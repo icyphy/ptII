@@ -59,7 +59,9 @@ JSIMPLE_TESTS = \
 JGRAPHICAL_TESTS = \
 	dummy.tcl
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
+EXTRA_SRCS = \
+	jad2java \
+	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -91,6 +93,41 @@ depend:
 ptjacl:
 	CLASSPATH="$(ROOT)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)" \
 		"$(PTII)/bin/ptjacl"
+
+SOURCECLASS = $(ROOT)/ptolemy/actor/lib/test/auto/RecordUpdater.xml
+SHALLOWTARGETPACKAGE = ptolemy.copernicus.java.test.cg
+SHALLOWTARGETCLASS = $(SHALLOWTARGETPACKAGE).RecordUpdater
+
+JVM_SIZE = -Xmx132m
+
+compileShallowDemo: $(JCLASS)
+	@echo "generate shallow code for $(SOURCEPACKAGE)"
+	$(JAVA) $(JVM_SIZE) \
+	 -classpath "$(CLASSPATH)" \
+	ptolemy.copernicus.java.Main $(SOURCECLASS) -d "$(ROOT)"  \
+		-p wjtp.at targetPackage:$(SHALLOWTARGETPACKAGE) \
+		-p wjtp.mt targetPackage:$(SHALLOWTARGETPACKAGE) \
+		$(SOOT_USER_ARGS)
+	@echo "Here is that javap output"
+	javap -verbose -l -s -classpath $(ROOT) $(SHALLOWTARGETCLASS)
+
+runShallowDemo:
+	@echo "Run the model"
+	$(JAVA) \
+	-Xfuture -classpath "$(CLASSPATH)" \
+	ptolemy.actor.gui.CompositeActorApplication \
+	-iterations 50 \
+	-class $(SHALLOWTARGETCLASS)
+
+# Run the output through the jad disassembler and then recompile it
+# This can be very useful for debugging
+disassembleShallowDemo:
+	jad -d cg cg/RecordUpdater.class
+	sh ./jad2java cg/RecordUpdater.jad > cg/RecordUpdater.java
+	$(JAVAC) -classpath $(ROOT) cg/RecordUpdater.java
+	$(ROOT)/bin/ptinvoke \
+		ptolemy.actor.gui.CompositeActorApplication \
+		-class ptolemy.copernicus.java.test.cg.RecordUpdater
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
