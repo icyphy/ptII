@@ -54,7 +54,7 @@
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">For convenience to change parameters and see other Hadamard matrices:
 Set x to be the matrix dimension (codeword length), and y should be log2(x).
-The parameters in the above actors will set to the new values.</text></svg></configure>
+The parameters in the above actors will be set to the new values.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -70,16 +70,6 @@ The parameters in the above actors will set to the new values.</text></svg></con
         <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 285.0">
         </property>
     </property>
-    <port name="in" class="ptolemy.actor.TypedIOPort">
-        <property name="input"/>
-        <property name="_location" class="ptolemy.kernel.util.Location">
-        </property>
-    </port>
-    <port name="out" class="ptolemy.actor.TypedIOPort">
-        <property name="output"/>
-        <property name="_location" class="ptolemy.kernel.util.Location">
-        </property>
-    </port>
     <entity name="HadamardCode" class="ptolemy.actor.lib.comm.HadamardCode">
         <property name="index" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
