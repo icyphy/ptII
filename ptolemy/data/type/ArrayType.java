@@ -266,7 +266,7 @@ public class ArrayType extends StructuredType {
      *  by replacing the BaseType.NAT component of the declared type by
      *  another type.
      *  @parameter type A Type.
-     *  @return True is the argument is a substitution instance of this type.
+     *  @return True if the argument is a substitution instance of this type.
      */
     public boolean isSubstitutionInstance(Type type) {
 	if (isConstant() || ( !(type instanceof ArrayType))) {
@@ -306,9 +306,10 @@ public class ArrayType extends StructuredType {
 	return "(" + _elementType.toString() + ")array";
     }
 
-    /** Set the elements that have declared type BaseType.ANY to the
-     *  specified type.
+    /** Set the elements that have declared type BaseType.ANY (the leaf
+     *  type variable) to the specified type.
      *  This method is called at the beginning of type resolution.
+     *  @param t the type to set the leaf type variable to.
      */
     public void initialize(Type t) {
         try {
@@ -320,19 +321,6 @@ public class ArrayType extends StructuredType {
 	        "initialize the element type to " + t + " " +
 		iae.getMessage());
 	}
-
-/*
-	if (isConstant()) {
-	    return;
-	}
-
-	if (_declaredElementType == BaseType.NAT) {
-	    _elementType = t;
-	} else {
-	    // element type is a structured type.
-	    ((StructuredType)_elementType).initialize(t);
-	}
-*/
     }
 
     /** Update this Type to the specified ArrayType.
