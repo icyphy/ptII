@@ -825,12 +825,6 @@ proc createAndExecute {file} {
 		incr KNOWN_FAILED
 		return
 	    }
-	    if [java::instanceof \
-		    $director ptolemy.domains.hde.kernel.HDEirector] {
-		puts "$file: Skipping tests with DE inside, marking as Known Failure"
-		incr KNOWN_FAILED
-		return
-	    }
 	}
     }
 
