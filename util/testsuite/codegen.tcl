@@ -74,16 +74,22 @@ proc speedComparison  {xmlFile \
     if {$codeGenType == "Deep"} {
 	#puts "Not generation speed comparision stats for Deep yet"
 	set args [java::new {String[]} 0]
-	puts "Running builtin $codeGenType codegen $repeat times"
-	#set codegenElapsed 0
-	set codegenElapsed [time {java::call \
-		$targetClass \
-		main $args} $repeat]
+
+	# builtin does not work because the generated code has a 
+	# different root than the ptolemy II tree.  
+
+	#puts "Running builtin $codeGenType codegen $repeat times"
+	set codegenElapsed 0
+	#set codegenElapsed [time {java::call \
+	#	$targetClass \
+	#	main $args} $repeat]
 	
 	puts "Running exec $codeGenType codegen $repeat times"
 	#set codegenExecElapsed 0
+	#set codegenExecElapsed \
+	#	[time {exec java -classpath $relativePathToPTII $targetClass} $repeat]
 	set codegenExecElapsed \
-		[time {exec java -classpath $relativePathToPTII $targetClass} $repeat]
+		[time {exec java -jar $relativePathToPTII/ptolemy/copernicus/java/cg/$modelName/treeshake_codegen.jar} $repeat]
 
     } else {
 	if {$codeGenType == "Actor" \
@@ -452,18 +458,21 @@ proc sootCodeGeneration {{PTII} modelPath {codeGenType Shallow} \
 	#    puts $results
     }
 
+
     # If the model has a different name than the file name, we
     # handle it here.
     set command $runCommand
 
-    if { $statsOnly == 1 || ${codeGenType} == "Actor" } {
-	# Just print the command
-	puts "make MODEL=$modelName SOURCECLASS=$modelPath $command"
-	return "Times Interp/Deep ms $modelName 1 \
-	    builtin: 0/0 \
-	    0 % \
-	    exec: 0/0 \
-	    0 %"
+    if { ${statsOnly} == 1 || ${codeGenType} == "Actor" } {
+	if { ${codeGenType} == "Actor" } {
+	    # Just print the command
+	    puts "make MODEL=$modelName SOURCECLASS=$modelPath $command"
+	    return "Times Interp/Deep ms $modelName 1 \
+		    builtin: 0/0 \
+		    0 % \
+	            exec: 0/0 \
+	            0 %"
+        }    
     } else {
 
 	set timeout 1200000
@@ -489,6 +498,7 @@ proc sootCodeGeneration {{PTII} modelPath {codeGenType Shallow} \
 	puts $results
     }
 
+    puts "codegen.tcl: sootCodeGeneration: speedComparison = $speedComparison"
     if {$speedComparison == 1} {
         return [speedComparison $modelPath $modelName $targetPackage \
 		    3 $modelClass $codeGenType]
