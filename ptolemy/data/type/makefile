@@ -65,9 +65,33 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	doc \
+	'ArrayType$$1.class' \
+	'ArrayType$$ElementTypeTerm.class' \
+	'BaseType$$1.class' \
+	'BaseType$$10.class' \
+	'BaseType$$11.class' \
+	'BaseType$$12.class' \
+	'BaseType$$13.class' \
+	'BaseType$$14.class' \
+	'BaseType$$15.class' \
+	'BaseType$$16.class' \
+	'BaseType$$17.class' \
+	'BaseType$$18.class' \
+	'BaseType$$19.class' \
+	'BaseType$$2.class' \
+	'BaseType$$3.class' \
+	'BaseType$$4.class' \
+	'BaseType$$5.class' \
+	'BaseType$$6.class' \
+	'BaseType$$7.class' \
+	'BaseType$$8.class' \
+	'BaseType$$9.class' \
+	'BaseType$$ConvertOperator.class' \
+	'TypeLattice$$1.class' \
+	'TypeLattice$$TheTypeLattice.class
 
-JCLASS = $(JSRCS:%.java=%.class)
+JCLASS= $(JSRCS:%.java=%.class)
 
 
 all: jclass
