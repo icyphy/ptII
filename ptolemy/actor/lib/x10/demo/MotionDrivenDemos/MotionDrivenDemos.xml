@@ -648,7 +648,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 40.0">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={134, 198, 815, 509}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={134, 198, 815, 516}}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -693,7 +693,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
                 </port>
             </entity>
             <entity name="Const2" class="ptolemy.actor.lib.Const">
-                <property name="value" class="ptolemy.data.expr.Parameter" value="50">
+                <property name="value" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <doc>Create a constant sequence</doc>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -804,7 +804,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 40.0">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={18, 226, 815, 509}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={18, 226, 815, 516}}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -849,7 +849,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
                 </port>
             </entity>
             <entity name="Const2" class="ptolemy.actor.lib.Const">
-                <property name="value" class="ptolemy.data.expr.Parameter" value="50">
+                <property name="value" class="ptolemy.data.expr.Parameter" value="25">
                 </property>
                 <doc>Create a constant sequence</doc>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
