@@ -56,17 +56,17 @@ do
 
 	# Look for public statements after private etc.
         awk '$1 == "public" {sawpublic=1
-				if (sawprivate == 1) {
+				if (sawprivate == 1 && sawinner != 1) {
 				   print FILENAME": public is after private"
 				   print $0
 				}
-	     			if (sawprotected == 1) {
+	     			if (sawprotected == 1 && sawinner != 1) {
 				   print FILENAME": public is after protected"
 				   print $0
 				}
 			}
         $1 == "protected" {
-				if (sawprivate == 1) {
+				if (sawprivate == 1 && sawinner != 1) {
 				   print FILENAME": public is after private"
 				   print $0
 				}
@@ -80,6 +80,12 @@ do
 			    } else {
 				sawprivate=1
 			    }
+			}    
+        $0 ~ /^[	 ]*\/\/*[ 	]*[Ii]nner.*[Cc]lass/ {
+			    # If we see an inner class comment, then
+			    # we basically ignore any out of order methods
+			    # after the comment.
+			    sawinner=1
 	}' $file
 
 	# Check that certain keywords exist
@@ -130,7 +136,7 @@ do
 	fi
 
 	# Check for problems with equals signs
-	results=`egrep '[^ ><+&=\!]=' $file`
+	results=`egrep '[^-*/ ><+&=\!]=' $file`
 	if [ "x$results" != "x" ]; then
 	    echo "$file: contains an equal sign without a leading space"
 	    echo "$results"
