@@ -110,6 +110,7 @@ OPTIONAL_FILES = \
 	'BaseType$$ObjectType.class' \
 	'BaseType$$ScalarType.class' \
 	'BaseType$$StringType.class' \
+	'BaseType$$UnsignedByteType.class' \
 	'BaseType$$UnknownType.class' \
 	'BaseType$$ConvertOperator.class' \
 	'RecordType$$1.class' \
