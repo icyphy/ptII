@@ -45,7 +45,7 @@ include $(CONFIG)
 
 DIRS = 		test 
 
-CLASSPATH = ../../..:/users/ptdesign/vendors/sun/JavaCC/JavaCC.zip
+CLASSPATH = ../../..:$(JAVACCDIR)/JavaCC.zip
 
 # Used to build zip files
 TYPACKAGE = 	pt.data.expr
