@@ -1,0 +1,31 @@
+#!/bin/sh
+# Run time tests such as de.lib.test.Time and report the output
+
+getStickyDate() {
+    stickyDate=`cvs status $1 | grep 'Sticky Date' | awk '{print $3}'`
+    if [ "$stickyDate" = "(none)" ]; then
+	stickyDate=`date +%Y.%m.%d.%H.%M.%S`
+    fi
+}
+
+cd $PTII
+
+domains="de sdf"
+for domain in $domains
+do
+    getStickyDate ptolemy/domains/$domain/lib/test/Time.java
+    java -classpath $PTII ptolemy.domains.$domain.lib.test.Time |
+	tail -2 | head -1 |
+	awk '{print stickyDate, domain ".lib.test.Time", $0}' \
+	    domain=$domain stickyDate=$stickyDate 
+done
+
+domains="giotto"
+for domain in $domains
+do
+    getStickyDate ptolemy/domains/$domain/test/auto/realtime.xml
+    $PTII/bin/ptinvoke ptolemy.actor.gui.MoMLSimpleApplication ptolemy/domains/$domain/test/auto/realtime.xml |	
+	tail -1 |
+	awk '{print stickyDate, domain "/test/auto/realtime.xml", $0}' \
+	    domain=$domain stickyDate=$stickyDate 
+done
