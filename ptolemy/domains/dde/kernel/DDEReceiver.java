@@ -552,9 +552,6 @@ public class DDEReceiver extends TimedQueueReceiver
 			return true;
 		    }
 		    return false;
-		    // JFIXME: beginning old
-		    // return true;
-		    // JFIXME: end old
 		}
 	    } else {
 		if( hasNullToken() ) {
@@ -571,6 +568,10 @@ public class DDEReceiver extends TimedQueueReceiver
 	}
 	if( !super.hasToken() && !_terminate ) {
 	    _readPending = true;
+	    if( actorName.equals("join") ) {
+		System.out.println("********** Actor: " + actorName + " about to read block");
+		timeKeeper.printRcvrList();
+	    }
             if( isConnectedToBoundary() ) {
                 director.addExternalReadBlock();
             } else {
@@ -743,6 +744,24 @@ public class DDEReceiver extends TimedQueueReceiver
         }
 	if( getRcvrTime() > timeKeeper.getNextTime() &&
         	!_terminate ) {
+	    // Pass this information in via a null token
+            IOPort port = (IOPort)getContainer();
+            Receiver[][] rcvrs = null;
+            try {
+                rcvrs = port.deepGetReceivers();
+            } catch( IllegalActionException e ) {
+                // FIXME: Do Something
+            }
+            double time = getRcvrTime();
+            for (int i = 0; i < rcvrs.length; i++) {
+		for (int j = 0; j < rcvrs[i].length; j++ ) {
+		    if( time > ((DDEReceiver)
+			    rcvrs[i][j]).getLastTime() ) {
+                    ((DDEReceiver)rcvrs[i][j]).put(
+			    new NullToken(), time );
+                    }
+                }
+	    }
 	    return false;
 	}
 
@@ -751,6 +770,7 @@ public class DDEReceiver extends TimedQueueReceiver
 	///////////////////////////
         if( super.hasToken() && !_terminate ) {
 	    if( !timeKeeper.hasMinRcvrTime() ) {
+		// BE SURE TO SEND A NULL TOKEN
 		if( hasNullToken() ) {
 		    if( timeKeeper.getHighestPriorityReal() != null ) {
 			return false;
@@ -758,39 +778,50 @@ public class DDEReceiver extends TimedQueueReceiver
                     	    timeKeeper.getHighestPriorityNull() ) {
 			return false;
 		    } else if( !_hideNullTokens ) {
-			// JFIXE: set tokenConsumed = true
+			// JFIXIT: set tokenConsumed = true
+			timeKeeper._tokenConsumed = true;
 			return true;
 		    } else {
 			super.get();
-			// JFIXE: set tokenConsumed = true
+			// JFIXIT: set tokenConsumed = true
+			timeKeeper._tokenConsumed = true;
 			timeKeeper.sendOutNullTokens(this);
-			return _hasToken(workspace, director,
+			// JFIXIT return _hasToken(workspace, director,
+			return _hasOutsideToken(workspace, director,
 				timeKeeper, _hideNullTokens);
 		    }
 		} else {
-		    // JFIXE: set tokenConsumed = true
 		    if( this == timeKeeper.getHighestPriorityReal() ) {
+			// JFIXIT: set tokenConsumed = true
+			timeKeeper._tokenConsumed = true;
 			return true;
 		    }
 		    return false;
-		    // JFIXME: beginning old
-		    // return true;
-		    // JFIXME: end old
 		}
 	    } else {
 		if( hasNullToken() ) {
 		    if( !_hideNullTokens ) {
+			// JFIXIT: set tokenConsumed = true
+			timeKeeper._tokenConsumed = true;
 			return true;
 		    }
 		    super.get();
+		    // JFIXIT: set tokenConsumed = true
+		    timeKeeper._tokenConsumed = true;
 		    timeKeeper.sendOutNullTokens(this);
-		    return _hasToken(workspace, director,
+		    // return _hasToken(workspace, director,
+		    return _hasOutsideToken(workspace, director,
                             timeKeeper, _hideNullTokens);
 		}
+		// JFIXIT: set tokenConsumed = true
+		timeKeeper._tokenConsumed = true;
 		return true;
 	    }
 	}
 	if( !super.hasToken() && !_terminate ) {
+	    if( timeKeeper._tokenConsumed ) {
+		return false;
+	    }
 	    _readPending = true;
             if( isConnectedToBoundary() ) {
                 director.addExternalReadBlock();
@@ -816,7 +847,8 @@ public class DDEReceiver extends TimedQueueReceiver
 	    }
             throw new TerminateProcessException("");
 	} else {
-            return _hasToken(workspace, director,
+            // return _hasToken(workspace, director,
+            return _hasOutsideToken(workspace, director,
             	    timeKeeper, _hideNullTokens);
 	}
     }
