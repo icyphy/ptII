@@ -97,7 +97,7 @@ test RecordToken-2.1 {Test add} {
     set r2 [java::new {ptolemy.data.RecordToken} $l2 $v2]
 
     [$r1 add $r2] toString
-} {{name="foobar", value=6.5}}
+} {{extra1=2, extra2=8.5, name="foobar", value=6.5}}
 
 ######################################################################
 ####
@@ -119,7 +119,7 @@ test RecordToken-2.2 {Test adding with empty record} {
     set r1 [java::new {ptolemy.data.RecordToken} $l1 $v1]
 
     [$r add $r1] toString
-} {{}}
+} {{extra1=2, name="foo", value=1}}
 
 ######################################################################
 ####
