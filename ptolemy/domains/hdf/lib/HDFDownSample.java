@@ -60,7 +60,7 @@ schedule cannot be changed in the middle of one iteration.
 <p>
 @author Rachel Zhou
 @version $Id$
-@since Ptolemy II 3.0
+@since Ptolemy II 3.1
 */
 public class HDFDownSample extends Transformer {
 
@@ -153,28 +153,6 @@ public class HDFDownSample extends Transformer {
         output.send(0, inputToken[_rateValue - phaseValue - 1]);
     }
 
-
-    /** Preinitialize the actor by setting the sample rate in the
-     *  first interation to be the initial value of the <i>rate</i>
-     *  portParameter.
-     *  @exception IllegalActionException If the parent class throws it.
-     */
-    public void preinitialize() throws IllegalActionException {
-
-        _rateValue = ((IntToken)rate.getToken()).intValue();
-        _inputRate.setToken(new IntToken(_rateValue));
-        _firingSoFar = 0;
-        Director director = getDirector();
-        director.invalidateSchedule();
-        //if (director instanceof HDFDirector) {
-        //    Scheduler scheduler =
-        //         ((SDFDirector)director).getScheduler();
-        //    _firingCount =
-        //        ((SDFScheduler)scheduler).getFiringCount(this);
-        //}
-        super.preinitialize();
-    }
-
     /** If it is end of one complete iteration, the postfire method
      *  takes in the most recent token from the <i>rate</i>
      *  portParameter, and invalidate the schedule.
@@ -205,6 +183,26 @@ public class HDFDownSample extends Transformer {
         return super.postfire();
     }
 
+    /** Preinitialize the actor by setting the sample rate in the
+     *  first interation to be the initial value of the <i>rate</i>
+     *  portParameter.
+     *  @exception IllegalActionException If the parent class throws it.
+     */
+    public void preinitialize() throws IllegalActionException {
+
+        _rateValue = ((IntToken)rate.getToken()).intValue();
+        _inputRate.setToken(new IntToken(_rateValue));
+        _firingSoFar = 0;
+        Director director = getDirector();
+        director.invalidateSchedule();
+        //if (director instanceof HDFDirector) {
+        //    Scheduler scheduler =
+        //         ((SDFDirector)director).getScheduler();
+        //    _firingCount =
+        //        ((SDFScheduler)scheduler).getFiringCount(this);
+        //}
+        super.preinitialize();
+    }
 
     //////////////////////////////////////////////////////////////
     ////           private variables                          ////

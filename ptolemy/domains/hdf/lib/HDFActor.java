@@ -60,7 +60,7 @@ be ignored. The schedule cannot be changed in the middle of one iteration.
 <p>
 @author Rachel Zhou
 @version $Id$
-@since Ptolemy II 3.0
+@since Ptolemy II 3.1
 */
 public class HDFActor extends Transformer {
 
@@ -134,21 +134,6 @@ public class HDFActor extends Transformer {
         output.broadcast(inputToken, _rateValue);
     }
 
-
-    /** Preitialize the actor by setting the port rate in the first
-     *  iteration to be the initial value of the <i>rate</i> portParameter.
-     *  @exception IllegalActionException If the parent class throws it.
-     */
-    public void preinitialize() throws IllegalActionException {
-        _rateValue = ((IntToken)rate.getToken()).intValue();
-        _outputRate.setToken(new IntToken(_rateValue));
-        _inputRate.setToken(new IntToken(_rateValue));
-        _firingSoFar = 0;
-        Director director = getDirector();
-        director.invalidateSchedule();
-        super.preinitialize();
-    }
-
     /** If it is end of one complete iteration, the postfire method
      *  takes in the most recent token from the <i>rate</i>
      *  portParameter, and invalidate the schedule.
@@ -172,6 +157,20 @@ public class HDFActor extends Transformer {
             }
         }
         return super.postfire();
+    }
+
+    /** Preitialize the actor by setting the port rate in the first
+     *  iteration to be the initial value of the <i>rate</i> portParameter.
+     *  @exception IllegalActionException If the parent class throws it.
+     */
+    public void preinitialize() throws IllegalActionException {
+        _rateValue = ((IntToken)rate.getToken()).intValue();
+        _outputRate.setToken(new IntToken(_rateValue));
+        _inputRate.setToken(new IntToken(_rateValue));
+        _firingSoFar = 0;
+        Director director = getDirector();
+        director.invalidateSchedule();
+        super.preinitialize();
     }
 
     //////////////////////////////////////////////////////////////
