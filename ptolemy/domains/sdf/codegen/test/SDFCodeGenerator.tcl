@@ -92,7 +92,7 @@ test SDFCodeGenerator-3.1 {Compile and run the RampArraySystem test} {
 test SDFCodeGenerator-4.1 {Compile and run the IntDoubleSystem test} {
     set result [cg_generate IntDoubleSystem]
     lrange $result 0 9
-} {1 1 1 1 1 1 1 1 1 1}
+} {1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0 10.0}
 
 test SDFCodeGenerator-5.1 {Compile and run the DotProductSystem test} {
     set result [cg_generate DotProductSystem]
