@@ -432,7 +432,7 @@ public class VergilApplication extends MoMLApplication {
     /** The command-line options that take arguments. */
     protected static String _commandOptions[][] = {
         {"-config", 
-         "<configuration URL, defaults to ptolemy/configs/vergilConfiguration.xml>"},
+         "<configuration URL, defaults to ptolemy/configs/full/configuration.xml>"},
     };
 
     ///////////////////////////////////////////////////////////////////
