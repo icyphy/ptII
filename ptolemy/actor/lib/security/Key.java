@@ -110,7 +110,7 @@ public class Key extends Source {
         }
 
         keySize = new Parameter(this, "keySize", new IntToken(56));
-
+        keySize.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////
