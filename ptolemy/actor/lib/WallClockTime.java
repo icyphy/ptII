@@ -95,7 +95,7 @@ public class WallClockTime extends Source {
 
     /** Override the base class to set the type constraints on the ports.
      *  @return A new instance of WallClockTime.
-     *  @throws CloneNotSupportedException If a derived class includes
+     *  @exception CloneNotSupportedException If a derived class includes
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
