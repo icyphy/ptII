@@ -67,13 +67,4 @@ public class NumericalNonconvergeException extends InvalidStateException{
             String detail) {
         super(obj1, obj2, detail);
     }
-
-    /** Constructs an Exception with a detail message that includes the
-     *  names of an enumeration of nameable plus the an argument string.
-     *  @param objects The enumeration of Nameable objects
-     *  @param detail The message.
-     */
-    public NumericalNonconvergeException( Enumeration objects, String detail) {
-        super(objects, detail);
-    }
 }
