@@ -43,10 +43,8 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.sched.NotSchedulableException;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.StaticSchedulingDirector;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.domains.fsm.kernel.Action;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.FSMDirector;
 import ptolemy.domains.fsm.kernel.State;
@@ -61,7 +59,6 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
 import java.util.Iterator;
@@ -171,8 +168,10 @@ public class HDFFSMDirector extends FSMDirector {
      */
     public void fire() throws IllegalActionException {
 
-        _setInputVariables();
         FSMActor ctrl = getController();
+        ctrl.setFiringsSoFar(_firingsSoFar);
+        ctrl.setFiringsPerIteration(_firingsPerIteration);
+        _setInputVariables();
         State st = ctrl.currentState();
         // FIXME
         //Actor ref = ctrl.currentState().getRefinement();

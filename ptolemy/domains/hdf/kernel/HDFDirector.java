@@ -300,6 +300,10 @@ public class HDFDirector extends SDFDirector {
      */
     public boolean postfire() throws IllegalActionException {
         // Get schedule here, no matter if it is the top level.
+        // This is necessary when HDF is constructed in hierarchy.
+        // The sub-controller may change modes but the upper controller
+        // will not be aware of it. Use SDF instead of HDF where
+        // everything has fixed port rates. This is more efficient.
         getSchedule();
         CompositeActor container = (CompositeActor)getContainer();
         Director exeDirector = container.getExecutiveDirector();
@@ -307,6 +311,7 @@ public class HDFDirector extends SDFDirector {
             || ((! (exeDirector instanceof SDFDirector))
                && (! (exeDirector instanceof HDFFSMDirector))
                && (! (exeDirector instanceof HDFDirector)))) {
+            //getSchedule();
             _directorFiringsPerIteration = 1;
             updateFiringsPerIteration(1, false);
         }
