@@ -59,7 +59,7 @@ public class PNRamp extends AtomicActor {
 	    throws IllegalActionException {
 	if (name.equals("Initial Value")) {
 	    IntToken token = new IntToken(valueString);
-	    _seed = token.getValue();
+	    _seed = token.intValue();
 	} else {
 	    throw new IllegalActionException(this,name+" param does not exist");
 	}
@@ -68,16 +68,25 @@ public class PNRamp extends AtomicActor {
     /** Writes successive integers to the output
      */
     public void fire() throws IllegalActionException {
-	while(true) {
+	while(_seed <= 100) {
+        //while(true) {
 	    IntToken data = new IntToken(_seed);
 	    _output.broadcast(data);
 	    _seed++;
 	    //System.out.println("Ramp printed "+_seed);
-	}
+        }
+        System.out.println("seed is : "+_seed);
+        _notdone = false;
+    }
+
+    public boolean postfire() {
+        return _notdone;
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    
+    private boolean _notdone = true;
     
     /* This is the initial value that the star puts in the stream */
     private int _seed;
