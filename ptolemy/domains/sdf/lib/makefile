@@ -77,7 +77,9 @@ JSRCS = \
 	SequenceToArray.java \
         SequenceToDoubleMatrix.java \
 	UpSample.java \
-	VariableFIR.java
+	VariableFIR.java \
+	VariableLattice.java \
+	VariableRecursiveLattice.java
 
 OTHER_FILES_TO_BE_JARED = \
 	Spectrum.xml \
