@@ -329,18 +329,7 @@ public class JNIUtilities {
         StreamExec javaExec = new StreamExec();
         javaExec.setCommands(execCommands);
         javaExec.start();
-        // FIXME: We should not need to sleep here
-        Thread.sleep(20000);
 
-//          synchronized(javaExec) {
-//              System.out.println("JNIUtilities: getProcess()");
-//              Process process= javaExec.getProcess();
-//              if (process != null) {
-//                  System.out.println("JNIUtilities: about to call waitFor");
-//                  process.waitFor();
-//                  System.out.println("JNIUtilities: done with");
-//              }
-//          }
     }
 
     ///////////////////////////////////////////////////////////////////
