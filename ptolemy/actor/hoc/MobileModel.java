@@ -97,7 +97,7 @@ public class MobileModel extends TypedCompositeActor {
         new Director(this, "defultDirector");
         director = new Parameter(this, "director",
                 new StringToken("ptolemy.actor.Director"));
-        getMoMLInfo().className = "ptolemy.actor.MobileModel";
+        getMoMLInfo().className = "ptolemy.actor.hoc.MobileModel";
     }
 
     /** Construct an actor with a name and a container.
@@ -128,7 +128,7 @@ public class MobileModel extends TypedCompositeActor {
         new Director(this, "defaultDirector");
         director = new Parameter(this, "director",
                 new StringToken("ptolemy.actor.Director"));
-        getMoMLInfo().className = "ptolemy.actor.MobileModel";
+        getMoMLInfo().className = "ptolemy.actor.hoc.MobileModel";
     }
 
     ///////////////////////////////////////////////////////////////////
