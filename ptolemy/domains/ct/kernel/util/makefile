@@ -51,7 +51,8 @@ TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
 JARFILE = 	$(TYPACKAGE).jar
 
 JSRCS = \
-	TotallyOrderedSet.java
+	TotallyOrderedSet.java \
+	DoubleComparator.java
 
 EXTRA_SRCS =	$(JSRCS)
 
