@@ -74,11 +74,11 @@ public class JAIInterpolation extends Transformer {
 
 	interp = Interpolation.getInstance(
 		      Interpolation.INTERP_BILINEAR);
-	parameters = new ParameterBlock();
     }
     
     public void fire() throws IllegalActionException {
 	super.fire();
+	parameters = new ParameterBlock();
 	ObjectToken objectToken = (ObjectToken) input.get(0);
 	RenderedOp oldImage = (RenderedOp) objectToken.getValue();
 	parameters.addSource(oldImage);
