@@ -7,11 +7,11 @@
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[92, 102]">
     </property>
-    <property name="frequency" class="ptolemy.data.expr.Parameter" value="PI">
-    </property>
     <property name="magnitude" class="ptolemy.data.expr.Parameter" value="1.0">
     </property>
     <property name="phase" class="ptolemy.data.expr.Parameter" value="0.0">
+    </property>
+    <property name="frequencyInHz" class="ptolemy.data.expr.Parameter" value="1.0">
     </property>
     <port name="trigger" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
@@ -38,7 +38,7 @@
         </port>
     </entity>
     <entity name="Frequency" class="ptolemy.actor.lib.Scale">
-        <property name="factor" class="ptolemy.data.expr.Parameter" value="frequency">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="frequencyInHz * 2.0 * PI">
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -107,7 +107,7 @@
         </port>
     </entity>
     <entity name="Magnitude" class="ptolemy.actor.lib.Scale">
-        <property name="factor" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="magnitude">
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
         </property>
