@@ -88,7 +88,7 @@ public class HTVQApplet extends Applet implements Runnable {
         _goButton.addActionListener(new GoButtonListener());
         // Done adding go button
 
-       Panel displayPanel = new Panel();
+        Panel displayPanel = new Panel();
         add(displayPanel);
         displayPanel.setLayout(new BorderLayout(15, 15));
         displayPanel.setSize(420, 200);
@@ -116,9 +116,18 @@ public class HTVQApplet extends Applet implements Runnable {
             d.setScheduleValid(false);
 
             ImageSequence source = new ImageSequence(c, "Source");
+            source.setBaseURL(getDocumentBase());
+            /*         Parameter filename = (Parameter) 
+                source.getAttribute("File Name Template");
+            filename.setToken(new StringToken(
+                    "file:/users/ptII/ptolemy/domains/sdf/lib/vq" +
+                    "/data/seq/missa/missa***.qcf"));
+            */
             ImagePartition part = new ImagePartition(c, "Part");
             HTVQEncode encode = new HTVQEncode(c, "Encoder");
+            encode.setBaseURL(getDocumentBase());
             VQDecode decode = new VQDecode(c, "Decoder");
+            encode.setBaseURL(getDocumentBase());
             ImageUnpartition unpart = new ImageUnpartition(c, "Unpart");
             ImageDisplay consumer = new ImageDisplay(c, "Compressed");
             ImageDisplay original = new ImageDisplay(c, "Original");

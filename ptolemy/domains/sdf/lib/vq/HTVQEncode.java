@@ -36,6 +36,7 @@ import ptolemy.actor.*;
 import java.util.Enumeration;
 import ptolemy.domains.sdf.kernel.*;
 import java.io.*;
+import java.net.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// HTVQEncode
@@ -85,8 +86,8 @@ public final class HTVQEncode extends SDFAtomicActor {
     }
 
     public void initialize() throws IllegalActionException {
-        File sourcefile = null;
-        FileInputStream source = null;
+  
+        InputStream source = null;
         
         Parameter p; 
 	p = (Parameter) getAttribute("XFramesize");
@@ -106,15 +107,36 @@ public final class HTVQEncode extends SDFAtomicActor {
         p = (Parameter) getAttribute("Codebook");
         String filename = ((StringToken)p.getToken()).stringValue();
         try {
-            sourcefile = new File(filename);
-            if(!sourcefile.exists() || !sourcefile.isFile())
-                throw new IllegalActionException("Codebook file " + 
-                        filename + " does not exist!");
-            if(!sourcefile.canRead()) 
-                throw new IllegalActionException("Codebook file " +
-                        filename + " is unreadable!");
-            source = new FileInputStream(sourcefile);
-
+            if (filename != null) {
+                if(_baseurl != null) {
+                    try {
+                        // showStatus("Reading data");
+                        URL dataurl = new URL(_baseurl, filename);
+                        System.out.println("dataurl=" + dataurl);
+                        source = dataurl.openStream();
+                        //showStatus("Done");
+                    } catch (MalformedURLException e) {
+                        System.err.println(e.toString());
+                    } catch (FileNotFoundException e) {
+                        System.err.println("RLEncodingApplet: " +
+                                "file not found: " +e);
+                    } catch (IOException e) {
+                        System.err.println(
+                                "RLEncodingApplet: error reading"+
+                                " input file: " +e);
+                    }
+                } else {
+                    File sourcefile = new File(filename);
+                    if(!sourcefile.exists() || !sourcefile.isFile())
+                        throw new IllegalActionException("Image file " + 
+                                filename + " does not exist!");
+                    if(!sourcefile.canRead()) 
+                        throw new IllegalActionException("Image file " +
+                                filename + " is unreadable!");
+                    source = new FileInputStream(sourcefile);
+                }                      
+            }
+            
             int i, j, y, x, size = 1;
             byte temp[];
             for(i = 0; i<5; i++) {
@@ -150,6 +172,10 @@ public final class HTVQEncode extends SDFAtomicActor {
                 }
             }
         }
+    }
+
+    public void setBaseURL(URL baseurl) {
+        _baseurl = baseurl;
     }
 
     int ipbuf_encodep1[][] = new int[8][8];
@@ -319,7 +345,7 @@ public final class HTVQEncode extends SDFAtomicActor {
         return d;
     }
     
-    int _fullread(FileInputStream s, byte b[]) throws IOException {
+    int _fullread(InputStream s, byte b[]) throws IOException {
         int len = 0;
         int remaining = b.length;
         int bytesread = 0;
@@ -342,6 +368,7 @@ public final class HTVQEncode extends SDFAtomicActor {
     private int _yframesize;
     private int _xpartsize;
     private int _ypartsize;
+    private URL _baseurl;
 }
 
 

@@ -36,6 +36,7 @@ import ptolemy.actor.*;
 import java.util.Enumeration;
 import ptolemy.domains.sdf.kernel.*;
 import java.io.*;
+import java.net.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// VQDecode
@@ -85,10 +86,10 @@ public final class VQDecode extends SDFAtomicActor {
 
         ((SDFIOPort) getPort("imagepart")).sendArray(0, _partitions);      
     }
-    
+
     public void initialize() throws IllegalActionException {
-        File sourcefile = null;
-        FileInputStream source = null;
+  
+        InputStream source = null;
         
         Parameter p; 
 	p = (Parameter) getAttribute("XFramesize");
@@ -99,45 +100,67 @@ public final class VQDecode extends SDFAtomicActor {
         _xpartsize = ((IntToken)p.getToken()).intValue();
         p = (Parameter) getAttribute("YPartitionSize");
         _ypartsize = ((IntToken)p.getToken()).intValue();
-        
-        _partitions = 
-            new IntMatrixToken[_yframesize * _xframesize 
-                    / _ypartsize / _xpartsize];
 
         _codewords = 
-            new IntToken[_yframesize * _xframesize 
-                    / _ypartsize / _xpartsize];
-       
-        _part = new int[_ypartsize * _xpartsize];
+            new IntToken[_yframesize * _xframesize / _ypartsize / _xpartsize];
+ 
+       _part = new int[_ypartsize * _xpartsize];
+       _partitions = 
+           new IntMatrixToken[_yframesize * _xframesize 
+                   / _ypartsize / _xpartsize];
+
 
         p = (Parameter) getAttribute("Codebook");
         String filename = ((StringToken)p.getToken()).stringValue();
         try {
-            sourcefile = new File(filename);
-            if(!sourcefile.exists() || !sourcefile.isFile())
-                throw new IllegalActionException("Codebook file " + 
-                        filename + " does not exist!");
-            if(!sourcefile.canRead()) 
-                throw new IllegalActionException("Codebook file " +
-                        filename + " is unreadable!");
-            source = new FileInputStream(sourcefile);
+            if (filename != null) {
+                if(_baseurl != null) {
+                    try {
+                        // showStatus("Reading data");
+                        URL dataurl = new URL(_baseurl, filename);
+                        System.out.println("dataurl=" + dataurl);
+                        source = dataurl.openStream();
+                        //showStatus("Done");
+                    } catch (MalformedURLException e) {
+                        System.err.println(e.toString());
+                    } catch (FileNotFoundException e) {
+                        System.err.println("RLEncodingApplet: " +
+                                "file not found: " +e);
+                    } catch (IOException e) {
+                        System.err.println(
+                                "RLEncodingApplet: error reading"+
+                                " input file: " +e);
+                    }
+                } else {
+                    File sourcefile = new File(filename);
+                    if(!sourcefile.exists() || !sourcefile.isFile())
+                        throw new IllegalActionException("Image file " + 
+                                filename + " does not exist!");
+                    if(!sourcefile.canRead()) 
+                        throw new IllegalActionException("Image file " +
+                                filename + " is unreadable!");
+                    source = new FileInputStream(sourcefile);
+                }                      
+            }
             
-            byte temp[];
             int i, j, y, x, size = 1;
-            for(i = 0; i<3; i++) {
+            byte temp[];
+            for(i = 0; i<5; i++) {
                 size = size * 2;
                 temp = new byte[size];
                 for(j = 0; j<256; j++) {
                     _codebook[i][j] = new int[size];
-                    if(source.read(temp) != size)
+                    if(_fullread(source, temp) != size)
                         throw new IllegalActionException("Error reading " +
                                 "codebook file!");
                     for(x = 0; x < size; x++)
                         _codebook[i][j][x] = temp[x];
                 }
-                // skip over the lookup tables.
+
+               // skip over the lookup tables.
                 source.skip(65536);
-            }
+ 
+           }
         }
         catch (Exception e) {
             throw new IllegalActionException(e.getMessage());
@@ -151,8 +174,26 @@ public final class VQDecode extends SDFAtomicActor {
                 }
             }
         }
+    }   
+
+    int _fullread(InputStream s, byte b[]) throws IOException {
+        int len = 0;
+        int remaining = b.length;
+        int bytesread = 0;
+        while(remaining > 0) {
+            bytesread = s.read(b, len, remaining);
+            if(bytesread == -1) throw new IOException(
+                    "HTVQEncode: _fullread: Unexpected EOF");
+            remaining -= bytesread;
+            len += bytesread;
+        }
+        return len;
     }
-    
+
+    public void setBaseURL(URL baseurl) {
+        _baseurl = baseurl;
+    }
+     
     private int _codebook[][][] = new int[6][256][];
     private IntToken _codewords[];
     private IntMatrixToken _partitions[];
@@ -161,6 +202,7 @@ public final class VQDecode extends SDFAtomicActor {
     private int _yframesize;
     private int _xpartsize;
     private int _ypartsize;
+    private URL _baseurl;
 
 }
 

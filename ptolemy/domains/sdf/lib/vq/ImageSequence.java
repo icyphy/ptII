@@ -33,6 +33,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.*;
 import java.io.*;
+import java.net.*;
 import ptolemy.actor.*;
 import java.text.MessageFormat;
 import java.util.Enumeration;
@@ -56,8 +57,15 @@ public final class ImageSequence extends SDFAtomicActor {
         setTokenProductionRate(outputport, 1);
         outputport.setDeclaredType(IntMatrixToken.class);
 
-        Parameter p = new Parameter(this, "File Name Template", 
-                new StringToken("../lib/vq/data/seq/missa/missa***.qcf"));
+        /*        Parameter p = new Parameter(this, "imageUrlTemplate", 
+                new StringToken("http://ptolemy.eecs.berkeley.edu/"+
+                        "~ptdesign/java/ptdesign-java/"+
+                        "ptolemy/domains/sdf/lib/vq" +
+                        "/data/seq/missa/missa***.qcf"));
+        */
+        Parameter p = new Parameter(this, "imageUrlTemplate", 
+                new StringToken("../lib/vq" +
+                        "/data/seq/missa/missa***.qcf"));
         new Parameter(this, "XImageSize", new IntToken("176"));
         new Parameter(this, "YImageSize", new IntToken("144"));
         new Parameter(this, "Start Frame", new IntToken("0"));
@@ -65,9 +73,8 @@ public final class ImageSequence extends SDFAtomicActor {
     }
 
     public void initialize() throws IllegalActionException {
-        File sourcefile = null;
-        FileInputStream source = null;
-        Parameter p = (Parameter) getAttribute("File Name Template");
+        InputStream source = null;
+        Parameter p = (Parameter) getAttribute("imageUrlTemplate");
         String fileroot = ((StringToken)p.getToken()).stringValue();
         p = (Parameter) getAttribute("Start Frame");
         int startframe = ((IntToken)p.getToken()).intValue();
@@ -78,6 +85,11 @@ public final class ImageSequence extends SDFAtomicActor {
         p = (Parameter) getAttribute("YImageSize");
         ysize = ((IntToken)p.getToken()).intValue();
  
+        // If we've already loaded all these fricking images, then don't load
+        // them again.
+        if((_baseurl != null)&&(frames != null)) {
+            return;
+        }
         numframes = endframe - startframe + 1;
         frames = new byte[numframes][ysize * xsize];
         frame = new int[ysize * xsize];
@@ -97,16 +109,36 @@ public final class ImageSequence extends SDFAtomicActor {
                     loc = tfilename.lastIndexOf('*');
                 }
                 String filename = new String(arr);
-                
-                sourcefile = new File(filename);
-                if(!sourcefile.exists() || !sourcefile.isFile())
-                    throw new IllegalActionException("Image file " + 
-                            filename + " does not exist!");
-                if(!sourcefile.canRead()) 
-                    throw new IllegalActionException("Image file " +
-                            filename + " is unreadable!");
-                source = new FileInputStream(sourcefile);
-  
+                if (filename != null) {
+                    if(_baseurl != null) {
+                        try {
+                            // showStatus("Reading data");
+                            URL dataurl = new URL(_baseurl, filename);
+                            System.out.println("dataurl=" + dataurl);
+                            source = dataurl.openStream();
+                            //showStatus("Done");
+                        } catch (MalformedURLException e) {
+                            System.err.println(e.toString());
+                        } catch (FileNotFoundException e) {
+                            System.err.println("RLEncodingApplet: " +
+                                    "file not found: " +e);
+                        } catch (IOException e) {
+                            System.err.println(
+                                    "RLEncodingApplet: error reading"+
+                                    " input file: " +e);
+                        }
+                    } else {
+                        File sourcefile = new File(filename);
+                        if(!sourcefile.exists() || !sourcefile.isFile())
+                            throw new IllegalActionException("Image file " + 
+                                    filename + " does not exist!");
+                        if(!sourcefile.canRead()) 
+                            throw new IllegalActionException("Image file " +
+                                    filename + " is unreadable!");
+                        source = new FileInputStream(sourcefile);
+                    }                      
+                }
+               
                 if(source.read(frames[framenumber], 0, ysize * xsize)
                         != ysize*xsize)
                     throw new IllegalActionException("Error reading " +
@@ -128,6 +160,10 @@ public final class ImageSequence extends SDFAtomicActor {
         }
         framenumber = 0;    
         port_image = (IOPort) getPort("image");
+    }
+
+    public void setBaseURL(URL baseurl) {
+        _baseurl = baseurl;
     }
 
     public void fire() throws IllegalActionException {
@@ -161,6 +197,7 @@ public final class ImageSequence extends SDFAtomicActor {
     int endframe;
     int numframes;
     int framenumber;
+    URL _baseurl;
     IOPort port_image;
 
 }
