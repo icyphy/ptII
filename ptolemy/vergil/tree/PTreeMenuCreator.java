@@ -80,7 +80,8 @@ public class PTreeMenuCreator extends MouseAdapter {
     }
 
     /** Create an instance of the menu associated with this factory.
-     *  @param figure The figure for which to create a context menu.
+     *  @param e The mouse event.  If the mouse event is 
+     *  the third button, then menu is created and shown.
      */
     public void mousePressed(MouseEvent e) {
         if(e.getButton() != MouseEvent.BUTTON3) {

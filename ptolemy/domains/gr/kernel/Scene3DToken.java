@@ -116,7 +116,7 @@ public class Scene3DToken extends Token {
 
         /** Convert the specified token to a token having the type
          *  represented by this object.
-         *  @param t A token.
+         *  @param token A token.
          *  @return A token.
          *  @exception IllegalActionException If lossless conversion cannot
          *   be done.

@@ -84,7 +84,7 @@ public class UnitSolverDialog
     implements ActionListener, ListSelectionListener, SelectionListener {
 
     /**
-     * @param tableau The DialogTableau.
+     * @param dialogTableau The DialogTableau.
      * @param owner The object that, per the user, appears to be generating the
      * dialog.
      * @param target The object whose units are being solved.
