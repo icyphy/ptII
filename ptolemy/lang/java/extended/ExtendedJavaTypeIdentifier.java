@@ -60,21 +60,22 @@ public class ExtendedJavaTypeIdentifier extends TypeIdentifier {
             int arrayDim = TypeUtility.arrayDimension(type);
 
             if (arrayDim == 1) {
-		System.out.println("ExtendedJavaTypeIdentifier.kind(): array of dimension 1: " + arrayDim);
                 TypeNode baseTypeNode = TypeUtility.arrayBaseType(type);
 
                 switch (kind(baseTypeNode)) {
 		case TYPE_KIND_INT:       return TYPE_KIND_INT_ARRAY;
 		case TYPE_KIND_DOUBLE:    return TYPE_KIND_DOUBLE_ARRAY;
+		case TYPE_KIND_CHAR:	  
 		case TYPE_KIND_BOOLEAN:
 		case TYPE_KIND_LONG:
 		case TYPE_KIND_COMPLEX:
 		case TYPE_KIND_FIX_POINT:
 		default:
-			throw new RuntimeException("ExtendedJavaTypeIdentifier.kind(): "
-						   + kind(baseTypeNode) 
-						   + "not supported for arrayDim == 1");
-
+			System.err.println("Warning: "
+                                + "ExtendedJavaTypeIdentifier.kind(): '"
+                                + kind(baseTypeNode) 
+                                + "' not supported for arrayDim == 1.");
+                        return super.kind(type);
 		}
 	    } else {
 		if (arrayDim == 2) {
