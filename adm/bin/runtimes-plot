@@ -1,14 +1,21 @@
 #!/bin/sh
 # Generate plot data from runtimes-past
-
+# Usage: runtimes-plot [logfiles]
+# If no logfiles are specified, then we look in the runtimes/logs dir
 
 runtimedir=/vol/carson/carson1/cxh/runtimes
 tmpprefix=/tmp/runtimes-plot$$
 
+if [ $# -eq 0 ]; then
+    files=`ls $runtimedir/logs/*`
+else
+    files=$@
+fi
+
 runs="de.lib sdf.lib"
 for run in $runs
 do
-    grep -h Time $runtimedir/logs/* | grep ms | grep $run |
+    grep -h Time $files | grep ms | grep $run |
     awk '
 	{
 	    if ($0 ~ /elapsed time:/) {
@@ -30,6 +37,7 @@ awk '
 	print "Title: Ptolemy time tests" 
 	print "Xlabel: month/year"
 	print "Ylabel: time (ms.)"
+	print "Marks: dots"
 
 	mo[1]=0; mo[2]=31; mo[3]=59; mo[4]=90
 	mo[5]=120; mo[6]=151; mo[7]=181; mo[8]=212
