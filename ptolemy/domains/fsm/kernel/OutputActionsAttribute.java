@@ -31,6 +31,7 @@ import java.util.Iterator;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
+import ptolemy.actor.Receiver;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.UnknownResultException;
@@ -158,8 +159,13 @@ public class OutputActionsAttribute
                 }
                 try {
                     if (token != null) {
+                        // Since this port is both input and output, it needs
+                        // to cache the tokens to be sent out.
+                        Receiver[][] localReceivers 
+                            = destination.getReceivers();
                         if (channel != null) {
                             destination.send(channel.intValue(), token);
+                            localReceivers[channel.intValue()][0].put(token);
                             if (_debugging) {
                                 _debug(getFullName()+ " port: "
                                         + destination.getName() + " channel: "
@@ -168,6 +174,9 @@ public class OutputActionsAttribute
                             }
                         } else {
                             destination.broadcast(token);
+                            for(int i = 0; i < localReceivers.length; i++) {
+                                localReceivers[i][0].put(token);
+                            }
                             if (_debugging) {
                                 _debug(getFullName() + " port: "
                                         + destination.getName()
