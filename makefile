@@ -47,7 +47,7 @@ include $(CONFIG)
 PTPACKAGE = 	ptII
 # If you change the version number, be sure to edit doc/makefile,
 # ptolemy/configs and ptolemy/configs/doc
-PTVERSION =	2.0devel
+PTVERSION =	2.1-devel
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
