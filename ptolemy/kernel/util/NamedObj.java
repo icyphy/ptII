@@ -250,7 +250,7 @@ public class NamedObj implements Nameable, Serializable {
      */
     public Param removeParam(String name) {
         Param p = (Param)_params.remove(name);
-        workspace().incrversion();
+        workspace().incrVersion();
         return p;
     }
 
