@@ -222,6 +222,8 @@ public class PortConfigurerDialog
                         _direction = "WEST";
                     } else if (port.isOutput() && !port.isInput()) {
                         _direction = "EAST";
+                    } else if (!port.isOutput() && !port.isInput()) {
+                        _direction = "SOUTH";
                     } else { // multiport
                         _direction = "WEST";
                     }
@@ -758,6 +760,12 @@ public class PortConfigurerDialog
                             && !((Boolean) (portInfo[PortTableModel.COL_INPUT]))
                                 .booleanValue()) {
                         _direction = "EAST";
+                    } else if (
+                        !((Boolean) (portInfo[PortTableModel.COL_OUTPUT]))
+                            .booleanValue()
+                            && !((Boolean) (portInfo[PortTableModel.COL_INPUT]))
+                                .booleanValue()) {
+                        _direction = "SOUTH";
                     } else {
                         // multiport
                         _direction = "WEST";
