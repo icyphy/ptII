@@ -159,7 +159,15 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     String openParen = tokenizer.nextToken();
                     if (openParen.equals("(") && tokenizer.hasMoreTokens()) {
                         String name = tokenizer.nextToken();
-                        if (name.equals(")")) {
+                        if (name.equals("(")) {
+                            // found "ref(("
+                            // This is to make sure "ref(()" will not be
+                            // recognized as a reference name.
+                            foundIt = false;
+                        } else if (name.equals(")")) {
+                            // found "ref()"
+                            // This is to make sure "ref()" and
+                            // "ref( )" will give the same result.
                             foundIt = true;
                             while (tokenizer.hasMoreTokens()) {
                                 result.append(tokenizer.nextToken());  
@@ -183,13 +191,16 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     String openParen = tokenizer.nextToken();
                     if (openParen.equals("(") && tokenizer.hasMoreTokens()) {
                         String macroName = tokenizer.nextToken();
-                        if (macroName.equals(")")) {
+                        if (macroName.equals("(")) {
+                            // found "val(("
+                            foundIt = false;
+                        } else if (macroName.equals(")")) {
+                            // found "val()"
                             foundIt = true;
                             while (tokenizer.hasMoreTokens()) {
                                 result.append(tokenizer.nextToken());  
                             }
-                        }
-                        else if (tokenizer.hasMoreTokens()) {
+                        } else if (tokenizer.hasMoreTokens()) {
                             String closeParen = tokenizer.nextToken();
                             if (closeParen.equals(")")) {
                                 foundIt = true;
