@@ -48,7 +48,7 @@ action may be executed more than once during an iteration in domains
 with fixed-point semantics.
 <p>
 When the FSMActor is postfired, the chosen transition of the latest firing
-of the actor is commited. The commit actions contained by the transition
+of the actor is committed. The commit actions contained by the transition
 are executed and the current state of the actor is set to the destination
 state of the transition. An action is a commit action if it implements the
 CommitAction marker interface.
