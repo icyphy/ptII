@@ -132,13 +132,13 @@ JHDL_JAR="@JHDL_JAR@"
 
 #### Cal 
 # Set to cal and used in $PTII/ptolemy/makefile if Cal was found.
-PTCAL_DIR=@PTCAL_DIR@
-CAL_JARS=""
-if [ "$PTCAL_DIR" = "cal" ]; then
+PTCALTROP_DIR=@PTCALTROP_DIR@
+CALTROP_JARS=""
+if [ "$PTCALTROP_DIR" = "cal" ]; then
     # Directory that contains the Cal jar file ptCal.jar
     # used by bin/ptinvoke.in
-    CAL_DIR="@CAL_DIR@"
-    CAL_JARS="${CLASSPATHSEPARATOR}${CAL_DIR}/ptCal.jar${CLASSPATHSEPARATOR}${CAL_DIR}/saxon7.jar${CLASSPATHSEPARATOR}${CAL_DIR}/java_cup.jar"
+    CALTROP_DIR="@CALTROP_DIR@"
+    CALTROP_JARS="${CLASSPATHSEPARATOR}${CALTROP_DIR}/ptCal.jar${CLASSPATHSEPARATOR}${CALTROP_DIR}/saxon7.jar${CLASSPATHSEPARATOR}${CALTROP_DIR}/java_cup.jar"
 fi
 
 #### Serial port stuff
@@ -306,10 +306,10 @@ fi
 #### All the jar files.  Useful for Vergil and ptolemy rules which must load
 # arbitrary files
 #
-# Note that CAL_JARS should be before SOOT_JARS because
-# CAL_JARS contains java_cup.jar and jasminclasses.jar contains
+# Note that CALTROP_JARS should be before SOOT_JARS because
+# CALTROP_JARS contains java_cup.jar and jasminclasses.jar contains
 # a version of java cup
-ALL_JAR="${DIVA_JAR}${JINI_JARS}${CAL_JARS}${COMMAPI_JARS}${SOOT_JARS}${PTJACL_JARS}${JOYSTICK_JARS}${JYTHON_JARS}${JXTA_JARS}${GIOTTO_JARS}${QTJAVA_JARS}${X10_JARS}${CHIC_JARS}"
+ALL_JAR="${DIVA_JAR}${JINI_JARS}${CALTROP_JARS}${COMMAPI_JARS}${SOOT_JARS}${PTJACL_JARS}${JOYSTICK_JARS}${JYTHON_JARS}${JXTA_JARS}${GIOTTO_JARS}${QTJAVA_JARS}${X10_JARS}${CHIC_JARS}"
 ALL_JFLAG="${DIVA_JFLAG} ${JINI_JFLAG}"
 
 #### Sandbox
