@@ -1219,7 +1219,7 @@ public class PlotBox extends JPanel implements Printable {
     }
 
     /** Specify whether the X axis is drawn with a logarithmic scale.
-     *  If you would like to have the X axis drawn with a 
+     *  If you would like to have the X axis drawn with a
      *  logarithmic axis, then setXLog(true) should be called before
      *  adding any data points.
      *  @param xlog If true, logarithmic axis is used.
@@ -1255,7 +1255,7 @@ public class PlotBox extends JPanel implements Printable {
     }
 
     /** Specify whether the Y axis is drawn with a logarithmic scale.
-     *  If you would like to have the Y axis drawn with a 
+     *  If you would like to have the Y axis drawn with a
      *  logarithmic axis, then setYLog(true) should be called before
      *  adding any data points.
      *  @param ylog If true, logarithmic axis is used.
@@ -2034,7 +2034,7 @@ public class PlotBox extends JPanel implements Printable {
                     // Draw the label mark on the axis
                     graphics.drawLine(xCoord1, _uly, xCoord1, yCoord1);
                     graphics.drawLine(xCoord1, _lry, xCoord1, yCoord2);
-                    
+
                     // Draw the grid line
                     if (_grid && xCoord1 != _ulx && xCoord1 != _lrx) {
                         graphics.setColor(Color.lightGray);
