@@ -70,8 +70,7 @@ JSRCS = \
 EXTRA_SRCS =	$(JSRCS) \
 	TODO.txt \
 	Vergil.htm \
-	Vergil.properties \
-	img_ptolemy.gif
+	Vergil.properties
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
