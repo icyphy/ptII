@@ -124,7 +124,16 @@ public class ShapeIcon extends EditorIcon {
         newFigure.setStrokePaint(_lineColor);
         newFigure.setFillPaint(_fillColor);
         _figures.add(new WeakReference(newFigure));
-        
+        // Trim the list of figures...
+        ListIterator figures = _figures.listIterator();
+        while (figures.hasNext()) {
+            Object figure = ((WeakReference)figures.next()).get();
+            if (figure == null) {
+                // The figure has been garbage collected, so we
+                // remove it from the list.
+                figures.remove();
+            }
+        }
         return newFigure;
     }
     

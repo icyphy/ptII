@@ -191,14 +191,6 @@ public class ActorViewerGraphController extends RunnableGraphController {
         // Defer to the superclass if it can provide a controller.
         NodeController result = super.getNodeController(object);
         if (result != null) {
-            // Add to the selection dragger.
-            // NOTE: This should not be null, but in case it is,
-            // it is better to just have the selection dragger not
-            // work than to get a null pointer exception.
-            if (_selectionDragger != null) {
-                _selectionDragger.addSelectionInteractor(
-                        (SelectionInteractor)result.getNodeInteractor());
-            }
             return result;
         }
 
@@ -270,40 +262,9 @@ public class ActorViewerGraphController extends RunnableGraphController {
 
         // Create and set up the selection dragger
         _selectionDragger = new SelectionDragger(pane);
-
-        // NOTE: Do not call _initializeInteraction to do this because
-        // that is overloaded in derived classes, and we are still
-        // in a constructor call.
-        _selectionDragger.addSelectionInteractor(
-                (SelectionInteractor)_entityController.getNodeInteractor());
-        _selectionDragger.addSelectionInteractor(
-                (SelectionInteractor)_relationController.getNodeInteractor());
-        _selectionDragger.addSelectionInteractor(
-                (SelectionInteractor)_portController.getNodeInteractor());
-        _selectionDragger.addSelectionInteractor(
-                (SelectionInteractor)_attributeController.getNodeInteractor());
-
-        // Link controller is not a NamedObjController, so it has
-        // to be done directly.
-        _selectionDragger.addSelectionInteractor(
-                (SelectionInteractor)_linkController.getEdgeInteractor());
+        _selectionDragger.addSelectionModel(getSelectionModel());
 
         super.initializeInteraction();
-    }
-
-    /** Initialize interactions for the specified controller.  This
-     *  method is called when a new controller is constructed. In this
-     *  class, this method attaches a selection dragger to the controller
-     *  if the controller.
-     *  @param controller The controller for which to initialize interaction.
-     */
-    protected void _initializeInteraction(NamedObjController controller) {
-        super._initializeInteraction(controller);
-        Interactor interactor = controller.getNodeInteractor();
-        if (interactor instanceof SelectionInteractor) {
-            _selectionDragger.addSelectionInteractor(
-                    (SelectionInteractor)interactor);
-        }
     }
 
     ///////////////////////////////////////////////////////////////////
