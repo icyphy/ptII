@@ -294,8 +294,11 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 	    .put("ptolemy.actor.lib.conversions.CartesianToComplex",
 		 cartesianPorts);
 
-
-	
+        // Sleep
+	HashMap sleepPorts = new HashMap();
+        sleepPorts.put("delay", "sleepTime");
+        _actorsWithPortNameChanges
+	    .put("ptolemy.actor.lib.Sleep", sleepPorts);
 
 	///////////////////////////////////////////////////////////
 	// Actors that have properties that have changed class.
