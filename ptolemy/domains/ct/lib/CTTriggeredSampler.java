@@ -30,15 +30,22 @@
 */
 
 package ptolemy.domains.ct.lib;
-import ptolemy.domains.ct.kernel.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.*;
-import ptolemy.actor.*;
+
+import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.TimedActor;
 import ptolemy.actor.lib.Transformer;
+import ptolemy.data.StringToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.domains.ct.kernel.CTDirector;
+import ptolemy.domains.ct.kernel.CTEventGenerator;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTTriggeredSampler

@@ -29,14 +29,26 @@
 */
 
 package ptolemy.domains.ct.lib;
-import ptolemy.domains.ct.kernel.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.*;
-import ptolemy.actor.*;
+
+import ptolemy.actor.AtomicActor;
+import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.TimedActor;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.domains.ct.kernel.CTDirector;
+import ptolemy.domains.ct.kernel.CTStepSizeControlActor;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// ThresholdMonitor

@@ -30,15 +30,18 @@
 
 package ptolemy.domains.ct.lib;
 
-import ptolemy.domains.ct.kernel.*;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
-import ptolemy.data.*;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
-import ptolemy.data.expr.Parameter;
+import ptolemy.actor.Director;
 import ptolemy.actor.lib.Transformer;
+import ptolemy.data.IntToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.domains.ct.kernel.CTDirector;
+import ptolemy.domains.ct.kernel.CTWaveformGenerator;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// ZeroOrderHold

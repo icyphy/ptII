@@ -29,16 +29,29 @@
 */
 
 package ptolemy.domains.ct.lib;
-import ptolemy.domains.ct.kernel.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.graph.InequalityTerm;
-import ptolemy.data.type.BaseType;
+
+import ptolemy.actor.Actor;
+import ptolemy.actor.AtomicActor;
+import ptolemy.actor.Director;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
-import ptolemy.data.expr.*;
-import ptolemy.actor.*;
-import ptolemy.actor.lib.Clock;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.domains.ct.kernel.CTDirector;
+import ptolemy.domains.ct.kernel.CTEventGenerator;
+import ptolemy.graph.InequalityTerm;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// EventSource
