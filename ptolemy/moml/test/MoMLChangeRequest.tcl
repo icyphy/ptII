@@ -83,6 +83,8 @@ test MoMLChangeRequest-1.1 {Test adding an entity} {
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
     <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -149,7 +151,7 @@ test MoMLChangeRequest-1.4 {Test adding a pair of links} {
 ######################################################################
 ####
 #
-test MoMLChangeRequest-1.5 {Test changing a parameter} {
+test MoMLChangeRequest-1.5a {Test changing a parameter} {
     set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
         <entity name=".top">
             <entity name="const">
@@ -168,7 +170,7 @@ test MoMLChangeRequest-1.5 {Test changing a parameter} {
 ######################################################################
 ####
 #
-test MoMLChangeRequest-1.5 {Test deleting an entity} {
+test MoMLChangeRequest-1.5b {Test deleting an entity} {
     set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
         <entity name=".top">
             <deleteEntity name="const"/>
@@ -181,6 +183,8 @@ test MoMLChangeRequest-1.5 {Test deleting an entity} {
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
     <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -203,7 +207,7 @@ test MoMLChangeRequest-1.5 {Test deleting an entity} {
 ######################################################################
 ####
 #
-test MoMLChangeRequest-1.6 {Test deleting a relation} {
+test MoMLChangeRequest-1.6a {Test deleting a relation} {
     set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
         <entity name=".top">
             <deleteRelation name="r"/>
@@ -216,6 +220,8 @@ test MoMLChangeRequest-1.6 {Test deleting a relation} {
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
     <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -235,7 +241,7 @@ test MoMLChangeRequest-1.6 {Test deleting a relation} {
 ######################################################################
 ####
 #
-test MoMLChangeRequest-1.6 {Test deleting a port, using a new parser and context} {
+test MoMLChangeRequest-1.6b {Test deleting a port, using a new parser and context} {
     set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
         <deletePort name="rec.input"/>
     }]
@@ -246,6 +252,8 @@ test MoMLChangeRequest-1.6 {Test deleting a port, using a new parser and context
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
     <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -273,6 +281,8 @@ test MoMLChangeRequest-1.7 {Test deleting a property using a lower context} {
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
     <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
