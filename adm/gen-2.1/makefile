@@ -646,6 +646,7 @@ remote1distjsall_2:
 	(cd $(REMOTE1PTIIDIST)/ptolemy/copernicus/applet; \
 		$(MAKE) $(MFLAGS) $(MAKEVARS) \
 			JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true \
+			AUXCLASSPATH=":$(JSCLASSPATH)" \
 			jsall JSINSTRFLAGS=;)
 
 remote1distjsall_3:
