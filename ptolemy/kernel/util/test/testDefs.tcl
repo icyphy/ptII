@@ -51,3 +51,18 @@ if {[string compare test [info procs test]] == 1} then {
     source [file join $TYCHO kernel test testDefs.tcl]
 } {}
 
+######################################################################
+####
+# Return a string that contains all of the information for an object
+# that we can retrieve with java::info
+#
+proc getJavaInfo {obj} {
+    return "\n \
+    class:         [java::info class $obj]\n \
+    fields:        [java::info fields $obj]\n \
+    methods:       [java::info methods $obj]\n \
+    constructors:  [java::info constructors $obj]\n \
+    properties:    [java::info properties $obj]\n \
+    superclass:    [java::info superclass $obj]\n"
+}
+
