@@ -65,6 +65,7 @@ JSRCS = \
 	Entity.java \
 	KernelException.java \
 	IllegalActionException.java \
+	IntToken.java \
 	InvalidStateException.java \
 	IOPort.java \
 	IORelation.java \
