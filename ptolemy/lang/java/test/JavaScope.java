@@ -37,7 +37,7 @@ package ptolemy.lang.java.test; import COM.sun.suntest.javascope.database.js$;im
 @author Jeff Tsay, Christopher Hylands
 @version $Id$
 */
-public class JavaScope { static private int js$t0 = js$.setDatabase("/home/eecs/cxh/jsdatabase");static private String[] js$p={"ptolemy","lang","java","test",};static private CoverageUnit js$c=js$.c(js$p,"JavaScope","/export/maury/maury2/cxh/src/ptII/ptolemy/lang/java/test/jsoriginal/JavaScope.java",975714324869L,js$n());  static final int[] js$a = js$c.counters; 
+public class JavaScope { static private int js$t0 = js$.setDatabase("/home/eecs/cxh/jsdatabase");static private String[] js$p={"ptolemy","lang","java","test",};static private CoverageUnit js$c=js$.c(js$p,"JavaScope","/export/maury/maury2/cxh/src/ptII/ptolemy/lang/java/test/jsoriginal/JavaScope.java",4869L,js$n());  static final int[] js$a = js$c.counters; 
     public JavaScope() { js$.g(JavaScope.js$a,1); 
      js$.g(JavaScope.js$a,0);/*$js$*/ }
     public int anInteger = 1; static private int js$n() {return 2;} 
