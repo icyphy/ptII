@@ -35,6 +35,19 @@
 
 # Every Ptolemy II makefile should include ptII.mk
 
+# Variables with @ around them are subsituted in by the configure script
+
+# Default top-level directory.  Usually this is the same as $PTII
+prefix =	@prefix@     
+
+# Usually the same as prefix.  exec_prefix is part of the autoconf standard.
+exec_prefix =	@exec_prefix@
+
+# Source directory we are building from.
+srcdir =	@srcdir@
+
+# Directory in which to install scripts
+BIN_INSTALL_DIR =	$(exec_prefix)/bin
 
 # The home of the Java Developer's Kit (JDK)
 # Generating Java documentation uses this makefile variable
@@ -108,3 +121,8 @@ JAVACC =	@JAVACC@
 
 # jtclsh script to run tclBlend for the test suite.
 JTCLSH =	@JTCLSH@
+
+# Commands used to install scripts and data
+INSTALL =		$(srcdir)/install-sh -c
+INSTALL_PROGRAM =	${INSTALL}
+INSTALL_DATA =		${INSTALL} -m 644
