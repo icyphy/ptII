@@ -58,17 +58,24 @@ $ctsub setDirector $ctdir
 set sine [java::new ptolemy.domains.ct.lib.CTSin $ctsub SIN]
 set hold [java::new ptolemy.domains.ct.lib.CTZeroOrderHold $ctsub Hold]
 set add1 [java::new ptolemy.domains.ct.lib.CTAdd $ctsub Add1]
+set add2 [java::new ptolemy.domains.ct.lib.CTAdd $ctsub Add2]
 set intgl1 [java::new ptolemy.domains.ct.lib.CTIntegrator $ctsub Integrator1]
 set intgl2 [java::new ptolemy.domains.ct.lib.CTIntegrator $ctsub Integrator2]
 set gain0 [java::new ptolemy.domains.ct.lib.CTGain $ctsub Gain0]
 set gain1 [java::new ptolemy.domains.ct.lib.CTGain $ctsub Gain1]
 set gain2 [java::new ptolemy.domains.ct.lib.CTGain $ctsub Gain2]
+set gain3 [java::new ptolemy.domains.ct.lib.CTGain $ctsub Gain3]
+set const [java::new ptolemy.domains.ct.lib.CTConst $ctsub Bias]
 set plot [java::new ptolemy.domains.ct.lib.CTPlot $ctsub Plot]
-set sampler [java::new ptolemy.domains.ct.lib.CTPeriodicalSampler $ctsub Sample]
+set sampler [java::new ptolemy.domains.ct.lib.CTPeriodicalSampler \
+	$ctsub Sample]
+
 #CTports
 set sineout [$sine getPort output]
 set add1in [$add1 getPort input]
 set add1out [$add1 getPort output]
+set add2in [$add2 getPort input]
+set add2out [$add2 getPort output]
 set intgl1in [$intgl1 getPort input]
 set intgl1out [$intgl1 getPort output]
 set intgl2in [$intgl2 getPort input]
@@ -79,6 +86,9 @@ set gain1in [$gain1 getPort input]
 set gain1out [$gain1 getPort output]
 set gain2in [$gain2 getPort input]
 set gain2out [$gain2 getPort output]
+set gain3in [$gain3 getPort input]
+set gain3out [$gain3 getPort output]
+set constout [$const getPort output]
 set plotin [$plot getPort input]
 set sampin [$sampler getPort input]
 set sampout [$sampler getPort output]
@@ -99,40 +109,47 @@ $sampout link $cr5
 $subout link $cr5
 set cr6 [$ctsub connect $gain1out $add1in CR6]
 set cr7 [$ctsub connect $gain2out $add1in CR7]
-set cr8 [$ctsub connect $holdout $add1in CR8]
+set cr8 [$ctsub connect $gain3out $add1in CR8]
 set cr9 [java::new ptolemy.actor.TypedIORelation $ctsub CR9]
 $holdin link $cr9
 $subin link $cr9
+set cr10 [$ctsub connect $gain3in $add2out CR10]
+set cr11 [$ctsub connect $constout $add2in CR11]
+set cr12 [$ctsub connect $holdout $add2in CR12]
 $plotin link $cr0
-$plotin link $cr8
+$plotin link $cr10
 
 ############################################################
 ### DE system
 #  approximate the FIR filter by a delay and a gain
-set delay [java::new ptolemy.domains.de.lib.DEDelay $sys DELAY 0.5]
-set fback [java::new ptolemy.domains.ct.lib.CTGain $sys FEEDBACK]
+set fir [java::new {ptolemy.domains.de.lib.DEFIRfilter \
+	ptolemy.actor.TypedCompositeActor String String}\
+	$sys FIR [list 0.5 0.5]]
+set firdelay [$fir getAttribute Delay]
+$firdelay setExpression 0.02
+$firdelay parameterChanged [java::null]
+
+set quan [java::new ptolemy.domains.de.lib.TestLevel $sys Quantizer]
 set deplot [java::new ptolemy.domains.de.lib.DEPlot $sys DEPLOT]
 
 # DE ports
-set delayin [$delay getPort input]
-set delayout [$delay getPort output]
-set fbackin [$fback getPort input]
-set fbackout [$fback getPort output]
+set firin [$fir getPort input]
+set firout [$fir getPort output]
+set quanin [$quan getPort input]
+set quanout [$quan getPort output]
 set deplotin [$deplot getPort input]
 
 #DE connections
-set dr1 [$sys connect $subout $delayin DR1]
-set dr2 [$sys connect $delayout $fbackin DR2]
-set dr3 [$sys connect $fbackout $subin DR3]
-$deplotin link $dr2 
+set dr1 [$sys connect $subout $firin DR1]
+set dr2 [$sys connect $firout $quanin DR2]
+set dr3 [$sys connect $quanout $subin DR3]
+$deplotin link $dr3 
 
 ############################################################
 ### DEParameters
 # 
 $dedir setStopTime 20.0
-set fb [$fback getAttribute Gain]
-$fb setExpression -100.0
-$fb parameterChanged [java::null]
+
 
 ############################################################
 ### CT Director Parameters
@@ -174,10 +191,18 @@ set g2 [$gain2 getAttribute Gain]
 $g2 setExpression -2500.0
 $g2 parameterChanged [java::null]
 
+set g3 [$gain3 getAttribute Gain]
+$g3 setExpression -200.0
+$g3 parameterChanged [java::null]
+
+set con [$const getAttribute Value]
+$con setExpression -0.5
+$con parameterChanged [java::null]
 
 set ts [$sampler getAttribute SamplePeriod]
-$ts setExpression 1.0
+$ts setExpression 0.1
 $ts parameterChanged [java::null]
 
 $man startRun
 
+#source SigmaDelta.tcl
