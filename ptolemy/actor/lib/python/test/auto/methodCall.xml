@@ -15,8 +15,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 65.0">
         </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-        </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={347, 192, 815, 516}}">
     </property>
@@ -39,8 +37,6 @@
         </property>
         <property name="result" class="ptolemy.kernel.util.StringAttribute" value="preinitialize initialize prefire fire postfire wrapup ">
         </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-        </property>
         <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
             <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
             </property>
@@ -58,8 +54,6 @@
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 175.0">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
         <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
             <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
