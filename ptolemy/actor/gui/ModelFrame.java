@@ -399,7 +399,7 @@ public class ModelFrame extends JFrame implements ExecutionListener {
     protected void _save() {
         if (_file != null) {
             try {
-                FileWriter fout = new FileWriter(_file);
+                java.io.FileWriter fout = new java.io.FileWriter(_file);
                 _model.exportMoML(fout);
                 fout.close();
             } catch (IOException ex) {
