@@ -1,8 +1,8 @@
-# Makefile for the Java classes used to test the Ptolemy kernel
+# Makefile for the Java classes used to demonstrate the Ptolemy kernel
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
-# @Version: @(#)makefile	1.23 11/16/97
+# @Version: $Id$
 #
 # @Copyright (c) 1997 The Regents of the University of California.
 # All rights reserved.
@@ -35,7 +35,7 @@
 # Root of the Java directory
 ROOT =		../../../..
 
-ME =		java/pt/kernel
+ME =		java/pt/kernel/demo
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
@@ -44,27 +44,12 @@ include $(CONFIG)
 CLASSPATH = ../../..
 
 TCL_SRCS = \
-	testDefs.tcl
+	HelloTcl.tcl
 
 JSRCS = \
-	ParamTest.java 
+	HelloTcl.java 
 
-# Non-graphical Java tests written in Tcl
-JSIMPLE_TESTS = \
-	CrossRefList.tcl \
-	IntParam.tcl \
-	NamedObj.tcl \
-	NamedObjList.tcl \
-	ParamList.tcl
-
-# Graphical Java tests that use Tcl.
-# Since there are no tests, we use a dummy file so that the script that builds
-# alljtests.tcl works.  If you add a test, be sure to add
-# $(JGRAPHICAL_TESTS) to EXTRA_SRCS
-JGRAPHICAL_TESTS = \
-	dummy.tcl
-
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS) 
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -76,28 +61,12 @@ OPTIONAL_FILES =	#codeDoc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-# Don't include all or install rules here, we want the user
-# to run 'make tests' to run the tests.
-
-tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
-
-test_java: jclass
-
-# These tests do not require a graphics terminal, but do use TclBlend and Java
-test_jsimple: $(EXTRA_SRCS) jclass alljtests.tcl
-	CLASSPATH=$(CLASSPATH)$(AUXCLASSPATH) $(JTCLSH) alljtests.tcl
-
-# These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple_jacl: $(EXTRA_SRCS) jclass alljtests.tcl
-	CLASSPATH=$(CLASSPATH)$(AUXCLASSPATH) jacl alljtests.tcl
-
+all: sources jclass $(JZIP)
+install: sources jclass javadocs $(JZIP) 
 docs: javadocs
 
-depend:
-	@echo "no dependencies in this directory"
+tests:: $(EXTRA_SRCS)
+	echo "Sorry no automatic Java tests yet"
 
 # Get the rest of the rules
 include $(ROOT)/mk/tycommon.mk
-
-
-
