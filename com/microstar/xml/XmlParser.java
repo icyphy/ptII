@@ -41,7 +41,6 @@ import java.util.Stack;
   * @version 1.1
   * @see XmlHandler
   * @see HandlerBase
-  * @see SAXDriver
   */
 public class XmlParser {
 

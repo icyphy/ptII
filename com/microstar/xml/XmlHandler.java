@@ -19,9 +19,6 @@ package com.microstar.xml;
   * @version 1.1
   * @see XmlParser
   * @see HandlerBase
-  * @see org.xml.sax.EntityHandler
-  * @see org.xml.sax.DocumentHandler
-  * @see org.xml.sax.ErrorHandler
   */
 public interface XmlHandler {
 

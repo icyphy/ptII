@@ -49,7 +49,6 @@ import java.util.Vector;
   * @author Copyright (c) 1998 by Microstar Software Ltd.
   * @author written by David Megginson &lt;dmeggins@microstar.com&gt;
   * @version 1.1
-  * @see org.xml.sax.Parser
   * @see XmlParser
   */
 public class SAXDriver
@@ -97,7 +96,6 @@ public class SAXDriver
 
   /**
     * Set the locale.
-    * @see org.xml.sax.Parser#setLocale
     */
   public void setLocale (Locale locale)
     throws SAXException
@@ -109,7 +107,6 @@ public class SAXDriver
   /**
     * Set the entity resolver for this parser.
     * @param handler The object to receive entity events.
-    * @see org.xml.sax.Parser#setEntityResolver
     */
   public void setEntityResolver (EntityResolver resolver) 
   {
@@ -120,7 +117,6 @@ public class SAXDriver
   /**
     * Set the DTD handler for this parser.
     * @param handler The object to receive DTD events.
-    * @see org.xml.sax.Parser#setDTDHandler
     */
   public void setDTDHandler (DTDHandler handler) 
   {
@@ -131,7 +127,6 @@ public class SAXDriver
   /**
     * Set the document handler for this parser.
     * @param handler The object to receive document events.
-    * @see org.xml.sax.Parser#setDocumentHandler
     */
   public void setDocumentHandler (DocumentHandler handler) 
   {
@@ -142,7 +137,6 @@ public class SAXDriver
   /**
     * Set the error handler for this parser.
     * @param handler The object to receive error events.
-    * @see org.xml.sax.Parser#setErrorHandler
     */
   public void setErrorHandler (ErrorHandler handler) 
   {
@@ -155,7 +149,6 @@ public class SAXDriver
     * <p>If you want anything useful to happen, you should set
     * at least one type of handler.
     * @param source The XML input source.
-    * @see org.xml.sax.Parser#parse(InputSource)
     * @see #setEntityResolver
     * @see #setDTDHandler
     * @see #setDocumentHandler
@@ -203,7 +196,6 @@ public class SAXDriver
 
   /**
     * Parse an XML document from a system identifier (URI).
-    * @see org.xml.sax.Parser#parse(String)
     */
   public void parse (String systemId)
     throws SAXException
