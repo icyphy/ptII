@@ -137,8 +137,10 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                         return type;
                     }
                 }
-                public NamedList variableList() {
-                    return null;
+                public Set identifierSet() throws IllegalActionException {
+                    Set set = currentScope.identifierSet();
+                    set.addAll(map.keySet());
+                    return set;
                 }
             };
         _scope = functionScope;

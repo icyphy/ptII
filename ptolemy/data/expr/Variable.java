@@ -46,6 +46,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
 import java.io.Writer;
@@ -1719,15 +1720,12 @@ public class Variable extends Attribute
             }
         }
 
-        /** Return the list of variables within the scope.
-         *  Note that this method is an extremely inefficient to refer
-         *  to the scope of a variable because it constructs a list containing
-         *  every variable in the scope.  It is best to avoid calling it
-         *  and instead just use the get() method.
-         *  @return The list of variables within the scope.
+        /** Return the list of identifiers within the scope.
+         *  @return The list of variable names within the scope.
          */
-        public NamedList variableList() {
-            return getScope();
+        public Set identifierSet() {
+            return getAllScopedVariableNames(Variable.this,
+                    (NamedObj)Variable.this.getContainer());
         }
     }
 }

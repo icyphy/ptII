@@ -38,6 +38,8 @@ import ptolemy.kernel.util.IllegalActionException;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.HashSet;
 
 //////////////////////////////////////////////////////////////////////////
 //// NamedConstantsScope
@@ -82,11 +84,13 @@ public class NamedConstantsScope implements ParserScope {
         }
     }
 
-    /** Return null.
-     *  @return null.
+    /** Return the set of identifiers defined in this scope.
+     *  @return A set containing the key defined in the map.
      */
-    public NamedList variableList() {
-        return null;
+    public Set identifierSet() {
+        Set set = new HashSet();
+        set.addAll(_map.keySet());
+        return set;
     }
 
     private Map _map;

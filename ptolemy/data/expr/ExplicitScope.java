@@ -31,6 +31,9 @@
 
 package ptolemy.data.expr;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.NamedList;
 import ptolemy.kernel.util.IllegalActionException;
@@ -87,6 +90,18 @@ public class ExplicitScope implements ParserScope {
 
     /** Return the list of variables within the scope.
      *  @return The list of variables within the scope.
+     */
+    public Set identifierSet() {
+        Set set = new HashSet();
+        for(Iterator variables = _list.elementList().iterator();
+            variables.hasNext();) {
+            Variable variable = (Variable)variables.next();
+            set.add(variable.getName());
+        }
+        return set;
+    }
+
+    /** Return the list of variables in this scope.
      */
     public NamedList variableList() {
         return _list;

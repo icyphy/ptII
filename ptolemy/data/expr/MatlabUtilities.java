@@ -36,18 +36,20 @@ import ptolemy.kernel.util.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 //////////////////////////////////////////////////////////////////////////
 //// MatlabUtilities
-/** This class provides access to the Ptolemy Matlab interface
-    in ptolemy.matlab by using reflection.
+/** 
+This class provides access to the Ptolemy Matlab interface in
+ptolemy.matlab by using reflection.
 
-    @author Christopher Hylands, Steve Neuendorffer
-    @version $Id$
-    @since Ptolemy II 2.1
-    @see ptolemy.data.expr.ParseTreeEvaluator
-*/
+@author Christopher Hylands, Steve Neuendorffer
+@version $Id$
+@since Ptolemy II 2.1
+@see ptolemy.data.expr.ParseTreeEvaluator
+ */
 
 public class MatlabUtilities {
 
@@ -175,25 +177,23 @@ public class MatlabUtilities {
 		    // Set scope variables
 		    // This would be more efficient if the matlab engine
 		    // understood the scope.
-		    NamedList scopeVariableList =
-			scope.variableList();
-		    if (scopeVariableList != null) {
-			Iterator variables =
-			    scopeVariableList.elementList().iterator();
-			while (variables.hasNext()) {
-			    Variable var = (Variable)variables.next();
-			    // This was here...  don't understand why???
-			    // if (var != packageDirectories)
+                    Set identifierSet = 
+                        scope.identifierSet();
+                    Iterator identifiers = 
+                        identifierSet.iterator();
+                    while(identifiers.hasNext()) {
+                        String identifier = (String)identifiers.next();
+                        // This was here...  don't understand why???
+                        // if (var != packageDirectories)
+                        
+                        //matlabEngine.put
+                        //    (engine, var.getName(), var.getToken());
 
-			    //matlabEngine.put
-			    //    (engine, var.getName(), var.getToken());
-
-			    _enginePut.invoke(matlabEngine,
-                                    new Object[] {
-                                        _engine, var.getName(), var.getToken()
-                                    });
-			}
-		    }
+                        _enginePut.invoke(matlabEngine,
+                                new Object[] {
+                                    _engine, identifier, scope.get(identifier)
+                                });
+                    }
 		    //matlabEngine.evalString(engine,
 		    //        "result__=" + expression);
 

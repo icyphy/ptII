@@ -31,6 +31,9 @@
 
 package ptolemy.data.expr;
 
+import java.util.*;
+import java.util.List;
+import java.util.Set;
 import java.util.Iterator;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.NamedList;
@@ -50,6 +53,42 @@ scopes for Ptolemy models.
 */
 
 public abstract class ModelScope implements ParserScope {
+
+    /** Return a list of variable names in scope for variables in the
+     * given container.  Exclude the given variable from being
+     * considered in scope.
+     */
+    public static Set getAllScopedVariableNames(
+            Variable exclude, NamedObj container) {
+        List variableList = container.attributeList(Variable.class);
+        variableList.remove(exclude);
+        Set nameSet = new HashSet();
+        for(Iterator variables = variableList.iterator(); 
+            variables.hasNext();) {
+            Variable variable = (Variable)variables.next();
+            nameSet.add(variable.getName());
+        }
+
+        // Get variables higher in scope.  Moving up the hierarchy
+        // terminates when the container is null.
+        NamedObj aboveContainer = (NamedObj)container.getContainer();
+        if(aboveContainer != null) {
+            nameSet.addAll(getAllScopedVariableNames(exclude, aboveContainer));
+        }
+
+        // Get variables in scope extenders.  Moving down the scope
+        // extenders terminates at hierarchy leaves.
+        Iterator extenders =
+            container.attributeList(ScopeExtender.class).iterator();
+        while (extenders.hasNext()) {
+            ScopeExtender extender = (ScopeExtender)extenders.next();
+            // It would be nice if ScopeExtender and NamedObj were common in 
+            // some way to avoid this cast.
+            nameSet.addAll(getAllScopedVariableNames(exclude,
+                                   (NamedObj)extender));
+        }
+        return nameSet;
+    }
 
     /** Get the variable with the given name in the scope of the given
      *  container.  The scope of the object includes any container of the

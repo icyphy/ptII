@@ -35,8 +35,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.NamedList;
 import ptolemy.kernel.util.IllegalActionException;
 
-import java.util.List;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// NestedScope
@@ -97,16 +99,20 @@ public class NestedScope implements ParserScope {
         return null;
     }
 
-    /** Return the list of variables within the scope.
-     *  @return The list of variables within the scope.
+    /** Return the list of identifiers within the scope.
+     *  @return The union of the identifierSets of the contained scopes.
+     *  @exception IllegalActionException If the identifierSet()
+     *  method of a contained scope throws it.
      */
-    public NamedList variableList() {
-        //FIXME: create a new NamedList, add all mappings defined in the list
-        //of scopes to the new list, return the list.
-        return null;
+    public Set identifierSet() throws IllegalActionException {
+        Set set = new HashSet();
+        for(Iterator scopes = _scopeList.iterator();
+            scopes.hasNext();) {
+            ParserScope scope = (ParserScope) scopes.next();
+            set.addAll(scope.identifierSet());
+        }
+        return set;
     }
-    //NOTE: we probably need a method to collect all the mappings defined in a
-    //scope. Such a method could return a hash map from names to value tokens.
 
     private List _scopeList;
 }

@@ -31,6 +31,7 @@
 
 package ptolemy.data.expr;
 
+import java.util.*;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.NamedList;
 import ptolemy.kernel.util.IllegalActionException;
@@ -69,10 +70,16 @@ public interface ParserScope {
     public ptolemy.data.type.Type getType(String name)
             throws IllegalActionException;
 
-    /** Return the list of variables within the scope.
-     *  @return The list of variables within the scope.
-     *  @deprecated We rarely want to construct this list.
+    /** Return a list of names corresponding to the identifiers
+     *  defined by this scope.  If an identifier is returned in this
+     *  list, then get() and getType() will return a value for the
+     *  identifier.  Note that generally speaking, this list is
+     *  extremely expensive to compute, and users should avoid calling
+     *  it.  It is primarily used for debugging purposes.
+     *  @exception IllegalActionException If constructing the list causes 
+     *  it.
      */
-    public NamedList variableList();
+    public Set identifierSet()
+            throws IllegalActionException;
 }
 
