@@ -206,6 +206,19 @@ public class StaticSchedulingDirector extends Director {
         }
     }
 
+    /** Return true if the current (cached) schedule is valid.
+     *  This calls the valid() method of Scheduler.
+     *  @return true if the schedule is valid.
+     *  @exception IllegalActionException If there's no scheduler.
+     */
+    public boolean isScheduleValid() throws IllegalActionException {
+        if (_scheduler == null) {
+            throw new IllegalActionException(this,
+                    "has no scheduler.");
+        }
+        return _scheduler.isValid();
+    }
+
     /** Return true if the director wishes to be scheduled for another
      *  iteration. This base class returns true if all of the actors
      *  iterated since the last call to prefire returned true from their
@@ -299,19 +312,6 @@ public class StaticSchedulingDirector extends Director {
                     "has no scheduler.");
         }
         _scheduler.setValid(valid);
-    }
-
-    /** Return true if the current (cached) schedule is valid.
-     *  This calls the valid() method of Scheduler.
-     *  @return true if the schedule is valid.
-     *  @exception IllegalActionException If there's no scheduler.
-     */
-    public boolean isScheduleValid() throws IllegalActionException {
-        if (_scheduler == null) {
-            throw new IllegalActionException(this,
-                    "has no scheduler.");
-        }
-        return _scheduler.isValid();
     }
 
     ///////////////////////////////////////////////////////////////////
