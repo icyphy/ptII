@@ -47,8 +47,8 @@ TCL_SRCS = \
 
 JSRCS = \
 	IdentityActor.java \
-	TestTypeListener.java \
 	TestActor.java \
+	TestTypeListener.java \
 	TestTypedIORelation.java \
 	TypedTestActor.java
 
@@ -62,6 +62,7 @@ JSIMPLE_TESTS = \
 	NoTokenException.tcl \
 	IOPort.tcl \
 	IORelation.tcl \
+	QueueReceiver.tcl \
 	TypeConflictException.tcl \
 	TypedIOPort.tcl \
 	TypedIORelation.tcl \
