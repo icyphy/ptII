@@ -278,7 +278,7 @@ fi
 # PTJAVA_DIR without /cygdrive
 # Use changequote here to preserve square brackets
 changequote(<<, >>)dnl
-PTJAVA_DIR_NO_CYGWIN="`echo "$PTJAVA_DIR" | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`"
+PTJAVA_DIR_NO_CYGDRIVE="`echo "$PTJAVA_DIR" | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`"
 changequote([, ])dnl
 
 #
@@ -2875,7 +2875,7 @@ AC_SUBST(PTJAI_PACKAGES)
 AC_SUBST(PTJAVA_DIR)
 
 # Location of the JDK
-AC_SUBST(PTJAVA_DIR_NO_CYGWIN)
+AC_SUBST(PTJAVA_DIR_NO_CYGDRIVE)
 
 # Value of java.home property, location of the JDK with /cygdrive/c/ converted to c:/
 AC_SUBST(PTJAVA_HOME)
