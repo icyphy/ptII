@@ -52,6 +52,23 @@ parameters on the given object.
 */
 public class EditParametersFactory extends MenuItemFactory {
 
+    /** Construct a factory with the default name, "Edit Parameters".
+     */
+    public EditParametersFactory() {
+        this("Edit Parameters");
+    }
+
+    /** Construct a factory with the specified name.  This name
+     *  will typically appear in a menu.
+     *  @param name The name of the factory.
+     */
+    public EditParametersFactory(String name) {
+        _name = name;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     public methods                        ////
+
     /** Add an item to the given context menu that will configure the
      *  parameters on the given target.
      *  @param menu The context menu.
@@ -73,11 +90,19 @@ public class EditParametersFactory extends MenuItemFactory {
 	return menu.add(action, name);
     }
 
-    /**
-     * Get the name of the items that will be created.  This is provided so
-     * that factory can be overriden slightly with the name changed.
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected methods                     ////
+
+    /** Get the name of the items that will be created.  This is provided so
+     *  that factory can be overriden slightly with the name changed.
      */
     protected String _getName() {
-	return "Edit Parameters";
+	return _name;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     private variables                     ////
+
+    // The name of this factory.
+    private String _name;
 }
