@@ -52,13 +52,13 @@ public class ASTPtLeafNode extends ASTPtRootNode {
     ///////////////////////////////////////////////////////////////////
     /// from here until next line of dashes is code for PtParser
 
-/** When the input String refers to another parameter, we store the
- *  referred parameter in the leaf node. Thus when the value of a
- *  parameter changes, by reevaluating the parse tree we get the
- *  correct result.
- */
-protected ptolemy.data.expr.Parameter _param;
-
+    /** When the input String refers to another parameter, we store the
+     *  referred parameter in the leaf node. Thus when the value of a
+     *  parameter changes, by reevaluating the parse tree we get the
+     *  correct result.
+     */
+    protected Parameter _param;
+    
     /** If this leaf node represents a reference to a parameter, return the
      *  PtToken contained in that parameter. Otherwise return the PtToken
      *  object stored in this node.
@@ -67,7 +67,8 @@ protected ptolemy.data.expr.Parameter _param;
      *  trying to evaluate the PtToken type and/or value to be stored in
      *  node in the tree.
      */
-    public ptolemy.data.Token evaluateParseTree() throws IllegalArgumentException {
+    public ptolemy.data.Token evaluateParseTree() 
+            throws IllegalArgumentException {
         if (_param != null) {
             _ptToken = _param.getToken();
         } else if (_ptToken == null) {
