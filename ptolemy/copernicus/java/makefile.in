@@ -138,7 +138,7 @@ runDemoTest: treeShakeAll
 # Treeshake everything and run it
 treeShakeAll: treeShakeWithoutCodegen runTreeShakeWithoutCodegen \
 		treeShakeAndRunSnapshots \
-		treeShaken runTreeShake \
+		treeShake runTreeShake \
 		compareTreeShakeJars
 
 treeShakeWithoutCodegen:
