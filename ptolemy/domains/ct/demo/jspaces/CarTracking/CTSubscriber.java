@@ -156,7 +156,7 @@ public class CTSubscriber extends Source
 
     /** Return true if there is an event notified.
      *  @return True if there is a new event notification
-     *  in the last iteratoin.
+     *  in the last iteration.
      */
     public boolean hasCurrentEvent() {
         return _hasNewToken;
