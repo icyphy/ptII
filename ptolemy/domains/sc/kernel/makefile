@@ -54,7 +54,8 @@ JSRCS = \
 	SCState.java \
         SCTransition.java \
         SCController.java \
-        SCDirector.java
+        SCDirector.java \
+	TransitionAction.java
 
 EXTRA_SRCS =	$(JSRCS)
 
