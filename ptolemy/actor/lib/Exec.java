@@ -62,8 +62,13 @@ import java.io.OutputStreamWriter;
 /**
 Execute a command and create a separately running subprocess.
 
-The <code>commandLine</code> PortParameter contains the command to be
-executed.
+The <i>command</i> PortParameter contains the command to be
+executed.  If the value of the <i>command</i> PortParameter changes,
+then each time fire() is called, a new subprocess always is invoked.
+If the value() of the <i>command</i> PortParameter does not change,
+then each time fire() is called, a new subprocess is only invoked
+if the previous subprocess exited.
+
 
 <p>This actor uses java.lang.Runtime.exec().
 For information about Runtime.exec(), see:
@@ -119,7 +124,6 @@ public class Exec extends TypedAtomicActor {
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -165,6 +169,9 @@ public class Exec extends TypedAtomicActor {
      */
     public TypedIOPort output;
 
+    ///////////////////////////////////////////////////////////////////
+    ////                     public methods                        ////
+
     /**
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException Not thrown in this base class.
@@ -181,17 +188,26 @@ public class Exec extends TypedAtomicActor {
     }
 
 
-    /** Send input to the subprocess and read output and errors
+    /** Send input to the subprocess and read output and errors.
      */
     public synchronized void fire() throws IllegalActionException {
         super.fire();
         String line = null;
 
         try {
-            if (_process == null) {
-                // FIXME: What if the portParameter command changes?
+
+            command.update();
+
+            if (_process == null 
+                || ((StringToken)command.getToken()).stringValue() 
+                                                       != _oldCommandValue) {
+                // If the command changed, we restart
+                _terminateProcess();
                 _exec();
+                _oldCommandValue =
+                    ((StringToken)command.getToken()).stringValue();
             }
+
             // FIXME: What if there is no input?
             if (input.numberOfSources() > 0 
                     && input.hasToken(0)) {
@@ -257,7 +273,8 @@ public class Exec extends TypedAtomicActor {
         super.initialize();
         // FIXME: What if the portParameter command changes?
         // FIXME: Should this be called in fire() instead?
-        _exec();
+        //    _exec();
+        _process = null;
     }
 
     /** Override the base class to stop waiting for input data.
@@ -293,37 +310,7 @@ public class Exec extends TypedAtomicActor {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void wrapup() throws IllegalActionException {
-        try {
-            if (_inputBufferedWriter != null) {
-                _inputBufferedWriter.close();
-            }
-            if (_process != null) {
-                if (_process.getInputStream() != null) {
-                    _process.getInputStream().close();
-                }
-                if (_process.getOutputStream() != null) {
-                    _process.getOutputStream().close();
-                }
-                if (_process.getErrorStream() != null) {
-                    _process.getErrorStream().close();
-                }
-            }
-            // FIXME: kill of the gobblers threads?
-
-        } catch (IOException ex) {
-            // ignore
-        }
-
-        // FIXME: Should we do a process.waitFor() and throw an exception
-        // if the return value is not 0?
-
-        //synchronized(this) {
-        if (_process != null) {
-            _process.destroy();
-        }
-
-        //    _process = null;
-        //}
+        _terminateProcess();
     }
 
     // Execute a command, set _process to point to the subprocess
@@ -338,12 +325,12 @@ public class Exec extends TypedAtomicActor {
             Runtime runtime = Runtime.getRuntime();
 
             String [] commandArray =
-                StringUtilities.tokenizeForExec(command.getExpression());
+                StringUtilities.tokenizeForExec(((StringToken)command.getToken()).stringValue());
             
             File directoryAsFile = directory.asFile();
 
             if (_debugging) {
-                _debug("About to exec \"" + command.getExpression() + "\""
+                _debug("About to exec \"" + ((StringToken)command.getToken()).stringValue() + "\""
                         + "\n in \"" + directoryAsFile
                         + "\"\n with environment:");
             }
@@ -404,6 +391,44 @@ public class Exec extends TypedAtomicActor {
         }
     }
 
+
+    // Terminate the process and close any associated streams
+    private void _terminateProcess() throws IllegalActionException {
+        try {
+            if (_inputBufferedWriter != null) {
+                _inputBufferedWriter.close();
+            }
+            if (_process != null) {
+                if (_process.getInputStream() != null) {
+                    _process.getInputStream().close();
+                }
+                if (_process.getOutputStream() != null) {
+                    _process.getOutputStream().close();
+                }
+                if (_process.getErrorStream() != null) {
+                    _process.getErrorStream().close();
+                }
+                //_process = null;
+            }
+            // FIXME: kill of the gobblers threads?
+
+        } catch (IOException ex) {
+            // ignore
+        }
+
+        // FIXME: Should we do a process.waitFor() and throw an exception
+        // if the return value is not 0?
+
+        //synchronized(this) {
+
+        if (_process != null) {
+            _process.destroy();
+            _process = null;
+        }
+
+        //    _process = null;
+        //}
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -618,6 +643,7 @@ public class Exec extends TypedAtomicActor {
     // StreamReader that we read stderr from the subprocess with.
     private _StreamReaderThread _errorGobbler;
 
+    private String _oldCommandValue;
     // StreamReader that we read stdout from the subprocess with.
     private _StreamReaderThread _outputGobbler;
 
