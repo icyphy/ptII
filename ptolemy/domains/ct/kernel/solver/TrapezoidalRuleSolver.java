@@ -60,7 +60,10 @@ import ptolemy.kernel.util.Workspace;
    The basic idea is that once states and derivatives are resolved, denoted as 
    x(t+h) and x'(t+h), use a two-step method with the calculated derivatives 
    to recalculate the states, denoted as xx(t+h). Since this solver is second 
-   order, the LTE is approximately abs(x(t+h) - xx(t+h))/(2^2 - 1).    
+   order, the LTE is approximately:
+   <pre>
+   abs(x(t+h) - xx(t+h))/(2^2 - 1)
+   </pre>    
 
    @author Jie Liu, Haiyang Zheng
    @version $Id$
