@@ -64,7 +64,7 @@ public class IntToken extends ScalarToken {
 	    throw new IllegalArgumentException(e.getMessage());
 	}
     }
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
