@@ -353,7 +353,7 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
                 thisLocal, composite, modelClass, createdSet);
 
         // handle the communication
-        _relations(body, thisLocal, composite);
+        _relations(body, thisLocal, composite, modelClass, createdSet);
         _links(body, composite);
         _linksOnPortsContainedByContainedEntities(body, composite);
     }
@@ -507,6 +507,8 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
             SootUtilities.createAndSetFieldFromLocal(body,
                     portLocal, modelClass, PtolemyUtilities.componentPortType,
                     fieldName);
+            createFieldsForAttributes(body, container, containerLocal,
+                    port, portLocal, modelClass, createdSet);
         }
     }
 
@@ -590,7 +592,8 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
 
     // Create and set relations.
     private void _relations(JimpleBody body, Local thisLocal,
-            CompositeEntity composite) {
+            CompositeEntity composite,
+            EntitySootClass modelClass, HashSet createdSet) {
         _relationLocalMap = new HashMap();
         for (Iterator relations = composite.relationList().iterator();
              relations.hasNext();) {
@@ -601,6 +604,15 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
                 PtolemyUtilities.createNamedObjAndLocal(body, className,
                         thisLocal, relation.getName());
             _relationLocalMap.put(relation, local);
+          
+            Relation classRelation = (Relation)_findDeferredInstance(relation);
+            
+            _updateCreatedSet(
+                    composite.getFullName() + "." + relation.getName(),
+                    classRelation, classRelation, createdSet);
+            
+            createFieldsForAttributes(body, composite, thisLocal,
+                    relation, local, modelClass, createdSet);
         }
     }
 
@@ -643,7 +655,7 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
      */
     // FIXME: duplicate with MoMLWriter.
     private static NamedObj _findDeferredInstance(NamedObj object) {
-        // System.out.println("findDeferred = " + object.getFullName());
+        System.out.println("findDeferred = " + object.getFullName());
         NamedObj deferredObject = null;
         NamedObj.MoMLInfo info = object.getMoMLInfo();
         if (info.deferTo != null) {
@@ -696,6 +708,7 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
                         }
                     }
                     if (match) {
+                        System.out.println("constructor = " + constructor);
                         deferredObject = (NamedObj)
                             constructor.newInstance(
                                     _reflectionArguments);
