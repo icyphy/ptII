@@ -141,9 +141,11 @@ color than the border where the axes are labeled.</b>
 <b>Unsupported in the Java version.</b>
 
 <dt><code>-bg</code> <code><i>&lt;color&gt;</i></code>
-<dd>Background color of the <code>pxgraph</code> window.
+<dd>Background color of the area where the labels and legend are rendered.
 <b>In the Java version, this argument takes hexadecimal color values
-(<code>fffff</code>), not color names.</b>
+(<code>fffff</code>), not color names.</b>  Note that the background
+of the data plotting region is always white because the dataset colors
+were designed for a white background.
 
 <dt><a name="-bigendian flag"><code>-bigendian</code></a>
 <dt>Data files are in big-endian, or network binary format.
