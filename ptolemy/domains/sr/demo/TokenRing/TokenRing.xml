@@ -57,6 +57,8 @@ This example is from:
         <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 10.0">
         </property>
     </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 11, 1019, 746}}">
+    </property>
     <entity name="Request1" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -83,6 +85,8 @@ This example is from:
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
         </property>
         <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
         </property>
@@ -269,15 +273,15 @@ This example is from:
             </port>
         </entity>
         <relation name="1:relation4" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="335.0, 340.0">
+            <vertex name="vertex1" value="335.0, 340.0">
             </vertex>
         </relation>
         <relation name="1:relation8" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="90.0, 210.0">
+            <vertex name="vertex1" value="90.0, 210.0">
             </vertex>
         </relation>
         <relation name="1:relation9" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="90.0, 400.0">
+            <vertex name="vertex1" value="90.0, 400.0">
             </vertex>
         </relation>
         <relation name="1:relation" class="ptolemy.actor.TypedIORelation">
@@ -488,15 +492,15 @@ This example is from:
             </port>
         </entity>
         <relation name="1:relation4" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="335.0, 340.0">
+            <vertex name="vertex1" value="335.0, 340.0">
             </vertex>
         </relation>
         <relation name="1:relation8" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="90.0, 210.0">
+            <vertex name="vertex1" value="90.0, 210.0">
             </vertex>
         </relation>
         <relation name="1:relation9" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="90.0, 400.0">
+            <vertex name="vertex1" value="90.0, 400.0">
             </vertex>
         </relation>
         <relation name="1:relation" class="ptolemy.actor.TypedIORelation">
@@ -707,15 +711,15 @@ This example is from:
             </port>
         </entity>
         <relation name="1:relation4" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="335.0, 340.0">
+            <vertex name="vertex1" value="335.0, 340.0">
             </vertex>
         </relation>
         <relation name="1:relation8" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="90.0, 210.0">
+            <vertex name="vertex1" value="90.0, 210.0">
             </vertex>
         </relation>
         <relation name="1:relation9" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="90.0, 400.0">
+            <vertex name="vertex1" value="90.0, 400.0">
             </vertex>
         </relation>
         <relation name="1:relation" class="ptolemy.actor.TypedIORelation">
@@ -795,6 +799,10 @@ This example is from:
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={504, 66, 508, 355}}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -873,19 +881,19 @@ This example is from:
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="220.0, 575.0">
+        <vertex name="vertex1" value="220.0, 575.0">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="425.0, 535.0">
+        <vertex name="vertex1" value="425.0, 535.0">
         </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="615.0, 450.0">
+        <vertex name="vertex1" value="615.0, 450.0">
         </vertex>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
@@ -895,11 +903,11 @@ This example is from:
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="620.0, 310.0">
+        <vertex name="vertex1" value="620.0, 310.0">
         </vertex>
     </relation>
     <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="110.0, 320.0">
+        <vertex name="vertex1" value="110.0, 320.0">
         </vertex>
     </relation>
     <link port="Request1.output" relation="relation11"/>

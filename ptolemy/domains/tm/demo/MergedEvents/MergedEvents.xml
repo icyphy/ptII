@@ -28,6 +28,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="69.0, 39.0">
         </property>
     </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={83, 1, 881, 466}}">
+    </property>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -77,6 +79,8 @@
         </port>
     </entity>
     <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
+        <property name="initialValue" class="ptolemy.data.expr.Parameter">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="445.0, 180.0">
         </property>
         <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
@@ -144,6 +148,10 @@
             </property>
             <property name="legend" class="ptolemy.kernel.util.StringAttribute">
             </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={557, 479, 445, 266}}">
+            </property>
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[437, 211]">
+            </property>
             <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 235.0">
@@ -159,8 +167,8 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="40.0"/>
-<yRange min="0.0" max="2.0"/>
+<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
 <default marks="dots" stems="yes"/>
 </plot>?>
             </configure>
@@ -200,17 +208,17 @@
             </port>
         </entity>
         <relation name="Copy1:relation14" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="340.0, 235.0">
+            <vertex name="vertex1" value="340.0, 235.0">
             </vertex>
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="69.0, 160.0">
+            <vertex name="vertex1" value="69.0, 160.0">
             </vertex>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="226.0, 111.0">
+            <vertex name="vertex1" value="226.0, 111.0">
             </vertex>
         </relation>
         <link port="u" relation="relation"/>
@@ -248,6 +256,10 @@
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={46, 479, 458, 262}}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[450, 207]">
+        </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="545.0, 85.0">
@@ -270,7 +282,7 @@
         </configure>
     </entity>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="267.0, 148.0">
+        <vertex name="vertex1" value="267.0, 148.0">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">

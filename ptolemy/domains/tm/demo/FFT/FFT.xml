@@ -48,6 +48,8 @@ executed in a separate thread.</text>
         <property name="_hideName" class="ptolemy.data.expr.Parameter">
         </property>
     </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={69, -3, 819, 570}}">
+    </property>
     <entity name="TMCompositeFacade" class="ptolemy.actor.TypedCompositeActor">
         <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.25">
         </property>
@@ -115,6 +117,10 @@ executed in a separate thread.</text>
             </property>
             <property name="legend" class="ptolemy.kernel.util.StringAttribute">
             </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={9, 401, 508, 355}}">
+            </property>
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+            </property>
             <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="xInit" class="ptolemy.data.expr.Parameter" value="-PI">
@@ -137,7 +143,7 @@ executed in a separate thread.</text>
 <plot>
 <title>SequenceScope</title>
 <xRange min="-3.1415926535895693" max="3.117048960983846"/>
-<yRange min="0.24167774792625657" max="127.42307580953582"/>
+<yRange min="0.13905154354353358" max="123.12729942589759"/>
 <wrap/>
 <default marks="pixels"/>
 </plot>?>
@@ -223,6 +229,10 @@ executed in a separate thread.</text>
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={521, 400, 508, 355}}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 120.0">
@@ -241,7 +251,7 @@ executed in a separate thread.</text>
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="1.0E-4" max="9.9922875"/>
-<yRange min="-1.7675101890654452" max="2.1545375117972467"/>
+<yRange min="-1.825227975737938" max="1.6868529491363478"/>
 </plot>?>
         </configure>
     </entity>
@@ -287,7 +297,7 @@ executed in a separate thread.</text>
             </property>
             <property name="init" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="step" class="ptolemy.data.expr.Parameter" value="pi/64.0">
+            <property name="step" class="ptolemy.actor.parameters.PortParameter" value="pi/64.0">
             </property>
             <doc>Create a sequence of tokens with increasing value</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="151.0, 132.0">
@@ -298,6 +308,9 @@ executed in a separate thread.</text>
             <port name="trigger" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
+            </port>
+            <port name="step" class="ptolemy.actor.parameters.ParameterPort">
+                <property name="input"/>
             </port>
         </entity>
         <entity name="TrigFunction" class="ptolemy.actor.lib.TrigFunction">
@@ -391,6 +404,10 @@ executed in a separate thread.</text>
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={515, 28, 508, 355}}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 55.0">
@@ -406,13 +423,13 @@ executed in a separate thread.</text>
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>RealTimePlotter</title>
-<xRange min="0" max="25"/>
-<yRange min="-1.7675101890654452" max="2.1545375117972467"/>
+<xRange min="0.01" max="10.375"/>
+<yRange min="-1.825227975737938" max="1.6868529491363478"/>
 </plot>?>
         </configure>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="340.0, 190.0">
+        <vertex name="vertex1" value="340.0, 190.0">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
