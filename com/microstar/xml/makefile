@@ -29,24 +29,18 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-# Order matters here.  kernel should be first, then actors, then domains
-# so that when we compile in a directory we should have already compiled
-# any classes in other directories that we depend on.
-#
-# doc directory should be last so we get files from version control before
-# updating the docs
-#DIRS = kernel actors domains pitcl doc graph data
-# filter is not yet ready
-DIRS = demo
+ME = 		com/microstar/xml
+
+DIRS =		demo
 
 # Root of Ptolemy II directory
 ROOT =		../../..
 
+CLASSPATH =	$(ROOT)
+
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
-
-CLASSPATH = $(ROOT)
 
 JSRCS = \
 	HandlerBase.java \
@@ -72,7 +66,6 @@ OPTIONAL_FILES = \
 	$(PTCLASSJAR)
 
 JCLASS = $(JSRCS:%.java=%.class)
-
 
 all: jclass
 install: jclass javadocs $(PTCLASSJAR)
