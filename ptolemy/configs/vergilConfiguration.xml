@@ -18,7 +18,7 @@
     <!-- Factories for tableaux that offer views of Ptolemy II entities. -->
     <entity name="factory1" class="ptolemy.actor.gui.PtolemyTableauFactory">
       <!-- These will appear in the View menu of an entity tableau. -->
-      <entity name="Graph Editor" class="ptolemy.vergil.ptolemy.GraphTableau$Factory">
+      <entity name="Graph Editor" class="ptolemy.vergil.ptolemy.kernel.KernelGraphTableau$Factory">
       </entity>
       <entity name="Run Window" class="ptolemy.actor.gui.RunTableau$Factory">
       </entity>
