@@ -37,6 +37,7 @@ import ptolemy.data.expr.ValueListener;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.expr.Parameter;
 import ptolemy.gui.*;
+import ptolemy.actor.gui.style.*;
 import ptolemy.data.*;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.Documentation;
@@ -108,6 +109,37 @@ public class PtolemyQuery extends Query
 	_ignoreEntryChange = new HashMap();
 	_ignoreVarChangePart1 = new HashMap();
 	
+    }
+
+    /** 
+     * Add a new entry to this query that represents the given parameter.
+     * The name of the entry will be set to the name of the parameter.
+     * If the parameter contains a parameter style, then use the style to 
+     * create the entry, otherwise just create a new line entry.
+     * Attach the variable to the new entry.
+     */
+    public void addStyledEntry(Variable param) {
+	// Look for a ParameterEditorStyle.
+	Iterator styles
+	    = param.attributeList(ParameterEditorStyle.class).iterator();
+	boolean foundStyle = false;
+	while (styles.hasNext() && !foundStyle) {
+	    ParameterEditorStyle style
+		= (ParameterEditorStyle)styles.next();
+	    try {
+		style.addEntry(this);
+		foundStyle = true;
+	    } catch (IllegalActionException ex) {
+		// Ignore failures here, and just present the default
+		// dialog.
+	    }
+	}
+	if (!(foundStyle)) {
+	    addLine(param.getName(),
+		    param.getName(),
+		    param.stringRepresentation());
+	    attachParameter(param, param.getName());
+	}
     }
 
     /** Attach a variable <i>var</i> to an entry, <i>entryName</i>,

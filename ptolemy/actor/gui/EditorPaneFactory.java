@@ -92,27 +92,7 @@ public class EditorPaneFactory extends Attribute {
         while (params.hasNext()) {
             foundOne = true;
             Parameter param = (Parameter)params.next();
-            // Check for ParameterEditorStyle.
-            Iterator styles
-                = param.attributeList(ParameterEditorStyle.class).iterator();
-            boolean foundStyle = false;
-            while (styles.hasNext() && !foundStyle) {
-                ParameterEditorStyle style
-                    = (ParameterEditorStyle)styles.next();
-                try {
-                    style.addEntry(query);
-                    foundStyle = true;
-                } catch (IllegalActionException ex) {
-                    // Ignore failures here, and just present the default
-                    // dialog.
-                }
-            }
-            if (!(foundStyle)) {
-                query.addLine(param.getName(),
-                        param.getName(),
-                        param.stringRepresentation());
-                query.attachParameter(param, param.getName());
-            }
+	    query.addStyledEntry(param);
         }
         if (!foundOne) {
             return new JLabel(container.getName() + " has no parameters.");

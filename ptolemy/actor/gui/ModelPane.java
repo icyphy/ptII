@@ -210,29 +210,7 @@ public class ModelPane extends JPanel {
                 Iterator params = paramList.iterator();
                 while (params.hasNext()) {
                     Parameter param = (Parameter)params.next();
-                    // Check for ParameterEditorStyle.
-                    Iterator styles = 
-                        param.attributeList(ParameterEditorStyle.class)
-                        .iterator();
-                    boolean foundStyle = false;
-                    while (styles.hasNext() && !foundStyle) {
-                        ParameterEditorStyle style
-                            = (ParameterEditorStyle)styles.next();
-                        try {
-                            style.addEntry(_paramQuery);
-                            foundStyle = true;
-                        } catch (IllegalActionException ex) {
-                            // Ignore failures here, 
-                            // and just present the default
-                            // dialog.
-                        }
-                    }
-                    if (!(foundStyle)) {
-                        _paramQuery.addLine(param.getName(),
-                                param.getName(),
-                                param.stringRepresentation());
-                        _paramQuery.attachParameter(param, param.getName());
-                    }
+                    _paramQuery.addStyledEntry(param);
                 }
                 _controlPanel.add(_paramQuery);
                 _controlPanel.add(Box.createRigidArea(new Dimension(0, 15)));
@@ -255,11 +233,8 @@ public class ModelPane extends JPanel {
                     Iterator params = dirParamList.iterator();
                     while (params.hasNext()) {
                         Parameter param = (Parameter)params.next();
-                        String name = param.getName();
-                        _directorQuery.addLine(name, name,
-                                param.stringRepresentation());
-                        _directorQuery.attachParameter(param, name);
-                    }
+			_directorQuery.addStyledEntry(param);
+		    }
                     _controlPanel.add(_directorQuery);
 
                     // If there are two queries, make them the same width.
