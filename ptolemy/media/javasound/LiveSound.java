@@ -203,8 +203,8 @@ public class LiveSound {
      *
      *  @return The sample rate in Hz.
      */
-    public static float getSampleRate() {
-	return _sampleRate;
+    public static int getSampleRate() {
+	return (int)_sampleRate;
     }
 
     /** Return the number of bits per audio sample, which is
@@ -274,7 +274,7 @@ public class LiveSound {
      *  @exception IllegalStateException If this method is called
      *   while audio capture or playback are active.
      */
-    public static void setSampleRate(float sampleRate) 
+    public static void setSampleRate(int sampleRate) 
 	throws IllegalStateException {
 	if ((_captureIsActive) || (_playbackIsActive)) {
 	    throw new IllegalStateException("LiveSound: " +
@@ -282,7 +282,7 @@ public class LiveSound {
 					"or playback was active.");
 	    
 	} else {
-	    _sampleRate = sampleRate;
+	    _sampleRate = (float)sampleRate;
 	}
     }
 
@@ -475,7 +475,18 @@ public class LiveSound {
 	if (_debug) {
 	    System.out.println("LiveSound: startCapture(): invoked");
 	}
-	_startCapture();
+	// This is a workaround for a javasound bug. In javasound,
+	// when doing simultaneous capture and playback, the
+	// capture process must be started first. So, if
+	// there is alread a playback process running then
+	// stop it before starting capture.
+	if (isPlaybackActive()) {
+	    resetPlayback();
+	    _startCapture();
+	    startPlayback(_producer);
+	} else {
+	    _startCapture();
+	}
 	_captureIsActive = true;
     }
 
@@ -532,6 +543,7 @@ public class LiveSound {
     public static void startPlayback(Object producer) 
 	throws IOException, IllegalStateException {
 	// FIXME: the value of producer is ignored.
+	_producer = producer;
 	if (_debug) {
 	    System.out.println("LiveSound: startPlayback() invoked");
 	}
@@ -1018,6 +1030,8 @@ public class LiveSound {
     // the number of audio samples to transfer per channel
     // when putSamples() or getSamples() is invoked.
     private static int _transferSize = 128;
+    private static Object _producer;
     // for debuging;
+    //private static boolean _debug = true;
     private static boolean _debug = false;
 }

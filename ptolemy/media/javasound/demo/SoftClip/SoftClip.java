@@ -49,7 +49,7 @@ public class SoftClip {
 	// Create a sound capture object that captures audio
 	// from the computer's audio input port (mic or
 	// line-in).
-	float sampleRate = 44100; // in Hz
+	int sampleRate = 44100; // in Hz
 	int sampleSizeInBits = 16;
 	int channels = 2; // stereo.
 	int inBufferSize = 4096;  // Internal buffer size for capture.
