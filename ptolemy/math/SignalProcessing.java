@@ -806,30 +806,20 @@ public class SignalProcessing {
         return window;
     }
 
-    /** Return a new array that is filled with samples of a waveform of a
-     *  specified length. The waveform is sampled with starting at startTime,
-     *  at a sampling period of interval.
-     *  @param length The number of samples to generate.
-     *  @param startTime The corresponding time for the first sample.
-     *  @param interval The time between successive samples. This may
-     *  be negative if the waveform is to be reversed, or zero if the
-     *  array is to be filled with a constant.
-     *  @param sampleGen A DoubleUnaryOperation.
-     *  @return A new array of doubles.
-     *  @see ptolemy.math.DoubleUnaryOperation
+    /** Return the next power of two larger than the argument.
+     *  @param x A positive real number.
+     *  @exception IllegalArgumentException If the argument is less than
+     *   or equal to zero.
      */
-    public static final double[] sampleWave(int length,
-            double startTime, double interval, DoubleUnaryOperation sampleGen) {
-        double time = startTime;
-
-        double[] returnValue = new double[length];
-
-        for (int t = 0; t < length; t++) {
-            returnValue[t] = sampleGen.operate(time);
-            time += interval;
+    public static final int nextPowerOfTwo(double x) {
+        if (x <= 0.0) {
+            throw new IllegalArgumentException(
+                    "ptolemy.math.SignalProcessing.nextPowerOfTwo(): " +
+                    "argument (" + x + ") is not a positive number.");
         }
-
-        return returnValue;
+        double m = Math.log(x)*_LOG2SCALE;
+        int exp = (int)Math.ceil(m);
+        return 1 << exp;
     }
 
     /** Return the "order" of a transform size, i.e. the base-2 logarithm
@@ -888,20 +878,30 @@ public class SignalProcessing {
         return freq;
     }
 
-    /** Return the next power of two larger than the argument.
-     *  @param x A positive real number.
-     *  @exception IllegalArgumentException If the argument is less than
-     *   or equal to zero.
+    /** Return a new array that is filled with samples of a waveform of a
+     *  specified length. The waveform is sampled with starting at startTime,
+     *  at a sampling period of interval.
+     *  @param length The number of samples to generate.
+     *  @param startTime The corresponding time for the first sample.
+     *  @param interval The time between successive samples. This may
+     *  be negative if the waveform is to be reversed, or zero if the
+     *  array is to be filled with a constant.
+     *  @param sampleGen A DoubleUnaryOperation.
+     *  @return A new array of doubles.
+     *  @see ptolemy.math.DoubleUnaryOperation
      */
-    public static final int nextPowerOfTwo(double x) {
-        if (x <= 0.0) {
-            throw new IllegalArgumentException(
-                    "ptolemy.math.SignalProcessing.nextPowerOfTwo(): " +
-                    "argument (" + x + ") is not a positive number.");
+    public static final double[] sampleWave(int length,
+            double startTime, double interval, DoubleUnaryOperation sampleGen) {
+        double time = startTime;
+
+        double[] returnValue = new double[length];
+
+        for (int t = 0; t < length; t++) {
+            returnValue[t] = sampleGen.operate(time);
+            time += interval;
         }
-        double m = Math.log(x)*_LOG2SCALE;
-        int exp = (int)Math.ceil(m);
-        return 1 << exp;
+
+        return returnValue;
     }
 
     /** Return a sample of a sawtooth wave with the specified period and
@@ -1014,6 +1014,30 @@ public class SignalProcessing {
         return point;
     }
 
+    /** Modify the specified array to unwrap the angles.  That is, if
+     *  the difference between successive values is greater than *
+     *  <em>PI</em> in magnitude, then the second value is modified by
+     *  * multiples of 2<em>PI</em> until the difference is less than
+     *  or * equal to <em>PI</em>.
+     *
+     *  In addition, the first element is modified so that its
+     *  difference from zero is less than or equal to <em>PI</em> in
+     *  magnitude.  This method is used for generating more meaningful
+     *  phase plots.
+     */
+    public static final void unwrap(double[] angles) {
+        double previous = 0.0;
+        for (int i = 0; i < angles.length; i++) {
+            while (angles[i] - previous < -Math.PI) {
+                angles[i] += 2*Math.PI;
+            }
+            while (angles[i] - previous > Math.PI) {
+                angles[i] -= 2*Math.PI;
+            }
+            previous = angles[i];
+        }
+    }
+
     /** Return a new array that is the result of inserting (n-1) zeroes
      *  between each successive sample in the input array, resulting in an
      *  array of length n * L, where L is the length of the original array.
@@ -1043,30 +1067,6 @@ public class SignalProcessing {
         }
 
         return returnValue;
-    }
-
-    /** Modify the specified array to unwrap the angles.  That is, if
-     *  the difference between successive values is greater than *
-     *  <em>PI</em> in magnitude, then the second value is modified by
-     *  * multiples of 2<em>PI</em> until the difference is less than
-     *  or * equal to <em>PI</em>.
-     *
-     *  In addition, the first element is modified so that its
-     *  difference from zero is less than or equal to <em>PI</em> in
-     *  magnitude.  This method is used for generating more meaningful
-     *  phase plots.
-     */
-    public static final void unwrap(double[] angles) {
-        double previous = 0.0;
-        for (int i = 0; i < angles.length; i++) {
-            while (angles[i] - previous < -Math.PI) {
-                angles[i] += 2*Math.PI;
-            }
-            while (angles[i] - previous > Math.PI) {
-                angles[i] -= 2*Math.PI;
-            }
-            previous = angles[i];
-        }
     }
 
     ///////////////////////////////////////////////////////////////////
