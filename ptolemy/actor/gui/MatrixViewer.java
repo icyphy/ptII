@@ -41,6 +41,7 @@ import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.math.Complex;
 import ptolemy.actor.lib.*;
 
