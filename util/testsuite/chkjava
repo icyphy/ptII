@@ -240,7 +240,7 @@ do
 
 
         # Check the rating
-        results=`egrep '^@AcceptedRating' $file`
+        results=`egrep '^@(Pt.)AcceptedRating' $file`
         if [ "x$results" != "x" ]; then
             rating=`echo $results | $awk '{print $2}' `
             if [ "$rating" != "Green" ]; then
@@ -248,7 +248,7 @@ do
                 echo "$results"
             fi
         else
-            echo "$file: does not have an @AcceptedRating doc tag"
+            echo "$file: does not have an @AcceptedRating or @Pt.AcceptedRating doc tag"
         fi
 
         results=`egrep '(public|private|protected) .* .*\(' $file | egrep ' \(|\( ' | grep -v ') throws' `
