@@ -108,7 +108,8 @@ public class QueueApp {
             DEServer server2 = new DEServer(sys, "Server2", 3.0);
 
             DEPseudoPlot plot3 = new DEPseudoPlot(sys, "Blocking signal");
-            DEPseudoPlot plot4 = new DEPseudoPlot(sys, "Dispositions of inputs");
+            DEPseudoPlot plot4 = new DEPseudoPlot(sys, 
+                    "Dispositions of inputs");
 
             // -----------------------
             // Creating connections
