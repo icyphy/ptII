@@ -25,8 +25,8 @@
                                         COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
-
 */
+
 package ptolemy.data;
 
 import java.awt.Image;
