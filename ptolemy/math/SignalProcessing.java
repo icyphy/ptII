@@ -991,12 +991,13 @@ public class SignalProcessing {
      *  @param firstZeroCrossing The number of samples from the center of the
      *   pulse to the first zero crossing.
      *  @param length The length of the returned array.
-     *  @return
+     *  @return An array containing a symmetric raised-cosine pulse.
      */
     public static final double[] generateRaisedCosinePulse(
             double excessBandwidth, double firstZeroCrossing, int length) {
         RaisedCosineSampleGenerator generator
-               = new RaisedCosineSampleGenerator(firstZeroCrossing, excessBandwidth);
+               = new RaisedCosineSampleGenerator(firstZeroCrossing,
+                       excessBandwidth);
         return sampleWave(
                length,
                -(length-1)/2.0,
