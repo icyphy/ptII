@@ -40,7 +40,7 @@
   <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
     <configure>
       <svg>
-	<polyline points="-14,-15, -2,-5, -14,5" style="stroke:green"/>
+	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"/>
       </svg>
     </configure>
   </property>
@@ -48,7 +48,7 @@
   <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
     <configure>
       <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:green" y="20">-P-</text>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:black" y="20">-P-</text>
       </svg>
     </configure>
   </property>
