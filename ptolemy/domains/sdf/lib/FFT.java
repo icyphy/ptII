@@ -115,7 +115,7 @@ public class FFT extends TypedAtomicActor {
     }
 
     /** Consume the inputs and produce the outputs of the FFT filter.
-     *  @exception IllegalActionException Not Thrown in this base class.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public void fire() throws IllegalActionException {
         int i;
