@@ -42,6 +42,7 @@ import ptolemy.gui.CloseListener;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
+import ptolemy.kernel.attributes.ChoiceAttribute;
 import ptolemy.kernel.attributes.FileAttribute;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.Attribute;
@@ -234,11 +235,18 @@ public class PtolemyQuery extends Query
                             directory);
                     attachParameter(attribute, name);
                     foundStyle = true;
+                    
+                } else if (attribute instanceof ChoiceAttribute) {
+                    ChoiceAttribute castAttribute = (ChoiceAttribute)attribute;
+                    addChoice(name,
+                            name,
+                            castAttribute.getChoices(),
+                            castAttribute.getExpression(),
+                            castAttribute.isEditable());
+                    attachParameter(attribute, name);
+                    foundStyle = true;
                 }
-                // FIXME: Other attribute classes?
-                // FIXME: Create a ChoiceAttribute create a style
-                // similar to what's in addEntry of actor.gui.style.ChoiceStyle.
-                // FIXME: Similarly for EditableChoiceStyle and TextStyle.
+                // FIXME: Other attribute classes? TextStyle?
             } catch (IllegalActionException ex) {
                 // Ignore and create a line entry.
             }
