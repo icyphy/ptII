@@ -864,10 +864,11 @@ public class PtolemyUtilities {
      *  resolve type as the typeable object that the invoke would have
      *  occurred on, has the code actually been executed.
      */
-    public static void inlineTypeableMethods(JimpleBody body,
+    public static boolean inlineTypeableMethods(JimpleBody body,
             Unit unit, ValueBox box, InstanceInvokeExpr expr,
             Typeable typeable) {
         String name = expr.getMethod().getName();
+        boolean doneSomething = false;
         // FIXME name matching here is rather imprecise.
         if (name.equals("getType")) {
             // Replace method calls to getType with the constant type
@@ -876,6 +877,7 @@ public class PtolemyUtilities {
                 Local typeLocal = PtolemyUtilities.buildConstantTypeLocal(
                         body, unit, typeable.getType());
                 box.setValue(typeLocal);
+                doneSomething = true;
             } catch (Exception ex) {
                 throw new RuntimeException("Type of " + typeable +
                         " could not be determined: " + ex.getMessage());
@@ -887,18 +889,23 @@ public class PtolemyUtilities {
             //        "Illegal Method Call: getTypeTerm()");
             //body.getUnits().swapWith(unit,
             //        Jimple.v().newThrowStmt(exceptionLocal));
+            // doneSomething = true;
         } else if (name.equals("setTypeEquals")) {
             // Remove call.
             body.getUnits().remove(unit);
+            doneSomething = true;
         } else if (name.equals("setTypeAtLeast")) {
             // Remove call.
             body.getUnits().remove(unit);
+            doneSomething = true;
         } else if (name.equals("setTypeAtMost")) {
             // Remove call.
             body.getUnits().remove(unit);
+            doneSomething = true;
         } else if (name.equals("setTypeSameAs")) {
             // Remove call.
             body.getUnits().remove(unit);
+            doneSomething = true;
         } else if (name.equals("typeConstraintList")) {
             //FIXME This method should be removed.
             // Local exceptionLocal =
@@ -906,7 +913,9 @@ public class PtolemyUtilities {
             //      "Illegal Method Call: typeConstraintList()");
             //body.getUnits().swapWith(unit,
             //        Jimple.v().newThrowStmt(exceptionLocal));
+            // doneSomething = true;
         }
+        return doneSomething;
     }
 
     /** Return true if the given type references a concrete
