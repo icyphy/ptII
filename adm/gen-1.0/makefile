@@ -118,8 +118,14 @@ all: $(PTII_FULL) $(PTII_SRC) #$(PTII_FULL_ZIP) #$(PTII_DEVEL_SRC)
 
 # Rebuild the distributions
 # rm unixPtiny.xml; make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII1.0beta PTIIADM=/home/eecs/cxh/ptII/adm  rebuildptiny
-rebuildptiny: clean all installshield_app build_unixPtiny
-rebuild: clean all installshield_app build_unixPtII
+rebuild: clean all codeDocPtiny installshield_app 
+rebuildptiny: rebuild build_unixPtiny
+rebuildptII: rebuild build_unixPtII
+
+# Codedoc directory for ptiny version
+codeDocPtiny:
+	(cd $(PTIIHOME)/doc; rm -rf codeDocPtiny;
+	make codeDocPtiny/tree.html JAVASOUNDJSRCS="ptolemy.actor.lib.javasound ptolemy.media.javasound")
 
 clean:
 	@echo "#"
@@ -907,7 +913,7 @@ installshield_app: installshield $(INSTALLSHIELD_APP) \
 			$(INSTALLSHIELD_DOC)
 
 installshield:
-	if [ ! -d $@ ]; then 
+	if [ ! -d $@ ]; then \
 		echo "Making $@ directory"; \
 		mkdir -p $@; \
 	fi
@@ -1005,7 +1011,7 @@ $(INSTALLSHIELD_PTINY):
 
 
 installshield_ptiny_only: $(INSTALLSHIELD_PTINY_ONLY)
-$(INSTALLSHIELD_PTINY_ONLY): bar
+$(INSTALLSHIELD_PTINY_ONLY):
 	@echo "#"
 	@echo "# Building $@"
 	mkdir -p $@/doc/codeDoc $@/ptolemy/configs
