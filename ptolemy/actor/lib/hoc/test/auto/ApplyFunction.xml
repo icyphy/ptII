@@ -36,6 +36,8 @@
         </port>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
         <doc>Create a constant sequence</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -46,14 +48,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 160.0]">
         </property>
     </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {366, 273, 292, 222}, maximized = false}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 190.0]">
-        </property>
-    </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="2">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="2.0">
         </property>
         <doc>Create a constant sequence</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -65,18 +61,24 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 200.0]">
         </property>
     </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 190.0]">
+        </property>
+    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[225.0, 160.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="ApplyFunction.output" relation="relation2"/>
     <link port="ApplyFunction.input" relation="relation3"/>
     <link port="ApplyFunction.y" relation="relation"/>
     <link port="Const.output" relation="relation3"/>
-    <link port="Display.input" relation="relation2"/>
     <link port="Const2.output" relation="relation"/>
+    <link port="Test.input" relation="relation2"/>
 </entity>
