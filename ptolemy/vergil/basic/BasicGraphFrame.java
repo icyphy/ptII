@@ -651,14 +651,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	return _jgraph;
     }
 
-    /** Get the mouse position recorded by the last mouse motion event.
-     *  @return The position of the mouse in the component, or null if
-     *   no motion event has been recorded.
-     */
-    public Point getMousePosition() {
-        return _mousePosition;
-    }
-
     /** Return the rectangle representing the visible part of the
      *  pane, transformed into canvas coordinates.  This is the range
      *  of locations that are visible, given the current pan and zoom.
@@ -975,6 +967,24 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	GUIUtilities.addMenuItem(_graphMenu, _importLibraryAction);
     }
 
+    /** Override the base class to remove the listeners we have
+     *  created when the frame closes.  Specifically,
+     *  remove our panner-updating listener from the entity.
+     *  Also remove the listeners our graph model has created.
+     *  @return True if the close completes, and false otherwise.
+     */
+    protected boolean _close() {
+        boolean result = super._close();
+        if (result) {
+            getModel().removeChangeListener(this);
+            GraphModel gm = _jgraph.getGraphPane().getGraphModel();
+            if (gm instanceof AbstractBasicGraphModel) {
+                ((AbstractBasicGraphModel)gm).removeListeners();
+            }
+        }
+        return result;
+    }
+
     /** Create a new graph pane.  Subclasses will override this to change
      *  the pane that is created.  Note that this method is called in
      *  constructor, so derived classes must be careful to not reference
@@ -1083,41 +1093,14 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         super._writeFile(file);
     }
 
-    /** Override the base class to remove the listeners we have
-     *  created when the frame closes.  Specifically,
-     *  remove our panner-updating listener from the entity.
-     *  Also remove the listeners our graph model has created.
-     *  @return True if the close completes, and false otherwise.
-     */
-    protected boolean _close() {
-        boolean result = super._close();
-        if (result) {
-            getModel().removeChangeListener(this);
-            GraphModel gm = _jgraph.getGraphPane().getGraphModel();
-            if (gm instanceof AbstractBasicGraphModel) {
-                ((AbstractBasicGraphModel)gm).removeListeners();
-            }
-        }
-        return result;
-    }
-
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected variables               ////
 
-    /** Point of last mouse motion. */
-    private Point _mousePosition;
+    /** The library. */
+    protected CompositeEntity _topLibrary;
 
-    /** Action for zooming in. */
-    private Action _zoomInAction = new ZoomInAction("Zoom In");
-
-    /** Action for zoom reset. */
-    private Action _zoomResetAction = new ZoomResetAction("Zoom Reset");
-
-    /** Action for zoom fitting. */
-    private Action _zoomFitAction = new ZoomFitAction("Zoom Fit");
-
-    /** Action for zooming out. */
-    private Action _zoomOutAction = new ZoomOutAction("Zoom Out");
+    // FIXME: Comments are needed on all these.
+    // FIXME: Need to be in alphabetical order.
 
     // NOTE: should be somewhere else?
     // Default background color is a light grey.
@@ -1141,23 +1124,29 @@ public abstract class BasicGraphFrame extends PtolemyFrame
     protected Action _saveInLibraryAction;
     protected Action _importLibraryAction;
 
-    /**
-     *  Action to undo the last MoML change
-     */
-    private Action _undoAction = new UndoAction();
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
-    /**
-     *  Action to redo the last undone MoML change
-     */
+    /** Action to redo the last undone MoML change. */
     private Action _redoAction = new RedoAction();
 
-
-    // Flag indicating that the current save action is "save as" rather than
-    // "save".
+    /** Flag indicating "save as" action rather than "save". */
     private boolean _saveAsFlag = false;
 
-    // The library.
-    protected CompositeEntity _topLibrary;
+    /** Action to undo the last MoML change. */
+    private Action _undoAction = new UndoAction();
+
+    /** Action for zooming in. */
+    private Action _zoomInAction = new ZoomInAction("Zoom In");
+
+    /** Action for zoom reset. */
+    private Action _zoomResetAction = new ZoomResetAction("Zoom Reset");
+
+    /** Action for zoom fitting. */
+    private Action _zoomFitAction = new ZoomFitAction("Zoom Fit");
+
+    /** Action for zooming out. */
+    private Action _zoomOutAction = new ZoomOutAction("Zoom Out");
 
     ///////////////////////////////////////////////////////////////////
     ////                     private inner classes                 ////
