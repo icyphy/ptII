@@ -1,6 +1,6 @@
 # Tests for the CompositeEntity class
 #
-# @Author: Edward A. Lee
+# @Author: Edward A. Lee, Jie Liu
 #
 # @Version: $Id$
 #
@@ -77,6 +77,8 @@ test CompositeEntity-2.1 {Create a 3 level deep tree using constructors} {
             [enumToNames [$c getEntities]]
 } {{B C} {} D}
 
+
+
 ######################################################################
 ####
 #
@@ -94,6 +96,19 @@ test CompositeEntity-2.2 {Create a 3 level deep tree after construction} {
             [enumToNames [$b getEntities]] \
             [enumToNames [$c getEntities]]
 } {B C D}
+
+######################################################################
+####
+#
+test CompositeEntity-2.3 {test setName for NameDuplicationException} {
+    set a [java::new ptolemy.kernel.CompositeEntity]
+    $a setName A
+    set b [java::new ptolemy.kernel.CompositeEntity $a B]
+    set c [java::new ptolemy.kernel.CompositeEntity $a C]
+    set d [java::new ptolemy.kernel.ComponentEntity $a D]
+    catch {$d setName B} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: .A: already contains an entity with the name B.}}
 
 ######################################################################
 ####
