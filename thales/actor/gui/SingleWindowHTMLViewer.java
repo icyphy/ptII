@@ -67,8 +67,8 @@ import thales.vergil.navigable.NavigationPTree;
 Main application Frame. Contains all the
 panels, menus and needed widget for the whole Design Environment.
 
-Soci@eacute;t@eacute; : Thales Research and technology</p>
-@author J&eacute;r&ocirc;me Blanc, Soci@eacute;t@eacute; : Thales Research and technology, 01 sept. 2003
+Soci&eacute;t&eacute; : Thales Research and technology</p>
+@author J&eacute;r&ocirc;me Blanc, Soci&eacute;t&eacute; : Thales Research and technology, 01 sept. 2003
 @version $Id$
 @since Ptolemy II 3.1
 */

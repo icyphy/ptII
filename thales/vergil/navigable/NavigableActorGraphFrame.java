@@ -57,7 +57,7 @@ import thales.vergil.SingleWindowApplication;
 <p>Titre : NavigableActorGraphFrame</p>
 <p>Description : This is a simple copy of the actuel ActorGraphFrame
 with additional functionalities for the navigation.</p>
-<p>Soci@eacute;t@eacute; : Thales Research and technology</p>
+<p>Soci&eacute;t&eacute; : Thales Research and technology</p>
 
 @author J&eacute;r&ocirc;me Blanc & Benoit Masson
 01 sept. 2003
