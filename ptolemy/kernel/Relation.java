@@ -1,4 +1,4 @@
-/* A Relation is an arc in a flat graph.
+@/* A Relation is an arc in a flat graph.
 
  Copyright (c) 1997 The Regents of the University of California.
  All rights reserved.
@@ -37,7 +37,6 @@ that each link has access to the other n-1 links. In our case, a "link" is
 a Port. We assume Ports may attach themselves to Relations, but the other 
 direction does not hold.
 @author Neil Smyth
-@author John S. Davis II
 @version $Id$
 */
 public abstract class Relation extends NamedObj {
