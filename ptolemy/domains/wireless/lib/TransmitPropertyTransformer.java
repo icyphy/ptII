@@ -123,7 +123,7 @@ public class TransmitPropertyTransformer extends LifeCycleManager
 
         properties = new Parameter(this, "properties");
         // FIXME: properties type should be at least an empty record.
-        properties.setExpression("{power = 0.0, range = 0.0}");
+        properties.setExpression("{power = 1.0, range = Infinity}");
         properties.setVisibility(Settable.EXPERT);
 
         // Create the icon.
