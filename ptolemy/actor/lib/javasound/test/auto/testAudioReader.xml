@@ -1,13 +1,15 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="testAudioCapture_AudioPlayer" class="ptolemy.actor.TypedCompositeActor">
+<entity name="testAudioReader" class="ptolemy.actor.TypedCompositeActor">
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[596, 454]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[106, 100]">
     </property>
     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -17,7 +19,7 @@
     <entity name="AudioReader" class="ptolemy.actor.lib.javasound.AudioReader">
         <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;file:///&quot; + property(&quot;ptolemy.ptII.dir&quot;) + &quot;/ptolemy/actor/lib/javasound/test/voice.wav&quot;">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="148.0, 208.0">
+        <property name="_location" class="ptolemy.moml.Location" value="144.0, 184.5">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -28,20 +30,58 @@
             <property name="multiport"/>
         </port>
     </entity>
+    <entity name="Chop" class="ptolemy.domains.sdf.lib.Chop">
+        <property name="numberToRead" class="ptolemy.data.expr.Parameter" value="64">
+        </property>
+        <property name="numberToWrite" class="ptolemy.data.expr.Parameter" value="16">
+        </property>
+        <property name="offset" class="ptolemy.data.expr.Parameter" value="-32">
+        </property>
+        <property name="usePastInputs" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="260.0, 183.5">
+        </property>
+        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="64">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="output"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="16">
+            </property>
+        </port>
+    </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.3387, 0.6374, 0.8607, 0.9822}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-0.0078125,-0.0078125,-0.0078125,-0.0078125}">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-3">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="266.0, 208.0">
+        <property name="_location" class="ptolemy.moml.Location" value="406.5, 184.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="64">
+        </property>
     </relation>
-    <link port="AudioReader.output" relation="relation"/>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="16">
+        </property>
+    </relation>
+    <link port="AudioReader.output" relation="relation5"/>
+    <link port="Chop.input" relation="relation5"/>
+    <link port="Chop.output" relation="relation"/>
     <link port="Test.input" relation="relation"/>
 </entity>
