@@ -1,5 +1,5 @@
 #!/bin/sh
-# -[Fri Sep 29 16:58:33 2000 by cxh]-
+# -[Wed Oct  4 08:45:00 2000 by cxh]-
 # Generate a quick summary of the code coverage
 summaryfile=/users/ptdesign/public_html/java/js/coverage.html
 summaryfile=/home/www/cvswww/ptolemy/nightly/coverage.html
@@ -12,9 +12,9 @@ Package                        Method        Constructor   Basic Block
 -------                        ------        -----------   -----------
 EOF
 
-awk '	$0 ~ /<th colspan=10>Package/ { split($3,p,"<")
+awk '	$0 ~ /<th colspan=10>Package/ { split($4,p,"\"")
 			 # Remove the leading ptolemy
-			 nf=split(p[1],pp,".")
+			 nf=split(p[2],pp,".")
 			 package=""
 			 for(i=3;i < nf; i++) {
 				package = package pp[i] "."
