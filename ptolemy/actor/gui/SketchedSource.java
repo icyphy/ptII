@@ -126,8 +126,9 @@ public class SketchedSource extends Source
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Throw an exception if the specified new value for
-     *  <i>dataset</i> is negative.
+    /** If the specified attribute is <i>length</i> or <i>dataset</i>,
+     *  then set the trace to its initial value;  if it is
+     *  <i>dataset</i>, then check that it is not negative.
      *  @exception IllegalActionException If the specified attribute
      *   is <i>dataset</i> and its value is negative.
      */
@@ -138,6 +139,9 @@ public class SketchedSource extends Source
                 throw new IllegalActionException(this,
                 "dataset: negative value is not allowed.");
             }
+            setInitialTrace();
+        } else if (attribute == length) {
+            setInitialTrace();
         }
     }
 
@@ -225,19 +229,12 @@ public class SketchedSource extends Source
                 plot = new EditablePlot();
                 _container.add(plot);
                 plot.setButtons(true);
+                plot.setBackground(_container.getBackground());
             }
         }
         // Set the default signal value in the plot.
         try {
-            int set = ((IntToken)dataset.getToken()).intValue();
-            plot.clear(set);
-            int len = ((IntToken)length.getToken()).intValue();
-            boolean connected = false;
-            for(int i = 0; i < len; i++) {
-                plot.addPoint(set, (double)i, 0.0, connected);
-                connected = true;
-            }
-            plot.repaint();
+            setInitialTrace();
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex.getMessage());
         }
@@ -254,6 +251,25 @@ public class SketchedSource extends Source
 
     /** Graphical container into which this plot should be placed */
     protected Container _container;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    // Set the initial value of the plot and fill the plot.
+    // If the plot is null, return without doing anything.
+    private void setInitialTrace() throws IllegalActionException {
+        if (plot == null) return;
+        int set = ((IntToken)dataset.getToken()).intValue();
+        plot.clear(set);
+        int len = ((IntToken)length.getToken()).intValue();
+        boolean connected = false;
+        for(int i = 0; i < len; i++) {
+            plot.addPoint(set, (double)i, 0.0, connected);
+            connected = true;
+        }
+        plot.repaint();
+        plot.fillPlot();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
