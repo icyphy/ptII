@@ -54,7 +54,6 @@ JSRCS = \
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) \
 	QRcompileApplet.html \
 	QRvr.gif \
-	SourceMatrix1.java \
 	dg.gif \
 	qr.xml
 
