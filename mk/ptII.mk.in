@@ -126,6 +126,9 @@ TOOLS_JAR =	@TOOLS_JAR@
 # $PTII/ptolemy/domains/gr/lib if Volume Rendering code was found
 PTVR_DIR =	@PTVR_DIR@
 
+# $PTII/lib/ptvr.jar file, used to for Volume Rendering
+PTVR_JAR =	@PTVR_JAR@
+
 # Ptolemy II packages that use the Java 3D Volume Rendering
 # PTVR_PACKAGES is used in ptII/doc/makefile
 PTVR_PACKAGES =	@PTVR_PACKAGES@
