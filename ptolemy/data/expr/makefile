@@ -1,9 +1,10 @@
-# Makefile for Java classes that Tycho uses
+# Makefile for Java Ptolemy Expression Parser classes
 #
-# @Version: @(#)makefile	1.15 06/17/98
-# @Author: Christopher Hylands
+# @Authors: Christopher Hylands, Neil Smyth, based on a file by Thomas M. Parks
 #
-# @Copyright (c) 1996-1998 The Regents of the University of California.
+# $Id$
+#
+# @Copyright (c) 1998 The Regents of the University of California.
 # All rights reserved.
 # 
 # Permission is hereby granted, without written agreement and without
@@ -27,34 +28,92 @@
 # 
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-# Don't go down into collections, it does not have a makefile
-DIRS = pt doc gui #collections
+# This directory contains classes used for the Ptolemy II parser, PtParser.
+# The parser is generated using JavaCC and JJTree. It creates a syntax
+# tree of Node objects. The node classes used by PtrParser when generating
+# the tree are the ASTPt*.java files.
 
-# Root of Ptolemy II directory
-ROOT =		.
+# Root of the Ptolemy II directory
+ROOT =		../../..
 
-ME =
-# True source directory
-VPATH =		$(ROOT)
+ME =		pt/data/expr
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
-# Include rules for directories that contain only subdirectories.
-include $(ROOT)/mk/tydir.mk
+DIRS = 		test 
 
-# Glimpse is a tool that prepares an index of a directory tree.
-# glimpse is not included with Tycho, see http://glimpse.cs.arizona.edu
-GLIMPSEINDEX =	/usr/sww/bin/glimpseindex
-glimpse: .glimpse_exclude
-	@echo "Saving .glimpse_exclude, removing the .glimpse* files"
-	rm -f glimpse_exclude
-	cp .glimpse_exclude glimpse_exclude
-	rm -f .glimpse*
-	cp  glimpse_exclude .glimpse_exclude
-	$(GLIMPSEINDEX) -H `pwd` `pwd`
-	chmod a+r .glimpse_*
-	rm -f glimpse_exclude
+CLASSPATH = ../../..:$(JAVACCDIR)/JavaCC.zip
+
+# Used to build zip files
+TYPACKAGE = 	pt.data.expr
+TYPACKAGE_ROOTDIR = $(CLASSPATH)
+TYPACKAGE_DIR = pt/data/expr
+TYVERSION =	1.0
+TYDIST =	$(TYPACKAGE)$(TYVERSION)
+TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
+JARFILE = 	$(TYPACKAGE).jar
+
+JSRCS = \
+	ASTPtBitwiseOpNode.java \
+	ASTPtFunctionNode.java \
+	ASTPtLeafNode.java \
+	ASTPtLogicalNode.java \
+	ASTPtMiscNode.java \
+	ASTPtProductNode.java \
+	ASTPtRelationalNode.java \
+	ASTPtRootNode.java \
+	ASTPtSumNode.java \
+	ASTPtUnaryNode.java \
+	Parameter.java
+
+EXTRA_SRCS =   PtParser.jjt $(JSRCS)
+
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+MISC_FILES =	# doc test
+
+# OPTIONAL_JSRCS files are created by javacc.  
+# javadoc generates html for file in $(OPTIONAL_JSRCS)
+OPTIONAL_JSRCS = \
+	ASCII_CharStream.java \
+	JJTPtParserState.java \
+	Node.java \
+	ParseException.java \
+	PtParser.java \
+	PtParserConstants.java \
+	PtParserTokenManager.java \
+	PtParserTreeConstants.java \
+	SimpleNode.java \
+	Token.java \
+	TokenMgrError.java
+
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES =  \
+	$(OPTIONAL_JSRCS) \
+	PtParser.jj
+
+JCLASS = $(JSRCS:%.java=%.class)
+
+# Needed for compiling under Cygwin on NT
+LIB = dummylib
+
+all: PtParser $(JCLASS) 
+install: PTParser javadocs $(JARFILE)
+docs: javadocs
+
+depend:
+	@echo "no dependencies in this directory"
+
+PtParser :  sources PtParser.jjt
+	rm -f PtParser.jj
+	CLASSPATH=$(CLASSPATH) $(JJTREE) PtParser.jjt
+	CLASSPATH=$(CLASSPATH) $(JAVACC) PtParser.jj
+	CLASSPATH=$(CLASSPATH) $(JAVAC) *.java
+
+# Get the rest of the rules
+include $(ROOT)/mk/tycommon.mk
+

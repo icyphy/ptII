@@ -1,9 +1,10 @@
-# Makefile for Ptolemy II Java classes
+# Makefile for the Java classes used to implement the Ptolemy kernel
+#
+# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
-# @Author: Christopher Hylands
 #
-# @Copyright (c) 1996- The Regents of the University of California.
+# @Copyright (c) 1997- The Regents of the University of California.
 # All rights reserved.
 # 
 # Permission is hereby granted, without written agreement and without
@@ -27,34 +28,69 @@
 # 
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-# Don't go down into collections, it does not have a makefile
-DIRS = pt doc gui #collections
+# Note that the Java classes contained in this directory were written
+# by Sun.  These classes came from tcljava, see license.terms for more info.
 
-# Root of Ptolemy II directory
-ROOT =		.
+# Root of the Java directory
+ROOT =		../../..
 
-ME =
-# True source directory
-VPATH =		$(ROOT)
+ME =		java/pt/kernel
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
-# Include rules for directories that contain only subdirectories.
-include $(ROOT)/mk/tydir.mk
+# Flags to pass to javadoc. (Override value in tycho.mk)
+JDOCFLAGS = 	-author -version -public
 
-# Glimpse is a tool that prepares an index of a directory tree.
-# glimpse is not included with Tycho, see http://glimpse.cs.arizona.edu
-GLIMPSEINDEX =	/usr/sww/bin/glimpseindex
-glimpse: .glimpse_exclude
-	@echo "Saving .glimpse_exclude, removing the .glimpse* files"
-	rm -f glimpse_exclude
-	cp .glimpse_exclude glimpse_exclude
-	rm -f .glimpse*
-	cp  glimpse_exclude .glimpse_exclude
-	$(GLIMPSEINDEX) -H `pwd` `pwd`
-	chmod a+r .glimpse_*
-	rm -f glimpse_exclude
+DIRS = 		mutation util test doc demo
+
+CLASSPATH = ../..
+
+# Used to build zip files
+TYPACKAGE = 	pt.kernel
+TYPACKAGE_ROOTDIR = $(CLASSPATH)
+TYPACKAGE_DIR = pt/kernel
+TYVERSION =	1.0
+TYDIST =	$(TYPACKAGE)$(TYVERSION)
+TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
+JARFILE = 	$(TYPACKAGE).jar
+
+JSRCS = \
+	ComponentEntity.java \
+	ComponentPort.java \
+	ComponentRelation.java \
+	CompositeEntity.java \
+	Entity.java \
+	Port.java \
+	Relation.java
+
+EXTRA_SRCS =	$(JSRCS)
+
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+MISC_FILES =	$(DIRS)
+
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES = \
+	$(JARFILE)	
+
+JCLASS = $(JSRCS:%.java=%.class)
+
+# Needed for compiling under Cygwin on NT
+LIB = dummylib
+
+all: jclass
+install: jclass javadocs $(JARFILE)
+docs: javadocs
+
+depend:
+	@echo "no dependencies in this directory"
+
+# Get the rest of the rules
+include $(ROOT)/mk/tycommon.mk
+
+
+
