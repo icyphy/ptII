@@ -133,7 +133,7 @@ public class DoubleReader extends URLReader {
             }
             return super.prefire();
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex.getMessage());
+            throw new IllegalActionException(this, ex, "prefire() failed");
         }
     }
 
