@@ -1,4 +1,4 @@
-/*
+/* Class for representing solutions.
 
  Copyright (c) 1999-2003 The Regents of the University of California.
  All rights reserved.
@@ -84,25 +84,31 @@ public class Solver {
             constraintNum++) {
             UnitEquation constraint =
                 (UnitEquation) (constraints.elementAt(constraintNum));
-            constraint.canonicalize();
-            Vector rightUTerms = constraint.getRhs().getUTerms();
+            UnitEquation canonicalEquation = constraint.canonicalize();
+            Vector rightUTerms = canonicalEquation.getRhs().getUTerms();
             if (rightUTerms.size() != 1) {
                 throw new IllegalActionException(
-                    "Constraint " + constraint + " has nonsingular RHS");
+                    "canonicalEquation "
+                        + canonicalEquation
+                        + " has nonsingular RHS");
             }
             UnitTerm rhsUterm = (UnitTerm) (rightUTerms.elementAt(0));
             if (!rhsUterm.isUnit()) {
                 throw new IllegalActionException(
-                    "Constraint " + constraint + " has nonUnit RHS");
+                    "canonicalEquation "
+                        + canonicalEquation
+                        + " has nonUnit RHS");
             }
             _vectorA[constraintNum] = rhsUterm.getUnit();
             _source[constraintNum] = constraint.getSource();
-            Vector leftUTerms = constraint.getLhs().getUTerms();
+            Vector leftUTerms = canonicalEquation.getLhs().getUTerms();
             for (int i = 0; i < leftUTerms.size(); i++) {
                 UnitTerm leftUTerm = (UnitTerm) (leftUTerms.elementAt(i));
                 if (!leftUTerm.isVariable()) {
                     throw new IllegalActionException(
-                        "Constraint " + constraint + " has nonVar LHS");
+                        "canonicalEquation "
+                            + canonicalEquation
+                            + " has nonVar LHS");
                 }
                 String variableLabel = leftUTerm.getVariable();
                 double exponent = leftUTerm.getExponent();
@@ -123,8 +129,6 @@ public class Solver {
         String color = null;
         StringBuffer moml = new StringBuffer();
         for (int j = 0; j < _numVariables; j++) {
-            int secondDot = _variables[j].substring(1).indexOf(".") + 1;
-            String variable = _variables[j].substring(secondDot + 1);
             String explanation = _varBindings[j];
             if (_varValid[j]) {
                 color = "green";
@@ -134,7 +138,7 @@ public class Solver {
 
             moml.append(
                 "<port name=\""
-                    + _variables[j].substring(secondDot + 1)
+                    + _variables[j]
                     + "\">"
                     + " <property name=\"_color\" "
                     + "class = \"ptolemy.kernel.util.StringAttribute\" "
@@ -152,7 +156,7 @@ public class Solver {
             constraintNum < _numConstraints;
             constraintNum++) {
             NamedObj source = _source[constraintNum];
-            String expression = _vectorA[constraintNum].commonExpression();
+            String expression = _vectorA[constraintNum].descriptiveForm();
 
             if (_constraintConsistent[constraintNum]) {
                 color = "green";
@@ -203,9 +207,7 @@ public class Solver {
             MoMLChangeRequest request =
                 new MoMLChangeRequest(this, _model, momlUpdate);
             request.setUndoable(false);
-            if (_debug) {
-                System.out.println("Solver.annotateGraph moml " + momlUpdate);
-            }
+            _debug("Solver.annotateGraph moml " + momlUpdate);
             _model.requestChange(request);
         }
     }
@@ -216,10 +218,7 @@ public class Solver {
      * NONUNIQUESOLUTION, and NOSOLUTION.
      */
     public Solver completeSolve() {
-        if (_debug) {
-            System.out.println(
-                "Solver.solve " + header() + " initial\n" + state());
-        }
+        _debug("Solver.solve " + header() + " initial\n" + state());
         Index g;
         while ((g = _findG()) != null) {
             int k = g.getK();
@@ -262,7 +261,7 @@ public class Solver {
         return retv;
     }
 
-    /**
+    /** Create a short description of the state of the solution.
      * @return The short description.
      */
     public String getShortDescription() {
@@ -342,22 +341,17 @@ public class Solver {
     }
 
     /**
-     * @return The vector of partial solutions.
+     * @return The vector of minimal solutions.
      */
-    public Vector partialSolve() {
-        if (_debug) {
-            System.out.println(
-                "Solver.solve " + header() + " initial\n" + state());
-        }
+    public Vector minimalSpanSolutions() {
+        _debug("Solver.solve " + header() + " initial\n" + state());
         // Eliminate the singletons (due to Ports)
         Iterator allG = _findAllG().iterator();
         while (allG.hasNext()) {
             Index g = (Index) (allG.next());
             _eliminate(g);
         }
-        if (_debug) {
-            System.out.println("Solver.solve initialized\n" + state());
-        }
+        _debug("Solver.solve initialized\n" + state());
         Vector branchPoints = _findAllG();
         Vector solutions = new Vector();
         if (branchPoints.size() > 0) {
@@ -418,7 +412,7 @@ public class Solver {
                 retv.append("" + _pFormat.format(_arrayP[i][j]) + " ");
             }
             retv.append(
-                "" + _vectorA[i] + " " + _vectorA[i].commonExpression() + "\n");
+                "" + _vectorA[i] + " " + _vectorA[i].descriptiveForm() + "\n");
         }
         if (_branchPoint == null) {
             retv.append("BranchPoint = null\n");
@@ -472,7 +466,7 @@ public class Solver {
                     && !_vectorA[i].equals(UnitLibrary.Identity)) {
                     _solveState = NOSOLUTION;
                     Unit factor = _vectorA[i].invert();
-                    String uString = factor.commonExpression();
+                    String uString = factor.descriptiveForm();
                     NamedObj source = _source[i];
                     String sourceName = "NoSource";
                     if (source instanceof IORelation) {
@@ -544,7 +538,7 @@ public class Solver {
             if (numNonZeroP == 0
                 && !_vectorA[i].equals(UnitLibrary.Identity)) {
                 Unit factor = _vectorA[i].invert();
-                String uString = factor.commonExpression();
+                String uString = factor.descriptiveForm();
                 _constraintConsistent[i] = false;
                 _constraintExplanations[i] += uString;
             } else if (
@@ -561,7 +555,7 @@ public class Solver {
                     if (numNonZeroP > 0) {
                         _varBindings[j] += ";";
                     }
-                    _varBindings[j] += U.commonExpression();
+                    _varBindings[j] += U.descriptiveForm();
                     numNonZeroP++;
                 }
             }
@@ -599,6 +593,11 @@ public class Solver {
         return G;
     }
 
+    private void _debug(String msg) {
+        if (_debug)
+            System.out.println(msg);
+    }
+
     /**
     * @param k
     * @param l
@@ -606,9 +605,7 @@ public class Solver {
     private void _eliminate(Index g) {
         int k = g.getK();
         int l = g.getL();
-        if (_debug) {
-            System.out.println("Eliminating (" + k + ", " + l + ")");
-        }
+        _debug("Eliminating (" + k + ", " + l + ")");
         Unit U = _vectorA[k].pow(1.0 / _arrayP[k][l]);
         _vectorA[k] = U;
         _arrayP[k][l] = 1;
@@ -751,7 +748,7 @@ public class Solver {
         return -1;
     }
 
-    /**
+    /** Make a set of bindings from the contents of the solution
      * @return The bindings.
      */
     private Bindings _makeBindings() {
@@ -775,15 +772,13 @@ public class Solver {
 
     private Vector _partialSolveRecursively(int level, Index g) {
         Vector retv = new Vector();
-        if (_debug) {
-            System.out.print(
-                "\nSolver._eliminateRecursively level "
-                    + level
-                    + " BrancPoint "
-                    + g
-                    + "\n"
-                    + state());
-        }
+        _debug(
+            "\nSolver._eliminateRecursively level "
+                + level
+                + " BrancPoint "
+                + g
+                + "\n"
+                + state());
 
         int rows[] = _branchesFrom(g);
         _eliminate(g);
@@ -847,7 +842,7 @@ public class Solver {
     boolean _varValid[] = null;
     boolean _constraintConsistent[] = null;
     Index _branchPoint = null;
-    boolean _debug = false;
+    boolean _debug = true;
     boolean _done[];
     TypedCompositeActor _model;
     int _numConstraints = 0;

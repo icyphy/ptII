@@ -52,7 +52,7 @@ This file implements a Unit parser for Ptolemy II using the
 JavaCC parser generator.
 
 @author Rowland R Johnson
-@version $Id: UParser.jj,v 1.4 2004-04-01 16:56:03 rowland Exp $
+@version $Id: UParser.jj,v 1.5 2004-04-08 01:14:41 rowland Exp $
 @since Ptolemy II 3.1
 */
 
@@ -158,22 +158,22 @@ UnitExpr uExpr() :
 {
     firstUnitTerm = uTerm()
     {
-	unitExpr.add(firstUnitTerm);
+	unitExpr.addUnitTerm(firstUnitTerm);
     }
     (
      <DIVIDE> unitTerm = uTerm()
 	{
-	    unitExpr.add(unitTerm.invert());
+	    unitExpr.addUnitTerm(unitTerm.invert());
 	}
      |
      <MULTIPLY> unitTerm = uTerm()
 	{
-	    unitExpr.add(unitTerm);
+	    unitExpr.addUnitTerm(unitTerm);
 	}
      |
      unitTerm = uTerm()
 	{
-	    unitExpr.add(unitTerm);
+	    unitExpr.addUnitTerm(unitTerm);
 	}
      )*
 	{

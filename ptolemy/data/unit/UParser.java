@@ -88,7 +88,7 @@ public class UParser implements UParserConstants {
 
     UnitExpr unitExpr = new UnitExpr();
     firstUnitTerm = uTerm();
-        unitExpr.add(firstUnitTerm);
+        unitExpr.addUnitTerm(firstUnitTerm);
     label_1:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -109,12 +109,12 @@ public class UParser implements UParserConstants {
       case DIVIDE:
         jj_consume_token(DIVIDE);
         unitTerm = uTerm();
-            unitExpr.add(unitTerm.invert());
+            unitExpr.addUnitTerm(unitTerm.invert());
         break;
       case MULTIPLY:
         jj_consume_token(MULTIPLY);
         unitTerm = uTerm();
-            unitExpr.add(unitTerm);
+            unitExpr.addUnitTerm(unitTerm);
         break;
       case INTEGER:
       case DOUBLE:
@@ -122,7 +122,7 @@ public class UParser implements UParserConstants {
       case PORT:
       case LPAREN:
         unitTerm = uTerm();
-            unitExpr.add(unitTerm);
+            unitExpr.addUnitTerm(unitTerm);
         break;
       default:
         jj_la1[1] = jj_gen;

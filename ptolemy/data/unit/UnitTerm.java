@@ -42,6 +42,7 @@ three types of UnitTerms; 1) a Unit, 2) a variable, or 3) a Unit Expression.
 @since Ptolemy II 3.1
 */
 public class UnitTerm implements UnitPresentation {
+
     /**
      * Construct a UnitTerm
      *
@@ -49,38 +50,16 @@ public class UnitTerm implements UnitPresentation {
     public UnitTerm() {
     }
 
+    /**
+     * @param unit
+     */
+    public UnitTerm(Unit unit) {
+        _type = _UNIT;
+        _unit = unit;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ///////////////////////// public methods //////////////////////////
-    /**
-     * Create a String that is readable by a human. Said String can also be to
-     * yield a UnitExpr that contains a UnitExpr equal to this one.
-     *
-     * @see ptolemy.data.unit.UnitPresentation#commonExpression()
-     */
-    public String commonExpression() {
-        String retv = null;
-        switch (getType()) {
-            case VARIABLE :
-                {
-                    retv = "$" + _variable;
-                    break;
-                }
-            case UNIT :
-                {
-                    retv = _unit.commonExpression();
-                    break;
-                }
-            case UNITEXPR :
-                {
-                    retv = "(" + _unitExpr.commonDesc() + ")";
-                    break;
-                }
-        }
-        if (getExponent() != 1) {
-            retv += "^" + getExponent();
-        }
-        return retv;
-    }
 
     /** Make a shallow copy of this UnitTerm. That is, the underlying Unit or
      *  UnitExpr is not copied.
@@ -96,46 +75,33 @@ public class UnitTerm implements UnitPresentation {
         return retv;
     }
 
-    public Unit eval(Bindings bindings) {
-        switch (_type) {
-            case UNIT :
-                {
-                    return _unit;
-                }
-            case VARIABLE :
-                {
-                    if (bindings == null) {
-                        return null;
-                    }
-                    return bindings.get(_variable);
-
-                }
-            case UnitTerm.UNITEXPR :
-                {
-                    return _unitExpr.eval(bindings);
-                }
-        }
-        return null;
-    }
-
     /**
-     * @param bindings
-     * @return The evaled expression.
+     * Create a String that is understandableable by a human.
+     * @see ptolemy.data.unit.UnitPresentation#descriptiveForm()
      */
-    public String getEvaledExpression(Bindings bindings) {
-        if (isUnitExpr()) {
-            return "(" + _unitExpr.getEvaledExpression(bindings) + ")";
-        } else if (isVariable()) {
-            Unit unit = bindings.get(_variable);
-            if (unit != null) {
-                return unit.toString();
-            }
-        } else if (isUnit()) {
-            if (_unit != null) {
-                return _unit.toString();
-            }
+    public String descriptiveForm() {
+        String retv = null;
+        switch (getType()) {
+            case _VARIABLE :
+                {
+                    retv = "$" + _variable;
+                    break;
+                }
+            case _UNIT :
+                {
+                    retv = _unit.descriptiveForm();
+                    break;
+                }
+            case _UNITEXPR :
+                {
+                    retv = "(" + _unitExpr.descriptiveForm() + ")";
+                    break;
+                }
         }
-        return "null";
+        if (getExponent() != 1) {
+            retv += "^" + getExponent();
+        }
+        return retv;
     }
 
     /**
@@ -183,13 +149,13 @@ public class UnitTerm implements UnitPresentation {
     public UnitTerm invert() {
         UnitTerm retv = copy();
         switch (getType()) {
-            case VARIABLE :
-            case UNIT :
+            case _VARIABLE :
+            case _UNIT :
                 {
                     retv.setExponent(-getExponent());
                     break;
                 }
-            case UNITEXPR :
+            case _UNITEXPR :
                 {
                     retv.setUnitExpr(_unitExpr.invert());
                     break;
@@ -199,15 +165,15 @@ public class UnitTerm implements UnitPresentation {
     }
 
     public boolean isUnit() {
-        return (_type == UNIT);
+        return (_type == _UNIT);
     }
 
     public boolean isUnitExpr() {
-        return (_type == UNITEXPR);
+        return (_type == _UNITEXPR);
     }
 
     public boolean isVariable() {
-        return (_type == VARIABLE);
+        return (_type == _VARIABLE);
     }
 
     /**
@@ -219,8 +185,8 @@ public class UnitTerm implements UnitPresentation {
     public UnitTerm multiplyBy(UnitTerm multiplicand)
         throws IllegalActionException {
         if (!isUnit() || !multiplicand.isUnit()) {
-            throw new IllegalActionException(
-                         "Attempt to multiply non-Unit UnitTerm");
+            throw
+            new IllegalActionException("Attempt to multiply non-Unit UnitTerm");
         }
         UnitTerm retv = new UnitTerm();
         retv.setUnit(getUnit().multiplyBy(multiplicand.getUnit()));
@@ -265,7 +231,7 @@ public class UnitTerm implements UnitPresentation {
      * @param unit The Unit.
      */
     public void setUnit(Unit unit) {
-        _type = UNIT;
+        _type = _UNIT;
         _unit = unit;
     }
 
@@ -273,7 +239,7 @@ public class UnitTerm implements UnitPresentation {
      * @param expr The Unit Expression.
      */
     public void setUnitExpr(UnitExpr expr) {
-        _type = UNITEXPR;
+        _type = _UNITEXPR;
         _unitExpr = expr;
     }
 
@@ -281,7 +247,7 @@ public class UnitTerm implements UnitPresentation {
      * @param v
      */
     public void setVariable(String v) {
-        _type = VARIABLE;
+        _type = _VARIABLE;
         _variable = v;
     }
 
@@ -293,17 +259,17 @@ public class UnitTerm implements UnitPresentation {
     public String toString() {
         String retv = null;
         switch (getType()) {
-            case VARIABLE :
+            case _VARIABLE :
                 {
                     retv = _variable;
                     break;
                 }
-            case UNIT :
+            case _UNIT :
                 {
                     retv = _unit.toString();
                     break;
                 }
-            case UNITEXPR :
+            case _UNITEXPR :
                 {
                     retv = "(" + _unitExpr.toString() + ")";
                     break;
@@ -327,9 +293,9 @@ public class UnitTerm implements UnitPresentation {
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
 
-    private static final int UNIT = 1;
-    private static final int UNITEXPR = 2;
-    private static final int VARIABLE = 3;
+    private static final int _UNIT = 1;
+    private static final int _UNITEXPR = 2;
+    private static final int _VARIABLE = 3;
 
     private int _exponent = 1;
     private int _type = -1;

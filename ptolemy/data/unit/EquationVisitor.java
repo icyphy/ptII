@@ -38,14 +38,14 @@ import ptolemy.kernel.util.IllegalActionException;
 //// EquationVisitor
 /**
 An Abstract class that specifies all the necessary aspects of visitors to a
-UnitEquation. For and example @see ExpandPortNames.
+UnitEquation.
 <p>
 The generic version of the method to visit a UnitEquation, UnitExpr, and
 UnitTerm are specified here. To do a specific kind of visit create a class
 that extnds EquationVisitor that overrides some one or more of these methods.
 These methods are specified as throwing an IllegalActionException to make it
 possible for the overridden methods in a subclass to throw
-IleegalActionException.
+IllegalActionException.
 @author Rowland R Johnson
 @version $Id$
 @since Ptolemy II 3.1
@@ -59,7 +59,7 @@ public abstract class EquationVisitor {
      * equation.
      * @param uEquation The UnitEquation to visit.
      * @return Null, can be overriden in a concrete visitor.
-     * @exception IllegalActionException Not thrown in this base class
+     * @exception IllegalActionException Not thrown in this base class.
      */
     protected Object _visitUnitEquation(UnitEquation uEquation)
         throws IllegalActionException {
@@ -71,7 +71,7 @@ public abstract class EquationVisitor {
     /** Visit a UnitExpr by visiting the UnitRerms.
      * @param unitExpr The UnitExpr to visit.
      * @return Null, can be overriden in a concrete visitor.
-     * @exception IllegalActionException Not thrown in this base class
+     * @exception IllegalActionException Not thrown in this base class.
      */
     protected Object _visitUnitExpr(UnitExpr unitExpr)
         throws IllegalActionException {
@@ -88,7 +88,7 @@ public abstract class EquationVisitor {
      * will almost certainly be overridden in a subclass.
      * @param uTerm The UnitTerm to visit.
      * @return Null, can be overriden in a concrete visitor.
-     * @exception IllegalActionException Not thrown in this base class
+     * @exception IllegalActionException Not thrown in this base class.
      */
     protected Object _visitUnitTerm(UnitTerm uTerm)
         throws IllegalActionException {

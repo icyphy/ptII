@@ -30,12 +30,19 @@ package ptolemy.data.unit;
 
 import java.util.Vector;
 
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
+
 //////////////////////////////////////////////////////////////////////////
 //// Unit
 /**
-Class used to represent a Unit.
-A Unit has the form <b>S</b>&ltE1, E2, ..., En&gt where <b>S</b> is the
+Class that contains the internal representation of a Unit.
+A Unit has the mathematical notation  <b>S</b>&ltE1, E2, ..., En&gt
+where <b>S</b> is the
 <i>scale</i> and &ltE1, E2, ..., En&gt is the <i>type</i> of the Unit.
+<p>
+This class also contains methods for operating on Units, such as multiply,
+divide, etc.
 @author Rowland R Johnson
 @version $Id$
 @since Ptolemy II 3.1
@@ -50,7 +57,7 @@ public class Unit implements UnitPresentation {
         for (int i = 0; i < UnitLibrary.getNumCategories(); i++) {
             _type[i] = 0;
         }
-        _labels.add("noName" + _noLabelCounter++);
+        _labels.add("noLabel" + _noLabelCounter++);
     }
 
     /** Create a Unit from a BaseUnit.
@@ -73,49 +80,79 @@ public class Unit implements UnitPresentation {
         setPrimaryLabel(name);
     }
 
+    /** Make a copy of this Unit.
+     * @return A new Unit.
+     */
+    public Unit copy() {
+        Unit retv = new Unit();
+        retv._setLabels((Vector) getLabels().clone());
+        int newExponents[] = retv.getType();
+        for (int i = 0; i < UnitLibrary.getNumCategories(); i++) {
+            newExponents[i] = _type[i];
+        }
+        retv.setScale(getScale());
+        return retv;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** The expression of the Unit that is commonly used by humans.
      * For example, the unit 4.1868E7&lt2, 1, -3, 0, 0&gt will produce the
      * common expression "calorie second^-1".
-     * @see ptolemy.data.unit.UnitPresentation#commonExpression()
+     * @see ptolemy.data.unit.UnitPresentation#descriptiveForm()
      */
-    public String commonExpression() {
+    public String descriptiveForm() {
         String retv = null;
         Unit unit = UnitLibrary.getUnit(this);
         if (unit != null) {
             return unit.getPrimaryLabel();
         }
-        // Try some alternates of the form xx/yy
-        // First see if it is simply an invert
-        Unit invert = UnitLibrary.getUnit(invert());
-        if (invert != null)
-            return invert.getPrimaryLabel() + "^-1";
-        // Second see if this is of the form numerator/denominator
-        Vector libraryUnits = UnitLibrary.getLibrary();
-        for (int i = 0; i < libraryUnits.size(); i++) {
-            Unit factor = (Unit) (libraryUnits.elementAt(i));
-            Unit numerator = this.multiplyBy(factor);
-            Unit xx = UnitLibrary.getUnit(numerator);
-            if (xx != null) {
-                if (xx != UnitLibrary.Identity)
-                    return xx.getPrimaryLabel()
-                        + " "
-                        + factor.getPrimaryLabel()
-                        + "^-1";
-                else
-                    return factor.getPrimaryLabel() + "^-1";
+        UnitExpr factorization = factor();
+        if (factorization != null) {
+            Vector numerator = new Vector();
+            Vector denominator = new Vector();
+            Vector uTerms = factorization.getUTerms();
+            for (int i = 0; i < uTerms.size(); i++) {
+                UnitTerm uterm = (UnitTerm) (uTerms.elementAt(i));
+                if (uterm.getExponent() < 0) {
+                    denominator.add(uterm.invert());
+                } else if (uterm.getExponent() > 0) {
+                    numerator.add(uterm);
+                }
             }
+            try {
+                if (numerator.size() == 0) {
+                    retv = "1";
+                } else {
+                    retv =
+                        ((UnitTerm) (numerator.elementAt(0)))
+                            .getUnit()
+                            .getPrimaryLabel();
+
+                    for (int i = 1; i < numerator.size(); i++) {
+                        retv += " "
+                            + ((UnitTerm) (numerator.elementAt(i)))
+                                .getUnit()
+                                .getPrimaryLabel();
+                    }
+                }
+                if (denominator.size() > 0) {
+                    retv += "/";
+                    for (int i = 0; i < denominator.size(); i++) {
+                        retv += " "
+                            + ((UnitTerm) (denominator.elementAt(i)))
+                                .getUnit()
+                                .getPrimaryLabel();
+                    }
+                }
+            } catch (IllegalActionException ex) {
+                KernelException.stackTraceToString(ex);
+            }
+            return retv;
         }
-        for (int i = 0; i < libraryUnits.size(); i++) {
-            Unit factor = (Unit) (libraryUnits.elementAt(i));
-            Unit remainder = this.divideBy(factor);
-            Unit xx = UnitLibrary.getUnit(remainder);
-            if (xx != null && xx != UnitLibrary.Identity)
-                return factor.getPrimaryLabel() + " " + xx.getPrimaryLabel();
-        }
-        if (_scaleToBaseUnit == 1.0) {
+
+        if (_scale == 1.0) {
             int numCats = _type.length;
             String desc = "";
             for (int i = 0; i < numCats; i++) {
@@ -134,27 +171,13 @@ public class Unit implements UnitPresentation {
             return desc.substring(1);
         }
         // End up here if nothing works, so just return the formal description
-        System.out.println("Unit.commonDesc had to use " + toString());
+        System.out.println("Unit.commonExpression had to use " + toString());
         return toString();
-    }
-
-    /** Make a copy of this Unit.
-     * @return A new Unit.
-     */
-    public Unit copy() {
-        Unit retv = new Unit();
-        retv.setLabels(getLabels());
-        int newExponents[] = retv.getType();
-        for (int i = 0; i < UnitLibrary.getNumCategories(); i++) {
-            newExponents[i] = _type[i];
-        }
-        retv.setScale(getScale());
-        return retv;
     }
 
     /** Divide this Unit by the argument.
      * @param divisor The divisor unit.
-     * @return This Unit divided by the argument.
+     * @return This Unit divided by the divisor.
      */
     public Unit divideBy(Unit divisor) {
         Unit retv = copy();
@@ -179,10 +202,63 @@ public class Unit implements UnitPresentation {
                 return false;
             }
         }
-        if (_scaleToBaseUnit != otherUnit.getScale()) {
+        if (_scale != otherUnit.getScale()) {
             return false;
         }
         return true;
+    }
+
+    /** Factor a Unit into a UnitExpr that has UnitTerms that are in the
+     * Library. In general, factorization is a <i>lengthy</i> process, and this
+     * method is not a complete factorization algorithm. It only tries some of
+     * the more likely combinations.
+     * @return UnitExpr that is equivalent to to the Unit.
+     */
+    public UnitExpr factor() {
+        Vector uTerms = new Vector();
+        // First see if it is simply an invert
+        Unit invert = UnitLibrary.getUnit(invert());
+        if (invert != null) {
+            UnitExpr retv = new UnitExpr();
+            UnitTerm uTerm = new UnitTerm(invert);
+            uTerm.setExponent(-1);
+            retv.addUnitTerm(uTerm);
+            return retv;
+        }
+        // Second see if this is of the form numerator/denominator
+        Vector libraryUnits = UnitLibrary.getLibrary();
+        for (int i = 0; i < libraryUnits.size(); i++) {
+            Unit factor = (Unit) (libraryUnits.elementAt(i));
+            Unit numerator = this.multiplyBy(factor);
+            Unit xx = UnitLibrary.getUnit(numerator);
+            if (xx != null) {
+                UnitExpr retv = new UnitExpr();
+                if (xx != UnitLibrary.Identity) {
+                    UnitTerm uTerm1 = new UnitTerm(xx);
+                    retv.addUnitTerm(uTerm1);
+                }
+                UnitTerm uTerm2 = new UnitTerm(factor);
+                uTerm2.setExponent(-1);
+                retv.addUnitTerm(uTerm2);
+                return retv;
+            }
+        }
+
+        for (int i = 0; i < libraryUnits.size(); i++) {
+            Unit factor = (Unit) (libraryUnits.elementAt(i));
+            Unit remainder = this.divideBy(factor);
+            Unit xx = UnitLibrary.getUnit(remainder);
+            if (xx != null && xx != UnitLibrary.Identity) {
+                UnitExpr retv = new UnitExpr();
+                UnitTerm uTerm = new UnitTerm(factor);
+                retv.addUnitTerm(uTerm);
+                uTerm = new UnitTerm(xx);
+                retv.addUnitTerm(uTerm);
+                return retv;
+            }
+
+        }
+        return null;
     }
 
     /** Get the labels for a Unit.
@@ -222,7 +298,7 @@ public class Unit implements UnitPresentation {
      * @return Scale.
      */
     public double getScale() {
-        return _scaleToBaseUnit;
+        return _scale;
     }
 
     /** Get the type (represented as a int array) of this Unit.
@@ -232,7 +308,7 @@ public class Unit implements UnitPresentation {
         return _type;
     }
 
-    /** Return true if the Unit has the same type as the argument.
+    /** Return true if the Unit has the same type as another Unit.
      * @param otherUnit
      * @return True if the Unit has the same type as the argument.
      */
@@ -305,7 +381,7 @@ public class Unit implements UnitPresentation {
      * @param d The scale.
      */
     public void setScale(double d) {
-        _scaleToBaseUnit = d;
+        _scale = d;
     }
 
     /** Set the type.
@@ -319,8 +395,7 @@ public class Unit implements UnitPresentation {
      * @see java.lang.Object#toString()
      */
     public String toString() {
-        String retv =
-            "Unit:(" + getLabelsString() + ") " + _scaleToBaseUnit + "*<";
+        String retv = "Unit:(" + getLabelsString() + ") " + _scale + "*<";
         retv += _type[0];
         for (int i = 1; i < UnitLibrary.getNumCategories(); i++) {
             retv += ", " + _type[i];
@@ -330,8 +405,12 @@ public class Unit implements UnitPresentation {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-    private void setLabels(Vector labels) {
+    ////                         protected methods                   ////
+
+    /** Set the labels of the Unit.
+     * @param labels The labels.
+     */
+    protected void _setLabels(Vector labels) {
         _labels = labels;
     }
 
@@ -339,6 +418,6 @@ public class Unit implements UnitPresentation {
     ////                         private variables                 ////
     Vector _labels = new Vector();
     private static int _noLabelCounter = 0;
-    private double _scaleToBaseUnit = 1.0;
+    private double _scale = 1.0;
     int _type[];
 }

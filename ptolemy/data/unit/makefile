@@ -55,6 +55,7 @@ JSRCS = \
 	Solver.java \
 	Unit.java \
 	UnitCategory.java \
+	UnitConstraint.java \
 	UnitConstraints.java \
 	UnitEquation.java \
 	UnitExpr.java \

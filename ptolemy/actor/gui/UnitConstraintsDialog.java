@@ -96,11 +96,12 @@ public class UnitConstraintsDialog
         UnitAttribute _unitConstraints =
             (UnitAttribute) target.getAttribute("_unitConstraints");
         if (_unitConstraints != null) {
-            Vector _constraintExpressions = _unitConstraints.getUnitEquations();
+            Vector _constraintExpressions =
+                _unitConstraints.getUnitConstraints().getConstraints();
             for (int i = 0; i < _constraintExpressions.size(); i++) {
                 UnitEquation uEq =
                     (UnitEquation) (_constraintExpressions.get(i));
-                String commonDesc = uEq.commonExpression();
+                String commonDesc = uEq.descriptiveForm();
                 System.out.println("_constraint " + commonDesc);
                 _constraintExpression.add(commonDesc);
             }

@@ -59,6 +59,7 @@ public class UnitLibrary {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
+    /* The Identity Unit, i.e. 1.0*<0, 0, ..., 0> */
     public static Unit Identity;
 
     ///////////////////////////////////////////////////////////////////
@@ -202,19 +203,20 @@ public class UnitLibrary {
         try {
             NamedObj container = new NamedObj();
             momlParser.setContext(container);
-            URL inURL = MoMLApplication.specToURL(
-                    "ptolemy/data/unit/SI.xml");
-            // Strangely, the XmlParser does not want as base the       
-            // directory containing the file, but rather the            
-            // file itself.                                             
+            URL inURL = MoMLApplication.specToURL("ptolemy/data/unit/SI.xml");
+            // Strangely, the XmlParser does not want as base the
+            // directory containing the file, but rather the
+            // file itself.
             URL base = inURL;
 
             momlParser.parse(base, inURL);
 
             us = (UnitSystem) (container.getAttribute("SI"));
         } catch (Throwable throwable) {
-            throw new InternalErrorException(null, throwable,
-                    "Failed to initialize statics in UnitLibrary");
+            throw new InternalErrorException(
+                null,
+                throwable,
+                "Failed to initialize statics in UnitLibrary");
         }
         // Initialize the Library.
         _unitsLibrary = new Vector();
@@ -249,8 +251,7 @@ public class UnitLibrary {
                 String expr = pair.getUExpr();
                 try {
                     UnitExpr uExpr = _parser.parseUnitExpr(expr);
-                    uExpr.reduce();
-                    Unit unit = uExpr.eval(null);
+                    Unit unit = uExpr.reduce().getSingleUnit();
                     if (unit != null) {
                         unit.setPrimaryLabel(pair.getName());
                         iter.remove();

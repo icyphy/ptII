@@ -45,7 +45,7 @@ import ptolemy.util.StringUtilities;
 //// UnitAttribute
 /**
 This class is used to implement the Unit Attribute. A UnitsAttribute is either
-a UnitExpr, or a vector of UnitEquations.
+a UnitExpr, or a vector of UnitConstraints.
 
 @author Rowland R Johnson
 @version $Id$
@@ -91,13 +91,6 @@ public class UnitAttribute extends Attribute implements Settable {
         }
     }
 
-    /** True if this UnitAttribute are Unit Equations.
-     * @return True if this UnitAttribute are Unit Equations.
-     */
-    public boolean areEquations() {
-        return (_type == EQUATION);
-    }
-
     /** Write a MoML description of the UnitsAttribute.
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
@@ -128,41 +121,29 @@ public class UnitAttribute extends Attribute implements Settable {
         output.write(_getIndentPrefix(depth) + "</" + _elementName + ">\n");
     }
 
-    /** Get the Common Description of the Unit Equations.
-     * @return The Common Description of the UnitEquations.
-     */
-    public String getCommonDescOfUnitEquations() {
-        String retv = "";
-        if (_unitEquations.size() > 0) {
-            retv = ((UnitEquation) (_unitEquations.elementAt(0)))
-                        .commonExpression();
-        }
-        for (int i = 1; i < _unitEquations.size(); i++) {
-            retv += ";"
-                + ((UnitEquation) (_unitEquations.elementAt(i)))
-                       .commonExpression();
-        }
-        return retv;
-    }
-
-    /** Get the expression for this attribute.
-     * @return a String that represents the expression.
+    /** Get the descriptive form of this attribute.
+     * @return a String that represents the descriptive form.
      * @see ptolemy.kernel.util.Settable#getExpression()
      */
     public String getExpression() {
-        if (isExpression()) {
-            return getUnitExpr().commonDesc();
-        } else if (areEquations()) {
-            return getCommonDescOfUnitEquations();
+        switch (_type) {
+            case _EXPRESSION :
+                {
+                    return getUnitExpr().descriptiveForm();
+                }
+            case _CONSTRAINTS :
+                {
+                    return getUnitConstraints().descriptiveForm();
+                }
         }
         return null;
     }
 
-    /** Get the UnitEquations.
-     * @return The UnitEquations.
+    /** Get the UnitConstraints.
+     * @return The UnitConstraints.
      */
-    public Vector getUnitEquations() {
-        return _unitEquations;
+    public UnitConstraints getUnitConstraints() {
+        return _unitConstraints;
     }
 
     /** Get the Unit Expression.
@@ -181,13 +162,6 @@ public class UnitAttribute extends Attribute implements Settable {
         return _visibility;
     }
 
-    /** True if this UnitsAttribute is a Unit Expression.
-     * @return True if this UnitsAttribute is a UnitExpr.
-     */
-    public boolean isExpression() {
-        return (_type == EXPRESSION);
-    }
-
     /** Remove a listener from the list of listeners that is
      *  notified when the value of this attribute changes.  If no such listener
      *  exists, do nothing.
@@ -199,8 +173,11 @@ public class UnitAttribute extends Attribute implements Settable {
         }
     }
 
-    /** Set the expression.
-     * @param expression
+    /** Set the expression. This method takes the descriptive form and
+     * determines the internal form (by parsing the descriptive form) and stores
+     * it.
+     * @param expression A String that is the descriptive form of either a Unit
+     * or a UnitEquation.
      * @see ptolemy.kernel.util.Settable#setExpression(java.lang.String)
      */
     public void setExpression(String expression)
@@ -209,7 +186,12 @@ public class UnitAttribute extends Attribute implements Settable {
             if (getName().equals("_unitConstraints")) {
                 Vector uEquations =
                     UnitLibrary.getParser().parseEquations(expression);
-                setUnitEquations(uEquations);
+                UnitConstraints uConstraints = new UnitConstraints();
+                for (int i = 0; i < uEquations.size(); i++) {
+                    uConstraints.addConstraint(
+                        (UnitEquation) (uEquations.elementAt(i)));
+                }
+                setUnitConstraints(uConstraints);
             }
             if (getName().equals("_units")) {
                 UnitExpr uExpr;
@@ -224,9 +206,9 @@ public class UnitAttribute extends Attribute implements Settable {
     /** Set the Unit Equations.
      * @param equations A Vector of UnitEquations.
      */
-    public void setUnitEquations(Vector equations) {
-        _unitEquations = equations;
-        _type = EQUATION;
+    public void setUnitConstraints(UnitConstraints constraints) {
+        _unitConstraints = constraints;
+        _type = _CONSTRAINTS;
     }
 
     /** Set the Unit Expression.
@@ -234,7 +216,7 @@ public class UnitAttribute extends Attribute implements Settable {
      */
     public void setUnitExpr(UnitExpr expr) {
         _unitExpr = expr;
-        _type = EXPRESSION;
+        _type = _EXPRESSION;
     }
 
     /** Set the visibility of this attribute.  The argument should be one
@@ -259,8 +241,8 @@ public class UnitAttribute extends Attribute implements Settable {
     // Listeners for changes in value.
     private List _valueListeners;
     private UnitExpr _unitExpr = null;
-    private Vector _unitEquations = null;
+    private UnitConstraints _unitConstraints = null;
     private int _type = -1;
-    private static final int EXPRESSION = 0;
-    private static final int EQUATION = 1;
+    private static final int _EXPRESSION = 0;
+    private static final int _CONSTRAINTS = 1;
 }

@@ -1,4 +1,4 @@
-/*
+/* A Unit equation which is a prticular type of Unit Constraint.
 
  Copyright (c) 1999-2003 The Regents of the University of California.
  All rights reserved.
@@ -32,11 +32,11 @@ package ptolemy.data.unit;
 import java.util.Vector;
 
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// UnitEquation
-/**
+/** A Unit equation is a particlar type of Unit constraint, another type being
+a Unit inequality.
 @author Rowland R Johnson
 @version $Id$
 @since Ptolemy II 3.1
@@ -52,24 +52,16 @@ public class UnitEquation extends UnitConstraint implements UnitPresentation {
         super(lhs, "=", rhs);
     }
 
-    /**
-     *
-     */
-    public UnitEquation() {
-        super("=");
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Return true if the equations are all satisfied.
-     * @param equations
-     * @param bindings
+     * @param equations The equations.
      * @return True if the equations are all satisfied.
      */
-    public static boolean areSatisfied(Vector equations, Bindings bindings) {
+    public static boolean areSatisfied(Vector equations) {
         for (int i = 0; i < equations.size(); i++) {
-            if (((UnitEquation) (equations.elementAt(i))).isSatisfied(bindings)
+            if (((UnitEquation) (equations.elementAt(i))).isSatisfied()
                 != true) {
                 return false;
             }
@@ -84,8 +76,9 @@ public class UnitEquation extends UnitConstraint implements UnitPresentation {
      * <b>
      * where each Exi is a Unit term containing only one variable, and A is a
      * Unit term containing one Unit and no variables.
+     * @return unitEquation The UnitEquation in canonical form.
      */
-    public void canonicalize() {
+    public UnitEquation canonicalize() {
         UnitExpr lhsUExpr = getLhs();
         UnitExpr rhsUExpr = getRhs();
         UnitExpr newLeftUExpr = new UnitExpr();
@@ -95,54 +88,47 @@ public class UnitEquation extends UnitConstraint implements UnitPresentation {
         for (int i = 0; i < leftUTerms.size(); i++) {
             UnitTerm uTerm = ((UnitTerm) (leftUTerms.elementAt(i)));
             if (uTerm.isUnit()) {
-                newRightUExpr.add(uTerm.invert());
+                newRightUExpr.addUnitTerm(uTerm.invert());
             } else if (uTerm.isVariable()) {
-                newLeftUExpr.add(uTerm);
+                newLeftUExpr.addUnitTerm(uTerm);
             }
         }
         Vector rightUTerms = rhsUExpr.getUTerms();
         for (int i = 0; i < rightUTerms.size(); i++) {
             UnitTerm uTerm = ((UnitTerm) (rightUTerms.elementAt(i)));
             if (uTerm.isUnit()) {
-                newRightUExpr.add(uTerm);
+                newRightUExpr.addUnitTerm(uTerm);
             } else if (uTerm.isVariable()) {
-                newLeftUExpr.add(uTerm.invert());
+                newLeftUExpr.addUnitTerm(uTerm.invert());
             }
         }
         if (newRightUExpr.getUTerms().isEmpty()) {
             UnitTerm x = new UnitTerm();
             x.setUnit(UnitLibrary.Identity);
-            newRightUExpr.add(x);
+            newRightUExpr.addUnitTerm(x);
         }
 
-        newRightUExpr.reduce();
-        setLhs(newLeftUExpr);
-        setRhs(newRightUExpr);
+        newRightUExpr = newRightUExpr.reduce();
+        return new UnitEquation(newLeftUExpr, newRightUExpr);
     }
 
+    /** Make a copy where the left and right sides are alos copied.
+     * @return The copy.
+     */
     public UnitEquation copy() {
         UnitEquation uE = new UnitEquation(getLhs().copy(), getRhs().copy());
         return uE;
     }
 
-    /**
-     * @param modelBindings
-     * @return A human readable form.
-     */
-    public String humanReadableForm(Bindings modelBindings) {
-        String retv =
-            commonExpression() + " satisfied = " + isSatisfied(modelBindings);
-        return retv;
-    }
-
     /** Return true if this equation is satisfied.
-     * @param bindings
      * @return True if this equation is satisfied.
      */
-    public boolean isSatisfied(Bindings bindings) {
+    public boolean isSatisfied() {
         Boolean retv = null;
-        Unit lhsUnit = getLhs().eval(bindings);
-        Unit rhsUnit = getRhs().eval(bindings);
+        UnitExpr lhsReduced = getLhs().reduce();
+        UnitExpr rhsReduced = getRhs().reduce();
+        Unit lhsUnit = lhsReduced.getSingleUnit();
+        Unit rhsUnit = rhsReduced.getSingleUnit();
 
         if (lhsUnit == null || rhsUnit == null) {
             return false;
@@ -154,12 +140,13 @@ public class UnitEquation extends UnitConstraint implements UnitPresentation {
         }
     }
 
+    /** Visit this Unit equation (on the way to visiting the leaves)
+     * @param visitor The visitor.
+     * @return Whatever may be returned by the visitor.
+     * @exception IllegalActionException Not thrown in this base class.
+     */
     public Object visit(EquationVisitor visitor)
         throws IllegalActionException {
         return visitor._visitUnitEquation(this);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
 }

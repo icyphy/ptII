@@ -30,13 +30,11 @@ package ptolemy.actor.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
 import java.util.Iterator;
-import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.AbstractListModel;
@@ -47,20 +45,9 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
-import diva.canvas.Figure;
-import diva.canvas.interactor.SelectionEvent;
-import diva.canvas.interactor.SelectionListener;
-import diva.canvas.interactor.SelectionModel;
-import diva.graph.GraphController;
-import diva.graph.GraphPane;
-import diva.graph.GraphUtilities;
-import diva.graph.JGraph;
-import diva.graph.modular.Graph;
 
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.unit.Solver;
@@ -69,12 +56,22 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.BasicGraphFrame;
+import diva.canvas.Figure;
+import diva.canvas.interactor.SelectionEvent;
+import diva.canvas.interactor.SelectionListener;
+import diva.canvas.interactor.SelectionModel;
+import diva.graph.GraphController;
+import diva.graph.GraphPane;
+import diva.graph.GraphUtilities;
+import diva.graph.JGraph;
 
 //////////////////////////////////////////////////////////////////////////
 //// UnitSolverDialog
@@ -187,28 +184,95 @@ public class UnitSolverDialog
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    // This method gets invoked as a result of a GUI action. Presently, it
-    // handles button presses. It has to be a public, not protected, or private,
-    // since it is inherited from ActionListener where it is public. Since it
-    // isn't meant to be invoked by the developer there is no javadoc.
+    /* (non-Javadoc)
+     * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
+     */
     public void actionPerformed(ActionEvent aEvent) {
         String command = aEvent.getActionCommand();
         if (aEvent.getSource() == _runMinimalSpanSolverButton) {
             _uConstraints = new UnitConstraints(_model, _entities, _relations);
-            _solutions = _uConstraints.minimalSpanSolution();
+            try {
+                _solutions = _uConstraints.minimalSpanSolutions();
+            } catch (IllegalActionException e) {
+                MessageHandler.error("Minimal Span Solver failed: ", e);
+                return;
+            }
             _solutionsListModel.setSolutions(_solutions);
             _solutionsList.setModel(_solutionsListModel);
+
         } else if (aEvent.getSource() == _runFullSolverButton) {
             _solutionsList.clearSelection();
             _uConstraints = new UnitConstraints(_model, _entities, _relations);
-            Solver solution = _uConstraints.completeSolve();
-            _fullSolutionResult.setText(solution.getStateDesc());
+            try {
+                Solver solution = _uConstraints.completeSolve();
+                _fullSolutionResult.setText(solution.getStateDesc());
+            } catch (IllegalActionException e) {
+                MessageHandler.error("Full Solver failed: ", e);
+                return;
+            }
+
         } else if (aEvent.getSource() == _setToSelected) {
             _setSelectedMembers();
         } else if (aEvent.getSource() == _showMembers) {
             _showMembers();
         } else {
             super.actionPerformed(aEvent);
+        }
+    }
+
+    /** Remove all the annotations from the graph.
+     * Actors, their ports, and relations are inspected to see if they either a
+     * _color and/or an _explanation attribute. If so, then the attribute is
+     * removed via a MoMl changeRequest.
+     */
+    public void deAnnotateGraph() {
+        StringBuffer moml = new StringBuffer();
+        Iterator entities = _model.entityList(ComponentEntity.class).iterator();
+        while (entities.hasNext()) {
+            ComponentEntity entity = (ComponentEntity) (entities.next());
+            String entityDeletes = _deletesIfNecessary(entity);
+            moml.append("<entity name=\"" + entity.getName() + "\">");
+            if (entityDeletes != null)
+                moml.append(entityDeletes);
+            Iterator ports = entity.portList().iterator();
+            while (ports.hasNext()) {
+                Port port = (Port) (ports.next());
+                String portDeletes = _deletesIfNecessary(port);
+                if (portDeletes != null) {
+                    moml.append(
+                        "<port name=\""
+                            + port.getName()
+                            + "\">"
+                            + portDeletes
+                            + "</port>");
+                }
+            }
+            moml.append("</entity>");
+        }
+
+        Iterator relations = _model.relationList().iterator();
+        while (relations.hasNext()) {
+            Relation relation = (Relation) (relations.next());
+            String relationDeletes = _deletesIfNecessary(relation);
+            if (relationDeletes != null) {
+                moml.append(
+                    "<relation name=\""
+                        + relation.getName()
+                        + "\">"
+                        + relationDeletes
+                        + "\"/></relation>");
+            }
+        }
+
+        if (moml.length() > 0) {
+            String momlUpdate = "<group>" + moml.toString() + "</group>";
+            MoMLChangeRequest request =
+                new MoMLChangeRequest(this, _model, momlUpdate);
+            request.setUndoable(false);
+            if (_debug) {
+                System.out.println("Solver.annotateGraph moml " + momlUpdate);
+            }
+            _model.requestChange(request);
         }
     }
 
@@ -258,6 +322,8 @@ public class UnitSolverDialog
 
     protected void _cancel() {
         _selectionModel.removeSelectionListener(this);
+        deAnnotateGraph();
+
         super._cancel();
     }
 
@@ -279,6 +345,20 @@ public class UnitSolverDialog
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    private String _deletesIfNecessary(NamedObj obj) {
+        String retv = null;
+        Attribute color = obj.getAttribute("_color");
+        Attribute explanation = obj.getAttribute("_explanation");
+        if (color != null && explanation != null) {
+            retv =
+                "<deleteProperty name=\"_color\"/>"
+                    + "<deleteProperty name=\"_explanation\"/>";
+        } else if (color != null && explanation == null) {
+        } else if (color == null && explanation != null) {
+        }
+        return retv;
+    }
 
     /** Create a Vector of selected odes in a Tableau. This method really
      *  belongs elsewhere and will be moved there at some point.
@@ -368,86 +448,6 @@ public class UnitSolverDialog
                     }
                 }
             }
-        }
-    }
-
-    private void _xshowMembers() {
-        String color = null;
-        Vector entities = new Vector(_model.entityList(ComponentEntity.class));
-        Vector relations = new Vector(_model.relationList());
-        StringBuffer moml = new StringBuffer();
-        for (int i = 0; i < entities.size(); i++) {
-            ComponentEntity entity = (ComponentEntity) (entities.elementAt(i));
-            Iterator ports = entity.portList().iterator();
-            if (_entities.contains(entity)) {
-                moml.append(
-                    "<entity name=\""
-                        + entity.getName()
-                        + "\">"
-                        + "<property name=\"_color\" "
-                        + "class = \"ptolemy.kernel.util.StringAttribute\" "
-                        + "value = \"blue\"/>");
-                while (ports.hasNext()) {
-                    Port port = (Port) (ports.next());
-                    moml.append(
-                        "<port name=\""
-                            + port.getName()
-                            + "\">"
-                            + "<property name=\"_color\" "
-                            + "class = \"ptolemy.kernel.util.StringAttribute\" "
-                            + "value = \"blue\"/></port>");
-                }
-                moml.append("</entity>");
-            } else {
-                StringAttribute colorAttribute;
-                moml.append("<entity name=\"" + entity.getName() + "\">");
-                colorAttribute =
-                    (StringAttribute) entity.getAttribute("_color");
-                if (colorAttribute != null) {
-                    moml.append("<deleteProperty name=\"_color\"/>");
-                }
-                while (ports.hasNext()) {
-                    Port port = (Port) (ports.next());
-                    colorAttribute =
-                        (StringAttribute) port.getAttribute("_color");
-                    if (colorAttribute != null) {
-                        moml.append(
-                            "<port name=\""
-                                + port.getName()
-                                + "\">"
-                                + "<deleteProperty name=\"_color\"/></port>");
-                    }
-                }
-                moml.append("</entity>");
-            }
-        }
-        for (int i = 0; i < relations.size(); i++) {
-            Relation relation = (Relation) (relations.elementAt(i));
-            if (_relations.contains(relation)) {
-                color = "blue";
-            } else {
-                color = "black";
-            }
-            moml.append(
-                "<relation name=\""
-                    + relation.getName()
-                    + "\" class=\"ptolemy.actor.TypedIORelation\">"
-                    + "<property name=\"_color\" "
-                    + "class = \"ptolemy.kernel.util.StringAttribute\" "
-                    + "value = \""
-                    + color
-                    + "\"/>"
-                    + "</relation>");
-        }
-        if (moml.length() > 0) {
-            String momlUpdate = "<group>" + moml.toString() + "</group>";
-            MoMLChangeRequest request =
-                new MoMLChangeRequest(this, _model, momlUpdate);
-            request.setUndoable(false);
-            if (_debug) {
-                System.out.println("Show Members " + momlUpdate);
-            }
-            _model.requestChange(request);
         }
     }
 

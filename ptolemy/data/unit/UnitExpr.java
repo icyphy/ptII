@@ -1,4 +1,4 @@
-/*
+/* UnitExpr that will contain UnitTerms.
 
  Copyright (c) 1999-2003 The Regents of the University of California.
  All rights reserved.
@@ -32,50 +32,45 @@ import java.util.Iterator;
 import java.util.Vector;
 import ptolemy.actor.IOPort;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.KernelException;
 
 //////////////////////////////////////////////////////////////////////////
 //// UnitExpr
-/**
+/** A UnitExpr contains UnitTerms.
 @author Rowland R Johnson
 @version $Id$
 @since Ptolemy II 3.1
 */
-public class UnitExpr {
+public class UnitExpr implements UnitPresentation {
 
-    /**
+    /** Construct an empty (i.e. no UnitTerms) UnitExpr.
      *
      */
     public UnitExpr() {
     }
 
-    public UnitExpr(IOPort actorPort) {
+    /** Construct a UnitTerm from an IOPort.
+     * The constructed UnitExpr will have one UnitTerm and it will be a variable
+     * with the name being that of the port.
+     * @param ioPort The IOPort.
+     */
+    public UnitExpr(IOPort ioPort) {
         UnitTerm uTerm = new UnitTerm();
-        uTerm.setVariable(actorPort.getFullName());
-        Vector uTerms = new Vector();
-        uTerms.add(uTerm);
-        setUTerms(uTerms);
+        uTerm.setVariable(
+            ioPort.getContainer().getName() + "." + ioPort.getName());
+        _uTerms.add(uTerm);
     }
+
     ///////////////////////////////////////////////////////////////////
     //// public methods ////
 
-    /**
-     * @param u
+    /** Add a UnitTerm to the expression.
+     * @param uTerm The UnitTerm.
      */
-    public void add(UnitTerm u) {
-        _uTerms.add(u);
+    public void addUnitTerm(UnitTerm uTerm) {
+        _uTerms.add(uTerm);
     }
 
-    public String commonDesc() {
-        Iterator iter = _uTerms.iterator();
-        String retv = ((UnitTerm) (iter.next())).commonExpression();
-        while (iter.hasNext()) {
-            retv += " " + ((UnitTerm) (iter.next())).commonExpression();
-        }
-        return retv;
-    }
-
-    /** Create a shallow copy of this UnitExpr.
+    /** Create a copy of this UnitExpr.
      * @return The new UnitExpr.
      */
     public UnitExpr copy() {
@@ -89,58 +84,41 @@ public class UnitExpr {
         return retv;
     }
 
-    public Unit eval(Bindings bindings) {
+    /** The expression of the UnitExpr that is commonly used by humans.
+    * @see ptolemy.data.unit.UnitPresentation#descriptiveForm()
+    */
+    public String descriptiveForm() {
         Iterator iter = _uTerms.iterator();
-        Unit retv = new Unit();
+        String retv = ((UnitTerm) (iter.next())).descriptiveForm();
         while (iter.hasNext()) {
-            UnitTerm term = (UnitTerm) (iter.next());
-            Unit unit = term.eval(bindings);
-            if (unit == null) {
-                return null;
-            }
-            retv = retv.multiplyBy(unit);
+            retv += " " + ((UnitTerm) (iter.next())).descriptiveForm();
         }
         return retv;
     }
 
-    public void flatten() {
-        if (isFlat()) {
-            return;
-        }
-        Vector newUTerms = new Vector();
-        for (int i = 0; i < _uTerms.size(); i++) {
-            UnitTerm unitTerm = (UnitTerm) (_uTerms.elementAt(i));
-            if (unitTerm.isUnitExpr()) {
-                UnitExpr uExpr = null;
-                try {
-                    uExpr = (UnitExpr) (unitTerm.getUnitExpr());
-                } catch (IllegalActionException e) {
-                    KernelException.stackTraceToString(e);
-                }
-                uExpr.flatten();
-                newUTerms.addAll(uExpr.getUTerms());
-            } else {
-                newUTerms.add(unitTerm);
+    /** If this UnitExpr has one term and it is a Unit then return that Unit.
+     * @return The Unit if there is a single UnitTerm, and it is a Unit, null
+     * otherwise.
+     */
+    public Unit getSingleUnit() {
+        if (_uTerms.size() == 1 && ((UnitTerm) _uTerms.elementAt(0)).isUnit())
+            try {
+                return ((UnitTerm) _uTerms.elementAt(0)).getUnit();
+            } catch (IllegalActionException e) {
             }
-        }
-        setFlat(true);
-        setUTerms(newUTerms);
+        return null;
     }
 
-    public String getEvaledExpression(Bindings bindings) {
-        Iterator iter = _uTerms.iterator();
-        String retv = ((UnitTerm) (iter.next())).getEvaledExpression(bindings);
-        while (iter.hasNext()) {
-            retv += " "
-                + ((UnitTerm) (iter.next())).getEvaledExpression(bindings);
-        }
-        return retv;
-    }
-
+    /** Get the UnitTerms in this UnitExpr.
+    * @return The UnitTerms.
+    */
     public Vector getUTerms() {
         return _uTerms;
     }
 
+    /** Create a new UnitExpr that is the inverse of this UnitExpr.
+     * @return The invers of this UnitExpr.
+     */
     public UnitExpr invert() {
         UnitExpr retv = new UnitExpr();
         Vector myUTerms = new Vector();
@@ -151,87 +129,86 @@ public class UnitExpr {
         return retv;
     }
 
-    public boolean isFlat() {
-        return _isFlat;
-    }
-
-    /**
-     * Return true if this UnitExpr contains just one UnitTerm, and it is a
-     * variable.
-     *
-     * @return True if there is one UnitTerm and it is a variable.
-     */
-    public boolean isSingleUnit() {
-        if (_uTerms.size() != 1) {
-            return false;
-        }
-        UnitTerm unitTerm = (UnitTerm) (_uTerms.elementAt(0));
-        return unitTerm.isUnit();
-    }
-
-    public boolean isSingleVariable() {
-        if (_uTerms.size() != 1) {
-            return false;
-        }
-        UnitTerm unitTerm = (UnitTerm) (_uTerms.elementAt(0));
-        return unitTerm.isVariable();
-    }
-
     /**
      * Reduce a UnitExpr to produce a UnitExpr that has at most one Unit. Any
      * embedded UnitExpr is first transformed so that all embedded UnitExprs
      * are replaced with Units. This intermediate result is a mixture of Units
      * and variables. The Units are then replaced with their product. The
      * result is a single Unit and all of the original variables.
+     * @return The reduced UnitExpr.
      */
-    public void reduce() {
-        flatten();
-        boolean reductionHasHappened = false;
-        Unit unit = new Unit();
-        UnitTerm constantUnitTerm = new UnitTerm();
-        constantUnitTerm.setUnit(unit);
+    public UnitExpr reduce() {
+        _flatten();
+        Unit reductionUnit = UnitLibrary.Identity.copy();
         Vector newUTerms = new Vector();
         for (int i = 0; i < _uTerms.size(); i++) {
             UnitTerm unitTerm = (UnitTerm) (_uTerms.elementAt(i));
             if (unitTerm.isUnit()) {
-                UnitTerm x = unitTerm.reduce();
                 try {
-                    constantUnitTerm = constantUnitTerm.multiplyBy(x);
+                    reductionUnit =
+                        reductionUnit.multiplyBy(unitTerm.getUnit());
                 } catch (IllegalActionException e) {
-                    KernelException.stackTraceToString(e);
+                    // OK to ignore since we know that unitTerm has to be a Unit
+                    // and the only reason that unitTerm.getUnit() would throw
+                    // an exception would be if it wasn't.
                 }
-                reductionHasHappened = true;
             } else {
                 newUTerms.add(unitTerm);
             }
         }
-        if (reductionHasHappened) {
-            newUTerms.add(constantUnitTerm);
-        }
-        setUTerms(newUTerms);
+        newUTerms.add(new UnitTerm(reductionUnit));
+        UnitExpr retv = new UnitExpr();
+        retv.setUTerms(newUTerms);
+        return retv;
     }
 
-    public void setFlat(boolean b) {
-        _isFlat = b;
-    }
-
-    public void setUTerms(Vector vector) {
-        _uTerms = vector;
+    public void setUTerms(Vector uTerms) {
+        _uTerms = uTerms;
     }
 
     public String toString() {
-        String retv = "UnitExpr(" + _uTerms.size() + "):[";
-        Iterator iter = _uTerms.iterator();
-        retv += ((UnitTerm) (iter.next())).toString();
-        while (iter.hasNext()) {
-            retv += " " + ((UnitTerm) (iter.next())).toString();
+        String retv = "UnitExpr:[";
+        if (_uTerms.size() > 0) {
+            retv += ((UnitTerm) (_uTerms.elementAt(0))).toString();
+            for (int i = 1; i < _uTerms.size(); i++) {
+                retv += " " + ((UnitTerm) (_uTerms.elementAt(i))).toString();
+            }
         }
         retv += "]";
         return retv;
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                    private methods                     ////
+    private void _flatten() {
+        if (_isFlat) {
+            return;
+        }
+        Vector newUTerms = new Vector();
+        for (int i = 0; i < _uTerms.size(); i++) {
+            UnitTerm unitTerm = (UnitTerm) (_uTerms.elementAt(i));
+            if (unitTerm.isUnitExpr()) {
+                UnitExpr uExpr = null;
+                try {
+                    uExpr = (UnitExpr) (unitTerm.getUnitExpr());
+                } catch (IllegalActionException e) {
+                    // OK to ignore since we know that unitTerm has to be a
+                    // UnitExpr and the only reason that unitTerm.getUnitExpr()
+                    // would throw an exception would be if it wasn't.
+                }
+                uExpr._flatten();
+                newUTerms.addAll(uExpr.getUTerms());
+            } else {
+                newUTerms.add(unitTerm);
+            }
+        }
+        _isFlat = true;
+        setUTerms(newUTerms);
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                    private variables                      ////
     boolean _isFlat = false;
     Vector _uTerms = new Vector();
+
 }

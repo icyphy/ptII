@@ -1,4 +1,4 @@
-/*
+/* An abstraction for Unit constraints.
 
  Copyright (c) 1999-2003 The Regents of the University of California.
  All rights reserved.
@@ -21,8 +21,8 @@
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
-										PT_COPYRIGHT_VERSION_3
-										COPYRIGHTENDKEY
+                                    PT_COPYRIGHT_VERSION_3
+                                    COPYRIGHTENDKEY
 @Pt.ProposedRating Red (rowland@eecs.berkeley.edu)
 @Pt.AcceptedRating Red (rowland@eecs.berkeley.edu)
 */
@@ -31,6 +31,13 @@ package ptolemy.data.unit;
 
 import ptolemy.kernel.util.NamedObj;
 
+//////////////////////////////////////////////////////////////////////////
+//// UnitConstraint
+/**
+@author Rowland R Johnson
+@version $Id$
+@since Ptolemy II 3.1
+*/
 public abstract class UnitConstraint {
 
     /**
@@ -47,42 +54,27 @@ public abstract class UnitConstraint {
      * @param rhs
      */
     public UnitConstraint(UnitExpr lhs, String operator, UnitExpr rhs) {
-    	_lhs = lhs;
-    	_operator = operator;
-    	_rhs = rhs;
+        _lhs = lhs;
+        _operator = operator;
+        _rhs = rhs;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
-	/* (non-Javadoc)
-	 * @see ptolemy.data.unit.UnitPresentation#commonDesc()
-	 */
-	public String commonExpression() {
-		return _lhs.commonDesc() + _operator + _rhs.commonDesc();
-	}
+
+    /* (non-Javadoc)
+     * @see ptolemy.data.unit.UnitPresentation#commonDesc()
+     */
+    public String descriptiveForm() {
+        return _lhs.descriptiveForm() + _operator + _rhs.descriptiveForm();
+    }
 
     /** Get the left hand side.
-	 * @return The left hand side.
-	 */
-	public UnitExpr getLhs() {
-		return _lhs;
-	}
-
-	/** Get the right hand side.
-	 * @return The right hand side.
-	 */
-	public UnitExpr getRhs() {
-		return _rhs;
-	}
-
-	/** Get the source of this equation.
-	 * @return The source of this equation.
-	 */
-	public NamedObj getSource() {
-		return _source;
-	}
-
+     * @return The left hand side.
+     */
+    public UnitExpr getLhs() {
+        return _lhs;
+    }
 
     /**
      * @return The operator.
@@ -90,41 +82,41 @@ public abstract class UnitConstraint {
     public String getOperator() {
         return _operator;
     }
-    
-	public void setLhs(UnitExpr expr) {
-		_lhs = expr;
-	}
 
-	public void setOperator(String string) {
-		_operator = string;
-	}
+    /** Get the right hand side.
+     * @return The right hand side.
+     */
+    public UnitExpr getRhs() {
+        return _rhs;
+    }
 
-	public void setRhs(UnitExpr expr) {
-		_rhs = expr;
-	}
+    /** Get the source of this equation.
+     * @return The source of this equation.
+     */
+    public NamedObj getSource() {
+        return _source;
+    }
 
-	public void setSource(NamedObj source) {
-		_source = source;
-	}
+    public void setLhs(UnitExpr expr) {
+        _lhs = expr;
+    }
 
-	public String toString() {
-		return _lhs.toString() + _operator + _rhs.toString();
-	}
+    public void setRhs(UnitExpr expr) {
+        _rhs = expr;
+    }
 
+    public void setSource(NamedObj source) {
+        _source = source;
+    }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+    public String toString() {
+        return _lhs.toString() + _operator + _rhs.toString();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-	UnitExpr _lhs, _rhs;
-	String _operator;
-	NamedObj _source = null;
+    UnitExpr _lhs, _rhs;
+    String _operator;
+    NamedObj _source = null;
 }

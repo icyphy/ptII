@@ -38,7 +38,13 @@ import ptolemy.kernel.util.KernelException;
 //////////////////////////////////////////////////////////////////////////
 //// ExpandPortNames
 /**
-Visit a UnitEquation and substitute each portname with its full portname. An
+Visit a UnitEquation and for each contained variable that represents a port
+substitute it with a variable that represents the port from
+the perspective of the model that contains the actor that contains the port.
+For example, the variable representing the value of the plus port of an actor
+named AddSubtract22 would originally have the variable label plus which would
+be substituted with AddSubtract22.plus.
+The reason for doing this is that a
 ComponentEntity will have constraints on units specified as a set of
 UnitEquations. Within each UnitEquation a variable of the form $PortName is
 used to represent the Unit value at that port. Since a CompositeEntity will
@@ -54,9 +60,10 @@ public class ExpandPortNames extends EquationVisitor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** The method that actually does the substitution.
-     * @param equation
-     * @param actor
+    /** The method is the entry point to the class.
+     * @param equation The UnitEquation to be visited.
+     * @param actor The ComponentEntity that contains ports that may be 
+     * referenced in the equation.
      */
     public void expand(UnitEquation equation, ComponentEntity actor) {
         _actorPorts = actor.portList();
@@ -71,7 +78,7 @@ public class ExpandPortNames extends EquationVisitor {
     ////                         protected methods                 ////
 
     /** The method that actually does the substitution of a variable with
-     *  the full name of the port.
+     *  the model name of the port.
      * @see ptolemy.data.unit.EquationVisitor#_visitUnitTerm(UnitTerm)
      */
     protected Object _visitUnitTerm(UnitTerm uTerm)
@@ -82,7 +89,9 @@ public class ExpandPortNames extends EquationVisitor {
             while (iter.hasNext()) {
                 IOPort actorPort = (IOPort) iter.next();
                 if (actorPort.getName().equals(_portName)) {
-                    uTerm.setVariable(actorPort.getFullName());
+                    uTerm.setVariable(
+                        actorPort.getName(
+                            actorPort.getContainer().getContainer()));
                     return null;
                 }
             }

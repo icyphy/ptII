@@ -72,7 +72,7 @@ public class Bindings {
             Iterator iter = actor.portList().iterator();
             while (iter.hasNext()) {
                 IOPort actorPort = (IOPort) iter.next();
-                String varLabel = actorPort.getFullName();
+                String varLabel = actor.getName() + "." + actorPort.getName();
                 put(varLabel, null);
             }
         }
@@ -120,7 +120,7 @@ public class Bindings {
             Unit unit = (Unit) (_VarLabel2Unit.get(varLabel));
             String unitExpr = "null";
             if (unit != null) {
-                unitExpr = unit.commonExpression();
+                unitExpr = unit.descriptiveForm();
             }
             retv.append("   " + varLabel + " = " + unitExpr + "\n");
         }
