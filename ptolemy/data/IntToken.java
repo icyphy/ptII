@@ -287,7 +287,7 @@ public class IntToken extends ScalarToken {
         }
 
         if (typeInfo == CPO.LOWER) {
-            return arg.isLessThan(this);
+            return arg.isLessThan(this).not();
         }
 
         // Argument type is lower or equal to this token.
