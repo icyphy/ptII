@@ -35,13 +35,16 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.actor.sched.Scheduler;
+import ptolemy.actor.NoTokenException;
 import ptolemy.data.IntToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StreamListener;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.util.InternalErrorException;
 
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -221,6 +224,51 @@ public class GiottoDirector extends StaticSchedulingDirector {
         }
 
         return _postfirereturns;
+    }
+
+    /** Return true if it transfers data from an input port of the
+     *  container to the ports it is connected to on the inside.
+     *  The port argument must  be an opaque input port.  If any
+     *  channel of the input port has no data, then that channel is
+     *  ignored. This method will transfer exactly one token on
+     *  each input channel that has at least one token available.
+     *  Update all receivers to which token is transferred.
+     *
+     *  @exception IllegalActionException If the port is not an opaque
+     *   input port.
+     *  @param port The port to transfer tokens from.
+     *  @return True if data are transferred.
+     */
+    public boolean transferInputs(IOPort port) throws IllegalActionException {
+        if (!port.isInput() || !port.isOpaque()) {
+            throw new IllegalActionException(this, port,
+                    "transferInputs: port argument is not an opaque" +
+                    "input port.");
+        }
+        boolean trans = false;
+        Receiver[][] insiderecs = port.deepGetReceivers();
+        for (int i = 0; i < port.getWidth(); i++) {
+	    if (port.hasToken(i)) {
+                try {
+                    Token t = port.get(i);
+                    if (insiderecs != null && insiderecs[i] != null) {
+                        if(_debugging) _debug(getName(),
+                                "transferring input from " + port.getName());
+                        for (int j = 0; j < insiderecs[i].length; j++) {
+                            insiderecs[i][j].put(t);
+			    ((GiottoReceiver)insiderecs[i][j]).update();
+                        }
+                        trans = true;
+                    }
+                } catch (NoTokenException ex) {
+                    // this shouldn't happen.
+                    throw new InternalErrorException(
+                            "Director.transferInputs: Internal error: " +
+                            ex.getMessage());
+                }
+            }
+        }
+        return trans;
     }
 
     /** Return the next time of interest in the Giotto model.
