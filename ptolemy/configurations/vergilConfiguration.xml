@@ -1,0 +1,22 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="configuration" class="ptolemy.actor.gui.Configuration">
+  <doc>Configuration to run but not edit Ptolemy II models</doc>
+  <entity name="directory" class="ptolemy.actor.gui.ModelDirectory">
+    <entity name="doc" class="ptolemy.actor.gui.Effigy">
+      <property name="identifier" value="ptolemy/configurations/intro.htm"/>
+      <entity name="tableau" class="ptolemy.actor.gui.HTMLViewerTableau">
+        <property name="url" value="ptolemy/configurations/intro.htm"/>
+      </entity>
+    </entity>
+   </entity>  
+  <entity name="factory" class="ptolemy.actor.gui.TableauFactory">
+    <entity name="factory1" class="ptolemy.vergil.ptolemy.TreeTableau$Factory">
+    </entity>
+    <entity name="factory2" class="ptolemy.vergil.ptolemy.GraphTableau$Factory">
+    </entity>
+  </entity>
+  <entity name="reader" class="ptolemy.actor.gui.ModelReader">
+  </entity>
+</model>
