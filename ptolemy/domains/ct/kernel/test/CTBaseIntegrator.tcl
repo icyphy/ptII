@@ -85,7 +85,7 @@ test CTBaseIntegrator-2.1 {Construct a CTBaseIntegrator, get parameters} {
 ######################################################################
 ####  check initialization
 #
-test CTBaseIntegrator-3.1 {check intialization} {
+test CTBaseIntegrator-3.1 {check initialization} {
     $dir preinitialize
     $dir initialize
     list [$integ getState] [$integ getTentativeState] \

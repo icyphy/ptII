@@ -213,7 +213,7 @@ public class CTScheduler extends Scheduler {
     public boolean isDiscrete(Actor actor) throws IllegalActionException {
         if (_signalTypes == null) {
             throw new IllegalActionException(this, " isDiscrete() can only "
-                    + "be called after intialization.");
+                    + "be called after initialization.");
         }
         List discreteActors = _signalTypes.getDiscreteActors();
         return discreteActors.contains(actor);
@@ -229,7 +229,7 @@ public class CTScheduler extends Scheduler {
     public boolean isContinuous(Actor actor) throws IllegalActionException {
         if (_signalTypes == null) {
             throw new IllegalActionException(this, " isContinuous() can only "
-                    + "be called after intialization.");
+                    + "be called after initialization.");
         }
         List continuousActors = _signalTypes.getContinuousActors();
         return continuousActors.contains(actor);
