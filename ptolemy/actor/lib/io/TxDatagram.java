@@ -46,18 +46,20 @@ import java.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// TxDatagram
 /**
-This actor transmits a Datagram over the Ethernet using the UDP protocol.
-The Datagram is sent to an address given by the actor's input.
-Said address is a string, such as "128.32.239.10".
-The data contained in the Datagram is the single byte 'A'.
-Although this actor's port number is selectable (parameter port),
-The actor always launches its datagram towards port 4096 of the remote address.
 
-Initially, the local port number is set to -1 to indicate no port at all.
-This prevents the actor still "in the barn" from having a port number conflict
-with the actor that is being places into the graph editor's work area.
+This actor transmits a Datagram over the Ethernet using the UDP
+protocol.  The Datagram is sent to an address given by the actor's
+input.  Said address is a string, such as "128.32.239.10".  The data
+contained in the Datagram is the single byte 'A'.  Although this
+actor's port number is selectable (parameter port), The actor always
+launches its datagram towards port 4096 of the remote address.
 
-@author Winthrop Williams, Yorn, Xiojun, Edward Lee
+Initially, the local port number is set to -1 to indicate no port at
+all.  This prevents the actor still "in the barn" from having a port
+number conflict with the actor that is being places into the graph
+editor's work area.
+
+@author Winthrop Williams, Joern Janneck,  Xiaojun Liu, Edward A. Lee
 (Based on TiltSensor actor writen by Chamberlain Fong, Xiaojun Liu, Edward Lee)
 @version $Id$
 */
@@ -78,8 +80,10 @@ public class TxDatagram extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** This port inputs the remote address towards which to launch the packet.
+    /** This port inputs the remote address towards which to launch
+     *  the packet.
      */
+
     public TypedIOPort remoteAddress;
 
     /** The local port number for this actor's socket.
@@ -188,7 +192,9 @@ public class TxDatagram extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Intermediate variables used to [re]construct the packet for transmission
+    // Intermediate variables used to [re]construct the packet for
+    // transmission.
+
     private byte _data;
     private int _length;
     private String _address;
