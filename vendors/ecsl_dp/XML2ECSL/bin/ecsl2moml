@@ -86,8 +86,10 @@ awk ' {
            }
        }
        indent = substr($0, 0, index($0,"<") - 1)  
-       print indent "<entity name=\"" name " \"class=\"ptolemy.actor.TypedCompositeActor\">"
+       # Sometimes we have <System ... />
+       print indent "<entity name=\"" name "\" class=\"ptolemy.actor.TypedCompositeActor\"" f[nf]
     } else if ($0 ~ /<\/System>/) {
+       # FIXME: If we have <System ... />, then the indent might be wrong?
        print indent "</entity>"
     } else {
        print $0
@@ -147,36 +149,45 @@ awk ' {
 
 # Convert <Line to <relation
 awk 'BEGIN {
-    map["Abs"] = "ptolemy.actor.lib.Abs"
+    map["Abs"] = "ptolemy.actor.lib.AbsoluteValue"
     map["Clock"] = "ptolemy.actor.lib.Clock"
-    map["Constant"] = "ptolemy.actor.lib.Constant"
-    map["Demux"] = "ptolemy.actor.lib.Demux"
-    map["DiscreteFilter"] = "ptolemy.actor.lib.DiscreteFilter"
-    map["DiscretePulseGenerator"] = "ptolemy.actor.lib.DiscretePulseGenerator"
-    map["Display"] = "ptolemy.actor.lib.Display"
-    map["From"] = "ptolemy.actor.lib.From"
-    map["Gain"] = "ptolemy.actor.lib.Gain"
-    map["Goto"] = "ptolemy.actor.lib.Goto"
-    map["Ground"] = "ptolemy.actor.lib.Ground"
-    map["Integrator"] = "ptolemy.actor.lib.Integrator"
+    map["Constant"] = "ptolemy.actor.lib.Const"
+    map["Demux"] = "ptolemy.actor.lib.Select"
+    # FIXME
+    map["DiscreteFilter"] = "ptolemy.actor.lib.EventFilter"
+    map["DiscretePulseGenerator"] = "ptolemy.actor.lib.Pulse"
+    map["Display"] = "ptolemy.actor.lib.gui.Display"
+    # FIXME
+    map["From"] = "ptolemy.actor.lib.Stop"
+    map["Gain"] = "ptolemy.actor.lib.Scale"
+    # FIXME
+    map["Goto"] = "ptolemy.actor.lib.Stop"
+    map["Ground"] = "ptolemy.actor.lib.Discard"
+    map["Integrator"] = "ptolemy.domains.ct.lib.Integrator"
     map["Logic"] = "ptolemy.actor.lib.Logic"
-    map["Merge"] = "ptolemy.actor.lib.Merge"
-    map["MinMax"] = "ptolemy.actor.lib.MinMax"
-    map["MultiPortSwitch"] = "ptolemy.actor.lib.MultiPortSwitch"
-    map["Mux"] = "ptolemy.actor.lib.Mux"
-    map["Product"] = "ptolemy.actor.lib.Product"
+    map["Merge"] = "ptolemy.domains.de.lib.Merge"
+    # FIXME: should be Minimum or Maximum 
+    map["MinMax"] = "ptolemy.actor.lib.Maximum"
+    # FIXME
+    map["MultiPortSwitch"] = "ptolemy.actor.lib.Switch"
+    map["Mux"] = "ptolemy.actor.lib.Multiplexor"
+    map["Product"] = "ptolemy.actor.lib.MultiplyDivide"
     map["RelationalOperator"] = "ptolemy.actor.lib.RelationalOperator"
-    map["S-Function"] = "ptolemy.actor.lib.S-Function"
-    map["Saturate"] = "ptolemy.actor.lib.Saturate"
-    map["Signum"] = "ptolemy.actor.lib.Signum"
-    map["Sin"] = "ptolemy.actor.lib.Sin"
-    map["Step"] = "ptolemy.actor.lib.Step"
-    map["Sum"] = "ptolemy.actor.lib.Sum"
+    map["S-Function"] = "ptolemy.matlab.Expression"
+    # FIXME
+    map["Saturate"] = "ptolemy.actor.lib.Quantizer"
+    map["Signum"] = "ptolemy.actor.lib.Quantizer"
+    # FIXME: set to Sin
+    map["Sin"] = "ptolemy.actor.lib.TrigFunction"
+    # FIXME
+    map["Step"] = "ptolemy.actor.lib.Stop"
+    map["Sum"] = "ptolemy.actor.lib.Accumulator"
     map["Switch"] = "ptolemy.actor.lib.Switch"
-    map["Terminator"] = "ptolemy.actor.lib.Terminator"
-    map["ToWorkspace"] = "ptolemy.actor.lib.ToWorkspace"
-    map["UnitDelay"] = "ptolemy.actor.lib.UnitDelay"
-    map["ZeroOrderHold"] = "ptolemy.actor.lib.ZeroOrderHold"
+    map["Terminator"] = "ptolemy.actor.lib.Stop"
+    # FIXME
+    map["ToWorkspace"] = "ptolemy.actor.lib.Stop"
+    map["UnitDelay"] = "ptolemy.domains.de.lib.TimedDelay"
+    map["ZeroOrderHold"] = "ptolemy.domains.ct.lib.ZeroOrderHold"
 }
 {
     if ($1 ~ /<Primitive/) {
@@ -210,8 +221,21 @@ awk 'BEGIN {
 
 
 # OutputPort
-awk '{
-    if ($1 ~ /<OutputPort/ || $1 ~ /<InputPort/) {
+awk '
+$1 ~ /<entity/ {
+       # Get the value of the name field
+       name=""
+       nf = split($0, f, "\"")   
+       for (i = 1; i <= nf; i++) {
+           if ( f[i] ~ /name=$/) {
+               name = f[i+1]
+               break;
+           }
+       }
+       container = name
+}
+{
+    if ($1 ~ /<OutputPort/ || $1 ~ /<InputPort/ || $1 ~ /<TriggerPort/) {
        # Get the value of the name field
        name=""
        nf = split($0, f, "\"")   
@@ -247,10 +271,38 @@ awk '{
                }
             }
        }
-       # FIXME: need the container here
-       print indent "<link port=\"" name "\" relation=\"" relation "\"/>" 
+       containerName = container "." name
+       links[containerName] = relation
     } else {
         print $0
+    }
+}
+$1 ~ /<\/entity>/ {
+    # We need to add the link statements outside the container.
+    # Sometimes, containers are nested, getting the links right is tricky.
+    indent = substr($0, 0, index($0,"<") - 1)  
+    for ( link in links) {
+       if ( length(links[link]) > 0 \
+          &&  substr(link, 0, length(container)) == container ) {
+          # We have not yet printed this link, and it is for
+          # the container we just exited.
+
+          # Sometimes a dstLine will have many relations listed
+          # dstLine="id32b id32c id32d id32e"
+
+          relation = links[link]
+          if (index(relation, " ") == 0) {
+              # No spaces is the relation name
+              print indent "<link port=\"" link "\" relation=\"" relation "\"/>" 
+          } else {
+              nf = split(relation, relations, " ") 
+              for(i = 1; i < nf; i++) {
+              print indent "<link port=\"" link "\" relation=\"" relations[i] "\"/>" 
+              }
+          }
+          links[link] = ""  
+       }
+
     }
 
 }' < $tmpfile1 > $tmpfile2
@@ -281,7 +333,7 @@ awk '{
        }
        indent = substr($0, 0, index($0,"<") - 1)  
        # FIXME: do more with types?
-       print indent "<property name=\"" name "\" class=\"ptolemy.data.expr.Parameter\" value=\"" value "\">"
+       print indent "<property name=\"" name "\" class=\"ptolemy.data.expr.Parameter\" value=\"" value "\"/>"
     } else {
        print $0
     } 
