@@ -1,4 +1,4 @@
-/* A GR Shape consisting of a cone
+/* A GR Shape consisting of a cone.
 
 Copyright (c) 1998-2004 The Regents of the University of California.
 All rights reserved.
@@ -31,6 +31,7 @@ import javax.media.j3d.Node;
 
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -40,7 +41,7 @@ import com.sun.j3d.utils.geometry.Cone;
 //////////////////////////////////////////////////////////////////////////
 ////Cone3D
 
-/** This actor contains the geometry and appearance specifications for a GR
+/** This actor contains the geometry and appearance specifications for a
     cone.  The output port is used to connect this actor to the Java3D scene
     graph. This actor will only have meaning in the GR domain.
 
@@ -64,25 +65,27 @@ public class Cone3D extends GRShadedShape {
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
-        radius = new Parameter(this, "radius", new DoubleToken(0.5));
-        height = new Parameter(this, "height", new DoubleToken(0.7));
+        
+        radius = new Parameter(this, "radius");
+        radius.setExpression("0.5");
+        radius.setTypeEquals(BaseType.DOUBLE);
+        
+        height = new Parameter(this, "height");
+        height.setExpression("0.7");
+        height.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The height of the cone
-     *  This parameter should contain a DoubleToken.
-     *  The default value of this parameter is 0.5
+    /** The height of the cone. This is a double that defaults to 0.5.
      */
     public Parameter height;
 
-    /** The radius of the base of the cone
-     *  This parameter should contain a DoubleToken.
-     *  The default value of this parameter is 0.7
+    /** The radius of the base of the cone. This is a double that
+     *  defaults to 0.7.
      */
     public Parameter radius;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

@@ -28,13 +28,18 @@ COPYRIGHTENDKEY
 package ptolemy.domains.gr.lib;
 
 import javax.media.j3d.Appearance;
+import javax.media.j3d.LineAttributes;
 import javax.media.j3d.Material;
+import javax.media.j3d.PolygonAttributes;
+import javax.media.j3d.TransparencyAttributes;
 import javax.vecmath.Color3f;
 
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.DoubleMatrixToken;
+import ptolemy.actor.gui.ColorAttribute;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.domains.gr.kernel.GRActor3D;
 import ptolemy.domains.gr.kernel.SceneGraphToken;
 import ptolemy.kernel.CompositeEntity;
@@ -43,13 +48,32 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// GRShadedShape
-/** An abstract base class for GR Actors that have material and color
-    properties. The parameters <i>redComponent</i>, <i>greenComponent</i>,
-    <i>blueComponent</i> determine the color of the object.  The parameter
-    <i>shininess</i> determines the Phong exponent used in calculating
-    the shininess of the object.
 
-    @author C. Fong, Steve Neuendorffer
+/** An abstract base class for GR Actors that have material and color
+    properties.
+    <p>
+    The parameter <i>diffuseColor</i> determines
+    the color of the object in the usual sense that it determines the
+    color of light reflected off the object. The default is gray.
+    The parameter <i>emissiveColor</i> specifies a color that is
+    emitted by the object, and hence does not depend on illumination.
+    It is black by default, which means that the object does not emit
+    any light and will be invisible without illumination. The
+    parameter <i>specularColor</i> determines the color of highlights
+    that are reflected by the object if the object is set to be shiny.
+    <p>
+    The parameter <i>shininess</i> determines the shininess of the object.
+    It ranges from 1.0 (the default) to 128.0, meaning not shiny to very
+    shiny.
+    <p>
+    The parameter <i>transparency</i> determines the transparency of the
+    object. It ranges from 0.0 (the default) to 1.0, meaning opaque to
+    fully transparent.
+    <p>
+    The <i>wireFrame</i> parameter can be used to view only the lines
+    that outline the polygons of the object and not the surface.
+
+    @author C. Fong, Steve Neuendorffer, Edward A. Lee
     @version $Id$
     @since Ptolemy II 1.0
     @Pt.ProposedRating Red (chf)
@@ -73,37 +97,80 @@ abstract public class GRShadedShape extends GRActor3D {
         sceneGraphOut.setOutput(true);
         sceneGraphOut.setTypeEquals(SceneGraphToken.TYPE);
 
-        rgbColor = new Parameter(this,"RGB color",
-                new DoubleMatrixToken(new double[][] {{ 0.7, 0.7, 0.7}} ));
+        diffuseColor = new ColorAttribute(this, "diffuseColor");
+        diffuseColor.setExpression("{0.7, 0.7, 0.7, 1.0}");
+        
+        emissiveColor = new ColorAttribute(this, "emissiveColor");
+        emissiveColor.setExpression("{0.0, 0.0, 0.0, 1.0}");
 
-        shininess = new Parameter(this,"shininess", new DoubleToken(0.0));
-        _color = new Color3f(1.0f, 1.0f, 1.0f);
+        specularColor = new ColorAttribute(this, "specularColor");
+        specularColor.setExpression("{1.0, 1.0, 1.0, 1.0}");
+
+        shininess = new Parameter(this,"shininess");
+        shininess.setExpression("1.0");
+        shininess.setTypeEquals(BaseType.DOUBLE);
+
+        transparency = new Parameter(this,"transparency");
+        transparency.setExpression("0.0");
+        transparency.setTypeEquals(BaseType.DOUBLE);
+
+        wireFrame = new Parameter(this,"wireFrame");
+        wireFrame.setExpression("false");
+        wireFrame.setTypeEquals(BaseType.BOOLEAN);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
+    /** The diffuse color, which is the color of the object reflecting
+     *  illumination. Note that the alpha value (the fourth
+     *  element of the array), which would normally specify transparency,
+     *  is ignored. The default color is grey.
+     */
+    public ColorAttribute diffuseColor;
+
+    /** The emissive color, which is a color that does not depend on
+     *  ambient illumination. Note that the alpha value (the fourth
+     *  element of the array), which would normally specify transparency,
+     *  is ignored. The default color is black, which means that there
+     *  is no emissive color (illumination is required).
+     */
+    public ColorAttribute emissiveColor;
+
     /** The output port for connecting to other GR Actors in
-     *  the scene graph
+     *  the scene graph.
      */
     public TypedIOPort sceneGraphOut;
 
-
-    /** The red, green, and blue color components of the 3D shape
-     */
-    public Parameter rgbColor;
-
     /** The shininess of the 3D shape.
-     *  This parameter should contain a DoubleToken.
-     *  The default value of this parameter is DoubleToken ??FIXME
+     *  This parameter should contain a DoubleToken in the range 1.0
+     *  to 128.0, where 1.0 represents not shiny and 128.0 represents
+     *  very shiny.  This is a double with default 1.0.
      */
     public Parameter shininess;
+
+    /** The specular color, which is a color of a highlight reflecting
+     *  ambient illumination. Note that the alpha value (the fourth
+     *  element of the array), which would normally specify transparency,
+     *  is ignored. The default color is white, which means that the
+     *  illumination is reflected white.
+     */
+    public ColorAttribute specularColor;
+    
+    /** The transparency, where 0.0 means opaque (the default) and 1.0
+     *  means fully transparent. The type is double. 
+     */
+    public Parameter transparency;
+
+    /** If true, render the shape using a wire frame. This is a boolean
+     *  that defaults to false. 
+     */
+    public Parameter wireFrame;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /*  Create the Java3D geometry and appearance for this GR actors
-     *
+    /*  Create the Java3D geometry and appearance for this GR actors.
      *  @exception IllegalActionException If the current director
      *  is not a GRDirector.
      */
@@ -112,10 +179,8 @@ abstract public class GRShadedShape extends GRActor3D {
         _createModel();
     }
 
-
     /** Return false if the scene graph is already initialized.
-     *
-     *  @return false if the scene graph is already initialized.
+     *  @return False if the scene graph is already initialized.
      *  @exception IllegalActionException Not thrown in this base class
      */
     public boolean prefire() throws IllegalActionException {
@@ -129,35 +194,65 @@ abstract public class GRShadedShape extends GRActor3D {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Create the material appearance of the shaded 3D actor
+    /** Create the material appearance of the shaded 3D actor.
+     *  @exception IllegalActionException If a parameter cannot be evaluated.
      */
-    protected void _createAppearance() {
+    protected void _createAppearance() throws IllegalActionException {
 
         _material = new Material();
         _appearance = new Appearance();
+        
+        Color3f color = new Color3f(emissiveColor.asColor());
+        _material.setEmissiveColor(color);
 
-        _material.setDiffuseColor(_color);
-        if (_shine > 1.0) {
-            _material.setSpecularColor(_whiteColor);
-            _material.setShininess(_shine);
+        color = new Color3f(diffuseColor.asColor());
+        _material.setDiffuseColor(color);
+
+        float shine = (float)
+                ((DoubleToken)shininess.getToken()).doubleValue();
+        if (shine > 1.0) {
+            color = new Color3f(specularColor.asColor());
+            _material.setSpecularColor(color);
+            _material.setShininess(shine);
         } else {
-            _material.setSpecularColor(_color);
+            _material.setSpecularColor(color);
         }
         _appearance.setMaterial(_material);
+        
+        float transparent = (float)
+                ((DoubleToken)transparency.getToken()).doubleValue();
+        if (transparent > 0.0) {
+            TransparencyAttributes attributes
+                    = new TransparencyAttributes(
+                    TransparencyAttributes.NICEST, transparent);
+            _appearance.setTransparencyAttributes(attributes);
+        }
+        
+        int mode = PolygonAttributes.POLYGON_FILL;
+        if (((BooleanToken)wireFrame.getToken()).booleanValue()) {
+            mode = PolygonAttributes.POLYGON_LINE;
+        }
+        // Default culls back facing polygons, which is weird.
+        // We disable that here.
+        PolygonAttributes polygonAttributes = new PolygonAttributes(
+                mode,
+                PolygonAttributes.CULL_NONE,
+                0.0f);
+        _appearance.setPolygonAttributes(polygonAttributes);
+        
+        // Turn on antialiasing.
+        // FIXME: Doesn't seem to work.
+        LineAttributes lineAttributes = new LineAttributes(
+                1.0f,
+                LineAttributes.PATTERN_SOLID,
+                true);
+        _appearance.setLineAttributes(lineAttributes);
     }
 
-    /** Create the color of this shaded GR actor
-     *
-     *  @exception IllegalActionException If unable to setup the color.
+    /** Set the color and appearance of this 3D object.
+     *  @exception IllegalActionException If a parameter cannot be evaluated.
      */
     protected void _createModel() throws IllegalActionException {
-        DoubleMatrixToken color = (DoubleMatrixToken) rgbColor.getToken();
-
-        _color.x = (float) color.getElementAt(0, 0);
-        _color.y = (float) color.getElementAt(0, 1);
-        _color.z = (float) color.getElementAt(0, 2);
-        _shine = (float) ((DoubleToken) shininess.getToken()).doubleValue();
-
         _createAppearance();
     }
 
@@ -168,11 +263,9 @@ abstract public class GRShadedShape extends GRActor3D {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    protected Color3f _color;
+    /** The appearance of this 3D object. */
     protected Appearance _appearance;
+    
+    /** The material of this 3D object. */
     protected Material _material;
-    protected float _shine;
-
-    protected static final Color3f _whiteColor = new Color3f(1.0f, 1.0f, 1.0f);
-    protected static final Color3f _blueColor = new Color3f(0.0f, 0.0f, 1.0f);
 }

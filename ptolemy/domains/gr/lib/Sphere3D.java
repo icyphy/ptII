@@ -34,7 +34,9 @@ import javax.media.j3d.TransformGroup;
 import javax.vecmath.Vector3d;
 
 import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -45,7 +47,7 @@ import com.sun.j3d.utils.geometry.Sphere;
 //////////////////////////////////////////////////////////////////////////
 //// Sphere3D
 
-/** This actor contains the geometry and appearance specifications for a GR
+/** This actor contains the geometry and appearance specifications for a
     sphere.  The output port is used to connect this actor to the Java3D scene
     graph. This actor may be used along with the Scale3D transformer to produce
     ellipsoid shapes. This actor will only have meaning in the GR domain.
@@ -70,19 +72,31 @@ public class Sphere3D extends GRShadedShape {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        radius = new Parameter(this, "radius", new DoubleToken(0.5));
+        radius = new Parameter(this, "radius");
+        radius.setExpression("0.1");
+        radius.setTypeEquals(BaseType.DOUBLE);
+        radius.moveToFirst();
+        
+        divisions = new Parameter(this, "divisions");
+        divisions.setExpression("roundToInt(radius * 300)");
+        divisions.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** The radius of the sphere
-     *  This parameter should contain a doubleToken
-     *  The default value of this parameter is the DoubleToken 0.5
+    /** The number of divisions in the sphere. This is an integer with
+     *  default value "roundToInt(radius * 300)". This parameter
+     *  determines the resolution of the sphere, which is approximated
+     *  as a surface composed of triangular facets. Increasing this
+     *  value makes the surface smoother, but also increases the cost
+     *  of rendering.
+     */
+    public Parameter divisions;
+    
+    /** The radius of the sphere. This is a double with default 0.1.
      */
     public Parameter radius;
-
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -100,8 +114,6 @@ public class Sphere3D extends GRShadedShape {
         super.attributeChanged(attribute);
     }
 
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -111,9 +123,11 @@ public class Sphere3D extends GRShadedShape {
      */
     protected void _createModel() throws IllegalActionException {
         super._createModel();
+        int divisionsValue = ((IntToken)divisions.getToken()).intValue();
         _containedNode = new Sphere(1.0f,
-                Sphere.GENERATE_NORMALS, _appearance);
-        //Shape3D sphereShape = _containedNode.getShape();
+                Sphere.GENERATE_NORMALS,
+                divisionsValue,
+                _appearance);
         _scaler = new TransformGroup();
         _scaler.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         scaleTransform = new Transform3D();

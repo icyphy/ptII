@@ -49,9 +49,9 @@ import javax.vecmath.Quat4d;
 import javax.vecmath.Vector3f;
 
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.gui.Placeable;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -131,9 +131,8 @@ public class ViewScreen extends GRActor3D
                 "iterationSynchronized", new BooleanToken(false));
         iterationSynchronized.setTypeEquals(BaseType.BOOLEAN);
 
-        backgroundColor = new Parameter(this, "backgroundColor",
-                new DoubleMatrixToken(new double[][] {{ 0.0, 0.0, 0.0}} ));
-        backgroundColor.setTypeEquals(BaseType.DOUBLE_MATRIX);
+        backgroundColor = new ColorAttribute(this, "backgroundColor");
+        backgroundColor.setExpression("{1.0, 1.0, 1.0, 1.0}");
 
         _lastTransform = new Transform3D();
     }
@@ -146,10 +145,11 @@ public class ViewScreen extends GRActor3D
      */
     public TypedIOPort sceneGraphIn;
 
-    /** The background color, given as a 3-element array representing
-     *  rgb color
+    /** The background color. Note that the alpha value (the fourth
+     *  element of the array), which would normally specify transparency,
+     *  is ignored.
      */
-    public Parameter backgroundColor;
+    public ColorAttribute backgroundColor;
 
     /** The horizontal resolution of the display screen
      *  This parameter should contain a IntToken.
@@ -485,14 +485,7 @@ public class ViewScreen extends GRActor3D
      * parameter.
      */
     protected Background _makeBackground() throws IllegalActionException {
-        DoubleMatrixToken colorVector =
-            (DoubleMatrixToken) backgroundColor.getToken();
-        Color3f color = new Color3f();
-
-        color.x = (float) colorVector.getElementAt(0, 0);
-        color.y = (float) colorVector.getElementAt(0, 1);
-        color.z = (float) colorVector.getElementAt(0, 2);
-
+        Color3f color = new Color3f(backgroundColor.asColor());
         return new Background(color);
     }
 
