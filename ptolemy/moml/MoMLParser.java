@@ -566,10 +566,19 @@ public class MoMLParser extends HandlerBase {
     /** Parse the given file, which contains MoML.
      *  If there are external references in the MoML, they are interpreted
      *  relative to the current working directory.
-     *  Note that this method attempts to read the user.dir system
+     *
+     *  <p>If you have an absolute pathname, rather than calling
+     *  this method, you may want to try:
+     *  <pre>
+     *  CompositeActor toplevel = (CompositeActor) parser.parse(null,
+     *           new File(xmlFilename).toURL());
+     *  </pre>
+     *
+     *  <p>Note that this method attempts to read the user.dir system
      *  property, which is not generally available in applets.  Hence
      *  it is probably not a good idea to use this method in applet code,
      *  since it will probably fail outright.
+     *
      *  @param text The file name from which to read MoML.
      *  @return The top-level composite entity of the Ptolemy II model.
      *  @exception Exception If the parser fails.
