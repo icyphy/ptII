@@ -212,7 +212,7 @@ public class MatrixMath {
     /** Return a new array that is filled with the contents of the matrix.
      *  The doubles are stored row by row, i.e. using the notation
      *  (row, column), the entries of the array are in the following order
-     *  for a (m,n) matrix :
+     *  for a (m, n) matrix :
      *  (0, 0), (0, 1), (0, 2), ... , (0, n-1), (1, 0), (1, 1), ..., (m-1)(n-1)
      *  @param A matrix of doubles.
      *  @return A new array of doubles.
@@ -234,8 +234,8 @@ public class MatrixMath {
      *  @param matrix A matrix of doubles.
      *  @return A new array of doubles.
      */
-    public static final double[] fromMatrixToArray(double[][] matrix, int maxRow,
-            int maxCol) {
+    public static final double[] fromMatrixToArray(double[][] matrix,
+            int maxRow, int maxCol) {
         double[] retval = new double[maxRow * maxCol];
         for (int i = 0; i < maxRow; i++) {
             System.arraycopy(matrix[i], 0, retval, i * maxCol, maxCol);
@@ -440,9 +440,9 @@ public class MatrixMath {
 
         if (rows != array.length) {
             throw new IllegalArgumentException(
-                    "preMultiply : array does not have the same number of elements (" +
-                    array.length + ") as the number of rows of the matrix (" + rows +
-                    ")");
+                    "preMultiply : array does not have the same number of " +
+                    "elements (" + array.length + ") as the number of rows " +
+                    "of the matrix (" + rows + ")");
         }
 
         double[] result = new double[columns];
@@ -472,9 +472,9 @@ public class MatrixMath {
 
         if (columns != array.length) {
             throw new IllegalArgumentException(
-                    "postMultiply() : array does not have the same number of elements (" +
-                    array.length + ") as the number of columns of the matrix (" +
-                    columns + ")");
+                    "postMultiply() : array does not have the same number " +
+                    "of elements (" + array.length + ") as the number of " +
+                    "columns of the matrix (" + columns + ")");
         }
 
         double[] result = new double[rows];
@@ -574,8 +574,8 @@ public class MatrixMath {
     }
 
     /** Return a new matrix of doubles that is initialized from a 1-D array.
-     *  The format of the array must be (0,0), (0,1), ..., (0, n-1), (1,0),
-     *  (1,1), ..., (m-1, n-1) where the output matrix is to be m x n and
+     *  The format of the array must be (0, 0), (0, 1), ..., (0, n-1), (1, 0),
+     *  (1, 1), ..., (m-1, n-1) where the output matrix is to be m x n and
      *  entries are denoted by (row, column).
      *  @param array An array of doubles.
      *  @param rows An int.
@@ -673,8 +673,8 @@ public class MatrixMath {
      *  2 matrices, that are of the same size, are all within a constant range,
      *  [-R, R], where R is the allowed error. The specified absolute
      *  difference must be non-negative.
-     *  More concisely, abs(M1[i,j] - M2[i,j]) must be within [R, R]
-     *  for 0<=i < m and 0<=j<n where M1 and M2 are both m x n matrices.
+     *  More concisely, abs(M1[i, j] - M2[i, j]) must be within [R, R]
+     *  for 0 <= i < m and 0 <= j <n where M1 and M2 are both m x n matrices.
      *  @param matrix1 A matrix of doubles.
      *  @param matrix2 A matrix of doubles.
      *  @param absoluteError A double indicating the absolute value of the
@@ -709,8 +709,9 @@ public class MatrixMath {
      *  specificed by the corresponding values of the error matrix. The
      *  error matrix may contain negative entries; the absolute value
      *  is used.
-     *  More concisely, abs(M1[i,j] - M2[i,j]) must be within [-E[i,j], E[i,j]],
-     *  for 0<=i < m and 0<=j<n where M1, M2, and E are all m x n matrices.
+     *  More concisely, abs(M1[i, j] - M2[i, j]) must be
+     *  within [-E[i,j], E[i,j]], for 0 <= i < m and 0 <= j < n
+     *  where M1, M2, and E are all m x n matrices.
      *  @param matrix1 A matrix of doubles.
      *  @param matrix2 A matrix of doubles.
      *  @param errorMatrix A matrix of doubles.
@@ -773,8 +774,9 @@ public class MatrixMath {
     private static final int _checkSquare(String caller, double[][] matrix) {
         if (_rows(matrix) != _columns(matrix)) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.MatrixMath." + caller + "() : matrix argument "
-                    + _dimensionString(matrix) + " is not a square matrix.");
+                    "ptolemy.math.MatrixMath." + caller + 
+                    "() : matrix argument " + _dimensionString(matrix) + 
+                    " is not a square matrix.");
         }
         return _rows(matrix);
     }
