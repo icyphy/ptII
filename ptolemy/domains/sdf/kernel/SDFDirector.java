@@ -269,6 +269,8 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  @return True.
      */
     public boolean prefire() throws IllegalActionException {
+        // Set current time based on the enclosing model.
+        super.prefire();
         _postfirereturns = true;
 
         TypedCompositeActor container = ((TypedCompositeActor)getContainer());

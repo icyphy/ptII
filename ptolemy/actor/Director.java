@@ -422,17 +422,33 @@ public class Director extends Attribute implements Executable {
 
     /** Return true if the director is ready to fire. This method is
      *  called by the container of this director to determine whether the
-     *  director is ready to execute. It should <i>not</i>, in general,
+     *  director is ready to execute. It does <i>not</i>
      *  call prefire() on the contained actors.
+     *  If this director is not at the top level of the hierarchy,
+     *  and the current time of the enclosing model is greater than the
+     *  current time of this director, then this base class updates
+     *  current time to match that of the enclosing model
      *  <p>
      *  In this base class, assume that the director is always ready to
      *  be fired, and so return true. Domain directors should probably
-     *  override this method.
+     *  override this method.  They should call super.prefire() if they
+     *  wish to propogate time as done here.
      *
      *  @return True.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean prefire() throws IllegalActionException {
+        Nameable container = getContainer();
+        if (container instanceof Actor) {
+            Director executiveDirector =
+                   ((Actor)container).getExecutiveDirector();
+            if (executiveDirector != null) {
+                double outTime = executiveDirector.getCurrentTime();
+                if (getCurrentTime() < outTime) {
+                    setCurrentTime(outTime);
+                }
+            }
+        }
         return true;
     }
 

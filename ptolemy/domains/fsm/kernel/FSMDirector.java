@@ -360,35 +360,14 @@ public class FSMDirector extends Director {
      *  FIXME: Changed by liuj, not yet reviewed.
      */
     public boolean prefire() throws IllegalActionException {
-        Nameable container = getContainer();
-        if (!(container instanceof Actor)) return false;
-        Actor cont = (Actor)container;
-        Director exeDir = cont.getExecutiveDirector();
+        // Set the current time based on the enclosing class.
+        super.prefire();
+
         FSMActor ctrl = getController();
         Actor ref = ctrl.currentState().getRefinement();
-        if (exeDir != null) {
-            double outTime = exeDir.getCurrentTime();
-            if (getCurrentTime() < outTime) {
-                setCurrentTime(outTime);
-            }
-            // Transfer inputs.
-            // liuj: Transfer input does not consume tokens
-            // Tokens will be consumed in fire() by the container of
-            // this director. FIXME: I am not sure this is the right
-            // way of doing it.
-            /*if (container instanceof CompositeActor) {
-                Iterator inputPorts = ((CompositeActor)container).
-                    inputPortList().iterator();
-                while(inputPorts.hasNext()) {
-                    IOPort p = (IOPort)inputPorts.next();
-                    transferInputs(p);
-                }
-                }*/
-        }
-        // Otherwise there's no notion of time.
         _fireRefinement = false;
         if (ref != null) {
-            _fireRefinement = true; // ref.prefire();
+            _fireRefinement = true;
         }
         return getController().prefire();
     }
