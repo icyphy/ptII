@@ -43,8 +43,6 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-JSRCS =
-
 # Files that are not compiled, such as .tcl and .itcl files.
 EXTRA_SRCS =	index.htm
 
@@ -56,14 +54,5 @@ MISC_FILES =	img
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES =
 
-JCLASS = $(JSRCS:%.java=%.class)
-
-all:
-
-install: all
-
-depend:
-	@echo "no dependencies in this directory"
-
 # Get the rest of the rules
-include $(ROOT)/mk/ptno-compile.mk
+include $(ROOT)/mk/ptcommon.mk
