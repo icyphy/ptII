@@ -4,7 +4,7 @@
 <entity name="NoisySinewave" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={26, 35, 815, 516}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {2, -2, 815, 516}, maximized = false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -18,10 +18,46 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 55.0">
         </property>
     </property>
-    <class name="NoisySinewave" extends="ptolemy.actor.lib.Sinewave">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={184, 242, 811, 566}, maximized=false}">
+    <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This actor is a class definition, indicated by the blue halo. It is&#10;ignored by the director, and serves as a declaration. To create an&#10;instance of this class, right click on the class definition and select&#10;&quot;Create Instance&quot; (or type Ctrl-N). To see the class definition, look inside.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 55.0">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 85.0">
+        </property>
+    </property>
+    <property name="annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates the mechanisms in Ptolemy II&#10;for defining classes and subclasses with inheritance.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 10.0">
+        </property>
+    </property>
+    <property name="annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is an instance&#10;of the above class&#10;definition.">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="15.0, 195.0">
+        </property>
+    </property>
+    <property name="annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is an instance&#10;of the base class&#10;for the above class&#10;definition.">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="15.0, 270.0">
+        </property>
+    </property>
+    <class name="NoisySinewave" extends="ptolemy.actor.lib.Sinewave">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {184, 242, 811, 566}, maximized = false}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 120.0">
         </property>
         <property name="noiseStandardDeviation" class="ptolemy.data.expr.Parameter" value="0.1">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -42,34 +78,44 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 50.0">
             </property>
         </property>
-        <unlink port="TrigFunction.output" relation="relation3"/>
-        <link port="TrigFunction.output" relation="relation5"/>
-        <link port="AddSubtract2.plus" relation="relation5"/>
-        <link port="AddSubtract2.plus" relation="relation6"/>
-        <link port="Gaussian.output" relation="relation6"/>
-        <link port="AddSubtract2.output" relation="relation3"/>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{298.0, 225.0}">
+        </property>
+        <port name="noisy" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="515.0, 355.0">
+            </property>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
         <entity name="AddSubtract2" class="ptolemy.actor.lib.AddSubtract">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 170.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="445.0, 355.0">
             </property>
         </entity>
         <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
             <property name="standardDeviation" class="ptolemy.data.expr.Parameter" value="noiseStandardDeviation">
             </property>
             <doc>Create a sequence of gaussian random variables</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 160.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 345.0">
             </property>
         </entity>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         </relation>
+        <link port="noisy" relation="relation7"/>
+        <link port="AddSubtract2.plus" relation="relation5"/>
+        <link port="AddSubtract2.plus" relation="relation3"/>
+        <link port="AddSubtract2.output" relation="relation7"/>
+        <link port="Gaussian.output" relation="relation5"/>
     </class>
     <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={426, 377, 508, 355}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {1, 514, 817, 250}, maximized = false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[809, 195]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 230.0">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -77,16 +123,28 @@
 <plot>
 <title>SequencePlotter</title>
 <xRange min="0.0" max="99.0"/>
-<yRange min="-1.127508507138847" max="1.1834187826024465"/>
+<yRange min="-1.46731029753325" max="1.7176517215600482"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="InstanceOfNoisySinewave" class="NoisySinewave">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 220.0">
+        </property>
+        <property name="noiseStandardDeviation" class="ptolemy.data.expr.Parameter" value="0.3">
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            </property>
         </property>
     </entity>
+    <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 290.0">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <link port="SequencePlotter.input" relation="relation2"/>
     <link port="SequencePlotter.input" relation="relation"/>
-    <link port="InstanceOfNoisySinewave.output" relation="relation"/>
+    <link port="InstanceOfNoisySinewave.noisy" relation="relation2"/>
+    <link port="Sinewave.output" relation="relation"/>
 </entity>
