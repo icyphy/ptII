@@ -115,11 +115,8 @@ public class AnnotationEditorFactory extends EditorFactory {
                 this, _iconDescription, moml));
     }
 
-    /** Return a new widget for configuring the container.  In this
-     *  base class, this method defers to the static createEditorPane method.
-     *  Subclasses that implement specialized interaction should override
-     *  this method to create an appropriate type of component.
-     *  @return A new widget for configuring the container.
+    /** Return a new widget for configuring the container.
+     *  @return A JPanel that is a text editor for editing the annotation text.
      */
     public Component createEditorPane() {
         _textArea = new JTextArea();

@@ -43,15 +43,24 @@ import ptolemy.kernel.util.NamedObj.MoMLInfo;
 //// CTCompositeActor
 /**
 Composite actor in the CT domain. This class is derived from
-TypedCompositeActor
-and implements the CTStepSizeControlActor interface. If the director of
-this composite actor is an instance of CTTransparentDirector, then the
-CTStepSizeControlActor calls will be delegated to its local director.
-Otherwise, it returns default values.
+TypedCompositeActor and implements the CTStepSizeControlActor interface.
+Normally, in the CT domain, opaque composite actors are not fired
+in every iteration. They are only fired in discrete iterations,
+when there is a possibility of events. Actors that implement
+the CTStepSizeControlActor interface, however, such as this one,
+are fired in every iteration.
+<p>
+The key task of this actor is to implement step-size control methods.
+If the director of this composite actor is an instance of
+CTTransparentDirector, then the CTStepSizeControlActor calls
+will be delegated to its local director. Otherwise, they return
+default values.
 <P>
 This composite actor should be used when a CT subsystem need to transfer
 its step size control information to the outer domain. Typical usage
-includes CT inside CT or CT inside FSM inside CT.
+includes CT inside CT or CT inside FSM inside CT.  If you construct
+a modal model, then by default, refinements of the modes are actors
+like this one that implement the CTStepSizeControlActor interface.
 
 @author  Jie Liu
 @version $Id$
