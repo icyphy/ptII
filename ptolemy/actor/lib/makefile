@@ -93,7 +93,7 @@ JSRCS = \
 	Commutator.java \
 	Const.java \
 	Counter.java \
-       	CurrentTime.java \
+	CurrentTime.java \
 	Differential.java \
 	DoubleReader.java \
 	DB.java \
@@ -148,9 +148,10 @@ JSRCS = \
 	ThrowException.java \
 	TimedActor.java \
 	TimedSource.java \
+	TokenMultiplexor.java \
 	Transformer.java \
-       	TrigFunction.java \
-        TriggeredClock.java\
+	TrigFunction.java \
+	TriggeredClock.java\
 	TrigFunction.java \
         TriggeredClock.java \
 	Uniform.java \
