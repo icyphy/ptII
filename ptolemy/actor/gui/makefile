@@ -94,6 +94,7 @@ JSRCS = \
 	HTMLEffigyFactory.java \
 	HTMLViewer.java \
 	HTMLViewerTableau.java \
+	InsideEntityEditorPaneFactory.java \
 	JNLPUtilities.java \
 	JVMTableau.java \
 	LocationAttribute.java \

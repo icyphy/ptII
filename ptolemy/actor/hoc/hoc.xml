@@ -10,6 +10,7 @@
       <entity name="IterateOverArray" class="ptolemy.actor.hoc.IterateOverArray">
         <doc>Iterate a contained actor over input arrays</doc>
         <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon"/>
+        <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory"/>
       </entity>
 
       <entity name="MultiInstanceComposite" class="ptolemy.actor.hoc.MultiInstanceComposite">
