@@ -543,7 +543,7 @@ public class PortConfigurerDialog
     }
 
     // TableCellRenderer for _portTable
-    // @see _setupTableModel()
+    // see _setupTableModel()
     class PortBooleanCellRenderer
         extends JCheckBox
         implements TableCellRenderer {
@@ -577,7 +577,7 @@ public class PortConfigurerDialog
     /** 
      * Default renderer for _portTable
      *
-     * @see _setupTableModel()
+     * see _setupTableModel()
      */
     class StringCellRenderer extends JLabel implements TableCellRenderer {
 
