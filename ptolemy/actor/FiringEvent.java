@@ -79,6 +79,30 @@ public class FiringEvent implements DebugEvent {
 	return _type;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    public static final FiringEventType PREFIRE =
+	new FiringEventType("prefire");
+    public static final FiringEventType FIRE =
+	new FiringEventType("fire");
+    public static final FiringEventType POSTFIRE =
+	new FiringEventType("postfire");
+    public static final FiringEventType POSTPOSTFIRE =
+	new FiringEventType("postpostfire");
+    public static final FiringEventType ITERATE =
+	new FiringEventType("iterate");
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private Actor _actor;
+    private NamedObj _director;
+    private FiringEventType _type;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
     public static class FiringEventType {
 	private FiringEventType(String name) {
 	    _name = name;
@@ -89,19 +113,4 @@ public class FiringEvent implements DebugEvent {
 	}
 	private String _name;
     }
-
-    public static FiringEventType PREFIRE =
-	new FiringEventType("prefire");
-    public static FiringEventType FIRE =
-	new FiringEventType("fire");
-    public static FiringEventType POSTFIRE =
-	new FiringEventType("postfire");
-    public static FiringEventType POSTPOSTFIRE =
-	new FiringEventType("postpostfire");
-    public static FiringEventType ITERATE =
-	new FiringEventType("iterate");
-
-    private Actor _actor;
-    private NamedObj _director;
-    private FiringEventType _type;
 }
