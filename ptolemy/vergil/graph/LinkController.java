@@ -72,9 +72,6 @@ undirected edge are allowed.
 public class LinkController extends EdgeController {
     public LinkController(GraphController controller) {
 	super(controller);
-	// Create and set up the target for connectors
-	// This is wierd...  we want 2 targets, one for head and port,
-	// one for tail and vertex.
 	ConnectorTarget ct = new LinkTarget();
 	setConnectorTarget(ct);
 	setEdgeRenderer(new LinkRenderer());
@@ -111,9 +108,10 @@ public class LinkController extends EdgeController {
                 return super.getHeadSite(f, x, y);
             }
         }
+	// Tail sites are the same as head sites.
     }
 
-    public class LinkRenderer implements EdgeRenderer {
+    public static class LinkRenderer implements EdgeRenderer {
 	/**
          * Render a visual representation of the given edge.
          */
