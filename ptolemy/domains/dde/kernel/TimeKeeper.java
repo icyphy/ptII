@@ -693,9 +693,6 @@ public class TimeKeeper {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // The actor that is managed by this time keeper.
@@ -759,7 +756,7 @@ public class TimeKeeper {
 	}
 
         ///////////////////////////////////////////////////////////
-	////                     public methods                ////
+	////                     public inner methods          ////
 
         // Return the TimedQueueReceiver of this RcvrTimeTriple.
         public TimedQueueReceiver getReceiver() {
@@ -777,7 +774,7 @@ public class TimeKeeper {
         }
 
         ///////////////////////////////////////////////////////////
-        ////                     private variables             ////
+        ////                     private inner variables       ////
 
         private TimedQueueReceiver _rcvr;
 	private double _rcvrTime = 0.0;
