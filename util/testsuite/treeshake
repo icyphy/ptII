@@ -38,7 +38,9 @@ treeshakejar=$1
 javaCommand=$2
 shift; shift
 
-manifest=/tmp/treeshake_manifest$$.txt
+# We can't use tmp here because under cygwin will remap /tmp
+# to c:/cygwin/tmp, and java will not be able to find it
+manifest=$PTII/treeshake_manifest$$.txt
 touch $manifest
 
 # Find the class that includes main()
@@ -63,6 +65,7 @@ ptolemyFiles=`$javaCommand -verbose ${1+"$@"} | \
     awk '{print substr($2, 1, length($2)-1)}' | \
     sed 's@\.@/@g' | awk '{print $1 ".class"}'`
 (cd $PTII; jar -cm $manifest $ptolemyFiles) > $treeshakejar
+rm -f $manifest
 
 # Throw away everything before -classpath xxx, where xxx is also tossed
 echo "$@" | egrep -e "-classpath"
