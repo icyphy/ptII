@@ -259,7 +259,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     //    (1) above).
 
     /**  Add a MoMLFilter to the end of the list of MoMLFilters used
-     *  to translate names.
+     *  to translate names.  If the list of MoMLFilters already contains
+     *  the filter, then the filter is not added again.
      *  Note that this method is static.  The specified MoMLFilter
      *  will filter all MoML for any instances of this class.
      *  @param filter  The MoMLFilter to add to the list of MoMLFilters.
@@ -271,11 +272,15 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         if (_filterList == null) {
             _filterList = new LinkedList();
         }
-        _filterList.add(filter);
+        if (!_filterList.contains(filter)) {
+            _filterList.add(filter);
+        }
     }
 
     /**  Add a List of MoMLFilters to the end of the list of MoMLFilters used
-     *  to translate names.
+     *  to translate names.  The argument list of filters is added even if
+     *  the current list already contains some of the filters in the argument
+     *  list.
      *  Note that this method is static.  The specified MoMLFilter
      *  will filter all MoML for any instances of this class.
      *  @param filterList The list of MoMLFilters to add to the
