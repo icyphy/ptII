@@ -54,7 +54,9 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 CLASSPATH = ../../../../..
 
 JSRCS = \
-	VQEncode.java
+	VQDecode.java \
+	VQEncode.java \
+	VQImageSequence.java
 
 
 EXTRA_SRCS =	$(JSRCS)
