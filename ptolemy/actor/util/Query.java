@@ -232,7 +232,7 @@ public class Query extends Panel {
             Enumeration listeners = _listeners.elements();
             while(listeners.hasMoreElements()) {
                 QueryListener qlistener =
-                       (QueryListener)(listeners.nextElement());
+                    (QueryListener)(listeners.nextElement());
                 qlistener.changed(name);
             }
         }
