@@ -1,14 +1,14 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE ptolemyschematic SYSTEM "ptolemyicon.dtd">
 
-<schematic name="SDF" path="domains/sdf/lib/icons" version="1.0">
+<schematic name="SDF" version="1.0">
 <description>Icons for use within SDF</description>
 
 <entity name="Load BMP File" iconlibrary="examplelibrary.ptml">
 <description>Load the Image that will be transmitted and stored.</description>
 <entitytype name="loadimage" ports="2"/>
 <parameter name="filename" type="string"/>
-<port name="image" direction="output" type="doubleArray"/>
+<port name="image" output="true" type="doubleArray"/>
 </entity>
 
 <entity name="Save BMP file" iconlibrary="examplelibrary.ptml">
@@ -18,8 +18,8 @@
 </entity>
 
 <relation name="R1">
-<link entity="Load BMP File" port="image"/>
-<link entity="Save BMP File" port="image"/>
+<link name="Load BMP File.image"/>
+<link name="Save BMP File.image"/>
 </relation>
 
 <!-- these parameters will get set in the Director -->

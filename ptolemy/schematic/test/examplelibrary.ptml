@@ -1,23 +1,27 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE ptolemyicon SYSTEM "ptolemyicon.dtd">
-<iconlibrary name="SDF" path="domains/sdf/lib/icons" version="1.0">
+
+<iconlibrary name="SDF" version="1.0">
 <header>
 <description>Icons for use within SDF</description>
 <sublibrary file="domains/sdf/lib/icons/htvq.pti"/>
 <sublibrary file="domains/sdf/lib/icons/communication.pti"/>
 </header>
-<icon>
-<entitytype name="loadimage" ports="2"/>
+<icon name="LoadImage">
 <description>Load an image from a file</description>
-<port name="filename" direction="input" type="&string;"/>
-<port name="image" direction="output" type="&doubleArray;"/>
+<entitytype name="loadimage" ports="2"/>
 <graphic format="tcl">
+<tclscript>
 <!-- Some Tcl script -->
+</tclscript>
 </graphic>
+<parameter name="filename" type="string"/>
+<port name="image" output="true" type="doubleArray"/>
 </icon>
-<icon name="saveimage" ports="2">
-<port name="filename" direction="input" type="&string;"/>
-<port name="image" direction="input" type="&doubleArray;"/>
+<icon name="SaveImage">
+<entitytype name="saveimage" ports="2"/>
+<port name="filename" input="true" type="string"/>
+<port name="image" input="true" type="doubleArray"/>
 <graphic format="xml">
 <line style="dotted" width="5" points="0 0 10 10"/>
 <rect color="blue" fill="hatch" points="0 0 10 10"/>
