@@ -38,8 +38,7 @@ import ptolemy.data.type.Type;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 
-import java.util.Enumeration;
-import collections.LinkedList;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// AbsoluteValue
@@ -95,11 +94,11 @@ public class AbsoluteValue extends Transformer {
     /** Return the following type constraints: If the input type is Complex,
      *  the output type is no less than Double, otherwise, the output type
      *  is no less than the input; The output type is no greater than Scalar.
-     *  @return An empty Enumeration.
+     *  @return A list of inequalities.
      */
-    public Enumeration typeConstraints () {
+    public List typeConstraintList() {
 	// type constraints are stored in the output port.
-	return output.typeConstraints();
+	return output.typeConstraintList();
     }
 
     /** Compute the absolute value of the input.  If there is no input, then
