@@ -26,7 +26,7 @@ fi
 
 
 # Stars from Ptolemy Classic CGC.  Include only stars and dsp
-stars=`find $cgc -name "*.pl" | egrep -v "targets|tcltk|contrib|vis"`
+stars=`find $cgc -name "*.pl" | egrep -v "targets|tcltk|contrib|vis" | sort`
 #stars="/users/ptolemy/src/domains/cgc/stars/CGCAdd.pl /users/ptolemy/src/domains/cgc/dsp/stars/CGCIIR.pl"
 
 for star in $stars
@@ -68,6 +68,7 @@ dirs="lib dsp/lib"
 for dir in $dirs
 do
     destinationDirectory=$PTII/$destinationSubdir/$dir
+    fixclassic $destinationDirectory/*.java
 
     echo "	    <input source=\"$destinationSubdir/$dir/index.xml\"/>" >> $PTII/$destinationSubdir/cgc.xml
 
