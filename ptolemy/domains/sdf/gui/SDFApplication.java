@@ -1,4 +1,4 @@
-/* A base class for applets that use the SDF domain.
+/* A base class for applications that use the SDF domain.
 
  Copyright (c) 1999 The Regents of the University of California.
  All rights reserved.
@@ -43,9 +43,8 @@ A base class for applications that use the SDF domain. This is provided
 for convenience, in order to promote certain common elements among
 SDF applications. It is by no means required in order to create an 
 application that uses the SDF domain. In particular, it creates 
-and configures a director. It sets the iterations parameter Note that
+and configures a director. It sets the iterations parameter. Note that
 this class does not use any gui elements.
-of the director.
 
 @author Brian K. Vogel
 @version $Id$
@@ -58,8 +57,8 @@ public class SDFApplication extends PtolemyApplication {
    
     /** Set the number of iterations. If this method is not called, a
      *  default vaule of 1 is used. This method should be called prior
-     *  to calling create(), otherwise the default value of iterations
-     *  will be used (1 iteration).
+     *  to calling create(),  otherwise the default value of 1 iteration
+     *  will be used.
      */
     public void setIterations(int numIterations) {
 	this.iterations = numIterations;
