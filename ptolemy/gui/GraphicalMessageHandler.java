@@ -71,6 +71,9 @@ public class GraphicalMessageHandler extends MessageHandler {
      *   is iconified, or null if none has been specified.
      */
     public static Component getContext() {
+        if (_context == null) {
+            return null;
+        }
         return (Component)_context.get();
     }
 
