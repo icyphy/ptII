@@ -173,12 +173,12 @@ PTINYPACKAGES = \
 #			ptolemy.domains.gr.lib
 
 # Javasound is not part of JDK1.2
-#JAVASOUNDPACKAGES =	ptolemy.actor.lib.javasound \
-#			ptolemy.media.javasound
+JAVASOUNDPACKAGES =	ptolemy.actor.lib.javasound \
+			ptolemy.media.javasound
 
 # rtos domain uses java.util.Timer, which is not present in JDK1.2
-#RTOSPACKAGES =		ptolemy.domains.rtos.kernel \
-#			ptolemy.domains.rtos.lib
+RTOSPACKAGES =		ptolemy.domains.rtos.kernel \
+			ptolemy.domains.rtos.lib
 
 ALLPACKAGES =		$(CODEGENPACKAGES) \
 			$(COPERNICUSPACKAGES) \
@@ -207,6 +207,7 @@ ALLPACKAGES =		$(CODEGENPACKAGES) \
 			ptolemy.domains.de.kernel \
 			ptolemy.domains.fsm.kernel \
 			ptolemy.domains.pn.kernel \
+			ptolemy.domains.petrinet.kernel \
 			ptolemy.domains.sdf.kernel \
 			ptolemy.domains.sr.kernel \
 			ptolemy.domains.sr.lib \
@@ -283,6 +284,7 @@ codeDoc/tree.html:	$(CODEGENJSRCS) \
 			../ptolemy/domains/de/lib/*.java \
 			../ptolemy/domains/fsm/kernel/*.java \
 			../ptolemy/domains/pn/kernel/*.java \
+			../ptolemy/domains/petrinet/kernel/*.java \
 			../ptolemy/domains/sdf/kernel/*.java \
 			../ptolemy/domains/sdf/lib/*.java \
 			../ptolemy/domains/sdf/lib/vq/*.java \
