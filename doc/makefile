@@ -80,6 +80,7 @@ ALLJSRCS = 		collections \
 			ptolemy.kernel.util \
 			ptolemy.actor \
 			ptolemy.actor.event \
+			ptolemy.actor.gui \
 			ptolemy.actor.lib \
 			ptolemy.actor.process \
 			ptolemy.actor.sched \
@@ -88,6 +89,7 @@ ALLJSRCS = 		collections \
 			ptolemy.domains.csp.lib \
 			ptolemy.domains.ct.gui \
 			ptolemy.domains.ct.kernel \
+			ptolemy.domains.ct.kernel.solver \
 			ptolemy.domains.ct.kernel.util \
 			ptolemy.domains.ct.lib \
 			ptolemy.domains.dde.kernel \
@@ -107,6 +109,7 @@ ALLJSRCS = 		collections \
 			ptolemy.data \
 			ptolemy.data.expr \
 			ptolemy.graph \
+			ptolemy.gui \
 			ptolemy.math \
 			ptolemy.media
 
@@ -121,6 +124,7 @@ codeDoc/tree.html: 	../collections/*.java \
 			../ptolemy/kernel/util/*.java \
 			../ptolemy/actor/*.java \
 			../ptolemy/actor/event/*.java \
+			../ptolemy/actor/gui/*.java \
 			../ptolemy/actor/lib/*.java \
 			../ptolemy/actor/process/*.java \
 			../ptolemy/actor/sched/*.java \
@@ -129,6 +133,7 @@ codeDoc/tree.html: 	../collections/*.java \
 			../ptolemy/domains/csp/kernel/*.java \
 			../ptolemy/domains/ct/gui/*.java \
 			../ptolemy/domains/ct/kernel/*.java \
+			../ptolemy/domains/ct/kernel/solver/*.java \
 			../ptolemy/domains/ct/kernel/util/*.java \
 			../ptolemy/domains/ct/lib/*.java \
 			../ptolemy/domains/dde/kernel/*.java \
@@ -148,6 +153,7 @@ codeDoc/tree.html: 	../collections/*.java \
 			../ptolemy/data/*.java \
 			../ptolemy/data/expr/*.java \
 			../ptolemy/graph/*.java \
+			../ptolemy/gui/*.java \
 			../ptolemy/math/*.java \
 			../ptolemy/media/*.java
 	if [ ! -d codeDoc ]; then mkdir -p codeDoc; fi
