@@ -1,0 +1,25 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="configuration" class="ptolemy.actor.gui.SingleWindowConfiguration">
+  
+  <!-- SingleWindow Effigy -->
+  <entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
+  	<entity name="Navigable Graph Editor" class="ptolemy.actor.gui.NavigableEffigy$Factory">
+      <entity name="blank" class="ptolemy.actor.TypedCompositeActor"/>
+    </entity>
+  </entity>
+  <!-- END SingleWindow Effigy factories-->
+  
+  <!-- SingleWindow Tableau factories -->
+  <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
+  	<input source="singleWindowTableauFactory.xml"/>
+  </property>
+  <!-- END SingleWindow Tableau factories -->
+  
+   <doc>Configuration to edit and run Ptolemy II models</doc>
+  <input source="ptolemy/configs/defaultFullConfiguration.xml"/>
+  
+  
+  
+</entity>

@@ -1,0 +1,26 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<!-- Factory for graph editing.  -->
+<property name="factoryNav" class="ptolemy.actor.gui.PtolemyTableauFactory">
+  <!-- These will appear in the View menu of a the graph editor. -->
+  <property name="Navigable Graph Editor"
+            class="ptolemy.vergil.navigable.NavigableActorGraphTableau$Factory"/>
+  <property name="Run Window"
+            class="ptolemy.actor.gui.RunTableau$Factory"/>
+  <property name="Tree View"
+            class="ptolemy.vergil.tree.TreeTableau$Factory"/>
+  <property name="XML view"
+            class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
+  <!-- No code gen in this basic file. -->
+  <!--property name="Code Generator"
+            class="ptolemy.copernicus.gui.GeneratorTableau$Factory"/-->
+  <!-- FIXME: does this belong in the View menu? -->
+  <property name="JVM Properties"
+            class="ptolemy.actor.gui.JVMTableau$Factory"/>
+  <!-- FIXME: Tcl Shell does not belong in the View menu, nor in basic.
+    Commented out so that Web Start works
+    -->
+  <!--property name="Tcl Shell"
+            class="ptolemy.actor.gui.ptjacl.TclShellTableau$Factory"/-->
+</property>
