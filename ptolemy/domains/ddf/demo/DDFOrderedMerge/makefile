@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II DDF RijndaelEncryption demo
+# Makefile for Ptolemy II DDF DDFOrderedMerge demo
 #
 # @Authors: Christopher Brooks (makefile only)
 #
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ddf/demo/RijndaelEncryption
+ME =		ptolemy/domains/ddf/demo/DDFOrderedMerge
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -41,19 +41,18 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	RijndaelEncryption
+PTPACKAGE = 	DDFOrderedMerge
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	RijndaelEncryption.xml \
-	sbox.txt
+	DDFOrderedMerge.xml \
+
 
 EXTRA_SRCS = \
 	$(JSRCS) \
-	$(OTHER_FILES_TO_BE_JARED) \
-	RijndaelEncryption.htm
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -73,15 +72,16 @@ all: jclass
 
 install: all $(PTCLASSJAR)
 
-demo: demo_applet demo_ptolemy demo_vergil
-demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer RijndaelEncryption.htm
+demo: demo_ptolemy demo_vergil
+
+#demo_applet:
+#	CLASSPATH="$(CLASSPATH)" appletviewer DDFOrderedMerge.htm
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" RijndaelEncryption.xml
+	"$(PTII)/bin/ptolemy" DDFOrderedMerge.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" RijndaelEncryption.xml
+	"$(PTII)/bin/vergil" DDFOrderedMerge.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
