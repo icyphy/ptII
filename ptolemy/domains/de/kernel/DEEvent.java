@@ -42,19 +42,19 @@ import ptolemy.kernel.util.NamedObj;
    This class defines the structure of events in Ptolemy II DE domain.
    Conceptually, a DE event contains a token and a tag.  
    <p>
-   A tag consists of a time stamp, a microstep. The time stamp is the model
+   A tag consists of a timestamp and a microstep. The timestamp is the model
    time when the event exists. The microstep represents the index of a sequence
    of simultaneous events at a model time. 
    <p>
    A DE event is associated with a destination actor, ioPort, and receiver. A 
    DE event can be a pure event, which is used to schedule an actor to fire at 
    a particular tag. A pure DE event has its desitination ioPort and receiver 
-   as null. A DE event can also be a data or token event. In which case, none
-   of the desitinations should be null.  
+   as null. A DE event can also be a trigger event, which is associated with an
+   IO port, where none of the desitinations should be null.  
    <p>
    A DE event also has a depth, which is the topology information of its 
    destinations. For a pure event, the depth is that of the destination actor.
-   For a data event, the depth is that of the destination io port. A larger 
+   For a trigger event, the depth is that of the destination io port. A larger 
    value of depth represents a lower priority when processing events with 
    the same tag. 
    <p>
@@ -66,11 +66,13 @@ import ptolemy.kernel.util.NamedObj;
    @author Lukito Muliadi, Edward A. Lee, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (liuj)
-   @Pt.AcceptedRating Green (liuxj)
+   @Pt.ProposedRating Yellow (hyzheng)
+   @Pt.AcceptedRating Red (hyzheng)
 */
 public final class DEEvent implements Comparable {
 
+    // FIXME: a DE event does not need the _token field nor the _receiver field.
+    
     /** Construct a data DE event with the specified destination receiver,
      *  token, time stamp, microstep, and depth. 
      *  @param receiver The destination receiver.

@@ -57,8 +57,8 @@ import ptolemy.kernel.util.InternalErrorException;
     @author Lukito Muliadi, Edward A. Lee, Jie Liu
     @version $Id$
     @since Ptolemy II 0.2
-    @Pt.ProposedRating Red (hyzheng)
-    @Pt.AcceptedRating Yellow (hyzheng)
+    @Pt.ProposedRating Yellow (hyzheng)
+    @Pt.AcceptedRating Red (hyzheng)
 */
 public class DEReceiver extends AbstractReceiver {
 
