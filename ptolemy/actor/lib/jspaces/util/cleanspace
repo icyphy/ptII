@@ -4,4 +4,4 @@
 ####  This is a script that cleans the JavsSpaces
 #
 
-java -Djava.security.policy=${PTII}/ptolemy/actor/lib/jspaces/policy.all -Doutrigger.spacename=JavaSpaces -Dcom.sun.jini.lookup.groups=public -cp ${PTII}:${PTII}/vendors/sun/jini/lib/jini-jspaces.jar -Djava.rmi.server.codebase=file:${PTII} ptolemy.actor.lib.jspaces.util.SpaceCleaner
+java -Djava.security.policy=${PTII}/ptolemy/actor/lib/jspaces/util/policy.all -Doutrigger.spacename=JavaSpaces -Dcom.sun.jini.lookup.groups=public -cp ${PTII}:${PTII}/vendors/sun/jini/lib/jini-jspaces.jar -Djava.rmi.server.codebase=file:${PTII} ptolemy.actor.lib.jspaces.util.SpaceCleaner
