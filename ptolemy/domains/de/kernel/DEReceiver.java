@@ -110,6 +110,56 @@ public class DEReceiver extends AbstractReceiver {
         return (Token)_tokens.removeFirst();
     }
 
+    /** Return the director that created this receiver.
+     *  If this receiver is an inside receiver of
+     *  an output port of an opaque composite actor,
+     *  then the director will be the local director
+     *  of the container of its port. Otherwise, it's the executive
+     *  director of the container of its port.Note that
+     *  the director returned is guaranteed to be non-null.
+     *  This method is read synchronized on the workspace.
+     *  @return An instance of DEDirector.
+     *  @exception IllegalActionException If there is no container port, or
+     *   if the port has no container actor, or if the actor has no director,
+     *   or if the director is not an instance of DEDirector.
+     */
+    public DEDirector getDirector() throws IllegalActionException {
+        IOPort port = (IOPort)getContainer();
+        if (port != null) {
+            if (_directorVersion == port.workspace().getVersion()) {
+                return _director;
+            }
+            // Cache is invalid.  Reconstruct it.
+            try {
+                port.workspace().getReadAccess();
+                Actor actor = (Actor)port.getContainer();
+                if (actor != null) {
+                    Director dir;
+                    if ( (port.isOutput()) &&
+                            (actor instanceof CompositeActor) &&
+                            ((CompositeActor)actor).isOpaque()) {
+                        dir = actor.getDirector();
+                    } else {
+                        dir = actor.getExecutiveDirector();
+                    }
+                    if (dir != null) {
+                        if (dir instanceof DEDirector) {
+                            _director = (DEDirector)dir;
+                            _directorVersion = port.workspace().getVersion();
+                            return _director;
+                        } else {
+                            throw new IllegalActionException(getContainer(),
+                                    "Does not have a DEDirector.");
+                        }
+                    }
+                }
+            } finally {
+                port.workspace().doneReading();
+            }
+        }
+        throw new IllegalActionException(getContainer(),
+                "Does not have a IOPort as the container of the receiver.");
+    }
 
     /** Return true, indicating that there is always room.
      *  @return True.
@@ -235,60 +285,6 @@ public class DEReceiver extends AbstractReceiver {
      */
     protected void _triggerEvent(Token token) {
         _tokens.add(token);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Return the director that created this receiver.
-     *  If this receiver is an inside receiver of
-     *  an output port of an opaque composite actor,
-     *  then the director will be the local director
-     *  of the container of its port. Otherwise, it's the executive
-     *  director of the container of its port.Note that
-     *  the director returned is guaranteed to be non-null.
-     *  This method is read synchronized on the workspace.
-     *  @return An instance of DEDirector.
-     *  @exception IllegalActionException If there is no container port, or
-     *   if the port has no container actor, or if the actor has no director,
-     *   or if the director is not an instance of DEDirector.
-     */
-    public DEDirector getDirector() throws IllegalActionException {
-        IOPort port = (IOPort)getContainer();
-        if (port != null) {
-            if (_directorVersion == port.workspace().getVersion()) {
-                return _director;
-            }
-            // Cache is invalid.  Reconstruct it.
-            try {
-                port.workspace().getReadAccess();
-                Actor actor = (Actor)port.getContainer();
-                if (actor != null) {
-                    Director dir;
-                    if ( (port.isOutput()) &&
-                            (actor instanceof CompositeActor) &&
-                            ((CompositeActor)actor).isOpaque()) {
-                        dir = actor.getDirector();
-                    } else {
-                        dir = actor.getExecutiveDirector();
-                    }
-                    if (dir != null) {
-                        if (dir instanceof DEDirector) {
-                            _director = (DEDirector)dir;
-                            _directorVersion = port.workspace().getVersion();
-                            return _director;
-                        } else {
-                            throw new IllegalActionException(getContainer(),
-                                    "Does not have a DEDirector.");
-                        }
-                    }
-                }
-            } finally {
-                port.workspace().doneReading();
-            }
-        }
-        throw new IllegalActionException(getContainer(),
-                "Does not have a IOPort as the container of the receiver.");
     }
 
     ///////////////////////////////////////////////////////////////////
