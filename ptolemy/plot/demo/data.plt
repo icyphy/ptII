@@ -1,6 +1,6 @@
 # Test file for Ptolemy II Java Plotter
 # @Version: $Id$
-# Copyright (c) 1997-2002 The Regents of the University of California.
+# Copyright (c) 1997-2003 The Regents of the University of California.
 # All rights reserved.
 # See the file ../copyright for copyright notice,
 # limitation of liability, and disclaimer of warranty provisions.

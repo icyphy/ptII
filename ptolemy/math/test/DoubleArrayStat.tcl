@@ -2,7 +2,7 @@
 #
 # @Author: Jeff Tsay
 #
-# @Copyright (c) 1998-2002 The Regents of the University of California.
+# @Copyright (c) 1998-2003 The Regents of the University of California.
 # All rights reserved.
 # 
 # Permission is hereby granted, without written agreement and without
@@ -331,4 +331,3 @@ test DoubleArrayStat-6.1.1 {autoCorrelation} {
 test DoubleArrayStat-6.1.2 {autoCorrelationAt without startlag and endlag} {
     set v1 [java::call ptolemy.math.DoubleArrayStat autoCorrelationAt $p1 4 0]
     list $v1 
-} {0.38}

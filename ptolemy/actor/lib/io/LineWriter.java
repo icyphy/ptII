@@ -1,6 +1,6 @@
 /* An actor that writes the value of string tokens to a file, one per line.
 
-@Copyright (c) 1998-2002 The Regents of the University of California.
+@Copyright (c) 1998-2003 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without

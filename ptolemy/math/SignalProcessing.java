@@ -6,7 +6,7 @@ described in:
 Martin Vetterli and Henri J. Nussbaumer."Simple FFT and DCT Algorithms with
 Reduced Number of Operations". Signal Processing 6 (1984) 267-278.
 
-Copyright (c) 1998-2002 The Regents of the University of California.
+Copyright (c) 1998-2003 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without

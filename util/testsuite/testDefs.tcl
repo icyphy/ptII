@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1996-2002 The Regents of the University of California.
+# @Copyright (c) 1996-2003 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -36,7 +36,7 @@
 # they run their tests.  This improved approach to testing was designed
 # and initially implemented by Mary Ann May-Pumphrey of Sun Microsystems.
 #
-# Copyright (c) 1990-2002 The Regents of the University of California.
+# Copyright (c) 1990-2003 The Regents of the University of California.
 # Copyright (c) 1994 Sun Microsystems, Inc.
 #
 # ========================================================================
@@ -46,7 +46,7 @@
 #           AT&T Bell Laboratories   E-mail: michael.mclennan@att.com
 #     RCS:  $Id$
 # ========================================================================
-#             Copyright (c) 1993-2002  AT&T Bell Laboratories
+#             Copyright (c) 1993-2003  AT&T Bell Laboratories
 # ------------------------------------------------------------------------
 #
 # See the file "license.terms" for information on usage and redistribution

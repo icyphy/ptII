@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1999-2002 The Regents of the University of California.
+# @Copyright (c) 1999-2003 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -304,4 +304,3 @@ info field = Ptolemy audio}}
 sleep 2
 if [catch {file delete -force tmp.au tmp.raw array.au tmp2.au tmp2_5.au} msg] {
     puts "deleteing files failed: $msg"
-}

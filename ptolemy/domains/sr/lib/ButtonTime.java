@@ -1,7 +1,7 @@
 /* An actor that generates the current wall clock time in response to a
    click of a button.
 
-@Copyright (c) 1998-2002 The Regents of the University of California.
+@Copyright (c) 1998-2003 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without

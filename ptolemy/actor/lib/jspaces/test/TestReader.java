@@ -1,6 +1,6 @@
 /* A JavaSpace client that reads stock prices and print out on screen.
 
- Copyright (c) 1998-2002 The Regents of the University of California.
+ Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this

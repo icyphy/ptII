@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2002 The Regents of the University of California.
+# @Copyright (c) 1998-2003 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -170,4 +170,3 @@ test PNProcessEvent-2.2 {get Methods} {
 	[[$p3 getException] toString] \
 	[$p3 getFinishingCause] \
 } {.E0.A1 736 368 {ptolemy.kernel.util.IllegalActionException: This is a test exception
-  in .E0.A2} 736}

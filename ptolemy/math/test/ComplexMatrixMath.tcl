@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2002 The Regents of the University of California.
+# @Copyright (c) 1998-2003 The Regents of the University of California.
 # All rights reserved.
 # 
 # Permission is hereby granted, without written agreement and without
@@ -362,4 +362,3 @@ test ComplexMatrixMath-5.4.3 {within} {
     set mr [java::call ptolemy.math.ComplexMatrixMath \
 	    within $m3 $m33 $c7]
     epsilonDiff $mr 0
-} {}

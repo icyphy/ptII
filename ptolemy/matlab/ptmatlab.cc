@@ -1,6 +1,6 @@
 /* ptmatlab.cc - Java Native Interface to the matlab engine API
 
- Copyright (c) 1998-2002 The Regents of the University of California and
+ Copyright (c) 1998-2003 The Regents of the University of California and
  Research in Motion Limited.
  All rights reserved.
  Permission is hereby granted, without written agreement and without

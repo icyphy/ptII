@@ -1,6 +1,6 @@
 /* A test class used to cover the _nonZeroLength method
 
-Copyright (c) 1998-2002 The Regents of the University of California.
+Copyright (c) 1998-2003 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without

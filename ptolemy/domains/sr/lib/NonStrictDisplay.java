@@ -1,6 +1,6 @@
 /* An actor that displays the status and value of input tokens in a text area.
 
-@Copyright (c) 1998-2002 The Regents of the University of California.
+@Copyright (c) 1998-2003 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
