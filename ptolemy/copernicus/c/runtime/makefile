@@ -51,6 +51,7 @@ EXTRA_SRCS =	$(JSRCS) \
 	pccg.h \
 	pccg_array.c \
 	pccg_array.h \
+    pccg_single.h \
 	readme.txt \
 	strings.c \
 	strings.h
