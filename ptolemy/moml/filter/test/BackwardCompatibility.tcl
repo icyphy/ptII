@@ -680,6 +680,28 @@ test BackwardCompatibility-12.1 {Setting a multiport can result in a null contai
 </entity>
 }}
 
+
+# If you create a DirectoryListing actor in Ptolemy II 4.0.1 and
+# enabling displaying port names, then you get something like:
+set testMoML "$header
+<entity name=\"testMoML\" class=\"ptolemy.actor.TypedCompositeActor\">
+    <entity name=\"test\" class=\"ptolemy.actor.lib.io.DirectoryListing\">
+    <port name=\"directoryOrURL\" class=\"ptolemy.actor.TypedIOPort\">
+        <property name=\"input\"/>
+        <property name=\"_showName\" class=\"ptolemy.kernel.util.SingletonAttribute\">
+            </property>
+    </port>
+    </entity>
+</entity>"
+
+test BackwardCompatibility-13.1 {DirectoryListing}  {
+    set parser [java::new ptolemy.moml.MoMLParser]
+    # Note that 1.1 added the filter for all the parsers
+    set toplevel [$parser parse $testMoML]
+    set newMoML [$toplevel exportMoML]
+    list $newMoML
+} {}
+
 # NonStrictTest reads ptolemy.actor.lib.NonStrictTest.fire.compat 
 # and ignores fire() not being called if the property is true.
 java::call System setProperty \
