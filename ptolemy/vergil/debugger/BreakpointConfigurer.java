@@ -71,6 +71,9 @@ public class BreakpointConfigurer extends Query implements ChangeListener{
             BasicGraphController graphController) {
         super();
 
+        // FIXME: Perhaps this dialog should have a help button?
+        // The text in $PTII/doc/coding/debugging.htm could be used.
+
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setTextWidth(15);
 
@@ -227,24 +230,26 @@ public class BreakpointConfigurer extends Query implements ChangeListener{
     // places in this file: _firingEventTypeLabels, _firingEventTypes
     // Labels of FiringEventTypes to show in the dialog box.
     protected static String[] _firingEventTypeLabels = {
-        "before prefire",
-        "after prefire",
-        "before fire",
-        "after fire",
-        "before postfire",
-        "after postfire",
+        // FIXME: Only BEFORE_ITERATE and AFTER_ITERATE work with SDF
+        //"before prefire",
+        //"after prefire",
+        //"before fire",
+        //"after fire",
+        //"before postfire",
+        //"after postfire",
         "before iterate",
         "after iterate"
     };
 
     // FiringEventTypes that the user can set breakpoints on.
     protected static FiringEventType[] _firingEventTypes = {
-        FiringEvent.BEFORE_PREFIRE,
-        FiringEvent.AFTER_PREFIRE,
-        FiringEvent.BEFORE_FIRE,
-        FiringEvent.AFTER_FIRE,
-        FiringEvent.BEFORE_POSTFIRE,
-        FiringEvent.AFTER_POSTFIRE,
+        // FIXME: Only BEFORE_ITERATE and AFTER_ITERATE work with SDF
+        //FiringEvent.BEFORE_PREFIRE,
+        //FiringEvent.AFTER_PREFIRE,
+        //FiringEvent.BEFORE_FIRE,
+        //FiringEvent.AFTER_FIRE,
+        //FiringEvent.BEFORE_POSTFIRE,
+        //FiringEvent.AFTER_POSTFIRE,
         FiringEvent.BEFORE_ITERATE,
         FiringEvent.AFTER_ITERATE
     };
