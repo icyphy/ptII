@@ -20,6 +20,7 @@ The following plot illustrates a dynamically updated plot:
 <p>
 Click on the start button to start the plotting, and on the stop button to stop it.  The animation on this plot has been slowed down for visual
 aesthetics.
+On a reasonable computer, plotting is quite fast.
 <p>
 Such a plot is created by defining a class derived from <code>PlotLive</code>
 (which is abstract).  The example shown here is the
@@ -37,8 +38,8 @@ however, introduces a number of annoying artifacts in the graph.  In
 particular, if marks are made at the plotted points, and lines are
 drawn between points, the lines effectively erase the marks where they
 intersect.  Moreover, if lines or points overlap, they erase each
-other.  Surely there must be a better way to achieve easy erasure of
-drawn graphics.
+other.  In the future we hope to replace this mechanism with one that
+treats marks on the screen as graphical objects.
 <HR>
 <A HREF="index.html">Up</A> to the Example index -
 <A HREF="BarGraph.html">Back</A> to a bar graph -
