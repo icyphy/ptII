@@ -1,6 +1,6 @@
 /* BusAssembler - assemble input port channels into output bus
 
- Copyright (c) 1998-2002 The Regents of the University of California and
+ Copyright (c) 2002 The Regents of the University of California and
  Research in Motion Limited.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -27,7 +27,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (zkemenczy@rim.net)
-@AcceptedRating
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
