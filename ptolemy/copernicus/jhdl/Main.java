@@ -27,8 +27,8 @@
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.copernicus.jhdl;
 
+package ptolemy.copernicus.jhdl;
 
 import ptolemy.actor.*;
 import ptolemy.copernicus.kernel.ActorTransformer;
@@ -57,26 +57,18 @@ import soot.util.*;
 import java.io.*;
 import java.util.*;
 
-//////////////////////////////////////////////////////////////////////////
-//// JHDLTransformer
-/**
-
-@author Michael Wirthlin, Stephen Neuendorffer, Edward A. Lee, Christopher Hylands
-@version $Id$
-*/
-
 public class Main extends KernelMain {
     
+    ///////////////////////////////////////////////////////////////////
+    ////                     public methods                        ////
 
-    /** Read in a MoML mode and generate Java classes for that model. 
-     *  @param args An array of Strings that control the transformation
-     */
-    public Main(String [] args) throws Exception{
+    public Main(String [] args) throws Exception {
 	super(args);
 
         // Process the global options.
         // FIXME!!
-        String options = "deep targetPackage:ptolemy.apps.soot.demo.SimpleAdd.cg";
+        String options = "deep targetPackage:ptolemy.copernicus.jhdl.demo.SimpleAdd.cg";
+
 
         // Add a transformer to convert each actor class to JHDL.
         // "wjtp" means "whole java tranformation package"
@@ -104,12 +96,9 @@ public class Main extends KernelMain {
         Scene.v().getPack("jtp").add(new Transform("jtp.dae",
                 DeadAssignmentEliminator.v()));
            
-        _callSootMain(args);
+         _callSootMain(args);
     }
     
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
     /** Read in a MoML model, generate .class files for use with JHDL */
     public static void main(String[] args) throws Exception {
 	// We do most of the work in the constructor so that we
@@ -117,4 +106,22 @@ public class Main extends KernelMain {
 	Main main = new Main(args);
     }
 
+    // Get the method with the given name in the given class 
+    // (or one of its super classes).
+    public static SootMethod _searchForMethodByName(SootClass theClass, 
+            String name) {
+        while(theClass != null) {
+            System.out.println("checking " + theClass + " for " + name);
+            if(theClass.declaresMethodByName(name)) {
+                return theClass.getMethodByName(name);
+            }
+            theClass = theClass.getSuperclass();
+            theClass.setLibraryClass();
+        }
+        throw new RuntimeException("Method " + name + " not found in class "
+                + theClass);
+    }
+    
+
+    //    private static CompositeActor _toplevel;
 }

@@ -58,6 +58,9 @@ import java.util.Map;
 Read in a MoML model, generate .class files with very few
 dependencies on Ptolemy II.
 
+FIXME: This is only a stub file, it does not implement
+C code generation yet.
+
 @author Michael Wirthlin, Stephen Neuendorffer, Edward A. Lee, Christopher Hylands
 @version $Id$
 */

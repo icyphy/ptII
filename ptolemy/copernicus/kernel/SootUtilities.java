@@ -437,6 +437,7 @@ public class SootUtilities {
                 return theClass.getMethodByName(name);
             }
             theClass = theClass.getSuperclass();
+            theClass.setLibraryClass();
         }
         throw new RuntimeException("Method " + name + " not found in class "
                 + theClass);
