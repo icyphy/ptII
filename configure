@@ -1704,7 +1704,7 @@ echo "configure:1689: checking for javax.comm.properties " >&5
     if test $PTCYGWIN = "yes"; then
        echo $ac_n "checking for win32com.dll ""... $ac_c" 1>&6
 echo "configure:1707: checking for win32com.dll " >&5
-       if test -f "$PTJAVA_HOME/jre/bin/win32com.dll"; then
+       if test -f "$PTJAVA_HOME/bin/win32com.dll"; then
            echo "$ac_t""$PTJAVA_HOME/jre/bin/win32com.dll" 1>&6
        else   
            echo "configure: warning: $PTJAVA_HOME/jre/bin/win32com.dll
