@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="HelicopterSystem" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Helicopter" class="ptolemy.actor.TypedCompositeActor">
     <property name="CTDirector" class="ptolemy.domains.ct.kernel.CTMultiSolverDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -27,11 +27,11 @@
         </property>
         <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="71.91108227835741, 530.833313147227">
+        <property name="_location" class="ptolemy.moml.Location" value="80.0, 545.0">
         </property>
     </property>
     <property name="13:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="474.0, 537.0">
+        <property name="_location" class="ptolemy.moml.Location" value="415.0, 475.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -46,9 +46,9 @@ Five controllers are applied sequentially to the modes.</text>
         <property name="_hideName" class="ptolemy.data.expr.Parameter">
         </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[811, 585]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1073, 919]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-1, 35]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, -4]">
     </property>
     <entity name="Controllers" class="ptolemy.domains.ct.kernel.CTCompositeActor">
         <property name="HSDirector" class="ptolemy.domains.fsm.kernel.HSDirector">
@@ -57,11 +57,11 @@ Five controllers are applied sequentially to the modes.</text>
             <property name="_location" class="ptolemy.moml.Location" value="478.0, 388.0">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="697.6666666666666, 92.49999237060547">
+        <property name="_location" class="ptolemy.moml.Location" value="715.0, 95.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
         </property>
-        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[172, 176]">
         </property>
         <port name="inputPx" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -90,7 +90,7 @@ Five controllers are applied sequentially to the modes.</text>
         </port>
         <port name="inputPz" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="96.0, 208.0">
+            <property name="_location" class="ptolemy.moml.Location" value="100.0, 210.0">
             </property>
         </port>
         <port name="inputDPz" class="ptolemy.actor.TypedIOPort">
@@ -120,12 +120,12 @@ Five controllers are applied sequentially to the modes.</text>
         </port>
         <port name="outputVx" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="505.0, 283.25">
+            <property name="_location" class="ptolemy.moml.Location" value="530.0, 285.0">
             </property>
         </port>
         <port name="outputVz" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="532.5, 306.25">
+            <property name="_location" class="ptolemy.moml.Location" value="525.0, 315.0">
             </property>
         </port>
         <entity name="HSController" class="ptolemy.domains.fsm.kernel.FSMActor">
@@ -210,13 +210,13 @@ Five controllers are applied sequentially to the modes.</text>
                 </port>
             </entity>
             <relation name="tr1" class="ptolemy.domains.fsm.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="inputAction">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="inputAction_isPresent &amp;&amp; inputAction == true">
                 </property>
                 <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
                 </property>
                 <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -2512,11 +2512,11 @@ Five controllers are applied sequentially to the modes.</text>
             </vertex>
         </relation>
         <relation name="rSubOutVx" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex" class="ptolemy.moml.Vertex" value="404.0, 289.0">
+            <vertex name="vertex" class="ptolemy.moml.Vertex" value="410.0, 285.0">
             </vertex>
         </relation>
         <relation name="rSubOutVz" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex" class="ptolemy.moml.Vertex" value="417.0, 312.0">
+            <vertex name="vertex" class="ptolemy.moml.Vertex" value="425.0, 315.0">
             </vertex>
         </relation>
         <relation name="rSubOutV" class="ptolemy.actor.TypedIORelation">
@@ -2626,7 +2626,7 @@ Five controllers are applied sequentially to the modes.</text>
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{false, true}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="432.0888867272271, 145.5">
+        <property name="_location" class="ptolemy.moml.Location" value="435.0, 145.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -2717,7 +2717,7 @@ Five controllers are applied sequentially to the modes.</text>
         </property>
         <property name="Mass" class="ptolemy.data.expr.Parameter" value="4.9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="363.9111151801213, 94.16666158040363">
+        <property name="_location" class="ptolemy.moml.Location" value="365.0, 95.0">
         </property>
         <port name="inputTm" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -2753,7 +2753,7 @@ Five controllers are applied sequentially to the modes.</text>
     <entity name="IntegratorPx" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="549.755551486545, 250.73528065400956">
+        <property name="_location" class="ptolemy.moml.Location" value="555.0, 255.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -2769,7 +2769,7 @@ Five controllers are applied sequentially to the modes.</text>
     <entity name="IntegratorDPx" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="439.6000183105467, 250.68823673023894">
+        <property name="_location" class="ptolemy.moml.Location" value="430.0, 255.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -2785,7 +2785,7 @@ Five controllers are applied sequentially to the modes.</text>
     <entity name="IntegratorPz" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="-1.5">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="557.6000183105467, 323.7823398365694">
+        <property name="_location" class="ptolemy.moml.Location" value="560.0, 330.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -2801,7 +2801,7 @@ Five controllers are applied sequentially to the modes.</text>
     <entity name="IntegratorDPz" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="444.4444584316676, 323.594743588096">
+        <property name="_location" class="ptolemy.moml.Location" value="435.0, 330.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -2817,7 +2817,7 @@ Five controllers are applied sequentially to the modes.</text>
     <entity name="IntegratorTh" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="326.75555148654496, 435.12352844687075">
+        <property name="_location" class="ptolemy.moml.Location" value="295.0, 455.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -2833,7 +2833,7 @@ Five controllers are applied sequentially to the modes.</text>
     <entity name="IntegratorDTh" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="443.5999877929686, 372.12352844687075">
+        <property name="_location" class="ptolemy.moml.Location" value="435.0, 380.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -2913,7 +2913,9 @@ Five controllers are applied sequentially to the modes.</text>
     <entity name="MINUS" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="-1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="663.755551486545, 324.78235509535847">
+        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="665.0, 330.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -2929,7 +2931,7 @@ Five controllers are applied sequentially to the modes.</text>
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="775.9111151801213, 258.3000061035156">
+        <property name="_location" class="ptolemy.moml.Location" value="765.0, 265.0">
         </property>
         <port name="inputX" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -2939,14 +2941,16 @@ Five controllers are applied sequentially to the modes.</text>
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Helicopter Position</title>
-<xRange min="-4.464903751167566E-5" max="212.36154963308977"/>
-<yRange min="1.5" max="10.975309469683468"/>
+<xRange min="-4.464903751167566E-5" max="212.3615496330894"/>
+<yRange min="1.5" max="10.975309469683456"/>
 </plot>?>
-                </configure>    </entity>
+        </configure>
+    </entity>
     <entity name="Horizontal Speed" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -2954,20 +2958,22 @@ Five controllers are applied sequentially to the modes.</text>
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="589.9111151801213, 191.43333536783848">
+        <property name="_location" class="ptolemy.moml.Location" value="570.0, 190.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Horizontal Speed</title>
 <xRange min="0.0" max="70.0"/>
 <yRange min="-2.6081690452206085E-4" max="5.3458406199202715"/>
 </plot>?>
-                </configure>    </entity>
+        </configure>
+    </entity>
     <entity name="Vertical Position" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -2975,20 +2981,22 @@ Five controllers are applied sequentially to the modes.</text>
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="767.9111151801213, 355.5666646321615">
+        <property name="_location" class="ptolemy.moml.Location" value="760.0, 370.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Vertical Position</title>
 <xRange min="0.0" max="70.0"/>
-<yRange min="1.5" max="10.975309469683468"/>
+<yRange min="1.5" max="10.975309469683456"/>
 </plot>?>
-                </configure>    </entity>
+        </configure>
+    </entity>
     <entity name="Pitch Angle" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -2996,28 +3004,30 @@ Five controllers are applied sequentially to the modes.</text>
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="559.9111151801213, 468.69999389648433">
+        <property name="_location" class="ptolemy.moml.Location" value="310.0, 550.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Pitch Angle</title>
 <xRange min="0.0" max="70.0"/>
 <yRange min="-0.029413093164408523" max="0.04148829691037313"/>
 </plot>?>
-                </configure>    </entity>
+        </configure>
+    </entity>
     <relation name="_R0" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="rPx" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="650.3333333333334, 257.2846153846153">
+        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="655.0, 255.0">
         </vertex>
     </relation>
     <relation name="rDPx" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="488.1777777777778, 257.76666666666665">
+        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="490.0, 255.0">
         </vertex>
     </relation>
     <relation name="rDDPx" class="ptolemy.actor.TypedIORelation">
@@ -3041,11 +3051,11 @@ Five controllers are applied sequentially to the modes.</text>
     <relation name="rD4Pz" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="rTh" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="24.33333333333337, 475.8230769230769">
+        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="10.0, 480.0">
         </vertex>
     </relation>
     <relation name="rDTh" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="267.1777777777778, 403.7266666666667">
+        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="265.0, 415.0">
         </vertex>
     </relation>
     <relation name="rDDTh" class="ptolemy.actor.TypedIORelation">
@@ -3063,7 +3073,7 @@ Five controllers are applied sequentially to the modes.</text>
         </vertex>
     </relation>
     <relation name="rA" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="220.7111111111111, 363.875">
+        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="220.0, 375.0">
         </vertex>
     </relation>
     <relation name="_R1" class="ptolemy.actor.TypedIORelation">
