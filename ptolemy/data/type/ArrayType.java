@@ -485,7 +485,7 @@ public class ArrayType extends StructuredType {
          *  @return A String.
          */
         public String toString() {
-            return "{ArrayElementType(" + getAssociatedObject()
+            return "(ArrayElementType(" + getAssociatedObject()
                 + "), " + getValue() + ")";
         }
     }
