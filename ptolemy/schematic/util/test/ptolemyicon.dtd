@@ -43,16 +43,12 @@ thing.
 @version $Id$
 -->
 
-<!-- icon elements will be parsed into class Icon -->
-<!ELEMENT entity (entitytype, parameter*, port*)>
+<!-- entity elements will be parsed into class SchematicEntity-->
+<!ELEMENT entity (parameter*, port*)>
 <!ATTLIST entity
 name ID #REQUIRED
-icon CDATA "default">
-
-<!-- entitytype elements will be parsed into class EntityType -->   
-<!ELEMENT entitytype EMPTY>
-<!ATTLIST entitytype
-name ID #REQUIRED>
+icon CDATA "default"
+terminalstyle CDATA "default">
 
 <!-- icon elements will be parsed into class Icon -->
 <!ELEMENT icon (description, entitytype, graphic*, port*)>
@@ -92,19 +88,24 @@ name ID #REQUIRED>
 name ID #REQUIRED
 version CDATA #REQUIRED>
 
+<!-- graphic elements will be parsed into class GraphicElement -->
+<!ELEMENT graphic (tclscript|line|rect|ellipse|polygon|textline|textbox|image)*>
+<!ATTLIST graphic
+format (xml|tcl) #REQUIRED>
+
+<!-- link elements will be parsed into class SchematicLink -->
+<!ELEMENT link EMPTY>
+<!ATTLIST link
+name CDATA #REQUIRED
+to CDATA #REQUIRED
+from CDATA #REQUIRED>
 
 <!-- The following don't have separate classes. -->
 <!ELEMENT description (#PCDATA)>
 <!ELEMENT ellipse EMPTY>
 <!ELEMENT header (description, sublibrary*)>
-<!ELEMENT graphic (tclscript|line|rect|ellipse|polygon|textline|textbox|image)*>
-<!ATTLIST graphic
-format (xml|tcl) #REQUIRED>
 <!ELEMENT image EMPTY>
 <!ELEMENT line EMPTY>
-<!ELEMENT link EMPTY>
-<!ATTLIST link
-name CDATA #REQUIRED>
 <!ELEMENT polygon EMPTY>
 <!ELEMENT rect EMPTY>
 <!ELEMENT tclscript (#PCDATA)>

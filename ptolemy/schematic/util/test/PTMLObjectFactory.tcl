@@ -52,7 +52,7 @@ if {[string compare test [info procs test]] == 1} then {
 #
 test PTMLObjectFactory-2.1 {Constructor tests} {
     set parser [java::new ptolemy.schematic.xml.PTMLParser]
-    set xmllib [$parser parse "file:/users/neuendor/ptII/ptolemy/schematic/util/test/examplelibrary.ptml"]   
+    set xmllib [$parser parse "file:/users/neuendor/ptII/ptolemy/schematic/util/test/exampleIconLibrary.ptml"]   
     set iconlib [java::call ptolemy.schematic.util.PTMLObjectFactory \
 	    createIconLibrary $xmllib]
     $iconlib toString

@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entitylibrary SYSTEM "ptolemyicon.dtd">
+
+<entitylibrary name="SDF" version="1.0">
+<description>Entities corresponding to SDF Actors</description>
+
+<entity name="LoadImage" icon=".SDF.LoadImage" terminalstyle=".SDF.1out">
+<description>Load an image from a file</description>
+<parameter name="filename" type="string"/>
+<port name="image" output="true" type="doubleArray"/>
+</entity>
+
+<entity name="SaveImage" icon=".SDF.SaveImage" terminalstyle=".SDF.1in">
+<port name="filename" input="true" type="string"/>
+<port name="image" input="true" type="doubleArray"/>
+</entity>
+</entitylibrary>
+

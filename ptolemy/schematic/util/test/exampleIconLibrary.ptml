@@ -6,13 +6,11 @@
 
 <icon name="LoadImage">
 <description>Load an image from a file</description>
-<entitytype name="loadimage" ports="2"/>
 <parameter name="filename" type="string"/>
 <port name="image" output="true" type="doubleArray"/>
 </icon>
 
 <icon name="SaveImage">
-<entitytype name="saveimage" ports="2"/>
 <port name="filename" input="true" type="string"/>
 <port name="image" input="true" type="doubleArray"/>
 <xmlgraphic>
