@@ -93,6 +93,7 @@ JSRCS = \
 	Reader.java \
 	RealTimeDelay.java \
 	Recorder.java \
+	RoundingFunction.java \
 	SequenceActor.java \
 	SequenceSource.java \
 	Scale.java \
