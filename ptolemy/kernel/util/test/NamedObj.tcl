@@ -41,6 +41,10 @@ if {[info procs enumToObjects] == "" } then {
      source enums.tcl
 }
 
+if {[info procs jdkCapture] == "" } then {
+    source [file join $PTII util testsuite jdktools.tcl]
+}
+
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
@@ -290,24 +294,6 @@ test NamedObj-8.8 {Test RecorderListener: call message() directly} {
 This is the second Message, trailing newline.
 
 This is the third Message, no trailing newline.
-}
-
-
-# Capture output to System.out
-proc jdkCapture {script varName} {
-    upvar $varName output
-    set stream [java::new java.io.ByteArrayOutputStream]
-    set printStream [java::new \
-            {java.io.PrintStream java.io.OutputStream} $stream]
-    set stdout [java::field System out]
-    java::call System setOut $printStream
-    set result [uplevel $script]
-    java::call System setOut $stdout
-    $printStream flush
-    # This hack is necessary because of problems with crnl under windows
-    regsub -all [java::call System getProperty "line.separator"] \
-	        [$stream toString] "\n" output
-    return $result
 }
 
 test NamedObj-9.1 {Test StreamListener} {
