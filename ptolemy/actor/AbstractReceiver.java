@@ -244,7 +244,7 @@ public abstract class AbstractReceiver implements Receiver {
      *  to be performed must override this method.
      *  @exception NoRoomException If there is no room in the receiver.
      */
-    public void setAbsent() throws NoRoomException {
+    public void setAbsent() {
     }
 
     /** Set the container.

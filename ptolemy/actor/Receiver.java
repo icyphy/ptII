@@ -164,7 +164,7 @@ public interface Receiver {
     /** Set the receiver to contain no tokens.
      *  @exception NoRoomException If there is no room in the receiver.
      */
-    public void setAbsent() throws NoRoomException;
+    public void setAbsent();
 
     /** Set the container.
      *  @param port The container.

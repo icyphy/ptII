@@ -1736,16 +1736,25 @@ public class IOPort extends ComponentPort {
         boolean wasTransferred = false;
         Receiver[][] insideReceivers = this.deepGetReceivers();
         for (int i = 0; i < this.getWidth(); i++) {
-	    if (this.hasToken(i)) {
+            if (insideReceivers != null && insideReceivers[i] != null) {
                 try {
-                    Token t = this.get(i);
-                    if (insideReceivers != null && insideReceivers[i] != null) {
-                        if(_debugging) _debug(getName(),
-                                "transferring input from " + this.getName());
-                        for (int j = 0; j < insideReceivers[i].length; j++) {
-                            insideReceivers[i][j].put(t);
+                    if (this.isKnown(i)) {
+                        if (this.hasToken(i)) {
+                            Token t = this.get(i);
+                            if(_debugging) _debug(getName(),
+                                    "transferring input from " 
+                                    + this.getName());
+                            for (int j = 0; j < insideReceivers[i].length; 
+                                 j++) {
+                                insideReceivers[i][j].put(t);
+                            }
+                            wasTransferred = true;
+                        } else {
+                            for (int j = 0; j < insideReceivers[i].length; 
+                                 j++) {
+                                insideReceivers[i][j].setAbsent();
+                            }
                         }
-                        wasTransferred = true;
                     }
                 } catch (NoTokenException ex) {
                     // this shouldn't happen.
@@ -1781,17 +1790,21 @@ public class IOPort extends ComponentPort {
             for (int i = 0; i < insideReceivers.length; i++) {
                 if (insideReceivers[i] != null) {
                     for (int j = 0; j < insideReceivers[i].length; j++) {
-			if (insideReceivers[i][j].hasToken()) {
-                            try {
-                                Token t = insideReceivers[i][j].get();
-                                this.send(i, t);
-                                wasTransferred = true;
-                            } catch (NoTokenException ex) {
-                                throw new InternalErrorException(
-                                        "IOPort.transferOutputs: " +
-                                        "Internal error: " +
-                                        ex.getMessage());
+                        try {
+                            if (insideReceivers[i][j].isKnown()) {
+                                if (insideReceivers[i][j].hasToken()) {
+                                    Token t = insideReceivers[i][j].get();
+                                    this.send(i, t);
+                                    wasTransferred = true;
+                                } else {
+                                    this.sendAbsent(i);
+                                }
                             }
+                        } catch (NoTokenException ex) {
+                            throw new InternalErrorException(
+                                    "IOPort.transferOutputs: " +
+                                    "Internal error: " +
+                                    ex.getMessage());
                         }
                     }
                 }
