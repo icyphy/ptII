@@ -1187,6 +1187,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	super.initialize();
 
 	_iterationCount = 0;
+        _unitIndex = 0;
 	Iterator receivers = _receivers.iterator();
 	while(receivers.hasNext()) {
 	    GiottoReceiver receiver = (GiottoReceiver) receivers.next();
