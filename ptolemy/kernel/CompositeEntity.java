@@ -630,7 +630,10 @@ public class CompositeEntity extends ComponentEntity {
                 }
                 // If both ends of the link are inherited objects, then
                 // suppress the export.
-                if (relation.isDerived() && port.isDerived()) {
+                // FIXME: This should depend on the level at which the
+                // export is occurring.
+                if (relation.getDerivedLevel() > 0
+                        && port.getDerivedLevel() > 0) {
                     continue;
                 }
                 // Apply filter.
@@ -693,10 +696,12 @@ public class CompositeEntity extends ComponentEntity {
                     }
                     // If both ends of the link are inherited objects, then
                     // suppress the export.
-                    if (relation.isDerived()
-                            && port.isDerived()
+                    // FIXME: This should depend on the level at which the
+                    // export is occurring.
+                    if (relation.getDerivedLevel() > 0
+                            && port.getDerivedLevel() > 0
                             && ((NamedObj)port.getContainer())
-                            .isDerived()) {
+                            .getDerivedLevel() > 0) {
                         continue;
                     }
                     // Apply filter.
@@ -900,38 +905,6 @@ public class CompositeEntity extends ComponentEntity {
      */
     public Enumeration getRelations() {
         return Collections.enumeration(relationList());
-    }
-
-    /** Create an instance by cloning this prototype and then adjust
-     *  the deferral relationship between the the clone and its parent,
-     *  and also any deferral relationships that are entirely contained
-     *  within the clone. That is, for any deferral relationship that
-     *  is entirely contained within the parent, a corresponding
-     *  deferral relationship is created within the clone.
-     *  <p>
-     *  The instantiated object is not a class definition (it is by default an
-     *  "instance" rather than a "class").  To make it a class definition
-     *  (a "subclass"), call setClassDefinition(true).
-     *  @see #setClassDefinition(boolean)
-     *  @param container The container for the instance.
-     *  @param name The name for the clone.
-     *  @return A new instance that is a clone of this prototype
-     *   with adjusted deferral relationships.
-     *  @exception CloneNotSupportedException If this prototype
-     *   cannot be cloned.
-     *  @exception IllegalActionException If this object is not a
-     *   class definition.
-     *   or the proposed container is not acceptable.
-     *  @exception NameDuplicationException If the name collides with
-     *   an object already in the container.
-     */
-    public Instantiable instantiate(NamedObj container, String name)
-            throws CloneNotSupportedException,
-            IllegalActionException, NameDuplicationException {
-        CompositeEntity clone =
-            (CompositeEntity)super.instantiate(container, name);
-        clone._adjustDeferrals(this, clone);
-        return clone;
     }
 
     /** Return false since CompositeEntities are not atomic.
@@ -1233,39 +1206,6 @@ public class CompositeEntity extends ComponentEntity {
     protected void _addRelation(ComponentRelation relation)
             throws IllegalActionException, NameDuplicationException {
         _containedRelations.append(relation);
-    }
-
-    /** Adjust the deferral relationships in the specified clone.
-     *  Specifically, if this object defers to something that is
-     *  deeply contained by the specified prototype, then find
-     *  the corresponding object in the specified clone and defer
-     *  to it instead. This method also calls the same method
-     *  on all contained class definitions and
-     *  ordinary entities.
-     *  @param prototype The object that was cloned.
-     *  @param clone The clone.
-     *  @exception IllegalActionException If the clone does not contain
-     *   a corresponding object to defer to.
-     */
-    protected void _adjustDeferrals(
-            CompositeEntity prototype, CompositeEntity clone) {
-        super._adjustDeferrals(prototype, clone);
-
-        // Adjust the contained class definitions.
-        Iterator classes = classDefinitionList().iterator();
-        while (classes.hasNext()) {
-            ComponentEntity classDefinition
-                = (ComponentEntity)classes.next();
-            classDefinition._adjustDeferrals(prototype, clone);
-        }
-
-        // Clone the contained entities.
-        Iterator entities = entityList().iterator();
-        while (entities.hasNext()) {
-            ComponentEntity entity
-                = (ComponentEntity)entities.next();
-            entity._adjustDeferrals(prototype, clone);
-        }
     }
 
     /** Return a description of the object.  The level of detail depends

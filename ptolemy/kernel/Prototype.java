@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.lang.ref.WeakReference;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -252,10 +253,14 @@ public class Prototype extends NamedObj implements Instantiable {
     }
 
     /** Create an instance by cloning this prototype and then adjust
-     *  the deferral relationship between the the clone and its parent.
-     *  Specifically, the
-     *  clone defers its definition to this prototype, which is its
-     *  "parent." It inherits all the objects contained by this prototype.
+     *  the deferral relationships between the clone and its parent.
+     *  Specifically, the clone defers its definition to this prototype,
+     *  which is its "parent." It inherits all the objects contained
+     *  by this prototype. If this prototype is a composite, then
+     *  then adjust any deferral relationships that are entirely contained
+     *  within the clone. That is, for any deferral relationship that
+     *  is entirely contained within the parent, a corresponding
+     *  deferral relationship is created within the clone.
      *  <p>
      *  The new object is not a class definition (it is by default an
      *  "instance" rather than a "class").  To make it a class
@@ -307,6 +312,8 @@ public class Prototype extends NamedObj implements Instantiable {
         clone.setParent(this);
         clone.setClassDefinition(false);
         clone.setClassName(getFullName());
+        
+        clone._adjustDeferrals(this, clone, 0);
 
         return clone;
     }
@@ -419,7 +426,7 @@ public class Prototype extends NamedObj implements Instantiable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    ////                         private methods                   ////
 
     /** Adjust the deferral relationships in the specified clone.
      *  Specifically, if this object defers to something that is
@@ -429,23 +436,34 @@ public class Prototype extends NamedObj implements Instantiable {
      *  on all contained class definitions and ordinary entities.
      *  @param prototype The object that was cloned.
      *  @param clone The clone.
+     *  @param depth The depth below the clone of this object.
      *  @exception IllegalActionException If the clone does not contain
      *   a corresponding object to defer to.
      */
-    protected void _adjustDeferrals(
-            CompositeEntity prototype, CompositeEntity clone) {
+    private void _adjustDeferrals(
+            Prototype prototype, Prototype clone, int depth) {
+        setDerivedLevel(depth);
+
         Instantiable originalDefersTo = getParent();
         if (originalDefersTo instanceof NamedObj) {
             // defersTo was cloned from the original, presumably.
             if (prototype.deepContains((NamedObj)originalDefersTo)) {
                 String relativeName = originalDefersTo.getName(prototype);
-                ComponentEntity revisedDefersTo = clone.getEntity(relativeName);
+                // The clone must be a CompositeEntity.
+                ComponentEntity revisedDefersTo
+                        = ((CompositeEntity)clone).getEntity(relativeName);
                 if (revisedDefersTo == null) {
                     throw new InternalErrorException(
                             "Clone is not identical to the prototype!");
                 }
                 try {
                     setParent(revisedDefersTo);
+                    // Reset the depth to zero here because it
+                    // is at this level that the derivation occurs.
+                    // This will affect the derived depth of contained
+                    // objects, which we presume are derived from this
+                    // parent-child relation.
+                    depth = 0;
                 } catch (IllegalActionException e) {
                     // This should not occur because the parent
                     // relationship was acceptable to the source
@@ -453,6 +471,38 @@ public class Prototype extends NamedObj implements Instantiable {
                     throw new InternalErrorException(e);
                 }
             }
+        }
+        
+        // Adjust the contained objects.
+        Iterator containedObjects = containedObjectsIterator();
+        while (containedObjects.hasNext()) {
+            NamedObj containedObject = (NamedObj)containedObjects.next();
+            if (containedObject instanceof Prototype) {
+                ((Prototype)containedObject)
+                        ._adjustDeferrals(prototype, clone, depth + 1);
+            } else {
+                // If the contained object is not an instance of Prototype,
+                // then it can't have any internal parent-child relations,
+                // so we only have to mark it and its contents derived.
+                _markDerived(containedObject, depth + 1);
+            }
+        }
+    }
+
+    /** Mark the specified object and its contents as being derived objects,
+     *  where the specified object has derivation depth given by the argument,
+     *  the immediate contents have derivation depth one greater
+     *  than that, etc.
+     *  @param depth The derivation depth for this object.
+     */
+    private void _markDerived(NamedObj object, int depth) {
+        object.setDerivedLevel(depth);
+        // NOTE: It is necessary to mark objects deeply contained
+        // so that we can disable deletion and name changes.
+        Iterator objects = object.containedObjectsIterator();
+        while (objects.hasNext()) {
+            NamedObj containedObject = (NamedObj)objects.next();
+            _markDerived(containedObject, depth + 1);
         }
     }
 

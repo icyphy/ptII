@@ -36,6 +36,7 @@ import java.util.List;
 
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
@@ -351,6 +352,27 @@ public class ComponentRelation extends Relation {
         if (!(port instanceof ComponentPort)) {
             throw new IllegalActionException(this, port,
                     "ComponentRelation can only link to a ComponentPort.");
+        }
+    }
+    
+    /** Propagate existence of this object to the
+     *  specified object. This overrides the base class
+     *  to set the container.
+     *  @param container Object to contain the new object.
+     *  @exception IllegalActionException If the object
+     *   cannot be cloned.
+     *  @return A new object of the same class and name
+     *   as this one.
+     */
+    protected NamedObj _propagateExistence(NamedObj container)
+            throws IllegalActionException {
+        try {
+            ComponentRelation newObject = (ComponentRelation)super
+                    ._propagateExistence(container);
+            newObject.setContainer((CompositeEntity)container);
+            return newObject;
+        } catch (NameDuplicationException e) {
+            throw new InternalErrorException(e);
         }
     }
 

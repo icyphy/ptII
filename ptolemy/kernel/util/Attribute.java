@@ -223,24 +223,46 @@ public class Attribute extends NamedObj {
      *  instance of the same class as this object.
      *  @param relativeName The name relative to the container.
      *  @param container The container expected to contain the object.
-     *  @return An object of the same class as this object.
-     *  @exception InternalErrorException If the object does not exist
-     *   or has the wrong class.
+     *  @return An object of the same class as this object, or null
+     *   if there is none.
+     *  @exception IllegalActionException If the object exists
+     *   and has the wrong class.
      */
     protected NamedObj _getContainedObject(String relativeName,
             NamedObj container)
-            throws InternalErrorException {
+            throws IllegalActionException {
         Attribute candidate = container.getAttribute(relativeName);
-        if (!getClass().isInstance(candidate)) {
-            throw new InternalErrorException(
+        if (candidate != null && !getClass().isInstance(candidate)) {
+            throw new IllegalActionException(this,
                     "Expected "
-                    + container.getFullName()
-                    + " to contain an attribute with name "
-                    + relativeName
-                    + " and class "
-                    + getClass().getName());
+                    + candidate.getFullName()
+                    + " to be an instance of "
+                    + getClass().getName()
+                    + ", but it is "
+                    + candidate.getClass().getName());
         }
         return candidate;
+    }
+
+    /** Propagate existence of this object to the
+     *  specified object. This overrides the base class
+     *  to set the container.
+     *  @param container Object to contain the new object.
+     *  @exception IllegalActionException If the object
+     *   cannot be cloned.
+     *  @return A new object of the same class and name
+     *   as this one.
+     */
+    protected NamedObj _propagateExistence(NamedObj container)
+            throws IllegalActionException {
+        try {
+            Attribute newObject = (Attribute)super
+                    ._propagateExistence(container);
+            newObject.setContainer(container);
+            return newObject;
+        } catch (NameDuplicationException e) {
+            throw new InternalErrorException(e);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

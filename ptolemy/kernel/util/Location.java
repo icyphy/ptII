@@ -347,7 +347,9 @@ public class Location extends SingletonAttribute
      */
     protected void _propagateValue(NamedObj destination)
             throws IllegalActionException {
-        ((Location)destination).setLocation(_location);
+        // NOTE: Cannot use the _location value because the
+        // expression may not have yet been evaluated.
+        ((Location)destination).setExpression(getExpression());
     }
 
     ///////////////////////////////////////////////////////////////////

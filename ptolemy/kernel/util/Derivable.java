@@ -56,6 +56,27 @@ public interface Derivable extends Nameable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Get the level above this object in the hierarchy where a
+     *  parent-child relationship defines the existence of this object.
+     *  A negative value (-1) is used to indicate that this object is
+     *  not a derived object. A value of 0 indicates that the object
+     *  is a child itself. A value of 1 indicates that the container
+     *  of the object is a child, and that the this object is derived
+     *  from a like object in the parent of the container. Etc.
+     *  If an object is derived, then normally has no persistent
+     *  representation when it is exported to MoML (unless it
+     *  is overridden), and normally it cannot have its name or
+     *  container changed.  An exception, however, is that the object
+     *  may appear in the MoML if the exported MoML does not include
+     *  the level of the hierarchy above this with the parent-child
+     *  relationship.
+     *  @return The level above this object in the containment
+     *   hierarchy where a parent-child relationship defines this object.
+     *  @see Instantiable
+     *  @see setDerivedLevel(int)
+     */
+    public int getDerivedLevel();
+
     /** Return a list of objects derived from this one.
      *  This is the list of objects that are "inherited" by their
      *  containers from a container of this object).
@@ -69,24 +90,6 @@ public interface Derivable extends Nameable {
      *   which this is called.
      */
     public List getDerivedList();
-
-    /** Return true if this object is a derived object.  An object
-     *  is derived if it is created in its container as a side effect
-     *  of the creation of a similar object in some other container.
-     *  For example, some container of this object may be an instance
-     *  of Instantiable that was created by another instance of Instantiable,
-     *  and this object was created during that instantiation.
-     *  If this method returns true, then there is typically no need
-     *  to export a description of this object to a persistent representation
-     *  (such as MoML), unless this object has been overridden in some
-     *  way.  Moreover, if this method returns true,
-     *  then it is reasonable to prohibit certain changes to this object,
-     *  such as a name change or a change of container.  Such changes
-     *  break the relationship with the object from which this inherits.
-     *  @see Instantiable
-     *  @return True if the object is a derived object.
-     */
-    public boolean isDerived();
     
     /** Propagate the value (if any) held by an implementor of this
      *  object to derived objects that have not been overridden.
@@ -98,12 +101,23 @@ public interface Derivable extends Nameable {
      */
     public List propagateValue() throws IllegalActionException;
 
-    /** Set whether this object is a derived object.  If an object
-     *  is derived, then normally has no persistent representation
-     *  when it is exported (unless it is overridden) and cannot
-     *  have its name or container changed.
-     *  @param isDerived True to mark this object as a derived object.
-     *  @see #isDerived()
+    /** Set the level above this object in the hierarchy where a
+     *  parent-child relationship defines the existence of this object.
+     *  A negative value (-1) is used to indicate that this object is
+     *  not a derived object. A value of 0 indicates that the object
+     *  is a child itself. A value of 1 indicates that the container
+     *  of the object is a child, and that the this object is derived
+     *  from a like object in the parent of the container. Etc.
+     *  If an object is derived, then normally has no persistent
+     *  representation when it is exported to MoML (unless it
+     *  is overridden), and normally it cannot have its name or
+     *  container changed.  An exception, however, is that the object
+     *  may appear in the MoML if the exported MoML does not include
+     *  the level of the hierarchy above this with the parent-child
+     *  relationship.
+     *  @param level The level above this object in the containment
+     *   hierarchy where a parent-child relationship defines this object.
+     *  @see #getDerivedLevel()
      */
-    public void setDerived(boolean isDerived);
+    public void setDerivedLevel(int level);
 }

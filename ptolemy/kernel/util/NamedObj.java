@@ -413,7 +413,7 @@ public class NamedObj implements
             // have any effect.
             newObject._deferChangeRequests = true;
             
-            // Occassionally, a derived object needs to know what
+            // Occasionally, a derived object needs to know what
             // it is being cloned from to manage the adjustments
             // made.  This can be accomplished by overriding the
             // protected method called here.
@@ -424,9 +424,8 @@ public class NamedObj implements
             // to access the directory are synchronized.
             newObject._attributes = null;
 
-            // Make sure the new object is not marked as a class.
-            // It may have been cloned from a class.
-            newObject._isDerived = false;
+            // Make sure the new object is not marked derived.
+            newObject._derivedLevel = -1;
 
             if (workspace == null) {
                 newObject._workspace = _DEFAULT_WORKSPACE;
@@ -994,7 +993,7 @@ public class NamedObj implements
      */
     public List getDerivedList() {
         try {
-            return _getDerivedList(null, false, this, null, null);
+            return _getDerivedList(null, false, false, this, 0, null, null);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex);
         }
@@ -1150,24 +1149,27 @@ public class NamedObj implements
         return _deferChangeRequests;
     }
 
-    /** Return true if this object is a derived object.  An object
-     *  is derived if it is created in its container as a side effect
-     *  of the creation of a similar object in some other container.
-     *  For example, some container of this object may be an instance
-     *  of Instantiable that was created by another instance of Instantiable,
-     *  and this object was created during that instantiation.
-     *  If this method returns true, then there is typically no need
-     *  to export a description of this object to a persistent representation
-     *  (such as MoML), unless this object's value has been overridden.
-     *  Moreover, if this method returns true,
-     *  then it is reasonable to prohibit certain changes to this object,
-     *  such as a name change or a change of container.  Such changes
-     *  break the relationship with the object from which this inherits.
+    /** Get the level above this object in the hierarchy where a
+     *  parent-child relationship defines the existence of this object.
+     *  A negative value (-1) is used to indicate that this object is
+     *  not a derived object. A value of 0 indicates that the object
+     *  is a child itself. A value of 1 indicates that the container
+     *  of the object is a child, and that the this object is derived
+     *  from a like object in the parent of the container. Etc.
+     *  If an object is derived, then normally has no persistent
+     *  representation when it is exported to MoML (unless it
+     *  is overridden), and normally it cannot have its name or
+     *  container changed.  An exception, however, is that the object
+     *  may appear in the MoML if the exported MoML does not include
+     *  the level of the hierarchy above this with the parent-child
+     *  relationship.
+     *  @return The level above this object in the containment
+     *   hierarchy where a parent-child relationship defines this object.
      *  @see Instantiable
-     *  @return True if the object is a derived object.
+     *  @see setDerivedLevel(int)
      */
-    public final boolean isDerived() {
-        return _isDerived;
+    public int getDerivedLevel() {
+        return _derivedLevel;
     }
 
     /** Return true if this object is persistent.
@@ -1192,6 +1194,20 @@ public class NamedObj implements
         }
     }
     
+    /** Propagate the existence of this object.
+     *  If this object has a container, then ensure that all
+     *  objects derived from the container contain an object
+     *  with the same class and name as this one. Create that
+     *  object when needed. Return the list of objects that are created.
+     *  @return A list of derived objects of the same class
+     *   as this object that are created.
+     *  @exception IllegalActionException If the object does
+     *   not exists and cannot be created.
+     */
+    public List propagateExistence() throws IllegalActionException {
+        return _getDerivedList(null, false, true, this, 0, null, null);
+    }
+
     /** Propagate the value (if any) held by this
      *  object to derived objects that have not been overridden.
      *  This leaves all derived objects unchanged if any single
@@ -1204,7 +1220,7 @@ public class NamedObj implements
     public List propagateValue() throws IllegalActionException {
         List override = new LinkedList();
         override.add(new Integer(0));
-        return _getDerivedList(null, true, this, override, null);
+        return _getDerivedList(null, true, false, this, 0, override, null);
     }
 
     /** Remove a change listener. If there is a container, delegate the
@@ -1336,16 +1352,27 @@ public class NamedObj implements
         }
     }
 
-    /** Set whether this object is a derived object.  If an object
-     *  is derived, then normally has no persistent representation
-     *  when it is exported (unless it is overridden after this
-     *  method is called) and cannot have its name or container changed.
-     *  By default, instances of NamedObj are not derived objects.
-     *  @param isDerived True to mark this object as a derived object.
-     *  @see #isDerived()
+    /** Set the level above this object in the hierarchy where a
+     *  parent-child relationship defines the existence of this object.
+     *  A negative value (-1) is used to indicate that this object is
+     *  not a derived object. A value of 0 indicates that the object
+     *  is a child itself. A value of 1 indicates that the container
+     *  of the object is a child, and that the this object is derived
+     *  from a like object in the parent of the container. Etc.
+     *  If an object is derived, then normally has no persistent
+     *  representation when it is exported to MoML (unless it
+     *  is overridden), and normally it cannot have its name or
+     *  container changed.  An exception, however, is that the object
+     *  may appear in the MoML if the exported MoML does not include
+     *  the level of the hierarchy above this with the parent-child
+     *  relationship.
+     *  @param level The level above this object in the containment
+     *   hierarchy where a parent-child relationship defines this object.
+     *  @see #getDerivedLevel()
      */
-    public final void setDerived(boolean isDerived) {
-        _isDerived = isDerived;
+    public final void setDerivedLevel(int level) {
+        _derivedLevel = level;
+
         // Setting override to null indicates that no override has
         // occurred.
         _override = null;
@@ -1355,7 +1382,11 @@ public class NamedObj implements
         // cloned from an object that had persistence
         // set to true), then override that and
         // reset to where persistence is unspecified.
-        if (_isPersistent != null && _isPersistent.booleanValue()) {
+        // But do this only if the derived level
+        // is greater than 0.
+        if (level > 0
+                && _isPersistent != null
+                && _isPersistent.booleanValue()) {
             _isPersistent = null;
         }
     }
@@ -1868,11 +1899,11 @@ public class NamedObj implements
      *  @param relativeName The name relative to the container.
      *  @param container The container expected to contain the object.
      *  @return null.
-     *  @exception InternalErrorException If the object does not exist
-     *   or has the wrong class. Not thrown in this base class.
+     *  @exception IllegalActionException If the object exists
+     *   and has the wrong class. Not thrown in this base class.
      */
     protected NamedObj _getContainedObject(String relativeName,
-            NamedObj container) throws InternalErrorException {
+            NamedObj container) throws IllegalActionException {
         return null;
     }
 
@@ -1883,6 +1914,31 @@ public class NamedObj implements
      */
     protected static String _getIndentPrefix(int level) {
         return StringUtilities.getIndentPrefix(level);
+    }
+
+    /** Propagate existence of this object to the
+     *  specified object. The specified object is required
+     *  to be an instance of the same class as the container
+     *  of this one, or an exception will be thrown. In this
+     *  base class, this object is cloned, and its name
+     *  is set to the same as this object.
+     *  Derived classes with a setContainer() method are
+     *  responsible for ensuring that this returned object
+     *  has its container set to the specified container.
+     *  @param container Object to contain the new object.
+     *  @exception IllegalActionException If the object
+     *   cannot be cloned.
+     *  @return A new object of the same class and name
+     *   as this one.
+     */
+    protected NamedObj _propagateExistence(NamedObj container)
+            throws IllegalActionException {
+        try {
+            return (NamedObj)clone(workspace());
+        } catch (CloneNotSupportedException e) {
+            throw new IllegalActionException(this, e,
+            "Failed to propogate instance.");
+        }
     }
 
     /** Propagate the value of this object (if any) to the
@@ -2027,7 +2083,14 @@ public class NamedObj implements
             return false;
         }
         // If the object is not derived, export MoML.
-        if (!_isDerived) {
+        if (_derivedLevel <= 0) {
+            // Object is not derived, or is derived at
+            // this level.
+            return false;
+        }
+        if (_derivedLevel > depth) {
+            // Object is derived, but the derivation occurs
+            // above in the hierarchy where we are exporting.
             return false;
         }
         // Export MoML if the value of the object is
@@ -2103,26 +2166,32 @@ public class NamedObj implements
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Return a list of derived objects. If the <i>propagated</i>
+    /** Return a list of derived objects. If the <i>propagate</i>
      *  argument is true, then this list will contain only those derived
      *  objects whose values are not overridden and that are not
      *  shadowed by objects whose values are overridden. Also, if
      *  that argument is true, then the value of this object is
      *  propagated to those returned objects during the construction
      *  of the list. This method is read-synchronized on the workspace.
+     *  If the <i>force</i> argument is true, then if an expected
+     *  derived object does not exist, then it is created by calling
+     *  the _propagateExistence() protected method.
      *  @param visited A set of objects that have previously been
      *   visited. This should be non-null only on the recursive calls
      *   to this method.
      *  @param propagate True to propagate the value of this object
      *   (if any) to derived objects that have not been overridden
      *   while the list is being constructed.
+     *  @param force Force derived objects to exist where they should
+     *   be if they do not already exist.
      *  @param context The context (this except in recursive calls).
+     *  @param depth The depth (0 except in recursive calls).
+     *  @param relativeName The name of the object relative to the
+     *   context (null except in recursive calls).
      *  @param override The list of override breadths (one per depth).
      *   If propagate is true, then this should be a list with with
      *   a single Integer 0 for outside callers, and otherwise it
      *   should be null.
-     *  @param relativeName The name of the object relative to the
-     *   context (null except in recursive calls).
      *  @return A list of instances of the same class as this object
      *   which are derived from
      *   this object. The list is empty in this base class, but
@@ -2134,7 +2203,9 @@ public class NamedObj implements
     private List _getDerivedList(
             HashSet visited,
             boolean propagate,
+            boolean force,
             NamedObj context,
+            int depth,
             List override,
             String relativeName)
             throws IllegalActionException {
@@ -2181,7 +2252,9 @@ public class NamedObj implements
                 result.addAll(_getDerivedList(
                                       visited,
                                       propagate,
+                                      force,
                                       container,
+                                      depth + 1,
                                       newOverride,
                                       newRelativeName));
             }
@@ -2216,14 +2289,32 @@ public class NamedObj implements
                             candidate = _getContainedObject(relativeName, other);
                         }
                         if (candidate == null) {
-                            // No candidate and no error.  In theory, we
-                            // should never reach this line.
-                            throw new InternalErrorException("Expected "
-                                    + container.getFullName()
-                                    + " to contain an object named "
-                                    + relativeName
-                                    + " of type "
-                                    + getClass().toString());
+                            if (force) {
+                                // Need to get the container.
+                                // Is there a better way than parsing
+                                // the relativeName?
+                                NamedObj remoteContainer = other;
+                                int lastPeriod = relativeName.lastIndexOf(".");
+                                if (lastPeriod > 0) {
+                                    String containerName
+                                            = relativeName.substring(
+                                            0, lastPeriod); 
+                                    remoteContainer = getContainer()
+                                            ._getContainedObject(
+                                            containerName, other);                                 
+                                }
+                                candidate = _propagateExistence(remoteContainer);
+                                candidate._markDerived(depth);
+                            } else {
+                                // No candidate and no error.  In theory, we
+                                // should never reach this line.
+                                throw new InternalErrorException("Expected "
+                                        + container.getFullName()
+                                        + " to contain an object named "
+                                        + relativeName
+                                        + " of type "
+                                        + getClass().toString());
+                            }
                         }
                         // We may have done this already.  Check this
                         // by finding the object that will be affected by
@@ -2274,9 +2365,19 @@ public class NamedObj implements
 
                         result.add(candidate);
 
-                        // Add objects that this defers to.
+                        // Add objects derived from this candidate.
+                        // Note that depth goes back to zero, since the
+                        // existence of objects derived from this candidate
+                        // will be determined by the depth of propagation from
+                        // this candidate.
                         result.addAll(candidate._getDerivedList(
-                                visited, propagate, candidate, newOverride, null));
+                                visited, 
+                                propagate, 
+                                force, 
+                                candidate,
+                                0,
+                                newOverride, 
+                                null));
 
                         // Note that the above recursive call will
                         // add the candidate to the HashSet, so we
@@ -2287,6 +2388,23 @@ public class NamedObj implements
             return result;
         } finally {
             workspace().doneReading();
+        }
+    }
+
+    /** Mark this object and its contents as being derived objects,
+     *  where this object has derivation depth given by the argument,
+     *  the immediate contents have derivation depth one greater
+     *  than that, etc.
+     *  @param depth The derivation depth for this object.
+     */
+    private void _markDerived(int depth) {
+        setDerivedLevel(depth);
+        // NOTE: It is necessary to mark objects deeply contained
+        // so that we can disable deletion and name changes.
+        Iterator objects = containedObjectsIterator();
+        while (objects.hasNext()) {
+            NamedObj containedObject = (NamedObj)objects.next();
+            containedObject._markDerived(depth + 1);
         }
     }
 
@@ -2315,9 +2433,9 @@ public class NamedObj implements
     // Version of the workspace when cache last updated.
     private long _fullNameVersion = -1;
 
-    // Boolean variable to indicate whether this is a derived object.
-    // By default, instances of NamedObj are not derived.
-    private boolean _isDerived = false;
+    // Variable indicating at what level above this object is derived.
+    // A negative number indicates that it is not derived.
+    private int _derivedLevel = -1;
 
     // The model error handler, if there is one.
     private ModelErrorHandler _modelErrorHandler = null;
