@@ -44,6 +44,7 @@ include $(CONFIG)
 CLASSPATH = ../../..
 
 TCL_SRCS = \
+	description.tcl \
 	enums.tcl \
 	testDefs.tcl \
 	testEnums.tcl
