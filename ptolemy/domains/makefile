@@ -74,13 +74,13 @@ PTAUXALLJARS = \
                 dt/dt.jar \
 		giotto/giotto.jar \
 		$(PTGRDOMAIN_JAR) \
+		hdf/hdf.jar ]
 		petrinet/petrinet.jar \
 		tm/tm.jar \
 		sr/sr.jar \
 		wireless/wireless.jar
 
 # Are we shipping these domains?
-#		hdf/hdf.jar
 #		nc/nc.jar 
 #		pbo/pbo.jar
 #		petrinet/petrinet.jar
