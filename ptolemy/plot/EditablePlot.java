@@ -226,7 +226,7 @@ public class EditablePlot extends Plot {
 
         // Erase the guide
         graphics.setXORMode(_editColor);
-        for (int i=0; i < _editSpecX.length; i++) {
+        for (int i = 0; i < _editSpecX.length; i++) {
             if (_editSpecSet[i]) {
                 graphics.drawLine(_editSpecX[i], _editSpecY[i]-1,
                         _editSpecX[i], _editSpecY[i]+1);
