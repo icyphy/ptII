@@ -43,7 +43,7 @@ The input sets the time interval before the next expire.
 @author Xiaojun Liu
 @version $Id$
 */
-public class DETimer extends DEActor {
+public class DETimer extends TypedAtomicActor {
 
     /** Constructor.
      *  @param name The name of this actor.
@@ -72,13 +72,15 @@ public class DETimer extends DEActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-
+        DEDirector dir = (DEDirector)getDirector();
+        double now = dir.getCurrentTime();
+        
         if (set.hasToken(0)) {
             // reset timer
             double delay = ((DoubleToken)set.get(0)).doubleValue();
             if (delay > 0.0) {
-                _expireTime = getCurrentTime() + delay;
-                fireAt(getCurrentTime() + delay);
+                _expireTime = now + delay;
+                dir.fireAt(this, now + delay);
             } else {
                 // disable timer
                 _expireTime = -1.0;
@@ -87,7 +89,7 @@ public class DETimer extends DEActor {
             //System.out.println("Reset DETimer " + this.getFullName() +
             //        " to expire at " + _expireTime);
 
-        } else if (Math.abs(getCurrentTime() - _expireTime) < 1e-14) {
+        } else if (Math.abs(now - _expireTime) < 1e-14) {
             // timer expires
             expired.broadcast(_outToken);
 

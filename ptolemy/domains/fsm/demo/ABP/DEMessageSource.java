@@ -43,7 +43,7 @@ Generate messages according to Poisson process.
 @author Xiaojun Liu
 @version $Id$
 */
-public class DEMessageSource extends DEActor {
+public class DEMessageSource extends TypedAtomicActor {
 
     /** Constructor.
      *  @param container The composite actor that this actor belongs to.
@@ -85,8 +85,9 @@ public class DEMessageSource extends DEActor {
 
         //System.out.println("DEChannel "+getFullName()+" initializing at time "+
         //        getCurrentTime());
-
-        fireAt(getCurrentTime() + 
+        DEDirector dir = (DEDirector) getDirector();
+        double now = dir.getCurrentTime();
+        dir.fireAt(this, now + 
                 ((DoubleToken)_maxDelay.getToken()).doubleValue()*Math.random());
     }
 
@@ -102,18 +103,19 @@ public class DEMessageSource extends DEActor {
             _firstFire = false;
             return;
         }
-
+        DEDirector dir = (DEDirector)getDirector();
+        double now = dir.getCurrentTime();
         double maxDelay = ((DoubleToken)_maxDelay.getToken()).doubleValue();
 
 	if (next.hasToken(0)) {
             next.get(0);
-            if (getCurrentTime() < _nextMsgTime) {
+            if (now < _nextMsgTime) {
                 // ignore this
             } else {
                 // compute a random delay between zero and MaxDelay.
                 double delay = maxDelay*Math.random();
-	        fireAt(getCurrentTime() + delay);
-                _nextMsgTime = getCurrentTime() + delay;
+	        dir.fireAt(this, now + delay);
+                _nextMsgTime = now + delay;
             }
 
             //System.out.println("DEMessageSource " + this.getFullName() +
@@ -121,7 +123,7 @@ public class DEMessageSource extends DEActor {
 
         }
 
-        if (Math.abs(getCurrentTime() - _nextMsgTime) < 1e-14) {
+        if (Math.abs(now - _nextMsgTime) < 1e-14) {
             ++_msgNum;
             output.broadcast(new IntToken(_msgNum));
         } else {

@@ -45,7 +45,7 @@ a probability. It does not change the order of messages.
 @author Xiaojun Liu
 @version $Id$
 */
-public class DEChannel extends DEActor {
+public class DEChannel extends TypedAtomicActor {
 
     /** Constructor.
      *  @param name The name of this actor.
@@ -81,7 +81,8 @@ public class DEChannel extends DEActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-
+        DEDirector dir = (DEDirector)getDirector();
+        double now = dir.getCurrentTime();
         if (input.hasToken(0)) {
             if (Math.random() < ((DoubleToken)_dropRate.getToken()).doubleValue()) {
                 // drop the message
@@ -94,8 +95,8 @@ public class DEChannel extends DEActor {
                     double minDelay = ((DoubleToken)_minDelay.getToken()).doubleValue();
                     double maxDelay = ((DoubleToken)_maxDelay.getToken()).doubleValue();
                     double delay = minDelay + (maxDelay - minDelay)*Math.random();
-                    _nextOutTime = getCurrentTime() + delay;
-                    fireAt(getCurrentTime() + delay);
+                    _nextOutTime = now + delay;
+                    dir.fireAt(this, now + delay);
                 }
             }
 
@@ -104,7 +105,7 @@ public class DEChannel extends DEActor {
 
         }
 
-        if(Math.abs(getCurrentTime() - _nextOutTime) < 1e-14) {
+        if(Math.abs(now - _nextOutTime) < 1e-14) {
             // send out a message
             IntToken msg = (IntToken)_msgs.take();
             output.broadcast(msg);
@@ -119,8 +120,8 @@ public class DEChannel extends DEActor {
                 double maxDelay = ((DoubleToken)_maxDelay.getToken()).doubleValue(
 );
                 double delay = minDelay + (maxDelay - minDelay)*Math.random();
-                _nextOutTime = getCurrentTime() + delay;
-                fireAt(getCurrentTime() + delay);
+                _nextOutTime = now + delay;
+                dir.fireAt(this, now + delay);
             }
         }
 

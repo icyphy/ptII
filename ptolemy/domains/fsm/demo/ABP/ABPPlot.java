@@ -143,9 +143,9 @@ public class ABPPlot extends DEActor {
      *  @exception IllegalActionException Not thrown in this class.
      */
     public void fire() throws IllegalActionException{
-
+        DEDirector dir = (DEDirector) getDirector();
         if (!_rangeInitialized) {
-            _plot.setXRange(getStartTime(), getStopTime());
+            _plot.setXRange(dir.getStartTime(), dir.getStopTime());
             _plot.setYRange(getYMin(), getYMax());
             _plot.init();
             _plot.repaint();
