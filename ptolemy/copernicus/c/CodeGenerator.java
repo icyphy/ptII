@@ -91,7 +91,6 @@ public abstract class CodeGenerator {
     }
 
     /** Generate code for typedef declaring array instances
-     * @param void
      * @return A newline character (\n) separated string of typdefs for
      * the arrays needed.
      */
@@ -114,7 +113,6 @@ public abstract class CodeGenerator {
 
     /** Generate include directives for all types that are required for the
      *  class that we are generating code for.
-     *  @param source The class that we are generating code for.
      *  @return The generated include directives.
      */
     protected String _generateIncludeDirectives() {
