@@ -93,41 +93,26 @@ public class JavaParserManip implements JavaStaticSemanticConstants {
             return loadedAST;
         }
 
-	// If the .java file is zero length, then try using reflection
-	File javaFile = new File(filename);
-	if (javaFile.length() == 0) {
-	    Class myClass = ASTReflect.pathnameToClass(filename);
-	    if (myClass != null) {
-		System.out.println("JavaParserManip.parseCanonicalFileName: "+
-				   filename + "is of length 0. Using " +
-				   " reflection on " + myClass.getName());
-		loadedAST = ASTReflect.ASTCompileUnitNode(myClass);
-	    }
-	} else {
-	    JavaParser p = new JavaParser();
+	JavaParser p = new JavaParser();
 
-	    //ApplicationUtility.trace("JavaParserManip: Calling " +
-	    //			     "JavaParser.init() " + 
-	    //			     StringManip.baseFilename(filename));
+	//ApplicationUtility.trace("JavaParserManip: Calling " +
+	//			     "JavaParser.init() " + 
+	//			     StringManip.baseFilename(filename));
 
-	    try {
-		p.init(filename);
-	    } catch (Exception e) {
-		ApplicationUtility.error("error opening " + filename +
+	try {
+	    p.init(filename);
+	} catch (Exception e) {
+	    ApplicationUtility.error("error opening " + filename +
 					 " : " + e);
-	    }
-
-	    p.yydebug = debug;
-	    p.yyparse();
-	    
-	    loadedAST = p.getAST();
-
-	    // Get the part of the filename before the last '.'
-	    //filename = StringManip.partBeforeLast(filename, '.');
 	}
 
+	p.yydebug = debug;
+	p.yyparse();
+
+	loadedAST = p.getAST();
+
 	if (loadedAST==null) {
-	    javaFile = new File(filename);
+	    File javaFile = new File(filename);
 	    throw new NullPointerException("JavaParserManip." +
 					   "parseCanonicalFileName(): "+
 					   "loadedAST is null: " + filename +
@@ -142,13 +127,8 @@ public class JavaParserManip implements JavaStaticSemanticConstants {
         //allParsedMap.put(filename, loadedAST);
 
 	String packageName = ASTReflect.getPackageName(loadedAST);
-	System.out.println("JavaParserManip.parseCanonicalFileName: "+
-			   " parsed " + filename + " found " + packageName);
-	// FIXME get rid of this debugging stuff
-	if (packageName.equals("cg.RampSystem.CG_Ramp_ramp")) {
-	    System.out.println("JavaParserManip.parseCanonicalFileName: " +
-			       loadedAST);
-	}
+	//System.out.println("JavaParserManip.parseCanonicalFileName: "+
+	//		   " parsed " + filename + " found " + packageName);
 
         loadedAST.setProperty(IDENT_KEY, packageName);
         allParsedMap.put(packageName, loadedAST);

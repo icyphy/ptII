@@ -236,9 +236,9 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         case CG_INTERFACE:
             {
                 ClassDecl classDecl = (ClassDecl) d;
-		System.out.println("StaticResolution.resolveAName(): " +
-				   "about to call classDecl.loadSource() " +
-				   d.category + " " + classDecl.getName() );
+		//System.out.println("StaticResolution.resolveAName(): " +
+		//		   "about to call classDecl.loadSource() " +
+		//		   d.category + " " + classDecl.getName() );
 
                 classDecl.loadSource();
                 int modifiers = classDecl.getModifiers();
@@ -413,8 +413,8 @@ public class StaticResolution implements JavaStaticSemanticConstants {
      *  the package name, for example "java.lang.Object"
      */
     public static CompileUnitNode loadClassName(String className, int pass) {
-        System.out.println("StaticResolution.loadClassName: " +
-                className);
+        //System.out.println("StaticResolution.loadClassName: " +
+        //        className);
 
         CompileUnitNode loadedAST =
             (CompileUnitNode) allPass0ResolvedMap.get(className);
@@ -432,8 +432,8 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     }
 
     public static CompileUnitNode loadFile(File file, int pass) {
-        System.out.println("StaticResolution.loadFile:" +
-                file.getName());
+        //System.out.println("StaticResolution.loadFile:" +
+        //        file.getName());
         try {
             return _loadCanonicalFile(file.getCanonicalPath(), pass);
         } catch (IOException ioe) {
@@ -559,6 +559,8 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
         System.out.println("StaticResolution<static>: --- require class on Object ---" + (System.currentTimeMillis() - startTime));
 
+	System.out.println("Each call to loadClassName() uses reflection and prints a +");
+	System.out.println("Each call to _loadCanonicalFile() parses a file and prints a .");
         OBJECT_DECL = _requireClass(env, "Object");
 
         System.out.println("StaticResolution<static>: --- done require class on Object ---" + (System.currentTimeMillis() - startTime));
@@ -652,7 +654,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 					    JavaDecl currentPackage,
 					    int categories) {
 
-	//System.out.println("StaticResolution._findPossibles():" +  name.getIdent());
+	//System.out.println("StaticResolution._findPossibles():" +  name.getIdent() + " " + currentPackage);
         EnvironIter possibles = new EnvironIter();
 
         if (name.getQualifier() == AbsentTreeNode.instance) {
@@ -723,7 +725,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
             }
         }
 
-        if (!possibles.hasNext() & ((categories & CG_CLASS) == 1)) { 
+        if (!possibles.hasNext() & ((categories & CG_CLASS) == 1) && currentPackage != null) { 
   	    // Use reflection
   	    ClassDeclNode classDeclNode =
   		ASTReflect.lookupClassDeclNode(currentPackage.fullName() +
@@ -778,8 +780,8 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     // do partial resolution only.
     private static CompileUnitNode _loadCanonicalFile(
             String filename, int pass) {
-        System.out.println("StaticResolution._loadCanonicalFile: " + 
-                filename);
+        //System.out.println("StaticResolution._loadCanonicalFile: " + 
+	//		   filename);
 	System.out.print(".");
 
         String noExtensionName = StringManip.partBeforeLast(filename, '.');
@@ -804,7 +806,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     // classes like Object
     private static final ClassDecl _requireClass(Environ env, String name) {
 	ClassDecl classDecl = null;
-	System.out.println("StaticResolution._requireClass() " + name);
+	//System.out.println("StaticResolution._requireClass() " + name);
         Decl decl = env.lookup(name);
 
         if (decl == null) {
@@ -862,9 +864,9 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 	    }
 	    classDecl = (ClassDecl) decl;
 	}
-	System.out.println("StaticResolution._requireClass() loadSource()");
+	//System.out.println("StaticResolution._requireClass() loadSource()");
         classDecl.loadSource();
-	System.out.println("\nStaticResolution._requireClass() -- leaving");
+	//System.out.println("\nStaticResolution._requireClass() -- leaving");
         return classDecl;
     }
 
@@ -875,8 +877,8 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     private static CompileUnitNode _resolvePass0(CompileUnitNode node) {
         String filename = (String) node.getProperty(IDENT_KEY);
 
-        System.out.println("StaticResolution._resolvePass0: " +
-                filename);
+        //System.out.println("StaticResolution._resolvePass0: " +
+        //        filename);
         if (filename != null) {
             CompileUnitNode pass0ResolvedNode =
                 (CompileUnitNode) allPass0ResolvedMap.get(filename);

@@ -147,7 +147,7 @@ public class PackageDecl extends JavaDecl
                 return;
         }
 
-       System.out.println("PackageDecl._initEnviron(): " +
+	System.out.println("PackageDecl._initEnviron(): " +
                "Now processing " + fullName('.'));
         // Use reflection to get at the Ptolemy Core packages.
         if (SearchPath.ptolemyCorePackageSet.contains(fullName('.'))) {
@@ -160,8 +160,8 @@ public class PackageDecl extends JavaDecl
                 // ptolemy.data.expr is not part of the core, so
                 // we need to add it by hand so that we can parse
                 // the .java files and get the bodies in to the AST.
-                System.out.println("PackageDecl._initEnviron" +
-                 "Packages(): saw ptolemy/data ");
+                //System.out.println("PackageDecl._initEnviron" +
+                // "Packages(): saw ptolemy/data ");
                 _environ.add(new PackageDecl("expr", this));
             }
             return;
@@ -234,10 +234,10 @@ public class PackageDecl extends JavaDecl
                         if (fs.isDirectory()) {
                             _environ.add(new PackageDecl(name, this));
 	                    empty = false;
-                            System.out.println(fullName() + " " +
-                             getName() + " : found subpackage in " +
-                             fullname +
-					       " Adding " + name);
+                            //System.out.println(fullName() + " " +
+			    // getName() + " : found subpackage in " +
+                            // fullname +
+			    //		       " Adding " + name);
                         }
 
                     } // className != null
@@ -255,8 +255,8 @@ public class PackageDecl extends JavaDecl
     // or ptolemy core packages.
     private void _initEnvironSystemPackages(Set classSet, Set packageSet) {
         String packageName = fullName('.');
-        System.out.println("PackageDecl._initEnvironSystemPackages(): " +
-			   "loading " + packageName + " _container:" + _container);
+        //System.out.println("PackageDecl._initEnvironSystemPackages(): " +
+	//	   "loading " + packageName + " _container:" + _container);
 
         Iterator classes = classSet.iterator();
         while (classes.hasNext()) {
@@ -268,9 +268,9 @@ public class PackageDecl extends JavaDecl
                     if (_environ.lookupProper(className, CG_USERTYPE) == null) {
                 String shortClassName =
                     className.substring(packageName.length() + 1);
-                System.out.println("PackageDecl._initEnviron" +
-                                "SystemPackages():"+
-                                shortClassName);
+                //System.out.println("PackageDecl._initEnviron" +
+                //                "SystemPackages():"+
+                //                shortClassName);
 
                         _environ.add(new ClassDecl(shortClassName, this));
                     }
@@ -300,17 +300,17 @@ public class PackageDecl extends JavaDecl
                 // of java/lang
                 String shortSystemPackageName =
                     systemPackageName.substring(packageName.length() + 1);
-                System.out.println("PackageDecl._initEnvironSystem" +
-				   "Packages(): adding package: " + shortSystemPackageName);
+                //System.out.println("PackageDecl._initEnvironSystem" +
+		//		   "Packages(): adding package: " + shortSystemPackageName);
                 _environ.add(new PackageDecl(shortSystemPackageName, this));
             } else {
                 if (packageName.equals("") && 
                         systemPackageName.indexOf('.') == -1 &&
                         !systemPackageName.equals("META-INF")
                     ) {
-                    System.out.println("PackageDecl._initEnvironSystem" +
-                     "Packages(): adding toplevel package: " +
-                     systemPackageName);
+                    //System.out.println("PackageDecl._initEnvironSystem" +
+                    // "Packages(): adding toplevel package: " +
+                    // systemPackageName);
                 _environ.add(new PackageDecl(systemPackageName, this));
                 }
             }

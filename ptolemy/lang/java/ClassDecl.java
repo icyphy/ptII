@@ -143,9 +143,6 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
 
     /** Ensure that the source code for this ClassDecl is loaded. */
     public void loadSource() {
-	if (getName().equals("CG_Ramp_ramp")) {
-	    System.out.println("ClassDecl.loadSource: _source = " + _source);
-	}
         if (_source == null) {
             _source = AbsentTreeNode.instance;
 
@@ -165,8 +162,8 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
 
                 File file = _pickLibrary(_container).openSource(fileName);
 
-                System.out.println("ClassDecl: Reading in user type : " +
-                        fullName() + " from " + fileName);
+                //System.out.println("ClassDecl: Reading in user type : " +
+                //        fullName() + " from " + fileName);
 
                 StaticResolution.loadFile(file, 0); // should set the source
 
