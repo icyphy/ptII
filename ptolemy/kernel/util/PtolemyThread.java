@@ -1,5 +1,5 @@
 /* A subclass of Thread to be used for optimizing reader-writer mechanism in
-   PtolemyII.
+   Ptolemy II.
 
  Copyright (c) 1997-1998 The Regents of the University of California.
  All rights reserved.
@@ -25,8 +25,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (lmuliadi@eecs.berkeley.edu)
-@AcceptedRating ??? (???@eecs.berkeley.edu)
+@ProposedRating Green (lmuliadi@eecs.berkeley.edu)
+@AcceptedRating Green (liuj@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel.util;
@@ -59,9 +59,6 @@ table. (as was metioned in the previous paragraph)
 */
 public class PtolemyThread extends Thread {
 
-    // FIXME: What kind of constructors should I provide here ? Should I
-    // provide all constructors from Thread class ?
-    
     /** Construct a new PtolemyThread object. This constructor has the
      *  same effect as PtolemyThread(null, null, <i>gname</i>), where 
      *  <i>gname</i> is a newly generated name. Automatically generated 
@@ -82,7 +79,7 @@ public class PtolemyThread extends Thread {
     }
     
     /** Construct a new PtolemyThread object. This constructor has the 
-     *  same effect as Thread(null, target, name)
+     *  same effect as PtolemyThread(null, target, name)
      *  @param target The object whose run method is called.
      *  @param name The name of the new thread.
      *
@@ -92,7 +89,7 @@ public class PtolemyThread extends Thread {
     }
 
     /** Construct a new PtolemyThread object. This constructor has the 
-     *  same effect as Thread(null, null, name)
+     *  same effect as PtolemyThread(null, null, name)
      *  @param name The name of the new thread.
      */
     public PtolemyThread(String name) {
@@ -132,25 +129,11 @@ public class PtolemyThread extends Thread {
         super(group, name);
     }
 
-
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-    // readDepth the number of read permissions this thread holds.
-    // FIXME: Is this the right level of permission ?? Should it be private
-    // and then provide public interface for accessing it ? Note that method
-    // calls are more expensive than field accesses.
-    // If we want public interface, (at least) these methods are needed:
-    // incr(), decr(), isZero()
-    public int readDepth;
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
+    ////                         variables                         ////
+    /** readDepth the number of read permissions this thread holds.
+     *  This field is made 'package friendly' because only the Workspace class
+     *  should access this field.
+     */
+    int readDepth;
 }

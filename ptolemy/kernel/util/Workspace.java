@@ -93,22 +93,28 @@ an item to the workspace directory.  The methods for accessing
 the directory are all synchronized, so there is no risk of any
 thread reading an inconsistent state.
 <p>
-To optimize performance, one can use the PtolemyThread class instead of the
-ordinary Thread class if it is known in advance that the thread will need to
-get read or write access in the workspace. FIXME: Maybe add a rough estimate
-of performance improvement.
+To improve performance, one can use the PtolemyThread class instead of the
+ordinary Thread class. The improvement is gained by having PtolemyThread
+object includes an integer field to store the read depth. This is as opposed
+to using a hashtable as a map between (ordinary )Thread object and its
+read depth field.
 <p>
-Note that there's a tradeoff between the simulation speed and the safety of
-the reader-writer mechanism. If you decide to write-protect the workspace in
-your domain, make sure you debug it first with the workspace 
-not-write-protected. This will ensure that your domain will still work when
-it's combined with, say, mutable domain (e.g. PN).
+Workspace can be made read-only by calling the setReadOnly(boolean) 
+method with <i>true</i> as an argument. A read-only workspace can only have
+readers but no writers. The getReadAccess() and doneReading() methods invoked
+on a read-only workspace return immediately bypassing all checks. Note that
+the pairing of the getReadAccess() and doneReading() methods is not checked
+under this condition. The getWriteAccess() and doneWriting() methods invoked
+on a read-only workspace will throw an exception. This is done to improve
+performance, as in many cases there are certain parts of simulation where
+we can predict in advance that no write access will be needed.
+
 
 @author Edward A. Lee, Mudit Goel, Lukito Muliadi
 @version $Id$
 */
-// FIXME: should this class be made final ?
-public class Workspace implements Nameable, Serializable {
+
+public final class Workspace implements Nameable, Serializable {
 
     private static final boolean DEBUG = false;
     private static final boolean DEBUG1 = true;
@@ -206,13 +212,15 @@ public class Workspace implements Nameable, Serializable {
      *  active read or write permissions), then wake up any threads that are
      *  suspended on access to this
      *  workspace so that they may contend for permissions.
+     *  If the workspace is read-only, the pairing
+     *  between the getReadAccess() and doneReading() methods is not checked.
      *  @exception InvalidStateException If this method is called
      *   before a corresponding call to getReadAccess().
      */
     public synchronized void doneReading() {
-        // A write protected workspace can't have no writers.
+        // A read-only workspace can't have any writers.
         // Since, getReadAccess() simply returns, so does doneReading().
-        if (_writeProtected) {
+        if (_readOnly) {
             return;
         }
 
@@ -274,13 +282,15 @@ public class Workspace implements Nameable, Serializable {
      *  This wakes up any threads that are suspended on access to this
      *  workspace so that they may contend for permissions.
      *  It also increments the version number of the workspace.
+     *  @exception InvalidStateException If this method is called when
+     *  the workspace is read-only.
      */
     public synchronized void doneWriting() {
-        // A write protected workspace can't be written, so calling this method
+        // A read-only workspace can't be written, so calling this method
         // doesn't really make sense.
-        if (_writeProtected) {
-            throw new IllegalStateException("Trying to relinguish write " + 
-                    "access on a write-protected workspace.");
+        if (_readOnly) {
+            throw new InvalidStateException(this, "Trying to relinguish " + 
+                    "write access on a write-protected workspace.");
                 }
         _writeReq--;
         _writeDepth--;
@@ -329,12 +339,16 @@ public class Workspace implements Nameable, Serializable {
      *  It is essential that doneReading() be called
      *  after this, or write permission may never again be granted in
      *  this workspace.
+     *  If the workspace is read-only, the calling thread will not suspend,
+     *  and will just return immediately from the method call. The pairing
+     *  between the getReadAccess() and doneReading() methods is not checked
+     *  under this condition.
      */
     public synchronized void getReadAccess() {
         
-        // The workspace is write protected, so there are no writers,
+        // The workspace is read-only, so there are no writers,
         // so always grant the permission.
-        if (_writeProtected) {
+        if (_readOnly) {
             return;
         }
         // Go into an infinite 'while (true)' loop, and at each iteration
@@ -418,12 +432,14 @@ public class Workspace implements Nameable, Serializable {
      *  has been obtained.  It is essential that doneWriting() be called
      *  after this, or read or write permission may never again be granted in
      *  this workspace.
+     *  @exception InvalidStateException If this method is called when the
+     *  workspace is read-only.
      */
     public synchronized void getWriteAccess() {
-        // A write protected workspace can't be written, so throw an exception.
-        if (_writeProtected) {
-            throw new IllegalStateException("Trying to get write access" + 
-                    " on a write-protected workspace.");
+        // A read-only workspace can't be written, so throw an exception.
+        if (_readOnly) {
+            throw new InvalidStateException(this, "Trying to get write " + 
+                    "access on a write-protected workspace.");
         }
         _writeReq++;
 
@@ -443,15 +459,48 @@ public class Workspace implements Nameable, Serializable {
                 if (_readers.isEmpty() && _numPtReaders==0) {
                     // No readers
                     
-                    // _writer = Thread.currentThread();
-                    // I changed the above line, because I think it's more
-                    // efficient.. Hope I won't introduce any bug (lmuliadi)
                     _writer = current;
 
                     _writeDepth = 1;
                     return;
                 }
                 
+                // Check if sole reader is this current thread.
+
+                if (current instanceof PtolemyThread) {
+                    // current thread is a PtolemyThread.
+                    if (DEBUG) {
+                        System.out.println("PtolemyThread calling " + 
+                                "getWriteAccess");
+                    }
+                    PtolemyThread ptThread = (PtolemyThread)current;
+                    if (_numPtReaders == 1 
+                            && _readers.size() == 0 
+                            && ptThread.readDepth > 0) {
+                        // Sole reader is this thread.
+                        _writer = current;
+                        _writeDepth = 1;
+                        return;
+                        
+                    }
+                } else {
+                    // current thread is not a PtolemyThread.
+                    if (DEBUG) {
+                        System.out.println("Thread calling " +
+                                "getWriteAccess");
+                    }
+                    if (_readers.size() == 1 && 
+                            _numPtReaders == 0 &&
+                            _readers.get(current) != null) {
+                        _writer = current;
+                        _writeDepth = 1;
+                        return;
+                    }
+                }
+
+
+                /*
+
                 if (_readers.size() == 1 && _readers.get(current) != null) {
                     if (DEBUG) {
                         System.out.println("Thread calling " +
@@ -459,9 +508,6 @@ public class Workspace implements Nameable, Serializable {
                     }
                     // Sole reader is this thread.
 
-                    // _writer = Thread.currentThread();
-                    // I changed the above line, because I think it's more
-                    // efficient.. Hope I won't introduce any bug (lmuliadi)
                     _writer = current;                   
 
                     _writeDepth = 1;
@@ -477,15 +523,15 @@ public class Workspace implements Nameable, Serializable {
                     if (_numPtReaders==1 && ptThread.readDepth > 0) {
                         // Sole reader is this thread.
                         
-                        // _writer = Thread.currentThread();
-                        // I changed the above line, because I think it's more
-                        // efficient.. Hope I won't introduce any bug (lmuliadi)
                         _writer = current;
                            
                         _writeDepth = 1;
                         return;  
                     }
                 }
+                
+
+                */
                 
             }
 	    try {
@@ -512,11 +558,11 @@ public class Workspace implements Nameable, Serializable {
         _version++;
     }
 
-    /** Return whether the workspace is write protected.
-     *  @return true if the workspace is write protected, false otherwise.
+    /** Return whether the workspace is read-only.
+     *  @return true if the workspace is read-only, false otherwise.
      */
-    public synchronized boolean isWriteProtected() {
-        return _writeProtected;
+    public synchronized boolean isReadOnly() {
+        return _readOnly;
     }
 
     /** Remove the specified item from the directory.
@@ -553,19 +599,26 @@ public class Workspace implements Nameable, Serializable {
         incrVersion();
     }
 
-    /** Set whether this workspace is write protected. A write-protected
-     *  workspace will throw a runtime exception when its getWriteAcess() or
-     *  doneWriting() methods are called.
-     *  <p>
-     *  Write protecting the workspace improves the perfomance as
-     *  the getReadAccess() and doneReading() methods can return immediately
-     *  without checking if there's any writers. (Note: there's no writer 
-     *  since it is write protected)
-     *  @param flagValue True to write protect the workspace, and false
+    /** Set whether this workspace is read-only. When the workspace is 
+     *  read-only, calling getWriteAcess() or doneWriting() will result in
+     *  a runtime exception, and calling getReadAccess() and doneReading()
+     *  will return immediately.
+     *  
+     *  @param flagValue True to make the workspace read-only, and false
      *  otherwise.
+     *  @exception IllegalActionException If this method is called when
+     *  there's a writer on the workspace.
      */
-    public synchronized void setWriteProtected(boolean flagValue) {
-        _writeProtected = flagValue;
+    public synchronized void setReadOnly(boolean flagValue) 
+            throws IllegalActionException {
+        if (flagValue == true) {
+            // Check if there's no writer.
+            if (_writer != null) {
+                throw new IllegalActionException(this, "Can't make a " + 
+                        "workspace read-only while there is a writer on it.");
+            }
+        }
+        _readOnly = flagValue;
     }
 
     /** Return a concise description of the object.
@@ -668,7 +721,7 @@ public class Workspace implements Nameable, Serializable {
         // only PN uses this method and PN doesn't permit the workspace
         // to be write-protected, this case shouldn't happen at all.
         // See also the _releaseAllReadPermissions() method
-        if (_writeProtected) {
+        if (_readOnly) {
             return;
         }
 
@@ -723,8 +776,8 @@ public class Workspace implements Nameable, Serializable {
 
         // FIXME: this might introduce a bug later..
         // Since, currently, only PN uses this code, and PN never let the
-        // workspace to be write protected, you don't have to worry about it.
-        if (_writeProtected) {
+        // workspace to be read-only, you don't have to worry about it.
+        if (_readOnly) {
             return 0;
         }
 
@@ -752,7 +805,9 @@ public class Workspace implements Nameable, Serializable {
                 return depth;
             }
         } else {
+            // the current thread is not an instance of PtolemyThread.
             ReadDepth depth = (ReadDepth)_readers.get(current);
+            // check if the thread is a reader.
             if (depth == null) {
                 return 0;
             }
@@ -795,9 +850,9 @@ public class Workspace implements Nameable, Serializable {
     // field goes from 1 to 0).
     private long _numPtReaders = 0;
 
-    // Indicate that the workspace is write protected, and no changes in
+    // Indicate that the workspace is read-only, and no changes in
     // this Workspace object is permitted.
-    private boolean _writeProtected = false;
+    private boolean _readOnly = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
