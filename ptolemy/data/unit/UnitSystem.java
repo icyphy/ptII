@@ -92,7 +92,8 @@ public class UnitSystem extends Attribute {
     public static void addUnitCategory(String categoryName,
 	    String baseUnitName) {
 
-System.out.println("Add unit category: " + categoryName + " " + baseUnitName);
+        // System.out.println("Add unit category: " + categoryName
+        // + " " + baseUnitName);
 
 	Integer index = (Integer)_indexTable.get(categoryName);
 	if (index != null) {
@@ -117,7 +118,7 @@ System.out.println("Add unit category: " + categoryName + " " + baseUnitName);
 	    throws IllegalActionException {
 	if (attribute instanceof Parameter) {
 
-System.out.println("Add unit constant: " + attribute.getName());
+            // System.out.println("Add unit constant: " + attribute.getName());
 
 	    Constants.add(attribute.getName(),
 		    ((Parameter)attribute).getToken());
