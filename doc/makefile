@@ -232,7 +232,7 @@ all: suball whatsnew.htm whatsnewVergil.htm codeDoc/tree.html
 install: all jars codeDoc.jar
 
 codeDoc.jar:
-	$(JAR) -cvf $@ -C $(ROOT) doc/codeDoc
+	"$(JAR)" -cvf $@ -C $(ROOT) doc/codeDoc
 
 
 # Vergil gets special versions of the html files because the JDK1.3 Java
