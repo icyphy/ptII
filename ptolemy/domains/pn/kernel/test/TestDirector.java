@@ -61,6 +61,7 @@ public class TestDirector extends AtomicActor {
     public TestDirector (CompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
+        input = new IOPort(this, "input", true, false);
         output = new IOPort(this, "output", false, true);
     }
 
@@ -84,6 +85,10 @@ public class TestDirector extends AtomicActor {
                 output.broadcast(new IntToken(i));
                 profile += "broadcast new token " + i + "\n";
             }
+            for (i = 0; i < 2; i++) {
+                int ans = ((IntToken)input.get(0)).intValue();
+                profile += "received new token " + ans + "\n";
+            }
             try {
                 ((CompositeActor)getContainer()).workspace().getReadAccess();
                 ((BasePNDirector)getDirector()).wrapup();
@@ -92,7 +97,9 @@ public class TestDirector extends AtomicActor {
             }
             output.broadcast(new IntToken(i));
             profile += "broadcast new token " + i + "\n";
-        } catch (IllegalActionException e) {}
+        } catch (IllegalActionException e) {
+            System.out.println(e.toString());
+        }
     }
     
     /** Return a profile which contains the various actions performed by this 
@@ -102,7 +109,7 @@ public class TestDirector extends AtomicActor {
         return profile;
     }
 
-
+    public IOPort input;
     public IOPort output;
     public String profile = "";
 
