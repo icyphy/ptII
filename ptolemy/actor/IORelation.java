@@ -33,6 +33,7 @@ package ptolemy.actor;
 
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.ComponentRelation;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -498,7 +499,8 @@ public class IORelation extends ComponentRelation {
      *  If the argument is not one, then all linked ports must
      *  be multiports, or an exception is thrown.  This method invalidates
      *  the resolved types on the director of the container, if there is
-     *  one.
+     *  one, and notifies each connected actor that its connections
+     *  have changed.
      *  This method write-synchronizes on the workspace.
      *
      *  @param width The width of the relation.
@@ -521,11 +523,12 @@ public class IORelation extends ComponentRelation {
                             "because of its links.");
                 }
             }
+            Iterator ports;
             if (width != 1) {
-                // Check for non-multiports
-                Iterator ports = linkedPortList().iterator();
+                ports = linkedPortList().iterator();
                 while (ports.hasNext()) {
                     IOPort p = (IOPort) ports.next();
+                    // Check for non-multiports
                     if (!p.isMultiport()) {
                         throw new IllegalActionException(this, p,
                                 "Cannot make bus because the " +
@@ -534,6 +537,17 @@ public class IORelation extends ComponentRelation {
                 }
             }
             _width = width;
+
+            // Do this as a second pass in case the change is aborted
+            // above by an exception.
+            ports = linkedPortList().iterator();
+            while (ports.hasNext()) {
+                IOPort p = (IOPort) ports.next();
+                Entity portContainer = (Entity)p.getContainer();
+                if (portContainer != null) {
+                    portContainer.connectionsChanged(p);
+                }
+            }
 
             // Invalidate schedule and type resolution.
             Nameable container = getContainer();
