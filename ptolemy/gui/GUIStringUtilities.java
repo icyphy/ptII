@@ -80,6 +80,37 @@ public class GUIStringUtilities {
     }
 
 
+    /**  If the string is longer than 80 characters, split it up by
+     *  displaying adding newlines every 80 characters.
+     *  If the <i>longName</i> argument is null, then the string
+     *  "<Unnamed>" is returned.
+     *  @see GUIStringUtilities#abbreviate
+     *  @param longName The string to optionally split up
+     *  @return Either the original string, or the string with newlines
+     *  inserted
+     */
+    public static String split(String longName) {
+	// In theory, this method should be in
+	// ptolemy.kernel.util.StringUtilities, but ptolemy.gui gets shipped
+	// without StringUtilities, so we include it here
+
+        if (longName == null) {
+            return "<Unnamed>";
+        }
+	if (longName.length() < 80) {
+	    return longName;
+	}
+	
+	StringBuffer results = new StringBuffer();
+	int i;
+	for(i = 0; i < longName.length() - 80; i+=80) {
+	    results.append(longName.substring(i, i+79) + "\n");
+	}								   
+	results.append(longName.substring(i));
+
+	return results.toString();
+    }
+
     /** Tokenize a String to an array of Strings for use with
      *  Runtime.exec(String []).
      * 

@@ -230,37 +230,6 @@ public abstract class Top extends JFrame {
         _modified = modified;
     }
 
-    /**  If the string is longer than 80 characters, split it up by
-     *  displaying adding newlines every 80 characters.
-     *  If the <i>longName</i> argument is null, then the string
-     *  "<Unnamed>" is returned.
-     *  @see GUIStringUtilities#abbreviate
-     *  @param longName The string to optionally split up
-     *  @return Either the original string, or the string with newlines
-     *  inserted
-     */
-    public static String split(String longName) {
-	// In theory, this method should be in
-	// ptolemy.kernel.util.StringUtilities, but ptolemy.gui gets shipped
-	// without StringUtilities, so we include it here
-
-        if (longName == null) {
-            return "<Unnamed>";
-        }
-	if (longName.length() < 80) {
-	    return longName;
-	}
-	
-	StringBuffer results = new StringBuffer();
-	int i;
-	for(i = 0; i < longName.length() - 80; i+=80) {
-	    results.append(longName.substring(i, i+79) + "\n");
-	}								   
-	results.append(longName.substring(i));
-
-	return results.toString();
-    }
-
     /** Size this window to its preferred size and make it
      *  displayable, and override the base class to populate the menu
      *  bar if the menus have not already been populated.  This is
@@ -703,7 +672,8 @@ public abstract class Top extends JFrame {
         Object[] options = {"Save", "Discard changes", "Cancel"};
 
 
-        String query = "Save changes to " + split(_getName()) + "?";
+        String query = "Save changes to "
+            + GUIStringUtilities.split(_getName()) + "?";
 
 
         // Show the MODAL dialog
