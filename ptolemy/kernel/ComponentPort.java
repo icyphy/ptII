@@ -408,7 +408,9 @@ public class ComponentPort extends Port {
      *  @return True if the given port is deeply connected.
      */
     public boolean isDeeplyConnected(ComponentPort port) {
-        if (port == null) return false;
+        if (port == null) {
+            return false;
+        }
         try {
             _workspace.getReadAccess();
             return deepConnectedPortList().contains(port);
@@ -430,7 +432,9 @@ public class ComponentPort extends Port {
      */
     public boolean isOpaque() {
         ComponentEntity entity = (ComponentEntity)getContainer();
-        if (entity == null) return true;
+        if (entity == null) {
+            return true;
+        }
         return entity.isOpaque();
     }
 
@@ -460,7 +464,9 @@ public class ComponentPort extends Port {
      */
     public void liberalLink(ComponentRelation relation)
             throws IllegalActionException {
-        if (relation != null) _checkLiberalLink(relation);
+        if (relation != null) {
+            _checkLiberalLink(relation);
+        }
         _doLink(relation);
     }
 
