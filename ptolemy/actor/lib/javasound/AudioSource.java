@@ -519,14 +519,15 @@ public class AudioSource extends Source {
 		// Start capturing audio.
 		_soundCapture.startCapture();
 	    } catch (IOException ex) {
+		// FIXME: this is bad code!!!
 		throw new IllegalActionException(
-                        "Cannot capture audio:\n" +
-                        ex.getMessage());
+			   "Cannot capture audio:\n" + ex);
 	    }
             // Read the number of audio channels and set
             // parameter accordingly.
             _channels = _soundCapture.getChannels();
-            channels.setToken(new IntToken(_channels));
+	    // FIXME: The next line causes an infinite loop!!!
+            //channels.setToken(new IntToken(_channels));
         }
     }
 
