@@ -524,3 +524,14 @@ test Variable-13.2 {Test setting structured type} {
     list [[$v getType] toString] [[$v getToken] toString]
 } {{{int}} {{0, 1}}}
 
+######################################################################
+####
+#
+test Variable-14.0 {Test getFreeIdentifiers} {
+    set var [java::new ptolemy.data.expr.Variable]
+    $var setExpression "1"
+    set result2 [$var getFreeIdentifiers]
+    $var setExpression "a"
+    set result3 [$var getFreeIdentifiers]
+    list [listToStrings $result2] [listToStrings $result3]
+} {{} a}

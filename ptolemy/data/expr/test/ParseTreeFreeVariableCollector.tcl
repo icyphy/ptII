@@ -64,7 +64,7 @@ proc theTest {expression} {
     set p1 [java::new ptolemy.data.expr.PtParser]
     set root [ $p1 {generateParseTree String} $expression]
     set type [freeVars $root]
-    listToObjects $type
+    listToStrings $type
 }
 
 ######################################################################

@@ -922,21 +922,21 @@ test PtParser-17.1 {Test assignment lists.} {
     set p [java::new ptolemy.data.expr.PtParser]
     set ra [ $p generateAssignmentMap "a=1;b=2+3;c=function(x) 4+5" ]
     set names [$ra keySet]
-    listToObjects $names
+    listToStrings $names
 } {a b c}
 
 test PtParser-17.2 {Test assignment lists.} {
     set p [java::new ptolemy.data.expr.PtParser]
     set ra [ $p generateAssignmentMap "a.g=1;b.g=2+3;c.g=function(x) 4+5" ]
     set names [$ra keySet]
-    listToObjects $names
+    listToStrings $names
 } {a.g b.g c.g}
 
 test PtParser-17.2 {Test assignment lists.} {
     set p [java::new ptolemy.data.expr.PtParser]
     set ra [ $p generateAssignmentMap "a.g(1)=1;b(2)=2+3;c.g.h(3)=function(x) 4+5" ]
     set names [$ra keySet]
-    listToObjects $names
+    listToStrings $names
 } {a.g(1) b(2) c.g.h(3)}
 
 ######################################################################
