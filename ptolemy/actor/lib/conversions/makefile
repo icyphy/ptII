@@ -58,6 +58,7 @@ JSRCS = \
 	DoubleToFix.java \
 	FixToDouble.java \
 	FixToFix.java \
+	InUnitsOf.java \
 	LongToDouble.java \
 	PolarToCartesian.java \
 	PolarToComplex.java \

@@ -59,6 +59,10 @@
           class="ptolemy.domains.sdf.lib.IntToBits">
   </entity>
 
+  <entity name="InUnitsOf"
+          class="ptolemy.actor.lib.conversions.InUnitsOf">
+  </entity>
+
   <entity name="LongToDouble"
           class="ptolemy.actor.lib.conversions.LongToDouble">
   </entity>
