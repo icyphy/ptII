@@ -37,7 +37,7 @@
 # updating the docs
 #DIRS = kernel actors domains pitcl doc graph data
 # filter is not yet ready 
-DIRS = kernel plot graph data actor automata gui math domains #filter
+DIRS = kernel plot graph data actor automata gui math #domains #filter
 
 # Root of Ptolemy II directory
 ROOT =		..
