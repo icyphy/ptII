@@ -598,7 +598,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                     new ptolemy.data.Token[node.getRowCount() * columnCount];
                 for(int i = 0; i < node.getRowCount(); i++) {
                     ptolemy.data.Token[] newTokens =
-                        MatrixToken.createTokenSequence(
+                        MatrixToken.createSequence(
                                 node.jjtGetChild(3*i).getToken(),
                                 node.jjtGetChild(3*i+1).getToken(),
                                 columnCount);

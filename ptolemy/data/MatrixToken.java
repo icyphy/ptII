@@ -211,8 +211,25 @@ public abstract class MatrixToken extends Token {
      *  @exception IllegalActionException If no type exists for the
      *  matrix token, or the array of tokens is not the right size, or
      *  the array is null.
+     *  @deprecated Use createMatrix() instead.
      */
     public static MatrixToken create(Token[] tokens, int rows, int columns)
+            throws IllegalActionException {
+        return createMatrix(tokens, rows, columns);
+    }
+
+    /** Create a new instance of a MatrixToken subclass with the given number
+     *  of rows and columns.  The token will contain all of the elements of the
+     *  given array.  The element type of the matrix token will be
+     *  the least upper bound of the types of all of the tokens in the given
+     *  array.  The size of the array must be (rows*columns).
+     *  @return An instance of a subclass of MatrixToken.
+     *  @exception IllegalActionException If no type exists for the
+     *  matrix token, or the array of tokens is not the right size, or
+     *  the array is null.
+     */
+    public static MatrixToken createMatrix(
+            Token[] tokens, int rows, int columns)
             throws IllegalActionException {
         Object[] typeTerms = new Object[tokens.length];
         for (int i = 0; i < tokens.length; i++) {
@@ -255,7 +272,7 @@ public abstract class MatrixToken extends Token {
      *  @exception IllegalActionException If the length is negative, or
      *  tokens of the given type cannot be added together.
      */
-    public static Token[] createTokenSequence(
+    public static Token[] createSequence(
             Token start, Token increment, int length)
             throws IllegalActionException {
         Token[] result = new Token[length];
@@ -268,6 +285,24 @@ public abstract class MatrixToken extends Token {
             }
         }
         return result;
+    }
+
+    /** Create an array of tokens of the given length.  The first
+     *  token in the sequence will have value start and each succeeding
+     *  token will have the value created by adding the given increment
+     *  to the preceding token.
+     *  @param start The value of the first element of the returned array.
+     *  @param increment The difference between elements in the array.
+     *  @param length The size of the array to create, which must not be
+     *  negative.
+     *  @exception IllegalActionException If the length is negative, or
+     *  tokens of the given type cannot be added together.
+     *  @deprecated Use createSequence() instead.
+     */
+    public static Token[] createTokenSequence(
+            Token start, Token increment, int length)
+            throws IllegalActionException {
+        return createSequence(start, increment, length);
     }
 
     /** Count the number of tokens differing by the given increment
