@@ -295,6 +295,16 @@ public class PropertyClassChanges implements MoMLFilter {
         _actorsWithPropertyClassChanges
             .put("ptolemy.matlab.Expression",
                     matlabClassChanges);
+        
+        // DirectoryListing
+        HashMap directoryListingClassChanges = new HashMap();
+        // Key = property name, Value = new class name
+        directoryListingClassChanges.put("directoryOrURL",
+                "ptolemy.actor.parameters.FilePortParameter");
+
+        _actorsWithPropertyClassChanges
+            .put("ptolemy.actor.lib.io.DirectoryListing",
+                    directoryListingClassChanges);
 
         // ImagePartition
         HashMap inputOutputTypedIOPortClassChanges = new HashMap();
