@@ -82,7 +82,7 @@ EXTRA_SRCS =	$(JSRCS)
 MISC_FILES =	$(DIRS) doc
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
+# make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES =	#codeDoc
 
 JCLASS = $(JSRCS:%.java=%.class)

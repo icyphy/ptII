@@ -44,10 +44,10 @@ EXTRA_SRCS = \
 MISC_FILES =	internals #usersGuides #codeDoc
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
+# make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES =	codeDoc
 
-# 'make realclean' removes these files
+# 'make distclean' removes these files
 REALCLEAN_STUFF =
 
 # Sub directories to run make in.

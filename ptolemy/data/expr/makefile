@@ -97,7 +97,7 @@ OPTIONAL_JSRCS = \
 DERIVED_JSRCS = PtParser.java
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
+# make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES =  \
 	$(OPTIONAL_JSRCS) \
 	message.txt \

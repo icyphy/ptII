@@ -84,7 +84,7 @@ EXTRA_SRCS = $(JSRCS) pxgraph pxgraph.bat ptplot2mif.tcl index.html
 MISC_FILES = test #bean
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
+# make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	$(DIRS) \
 	adm \
@@ -108,7 +108,7 @@ OPTIONAL_FILES = \
 	'Pxgraph$$HTMLButtonListener.class' \
 	'Pxgraph$$PrintButtonListener.class'
 
-# Files to be removed by 'make realclean'
+# Files to be removed by 'make distclean'
 REALCLEAN_STUFF =
 
 JCLASS = $(JSRCS:%.java=%.class)

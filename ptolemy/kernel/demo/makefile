@@ -67,7 +67,7 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) \
 MISC_FILES =	#doc
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
+# make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES =	ExampleSerializable.data #codeDoc
 
 JCLASS = $(JSRCS:%.java=%.class)

@@ -52,10 +52,10 @@ EXTRA_SRCS = \
 MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
+# make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES =
 
-# 'make realclean' should remove tclIndex
+# 'make distclean' should remove tclIndex
 REALCLEAN_STUFF =
 
 all: $(EXTRA_SRCS)
