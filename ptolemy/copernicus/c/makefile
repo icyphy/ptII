@@ -48,6 +48,7 @@ include $(CONFIG)
 # Keep this list alphabetized.
 JSRCS = \
     CNames.java \
+    CodeGenerator.java \
     Context.java \
 	Main.java
 
