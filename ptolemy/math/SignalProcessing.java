@@ -885,7 +885,7 @@ public class SignalProcessing {
      *  @param standardDeviation The standard deviation.
      *  @param extent The multiple of the standard deviation out to
      *   which the curve is plotted.
-     *  @param length The length returned array.
+     *  @param length The length of the returned array.
      *  @return An array that contains samples of the Gaussian curve.
      */
     public static final double[] generateGaussianCurve(
@@ -952,14 +952,18 @@ public class SignalProcessing {
     }
 
     /** Return an array with samples a polynomial curve.
-     *  The returned array is symmetric.  E.g., to get a Gaussian curve
-     *  that extends out to "four sigma," then the <i>extent</i> argument
-     *  should be 4.0.
-     *  @param standardDeviation The standard deviation.
-     *  @param extent The multiple of the standard deviation out to
-     *   which the curve is plotted.
-     *  @param length The length returned array.
-     *  @return An array that contains samples of the Gaussian curve.
+     *  The first argument is an array giving the coefficients
+     *  of the polynomial, starting with the constant term, followed
+     *  by the linear term, followed by the quadratic term, etc.
+     *  The remaining coefficients determine the points at which
+     *  the polynomial curve is sampled. That is, they determine
+     *  the values of the polynomial variable at which the polynomial
+     *  is evaluated.
+     *  @param polynomial An array with polynomial coefficients.
+     *  @param start The point of the first sample.
+     *  @param step The step size between samples.
+     *  @param length The length of the returned array.
+     *  @return An array that contains samples of a polynomial curve.
      */
     public static final double[] generatePolynomialCurve(
             double[] polynomial, double start, double step, int length) {
