@@ -378,7 +378,7 @@ public class DatagramReceiver extends TypedAtomicActor {
 		if(_decodeWithPtolemyParser) {
 		    // Set <i>output</i> to GENERAL so that output can 
 		    // handle whatever type comes out of the parser.
-		    if (true) System.out.println("->GENERAL");
+		    //if (true) System.out.println("->GENERAL");
 		    output.setTypeEquals(BaseType.GENERAL);
 		} else if (_decodeToIntegerArray) {
 		    // Set <i>output</i> to {INT} to exactly match the 
