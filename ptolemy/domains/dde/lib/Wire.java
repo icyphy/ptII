@@ -75,6 +75,17 @@ public class Wire extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** The output port.
+     */
+    public TypedIOPort output;
+    
+    /** The input port.
+     */
+    public TypedIOPort input;
+    
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Execute this actor by consuming a token on the input and producing
@@ -112,6 +123,7 @@ public class Wire extends TypedAtomicActor {
 
     /** Return true if this actor will allow subsequent iterations to
      *  occur; return false otherwise.
+     * @return True if continued execution is enabled; false otherwise.
      * @exception IllegalActionException Is not thrown. It is declared
      *  to allow this exception in derived classes.
      */
@@ -122,7 +134,5 @@ public class Wire extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    public TypedIOPort output;
-    public TypedIOPort input;
     private boolean _continueIterations = true;
 }

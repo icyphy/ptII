@@ -73,8 +73,10 @@ public class DDESink extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                     ports and parameters                  ////
 
+    /** The input port.
+     */
     public TypedIOPort input;
 
     /** Indicate the integer valued number of real tokens that this
@@ -120,6 +122,7 @@ public class DDESink extends TypedAtomicActor {
 
     /** Return true if this actor is enabled to proceed with additional
      *  iterations. Return false otherwise.
+     * @return True if continued execution is enabled; false otherwise.
      * @throws IllegalActionException Is not thrown but may be thrown
      *  in derived classes.
      * @see #fire

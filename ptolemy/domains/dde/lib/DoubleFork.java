@@ -79,6 +79,21 @@ public class DoubleFork extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** The first output port.
+     */
+    public TypedIOPort output1;
+    
+    /** The second output port.
+     */
+    public TypedIOPort output2;
+    
+    /** The input port.
+     */
+    public TypedIOPort input;
+    
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Execute this actor by consuming a real input token and producing
@@ -105,6 +120,7 @@ public class DoubleFork extends TypedAtomicActor {
 
     /** Return true if this actor will allow subsequent iterations to
      *  occur; return false otherwise.
+     * @return True if continued execution is enabled; false otherwise.
      * @exception IllegalActionException Is not thrown. It is declared
      *  to allow this exception in derived classes.
      */
@@ -115,9 +131,6 @@ public class DoubleFork extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    public TypedIOPort output1;
-    public TypedIOPort output2;
-    public TypedIOPort input;
     private boolean _continueIterations = true;
 
 }

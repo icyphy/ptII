@@ -83,11 +83,20 @@ public class TimeAdvance extends DDEActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
+    ////                     ports and parameters                  ////
 
-    // A parameter used to specify the value of the DoubleTokens
-    // that are produced as outputs of this actor.
-    Parameter outputValue;
+    /** The output port.
+     */
+    public TypedIOPort output;
+    
+    /** The input port.
+     */
+    public TypedIOPort input;
+    
+    /** A parameter used to specify the value of the DoubleTokens
+     * that are produced as outputs of this actor.
+     */
+    public Parameter outputValue;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -111,6 +120,7 @@ public class TimeAdvance extends DDEActor {
 
     /** Return true if this actor will allow subsequent iterations to
      *  occur; return false otherwise.
+     * @return True if continued execution is enabled; false otherwise.
      * @exception IllegalActionException Is not thrown. It is declared
      *  to allow this exception in derived classes.
      */
@@ -121,8 +131,6 @@ public class TimeAdvance extends DDEActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    public TypedIOPort output;
-    public TypedIOPort input;
     private boolean _continueIterations = true;
 
 }
