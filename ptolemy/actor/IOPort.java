@@ -566,7 +566,7 @@ public class IOPort extends ComponentPort {
      *  the returned receivers are contained by ports connected on the
      *  inside to this port.  The number of channels is the inside
      *  width of this port.  If there are no relations linked on the
-     *  inside, it returns null.  This method is used for opaque,
+     *  inside, it returns an empty array.  This method is used for opaque,
      *  non-atomic entities.  It "sees through" the boundary of opaque
      *  ports and actors.  This method is <i>not</i> read-synchronized
      *  on the workspace, so the caller should be.
