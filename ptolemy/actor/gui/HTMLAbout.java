@@ -32,16 +32,27 @@ package ptolemy.actor.gui;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.moml.MoMLParser;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URL;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import javax.swing.event.HyperlinkEvent;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// HTMLAbout
 /**
 This class contains static methods that are called
 by when HTMLViewer.hyperlinkUpdate() is invoked on a hyperlink
-that starts with <code>about:</code>.
+that starts with <code>about:</code>.  This facility is primarily
+used for testing.
 
 @author Christopher Hylands
 @version $Id$
@@ -56,61 +67,203 @@ public class HTMLAbout {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Parse a configuration and return a CompositeEntity. 
-     *  This method is primarily used for testing.
-     *  <p>For example, if vergil -ptiny was called, then the configuration
-     *  at <code>ptolemy/configs/ptiny/configuration.xml</code>
-     *  will have been used by {@link ptolemy.vergil.VergilApplication}.
-     *  If the Vergil {@link HTMLViewer} is pointed at a link
-     *  <a href="about:expandConfiguration#full"><code>about:expandConfiguration#full</code></a>,
-     *  then the configuration will be expanded, which is a good way to test
-     *  that all of the classes in a configuration are present.
-     *  Note that the <code>about:expandConfiguration</code> link will
-     *  only work inside Ptolemy II, browsers such as IE or Mozilla will
-     *  not understand it.
-     *
-     *  @param configurationSubdirectory The subdirectory (if any) of
-     *  ptolemy/configs where the configuration will be found.
-     *  @return A CompositeEntity that contains the configuration.
-     *  @exception Exception If there is a problem opening the configuration.
-     *  @see ptolemy.actor.gui.HTMLViewer
+    /** Return a string containing HTML that describes the about: 
+     *  features.
+     */   
+    public static String about() {
+        return "<html><head><title>About Ptolemy II</title></head>"
+            + "<body><h1>About Ptolemy II</h1>\n"
+            + "The HTML Viewer in Ptolemy II handles the <code>about:</code>\n"
+            + "tag specially.\n"
+            + "<br>The following urls are handled:\n"
+            + "<ul>\n"
+            + "<li><a href=\"about:configuration\">"
+            + "<code>about:configuration</code></a> "
+            + "Expand the configuration (good way to test for "
+            + "missing classes)\n"
+            + "<li><a href=\"about:copyright\"><code>about:copyright</code></a> "
+            + "Display information about the copyrights.\n"
+            + "<li><a href=\"about:demos\"><code>about:demos</code></a>"
+            + "Open up all the demonstrations.\n"
+            + "<li><a href=\"about:demos#ptolemy/configs/doc/demosPtiny.htm\">"
+            + "<code>about:demos#ptolemy/configs/doc/demosPtiny.htm</code></a>"
+            + "\nOpen up the .xml files in\n"
+            + "<code>ptolemy/configs/doc/demosPtiny.htm</code>. Note that\n"
+            + "URL can be used here, but File -&gt Open URL does not handle\n"
+            + "<code>about:</code>, so you will need to create a webpage\n"
+            + "that has this as a URL."
+//             + "<li><a href=\"about:runAllDemos\"><code>about:runAllDemos</code></a>"
+//             + "Run all the demonstrations.\n"
+//             + "<li><a href=\"about:runAllDemos#ptolemy/configs/doc/demosPtiny.htm\">"
+//             + "<code>about:runAllDemosdemos#ptolemy/configs/doc/demosPtiny.htm</code></a>"
+//             + "\nRun all the .xml files in\n"
+//             + "<code>ptolemy/configs/doc/demosPtiny.htm</code>.\n"
+            + "</ul>\n</body>\n</html>\n";
+    }
+
+    /** Call Configuration.openModel() on all the local .xml files that
+     *  are linked to from an HTML file.
+     *  @param demosFileName The name of the HTML file that contains links
+     *  to the .xml files.  If this argument is the empty string, then
+     *  "ptolemy/configs/doc/demos.htm" is used.
+     *  @param configuration  The configuration to open the files in.
+     *  @return the URL of the HTML file that was searched. 
+     */   
+    public static URL demos(String demosFileName, Configuration configuration)
+            throws Exception {
+
+        URL demosURL = _getDemoURL(demosFileName);
+        List modelList = _getModelURLs(demosURL);
+        Iterator models = modelList.iterator();
+        while (models.hasNext()) {
+            URL model = (URL)models.next();
+            configuration.openModel(model, model,
+                    model.toExternalForm());
+        } 
+        return demosURL;
+    }
+
+    /** Process an "about:" HyperlinkEvent.
+     *  @param event The HyperlinkEvent to process.  The description of
+     *  the event should start with "about:".  If there are no specific
+     *  matches for the description, then a general usage message is
+     *  returned.
+     *  @param configuration The configuration in which we are operating.
+     *  @return A URL that points to the results.
+     *  @exception Throwable If there is a problem invoking the about
+     *  task.
      */
-    public static String expandConfiguration(String 
-            configurationSubdirectory) throws Exception {
-
-        // This method is not in HTMLViewer because HTMLViewer
-        // does not import anything outside of ptolemy.gui
-
-        MoMLParser parser = new MoMLParser();
-        ClassLoader loader = parser.getClass().getClassLoader();
-        // Search for / or . so as to avoid arbitrary expansion outside
-        // of ptolemy/configs
-        if (configurationSubdirectory.indexOf("/") != -1) {
-            throw new Exception("configurationSubdirectory must not "
-                    + "contain a '/', it was: '"
-                    + configurationSubdirectory + "'");
-
+    public static URL hyperlinkUpdate(HyperlinkEvent event,
+            Configuration configuration) throws Throwable {
+        
+        URL newURL = null;
+        if (event.getDescription().equals("about:copyright")) {
+            // Note that if we have a link that is
+            // <a href="about:copyright">about:copyright</a>
+            // then event.getURL() will return null, so we have
+            // to use getDescription()
+            newURL = _temporaryHTMLFile("copyright",
+                    GenerateCopyrights.generateHTML());
+        } else if (event.getDescription()
+                .equals("about:configuration")) {
+            // about:expandConfiguration will expand the configuration
+            // and report any problems such as missing classes.
+            newURL = _temporaryHTMLFile("configuration",
+                    configuration.exportMoML());
+        } else if (event.getDescription()
+                .startsWith("about:demos")) {
+            // Expand all the local .xml files in the fragment
+            // and return a URL pointing to the fragment.
+            // If there is no fragment, then use
+            // "ptolemy/configs/doc/demos.htm"
+            URI aboutURI = new URI(event.getDescription());
+            newURL = demos(aboutURI.getFragment(), configuration);
+//         } else if (event.getDescription()
+//                 .startsWith("about:runAllDemos")) {
+//             URI aboutURI = new URI(event.getDescription());
+//             newURL = runAllDemos(aboutURI.getFragment(),
+//                     configuration);
+        } else {
+            // Display a message about the about: facility 
+            newURL = _temporaryHTMLFile("about", about());
         }
+        return newURL;
+    }
 
-        if (configurationSubdirectory.indexOf(".") != -1) {
-            throw new Exception("configurationSubdirectory must not "
-                    + "contain a '.', it was: '"
-                    + configurationSubdirectory + "'");
+    /** Run all the local .xml files that are linked to from an HTML file.
+     *  @param demosFileName The name of the HTML file that contains links
+     *  to the .xml files.  If this argument is the empty string, then
+     *  "ptolemy/configs/doc/demos.htm" is used.
+     *  @param configuration  The configuration to run the files in.
+     *  @return the URL of the HTML file that was searched. 
+     */   
+    public static URL runAllDemos(String demosFileName,
+            Configuration configuration)
+            throws Exception {
 
+        URL demosURL = _getDemoURL(demosFileName);
+        List modelList = _getModelURLs(demosURL);
+        Iterator models = modelList.iterator();
+        while (models.hasNext()) {
+            URL model = (URL)models.next();
+            configuration.openModel(model, model,
+                    model.toExternalForm());
+        } 
+        return demosURL;
+    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    // Return the URL of the file that contains links to .xml files
+    private static URL _getDemoURL(String demosFileName) throws IOException {
+        // Open the demos.htm file and read the contents into
+        // a String
+        if (demosFileName == null || demosFileName.length() == 0) {
+            demosFileName = "ptolemy/configs/doc/demos.htm";
         }
+        return MoMLApplication.specToURL(demosFileName);
+    }
 
-        String configurationResource = "ptolemy/configs/"
-            + configurationSubdirectory + "/configuration.xml";
-        URL configurationURL =
-            loader.getResource(configurationResource);
 
-        if (configurationURL == null) {
-            throw new FileNotFoundException("Could not find '"
-                    + configurationResource + "' ");
+
+    // Return a list of URLs for local .xml files linked to in demosURL.
+    private static List  _getModelURLs(URL demosURL) throws IOException {
+
+	BufferedReader in = new BufferedReader(
+				new InputStreamReader(
+				demosURL.openStream()));
+
+        StringBuffer demosBuffer = new StringBuffer();
+
+	String inputLine;
+	while ((inputLine = in.readLine()) != null) {
+            demosBuffer.append(inputLine);
         }
-        CompositeEntity configuration =
-            (CompositeEntity)parser.parse(configurationURL,
-                    configurationURL);
-        return configuration.exportMoML();
+	in.close();       
+
+        // demos contains the contents of the html file that has
+        // links to the demos we are interested in.
+        String demos = demosBuffer.toString();
+
+        // All the models we find go here.
+        List modelList = new LinkedList();
+
+        // Loop through the html file that contains links to the demos
+        // and pull out all the links by looking for href=" and then
+        // for the closing "
+        int modelStartIndex = demos.indexOf("href=\"");
+        while (modelStartIndex != -1) {
+            int modelEndIndex = demos.indexOf("\"", modelStartIndex + 6);
+            if (modelEndIndex != -1) {
+                String modelLink =
+                    demos.substring(modelStartIndex + 6, modelEndIndex);
+                if (!modelLink.startsWith("http://")
+                        && modelLink.endsWith(".xml")) {
+                    // If the link does not start with http://, but ends
+                    // with .xml, then we add it to the list
+                    modelList.add(MoMLApplication.specToURL(modelLink));
+                }
+            }
+            modelStartIndex = demos.indexOf("href=\"", modelEndIndex);
+        } 
+        return modelList;
+    }
+
+    // Save a string in a temporary html file and return a URL to it.
+    // @param prefix The prefix string to be used in generating the
+    // file's name; must be at least three characters long.
+    // @param contents  The contents of the temporary file
+    // @return A URL pointing to a temporary file.
+    private static URL _temporaryHTMLFile(String prefix, String contents) 
+            throws IOException {
+        // Generate a copyright page in a temporary file
+        File temporaryFile = File.createTempFile(
+                prefix, "htm");
+        temporaryFile.deleteOnExit();
+
+        FileWriter fileWriter = new FileWriter(temporaryFile);
+        fileWriter.write(contents, 0 , contents.length());
+        fileWriter.close();
+        return temporaryFile.toURL();
     }
 }
