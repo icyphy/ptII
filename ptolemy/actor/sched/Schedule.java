@@ -126,7 +126,9 @@ S3.setIterationCount(2);
 S3.setActor(D);
 </code>
 <p>
-
+Note that this implementation is not synchronized. It is therefore not safe
+for a thread to make modifications to the schedule structure while
+multiple threads are concurrently accessing the schedule.
 <h1>References</h1>
 S. S. Bhattacharyya, P K. Murthy, and E. A. Lee,
 Software Syntheses from Dataflow Graphs, Kluwer Academic Publishers, 1996.
@@ -221,6 +223,18 @@ public class Schedule extends ScheduleElement {
 	    }
 	}
 	return returnFirings.iterator();
+    }
+
+    /** Return an iterator over the schedule elements of this schedule.
+     *  The ordering of elements in the iterator sequence is simply
+     *  the order in which they were added to the schedule.
+     *  The elements of the iterator sequence are instances of Firing
+     *  or Schedule.
+     *
+     *  @return An iterator over the schedule elements of this schedule.
+     */
+    public Iterator iterator() {
+	return(_schedule.iterator());
     }
 
     /** Remove the schedule element at the specified position in the

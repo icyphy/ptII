@@ -212,7 +212,7 @@ test Scheduler-6.2 {Test firingIterator method of Schedule} {
 ######################################################################
 ####
 #
-test Scheduler-6.2 {Test setIterationCount, getIterationCount method of ScheduleElement} {
+test Scheduler-6.3 {Test setIterationCount, getIterationCount method of ScheduleElement} {
     set manager [java::new ptolemy.actor.Manager $w Manager]
     set toplevel [java::new ptolemy.actor.CompositeActor $w]
     set director [java::new ptolemy.actor.sched.StaticSchedulingDirector \
@@ -243,3 +243,37 @@ test Scheduler-6.2 {Test setIterationCount, getIterationCount method of Schedule
     list [$firing1 getIterationCount] [$firing2 getIterationCount]
     
 } {5 1}
+
+######################################################################
+####
+#
+test Scheduler-6.4 {Test iterator method of Schedule} {
+    set manager [java::new ptolemy.actor.Manager $w Manager]
+    set toplevel [java::new ptolemy.actor.CompositeActor $w]
+    set director [java::new ptolemy.actor.sched.StaticSchedulingDirector \
+	    $toplevel Director]
+    $toplevel setName Toplevel
+    $toplevel setManager $manager
+    set scheduler [java::new ptolemy.actor.sched.Scheduler $w]
+    $director setScheduler $scheduler
+
+    set a1 [java::new ptolemy.actor.test.TestActor $toplevel A1]
+    set a2 [java::new ptolemy.actor.test.TestActor $toplevel A2]
+    $scheduler setValid false
+    set schedule [$scheduler getSchedule]
+    set iter [$schedule iterator]
+    set firing1 [$iter next]
+    set firing1 [java::cast ptolemy.actor.sched.Firing \
+                                 $firing1]
+    set firing2 [$iter next]
+    set firing2 [java::cast ptolemy.actor.sched.Firing \
+                                 $firing2]
+    set actor1 [$firing1 getActor]
+    set actor1 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor1]
+    set actor2 [$firing2 getActor]
+    set actor2 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor2]
+    list [$actor1 getName] [$actor2 getName]
+    
+} {A1 A2}
