@@ -1,7 +1,7 @@
 /* Abstract base class for attributes that can have their values
    externally set.
 
-Copyright (c) 1997-2004 The Regents of the University of California.
+Copyright (c) 2004 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -42,7 +42,7 @@ package ptolemy.kernel.util;
 
    @author Edward A. Lee
    @version $Id$
-   @since Ptolemy II 4.0
+   @since Ptolemy II 4.1
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Red (cxh)
 */
@@ -123,7 +123,7 @@ public abstract class AbstractSettableAttribute
      *  @param expression The value of the attribute.
      *  @exception IllegalActionException If the expression is invalid
      *   (not thrown in this base class).
-     *  @see #restoreToDefault()
+     *  @see #getDefaultExpression()
      */
     public void setExpression(String expression)
             throws IllegalActionException {
