@@ -73,7 +73,7 @@ public class TypedTestProcessActor extends TypedTestActor {
      */
     public void fire() {
         super.fire();
-        _notdone = false;
+        _notDone = false;
     }
 
     /** Record the invocation, then return true if fire was never called.
@@ -81,11 +81,11 @@ public class TypedTestProcessActor extends TypedTestActor {
      */
     public boolean postfire() {
         super.postfire();
-        return _notdone;
+        return _notDone;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private boolean _notdone = true;
+    private boolean _notDone = true;
 }
