@@ -77,9 +77,4 @@ public class InterfaceAutomatonGraphFrame extends FSMGraphFrame {
 	final FSMGraphModel graphModel = new FSMGraphModel(getModel());
 	return new GraphPane(_controller, graphModel);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // private InterfaceAutomatonGraphController _controller;
 }
