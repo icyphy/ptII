@@ -48,15 +48,14 @@ in a base class.
 
 <li>
 <a href="../../domains/sdf/demo/MultipleRuns/MultipleRuns.xml">
-Lifecycle management</a>.
+Lifecycle management</a> (see also
+<a href="../../actor/lib/hoc/demo/ModelReference/ModelReference.xml">
+ModelReference</a>).
 <br>
 Version 4.0 introduces the first of a family of
 <i>lifecycle management</i> actors, which are actors
 that control the execution of associated models.
 This example uses one model to control repeated runs of another.
-
-<li>
-FIXME: Higher-order components.
 
 </ul>
 <h2>
@@ -73,23 +72,19 @@ The new statically checked units system associates
 units with ports and checks compatibility in connections.
 
 <li>
+<a href="../../actor/lib/hoc/demo/IterateOverArray.xml">
+Higher-Order Components</a>.
+Version 4.0 adds <i>higher-order components</i>,
+which are components (like actors) that operate on other
+components rather than directly on data.
+
+<li>
 <a href="../../vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil.xml">
 Interactive decorations in Vergil diagrams</a>.
 <br>
 Actors can have custom icons, diagrams can be decorated with
 decorative elements, and parameters of the icons and decorative
 elements can be tied to values compute by the model.
-
-<li>
-<a href="../../domains/psdf/demo/BlindCommunication/BlindCommunication.xml">Re
-configuration analysis</a>
-<br>
-A new capability helps to ensure the safe use of reconfiguration.
-Currently it is primarily used by the code generator to
-ensure that synchronous dataflow rate parameters are constant
-over the lifetime of the model.  This analysis also enables
-parameterized static scheduling of some models where rate parameters
-change only between iterations of a sub-model.
 
 <li>
 <a href="../../domains/de/demo/HierarchicalModel/HierarchicalModel.xml">
@@ -101,18 +96,7 @@ that is required by several domains. It provides a systematic
 framework for determining whether events at a particular input
 affect a particular output.
 
-<li>
-Copernicus
-<br>
-The copernicus code generator has matured significantly:
-<ul>
-<li>Better handling of data types, reconfiguration, and attributes other than simple parameters.
-<li>Code Generation for the Giotto domain.
-<li>A primitive code generator for generating atomic actors from models.
-<li>Static analysis of reachable code for generating self-contained jar files.
-</ul>
-
-<li> FIXME: String parameters
+<!-- FIXME: String parameters -->
 
 </ul>
 <h2>
@@ -135,8 +119,7 @@ Communications library</a> (see also
    <a href="../../actor/lib/comm/demo/TrellisDecoder/TrellisDecoder.xml">TrellisDecoder</a>,
    <a href="../../actor/lib/comm/demo/ViterbiDecoder/ViterbiDecoder.xml">ViterbiDecoder</a>).
    
-<li>
-FIXME: String library
+<!-- FIXME: String library -->
 
 </ul>
 <h2>
@@ -204,8 +187,7 @@ Additional Features
 	<li> Expert mode parameter editing
 	<li><CODE>vergil -help</CODE> lists available configurations.
 	<li> Full-screen mode for use in presentations (accessible from the toolbar).
-	<li> <a href="../../../doc/codeDoc/ptolemy/vergil/kernel/attributes.DocumentationAttribute.html">
-	     DocumentationAttribute</a>
+	<li> <a href="../../../doc/codeDoc/ptolemy/vergil/kernel/attributes/DocumentationAttribute.html">DocumentationAttribute</a>
 	<li> <a href="../../../doc/codeDoc/ptolemy/kernel/attributes/IDAttribute.html">
 	     IDAttribute</a>
     </menu>
