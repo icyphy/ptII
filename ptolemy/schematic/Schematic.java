@@ -191,9 +191,35 @@ public class Schematic extends SchematicElement {
         setAttribute("version",s);
     }
 
-    XMLElement description;
-    HashedMap entities;
-    HashedMap relations;
+    /**
+     * Take an arbitrary XMLElement and figure out what type it is, then
+     * figure out what semantic meaning that has within this XMLElement.
+     * This is primarily used by the parser to keep the semantic structures
+     * within an XMLElement consistant with the childElements.
+     */
+    void applySemanticsToChild(XMLElement e) {
+        if(e instanceof SchematicEntity) {
+            // if it's a Port, then just add it to the list of ports.
+            entities.putAt(
+                    ((SchematicPort) e).getName(), e);
+        } else if(e instanceof SchematicRelation) {
+            // if a relation, remove the old one and install the new one.
+            relations.putAt(
+                    ((SchematicRelation) e).getName(), e);
+        } else if(e instanceof SchematicParameter) {
+            // if a parameter, remove the old one and install the new one.
+            parameters.putAt(
+                    ((SchematicParameter) e).getName(), e);
+        } else if(e.getElementType().equals("description")) {
+            // if a description, remove the old one and install the new one.
+            removeChildElement(description);
+            description = e;
+        }
+    }
+
+    protected XMLElement description;
+    protected HashedMap entities;
+    protected HashedMap relations;
 
 }
 
