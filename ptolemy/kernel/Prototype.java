@@ -41,7 +41,6 @@ import java.util.ListIterator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
@@ -131,7 +130,6 @@ public class Prototype extends NamedObj {
         // The new object does not have any other objects deferring
         // their MoML definitions to it, so we have to reset this.
         newObject._deferredFrom = null;
-        newObject._container = null;
 
         return newObject;
     }
@@ -214,13 +212,6 @@ public class Prototype extends NamedObj {
         output.write(_getIndentPrefix(depth) + "</class>\n");
     }
 
-    /** Get the container entity.
-     *  @return The container, which is an instance of CompositeEntity.
-     */
-    public Nameable getContainer() {
-        return _container;
-    }
-
     /** Get the list of prototypes that defer to this object.
      *  @return An unmodifiable list of prototypes or null if no object defers
      *   to this one.
@@ -258,7 +249,9 @@ public class Prototype extends NamedObj {
      *  subclass, first instantiate it, then convert it to a class
      *  definition by calling setClassDefinition(). The returned
      *  instance will refer to this prototype by its full name
-     *  in the class attribute of its exported MoML.
+     *  in the class attribute of its exported MoML. Derived classes
+     *  with setContainer() methods are responsible for overriding this
+     *  and calling setContainer().
      *  @see #setClassDefinition(boolean)
      *  @param container The container for the instance.
      *  @param name The name for the clone.
@@ -289,7 +282,6 @@ public class Prototype extends NamedObj {
         // Set the name before the container to not get
         // spurious name conflicts.
         clone.setName(name);
-        clone.setContainer(container);
         clone.setDeferTo(this);
         clone.setClassDefinition(false);
         clone.getMoMLInfo().className = getFullName();
@@ -323,7 +315,7 @@ public class Prototype extends NamedObj {
                     result = newDepth;
                 }
             }
-            // setContainer() ensures that the container
+            // Subclasses ensure that the container
             // is an instance of Prototype.
             context = (Prototype)context.getContainer();
         }
@@ -336,29 +328,6 @@ public class Prototype extends NamedObj {
      */
     public final void setClassDefinition(boolean isClass) {
         _isClassDefinition = isClass;
-    }
-
-    /** Specify the container. Note that calling this method does nothing
-     *  to ensure that the container knows about this relationship.
-     *  Subclasses are responsible for that.
-     *  @param container The container.
-     *  @throws IllegalActionException Not thrown in this base class.
-     *  @throws NameDuplicationException Not thrown in this base class.
-     */
-    public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
-        // NOTE: It may seem that making the argument a Prototype
-        // rather that a CompositeEntity makes more sense, but actually
-        // this creates problems. Derived classes override the method
-        // setContainer(CompositeEntity), and with a Prototype argument,
-        // it is actually a new method.  A symptom of the resulting bugs
-        // is that plot windows are no longer closed when a model is closed.
-        // Changing the derived classes to use a Prototype argument is
-        // risky because there are many derived classes, and there might
-        // be some in user code.  So we are stuck here with a method
-        // that, in effect, constrains classes to be contained by
-        // instances of CompositeEntity.
-        _container = container;
     }
 
     /** Specify that this object defers its definition to another
@@ -443,9 +412,6 @@ public class Prototype extends NamedObj {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** The container of this prototype. */
-    private Prototype _container;
 
     /** List of prototypes that defer their definition to this object. */
     private List _deferredFrom;

@@ -63,10 +63,8 @@ test Prototype-1.0 {Constructor tests} {
 ######################################################################
 ####
 #
-test Prototype-1.1 {setContainer and exportMoML} {
+test Prototype-1.1 {exportMoML} {
     set e1 [java::new ptolemy.kernel.Prototype "e1"]
-    set e2 [java::new ptolemy.kernel.Prototype "e2"]
-    $e2 setContainer $e1
     $e1 exportMoML
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"

@@ -34,6 +34,7 @@ import java.util.Iterator;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
 
@@ -105,6 +106,59 @@ public class ComponentEntity extends Entity {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is a new component entity that defers its definition to the
+     *  same object as this one (or to none) that has no container.
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException If one of the attributes
+     *   cannot be cloned.
+     *  @return A new Prototype.
+     */
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        ComponentEntity newObject = (ComponentEntity)super.clone(workspace);
+        newObject._container = null;
+        return newObject;
+    }
+
+    /** Get the container entity.
+     *  @return The container, which is an instance of CompositeEntity.
+     */
+    public Nameable getContainer() {
+        return _container;
+    }
+
+    /** Create an instance by cloning this prototype and then adjusting
+     *  the deferral relationships in the clone.  Specifically, the
+     *  clone defers its definition to this prototype. To create a
+     *  subclass, first instantiate it, then convert it to a class
+     *  definition by calling setClassDefinition(). The returned
+     *  instance will refer to this prototype by its full name
+     *  in the class attribute of its exported MoML. This overrides
+     *  the base class to set the container.
+     *  @param container The container for the instance.
+     *  @param name The name for the clone.
+     *  @return A new instance that is a clone of this prototype
+     *   with adjusted deferral relationships.
+     *  @throws CloneNotSupportedException If this prototype
+     *   cannot be cloned.
+     *  @throws IllegalActionException If this object is not a
+     *   class definition or the proposed container
+     *   is not acceptable.
+     *  @throws NameDuplicationException If the name collides with
+     *   an object already in the container.
+     */
+    public Prototype instantiate(CompositeEntity container, String name)
+            throws CloneNotSupportedException,
+            IllegalActionException, NameDuplicationException {
+        ComponentEntity clone = (ComponentEntity)
+                super.instantiate(container, name);
+        clone.setContainer(container);        
+        return clone;
+    }
 
     /** Return true if the entity is atomic.
      *  An atomic entity is one that cannot have components.
@@ -212,7 +266,7 @@ public class ComponentEntity extends Entity {
                     _workspace.remove(this);
                 }
             }
-            super.setContainer(container);
+            _container = container;
             if (previousContainer != null) {
                 // This is safe now because it does not throw an exception.
                 previousContainer._removeEntity(this);
@@ -318,4 +372,10 @@ public class ComponentEntity extends Entity {
                 "style=\"fill:blue\"/>\n" +
                 "</svg>\n");
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The container. */
+    private CompositeEntity _container;
 }
