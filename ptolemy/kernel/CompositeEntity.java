@@ -479,7 +479,8 @@ public class CompositeEntity extends ComponentEntity {
                     if (entity.isOpaque()) {
                         result.add(entity);
                     } else {
-                        result.addAll(((CompositeEntity)entity).deepEntityList());
+                        result.addAll(
+                                ((CompositeEntity)entity).deepEntityList());
                     }
                 }
             }
@@ -905,7 +906,8 @@ public class CompositeEntity extends ComponentEntity {
      *   with adjusted deferral relationships.
      *  @exception CloneNotSupportedException If this prototype
      *   cannot be cloned.
-     *  @exception IllegalActionException If this object is not a class definition
+     *  @exception IllegalActionException If this object is not a
+     *   class definition.
      *   or the proposed container is not acceptable.
      *  @exception NameDuplicationException If the name collides with
      *   an object already in the container.
@@ -913,7 +915,8 @@ public class CompositeEntity extends ComponentEntity {
     public Instantiable instantiate(NamedObj container, String name)
             throws CloneNotSupportedException,
             IllegalActionException, NameDuplicationException {
-        CompositeEntity clone = (CompositeEntity)super.instantiate(container, name);
+        CompositeEntity clone =
+            (CompositeEntity)super.instantiate(container, name);
         clone._adjustDeferrals(this, clone);
         return clone;
     }
@@ -1426,13 +1429,6 @@ public class CompositeEntity extends ComponentEntity {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** List of contained entities. */
-    // FIXME: This used to be protected... Why?
-    private NamedList _containedEntities = new NamedList(this);
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     private void _addIcon() {
@@ -1489,6 +1485,9 @@ public class CompositeEntity extends ComponentEntity {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    /** List of contained entities. */
+    private NamedList _containedEntities = new NamedList(this);
 
     /** @serial List of contained ports. */
     private NamedList _containedRelations = new NamedList(this);
