@@ -24,6 +24,9 @@ output stream.
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
+@ProposedRating Yellow (mudit@eecs.berkeley.edu)
+@AcceptedRating Red
 */
 
 package ptolemy.actor.lib;
