@@ -31,8 +31,6 @@
 
 package ptolemy.math;
 
-import ptolemy.kernel.util.IllegalActionException;
-
 import java.math.BigInteger;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
