@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="coltDemo" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-alpha">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="100">
@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{70, 45}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 125, 815, 518}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 3, 815, 518}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -19,13 +19,13 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
     <entity name="ColtPoisson" class="ptolemy.actor.lib.colt.ColtPoisson">
-        <property name="Random Number Generator" class="ptolemy.kernel.util.StringAttribute" value="MersenneTwister (MT19937)">
+        <property name="generatorClass" class="ptolemy.moml.SharedParameter" value="MersenneTwister (MT19937)">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{155, 110}">
         </property>
     </entity>
     <entity name="HistogramPlotter" class="ptolemy.actor.lib.gui.HistogramPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {258, 206, 508, 355}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={425, 387, 508, 355}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -36,7 +36,7 @@
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>HistogramPlotter</title>
-<xRange min="0.5" max="5.0"/>
+<xRange min="0.5" max="7.0"/>
 <yRange min="0.0" max="42.0"/>
 <barGraph width="0.5" offset="0.15"/>
 <bin width="1.0" offset="0.5"/>

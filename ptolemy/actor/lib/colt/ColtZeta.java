@@ -27,19 +27,16 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.colt;
 
-import cern.jet.random.Zeta;
-import cern.jet.random.engine.DRand;
-
-import ptolemy.actor.gui.style.ChoiceStyle;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.StringAttribute;
+import cern.jet.random.Zeta;
+
+import com.sun.tools.javac.v8.tree.Tree.If;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -60,6 +57,7 @@ import ptolemy.kernel.util.StringAttribute;
    @Pt.AcceptedRating Red (cxh)
 */
 public class ColtZeta extends ColtRandomSource {
+    
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -78,10 +76,9 @@ public class ColtZeta extends ColtRandomSource {
         ro.setTypeEquals(BaseType.DOUBLE);
         pk = new Parameter(this, "pk", new DoubleToken(1.0));
         pk.setTypeEquals(BaseType.DOUBLE);
-
-        randomNumberGeneratorClass = _getRandomNumberGeneratorClass(container);
-
-        _rng = new Zeta(1.0, 1.0, _randomNumberGenerator);
+        
+        pk.moveToFirst();
+        ro.moveToFirst();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -109,23 +106,33 @@ public class ColtZeta extends ColtRandomSource {
         super.fire();
         output.send(0, new IntToken(_current));
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
-    /** Calculate the next random number.
-     *  @exception IllegalActionException If the base class throws it.
-     *  @return True if it is ok to continue.
+    /** Method that is called after _randomNumberGenerator is changed.
      */
-    public boolean prefire() throws IllegalActionException {
+    protected void _createdNewRandomNumberGenerator() {
+        _generator = new Zeta(1.0, 1.0, _randomNumberGenerator);
+    }
+
+    /** Generate a new random number.
+     *  @exception If the parameter values are incorrect.
+     */
+    protected void _generateRandomNumber() throws IllegalActionException {
         double roValue = ((DoubleToken) ro.getToken()).doubleValue();
         double pkValue = ((DoubleToken) pk.getToken()).doubleValue();
 
-        ((Zeta) _rng).setState(roValue, pkValue);
-        _current = ((Zeta) _rng).nextInt();
-
-        return super.prefire();
+        _generator.setState(roValue, pkValue);
+        _current = _generator.nextInt();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The random number for the current iteration.
+
+    /** The random number for the current iteration. */
     private int _current;
+    
+    /** The random number generator. */
+    private Zeta _generator;
 }

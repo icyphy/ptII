@@ -27,19 +27,15 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.colt;
 
-import cern.jet.random.Beta;
-import cern.jet.random.engine.DRand;
-
-import ptolemy.actor.gui.style.ChoiceStyle;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.StringAttribute;
+import cern.jet.random.Beta;
+
+import com.sun.tools.javac.v8.tree.Tree.If;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -60,6 +56,7 @@ import ptolemy.kernel.util.StringAttribute;
    @Pt.AcceptedRating Red (cxh)
 */
 public class ColtBeta extends ColtRandomSource {
+    
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -78,21 +75,19 @@ public class ColtBeta extends ColtRandomSource {
         alpha.setTypeEquals(BaseType.DOUBLE);
         beta = new Parameter(this, "beta", new DoubleToken(2.0));
         beta.setTypeEquals(BaseType.DOUBLE);
-
-        randomNumberGeneratorClass = _getRandomNumberGeneratorClass(container);
-
-        _rng = new Beta(2.0, 2.0, _randomNumberGenerator);
+        beta.moveToFirst();
+        alpha.moveToFirst();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** alpha.
+    /** Alpha.
      *  This parameter contains a DoubleToken, initially with value 1.0.
      */
     public Parameter alpha;
 
-    /** beta.
+    /** Beta.
      *  This parameter contains a DoubleToken, initially with value 1.0.
      */
     public Parameter beta;
@@ -110,21 +105,30 @@ public class ColtBeta extends ColtRandomSource {
         output.send(0, new DoubleToken(_current));
     }
 
-    /** Calculate the next random number.
-     *  @exception IllegalActionException If the base class throws it.
-     *  @return True if it is ok to continue.
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Method that is called after _randomNumberGenerator is changed.
      */
-    public boolean prefire() throws IllegalActionException {
+    protected void _createdNewRandomNumberGenerator() {
+        _generator = new Beta(2.0, 2.0, _randomNumberGenerator);
+    }
+
+    /** Generate a new random number.
+     *  @exception If parameter values are incorrect.
+     */
+    protected void _generateRandomNumber() throws IllegalActionException {
         double alphaValue = ((DoubleToken) alpha.getToken()).doubleValue();
         double betaValue = ((DoubleToken) beta.getToken()).doubleValue();
-
-        _current = ((Beta) _rng).nextDouble(alphaValue, betaValue);
-
-        return super.prefire();
+        _current = _generator.nextDouble(alphaValue, betaValue);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The random number for the current iteration.
+
+    /** The random number for the current iteration. */
     private double _current;
+    
+    /** The random number generator. */
+    private Beta _generator;
 }

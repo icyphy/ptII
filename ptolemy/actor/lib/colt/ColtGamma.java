@@ -27,19 +27,15 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.colt;
 
-import cern.jet.random.Gamma;
-import cern.jet.random.engine.DRand;
-
-import ptolemy.actor.gui.style.ChoiceStyle;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.StringAttribute;
+import cern.jet.random.Gamma;
+
+import com.sun.tools.javac.v8.tree.Tree.If;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -78,10 +74,9 @@ public class ColtGamma extends ColtRandomSource {
         alpha.setTypeEquals(BaseType.DOUBLE);
         lambda = new Parameter(this, "lambda", new DoubleToken(1.0));
         lambda.setTypeEquals(BaseType.DOUBLE);
-
-        randomNumberGeneratorClass = _getRandomNumberGeneratorClass(container);
-
-        _rng = new Gamma(1.0, 1.0, _randomNumberGenerator);
+        
+        lambda.moveToFirst();
+        alpha.moveToFirst();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -112,21 +107,31 @@ public class ColtGamma extends ColtRandomSource {
         output.send(0, new DoubleToken(_current));
     }
 
-    /** Calculate the next random number.
-     *  @exception IllegalActionException If the base class throws it.
-     *  @return True if it is ok to continue.
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Method that is called after _randomNumberGenerator is changed.
      */
-    public boolean prefire() throws IllegalActionException {
+    protected void _createdNewRandomNumberGenerator() {
+        _generator = new Gamma(1.0, 1.0, _randomNumberGenerator);
+    }
+
+    /** Generate a new random number.
+     *  @exception If parameter values are incorrect.
+     */
+    protected void _generateRandomNumber() throws IllegalActionException {
         double alphaValue = ((DoubleToken) alpha.getToken()).doubleValue();
         double lambdaValue = ((DoubleToken) lambda.getToken()).doubleValue();
 
-        _current = ((Gamma) _rng).nextDouble(alphaValue, lambdaValue);
-
-        return super.prefire();
+        _current = _generator.nextDouble(alphaValue, lambdaValue);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The random number for the current iteration.
+
+    /** The random number for the current iteration. */
     private double _current;
+    
+    /** The random number generator. */
+    private Gamma _generator;
 }

@@ -27,19 +27,15 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.colt;
 
-import cern.jet.random.Exponential;
-import cern.jet.random.engine.DRand;
-
-import ptolemy.actor.gui.style.ChoiceStyle;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.StringAttribute;
+import cern.jet.random.Exponential;
+
+import com.sun.tools.javac.v8.tree.Tree.If;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -53,13 +49,14 @@ import ptolemy.kernel.util.StringAttribute;
    deviation given by parameters.  In addition, the seed can be
    specified as a parameter to control the sequence that is generated.
 
-   @author David Bauer and Kostas Oikonomou
+   @author David Bauer and Kostas Oikonomou (contributor: Edward A. Lee)
    @version $Id$
    @since Ptolemy II 4.1
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
 public class ColtExponential extends ColtRandomSource {
+    
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -76,16 +73,13 @@ public class ColtExponential extends ColtRandomSource {
 
         lambda = new Parameter(this, "lambda", new DoubleToken(1.0));
         lambda.setTypeEquals(BaseType.DOUBLE);
-
-        randomNumberGeneratorClass = _getRandomNumberGeneratorClass(container);
-
-        _rng = new Exponential(1.0, _randomNumberGenerator);
+        lambda.moveToFirst();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** lambda.
+    /** The mean value of the exponential.
      *  This parameter contains a DoubleToken, initially with value 1.0.
      */
     public Parameter lambda;
@@ -103,20 +97,29 @@ public class ColtExponential extends ColtRandomSource {
         output.send(0, new DoubleToken(_current));
     }
 
-    /** Calculate the next random number.
-     *  @exception IllegalActionException If the base class throws it.
-     *  @return True if it is ok to continue.
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Method that is called after _randomNumberGenerator is changed.
      */
-    public boolean prefire() throws IllegalActionException {
+    protected void _createdNewRandomNumberGenerator() {
+        _generator = new Exponential(1.0, _randomNumberGenerator);
+    }
+
+    /** Generate a new random number.
+     *  @exception If parameter values are incorrect.
+     */
+    protected void _generateRandomNumber() throws IllegalActionException {
         double lambdaValue = ((DoubleToken) lambda.getToken()).doubleValue();
-
-        _current = ((Exponential) _rng).nextDouble(lambdaValue);
-
-        return super.prefire();
+        _current = _generator.nextDouble(lambdaValue);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The random number for the current iteration.
+    
+    /** The random number for the current iteration. */
     private double _current;
+    
+    /** The random number generator. */
+    private Exponential _generator;
 }

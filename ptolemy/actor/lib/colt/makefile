@@ -67,6 +67,7 @@ JSRCS = \
 	ColtPoisson.java \
 	ColtPoissonSlow.java \
 	ColtRandomSource.java \
+	ColtSeedParameter.java \
 	ColtStudentT.java \
 	ColtVonMises.java \
 	ColtZeta.java

@@ -27,19 +27,16 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.colt;
 
-import cern.jet.random.NegativeBinomial;
-import cern.jet.random.engine.DRand;
-
-import ptolemy.actor.gui.style.ChoiceStyle;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.StringAttribute;
+import cern.jet.random.NegativeBinomial;
+
+import com.sun.tools.javac.v8.tree.Tree.If;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -78,10 +75,9 @@ public class ColtNegativeBinomial extends ColtRandomSource {
         n.setTypeEquals(BaseType.INT);
         p = new Parameter(this, "p", new DoubleToken(0.5));
         p.setTypeEquals(BaseType.DOUBLE);
-
-        randomNumberGeneratorClass = _getRandomNumberGeneratorClass(container);
-
-        _rng = new NegativeBinomial(1, 0.5, _randomNumberGenerator);
+        
+        p.moveToFirst();
+        n.moveToFirst();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -112,21 +108,31 @@ public class ColtNegativeBinomial extends ColtRandomSource {
         output.send(0, new IntToken(_current));
     }
 
-    /** Calculate the next random number.
-     *  @exception IllegalActionException If the base class throws it.
-     *  @return True if it is ok to continue.
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Method that is called after _randomNumberGenerator is changed.
      */
-    public boolean prefire() throws IllegalActionException {
+    protected void _createdNewRandomNumberGenerator() {
+        _generator = new NegativeBinomial(1, 0.5, _randomNumberGenerator);
+    }
+
+    /** Generate a new random number.
+     *  @exception If parameter values are incorrect.
+     */
+    protected void _generateRandomNumber() throws IllegalActionException {
         int nValue = ((IntToken) n.getToken()).intValue();
         double pValue = ((DoubleToken) p.getToken()).doubleValue();
 
-        _current = ((NegativeBinomial) _rng).nextInt(nValue, pValue);
-
-        return super.prefire();
+        _current = _generator.nextInt(nValue, pValue);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The random number for the current iteration.
+
+    /** The random number for the current iteration. */
     private int _current;
+    
+    /** The random number generator. */
+    private NegativeBinomial _generator;
 }

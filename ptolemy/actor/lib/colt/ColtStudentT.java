@@ -27,19 +27,15 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.colt;
 
-import cern.jet.random.StudentT;
-import cern.jet.random.engine.DRand;
-
-import ptolemy.actor.gui.style.ChoiceStyle;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.StringAttribute;
+import cern.jet.random.StudentT;
+
+import com.sun.tools.javac.v8.tree.Tree.If;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -76,10 +72,8 @@ public class ColtStudentT extends ColtRandomSource {
 
         freedom = new Parameter(this, "freedom", new DoubleToken(1.0));
         freedom.setTypeEquals(BaseType.DOUBLE);
-
-        randomNumberGeneratorClass = _getRandomNumberGeneratorClass(container);
-
-        _rng = new StudentT(1.0, _randomNumberGenerator);
+        
+        freedom.moveToFirst();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -103,20 +97,30 @@ public class ColtStudentT extends ColtRandomSource {
         output.send(0, new DoubleToken(_current));
     }
 
-    /** Calculate the next random number.
-     *  @exception IllegalActionException If the base class throws it.
-     *  @return True if it is ok to continue.
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Method that is called after _randomNumberGenerator is changed.
      */
-    public boolean prefire() throws IllegalActionException {
+    protected void _createdNewRandomNumberGenerator() {
+        _generator = new StudentT(1.0, _randomNumberGenerator);
+    }
+
+    /** Generate a new random number.
+     *  @exception If parameter values are incorrect.
+     */
+    protected void _generateRandomNumber() throws IllegalActionException {
         double freedomValue = ((DoubleToken) freedom.getToken()).doubleValue();
 
-        _current = ((StudentT) _rng).nextDouble(freedomValue);
-
-        return super.prefire();
+        _current = _generator.nextDouble(freedomValue);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The random number for the current iteration.
+
+    /** The random number for the current iteration. */
     private double _current;
+    
+    /** The random number generator. */
+    private StudentT _generator;
 }
