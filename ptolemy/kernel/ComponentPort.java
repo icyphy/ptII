@@ -168,8 +168,9 @@ public class ComponentPort extends Port {
                 while (connectedports.hasMoreElements()) {
                     ComponentPort port =
                         (ComponentPort)connectedports.nextElement();
-                    // NOTE: If level-crossing transitions are not allowed, then
-                    // a simpler test than that of the following would work.
+                    // NOTE: If level-crossing transitions are not allowed,
+                    // then a simpler test than that of the following
+                    // would work.
                     if (port._outside(relation.getContainer())) {
                         // We are coming at the port from the inside.
                         if (port.isOpaque()) {
@@ -380,7 +381,8 @@ public class ComponentPort extends Port {
         if (relation == null) return;
         if (!(relation instanceof ComponentRelation)) {
             throw new IllegalActionException(this, relation,
-                    "ComponentPort can only link to instances of ComponentRelation.");
+                    "ComponentPort can only link to instances "+
+                    "of ComponentRelation.");
         }
         if (workspace() != relation.workspace()) {
             throw new IllegalActionException(this, relation,
