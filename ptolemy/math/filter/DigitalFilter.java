@@ -287,16 +287,6 @@ public abstract class DigitalFilter extends Filter{
         RealDigitalFilter dFilter =
                _bilinearQuadTransform(aFilter, fs);
 
-        double[] num = dFilter.getNumerator();
-        double[] den = dFilter.getDenominator();
-        for(int i = 0; i<num.length; i++) {
-           System.out.println("num = "+num[i]);
-        }
-        for(int j = 0; j<num.length; j++) {
-           System.out.println("den = "+den[j]);
-        }
-        double g = dFilter.getGain();
-        System.out.println("gain = "+g);
         return dFilter;
       }
             
