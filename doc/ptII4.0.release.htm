@@ -95,8 +95,19 @@ platform that has JDK 1.4 or later
  <p>We developed Ptolemy II 4.0 under Solaris 8 and Windows XP sp1 
 and with JDK1.4.2_04
 
-Ptolemy II 4.0 will not compile under Java 1.3 because we use the
+<p>Ptolemy II 4.0 will not compile under Java 1.3 because we use the
 java.lang.URI class, which is present only in Java 1.4 and later
+
+<p>There are various problems with Java 1.5.0-beta:
+<menu>
+<li> <a href="#webstart1.5.0-beta">Web Start</a> does not work
+<li> Caltrop does not work
+</menu>
+
+ <p>Ptolemy II has been compiled and run
+under IBM JDK 1.4.0 and IBM JDK 1.4.1
+
+
 
 <!--whatsnew-->
 <h2>Major Features that are new in Ptolemy II 4.0 </h2>
@@ -1163,7 +1174,8 @@ lax.nl.java.option.additional=-Xdebug -Xrunjdwp:transport=dt_shmem,server=y,susp
 <li> Web Start issues:
 	<ul>
 
-	<li> The Web Start installer does not work with Java 1.5.0-beta.
+	<li> <a name="webstart1.5.0-beta">The Web Start</a>
+	 installer does not work with Java 1.5.0-beta.
 	The problem is that the certificate is not recognized.
 
 	<li> The Matlab Wireless demo fails under Web Start.
