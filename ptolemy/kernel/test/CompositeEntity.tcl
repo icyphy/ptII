@@ -63,36 +63,30 @@ test CompositeEntity-1.1 {Get information about an instance \
   class:         pt.kernel.CompositeEntity
   fields:        
   methods:       {addEntity pt.kernel.ComponentEntity} {addPort pt.kerne
-    l.Port} {addRelation pt.kernel.ComponentRelation} {alia
-    s pt.kernel.ComponentPort pt.kernel.ComponentPort} {ali
-    as pt.kernel.ComponentPort pt.kernel.ComponentPort java
-    .lang.String} {connect pt.kernel.ComponentPort pt.kerne
-    l.ComponentPort} {connect pt.kernel.ComponentPort pt.ke
-    rnel.ComponentPort java.lang.String} {deepContains pt.k
-    ernel.ComponentEntity} deepGetEntities {equals java.lan
-    g.Object} getClass getConnectedEntities {getConnectedEn
-    tities java.lang.String} {getConnectedEntities pt.kerne
-    l.Port} getContainer getEntities {getEntity java.lang.S
-    tring} getFullName getLinkedRelations {getLinkedRelatio
-    ns java.lang.String} {getLinkedRelations pt.kernel.Port
-    } getName {getPort java.lang.String} getPorts {getRelat
-    ion java.lang.String} getRelations hashCode isAtomic {n
-    ewPort java.lang.String} {newRelation java.lang.String}
-     notify notifyAll numEntities numRelations removeAllEnt
-    ities removeAllPorts removeAllRelations {removeEntity j
-    ava.lang.String} {removeEntity pt.kernel.ComponentEntit
-    y} {removePort java.lang.String} {removePort pt.kernel.
-    Port} {removeRelation java.lang.String} {removeRelation
-     pt.kernel.ComponentRelation} {setContainer pt.kernel.C
-    ompositeEntity} {setName java.lang.String} toString wai
-    t {wait long} {wait long int}
+    l.Port} {addRelation pt.kernel.ComponentRelation} {allo
+    wLevelCrossingConnect boolean} {connect pt.kernel.Compo
+    nentPort pt.kernel.ComponentPort} {connect pt.kernel.Co
+    mponentPort pt.kernel.ComponentPort java.lang.String} {
+    deepContains pt.kernel.ComponentEntity} deepGetEntities
+     {equals java.lang.Object} getClass getConnectedPorts g
+    etContainer getEntities {getEntity java.lang.String} ge
+    tFullName getLinkedRelations getName {getPort java.lang
+    .String} getPorts {getRelation java.lang.String} getRel
+    ations hashCode isAtomic {newPort java.lang.String} {ne
+    wRelation java.lang.String} notify notifyAll numEntitie
+    s numRelations removeAllEntities removeAllPorts removeA
+    llRelations {removeEntity pt.kernel.ComponentEntity} {r
+    emovePort pt.kernel.Port} {removeRelation pt.kernel.Com
+    ponentRelation} {setContainer pt.kernel.CompositeEntity
+    } {setName java.lang.String} toString wait {wait long} 
+    {wait long int} workspace
     
-  constructors:  pt.kernel.CompositeEntity {pt.kernel.CompositeEntity ja
-    va.lang.String} {pt.kernel.CompositeEntity pt.kernel.Co
-    mpositeEntity java.lang.String}
+  constructors:  pt.kernel.CompositeEntity {pt.kernel.CompositeEntity pt
+    .kernel.CompositeEntity java.lang.String} {pt.kernel.Co
+    mpositeEntity pt.kernel.Workspace}
     
-  properties:    atomic class connectedEntities container entities fullN
-    ame linkedRelations name ports relations
+  properties:    atomic class connectedPorts container entities fullName
+     linkedRelations name ports relations
     
   superclass:    pt.kernel.ComponentEntity
     
@@ -101,22 +95,24 @@ test CompositeEntity-1.1 {Get information about an instance \
 ######################################################################
 ####
 # 
-test CompositeEntity-1.1 {Construct CompositeEntities, call a few methods} {
+test CompositeEntity-2.0 {Construct CompositeEntities, call a few methods} {
     set e1 [java::new pt.kernel.CompositeEntity]
-    set e2 [java::new pt.kernel.CompositeEntity A]
+    set e2 [java::new pt.kernel.CompositeEntity]
+    $e2 setName A
     set e1contents [$e1 getEntities]
     list [$e1 getName] [$e2 getName] \
 	    [$e1 getFullName] [$e2 getFullName] \
 	    [$e1 isAtomic] [$e2 isAtomic] \
 	    [ java::instanceof $e1contents java.util.Enumeration] \
 	    [expr {[java::null] == [$e1 getContainer]}]
-} {{} A {} A 0 0 1 1}
+} {{} A . .A 0 0 1 1}
 
 ######################################################################
 ####
 # 
 test CompositeEntity-2.1 {Create a 3 level deep tree using constructors} {
-    set a [java::new pt.kernel.CompositeEntity A]
+    set a [java::new pt.kernel.CompositeEntity]
+    $a setName A
     set b [java::new pt.kernel.CompositeEntity $a B]
     set c [java::new pt.kernel.CompositeEntity $a C]
     set d [java::new pt.kernel.ComponentEntity $c D]
@@ -129,10 +125,12 @@ test CompositeEntity-2.1 {Create a 3 level deep tree using constructors} {
 ####
 # 
 test CompositeEntity-2.2 {Create a 3 level deep tree after construction} {
-    set a [java::new pt.kernel.CompositeEntity A]
-    set b [java::new pt.kernel.CompositeEntity B]
-    set c [java::new pt.kernel.CompositeEntity C]
-    set d [java::new pt.kernel.ComponentEntity D]
+    # entity serving as a workspace
+    set w [java::new pt.kernel.CompositeEntity]
+    set a [java::new pt.kernel.CompositeEntity $w A]
+    set b [java::new pt.kernel.CompositeEntity $w B]
+    set c [java::new pt.kernel.CompositeEntity $w C]
+    set d [java::new pt.kernel.ComponentEntity $w D]
     $c addEntity $d
     $a addEntity $b
     $b addEntity $c
@@ -145,7 +143,8 @@ test CompositeEntity-2.2 {Create a 3 level deep tree after construction} {
 ####
 # 
 test CompositeEntity-3.1 {Test deepGetEntities} {
-    set a [java::new pt.kernel.CompositeEntity A]
+    set a [java::new pt.kernel.CompositeEntity]
+    $a setName A
     set b [java::new pt.kernel.ComponentEntity $a B]
     set c [java::new pt.kernel.CompositeEntity $a C]
     set d [java::new pt.kernel.ComponentEntity $c D]
@@ -157,7 +156,8 @@ test CompositeEntity-3.1 {Test deepGetEntities} {
 ####
 # 
 test CompositeEntity-3.2 {Test numEntities} {
-    set a [java::new pt.kernel.CompositeEntity A]
+    set a [java::new pt.kernel.CompositeEntity]
+    $a setName A
     set b [java::new pt.kernel.CompositeEntity $a B]
     set c [java::new pt.kernel.CompositeEntity $a C]
     set d [java::new pt.kernel.ComponentEntity $c D]
@@ -168,19 +168,21 @@ test CompositeEntity-3.2 {Test numEntities} {
 ####
 # 
 test CompositeEntity-3.3 {Test getEntity by name} {
-    set a [java::new pt.kernel.CompositeEntity A]
+    set a [java::new pt.kernel.CompositeEntity]
+    $a setName A
     set b [java::new pt.kernel.CompositeEntity $a B]
     set c [java::new pt.kernel.CompositeEntity $b C]
     set d [java::new pt.kernel.ComponentEntity $c D]
     set e [$c getEntity D]
     $e getFullName
-} {A.B.C.D}
+} {.A.B.C.D}
 
 ######################################################################
 ####
 # 
 test CompositeEntity-4.1 {Test deepContains} {
-    set a [java::new pt.kernel.CompositeEntity A]
+    set a [java::new pt.kernel.CompositeEntity]
+    $a setName A
     set b [java::new pt.kernel.CompositeEntity $a B]
     set c [java::new pt.kernel.CompositeEntity $a C]
     set d [java::new pt.kernel.ComponentEntity $c D]
@@ -192,7 +194,8 @@ test CompositeEntity-4.1 {Test deepContains} {
 ####
 # 
 test CompositeEntity-5.1 {Test reparenting} {
-    set a [java::new pt.kernel.CompositeEntity A]
+    set a [java::new pt.kernel.CompositeEntity]
+    $a setName A
     set b [java::new pt.kernel.CompositeEntity $a B]
     set c [java::new pt.kernel.CompositeEntity $a C]
     set d [java::new pt.kernel.ComponentEntity $c D]
@@ -206,19 +209,21 @@ test CompositeEntity-5.1 {Test reparenting} {
 ####
 # 
 test CompositeEntity-5.2 {Test reparenting with an error} {
-    set a [java::new pt.kernel.CompositeEntity A]
+    set a [java::new pt.kernel.CompositeEntity]
+    $a setName A
     set b [java::new pt.kernel.CompositeEntity $a B]
     set c [java::new pt.kernel.CompositeEntity $a C]
     set d [java::new pt.kernel.CompositeEntity $c D]
     catch {$c setContainer $d} msg
     list $msg
-} {{pt.kernel.IllegalActionException: A.C and A.C.D: Attempt to construct recursive containment.}}
+} {{pt.kernel.IllegalActionException: .A.C and .A.C.D: Attempt to construct recursive containment.}}
 
 ######################################################################
 ####
 # 
 test CompositeEntity-6.1 {Test removing entities} {
-    set a [java::new pt.kernel.CompositeEntity A]
+    set a [java::new pt.kernel.CompositeEntity]
+    $a setName A
     set b [java::new pt.kernel.CompositeEntity $a B]
     set c [java::new pt.kernel.CompositeEntity $b C]
     set d [java::new pt.kernel.CompositeEntity $c D]
@@ -232,23 +237,25 @@ test CompositeEntity-6.1 {Test removing entities} {
 ####
 # 
 test CompositeEntity-6.2 {Test removing entities with an error} {
-    set a [java::new pt.kernel.CompositeEntity A]
+    set a [java::new pt.kernel.CompositeEntity]
+    $a setName A
     set b [java::new pt.kernel.CompositeEntity $a B]
     set c [java::new pt.kernel.CompositeEntity $b C]
     set d [java::new pt.kernel.CompositeEntity $c D]
     catch {$a {removeEntity pt.kernel.ComponentEntity} $d} msg
     list $msg
-} {{pt.kernel.IllegalActionException: A and A.B.C.D: Attempt to remove an entity from a container that does not contain it.}}
+} {{pt.kernel.IllegalActionException: .A and .A.B.C.D: Attempt to remove an entity from a container that does not contain it.}}
 
 ######################################################################
 ####
 # 
 test CompositeEntity-6.3 {Test removing entities by name} {
-    set a [java::new pt.kernel.CompositeEntity A]
+    set a [java::new pt.kernel.CompositeEntity]
+    $a setName A
     set b [java::new pt.kernel.CompositeEntity $a B]
     set c [java::new pt.kernel.CompositeEntity $b C]
     set d [java::new pt.kernel.CompositeEntity $c D]
-    $a {removeEntity String} B
+    $a removeEntity [$a getEntity B]
     enumMethodToNames getEntities $a $b $c $d
 } {{} C D {}}
 
@@ -256,19 +263,21 @@ test CompositeEntity-6.3 {Test removing entities by name} {
 ####
 # 
 test CompositeEntity-6.4 {Test removing entities by name with an error} {
-    set a [java::new pt.kernel.CompositeEntity A]
+    set a [java::new pt.kernel.CompositeEntity]
+    $a setName A
     set b [java::new pt.kernel.CompositeEntity $a B]
     set c [java::new pt.kernel.CompositeEntity $b C]
     set d [java::new pt.kernel.CompositeEntity $c D]
-    catch {$a {removeEntity String} D} msg
+    catch {$a removeEntity $d} msg
     list $msg
-} {{pt.kernel.NoSuchItemException: A: Attempt to remove a nonexistent entity: D}}
+} {{pt.kernel.IllegalActionException: .A and .A.B.C.D: Attempt to remove an entity from a container that does not contain it.}}
 
 ######################################################################
 ####
 # 
 test CompositeEntity-7.1 {Add relations} {
-    set a [java::new pt.kernel.CompositeEntity A]
+    set a [java::new pt.kernel.CompositeEntity]
+    $a setName A
     set r1 [java::new pt.kernel.ComponentRelation $a R1]
     set r2 [java::new pt.kernel.ComponentRelation $a R2]
     enumToNames [$a getRelations]
@@ -278,9 +287,11 @@ test CompositeEntity-7.1 {Add relations} {
 ####
 # 
 test CompositeEntity-7.2 {Add relations after creation} {
-    set a [java::new pt.kernel.CompositeEntity A]
-    set r1 [java::new pt.kernel.ComponentRelation R1]
-    set r2 [java::new pt.kernel.ComponentRelation R2]
+    # Workspace entity
+    set w [java::new pt.kernel.CompositeEntity]
+    set a [java::new pt.kernel.CompositeEntity $w A]
+    set r1 [java::new pt.kernel.ComponentRelation $w R1]
+    set r2 [java::new pt.kernel.ComponentRelation $w R2]
     $a addRelation $r1
     $a addRelation $r2
     enumToNames [$a getRelations]
@@ -290,18 +301,20 @@ test CompositeEntity-7.2 {Add relations after creation} {
 ####
 # 
 test CompositeEntity-7.3 {Get relations by name} {
-    set a [java::new pt.kernel.CompositeEntity A]
+    set a [java::new pt.kernel.CompositeEntity]
+    $a setName A
     set r1 [java::new pt.kernel.ComponentRelation $a R1]
     set r2 [java::new pt.kernel.ComponentRelation $a R2]
     set r [$a getRelation R1]
     $r getFullName
-} {A.R1}
+} {.A.R1}
 
 ######################################################################
 ####
 # 
 test CompositeEntity-7.4 {Add relations using newRelation} {
-    set a [java::new pt.kernel.CompositeEntity A]
+    set a [java::new pt.kernel.CompositeEntity]
+    $a setName A
     set r1 [$a newRelation R1]
     set r2 [$a newRelation R2]
     enumToNames [$a getRelations]
@@ -311,7 +324,8 @@ test CompositeEntity-7.4 {Add relations using newRelation} {
 ####
 # 
 test CompositeEntity-8.1 {Remove relations} {
-    set a [java::new pt.kernel.CompositeEntity A]
+    set a [java::new pt.kernel.CompositeEntity]
+    $a setName A
     set r1 [java::new pt.kernel.ComponentRelation $a R1]
     set r2 [java::new pt.kernel.ComponentRelation $a R2]
     $a {removeRelation pt.kernel.ComponentRelation} $r1
@@ -322,21 +336,24 @@ test CompositeEntity-8.1 {Remove relations} {
 ####
 # 
 test CompositeEntity-8.2 {Remove relations with an error} {
-    set a [java::new pt.kernel.CompositeEntity A]
-    set r1 [java::new pt.kernel.ComponentRelation R1]
+    set a [java::new pt.kernel.CompositeEntity]
+    $a setName A
+    set r1 [java::new pt.kernel.ComponentRelation]
+    $r1 setName R1
     set r2 [java::new pt.kernel.ComponentRelation $a R2]
     catch {$a {removeRelation pt.kernel.ComponentRelation} $r1} msg
     list $msg
-} {{pt.kernel.IllegalActionException: A and R1: Attempt to remove a relation from a container that does not contain it.}}
+} {{pt.kernel.IllegalActionException: .A and .R1: Attempt to remove a relation from a container that does not contain it.}}
 
 ######################################################################
 ####
 # 
 test CompositeEntity-8.3 {Remove relations by name} {
-    set a [java::new pt.kernel.CompositeEntity A]
+    set a [java::new pt.kernel.CompositeEntity]
+    $a setName A
     set r1 [java::new pt.kernel.ComponentRelation $a R1]
     set r2 [java::new pt.kernel.ComponentRelation $a R2]
-    $a {removeRelation String} R2
+    $a removeRelation $r2
     enumToNames [$a getRelations]
 } {R1}
 
@@ -344,18 +361,21 @@ test CompositeEntity-8.3 {Remove relations by name} {
 ####
 # 
 test CompositeEntity-8.4 {Remove relations by name with an error} {
-    set a [java::new pt.kernel.CompositeEntity A]
-    set r1 [java::new pt.kernel.ComponentRelation R1]
+    set a [java::new pt.kernel.CompositeEntity]
+    $a setName A
+    set r1 [java::new pt.kernel.ComponentRelation]
+    $r1 setName R1
     set r2 [java::new pt.kernel.ComponentRelation $a R2]
-    catch {$a {removeRelation String} R1} msg
+    catch {$a removeRelation $r1} msg
     list $msg
-} {{pt.kernel.NoSuchItemException: A: Attempt to remove a nonexistent relation: R1}}
+} {{pt.kernel.IllegalActionException: .A and .R1: Attempt to remove a relation from a container that does not contain it.}}
 
 ######################################################################
 ####
 # 
 test CompositeEntity-8.5 {Test removing all entities} {
-    set a [java::new pt.kernel.CompositeEntity A]
+    set a [java::new pt.kernel.CompositeEntity]
+    $a setName A
     set b [java::new pt.kernel.CompositeEntity $a B]
     set c [java::new pt.kernel.CompositeEntity $a C]
     set d [java::new pt.kernel.CompositeEntity $a D]
@@ -367,7 +387,8 @@ test CompositeEntity-8.5 {Test removing all entities} {
 ####
 # 
 test CompositeEntity-8.6 {Remove all relations} {
-    set a [java::new pt.kernel.CompositeEntity A]
+    set a [java::new pt.kernel.CompositeEntity]
+    $a setName A
     set r1 [java::new pt.kernel.ComponentRelation $a R1]
     set r2 [java::new pt.kernel.ComponentRelation $a R2]
     $a removeAllRelations
@@ -377,87 +398,76 @@ test CompositeEntity-8.6 {Remove all relations} {
 ######################################################################
 ####
 # 
-test CompositeEntity-9.1 {Test alias} {
-    set a [java::new pt.kernel.CompositeEntity A]
+test CompositeEntity-9.1 {Test transparent port} {
+    set a [java::new pt.kernel.CompositeEntity]
+    $a setName A
     set b [java::new pt.kernel.CompositeEntity $a B]
     set p1 [java::new pt.kernel.ComponentPort $a P1]
     set p2 [java::new pt.kernel.ComponentPort $b P2]
-    $a alias $p2 $p1
-    set ar [$p1 getDownAlias]
-    enumToFullNames [$ar getLinkedPorts]
-} {A.B.P2}
+    $a connect $p2 $p1
+    set result {}
+    foreach ar [enumToObjects [$p1 getInsideRelations]] {
+        lappend result [enumToFullNames [$ar getLinkedPortsExcept $p1]]
+    }
+    list $result
+} {.A.B.P2}
 
 ######################################################################
 ####
 # 
-test CompositeEntity-10.1 {Test multiple alias relation naming} {
-    set a [java::new pt.kernel.CompositeEntity A]
+test CompositeEntity-10.1 {Test multiple relation naming} {
+    set a [java::new pt.kernel.CompositeEntity]
+    $a setName A
     set b [java::new pt.kernel.ComponentEntity $a B]
     set c [java::new pt.kernel.ComponentEntity $a C]
     set p1 [java::new pt.kernel.ComponentPort $a P1]
     set p2 [java::new pt.kernel.ComponentPort $b P2]
     set p3 [java::new pt.kernel.ComponentPort $c P3]
     set p4 [java::new pt.kernel.ComponentPort $a P4]
-    set ar1 [$a alias $p2 $p1]
-    set ar2 [$a alias $p3 $p4]
+    set ar1 [$a connect $p2 $p1]
+    set ar2 [$a connect $p3 $p4]
     list [$ar1 getFullName] [$ar2 getFullName]
-} {A._R0 A._R1}
+} {.A._R0 .A._R1}
 
 ######################################################################
 ####
 # 
-test CompositeEntity-10.2 {Test multiple alias relation naming} {
-    set a [java::new pt.kernel.CompositeEntity A]
+test CompositeEntity-10.3 {Create and then remove a transparent port} {
+    set a [java::new pt.kernel.CompositeEntity]
+    $a setName A
     set b [java::new pt.kernel.ComponentEntity $a B]
     set c [java::new pt.kernel.ComponentEntity $a C]
     set p1 [java::new pt.kernel.ComponentPort $a P1]
     set p2 [java::new pt.kernel.ComponentPort $b P2]
     set p3 [java::new pt.kernel.ComponentPort $c P3]
     set p4 [java::new pt.kernel.ComponentPort $a P4]
-    $a alias $p2 $p1
-    $a alias $p3 $p4
-    set ar1 [$p1 getDownAlias]
-    set ar2 [$p4 getDownAlias]
-    list [$ar1 getFullName] [$ar2 getFullName]
-} {A._R0 A._R1}
-
-######################################################################
-####
-# 
-test CompositeEntity-10.3 {Create and then remove an alias} {
-    set a [java::new pt.kernel.CompositeEntity A]
-    set b [java::new pt.kernel.ComponentEntity $a B]
-    set c [java::new pt.kernel.ComponentEntity $a C]
-    set p1 [java::new pt.kernel.ComponentPort $a P1]
-    set p2 [java::new pt.kernel.ComponentPort $b P2]
-    set p3 [java::new pt.kernel.ComponentPort $c P3]
-    set p4 [java::new pt.kernel.ComponentPort $a P4]
-    set ar1 [$a alias $p2 $p1]
-    set ar2 [$a alias $p3 $p4]
+    set ar1 [$a connect $p2 $p1]
+    set ar2 [$a connect $p3 $p4]
     set result {}
     lappend result [$ar1 getFullName] [$ar2 getFullName]
     $a {removeRelation pt.kernel.ComponentRelation} $ar2
-    lappend result [expr { [$p4 getDownAlias] == [java::null] } ]
-} {A._R0 A._R1 1}
+    lappend result [$p4 numInsideLinks]
+} {.A._R0 .A._R1 0}
 
 ######################################################################
 ####
 # 
-test CompositeEntity-10.4 {Create and then remove aliases with given names} {
-    set a [java::new pt.kernel.CompositeEntity A]
+test CompositeEntity-10.4 {Create and then remove ports with given names} {
+    set a [java::new pt.kernel.CompositeEntity]
+    $a setName A
     set b [java::new pt.kernel.ComponentEntity $a B]
     set c [java::new pt.kernel.ComponentEntity $a C]
     set p1 [java::new pt.kernel.ComponentPort $a P1]
     set p2 [java::new pt.kernel.ComponentPort $b P2]
     set p3 [java::new pt.kernel.ComponentPort $c P3]
     set p4 [java::new pt.kernel.ComponentPort $a P4]
-    set ar1 [$a alias $p2 $p1 AR1]
-    set ar2 [$a alias $p3 $p4 AR2]
+    set ar1 [$a connect $p2 $p1 AR1]
+    set ar2 [$a connect $p3 $p4 AR2]
     set result {}
     lappend result [$ar1 getFullName] [$ar2 getFullName]
-    $a {removeRelation pt.kernel.ComponentRelation} $ar2
-    lappend result [expr { [$p4 getDownAlias] == [java::null] } ]
-} {A.AR1 A.AR2 1}
+    $a removeRelation $ar2
+    lappend result [$p4 numInsideLinks]
+} {.A.AR1 .A.AR2 0}
 
 ######################################################################
 ####
@@ -467,91 +477,89 @@ test CompositeEntity-11.1 {Test deepGetLinkedEntities on component relations} {
     # This structure is the example in the kernel design document.
 
     # Create composite entities
-    set e0 [java::new pt.kernel.CompositeEntity E0]
-    set e4 [java::new pt.kernel.CompositeEntity $e0 E4]
+    set e0 [java::new pt.kernel.CompositeEntity]
+    $e0 setName E0
+    set e3 [java::new pt.kernel.CompositeEntity $e0 E3]
+    set e4 [java::new pt.kernel.CompositeEntity $e3 E4]
     set e7 [java::new pt.kernel.CompositeEntity $e0 E7]
-    set e3 [java::new pt.kernel.CompositeEntity $e4 E3]
+    set e10 [java::new pt.kernel.CompositeEntity $e0 E10]
 
     # Create component entities.
-    set e1 [java::new pt.kernel.ComponentEntity $e3 E1]
-    set e2 [java::new pt.kernel.ComponentEntity $e3 E2]
-    set e5 [java::new pt.kernel.ComponentEntity $e4 E5]
-    set e6 [java::new pt.kernel.ComponentEntity $e4 E6]
+    set e1 [java::new pt.kernel.ComponentEntity $e4 E1]
+    set e2 [java::new pt.kernel.ComponentEntity $e4 E2]
+    set e5 [java::new pt.kernel.ComponentEntity $e3 E5]
+    set e6 [java::new pt.kernel.ComponentEntity $e3 E6]
     set e8 [java::new pt.kernel.ComponentEntity $e7 E8]
+    set e9 [java::new pt.kernel.ComponentEntity $e10 E9]
 
     # Create ports.
+    set p0 [$e4 newPort P0]
     set p1 [$e1 newPort P1]
     set p2 [$e2 newPort P2]
-    set p3 [$e3 newPort P3]
+    set p3 [$e2 newPort P3]
     set p4 [$e4 newPort P4]
     set p5 [$e5 newPort P5]
     set p6 [$e6 newPort P6]
-    set p7 [$e7 newPort P7]
-    set p8 [$e8 newPort P8]
+    set p7 [$e3 newPort P7]
+    set p8 [$e7 newPort P8]
     set p9 [$e8 newPort P9]
-    set p10 [$e3 newPort P10]
+    set p10 [$e8 newPort P10]
     set p11 [$e7 newPort P11]
-    set p12 [$e2 newPort P12]
+    set p12 [$e10 newPort P12]
+    set p13 [$e10 newPort P13]
+    set p14 [$e9 newPort P14]
 
     # Create links
-    set a1 [$e3 alias $p1 $p10 A1]
-    set a2 [$e3 alias $p1 $p3 A2]
-    set r1 [$e3 connect $p1 $p2 R1]
-    set a3 [$e4 alias $p3 $p4 A3]
-    set r2 [$e4 connect $p3 $p5 R2]
-    set r3 [$e4 connect $p3 $p6 R3]
-    set r4 [$e0 connect $p4 $p7 R4]
-    set a4 [$e7 alias $p8 $p7 A4]
-    set a5 [$e7 alias $p9 $p11 A5]
-    $p11 link $r4
-    $p12 link $a2
+    set r1 [$e4 connect $p1 $p0 R1]
+    set r2 [$e4 connect $p1 $p4 R2]
+    $p3 link $r2
+    set r3 [$e4 connect $p1 $p2 R3]
+    set r4 [$e3 connect $p4 $p7 R4]
+    set r5 [$e3 connect $p4 $p5 R5]
+    $e3 allowLevelCrossingConnect true
+    set r6 [$e3 connect $p3 $p6 R6]
+    set r7 [$e0 connect $p7 $p13 R7]
+    set r8 [$e7 connect $p9 $p8 R8]
+    set r9 [$e7 connect $p10 $p11 R9]
+    set r10 [$e0 connect $p8 $p12 R10]
+    set r11 [$e10 connect $p12 $p13 R11]
+    set r12 [$e10 connect $p14 $p13 R12]
+    $p11 link $r7
 
-    enumMethodToNames deepGetLinkedEntities $r1 $r2 $r3 $r4
-} {{E1 E2} {E1 E2 E5} {E1 E2 E6} {E1 E2 E8 E8}}
-
-######################################################################
-####
-# NOTE:  Uses the setup constructed in 11.1.
-test CompositeEntity-11.2 {Test deepGetLinkedEntities on alias relations} {
-    enumMethodToNames deepGetLinkedEntities $a1 $a2 $a3 $a4 $a5
-} {E1 {E1 E2} {E1 E2} E8 E8}
+    enumMethodToNames deepGetLinkedPorts $r1 $r2 $r3 $r4 $r5 $r6 $r7 $r8 $r9 \
+            $r10 $r11 $r12
+} {P1 {P1 P9 P14 P10 P5 P3} {P1 P2} {P1 P3 P9 P14 P10} {P1 P3 P5} {P3 P6} {P1 P3 P9 P14 P10} {P9 P1 P3 P10} {P10 P1 P3 P9 P14} {P9 P1 P3 P10} {P9 P1 P3 P10} {P14 P1 P3 P10}}
 
 ######################################################################
 ####
 # NOTE:  Uses the setup constructed in 11.1.
-test CompositeEntity-11.3 {Test deepGetLinkedPorts on normal relations} {
-    enumMethodToNames deepGetLinkedPorts $r1 $r2 $r3 $r4
-} {{P1 P2} {P1 P12 P5} {P1 P12 P6} {P1 P12 P8 P9}}
-
-# FIXME: test deepGetLinkedPortsExcept
-
-######################################################################
-####
-# NOTE:  Uses the setup constructed in 11.1.
-test CompositeEntity-11.5 {Test deepGetLinkedRelations on ports} {
-    enumMethodToNames deepGetLinkedRelations $p1 $p2 $p3 $p4 $p5 $p6 $p7 $p8 $p9 $p10 $p11
-} {{R4 R2 R3 R1} R1 {R4 R2 R3} R4 R2 R3 R4 R4 R4 {} R4}
+test CompositeEntity-11.2 {Test getLinkedPorts on relations} {
+    enumMethodToNames getLinkedPorts $r1 $r2 $r3 $r4 $r5 $r6 $r7 $r8 $r9 \
+            $r10 $r11 $r12
+} {{P1 P0} {P1 P4 P3} {P1 P2} {P4 P7} {P4 P5} {P3 P6} {P7 P13 P11} {P9 P8} {P10 P11} {P8 P12} {P12 P13} {P14 P13}}
 
 ######################################################################
 ####
 # NOTE:  Uses the setup constructed in 11.1.
-test CompositeEntity-11.6 {Test deepGetConnectedPorts on ports} {
-    enumMethodToNames deepGetConnectedPorts $p1 $p2 $p3 $p4 $p5 $p6 $p7 $p8 $p9 $p10 $p11 $p12
-} {{P12 P8 P9 P5 P6 P2} P1 {P8 P9 P5 P6} {P8 P9} {P1 P12} {P1 P12} {P1 P12 P9} {P1 P12 P9} {P1 P12 P8} {} {P1 P12 P8} {P1 P8 P9 P5 P6}}
+test CompositeEntity-11.3 {Test deepGetConnectedPorts on ports} {
+    enumMethodToNames deepGetConnectedPorts $p0 $p1 $p2 $p3 $p4 $p5 $p6 \
+            $p7 $p8 $p9 $p10 $p11 $p12 $p13 $p14
+} {{} {P9 P14 P10 P5 P3 P2} P1 {P1 P9 P14 P10 P5 P6} {P9 P14 P10 P5} {P1 P3} P3 {P9 P14 P10} {P1 P3 P10} {P1 P3 P10} {P1 P3 P9 P14} {P1 P3 P9 P14} P9 {P1 P3 P10} {P1 P3 P10}}
 
 ######################################################################
 ####
 # NOTE:  Uses the setup constructed in 11.1.
-test CompositeEntity-11.7 {Test deepGetConnectedEntities on ports} {
-    enumMethodToNames deepGetConnectedEntities $p1 $p2 $p3 $p4 $p5 $p6 $p7 $p8 $p9 $p10 $p11 $p12
-} {{E2 E8 E8 E5 E6 E2} E1 {E8 E8 E5 E6} {E8 E8} {E1 E2} {E1 E2} {E1 E2 E8} {E1 E2 E8} {E1 E2 E8} {} {E1 E2 E8} {E1 E8 E8 E5 E6}}
-
+test CompositeEntity-11.4 {Test getConnectedPorts on ports} {
+    enumMethodToNames getConnectedPorts $p0 $p1 $p2 $p3 $p4 $p5 $p6 \
+            $p7 $p8 $p9 $p10 $p11 $p12 $p13 $p14
+} {{} {P0 P4 P3 P2} P1 {P1 P4 P6} {P7 P5} P4 P3 {P13 P11} P12 P8 P11 {P7 P13} P8 {P7 P11} P13}
 
 ######################################################################
 ####
 # Test connections.
 test CompositeEntity-12.1 {Test connect} {
-    set e0 [java::new pt.kernel.CompositeEntity E0]
+    set e0 [java::new pt.kernel.CompositeEntity]
+    $e0 setName E0
     set e1 [java::new pt.kernel.ComponentEntity $e0 E1]
     set e2 [java::new pt.kernel.ComponentEntity $e0 E2]
     set p1 [java::new pt.kernel.ComponentPort $e1 P1]
@@ -564,7 +572,8 @@ test CompositeEntity-12.1 {Test connect} {
 ####
 # Test connections.
 test CompositeEntity-12.2 {Test connect} {
-    set e0 [java::new pt.kernel.CompositeEntity E0]
+    set e0 [java::new pt.kernel.CompositeEntity]
+    $e0 setName E0
     set e1 [java::new pt.kernel.ComponentEntity $e0 E1]
     set e2 [java::new pt.kernel.ComponentEntity $e0 E2]
     set p1 [java::new pt.kernel.ComponentPort $e1 P1]

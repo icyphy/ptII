@@ -119,7 +119,7 @@ test KernelException-4.1 {Create a KernelException with a Nameable \
     set n1 [java::new pt.kernel.NamedObj]
     set pe [java::new {pt.kernel.KernelException pt.kernel.Nameable} $n1]
     list [$pe getMessage]
-} {{<Unnamed Object>}}
+} {.}
 
 ######################################################################
 ####
@@ -129,7 +129,7 @@ test KernelException-4.2 {Create a KernelException with a NamedObj \
     set n1 [java::new pt.kernel.NamedObj "My NamedObj"]
     set pe [java::new {pt.kernel.KernelException pt.kernel.Nameable} $n1]
     list [$pe getMessage]
-} {{My NamedObj}}
+} {{.My NamedObj}}
 
 ######################################################################
 ####
@@ -148,7 +148,7 @@ test KernelException-5.1 {Create a KernelException with a NamedObj \
     set n1 [java::new pt.kernel.NamedObj]
     set pe [java::new {pt.kernel.KernelException pt.kernel.Nameable String} $n1 "Detail String"]
     list [$pe getMessage]
-} {{<Unnamed Object>: Detail String}}
+} {{.: Detail String}}
 
 ######################################################################
 ####
@@ -158,7 +158,7 @@ test KernelException-5.2 {Create a KernelException with a NamedObj \
     set n1 [java::new pt.kernel.NamedObj "My NamedObj"]
     set pe [java::new {pt.kernel.KernelException pt.kernel.Nameable String} $n1 "Detail String"]
     list [$pe getMessage]
-} {{My NamedObj: Detail String}}
+} {{.My NamedObj: Detail String}}
 
 ######################################################################
 ####
@@ -171,7 +171,7 @@ test KernelException-6.1 {Create a KernelException with an unamed NamedObj \
 	    {pt.kernel.KernelException pt.kernel.Nameable pt.kernel.Nameable}\
 	    $n1 $n2]
     list [$pe getMessage]
-} {{<Unnamed Object> and <Unnamed Object>}}
+} {{. and .}}
 
 ######################################################################
 ####
@@ -184,7 +184,7 @@ test KernelException-6.2 {Create a KernelException with a named NamedObj \
 	    {pt.kernel.KernelException pt.kernel.Nameable pt.kernel.Nameable}\
 	    $n1 $n2]
     list [$pe getMessage]
-} {{NamedObj 1 and <Unnamed Object>}}
+} {{.NamedObj 1 and .}}
 
 ######################################################################
 ####
@@ -197,7 +197,7 @@ test KernelException-6.3 {Create a KernelException with an unamed NamedObj \
 	    {pt.kernel.KernelException pt.kernel.Nameable pt.kernel.Nameable}\
 	    $n1 $n2]
     list [$pe getMessage]
-} {{<Unnamed Object> and NamedObj 2}}
+} {{. and .NamedObj 2}}
 
 ######################################################################
 ####
@@ -210,7 +210,7 @@ test KernelException-6.4 {Create a KernelException with a named NamedObj \
 	    {pt.kernel.KernelException pt.kernel.Nameable pt.kernel.Nameable}\
 	    $n1 $n2]
     list [$pe getMessage]
-} {{NamedObj 1 and NamedObj 2}}
+} {{.NamedObj 1 and .NamedObj 2}}
 
 
 ######################################################################
@@ -222,7 +222,7 @@ test KernelException-7.1 {Create a KernelException with an unamed NamedObj \
     set n2 [java::new pt.kernel.NamedObj]
     set pe [java::new pt.kernel.KernelException $n1 $n2 "Detail Message"]
     list [$pe getMessage]
-} {{<Unnamed Object> and <Unnamed Object>: Detail Message}}
+} {{. and .: Detail Message}}
 
 ######################################################################
 ####
@@ -233,7 +233,7 @@ test KernelException-7.2 {Create a KernelException with a named NamedObj \
     set n2 [java::new pt.kernel.NamedObj]
     set pe [java::new pt.kernel.KernelException $n1 $n2 "Detail Message"]
     list [$pe getMessage]
-} {{NamedObj 1 and <Unnamed Object>: Detail Message}}
+} {{.NamedObj 1 and .: Detail Message}}
 
 ######################################################################
 ####
@@ -244,7 +244,7 @@ test KernelException-7.3 {Create a KernelException with an unamed NamedObj \
     set n2 [java::new pt.kernel.NamedObj "NamedObj 2"]
     set pe [java::new pt.kernel.KernelException $n1 $n2 "Detail Message"]
     list [$pe getMessage]
-} {{<Unnamed Object> and NamedObj 2: Detail Message}}
+} {{. and .NamedObj 2: Detail Message}}
 
 ######################################################################
 ####
@@ -255,5 +255,5 @@ test KernelException-7.4 {Create a KernelException with a named NamedObj \
     set n2 [java::new pt.kernel.NamedObj "NamedObj 2"]
     set pe [java::new pt.kernel.KernelException $n1 $n2 "Detail Message"]
     list [$pe getMessage]
-} {{NamedObj 1 and NamedObj 2: Detail Message}}
+} {{.NamedObj 1 and .NamedObj 2: Detail Message}}
 

@@ -2,7 +2,7 @@
 #
 # @Author: Christopher Hylands
 #
-# @Version: $Id$
+# @Version: @(#)testEnums.tcl	1.4 12/29/97
 #
 # @Copyright (c) 1997 The Regents of the University of California.
 # All rights reserved.

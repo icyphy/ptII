@@ -109,7 +109,7 @@ test NoSuchItemException-5.1 {Create a NoSuchItemException with a NamedObj \
     set n1 [java::new pt.kernel.NamedObj]
     set pe [java::new {pt.kernel.NoSuchItemException pt.kernel.Nameable String} $n1 "Detail String"]
     list [$pe getMessage]
-} {{<Unnamed Object>: Detail String}}
+} {{.: Detail String}}
 
 ######################################################################
 ####
@@ -119,4 +119,4 @@ test NoSuchItemException-5.2 {Create a NoSuchItemException with a NamedObj \
     set n1 [java::new pt.kernel.NamedObj "My NamedObj"]
     set pe [java::new {pt.kernel.NoSuchItemException pt.kernel.Nameable String} $n1 "Detail String"]
     list [$pe getMessage]
-} {{My NamedObj: Detail String}}
+} {{.My NamedObj: Detail String}}

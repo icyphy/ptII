@@ -42,6 +42,11 @@ if {[info procs _testPortEnumRelations] == "" } then {
     source testEnums.tcl
 }
 
+# Load up Tcl procs to print out enums
+if {[info procs enumToNames] == "" } then { 
+    source enums.tcl
+}
+
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
@@ -62,18 +67,18 @@ test Port-1.1 {Get information about an instance of Port} {
 } {{
   class:         pt.kernel.Port
   fields:        
-  methods:       {CrossLevelLink pt.kernel.Relation} {_checkRelation pt.
-    kernel.Relation} {equals java.lang.Object} getClass get
-    Container getFullName getLinkedRelations getName hashCo
-    de {link pt.kernel.Relation} notify notifyAll numLinks 
-    {setContainer pt.kernel.Entity} {setName java.lang.Stri
-    ng} toString {unlink pt.kernel.Relation} unlinkAll wait
-     {wait long} {wait long int}
+  methods:       {equals java.lang.Object} getClass getConnectedPorts ge
+    tContainer getFullName getLinkedRelations getName hashC
+    ode {link pt.kernel.Relation} notify notifyAll numLinks
+     {setContainer pt.kernel.Entity} {setName java.lang.Str
+    ing} toString {unlink pt.kernel.Relation} unlinkAll wai
+    t {wait long} {wait long int} workspace
     
   constructors:  pt.kernel.Port {pt.kernel.Port pt.kernel.Entity java.la
-    ng.String}
+    ng.String} {pt.kernel.Port pt.kernel.Workspace}
     
-  properties:    class container fullName linkedRelations name
+  properties:    class connectedPorts container fullName linkedRelations
+     name
     
   superclass:    pt.kernel.NamedObj
     
@@ -97,10 +102,12 @@ test Port-3.1 {Test link with one port, one relation} {
     set e1 [java::new pt.kernel.Entity]
     set p1 [java::new pt.kernel.Port]
     $p1 setContainer $e1
-    set r1 [java::new pt.kernel.Relation "My Relation"]
+    $p1 setName P1
+    set r1 [java::new pt.kernel.Relation R1]
     $p1 link $r1
-    list [_testPortGetLinkedRelations $p1]
-} {{{{My Relation}}}}
+    list [enumToNames [$p1 getLinkedRelations]] \
+            [enumToNames [$p1 getConnectedPorts]]
+} {R1 {}}
 
 ######################################################################
 ####
@@ -109,11 +116,12 @@ test Port-3.1.1 {Test link with one port, one relation twice} {
     set e1 [java::new pt.kernel.Entity]
     set p1 [java::new pt.kernel.Port]
     $p1 setContainer $e1
-    set r1 [java::new pt.kernel.Relation "My Relation"]
+    set r1 [java::new pt.kernel.Relation R1]
     $p1 link $r1
     $p1 link $r1
-    list [_testPortGetLinkedRelations $p1]
-} {{{{My Relation} {My Relation}}}}
+    list [enumToNames [$p1 getLinkedRelations]] \
+            [enumToNames [$p1 getConnectedPorts]]
+} {{R1 R1} {}}
 
 ######################################################################
 ####
@@ -121,8 +129,9 @@ test Port-3.1.1 {Test link with one port, one relation twice} {
 test Port-3.1.2 {Test link with one port to a null relation} {
     set p1 [java::new pt.kernel.Port]
     $p1 link [java::null]
-    list [_testPortGetLinkedRelations $p1]
-} {{{}}}
+    list [enumToNames [$p1 getLinkedRelations]] \
+            [enumToNames [$p1 getConnectedPorts]]
+} {{} {}}
 
 ######################################################################
 ####
@@ -131,12 +140,13 @@ test Port-3.2 {Test link with one port, two relations} {
     set e1 [java::new pt.kernel.Entity]
     set p1 [java::new pt.kernel.Port]
     $p1 setContainer $e1
-    set r1 [java::new pt.kernel.Relation "My Relation"]
-    set r2 [java::new pt.kernel.Relation "My Other Relation"]
+    set r1 [java::new pt.kernel.Relation R1]
+    set r2 [java::new pt.kernel.Relation R2]
     $p1 link $r1
     $p1 link $r2
-    list [_testPortGetLinkedRelations $p1]
-} {{{{My Relation} {My Other Relation}}}}
+    list [enumToNames [$p1 getLinkedRelations]] \
+            [enumToNames [$p1 getConnectedPorts]]
+} {{R1 R2} {}}
 
 ######################################################################
 ####
@@ -145,11 +155,12 @@ test Port-3.3 {Test link with two ports, one relation} {
     set e1 [java::new pt.kernel.Entity]
     set p1 [java::new pt.kernel.Port $e1 P1]
     set p2 [java::new pt.kernel.Port $e1 P2]
-    set r1 [java::new pt.kernel.Relation "My Relation"]
+    set r1 [java::new pt.kernel.Relation R1]
     $p1 link $r1
     $p2 link $r1
-    list [_testPortGetLinkedRelations $p1 $p2]
-} {{{{My Relation}} {{My Relation}}}}
+    list [enumToNames [$p1 getLinkedRelations]] \
+            [enumToNames [$p1 getConnectedPorts]]
+} {R1 P2}
 
 ######################################################################
 ####
@@ -158,16 +169,19 @@ test Port-3.4 {Test link with two ports, two relations} {
     set e1 [java::new pt.kernel.Entity]
     set p1 [java::new pt.kernel.Port $e1 P1]
     set p2 [java::new pt.kernel.Port $e1 P2]
-    set r1 [java::new pt.kernel.Relation "My Relation"]
-    set r2 [java::new pt.kernel.Relation "My Other Relation"]
+    set r1 [java::new pt.kernel.Relation R1]
+    set r2 [java::new pt.kernel.Relation R2]
     $p1 link $r1
     $p2 link $r1
     $p1 link $r2
     $p2 link $r2
-    list [_testPortGetLinkedRelations $p1 $p2] \
+    list [enumToNames [$p1 getLinkedRelations]] \
+            [enumToNames [$p1 getConnectedPorts]] \
+            [enumToNames [$p2 getLinkedRelations]] \
+            [enumToNames [$p2 getConnectedPorts]] \
 	    [$p1 numLinks] \
 	    [$p2 numLinks]
-} {{{{My Relation} {My Other Relation}} {{My Relation} {My Other Relation}}} 2 2}
+} {{R1 R2} {P2 P2} {R1 R2} {P1 P1} 2 2}
 
 ######################################################################
 ####
@@ -346,24 +360,22 @@ test Port-10.1 {Reassign a port to a new container} {
 } {{Arc Arc} {{}} {{{Print in} {Ramp out}}}}
 
 ######################################################################
-#### 
+####
 # 
-test Port-11.1 {Cross Level Link} {
-    # Create objects
-    set e0 [java::new pt.kernel.CompositeEntity "E0"]
-    set e1 [java::new pt.kernel.CompositeEntity $e0 "E1"]
-    set e2 [java::new pt.kernel.ComponentEntity $e1 "E2"]
-    set e3 [java::new pt.kernel.ComponentEntity $e0 "E3"]
-    set p1 [java::new pt.kernel.ComponentPort $e2 "P1"]
-    set p2 [java::new pt.kernel.ComponentPort $e3 "P2"]
-    set r1 [java::new pt.kernel.ComponentRelation $e0 "R1"]
+test Port-11.1 {Move Port in and out of the workspace} {
+    set w [java::new pt.kernel.Workspace]
+    set e1 [java::new pt.kernel.Entity $w E1]
+    set p1 [java::new pt.kernel.Port $w]
+    $p1 setName P1
+    set p2 [java::new pt.kernel.Port $e1 P2]
+    set p3 [java::new pt.kernel.Port $e1 P3]
+    set r1 [enumToFullNames [$w elements]]
+    set r2 [enumToFullNames [$e1 getPorts]]
+    $e1 removePort $p2
+    $p3 setContainer [java::null]
+    set r3 [enumToFullNames [$w elements]]
+    set r4 [enumToFullNames [$e1 getPorts]]
+    list $r1 $r2 $r3 $r4
+} {{.E1 .P1} {.E1.P2 .E1.P3} {.E1 .P1 .P3} {}}
 
-    # Connect
-    $p1 CrossLevelLink $r1
-    $p2 link $r1
-
-    # Note that we are not getting all the information we could
-    list [_testPortGetLinkedRelations $p1 $p2]
-            
-} {{R1 R1}}
 

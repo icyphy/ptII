@@ -59,11 +59,12 @@ test NamedObj-1.1 {Get information about an instance of NamedObj} {
   fields:        
   methods:       {equals java.lang.Object} getClass getContainer getFull
     Name getName hashCode notify notifyAll {setName java.la
-    ng.String} toString wait {wait long} {wait long int}
+    ng.String} toString wait {wait long} {wait long int} wo
+    rkspace
     
   constructors:  pt.kernel.NamedObj {pt.kernel.NamedObj java.lang.String
-    } {pt.kernel.NamedObj pt.kernel.Nameable java.lang.Stri
-    ng}
+    } {pt.kernel.NamedObj pt.kernel.Workspace java.lang.Str
+    ing}
     
   properties:    class container fullName name
     
@@ -142,25 +143,25 @@ test NamedObj-2.3 { Check names with dots} {
 ######################################################################
 ####
 # 
-test NamedObj-4.1 {Attempt to set the name to null in the constructor} {
-    catch {set n [java::new pt.kernel.NamedObj [java::null]]} msg
-    list $msg
-} {{pt.kernel.IllegalActionException: Attempt to set name of a NamedObj to null.}}
+test NamedObj-4.1 {Set the name to null in the constructor} {
+    set n [java::new pt.kernel.NamedObj [java::null]]
+    $n getName
+} {}
 
 ######################################################################
 ####
 # 
-test NamedObj-4.2 {Attempt to set the name to null after construction} {
+test NamedObj-4.2 {Set the name to null after construction} {
     set n [java::new pt.kernel.NamedObj "foo"]
-    catch {$n setName [java::null]} msg
-    list $msg
-} {{pt.kernel.IllegalActionException: Attempt to set name of a NamedObj to null.}}
+    $n setName [java::null]
+    $n getName
+} {}
 
 ######################################################################
 ####
 # 
 test NamedObj-5.1 {Test getFullName} {
-    set n [java::new pt.kernel.NamedObj "foo"]
+    set n [java::new pt.kernel.Workspace "foo"]
     set b [java::new pt.kernel.NamedObj $n "bar"]
     list [$n getFullName] [$b getFullName]
 } {foo foo.bar}

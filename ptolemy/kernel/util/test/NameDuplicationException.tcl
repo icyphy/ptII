@@ -110,7 +110,7 @@ test NameDuplicationException-2.3 {Two named objects arguments} {
     set pe [java::new {pt.kernel.NameDuplicationException \
             pt.kernel.Nameable pt.kernel.Nameable} $container $containee]
     list [$pe getMessage] [$pe getLocalizedMessage]
-} {{Attempt to insert object named "wouldBeContainee" into container named "container", which already contains an object with that name.} {Attempt to insert object named "wouldBeContainee" into container named "container", which already contains an object with that name.}}
+} {{Attempt to insert object named "wouldBeContainee" into container named ".container", which already contains an object with that name.} {Attempt to insert object named "wouldBeContainee" into container named ".container", which already contains an object with that name.}}
 
 ######################################################################
 ####
@@ -122,4 +122,4 @@ test NameDuplicationException-2.4 {two objects and a string} {
     set pe [java::new pt.kernel.NameDuplicationException \
             $container $containee "more info" ]
     list [$pe getMessage] [$pe getLocalizedMessage]
-} {{Attempt to insert object named "wouldBeContainee" into container named "container", which already contains an object with that name. more info} {Attempt to insert object named "wouldBeContainee" into container named "container", which already contains an object with that name. more info}}
+} {{Attempt to insert object named "wouldBeContainee" into container named ".container", which already contains an object with that name. more info} {Attempt to insert object named "wouldBeContainee" into container named ".container", which already contains an object with that name. more info}}

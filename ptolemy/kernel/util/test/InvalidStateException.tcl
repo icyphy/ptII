@@ -120,7 +120,7 @@ test InvalidStateException-4.1 {Create a InvalidStateException with a Nameable \
     set n1 [java::new pt.kernel.NamedObj]
     set pe [java::new {pt.kernel.InvalidStateException pt.kernel.Nameable} $n1]
     list [$pe getMessage]
-} {{<Unnamed Object>: Serious internal error!}}
+} {{.: Serious internal error!}}
 
 ######################################################################
 ####
@@ -130,7 +130,7 @@ test InvalidStateException-4.2 {Create a InvalidStateException with a NamedObj \
     set n1 [java::new pt.kernel.NamedObj "My NamedObj"]
     set pe [java::new {pt.kernel.InvalidStateException pt.kernel.Nameable} $n1]
     list [$pe getMessage]
-} {{My NamedObj: Serious internal error!}}
+} {{.My NamedObj: Serious internal error!}}
 
 ######################################################################
 ####
@@ -149,7 +149,7 @@ test InvalidStateException-5.1 {Create a InvalidStateException with a NamedObj \
     set n1 [java::new pt.kernel.NamedObj]
     set pe [java::new {pt.kernel.InvalidStateException pt.kernel.Nameable String} $n1 "Detail String"]
     list [$pe getMessage]
-} {{<Unnamed Object>: Detail String}}
+} {{.: Detail String}}
 
 ######################################################################
 ####
@@ -159,7 +159,7 @@ test InvalidStateException-5.2 {Create a InvalidStateException with a NamedObj \
     set n1 [java::new pt.kernel.NamedObj "My NamedObj"]
     set pe [java::new {pt.kernel.InvalidStateException pt.kernel.Nameable String} $n1 "Detail String"]
     list [$pe getMessage]
-} {{My NamedObj: Detail String}}
+} {{.My NamedObj: Detail String}}
 
 ######################################################################
 ####
@@ -172,7 +172,7 @@ test InvalidStateException-6.1 {Create a InvalidStateException with an unamed Na
 	    {pt.kernel.InvalidStateException pt.kernel.Nameable pt.kernel.Nameable}\
 	    $n1 $n2]
     list [$pe getMessage]
-} {{<Unnamed Object> and <Unnamed Object>: Serious internal error!}}
+} {{. and .: Serious internal error!}}
 
 ######################################################################
 ####
@@ -185,7 +185,7 @@ test InvalidStateException-6.2 {Create a InvalidStateException with a named Name
 	    {pt.kernel.InvalidStateException pt.kernel.Nameable pt.kernel.Nameable}\
 	    $n1 $n2]
     list [$pe getMessage]
-} {{NamedObj 1 and <Unnamed Object>: Serious internal error!}}
+} {{.NamedObj 1 and .: Serious internal error!}}
 
 ######################################################################
 ####
@@ -198,7 +198,7 @@ test InvalidStateException-6.3 {Create a InvalidStateException with an unamed Na
 	    {pt.kernel.InvalidStateException pt.kernel.Nameable pt.kernel.Nameable}\
 	    $n1 $n2]
     list [$pe getMessage]
-} {{<Unnamed Object> and NamedObj 2: Serious internal error!}}
+} {{. and .NamedObj 2: Serious internal error!}}
 
 ######################################################################
 ####
@@ -211,7 +211,7 @@ test InvalidStateException-6.4 {Create a InvalidStateException with a named Name
 	    {pt.kernel.InvalidStateException pt.kernel.Nameable pt.kernel.Nameable}\
 	    $n1 $n2]
     list [$pe getMessage]
-} {{NamedObj 1 and NamedObj 2: Serious internal error!}}
+} {{.NamedObj 1 and .NamedObj 2: Serious internal error!}}
 
 
 ######################################################################
@@ -223,7 +223,7 @@ test InvalidStateException-7.1 {Create a InvalidStateException with an unamed Na
     set n2 [java::new pt.kernel.NamedObj]
     set pe [java::new pt.kernel.InvalidStateException $n1 $n2 "Detail Message"]
     list [$pe getMessage]
-} {{<Unnamed Object> and <Unnamed Object>: Detail Message}}
+} {{. and .: Detail Message}}
 
 ######################################################################
 ####
@@ -234,7 +234,7 @@ test InvalidStateException-7.2 {Create a InvalidStateException with a named Name
     set n2 [java::new pt.kernel.NamedObj]
     set pe [java::new pt.kernel.InvalidStateException $n1 $n2 "Detail Message"]
     list [$pe getMessage]
-} {{NamedObj 1 and <Unnamed Object>: Detail Message}}
+} {{.NamedObj 1 and .: Detail Message}}
 
 ######################################################################
 ####
@@ -245,7 +245,7 @@ test InvalidStateException-7.3 {Create a InvalidStateException with an unamed Na
     set n2 [java::new pt.kernel.NamedObj "NamedObj 2"]
     set pe [java::new pt.kernel.InvalidStateException $n1 $n2 "Detail Message"]
     list [$pe getMessage]
-} {{<Unnamed Object> and NamedObj 2: Detail Message}}
+} {{. and .NamedObj 2: Detail Message}}
 
 ######################################################################
 ####
@@ -256,5 +256,5 @@ test InvalidStateException-7.4 {Create a InvalidStateException with a named Name
     set n2 [java::new pt.kernel.NamedObj "NamedObj 2"]
     set pe [java::new pt.kernel.InvalidStateException $n1 $n2 "Detail Message"]
     list [$pe getMessage]
-} {{NamedObj 1 and NamedObj 2: Detail Message}}
+} {{.NamedObj 1 and .NamedObj 2: Detail Message}}
 

@@ -63,23 +63,20 @@ test ComponentEntity-1.1 {Get information about an instance of ComponentEntity} 
   class:         pt.kernel.ComponentEntity
   fields:        
   methods:       {addPort pt.kernel.Port} {equals java.lang.Object} getC
-    lass getConnectedEntities {getConnectedEntities java.la
-    ng.String} {getConnectedEntities pt.kernel.Port} getCon
-    tainer getFullName getLinkedRelations {getLinkedRelatio
-    ns java.lang.String} {getLinkedRelations pt.kernel.Port
-    } getName {getPort java.lang.String} getPorts hashCode 
-    isAtomic {newPort java.lang.String} notify notifyAll re
-    moveAllPorts {removePort java.lang.String} {removePort 
-    pt.kernel.Port} {setContainer pt.kernel.CompositeEntity
-    } {setName java.lang.String} toString wait {wait long} 
-    {wait long int}
+    lass getConnectedPorts getContainer getFullName getLink
+    edRelations getName {getPort java.lang.String} getPorts
+     hashCode isAtomic {newPort java.lang.String} notify no
+    tifyAll removeAllPorts {removePort pt.kernel.Port} {set
+    Container pt.kernel.CompositeEntity} {setName java.lang
+    .String} toString wait {wait long} {wait long int} work
+    space
     
-  constructors:  pt.kernel.ComponentEntity {pt.kernel.ComponentEntity ja
-    va.lang.String} {pt.kernel.ComponentEntity pt.kernel.Co
-    mpositeEntity java.lang.String}
+  constructors:  pt.kernel.ComponentEntity {pt.kernel.ComponentEntity pt
+    .kernel.CompositeEntity java.lang.String} {pt.kernel.Co
+    mponentEntity pt.kernel.Workspace}
     
-  properties:    atomic class connectedEntities container fullName linke
-    dRelations name ports
+  properties:    atomic class connectedPorts container fullName linkedRe
+    lations name ports
     
   superclass:    pt.kernel.Entity
     
@@ -90,27 +87,31 @@ test ComponentEntity-1.1 {Get information about an instance of ComponentEntity} 
 # 
 test ComponentEntity-2.1 {Construct entities} {
     set e1 [java::new pt.kernel.ComponentEntity]
-    set e2 [java::new pt.kernel.ComponentEntity A]
-    set e3 [java::new pt.kernel.CompositeEntity B]
+    set e2 [java::new pt.kernel.ComponentEntity]
+    $e2 setName A
+    set w [java::new pt.kernel.Workspace]
+    set e3 [java::new pt.kernel.CompositeEntity $w]
+    $e3 setName B
     set e4 [java::new pt.kernel.ComponentEntity $e3 B]
     list [$e1 getFullName] [$e2 getFullName] [$e3 getFullName] [$e4 getFullName]
-} {{} A B B.B}
+} {. .A .B .B.B}
 
 ######################################################################
 ####
 # 
 test ComponentEntity-3.1 {add ports} {
-    set e1 [java::new pt.kernel.ComponentEntity X]
+    set e1 [java::new pt.kernel.ComponentEntity]
+    $e1 setName X
     set p1 [java::new pt.kernel.ComponentPort $e1 A]
     set p2 [java::new pt.kernel.ComponentPort $e1 B]
     list [$p1 getFullName] [$p2 getFullName] [_testEntityGetPorts $e1]
-} {X.A X.B {{A B}}}
+} {.X.A .X.B {{A B}}}
 
 ######################################################################
 ####
 # 
 test ComponentEntity-4.1 {is atomic test} {
-    set e1 [java::new pt.kernel.ComponentEntity X]
+    set e1 [java::new pt.kernel.ComponentEntity]
     list [$e1 isAtomic]
 } {1}
 
@@ -118,18 +119,21 @@ test ComponentEntity-4.1 {is atomic test} {
 ####
 # 
 test ComponentEntity-5.1 {Create new ports} {
-    set e1 [java::new pt.kernel.ComponentEntity X]
+    set w [java::new pt.kernel.Workspace X]
+    set e1 [java::new pt.kernel.ComponentEntity $w]
+    $e1 setName Y
     set p1 [$e1 newPort A]
     set p2 [$e1 newPort B]
     list [$p1 getFullName] [$p2 getFullName] [_testEntityGetPorts $e1]
-} {X.A X.B {{A B}}}
+} {X.Y.A X.Y.B {{A B}}}
 
 ######################################################################
 ####
 # 
 test ComponentEntity-6.1 {Reparent entities} {
-    set e1 [java::new pt.kernel.CompositeEntity A]
-    set e2 [java::new pt.kernel.CompositeEntity $e1 B]
+    set e1 [java::new pt.kernel.Workspace A]
+    set e2 [java::new pt.kernel.CompositeEntity $e1]
+    $e2 setName B
     set e3 [java::new pt.kernel.CompositeEntity $e2 C]
     set e4 [java::new pt.kernel.ComponentEntity $e3 D]
     set result1 [list [$e1 getFullName] [$e2 getFullName] \
@@ -141,14 +145,15 @@ test ComponentEntity-6.1 {Reparent entities} {
     set result3 [list [$e1 getFullName] [$e2 getFullName] \
             [$e3 getFullName] [$e4 getFullName]]
     list $result1 $result2 $result3
-} {{A A.B A.B.C A.B.C.D} {A A.B A.B.C A.B.D} {A A.B C A.B.D}}
+} {{A A.B A.B.C A.B.C.D} {A A.B A.B.C A.B.D} {A A.B A.C A.B.D}}
 
 ######################################################################
 ####
 # 
 test ComponentEntity-7.1 {Reparent entities, attempting a circular structure} {
-    set e1 [java::new pt.kernel.CompositeEntity A]
-    set e2 [java::new pt.kernel.CompositeEntity $e1 B]
+    set e1 [java::new pt.kernel.Workspace A]
+    set e2 [java::new pt.kernel.CompositeEntity $e1]
+    $e2 setName B
     set e3 [java::new pt.kernel.CompositeEntity $e2 C]
     catch {$e2 setContainer $e3} msg
     list $msg

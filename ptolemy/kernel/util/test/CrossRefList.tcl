@@ -1,4 +1,4 @@
-# Tests for the NamedObj class
+# Tests for the CrossRefList class
 #
 # @Author: Christopher Hylands
 #
@@ -40,6 +40,10 @@ if {[string compare test [info procs test]] == 1} then {
 # Load up Tcl Procs to print out enums
 if {[info procs _testCrossRefListGetLinks] == "" } then { 
     source testEnums.tcl
+}
+
+if {[info procs enumToNames] == "" } then { 
+    source enums.tcl
 }
 
 # Uncomment this to get a full report, or set in your Tcl shell window.
