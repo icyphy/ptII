@@ -30,7 +30,7 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="Delay7" class="ptolemy.domains.sdf.lib.Delay">
+    <entity name="Delay7" class="ptolemy.domains.sdf.lib.SampleDelay">
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{0.0,1.0,2.0,3.0}">
         </property>
         <doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>

@@ -49,10 +49,10 @@ if {[info procs enumToObjects] == "" } then {
 #
 test Delay-2.1 {test constructor and clone} {
     set e0 [sdfModel 5]
-    set delaybase [java::new ptolemy.domains.sdf.lib.Delay $e0 delay]
+    set delaybase [java::new ptolemy.domains.sdf.lib.SampleDelay $e0 delay]
     # FIXME: If I use a clone instead of the original, the original is
     # tested for type satisfaction!
-    set delay [java::cast ptolemy.domains.sdf.lib.Delay [$delaybase clone]]
+    set delay [java::cast ptolemy.domains.sdf.lib.SampleDelay [$delaybase clone]]
     $delaybase setContainer [java::null]
     $delay setContainer $e0
     set initialOutputs [getParameter $delay initialOutputs]

@@ -7,7 +7,7 @@
       <group>
 <doc>Synchronous dataflow actors</doc>
 
-<entity name="Delay" class="ptolemy.domains.sdf.lib.Delay">
+<entity name="Delay" class="ptolemy.domains.sdf.lib.SampleDelay">
 <doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>
 </entity>
 

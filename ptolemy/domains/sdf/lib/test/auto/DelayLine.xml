@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.moml.Location" value="94.0, 92.0">
         </property>
     </property>
-    <entity name="DelayLine" class="ptolemy.domains.sdf.lib.DelayLine">
+    <entity name="DelayLine" class="ptolemy.domains.sdf.lib.SampleDelayLine">
         <property name="initialValues" class="ptolemy.data.expr.Parameter" value="{0,0,0,0}">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="196.0, 195.0">

@@ -73,7 +73,7 @@
             <property name="input"/>
         </port>
     </entity>
-    <entity name="Delay" class="ptolemy.domains.sdf.lib.Delay">
+    <entity name="Delay" class="ptolemy.domains.sdf.lib.SampleDelay">
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="initialTaps">
         </property>
         <doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>
@@ -148,7 +148,7 @@
             </property>
         </port>
     </entity>
-    <entity name="DelayLine" class="ptolemy.domains.sdf.lib.DelayLine">
+    <entity name="DelayLine" class="ptolemy.domains.sdf.lib.SampleDelayLine">
         <property name="initialValues" class="ptolemy.data.expr.Parameter" value="{0.0,0.0,0.0,0.0}">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="200.0, 127.0">
@@ -214,7 +214,7 @@
             <property name="input"/>
         </port>
     </entity>
-    <entity name="::Delay" class="ptolemy.domains.sdf.lib.Delay">
+    <entity name="::Delay" class="ptolemy.domains.sdf.lib.SampleDelay">
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{0}">
         </property>
         <doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>

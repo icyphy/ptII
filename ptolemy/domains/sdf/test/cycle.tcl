@@ -60,7 +60,7 @@ test cycle-1.0 {Cycle Scheduling tests} {
 
     set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDelay $toplevel Actor1]
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDelay $toplevel Actor2]
-    set a3 [java::new ptolemy.domains.sdf.lib.Delay $toplevel Delay]
+    set a3 [java::new ptolemy.domains.sdf.lib.SampleDelay $toplevel Delay]
 
     set r1 [$toplevel connect [java::field $a1 output] [java::field $a2 input] R1]
     set r2 [$toplevel connect [java::field $a2 output] \

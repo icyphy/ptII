@@ -61,7 +61,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Delay2" class="ptolemy.domains.sdf.lib.Delay">
+    <entity name="Delay2" class="ptolemy.domains.sdf.lib.SampleDelay">
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="[[0]]">
         </property>
         <doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>

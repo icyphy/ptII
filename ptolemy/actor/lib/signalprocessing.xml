@@ -12,7 +12,7 @@
 </entity>
   <entity name="DB" class="ptolemy.actor.lib.DB">
   </entity>
-<entity name="DelayLine" class="ptolemy.domains.sdf.lib.DelayLine"/>
+<entity name="DelayLine" class="ptolemy.domains.sdf.lib.SampleDelayLine"/>
 <entity name="DownSample" class="ptolemy.domains.sdf.lib.DownSample"/>
 <entity name="FFT" class="ptolemy.domains.sdf.lib.FFT">
    <doc>Forward Fast Fourier Transform</doc>
