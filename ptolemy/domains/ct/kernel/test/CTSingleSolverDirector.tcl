@@ -80,6 +80,7 @@ test CTSingleSolverDirector-2.1 {Get default values} {
     set sys [java::new ptolemy.actor.TypedCompositeActor]
     $sys setName System
     set dir [java::new ptolemy.domains.ct.kernel.CTSingleSolverDirector $sys DIR]
+    $dir preinitialize
     $dir initialize
     list [[$dir getCurrentODESolver] getFullName] \
 	    [$dir getCurrentStepSize] \
@@ -199,6 +200,7 @@ test CTSingleSolverDirector-3.1 {register a breakpoint} {
     set sys [java::new ptolemy.actor.TypedCompositeActor]
     $sys setName System
     set dir [java::new ptolemy.domains.ct.kernel.CTSingleSolverDirector $sys DIR]
+    $dir preinitialize
     $dir initialize
     $dir fireAt $sys 0.1
     $dir fireAt $sys 0.4
