@@ -146,18 +146,18 @@ ITERATIONSPARAMETER =	,iterations:$(ITERATIONS)
 
 compileDemo: $(JCLASS)
 	@echo "generate deep code for $(MODELPATH)"
-	$(JAVA) \
+	"$(JAVA)" \
 		-classpath "$(ROOT)" \
 		ptolemy.copernicus.kernel.Copernicus \
 		-verbose \
 		-compile	 true \
 		-iterations      '"$(ITERATIONS)"' \
 		-iterationsParameter '"$(ITERATIONSPARAMETER)"' \
-		-java            `echo '"$(JAVA)"' | sed 's@/cygdrive/\([a-z]\)@\1:@'` \
+		-java            "`echo '"$(JAVA)"' | sed 's@/cygdrive/\([a-z]\)@\1:@'`" \
 		-jvmSize         '"$(JVMSIZE)"' \
 		-modelPath       '"$(MODELPATH)"' \
 		-run		 false \
-		-ptIIUserDirectory  `echo '"$(PTII)"' | sed 's@\\\@/@g'` \
+		-ptIIUserDirectory  "`echo '"$(PTII)"' | sed 's@\\\@/@g'`" \
 		-targetPackage   '"$(TARGETPACKAGE)"' \
 		-targetPath      '"$(TARGETPATH)"' \
 		-watchDogTimeout '"$(WATCHDOGTIMEOUT)"' \
@@ -168,7 +168,7 @@ compileDemo: $(JCLASS)
 
 runDemo:
 	@echo "Run the deep model"
-	$(JAVA) \
+	"$(JAVA)" \
 	-Xfuture -classpath "$(CLASSPATH)" \
 	$(TARGETPACKAGE).Main 
 
@@ -177,8 +177,8 @@ TREESHAKE_PREFIX = $(ROOT)/$(TARGETPATH)/treeshake
 TREESHAKE=$(ROOT)/util/testsuite/treeshake
 treeShakeDemo:
 	@echo "Create the minimal jar file and run it" 
-	$(TREESHAKE) $(JAR) $(TREESHAKE_PREFIX).jar \
-		$(JAVA)	-Xfuture -classpath "$(CLASSPATH)" \
+	"$(TREESHAKE)" "$(JAR)" $(TREESHAKE_PREFIX).jar \
+		"$(JAVA)" -Xfuture -classpath "$(CLASSPATH)" \
 		$(TARGETPACKAGE).Main 
 	ls -l $(TREESHAKE_PREFIX).jar
 
@@ -198,8 +198,8 @@ treeShakeAll: treeShakeWithoutCodegen runTreeShakeWithoutCodegen \
 treeShakeWithoutCodegen:
 	@echo "Treeshake $(MODEL) without codegen"
 	@CLASSPATH="$(CLASSPATH)" \
-		$(TREESHAKE) $(JAR) $(TREESHAKE_PREFIX).jar \
-			$(JAVA) ptolemy.copernicus.java.TestApplication \
+		"$(TREESHAKE)" "$(JAR)" $(TREESHAKE_PREFIX).jar \
+			"$(JAVA)" ptolemy.copernicus.java.TestApplication \
 			$(MODELPATH) \
 			| tail -1
 	ls -l $(TREESHAKE_PREFIX).jar
@@ -208,7 +208,7 @@ runTreeShakeWithoutCodegen:
 	@echo "Run without codegen with treeshake.jar"
 	@for repeat in 1 2 3 4; \
 	do \
-		$(JAVA) \
+		"$(JAVA)" \
 			-classpath $(TREESHAKE_PREFIX).jar \
 			ptolemy.copernicus.java.TestApplication \
 			$(MODELPATH) \
@@ -223,8 +223,8 @@ treeShakeAndRunSnapshots:
 	do \
 		echo "Running the code from $(TARGETPATH)/$${snapshot}"; \
 		echo "Treeshake $$snapshot"; \
-		$(TREESHAKE) $(JAR) $(TREESHAKE_PREFIX)_$${snapshot}.jar \
-			$(JAVA) \
+		"$(TREESHAKE)" "$(JAR)" $(TREESHAKE_PREFIX)_$${snapshot}.jar \
+			"$(JAVA)" \
 				-Xfuture -classpath \
 	"$(ROOT)/$(TARGETPATH)/$$snapshot$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
 				$(TARGETPACKAGE).Main| tail -1 ; \
@@ -232,7 +232,7 @@ treeShakeAndRunSnapshots:
 		rm -f  $(STATSFILE); \
 		for repeat in 1 2 3 4; \
 		do \
-			$(JAVA) \
+			"$(JAVA)" \
 				-classpath $(TREESHAKE_PREFIX)_$${snapshot}.jar \
 				$(TARGETPACKAGE).Main | tail -1 | \
 			tee -a $(STATSFILE); \
@@ -242,8 +242,8 @@ treeShakeAndRunSnapshots:
 
 treeShakeCodegen:
 	@echo "Treeshake the final codegen version"
-	@$(TREESHAKE) $(JAR) $(TREESHAKE_PREFIX)_codegen.jar \
-		$(JAVA) \
+	@"$(TREESHAKE)" "$(JAR)" $(TREESHAKE_PREFIX)_codegen.jar \
+		"$(JAVA)" \
 			-classpath "$(CLASSPATH)" \
 			$(TARGETPACKAGE).Main | tail -1
 	@ls -l $(TREESHAKE_PREFIX)_codegen.jar;
@@ -253,7 +253,7 @@ runTreeShakeCodegen:
 	@rm -f  $(STATSFILE)
 	@for repeat in 1 2 3 4; \
 	do \
-		$(JAVA) \
+		"$(JAVA)" \
 			-classpath $(TREESHAKE_PREFIX)_codegen.jar \
 			$(TARGETPACKAGE).Main | tail -1 | \
 			tee -a $(STATSFILE); \
@@ -265,9 +265,9 @@ compareTreeShakeJars:
 	@echo "See ${TREESHAKE_PREFIX}_jardiff.txt"
 	@echo "  for the .class files are present in the regular jar,"
 	@echo "  but not in the codegen jar"
-	@jar -tvf ${TREESHAKE_PREFIX}.jar | \
+	@"$(JAR)" -tvf ${TREESHAKE_PREFIX}.jar | \
 		awk '{print $$NF}' | sort > /tmp/treeshake_toc
-	@jar -tvf ${TREESHAKE_PREFIX}_codegen.jar | \
+	@"$(JAR)" -tvf ${TREESHAKE_PREFIX}_codegen.jar | \
 		awk '{print $$NF}' | sort > /tmp/treeshake_codegen_toc
 	@comm -23 /tmp/treeshake_toc /tmp/treeshake_codegen_toc \
 		> ${TREESHAKE_PREFIX}_jardiff.txt
@@ -489,13 +489,13 @@ gcj3_2:
 
 timeOrthoCommDemo:
 	@echo "Time the model for $(ITERATIONS) iterations"
-	$(JAVA) \
+	"$(JAVA)" \
 	-Xfuture -classpath "$(CLASSPATH)" \
 	$(TARGETPACKAGE).Main  | tail
 
 runStaticDemo:
 	@echo "Run the deep model static"
-	$(JAVA) \
+	"$(JAVA)" \
 	-Xfuture -classpath "$(CLASSPATH)" \
 	$(TARGETPACKAGE).StaticMain 
 # -iterations 50

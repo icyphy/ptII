@@ -25,12 +25,12 @@
  -p wjtp.noe targetPackage:@targetPackage@
  -p wjtp.nee targetPackage:@targetPackage@
  -p wjtp.cie targetPackage:@targetPackage@
- -p wjtp.snapshot1 outDir:@ptIIUserDirectory@/@targetPath@/jimple1
- -p wjtp.snapshot2 outDir:@ptIIUserDirectory@/@targetPath@/jimple2
- -p wjtp.snapshot3 outDir:@ptIIUserDirectory@/@targetPath@/jimple3
- -p wjtp.snapshot4 outDir:@ptIIUserDirectory@/@targetPath@/jimple4
- -p wjtp.snapshot5 outDir:@ptIIUserDirectory@/@targetPath@/jimple5
- -p wjtp.snapshot6 outDir:@ptIIUserDirectory@/@targetPath@/jimple6
- -p wjtp.finalSnapshot outDir:@ptIIUserDirectory@/@targetPath@
+ -p wjtp.snapshot1 "outDir:@ptIIUserDirectory@/@targetPath@/jimple1"
+ -p wjtp.snapshot2 "outDir:@ptIIUserDirectory@/@targetPath@/jimple2"
+ -p wjtp.snapshot3 "outDir:@ptIIUserDirectory@/@targetPath@/jimple3"
+ -p wjtp.snapshot4 "outDir:@ptIIUserDirectory@/@targetPath@/jimple4"
+ -p wjtp.snapshot5 "outDir:@ptIIUserDirectory@/@targetPath@/jimple5"
+ -p wjtp.snapshot6 "outDir:@ptIIUserDirectory@/@targetPath@/jimple6"
+ -p wjtp.finalSnapshot "outDir:@ptIIUserDirectory@/@targetPath@"
  -p wjtp.iee enabled
  @compileOptions@
