@@ -172,9 +172,11 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener {
                 variable = new Variable(this, _variableName);
             } catch (NameDuplicationException ex) {
                 throw new IllegalActionException(
-                    this,
+                    this, ex,
                     "Existing attribute that is not a Variable with specified name: "
-                        + _variableName);
+                    + _variableName
+                    + ". It is: "
+                    + container.getAttribute(_variableName));
             }
         }
         variable.setTypeSameAs(input);
