@@ -305,26 +305,7 @@ public class HTMLViewer extends TableauFrame
         fileWriter.close();
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
 
-    // Save a string in a temporary html file and return a URL to it.
-    // @param prefix The prefix string to be used in generating the
-    // file's name; must be at least three characters long.
-    // @param contents  The contents of the temporary file
-    // @return A URL pointing to a temporary file.
-    private URL _temporaryHTMLFile(String prefix, String contents) 
-            throws IOException {
-        // Generate a copyright page in a temporary file
-        File temporaryFile = File.createTempFile(
-                prefix, "htm");
-        temporaryFile.deleteOnExit();
-
-        FileWriter fileWriter = new FileWriter(temporaryFile);
-        fileWriter.write(contents, 0 , contents.length());
-        fileWriter.close();
-        return temporaryFile.toURL();
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
