@@ -235,8 +235,7 @@ public class VergilApplication extends MoMLApplication {
         //
         // Use StringUtilities.getProperty() so we get the proper
         // canonical path
-        String libraryName = StringUtilities.getProperty("user.home")
-            + StringUtilities.getProperty("file.separator")
+        String libraryName = StringUtilities.preferencesDirectory()
             + "vergilUserLibrary.xml";
         System.out.print("Opening user library " + libraryName + "...");
         File file = new File(libraryName);
