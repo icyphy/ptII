@@ -258,7 +258,7 @@ public class Main extends KernelMain {
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
         
         // Remove tests of object equality that can be statically
-        // determined.  The generated code ends up with alot of
+        // determined.  The generated code ends up with a lot of
         // these that are really just dead code (usually from
         // inlining the attributeChanged method).
         // A general analysis is expensive...  Let's see if we can get away

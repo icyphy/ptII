@@ -1445,7 +1445,7 @@ public class SootUtilities {
      */
     public static void unrollIteratorInstances(SootClass theClass,
             SootField field, List fieldList) {
-        // FIXME: This is currently written using alot of manually searching
+        // FIXME: This is currently written using a lot of manually searching
         // of the blocks.  Unfortunately, finding them all is hard.
         // This should really be done using Dava (when it is finished)
         SootClass iteratorClass = Scene.v().getSootClass("java.util.Iterator");

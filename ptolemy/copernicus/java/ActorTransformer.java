@@ -144,7 +144,7 @@ public class ActorTransformer extends SceneTransformer {
             // FIXME the code below should probably copy the class and then
             // add init stuff.  EntitySootClass handles this nicely, but
             // doesn't let us use copyClass.  Generally adding this init crap
-            // is something we have to do alot.  How do we handle it nicely?
+            // is something we have to do a lot.  How do we handle it nicely?
             // 
             //            SootClass newClass =
             //     SootUtilities.copyClass(entityClass, newClassName);
