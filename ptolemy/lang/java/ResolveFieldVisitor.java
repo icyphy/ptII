@@ -553,7 +553,8 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
             MethodDecl method = (MethodDecl) methods.next();
 
 
-	    debugMatches.append("-" + method.toString() + " " + method.getName());
+	    debugMatches.append("-" + method.toString()
+				+ " " + method.getName());
 	    List formalTypes = method.getParams();
 	    Iterator formalItr2 = formalTypes.iterator();
 	    while (formalItr2.hasNext()) {
@@ -566,8 +567,11 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         }
 
         if (matches.size() == 0) {
-            throw new RuntimeException("no matching method " + aMethod.getName() +
-                    "(" + TNLManip.toString(argTypes) + ")" + debugMatches);
+            throw new RuntimeException("no matching method "
+				       + aMethod.getName()
+				       + "(" + TNLManip.toString(argTypes)
+				       + ")\n Possible matches:\n"
+				       + debugMatches);
         }
 
         Iterator matchesItr1 = matches.iterator();
