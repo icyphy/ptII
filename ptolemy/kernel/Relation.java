@@ -69,8 +69,7 @@ public class Relation extends NamedObj {
      *  Increment the version number of the workspace.
      *  @param name Name of this object.
      */
-    public Relation(String name)
-            throws IllegalActionException {
+    public Relation(String name) {
 	super(name);
         // Ignore exception because "this" cannot be null.
         try {
