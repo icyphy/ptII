@@ -46,6 +46,43 @@ token within the queue and is updated every time put() is called. The
 "rcvrTime" of this queue is defined as the time stamp of the oldest token 
 within the queue and is called every time get() is called. 
 
+Synchronization Notes:
+This domain observes a hierarchy of synchronization locks. When multiple
+synchronization locks are required, they must be obtained in an order that
+is consistent with this hierarchy. Adherence to this hierarchical ordering
+ensures that deadlock can not occur due to circular lock dependencies.
+ 
+The following synchronization hierarchy is utilized:
+ 
+        1. read/write access on the workspace
+        2. synchronization on the receiver
+        3. synchronization on the director
+        4. synchronization on the actor
+        5. (other) synchronization on the workspace
+ 
+We say that lock #1 is at the highest level in the hierarchy and lock #5
+is at the lowest level.
+ 
+As an example, a method that synchronizes on a receiver can not contain
+read/write access on the workspace; such accesses must occur outside of
+the receiver synchronization. Similarly, a method which synchronizes on a
+director must not synchronize on the receiver or contain read/write
+accesses on the workspace; it can contain synchronizations on actors or
+the workspace.
+ 
+The justification of the chosen ordering of this hierarchy is based on
+the access a method has to the fields of its object versus the fields of
+other objects. The more (less) a method focuses on the internal state of
+its object and non-synchronized methods of external objects, the lower
+(higher) the method is placed in the synchronization hierarchy. In the
+case of read/write access on the workspace, the corresponding methods,
+i.e, getReadAccess() and getWriteAccess(), access the current thread
+running in the JVM. This external access deems these methods as being at
+the top of the hierarchy. All other synchronizations on the workspace only
+focus on the internal state of the workspace and hence are at the bottom
+of the synchronization hierarchy.
+
+
 
 @author John S. Davis II
 @version @(#)TimedQueueReceiver.java	1.17	11/18/98
@@ -75,11 +112,11 @@ public class TimedQueueReceiver implements Receiver {
      * @exception NoTokenException If the queue is empty.
      */
     public Token get() {
-        System.out.println("Call to TimedQueueReceiver.get()");
+        // System.out.println("Call to TimedQueueReceiver.get()");
         // System.out.println("Previous rcvrTime = " + getRcvrTime() );
-        System.out.println("rcvrTime = " + getRcvrTime() );
+        // System.out.println("rcvrTime = " + getRcvrTime() );
         ODActor odactor = (ODActor)getContainer().getContainer();
-        System.out.println("actor time = " + odactor.getCurrentTime() );
+        // System.out.println("actor time = " + odactor.getCurrentTime() );
         Event event = (Event)_queue.take();
         if (event == null) {
             throw new NoTokenException(getContainer(),
@@ -89,22 +126,26 @@ public class TimedQueueReceiver implements Receiver {
         
         // Set the rcvr time based on the next token
         if( getSize() > 0 ) {
-            System.out.println("Size after get is " + getSize());
+            // System.out.println("Size after get is " + getSize());
             // FIXME: get gives FIFO info now
             // Event nextEvent = (Event)_queue.get( _queue.size() - 1 ); 
             Event nextEvent = (Event)_queue.get(0); 
             _rcvrTime = nextEvent.getTime();
-            System.out.println("Update via get(): _rcvrTime = " + _rcvrTime );
+            // System.out.println("Update via get(): _rcvrTime = " + _rcvrTime );
             // FIXME We should update the actor rcvrtripletable here 
         }
         // Call update even if getSize == 0, so that triple is 
         // no longer in front
             
-            RcvrTimeTriple triple; 
-            triple = new RcvrTimeTriple( this, _rcvrTime, getPriority() ); 
-            ODActor actor = (ODActor)getContainer().getContainer();
-            actor.updateRcvrTable( triple );
+        RcvrTimeTriple triple; 
+        triple = new RcvrTimeTriple( this, _rcvrTime, getPriority() ); 
+        ODActor actor = (ODActor)getContainer().getContainer(); 
+        actor.updateRcvrTable( triple );
             
+        /*
+        // System.out.println(((ComponentEntity)odactor).getName()
+                + " completed TimedQueueReceiver.get().");
+        */
         return token;
     }
 
@@ -152,16 +193,14 @@ public class TimedQueueReceiver implements Receiver {
     }
 
     /** Return true if put() will succeed in accepting a token. 
-     * @exception IllegalActionException Not thrown in this class.
      */
-    public boolean hasRoom() throws IllegalActionException {
+    public boolean hasRoom() {
         return !_queue.isFull();
     }
 
     /** Return true if get() will succeed in returning a token. 
-     * @exception IllegalActionException Not thrown in this class.
      */
-    public boolean hasToken() throws IllegalActionException {
+    public boolean hasToken() {
         return _queue.size() > 0;
     }
 
@@ -174,7 +213,7 @@ public class TimedQueueReceiver implements Receiver {
      *  FIXME: I need an IllegalActionException here to deal with
      *         time stamps that are decreasing.
      */
-    public synchronized void put(Token token) {
+    public void put(Token token) {
         put( token, _lastTime );
     }
 
@@ -187,26 +226,33 @@ public class TimedQueueReceiver implements Receiver {
      *  FIXME: I need an IllegalActionException here to deal with
      *         time stamps that are decreasing.
      */
-    public synchronized void put(Token token, double time) {
-        System.out.println("Call to TimedQueueReceiver.put()");
-        System.out.println("Previous queue size = " + getSize() );
+    public void put(Token token, double time) {
+        // System.out.println("Call to TimedQueueReceiver.put()");
+        // System.out.println("Previous queue size = " + getSize() );
         Event event = new Event(token, time);
         ODIOPort port = (ODIOPort)getContainer();
         ODActor actor = (ODActor)port.getContainer();
         
-        _lastTime = time; 
-        
-        if( getSize() == 0 ) {
-            RcvrTimeTriple triple; 
-            triple = new RcvrTimeTriple( this, time, _priority ); 
-            _rcvrTime = time;
-            System.out.println("Update: _rcvrTime = " + _rcvrTime);
-            actor.updateRcvrTable( triple ); 
-        }
+        synchronized(this) {
+            _lastTime = time; 
+            
+            if( getSize() == 0 ) {
+                RcvrTimeTriple triple; 
+                triple = new RcvrTimeTriple( this, time, _priority ); 
+                _rcvrTime = time; 
+                // System.out.println("Update: _rcvrTime = " + _rcvrTime); 
+                actor.updateRcvrTable( triple ); 
+            }
 
-        if (!_queue.put(event)) {
-            throw new NoRoomException (getContainer(),
-                    "Queue is at capacity. Cannot insert token.");
+            if (!_queue.put(event)) {
+                throw new NoRoomException (getContainer(), 
+                        "Queue is at capacity. Cannot insert token.");
+            }
+            
+            /*
+            // System.out.println(((ComponentEntity)actor).getName()
+                + " completed TimedQueueReceiver.put().");
+            */
         }
     }
 

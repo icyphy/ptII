@@ -38,11 +38,48 @@ import ptolemy.actor.process.*;
 import ptolemy.actor.util.*;
 
 import java.util.NoSuchElementException;
+import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// ODReceiver
 /**
 A receiver which stores timed tokens using blocking reads/writes.
+
+Synchronization Notes:
+This domain observes a hierarchy of synchronization locks. When multiple 
+synchronization locks are required, they must be obtained in an order that 
+is consistent with this hierarchy. Adherence to this hierarchical ordering
+ensures that deadlock can not occur due to circular lock dependencies.
+
+The following synchronization hierarchy is utilized: 
+
+	1. read/write access on the workspace 
+        2. synchronization on the receiver 
+        3. synchronization on the director 
+        4. synchronization on the actor
+        5. (other) synchronization on the workspace
+        
+We say that lock #1 is at the highest level in the hierarchy and lock #5
+is at the lowest level.
+
+As an example, a method that synchronizes on a receiver can not contain 
+read/write access on the workspace; such accesses must occur outside of 
+the receiver synchronization. Similarly, a method which synchronizes on a 
+director must not synchronize on the receiver or contain read/write 
+accesses on the workspace; it can contain synchronizations on actors or
+the workspace. 
+
+The justification of the chosen ordering of this hierarchy is based on
+the access a method has to the fields of its object versus the fields of
+other objects. The more (less) a method focuses on the internal state of 
+its object and non-synchronized methods of external objects, the lower 
+(higher) the method is placed in the synchronization hierarchy. In the 
+case of read/write access on the workspace, the corresponding methods, 
+i.e, getReadAccess() and getWriteAccess(), access the current thread 
+running in the JVM. This external access deems these methods as being at 
+the top of the hierarchy. All other synchronizations on the workspace only 
+focus on the internal state of the workspace and hence are at the bottom 
+of the synchronization hierarchy.
 
 
 @author John S. Davis II
@@ -74,26 +111,46 @@ public class ODReceiver extends TimedQueueReceiver
      *  data is available or until the system is terminated. Note: this
      *  method should return null only where it is explicitly shown.
      */
-    public synchronized Token get() {
+    public Token get() {
         // System.out.println("\nCall to ODReceiver.get()");
         // System.out.println("Previous rcvrTime = " + getRcvrTime() );
+       
+       
+        // Cache values so that the synchronization hierarchy 
+        // will not be violated
         Workspace workspace = getContainer().workspace();
-        Actor actor = (Actor)getContainer().getContainer();
-        ODDirector director = (ODDirector)actor.getDirector();
-        Token token = null;
-        try {
+        ODActor actor = (ODActor)getContainer().getContainer();
+        ODDirector director = (ODDirector)actor.getDirector(); 
+        ODIOPort myPort = (ODIOPort)getContainer();
+        String name = actor.getName(); 
+        Token token = null; 
+        
+        synchronized(this) {
             if( super.hasToken() ) {
-                ODActor odactor = (ODActor)getContainer().getContainer();
-                // System.out.println("rcvrTime = " + getRcvrTime() );
-                // System.out.println("actor time = " + odactor.getCurrentTime() );
-                if( getRcvrTime() <= odactor.getCurrentTime() ) {
-                    if( odactor.hasMinRcvrTime() ) {
-                        return super.get();
+                /*
+                if( name.equals("printer") ) {
+                    System.out.println("\t"+name+" entered hasToken() block");
+                    System.out.println("\trcvrTime = "+getRcvrTime());
+                    System.out.println("\tactor time = " 
+                            +actor.getCurrentTime());
+                }
+                */
+                if( getRcvrTime() <= actor.getCurrentTime() ) {
+                    if( actor.hasMinRcvrTime() ) {
+                        token = super.get();
+                        notifyAll(); // Wake up threads waiting to write.
+                        return token;
                     } else if( isSimultaneousIgnore() ) {
                         setSimultaneousIgnore(false);
-                        return super.get();
+                        token = super.get();
+                        notifyAll(); // Wake up threads waiting to write.
+                        return token;
                     }
-                    // System.out.println("First null");
+                    /*
+                    if( name.equals("printer") ) {
+                        System.out.println(name+" reaached first null");
+                    }
+                    */
                     return null;
                 }
                 // FIXME: Will this point ever be reached? 
@@ -102,8 +159,55 @@ public class ODReceiver extends TimedQueueReceiver
             } else {
                 director.addReadBlock();
                 while( !_terminate && !super.hasToken() ) {
-                    notifyAll();
+                    /*
+                    System.out.println("Actor(" 
+                            + ((ComponentEntity)actor).getName() + 
+                            ") about to block in Port("
+                            + myPort.getName() 
+                            + ") ODReceiver.get()");
+                    */
+                    
+                    //
+                    // JBEGIN: This is all for testing
+                    /*
+                    Enumeration portEnum = myPort.deepConnectedPorts();
+                    ODIOPort connectedPort = null;
+                    while( portEnum.hasMoreElements() ) {
+                        connectedPort = (ODIOPort)portEnum.nextElement();
+                        Receiver connectedRcvrs[][] 
+                                = connectedPort.getRemoteReceivers();
+                        for( int i=0; i < connectedRcvrs.length; i++ ) {
+                            for( int j=0; j < connectedRcvrs[i].length; j++ ) {
+                                // System.out.println("check for block");
+                                Receiver connRcvr = connectedRcvrs[i][j];
+                                if( connRcvr == this ) {
+                        	    System.out.println("\tBlocking on " 
+                                    + connectedPort.getContainer().getName());
+                                }
+                            }
+                        }
+                    }
+                    */
+                    // JEND
+                    //
+                    if( director.isDeadlocked() ) {
+                        System.out.println("System is deadlocked");
+                    }
+                    // notifyAll();
+                    /*
+                    System.out.println("Actor("
+                            + name.getName() + 
+                            ") preparing to wait. hasToken = "
+                            + super.hasToken() );
+                    */
+                    // FIXME: Will this work?? It might violate the 
+                    // synchronization hierarchy
                     workspace.wait( this );
+                    /*
+                    System.out.println("Actor: " 
+                            + ((ComponentEntity)actor).getName() + 
+                            " awakened after blocking in ODReceiver.get()");
+                    */
                 }
             } 
             if( _terminate ) {
@@ -111,22 +215,20 @@ public class ODReceiver extends TimedQueueReceiver
                 new TerminateProcessException( getContainer(), "This "
                         + "receiver has been terminated during get().");
             } else {
-                ODActor odactor = (ODActor)getContainer().getContainer();
-                if( getRcvrTime() <= odactor.getCurrentTime() ) {
-                    if( odactor.hasMinRcvrTime() ) {
+                // ODActor actor = (ODActor)getContainer().getContainer();
+                if( getRcvrTime() <= actor.getCurrentTime() ) {
+                    if( actor.hasMinRcvrTime() ) {
                         token = super.get();
+                        notifyAll(); // Wake up threads waiting to write.
                     } else if( isSimultaneousIgnore() ) {
                         setSimultaneousIgnore(false);
-                        return super.get();
+                        token = super.get();
+                        notifyAll(); // Wake up threads waiting to write.
                     }
                 }
                 director.removeReadBlock(); 
             }
             // FIXME: Will this point ever be reached?
-            
-        } catch(IllegalActionException e) {
-	    System.out.println("ODReceiver.get() Exception");
-            // Do nothing. This can't happen.
         }
         
         // This check is only for clarity.
@@ -138,20 +240,24 @@ public class ODReceiver extends TimedQueueReceiver
 
     /** Throw an IllegalActionException because polling of queues 
      *  is not allowed.
-     * @exception IllegalActionException Not thrown in this class.
      */
-    public boolean hasRoom() throws IllegalActionException {
+    public boolean hasRoom() {
+        return true;
+        /*
         throw new IllegalActionException( getContainer(), "This domain"
                 + " does not allow polling of input queues.");
+        */
     }
 
     /** Throw an IllegalActionException because polling of queues 
      *  is not allowed.
-     * @exception IllegalActionException Not thrown in this class.
      */
-    public boolean hasToken() throws IllegalActionException {
+    public boolean hasToken() {
+        return true;
+        /*
         throw new IllegalActionException( getContainer(), "This domain"
                 + " does not allow polling of output queues.");
+        */
     }
 
     /** Return true if the simultaneous pending event ignore flag is true.
@@ -164,7 +270,7 @@ public class ODReceiver extends TimedQueueReceiver
      *  Associate the current time as the time stamp of the token. 
      * @param token The token to put on the queue.
      */
-    public synchronized void put(Token token) {
+    public void put(Token token) {
         double currentTime;
         currentTime = ((ODActor)getContainer().getContainer()).getCurrentTime();
         put( token, 0.0 );
@@ -175,28 +281,48 @@ public class ODReceiver extends TimedQueueReceiver
      *  @param token The token to put on the queue.
      *  @param time The time stamp of the token.
      */
-    public synchronized void put(Token token, double time) {
+    public void put(Token token, double time) {
         // System.out.println("\nCall to ODReceiver.put()");
         // System.out.println("Previous queue size = " + getSize() );
+        
+        
+        // Cache values so that the synchronization hierarchy 
+        // will not be violated
         Workspace workspace = getContainer().workspace();
         ODActor actor = (ODActor)getContainer().getContainer();
         ODDirector director = (ODDirector)actor.getDirector();
-        try {
+        
+        synchronized(this) {
             if( !super.hasRoom() ) {
                 director.addWriteBlock();
                 while( !_terminate && !super.hasRoom() ) {
+                    /*
+                    System.out.println("Actor: " 
+                            + ((ComponentEntity)actor).getName() + 
+                            " about to block in ODReceiver.get()");
+                    System.out.println("Actor(" 
+                            + ((ComponentEntity)actor).getName() + 
+                            ") about to block in Port("
+                            + getContainer().getName() 
+                            + ") ODReceiver.put()");
+                    */
                     notifyAll();
                     workspace.wait( this );
+                    /*
+                    System.out.println("Actor: " 
+                            + ((ComponentEntity)actor).getName() + 
+                            " awakened after blocking in ODReceiver.get()");
+                    */
                 }
             } else if( !_terminate ) {
-                /* Moved to TimedQueueReceiver.java
-                if( !super.hasToken() ) {
-                    RcvrTimeTriple triple;
-                    triple = new RcvrTimeTriple( this, time, getPriority() );
-                    actor.updateRcvrTable( triple );
-                }
-                */
                 super.put(token, time);
+                notifyAll(); 
+                /*
+                System.out.println("Actor(" 
+                        + ((ComponentEntity)actor).getName() + 
+                        ") notifiedAll after a ODReceiver.super.put()"
+                        + "\n\treceiver hasToken() = "+super.hasToken() );
+                */
 		return;
             } 
             
@@ -206,18 +332,10 @@ public class ODReceiver extends TimedQueueReceiver
                         + "receiver has been terminated during put().");
             } else {
                 director.removeWriteBlock(); 
-                /* Moved to TimedQueueReceiver.java
-                if( !super.hasToken() ) {
-                    RcvrTimeTriple triple;
-                    triple = new RcvrTimeTriple( this, time, getPriority() );
-                    actor.updateRcvrTable( triple );
-                }
-                */
                 super.put(token, time);
+                notifyAll();
+		return;
             }
-        } catch(IllegalActionException e) {
-	    System.out.println("ODReceiver.put() Exception");
-            // Do nothing. This won't happen.
         }
     }
 
