@@ -69,10 +69,8 @@ remainder, and loses the input when the function is changed back.
 @version $Id$
 @see AbsoluteValue
 @see Scale
-@see Round
 @see TrigFunction
 */
-
 public class MathFunction extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
