@@ -46,14 +46,16 @@ import ptolemy.data.expr.Parameter;
 /**
 Produce an output token on each firing with a value that is
 equal to the specified rounding function of the input.
-The input and output types are DoubleToken.  The functions
-are exactly those in the java.lang.Math class.  They are:
+The input type is DoubleToken. The output types is IntToken.
+The functions are a subset of those in the java.lang.Math class.
+They are:
 <ul>
 <li> <b>ceil</b>: Round towards positive infinity.
 If the argument is NaN, then the result is NaN.
 <li> <b>floor</b>: Round towards negative infinity.
 If the argument is NaN, then the result is NaN.
 <li> <b>round</b>: Round towards nearest integer.
+This is the default function for this actor.
 If the argument is NaN, then the result is NaN.
 <li> <b>truncate</b>: Round towards zero.
 If the argument is NaN, then the result is NaN.
@@ -77,11 +79,12 @@ public class Round extends Transformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        // parameters
+        // Parameters
         function = new StringAttribute(this, "function");
         function.setExpression("round");
         _function = ROUND;
-
+        
+        // Ports
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.INT);
     }
@@ -124,7 +127,8 @@ public class Round extends Transformer {
         }
     }
 
-    /** Compute the specified rounding function of the input.
+    /** Compute the specified rounding function of the input. 
+     *  Consumes and produces at most one input for each firing.
      *  If there is no input, then produce no output.
      *  @exception IllegalActionException If there is no director.
      */
@@ -149,8 +153,7 @@ public class Round extends Transformer {
      *  @return COMPLETED if the actor was successfully iterated the
      *   specified number of times. Otherwise, return NOT_READY, and do
      *   not consume any input tokens.
-     *  @exception IllegalActionException If iterating cannot be
-     *  performed.
+     *  @exception IllegalActionException Should not be thrown
      */
     public int iterate(int count) throws IllegalActionException {
 	// Check whether we need to reallocate the output token array.
@@ -163,8 +166,8 @@ public class Round extends Transformer {
 	    // only the first count tokens are valid.
             Token[] inArray = input.get(0, count);
 	        for (int i = 0; i < count; i++) {
-		        double input = ((DoubleToken)(inArray[i])).doubleValue();
-		        _resultArray[i] = new IntToken(_doFunction(input));
+		        double in = ((DoubleToken)(inArray[i])).doubleValue();
+		        _resultArray[i] = new IntToken(_doFunction(in));
 	         }
             output.send(0, _resultArray, count);
             return COMPLETED;
