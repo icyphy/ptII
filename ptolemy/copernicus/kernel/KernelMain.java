@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
 import ptolemy.actor.Manager;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
@@ -190,16 +191,24 @@ public abstract class KernelMain {
             throws IllegalActionException, NameDuplicationException {
         _toplevel = toplevel;
 
-      SDFDirector director = (SDFDirector)toplevel.getDirector();
-      if(director != null) {
-            Parameter iterations = (Parameter) director.getAttribute("iterations");
+        // Applet codegen works with all directors, not just SDF.
+        Director topLevelDirector = toplevel.getDirector();
+
+        if (topLevelDirector != null
+                && topLevelDirector instanceof SDFDirector) {
+            SDFDirector director = (SDFDirector) topLevelDirector;
+            Parameter iterations =
+                (Parameter) director.getAttribute("iterations");
             Parameter copernicus_iterations = 
                 (Parameter) director.getAttribute("copernicus_iterations");
+
             // Set to be a large number of iterations, unless
             // copernicus_iterations is set.
-            if(copernicus_iterations != null) {
+            if (copernicus_iterations != null) {
                 iterations.setToken(copernicus_iterations.getToken());
             } else {
+                System.out.println("KernelMain: "
+                        + "Setting number of iterations to 100000");
                 iterations.setToken(new IntToken(100000));
             }
         }
