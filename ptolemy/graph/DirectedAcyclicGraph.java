@@ -37,7 +37,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
-import ptolemy.kernel.util.InvalidStateException;
 
 //////////////////////////////////////////////////////////////////////////
 //// DirectedAcyclicGraph.java
@@ -49,7 +48,7 @@ import ptolemy.kernel.util.InvalidStateException;
    the construction of the graph (calls to <code>add</code> and
    <code>addEdge</code>), but is checked when any of the other methods is
    called for the first time after the addition of nodes or edges. If the
-   graph is cyclic, an InvalidStateException is thrown. The check for cycles
+   graph is cyclic, a GraphTopologyException is thrown. The check for cycles
    is done by computing the transitive closure, so the first operation after
    a graph change is slower.
 
@@ -262,7 +261,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
      *
      *  @return An array of Objects representing the nodes sorted
      *   according to the topology.
-     *  @exception InvalidStateException If the graph is cyclic.
+     *  @exception GraphTopologyException If the graph is cyclic.
      */
     public Object[] topologicalSort() {
         int size = nodeCount();
@@ -293,7 +292,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
                 }
             }
             if (finished && active) {
-                throw new InvalidStateException(
+                throw new GraphTopologyException(
                         "DirectedAcyclicGraph.topologicalSort: Graph is "
                         + "cyclic.");
             }
@@ -367,15 +366,17 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
      *  @param weight The weight that is to be applied if the edge is to
      *  be weighted.
      *  @return The edge.
-     *  @exception IllegalArgumentException If either of the specified nodes
-     *  is not in the graph, or if the specified nodes are identical.
+     *  @exception GraphConstructionException If the specified nodes
+     *  are identical.
+     *  @exception GraphElementException If either of the specified nodes
+     *  is not in the graph.
      *  @exception NullPointerException If the edge is to be weighted, but
      *  the specified weight is null.
      */
     protected Edge _addEdge(Node node1, Node node2, boolean weighted,
             Object weight) {
         if (node1 == node2) {
-            throw new IllegalArgumentException("Cannot add a self loop in " +
+            throw new GraphConstructionException("Cannot add a self loop in " +
                     "an acyclic graph.\nA self loop was attempted on the " +
                     "following node.\n" + node1.toString());
         } else {
@@ -384,7 +385,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
     }
 
     /** Initialize the list of analyses that are associated with this graph,
-     *  and initialize the change counter of the graph. 
+     *  and initialize the change counter of the graph.
      *  @see ptolemy.graph.analysis.Analysis
      */
     protected void _initializeAnalyses() {
@@ -412,7 +413,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
     //   |
     // _upSetShared
 
-    // compute transitive closure.  Throws InvalidStateException if detects
+    // compute transitive closure.  Throws GraphTopologyException if detects
     // cycles.  Find bottom and top elements.
     private void _validate() {
         boolean[][] transitiveClosure = transitiveClosure();
@@ -423,8 +424,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
         }
 
         if ( !isAcyclic()) {
-            throw new InvalidStateException("DirectedAcyclicGraph._validate: "
-                    + "Graph is cyclic.");
+            throw new GraphTopologyException(
+                    "DirectedAcyclicGraph._validate: Graph is cyclic.");
         }
 
         // find bottom
@@ -575,8 +576,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
             } else {
         // case (4)
         // candidate != -1 && !listEmpty
-                throw new InvalidStateException("bug in code! " +
-                        "Inconsistent data structure!");
+                throw new GraphStateException(
+                        "Bugs in code! Inconsistent data structure!");
             }
         }
 

@@ -73,46 +73,56 @@ test Graph-2.2 {Create a graph with 2 nodes} {
 
 ######################################################################
 ####
-# 
+#
 test Graph-2.3 {try to add duplicate nodes} {
     # use the graph above
     set z [$p addNodeWeight $n1]
     catch {$p {addNode ptolemy.graph.Node} $z} msg
     list $msg
-} {{java.lang.IllegalArgumentException: Attempt to add a node that is already contained in the graph.
+} {{ptolemy.graph.GraphConstructionException: Attempt to add a node that is already contained in the graph.
 Dumps of the offending node and graph follow.
 The offending node:
 node1
 The offending graph:
 {ptolemy.graph.Graph
-  {node1 node2}
-  {node2 node1}
-  {node1}
+Node Set:
+0: node1
+1: node2
+2: node1
+Edge Set:
+0: (node1, node2)
+1: (node2, node1)
 }
+
 }}
 
 ######################################################################
 ####
-# 
+#
 test Graph-2.4 {try to add duplicate edges} {
     # use the graph above
     catch {$p {addEdge ptolemy.graph.Edge} $newEdge} msg
     list $msg
-} {{java.lang.IllegalArgumentException: Attempt to add an edge that is already in the graph.
+} {{ptolemy.graph.GraphConstructionException: Attempt to add an edge that is already in the graph.
 Dumps of the offending edge and graph follow.
 The offending edge:
 (node1, node2)
 The offending graph:
 {ptolemy.graph.Graph
-  {node1 node2}
-  {node2 node1}
-  {node1}
+Node Set:
+0: node1
+1: node2
+2: node1
+Edge Set:
+0: (node1, node2)
+1: (node2, node1)
 }
+
 }}
 
 ######################################################################
 ####
-# 
+#
 test Graph-2.4 {Create a graph with 4 nodes forming a diamond} {
     set p [java::new ptolemy.graph.Graph]
     set n1 [java::new {java.lang.String String} node1]
@@ -257,7 +267,7 @@ Edge Set:
 
 ######################################################################
 ####
-# 
+#
 test Graph-4.3 {Test computation of connected components} {
     set collection [$p3 connectedComponents]
     set obj [java::cast java.lang.Object $collection]
@@ -780,13 +790,17 @@ test Graph-10.3 {checking restoration of an edge whose one node is deleted} {
     $oneg removeNode $node1
     catch {$oneg {restoreEdge ptolemy.graph.Edge} $edge} msg
     list $msg
-} {{java.lang.IllegalArgumentException: Source node is not in the graph.
+} {{ptolemy.graph.GraphElementException: Source node is not in the graph.
 
 Dumps of the offending edge and graph follow.
 The offending edge:
 (node1, node2)
 The offending graph:
 {ptolemy.graph.Graph
-  {node2}
+Node Set:
+0: node2
+Edge Set:
+0: (node1, node2)
 }
+
 }}

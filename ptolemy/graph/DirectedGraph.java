@@ -43,8 +43,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 
 //////////////////////////////////////////////////////////////////////////
 //// DirectedGraph
@@ -114,12 +112,12 @@ public class DirectedGraph extends Graph {
      *  a {@link Node}.
      *  @return The nodes in their sorted order in the form of a list;
      *  each element is a {@link Node}.
-     *  @exception IllegalActionException If any two nodes are strongly
+     *  @exception GraphActionException If any two nodes are strongly
      *  connected.
      *  @see #topologicalSort(Object[])
      */
     public List topologicalSort(Collection nodeCollection)
-            throws IllegalActionException {
+            throws GraphActionException {
         boolean[][] transitiveClosure = transitiveClosure();
 
         int N = nodeCollection.size();
@@ -135,7 +133,7 @@ public class DirectedGraph extends Graph {
                 int label2 = nodeLabel(nodeArray[j]);
                 if (transitiveClosure[label2][label1]) {
                     if (transitiveClosure[label1][label2]) {
-                        throw new IllegalActionException("Attempted to"
+                        throw new GraphActionException("Attempted to"
                                 + " topologically sort cyclic nodes.");
                     } else {
                         // Swap nodes
@@ -158,12 +156,12 @@ public class DirectedGraph extends Graph {
      *  The weights of the sorted nodes are returned.
      *  @param weights The weight set.
      *  @return The weights of the sorted nodes.
-     *  @exception IllegalActionException If any two nodes are strongly
+     *  @exception GraphActionException If any two nodes are strongly
      *   connected.
      *  @see #topologicalSort(Collection)
      */
     public Object[] topologicalSort(Object[] weights) throws
-            IllegalActionException {
+            GraphActionException {
         return weightArray(topologicalSort(
                 nodes(Arrays.asList(weights))));
     }
@@ -175,7 +173,7 @@ public class DirectedGraph extends Graph {
      *  @param node A node in this graph.
      *  @return The collection of nodes that is backward-reachable from the
      *  specified node; each element is a {@link Node}.
-     *  @exception IllegalArgumentException If the specified node is
+     *  @exception GraphElementException If the specified node is
      *  not a node in this graph.
      */
     public Collection backwardReachableNodes(Node node) {
@@ -204,14 +202,15 @@ public class DirectedGraph extends Graph {
      *  @param node A node weight in this graph.
      *  @return An array of node weights that are backward-reachable from the
      *  nodes that have the specified weight; each element is an {@link Object}.
-     *  @exception IllegalArgumentException If the specified weight is
+     *  @exception GraphElementException If the specified weight is
      *  not a node weight in this graph.
      */
     public Object[] backwardReachableNodes(Object weight) {
         Collection sameWeightNodes = nodes(weight);
         if (sameWeightNodes.size() == 0) {
-            throw new IllegalArgumentException("The specified weight is not a "
-                    + "node weight in this graph." + _weightDump(weight));
+            throw new GraphElementException("The specified weight is not a "
+                    + "node weight in this graph."
+                    + GraphException.weightDump(weight, this));
         }
         return weightArray(backwardReachableNodes(sameWeightNodes));
     }
@@ -258,7 +257,7 @@ public class DirectedGraph extends Graph {
      *  @return An array of node weights that are backward-reachable from the
      *  nodes that have the specified weights; each element is an
      *  {@link Object}.
-     *  @exception IllegalArgumentException If the one or more of the specified
+     *  @exception GraphElementException If the one or more of the specified
      *  weights is not a node weight in this graph.
      */
     public Object[] backwardReachableNodes(Object[] weights) {
@@ -431,7 +430,7 @@ public class DirectedGraph extends Graph {
      *  @param node The specified node.
      *  @return The collection of nodes reachable from the specified one;
      *  each element is a {@link Node}.
-     *  @exception IllegalArgumentException If the specified node is
+     *  @exception GraphElementException If the specified node is
      *  not a node in this graph.
      */
     public Collection reachableNodes(Node node) {
@@ -455,15 +454,16 @@ public class DirectedGraph extends Graph {
      *  @param node The specified node weight.
      *  @return An array of node weights reachable from the specified weight;
      *  each element is an {@link Object}.
-     *  @exception IllegalArgumentException If the specified node weight is
+     *  @exception GraphElementException If the specified node weight is
      *  not a node weight in this graph.
      *  @see #reachableNodes(Node)
      */
     public Object[] reachableNodes(Object weight) {
         Collection sameWeightNodes = nodes(weight);
         if (sameWeightNodes.size() == 0) {
-            throw new IllegalArgumentException("The specified weight is not a "
-                    + "node weight in this graph." + _weightDump(weight));
+            throw new GraphElementException("The specified weight is not a "
+                    + "node weight in this graph."
+                    + GraphException.weightDump(weight, this));
         }
         return weightArray(reachableNodes(sameWeightNodes));
     }
@@ -528,8 +528,8 @@ public class DirectedGraph extends Graph {
 
         int N = nodeCount();
         if (transitiveClosure.length != N) {
-            throw new InternalErrorException("Graph inconsistency. A dump"
-                    + " of the graph follows.\n" + this);
+            throw new GraphStateException("Graph inconsistency."
+                    + " A dump of the graph follows.\n" + this);
         }
 
         // initially, no nodes have been added to an SCC
@@ -572,8 +572,8 @@ public class DirectedGraph extends Graph {
         try {
             sortedSCCRepresentatives =
                 topologicalSort(sccRepresentatives);
-        } catch (IllegalActionException ex) {
-            throw new InternalErrorException("nodes in different SCCs were"
+        } catch (GraphActionException ex) {
+            throw new GraphStateException("nodes in different SCCs were"
                     + " found to be strongly connected.");
         }
 
@@ -697,8 +697,7 @@ public class DirectedGraph extends Graph {
      *
      *  @return An acyclic graph in the form of
      *          {@link DirectedAcyclicGraph}.
-     *  @exception IllegalArgumentException This graph is not acyclic.
-     *  FIXME: we need a better exception for this.
+     *  @exception GraphTopologyException This graph is not acyclic.
      */
     public DirectedAcyclicGraph toDirectedAcyclicGraph() {
         DirectedAcyclicGraph acyclicGraph;
@@ -706,7 +705,8 @@ public class DirectedGraph extends Graph {
             acyclicGraph = (DirectedAcyclicGraph)
                     cloneAs(new DirectedAcyclicGraph());
         } else {
-            throw new IllegalArgumentException("This graph is not acyclic");
+            throw new GraphTopologyException("This graph is not acyclic."
+                    + GraphException.graphDump(this));
         }
         return acyclicGraph;
     }
@@ -728,7 +728,7 @@ public class DirectedGraph extends Graph {
      * the adjacency information associated with the node.
      * @param edge The edge.
      * @param node The node.
-     * @exception IllegalArgumentException If the edge has already
+     * @exception GraphConstructionException If the edge has already
      * been connected to the node.
      */
     protected void _connect(Edge edge, Node node) {
@@ -793,16 +793,6 @@ public class DirectedGraph extends Graph {
         if ((index = list.indexOf(element)) != -1) {
             list.remove(index);
         }
-    }
-
-    // Return a dump of a node or edge weight and this graph suitable to be
-    // appended to an error message.
-    // FIXME: move this to exception class. 
-    private String _weightDump(Object weight) {
-        String weightString = (weight == null) ? "<null>" : weight.toString();
-        return "\nDumps of the offending weight and graph follow.\n"
-            + "The offending weight:\n" + weightString
-            + "\nThe offending graph:\n" + this.description() + "\n";
     }
 
     ///////////////////////////////////////////////////////////////////

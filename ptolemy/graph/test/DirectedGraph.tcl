@@ -18,7 +18,7 @@
 # ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 # THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
-# 
+#
 # THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 # INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 # MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
@@ -26,8 +26,8 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 # 
-# 						PT_COPYRIGHT_VERSION_2
-# 						COPYRIGHTENDKEY
+#                       PT_COPYRIGHT_VERSION_2
+#                       COPYRIGHTENDKEY
 #######################################################################
 
 # Tycho test bed, see $TYCHO/doc/coding/testing.html for more information.
@@ -42,7 +42,7 @@ if {[string compare test [info procs test]] == 1} then {
 
 # If a file contains non-graphical tests, then it should be named .tcl
 # If a file contains graphical tests, then it should be called .itcl
-# 
+#
 # It would be nice if the tests would work in a vanilla itkwish binary.
 # Check for necessary classes and adjust the auto_path accordingly.
 #
@@ -50,7 +50,7 @@ if {[string compare test [info procs test]] == 1} then {
 
 ######################################################################
 ####
-# 
+#
 test DirectedGraph-2.1 {Create an empty instance} {
     set p [java::new ptolemy.graph.DirectedGraph]
     list [$p containsNodeWeight null] [$p isAcyclic]
@@ -58,23 +58,28 @@ test DirectedGraph-2.1 {Create an empty instance} {
 
 ######################################################################
 ####
-# 
-#    set z [$p {reachableNodes Object} null] 
+#
+#    set z [$p {reachableNodes Object} null]
 test DirectedGraph-2.2 {test reachableNodes on empty graph above} {
      catch {$p {reachableNodes Object} null} msg
      list $msg
-} {{java.lang.IllegalArgumentException: The specified weight is not a node weight in this graph.
+} {{ptolemy.graph.GraphElementException: The specified weight is not a node weight in this graph.
 Dumps of the offending weight and graph follow.
 The offending weight:
 null
 The offending graph:
 {ptolemy.graph.DirectedGraph
+Node Set:
+
+Edge Set:
+
 }
+
 }}
 
 ######################################################################
 ####
-# 
+#
 test DirectedGraph-3.1 {Create a cyclic graph with 2 nodes} {
     set p [java::new ptolemy.graph.DirectedGraph]
     set n1 [java::new {java.lang.String String} node1]
@@ -89,7 +94,7 @@ test DirectedGraph-3.1 {Create a cyclic graph with 2 nodes} {
 
 ######################################################################
 ####
-# 
+#
 test DirectedGraph-3.2 {an acyclic graph with 4 nodes forming a diamond} {
     set p [java::new ptolemy.graph.DirectedGraph]
     set n1 [java::new {java.lang.String String} node1]
@@ -106,12 +111,12 @@ test DirectedGraph-3.2 {an acyclic graph with 4 nodes forming a diamond} {
     $p addEdge $n3 $n4
     set reach [$p {reachableNodes Object} $n2]
     list [$p isAcyclic] \
-	 [$reach get 0]
+     [$reach get 0]
 } {1 node4}
 
 ######################################################################
 ####
-# 
+#
 test DirectedGraph-4.1 { backwardReachableNodes } {
     # Note: Use the previous set up.
     set reach [$p {backwardReachableNodes Object} $n4]
@@ -120,7 +125,7 @@ test DirectedGraph-4.1 { backwardReachableNodes } {
 
 ######################################################################
 ####
-# 
+#
 test DirectedGraph-4.2 { backwardReachableNodes for a set of nodes } {
     set p [java::new ptolemy.graph.DirectedGraph]
     set n1 [java::new {java.lang.String String} node1]
@@ -248,7 +253,7 @@ test DirectedGraph-5.4 { successors } {
 
 ######################################################################
 ####
-# 
+#
 test DirectedGraph-5.5 { predecessors } {
     set s [$p predecessors $z]
     set result [java::call ptolemy.graph.test.Utilities toSortedString $s 1]
@@ -323,35 +328,48 @@ test Graph-6.2 {Test predecessor edges} {
 } {{[(node3, node2, edge5), (node3, node2, edge6)]} {[]} {[(node2, node4, edge7)]} {[(node1, node2, edge1), (node1, node2, edge2)]}}
 
 test DirectedGraph-7.1 {test toDirectedAcyclicGraph} {
-	set dirg [java::new ptolemy.graph.DirectedGraph]
-	set n1 [java::new ptolemy.graph.Node]
-	set n2 [java::new ptolemy.graph.Node]
-	set n3 [java::new ptolemy.graph.Node]
-	set e1 [java::new ptolemy.graph.Edge $n1 $n2]
-	set e2 [java::new ptolemy.graph.Edge $n2 $n3]
-	$dirg addNode $n1
-	$dirg addNode $n2
-	$dirg addNode $n3
-	$dirg addEdge $e1
-	$dirg addEdge $e2
-	set acyg [$dirg toDirectedAcyclicGraph]
-	set ctn1 [$acyg containsNode $n1]
-	set ctn2 [$acyg containsNode $n2]
-	set ctn3 [$acyg containsNode $n3]
-	set cte1 [$acyg containsEdge $e1]
-	set cte2 [$acyg containsEdge $e2]
-	set acycls [$acyg getClass]
-	set acynam [$acycls getName]
-	list $acynam $ctn1 $ctn2 $ctn3 $cte1 $cte2
+    set dirg [java::new ptolemy.graph.DirectedGraph]
+    set n1 [java::new ptolemy.graph.Node]
+    set n2 [java::new ptolemy.graph.Node]
+    set n3 [java::new ptolemy.graph.Node]
+    set e1 [java::new ptolemy.graph.Edge $n1 $n2]
+    set e2 [java::new ptolemy.graph.Edge $n2 $n3]
+    $dirg addNode $n1
+    $dirg addNode $n2
+    $dirg addNode $n3
+    $dirg addEdge $e1
+    $dirg addEdge $e2
+    set acyg [$dirg toDirectedAcyclicGraph]
+    set ctn1 [$acyg containsNode $n1]
+    set ctn2 [$acyg containsNode $n2]
+    set ctn3 [$acyg containsNode $n3]
+    set cte1 [$acyg containsEdge $e1]
+    set cte2 [$acyg containsEdge $e2]
+    set acycls [$acyg getClass]
+    set acynam [$acycls getName]
+    list $acynam $ctn1 $ctn2 $ctn3 $cte1 $cte2
 } {ptolemy.graph.DirectedAcyclicGraph 1 1 1 1 1}
 
 ######################################################################
 ####
 #
 test DirectedGraph-7.2 {test toDirectedAcyclicGraph exception} {
-	set e3 [java::new ptolemy.graph.Edge $n3 $n1]
-	$dirg addEdge $e3
-	catch {$dirg toDirectedAcyclicGraph} msg
-	list $msg
-} {{java.lang.IllegalArgumentException: This graph is not acyclic}}
+    set e3 [java::new ptolemy.graph.Edge $n3 $n1]
+    $dirg addEdge $e3
+    catch {$dirg toDirectedAcyclicGraph} msg
+    list $msg
+} {{ptolemy.graph.GraphTopologyException: This graph is not acyclic.
+A Dump of the offending graph follows.
+{ptolemy.graph.DirectedGraph
+Node Set:
+0: <unweighted node>
+1: <unweighted node>
+2: <unweighted node>
+Edge Set:
+0: (<unweighted node>, <unweighted node>)
+1: (<unweighted node>, <unweighted node>)
+2: (<unweighted node>, <unweighted node>)
+}
+
+}}
 

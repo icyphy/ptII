@@ -59,6 +59,12 @@ JSRCS = \
 	Edge.java \
     Element.java \
 	Graph.java \
+    GraphActionException.java \
+    GraphConstructionException.java \
+    GraphElementException.java \
+    GraphStateException.java \
+    GraphTopologyException.java \
+    GraphException.java \
 	Graphs.java \
 	LabeledList.java \
 	Inequality.java \
