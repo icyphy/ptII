@@ -1,4 +1,4 @@
-dnl	This file is an input file used by the GNU "autoconf" program to
+nl	This file is an input file used by the GNU "autoconf" program to
 dnl	generate the file "configure", which is run to configure the
 dnl	Makefile in this directory.
 
@@ -898,7 +898,8 @@ else
     \$PTII/ptolemy/matlab will not be usable.]);
     else 
 	#MATLAB_DIR=${MATLAB%%/bin*}
-	MATLAB_DIR=${MATLAB}/../bin
+	MATLAB_BIN_DIR=`dirname $MATLAB`
+	MATLAB_DIR=`dirname $MATLAB_BIN_DIR`
 	if test ! -d "$MATLAB_DIR"; then
 		AC_MSG_WARN([Failed to find '${MATLAB}/../bin'
         If Matlab is not present, then the Ptolemy II/Matlab interface in
