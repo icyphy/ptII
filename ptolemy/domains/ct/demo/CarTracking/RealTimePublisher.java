@@ -167,15 +167,20 @@ public class RealTimePublisher extends Sink
      */
     public boolean postfire() throws IllegalActionException {
         if(input.hasToken(0)) {
+            
             String name = ((StringToken)entryName.getToken()).toString();
             Long serialNumber = new Long(System.currentTimeMillis());
             Token token = input.get(0);
+            //System.out.println(getName() + " has token for the space: " 
+            //        + getDirector().getCurrentTime() + " " + token);
             TokenEntry template = new TokenEntry(name, null, null);
             try {
                 _space.takeIfExists(template, null, 100);
                 TokenEntry entry = new TokenEntry(name,
                         serialNumber, token);
                 _space.write(entry, null, Lease.FOREVER);
+                //System.out.println(getName() + 
+                //        " write to space: " +  serialNumber + " "+ token);
             } catch (RemoteException re) {
                 throw new IllegalActionException(this, "Cannot write into " +
                         "JavaSpace. " + re.getMessage());

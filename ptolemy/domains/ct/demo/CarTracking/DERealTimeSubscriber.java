@@ -247,11 +247,14 @@ public class DERealTimeSubscriber extends Source
                         System.out.println(getName() + 
                                 " read null from space");
                     } else {
-                        _tokenList.addLast(entry.token);
+                        //System.out.println(getName() + 
+                        //        " take from space: " 
+                        //        + entry.serialNumber + " " + entry.token);
+                        _tokenList.addLast(entry.token); 
                         try {
                             _container.getDirector().fireAt(_container, 
-                                    (double)System.currentTimeMillis());
-                            //    entry.serialNumber.doubleValue());
+                                    entry.serialNumber.doubleValue());
+                            //(double)System.currentTimeMillis());
                         } catch (IllegalActionException ex) {
                             throw new InvalidStateException(_container,
                                     "can't register fireAt with the director."

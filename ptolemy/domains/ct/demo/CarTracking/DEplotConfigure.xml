@@ -7,5 +7,4 @@
   <xRange min="0" max="100"/>
   <yRange min="-1" max="100"/>
   <noGrid/>
-  <noConnected/>
 </plot>
