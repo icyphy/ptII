@@ -192,7 +192,7 @@ public class TimeSyncDEDirector extends DEDirector {
         // Uncomment to have a debug listener.
         //addDebugListener(new StreamListener());
 
-        String host = timeBaseHost.getToken().stringValue();
+        String host = timeBaseHost.getToken().toString();
         try {
             Socket socket = new Socket(host, 80);
             DataInputStream in = new DataInputStream(socket.getInputStream());
