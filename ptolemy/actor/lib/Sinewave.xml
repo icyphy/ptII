@@ -8,12 +8,6 @@
     <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="8000.0">
         <doc>The sampling frequency, in the same units as the frequency.</doc>
     </property>
-    <property name="frequency" class="ptolemy.data.expr.Parameter" value="440.0">
-        <doc>The frequency of the sinusoid, in the same units as the sampling frequency.</doc>
-    </property>
-    <property name="phase" class="ptolemy.data.expr.Parameter" value="0.0">
-        <doc>The phase, in radians.</doc>
-    </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
@@ -35,13 +29,81 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="25.0, 20.0">
+        <property name="_location" class="ptolemy.moml.Location" value="145.0, 25.0">
+        </property>
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 45.0">
+        </property>
+    </property>
+    <property name="frequency" class="ptolemy.actor.parameters.PortParameter" value="440.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"></polyline>
+      </svg>
+    </configure>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:green" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 95.0">
+        </property>
+    </property>
+    <property name="phase" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"></polyline>
+      </svg>
+    </configure>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:green" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 135.0">
         </property>
     </property>
     <port name="output" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
         <doc>Sinusoidal waveform output.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="290.0, 110.0">
+        <property name="_location" class="ptolemy.moml.Location" value="350.0, 230.0">
+        </property>
+    </port>
+    <port name="frequency" class="ptolemy.actor.parameters.ParameterPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 90.0">
+        </property>
+    </port>
+    <port name="phase" class="ptolemy.actor.parameters.ParameterPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 130.0">
         </property>
     </port>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -49,9 +111,9 @@
         </property>
         <property name="init" class="ptolemy.data.expr.Parameter" value="phase">
         </property>
-        <property name="step" class="ptolemy.data.expr.Parameter" value="frequency*2*PI/samplingFrequency">
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="frequency*2*PI/samplingFrequency">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="85.0, 110.0">
+        <property name="_location" class="ptolemy.moml.Location" value="145.0, 230.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -59,6 +121,9 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
+        </port>
+        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
         </port>
     </entity>
     <entity name="TrigFunction" class="ptolemy.actor.lib.TrigFunction">
@@ -84,7 +149,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="195.0, 110.0">
+        <property name="_location" class="ptolemy.moml.Location" value="255.0, 230.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
