@@ -37,6 +37,7 @@ import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.StringTokenizer;
 import org.omg.CORBA.*;
 import org.omg.CosNaming.*;
@@ -220,9 +221,9 @@ public class CorbaActorClient extends TypedAtomicActor {
                         " initialize ORB failed." + ex.getMessage());
             }
             //check the corespondence of parameters and ports.
-            Enumeration atts = getAttributes();
-            while (atts.hasMoreElements()) {
-                Attribute att = (Attribute)atts.nextElement();
+            Iterator attributes = attributeList().iterator();
+            while (attributes.hasNext()) {
+                Attribute att = (Attribute)attributes.next();
                 if((att != ORBInitProperties) && (att != remoteActorName)) {
                     _debug(getName(), 
                             " check remote parameter: ", att.getName());
@@ -233,9 +234,9 @@ public class CorbaActorClient extends TypedAtomicActor {
                     }
                 }
             }
-            Enumeration ports = getPorts();
-            while (ports.hasMoreElements()) {
-                IOPort p = (IOPort)ports.nextElement();
+            Iterator ports = portList().iterator();
+            while (ports.hasNext()) {
+                IOPort p = (IOPort)ports.next();
                 _debug(getName(), " check remote port: ", p.getName());
                 if (!_remoteActor.hasPort(p.getName(),
                         p.isInput(), p.isOutput(), p.isMultiport())) {
