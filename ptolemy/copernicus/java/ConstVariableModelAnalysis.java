@@ -270,7 +270,8 @@ public class ConstVariableModelAnalysis {
                             names.hasNext() && !isNotConstant;) {
                             String name = (String)names.next();
                             Variable scopeVariable =
-                                ModelScope.getScopedVariable(variable, name);
+                                ModelScope.getScopedVariable(
+                                        variable, variable, name);
                             // Free variables must be not constants.
                             if(scopeVariable == null ||
                                     _notConstantVariableSet.contains(scopeVariable)) {

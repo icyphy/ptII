@@ -55,7 +55,7 @@ This class visits parse trees and generates soot instructions that evaluate the 
 @see ptolemy.data.expr.ASTPtRootNode
 */
 
-public class ParseTreeCodeGenerator implements ParseTreeVisitor {
+public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
