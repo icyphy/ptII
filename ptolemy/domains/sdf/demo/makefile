@@ -74,6 +74,10 @@ all: $(JCLASS) ../lib/*.class ../kernel/*.class
 
 install: all
 
+VideoDemo: ../lib/vq/*.class ../kernel/*.class
+	setenv CLASSPATH $(CLASSPATH)
+	jtclsh VideoDemo.tcl
+
 demo: $(JSRCS)
 	java ptolemy.domains.sdf.demo.SDFdemo
 
