@@ -28,15 +28,10 @@ COPYRIGHTENDKEY
 
 package ptolemy.hsif;
 
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
-import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.w3c.dom.Document;
-
-import ptolemy.actor.gui.JNLPUtilities;
 import ptolemy.util.XSLTUtilities;
 
 //////////////////////////////////////////////////////////////////////////
