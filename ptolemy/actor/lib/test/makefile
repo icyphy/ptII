@@ -1,4 +1,4 @@
-# Makefile for the Java classes used to test the Ptolemy actors
+# Makefile for the Java classes used to test the polymorphic actors
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #

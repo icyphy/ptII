@@ -1,4 +1,4 @@
-# Makefile for Java Ptolemy concurrent functional classes
+# Makefile for Java Ptolemy polymorphic actor classes
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
