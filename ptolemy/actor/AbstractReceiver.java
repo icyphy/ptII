@@ -79,6 +79,36 @@ public abstract class AbstractReceiver implements Receiver {
      */
     public abstract Token get();
 
+    /** Get an array of tokens from this receiver. The parameter
+     *  specifies the number of valid tokens to get in the returned
+     *  array. The length of the returned array can be greater than
+     *  <i>vectorLength</i>, in which case, only the first <i>vectorLength</i> 
+     *  elements are guaranteed to be valid. This is allowed so that
+     *  an implementation of this method can choose to reallocate
+     *  the returned token array only when the vector length is increased.
+     *  <p>
+     *  This base class method is not performance optimized, since
+     *  it simply calls put(Token) multiple times. Domains that
+     *  can use a vectorized put() and get() should probably  implement 
+     *  a more optimized version of this method.
+     *  @param vectorLength The number of valid tokens to get in the
+     *   returned array.
+     *  @exception NoTokenException If there are not <i>vectorLength</i>
+     *   tokens.
+     */
+    public Token[] getArray(int vectorLength) {
+	// Check if we need to reallocate the cached
+	// token array.
+	if (vectorLength > _tokenCache.length) {
+	    // Reallocate token array.
+	    _tokenCache = new Token[vectorLength];
+	}
+	for (int i = 0; i < vectorLength; i++) {
+	    _tokenCache[i] = get();
+	}
+	return _tokenCache;
+    }
+
     /** Return the container of this receiver, or null if there is none.
      *  @return The IOPort containing this receiver.
      */
@@ -148,6 +178,28 @@ public abstract class AbstractReceiver implements Receiver {
      *  @exception NoRoomException If the receiver is full.
      */
     public abstract void put(Token token);
+
+    /** Put a portion of a token array into this receiver. The vector
+     *  length parameter specifies the number of elements of the
+     *  token array to put into this receiver, starting with the
+     *  first element. Note that the thrown exception is a runtime
+     *  exception, therefore the caller is not required to catch it.
+     *  <p>
+     *  This base class method is not performance optimized, since
+     *  it simply calls put(Token) multiple times. Domains that
+     *  can use a vectorized put() and get() should probably implement 
+     *  a more optimized version of this method.
+     *  @param tokenArray The array containing data to put into this
+     *   receiver.
+     *  @param vectorLength The number of elements of of the token
+     *   array to put into this receiver.
+     *  @exception NoRoomException If the token array cannot be put.
+     */
+    public void putArray(Token[] tokenArray, int vectorLength) {
+	for (int i = 0; i < vectorLength; i++) {
+	    put(tokenArray[i]);
+	}
+    }
     
     /** Set the container.
      *  @param port The IOPort containing this receiver.
@@ -163,4 +215,6 @@ public abstract class AbstractReceiver implements Receiver {
     ////                         private variables                 ////
 
     private IOPort _container;
+
+    private Token[] _tokenCache;
 }
