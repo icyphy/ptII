@@ -94,7 +94,7 @@ public class Vertex extends Attribute implements Locatable {
     /** Get the location in some cartesian coordinate system.
      *  @return The location.
      */	
-    public int[] getLocation() {
+    public double[] getLocation() {
         return _location;
     }
 
@@ -127,7 +127,7 @@ public class Vertex extends Attribute implements Locatable {
     /** Set the location in some cartesian coordinate system.
      *  @param location The location.
      */	
-    public void setLocation(int[] location) {
+    public void setLocation(double[] location) {
         _location = location;
     }
 
@@ -176,7 +176,7 @@ public class Vertex extends Attribute implements Locatable {
     ////                         private variables                 ////
 
     // The location.
-    private int[] _location;
+    private double[] _location;
 
     // The vertex that this attribute is connected to.
     private Vertex _linked;

@@ -69,14 +69,14 @@ public class Icon extends Attribute implements Locatable {
     /** Get the location in some cartesian coordinate system.
      *  @return The location.
      */	
-    public int[] getLocation() {
+    public double[] getLocation() {
         return _location;
     }
 
     /** Set the location in some cartesian coordinate system.
      *  @param location The location.
      */	
-    public void setLocation(int[] location) {
+    public void setLocation(double[] location) {
         _location = location;
     }
 
@@ -122,5 +122,5 @@ public class Icon extends Attribute implements Locatable {
     ////                         private variables                 ////
 
     // The location.
-    private int[] _location = new int[2];
+    private double[] _location = new double[2];
 }

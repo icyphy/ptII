@@ -50,10 +50,10 @@ public interface Locatable {
     /** Get the location in some cartesian coordinate system.
      *  @return The location.
      */	
-    public int[] getLocation();
+    public double[] getLocation();
 
     /** Set the location in some cartesian coordinate system.
      *  @param location The location.
      */	
-    public void setLocation(int[] location);
+    public void setLocation(double[] location);
 }

@@ -602,22 +602,22 @@ public class MoMLParser extends HandlerBase {
                        + "is not Locatable. It is: "
                        + _current);
 
-                int x = Integer.parseInt(xSpec);
+                double x = Double.parseDouble(xSpec);
                 if (ySpec != null) {
-                    int y = Integer.parseInt(ySpec);
+                    double y = Double.parseDouble(ySpec);
                     if (zSpec != null) {
                         // Have three dimensions.
-                        int z = Integer.parseInt(zSpec);
-                        int[] location = {x, y, z};
+                        double z = Double.parseDouble(zSpec);
+                        double[] location = {x, y, z};
                         ((Locatable)_current).setLocation(location);
                     } else {
                         // Have two dimensions.
-                        int[] location = {x, y};
+                        double[] location = {x, y};
                         ((Locatable)_current).setLocation(location);
                     }
                 } else {
                     // Have one dimension.
-                    int[] location = {x};
+                    double[] location = {x};
                     ((Locatable)_current).setLocation(location);
                 }
 
