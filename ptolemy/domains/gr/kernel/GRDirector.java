@@ -56,18 +56,16 @@ import java.util.ListIterator;
 //////////////////////////////////////////////////////////////////////////
 //// GRDirector
 /**
-
-<h1>GR overview</h1>
 GR is a domain for displaying three-dimensional graphics in
 Ptolemy II.  GR is an untimed domain that follows loop-less
 synchronous/reactive (SR) semantics.
 
-The basic idea behind the GR domain is to arrange geometry and transform
-actors in a directed acyclic graph to represent the location and orientation
-of objects in a scene. This topology of connected GR actors form what is
-commonly called a scene graph in computer graphics literature.
-The GR director converts the GR scene graph into a Java3D representation for
-rendering on the computer screen.
+<p>The basic idea behind the GR domain is to arrange geometry and
+transform actors in a directed acyclic graph to represent the location
+and orientation of objects in a scene. This topology of connected GR
+actors form what is commonly called a scene graph in computer graphics
+literature.  The GR director converts the GR scene graph into a Java3D
+representation for rendering on the computer screen.
 
 @see GRReceiver
 @see GRActor
@@ -83,7 +81,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *  the workspace. Increment the version number of the workspace.
      */
     public GRDirector() {
-            super();
+        super();
         _init();
     }
 
@@ -119,19 +117,23 @@ public class GRDirector extends StaticSchedulingDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** A parameter representing the number of times that postfire may be
-     *  called before it returns false.  If the value is less than or
-     *  equal to zero, the execution will never return false in postfire,
-     *  and thus the execution continues indefinitely.
+    /** A parameter representing the number of times that postfire()
+     *  may be called before it returns false.  If the value is less
+     *  than or equal to zero, the execution will never return false
+     *  in postfire(), and thus the execution continues indefinitely.
+     *  This parameter must contain an IntToken.
      *  The default value is an IntToken with the value zero.
      */
     public Parameter iterations;
 
-    /** A parameter that indicates the time lower bound of each iteration.
-     *  This parameter is useful for guaranteeing that each frame of an
-     *  animation takes at least a certain amount of time before proceeding
-     *  to the next frame. This parameter is measured in milliseconds.
-     *  The default value is an IntToken with value the 33.
+    /** A parameter that indicates the time lower bound of each
+     *  iteration.  This parameter is useful for guaranteeing that
+     *  each frame of an animation takes at least a certain amount of
+     *  time before proceeding to the next frame. This parameter is
+     *  measured in milliseconds.
+     *  This parameter must contain an IntToken.
+     *  The default value is an IntToken with value the 33, which 
+     *  corresponds roughly to 30 frames per second.
      */
     public Parameter iterationTimeLowerBound;
 
@@ -154,11 +156,9 @@ public class GRDirector extends StaticSchedulingDirector {
         return newObject;
     }
 
-
-
     /** Make sure that <i>iterationLowerUpperBound</i> milliseconds have
      *  elapsed since the last iteration.  Go through the schedule and
-     *  iterate every actor if an actor returns false in its prefire(),
+     *  iterate every actor. If an actor returns false in its prefire(),
      *  fire() and postfire() will not be called on it.
      *
      *  @exception IllegalActionException If an actor executed by this
@@ -166,7 +166,6 @@ public class GRDirector extends StaticSchedulingDirector {
      */
     public void fire() throws IllegalActionException {
         TypedCompositeActor container = (TypedCompositeActor) getContainer();
-        Director outsideDirector = _getOutsideDirector();
 
         long currentTime = System.currentTimeMillis();
         int frameRate =
@@ -177,27 +176,27 @@ public class GRDirector extends StaticSchedulingDirector {
             try {
                 java.lang.Thread.sleep(timeRemaining);
             } catch (InterruptedException e) {
-
+                // Ignored.
             }
         }
         _lastIterationTime = currentTime;
 
         if (container == null) {
-            throw new InvalidStateException("GRDirector " + getName() +
-                    " fired, but it has no container!");
+            throw new InvalidStateException(this, getName()
+                    + " fired, but it has no container!");
         }
 
         Scheduler scheduler = getScheduler();
-        if (scheduler == null)
-            throw new IllegalActionException(this,"Attempted to fire " +
-                    "GR system with no scheduler");
+        if (scheduler == null) {
+            throw new IllegalActionException(this, "Attempted to fire "
+                    + "GR system with no scheduler");
+        }
 
         Schedule schedule = scheduler.getSchedule();
 
-        Iterator allActors = schedule.actorIterator();
-        while (allActors.hasNext()) {
-
-            Actor actor = (Actor)allActors.next();
+        Iterator actors = schedule.actorIterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor)actors.next();
 
             // If an actor returns true to prefire(), fire() and postfire()
             // will be called.
@@ -214,13 +213,14 @@ public class GRDirector extends StaticSchedulingDirector {
                     actor.fire();
                 }
             }
-
+            // FIXME: postfire() should not be called if prefire() returns
+            // false.
             actor.postfire();
+
             // FIXME: should remove actor from schedule
             // if it returns false on postfire()
         }
     }
-
 
     /** Advance "time" to the next requested firing time.  The GR domain is
      *  not a timed domain, so this method is semantically meaningless.
@@ -254,8 +254,8 @@ public class GRDirector extends StaticSchedulingDirector {
 
     /** Return maximum value for type double. Since the GR domain is not a
      *  timed domain, so this method does not return any meaningful value.
-     *  However, this method is implemented in order to get timed domains
-     *  to work inside the GR domain.
+     *  However, this method is implemented so that GR will work within
+     *  timed domains.
      *
      *  @return The maximum value for type double.
      */
@@ -263,12 +263,10 @@ public class GRDirector extends StaticSchedulingDirector {
         return Double.MAX_VALUE;
     }
 
-
-
     /** Initialize all the actors associated with this director. Perform
      *  some internal initialization for this director.
      *
-     *  @exception IllegalActionException If the preinitialize() method of
+     *  @exception IllegalActionException If the initialize() method of
      *  one of the associated actors throws it.
      */
     public void initialize() throws IllegalActionException {
@@ -277,13 +275,9 @@ public class GRDirector extends StaticSchedulingDirector {
         _buildReceiverTable();
     }
 
-
-
     /** Process the mutation that occurred.  Reset this director
      *  to an uninitialized state to prepare for rescheduling.
      *  Notify parent class about invalidated schedule.
-     *
-     *  see other mutation methods:
      *
      *  @see ptolemy.kernel.util.NamedObj#attributeChanged
      *  @see ptolemy.kernel.util.NamedObj#attributeTypeChanged
@@ -304,22 +298,24 @@ public class GRDirector extends StaticSchedulingDirector {
         return new GRReceiver();
     }
 
-    /** Return false if the system has finished executing. This happens when
-     *  the iteration limit is reached. The iteration limit is specified by
-     *  the "iterations" parameter. If the "iterations" parameter is set to
-     *  zero, the model will run indefinitely.
+    /** Return false if the system has finished executing. This
+     *  happens when the iteration limit is reached. The iteration
+     *  limit is specified by the <i>iterations</i> parameter. If the
+     *  <i>iterations</i> parameter is set to zero, this method will always
+     *  return true and the model will run indefinitely.
      *
-     *  @return True if the Director wants to be fired again in the
-     *  future.
+     *  @return Return true if the iterations parameter is 0 or
+     *  if the iteration limit has not been exceeded.
      *  @exception IllegalActionException If unable to get the parameter
-     *  <i>iterations</i>
+     *  <i>iterations</i>.
      */
     public boolean postfire() throws IllegalActionException {
-        // Note: actors return false on postfire(), if they wish never to be
-        // fired again during the execution. This can be interpreted as the
-        // actor being dead. Also, fireAt() calls by the actor will be ignored.
-        // In SDF, an actor returning false on postfire will effectively
-        // stop the SDF composite actor container too.
+
+        // Note: actors return false on postfire(), if they wish never
+        // to be fired again during the execution. This can be
+        // interpreted as the actor being dead.
+        // Also, fireAt() calls by the actor will be ignored.
+
         super.postfire();
         int totalIterations = ((IntToken) (iterations.getToken())).intValue();
         _iteration++;
@@ -333,14 +329,13 @@ public class GRDirector extends StaticSchedulingDirector {
     /** Always return true. A GR composite actor will always be iterated.
      *  Note that this does not call prefire() on the contained actors.
      *
-     *  @return True.
+     *  @return Always returns True.
      *  @exception IllegalActionException Not thrown in this base class
      */
     public boolean prefire() throws IllegalActionException {
         // Note: Actors return false on prefire if they don't want to be
         // fired and postfired in the current iteration.
         return true;
-        // _prefire_
     }
 
 
@@ -373,7 +368,7 @@ public class GRDirector extends StaticSchedulingDirector {
     /** Override the base class to indicate that this director does not
      *  need write access on the workspace during an iteration.
      *
-     *  @return False.
+     *  @return Always return false.
      */
     protected boolean _writeAccessRequired() {
         return false;
@@ -385,23 +380,22 @@ public class GRDirector extends StaticSchedulingDirector {
 
 
     /** Create an actor table that caches all the actors directed by this
-     *  director.  This method is called once at initialize();
-     *  @exception IllegalActionException If the scheduler is null
+     *  director.  This method is called once in initialize().
+     *  @exception IllegalActionException If the scheduler is null.
      */
     private void _buildActorTable() throws IllegalActionException {
         Scheduler currentScheduler = getScheduler();
-        if (currentScheduler == null)
-            throw new IllegalActionException(this,"Attempted to fire " +
-                    "GR system with no scheduler");
+        if (currentScheduler == null) {
+            throw new IllegalActionException(this, "Attempted to fire "
+                    + "GR system with no scheduler");
+        }
 
         Schedule schedule = currentScheduler.getSchedule();
-        Iterator allActorsScheduled = schedule.actorIterator();
-
 
         int actorsInSchedule = 0;
-        while (allActorsScheduled.hasNext()) {
-            Actor actor = (Actor) allActorsScheduled.next();
-            String name = ((Nameable)actor).getFullName();
+        Iterator actors = schedule.actorIterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
             ContainedGRActor grActor =
                 (ContainedGRActor) _allActorsTable.get(actor);
             if (grActor == null) {
@@ -412,8 +406,8 @@ public class GRDirector extends StaticSchedulingDirector {
             actorsInSchedule++;
         }
 
-        // include the container as an actor.
-        // This is needed for TypedCompositeActors
+        // Include the container as an actor.
+        // This is needed for TypedCompositeActors.
         String name = getContainer().getFullName();
         Actor actor = (Actor) getContainer();
         _allActorsTable.put(actor,
@@ -676,33 +670,30 @@ public class GRDirector extends StaticSchedulingDirector {
         try {
             GRScheduler scheduler = new GRScheduler(workspace());
             setScheduler(scheduler);
-        } catch (Exception e) {
+        } catch (Exception ex) {
             // if setScheduler fails, then we should just set it to Null.
             // this should never happen because we don't override
             // setScheduler() to do sanity checks.
-            throw new InternalErrorException(
-                    "Could not create Default Scheduler:\n" +
-                    e.getMessage());
+            throw new InternalErrorException(this, ex, 
+                    "Could not create Default scheduler.");
         }
 
         try {
             iterations = new Parameter(this,"iterations",new IntToken(0));
             iterationTimeLowerBound = new Parameter(this,
                     "iteration time lower bound",new IntToken(33));
-        } catch (Exception e) {
-            throw new InternalErrorException(
-                    "Cannot create default iterations parameter:\n" +
-                    e.getMessage());
+        } catch (Exception ex) {
+            throw new InternalErrorException(this, ex,
+                    "Cannot create default iterations parameter.");
         }
             try {
             //period = new Parameter(this,"period",new DoubleToken(1.0));
             _reset();
             iterations.setToken(new IntToken(0));
             debug = new GRDebug(false);
-            } catch (Exception e) {
-                throw new InternalErrorException(
-                    "unable to initialize GR Director:\n" +
-                    e.getMessage());
+            } catch (Exception ex) {
+                throw new InternalErrorException(this, ex, 
+                    "Unable to initialize GR Director.");
             }
     }
 
