@@ -324,6 +324,9 @@ public class LevelCrossingDetector extends TypedAtomicActor
         } else if (_thisTrigger == _level) {
             _eventNow = true;
             _eventMissed = false;
+        } else if (Math.abs(_thisTrigger - _level) < _errorTolerance) {
+            _eventNow = true;
+            _eventMissed = false;
         } else {
             _eventNow = false;
             _eventMissed = false;
