@@ -84,3 +84,16 @@ test VersionAttribute-2.0 {compareTo} {
     }
     list $results
 } {{{1.0 2.0-beta -1 1} {1.0.0 2.0-beta -1 1} {1.0-beta 2.0-beta -1 1} {2.0 2.0-beta -1 1} {2.0-devel 2.0-beta 1 -1} {2.0.alpha 2.0-beta -1 1} {2.0_beta 2.0-beta 0 0} {2.0-build003 2.0-beta 1 -1} {2.0-release-1 2.0-beta 1 -1} {3.0 2.0-beta 1 -1} {2.0-beta 2.0-beta 0 0}}}
+
+
+test VersionAttribute-3.0 {clone: This used to throw an exception because of NamedObj.clone() was not checking for final fields.} {
+    set n [java::new ptolemy.kernel.util.NamedObj "my NamedObj"]
+    set va [java::new ptolemy.kernel.util.VersionAttribute "2.0-beta"]
+    set vaClone [$va clone]
+    # Unfortunately, there seem to be problems with ptjacl and accessing
+    # static fields of clones, so we can't do this test
+    #set vaCurrentVersion [ java::field $va CURRENT_VERSION]
+    #set vaCloneCurrentVersion [ java::field $vaClone CURRENT_VERSION]
+    #list [$vaClone toString] [$vaCurrentVersion equals $vaCloneCurrentVersion]
+    list {}
+} {{}}
