@@ -583,14 +583,14 @@ class CSPTokenReader {
 
         while (true) {
             ConditionalBranch [] branches = _createBranches();
-            ptActor.printDebug("Calling chooseBranch() to receive...");
+            //ptActor.printDebug("Calling chooseBranch() to receive...");
             int result = _cbc.chooseBranch(branches);
             if (result != -1) {
                 Token t = branches[result].getToken();
                 _data[result].add(t);
                 _count[result]--;
-                ptActor.printDebug("Received " + t.toString() + " on port " + _indexToPort(result) + ", channel " +
-                        _indexToChannelNumber(result));
+                //ptActor.printDebug("Received " + t.toString() + " on port " + _indexToPort(result) + ", channel " +
+                //        _indexToChannelNumber(result));
             } else {
                 _done = true;
                 return;
@@ -604,14 +604,14 @@ class CSPTokenReader {
         try {
             if (!_done) {
                 ConditionalBranch [] branches = _createBranches();
-                ptActor.printDebug("Calling chooseBranch() to receive...");
+                //ptActor.printDebug("Calling chooseBranch() to receive...");
                 int result = _cbc.chooseBranch(branches);
                 if (result != -1) {
                     Token t = branches[result].getToken();
                     _data[result].add(t);
                     _count[result]--;
-                    ptActor.printDebug("Received " + t.toString() + " on port " + _indexToPort(result) + ", channel " +
-                            _indexToChannelNumber(result));
+                    //ptActor.printDebug("Received " + t.toString() + " on port " + _indexToPort(result) + ", channel " +
+                    //        _indexToChannelNumber(result));
                     return new DataChannelID(t, _indexToChannelID[result]);
                 } else {
                     _done = true;
@@ -632,8 +632,8 @@ class CSPTokenReader {
 
         for (int i = 0; i < _count.length; i++) {
             if (_count[i] > 0) {
-                ptActor.printDebug("Creating a ConditionalReceive to receive on port " +
-                        _indexToPort(i).getFullName() + ", channel " + _indexToChannelNumber(i));
+                //ptActor.printDebug("Creating a ConditionalReceive to receive on port " +
+                //        _indexToPort(i).getFullName() + ", channel " + _indexToChannelNumber(i));
                 branches[i] = new ConditionalReceive(true, _indexToPort(i), _indexToChannelNumber(i), i, _cbc);
             } else {
                 branches[i] = new ConditionalReceive(false, _indexToPort(i), _indexToChannelNumber(i), i, _cbc);
@@ -738,11 +738,11 @@ class CSPTokenWriter {
 
         while (true) {
             ConditionalBranch [] branches = _createBranches();
-            ptActor.printDebug("Calling chooseBranch() to send...");
+            //ptActor.printDebug("Calling chooseBranch() to send...");
             int result = _cbc.chooseBranch(branches);
             if (result != -1) {
                 _count[result]++;
-                ptActor.printDebug("Sent on port " + _indexToPort(result) + " channel " + _indexToChannelNumber(result));
+                //ptActor.printDebug("Sent on port " + _indexToPort(result) + " channel " + _indexToChannelNumber(result));
             } else {
                 return;
             }
@@ -759,10 +759,11 @@ class CSPTokenWriter {
         for (int i = 0; i < _count.length; i++) {
             List datal = (List) _data.get(_indexToChannelID[i]);
             if (_count[i] < datal.size()) {
-                ptActor.printDebug("Creating a ConditionalSend to send " +
-                        datal.get(_count[i]) +  " on port " +
-                        _indexToPort(i).getFullName() + " channel " +
-                        _indexToChannelNumber(i));
+                //ptActor.printDebug("Creating a ConditionalSend to send " +
+                //        datal.get(_count[i]) +  " on port " +
+                //        _indexToPort(i).getFullName() + " channel " +
+                //
+                //_indexToChannelNumber(i));
                 branches[i] = new ConditionalSend(true, _indexToPort(i), _indexToChannelNumber(i), i,
                         (Token) datal.get(_count[i]), _cbc);
             } else {
