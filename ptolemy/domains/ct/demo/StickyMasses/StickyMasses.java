@@ -72,10 +72,10 @@ public class StickyMasses extends TypedCompositeActor {
         stickiness = new Parameter(this, "stickiness", new DoubleToken(-1.0));
 
         // constant source.
-        Const source1 = new Const(this, "source1");
-        source1.value.setToken(new DoubleToken(0.0));
-        Const source2 = new Const(this, "source2");
-        source2.value.setToken(new DoubleToken(0.0));
+        //Const source1 = new Const(this, "source1");
+        //source1.value.setToken(new DoubleToken(0.0));
+        //Const source2 = new Const(this, "source2");
+        //source2.value.setToken(new DoubleToken(0.0));
 
         // the plot
         TimedPlotter responsePlot = new TimedPlotter(this, "plot");
@@ -97,13 +97,13 @@ public class StickyMasses extends TypedCompositeActor {
         stickiness1.setExpression("stickiness");
         // the ports
         // Input for ball 1
-        TypedIOPort hsin1 = (TypedIOPort)hs.newPort("force1");
-        hsin1.setInput(true);
-        hsin1.setTypeEquals(BaseType.DOUBLE);
+        //TypedIOPort hsin1 = (TypedIOPort)hs.newPort("force1");
+        //hsin1.setInput(true);
+        //hsin1.setTypeEquals(BaseType.DOUBLE);
         // Input for ball 2
-        TypedIOPort hsin2 = (TypedIOPort)hs.newPort("force2");
-        hsin2.setInput(true);
-        hsin2.setTypeEquals(BaseType.DOUBLE);
+        //TypedIOPort hsin2 = (TypedIOPort)hs.newPort("force2");
+        //hsin2.setInput(true);
+        //hsin2.setTypeEquals(BaseType.DOUBLE);
         // Output ball 1 position
         TypedIOPort hsout1 = (TypedIOPort)hs.newPort("P1");
         hsout1.setOutput(true);
@@ -143,7 +143,7 @@ public class StickyMasses extends TypedCompositeActor {
         ctrlInc.incomingPort.link(ctrlTr0);
         // Always true.
         ctrlTr0.setGuardExpression("true");
-        ctrlTr0.preemptive.setExpression("true");
+        ctrlTr0.preemptive.setExpression("false");
 
         // Actions on Tr0, setting integrator initial states.
 	ctrlTr0.setActions.setExpression(
@@ -183,33 +183,34 @@ public class StickyMasses extends TypedCompositeActor {
         //ZeroOrderHold ctIncH1 = new ZeroOrderHold(ctInc, "Hold1");
         Integrator ctIncV1 = new Integrator(ctInc, "V1");
         Integrator ctIncP1 = new Integrator(ctInc, "P1");
-        ctIncP1.initialState.setToken(new DoubleToken(3.0));
+        ctIncP1.initialState.setToken(new DoubleToken(0.0));
         Expression ctIncE1 = new Expression(ctInc, "E1");
-        TypedIOPort ctIncE1In = (TypedIOPort)ctIncE1.newPort("In");
-        ctIncE1In.setInput(true);
-        ctIncE1In.setTypeEquals(BaseType.DOUBLE);
+        //TypedIOPort ctIncE1In = (TypedIOPort)ctIncE1.newPort("In");
+        //ctIncE1In.setInput(true);
+        //ctIncE1In.setTypeEquals(BaseType.DOUBLE);
         ctIncE1.output.setTypeEquals(BaseType.DOUBLE);
         TypedIOPort ctIncE1P1 = (TypedIOPort)ctIncE1.newPort("P1");
         ctIncE1P1.setInput(true);
         ctIncE1P1.setTypeEquals(BaseType.DOUBLE);
         // The expression is:
         // (K1*Y1 + In - K1*P1)/M1
-        ctIncE1.expression.setExpression("1.0*1.0 + In - 1.0*P1");
+        ctIncE1.expression.setExpression("1.0*1.0 - 1.0*P1");
 
         //ZeroOrderHold ctIncH2 = new ZeroOrderHold(ctInc, "Hold2");
         Integrator ctIncV2 = new Integrator(ctInc, "V2");
         Integrator ctIncP2 = new Integrator(ctInc, "P2");
+        ctIncP2.initialState.setToken(new DoubleToken(3.0));
         Expression ctIncE2 = new Expression(ctInc, "E2");
-        TypedIOPort ctIncE2In = (TypedIOPort)ctIncE2.newPort("In");
-        ctIncE2In.setInput(true);
-        ctIncE2In.setTypeEquals(BaseType.DOUBLE);
+        //TypedIOPort ctIncE2In = (TypedIOPort)ctIncE2.newPort("In");
+        //ctIncE2In.setInput(true);
+        //ctIncE2In.setTypeEquals(BaseType.DOUBLE);
         ctIncE2.output.setTypeEquals(BaseType.DOUBLE);
         TypedIOPort ctIncE2P2 = (TypedIOPort)ctIncE2.newPort("P2");
         ctIncE2P2.setInput(true);
         ctIncE2P2.setTypeEquals(BaseType.DOUBLE);
         // The expression is:
         // (K2*Y2 + In - K2*P2)/M2
-        ctIncE2.expression.setExpression("2.0*2.0 + In - 2.0*P2");
+        ctIncE2.expression.setExpression("2.0*2.0 - 2.0*P2");
 
         AddSubtract ctIncE3 = new AddSubtract(ctInc, "E3");
         ZeroCrossingDetector ctIncD =
@@ -217,13 +218,13 @@ public class StickyMasses extends TypedCompositeActor {
 
         // the ports
         // Force on ball 1
-        TypedIOPort ctIncF1 = (TypedIOPort)ctInc.newPort("force1");
-        ctIncF1.setInput(true);
-        ctIncF1.setTypeEquals(BaseType.DOUBLE);
+        //TypedIOPort ctIncF1 = (TypedIOPort)ctInc.newPort("force1");
+        //ctIncF1.setInput(true);
+        //ctIncF1.setTypeEquals(BaseType.DOUBLE);
         // Force on ball 2
-        TypedIOPort ctIncF2 = (TypedIOPort)ctInc.newPort("force2");
-        ctIncF2.setInput(true);
-        ctIncF2.setTypeEquals(BaseType.DOUBLE);
+        //TypedIOPort ctIncF2 = (TypedIOPort)ctInc.newPort("force2");
+        //ctIncF2.setInput(true);
+        //ctIncF2.setTypeEquals(BaseType.DOUBLE);
         // Touched trigger
         TypedIOPort ctIncTouched = (TypedIOPort)ctInc.newPort("touched");
         ctIncTouched.setOutput(true);
@@ -248,7 +249,7 @@ public class StickyMasses extends TypedCompositeActor {
         // connect ctInc
         //ctInc.connect(ctIncF1, ctIncH1.input);
         //ctInc.connect(ctIncH1.output, ctIncE1In);
-        ctInc.connect(ctIncF1, ctIncE1In);
+        //ctInc.connect(ctIncF1, ctIncE1In);
         ctInc.connect(ctIncE1.output, ctIncV1.input);
         Relation ctIncRB0 = ctInc.connect(ctIncV1.output, ctIncP1.input);
         ctIncOV1.link(ctIncRB0);
@@ -257,7 +258,7 @@ public class StickyMasses extends TypedCompositeActor {
 
         //ctInc.connect(ctIncF2, ctIncH2.input);
         //ctInc.connect(ctIncH2.output, ctIncE2In);
-        ctInc.connect(ctIncF2, ctIncE2In);
+        //ctInc.connect(ctIncF2, ctIncE2In);
         ctInc.connect(ctIncE2.output, ctIncV2.input);
         Relation ctIncRB3 = ctInc.connect(ctIncV2.output, ctIncP2.input);
         ctIncOV2.link(ctIncRB3);
@@ -345,8 +346,8 @@ public class StickyMasses extends TypedCompositeActor {
         // connect the hybrid system
         ctrlInc.refinementName.setExpression("Separate");
         ctrlDec.refinementName.setExpression("Together");
-        hs.connect(hsin1, ctIncF1);
-        hs.connect(hsin2, ctIncF2);
+        //hs.connect(hsin1, ctIncF1);
+        //hs.connect(hsin2, ctIncF2);
         Relation hsR1 = hs.connect(ctIncOP1, ctDecOP1);
         ctrlInP1.link(hsR1);
         Relation hsR2 = hs.connect(ctIncOP2, ctDecOP2);
@@ -371,8 +372,8 @@ public class StickyMasses extends TypedCompositeActor {
         ctrlInSTI.link(hsSTI);
 
             // connect the top-level system
-        this.connect(source1.output, hsin1);
-        this.connect(source2.output, hsin2);
+        //this.connect(source1.output, hsin1);
+        //this.connect(source2.output, hsin2);
         this.connect(hsout1, responsePlot.input);
         this.connect(hsout2, responsePlot.input);
 
@@ -409,12 +410,12 @@ public class StickyMasses extends TypedCompositeActor {
         topdir.minStepSize.setToken(new DoubleToken(1e-5));
         topdir.maxStepSize.setToken(new DoubleToken(0.3));
         tok = new StringToken(
-                "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver");
+                "ptolemy.domains.ct.kernel.solver.DerivativeResolver");
         topdir.breakpointODESolver.setToken(tok);
         tok = new StringToken(
                 "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
         topdir.ODESolver.setToken(tok);
-
+        //System.out.println(exportMoML());
     }
 
     ///////////////////////////////////////////////////////////////////
