@@ -133,5 +133,3 @@ codeDoc/tree.html: 	../collections/*.java \
 
 # We don't include common.mk since we don't use the compiler here
 include $(ROOT)/mk/ptno-compile.mk
-
-

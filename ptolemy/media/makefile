@@ -81,6 +81,3 @@ sound:
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-
-
-

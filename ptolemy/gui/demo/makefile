@@ -67,6 +67,7 @@ all: $(JCLASS)
 
 install: all
 
+demos: demo
 demo:
 	CLASSPATH=$(CLASSPATH) appletviewer index.html
 
@@ -76,6 +77,3 @@ depend:
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-
-
-
