@@ -37,7 +37,7 @@ import java.util.Set;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
-//import ptolemy.actor.PeekReceiver;
+import ptolemy.actor.PeekReceiver;
 import ptolemy.actor.Receiver;
 import ptolemy.data.expr.ASTPtAssignmentNode;
 import ptolemy.data.expr.ASTPtRootNode;
@@ -75,7 +75,7 @@ import ptolemy.kernel.util.Workspace;
 
 
 public class ExtendedFSMDirector extends FSMDirector {
-    
+        
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -146,40 +146,6 @@ public class ExtendedFSMDirector extends FSMDirector {
             }
         }
         super.fire();
-    }
-    
-    /** Return a peek receiver that is a one-place buffer.
-     *  @return A peek receiver that is a one-place buffer.
-     */
-    public Receiver newReceiver() {
-        return super.newReceiver();
-        //return new PeekReceiver();
-    }
-    
-    /** Get the referred input ports in the guard expressions
-     *  of all the transitions that go out from the current state.
-     *  Then call super class postfire().
-     *  @exception IllegalActionException If the super class throws it.
-     */
-    public boolean postfire() throws IllegalActionException {
-        boolean postfireValue = super.postfire();
-        FSMActor controller = getController();
-        getGuardReferredInputPorts(controller.currentState());
-        _consumeToken = false;
-        return postfireValue;
-    }
-    
-    /** Initialize the director. Get the referred input ports
-     *  in the guard expressions of all the transitions that go out
-     *  from the initial state.
-     *  @exception IllegalActionException If the super class throws it.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        _consumeToken = false;
-        FSMActor controller = getController();
-        //System.out.println(controller.getInitialState().getName());
-        getGuardReferredInputPorts(controller.getInitialState());
     }
     
     /** Given a state, get a list of referred input ports in the guard
@@ -264,6 +230,40 @@ public class ExtendedFSMDirector extends FSMDirector {
         }
     }
     
+    /** Initialize the director. Get the referred input ports
+     *  in the guard expressions of all the transitions that go out
+     *  from the initial state.
+     *  @exception IllegalActionException If the super class throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _consumeToken = false;
+        FSMActor controller = getController();
+        //System.out.println(controller.getInitialState().getName());
+        getGuardReferredInputPorts(controller.getInitialState());
+    }
+    
+    /** Return a peek receiver that is a one-place buffer.
+     *  @return A peek receiver that is a one-place buffer.
+     */
+    public Receiver newReceiver() {
+        return super.newReceiver();
+        //return new PeekReceiver();
+    }
+    
+    /** Get the referred input ports in the guard expressions
+     *  of all the transitions that go out from the current state.
+     *  Then call super class postfire().
+     *  @exception IllegalActionException If the super class throws it.
+     */
+    public boolean postfire() throws IllegalActionException {
+        boolean postfireValue = super.postfire();
+        FSMActor controller = getController();
+        getGuardReferredInputPorts(controller.currentState());
+        _consumeToken = false;
+        return postfireValue;
+    }
+    
     /** Overide by super class by only transferring inputs for those
      *  input ports that appear in at least one guard expression
      *  of all the transitions that go out from the current state.
@@ -290,6 +290,9 @@ public class ExtendedFSMDirector extends FSMDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                  ////
     
+    // A flag indicates whether the receiver is a peek one or not.
+    private boolean _consumeToken;
+    
     // A list of input ports that appear at least in one guard
     // expression in all the transitions that go from the current state, 
     private LinkedList _guardReferredInputPorts = new LinkedList();
@@ -297,7 +300,4 @@ public class ExtendedFSMDirector extends FSMDirector {
     // A list of input ports that appear in the output actions of
     // the enabled transition.
     private LinkedList _outputActionReferredInputPorts = new LinkedList();
-    
-    // A flag indicates whether the receiver is a peek one or not.
-    private boolean _consumeToken;
 }
