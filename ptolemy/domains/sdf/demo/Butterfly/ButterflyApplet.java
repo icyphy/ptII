@@ -109,9 +109,8 @@ public class ButterflyApplet extends SDFApplet {
             xyPlotter.setPanel(this);
             Dimension size = getSize();
             xyPlotter.plot.setSize(size.width, size.height - 50);
-	    xyPlot.plot.clear(false);
-	    xyPlot.plot.setXRange(-3, 4);
-	    xyPlot.plot.setYRange(-4, 4);
+	    xyPlotter.plot.setXRange(-3, 4);
+	    xyPlotter.plot.setYRange(-4, 4);
 
 	    _toplevel.connect(scale2.output, sin1Input);
 	    _toplevel.connect(scale1.output, cos1Input);
