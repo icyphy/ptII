@@ -219,7 +219,6 @@ public class PNDirector extends BasePNDirector {
      *  it.
      */
     public void fire() throws IllegalActionException {
-	boolean mutreq;
         Workspace worksp = workspace();
         synchronized (this) { //Reset this as mutations must be done by now
             _mutationBlockCount = 0;
