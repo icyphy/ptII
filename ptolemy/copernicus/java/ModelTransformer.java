@@ -201,26 +201,12 @@ public class ModelTransformer extends SceneTransformer {
                     settableType);
             body.getLocals().add(settableLocal);
 
-            for(Iterator attributes = _model.attributeList().iterator();
-                attributes.hasNext();) {
-                Attribute attribute = (Attribute)attributes.next();
-                String className = attribute.getClass().getName();
-                Local local = _createNamedObjAndLocal(body, className,
-                        thisLocal, attribute.getName());
-                _createAndSetFieldFromLocal(modelClass, attributeType,
-                        attribute.getName(), body, local);
-                if(attribute instanceof Settable) {
-                    // cast to Settable.
-                    units.add(Jimple.v().newAssignStmt(settableLocal,
-                            Jimple.v().newCastExpr(local, settableType)));
-                    // call setExpression.
-                    units.add(Jimple.v().newInvokeStmt(
-                            Jimple.v().newInterfaceInvokeExpr(settableLocal,
-                                    setExpressionMethod,
-                                    StringConstant.v(((Settable)attribute)
-                                            .getExpression()))));
-                }
-            }
+	    _createAndSetAttributesFromLocal(_model,
+					     modelClass, 
+					     attributeType, settableType,
+					     setExpressionMethod,
+					     body,
+					     settableLocal);
 
             // Entities are similar to the first two.
             Map entityLocalMap = new HashMap();
@@ -502,6 +488,48 @@ public class ModelTransformer extends SceneTransformer {
                 Jimple.v().newSpecialInvokeExpr(local,
                         constructor, args)));
         return local;
+    }
+
+    // Create and set attributes
+    private void
+	_createAndSetAttributesFromLocal(NamedObj namedObj,
+					 SootClass theClass,
+					 Type attributeType,
+					 Type settableType,
+					 SootMethod setExpressionMethod,
+					 JimpleBody body,
+					 Local settableLocal) {
+	// This is a separate method so we can use recursion
+	Chain units = body.getUnits();
+	Local thisLocal = body.getThisLocal();
+	for(Iterator attributes = namedObj.attributeList().iterator();
+	    attributes.hasNext();) {
+	    Attribute attribute = (Attribute)attributes.next();
+	    String className = attribute.getClass().getName();
+	    Local local = _createNamedObjAndLocal(body, className,
+						  thisLocal,
+						  attribute.getName());
+	    _createAndSetFieldFromLocal(theClass, attributeType,
+					attribute.getName(), body, local);
+	    if(attribute instanceof Settable) {
+		// cast to Settable.
+		units.add(Jimple.v().newAssignStmt(settableLocal,
+						   Jimple.v()
+						   .newCastExpr(local,
+								settableType)
+						   ));
+		// call setExpression.
+		units.add(Jimple.v()
+			  .newInvokeStmt(Jimple.v()
+					 .newInterfaceInvokeExpr(settableLocal,
+								 setExpressionMethod,
+								 StringConstant.v(((Settable)attribute).getExpression()))));
+	    }
+	    // Set the attributes of attributes.  This handles setting
+	    // the iterations of the SDFDirector.
+	    _initializeParameters(body, namedObj,
+				  attribute, thisLocal);
+	}
     }
 
     // Generate code in the given body to initialize all of the attributes
