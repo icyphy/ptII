@@ -79,13 +79,14 @@ Thus, multigraphs are supported.
 affect comparison under the <code>equals</code> method.
 Otherwise, unpredictable behavior may result.
 
-@author Shuvra S. Bhattacharyya, Yuhong Xiong, Jie Liu, Shahrooz Shahparnia
+@author Shuvra S. Bhattacharyya, Yuhong Xiong, Jie Liu, Ming-Yung Ko,
+Shahrooz Shahparnia
 @version $Id$
 @since Ptolemy II 0.2
 @see ptolemy.graph.Edge
 @see ptolemy.graph.Node
 */
-public class Graph {
+public class Graph implements Cloneable {
 
     /** Construct an empty graph.
      */
@@ -332,6 +333,28 @@ public class Graph {
      */
     public long changeCount() {
         return _changeCount;
+    }
+
+    /** Return a clone of this graph. The clone has the same set of
+     *  nodes and edges. Changes to the node or edge weights
+     *  affect the clone simultaneously. However,
+     *  modifications to the graph topology make the clone different from
+     *  this graph (e.g., they are no longer equal (see
+     *  {@link #equals(Object)})).
+     *
+     *  @return The clone graph.
+     */
+    public Object clone() {
+        Graph cloneGraph = new Graph();
+        Iterator nodes = nodes().iterator();
+        while (nodes.hasNext()) {
+            cloneGraph.addNode((Node)nodes.next());
+        }
+        Iterator edges = edges().iterator();
+        while (edges.hasNext()) {
+            cloneGraph.addEdge((Edge)edges.next());
+        }
+        return cloneGraph;
     }
 
     /** Return the connected components of the graph. The connected
@@ -613,6 +636,66 @@ public class Graph {
         }
         return edges;
     }
+
+    /** Test if a graph is equal to this one. If the
+     *  argument graph has the same set of nodes and edges as this graph,
+     *  they are equal.
+     *
+     *  @param graph The reference graph with which to compare.
+     *  @return True if this graph is the same as the argument
+     *  graph; false otherwise.
+     */
+    public boolean equals(Object graph) {
+        boolean result = true;
+        if (graph == null) {
+            result = false;
+        }
+        else if (!(graph instanceof Graph)) {
+            return false;
+        } else {
+            Graph argumentGraph = (Graph)graph; 
+            Iterator argumentNodes = argumentGraph.nodes().iterator();
+            while (argumentNodes.hasNext()) {
+                if (!containsNode((Node)argumentNodes.next()))
+                    return false;
+            }
+            Iterator nodes = nodes().iterator();
+            while (nodes.hasNext()) {
+                if (!argumentGraph.containsNode((Node)nodes.next()) )
+                    return false;
+            }
+            Iterator argumentEdges = argumentGraph.edges().iterator();
+            while (argumentEdges.hasNext()) {
+                if (!containsEdge((Edge)argumentEdges.next()))
+                    return false;
+            }
+            Iterator edges = edges().iterator();
+            while (edges.hasNext()) {
+                if (!argumentGraph.containsEdge((Edge)edges.next()) )
+                    return false;
+            }
+        }
+        return result;
+    }
+
+    /** Returns a hash code value for the graph.
+     *
+     *  @return A hash code value for this graph.
+     */
+    public int hashCode() {
+        // FIXME: modify this so that mappings have less chance of collision.
+        int code = 0;
+        Iterator nodes = nodes().iterator();
+        while (nodes.hasNext()) {
+            code += nodes.next().hashCode();
+        }
+        Iterator edges = edges().iterator();
+        while (edges.hasNext()) {
+            code += edges.next().hashCode();
+        }
+        return code;
+    }
+
     /** Return the number of edges that are incident to a specified node.
      *  @param node The node.
      *  @return The number of incident edges.
