@@ -67,7 +67,7 @@ done
 #set -x
 ptolemyFiles=`"$javaCommand" -verbose ${1+"$@"} | \
     egrep '^\[Loaded ' | \
-    egrep 'Loaded (ptolemy|com.microstar)' | \
+    egrep 'Loaded (ptolemy|com.microstar|diva)' | \
     awk '{print substr($2, 1, length($2)-1)}' | \
     sed 's@\.@/@g' | awk '{print $1 ".class"}'`
 #set +x
@@ -112,7 +112,7 @@ if [ $retval = 0 ]; then
 	    echo "Passed in -classpath arg was: $classPathArg"
 	    shift
 	    classPathDirectoriesAndJars=`echo $classPathArg | \
-		awk -F "$CLASSPATHSEPARATOR" '{for(i=1;i<NF;i++) printf("%s ", $i)}' `
+		awk -F "$CLASSPATHSEPARATOR" '{for(i=1;i<=NF;i++) printf("%s ", $i)}' `
             echo "classPathDirectoriesAndJars:	$classPathDirectoriesAndJars"
 	    # Ok, since we might be pulling jar files from multiple
 	    # directories, we split up the value of the classpath argument
@@ -137,8 +137,9 @@ if [ $retval = 0 ]; then
 		    fi	
 		fi
 	    done	
-            #echo "classPathDirectories:	$classPathDirectories"
-
+            echo "classPathDirectories:	$classPathDirectories"
+	    echo "classPathJarFiles:	$classPathJarFiles"
+ 
 	    # There is similar jar handling code in ptcommon.mk
 	    PTJAR_TMPDIR=ptjar_tmpdir
 	    rm -rf $PTJAR_TMPDIR
@@ -154,6 +155,7 @@ if [ $retval = 0 ]; then
 			    if [ ! -d "$classDir" ]; then
 				mkdir -p $classDir
 			    fi	
+			    echo $file
 			    cp "$directory/$file" $classDir
 			fi
 		done
@@ -161,8 +163,9 @@ if [ $retval = 0 ]; then
 
     	    for jarFile in $classPathJarFiles
 	    do
+	        echo $jarFile
 		# Exclude certain jar files:
-		echo $jarFile | egrep '/rt.jar$|/jasminclasses.jar$|sootclasses.jar$'
+		echo $jarFile | egrep 'rt.jar$|jasminclasses.jar$|sootclasses.jar$'
 		retval=$?
 	        if [ $retval = 1 ]; then
 		    # jarFile was not one of the excluded jar files . . .
