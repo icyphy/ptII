@@ -346,7 +346,11 @@ public class CorbaActorClient extends TypedAtomicActor {
      */
     public void wrapup() throws IllegalActionException {
         try {
-            _remoteActor.prefire();
+            if (_remoteActor != null) {
+                // copernicus.kernel.KernelMain.generateCode() calls wrapup()
+                // so we need to be sure that _remoteActor is non-null
+                _remoteActor.prefire();
+            }
         } catch (CorbaIllegalActionException ex) {
             throw new IllegalActionException(this,
                     "remote actor throws IllegalActionException"
