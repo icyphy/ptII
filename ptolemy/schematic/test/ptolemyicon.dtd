@@ -43,7 +43,7 @@ thing.
 -->
 
 <!-- icon elements will be parsed into class Icon -->
-<!ELEMENT entity (description?, entitytype, parameter*, port*)>
+<!ELEMENT entity (entitytype, parameter*, port*)>
 <!ATTLIST entity
 name ID #REQUIRED
 iconlibrary CDATA #REQUIRED>
