@@ -73,7 +73,7 @@ public class ParameterPort extends TypedIOPort {
      */
     public ParameterPort(ComponentEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-	super(container, name);
+        super(container, name);
         setInput(true);
         setMultiport(false);
         // Notify SDF scheduler that this port consumes one token,
