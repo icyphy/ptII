@@ -90,7 +90,7 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         // " X connection to foo:0 broken (explicit kill or server shutdown)."
         // Try uncommenting the next lines to see what is being
         // expanding before the error:
-        //System.out.println("filterAttributeValue: " + container + "\t"
+        // System.out.println("filterAttributeValue: " + container + "\t"
         //        +  attributeName + "\t" + attributeValue);
 
         if (attributeValue == null) {
@@ -153,10 +153,9 @@ public class RemoveGraphicalClasses implements MoMLFilter {
     static {
         _graphicalClasses = new HashMap();
         // Alphabetical by key class
-        // FIXME: removing MonitorValue is probably not right, but
-        // it gets us through the moml tests.
-        _graphicalClasses.put("ptolemy.actor.lib.MonitorValue",
-                null);
+
+        // It would be nice if we could substitute in Discard actors
+        // when we see the plotter or the display.
         //_graphicalClasses.put("ptolemy.actor.lib.gui.Display",
         //        "ptolemy.actor.lib.Discard");
 
@@ -172,8 +171,10 @@ public class RemoveGraphicalClasses implements MoMLFilter {
                 null);
         _graphicalClasses.put("ptolemy.vergil.icon.BoxedValueIcon",
                 null);
+        // ptolemy/actor/lib/test/auto/StopSDF.xml has a MonitorValue actor,
+        // so remove the UpdatedValueIcon.
         _graphicalClasses.put("ptolemy.vergil.icon.UpdatedValueIcon",
-                "ptolemy.kernel.util.Attribute");
+                null);
         _graphicalClasses.put("ptolemy.vergil.icon.ValueIcon",
                 "ptolemy.kernel.util.Attribute");
         // Generated applet from moml/demo/modulation.xml
