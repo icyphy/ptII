@@ -46,7 +46,13 @@ include $(CONFIG)
 # Used to build jar files
 PTPACKAGE = 	basic
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+		img/img.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	AbstractBasicGraphModel.java \
