@@ -701,7 +701,8 @@ public class PlotBox extends Panel {
      *  @param name A font name.
      */
     public void setLabelFont(String name) {
-        _labelfont = Font.decode(name);
+        _labelFont = Font.decode(name);
+        _labelFontMetrics = getFontMetrics(_labelFont);
     }
 
     /** Set the title of the graph.
@@ -717,8 +718,8 @@ public class PlotBox extends Panel {
      *  @param name A font name.
      */
     public void setTitleFont(String name) {
-        _titlefont = Font.decode(name);
-        _titleFontMetrics = getFontMetrics(_titlefont);
+        _titleFont = Font.decode(name);
+        _titleFontMetrics = getFontMetrics(_titleFont);
     }
 
     /** Control whether the X axis is wrapped.
@@ -903,7 +904,7 @@ public class PlotBox extends Panel {
 
         // Number of vertical tick marks depends on the height of the font
         // for labeling ticks and the height of the window.
-        graphics.setFont(_labelfont);
+        graphics.setFont(_labelFont);
         int labelheight = _labelFontMetrics.getHeight();
         int halflabelheight = labelheight/2;
 
@@ -916,12 +917,12 @@ public class PlotBox extends Panel {
         if (_xExp != 0 && _xticks == null) {
             String superscript = Integer.toString(_xExp);
             xSPos -= _superscriptFontMetrics.stringWidth(superscript);
-            graphics.setFont(_superscriptfont);
+            graphics.setFont(_superscriptFont);
             if (!_xlog) {
                 graphics.drawString(superscript, xSPos,
                         ySPos - halflabelheight);
                 xSPos -= _labelFontMetrics.stringWidth("x10");
-                graphics.setFont(_labelfont);
+                graphics.setFont(_labelFont);
                 graphics.drawString("x10", xSPos, ySPos);
             }
             // NOTE: 5 pixel padding on bottom
@@ -1132,11 +1133,11 @@ public class PlotBox extends Panel {
             // Draw scaling annotation for y axis.
             if (_yExp != 0) {
                 graphics.drawString("x10", 2, titley);
-                graphics.setFont(_superscriptfont);
+                graphics.setFont(_superscriptFont);
                 graphics.drawString(Integer.toString(_yExp),
                         _labelFontMetrics.stringWidth("x10") + 2,
                         titley-halflabelheight);
-                graphics.setFont(_labelfont);
+                graphics.setFont(_labelFont);
             }
         } else {
             // ticks have been explicitly specified
@@ -1282,11 +1283,11 @@ public class PlotBox extends Panel {
 
                 if (needExponent) {
                     _xExp = (int)Math.floor(xTmpStart);
-                    graphics.setFont(_superscriptfont);
+                    graphics.setFont(_superscriptFont);
                     graphics.drawString(Integer.toString(_xExp), xSPos,
                             ySPos - halflabelheight);
                     xSPos -= _labelFontMetrics.stringWidth("x10");
-                    graphics.setFont(_labelfont);
+                    graphics.setFont(_labelFont);
                     graphics.drawString("x10", xSPos, ySPos);
                 } else {
                     _xExp = 0;
@@ -1323,13 +1324,13 @@ public class PlotBox extends Panel {
         graphics.setColor(_foreground);
 
         if (_title != null) {
-            graphics.setFont(_titlefont);
+            graphics.setFont(_titleFont);
             int titlex = _ulx +
                 (width - _titleFontMetrics.stringWidth(_title))/2;
             graphics.drawString(_title, titlex, titley);
         }
 
-        graphics.setFont(_labelfont);
+        graphics.setFont(_labelFont);
         if (_xlabel != null) {
             int labelx = _ulx +
                 (width - _labelFontMetrics.stringWidth(_xlabel))/2;
@@ -1693,7 +1694,7 @@ public class PlotBox extends Panel {
      */
     private int _drawLegend(Graphics graphics, int urx, int ury) {
         // FIXME: consolidate all these for efficiency
-        graphics.setFont(_labelfont);
+        graphics.setFont(_labelFont);
         int spacing = _labelFontMetrics.getHeight();
 
         Enumeration v = _legendStrings.elements();
@@ -1939,16 +1940,16 @@ public class PlotBox extends Panel {
      */
     private void _measureFonts() {
         // We only measure the fonts once, and we do it from addNotify().
-        if (_labelfont == null)
-            _labelfont = new Font("Helvetica", Font.PLAIN, 12);
-        if (_superscriptfont == null)
-            _superscriptfont = new Font("Helvetica", Font.PLAIN, 9);
-        if (_titlefont == null)
-            _titlefont = new Font("Helvetica", Font.BOLD, 14);
+        if (_labelFont == null)
+            _labelFont = new Font("Helvetica", Font.PLAIN, 12);
+        if (_superscriptFont == null)
+            _superscriptFont = new Font("Helvetica", Font.PLAIN, 9);
+        if (_titleFont == null)
+            _titleFont = new Font("Helvetica", Font.BOLD, 14);
 
-        _labelFontMetrics = getFontMetrics(_labelfont);
-        _superscriptFontMetrics = getFontMetrics(_superscriptfont);
-        _titleFontMetrics = getFontMetrics(_titlefont);
+        _labelFontMetrics = getFontMetrics(_labelFont);
+        _superscriptFontMetrics = getFontMetrics(_superscriptFont);
+        _titleFontMetrics = getFontMetrics(_titleFont);
     }
 
     /*
@@ -2332,8 +2333,8 @@ public class PlotBox extends Panel {
     private double _ytickscale = 0.0, _xtickscale = 0.0;
 
     /** @serial Font information. */
-    private Font _labelfont = null, _superscriptfont = null,
-        _titlefont = null;
+    private Font _labelFont = null, _superscriptFont = null,
+        _titleFont = null;
     /** @serial FontMetric information. */
     private FontMetrics _labelFontMetrics = null,
         _superscriptFontMetrics = null,
