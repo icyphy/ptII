@@ -339,7 +339,7 @@ public class PtolemyUtilities {
             body.getLocals().add(labelArrayLocal);
             units.insertBefore(Jimple.v().newAssignStmt(labelArrayLocal,
                     Jimple.v().newNewArrayExpr(RefType.v("java.lang.String"), 
-                            IntConstant.v(1))),
+                            IntConstant.v(recordType.labelSet().size()))),
                     insertPoint);
             // Create the new array of types.
             Local typeArrayLocal = Jimple.v().newLocal("typeArray", 
@@ -347,7 +347,7 @@ public class PtolemyUtilities {
             body.getLocals().add(typeArrayLocal);
             units.insertBefore(Jimple.v().newAssignStmt(typeArrayLocal,
                     Jimple.v().newNewArrayExpr(RefType.v(baseTypeClass), 
-                            IntConstant.v(1))),
+                            IntConstant.v(recordType.labelSet().size()))),
                     insertPoint);
            
             int count = 0;
@@ -378,12 +378,13 @@ public class PtolemyUtilities {
                     RefType.v(recordTypeClass));
             body.getLocals().add(typeLocal);
             units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
-                    Jimple.v().newNewExpr(RefType.v(arrayTypeClass))),
+                    Jimple.v().newNewExpr(RefType.v(recordTypeClass))),
                     insertPoint);
             
             // invoke the initializer.
             SootMethod typeConstructor =
-                SootUtilities.searchForMethodByName(arrayTypeClass, "<init>");
+                SootUtilities.searchForMethodByName(recordTypeClass, "<init>");
+            System.out.println("typeConstructor = " + typeConstructor);
             units.insertBefore(Jimple.v().newInvokeStmt(
                     Jimple.v().newSpecialInvokeExpr(typeLocal,
                             typeConstructor, labelArrayLocal, typeArrayLocal)),
@@ -1043,7 +1044,7 @@ public class PtolemyUtilities {
         arrayTypeClass =
             Scene.v().loadClassAndSupport("ptolemy.data.type.ArrayType");
         recordTypeClass =
-            Scene.v().loadClassAndSupport("ptolemy.data.type.ArrayType");
+            Scene.v().loadClassAndSupport("ptolemy.data.type.RecordType");
         baseTypeClass =
                 Scene.v().loadClassAndSupport("ptolemy.data.type.BaseType");
         unknownTypeField = baseTypeClass.getFieldByName("UNKNOWN");
