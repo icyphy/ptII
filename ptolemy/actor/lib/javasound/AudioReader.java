@@ -81,8 +81,8 @@ Note: Requires Java 2 v1.3.0 or later.
 @version $Id$
 @since Ptolemy II 1.0
 @see ptolemy.media.javasound.LiveSound
-@see SoundWriter
-@see SoundPlayback
+@see ptolemy.media.javasound.SoundWriter
+@see ptolemy.media.javasound.SoundPlayback
 */
 public class AudioReader extends Source {
 
