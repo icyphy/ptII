@@ -92,7 +92,26 @@ applet is displayed on a XGA screen-->
 //--></SCRIPT>
 <!-- /HTML CONVERTER -->
 </CENTER>
-The <a href="ModalBSCVergil.htm">block diagram</a>
+This modal model by
+Zoltan Kemenczy (Research in Motion Limited)
+represents a trivial
+Binary Symmetric Channel
+model with two states, "good" and "bad", each with different
+probabilities of error. The same state refinement is used
+to generate the error and state change events.
+A transition refinement is used to scale the state change
+signal from the state refinement to make it more visible
+on the scope. If the same refinement is configured for both
+state transitions, the scale parameter of the refinement is
+set to be different for the two transitions.
+
+<p>Note that the decision which transition to
+take is made by the controller based on the state refinement's
+state change output (==1) and is not affected by the transition
+refinement changing the state change to double (0.5).
+
+
+<p>The <a href="ModalBSCVergil.htm">block diagram</a>
 for the model was constructed using the Ptolemy II schematic editor
 called Vergil.
 </p>
