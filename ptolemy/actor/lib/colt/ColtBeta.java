@@ -50,7 +50,7 @@ import cern.jet.random.Beta;
    <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/Beta.html">cern.jet.random.Beta</a> object with
     alpha and beta both set to 2.0.
 
-    A definition of NegativeBinomial by Wolfgang Hoschek can be found at
+    <p>A definition of NegativeBinomial by Wolfgang Hoschek can be found at
     <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/stat/Probability.html#beta(double,%20double,%20double)"<code>http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/stat/Probability.html#beta(double,%20double,%20double)</code></a>:
 <blockquote>
 <h3>
@@ -58,9 +58,7 @@ beta</h3>
 <pre>public static double <b>beta</b>(double&nbsp;a,
                           double&nbsp;b,
                           double&nbsp;x)</pre>
-<dl>
-
-<dd>Returns the area from zero to <tt>x</tt> under the beta density
+<p>Returns the area from zero to <tt>x</tt> under the beta density
  function.
  <pre>                          x
             -             -

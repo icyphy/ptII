@@ -46,6 +46,10 @@ import cern.jet.random.HyperGeometric;
    deviation given by parameters.  In addition, the seed can be
    specified as a parameter to control the sequence that is generated.
 
+   <p> This actor instantiates a 
+   <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/HyperGeometric.html">cern.jet.random.HyperGeometric</a> object with
+    N set to 2, and s and n both set to 1.
+
    @author David Bauer and Kostas Oikonomou
    @version $Id$
    @since Ptolemy II 4.1

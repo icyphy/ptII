@@ -78,8 +78,11 @@ Returns the sum of the terms <tt>0</tt> through <tt>k</tt> of the Negative Binom
  </p><p>
  <tt>y = negativeBinomial( k, n, p ) = Gamma.incompleteBeta( n, k+1, p )</tt>.
 
- All arguments must be positive,</p></dd><dd><dl>
-<dt><b>Parameters:</b></dt><dd><code>k</code> - end term.</dd><dd><code>n</code> - the number of trials.</dd><dd><code>p</code> - the probability of success (must be in <tt>(0.0,1.0)</tt>).</dd>
+ All arguments must be positive,</p>
+<b>Parameters:
+<br></b><code>k</code> - end term.
+<br><code>n</code> - the number of trials.
+<br><code>p</code> - the probability of success (must be in <tt>(0.0,1.0)</tt>).
 </blockquote>
    The above description of negativeBinomial() is
    <a href="doc-files/colt-copyright.htm">copyrighted</a>. 

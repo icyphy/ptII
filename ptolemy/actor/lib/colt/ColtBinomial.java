@@ -61,8 +61,7 @@ binomial</h3>
                               int&nbsp;n,
                               double&nbsp;p)</pre>
 
-<dl>
-<dd>Returns the sum of the terms <tt>0</tt> through <tt>k</tt> of the Binomial
+<p>Returns the sum of the terms <tt>0</tt> through <tt>k</tt> of the Binomial
  probability density.
  <pre>   k
    --  ( n )   j      n-j

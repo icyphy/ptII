@@ -46,6 +46,10 @@ import cern.jet.random.Logarithmic;
    deviation given by parameters.  In addition, the seed can be
    specified as a parameter to control the sequence that is generated.
 
+   <p> This actor instantiates a 
+   <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/Logarithmic.html">cern.jet.random.Logarithmic</a> object with
+    p set to 0.5
+
    @author David Bauer and Kostas Oikonomou
    @version $Id$
    @since Ptolemy II 4.1

@@ -46,6 +46,10 @@ import cern.jet.random.Gamma;
    deviation given by parameters.  In addition, the seed can be
    specified as a parameter to control the sequence that is generated.
 
+   <p> This actor instantiates a 
+   <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/Gamma.html">cern.jet.random.Gamma</a> object with
+    double and lambda both set to 1.0.
+
    @author David Bauer and Kostas Oikonomou
    @version $Id$
    @since Ptolemy II 4.1
