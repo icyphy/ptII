@@ -31,6 +31,7 @@
 package ptolemy.actor.lib;
 
 import ptolemy.actor.*;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
@@ -63,7 +64,7 @@ public class Average extends Transformer {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Average(TypedCompositeActor container, String name)
+    public Average(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         output.setTypeSameAs(input);

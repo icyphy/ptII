@@ -43,6 +43,8 @@ import ptolemy.actor.gui.Placeable;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -67,7 +69,7 @@ public class MatrixVisualizer extends TypedAtomicActor implements Placeable {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public MatrixVisualizer(TypedCompositeActor container, String name)
+    public MatrixVisualizer(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 

@@ -130,11 +130,13 @@ public class CSPDirector extends CompositeProcessDirector {
      *
      *  @param container Container of the director.
      *  @param name Name of this director.
-     *  @exception It may be thrown in derived classes if the
-     *      director is not compatible with the specified container.
+     *  @exception IllegalActionException If the director is not
+     *   compatible with the specified container.
+     *  @exception NameDuplicationException If the container not a
+     *   CompositeActor and the name collides with an entity in the container.
      */
-    public CSPDirector(CompositeActor container, String name)
-            throws IllegalActionException {
+    public CSPDirector(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -252,45 +254,8 @@ public class CSPDirector extends CompositeProcessDirector {
      *  are deadlocked or stopped.
      */
     protected synchronized void _actorBlocked(CSPReceiver rcvr) {
-        /*
-        if( rcvr.isReadBlocked() ) {
-            if( rcvr.isConnectedToBoundary() ) {
-                _extReadBlockCount++;
-            }
-            _intReadBlockCount++;
-        }
-        */
-        // _actorsBlocked++;
-	// notifyAll();
         super._actorBlocked(rcvr);
     }
- 
-    /** Increase the count of blocked processes and check for deadlock.
-    protected synchronized void _actorReadBlocked(CSPReceiver rcvr) {
-        boolean internal = true;
-        if( rcvr.isConnectedToBoundary() ) {
-            internal = false;
-        }
-        
-        if( internal ) {
-            _intReadBlockCount++;
-        } else {
-            _extReadBlockCount++;
-        }
-        if (_areActorsDeadlocked()) {
-	    notifyAll();
-	}
-    }
-     */
- 
-    /** Increase the count of blocked processes and check for deadlock.
-    protected synchronized void _actorWriteBlocked(CSPReceiver rcvr) {
-        _writeBlockCount++;
-        if (_areActorsDeadlocked()) {
-	    notifyAll();
-	}
-    }
-     */
  
     /** Called by a CSPActor when it wants to delay. When the
      *  director has advanced time to "getCurrentTime() + delta", the process
@@ -323,40 +288,8 @@ public class CSPDirector extends CompositeProcessDirector {
     /** An actor has unblocked, decrease the count of blocked actors.
      */
     protected synchronized void _actorUnBlocked(CSPReceiver rcvr) {
-        /*
-        if( rcvr.isReadBlocked() ) {
-            if( rcvr.isConnectedToBoundary() ) {
-                _extReadBlockCount--;
-            }
-            _intReadBlockCount--;
-        }
-        if( rcvr.isWriteBlocked() ) {
-            _writeBlockCount--;
-        }
-        */
-        // _actorsBlocked--;
         super._actorUnBlocked(rcvr);
     }
-
-    /** An actor has unblocked, decrease the count of blocked actors.
-    protected synchronized void _actorReadUnBlocked(CSPReceiver rcvr) {
-        boolean internal = true;
-        if( rcvr.isConnectedToBoundary() ) {
-            internal = false;
-        }
-        if( internal ) {
-            _intReadBlockCount--;
-        } else {
-            _extReadBlockCount--;
-        }
-    }
-     */
-
-    /** An actor has unblocked, decrease the count of blocked actors.
-    protected synchronized void _actorWriteUnBlocked(CSPReceiver rcvr) {
-        _writeBlockCount--;
-    }
-     */
 
     /** Returns true if all active processes are either blocked or
      *  delayed, false otherwise.
@@ -369,7 +302,8 @@ public class CSPDirector extends CompositeProcessDirector {
         }
         */
         // if( _getActiveActorsCount() == _actorsBlocked + _actorsDelayed ) {
-        if( _getActiveActorsCount() == _getBlockedActorsCount() + _actorsDelayed ) {
+        if( _getActiveActorsCount() == _getBlockedActorsCount()
+                + _actorsDelayed ) {
             return true;
         }
         return false;
@@ -477,18 +411,6 @@ public class CSPDirector extends CompositeProcessDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    // Count of the number of processes blocked trying to rendezvous.
-    // private int _intReadBlockCount = 0;
-
-    // Count of the number of processes blocked trying to rendezvous.
-    // private int _extReadBlockCount = 0;
-
-    // Count of the number of processes blocked trying to rendezvous.
-    // private int _writeBlockCount = 0;
-
-    // Count of the number of processes blocked trying to rendezvous.
-    // private int _actorsBlocked = 0;
 
     // Count of the number of processes delayed until time
     // sufficiently advances.

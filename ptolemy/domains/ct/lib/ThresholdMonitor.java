@@ -65,7 +65,7 @@ public class ThresholdMonitor extends TypedAtomicActor
      *  @exception NameDuplicationException If name coincides with
      *   an entity already in the container.
      */
-    public ThresholdMonitor(TypedCompositeActor container, String name)
+    public ThresholdMonitor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);

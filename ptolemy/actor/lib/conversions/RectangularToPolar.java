@@ -35,6 +35,7 @@ import ptolemy.actor.lib.*;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
 
@@ -104,7 +105,7 @@ public class RectangularToPolar extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public RectangularToPolar(TypedCompositeActor container, String name)
+    public RectangularToPolar(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 

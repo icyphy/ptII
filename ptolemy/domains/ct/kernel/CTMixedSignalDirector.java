@@ -30,6 +30,7 @@
 package ptolemy.domains.ct.kernel;
 
 import ptolemy.domains.ct.kernel.util.TotallyOrderedSet;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -107,10 +108,12 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *  @param workspace Object for synchronization and version tracking
      *  @param name Name of this director.
      *  @exception IllegalActionException If the director is not compatible
-     *  with the specified container.  May be thrown in a derived class.
+     *   with the specified container.  May be thrown in a derived class.
+     *  @exception NameDuplicationException If the container is not a
+     *   CompositeActor and the name collides with an entity in the container.
      */
-    public CTMixedSignalDirector(CompositeActor container, String name)
-            throws IllegalActionException {
+    public CTMixedSignalDirector(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 

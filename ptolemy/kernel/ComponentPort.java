@@ -81,7 +81,7 @@ subclass.  Similarly, a ComponentPort can only be contained by a
 ComponentEntity, and an attempt to set the container to an instance
 of Entity will trigger an exception.  If a subclass wishes to
 constrain the containers of the port to be of a subclass of
-ComponentEntity, they should override setContainer().
+ComponentEntity, they should override _checkContainer().
 
 @author Edward A. Lee, Xiaojun Liu
 @version $Id$
@@ -459,24 +459,6 @@ public class ComponentPort extends Port {
         }
     }
 
-    /** Override the base class to ensure that the proposed container is a
-     *  ComponentEntity.
-     *  @param entity The proposed container.
-     *  @exception IllegalActionException If the container is not a
-     *   ComponentEntity, or it has no name,
-     *   or the port and container are not in the same workspace.
-     *  @exception NameDuplicationException If the container already has
-     *   a port with the name of this port.
-     */
-    public void setContainer(Entity container)
-            throws IllegalActionException, NameDuplicationException {
-        if (!(container instanceof ComponentEntity) && (container != null)) {
-            throw new IllegalActionException(container, this,
-                    "ComponentPort can only be contained by ComponentEntity");
-        }
-        super.setContainer(container);
-    }
-
     /** Unlink the specified Relation. If the Relation
      *  is not linked to this port, do nothing. If the relation is linked
      *  more than once, then unlink all occurrences.
@@ -574,6 +556,20 @@ public class ComponentPort extends Port {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Override the base class to ensure that the proposed container is a
+     *  ComponentEntity.
+     *  @param entity The proposed container.
+     *  @exception IllegalActionException If the container is not a
+     *   ComponentEntity.
+     */
+    protected void _checkContainer(Entity container)
+            throws IllegalActionException {
+        if (!(container instanceof ComponentEntity) && (container != null)) {
+            throw new IllegalActionException(container, this,
+                    "ComponentPort can only be contained by ComponentEntity");
+        }
+    }
 
     /** This method is identical to _checkLink(), except that it does
      *  not throw an exception if the link crosses levels of the

@@ -30,6 +30,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.gui;
 
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
@@ -76,7 +77,7 @@ public class Display extends Sink implements Placeable, SequenceActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Display(TypedCompositeActor container, String name)
+    public Display(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         // Set the type of the input port.

@@ -27,6 +27,7 @@
 @ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 Review changeRequest / changeListener code.
+Review container relationship and new parent class.
 */
 
 package ptolemy.actor;
@@ -47,13 +48,14 @@ A Director governs the execution within a CompositeActor.  A composite actor
 that contains a director is said to be <i>opaque</i>, and the execution model
 within the composite actor is determined by the contained director.   This
 director is called the <i>local director</i> of a composite actor.
-A composite
-actor is also aware of the director of its container, which is referred to
-as its <i>executive director</i>.
+A composite actor is also aware of the director of its container,
+which is referred to as its <i>executive director</i>.
+A director may also be contained by a CompositeEntity that is not a
+CompositeActor, in which case it acts like any other entity within
+that composite.
 <p>
 A top-level composite actor is generally associated with a <i>manager</i>
-as well as
-a local director.  The Manager has overall responsibility for
+as well as a local director.  The Manager has overall responsibility for
 executing the application, and is often associated with a GUI.   Top-level
 composite actors have no executive director and getExecutiveDirector() will
 return null.
@@ -86,7 +88,7 @@ which will result in faster execution.
 @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer, John Reekie
 @version $Id$
 */
-public class Director extends NamedObj implements Executable {
+public class Director extends ComponentEntity implements Executable {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -108,36 +110,43 @@ public class Director extends NamedObj implements Executable {
     }
 
     /** Construct a director in the given container with the given name.
-     *  If the container argument must not be null, or a
+     *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
      *  If the name argument is null, then the name is set to the
      *  empty string. Increment the version number of the workspace.
      *
-     *  @param workspace Object for synchronization and version tracking
-     *  @param name Name of this director.
-     *  @exception IllegalActionException If the nane has a period in it, or
+     *  @param container The container.
+     *  @param name The name of this director.
+     *  @exception IllegalActionException If the name has a period in it, or
      *   the director is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container already contains
+     *   an entity with the specified name.
      */
-    public Director(CompositeActor container, String name)
-            throws IllegalActionException {
-        super(container.workspace(), name);
-        container.setDirector(this);
+    public Director(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container.workspace());
+        setName(name);
+        if (container instanceof CompositeActor) {
+            ((CompositeActor)container).setDirector(this);
+        } else {
+            setContainer(container);
+        }
         setMoMLElementName("director");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the director into the specified workspace. The new object is
+    /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
-     *  The result is a new director with no container, no pending mutations,
-     *  and no mutation listeners.
-     *
+     *  The result is a new entity with the same ports as the original, but
+     *  no connections and no container.
      *  @param ws The workspace for the cloned object.
-     *  @exception CloneNotSupportedException If one of the attributes
-     *   cannot be cloned.
-     *  @return The new director.
+     *  @exception CloneNotSupportedException If cloned ports cannot have
+     *   as their container the cloned entity (this should not occur), or
+     *   if one of the attributes cannot be cloned.
+     *  @return A new ComponentEntity.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         Director newobj = (Director)super.clone(ws);
@@ -158,15 +167,18 @@ public class Director extends NamedObj implements Executable {
      *  In this base class, an attempt is made to fire each actor exactly
      *  once, in the order they were created.  Prefire is called once, and
      *  if prefire returns true, then fire is called once, followed by
-     *  postfire.  The return value from postfire is ignored.
+     *  postfire.  The return value from postfire is ignored. If the
+     *  container is not an instance of CompositeActor, however, then
+     *  this method does nothing.
      *
      *  @exception IllegalActionException If any called method of one
      *  of the associated actors throws it.
      */
     public void fire() throws IllegalActionException {
-        CompositeActor container = ((CompositeActor)getContainer());
-        if (container!= null) {
-            Iterator actors = container.deepEntityList().iterator();
+        Nameable container = getContainer();
+        if (container instanceof CompositeActor) {
+            Iterator actors = ((CompositeActor)container)
+                    .deepEntityList().iterator();
             while (actors.hasNext()) {
                 Actor actor = (Actor)actors.next();
                 if(actor.prefire()) {
@@ -198,12 +210,15 @@ public class Director extends NamedObj implements Executable {
 
     }
 
-    /** Return the container, which is the composite actor for which this
-     *  is the local director.
-     *  @return The CompositeActor that this director is responsible for.
+    /** Get the container entity.
+     *  @return The container, which is an instance of CompositeEntity.
      */
     public Nameable getContainer() {
-        return _container;
+        if (_container != null) {
+            return _container;
+        } else {
+            return super.getContainer();
+        }
     }
 
     /** Return the current time of the model being executed by this director.
@@ -235,7 +250,9 @@ public class Director extends NamedObj implements Executable {
         return _currentTime;
     }
 
-    /** Invoke the initialize() method of each deeply contained actor.
+    /** Invoke the initialize() method of each deeply contained actor,
+     *  unless the container is not an instance of CompositeActor, in which
+     *  case, do nothing.
      *  This method should be invoked once per execution, after the
      *  initialization phase, but before any iteration.  Since type
      *  resolution has been completed, the initialize() method of a contained
@@ -247,9 +264,10 @@ public class Director extends NamedObj implements Executable {
      *   one of the associated actors throws it.
      */
     public void initialize() throws IllegalActionException {
-        CompositeActor container = ((CompositeActor)getContainer());
-        if (container!= null) {
-            Iterator actors = container.deepEntityList().iterator();
+        Nameable container = getContainer();
+        if (container instanceof CompositeActor) {
+            Iterator actors = ((CompositeActor)container)
+                    .deepEntityList().iterator();
             while (actors.hasNext()) {
                 Actor actor = (Actor)actors.next();
                 if (_debugging) _debug("Invoking initialize(): ",
@@ -278,12 +296,13 @@ public class Director extends NamedObj implements Executable {
     /** Indicate that resolved types in the model may no longer be valid.
      *  This will force type resolution to be redone on the next iteration.
      *  This method simply defers to the manager, notifying it.  If there
-     *  is no container, or if it has no manager, do nothing.
+     *  is no container, or the container is not an instance of
+     *  CompositeActor, or if it has no manager, do nothing.
      */
     public void invalidateResolvedTypes() {
-        CompositeActor container = ((CompositeActor)getContainer());
-        if (container!= null) {
-            Manager manager = container.getManager();
+        Nameable container = getContainer();
+        if (container instanceof CompositeActor) {
+            Manager manager = ((CompositeActor)container).getManager();
             if (manager != null) {
                 manager.invalidateResolvedTypes();
             }
@@ -354,15 +373,16 @@ public class Director extends NamedObj implements Executable {
      *  @return true If this director, or any of its contained directors,
      *  needs write access to the workspace.
      *  @exception InvalidStateException If the director does not have
-     *  a container.
+     *  a container, or the container is not an instance of CompositeActor.
      */
     public final boolean needWriteAccess() {
         if (_writeAccessRequired()) {
             return true;
         }
-        CompositeActor container = ((CompositeActor)getContainer());
-        if (container!= null) {
-            Iterator actors = container.deepEntityList().iterator();
+        Nameable container = getContainer();
+        if (container instanceof CompositeActor) {
+            Iterator actors = ((CompositeActor)container)
+                    .deepEntityList().iterator();
             while (actors.hasNext()) {
                 Actor actor = (Actor)actors.next();
                 // find out which of those actors has a local director.
@@ -441,18 +461,18 @@ public class Director extends NamedObj implements Executable {
      *   one of the associated actors throws it.
      */
     public void preinitialize() throws IllegalActionException {
-        CompositeActor container = ((CompositeActor)getContainer());
-        if (container!= null) {
-	    CompositeActor containersContainer =
-                (CompositeActor)container.getContainer();
-	    if( containersContainer == null ) {
-                _currentTime = 0.0;
-	    } else {
-		double time =
-                    containersContainer.getDirector().getCurrentTime();
+        Nameable container = getContainer();
+        if (container instanceof CompositeActor) {
+	    Nameable containersContainer = container.getContainer();
+	    if(containersContainer instanceof CompositeActor) {
+		double time = ((CompositeActor)containersContainer)
+                       .getDirector().getCurrentTime();
                 _currentTime = time;
+	    } else {
+                _currentTime = 0.0;
 	    }
-            Iterator actors = container.deepEntityList().iterator();
+            Iterator actors = ((CompositeActor)container)
+                   .deepEntityList().iterator();
             while (actors.hasNext()) {
                 Actor actor = (Actor)actors.next();
                 if (_debugging) _debug("Invoking preinitialize(): ",
@@ -471,16 +491,95 @@ public class Director extends NamedObj implements Executable {
      *  will occur when a model is first constructed, and during the
      *  execute() method of a ChangeRequest that is queued using
      *  requestChange().  In this base class, the request is delegated
-     *  to the manager. If there is no manager, do nothing.
+     *  to the manager. If there is no manager, or if the container
+     *  is not an instance of CompositeActor, then do nothing.
      *  @param actor The actor to initialize.
      */
     public void requestInitialization(Actor actor) {
-        CompositeActor container = ((CompositeActor)getContainer());
-        if (container!= null) {
-            Manager manager = container.getManager();
+        Nameable container = getContainer();
+        if (container instanceof CompositeActor) {
+            Manager manager = ((CompositeActor)container).getManager();
             if (manager != null) {
                 manager.requestInitialization(actor);
             }
+        }
+    }
+
+    /** Specify the container.  If the specified container is an instance
+     *  of CompositeActor, then this becomes the one unique director for
+     *  that composite.  Otherwise, this is an entity like any other within
+     *  the container. In that case, if the container already contains
+     *  an entity with the same name, then throw an exception and do not make
+     *  any changes.  Similarly, if the container is not in the same
+     *  workspace as this entity, throw an exception.
+     *  If this director is already contained by the container, do nothing.
+     *  If this director already has a container, remove it
+     *  from that container first.  Otherwise, remove it from
+     *  the directory of the workspace, if it is present.
+     *  If the argument is null, then unlink the ports of the director
+     *  (if any) from any relations and remove it from its container.
+     *  This director is not added to the workspace directory, so calling
+     *  this method with a null argument could result in
+     *  this director being garbage collected.
+     *  Derived classes may further constrain the container
+     *  to subclasses of CompositeEntity by overriding the protected
+     *  method _checkContainer(). This method is write-synchronized
+     *  to the workspace and increments its version number.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the action would result in a
+     *   recursive containment structure, or if
+     *   this director and container are not in the same workspace, or
+     *   if the protected method _checkContainer() throws it.
+     *  @exception NameDuplicationException If the name of this director
+     *   collides with a name already in the container.  This will not
+     *   be thrown if the container argument is an instance of
+     *   CompositeActor.
+     */
+    public void setContainer(CompositeEntity container)
+            throws IllegalActionException, NameDuplicationException {
+        if (container instanceof CompositeActor) {
+            if (container != null && _workspace != container.workspace()) {
+                throw new IllegalActionException(this, container,
+                "Cannot set container because workspaces are different.");
+            }
+            try {
+                _workspace.getWriteAccess();
+                _checkContainer(container);
+                CompositeActor castContainer = (CompositeActor)container;
+                // NOTE: The following code is quite tricky.  It is very careful
+                // to leave a consistent state even in the face of unexpected
+                // exceptions.  Be very careful if modifying it.
+                CompositeEntity prevcontainer = (CompositeEntity)getContainer();
+                if (prevcontainer == container) return;
+
+                // Do this first, because it may throw an exception, and we have
+                // not yet changed any state.
+                if (container != null) {
+                    castContainer._setDirector(this);
+                    if (prevcontainer == null) {
+                        _workspace.remove(this);
+                    }
+                }
+                _container = castContainer;
+                // This is safe now because it does not throw an exception.
+                if (prevcontainer instanceof CompositeActor) {
+                    ((CompositeActor)prevcontainer)._setDirector(null);
+                } else if (prevcontainer != null || container == null) {
+                    // If the previous container was not null or the
+                    // new container is null, call the superclass with a
+                    // null argument.  This has the effect of removing
+                    // this entity from the previous container (if there
+                    // was one) and disconnecting all the port (if there
+                    // are any).
+                    super.setContainer(null);
+                }
+            } finally {
+                _workspace.doneWriting();
+            }
+        } else {
+            // Not a CompositeActor container.
+            super.setContainer(container);
+            _container = null;
         }
     }
 
@@ -498,11 +597,14 @@ public class Director extends NamedObj implements Executable {
      *  resume at the point where it was suspended.  However, they should
      *  not assume the fire() method will be called again.  It is possible
      *  that the wrapup() method will be called next.
+     *  If the container is not an instance of CompositeActor, then this
+     *  method does nothing.
      */
     public void stopFire() {
-        CompositeActor container = ((CompositeActor)getContainer());
-        if (container!= null) {
-            Iterator actors = container.deepEntityList().iterator();
+        Nameable container = getContainer();
+        if (container instanceof CompositeActor) {
+            Iterator actors = ((CompositeActor)container)
+                   .deepEntityList().iterator();
             while (actors.hasNext()) {
                 Actor actor = (Actor)actors.next();
                 actor.stopFire();
@@ -542,12 +644,15 @@ public class Director extends NamedObj implements Executable {
      *  override this method to release all resources in use and kill
      *  any sub-threads.  Derived classes should not synchronize this
      *  method because it should execute as soon as possible.
+     *  If the container is not an instance of CompositeActor, then
+     *  this method does nothing.
      *  <p>
      */
     public void terminate() {
-        CompositeActor container = ((CompositeActor)getContainer());
-        if (container!= null) {
-            Iterator actors = container.deepEntityList().iterator();
+        Nameable container = getContainer();
+        if (container instanceof CompositeActor) {
+            Iterator actors = ((CompositeActor)container)
+                    .deepEntityList().iterator();
             while (actors.hasNext()) {
                 Actor actor = (Actor)actors.next();
                 actor.terminate();
@@ -555,7 +660,7 @@ public class Director extends NamedObj implements Executable {
         }
     }
 
-    /** Return true if it transfers data from an input port of the
+    /** Transfer data from an input port of the
      *  container to the ports it is connected to on the inside.
      *  The port argument must  be an opaque input port.  If any
      *  channel of the input port has no data, then that channel is
@@ -565,7 +670,7 @@ public class Director extends NamedObj implements Executable {
      *  @exception IllegalActionException If the port is not an opaque
      *   input port.
      *  @param port The port to transfer tokens from.
-     *  @return True if data are transferred.
+     *  @return True if at least one data token is transferred.
      */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         if (!port.isInput() || !port.isOpaque()) {
@@ -598,7 +703,7 @@ public class Director extends NamedObj implements Executable {
         return trans;
     }
 
-    /** Return true if it transfers data from an output port of the
+    /** Transfer data from an output port of the
      *  container to the ports it is connected to on the outside.
      *  The port argument must be an opaque output port.  If any
      *  channel of the output port has no data, then that channel is
@@ -608,7 +713,7 @@ public class Director extends NamedObj implements Executable {
      *  @exception IllegalActionException If the port is not an opaque
      *   output port.
      *  @param port The port to transfer tokens from.
-     *  @return True if data are transfered.
+     *  @return True if at least one data token is transfered.
      */
     public boolean transferOutputs(IOPort port)
             throws IllegalActionException {
@@ -644,7 +749,8 @@ public class Director extends NamedObj implements Executable {
 
     /** Invoke the wrapup() method of all the actors contained in the
      *  director's container.   In this base class wrapup() is called on the
-     *  associated actors in the order of their creation.
+     *  associated actors in the order of their creation.  If the container
+     *  is not an instance of CompositeActor, then this method does nothing.
      *  <p>
      *  This method should be invoked once per execution.  None of the other
      *  action methods should be invoked after it in the execution.
@@ -655,9 +761,10 @@ public class Director extends NamedObj implements Executable {
      *   one of the associated actors throws it.
      */
     public void wrapup() throws IllegalActionException {
-        CompositeActor container = ((CompositeActor)getContainer());
-        if (container!= null) {
-            Iterator actors = container.deepEntityList().iterator();
+        Nameable container = getContainer();
+        if (container instanceof CompositeActor) {
+            Iterator actors = ((CompositeActor)container)
+                    .deepEntityList().iterator();
             while (actors.hasNext()) {
                 Actor actor = (Actor)actors.next();
                 actor.wrapup();
@@ -708,22 +815,6 @@ public class Director extends NamedObj implements Executable {
         }
     }
 
-    /** Make this director the local director of the specified composite
-     *  actor.  If the CompositeActor is not null, then remove the Actor
-     *  from the workspace directory. If the CompositeActor is null, then
-     *  the director is not added back into the directory of the Workspace,
-     *  which could result in it being garbage collected.
-     *  This method should not be called directly.  Instead, call
-     *  setDirector of the CompositeActor class (or a derived class).
-     */
-    protected void _makeDirectorOf(CompositeActor cast) {
-
-        _container = cast;
-        if (cast != null) {
-            _workspace.remove(this);
-        }
-    }
-
     /** Return true if this director requires write access
      *  on the workspace during execution. Most director functions
      *  during execution do not need write access on the workspace.
@@ -745,12 +836,12 @@ public class Director extends NamedObj implements Executable {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables                 ////
 
-    // The current time of the model.
+    /** The current time of the model. */
     protected double _currentTime = 0.0;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The composite of which this is the local director.
-    private CompositeActor _container = null;
+    // The composite actor that this is the director of, if any.
+    private CompositeActor _container;
 }

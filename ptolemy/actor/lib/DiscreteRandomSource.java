@@ -33,6 +33,7 @@ package ptolemy.actor.lib;
 import java.util.Random;
 
 import ptolemy.actor.*;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
@@ -71,7 +72,7 @@ public class DiscreteRandomSource extends RandomSource {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public DiscreteRandomSource(TypedCompositeActor container, String name)
+    public DiscreteRandomSource(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         pmf = new Parameter(this, "pmf", new DoubleMatrixToken(

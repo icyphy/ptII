@@ -68,7 +68,7 @@ public class CTTriggeredSampler extends Transformer
      *  @exception NameDuplicationException If name coincides with
      *   an entity already in the container.
      */
-    public CTTriggeredSampler(TypedCompositeActor container, String name)
+    public CTTriggeredSampler(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setMultiport(true);

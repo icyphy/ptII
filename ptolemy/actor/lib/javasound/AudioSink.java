@@ -30,6 +30,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 
 package ptolemy.actor.lib.javasound;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.Token;
 import ptolemy.data.*;
@@ -123,7 +124,7 @@ public class AudioSink extends Sink {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public AudioSink(TypedCompositeActor container, String name)
+    public AudioSink(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 	if(_debugging) _debug("AudioSink: Constructor invoked");

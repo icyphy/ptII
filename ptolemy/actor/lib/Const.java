@@ -31,6 +31,7 @@
 package ptolemy.actor.lib;
 
 import ptolemy.actor.*;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
@@ -59,7 +60,7 @@ public class Const extends Source {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Const(TypedCompositeActor container, String name)
+    public Const(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
     	value = new Parameter(this, "value", new IntToken(1));

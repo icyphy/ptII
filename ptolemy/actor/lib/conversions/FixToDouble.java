@@ -31,6 +31,7 @@ package ptolemy.actor.lib.conversions;
 
 import ptolemy.actor.*;
 import ptolemy.actor.lib.Transformer;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.FixToken;   // for javadoc
@@ -93,7 +94,7 @@ public class FixToDouble extends Transformer {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public FixToDouble(TypedCompositeActor container, String name)
+    public FixToDouble(CompositeEntity container, String name)
 	throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         input.setTypeEquals(BaseType.FIX);

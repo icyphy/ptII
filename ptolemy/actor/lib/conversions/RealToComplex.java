@@ -36,6 +36,7 @@ import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.sdf.kernel.*;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.math.Complex;
 
@@ -61,7 +62,7 @@ public class RealToComplex extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public RealToComplex(TypedCompositeActor container, String name)
+    public RealToComplex(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 

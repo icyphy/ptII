@@ -62,7 +62,7 @@ use the unlink() method.
 The container for instances of this class can only be instances of
 ComponentEntity.  Derived classes may wish to further constrain the
 container to subclasses of ComponentEntity.  To do this, they should
-override the setContainer() method.
+override the protected _checkContainer() method.
 
 @author Edward A. Lee
 @version $Id$
@@ -210,6 +210,7 @@ public class ComponentRelation extends Relation {
         }
         try {
             _workspace.getWriteAccess();
+            _checkContainer(container);
             CompositeEntity prevcontainer = (CompositeEntity)getContainer();
             if (prevcontainer == container) return;
             // Do this first, because it may throw an exception.
@@ -289,6 +290,16 @@ public class ComponentRelation extends Relation {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Check that the specified container is of a suitable class for
+     *  this relation.  In this base class, this method returns immediately
+     *  without doing anything.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the container is not of
+     *   an acceptable class.  Not thrown in this base class.
+     */
+    protected void _checkContainer(CompositeEntity container)
+             throws IllegalActionException {}
 
     /** Throw an exception if the specified port cannot be linked to this
      *  relation (is not of class ComponentPort).

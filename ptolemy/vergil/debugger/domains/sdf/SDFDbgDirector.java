@@ -134,10 +134,12 @@ public class SDFDbgDirector extends StaticSchedulingDirector implements DbgDirec
      *  @param container Container of the director.
      *  @param name Name of this director.
      *  @exception IllegalActionException If the director is not compatible
-     *  with the specified container.  May be thrown in a derived class.
+     *   with the specified container.  May be thrown in a derived class.
+     *  @exception NameDuplicationException If the container is not a
+     *   CompositeActor and the name collides with an entity in the container.
      */
-    public SDFDbgDirector(TypedCompositeActor container, String name)
-            throws IllegalActionException {
+    public SDFDbgDirector(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
 	/*££Debug Code££*/

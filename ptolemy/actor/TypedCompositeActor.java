@@ -52,8 +52,7 @@ ComponentEntity that implement the TypedActor interface.  Derived classes
 may impose further constraints by overriding newPort(), _addPort(),
 newRelation(), _addRelation(), and _addEntity().
 <p>
-The container is constrained to be an instance of TypedCompositeActor.
-Derived classes may impose further constraints by overriding setContainer().
+Derived classes may constrain the container by overriding _checkContainer().
 
 @author Yuhong Xiong
 @version $Id$
@@ -99,14 +98,14 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *  local director initially, and its executive director will be simply
      *  the director of the container.
      *
-     *  @param container The container actor.
+     *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the container is incompatible
      *   with this actor.
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public TypedCompositeActor(TypedCompositeActor container, String name)
+    public TypedCompositeActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -232,29 +231,6 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
         } finally {
             workspace().doneWriting();
         }
-    }
-
-    /** Override the base class to ensure that the proposed container
-     *  is an instance of TypedCompositeActor. If it is, call the base
-     *  class setContainer() method.
-     *
-     *  @param entity The proposed container.
-     *  @exception IllegalActionException If the action would result in a
-     *   recursive containment structure, or if
-     *   this actor and the container are not in the same workspace, or
-     *   if the argument is not a TypedCompositeActor or null.
-     *  @exception NameDuplicationException If the container already has
-     *   an entity with the name of this actor.
-     */
-    public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
-        if (!(container instanceof TypedCompositeActor) &&
-                (container != null)) {
-            throw new IllegalActionException(container, this,
-                    "TypedCompositeActor can only be contained by instances "
-		    + "of TypedCompositeActor.");
-        }
-        super.setContainer(container);
     }
 
     /** Return the type constraints of this typed composite actor, if it
@@ -384,7 +360,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
     /** Add a port to this actor. This overrides the base class to
      *  throw an exception if the proposed port is not an instance of
      *  TypedIOPort.  This method should not be used directly.  Call the
-     *  setContainer() method of the port instead. This method does not set
+     *  s() method of the port instead. This method does not set
      *  the container of the port to point to this actor.
      *  It assumes that the port is in the same workspace as this
      *  actor, but does not check.  The caller should check.

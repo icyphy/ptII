@@ -43,6 +43,8 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.sched.NotSchedulableException;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.Attribute;
@@ -50,7 +52,6 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Port;
 import ptolemy.data.Token;
 import ptolemy.data.IntToken;
@@ -185,11 +186,13 @@ public class HDFFSMDirector extends FSMDirector {
      *
      *  @param container Container of the director.
      *  @param name Name of this director.
-     *  @exception It may be thrown in derived classes if the
-     *      director is not compatible with the specified container.
+     *  @exception IllegalActionException If the director is not compatible
+     *   with the specified container.
+     *  @exception NameDuplicationException If the container is not a
+     *   CompositeActor and the name collides with an entity in the container.
      */
-    public HDFFSMDirector(CompositeActor container, String name)
-            throws IllegalActionException {
+    public HDFFSMDirector(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 

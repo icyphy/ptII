@@ -30,6 +30,7 @@
 
 package ptolemy.actor.lib.jspaces;
 
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -39,7 +40,6 @@ import ptolemy.data.LongToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.StringToken;
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.lib.Sink;
 import ptolemy.actor.lib.jspaces.util.SpaceFinder;
 
@@ -67,7 +67,7 @@ public class IndexedPublisher extends Sink {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public IndexedPublisher(TypedCompositeActor container, String name)
+    public IndexedPublisher(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 

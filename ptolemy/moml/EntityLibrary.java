@@ -336,23 +336,6 @@ public class EntityLibrary
         }
     }
 
-    /** Override the base class to allow the proposed container
-     *  to be any instance of CompositeEntity.
-     *
-     *  @param entity The proposed container.
-     *  @exception IllegalActionException If the action would result in a
-     *   recursive containment structure, or if
-     *   this actor and the container are not in the same workspace, or
-     *   if the argument is not a TypedCompositeActor or null.
-     *  @exception NameDuplicationException If the container already has
-     *   an entity with the name of this actor.
-     */
-    public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
-        // Call the protected method to bypass type checks.
-        _setContainer(container);
-    }
-
     /** Override the base class to prevent there being a director.
      *  @param director The Director responsible for execution.
      *  @exception IllegalActionException Always thrown.
@@ -389,6 +372,16 @@ public class EntityLibrary
         }
         _containedEntities.append(entity);
     }
+
+    /** Check that the specified container is of a suitable class for
+     *  this entity.  This overrides the base class to return immediately
+     *  without doing anything.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the container is not of
+     *   an acceptable class.  Not thrown in this class.
+     */
+    protected void _checkContainer(CompositeEntity container)
+             throws IllegalActionException {}
 
     /** Write a MoML description of the contents of this object, which
      *  in this class is the configuration information. This method is called

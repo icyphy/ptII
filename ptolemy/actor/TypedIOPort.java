@@ -70,7 +70,7 @@ _linkInside() to throw an exception if their arguments are not of the
 appropriate type.  Similarly, an TypeIOPort can only be contained by a
 class derived from ComponentEntity and implementing the TypedActor
 interface.  Subclasses may further constrain the containers by overriding
-setContainer().
+_checkContainer().
 
 @author Yuhong Xiong, Lukito Muliadi
 @version $Id$
@@ -301,27 +301,6 @@ public class TypedIOPort extends IOPort implements Typeable {
         }
     }
 
-    /** Override the base class to ensure that the proposed container
-     *  implements the TypedActor interface (the base class ensures that
-     *  the container implements the Actor interface) or null. A null
-     *  argument will remove the port from the container.
-     *
-     *  @param container The proposed container.
-     *  @exception IllegalActionException If the proposed container is not a
-     *   TypedActor, or if the base class throws it.
-     *  @exception NameDuplicationException If the container already has
-     *   a port with the name of this port.
-     */
-    public void setContainer(Entity container)
-            throws IllegalActionException, NameDuplicationException {
-        if (!(container instanceof TypedActor) && (container != null)) {
-            throw new IllegalActionException(container, this,
-                    "TypedIOPort can only be contained by objects " +
-		    "implementing the TypedActor interface.");
-        }
-        super.setContainer(container);
-    }
-
     /** Constrain that the type of this port to be equal to or greater
      *  than the type of the specified Typeable object.
      *  @param less A Typeable object.
@@ -470,6 +449,23 @@ public class TypedIOPort extends IOPort implements Typeable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Override the base class to ensure that the proposed container
+     *  implements the TypedActor interface (the base class ensures that
+     *  the container implements the Actor interface) or null.
+     *
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the proposed container is not a
+     *   TypedActor, or if the base class throws it.
+     */
+    protected void _checkContainer(Entity container)
+            throws IllegalActionException {
+        if (!(container instanceof TypedActor) && (container != null)) {
+            throw new IllegalActionException(container, this,
+                    "TypedIOPort can only be contained by objects " +
+		    "implementing the TypedActor interface.");
+        }
+    }
 
     /** Override parent method to ensure compatibility of the relation.
      *  This method is <i>not</i> synchronized on the

@@ -31,6 +31,7 @@
 package ptolemy.domains.sdf.lib;
 
 import ptolemy.actor.*;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
@@ -58,7 +59,7 @@ public class IntToBits extends SDFAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public IntToBits(TypedCompositeActor container, String name)
+    public IntToBits(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
 
         super(container, name);

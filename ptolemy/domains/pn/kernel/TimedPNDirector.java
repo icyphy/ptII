@@ -140,10 +140,12 @@ public class TimedPNDirector extends BasePNDirector {
      *  @param container Container of the director.
      *  @param name Name of this director.
      *  @exception IllegalActionException If the director is not compatible
-     *  with the specified container.  May be thrown in derived classes.
+     *   with the specified container.  May be thrown in derived classes.
+     *  @exception NameDuplicationException If the container not a
+     *   CompositeActor and the name collides with an entity in the container.
      */
-    public TimedPNDirector(CompositeActor container, String name)
-            throws IllegalActionException {
+    public TimedPNDirector(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 

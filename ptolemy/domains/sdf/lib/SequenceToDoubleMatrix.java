@@ -40,6 +40,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.sdf.kernel.SDFAtomicActor;
 import ptolemy.domains.sdf.kernel.SDFIOPort;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -73,7 +74,7 @@ public class SequenceToDoubleMatrix extends SDFAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public SequenceToDoubleMatrix(TypedCompositeActor container, String name)
+    public SequenceToDoubleMatrix(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 

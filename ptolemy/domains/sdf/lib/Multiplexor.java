@@ -34,6 +34,7 @@ import ptolemy.actor.*;
 import ptolemy.data.*;
 import ptolemy.data.type.*;
 import ptolemy.domains.sdf.kernel.*;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
 
@@ -65,7 +66,7 @@ public class Multiplexor extends SDFAtomicActor {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public Multiplexor(TypedCompositeActor container, String name)
+    public Multiplexor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 

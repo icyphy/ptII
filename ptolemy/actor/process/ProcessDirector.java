@@ -98,9 +98,11 @@ public class ProcessDirector extends Director {
      *  @param name Name of this director.
      *  @exception IllegalActionException If the name contains a period,
      *   or if the director is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container not a
+     *   CompositeActor and the name collides with an entity in the container.
      */
-    public ProcessDirector(CompositeActor container, String name)
-            throws IllegalActionException {
+    public ProcessDirector(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _name = name;
     }
@@ -151,7 +153,8 @@ public class ProcessDirector extends Director {
      *  actors in the container (a composite actor) of this director.
      *  These are expected to call initialize(Actor), which will result
      *  in the creation of a new thread for each actor.
-     *  Also, set the current time to 0.0.
+     *  Also, set the current time to 0.0.  If the container is not
+     *  an instance of CompositeActor, then this method does nothing.
      *
      *  @exception IllegalActionException If the initialize() method
      *   of one of the deeply contained actors throws it.
@@ -162,10 +165,11 @@ public class ProcessDirector extends Director {
         _blockedActorCount = 0;
 	_actorThreadList = new LinkedList();
 	_newActorThreadList = new LinkedList();
-        CompositeActor container = ((CompositeActor)getContainer());
-        if (container!= null) {
+        Nameable container = getContainer();
+        if (container instanceof CompositeActor) {
             // Creating threads for all actors;
-            Iterator actors = container.deepEntityList().iterator();
+            Iterator actors = ((CompositeActor)container)
+                    .deepEntityList().iterator();
             while( actors.hasNext() ) {
                 Actor actor = (Actor)actors.next();
                 actor.initialize();
@@ -308,9 +312,9 @@ public class ProcessDirector extends Director {
     /** End the execution of the model under the control of this
      *  director. A flag is set in all the receivers that causes
      *  each process to terminate at the earliest communication point.
-     *  <P>
      *  Prior to setting receiver flags, this method wakes up the
-     *  threads if they all are stopped.
+     *  threads if they all are stopped.  If the container is not
+     *  an instance of CompositeActor, then this method does nothing.
      *  <P>
      *  This method is not synchronized on the workspace, so the caller
      *  should be.
@@ -322,23 +326,26 @@ public class ProcessDirector extends Director {
     public void wrapup() throws IllegalActionException {
         if( _debugging ) _debug(_name+": calling wrapup()");
         
-	CompositeActor cont = (CompositeActor)getContainer();
-        Iterator actors = cont.deepEntityList().iterator();
-        Iterator actorPorts;
-        ProcessReceiver nextRec;
-        LinkedList recs = new LinkedList();
-        while (actors.hasNext()) {
-            Actor actor = (Actor)actors.next();
-            actorPorts = actor.inputPortList().iterator();
-            while (actorPorts.hasNext()) {
-                IOPort port = (IOPort)actorPorts.next();
-                // Setting finished flag in the receivers.
-                Receiver[][] receivers = port.getReceivers();
-                for (int i = 0; i < receivers.length; i++) {
-                    for (int j = 0; j < receivers[i].length; j++) {
-                        nextRec = (ProcessReceiver)receivers[i][j];
-                        nextRec.requestFinish();
-                        recs.addFirst(nextRec);
+	Nameable container = getContainer();
+        if (container instanceof CompositeActor) {
+            Iterator actors = ((CompositeActor)container)
+                    .deepEntityList().iterator();
+            Iterator actorPorts;
+            ProcessReceiver nextRec;
+            LinkedList recs = new LinkedList();
+            while (actors.hasNext()) {
+                Actor actor = (Actor)actors.next();
+                actorPorts = actor.inputPortList().iterator();
+                while (actorPorts.hasNext()) {
+                    IOPort port = (IOPort)actorPorts.next();
+                    // Setting finished flag in the receivers.
+                    Receiver[][] receivers = port.getReceivers();
+                    for (int i = 0; i < receivers.length; i++) {
+                        for (int j = 0; j < receivers[i].length; j++) {
+                            nextRec = (ProcessReceiver)receivers[i][j];
+                            nextRec.requestFinish();
+                            recs.addFirst(nextRec);
+                        }
                     }
                 }
             }

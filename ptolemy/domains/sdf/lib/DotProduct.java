@@ -34,6 +34,7 @@ import ptolemy.actor.*;
 import ptolemy.data.*;
 import ptolemy.data.type.*;
 import ptolemy.domains.sdf.kernel.*;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.math.DoubleArrayMath;
 
@@ -65,7 +66,7 @@ public class DotProduct extends SDFAtomicActor {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public DotProduct(TypedCompositeActor container, String name)
+    public DotProduct(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
       	input1 = new SDFIOPort(this, "input1", true, false);

@@ -37,6 +37,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Nameable;
@@ -123,9 +124,11 @@ public class FSMDirector extends Director {
      *  @param name Name of this director.
      *  @exception IllegalActionException If the name has a period in it, or
      *   the director is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container not a
+     *   CompositeActor and the name collides with an entity in the container.
      */
-    public FSMDirector(CompositeActor container, String name)
-            throws IllegalActionException {
+    public FSMDirector(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _createParameter();
     }
@@ -236,12 +239,15 @@ public class FSMDirector extends Director {
      */
     public void fireAt(Actor actor, double time)
             throws IllegalActionException {
-        Actor cont = (Actor)getContainer();
-        Director execdir = cont.getExecutiveDirector();
-        if(execdir != null) {
-            execdir.fireAt(cont, time);
-        } else {
-            setCurrentTime(time);
+        Nameable container = getContainer();
+        if (container instanceof Actor) {
+            Actor cont = (Actor)container;
+            Director execdir = cont.getExecutiveDirector();
+            if(execdir != null) {
+                execdir.fireAt(cont, time);
+            } else {
+                setCurrentTime(time);
+            }
         }
     }
 
@@ -265,7 +271,11 @@ public class FSMDirector extends Director {
                         + "controller is set.");
             }
             String ctrlName = tok.stringValue();
-            CompositeActor cont = (CompositeActor)getContainer();
+            Nameable container = getContainer();
+            if (!(container instanceof CompositeActor)) {
+                throw new IllegalActionException(this, "No controller found.");
+            }
+            CompositeActor cont = (CompositeActor)container;
             Entity entity = cont.getEntity(ctrlName);
             if (entity == null) {
                 throw new IllegalActionException(this, "No controller found "
@@ -321,13 +331,15 @@ public class FSMDirector extends Director {
         boolean result = true;
         if (_fireRefinement) {
             result = ctrl.currentState().getRefinement().postfire();
-            if (((CompositeActor)getContainer())
-               .getExecutiveDirector() != null) {
+            Nameable container = getContainer();
+            if (container instanceof CompositeActor &&
+                   ((CompositeActor)container).getExecutiveDirector() != null) {
                 // Not at the top level, ignore the return value from 
                 // the current refinement.
                 result = true;
             }
-            // Otherwise, 'and' the refinement.postfire() with controller.postfire()
+            // Otherwise, 'and' the refinement.postfire()
+            // with controller.postfire()
         }
         result = result && ctrl.postfire();
         _currentLocalReceiverMap =
@@ -345,7 +357,9 @@ public class FSMDirector extends Director {
      *  FIXME: Changed by liuj, not yet reviewed.
      */
     public boolean prefire() throws IllegalActionException {
-        Actor cont = (Actor)getContainer();
+        Nameable container = getContainer();
+        if (!(container instanceof Actor)) return false;
+        Actor cont = (Actor)container;
         Director exeDir = cont.getExecutiveDirector();
         FSMActor ctrl = getController();
         Actor ref = ctrl.currentState().getRefinement();

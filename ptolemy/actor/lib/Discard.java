@@ -31,6 +31,7 @@
 package ptolemy.actor.lib;
 
 import ptolemy.actor.*;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -58,7 +59,7 @@ public class Discard extends Sink {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Discard(TypedCompositeActor container, String name)
+    public Discard(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
     }

@@ -162,9 +162,11 @@ public class DTDirector extends SDFDirector {
      *  @param name Name of this director.
      *  @exception IllegalActionException If the
      *   director is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container is not a
+     *   CompositeActor and the name collides with an entity in the container.
      */
-    public DTDirector(TypedCompositeActor container, String name)
-            throws IllegalActionException {
+    public DTDirector(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }

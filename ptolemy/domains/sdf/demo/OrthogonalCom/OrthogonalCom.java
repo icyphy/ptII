@@ -58,10 +58,10 @@ public class OrthogonalCom extends TypedCompositeActor {
 
     public OrthogonalCom(Workspace w) throws IllegalActionException {
         super(w);               
-        
-        setDirector(new SDFDirector(this, "director"));
-                
+                        
         try {
+            setDirector(new SDFDirector(this, "director"));
+
            // Bit source
            DiscreteRandomSource bitSource =
 	       new DiscreteRandomSource(this, "bitSource");

@@ -31,6 +31,7 @@
 package ptolemy.actor.lib;
 
 import ptolemy.actor.*;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.data.*;
@@ -64,7 +65,7 @@ public class AbsoluteValue extends Transformer {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public AbsoluteValue(TypedCompositeActor container, String name)
+    public AbsoluteValue(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 

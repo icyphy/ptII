@@ -1,4 +1,4 @@
-/* An FFT filter.
+/* An FFT.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -31,6 +31,7 @@
 package ptolemy.domains.sdf.lib;
 
 import ptolemy.actor.*;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
@@ -64,7 +65,7 @@ public class FFT extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public FFT(TypedCompositeActor container, String name)
+    public FFT(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 

@@ -79,7 +79,7 @@ public class Commutator extends Transformer implements SequenceActor {
      *  @exception IllegalActionException If the actor cannot be contained
      *  by the proposed container.
      */
-    public Commutator(TypedCompositeActor container, String name)
+    public Commutator(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setMultiport(true);

@@ -47,9 +47,8 @@ import java.util.List;
 //// TypedAtomicActor
 /**
 A TypedAtomicActor is an AtomicActor whose ports and parameters have types.
-The container is required to be an instance of TypedCompositeActor.
-Derived classes may further constrain the container by overriding
-setContainer(). The Ports of TypedAtomicActors are constrained to be
+Derived classes may constrain the container by overriding
+_checkContainer(). The Ports of TypedAtomicActors are constrained to be
 TypedIOPorts.  Derived classes may further constrain the ports by
 overriding the public method newPort() to create a port of the
 appropriate subclass, and the protected method _addPort() to throw an
@@ -102,7 +101,7 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public TypedAtomicActor(TypedCompositeActor container, String name)
+    public TypedAtomicActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -196,30 +195,6 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
         } finally {
             _workspace.doneWriting();
         }
-    }
-
-    /** Override the base class to ensure that the proposed container
-     *  is an instance of TypedCompositeActor or null. If it is, call the
-     *  base class setContainer() method. A null argument will remove
-     *  the actor from its container.
-     *
-     *  @param entity The proposed container.
-     *  @exception IllegalActionException If the action would result in a
-     *   recursive containment structure, or if
-     *   this actor and container are not in the same workspace, or
-     *   if the argument is not a TypedCompositeActor or null.
-     *  @exception NameDuplicationException If the container already has
-     *   an entity with the name of this actor.
-     */
-    public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
-        if (!(container instanceof TypedCompositeActor) &&
-                (container != null)) {
-            throw new IllegalActionException(container, this,
-                    "TypedAtomicActor can only be contained by instances of " +
-                    "TypedCompositeActor.");
-        }
-        super.setContainer(container);
     }
 
     /** Return the type constraints of this actor.

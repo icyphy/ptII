@@ -30,6 +30,7 @@
 
 package ptolemy.actor.lib;
 
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.graph.*;
 import ptolemy.data.*;
@@ -62,7 +63,7 @@ public class MaxIndex extends Transformer {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public MaxIndex(TypedCompositeActor container, String name)
+    public MaxIndex(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.DOUBLE);

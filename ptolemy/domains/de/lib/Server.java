@@ -32,11 +32,11 @@ package ptolemy.domains.de.lib;
 
 import ptolemy.domains.de.kernel.*;
 import ptolemy.domains.de.lib.DETransformer;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
-import ptolemy.actor.TypedCompositeActor;
 
 //////////////////////////////////////////////////////////////////////////
 //// Server
@@ -85,7 +85,7 @@ public class Server extends DETransformer {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Server(TypedCompositeActor container, String name)
+    public Server(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         serviceTime =

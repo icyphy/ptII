@@ -32,11 +32,11 @@ package ptolemy.domains.de.lib;
 
 import ptolemy.domains.de.kernel.*;
 import ptolemy.domains.de.lib.DETransformer;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 
 //////////////////////////////////////////////////////////////////////////
@@ -60,7 +60,7 @@ public class VariableDelay extends DETransformer {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public VariableDelay(TypedCompositeActor container, String name)
+    public VariableDelay(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         defaultDelay = new Parameter(this, 

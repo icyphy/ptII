@@ -100,7 +100,7 @@ public class SDFAtomicActor extends TypedAtomicActor {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public SDFAtomicActor(TypedCompositeActor container, String name)
+    public SDFAtomicActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }

@@ -147,9 +147,11 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  @param name Name of this director.
      *  @exception IllegalActionException If the name contains a period,
      *   or if the director is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container not a
+     *   CompositeActor and the name collides with an entity in the container.
      */
-    public CompositeProcessDirector(CompositeActor container, String name)
-            throws IllegalActionException {
+    public CompositeProcessDirector(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _name = name;
     }

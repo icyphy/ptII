@@ -30,6 +30,7 @@
 
 package ptolemy.domains.sdf.lib;
 
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -40,7 +41,6 @@ import ptolemy.data.Token;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.ArrayType;
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.domains.sdf.kernel.SDFAtomicActor;
 import ptolemy.domains.sdf.kernel.SDFIOPort;
 
@@ -72,7 +72,7 @@ public class SequenceToArray extends SDFAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public SequenceToArray(TypedCompositeActor container, String name)
+    public SequenceToArray(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 

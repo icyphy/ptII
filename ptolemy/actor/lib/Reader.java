@@ -38,6 +38,7 @@ import java.net.URL;
 import java.util.StringTokenizer;
 
 // Ptolemy imports.
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.Token;
 import ptolemy.data.StringToken;
@@ -77,7 +78,7 @@ public class Reader extends Source {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Reader(TypedCompositeActor container, String name)
+    public Reader(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 

@@ -69,7 +69,7 @@ use the unlink() method.
 The container for instances of this class can only be instances of
 CompositeActor.  Derived classes may wish to further constrain the
 container to subclasses of ComponentEntity.  To do this, they should
-override the setContainer() method.
+override the _checkContainer() method.
 
 @author Edward A. Lee, Jie Liu
 @version $Id$
@@ -108,7 +108,7 @@ public class IORelation extends ComponentRelation {
      *  @exception NameDuplicationException If the name coincides with
      *   a relation already in the container.
      */
-    public IORelation(CompositeActor container, String name)
+    public IORelation(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -443,16 +443,16 @@ public class IORelation extends ComponentRelation {
                     "IORelation can only be contained by CompositeActor.");
         }
         // Invalidate schedule and type resolution of the old container.
-        CompositeActor oldContainer = (CompositeActor)getContainer();
-        if (oldContainer != null) {
-            Director director = oldContainer.getDirector();
+        Nameable oldContainer = getContainer();
+        if (oldContainer instanceof CompositeActor) {
+            Director director = ((CompositeActor)oldContainer).getDirector();
             if (director != null) {
                 director.invalidateSchedule();
                 director.invalidateResolvedTypes();
             }
         }
         // Invalidate schedule and type resolution of the new container.
-        if (container != null) {
+        if (container instanceof CompositeActor) {
             Director director = ((CompositeActor)container).getDirector();
             if (director != null) {
                 director.invalidateSchedule();
@@ -508,9 +508,9 @@ public class IORelation extends ComponentRelation {
             _width = width;
 
             // Invalidate schedule and type resolution.
-            CompositeActor container = (CompositeActor)getContainer();
-            if (container != null) {
-                Director director = container.getDirector();
+            Nameable container = getContainer();
+            if (container instanceof CompositeActor) {
+                Director director = ((CompositeActor)container).getDirector();
                 if (director != null) {
                     director.invalidateSchedule();
                     director.invalidateResolvedTypes();

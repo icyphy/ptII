@@ -75,7 +75,7 @@ public class XYScope extends XYPlotter {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public XYScope(TypedCompositeActor container, String name)
+    public XYScope(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 

@@ -35,6 +35,7 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.lib.TimedActor;
 import ptolemy.actor.lib.SequenceActor;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -58,7 +59,7 @@ public abstract class DETransformer extends DEActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    protected DETransformer(TypedCompositeActor container, String name)
+    protected DETransformer(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 

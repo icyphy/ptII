@@ -31,6 +31,7 @@
 package ptolemy.actor.lib;
 
 import ptolemy.actor.*;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
@@ -70,7 +71,7 @@ public class SequenceSource extends Source implements SequenceActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public SequenceSource(TypedCompositeActor container, String name)
+    public SequenceSource(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         firingCountLimit = new Parameter(this, "firingCountLimit",

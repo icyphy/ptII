@@ -30,6 +30,7 @@
 
 package ptolemy.actor.lib;
 
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.graph.*;
 import ptolemy.data.*;
@@ -82,7 +83,7 @@ public class MultiplyDivide extends TypedAtomicActor {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public MultiplyDivide(TypedCompositeActor container, String name)
+    public MultiplyDivide(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 	multiply = new TypedIOPort(this, "multiply", true, false);

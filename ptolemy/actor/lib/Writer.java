@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 
 // Ptolemy imports.
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.Token;
 import ptolemy.data.StringToken;
@@ -63,7 +64,7 @@ public class Writer extends Sink {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Writer(TypedCompositeActor container, String name)
+    public Writer(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 

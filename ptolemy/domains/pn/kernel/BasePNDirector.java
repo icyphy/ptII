@@ -163,10 +163,12 @@ public class BasePNDirector extends CompositeProcessDirector {
      *  @param container Container of the director.
      *  @param name Name of this director.
      *  @exception IllegalActionException If the director is not compatible
-     *  with the specified container.  Thrown in derived classes.
+     *   with the specified container.  Thrown in derived classes.
+     *  @exception NameDuplicationException If the container not a
+     *   CompositeActor and the name collides with an entity in the container.
      */
-    public BasePNDirector(CompositeActor container, String name)
-            throws IllegalActionException {
+    public BasePNDirector(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         try {
             Parameter param = new Parameter(this,"Initial_queue_capacity",

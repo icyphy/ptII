@@ -33,6 +33,7 @@ import ptolemy.actor.*;
 import ptolemy.actor.lib.SequenceActor;
 import ptolemy.actor.lib.TimedActor;
 import ptolemy.domains.de.kernel.*;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -59,9 +60,8 @@ public abstract class DEActor extends TypedAtomicActor
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    protected DEActor(TypedCompositeActor container, String name)
+    protected DEActor(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
     }
-
 }

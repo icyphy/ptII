@@ -100,7 +100,7 @@ to throw an exception if their arguments are not of the appropriate
 type.  Similarly, an IOPort can only be contained by a class
 derived from ComponentEntity and implementing the Actor interface.
 Subclasses may further constrain the containers by overriding
-setContainer().
+the protected method _checkContainer().
 
 @authors Edward A. Lee, Jie Liu, Neil Smyth, Lukito Muliadi
 @version $Id$
@@ -1346,11 +1346,6 @@ public class IOPort extends ComponentPort {
      */
     public void setContainer(Entity container)
             throws IllegalActionException, NameDuplicationException {
-        if (!(container instanceof Actor) && (container != null)) {
-            throw new IllegalActionException(container, this,
-                    "IOPort can only be contained by objects implementing " +
-                    "the Actor interface.");
-        }
         // Invalidate schedule and type resolution of the old container.
         Actor oldContainer = (Actor)getContainer();
         if (oldContainer != null) {
@@ -1361,7 +1356,7 @@ public class IOPort extends ComponentPort {
             }
         }
         // Invalidate schedule and type resolution of the new container.
-        if (container != null) {
+        if (container instanceof Actor) {
             Director director = ((Actor)container).getDirector();
             if (director != null) {
                 director.invalidateSchedule();
@@ -1619,6 +1614,21 @@ public class IOPort extends ComponentPort {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Check that the specified container implements the Actor interface
+     *  (or is null).
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the container is not of
+     *   an acceptable class.
+     */
+    protected void _checkContainer(Entity container)
+             throws IllegalActionException {
+        if (!(container instanceof Actor) && (container != null)) {
+            throw new IllegalActionException(container, this,
+                    "IOPort can only be contained by objects implementing " +
+                    "the Actor interface.");
+        }
+    }
 
     /** Override parent method to ensure compatibility of the relation
      *  and validity of the width of the port.
@@ -1879,11 +1889,14 @@ public class IOPort extends ComponentPort {
      *   if it has no local director).
      */
     protected Receiver _newInsideReceiver() throws IllegalActionException {
-        ComponentEntity container = (ComponentEntity)getContainer();
-        if (container.isOpaque() && !container.isAtomic()) {
-            Receiver rec = ((CompositeActor)container).newInsideReceiver();
-            rec.setContainer(this);
-            return rec;
+        Nameable container = getContainer();
+        if (container instanceof CompositeActor) {
+            CompositeActor castContainer = (CompositeActor)container;
+            if (castContainer.isOpaque() && !castContainer.isAtomic()) {
+                Receiver rec = castContainer.newInsideReceiver();
+                rec.setContainer(this);
+                return rec;
+            }
         }
         throw new IllegalActionException(this,
                 "Can only create inside receivers for a port of a non-atomic, "
@@ -1993,9 +2006,9 @@ public class IOPort extends ComponentPort {
     // Invalidate schedule and type resolution of the director of the
     // container, if there is one.
     private void _invalidate() {
-        Actor container = (Actor)getContainer();
-        if (container != null) {
-            Director director = container.getDirector();
+        Nameable container = getContainer();
+        if (container instanceof Actor) {
+            Director director = ((Actor)container).getDirector();
             if (director != null) {
                 director.invalidateSchedule();
                 director.invalidateResolvedTypes();

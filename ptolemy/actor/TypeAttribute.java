@@ -84,24 +84,6 @@ public class TypeAttribute extends StringAttribute {
         return _type;
     }
 
-    /** Override the base class to ensure that the proposed container
-     *  is a TypedIOPort.
-     *  @param container The proposed container.
-     *  @exception IllegalActionException If the proposed container is not a
-     *   TypedIOPort, or if the base class throws it.
-     *  @exception NameDuplicationException If the container already has
-     *   an attribute with the name of this attribute.
-     */
-    public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
-        if (!(container instanceof TypedIOPort) && (container != null)) {
-            throw new IllegalActionException(container, this,
-                    "TypeAttribute can only be contained by instances " +
-		    "of TypedIOPort.");
-        }
-        super.setContainer(container);
-    }
-
     /** Set the type designation.
      *  @param expression The type designation.
      *  @exception IllegalActionException If the change is not acceptable
@@ -114,6 +96,24 @@ public class TypeAttribute extends StringAttribute {
             "Cannot find type class: " + expression);
         }
         super.setExpression(expression);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Override the base class to ensure that the proposed container
+     *  is a TypedIOPort.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the proposed container is not a
+     *   TypedIOPort, or if the base class throws it.
+     */
+    protected void _checkContainer(NamedObj container)
+            throws IllegalActionException {
+        if (!(container instanceof TypedIOPort) && (container != null)) {
+            throw new IllegalActionException(container, this,
+                    "TypeAttribute can only be contained by instances " +
+		    "of TypedIOPort.");
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

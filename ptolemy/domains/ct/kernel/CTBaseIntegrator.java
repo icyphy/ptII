@@ -30,13 +30,13 @@
 
 package ptolemy.domains.ct.kernel;
 
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.type.BaseType;
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.TimedActor;
@@ -106,10 +106,10 @@ public class CTBaseIntegrator extends TypedAtomicActor
                CTDynamicActor, CTStatefulActor {
 
     /** Construct an integrator, with a name, a input port, a output port
-     *  and a TypedCompositeActor as the container.
+     *  and a container.
      *  The integrator is in the same workspace as the container.
      *
-     * @param container The TypedCompositeActor that contains this integrator.
+     * @param container The container.
      * @param name The name
      * @return The CTBaseIntegrator
      * @exception NameDuplicationException If the name is used by another
@@ -117,7 +117,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
      * @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container. FIXME: never happens?
      */
-    public CTBaseIntegrator(TypedCompositeActor container, String name)
+    public CTBaseIntegrator(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input = new TypedIOPort(this, "input");

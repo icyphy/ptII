@@ -31,6 +31,7 @@
 package ptolemy.actor.lib;
 
 import ptolemy.actor.*;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
@@ -69,7 +70,7 @@ public class TimedSource extends Source implements TimedActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public TimedSource(TypedCompositeActor container, String name)
+    public TimedSource(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         stopTime = new Parameter(this, "stopTime", new DoubleToken(0.0));

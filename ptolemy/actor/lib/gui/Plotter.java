@@ -77,7 +77,7 @@ public class Plotter extends TypedAtomicActor
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Plotter(TypedCompositeActor container, String name)
+    public Plotter(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         fillOnWrapup = new Parameter(this, "fillOnWrapup",

@@ -30,6 +30,7 @@
 
 package ptolemy.domains.ct.lib;
 import ptolemy.domains.ct.kernel.*;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 
@@ -43,15 +44,16 @@ that it is in the ct.lib package.
 @see ptolemy.domains.ct.kernel.CTBaseIntegrator
 */
 public class Integrator extends CTBaseIntegrator {
-    /** construct the integrator.
+
+    /** Construct an integrator.
      * @see ptolemy.domains.ct.kernel.CTBaseIntegrator
-     * @param container The TypedCompositeActor this star belongs to
+     * @param container The container.
      * @param name The name.
      * @exception NameDuplicationException If another star already had
      * this name.
      * @exception IllegalActionException If there was an internal problem.
      */
-    public Integrator(TypedCompositeActor container, String name)
+    public Integrator(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }

@@ -76,7 +76,9 @@ JCLASS =	$(JSRCS:%.java=%.class)
 # to run 'make tests' to run the tests.
 
 tests:: $(EXTRA_SRCS) jclass test_java #test_jsimple
-	$(PTII)/bin/ptinvoke ptolemy.actor.gui.MoMLApplication FileWriter.xml
+
+# FIXME: What is this about?  There is no such file.
+#	$(PTII)/bin/ptinvoke ptolemy.actor.gui.MoMLApplication FileWriter.xml
 
 test_java: jclass
 

@@ -93,9 +93,6 @@ relations to be IORelations, and the actors to be instances of
 ComponentEntity that implement the Actor interface.  Derived classes
 may impose further constraints by overriding newPort(), _addPort(),
 newRelation(), _addRelation(), and _addEntity().
-<p>
-The container is constrained to be an instance of CompositeActor.
-Derived classes may impose further constraints by overriding setContainer().
 
 @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer
 @version $Id$
@@ -178,8 +175,13 @@ public class CompositeActor extends CompositeEntity implements Actor {
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         CompositeActor newobj = (CompositeActor)super.clone(ws);
         if (_director != null) {
-            newobj._director = (Director)_director.clone();
-	    newobj._director._makeDirectorOf(newobj);
+            Director newDirector = (Director)_director.clone(ws);
+            try {
+                newDirector.setContainer(newobj);
+            } catch (Exception ex) {
+                throw new CloneNotSupportedException(
+                        "Failed to clone the director: " + ex);
+            }
         } else {
             newobj._director = null;
         }
@@ -310,8 +312,10 @@ public class CompositeActor extends CompositeEntity implements Actor {
         try {
             _workspace.getReadAccess();
             if (_manager != null) return _manager;
-            CompositeActor container = (CompositeActor)getContainer();
-            if (container != null) return container.getManager();
+            Nameable container = getContainer();
+            if (container instanceof Actor) {
+                return ((Actor)container).getManager();
+            }
             return null;
         } finally {
             _workspace.doneReading();
@@ -646,8 +650,10 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  @param change The requested change.
      */
     public void requestChange(ChangeRequest change) {
-	CompositeEntity container = (CompositeEntity) getContainer();
-	if(container == null) {
+        Nameable container = getContainer();
+        if (container instanceof NamedObj) {
+	    ((NamedObj)container).requestChange(change);
+        } else {
 	    change.setListeners(_changeListeners);
 	    Manager manager = getManager();
 	    if(manager == null) {
@@ -655,32 +661,35 @@ public class CompositeActor extends CompositeEntity implements Actor {
 	    } else {
 		manager.requestChange(change);
 	    }
-	} else {
-	    container.requestChange(change);
 	}
     }
 
-    /** Override the base class to ensure that the proposed container
-     *  is an instance of CompositeActor. If it is, call the base class
-     *  setContainer() method.  Also, invalidate the schedule and
+    /** Override the base class to invalidate the schedule and
      *  resolved types of the director.
-     *
      *  @param entity The proposed container.
      *  @exception IllegalActionException If the action would result in a
      *   recursive containment structure, or if
-     *   this entity and container are not in the same workspace, or
-     *   if the argument is not a CompositeActor or null.
+     *   this entity and container are not in the same workspace.
      *  @exception NameDuplicationException If the container already has
      *   an entity with the name of this entity.
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
-        if (!(container instanceof CompositeActor) && (container != null)) {
-            throw new IllegalActionException(container, this,
-                    "CompositeActor can only be contained by instances of " +
-                    "CompositeActor.");
+        // Invalidate the schedule and type resolution of the old director.
+        Director oldDirector = getDirector();
+        if (oldDirector != null) {
+            oldDirector.invalidateSchedule();
+            oldDirector.invalidateResolvedTypes();
         }
+
         super.setContainer(container);
+
+        Director director = getDirector();
+        // Invalidate the schedule and type resolution of the new director.
+        if (director != null) {
+            director.invalidateSchedule();
+            director.invalidateResolvedTypes();
+        }
     }
 
     /** Set the local director for execution of this CompositeActor.
@@ -689,27 +698,27 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  The container of the specified director is set to this composite
      *  actor, and if there was previously a local director, its container
      *  is set to null. This method is write-synchronized on the workspace.
+     *  NOTE: Calling this method is equivalent to calling setContainer()
+     *  on the director with this composite as an argument.
      *
      *  @param director The Director responsible for execution.
      *  @exception IllegalActionException If the director is not in
-     *  the same workspace as this actor. It may also be thrown in derived
-     *  classes if the director is not compatible.
+     *   the same workspace as this actor. It may also be thrown in derived
+     *   classes if the director is not compatible.
      */
     public void setDirector(Director director) throws IllegalActionException {
-        if (director != null && _workspace != director.workspace()) {
-            throw new IllegalActionException(this, director,
-                    "Cannot set director because workspaces are different.");
-        }
         try {
-            _workspace.getWriteAccess();
-            // If there was a previous director, we need to reset it.
-            if (_director != null) _director._makeDirectorOf(null);
             if (director != null) {
-                director._makeDirectorOf(this);
+                director.setContainer(this);
+            } else {
+                Director oldDirector = getDirector();
+                if (oldDirector != null) {
+                    oldDirector.setContainer(null);
+                }
+                _setDirector(null);
             }
-            _director = director;
-        } finally {
-            _workspace.doneWriting();
+        } catch (NameDuplicationException ex) {
+            throw new InternalErrorException("Name collision in setDirector!");
         }
     }
 
@@ -719,7 +728,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  This method is write-synchronized on the workspace.
      *
      *  @param manager The Manager
-     *  @exception IllegalActionException If this actor already has a
+     *  @exception IllegalActionException If this actor has a
      *  container, or the manager is not in the same workspace as this
      *  actor.
      *  @see #getManager()
@@ -956,32 +965,13 @@ public class CompositeActor extends CompositeEntity implements Actor {
         super._exportMoMLContents(output, depth);
     }
 
-    /** Override the base class to invalidate the schedule and
-     *  resolved types of the director.
-     *  @param entity The proposed container.
-     *  @exception IllegalActionException If the action would result in a
-     *   recursive containment structure, or if
-     *   this entity and container are not in the same workspace.
-     *  @exception NameDuplicationException If the container already has
-     *   an entity with the name of this entity.
+    /** Set the local director for execution of this CompositeActor.
+     *  This should not be called be directly.  Instead, call setContainer()
+     *  on the director.
+     *  @param director The Director responsible for execution.
      */
-    protected void _setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
-        // Invalidate the schedule and type resolution of the old director.
-        Director oldDirector = getDirector();
-        if (oldDirector != null) {
-            oldDirector.invalidateSchedule();
-            oldDirector.invalidateResolvedTypes();
-        }
-
-        super._setContainer(container);
-
-        Director director = getDirector();
-        // Invalidate the schedule and type resolution of the new director.
-        if (director != null) {
-            director.invalidateSchedule();
-            director.invalidateResolvedTypes();
-        }
+    protected void _setDirector(Director director) {
+        _director = director;
     }
 
     ///////////////////////////////////////////////////////////////////

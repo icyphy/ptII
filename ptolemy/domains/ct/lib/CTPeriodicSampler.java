@@ -70,7 +70,7 @@ public class CTPeriodicSampler extends Transformer
      *  @exception NameDuplicationException If name coincides with
      *   an entity already in the container.
      */
-    public CTPeriodicSampler(TypedCompositeActor container, String name)
+    public CTPeriodicSampler(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setMultiport(true);

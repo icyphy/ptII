@@ -56,7 +56,7 @@ subclasses should override the protected method _checkLink() to throw
 an exception if its argument is a relation that is not of the appropriate
 subclass.  Similarly, if a subclass wishes to constrain the containers
 of the port to be of a subclass of Entity, they should override
-setContainer().
+the protected method _checkContainer().
 
 @author Mudit Goel, Edward A. Lee, Jie Liu
 @version $Id$
@@ -392,6 +392,7 @@ public class Port extends NamedObj {
         }
         try {
             _workspace.getWriteAccess();
+            _checkContainer(entity);
             Entity prevcontainer = (Entity)getContainer();
             if (prevcontainer == entity) return;
             // Do this first, because it may throw an exception.
@@ -490,6 +491,16 @@ public class Port extends NamedObj {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Check that the specified container is of a suitable class for
+     *  this port.  In this base class, this method returns immediately
+     *  without doing anything.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the container is not of
+     *   an acceptable class.  Not thrown in this base class.
+     */
+    protected void _checkContainer(Entity container)
+             throws IllegalActionException {}
 
     /** Check that this port is compatible with the specified relation.
      *  If the argument is null, do nothing.

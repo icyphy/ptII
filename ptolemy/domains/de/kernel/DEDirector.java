@@ -186,9 +186,11 @@ public class DEDirector extends Director {
      *  @param name Name of this director.
      *  @exception IllegalActionException If the
      *   director is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container not a
+     *   CompositeActor and the name collides with an entity in the container.
      */
-    public DEDirector(CompositeActor container , String name)
-            throws IllegalActionException {
+    public DEDirector(CompositeEntity container , String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _initParameters();
     }
@@ -641,7 +643,9 @@ public class DEDirector extends Director {
     /** Advance current time to the current time of the executive director,
      *  and then call the superclass method.  The port argument must
      *  be an opaque input port.  If any channel of the input port
-     *  has no data, then that channel is ignored.
+     *  has no data, then that channel is ignored.  If the container
+     *  does not implement the Actor interface, then this method does
+     *  nothing.
      *
      *  @return True if data are transferred.
      *  @param port The input port from which tokens are transferred.
@@ -650,16 +654,20 @@ public class DEDirector extends Director {
      *   is in the past.
      */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
-        Actor container = (Actor)getContainer();
-        double outsideCurrTime =
-            container.getExecutiveDirector().getCurrentTime();
-        if (outsideCurrTime < getCurrentTime()) {
-            throw new IllegalActionException(this,
-                    "Received an event in the past at "
-                    + "an opaque composite actor boundary.");
+        Nameable container = getContainer();
+        if (container instanceof Actor) {
+            double outsideCurrTime = ((Actor)container)
+                    .getExecutiveDirector().getCurrentTime();
+            if (outsideCurrTime < getCurrentTime()) {
+                throw new IllegalActionException(this,
+                "Received an event in the past at "
+                + "an opaque composite actor boundary.");
+            }
+            setCurrentTime(outsideCurrTime);
+            return super.transferInputs(port);
+        } else {
+            return false;
         }
-        setCurrentTime(outsideCurrTime);
-        return super.transferInputs(port);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -984,20 +992,22 @@ public class DEDirector extends Director {
         // Clear the graph
         DirectedAcyclicGraph dag = new DirectedAcyclicGraph();
 
-        CompositeActor container = ((CompositeActor)getContainer());
+        Nameable container = getContainer();
 
         // If there is no container, there are no actors.
-        if (container == null) return dag;
+        if (!(container instanceof CompositeActor)) return dag;
+
+        CompositeActor castContainer = (CompositeActor)container;
 
         // First, include all actors as nodes in the graph.
         // get all the contained actors.
-        Iterator actors = container.deepEntityList().iterator();
+        Iterator actors = castContainer.deepEntityList().iterator();
         while (actors.hasNext()) {
             dag.add(actors.next());
         }
 
         // Next, create the directed edges by iterating again.
-        actors = container.deepEntityList().iterator();
+        actors = castContainer.deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor)actors.next();
             // get all the input ports in that actor
@@ -1080,7 +1090,7 @@ public class DEDirector extends Director {
         // for the composite actor that contains this director.
         // This composite actor is set to the highest depth.
         _actorToDepth = new Hashtable(sort.length+1);
-        if (_debugging) _debug(((Nameable)getContainer()).getFullName(),
+        if (_debugging) _debug(getContainer().getFullName(),
                 "depth: " + sort.length);
         _actorToDepth.put(getContainer(), new Integer(sort.length));
 	for(int i = sort.length-1; i >= 0; i--) {
@@ -1159,7 +1169,7 @@ public class DEDirector extends Director {
     // Return true if this director is embedded inside an opaque composite
     // actor contained by another composite actor.
     private boolean _isEmbedded() {
-        return (getContainer().getContainer() != null);
+        return (getContainer() != null && getContainer().getContainer() != null);
     }
 
     ///////////////////////////////////////////////////////////////////

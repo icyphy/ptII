@@ -30,6 +30,7 @@
 
 package ptolemy.actor.lib;
 
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -41,7 +42,6 @@ import ptolemy.data.IntMatrixToken;
 import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.math.Interpolation;
 
 //////////////////////////////////////////////////////////////////////////
@@ -91,7 +91,7 @@ public class Interpolator extends SequenceSource {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Interpolator(TypedCompositeActor container, String name)
+    public Interpolator(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 

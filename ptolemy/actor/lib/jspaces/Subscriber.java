@@ -35,6 +35,7 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.*;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.actor.lib.jspaces.util.SpaceFinder;
@@ -73,7 +74,7 @@ public class Subscriber extends Source implements RemoteEventListener {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Subscriber(TypedCompositeActor container, String name)
+    public Subscriber(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
     	jspaceName = new Parameter(this, "jspaceName",

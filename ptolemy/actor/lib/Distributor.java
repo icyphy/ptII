@@ -78,7 +78,7 @@ public class Distributor extends Transformer implements SequenceActor {
      *  @exception IllegalActionException If the actor cannot be contained
      *  by the proposed container.
      */
-    public Distributor(TypedCompositeActor container, String name)
+    public Distributor(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         // These parameters are required for SDF

@@ -70,7 +70,7 @@ public class SequenceScope extends SequencePlotter {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public SequenceScope(TypedCompositeActor container, String name)
+    public SequenceScope(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 

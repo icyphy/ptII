@@ -60,7 +60,7 @@ public class TimedPlotter extends Plotter implements TimedActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public TimedPlotter(TypedCompositeActor container, String name)
+    public TimedPlotter(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 

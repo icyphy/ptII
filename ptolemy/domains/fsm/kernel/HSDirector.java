@@ -34,8 +34,10 @@ import ptolemy.domains.ct.kernel.CTTransparentDirector;
 
 import ptolemy.domains.ct.kernel.CTDirector;
 import ptolemy.domains.ct.kernel.CTStepSizeControlActor;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Director;
@@ -87,9 +89,11 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      *  @param name Name of this director.
      *  @exception IllegalActionException If the name has a period in it, or
      *   the director is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container is not a
+     *   CompositeActor and the name collides with an entity in the container.
      */
-    public HSDirector(CompositeActor container, String name)
-            throws IllegalActionException {
+    public HSDirector(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 

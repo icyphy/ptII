@@ -31,6 +31,7 @@
 package ptolemy.domains.ct.lib;
 
 import ptolemy.domains.ct.kernel.*;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
@@ -69,7 +70,7 @@ public class ZeroOrderHold extends Transformer
      *  @exception NameDuplicationException If name coincides with
      *   an entity already in the container.
      */
-    public ZeroOrderHold(TypedCompositeActor container, String name)
+    public ZeroOrderHold(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);        
         // FIXME: Are they always DOUBLE? 

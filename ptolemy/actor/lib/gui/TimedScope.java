@@ -71,7 +71,7 @@ public class TimedScope extends TimedPlotter {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public TimedScope(TypedCompositeActor container, String name)
+    public TimedScope(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 

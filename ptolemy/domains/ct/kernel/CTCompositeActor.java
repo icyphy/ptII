@@ -30,9 +30,10 @@
 
 package ptolemy.domains.ct.kernel;
 
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.TypedCompositeActor;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -47,12 +48,12 @@ Otherwise, it returns default values.
 
 @author  Jie Liu
 @version $Id$
-@see ptolemy.actor.TypedCompositeActor
 @see CTStepSizeControlActor
 @see CTTransparentDirector
 */
 public class CTCompositeActor extends TypedCompositeActor
-    implements CTStepSizeControlActor {
+        implements CTStepSizeControlActor {
+
     /** Construct a CTCompositeActor in the default workspace with no container
      *  and an empty string as its name. Add the actor to the workspace
      *  directory.
@@ -96,7 +97,7 @@ public class CTCompositeActor extends TypedCompositeActor
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public CTCompositeActor(TypedCompositeActor container, String name)
+    public CTCompositeActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }

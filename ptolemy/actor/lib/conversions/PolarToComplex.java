@@ -35,6 +35,7 @@ import ptolemy.actor.lib.*;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.math.Complex;
 
@@ -64,7 +65,7 @@ public class PolarToComplex extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public PolarToComplex(TypedCompositeActor container, String name)
+    public PolarToComplex(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 

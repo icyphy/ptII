@@ -32,6 +32,7 @@ package ptolemy.domains.sdf.lib;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Attribute;
@@ -40,7 +41,6 @@ import ptolemy.data.IntToken;
 import ptolemy.data.IntMatrixToken;
 import ptolemy.data.MatrixToken;
 import ptolemy.data.Token;
-import ptolemy.actor.TypedCompositeActor;
 
 /** This actor outputs a set of initial tokens during the initialize()
  *  method, and subsequently passes the input tokens to the output.
@@ -54,7 +54,7 @@ import ptolemy.actor.TypedCompositeActor;
  *  @version $Id$
  */
 public class Delay extends Transformer {
-    public Delay(TypedCompositeActor container, String name)
+    public Delay(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         new Parameter(output, "tokenInitProduction", new IntToken(1));

@@ -31,6 +31,7 @@
 package ptolemy.actor.lib;
 
 import ptolemy.actor.*;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.type.*;
@@ -84,7 +85,7 @@ public class Pulse extends SequenceSource {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Pulse(TypedCompositeActor container, String name)
+    public Pulse(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 

@@ -70,7 +70,7 @@ public class ZeroCrossingDetector extends Transformer
      *  @exception NameDuplicationException If name coincides with
      *   an entity already in the container.
      */
-    public ZeroCrossingDetector(TypedCompositeActor container, String name)
+    public ZeroCrossingDetector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.DOUBLE);

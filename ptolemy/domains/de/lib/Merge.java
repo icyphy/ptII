@@ -31,6 +31,7 @@
 package ptolemy.domains.de.lib;
 
 import ptolemy.kernel.*;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.*;
@@ -66,7 +67,7 @@ public class Merge extends DETransformer  {
      *  @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
      */
-    public Merge(TypedCompositeActor container, String name)
+    public Merge(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setMultiport(true);

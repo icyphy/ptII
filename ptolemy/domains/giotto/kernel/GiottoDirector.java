@@ -39,6 +39,7 @@ import ptolemy.actor.NoTokenException;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -98,9 +99,11 @@ public class GiottoDirector extends StaticSchedulingDirector {
      *  @exception IllegalActionException If the director is not compatible
      *   with the specified container.
      *  @exception NameDuplicationException If the base class has an
-     *   "iterations" parameter (which it should not).
+     *   "iterations" parameter (which it should not), or if the container is
+     *   not a CompositeActor and the name collides with an entity in the
+     *   container.
      */
-    public GiottoDirector(TypedCompositeActor container, String name)
+    public GiottoDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();

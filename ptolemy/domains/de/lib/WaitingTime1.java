@@ -63,7 +63,7 @@ public class WaitingTime1 extends DETransformer {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public WaitingTime1(TypedCompositeActor container, String name)
+    public WaitingTime1(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         // create the ports

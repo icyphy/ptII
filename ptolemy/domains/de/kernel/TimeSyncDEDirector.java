@@ -108,9 +108,11 @@ public class TimeSyncDEDirector extends DEDirector {
      *  @param name Name of this director.
      *  @exception IllegalActionException If the
      *   director is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container is not a
+     *   CompositeActor and the name collides with an entity in the container.
      */
-    public TimeSyncDEDirector(CompositeActor container , String name)
-            throws IllegalActionException {
+    public TimeSyncDEDirector(CompositeEntity container , String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         try {
             timeBaseHost = new Parameter(this, "timeBaseHost",

@@ -64,7 +64,7 @@ public class SequencePlotter extends Plotter implements SequenceActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public SequencePlotter(TypedCompositeActor container, String name)
+    public SequencePlotter(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 

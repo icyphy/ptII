@@ -32,6 +32,7 @@
 package ptolemy.domains.de.lib;
 
 import ptolemy.domains.de.kernel.*;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
@@ -77,7 +78,7 @@ public class Sampler extends DETransformer {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Sampler(TypedCompositeActor container, String name)
+    public Sampler(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         input.setMultiport(true);

@@ -30,12 +30,6 @@
 
 package ptolemy.actor.lib;
 
-import ptolemy.actor.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.data.expr.Parameter;
-import ptolemy.graph.Inequality;
-
 //////////////////////////////////////////////////////////////////////////
 //// TimedActor
 /**

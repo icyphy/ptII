@@ -53,7 +53,7 @@ use the unlink() method.
 The container for instances of this class can only be instances of
 TypedCompositeActor.  Derived classes may wish to further constrain the
 container to subclasses of TypedComponentEntity.  To do this, they should
-override the setContainer() method.
+override the _checkContainer() method.
 
 @author Yuhong Xiong
 @version $Id$
@@ -100,31 +100,25 @@ public class TypedIORelation extends IORelation {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                         protected methods                 ////
 
     /** Override the method in the super class to constrain the
-     *  container to be an instance of TypedCompositeActor.
+     *  container to be an instance of TypedCompositeActor, or to be null.
      *
      *  @param container The proposed container.
      *  @exception IllegalActionException If the container is not a
      *   TypedCompositeActor or null, or this relation and the container
      *   are not in the same workspace.
-     *  @exception NameDuplicationException If the name collides with a name
-     *   already on the relations list of the container.
      */
-    public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
+    protected void _checkContainer(CompositeEntity container)
+            throws IllegalActionException {
         if (!(container instanceof TypedCompositeActor) &&
                 (container != null)) {
             throw new IllegalActionException (this, container,
                     "TypedIORelation can only be contained by " +
 		    "TypedCompositeActor.");
         }
-        super.setContainer(container);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
 
     /** Throw an exception if the specified port cannot be linked to this
      *  relation (is not of class TypedIOPort).

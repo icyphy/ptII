@@ -31,6 +31,7 @@
 
 package ptolemy.actor.lib.gui;
 
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.actor.gui.Placeable;
@@ -72,7 +73,7 @@ public class MatrixViewer extends Sink implements Placeable {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public MatrixViewer(TypedCompositeActor container, String name)
+    public MatrixViewer(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  
         {
             super(container, name);

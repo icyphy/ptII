@@ -30,8 +30,6 @@
 
 package ptolemy.domains.ct.kernel;
 
-import ptolemy.domains.ct.kernel.util.*;
-import ptolemy.kernel.util.*;
 import ptolemy.actor.Actor;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.CompositeActor;
@@ -40,6 +38,10 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
+import ptolemy.domains.ct.kernel.util.*;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
+
 import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
@@ -159,10 +161,12 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  @param workspace Object for synchronization and version tracking
      *  @param name Name of this director.
      *  @exception IllegalActionException If the director is not compatible
-     *  with the specified container.  May also be thrown by a derived class.
+     *   with the specified container.  May also be thrown by a derived class.
+     *  @exception NameDuplicationException If the container not a
+     *   CompositeActor and the name collides with an entity in the container.
      */
-    public CTDirector(CompositeActor container, String name)
-            throws IllegalActionException {
+    public CTDirector(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _initParameters();
         try {
@@ -547,12 +551,13 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      */
     public void preinitialize() throws IllegalActionException {
         if(_debugging) _debug(getFullName(), "preinitializing.");
-        //System.out.println(getName() + "preinitializing.");
-        //from here
-        CompositeActor ca = (CompositeActor) getContainer();
-        if (ca == null) {
-            throw new IllegalActionException(this, "Has no container.");
+
+        Nameable container = getContainer();
+        if (!(container instanceof CompositeActor)) {
+            throw new IllegalActionException(this,
+            "Has no CompositeActor container.");
         }
+        CompositeActor ca = (CompositeActor)container;
         if (ca.getContainer() != null) {
             if (!canBeInsideDirector()) {
                 throw new IllegalActionException(this,

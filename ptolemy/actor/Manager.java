@@ -289,11 +289,13 @@ public class Manager extends NamedObj implements Runnable {
         _finishRequested = true;
         if(_state == IDLE) return;
 
-        CompositeActor container = (CompositeActor) getContainer();
-        if(container == null) throw new InternalErrorException(
-                "Attempted to call finish on an executing manager with no" +
-                " associated model");
-        container.stopFire();
+        Nameable container = getContainer();
+        if(!(container instanceof CompositeActor)) {
+            throw new InternalErrorException(
+                    "Attempted to call finish() on an executing manager " +
+                    "with no associated CompositeActor model");
+        }
+        ((CompositeActor)container).stopFire();
 
 	// Since Manager.resume() is synchronized, start a thread
 	// to call resume() in order to avoid deadlock
@@ -492,11 +494,13 @@ public class Manager extends NamedObj implements Runnable {
      */
     public void pause() {
         _pauseRequested = true;
-        CompositeActor container = (CompositeActor) getContainer();
-        if(container == null) throw new InternalErrorException(
-                "Attempted to call finish on an executing manager with no" +
-                " associated model");
-        container.stopFire();
+        Nameable container = getContainer();
+        if(!(container instanceof CompositeActor)) {
+            throw new InternalErrorException(
+                    "Attempted to call pause() on an executing manager " +
+                    "with no associated CompositeActor model");
+        }
+        ((CompositeActor)container).stopFire();
     }
 
     /** Remove a listener from the list of listeners that are notified

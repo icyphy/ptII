@@ -74,9 +74,11 @@ public class GRDirector extends StaticSchedulingDirector {
      *  @param name Name of this director.
      *  @exception IllegalActionException If the
      *   director is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container not a
+     *   CompositeActor and the name collides with an entity in the container.
      */
-    public GRDirector(TypedCompositeActor container, String name)
-            throws IllegalActionException {
+    public GRDirector(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -138,7 +140,6 @@ public class GRDirector extends StaticSchedulingDirector {
      *  director return false in its prefire().
      */
     public void fire() throws IllegalActionException {
-    //  -fire-
         TypedCompositeActor container = (TypedCompositeActor) getContainer();
         Director outsideDirector = _getOutsideDirector();
         

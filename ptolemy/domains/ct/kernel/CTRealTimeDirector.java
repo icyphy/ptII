@@ -31,6 +31,7 @@
 package ptolemy.domains.ct.kernel;
 
 import ptolemy.domains.ct.kernel.util.*;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.actor.*;
@@ -82,10 +83,12 @@ public class CTRealTimeDirector extends CTMultiSolverDirector {
      *  @param workspace Object for synchronization and version tracking
      *  @param name Name of this director.
      *  @exception IllegalActionException If the director is not compatible
-     *  with the specified container.  May be thrown in derived classes.
+     *   with the specified container.  May be thrown in derived classes.
+     *  @exception NameDuplicationException If the container is not a
+     *   CompositeActor and the name collides with an entity in the container.
      */
-    public CTRealTimeDirector(CompositeActor container, String name)
-            throws IllegalActionException {
+    public CTRealTimeDirector(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 

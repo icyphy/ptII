@@ -30,6 +30,7 @@
 
 package ptolemy.actor.lib.logic;
 
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.graph.*;
 import ptolemy.data.*;
@@ -70,7 +71,7 @@ public class Equals extends TypedAtomicActor {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public Equals(TypedCompositeActor container, String name)
+    public Equals(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 	upperPort = new TypedIOPort(this, "upperPort", true, false);

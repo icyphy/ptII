@@ -45,7 +45,7 @@ be atomic (meaning that it cannot contain components).
 <p>
 Derived classes may further constrain the container to be
 a subclass of CompositeEntity.  To do this, they should override
-setContainer() to throw an exception.
+the protected method _checkContainer() to throw an exception.
 <p>
 A ComponentEntity can contain instances of ComponentPort.  Derived
 classes may further constrain to a subclass of ComponentPort.
@@ -186,19 +186,57 @@ public class ComponentEntity extends Entity {
      *  from any relations and remove it from its container.
      *  It is not added to the workspace directory, so this could result in
      *  this entity being garbage collected.
-     *  Derived classes may override this method to constrain the container
-     *  to subclasses of CompositeEntity. This method is write-synchronized
+     *  Derived classes may further constrain the container
+     *  to subclasses of CompositeEntity by overriding the protected
+     *  method _checkContainer(). This method is write-synchronized
      *  to the workspace and increments its version number.
      *  @param container The proposed container.
      *  @exception IllegalActionException If the action would result in a
      *   recursive containment structure, or if
-     *   this entity and container are not in the same workspace..
+     *   this entity and container are not in the same workspace, or
+     *   if the protected method _checkContainer() throws it.
      *  @exception NameDuplicationException If the name of this entity
      *   collides with a name already in the container.
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
-        _setContainer(container);
+
+        if (container != null && _workspace != container.workspace()) {
+            throw new IllegalActionException(this, container,
+                    "Cannot set container because workspaces are different.");
+        }
+        try {
+            _workspace.getWriteAccess();
+            _checkContainer(container);
+            // NOTE: The following code is quite tricky.  It is very careful
+            // to leave a consistent state even in the face of unexpected
+            // exceptions.  Be very careful if modifying it.
+            CompositeEntity prevcontainer = (CompositeEntity)getContainer();
+            if (prevcontainer == container) return;
+
+            // Do this first, because it may throw an exception, and we have
+            // not yet changed any state.
+            if (container != null) {
+                container._addEntity(this);
+                if (prevcontainer == null) {
+                    _workspace.remove(this);
+                }
+            }
+            _container = container;
+            if (prevcontainer != null) {
+                // This is safe now because it does not throw an exception.
+                prevcontainer._removeEntity(this);
+            }
+            if (container == null) {
+                Enumeration ports = getPorts();
+                while (ports.hasMoreElements()) {
+                    Port port = (Port)ports.nextElement();
+                    port.unlinkAll();
+                }
+            }
+        } finally {
+            _workspace.doneWriting();
+        }
     }
 
     /** Set the name of the ComponentEntity. If there is already
@@ -255,55 +293,16 @@ public class ComponentEntity extends Entity {
         super._addPort(port);
     }
 
-    /** Set the container.  This method is provided so that derived
-     *  classes can bypass type checks. You should normally not
-     *  call this method directly, but instead call the public method
-     *  setContainer().
-     *  @param container The container.
-     *  @exception IllegalActionException If the action would result in a
-     *   recursive containment structure, or if
-     *   this entity and container are not in the same workspace.
-     *  @exception NameDuplicationException If the name of this entity
-     *   collides with a name already in the container.
+    /** Check that the specified container is of a suitable class for
+     *  this entity.  In this base class, this method returns immediately
+     *  without doing anything.  Derived classes may override it to constrain
+     *  the container.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the container is not of
+     *   an acceptable class.  Not thrown in this base class.
      */
-    protected void _setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
-        if (container != null && _workspace != container.workspace()) {
-            throw new IllegalActionException(this, container,
-                    "Cannot set container because workspaces are different.");
-        }
-        try {
-            _workspace.getWriteAccess();
-            // NOTE: The following code is quite tricky.  It is very careful
-            // to leave a consistent state even in the face of unexpected
-            // exceptions.  Be very careful if modifying it.
-            CompositeEntity prevcontainer = (CompositeEntity)getContainer();
-            if (prevcontainer == container) return;
-
-            // Do this first, because it may throw an exception, and we have
-            // not yet changed any state.
-            if (container != null) {
-                container._addEntity(this);
-                if (prevcontainer == null) {
-                    _workspace.remove(this);
-                }
-            }
-            _container = container;
-            if (prevcontainer != null) {
-                // This is safe now because it does not throw an exception.
-                prevcontainer._removeEntity(this);
-            }
-            if (container == null) {
-                Enumeration ports = getPorts();
-                while (ports.hasMoreElements()) {
-                    Port port = (Port)ports.nextElement();
-                    port.unlinkAll();
-                }
-            }
-        } finally {
-            _workspace.doneWriting();
-        }
-    }
+    protected void _checkContainer(CompositeEntity container)
+             throws IllegalActionException {}
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

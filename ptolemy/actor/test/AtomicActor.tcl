@@ -178,13 +178,12 @@ test AtomicActor-8.1 {Test newReceiver} {
 ######################################################################
 ####
 #
-test AtomicActor-9.1 {Test setContainer error catching} {
+test AtomicActor-9.1 {Test setContainer tolerance} {
     # NOTE: Uses the setup above
     set entity [java::new ptolemy.kernel.CompositeEntity]
     catch {$e1 setContainer $entity} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: . and .:
-AtomicActor can only be contained by instances of CompositeActor.}}
+} {{}}
 
 ######################################################################
 ####

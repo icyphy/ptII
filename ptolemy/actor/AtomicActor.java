@@ -44,9 +44,7 @@ import java.util.Collections;
 //// AtomicActor
 /**
 An AtomicActor is an executable entity that cannot itself contain
-other actors. The container is required to be an instance of CompositeActor.
-Derived classes may further constrain the container by overriding
-setContainer(). The Ports of AtomicActors are constrained to be IOPorts.
+other actors. The Ports of AtomicActors are constrained to be IOPorts.
 Derived classes may further constrain the ports by overriding the public
 method newPort() to create a port of the appropriate subclass, and the
 protected method _addPort() to throw an exception if its argument is a
@@ -91,7 +89,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public AtomicActor(CompositeActor container, String name)
+    public AtomicActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -135,9 +133,9 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  @return The director that invokes this actor.
      */
     public Director getDirector() {
-        CompositeActor container = (CompositeActor)getContainer();
-        if (container != null) {
-            return container.getDirector();
+        Nameable container = getContainer();
+        if (container instanceof Actor) {
+            return ((Actor)container).getDirector();
         }
         return null;
     }
@@ -156,9 +154,9 @@ public class AtomicActor extends ComponentEntity implements Actor {
     public Manager getManager() {
 	try {
 	    _workspace.getReadAccess();
-	    CompositeActor container = (CompositeActor)getContainer();
-	    if (container != null) {
-		return container.getManager();
+            Nameable container = getContainer();
+            if (container instanceof Actor) {
+		return ((Actor)container).getManager();
 	    }
 	    return null;
 	} finally {
@@ -370,42 +368,32 @@ public class AtomicActor extends ComponentEntity implements Actor {
         _createReceivers();
     }
 
-    /** Override the base class to ensure that the proposed container
-     *  is an instance of CompositeActor or null. If it is, call the
-     *  base class setContainer() method. Also, invalidate the schedule
-     *  and resolved types of the director. A null argument will remove
-     *  this actor from its container.
-     *
-     *  @param container The proposed container.
+    /** Override the base class to invalidate the schedule and
+     *  resolved types of the director.
+     *  @param entity The proposed container.
      *  @exception IllegalActionException If the action would result in a
      *   recursive containment structure, or if
-     *   this entity and container are not in the same workspace, or
-     *   if the argument is not a CompositeActor or null.
+     *   this entity and container are not in the same workspace.
      *  @exception NameDuplicationException If the container already has
      *   an entity with the name of this entity.
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
-        if (!(container instanceof CompositeActor) && (container != null)) {
-            throw new IllegalActionException(container, this,
-                    "AtomicActor can only be contained by instances of " +
-                    "CompositeActor.");
-        }
         // Invalidate the schedule and type resolution of the old director.
         Director oldDirector = getDirector();
         if (oldDirector != null) {
             oldDirector.invalidateSchedule();
             oldDirector.invalidateResolvedTypes();
         }
-        // Invalidate the schedule and type resolution of the new director.
-        if (container != null) {
-            Director director = ((CompositeActor)container).getDirector();
-            if (director != null) {
-                director.invalidateSchedule();
-                director.invalidateResolvedTypes();
-            }
-        }
+
         super.setContainer(container);
+
+        Director director = getDirector();
+        // Invalidate the schedule and type resolution of the new director.
+        if (director != null) {
+            director.invalidateSchedule();
+            director.invalidateResolvedTypes();
+        }
     }
 
     /** Request that execution of the current iteration stop.

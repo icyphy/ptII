@@ -31,6 +31,7 @@
 package ptolemy.actor.lib;
 
 import ptolemy.actor.*;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.Port;
 import ptolemy.data.*;
@@ -59,7 +60,7 @@ public class BooleanExpression extends Expression {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public BooleanExpression(TypedCompositeActor container, String name)
+    public BooleanExpression(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         output.setTypeEquals(BaseType.BOOLEAN);

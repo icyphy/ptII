@@ -108,8 +108,8 @@ test CompositeActor-3.3a {Test failure mode of setDirector} {
     $d4 setName Director
     catch {$e0 setDirector $d4} msg
     list $msg 
-} {{ptolemy.kernel.util.IllegalActionException: .E0 and .Director:
-Cannot set director because workspaces are different.}}
+} {{ptolemy.kernel.util.IllegalActionException: .Director and .E0:
+Cannot set container because workspaces are different.}}
 
 test CompositeActor-3.4 {Test isOpaque} {
     # NOTE: Uses the setup above
@@ -206,6 +206,7 @@ test CompositeActor-7.1 {Test clone and description} {
     } relations {
     } director {
         {ptolemy.actor.Director {.E3.E5.WORMDIR} attributes {
+        } ports {
         }}
     } executivedirector {
     }}
@@ -229,13 +230,12 @@ test CompositeActor-8.1 {Test newReceiver} {
 ######################################################################
 ####
 #
-test CompositeActor-9.1 {Test setContainer error catching} {
+test CompositeActor-9.1 {Test setContainer tolerance} {
     # NOTE: Uses the setup above
     set entity [java::new ptolemy.kernel.CompositeEntity]
     catch {$e1 setContainer $entity} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: . and .:
-CompositeActor can only be contained by instances of CompositeActor.}}
+} {{}}
 
 ######################################################################
 ####

@@ -31,6 +31,7 @@
 package ptolemy.domains.sdf.lib;
 
 import ptolemy.actor.*;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
@@ -116,7 +117,7 @@ public class RaisedCosine extends FIR {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public RaisedCosine(TypedCompositeActor container, String name)
+    public RaisedCosine(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 

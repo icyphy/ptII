@@ -115,10 +115,12 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  @param container Container of the director.
      *  @param name Name of this director.
      *  @exception IllegalActionException If the director is not compatible
-     *  with the specified container.  May be thrown in a derived class.
+     *   with the specified container.  May be thrown in a derived class.
+     *  @exception NameDuplicationException If the container is not a
+     *   CompositeActor and the name collides with an entity in the container.
      */
     public SDFDirector(TypedCompositeActor container, String name)
-            throws IllegalActionException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -464,9 +466,4 @@ public class SDFDirector extends StaticSchedulingDirector {
 
     private int _iteration = 0;
     protected boolean _postfirereturns = true;
-
-    // Support for mutations.
-    // private CircularList _pendingMutations = null;
-    // private CircularList _mutationListeners = null;
-    //    private ActorListener _actorListener = null;
 }

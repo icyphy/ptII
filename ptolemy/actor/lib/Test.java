@@ -31,6 +31,7 @@
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -105,7 +106,7 @@ public class Test extends Sink {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Test(TypedCompositeActor container, String name)
+    public Test(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 

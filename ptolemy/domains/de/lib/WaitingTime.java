@@ -35,6 +35,7 @@ import ptolemy.actor.lib.TimedActor;
 import ptolemy.actor.lib.SequenceActor;
 import ptolemy.domains.de.kernel.*;
 import ptolemy.kernel.*;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
@@ -69,7 +70,7 @@ public class WaitingTime extends DEActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public WaitingTime(TypedCompositeActor container, String name)
+    public WaitingTime(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         // create the ports
