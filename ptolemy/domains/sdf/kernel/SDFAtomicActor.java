@@ -126,7 +126,7 @@ public class SDFAtomicActor extends TypedAtomicActor {
     /** Get the number of tokens that are consumed
      *  on the designated port of this Actor.
      *
-     *  @exception IllegalActionException if port is not contained in
+     *  @exception IllegalActionException If port is not contained in
      *  this actor, or the port is not an input port.
      *  @return The number of tokens consumed on the port, as specified in
      *  the TokenConsumptionRate Parameter, or DEFAULT_CONSUMPTION_RATE if the

@@ -1148,7 +1148,7 @@ public class SDFScheduler extends Scheduler {
      *  tokens in the queue for that port.
      *  @return boolean Whether or not the actor can fire again right away
      *  after it has consumed tokens.
-     *  @exception IllegalActionException if any called method throws it.
+     *  @exception IllegalActionException If any called method throws it.
      */
     private boolean _simulateInputConsumption(ComponentEntity currentActor,
             Map waitingTokens)

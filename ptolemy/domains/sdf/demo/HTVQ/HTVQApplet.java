@@ -174,7 +174,7 @@ public class HTVQApplet extends SDFApplet {
 
     /** Execute the system.  This overrides the base class to read the
      *  values in the query box first.
-     *  @exception IllegalActionException Not thrown.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     protected void _go() throws IllegalActionException {
         super._go();

@@ -129,7 +129,7 @@ public class ExpressionApplet extends SDFApplet {
 
     /** Execute the model.  This overrides the base class to read the
      *  values in the query box first.
-     *  @exception IllegalActionException Not thrown.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     protected void _go() throws IllegalActionException {
         _expr.expression.setExpression(_query.stringValue("expr"));

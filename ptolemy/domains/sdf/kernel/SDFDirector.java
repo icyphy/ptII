@@ -115,8 +115,8 @@ public class SDFDirector extends StaticSchedulingDirector {
      *
      *  @param container Container of the director.
      *  @param name Name of this director.
-     *  @exception It may be thrown in derived classes if the
-     *      director is not compatible with the specified container.
+     *  @exception IllegalActionException If the director is not compatible
+     *  with the specified container.  May be thrown in a derived class.
      */
     public SDFDirector(TypedCompositeActor container, String name)
             throws IllegalActionException {
@@ -192,7 +192,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  assuming that it can be fired.   It does
      *  not call prefire on any contained actors.
      *  @return True.
-     *  @exception IllegalActionException Not Thrown.
+     *  @exception IllegalActionException Not Thrown in this base class.
      */
     // FIXME This should, perhaps return false if the rates on the
     // Composite actors input ports are not satisfied.  This will
@@ -223,11 +223,10 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  call to prefire returned true.
      *  @return True if the Director wants to be fired again in the
      *  future.
-     *  @exception IllegalActionException Not thrown.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
-        int numiterations = ((IntToken) (iterations.getToken()))
-            .intValue();
+        int numiterations = ((IntToken) (iterations.getToken())).intValue();
         _iteration++;
         if((numiterations > 0) && (_iteration >= numiterations)) {
             _iteration = 0;
@@ -333,6 +332,25 @@ public class SDFDirector extends StaticSchedulingDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Return true if this director requires write access
+     *  on the workspace during execution. Most director functions
+     *  during execution do not need write access on the workpace.
+     *  A director will generally only need write access on the workspace if
+     *  it performs mutations locally, instead of queueing them with the
+     *  manager.
+     *  <p>
+     *  In this class, return true, indicating that SDF does not perform local
+     *  mutations.
+     *
+     *  @return false
+     */
+    protected boolean _writeAccessRequired() {
+        return false;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     /** Initialize the object.   In this case, we give the SDFDirector a
      *  default scheduler of the class SDFScheduler.
      */
@@ -360,26 +378,6 @@ public class SDFDirector extends StaticSchedulingDirector {
                     "Cannot create default iterations parameter:\n" +
                     e.getMessage());
         }
-
-
-
-
-    }
-
-    /** Return true if this director requires write access
-     *  on the workspace during execution. Most director functions
-     *  during execution do not need write access on the workpace.
-     *  A director will generally only need write access on the workspace if
-     *  it performs mutations locally, instead of queueing them with the
-     *  manager.
-     *  <p>
-     *  In this class, return true, indicating that SDF does not perform local
-     *  mutations.
-     *
-     *  @return false
-     */
-    protected boolean _writeAccessRequired() {
-        return false;
     }
 
     ///////////////////////////////////////////////////////////////////
