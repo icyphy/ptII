@@ -295,6 +295,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
             registerConstant("false", new BooleanToken(false));
             registerFunctionClass("java.lang.Math");
             registerFunctionClass("ptolemy.data.expr.UtilityFunctions");
+            registerFunctionClass("ptolemy.data.expr.FixPointFunctions");
         }
     }
 
