@@ -136,7 +136,6 @@ public class SequencePlotter extends Plotter implements SequenceActor {
      *  @return True if it is OK to continue.
      */
     public boolean postfire() throws IllegalActionException {
-        _xValue += _xUnit;
         int width = input.getWidth();
         int offset = ((IntToken)startingDataset.getToken()).intValue();
         for (int i = width - 1; i >= 0; i--) {
@@ -146,6 +145,7 @@ public class SequencePlotter extends Plotter implements SequenceActor {
                 plot.addPoint(i + offset, _xValue, curValue, true);
             }
         }
+        _xValue += _xUnit;
         return super.postfire();
     }
 
