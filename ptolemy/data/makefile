@@ -77,6 +77,7 @@ JSRCS = \
 	StringToken.java \
 	Token.java \
 	TokenPublisher.java \
+	TypeCpo.java \
 	VectorToken.java
 
 
