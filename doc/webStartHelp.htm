@@ -2,6 +2,7 @@
 <head>
 <title>Web Start Help</title>
 </head>
+<body>
 <h1>Web Start Help</h1>	
 <a href="http://java.sun.com/products/javawebstart/" target="_top">Web Start</a>
 is a product from Sun that uses the Web to download applications.
@@ -151,11 +152,10 @@ report error messages in the application
 This can be very useful if the application is crashing and
 the Java Console window is closed before you can read it.
 </dl>
-
+</li>
 <li> To remove an application, mouse on the application
 and then select <CODE>Application</CODE> -&gt; <CODE>Remove Application</CODE>
-
-
+</li>
 <li> 
 If an update to the application is available, a small yellow triangle will
 appear at the bottom of the Web Start application manager when the application
@@ -163,6 +163,7 @@ is highlighted.  It is unclear when updating occurs, but one way to trigger
 the update is to go back to the website where you initially downloaded
 the application and redownload it.  In theory, only the changed jar files will
 be pulled over.
+</li>
 
 </menu>
 
@@ -194,8 +195,8 @@ Help for developers:
 <menu>
 <li> <a href="#remoteJavaWebStartResources">Remote Java Web Start Resources</a>
 <li> <a href="#ptolemyIIjnlpFiles">How Web Start .jnlp files are built in Ptolemy II</a>
-<li> <a href="#fileNotFound>File not found</a>
-<li> <a href="#unsignedApplicationRequesting>"Unsigned application requesting unrestricted access to system"</a>
+<li> <a href="#fileNotFound">File not found</a>
+<li> <a href="#unsignedApplicationRequesting">Unsigned application requesting unrestricted access to system</a>
 <li> <a href="#badMimeType">Bad Mime Type</a>
 </menu>
 
@@ -437,7 +438,9 @@ application.  Those jar files are found in
 <h4><a name="fileNotFound">File not found</a></h4>
 Starting up vergil and clicking on the mainVergil.htm link yields
 <pre>
-java.io.FileNotFoundException: JAR entry doc/mainVergil.htm not found in C:\Program Files\Java Web Start\.javaws\cache\file\D\P-1\DMc&c\DMusers\DMcxh\DMptII\DMptolemy\RMptolemy.jar
+java.io.FileNotFoundException: JAR entry doc/mainVergil.htm not found in 
+   C:\Program Files\Java Web Start\.javaws\cache\file\D\P-1
+   \DMc&c\DMusers\DMcxh\DMptII\DMptolemy\RMptolemy.jar
 	at sun.net.www.protocol.jar.JarURLConnection.connect(Unknown Source)
 	at sun.net.www.protocol.jar.JarURLConnection.getInputStream(Unknown Source)
 	at javax.swing.JEditorPane.getStream(Unknown Source)
@@ -492,7 +495,8 @@ file actually has data files in it
 When trying to fetch a .jnlp file from a server
 with cookie authentication, I sometimes have seen:
 <pre>
-Bad MIME type returned from server when accessing resource: http://www.gigascale.org/ptolemy/src/ptII/vergil.jnlp - text/html
+Bad MIME type returned from server when accessing resource: 
+   http://www.gigascale.org/ptolemy/src/ptII/vergil.jnlp - text/html
 </pre>
 I think the problem is with the second time the jnlp file is fetched.
 <br>I can run JNLP on the ptolemy web server with basic password based authentication turned on.
@@ -505,6 +509,7 @@ sometimes the app starts up without checking for updates.
 <menu>
 <li><a href="http://www.geocities.com/vamp201/jwsfaq.html#badmimetype" target="_top">Unofficial FAQ about bad mime type</a>
 <li><a href="http://forums.java.sun.com/thread.jsp?forum=38&thread=71152" target="_top">Question about cookies</a>
+</menu>
 
 <h4>Spaces in path names</h4>
 Web Start does not work very well if the pathname to the 
