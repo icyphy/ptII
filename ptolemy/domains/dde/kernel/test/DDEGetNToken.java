@@ -65,7 +65,8 @@ public class DDEGetNToken extends DDEGet {
 
 	 _numTokens = numTokens;
 	 _tokens = new Token[_numTokens];
-	 _threadTimes = new double[_numTokens];
+	 _beforeTimes = new double[_numTokens];
+	 _afterTimes = new double[_numTokens];
 	 _rcvrTimes = new double[_numTokens];
     }
 
@@ -74,8 +75,14 @@ public class DDEGetNToken extends DDEGet {
 
     /**
      */
-    public double getThreadTime(int cntr) {
-	return _threadTimes[cntr];
+    public double getAfterTime(int cntr) {
+	return _afterTimes[cntr];
+    }
+
+    /**
+     */
+    public double getBeforeTime(int cntr) {
+	return _beforeTimes[cntr];
     }
 
     /**
@@ -93,8 +100,9 @@ public class DDEGetNToken extends DDEGet {
             Thread thread = Thread.currentThread(); 
 	    if( thread instanceof DDEThread ) {
 		TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
+		_beforeTimes[cnt] = timeKeeper.getCurrentTime(); 
 	        _tokens[cnt] = getNextToken(); 
-		_threadTimes[cnt] = timeKeeper.getCurrentTime(); 
+		_afterTimes[cnt] = timeKeeper.getCurrentTime(); 
 		cnt++;
 	    }
 	}
@@ -105,7 +113,8 @@ public class DDEGetNToken extends DDEGet {
 
     private int _numTokens;
     private Token[] _tokens = null;
-    private double[] _threadTimes = null;
+    private double[] _beforeTimes = null;
+    private double[] _afterTimes = null;
     private double[] _rcvrTimes = null;
     
 }
