@@ -120,6 +120,7 @@ autoAppletCG [file join $relativePathToPTII ptolemy domains sr kernel test auto]
 autoAppletCG [file join $relativePathToPTII ptolemy domains sr lib test auto]
 
 autoAppletCG [file join $relativePathToPTII ptolemy domains ct lib test auto]
+autoAppletCG [file join $relativePathToPTII ptolemy domains wireless test auto]
 
 # Print out stats
 #doneTests
