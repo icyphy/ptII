@@ -621,7 +621,7 @@
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{81.5364583333333, 95.7754892676768}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{152.7152777777777, 47.244476010101}">
         </property>
         <port name="TXTXRequest" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -820,10 +820,6 @@
                 <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
                 </property>
             </port>
-        </entity>
-        <entity name="RxCoordination" class="ptolemy.domains.wireless.lib.network.mac.RxCoordination">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, -70.0">
-            </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
