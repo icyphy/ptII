@@ -30,9 +30,6 @@ package ptolemy.data.unit;
 
 import java.util.Vector;
 
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.KernelException;
-
 //////////////////////////////////////////////////////////////////////////
 //// Unit
 /**
@@ -80,6 +77,9 @@ public class Unit implements UnitPresentation {
         setPrimaryLabel(name);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /** Make a copy of this Unit.
      * @return A new Unit.
      */
@@ -93,9 +93,6 @@ public class Unit implements UnitPresentation {
         retv.setScale(getScale());
         return retv;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
 
     /** The expression of the Unit that is commonly used by humans.
      * For example, the unit 4.1868E7&lt2, 1, -3, 0, 0&gt will produce the
@@ -121,33 +118,29 @@ public class Unit implements UnitPresentation {
                     numerator.add(uterm);
                 }
             }
-            try {
-                if (numerator.size() == 0) {
-                    retv = "1";
-                } else {
-                    retv =
-                        ((UnitTerm) (numerator.elementAt(0)))
+            if (numerator.size() == 0) {
+                retv = "1";
+            } else {
+                retv =
+                    ((UnitTerm) (numerator.elementAt(0)))
+                        .getUnit()
+                        .getPrimaryLabel();
+
+                for (int i = 1; i < numerator.size(); i++) {
+                    retv += " "
+                        + ((UnitTerm) (numerator.elementAt(i)))
                             .getUnit()
                             .getPrimaryLabel();
-
-                    for (int i = 1; i < numerator.size(); i++) {
-                        retv += " "
-                            + ((UnitTerm) (numerator.elementAt(i)))
-                                .getUnit()
-                                .getPrimaryLabel();
-                    }
                 }
-                if (denominator.size() > 0) {
-                    retv += "/";
-                    for (int i = 0; i < denominator.size(); i++) {
-                        retv += " "
-                            + ((UnitTerm) (denominator.elementAt(i)))
-                                .getUnit()
-                                .getPrimaryLabel();
-                    }
+            }
+            if (denominator.size() > 0) {
+                retv += "/";
+                for (int i = 0; i < denominator.size(); i++) {
+                    retv += " "
+                        + ((UnitTerm) (denominator.elementAt(i)))
+                            .getUnit()
+                            .getPrimaryLabel();
                 }
-            } catch (IllegalActionException ex) {
-                KernelException.stackTraceToString(ex);
             }
             return retv;
         }
@@ -171,11 +164,11 @@ public class Unit implements UnitPresentation {
             return desc.substring(1);
         }
         // End up here if nothing works, so just return the formal description
-        System.out.println("Unit.commonExpression had to use " + toString());
+        System.out.println("Unit.descriptiveForm had to use " + toString());
         return toString();
     }
 
-    /** Divide this Unit by the argument.
+    /** Divide this Unit by another Unit.
      * @param divisor The divisor unit.
      * @return This Unit divided by the divisor.
      */

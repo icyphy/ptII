@@ -33,7 +33,6 @@ import java.util.List;
 import ptolemy.actor.IOPort;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.KernelException;
 
 //////////////////////////////////////////////////////////////////////////
 //// ExpandPortNames
@@ -62,16 +61,13 @@ public class ExpandPortNames extends EquationVisitor {
 
     /** The method is the entry point to the class.
      * @param equation The UnitEquation to be visited.
-     * @param actor The ComponentEntity that contains ports that may be 
+     * @param actor The ComponentEntity that contains ports that may be
      * referenced in the equation.
      */
-    public void expand(UnitEquation equation, ComponentEntity actor) {
+    public void expand(UnitEquation equation, ComponentEntity actor)
+        throws IllegalActionException {
         _actorPorts = actor.portList();
-        try {
-            equation.visit(this);
-        } catch (IllegalActionException e) {
-            KernelException.stackTraceToString(e);
-        }
+        equation.visit(this);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -84,11 +80,14 @@ public class ExpandPortNames extends EquationVisitor {
     protected Object _visitUnitTerm(UnitTerm uTerm)
         throws IllegalActionException {
         if (uTerm.isVariable()) {
-            String _portName = uTerm.getVariable();
+            String portName = uTerm.getVariable();
+            if (portName == null) {
+                throw new IllegalActionException(uTerm + " is not a variable");
+            }
             Iterator iter = _actorPorts.iterator();
             while (iter.hasNext()) {
                 IOPort actorPort = (IOPort) iter.next();
-                if (actorPort.getName().equals(_portName)) {
+                if (actorPort.getName().equals(portName)) {
                     uTerm.setVariable(
                         actorPort.getName(
                             actorPort.getContainer().getContainer()));
@@ -96,7 +95,7 @@ public class ExpandPortNames extends EquationVisitor {
                 }
             }
             throw new IllegalActionException(
-                "Can't find Model port " + _portName);
+                "Can't find Model port " + portName);
         }
         return null;
     }

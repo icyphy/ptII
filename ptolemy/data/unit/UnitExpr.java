@@ -80,7 +80,7 @@ public class UnitExpr implements UnitPresentation {
             UnitTerm term = (UnitTerm) (_uTerms.elementAt(i));
             newUTerms.add(term.copy());
         }
-        retv.setUTerms(newUTerms);
+        retv._setUTerms(newUTerms);
         return retv;
     }
 
@@ -101,11 +101,10 @@ public class UnitExpr implements UnitPresentation {
      * otherwise.
      */
     public Unit getSingleUnit() {
-        if (_uTerms.size() == 1 && ((UnitTerm) _uTerms.elementAt(0)).isUnit())
-            try {
-                return ((UnitTerm) _uTerms.elementAt(0)).getUnit();
-            } catch (IllegalActionException e) {
-            }
+        if (_uTerms.size() == 1
+            && ((UnitTerm) _uTerms.elementAt(0)).isUnit()) {
+            return ((UnitTerm) _uTerms.elementAt(0)).getUnit();
+        }
         return null;
     }
 
@@ -125,7 +124,7 @@ public class UnitExpr implements UnitPresentation {
         for (int i = 0; i < _uTerms.size(); i++) {
             myUTerms.add(((UnitTerm) (_uTerms.elementAt(i))).invert());
         }
-        retv.setUTerms(myUTerms);
+        retv._setUTerms(myUTerms);
         return retv;
     }
 
@@ -144,26 +143,15 @@ public class UnitExpr implements UnitPresentation {
         for (int i = 0; i < _uTerms.size(); i++) {
             UnitTerm unitTerm = (UnitTerm) (_uTerms.elementAt(i));
             if (unitTerm.isUnit()) {
-                try {
-                    reductionUnit =
-                        reductionUnit.multiplyBy(unitTerm.getUnit());
-                } catch (IllegalActionException e) {
-                    // OK to ignore since we know that unitTerm has to be a Unit
-                    // and the only reason that unitTerm.getUnit() would throw
-                    // an exception would be if it wasn't.
-                }
+                reductionUnit = reductionUnit.multiplyBy(unitTerm.getUnit());
             } else {
                 newUTerms.add(unitTerm);
             }
         }
         newUTerms.add(new UnitTerm(reductionUnit));
         UnitExpr retv = new UnitExpr();
-        retv.setUTerms(newUTerms);
+        retv._setUTerms(newUTerms);
         return retv;
-    }
-
-    public void setUTerms(Vector uTerms) {
-        _uTerms = uTerms;
     }
 
     public String toString() {
@@ -179,6 +167,13 @@ public class UnitExpr implements UnitPresentation {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                    protected methods                     ////
+
+    protected void _setUTerms(Vector uTerms) {
+        _uTerms = uTerms;
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                    private methods                     ////
     private void _flatten() {
         if (_isFlat) {
@@ -188,22 +183,17 @@ public class UnitExpr implements UnitPresentation {
         for (int i = 0; i < _uTerms.size(); i++) {
             UnitTerm unitTerm = (UnitTerm) (_uTerms.elementAt(i));
             if (unitTerm.isUnitExpr()) {
-                UnitExpr uExpr = null;
-                try {
-                    uExpr = (UnitExpr) (unitTerm.getUnitExpr());
-                } catch (IllegalActionException e) {
-                    // OK to ignore since we know that unitTerm has to be a
-                    // UnitExpr and the only reason that unitTerm.getUnitExpr()
-                    // would throw an exception would be if it wasn't.
+                UnitExpr uExpr = unitTerm.getUnitExpr();
+                if (uExpr != null) {
+                    uExpr._flatten();
+                    newUTerms.addAll(uExpr.getUTerms());
                 }
-                uExpr._flatten();
-                newUTerms.addAll(uExpr.getUTerms());
             } else {
                 newUTerms.add(unitTerm);
             }
         }
         _isFlat = true;
-        setUTerms(newUTerms);
+        _setUTerms(newUTerms);
     }
 
     ///////////////////////////////////////////////////////////////////

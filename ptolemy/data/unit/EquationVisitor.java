@@ -94,7 +94,9 @@ public abstract class EquationVisitor {
         throws IllegalActionException {
         if (uTerm.isUnitExpr()) {
             UnitExpr uExpr = uTerm.getUnitExpr();
-            _visitUnitExpr(uExpr);
+            if (uExpr != null) {
+                _visitUnitExpr(uExpr);
+            }
         }
         return null;
     }

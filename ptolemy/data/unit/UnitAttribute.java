@@ -198,8 +198,11 @@ public class UnitAttribute extends Attribute implements Settable {
                 uExpr = UnitLibrary.getParser().parseUnitExpr(expression);
                 setUnitExpr(uExpr);
             }
-        } catch (ParseException e) {
-            throw new IllegalActionException(e.getMessage());
+        } catch (ParseException ex) {
+            throw new IllegalActionException(
+                this,
+                ex,
+                "Can't parse the expression " + expression);
         }
     }
 

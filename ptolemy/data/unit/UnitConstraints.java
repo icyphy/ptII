@@ -79,19 +79,19 @@ public class UnitConstraints implements UnitPresentation {
      * seen on a component entity in the first step is used to create a Unit
      * equation that gets added to the collection.
      * @param model The model containing the component entities.
-     * @param componentEntities The component entities.
+     * @param entities The component entities.
      * @param relations The relations.
      */
     public UnitConstraints(
         TypedCompositeActor model,
-        Vector componentEntities,
-        Vector relations) {
+        Vector entities,
+        Vector relations) throws IllegalActionException {
         this();
         _model = model;
-        _bindings = new Bindings(componentEntities);
-        for (int i = 0; i < componentEntities.size(); i++) {
+        _bindings = new Bindings(entities);
+        for (int i = 0; i < entities.size(); i++) {
             ComponentEntity componentEntity =
-                (ComponentEntity) (componentEntities.elementAt(i));
+                (ComponentEntity) (entities.elementAt(i));
             Vector actorConstraints = new Vector();
             List unitsAttrs =
                 componentEntity.attributeList(
@@ -164,26 +164,26 @@ public class UnitConstraints implements UnitPresentation {
     ///////////////////////////////////////////////////////////////////
     ////                          public methods                   ////
 
-    /** Add a Unit constraint in the form of a Unit equation to the collection.
-     * @param unitConstraint The Unit constraint to be added to the collection.
+    /** Add a UnitConstraint to the collection.
+     * @param constraint The UnitConstraint to be added to the collection.
      */
-    public void addConstraint(UnitConstraint unitConstraint) {
-        _constraints.add(unitConstraint);
+    public void addConstraint(UnitConstraint constraint) {
+        _constraints.add(constraint);
     }
 
     /** Generate a complete solution.
      * @return The solution.
      */
-    public Solver completeSolve() throws IllegalActionException {
-        Solver solution = null;
+    public Solution completeSolution() throws IllegalActionException {
+        Solution solution = null;
         if (_debug) {
             System.out.println(
                 "Constraints\n" + descriptiveForm() + "\\Constraints");
         }
-        Solver G =
-            new Solver(_model, _bindings.variableLabels(), getConstraints());
+        Solution G =
+            new Solution(_model, _bindings.variableLabels(), getConstraints());
         G.setDebug(_debug);
-        solution = G.completeSolve();
+        solution = G.completeSolution();
         return solution;
     }
 
@@ -222,8 +222,8 @@ public class UnitConstraints implements UnitPresentation {
             System.out.println(
                 "Constraints\n" + descriptiveForm() + "\\Constraints");
         }
-        Solver G =
-            new Solver(_model, _bindings.variableLabels(), getConstraints());
+        Solution G =
+            new Solution(_model, _bindings.variableLabels(), getConstraints());
         G.setDebug(_debug);
         solutions = G.minimalSpanSolutions();
         //G.annotateGraph();
