@@ -40,7 +40,7 @@ The value of this InequalityTerm is a String set in the constructor.
 This term has name, which is used for printing test result.
 
 @author Yuhong Xiong
-$Id$
+@version $Id$
 */
 
 public class TestConstant implements InequalityTerm {
