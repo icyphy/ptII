@@ -470,7 +470,15 @@ public class EntityLibrary
             }
         } catch (Exception ex) {
             MessageHandler.error("Failed to populate library.", ex);
-            throw new InvalidStateException(this, ex.getMessage());
+	    // Oddly, under JDK1.3.1, we may see the line
+	    // "Exception occurred during event dispatching:"
+	    // in the console window, but there is no stack trace.
+	    // If we change this exception to a RuntimeException, then
+	    // the stack trace appears.  My guess is this indicates a
+	    // bug in the ptolemy.kernel.Exception* classes or in JDK1.3.1
+	    // Note that under JDK1.4, the stack trace is printed in
+	    // both cases.
+            throw new InvalidStateException(this, ex, "Failed to populate Library");
         } finally {
             _populating = false;
         }
