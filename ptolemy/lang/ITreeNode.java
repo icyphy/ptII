@@ -55,9 +55,9 @@ public interface ITreeNode extends Cloneable {
      *  after this node is visited, or not at all.
      */
     public Object accept(IVisitor v, LinkedList visitorArgs);
-    
+
     /** Return the list of all direct children of this node. */
-    public ArrayList children(); 
+    public ArrayList children();
 
     /** Syntactic sugar to get the return value of the most recent
       * visitor to the i-th child node, where the argument is i.
@@ -71,7 +71,7 @@ public interface ITreeNode extends Cloneable {
 
     /** Return the class ID number (the node ID), which is unique for
      *  each sub-type.
-     */    
+     */
     public int classID();
 
     /** Return a clone of this node, cloning all children of the node. */
@@ -85,20 +85,20 @@ public interface ITreeNode extends Cloneable {
     /** Set the child at the specified index in the child list. */
     public void setChild(int index, Object child);
 
-    /** Visit all nodes or lists in in the argument list, and place the list of 
+    /** Visit all nodes or lists in in the argument list, and place the list of
      *  return values in the CHILD_RETURN_VALUES_KEY property of the node.
      */
     public void traverseChildren(IVisitor v, LinkedList args);
-    
+
     public void setChildren(ArrayList childList);
 
     /** Return a String representation of this node.
      *  Call the toString() method of all child nodes.
-     */  
+     */
     public String toString();
 
-    /** Return a String representation of this node, indented by ident. 
+    /** Return a String representation of this node, indented by ident.
      *  Call the toString() method of all child nodes.
      */
-    public String toString(String indent);    
+    public String toString(String indent);
 }
