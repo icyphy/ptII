@@ -1,4 +1,3 @@
-
 /* Generates acknowledgements, routes data frames to the network layer
    and indicates receipt of Ack and Cts to TxCoordination process.
 
@@ -52,7 +51,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    also notifies TxCoordination process of the receipt of either CTS or Ack.
 
    @author Charlie Zhong
-   @version RxCoordination.java,v 1.9 2004/04/13 03:37:55 cxh Exp
+   @version $Id$
    @since Ptolemy II 4.0
    @Pt.ProposedRating Red (czhong)
    @Pt.AcceptedRating Red (reviewmoderator)

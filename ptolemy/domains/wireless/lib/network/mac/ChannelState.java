@@ -48,12 +48,10 @@ import ptolemy.kernel.util.Workspace;
    This actor updates the channel state based on the information from PHY
    and NAV (Network Allocation Vector). To speed up simulation, slot events
    in 802.11 are not generated here.
-
-
    @author Yang Zhao
-   @version ChannelState.java,v 1.10 2004/04/12 15:30:35 cxh Exp
+   @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (eal)
+   @Pt.ProposedRating Red (ellen_zh)
    @Pt.AcceptedRating Red (pjb2e)
 */
 public class ChannelState extends MACActorBase {

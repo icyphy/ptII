@@ -1,5 +1,4 @@
-/* An actor that evaluates matlab expressions with input ports
-   providing variables
+/* An actor that provides a virtual enviorment to run tinyOS code directly.
 
    Copyright (c) 2004 The Regents of the University of California and
    Research in Motion Limited.
@@ -49,9 +48,9 @@ import ptolemy.vergil.kernel.attributes.EllipseAttribute;
     FIXME: this class hasn't been fully implemented.
     FIXME: add more doc here.
     @author Yang Zhao, Xiaojun Liu
-    @version $ $
+    @version $Id$
     @since Ptolemy II 4.0
-    @Pt.ProposedRating Yellow (zkemenczy)
+    @Pt.ProposedRating Red(ellen_zh)
     @Pt.AcceptedRating Red (cxh)
 */
 public class VirtualTinyOS extends TypedAtomicActor {

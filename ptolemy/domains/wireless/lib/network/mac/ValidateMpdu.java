@@ -1,4 +1,3 @@
-
 /* Validates a received MPDU (MAC Protocol Data Unit).
 
 Copyright (c) 2004 The Regents of the University of California.

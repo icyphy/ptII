@@ -1,4 +1,3 @@
-
 /* Controls the sequence of events involved in initiating a session.
 
 Copyright (c) 2004 The Regents of the University of California.
@@ -65,7 +64,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 
    @author Charlie Zhong, Yang Zhao
-   @version TxCoordination.java,v 1.10 2004/04/13 03:37:57 cxh Exp
+   @version $Id$
    @since Ptolemy II 4.0
    @Pt.ProposedRating Red (czhong)
    @Pt.AcceptedRating Red (reviewmoderator)

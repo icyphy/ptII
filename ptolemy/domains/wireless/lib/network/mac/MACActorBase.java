@@ -1,4 +1,4 @@
-/* An actor that provides the channel status.
+/* An actor that provides the common interface for MAC actors.
 
 Copyright (c) 2004 The Regents of the University of California.
 All rights reserved.
@@ -53,7 +53,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    Based on this, it is relatively easy to translate a OMNET class
    to a actor here.
    @author Yang Zhao
-   @version MACActorBase.java,v 1.8 2004/04/12 15:30:36 cxh Exp
+   @version $Id$
    @since Ptolemy II 4.0
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (pjb2e)
@@ -412,41 +412,55 @@ public class MACActorBase extends NetworkActorBase {
 
 
     // message formats
-    protected static final String[] RxStartMsgFields ={"kind", "rxRate"};
-    protected static final String[] TxStartMsgFields = {"kind", "length", "rate"};
+    protected static final String[] RxStartMsgFields 
+            ={"kind", "rxRate"};
+    protected static final String[] TxStartMsgFields 
+            = {"kind", "length", "rate"};
     protected static final String[] RtsTimeoutMsgFields ={"kind"};
-    protected static final String[] RxMpduMsgFields ={"kind", "pdu","endRx","rxRate"};
-    protected static final String[] UseIfsMsgFields ={"kind", "tRxEnd"};
-    protected static final String[] RxEndMsgFields ={"kind", "status"};
+    protected static final String[] RxMpduMsgFields 
+            ={"kind", "pdu","endRx","rxRate"};
+    protected static final String[] UseIfsMsgFields 
+            ={"kind", "tRxEnd"};
+    protected static final String[] RxEndMsgFields 
+            ={"kind", "status"};
     protected static final String[] RxIndicateMessageFields =
-    {"kind", "pdu", "endRx", "rxRate"};
+            {"kind", "pdu", "endRx", "rxRate"};
     protected static final String[] NeedAckMessageFields =
-    {"kind", "ackto", "endRx", "rxRate", "dAck"};
+            {"kind", "ackto", "endRx", "rxRate", "dAck"};
     protected static final String[] SetNavMessageFields =
-    {"kind", "tRef", "dNav", "src"};
+            {"kind", "tRef", "dNav", "src"};
 
     protected static final String[] CSMsgFields={"kind"};
 
-    // the value for the pdu field is a record with fields as DataPacket's fields.
-    protected static final String[] TxRequestMsgFields = {"kind", "pdu", "rate"};
+    // the value for the pdu field is a record with fields 
+    // as DataPacket's fields.
+    protected static final String[] TxRequestMsgFields 
+            = {"kind", "pdu", "rate"};
     protected static final String[] TxConfirmMsgFields = {"kind"};
 
-    protected static final String[] DataPacket = {"protocolVer", "Type", "Subtype",
-                                                  "toDs", "frDs", "moreFrag", "retryBit", "pwrMgt", "moreData", "wepBit",
-                                                  "orderBit", "FCS", "durId", "Addr1", "Addr2", "Addr3", "SeqNum", "FragNum", "Addr4",
-                                                  "payload","Length"};
+    protected static final String[] DataPacket 
+            = {"protocolVer", "Type", "Subtype",
+               "toDs", "frDs", "moreFrag", "retryBit", "pwrMgt", 
+               "moreData", "wepBit", "orderBit", "FCS", "durId", 
+               "Addr1", "Addr2", "Addr3", "SeqNum", "FragNum", 
+               "Addr4", "payload","Length"};
 
-    protected static final String[] AckPacket = {"protocolVer", "Type", "Subtype",
-                                                 "toDs", "frDs", "moreFrag", "retryBit", "pwrMgt", "moreData", "wepBit",
-                                                 "orderBit", "FCS", "durId", "RA","Length"};
+    protected static final String[] AckPacket 
+            = {"protocolVer", "Type", "Subtype", "toDs", "frDs", 
+               "moreFrag", "retryBit", "pwrMgt", "moreData", "wepBit",
+               "orderBit", "FCS", "durId", "RA","Length"};
 
-    protected static final String[] RtsPacket = {"protocolVer", "Type", "Subtype",
-                                                 "toDs", "frDs", "moreFrag", "retryBit", "pwrMgt", "moreData", "wepBit",
-                                                 "orderBit", "FCS", "durId", "RA", "TA","Length"};
+    protected static final String[] RtsPacket 
+            = {"protocolVer", "Type", "Subtype", "toDs", "frDs", 
+               "moreFrag", "retryBit", "pwrMgt", "moreData", "wepBit",
+               "orderBit", "FCS", "durId", "RA", "TA","Length"};
 
-    protected static final String[] BackoffDoneMsgFields = {"kind","cnt"};
-    protected static final String[] getBackoffMsgFields = {"kind","ccw", "cnt"};
-    protected static final String[] GotCtsMsgFields = {"kind","endRx"};
+    protected static final String[] BackoffDoneMsgFields 
+            = {"kind","cnt"};
+    protected static final String[] getBackoffMsgFields 
+            = {"kind","ccw", "cnt"};
+    protected static final String[] GotCtsMsgFields 
+            = {"kind","endRx"};
 
 
 

@@ -50,7 +50,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    The code is based on a OMNET model created by Charlie Zhong.
 
    @author Xiaojun Liu
-   @version FilterMpdu.java,v 1.6 2004/04/12 15:30:36 cxh Exp
+   @version $Id$
    @since Ptolemy II 4.0
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (pjb2e)

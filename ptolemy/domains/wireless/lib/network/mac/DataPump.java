@@ -1,6 +1,6 @@
-/* An actor that maintains the channel state based on both the result of carrier sense
- * and the reservation (NAV).
-
+/* An actor that talks to the Physical layer to get permission of
+ sending data.
+ 
  Copyright (c) 2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -59,9 +59,9 @@ import ptolemy.kernel.util.Workspace;
    TxConfirm.
 
    @author Yang Zhao, Charlie Zhong and Xiaojun Liu
-   @version DataPump.java,v 1.4 2004/04/12 15:30:36 cxh Exp
+   @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (eal)
+   @Pt.ProposedRating Red (ellen_zh)
    @Pt.AcceptedRating Red (pjb2e)
 */
 public class DataPump extends MACActorBase {

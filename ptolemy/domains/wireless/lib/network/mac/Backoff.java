@@ -1,5 +1,4 @@
-/* An actor that maintains the channel state based on both the result of carrier sense
- * and the reservation (NAV).
+/* An actor that does back off after a frame transmission.
 
  Copyright (c) 2004 The Regents of the University of California.
  All rights reserved.
@@ -47,14 +46,15 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// Backoff
 
-/**
-
-
-@author Yang Zhao
-@version Backoff.java,v 1.3 2004/04/12 15:30:35 cxh Exp
-@since Ptolemy II 4.0
-@Pt.ProposedRating Yellow (eal)
-@Pt.AcceptedRating Red (pjb2e)
+/**  
+   This actor does the back off after a frame transmission. It randomly 
+   choose a slot from the back off window and wait for that amount of 
+   time before trying to access the medium.
+   @author Yang Zhao
+   @version $Id$
+   @since Ptolemy II 4.0
+   @Pt.ProposedRating Red (ellen_zh)
+   @Pt.AcceptedRating Red (pjb2e)
 */
 public class Backoff extends MACActorBase {
 
