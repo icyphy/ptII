@@ -47,6 +47,7 @@ import ptolemy.lang.java.nodetypes.*;
 
 /** A Java AST visitor that finds the most specific Token type allowable for
 variables declared as abstract Tokens (Token, ScalarToken, and MatrixToken).
+
 @author Jeff Tsay
 @version $Id$
 */
@@ -330,7 +331,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
                 (InequalityTerm) accessedObjTermObj;
 
             boolean variableAccessedTerm =
-                (accessedObjTerm instanceof VariableTerm);
+                (accessedObjTerm instanceof _VariableTerm);
 
             if (variableAccessedTerm) {
                 retval = _makeVariableTerm(returnType, null);
@@ -353,19 +354,20 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
 			firstArgTerm = (InequalityTerm) argTerms.get(0);
 		    } catch (ClassCastException e) {
 			System.err.println("SpecializeTokenVisitor."
-					   + "visitMethodCallNode: " + e
-					   + "\n node = " + node
-					   + "\n node.getArgs() = " + node.getArgs()
-					   + "\n args = " + args
-					   + "\n argTerms = " + argTerms
-					   + "\n argTerms.get(0) = "
-					   + (( argTerms == null) ?
-					      "null" : argTerms.get(0))
+                                + "visitMethodCallNode: " + e
+                                + "\n node = " + node
+                                + "\n node.getArgs() = "
+                                + node.getArgs()
+                                + "\n args = " + args
+                                + "\n argTerms = " + argTerms
+                                + "\n argTerms.get(0) = "
+                                + (( argTerms == null) ?
+                                        "null" : argTerms.get(0))
 					   );
 			throw e;
 		    }
                     if (!variableAccessedTerm &&
-                            (firstArgTerm instanceof VariableTerm)) {
+                            (firstArgTerm instanceof _VariableTerm)) {
                         retval = _makeVariableTerm(returnType, null);
                     }
 
@@ -509,14 +511,42 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    ////                         private methods                   ////
 
-    protected InequalityTerm _visitExprNode(ExprNode node) {
+    /** Return a variable inequality term corresponding to the given type,
+     *  with the associated decl, which may be null. If type is not a
+     *  supported token type, return null.
+     */
+    private _VariableTerm _makeVariableTerm(TypeNode type, TypedDecl decl) {
+        int kind = _typeID.kind(type);
+        if (!_typeID.isSupportedTokenKind(kind)) {
+            return null;
+        }
+
+        return new _VariableTerm((ClassDecl)
+                JavaDecl.getDecl((NamedNode) type), decl);
+    }
+
+    /** Return a constant inequality term corresponding to the given type,
+     *  with the associated decl, which may be null. If type is not a
+     *  supported token type, return null.
+     */
+    private _ConstantTerm _makeConstantTerm(TypeNode type, TypedDecl decl) {
+        int kind = _typeID.kind(type);
+        if (!_typeID.isSupportedTokenKind(kind)) {
+            return null;
+        }
+
+        return new _ConstantTerm((ClassDecl)
+                JavaDecl.getDecl((NamedNode) type), decl);
+    }
+
+    private InequalityTerm _visitExprNode(ExprNode node) {
         _defaultVisit(node, null);
         return _makeConstantTerm(_typeVisitor.type(node), null);
     }
 
-    protected InequalityTerm _visitVariableNode(NamedNode node) {
+    private InequalityTerm _visitVariableNode(NamedNode node) {
         _defaultVisit((TreeNode) node, null);
 
         TypedDecl typedDecl = (TypedDecl) JavaDecl.getDecl(node);
@@ -526,7 +556,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         return term;
     }
 
-    protected Object _visitVarInitDeclNode(VarInitDeclNode node) {
+    private Object _visitVarInitDeclNode(VarInitDeclNode node) {
         TypeNode type = node.getDefType();
         TypedDecl typedDecl = (TypedDecl) JavaDecl.getDecl((NamedNode) node);
 
@@ -549,54 +579,28 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         return null;
     }
 
-    /** Return a variable inequality term corresponding to the given type,
-     *  with the associated decl, which may be null. If type is not a
-     *  supported token type, return null.
-     */
-    protected VariableTerm _makeVariableTerm(TypeNode type, TypedDecl decl) {
-        int kind = _typeID.kind(type);
-        if (!_typeID.isSupportedTokenKind(kind)) {
-            return null;
-        }
-
-        return new VariableTerm((ClassDecl)
-                JavaDecl.getDecl((NamedNode) type), decl);
-    }
-
-    /** Return a constant inequality term corresponding to the given type,
-     *  with the associated decl, which may be null. If type is not a
-     *  supported token type, return null.
-     */
-    protected ConstantTerm _makeConstantTerm(TypeNode type, TypedDecl decl) {
-        int kind = _typeID.kind(type);
-        if (!_typeID.isSupportedTokenKind(kind)) {
-            return null;
-        }
-
-        return new ConstantTerm((ClassDecl)
-                JavaDecl.getDecl((NamedNode) type), decl);
-    }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
+    ////                         private variables                 ////
 
-    protected ActorCodeGeneratorInfo _actorInfo;
+    private ActorCodeGeneratorInfo _actorInfo;
 
-    protected PtolemyTypeIdentifier _typeID;
+    private PtolemyTypeIdentifier _typeID;
 
-    protected PtolemyTypeVisitor _typeVisitor;
+    private PtolemyTypeVisitor _typeVisitor;
 
     /** A Map from TypeDecls to InequalityTerms. */
-    protected Map _declToTermMap;
+    private Map _declToTermMap;
 
-    protected static final DirectedAcyclicGraph _cpo;
-    protected InequalitySolver _solver;
+    private static final DirectedAcyclicGraph _cpo;
+    private InequalitySolver _solver;
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    protected static class ConstantTerm implements InequalityTerm {
-        public ConstantTerm(ClassDecl classDecl, TypedDecl decl) {
+    private static class _ConstantTerm implements InequalityTerm {
+        public _ConstantTerm(ClassDecl classDecl, TypedDecl decl) {
             _classDecl = classDecl;
             _decl = decl;
         }
@@ -627,11 +631,11 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
 
         public void setValue(Object e) throws IllegalActionException {
             throw new IllegalActionException(
-                    "ConstantTerm.setValue(): This term is a constant");
+                    "_ConstantTerm.setValue(): This term is a constant");
         }
 
         public String toString() {
-            return "ConstantTerm: value = " + _classDecl.getName() +
+            return "_ConstantTerm: value = " + _classDecl.getName() +
                 ", _decl = " + _decl;
         }
 
@@ -641,8 +645,8 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         private TypedDecl _decl;
     }
 
-    protected static class VariableTerm implements InequalityTerm {
-        public VariableTerm(ClassDecl classDecl, TypedDecl decl) {
+    private static class _VariableTerm implements InequalityTerm {
+        public _VariableTerm(ClassDecl classDecl, TypedDecl decl) {
             _classDecl = classDecl;
             _decl = decl;
         }
@@ -675,7 +679,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         }
 
         public String toString() {
-            return "VariableTerm: decl = " + _decl + ", value = " +
+            return "_VariableTerm: decl = " + _decl + ", value = " +
                 _classDecl.getName();
         }
 
