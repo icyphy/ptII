@@ -83,7 +83,7 @@ public class PtolemyApplet extends Applet {
     /** Initialize the applet. This method is called by the browser
      *  or applet viewer to inform this applet that it has been
      *  loaded into the system. It is always called before
-     *  the first time that the start method is called. 
+     *  the first time that the start method is called.
      *  In this base class, this method creates a manager and
      *  a top-level composite actor, both of which are accessible
      *  to derived classes via protected members.
@@ -164,8 +164,8 @@ public class PtolemyApplet extends Applet {
     /** Concatenate two parameter info string arrays and return the result.
      *  This is provided to make it easy for derived classes to override
      *  the getParameterInfo() method.
-     *  
-     *  @param first The first string array.  
+     *
+     *  @param first The first string array.
      *  @param second The second string array.
      *  @return A concatenated string array.
      */
