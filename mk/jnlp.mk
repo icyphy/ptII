@@ -73,7 +73,8 @@ SIGNED_LIB_JARS =	$(NATIVE_SIGNED_LIB_JARS) \
 # should be loaded eagerly.
 NUMBER_OF_JARS_TO_LOAD_EAGERLY = 10
 
-# Jar files that will appear in all Ptolemy II JNLP files.
+# Jar files that will appear in most Ptolemy II JNLP files.
+# HybridSystems has its own set of core jars
 CORE_JNLP_JARS = \
 	doc/docConfig.jar \
 	lib/diva.jar \
@@ -109,6 +110,14 @@ HYBRID_SYSTEMS_ONLY_JNLP_JARS =
 HYBRID_SYSTEMS_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/HybridSystemsApplication.jar
 
+#  - hybrid/configure.xml includes actor/lib/math.xml which includes
+#    sdf.lib.DotProduct
+#  - hybrid/configure.xml includes
+#    actor/lib/conversions/conversions.xml
+#    which includes
+#    sdf.lib.BitsToInt
+#    sdf.lib.IntToBits
+
 HYBRID_SYSTEMS_JNLP_JARS =	\
 	$(HYBRID_SYSTEMS_MAIN_JAR) \
 	$(HYBRID_SYSTEMS_ONLY_JAR) \
@@ -119,6 +128,8 @@ HYBRID_SYSTEMS_JNLP_JARS =	\
 	ptolemy/domains/ct/doc/doc.jar \
 	ptolemy/domains/fsm/fsm.jar \
 	ptolemy/domains/fsm/doc/doc.jar \
+	ptolemy/domains/sdf/lib/lib.jar \
+	ptolemy/domains/sdf/kernel/kernel.jar \
 	ptolemy/ptsupport.jar \
 	ptolemy/vergil/vergil.jar \
 	ptolemy/actor/lib/javasound/javasound.jar \
