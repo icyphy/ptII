@@ -118,6 +118,11 @@ ALLJSRCS =		ptolemy.plot \
 			ptolemy.data.type \
 			ptolemy.graph \
 			ptolemy.gui \
+			ptolemy.lang \
+			ptolemy.lang.java \
+			ptolemy.lang.java.extended \
+			ptolemy.lang.java.nodetypes \
+			ptolemy.lang.tree \
 			ptolemy.math \
 			ptolemy.media \
 			ptolemy.moml
@@ -166,6 +171,11 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/data/type/*.java \
 			../ptolemy/graph/*.java \
 			../ptolemy/gui/*.java \
+			../ptolemy/lang/*.java \
+			../ptolemy/lang/java/*.java \
+			../ptolemy/lang/java/extended/*.java \
+			../ptolemy/lang/java/nodetypes/*.java \
+			../ptolemy/lang/tree/*.java \
 			../ptolemy/math/*.java \
 			../ptolemy/media/*.java \
 			../ptolemy/moml/*.java
