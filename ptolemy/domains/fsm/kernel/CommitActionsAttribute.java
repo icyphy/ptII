@@ -144,10 +144,8 @@ public class CommitActionsAttribute
         if (_destinations != null) {
             Iterator destinations = _destinations.iterator();
             Iterator channels = _numbers.iterator();
-            //     Iterator variables = _variables.iterator();
             Iterator parseTrees = _parseTrees.iterator();
             while (destinations.hasNext()) {
-                //        Variable variable = (Variable)variables.next();
                 NamedObj nextDestination = (NamedObj)destinations.next();
                 // Need to get the next channel even if it's not used.
                 Integer channel = (Integer)channels.next();
@@ -159,14 +157,13 @@ public class CommitActionsAttribute
                 } catch (IllegalActionException ex) {
                     // Chain exceptions to get the actor that
                     // threw the exception.
-                    throw new IllegalActionException(this, ex, "Expression invalid.");
+                    throw new IllegalActionException(
+                            this, ex, "Expression invalid.");
                 }
                 if (nextDestination instanceof IOPort) {
                     IOPort destination = (IOPort)nextDestination;
                     
                     try {
-
-                        //Token token = result;//variable.getToken();
                         if (channel != null) {
                             if (token == null) {
                                 destination.sendClear(channel.intValue());

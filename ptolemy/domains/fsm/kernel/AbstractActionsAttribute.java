@@ -30,9 +30,12 @@
 package ptolemy.domains.fsm.kernel;
 
 import ptolemy.actor.NoRoomException;
+import ptolemy.data.expr.ASTPtAssignmentNode;
+import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.expr.ParseTreeEvaluator;
+import ptolemy.data.expr.ParseTreeWriter;
 import ptolemy.data.expr.PtParser;
 import ptolemy.kernel.util.*;
 
@@ -40,6 +43,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 //////////////////////////////////////////////////////////////////////////
@@ -166,9 +170,9 @@ public abstract class AbstractActionsAttribute extends Action {
      *  assigned to the object associated with the name.
      */
     public String getExpression(String name) {
-        Variable var = (Variable) _variables.get(
-                _destinationNames.indexOf(name));
-        return var.getExpression();
+        ParseTreeWriter writer = new ParseTreeWriter();
+        return writer.printParseTree((ASTPtRootNode)
+                _parseTrees.get(_destinationNames.indexOf(name)));
     }
 
     /** Test if a channel number is associated with the given name.
@@ -192,14 +196,14 @@ public abstract class AbstractActionsAttribute extends Action {
             throws IllegalActionException {
         super.setExpression(expression);
 
-        if (expression == null) return;
-
-        PtParser parser = new PtParser();
+        // This is important for InterfaceAutomata which extend from
+        // this class.
+        if (expression == null ||
+            expression.trim().equals("")) return;
 
         // Initialize the lists that store the commands to be executed.
         _destinationNames = new LinkedList();
         _numbers = new LinkedList();
-        _variables = new LinkedList();
         _parseTrees = new LinkedList();
 
         // Indicate that the _destinations list is invalid.  We defer
@@ -207,25 +211,15 @@ public abstract class AbstractActionsAttribute extends Action {
         // may not have been created yet.
         _destinationsListVersion = -1;
 
-        // FIXME: There is a conflict between the format for matrices
-        // and this separator.  Use the expression language to do this
-        // separation.
-        StringTokenizer commands = new StringTokenizer(expression, ";");
-        while (commands.hasMoreTokens()) {
-            String command = commands.nextToken();
-
-            // Parse the command.
-            int equalSign = command.indexOf("=");
-            if (equalSign < 1 || equalSign >= command.length()-1) {
-                throw new IllegalActionException(this,
-                        "Malformed action: expected destination = "
-                        + "expression. Got: "
-                        + command);
-            }
+        PtParser parser = new PtParser();
+        Map map = parser.generateAssignmentMap(expression);
+        for(Iterator names = map.keySet().iterator();
+            names.hasNext();) {
+            String name = (String)names.next();
+            ASTPtAssignmentNode node = (ASTPtAssignmentNode)map.get(name);
 
             // Parse the destination specification first.
-            String completeDestinationSpec
-                = command.substring(0, equalSign).trim();
+            String completeDestinationSpec = node.getIdentifier();
             int openParen = completeDestinationSpec.indexOf("(");
             if (openParen > 0) {
                 // A channel is being specified.
@@ -233,7 +227,7 @@ public abstract class AbstractActionsAttribute extends Action {
                 if (closeParen < openParen) {
                     throw new IllegalActionException(this,
                             "Malformed action: expected destination = "
-                            + "expression. Got: " + command);
+                            + "expression. Got: " + completeDestinationSpec);
                 }
                 _destinationNames.add(
                         completeDestinationSpec.substring(
@@ -245,7 +239,7 @@ public abstract class AbstractActionsAttribute extends Action {
                 } catch (NumberFormatException ex) {
                     throw new IllegalActionException(this,
                             "Malformed action: expected destination = "
-                            + "expression. Got: " + command);
+                            + "expression. Got: " + completeDestinationSpec);
                 }
             } else {
                 // No channel is specified.
@@ -254,51 +248,7 @@ public abstract class AbstractActionsAttribute extends Action {
             }
             
             // Parse the expression
-            _parseTrees.add(parser.generateParseTree(
-                                    command.substring(equalSign + 1).trim()));
-            
-            // Next, create a variable in the transition to
-            // evaluate this expression with the appropriate scope.
-            Transition transition = (Transition)getContainer();
-            // Arcane name for variable to ensure we don't get collisions.
-            String variableName = "_action_"
-                + getName()
-                + "_"
-                + completeDestinationSpec.replace('(', '_')
-                .replace(')', '_').replace('.', '_');
-            Variable evalVariable = null;
-            if (transition == null) {
-                // Create the variable in the workspace.
-                evalVariable = new Variable(workspace());
-                // Make the variable lazy since it will often have
-                // an expression that cannot be evaluated.
-                evalVariable.setLazy(true);
-                try {
-                    evalVariable.setName(variableName);
-                } catch (NameDuplicationException ex) {
-                    throw new InternalErrorException(this, ex, null);
-                }
-            } else {
-                Attribute attribute = transition.getAttribute(variableName);
-                if (attribute instanceof Variable) {
-                    evalVariable = (Variable)attribute;
-                } else {
-                    try {
-                        if (attribute != null) {
-                            attribute.setContainer(null);
-                        }
-                        evalVariable = new Variable(transition, variableName);
-                        // Make the variable lazy since it will often have
-                        // an expression that cannot be evaluated.
-                        evalVariable.setLazy(true);
-                    } catch (NameDuplicationException ex) {
-                        throw new InternalErrorException(this, ex, null);
-                    }
-                }
-            }
-            evalVariable.setExpression(
-                    command.substring(equalSign + 1).trim());
-            _variables.add(evalVariable);
+            _parseTrees.add(node.getExpressionTree());
         }
     }
 
@@ -327,9 +277,6 @@ public abstract class AbstractActionsAttribute extends Action {
 
     // List of destination names.
     protected List _destinationNames;
-
-    // List of variables.
-    protected List _variables;
 
     // The workspace version number when the _destinations list is last
     // updated.
@@ -366,15 +313,7 @@ public abstract class AbstractActionsAttribute extends Action {
                     _destinations.add(destination);
                 }
             }
-            if (_variables != null) {
-                Iterator variables = _variables.iterator();
-                _variables = new LinkedList();
-                while (variables.hasNext()) {
-                    Variable variable = (Variable)variables.next();
-                    Transition container = (Transition)getContainer();
-                    _variables.add(container.getAttribute(variable.getName()));
-                }
-            }
+
             _destinationsListVersion = workspace().getVersion();
         } finally {
             workspace().doneReading();

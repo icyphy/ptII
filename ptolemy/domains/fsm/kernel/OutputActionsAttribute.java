@@ -32,6 +32,7 @@ package ptolemy.domains.fsm.kernel;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
 import ptolemy.data.Token;
+import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.expr.UnknownResultException;
 import ptolemy.kernel.Entity;
@@ -130,7 +131,7 @@ public class OutputActionsAttribute
         if (_destinations != null) {
             Iterator destinations = _destinations.iterator();
             Iterator channels = _numbers.iterator();
-            Iterator variables = _variables.iterator();
+            Iterator parseTrees = _parseTrees.iterator();
             while (destinations.hasNext()) {
                 NamedObj nextDestination = (NamedObj)destinations.next();
                 if (!(nextDestination instanceof IOPort)) {
@@ -140,9 +141,17 @@ public class OutputActionsAttribute
                 }
                 IOPort destination = (IOPort)nextDestination;
                 Integer channel = (Integer)channels.next();
-                Variable variable = (Variable)variables.next();
+                ASTPtRootNode parseTree = (ASTPtRootNode)parseTrees.next();
+                Token token;
+                try {                       
+                    token = _parseTreeEvaluator.evaluateParseTree(
+                            parseTree, _scope);
+                } catch (IllegalActionException ex) {
+                    // Chain exceptions to get the actor that
+                    // threw the exception.
+                    throw new IllegalActionException(this, ex, "Expression invalid.");
+                }
                 try {
-                    Token token = variable.getToken();
                     if (token != null) {
                         if (channel != null) {
                             destination.send(channel.intValue(), token);
