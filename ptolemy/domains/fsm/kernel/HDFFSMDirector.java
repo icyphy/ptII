@@ -1,4 +1,5 @@
-/* A HDFFSMDirector governs the execution of a *chart model.
+/* A HDFFSMDirector governs the execution of the finite state
+   machine in heterochronous dataflow model.
 
  Copyright (c) 1999 The Regents of the University of California.
  All rights reserved.
@@ -38,18 +39,22 @@ import ptolemy.kernel.event.*;
 import ptolemy.data.*;
 import ptolemy.actor.*;
 import ptolemy.domains.fsm.kernel.*;
+import ptolemy.domains.sdf.kernel.*;
 import ptolemy.data.expr.Variable;
 import collections.LinkedList;
 import java.util.Enumeration;
+import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// HDFFSMDirector
 /**
-An HDFFSMDirector governs the execution of a *charts model.
+A HDFFSMDirector governs the execution of the finite state
+machine in heterochronous dataflow model.
 Note:
 There is currently the following constraint on port names: All ports
 that are linked to an input port of this director's container must
-have have the same name (the name of the input port).
+have have the same name (the name of the input port). The same goes
+for output ports.
 @author Brian K. Vogel
 @version: $Id$
 */
@@ -92,15 +97,12 @@ public class HDFFSMDirector extends FSMDirector {
     public HDFFSMDirector(CompositeActor container, String name)
             throws IllegalActionException {
         super(container, name);
-	// FIXME: 
-	if (guardVar == null) {
-	    try {
-		System.out.println("Setting guard variable");
-		guardVar = new Variable(this, "TheGuard");
-	    } catch (NameDuplicationException ex) {
-		System.out.println("HDFFSMDirector " +ex.getMessage());
-	    }
-	}
+
+
+	// FIXME: Remove this when get something better.
+	
+
+	
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -223,6 +225,9 @@ public class HDFFSMDirector extends FSMDirector {
         return nextTime;
     }
 
+
+
+
     /** Create receivers and then invoke the initialize()
      *  methods of all its deeply contained actors.
      *  <p>
@@ -251,6 +256,8 @@ public class HDFFSMDirector extends FSMDirector {
             }
             _controller.initialize();
         }
+
+
 
         /* REMOVE! */
         System.out.println("Initializing HDFFSMDirector " + this.getFullName());
@@ -330,33 +337,190 @@ public class HDFFSMDirector extends FSMDirector {
         return result;
     }
 
-    public void setController(HDFFSMController ctrl)
-            throws IllegalActionException {
-        if (getContainer() == null) {
-            throw new IllegalActionException(this, ctrl,
-                    "HDFFSMDirector must have a container to set its "
-                    + "controller.");
+
+    /** Initialize the guard variables, which are used in the
+     *  state transition expressions. Then Create receivers and then
+     *  invoke the preinitialize()
+     *  methods of all its deeply contained actors.
+     *  Set the current time to be 0.0.
+     *  This method is invoked once per execution, before any
+     *  iteration, and before the initialize() method.
+     *  This method is <i>not</i> synchronized on the workspace, so the
+     *  caller should be.
+     *
+     *  @exception IllegalActionException If the preinitialize() method of
+     *  one of the associated actors throws it.
+     */
+    public void preinitialize() throws IllegalActionException {
+	// Initialize guard variables.
+	/*
+	if (guardVar == null) {
+	    try {
+		if (_debugging) _debug("Setting guard variables.");
+		guardVar = new Variable(this, "TheGuard");
+	    } catch (NameDuplicationException ex) {
+		System.out.println("HDFFSMDirector " +ex.getMessage());
+	    }
+	}
+	*/
+	//guardLength
+	// Code from base Direcotr class:
+        CompositeActor container = ((CompositeActor)getContainer());
+        if (container!= null) {
+	    // Initialize guard variables.
+
+	    if (inputPortNameToArrayFIFOQueue == null) {
+		// Initialize the map from a port name to
+		// its assiciated ArrayFIFOQueue of most
+		// recently transfered tokens.
+		inputPortNameToArrayFIFOQueue = new HashMap();
+	    }
+
+	    if (inputPortNameToVariableArray == null) {
+		// Initialize the map from a port name to
+		// its assiciated variable array of most
+		// recently transfered tokens.
+		inputPortNameToVariableArray = new HashMap();
+	    }
+
+	    Enumeration inPorts = container.inputPorts();
+	    while (inPorts.hasMoreElements()) {
+		TypedIOPort inport = (TypedIOPort)inPorts.nextElement();
+		if (_debugging) _debug("guard: port name:" + inport.getName());
+		// Array to store queue of tokens to be used in evaluating
+		// the state transition guard expression.
+
+		ArrayFIFOQueue guardTokenArray = new ArrayFIFOQueue(guardLength);
+
+		
+		// Fill up guardTokenArray. The queue should always
+		// be full so that its size does not need to be checked
+		// on each call to fire().
+		while (!guardTokenArray.isFull()) {
+		    Token tempToken = new Token();
+		    guardTokenArray.put(tempToken);
+		    if (_debugging) _debug("guard: puting temparary token in guardTokenArray");
+		}
+
+		// Create a mapping from the current port's name to
+		// a queue to be used to store the guardLength most
+		// recently read in tokens.
+		if (!inputPortNameToArrayFIFOQueue.containsKey(inport.getName())) {
+		    inputPortNameToArrayFIFOQueue.put(inport.getName(), guardTokenArray);
+		}
+		
+		
+
+		Variable[] guardVarArray = new Variable[guardLength];
+				
+		try {
+		    for(int i = 0; i < guardLength; i++) {
+
+			Integer iInt = new Integer(i);
+			String guardName = inport.getName() + "$" + iInt.toString();
+
+			if (_debugging) _debug("guard: with guard name:" + guardName);
+
+			guardVarArray[i] = new Variable(this, guardName);
+		    }
+		    // Put this variable in a list of variables and make
+		    // this list available to the transition. The
+		    // transition will then add the variables in the
+		    // list to its scope of variables allowed in the
+		    // transition guard expression.
+		    
+		    // create new variable lists
+		    if (_allGuardVars == null) {
+			_allGuardVars = new ArrayFIFOQueue();
+		    }
+		    _allGuardVars.putArray(guardVarArray);
+		} catch (NameDuplicationException ex) {
+		    System.out.println("HDFFSMDirector " +ex.getMessage());
+		}
+
+		// Create a mapping from the current port's name to
+		// an array of variables. The tokens in the 
+		// ArrayFIFOQueue associated with the port will
+		// be copied into the variables in the array on the
+		// last firing of an iteration (Type B firing in the
+		// reference paper).
+		if (!inputPortNameToVariableArray.containsKey(inport.getName())) {
+		    inputPortNameToVariableArray.put(inport.getName(), guardVarArray);
+		}
+
+
+	    }
+
+	    // End of Initialize guard variables.
+	    CompositeActor containersContainer =
+                (CompositeActor)container.getContainer();
+	    if( containersContainer == null ) {
+                _currentTime = 0.0;
+	    } else {
+		double time =
+                    containersContainer.getDirector().getCurrentTime();
+                _currentTime = time;
+	    }
+            Enumeration allactors = container.deepGetEntities();
+            while (allactors.hasMoreElements()) {
+                Actor actor = (Actor)allactors.nextElement();
+                if (_debugging) _debug("Invoking preinitialize(): ",
+                ((NamedObj)actor).getFullName());
+                actor.preinitialize();
+            }
         }
-        if (getContainer() != ctrl.getContainer()) {
-            throw new IllegalActionException(this, ctrl,
-                    "HDFFSMDirector must have the same container as its "
-                    + "controller.");
-        }
-        _controller = ctrl;
+	// End of code from base Direcotr class.
+
+
+
+        if (_debugging) _debug("Finished preinitialize().");
     }
 
-    /** Set the current time.
-     *  Do nothing in this base class implementation.
-     *  @exception IllegalActionException If time cannot be changed
-     *   due to the state of the simulation. Only thrown in derived
-     *   classes.
-     *  @param newTime The new current simulation time.
-     *
+
+    /** Set the controller associated with this director. This method
+     *  must be called in the model code.
      */
-    // FIXME: complete this.
-    // Call this method on all CompositeActor refinements.
-    public void setCurrentTime(double newTime) throws IllegalActionException {
+    public void setController(HDFFSMController ctrl)
+            throws IllegalActionException {
+	System.out.println("HDFFSMDirector: setController()");
+	// Check that _controller is not already set.
+	if (_controller == null) {
+	    if (getContainer() == null) {
+		throw new IllegalActionException(this, ctrl,
+                    "HDFFSMDirector must have a container to set its "
+                    + "controller.");
+	    }
+	    if (getContainer() != ctrl.getContainer()) {
+		throw new IllegalActionException(this, ctrl,
+                    "HDFFSMDirector must have the same container as its "
+                    + "controller.");
+	    }
+	    _controller = ctrl;
+	} else {
+	    throw new IllegalActionException(this,
+		      "setController() was already called."
+		      + "HDFFSMDirector can only have one controller");
+	}
     }
+
+    /** Set the number of guard tokens allowed (largest m in dataIn$m)
+     *  for each port. This number is common to all port. The default
+     *  value is 1.
+     *  <p>
+     *  As an example, suppose that the the opaque composite actor
+     *  containing the FSM model has an input port named "dataIn."
+     *  Then, in order to reference tokens read in the "dataIn"
+     *  port in the state transition guard expression, the guard
+     *  variable(s) associated with port "dataIn"  must be used.
+     *  These guard variables have the names dataIn$0, dataIn$1,
+     *  dataIn$2, .... Here, dataIn$0 references the token most
+     *  recently read in port "dataIn", dataIn$1 references the
+     *  next most recently read token, and so on. 
+     */
+    public void  setGuardTokenHistory(int histSize) {
+	guardLength = histSize;
+    }
+    
 
     /** Return true if it
      *  transfers data from an input port of the container to the
@@ -403,20 +567,34 @@ public class HDFFSMDirector extends FSMDirector {
 		// that subsequent port.hasToken(0) will return false.
 		//Token t = port.get(0);
 		t = port.get(0);
-		/*
-		if (guardVar == null) {
-		    try {
-			System.out.println("Setting guard variable");
-			guardVar = new Variable(this, "TheGuard");
-		    } catch (NameDuplicationException ex) {
-			System.out.println("HDFFSMDirector " +ex.getMessage());
-		    }
-		}
-		*/
-		// Put the token in a Variable. This variable is used
-		// as the value for the guard expression.
+		
 		// FIXME: currently only allow 1 input, 1 token for guard.
-		guardVar.setToken(t);
+		//guardVar.setToken(t);
+
+		
+
+		// Get token queue associated with "port".
+		ArrayFIFOQueue guardTokenArray = (ArrayFIFOQueue)inputPortNameToArrayFIFOQueue.get(port.getName());
+		
+		// Remove the oldest token from the queu and throw it away
+		// to make room for a new token. 
+		// FIXME: Make this work for non-homogeneous case.
+		guardTokenArray.take();
+
+		// Put the most recently read in token in the queue.
+		guardTokenArray.put(t);
+
+		// Copy the newest token into the Variable array.
+		// FIXME: For the non-homogeneous case, only do this
+		// on the last firing of an iteration.
+		Token tempToken2 = (Token)guardTokenArray.get(0);
+
+		// Get the array of variables associated with "port".
+		Variable[] guardVarArray = (Variable[])inputPortNameToVariableArray.get(port.getName());
+
+		// Copy the token(s) into the array of variables.
+		(guardVarArray[0]).setToken(tempToken2);
+		
 
 		System.out.println("HDFFSMDirector: transferInputs(): Port " + port.getFullName() + " has token.");
 		System.out.println("HDFFSMDirector: transferInputs(): input port's token: " + t.toString());
@@ -448,8 +626,8 @@ public class HDFFSMDirector extends FSMDirector {
 		}
 		// End of debug stuff.
 		
-		// ******************************************************
-		// ************ FIXME ************* THIS IS REALLY STUPID! ****
+
+		// ************ FIXME ***************
 		/* This is stupid. This assumes that the name of the
 		 * refining state's port must have the same name 
 		 * as the input port (of this director's container) to
@@ -544,6 +722,17 @@ public class HDFFSMDirector extends FSMDirector {
         return trans;
     }
 
+    ///////////////////////////////////////////////////////////////
+    //////////        protected methods           /////////////////
+
+    /* Get an enumeration of all of the variables that can be part
+     * of a transistion's guard expression. This method should
+     * only be called by an instance of HDFFSMTransistion.
+     */
+    protected Enumeration _getTransitionGuardVars() {
+	return _allGuardVars.elements();
+    }
+
     /** Indicate whether this director would like to have write access
      *  during its iteration. By default, the return value is true, indicating
      *  the need for a write access.
@@ -555,6 +744,9 @@ public class HDFFSMDirector extends FSMDirector {
         return false;
     }
 
+
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
@@ -564,12 +756,34 @@ public class HDFFSMDirector extends FSMDirector {
     public Token t;
     
     public Variable guardVar;
+
+    public int guardLength = 1;
     
+
+    // Map a port name to its associated ArrayFIFOQueue of most
+    // recently transfered tokens.
+    public HashMap inputPortNameToArrayFIFOQueue;
+
+    // Map a port name to its associated array of Variables. The
+    // array of Variables stores the guardLength most recently
+    // transfered tokens by the input port. The variables in the
+    // array are updated by copying the tokens contained in the
+    // ArrayFIFOQueue of the same port (obtained from 
+    // inputPortNameToArrayFIFOQueue). Note that the array
+    // of variables is only updated on the last firing of an
+    // iteration.
+    public HashMap inputPortNameToVariableArray;
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables                 ////
 
     /** @serial Controller of this director. */
     protected HDFFSMController _controller = null;
 
+    /* List of all of the variables that can be part
+     * of a transistion's guard expression.
+     */
+    protected ArrayFIFOQueue _allGuardVars = null;
 
 }

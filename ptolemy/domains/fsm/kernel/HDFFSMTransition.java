@@ -163,27 +163,59 @@ public class HDFFSMTransition extends FSMTransition {
         _tcSet = true;
     }
 
+
+
+
     /** Setup the scope of the guard (trigger condition). The scope
-     *  consists of ????
+     *  consists of the guard variables. There is a sequence of
+     *  guard variables associated with each port contained by the
+     *  the local director's container (an opaque composite actor).
+     *  For example, if the director's container has an input port
+     *  called "dataIn", then the associated sequence of guard
+     *  variables is dataIn$0, dataIn$1, dataIn$2, .... Here, 
+     *  dataIn$0 denotes the most recently read token, dataIn$1
+     *  denotes the next most recently read token, and so on.
+     *  <p>
+     *  The director method setGuardTokenHistory() sets the
+     *  number of guard tokens (largest n in dataIn$n).
      */
     public void setupScope() throws NameDuplicationException, IllegalActionException {
+	System.out.println("HDFFSMTransition: setupScope()");
 	HDFFSMController ctrl = (HDFFSMController)getContainer();
 	HDFFSMDirector direct = ((HDFFSMDirector)ctrl.getDirector());
-	directorGuard = direct.guardVar;
-	if (direct == null) {
-	    System.out.println("PPPPPPPPPPPPPPPPPPP");
-	}
-	if (directorGuard != null) {
-            _te.addToScope(directorGuard);
-            _tc.addToScope(directorGuard);
-
+	//directorGuard = direct.guardVarArray[0];
+	Enumeration dirScopeVars = direct._getTransitionGuardVars();
+	/*
+	if (dirScopeVars != null) {
+            _te.addToScope(dirScopeVars);
+            _tc.addToScope(dirScopeVars);
+	    System.out.println("HDFFSMTransition: setupScope(): added guard vars to scope");
         } else {
 	    //throw new IllegalActionException((HDFFSMController)getContainer(), this,
 	    //      "The guard variable is null");
-	    System.out.println("The guard variable is null");
+	    System.out.println("The guard variable list is null");
+	}
+	*/
+	if (dirScopeVars != null) {
+	    while (dirScopeVars.hasMoreElements()) {
+		Variable var1 = (Variable)dirScopeVars.nextElement();
+		_te.addToScope(var1);
+		_tc.addToScope(var1);
+		//System.out.println("HDFFSMTransition: setupScope(): Adding "
+		//	   + var1.toString());
+	    }
+        } else {
+	    //throw new IllegalActionException((HDFFSMController)getContainer(), this,
+	    //      "The guard variable is null");
+	    System.out.println("The guard variable list is null");
 	}
     }
 
+    //////////////////////////////////////////////////////////////
+    ///////////        protected methods                   ///////
+
+
+
     ///////////////////////////////////////////////////////////////
-    Variable directorGuard;
+    // Variable directorGuard;
 }

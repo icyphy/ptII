@@ -429,7 +429,12 @@ public class HDFFSMController  extends FSMController implements TypedActor {
         return true;
     }
 
+
+    /** What does this do?
+     *
+     */
     public void preinitialize() throws IllegalActionException {
+	System.out.println("HDFFSMController: preinitialize() called from?");
         try {
             _createReceivers();
             setupScope();
