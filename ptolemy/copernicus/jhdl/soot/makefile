@@ -60,9 +60,10 @@ JSRCS = SootASTVisitor.java \
 # - ConditionalControlCompactor.java
 # - BooleanNotCompactor.java
 
-OTHER_FILES_TO_BE_JARED = \
-	compileCommandTemplate.txt \
-	runCommandTemplate.txt
+OTHER_FILES_TO_BE_JARED =
+
+#	compileCommandTemplate.txt
+#	runCommandTemplate.txt
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
