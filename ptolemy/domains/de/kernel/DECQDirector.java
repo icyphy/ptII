@@ -34,9 +34,9 @@ import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.actor.util.*;
 import ptolemy.data.*;
-import java.util.*;
 import ptolemy.graph.*;
-import collections.*;
+import collections.LinkedList;
+import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// DECQDirector

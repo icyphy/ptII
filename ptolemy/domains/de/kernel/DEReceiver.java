@@ -35,7 +35,6 @@ import ptolemy.data.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import collections.LinkedList;
-import collections.CollectionEnumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// DEReceiver
