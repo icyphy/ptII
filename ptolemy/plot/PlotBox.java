@@ -218,22 +218,20 @@ public class PlotBox extends Panel {
         // in JDK1.1, but we need to compile under 1.0.2 for
         // netscape3.x compatibility.
 
-        if (_debug > 15) {
-            System.out.println("PlotBox: drawPlot drawRect ="+
-                    drawRect.width+" "+drawRect.height); 
-            graphics.drawRect(0,0,drawRect.width, drawRect.height);
-        }
-
-
         graphics.setPaintMode();
         if (clearfirst) {
             // Clear all the way from the top so that we erase the title.
             // If we don't do this, then zooming in with the pxgraph
             // application ends up blurring the title.
-            graphics.clearRect(0,0,drawRect.width, drawRect.height);
+            graphics.clearRect(0,0,drawRect.width-1, drawRect.height-1);
         }
-        
 
+        if (_debug > 8) {
+            System.out.println("PlotBox: drawPlot drawRect ="+
+                    drawRect.width+" "+drawRect.height+" "+
+                    drawRect.x+" "+drawRect.y); 
+            graphics.drawRect(0,0,drawRect.width-1, drawRect.height-1);
+        }
 
         // If an error message has been set, display it and return.
         if (_errorMsg != null) {
@@ -281,9 +279,9 @@ public class PlotBox extends Panel {
 
         // Draw scaling annotation for x axis.
         // NOTE: 5 pixel padding on bottom.
-        int ySPos = drawRect.height - 5; 
+        int ySPos = drawRect.height - 5;
         if (_xExp != 0 && _xticks == null) {
-            int xSPos = drawRect.x + drawRect.width - _rightPadding;
+            int xSPos = drawRect.width - _rightPadding;
             String superscript = Integer.toString(_xExp);
             xSPos -= _superscriptFontMetrics.stringWidth(superscript);
             graphics.setFont(_superscriptfont);
@@ -302,7 +300,7 @@ public class PlotBox extends Panel {
         
         // Compute the space needed around the plot, starting with vertical.
         // NOTE: padding of 5 pixels below title.
-        _uly = drawRect.y + titley + 5;
+        _uly = titley + 5;
         // NOTE: 3 pixels above bottom labels.
         _lry = drawRect.height-labelheight-_bottomPadding-3; 
         int height = _lry-_uly;
@@ -385,9 +383,9 @@ public class PlotBox extends Panel {
 
         // Next we do the horizontal spacing.
         if (_ylabel != null) {
-            _ulx = drawRect.x + widesty + _labelFontMetrics.stringWidth("W") + _leftPadding;
+            _ulx = widesty + _labelFontMetrics.stringWidth("W") + _leftPadding;
         } else {     
-            _ulx = drawRect.x + widesty + _leftPadding;
+            _ulx = widesty + _leftPadding;
         }
         int legendwidth = _drawLegend(graphics,
                 drawRect.width-_rightPadding, _uly);
@@ -396,6 +394,11 @@ public class PlotBox extends Panel {
         _xscale = width/(_xMax - _xMin);
         _xtickscale = width/(_xtickMax - _xtickMin);
         
+        if (_debug > 8) {
+            System.out.println("PlotBox: drawPlot _ulx "+_ulx+" "+_uly+" "+
+                    _lrx+" "+_lry+" "+width+" "+height);
+
+        }
         // background for the plotting rectangle
         graphics.setColor(_background);
         graphics.fillRect(_ulx,_uly,width,height);
@@ -1019,6 +1022,15 @@ public class PlotBox extends Panel {
         
     } 
   
+    /**
+     * Resize this component. 
+     */
+    public void resize(int width, int height) {
+        if (_debug > 8)
+            System.out.println("PlotBox: resize"+width+" "+height);
+        super.resize(width,height);
+    }
+
     /** Set the background color.
      */
     public void setBackground (Color background) {
