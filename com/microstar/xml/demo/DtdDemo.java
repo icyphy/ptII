@@ -29,7 +29,7 @@ public class DtdDemo extends XmlApp {
 
   /**
     * Entry point for an application (applets enter through XmlApp.init()).
-    * @see XmlApp.init
+    * @see XmlApp
     */
   public static void main (String args[]) 
     throws Exception
@@ -211,7 +211,7 @@ public class DtdDemo extends XmlApp {
     * @see #makeAttributeType
     * @see #makeAttributeValue
     */
-  void dumpAttributes (String elname)
+  public void dumpAttributes (String elname)
   {
     Enumeration attributeNames = parser.declaredAttributes(elname);
     String aname;
@@ -250,7 +250,7 @@ public class DtdDemo extends XmlApp {
   /**
     * Generate the attribute type as a normalised string.
     */
-  String makeAttributeType (String elname, String aname)
+  public String makeAttributeType (String elname, String aname)
   {
 				// Construct a string equivalent
 				// of the attribute type.
@@ -286,7 +286,7 @@ public class DtdDemo extends XmlApp {
     * Generate a full attribute default value.
     * @see #makeLiteral
     */
-  String makeAttributeValue (String elname, String aname)
+  public String makeAttributeValue (String elname, String aname)
   {
 				// Generate a default value based
 				// on the type.
@@ -309,7 +309,7 @@ public class DtdDemo extends XmlApp {
     * Construct a string equivalent of external identifiers.
     * @see #makeLiteral
     */
-  String makeExternalIdentifiers (String pubid, String sysid)
+  public String makeExternalIdentifiers (String pubid, String sysid)
   {
     String extId = "";
 
@@ -329,7 +329,7 @@ public class DtdDemo extends XmlApp {
   /**
     * Quote a literal, and escape any '"' or non-ASCII characters within it.
     */
-  String makeLiteral (String data)
+  public String makeLiteral (String data)
   {
     char ch[] = data.toCharArray();
     StringBuffer buf = new StringBuffer();

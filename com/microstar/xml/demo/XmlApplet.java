@@ -61,7 +61,7 @@ public class XmlApplet extends Applet implements XmlHandler {
     * public identifier in a hash table, or it could replace the
     * URL supplied with a different, local one; for now, however,
     * just return the URL supplied.
-    * @see com.Microstar.xml.XmlHandler#resolveEntity
+    * @see com.microstar.xml.XmlHandler#resolveEntity
     */
   public Object resolveEntity (String publicId, String systemId)
   {
@@ -84,7 +84,7 @@ public class XmlApplet extends Applet implements XmlHandler {
     * <p>Do nothing for now.  Subclasses can override this method
     * if they want to take a specific action.
     * <p>This method will always be called first.
-    * @see com.Microstar.xml.XmlHandler#startDocument
+    * @see com.microstar.xml.XmlHandler#startDocument
     */
   public void startDocument ()
   {
@@ -96,7 +96,7 @@ public class XmlApplet extends Applet implements XmlHandler {
     * <p>Do nothing for now.  Subclasses can override this method
     * if they want to take a specific action.
     * <p>This method will always be called last.
-    * @see com.Microstar.xml.XmlHandler#endDocument
+    * @see com.microstar.xml.XmlHandler#endDocument
     */
   public void endDocument ()
   {
@@ -110,7 +110,7 @@ public class XmlApplet extends Applet implements XmlHandler {
     * <p>Well-formed XML documents might not have one of these.
     * <p>The query methods in XmlParser will return useful
     * values only after this callback.
-    * @see com.Microstar.xml.XmlHandler#doctypeDecl
+    * @see com.microstar.xml.XmlHandler#doctypeDecl
     */
   public void doctypeDecl (String name,
 			   String pubid, String sysid)
@@ -122,7 +122,7 @@ public class XmlApplet extends Applet implements XmlHandler {
     * Handle an attribute value specification.
     * <p>Do nothing for now.  Subclasses can override this method
     * if they want to take a specific action.
-    * @see com.Microstar.xml.XmlHandler#attribute
+    * @see com.microstar.xml.XmlHandler#attribute
     */
   public void attribute (String name, String value,
 			 boolean isSpecified)
@@ -134,7 +134,7 @@ public class XmlApplet extends Applet implements XmlHandler {
     * Handle the start of an element.
     * <p>Do nothing for now.  Subclasses can override this method
     * if they want to take a specific action.
-    * @see com.Microstar.xml.XmlHandler#startElement
+    * @see com.microstar.xml.XmlHandler#startElement
     */
   public void startElement (String name)
   {
@@ -145,7 +145,7 @@ public class XmlApplet extends Applet implements XmlHandler {
     * Handle the end of an element.
     * <p>Do nothing for now.  Subclasses can override this method
     * if they want to take a specific action.
-    * @see com.Microstar.xml.XmlHandler#endElement
+    * @see com.microstar.xml.XmlHandler#endElement
     */
   public void endElement (String name)
   {
@@ -156,7 +156,7 @@ public class XmlApplet extends Applet implements XmlHandler {
     * Handle character data.
     * <p>Do nothing for now.  Subclasses can override this method
     * if they want to take a specific action.
-    * @see com.Microstar.xml.XmlHandler#charData
+    * @see com.microstar.xml.XmlHandler#charData
     */
   public void charData (char ch[], int start, int length)
   {
@@ -167,7 +167,7 @@ public class XmlApplet extends Applet implements XmlHandler {
     * Handle ignorable whitespace.
     * <p>Do nothing for now.  Subclasses can override this method
     * if they want to take a specific action.
-    * @see com.Microstar.xml.XmlHandler#ignorableWhitespace
+    * @see com.microstar.xml.XmlHandler#ignorableWhitespace
     */
   public void ignorableWhitespace (char ch[], 
 				   int start, int length)
@@ -179,7 +179,7 @@ public class XmlApplet extends Applet implements XmlHandler {
     * Handle a processing instruction.
     * <p>Do nothing for now.  Subclasses can override this method
     * if they want to take a specific action.
-    * @see com.Microstar.xml.XmlHandler#processingInstruction
+    * @see com.microstar.xml.XmlHandler#processingInstruction
     */
   public void processingInstruction (String target,
 				     String data)
@@ -192,7 +192,7 @@ public class XmlApplet extends Applet implements XmlHandler {
     * <p>By default, print a message and throw an Error.
     * <p>Subclasses can override this method if they want to do something
     * different.
-    * @see com.Microstar.xml.XmlHandler#error
+    * @see com.microstar.xml.XmlHandler#error
     */
   public void error (String message,
 		     String url, int line, int column)
