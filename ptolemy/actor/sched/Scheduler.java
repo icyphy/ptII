@@ -187,6 +187,13 @@ public class Scheduler extends Attribute {
         }
     }
 
+    /** Return true if the current schedule is valid.
+     *  @return true if the current schedule is valid.
+     */
+    public boolean isValid() {
+        return _valid;
+    }
+
     /** Specify the container.  If the specified container is an instance
      *  of Director, then this becomes the active scheduler for
      *  that director.  Otherwise, this is an attribute like any other within
@@ -271,13 +278,6 @@ public class Scheduler extends Attribute {
         if (valid == false) {
             _cachedGetSchedule = null;
         }
-    }
-
-    /** Return true if the current schedule is valid.
-     *  @return true if the current schedule is valid.
-     */
-    public boolean isValid() {
-        return _valid;
     }
 
     ///////////////////////////////////////////////////////////////////
