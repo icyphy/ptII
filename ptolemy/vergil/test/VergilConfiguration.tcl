@@ -121,7 +121,7 @@ test VergilConfiguration-1.3 {make sure that everything inside the Full configur
     puts "file name vergilConfiguration.xml: $inFile"
 
     set infd [open $inFile]
-    set outfd [open vergilConfigurationNoMatlabNoSerialNoApps.xml "w"]
+    set outfd [open vergilConfigurationNoMatlabNoSerialNoAppsNoJMF.xml "w"]
     while {![eof $infd]} {
 	set linein [gets $infd]
 	regsub -all {.*matlab.*} $linein {} lineout
@@ -130,11 +130,13 @@ test VergilConfiguration-1.3 {make sure that everything inside the Full configur
 	regsub -all {.*comm/comm.xml.*} $lineout {} lineout2
 	# Filter out apps
 	regsub -all {.*apps/apps.xml.*} $lineout2 {} lineout3
-	puts $outfd $lineout3    }
+	# Filter out jmf
+	regsub -all {.*jmf/jmf.xml.*} $lineout3 {} lineout4
+	puts $outfd $lineout4    }
     close $infd
     close $outfd
 
-    expandConfiguration "ptolemy/vergil/test/vergilConfigurationNoMatlabNoSerialNoApps.xml"
+    expandConfiguration "ptolemy/vergil/test/vergilConfigurationNoMatlabNoSerialNoAppsNoJMF.xml"
 } {0}
 
 

@@ -1,6 +1,6 @@
 # Tests for configurations
 #
-# @Author: Steve Neuendorffer
+# @Author: Steve Neuendorffer, Contributor: Christopher Hylands
 #
 # $Id$
 #
@@ -93,7 +93,9 @@ foreach i $configs {
 	    regsub -all {.*comm/comm.xml.*} $lineout {} lineout2
 	    # Filter out apps
 	    regsub -all {.*apps/apps.xml.*} $lineout2 {} lineout3
-	    puts $outfd $lineout3
+	    # Filter out jmf
+	    regsub -all {.*jmf/jmf.xml.*} $lineout3 {} lineout4
+	    puts $outfd $lineout4
 	}
 	close $infd
 	close $outfd
