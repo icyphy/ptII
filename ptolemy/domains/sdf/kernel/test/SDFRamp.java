@@ -66,7 +66,7 @@ public class SDFRamp extends SDFAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    //// 
 
-   public TypedIOPort output;
+    public TypedIOPort output;
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.  The new

@@ -323,7 +323,7 @@ public final class ArrayFIFOQueue implements Cloneable {
      */
     
     public void setCapacity(int capacity)
-	throws IllegalActionException {
+            throws IllegalActionException {
         if (capacity == INFINITE_CAPACITY) {
             _queuemaxcapacity = INFINITE_CAPACITY;
             return;
@@ -335,7 +335,7 @@ public final class ArrayFIFOQueue implements Cloneable {
 
 	if (size() > capacity) {
             throw new IllegalActionException(_container, "Queue contains " +
-		"more elements than the proposed capacity.");
+                    "more elements than the proposed capacity.");
         }
         _queuemaxcapacity = capacity;
  	_resizeArray(capacity);
@@ -470,18 +470,18 @@ public final class ArrayFIFOQueue implements Cloneable {
     private void _resizeArray(int newsize) {
 	if (newsize < 0) {
 	    throw new InternalErrorException(
-	        "Buffer size of " + newsize + " is not greater than zero.");
+                    "Buffer size of " + newsize + " is not greater than zero.");
         }
 
 	if (size() > newsize) {
             throw new InternalErrorException("Queue contains " +
-		"more elements than the proposed array size.");
+                    "more elements than the proposed array size.");
         }
 
 	if((_queuemaxcapacity != INFINITE_CAPACITY)&&
-	    (newsize > _queuemaxcapacity)) { 
+                (newsize > _queuemaxcapacity)) { 
 	    throw new InternalErrorException("The proposed" +
-		      " array size exceeds the maximum declared queue size.");
+                    " array size exceeds the maximum declared queue size.");
 	}
 
 	Object newarray[] = new Object[newsize];

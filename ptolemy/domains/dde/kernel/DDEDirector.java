@@ -401,12 +401,12 @@ public class DDEDirector extends ProcessDirector {
         
         if( _pendingMutations ) {
 	    /* FIXME
-            try {
-                _processTopologyRequests();
-            } catch( TopologyChangeFailedException e ) {
-                throw new IllegalActionException("TopologyChangeFailed: " 
-                        + e.getMessage());
-            }
+               try {
+               _processTopologyRequests();
+               } catch( TopologyChangeFailedException e ) {
+               throw new IllegalActionException("TopologyChangeFailed: " 
+               + e.getMessage());
+               }
 	    */
         }
         return false;
@@ -442,10 +442,10 @@ public class DDEDirector extends ProcessDirector {
     
     /** Mutate the model that this director controls.
      *  FIXME
-    protected void _processTopologyRequests() throws
-            TopologyChangeFailedException {
-    }
-     */
+     protected void _processTopologyRequests() throws
+     TopologyChangeFailedException {
+     }
+    */
     
     /** Mutate the model that this director controls.
      *  FIXME
@@ -473,29 +473,29 @@ public class DDEDirector extends ProcessDirector {
     
     private class RcvrCapacityComparator implements Comparator {
             
-       /**
-        * @exception ClassCastException If fst and scd are
-        *  not instances of DDEReceiver.
-        */
-       public int compare( Object fst, Object scd ) {
-           DDEReceiver first = null;
-           DDEReceiver second = null;
+        /**
+         * @exception ClassCastException If fst and scd are
+         *  not instances of DDEReceiver.
+         */
+        public int compare( Object fst, Object scd ) {
+            DDEReceiver first = null;
+            DDEReceiver second = null;
            
-           if( fst instanceof DDEReceiver ) {
-               first = (DDEReceiver)fst;
-           }
-           if( scd instanceof DDEReceiver ) {
-               second = (DDEReceiver)scd;
-           }
+            if( fst instanceof DDEReceiver ) {
+                first = (DDEReceiver)fst;
+            }
+            if( scd instanceof DDEReceiver ) {
+                second = (DDEReceiver)scd;
+            }
            
-           if( first.getCapacity() > second.getCapacity() ) {
-               return 1;
-           } else if( first.getCapacity() < second.getCapacity() ) {
-               return -1;
-           } else {
-               return 0;
-           }
-       }
+            if( first.getCapacity() > second.getCapacity() ) {
+                return 1;
+            } else if( first.getCapacity() < second.getCapacity() ) {
+                return -1;
+            } else {
+                return 0;
+            }
+        }
     }
 }
 

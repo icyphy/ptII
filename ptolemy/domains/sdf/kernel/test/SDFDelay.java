@@ -99,7 +99,7 @@ public class SDFDelay extends SDFAtomicActor {
             output.setOutput(true);
             setTokenProductionRate(output, 1);
 	    output.setTypeEquals(IntToken.class);
-       }
+        }
         catch (IllegalActionException e1) {
             System.out.println("SDFDelay: constructor error");
             e1.printStackTrace();

@@ -91,7 +91,7 @@ public final class ImageContrast extends SDFAtomicActor {
 
         p = (Parameter) getAttribute("YFramesize");
         yframesize = ((IntToken)p.getToken()).intValue();
-         if(yframesize < 0)
+        if(yframesize < 0)
             throw new IllegalActionException(
                     "The value of the yframesize parameter(" + yframesize +
                     ") must be greater than zero.");

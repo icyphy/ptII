@@ -182,7 +182,7 @@ public final class ImageDisplay extends SDFAtomicActor {
                     ((frame[j][i] & 255) << 16) |
                     ((frame[j][i] & 255) << 8) |
                     (frame[j][i] & 255);
-             }
+        }
         _picture.displayImage();
         _picture.repaint();
     }

@@ -136,8 +136,8 @@ public class DDEActor extends TypedAtomicActor {
         Token token = _getNextInput();
         if( token instanceof NullToken ) {
 	    /*
-	    System.out.println(getName()+": got a NullToken "
-                    + "from _getNextInput()");
+              System.out.println(getName()+": got a NullToken "
+              + "from _getNextInput()");
 	    */
             return getNextToken();
 	}
@@ -150,10 +150,10 @@ public class DDEActor extends TypedAtomicActor {
      * @return False to indicate that future execution can not occur.
      * @exception IllegalActionException Not thrown in this class. May be
      *  thrown in derived classes.
-    public boolean postfire() throws IllegalActionException {
-        return false;
-    }
-     */
+     public boolean postfire() throws IllegalActionException {
+     return false;
+     }
+    */
 
     ///////////////////////////////////////////////////////////////////
     ////                   package friendly methods		   ////
@@ -178,13 +178,13 @@ public class DDEActor extends TypedAtomicActor {
 	Thread thread = Thread.currentThread();
 	if( thread instanceof DDEThread ) {
 	    TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
-        DDEReceiver lowestRcvr = (DDEReceiver)timeKeeper.getFirstRcvr();
-	if( lowestRcvr.hasToken() ) {
-	    _lastPort = (TypedIOPort)lowestRcvr.getContainer();
-	    return lowestRcvr.get();
-	} else {
-	    return _getNextInput();
-	}
+            DDEReceiver lowestRcvr = (DDEReceiver)timeKeeper.getFirstRcvr();
+            if( lowestRcvr.hasToken() ) {
+                _lastPort = (TypedIOPort)lowestRcvr.getContainer();
+                return lowestRcvr.get();
+            } else {
+                return _getNextInput();
+            }
 	} else { 
 	    throw new IllegalActionException("FIXME");
 	}

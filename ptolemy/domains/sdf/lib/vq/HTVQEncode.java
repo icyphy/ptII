@@ -113,8 +113,8 @@ public final class HTVQEncode extends SDFAtomicActor {
         ((SDFIOPort) getPort("imagepart")).getArray(0, _tokens);
 
         for(j = 0; j < numpartitions; j++) {
-           _codewords[j] = new IntToken(
-                _encode(_tokens[j].intArray(), _xpartsize * _ypartsize));
+            _codewords[j] = new IntToken(
+                    _encode(_tokens[j].intArray(), _xpartsize * _ypartsize));
 	}
 
         ((SDFIOPort) getPort("index")).sendArray(0, _codewords);
@@ -319,13 +319,13 @@ public final class HTVQEncode extends SDFAtomicActor {
             p4[3][2] = _lookup_table[stage][ip];
 
             ip = ((p5[3][0] & 255) << 8) + (p5[3][1] & 255);
-             p4[0][3] = _lookup_table[stage][ip];
+            p4[0][3] = _lookup_table[stage][ip];
             ip = ((p5[3][2] & 255) << 8) + (p5[3][2] & 255);
-             p4[1][3] = _lookup_table[stage][ip];
+            p4[1][3] = _lookup_table[stage][ip];
             ip = ((p5[3][4] & 255) << 8) + (p5[3][4] & 255);
-             p4[2][3] = _lookup_table[stage][ip];
+            p4[2][3] = _lookup_table[stage][ip];
             ip = ((p5[3][6] & 255) << 8) + (p5[3][6] & 255);
-             p4[3][3] = _lookup_table[stage][ip];
+            p4[3][3] = _lookup_table[stage][ip];
             stage++;
         case 3:
             //XSIZE = 4, YSIZE = 4
@@ -345,9 +345,9 @@ public final class HTVQEncode extends SDFAtomicActor {
             p3[1][2] = _lookup_table[stage][ip];
 
             ip = ((p4[3][1] & 255) << 8) + (p4[3][0] & 255);
-             p3[0][3] = _lookup_table[stage][ip];
+            p3[0][3] = _lookup_table[stage][ip];
             ip = ((p4[3][3] & 255) << 8) + (p4[3][2] & 255);
-             p3[1][3] = _lookup_table[stage][ip];
+            p3[1][3] = _lookup_table[stage][ip];
             stage++;
         case 2:
             //XSIZE = 4, YSIZE = 2
@@ -383,10 +383,10 @@ public final class HTVQEncode extends SDFAtomicActor {
         long c, d = 0;
         int i;
         for(i = 0;i<len;i++)
-        {
+            {
                 c = ((a[i] & 255) - (b[i] & 255));
                 d += c * c;
-        }
+            }
         return d;
     }
 

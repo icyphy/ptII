@@ -74,14 +74,14 @@ public final class VQDecode extends SDFAtomicActor {
 
     }
 
-   /** 
+    /** 
      * Fire this actor.
      * Consume a Vector on the input, and perform Vector Quantization using
      * Hierarchical Table-Lookup Vector Quantization.  Send the computed
      * codeword on the output.
      * @exception IllegalActionException if a contained method throws it.
      */
-     public void fire() throws IllegalActionException {
+    public void fire() throws IllegalActionException {
         int j;
         int numpartitions =
             _xframesize * _yframesize / _xpartsize / _ypartsize;
@@ -116,10 +116,10 @@ public final class VQDecode extends SDFAtomicActor {
         _codewords =
             new IntToken[_yframesize * _xframesize / _ypartsize / _xpartsize];
 
-       _part = new int[_ypartsize * _xpartsize];
-       _partitions =
-           new IntMatrixToken[_yframesize * _xframesize
-                   / _ypartsize / _xpartsize];
+        _part = new int[_ypartsize * _xpartsize];
+        _partitions =
+            new IntMatrixToken[_yframesize * _xframesize
+                    / _ypartsize / _xpartsize];
 
 
         p = (Parameter) getAttribute("Codebook");
@@ -176,7 +176,7 @@ public final class VQDecode extends SDFAtomicActor {
                 if(_fullread(source, temp) != 65536)
                     throw new IllegalActionException("Error reading " +
                             "codebook file!");
-           }
+            }
         }
         catch (Exception e) {
             throw new IllegalActionException(e.getMessage());

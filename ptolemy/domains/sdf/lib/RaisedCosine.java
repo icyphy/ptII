@@ -97,7 +97,7 @@ Typically, the value of <i>interpolation</i> is the same as that of
 as a transmit pulse shaper.
 <h3>References</h3>
 <p>[1]
-E. A. Lee and D. G. Messerchmitt,
+E. A. Lee and D. G. Messerschmitt,
 <i>Digital Communication,</i> Kluwer Academic Publishers, Boston, 1988.
 <p>[2]
 I. Korn, <i>Digital Communications</i>, Van Nostrand Reinhold, New York, 1985.
@@ -196,10 +196,10 @@ public class RaisedCosine extends FIR {
         double center = len * 0.5;
 
         SampleGenerator rcSg = sqrt ? 
-         (SampleGenerator) 
-         new SignalProcessing.SqrtRaisedCosineSampleGenerator(inter, ebw) :
-         (SampleGenerator)
-         new SignalProcessing.RaisedCosineSampleGenerator(inter, ebw);
+            (SampleGenerator) 
+            new SignalProcessing.SqrtRaisedCosineSampleGenerator(inter, ebw) :
+            (SampleGenerator)
+            new SignalProcessing.RaisedCosineSampleGenerator(inter, ebw);
 
         tps[0] = SignalProcessing.sampleWave(len, -center, 1.0, rcSg);
 

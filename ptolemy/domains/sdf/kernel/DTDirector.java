@@ -108,7 +108,7 @@ public class DTDirector extends SDFDirector {
     /** Return a new receiver consistent with the SDF domain.
         All SDF receivers are FIFOQueues.
         @return A new FIFOQueue
-        */
+    */
     public Receiver newReceiver() {
         return new QueueReceiver();
     }
@@ -211,10 +211,10 @@ public class DTDirector extends SDFDirector {
 		// container is opaque, so each element of r[] is of length 1
 		Receivers r[][] = p.getInsideReceivers();
 		for(int i = 0; i<r.length(); i++) {
-		   while(r[i][0].hasToken()) {
-		       _waitingtokens[portcount][i].insertLast(r[i][0].get());
-		       count++;
-		   }
+                    while(r[i][0].hasToken()) {
+                        _waitingtokens[portcount][i].insertLast(r[i][0].get());
+                        count++;
+                    }
 		}
 		portcount++;
 	    }
@@ -270,7 +270,7 @@ public class DTDirector extends SDFDirector {
             // this should never happen because we don't override
             // setScheduler() to do sanity checks.
             Debug.println("Illegal schedule caught, " +
-                "which should never happen!");
+                    "which should never happen!");
         }
 
         try {
@@ -317,5 +317,5 @@ public class DTDirector extends SDFDirector {
     // Support for mutations.
     // private LinkedList _pendingMutations = null;
     // private LinkedList _mutationListeners = null;
-//    private ActorListener _actorListener = null;
+    //    private ActorListener _actorListener = null;
 }

@@ -134,7 +134,7 @@ public final class SDFReceiver implements Receiver {
      *  exception is thrown.
      *  @param offset The offset from the oldest token in the receiver.
      *  @return The token at the desired offset in the receiver or its
-         history.
+     history.
      *  @exception NoTokenException If the offset is out of range.
      */
     public Token get(int offset) {
@@ -155,9 +155,9 @@ public final class SDFReceiver implements Receiver {
      *  @exception NoTokenException If there is no token in the receiver.
      */
     public void getArray(Token t[]) {
-       try {
-           _queue.takeArray(t);
-           return;
+        try {
+            _queue.takeArray(t);
+            return;
         } catch (NoSuchElementException ex) {
             throw new NoTokenException(getContainer(),
                     "Count " + t.length + " out of range with " + _queue.size()
@@ -301,7 +301,7 @@ public final class SDFReceiver implements Receiver {
     ////                         public variables                  ////
 
     public static final int INFINITE_CAPACITY =
-            ArrayFIFOQueue.INFINITE_CAPACITY;
+    ArrayFIFOQueue.INFINITE_CAPACITY;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
