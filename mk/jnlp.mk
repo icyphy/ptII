@@ -186,18 +186,25 @@ COPERNICUS_JARS = \
 	ptolemy/copernicus/copernicus.jar
 
 
+PYTHON_JARS =	ptolemy/actor/gui/python/python.jar 
+
+EXEC_JARS = 	ptolemy/actor/gui/exec/exec.jar
+
+PTJACL_JARS =	ptolemy/actor/gui/ptjacl/ptjacl.jar \
+		lib/ptjacl.jar
+# Do not include PTJACL for size reasons
+PTJACL_JARS =
+
+
 # Jar files that will appear in a full JNLP Ptolemy II Runtime
 # ptolemy/domains/sdf/lib/vq/data/data.jar contains images for HTVQ demo
 FULL_ONLY_JNLP_JARS = \
 	$(COPERNICUS_JARS) \
 	doc/design/design.jar \
-	ptolemy/actor/gui/exec/exec.jar \
-	ptolemy/actor/gui/ptjacl/ptjacl.jar \
-	lib/ptjacl.jar \
-	ptolemy/actor/gui/python/python.jar \
+	$(PTJACL_JARS) \
 	vendors/jython/jython.jar \
+	ptolemy/actor/hoc/demo/demo.jar \
 	ptolemy/actor/lib/io/comm/comm.jar \
-	ptolemy/actor/lib/hoc/demo/demo.jar \
 	ptolemy/domains/experimentalDomains.jar \
 	ptolemy/domains/ci/demo/demo.jar \
 	ptolemy/domains/dt/demo/demo.jar \
