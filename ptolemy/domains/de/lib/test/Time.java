@@ -28,7 +28,7 @@
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.actor.util.test;
+package ptolemy.domains.de.lib.test;
 
 import ptolemy.domains.de.kernel.*;
 import ptolemy.kernel.*;
