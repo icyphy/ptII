@@ -46,15 +46,16 @@ import ptolemy.lang.java.*;
 import ptolemy.lang.java.nodetypes.*;
 
 /** A Java AST visitor that finds the most specific Token type allowable for
- *  variables declared as abstract Tokens (Token, ScalarToken, and MatrixToken).
- *
- *  @author Jeff Tsay
- */
+variables declared as abstract Tokens (Token, ScalarToken, and MatrixToken).
+@author Jeff Tsay
+@version $Id$
+*/
 public class SpecializeTokenVisitor extends ResolveVisitorBase {
 
     public SpecializeTokenVisitor(ActorCodeGeneratorInfo actorInfo,
             PtolemyTypeVisitor typeVisitor) {
-        this(actorInfo, typeVisitor, new InequalitySolver(_cpo), new HashMap());
+        this(actorInfo, typeVisitor,
+                new InequalitySolver(_cpo), new HashMap());
     }
 
     public SpecializeTokenVisitor(ActorCodeGeneratorInfo actorInfo,
@@ -64,17 +65,18 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         super(TM_CUSTOM);
         _actorInfo = actorInfo;
 
-        _typeID = (PtolemyTypeIdentifier) typeVisitor.typePolicy().typeIdentifier();
+        _typeID =
+            (PtolemyTypeIdentifier) typeVisitor.typePolicy().typeIdentifier();
         _typeVisitor = typeVisitor;
 
         _solver = solver;
         _declToTermMap = declToTermMap;
     }
 
-    /** Use the CompileUnitNodes (which presumably contain classes in a hierarchy),
-     *  to return a Map from all Token declarations that appear in the compile units
-     *  to TypeNameNodes representing the most specific type possible that the
-     *  declaration could have.
+    /** Use the CompileUnitNodes (which presumably contain classes in a
+     *  hierarchy), to return a Map from all Token declarations that appear
+     *  in the compile units to TypeNameNodes representing the most specific
+     *  type possible that the declaration could have.
      */
     public static Map specializeTokens(List nodeList,
             ActorCodeGeneratorInfo actorInfo, PtolemyTypeVisitor typeVisitor) {
@@ -88,7 +90,8 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         // inequality term map is used in each invocation
 
         SpecializeTokenVisitor specializeVisitor =
-            new SpecializeTokenVisitor(actorInfo, typeVisitor, solver, declToTermMap);
+            new SpecializeTokenVisitor(actorInfo, typeVisitor,
+                    solver, declToTermMap);
 
         while (nodeItr.hasNext()) {
             CompileUnitNode unitNode = (CompileUnitNode) nodeItr.next();
@@ -128,15 +131,17 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
                     (value == PtolemyTypeIdentifier.TOKEN_DECL) ||
                     (value == PtolemyTypeIdentifier.SCALAR_TOKEN_DECL) ||
                     (value == PtolemyTypeIdentifier.MATRIX_TOKEN_DECL)) {
-                System.err.println("Warning: could not solve for specific token type for " +
-                        "declaration " + typedDecl.getName() + " in " + actorInfo.actor.getName());
+                System.err.println("Warning: could not solve for specific" +
+                        " token type for declaration " + typedDecl.getName() +
+                        " in " + actorInfo.actor.getName());
 
-                // replace the declaration type with "Token" as an indication for
-                // later passes
+                // Replace the declaration type with "Token" as an indication
+                // for later passes.
                 declToTokenTypeMap.put(typedDecl,
                         PtolemyTypeIdentifier.TOKEN_TYPE.clone());
             } else {
-                TypeNameNode typeNode = (TypeNameNode) value.getDefType().clone();
+                TypeNameNode typeNode =
+                    (TypeNameNode) value.getDefType().clone();
 
                 declToTokenTypeMap.put(typedDecl, typeNode);
             }
@@ -195,7 +200,8 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         return _visitVarInitDeclNode(node);
     }
 
-    public Object visitLocalVarDeclNode(LocalVarDeclNode node, LinkedList args) {
+    public Object visitLocalVarDeclNode(LocalVarDeclNode node,
+            LinkedList args) {
         return _visitVarInitDeclNode(node);
     }
 
@@ -208,7 +214,8 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         return null;
     }
 
-    public Object visitConstructorDeclNode(ConstructorDeclNode node, LinkedList args) {
+    public Object visitConstructorDeclNode(ConstructorDeclNode node,
+            LinkedList args) {
         // make sure we process the parameters first
         TNLManip.traverseList(this, null, node.getParams());
 
@@ -217,7 +224,8 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         return null;
     }
 
-    public Object visitInterfaceDeclNode(InterfaceDeclNode node, LinkedList args) {
+    public Object visitInterfaceDeclNode(InterfaceDeclNode node,
+            LinkedList args) {
         // do not look into interfaces
         return null;
     }
@@ -233,7 +241,8 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
             _declToTermMap.put(typedDecl, term);
 
             // constrain the type (it must be added the inequalities)
-            _solver.addInequality(new Inequality(term, _makeConstantTerm(type, null)));
+            _solver.addInequality(new Inequality(term,
+                    _makeConstantTerm(type, null)));
         }
         return null;
     }
@@ -242,19 +251,23 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         return _visitVariableNode(node);
     }
 
-    public Object visitObjectFieldAccessNode(ObjectFieldAccessNode node, LinkedList args) {
+    public Object visitObjectFieldAccessNode(ObjectFieldAccessNode node,
+            LinkedList args) {
         return _visitVariableNode(node);
     }
 
-    public Object visitSuperFieldAccessNode(SuperFieldAccessNode node, LinkedList args) {
+    public Object visitSuperFieldAccessNode(SuperFieldAccessNode node,
+            LinkedList args) {
         return _visitVariableNode(node);
     }
 
-    public Object visitTypeFieldAccessNode(TypeFieldAccessNode node, LinkedList args) {
+    public Object visitTypeFieldAccessNode(TypeFieldAccessNode node,
+            LinkedList args) {
         return _visitVariableNode(node);
     }
 
-    public Object visitThisFieldAccessNode(ThisFieldAccessNode node, LinkedList args) {
+    public Object visitThisFieldAccessNode(ThisFieldAccessNode node,
+            LinkedList args) {
         return _visitVariableNode(node);
     }
 
@@ -268,7 +281,8 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
 
         FieldAccessNode fieldAccessNode = (FieldAccessNode) node.getMethod();
 
-        ExprNode accessedObj = (ExprNode) ExprUtility.accessedObject(fieldAccessNode);
+        ExprNode accessedObj =
+            (ExprNode) ExprUtility.accessedObject(fieldAccessNode);
 
         // if this is a static method call, we can't do any more.
         if (accessedObj == null) {
@@ -279,20 +293,24 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
 
         int accessedObjKind = _typeID.kind(_typeVisitor.type(accessedObj));
 
-        MethodDecl methodDecl = (MethodDecl) JavaDecl.getDecl((NamedNode) fieldAccessNode);
+        MethodDecl methodDecl =
+            (MethodDecl) JavaDecl.getDecl((NamedNode) fieldAccessNode);
 
         String methodName = methodDecl.getName();
 
         if (_typeID.isSupportedTokenKind(accessedObjKind)) {
 
-            // if the return type is not a subclass of Token, we can't do any more
+            // If the return type is not a subclass of Token, we can't do
+            // any more.
             if (retval == null) {
                 return null;
             }
 
-            InequalityTerm accessedObjTerm = (InequalityTerm) accessedObjTermObj;
+            InequalityTerm accessedObjTerm =
+                (InequalityTerm) accessedObjTermObj;
 
-            boolean variableAccessedTerm = (accessedObjTerm instanceof VariableTerm);
+            boolean variableAccessedTerm =
+                (accessedObjTerm instanceof VariableTerm);
 
             if (variableAccessedTerm) {
                 retval = _makeVariableTerm(returnType, null);
@@ -317,20 +335,28 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
                         retval = _makeVariableTerm(returnType, null);
                     }
 
-                    if (methodName.equals("add") || methodName.equals("addReverse") ||
-                            methodName.equals("subtract") || methodName.equals("subtractReverse") ||
-                            methodName.equals("multiply") || methodName.equals("multiplyReverse") ||
-                            methodName.equals("divide") || methodName.equals("divideReverse") ||
-                            methodName.equals("modulo") || methodName.equals("moduloReverse")) {
-                        // constrain the return value to be >= both the accessedObject and
-                        // the first argument
+                    if (methodName.equals("add") ||
+                            methodName.equals("addReverse") ||
+                            methodName.equals("subtract") ||
+                            methodName.equals("subtractReverse") ||
+                            methodName.equals("multiply") ||
+                            methodName.equals("multiplyReverse") ||
+                            methodName.equals("divide") ||
+                            methodName.equals("divideReverse") ||
+                            methodName.equals("modulo") ||
+                            methodName.equals("moduloReverse")) {
+                        // Constrain the return value to be >= both 
+                        // the accessedObject and the first argument
 
-                        _solver.addInequality(new Inequality(accessedObjTerm, retval));
-                        _solver.addInequality(new Inequality(firstArgTerm, retval));
+                        _solver.addInequality(new Inequality(accessedObjTerm,
+                                retval));
+                        _solver.addInequality(new Inequality(firstArgTerm,
+                                retval));
 
                     } else if (methodName.equals("convert")) {
-                        // constrain the return value to be equal the accessedObject
-                        // also constain the first argument to be <= the accessedObject
+                        // constrain the return value to be equal the
+                        // accessedObject also constain the first argument to
+                        // be <= the accessedObject
 
                         retval = accessedObjTerm;
 
@@ -344,14 +370,16 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         } else if (_typeID.isSupportedPortKind(accessedObjKind)) {
             // use the resolved type of ports to do type inference
 
-            TypedDecl typedDecl = (TypedDecl) JavaDecl.getDecl((NamedNode) accessedObj);
+            TypedDecl typedDecl =
+                (TypedDecl) JavaDecl.getDecl((NamedNode) accessedObj);
             String varName = typedDecl.getName();
 
-            TypedIOPort port = (TypedIOPort) _actorInfo.portNameToPortMap.get(varName);
+            TypedIOPort port =
+                (TypedIOPort) _actorInfo.portNameToPortMap.get(varName);
 
             if (port == null) {
-                System.err.println("Warning: method called on port that is not " +
-                        "a field of the actor");
+                System.err.println("Warning: method called on port " +
+                        " that is not a field of the actor");
                 return null;
             }
 
@@ -368,24 +396,28 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
                 return _makeConstantTerm(portTypeNode, null);
             } else if (methodName.equals("send")) {
                 // second argument is a token, constrain it
-                InequalityTerm secondArgTerm = (InequalityTerm) argTerms.get(1);
+                InequalityTerm secondArgTerm =
+                    (InequalityTerm) argTerms.get(1);
                 _solver.addInequality(new Inequality(secondArgTerm,
                         _makeConstantTerm(portTypeNode, null)));
                 return null; // return type is void
             } // support getArray ...
 
-        } else if (accessedObjKind == PtolemyTypeIdentifier.TYPE_KIND_PARAMETER) {
+        } else if (accessedObjKind ==
+                PtolemyTypeIdentifier.TYPE_KIND_PARAMETER) {
             // use the tokens returned by parameters to do type inference
 
             if (methodName.equals("getToken")){
-                TypedDecl typedDecl = (TypedDecl) JavaDecl.getDecl((NamedNode) accessedObj);
+                TypedDecl typedDecl =
+                    (TypedDecl) JavaDecl.getDecl((NamedNode) accessedObj);
                 String varName = typedDecl.getName();
 
-                Token token = (Token) _actorInfo.parameterNameToTokenMap.get(varName);
+                Token token =
+                    (Token) _actorInfo.parameterNameToTokenMap.get(varName);
 
                 if (token == null) {
-                    System.err.println("Warning: getToken() called on parameter that is not " +
-                            "a field of the actor");
+                    System.err.println("Warning: getToken() called on" +
+                            " parameter that is not a field of the actor");
                     return null;
                 }
 
@@ -406,7 +438,8 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
     public Object visitCastNode(CastNode node, LinkedList args) {
         // assume that all casts succeed
 
-        InequalityTerm term = (InequalityTerm) node.getExpr().accept(this, null);
+        InequalityTerm term =
+            (InequalityTerm) node.getExpr().accept(this, null);
 
         if (term != null) {
             _solver.addInequality(new Inequality(term,
@@ -417,8 +450,10 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
     }
 
     public Object visitAssignNode(AssignNode node, LinkedList args) {
-        InequalityTerm leftTerm = (InequalityTerm) node.getExpr1().accept(this, null);
-        InequalityTerm rightTerm = (InequalityTerm) node.getExpr2().accept(this, null);
+        InequalityTerm leftTerm =
+            (InequalityTerm) node.getExpr1().accept(this, null);
+        InequalityTerm rightTerm =
+            (InequalityTerm) node.getExpr2().accept(this, null);
 
         if ((leftTerm != null) && (rightTerm != null)) {
             _solver.addInequality(new Inequality(rightTerm, leftTerm));
@@ -437,7 +472,8 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
 
         TypedDecl typedDecl = (TypedDecl) JavaDecl.getDecl(node);
 
-        InequalityTerm term = (InequalityTerm) _declToTermMap.get(typedDecl); // may be null
+        InequalityTerm term =
+            (InequalityTerm) _declToTermMap.get(typedDecl); // may be null
         return term;
     }
 
@@ -446,14 +482,16 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         TypedDecl typedDecl = (TypedDecl) JavaDecl.getDecl((NamedNode) node);
 
         InequalityTerm term = _makeVariableTerm(type, typedDecl);
-        InequalityTerm initExprTerm = (InequalityTerm) node.getInitExpr().accept(this, null);
+        InequalityTerm initExprTerm =
+            (InequalityTerm) node.getInitExpr().accept(this, null);
 
         if (term != null) {
             // add to the map from decls to inequality terms
             _declToTermMap.put(typedDecl, term);
 
             // constrain the type (it must be added the inequalities)
-            _solver.addInequality(new Inequality(term, _makeConstantTerm(type, null)));
+            _solver.addInequality(new Inequality(term,
+                    _makeConstantTerm(type, null)));
 
             if (initExprTerm != null) {
                 _solver.addInequality(new Inequality(initExprTerm, term));
@@ -472,7 +510,8 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
             return null;
         }
 
-        return new VariableTerm((ClassDecl) JavaDecl.getDecl((NamedNode) type), decl);
+        return new VariableTerm((ClassDecl)
+                JavaDecl.getDecl((NamedNode) type), decl);
     }
 
     /** Return a constant inequality term corresponding to the given type,
@@ -485,7 +524,8 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
             return null;
         }
 
-        return new ConstantTerm((ClassDecl) JavaDecl.getDecl((NamedNode) type), decl);
+        return new ConstantTerm((ClassDecl)
+                JavaDecl.getDecl((NamedNode) type), decl);
     }
 
     protected ActorCodeGeneratorInfo _actorInfo;
@@ -510,12 +550,18 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
 
         public void fixValue() {}
 
-        public Object getValue() { return _classDecl; }
+        public Object getValue() {
+            return _classDecl;
+        }
 
-        public Object getAssociatedObject() { return _decl; }
+        public Object getAssociatedObject() {
+            return _decl;
+        }
 
         // Constant terms do not contain any variables
-        public InequalityTerm[] getVariables() { return new InequalityTerm[0]; }
+        public InequalityTerm[] getVariables() {
+            return new InequalityTerm[0];
+        }
 
         public void initialize(Object e) throws IllegalActionException {
             setValue(e);
@@ -532,7 +578,8 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         }
 
         public String toString() {
-            return "ConstantTerm: value = " + _classDecl.getName() + ", _decl = " + _decl;
+            return "ConstantTerm: value = " + _classDecl.getName() + 
+                ", _decl = " + _decl;
         }
 
         public void unfixValue() {}
@@ -575,7 +622,8 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         }
 
         public String toString() {
-            return "VariableTerm: decl = " + _decl + ", value = " + _classDecl.getName();
+            return "VariableTerm: decl = " + _decl + ", value = " +
+                _classDecl.getName();
         }
 
         public void unfixValue() { _fixed = false; }
@@ -589,38 +637,15 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         System.out.println("SpecializedTokenVisitor<static>");
         // construct the type lattice
         _cpo = new DirectedAcyclicGraph(18);
-
-        System.out.println("SpecializedTokenVisitor<static>:" +
-                "DUMMY_LOWER_BOUND" + PtolemyTypeIdentifier.DUMMY_LOWER_BOUND);
         _cpo.add(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND);
-
-        System.out.println("SpecializedTokenVisitor<static>:" +
-                "BOOLEAN_TOKEN_DECL" + 
-                PtolemyTypeIdentifier.BOOLEAN_TOKEN_DECL);
         _cpo.add(PtolemyTypeIdentifier.BOOLEAN_TOKEN_DECL);
-
-        System.out.println("SpecializedTokenVisitor<static>:" +
-                "BOOLEAN_MATRIX_TOKEN_DECL" + 
-                PtolemyTypeIdentifier.BOOLEAN_MATRIX_TOKEN_DECL);
         _cpo.add(PtolemyTypeIdentifier.BOOLEAN_MATRIX_TOKEN_DECL);
-
-        System.out.println("SpecializedTokenVisitor<static>:" +
-                           "COMPLEX_TOKEN_DECL");
         _cpo.add(PtolemyTypeIdentifier.COMPLEX_TOKEN_DECL);
-
-        System.out.println("SpecializedTokenVisitor<static>:" +
-                           "COMPLEX_MATRIX_TOKEN_DECL");
         _cpo.add(PtolemyTypeIdentifier.COMPLEX_MATRIX_TOKEN_DECL);
-
-        System.out.println("SpecializedTokenVisitor<static>:" +
-                           "DOUBLE_TOKEN_DECL");
         _cpo.add(PtolemyTypeIdentifier.DOUBLE_TOKEN_DECL);
         _cpo.add(PtolemyTypeIdentifier.DOUBLE_MATRIX_TOKEN_DECL);
         _cpo.add(PtolemyTypeIdentifier.FIX_TOKEN_DECL);
         _cpo.add(PtolemyTypeIdentifier.FIX_MATRIX_TOKEN_DECL);
-        System.out.println("SpecializedTokenVisitor<static>:" +
-                           "INT_TOKEN_DECL");
-
         _cpo.add(PtolemyTypeIdentifier.INT_TOKEN_DECL);
         _cpo.add(PtolemyTypeIdentifier.INT_MATRIX_TOKEN_DECL);
         _cpo.add(PtolemyTypeIdentifier.LONG_TOKEN_DECL);
@@ -631,42 +656,66 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         _cpo.add(PtolemyTypeIdentifier.STRING_TOKEN_DECL);
         _cpo.add(PtolemyTypeIdentifier.TOKEN_DECL);
 
-        _cpo.addEdge(PtolemyTypeIdentifier.OBJECT_TOKEN_DECL, PtolemyTypeIdentifier.TOKEN_DECL);
-        _cpo.addEdge(PtolemyTypeIdentifier.STRING_TOKEN_DECL, PtolemyTypeIdentifier.TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.OBJECT_TOKEN_DECL,
+                PtolemyTypeIdentifier.TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.STRING_TOKEN_DECL,
+                PtolemyTypeIdentifier.TOKEN_DECL);
 
-        _cpo.addEdge(PtolemyTypeIdentifier.BOOLEAN_TOKEN_DECL, PtolemyTypeIdentifier.STRING_TOKEN_DECL);
-        _cpo.addEdge(PtolemyTypeIdentifier.SCALAR_TOKEN_DECL, PtolemyTypeIdentifier.STRING_TOKEN_DECL);
-        _cpo.addEdge(PtolemyTypeIdentifier.MATRIX_TOKEN_DECL, PtolemyTypeIdentifier.STRING_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.BOOLEAN_TOKEN_DECL,
+                PtolemyTypeIdentifier.STRING_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.SCALAR_TOKEN_DECL,
+                PtolemyTypeIdentifier.STRING_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.MATRIX_TOKEN_DECL,
+                PtolemyTypeIdentifier.STRING_TOKEN_DECL);
 
-        _cpo.addEdge(PtolemyTypeIdentifier.LONG_TOKEN_DECL, PtolemyTypeIdentifier.SCALAR_TOKEN_DECL);
-        _cpo.addEdge(PtolemyTypeIdentifier.COMPLEX_TOKEN_DECL, PtolemyTypeIdentifier.SCALAR_TOKEN_DECL);
-        _cpo.addEdge(PtolemyTypeIdentifier.FIX_TOKEN_DECL, PtolemyTypeIdentifier.SCALAR_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.LONG_TOKEN_DECL,
+                PtolemyTypeIdentifier.SCALAR_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.COMPLEX_TOKEN_DECL,
+                PtolemyTypeIdentifier.SCALAR_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.FIX_TOKEN_DECL,
+                PtolemyTypeIdentifier.SCALAR_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.DOUBLE_TOKEN_DECL,
+                PtolemyTypeIdentifier.COMPLEX_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.INT_TOKEN_DECL,
+                PtolemyTypeIdentifier.LONG_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.INT_TOKEN_DECL,
+                PtolemyTypeIdentifier.DOUBLE_TOKEN_DECL);
 
-        _cpo.addEdge(PtolemyTypeIdentifier.DOUBLE_TOKEN_DECL, PtolemyTypeIdentifier.COMPLEX_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.BOOLEAN_MATRIX_TOKEN_DECL,
+                PtolemyTypeIdentifier.MATRIX_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.LONG_MATRIX_TOKEN_DECL,
+                PtolemyTypeIdentifier.MATRIX_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.COMPLEX_MATRIX_TOKEN_DECL,
+                PtolemyTypeIdentifier.MATRIX_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.FIX_MATRIX_TOKEN_DECL,
+                PtolemyTypeIdentifier.MATRIX_TOKEN_DECL);
 
-        _cpo.addEdge(PtolemyTypeIdentifier.INT_TOKEN_DECL, PtolemyTypeIdentifier.LONG_TOKEN_DECL);
-        _cpo.addEdge(PtolemyTypeIdentifier.INT_TOKEN_DECL, PtolemyTypeIdentifier.DOUBLE_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.DOUBLE_MATRIX_TOKEN_DECL,
+                PtolemyTypeIdentifier.COMPLEX_MATRIX_TOKEN_DECL);
 
-        _cpo.addEdge(PtolemyTypeIdentifier.BOOLEAN_MATRIX_TOKEN_DECL, PtolemyTypeIdentifier.MATRIX_TOKEN_DECL);
-        _cpo.addEdge(PtolemyTypeIdentifier.LONG_MATRIX_TOKEN_DECL, PtolemyTypeIdentifier.MATRIX_TOKEN_DECL);
-        _cpo.addEdge(PtolemyTypeIdentifier.COMPLEX_MATRIX_TOKEN_DECL, PtolemyTypeIdentifier.MATRIX_TOKEN_DECL);
-        _cpo.addEdge(PtolemyTypeIdentifier.FIX_MATRIX_TOKEN_DECL, PtolemyTypeIdentifier.MATRIX_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.INT_MATRIX_TOKEN_DECL,
+                PtolemyTypeIdentifier.DOUBLE_MATRIX_TOKEN_DECL);
 
-        _cpo.addEdge(PtolemyTypeIdentifier.DOUBLE_MATRIX_TOKEN_DECL, PtolemyTypeIdentifier.COMPLEX_MATRIX_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.INT_MATRIX_TOKEN_DECL,
+                PtolemyTypeIdentifier.LONG_MATRIX_TOKEN_DECL);
 
-        _cpo.addEdge(PtolemyTypeIdentifier.INT_MATRIX_TOKEN_DECL, PtolemyTypeIdentifier.DOUBLE_MATRIX_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND,
+                PtolemyTypeIdentifier.OBJECT_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND,
+                PtolemyTypeIdentifier.STRING_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND,
+                PtolemyTypeIdentifier.BOOLEAN_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND,
+                PtolemyTypeIdentifier.INT_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND,
+                PtolemyTypeIdentifier.FIX_TOKEN_DECL);
 
-        _cpo.addEdge(PtolemyTypeIdentifier.INT_MATRIX_TOKEN_DECL, PtolemyTypeIdentifier.LONG_MATRIX_TOKEN_DECL);
-
-        _cpo.addEdge(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND, PtolemyTypeIdentifier.OBJECT_TOKEN_DECL);
-        _cpo.addEdge(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND, PtolemyTypeIdentifier.STRING_TOKEN_DECL);
-        _cpo.addEdge(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND, PtolemyTypeIdentifier.BOOLEAN_TOKEN_DECL);
-        _cpo.addEdge(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND, PtolemyTypeIdentifier.INT_TOKEN_DECL);
-        _cpo.addEdge(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND, PtolemyTypeIdentifier.FIX_TOKEN_DECL);
-
-        _cpo.addEdge(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND, PtolemyTypeIdentifier.BOOLEAN_MATRIX_TOKEN_DECL);
-        _cpo.addEdge(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND, PtolemyTypeIdentifier.INT_MATRIX_TOKEN_DECL);
-        _cpo.addEdge(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND, PtolemyTypeIdentifier.FIX_MATRIX_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND,
+                PtolemyTypeIdentifier.BOOLEAN_MATRIX_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND,
+                PtolemyTypeIdentifier.INT_MATRIX_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND,
+                PtolemyTypeIdentifier.FIX_MATRIX_TOKEN_DECL);
 
         if (!_cpo.isLattice()) {
             throw new RuntimeException("SpecializeTokenVisitor: The " +
