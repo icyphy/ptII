@@ -161,8 +161,10 @@ if [ $retval = 0 ]; then
 	    classPathArg=$@
 	    echo "Passed in -classpath arg was: $classPathArg"
 	    shift
+	    # Under solaris, the awk command should not have a space
+            # between the -F and the separator.
 	    classPathDirectoriesAndJars=`echo $classPathArg | \
-		awk -F "$CLASSPATHSEPARATOR" '{for(i=1;i<=NF;i++) printf("%s ", $i)}' `
+		awk -F"$CLASSPATHSEPARATOR" '{for(i=1;i<=NF;i++) printf("%s ", $i)}' `
             echo "classPathDirectoriesAndJars:	$classPathDirectoriesAndJars"
 	    # Ok, since we might be pulling jar files from multiple
 	    # directories, we split up the value of the classpath argument
