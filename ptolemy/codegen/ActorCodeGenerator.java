@@ -42,6 +42,8 @@ import java.util.Map;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.StringToken;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.domains.sdf.kernel.*;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.lang.*;
@@ -400,6 +402,11 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
                     throw new RuntimeException(
                             "couldn't get token value for parameter " + param.getName());
                 }
+            } else if(attributeObj instanceof StringAttribute) {
+                StringAttribute param = (StringAttribute) attributeObj;
+
+                actorInfo.parameterNameToTokenMap.put(param.getName(),
+                        new StringToken(param.getExpression()));
             }
         }
     }

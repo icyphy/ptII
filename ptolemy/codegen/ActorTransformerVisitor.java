@@ -129,7 +129,8 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
             if (initExpr.classID() == NULLPNTRNODE_ID) {
                 node.setInitExpr(_dummyValue(type));
             }
-        } else if (kind == PtolemyTypeIdentifier.TYPE_KIND_PARAMETER) {
+        } else if (kind == PtolemyTypeIdentifier.TYPE_KIND_PARAMETER ||
+                   kind == PtolemyTypeIdentifier.TYPE_KIND_STRINGATTRIBUTE) {
             String paramName = node.getName().getIdent();
 
             Token token = (Token) _actorInfo.parameterNameToTokenMap.get(paramName);
@@ -169,7 +170,8 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
             if (initExpr.classID() == NULLPNTRNODE_ID) {
                 node.setInitExpr(_dummyValue(type));
             }
-        } else if (kind == PtolemyTypeIdentifier.TYPE_KIND_PARAMETER) {
+        } else if (kind == PtolemyTypeIdentifier.TYPE_KIND_PARAMETER ||
+                   kind == PtolemyTypeIdentifier.TYPE_KIND_STRINGATTRIBUTE) {
             return node; // leave everything alone
         }
 
@@ -612,8 +614,9 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                                     TNLManip.addFirst(accessedObj), AbsentTreeNode.instance)),
                     methodArgs);
 
-        } else if (accessedObjKind == PtolemyTypeIdentifier.TYPE_KIND_PARAMETER) {
-            MethodDecl methodDecl = (MethodDecl) JavaDecl.getDecl((NamedNode) fieldAccessNode);
+        } else if (accessedObjKind == PtolemyTypeIdentifier.TYPE_KIND_PARAMETER || accessedObjKind == PtolemyTypeIdentifier.TYPE_KIND_STRINGATTRIBUTE) {
+            MethodDecl methodDecl = 
+                (MethodDecl) JavaDecl.getDecl((NamedNode) fieldAccessNode);
 
             fieldAccessNode = (FieldAccessNode) fieldAccessNode.accept(this, args);
 
@@ -980,7 +983,8 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
         // prevent assignment to ports and parameters
         if (_typeID.isSupportedPortKind(kind) ||
-                (kind == PtolemyTypeIdentifier.TYPE_KIND_PARAMETER)) {
+                (kind == PtolemyTypeIdentifier.TYPE_KIND_PARAMETER) ||
+                (kind == PtolemyTypeIdentifier.TYPE_KIND_STRINGATTRIBUTE)) {
             return new NullPntrNode(); // must be eliminated by visitBlockNode()
         }
 

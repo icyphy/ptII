@@ -279,8 +279,11 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
     // Parameter kind.
     public static final int TYPE_KIND_PARAMETER            = TYPE_KIND_DUMMY_TOKEN + 1;
 
+    // StringAttribute kind.
+    public static final int TYPE_KIND_STRINGATTRIBUTE      = TYPE_KIND_PARAMETER + 1;
+
     // Port kind.
-    public static final int TYPE_KIND_TYPED_IO_PORT        = TYPE_KIND_PARAMETER + 1;
+    public static final int TYPE_KIND_TYPED_IO_PORT        = TYPE_KIND_STRINGATTRIBUTE + 1;
 
     // Ptolemy exception kinds.
     public static final int TYPE_KIND_ILLEGAL_ACTION_EXCEPTION
@@ -387,6 +390,10 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
     public static final ClassDecl PARAMETER_DECL;
     public static final TypeNameNode PARAMETER_TYPE;
 
+     // Parameter type.
+    public static final ClassDecl STRINGATTRIBUTE_DECL;
+    public static final TypeNameNode STRINGATTRIBUTE_TYPE;
+
     // Port type.
     public static final ClassDecl TYPED_IO_PORT_DECL;
     public static final TypeNameNode TYPED_IO_PORT_TYPE;
@@ -461,6 +468,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
         TYPE_KIND_COMPLEX_MATRIX_TOKEN, TYPE_KIND_FIX_MATRIX_TOKEN,
         TYPE_KIND_DUMMY_TOKEN,
         TYPE_KIND_PARAMETER,
+        TYPE_KIND_STRINGATTRIBUTE,
         TYPE_KIND_TYPED_IO_PORT,
 	TYPE_KIND_ILLEGAL_ACTION_EXCEPTION,
         TYPE_KIND_KERNEL_EXCEPTION, TYPE_KIND_NAME_DUPLICATION_EXCEPTION,
@@ -701,6 +709,12 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
                 "Parameter", CG_CLASS);
         PARAMETER_TYPE = PARAMETER_DECL.getDefType();
 
+        CompileUnitNode stringAttributeUnit =
+            StaticResolution.loadClassName("ptolemy.kernel.util.StringAttribute", 1);
+        STRINGATTRIBUTE_DECL = (ClassDecl) StaticResolution.findDecl( stringAttributeUnit,
+                "StringAttribute", CG_CLASS);
+        STRINGATTRIBUTE_TYPE = STRINGATTRIBUTE_DECL.getDefType();
+
 
         CompileUnitNode typedIOPortUnit =
             StaticResolution.loadClassName("ptolemy.actor.TypedIOPort", 1);
@@ -835,6 +849,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
                 COMPLEX_MATRIX_TOKEN_DECL, FIX_MATRIX_TOKEN_DECL,
                 DUMMY_LOWER_BOUND,
                 PARAMETER_DECL,
+                STRINGATTRIBUTE_DECL,
                 TYPED_IO_PORT_DECL,
 		ILLEGAL_ACTION_EXCEPTION_DECL,
                 KERNEL_EXCEPTION_DECL, NAME_DUPLICATION_EXCEPTION_DECL,
@@ -860,6 +875,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
                 COMPLEX_MATRIX_TOKEN_TYPE, FIX_MATRIX_TOKEN_TYPE,
                 DUMMY_LOWER_BOUND_TYPE,
                 PARAMETER_TYPE,
+                STRINGATTRIBUTE_TYPE,
                 TYPED_IO_PORT_TYPE,
 		ILLEGAL_ACTION_EXCEPTION_TYPE,
                 KERNEL_EXCEPTION_TYPE, NAME_DUPLICATION_EXCEPTION_TYPE,
