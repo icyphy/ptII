@@ -1,4 +1,4 @@
-/* An actor that outputs a random sequence with a Poisson distribution.
+/* An actor that outputs a random sequence with a HyperGeometric distribution.
 
 Copyright (c) 1998-2004 The Regents of the University of California.
 All rights reserved.
@@ -39,13 +39,13 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
-import cern.jet.random.Poisson;
+import cern.jet.random.HyperGeometric;
 import cern.jet.random.engine.DRand;
 
 //////////////////////////////////////////////////////////////////////////
-//// Poisson
+//// HyperGeometric
 /**
-   Produce a random sequence with a Poisson distribution.  On each
+   Produce a random sequence with a HyperGeometric distribution.  On each
    iteration, a new random number is produced.  The output port is of
    type DoubleToken.  The values that are generated are independent
    and identically distributed with the mean and the standard
@@ -59,7 +59,7 @@ import cern.jet.random.engine.DRand;
    @Pt.AcceptedRating Green (bilung)
 */
 
-public class ColtPoisson extends ColtRandomSource {
+public class ColtHyperGeometric extends ColtRandomSource {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -69,33 +69,49 @@ public class ColtPoisson extends ColtRandomSource {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public ColtPoisson(CompositeEntity container, String name)
+    public ColtHyperGeometric(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
 
         super(container, name);
 
         output.setTypeEquals(BaseType.INT);
 
-        coltMean = new Parameter(this, "mean", new DoubleToken(1.0));
-        coltMean.setTypeEquals(BaseType.DOUBLE);
+        coltN = new Parameter(this, "N", new IntToken(2));
+        coltN.setTypeEquals(BaseType.INT);
+
+        colts = new Parameter(this, "s", new IntToken(1));
+        colts.setTypeEquals(BaseType.INT);
+
+        coltn = new Parameter(this, "n", new IntToken(1));
+        coltn.setTypeEquals(BaseType.INT);
 
 	randomElementClass = getRandomElementClass(container);
 
-	rng = new Poisson(1.0, randomElement);
+	rng = new HyperGeometric(2, 1, 1, randomElement);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** coltMean.
-     *  This parameter contains a DoubleToken, initially with value 1.0.
+    /** coltN.
+     *  This parameter contains a IntToken, initially with value 1.0.
      */
-    public Parameter coltMean;
+    public Parameter coltN;
+
+    /** coltLmabda.
+     *  This parameter contains a IntToken, initially with value 1.0.
+     */
+    public Parameter colts;
+
+    /** coltLmabda.
+     *  This parameter contains a IntToken, initially with value 1.0.
+     */
+    public Parameter coltn;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Send a random number with a Poisson distribution to the output.
+    /** Send a random number with a HyperGeometric distribution to the output.
      *  This number is only changed in the prefire() method, so it will
      *  remain constant throughout an iteration.
      *  @exception IllegalActionException If there is no director.
@@ -111,9 +127,11 @@ public class ColtPoisson extends ColtRandomSource {
      */
     public boolean prefire() throws IllegalActionException {
 
-	double mean = ((DoubleToken) coltMean.getToken()).doubleValue();
+	int N = ((IntToken) coltN.getToken()).intValue();
+	int s = ((IntToken) colts.getToken()).intValue();
+	int n = ((IntToken) coltn.getToken()).intValue();
 
-        _current = ((Poisson) rng).nextInt(mean);
+        _current = ((HyperGeometric) rng).nextInt(N, s, n);
 
         return super.prefire();
     }

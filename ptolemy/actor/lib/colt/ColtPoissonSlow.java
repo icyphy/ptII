@@ -1,4 +1,4 @@
-/* An actor that outputs a random sequence with a Poisson distribution.
+/* An actor that outputs a random sequence with a PoissonSlow distribution.
 
 Copyright (c) 1998-2004 The Regents of the University of California.
 All rights reserved.
@@ -39,13 +39,13 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
-import cern.jet.random.Poisson;
+import cern.jet.random.PoissonSlow;
 import cern.jet.random.engine.DRand;
 
 //////////////////////////////////////////////////////////////////////////
-//// Poisson
+//// PoissonSlow
 /**
-   Produce a random sequence with a Poisson distribution.  On each
+   Produce a random sequence with a PoissonSlow distribution.  On each
    iteration, a new random number is produced.  The output port is of
    type DoubleToken.  The values that are generated are independent
    and identically distributed with the mean and the standard
@@ -59,7 +59,7 @@ import cern.jet.random.engine.DRand;
    @Pt.AcceptedRating Green (bilung)
 */
 
-public class ColtPoisson extends ColtRandomSource {
+public class ColtPoissonSlow extends ColtRandomSource {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -69,7 +69,7 @@ public class ColtPoisson extends ColtRandomSource {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public ColtPoisson(CompositeEntity container, String name)
+    public ColtPoissonSlow(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
 
         super(container, name);
@@ -81,7 +81,7 @@ public class ColtPoisson extends ColtRandomSource {
 
 	randomElementClass = getRandomElementClass(container);
 
-	rng = new Poisson(1.0, randomElement);
+	rng = new PoissonSlow(1.0, randomElement);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -95,7 +95,7 @@ public class ColtPoisson extends ColtRandomSource {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Send a random number with a Poisson distribution to the output.
+    /** Send a random number with a PoissonSlow distribution to the output.
      *  This number is only changed in the prefire() method, so it will
      *  remain constant throughout an iteration.
      *  @exception IllegalActionException If there is no director.
@@ -113,7 +113,8 @@ public class ColtPoisson extends ColtRandomSource {
 
 	double mean = ((DoubleToken) coltMean.getToken()).doubleValue();
 
-        _current = ((Poisson) rng).nextInt(mean);
+        ((PoissonSlow) rng).setMean(mean);
+        _current = ((PoissonSlow) rng).nextInt();
 
         return super.prefire();
     }

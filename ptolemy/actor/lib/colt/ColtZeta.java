@@ -1,4 +1,4 @@
-/* An actor that outputs a random sequence with a Poisson distribution.
+/* An actor that outputs a random sequence with a Zeta distribution.
 
 Copyright (c) 1998-2004 The Regents of the University of California.
 All rights reserved.
@@ -39,13 +39,13 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
-import cern.jet.random.Poisson;
+import cern.jet.random.Zeta;
 import cern.jet.random.engine.DRand;
 
 //////////////////////////////////////////////////////////////////////////
-//// Poisson
+//// Zeta
 /**
-   Produce a random sequence with a Poisson distribution.  On each
+   Produce a random sequence with a Zeta distribution.  On each
    iteration, a new random number is produced.  The output port is of
    type DoubleToken.  The values that are generated are independent
    and identically distributed with the mean and the standard
@@ -59,7 +59,7 @@ import cern.jet.random.engine.DRand;
    @Pt.AcceptedRating Green (bilung)
 */
 
-public class ColtPoisson extends ColtRandomSource {
+public class ColtZeta extends ColtRandomSource {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -69,33 +69,40 @@ public class ColtPoisson extends ColtRandomSource {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public ColtPoisson(CompositeEntity container, String name)
+    public ColtZeta(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
 
         super(container, name);
 
         output.setTypeEquals(BaseType.INT);
 
-        coltMean = new Parameter(this, "mean", new DoubleToken(1.0));
-        coltMean.setTypeEquals(BaseType.DOUBLE);
+        coltRo = new Parameter(this, "ro", new DoubleToken(1.0));
+        coltRo.setTypeEquals(BaseType.DOUBLE);
+        coltPk= new Parameter(this, "pk", new DoubleToken(1.0));
+        coltPk.setTypeEquals(BaseType.DOUBLE);
 
 	randomElementClass = getRandomElementClass(container);
 
-	rng = new Poisson(1.0, randomElement);
+	rng = new Zeta(1.0, 1.0, randomElement);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** coltMean.
+    /** coltRo.
      *  This parameter contains a DoubleToken, initially with value 1.0.
      */
-    public Parameter coltMean;
+    public Parameter coltRo;
+
+    /** coltPk.
+     *  This parameter contains a DoubleToken, initially with value 1.0.
+     */
+    public Parameter coltPk;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Send a random number with a Poisson distribution to the output.
+    /** Send a random number with a Zeta distribution to the output.
      *  This number is only changed in the prefire() method, so it will
      *  remain constant throughout an iteration.
      *  @exception IllegalActionException If there is no director.
@@ -111,9 +118,11 @@ public class ColtPoisson extends ColtRandomSource {
      */
     public boolean prefire() throws IllegalActionException {
 
-	double mean = ((DoubleToken) coltMean.getToken()).doubleValue();
+	double ro = ((DoubleToken) coltRo.getToken()).doubleValue();
+	double pk = ((DoubleToken) coltPk.getToken()).doubleValue();
 
-        _current = ((Poisson) rng).nextInt(mean);
+        ((Zeta) rng).setState(ro, pk);
+        _current = ((Zeta) rng).nextInt();
 
         return super.prefire();
     }

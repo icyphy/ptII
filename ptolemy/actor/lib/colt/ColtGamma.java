@@ -1,4 +1,4 @@
-/* An actor that outputs a random sequence with a Poisson distribution.
+/* An actor that outputs a random sequence with a Gamma distribution.
 
 Copyright (c) 1998-2004 The Regents of the University of California.
 All rights reserved.
@@ -39,13 +39,13 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
-import cern.jet.random.Poisson;
+import cern.jet.random.Gamma;
 import cern.jet.random.engine.DRand;
 
 //////////////////////////////////////////////////////////////////////////
-//// Poisson
+//// Gamma
 /**
-   Produce a random sequence with a Poisson distribution.  On each
+   Produce a random sequence with a Gamma distribution.  On each
    iteration, a new random number is produced.  The output port is of
    type DoubleToken.  The values that are generated are independent
    and identically distributed with the mean and the standard
@@ -59,7 +59,7 @@ import cern.jet.random.engine.DRand;
    @Pt.AcceptedRating Green (bilung)
 */
 
-public class ColtPoisson extends ColtRandomSource {
+public class ColtGamma extends ColtRandomSource {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -69,40 +69,49 @@ public class ColtPoisson extends ColtRandomSource {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public ColtPoisson(CompositeEntity container, String name)
+    public ColtGamma(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
 
         super(container, name);
 
-        output.setTypeEquals(BaseType.INT);
+        output.setTypeEquals(BaseType.DOUBLE);
 
-        coltMean = new Parameter(this, "mean", new DoubleToken(1.0));
-        coltMean.setTypeEquals(BaseType.DOUBLE);
+        coltAlpha = new Parameter(this, "mean", new DoubleToken(1.0));
+        coltAlpha.setTypeEquals(BaseType.DOUBLE);
+        coltLambda = new Parameter(this, "lambda", new DoubleToken(1.0));
+        coltLambda.setTypeEquals(BaseType.DOUBLE);
 
 	randomElementClass = getRandomElementClass(container);
 
-	rng = new Poisson(1.0, randomElement);
+	rng = new Gamma(1.0, 1.0, randomElement);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** coltMean.
+    /** coltAlpha.
      *  This parameter contains a DoubleToken, initially with value 1.0.
+     *  This is the mean.
      */
-    public Parameter coltMean;
+    public Parameter coltAlpha;
+
+    /** coltLambda.
+     *  This parameter contains a DoubleToken, initially with value 1.0.
+     *  This is the variance.
+     */
+    public Parameter coltLambda;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Send a random number with a Poisson distribution to the output.
+    /** Send a random number with a Gamma distribution to the output.
      *  This number is only changed in the prefire() method, so it will
      *  remain constant throughout an iteration.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        output.send(0, new IntToken(_current));
+        output.send(0, new DoubleToken(_current));
     }
 
     /** Calculate the next random number.
@@ -111,9 +120,10 @@ public class ColtPoisson extends ColtRandomSource {
      */
     public boolean prefire() throws IllegalActionException {
 
-	double mean = ((DoubleToken) coltMean.getToken()).doubleValue();
+	double alpha = ((DoubleToken) coltAlpha.getToken()).doubleValue();
+	double lambda = ((DoubleToken) coltLambda.getToken()).doubleValue();
 
-        _current = ((Poisson) rng).nextInt(mean);
+        _current = ((Gamma) rng).nextDouble(alpha, lambda);
 
         return super.prefire();
     }
@@ -122,5 +132,5 @@ public class ColtPoisson extends ColtRandomSource {
     ////                         private variables                 ////
 
     // The random number for the current iteration.
-    private int _current;
+    private double _current;
 }

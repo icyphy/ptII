@@ -1,4 +1,4 @@
-/* An actor that outputs a random sequence with a Poisson distribution.
+/* An actor that outputs a random sequence with a NegativeBinomial distribution.
 
 Copyright (c) 1998-2004 The Regents of the University of California.
 All rights reserved.
@@ -39,13 +39,13 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
-import cern.jet.random.Poisson;
+import cern.jet.random.NegativeBinomial;
 import cern.jet.random.engine.DRand;
 
 //////////////////////////////////////////////////////////////////////////
-//// Poisson
+//// NegativeBinomial
 /**
-   Produce a random sequence with a Poisson distribution.  On each
+   Produce a random sequence with a NegativeBinomial distribution.  On each
    iteration, a new random number is produced.  The output port is of
    type DoubleToken.  The values that are generated are independent
    and identically distributed with the mean and the standard
@@ -59,7 +59,7 @@ import cern.jet.random.engine.DRand;
    @Pt.AcceptedRating Green (bilung)
 */
 
-public class ColtPoisson extends ColtRandomSource {
+public class ColtNegativeBinomial extends ColtRandomSource {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -69,33 +69,42 @@ public class ColtPoisson extends ColtRandomSource {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public ColtPoisson(CompositeEntity container, String name)
+    public ColtNegativeBinomial(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
 
         super(container, name);
 
         output.setTypeEquals(BaseType.INT);
 
-        coltMean = new Parameter(this, "mean", new DoubleToken(1.0));
-        coltMean.setTypeEquals(BaseType.DOUBLE);
+        coltN = new Parameter(this, "n", new IntToken(1));
+        coltN.setTypeEquals(BaseType.INT);
+        coltP = new Parameter(this, "p", new DoubleToken(0.5));
+        coltP.setTypeEquals(BaseType.DOUBLE);
 
 	randomElementClass = getRandomElementClass(container);
 
-	rng = new Poisson(1.0, randomElement);
+	rng = new NegativeBinomial(1, 0.5, randomElement);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** coltMean.
+    /** coltN.
      *  This parameter contains a DoubleToken, initially with value 1.0.
+     *  This is the mean.
      */
-    public Parameter coltMean;
+    public Parameter coltN;
+
+    /** coltLmabda.
+     *  This parameter contains a DoubleToken, initially with value 1.0.
+     *  This is the variance.
+     */
+    public Parameter coltP;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Send a random number with a Poisson distribution to the output.
+    /** Send a random number with a NegativeBinomial distribution to the output.
      *  This number is only changed in the prefire() method, so it will
      *  remain constant throughout an iteration.
      *  @exception IllegalActionException If there is no director.
@@ -111,9 +120,10 @@ public class ColtPoisson extends ColtRandomSource {
      */
     public boolean prefire() throws IllegalActionException {
 
-	double mean = ((DoubleToken) coltMean.getToken()).doubleValue();
+	int n = ((IntToken) coltN.getToken()).intValue();
+	double p = ((DoubleToken) coltP.getToken()).doubleValue();
 
-        _current = ((Poisson) rng).nextInt(mean);
+        _current = ((NegativeBinomial) rng).nextInt(n, p);
 
         return super.prefire();
     }
