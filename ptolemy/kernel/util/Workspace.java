@@ -262,8 +262,8 @@ public final class Workspace implements Nameable, Serializable {
      *  This wakes up any threads that are suspended on access to this
      *  workspace so that they may contend for permissions.
      *  It also increments the version number of the workspace.
-     *  @exception InvalidStateException If this method is called when
-     *  the workspace is read-only.
+     *  @exception InvalidStateException If this method is called without
+     *   a matching call to getWriteAccess().
      */
     public final synchronized void doneWriting() {
 
@@ -788,11 +788,6 @@ public final class Workspace implements Nameable, Serializable {
      *  access.
      */
     private long _numReaders = 0;
-
-    /** @serial Indicate that the workspace is read-only, and no changes in
-     * this Workspace object is permitted.
-     */
-    // private boolean _readOnly = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
