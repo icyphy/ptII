@@ -32,6 +32,7 @@ package ptolemy.data.type;
 
 import java.lang.reflect.Modifier;
 import java.util.Hashtable;
+import java.io.Serializable;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.graph.CPO;
@@ -47,7 +48,7 @@ enumeration of base types.
 @version $Id$
 */
 
-public class BaseType implements Type {
+public class BaseType implements Type, Serializable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -338,7 +339,7 @@ public class BaseType implements Type {
 
     // This interface achieves the effect of HOF by passing the convert
     // method in an object implementing this interface.
-    private interface ConvertOperator {
+    private interface ConvertOperator extends Serializable {
 	public Token convert(Token t) throws IllegalActionException;
     }
 }
