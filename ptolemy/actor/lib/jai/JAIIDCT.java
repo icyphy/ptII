@@ -41,10 +41,9 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// JAIIDCT
 /**
-   Calculate the inverse discrete cosine transform of an image.  Even 
-   though the input image data may be 3 bytes (one for each band) per 
-   pixel, the output image data is of a higher resolution, not suitable 
-   for displaying or saving.  To display or save the output of this image,
+   Calculate the inverse discrete cosine transform of an image.  The output 
+   image data is of a high resolution (doubles), not suitable for 
+   displaying or saving.  To display or save the output of this image,
    use the JAIDataCaster actor to cast the data to an appropriate type
    (for instance, byte).
    <p>
