@@ -123,6 +123,19 @@ public class ProcessDirector extends Director {
         return newobj;
     }
 
+    /** End the execution of the model under the control of this
+     *  director. A flag is set in all the receivers which causes 
+     *  each process to terminate at the earliest communication point.
+     */
+    public synchronized void finish() {
+	try {
+	    wrapup();
+	} catch( IllegalActionException e ) {
+	    System.err.println("Error in calling "+getName()+".wrapup()");
+	    e.printStackTrace();
+	}
+    }
+
     /** Wait till the detection of a deadlock. Then handle the deadlock
      *  and return.
      *  @exception IllegalActionException If a derived class throws it.
@@ -347,62 +360,6 @@ public class ProcessDirector extends Director {
         while (threads.hasMoreElements()) {
 	    ((Thread)threads.nextElement()).stop();
         }
-    }
-
-
-    /** End the execution of the model under the control of this
-     *  director. A flag is set in all the receivers which causes 
-     *  each process to terminate at the earliest communication point.
-     *  <P>
-     *  This method is not synchronized on the workspace, so the caller
-     *  should be.
-     * @exception IllegalActionException if an error occurs while
-     *  accessing the receivers of all actors under the contol of
-     *  this director.
-     */
-    public void finish() throws IllegalActionException {
-	CompositeActor cont = (CompositeActor)getContainer();
-        Enumeration allMyActors = cont.deepGetEntities();
-        Enumeration actorPorts;
-        ProcessReceiver nextRec;
-        LinkedList recs = new LinkedList();
-        while (allMyActors.hasMoreElements()) {
-            Actor actor = (Actor)allMyActors.nextElement();
-            actorPorts = actor.inputPorts();
-            while (actorPorts.hasMoreElements()) {
-                IOPort port = (IOPort)actorPorts.nextElement();
-                // Setting finished flag in the receivers.
-                Receiver[][] receivers = port.getReceivers();
-                for (int i = 0; i<receivers.length; i++) {
-                    for (int j = 0; j<receivers[i].length; j++) {
-                        nextRec = (ProcessReceiver)receivers[i][j];
-                        nextRec.setFinish();
-                        recs.insertFirst(nextRec);
-                    }
-                }
-            }
-
-            // If this director is controlling a CompositeActor with
-            // output ports, need to set the finished flag
-            // there as well.
-            actorPorts  = cont.outputPorts();
-            while (actorPorts.hasMoreElements()) {
-                IOPort port = (IOPort)actorPorts.nextElement();
-                // Terminating the ports and hence the star
-                Receiver[][] receivers = port.getReceivers();
-                for (int i = 0; i<receivers.length; i++) {
-                    for (int j = 0; j<receivers[i].length; j++) {
-                        nextRec = (ProcessReceiver)receivers[i][j];
-                        nextRec.setFinish();
-                        recs.insertFirst(nextRec);
-                    }
-                }
-            }
-
-            // Now wake up all the receivers.
-            (new NotifyThread(recs)).start();
-        }
-        return;
     }
 
     /** End the execution of the model under the control of this
