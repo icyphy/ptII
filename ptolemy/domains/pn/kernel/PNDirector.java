@@ -100,7 +100,7 @@ model.
 @author Mudit Goel
 @version $Id$
 */
-public class PNDirector extends ProcessDirector {
+public class PNDirector extends ptolemy.actor.process.ProcessDirector {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -353,7 +353,7 @@ public class PNDirector extends ProcessDirector {
 
     /** Decreases the number of processes blocked on a delay.
      */
-    synchronized  void _delayUnblock() {
+    synchronized protected void _delayUnblock() {
 	_delayBlockCount--;
 	return;
     }
@@ -455,7 +455,7 @@ public class PNDirector extends ProcessDirector {
 	    Actor actor = (Actor)newactors.nextElement();
 	    actor.createReceivers();
 	    actor.initialize();
-	    ProcessThread pnt = new ProcessThread(actor, this);
+	    ptolemy.actor.process.ProcessThread pnt = new ptolemy.actor.process.ProcessThread(actor, this);
 	    threadlist.insertFirst(pnt);
 	    _addNewThread(pnt);
 	}
@@ -464,7 +464,7 @@ public class PNDirector extends ProcessDirector {
 	Enumeration threads = threadlist.elements();
 	//Starting threads;
 	while (threads.hasMoreElements()) {
-	    ProcessThread pnt = (ProcessThread)threads.nextElement();
+	    ptolemy.actor.process.ProcessThread pnt = (ptolemy.actor.process.ProcessThread)threads.nextElement();
 	    pnt.start();
 	    //System.out.println("Started a thread for "+((Entity)pnt.getActor()).getName());
 	}
@@ -576,15 +576,15 @@ public class PNDirector extends ProcessDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private boolean _notdone = true;
-    private int _delayBlockCount = 0;
-    private int _readBlockCount = 0;
+    protected boolean _notdone = true;
+    protected int _delayBlockCount = 0;
+    protected int _readBlockCount = 0;
     //private boolean _terminate = false;
-    private boolean _urgentMutations = false;
-    private int _writeBlockCount = 0;
-    private LinkedList _writeblockedQs = new LinkedList();
-    private CalendarQueue _eventQueue;
-    private double _currenttime = 0;
+    protected boolean _urgentMutations = false;
+    protected int _writeBlockCount = 0;
+    protected LinkedList _writeblockedQs = new LinkedList();
+    protected CalendarQueue _eventQueue;
+    protected double _currenttime = 0;
 }
 
 

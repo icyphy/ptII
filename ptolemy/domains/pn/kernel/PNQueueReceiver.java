@@ -54,7 +54,7 @@ In case of pausing, it suspends the process when it tries to read or write to th
 @see QueueReceiver
 @see ptolemy.actor.QueueReceiver
 */
-public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
+public class PNQueueReceiver extends QueueReceiver implements ptolemy.actor.process.ProcessReceiver {
     /** Construct an empty queue with no container
      */
     public PNQueueReceiver() {
@@ -71,6 +71,17 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** 
+     * Clearing the tokens in the receivers.
+     * This method should be implemented in the base Receiver class...
+     * William Wu
+     */
+    public void clear() {
+        while (super.hasToken()){
+            Token t = get();
+        }
+    }
 
     /** Remove and return the oldest token from the FIFO queue. If there 
      *  are no tokens in the queue, then the method blocks on it and 
@@ -102,7 +113,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 
             //System.out.println("Halfway thru receiver.get()");
             if (_terminate) {
-                throw new TerminateProcessException("");
+                throw new ptolemy.actor.process.TerminateProcessException("");
             } else {
                 result = super.get();
                 //Check if pending write to the Queue;
@@ -186,7 +197,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                 }
             }
             if (_terminate) {
-                throw new TerminateProcessException("");
+                throw new ptolemy.actor.process.TerminateProcessException("");
             } else {
                 //token can be put in the queue;
                 super.put(token);
