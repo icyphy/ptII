@@ -32,6 +32,8 @@ package ptolemy.data.type;
 
 import java.lang.reflect.Modifier;
 import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Map;
 import java.io.Serializable;
 
 import ptolemy.kernel.util.IllegalActionException;
@@ -63,6 +65,14 @@ public class BaseType implements Type, Serializable {
     public Token convert(Token t)
 	    throws IllegalActionException {
 	return _convertOp.convert(t);
+    }
+
+    /** Return an instance of this class with the specified name,
+     *  or null if none exists.
+     *  @return An instance of BaseType.
+     */
+    public static Type forName(String name) {
+        return (Type)_types.get(name);
     }
 
     /** Test if the argument token is compatible with this type. The method
@@ -337,6 +347,7 @@ public class BaseType implements Type, Serializable {
 	_tokenClass = c;
 	_name = name;
 	_convertOp = op;
+        _types.put(_name, this);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -345,6 +356,9 @@ public class BaseType implements Type, Serializable {
     private Class _tokenClass;
     private String _name;
     private ConvertOperator _convertOp;
+
+    // Table of types that have been created.
+    private static Map _types = new HashMap();
 
     ///////////////////////////////////////////////////////////////////
     ////                      private interface                    ////
