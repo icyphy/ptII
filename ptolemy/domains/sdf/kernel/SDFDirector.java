@@ -359,7 +359,7 @@ public class SDFDirector extends StaticSchedulingDirector {
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
               
-        SDFScheduler scheduler = (SDFScheduler)getScheduler();
+        BaseSDFScheduler scheduler = (BaseSDFScheduler)getScheduler();
         if (scheduler == null)
             throw new IllegalActionException("Attempted to initialize " +
                     "SDF system with no scheduler");

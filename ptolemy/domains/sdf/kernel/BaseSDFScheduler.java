@@ -117,6 +117,13 @@ public abstract class BaseSDFScheduler extends Scheduler {
         super(container, name);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                 ////
+
+    /** Declare the rate dependency on any external ports of the model.
+     *  SDF directors should invoke this method once during preinitialize.
+     */
+    public abstract void declareRateDependency() throws IllegalActionException;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
