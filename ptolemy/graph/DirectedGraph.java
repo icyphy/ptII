@@ -115,6 +115,90 @@ public class DirectedGraph extends Graph {
 	_transitiveClosure = null;
     }
 
+    /** Find all the nodes that can be reached backward from the
+     *  specified node.
+     *  The reachable nodes do not include the specific one unless
+     *  there is a loop from the specified node back to itself.
+     *  The implementation computes the transitive closure of the
+     *  graph, if it is not already computed after the last graph
+     *  change.  So the first call to this method after graph
+     *  change may be slow, but all the subsequent calls return
+     *  in constant time.
+     *  @param o an Object representing a node in this graph.
+     *  @return an array of Objects representing nodes reachable from
+     *   the specified one.
+     *  @exception IllegalArgumentException If the specified Object is
+     *   not a node in this graph.
+     */
+    public Object[] backwardReachableNodes(Object o) {
+	_computeTransitiveClosure();
+
+	int id = _getNodeId(o);
+	Vector nodes = new Vector(_transitiveClosure.length);
+        // Look at the correspoding row.
+	for (int i = 0; i < _transitiveClosure.length; i++) {
+	    if (_transitiveClosure[i][id]) {
+		nodes.addElement(_getNodeObject(i));
+	    }
+	}
+
+        // FIXME: restore the following line when moving to jdk1.2
+        //	return nodes.toArray();
+
+        // FIXME: remove the following lines when moving to jdk1.2
+        Object[] arr = new Object[nodes.size()];
+        for (int i = 0; i < nodes.size(); i++) {
+            arr[i] = nodes.elementAt(i);
+        }
+        return arr;
+    }
+
+    /** Find all the nodes that can be reached backward from the
+     *  specified nodes.
+     *  The reachable nodes do not include the specific ones unless
+     *  there is a loop from the specified node back to itself.
+     *  The implementation computes the transitive closure of the
+     *  graph, if it is not already computed after the last graph
+     *  change.  So the first call to this method after graph
+     *  change may be slow, but all the subsequent calls return
+     *  in constant time.
+     *  @param o an Object representing a node in this graph.
+     *  @return an array of Objects representing nodes reachable from
+     *   the specified one.
+     *  @exception IllegalArgumentException If the specified Object is
+     *   not a node in this graph.
+     */
+    public Object[] backwardReachableNodes(Object[] objs) {
+	_computeTransitiveClosure();
+        
+        int N = objs.length;
+        int ids[] = new int[N];
+        for (int i = 0; i < N; i++) {
+            ids[i] = _getNodeId(objs[i]);
+        }
+	Vector nodes = new Vector(_transitiveClosure.length);
+        // Or the correspoding rows.
+	for (int i = 0; i < _transitiveClosure.length; i++) {
+            boolean orthem = false;
+            for (int j = 0;  j < N; j++) { 
+                orthem = orthem || _transitiveClosure[i][j];
+            }
+	    if (orthem) {
+		nodes.addElement(_getNodeObject(i));
+	    }
+	}
+
+        // FIXME: restore the following line when moving to jdk1.2
+        //	return nodes.toArray();
+
+        // FIXME: remove the following lines when moving to jdk1.2
+        Object[] arr = new Object[nodes.size()];
+        for (int i = 0; i < nodes.size(); i++) {
+            arr[i] = nodes.elementAt(i);
+        }
+        return arr;
+    }
+
     /** Test if this graph is acyclic (is a DAG).
      *  The implementation computes the transitive closure of the
      *  graph, if it is not already computed after the last change to
@@ -155,6 +239,50 @@ public class DirectedGraph extends Graph {
 	    }
 	}
 
+        // FIXME: restore the following line when moving to jdk1.2
+        //	return nodes.toArray();
+
+        // FIXME: remove the following lines when moving to jdk1.2
+        Object[] arr = new Object[nodes.size()];
+        for (int i = 0; i < nodes.size(); i++) {
+            arr[i] = nodes.elementAt(i);
+        }
+        return arr;
+    }
+
+    /** Find all the nodes that can be reached from the specified nodes.
+     *  The reachable nodes do not include the specific ones unless
+     *  there is a loop from the specified node back to itself.
+     *  The implementation computes the transitive closure of the
+     *  graph, if it is not already computed after the last graph
+     *  change.  So the first call to this method after graph
+     *  change may be slow, but all the subsequent calls return
+     *  in constant time.
+     *  @param o an Object representing a node in this graph.
+     *  @return an array of Objects representing nodes reachable from
+     *   the specified one.
+     *  @exception IllegalArgumentException If the specified Object is
+     *   not a node in this graph.
+     */
+    public Object[] reachableNodes(Object[] objs) {
+	_computeTransitiveClosure();
+
+	int N = objs.length;
+        int ids[] = new int[N];
+        for (int i = 0; i < N; i++) {
+            ids[i] = _getNodeId(objs[i]);
+        }
+	Vector nodes = new Vector(_transitiveClosure.length);
+        // Or the correspoding rows.
+	for (int i = 0; i < _transitiveClosure.length; i++) {
+            boolean orthem = false;
+            for (int j = 0;  j < N; j++) { 
+                orthem = orthem || _transitiveClosure[j][i];
+            }
+	    if (orthem) {
+		nodes.addElement(_getNodeObject(i));
+	    }
+	}
         // FIXME: restore the following line when moving to jdk1.2
         //	return nodes.toArray();
 
