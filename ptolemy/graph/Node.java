@@ -84,8 +84,7 @@ public final class Node {
     public String toString() {
         if (_weight == null) {
             return "<unweighted node>";
-        }
-        else {
+        } else {
             return _weight.toString();
         }
     }

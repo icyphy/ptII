@@ -69,7 +69,7 @@ public final class Edge {
         _weight = null;
     }
 
-    /** Construct an edge with a specified source node, sink node, and
+    /** Construct a weighted edge with a specified source node, sink node, and
      *  edge weight.
      *  @param source The source node.
      *  @param sink The sink node.
@@ -131,8 +131,7 @@ public final class Edge {
      *  are string representations
      *  of the source node, sink node, and edge weight, respectively.
      *  If the edge is unweighted or the <code>showWeight</code> argument is
-     *  false, then the string representation is
-     *  is simply
+     *  false, then the string representation is simply
      *
      *  <p> <code>(source, sink)</code>.
      *
@@ -141,7 +140,7 @@ public final class Edge {
      *  @return A string representation of the edge.
      */
     public String toString(boolean showWeight) {
-        String result = new String("(" + _source + ", " + _sink);
+        String result = "(" + _source + ", " + _sink;
         if (showWeight && hasWeight()) {
             result += ", " + _weight;
         }
@@ -160,12 +159,12 @@ public final class Edge {
 
     /** Return the weight of the edge.
      *  @return The edge weight.
-     *  @exception IllegalStateException If this is an unweighted node.
+     *  @exception IllegalStateException If this is an unweighted edge.
      */
     public Object weight() {
         if (!hasWeight()) {
             throw new IllegalStateException("Attempt to access the weight "
-                    + "of an unweighted edge. The edge: " + this + ".\n");
+                    + "of an unweighted edge '" + this + "'");
         } else {
             return _weight;
         }

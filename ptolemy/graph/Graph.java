@@ -43,7 +43,7 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// Graph
 /**
-A graph with optionally-weighted edges and nodes.
+A graph with optionally-weighted nodes and edges.
 
 <p>Each node or edge may have a weight associated with it
 (see {@link Edge} and {@link Node}).
@@ -70,7 +70,7 @@ Furthermore, the label assigned in a given graph to a node may change over time
 (if the set of nodes in the graph changes). If a node is contained in
 multiple graphs, it has the same weight in all of the graphs.
 All of this holds for edges
-all well. The same weight may be shared among multiple nodes and edges.
+as well. The same weight may be shared among multiple nodes and edges.
 
 <p> Multiple edges in a graph can connect the same pair of nodes.
 Thus, multigraphs are supported.
@@ -209,8 +209,7 @@ public class Graph implements Cloneable {
         if (!containsNode(edge.source())) {
             throw new IllegalArgumentException("The source node "
                     + "is not in the graph." + _edgeDump(edge));
-        }
-        else if (!containsNode(edge.sink())) {
+        } else if (!containsNode(edge.sink())) {
             throw new IllegalArgumentException("The sink node "
                     + "is not in the graph." + _edgeDump(edge));
         } else if (containsEdge(edge)) {
@@ -232,14 +231,10 @@ public class Graph implements Cloneable {
         if (listener.graph() != this) {
             throw new IllegalArgumentException("Invalid associated graph.\n" +
                     "The listener:\n" + listener + "\n");
-        } else {
-            Iterator listeners = _listenerList.iterator();
-            while (listeners.hasNext()) {
-                if (listeners.next() == listener) {
-                    throw new IllegalArgumentException("Attempt to add " +
-                            "duplicate listener.\nThe listener:\n" + listener);
-                }
-            }
+        }
+        if (_listenerList.contains(listener)) {
+            throw new IllegalArgumentException("Attempt to add " +
+                    "duplicate listener.\nThe listener:\n" + listener);
         }
         _listenerList.add(listener);
     }
@@ -263,14 +258,13 @@ public class Graph implements Cloneable {
             throw new IllegalArgumentException("Attempt to add a node "
                     + "that is already contained in the graph."
                     + _nodeDump(node));
-        }
-        else {
+        } else {
             _registerNode(node);
             return node;
         }
     }
 
-    /** Add a weighted node to this graph given the node weight.
+    /** Add a new weighted node to this graph given the node weight.
      *
      *  @param weight The node weight.
      *  @return The node.
@@ -291,8 +285,8 @@ public class Graph implements Cloneable {
      *  is an instance of {@link Node}.
      */
     public Collection addNodeWeights(Collection weightCollection) {
-        Iterator weights = weightCollection.iterator();
         ArrayList nodes = new ArrayList();
+        Iterator weights = weightCollection.iterator();
         while (weights.hasNext()) {
             nodes.add(addNodeWeight(weights.next()));
         }
@@ -301,7 +295,7 @@ public class Graph implements Cloneable {
 
     /** Return the present value of a counter that keeps track
      *  of changes to the graph.
-     *  This counter is monitored by GraphListeners to determine
+     *  This counter is monitored by {@link GraphListener}s to determine
      *  if associated computations are obsolete. Upon overflow, the counter
      *  resets to zero, broadcasts a change to all graph listeners, and
      *  begins counting again.
@@ -387,8 +381,7 @@ public class Graph implements Cloneable {
         return result;
     }
 
-    /** Return true if the specified edge exists in the
-     *  graph; otherwise, return false.
+    /** Return true if the specified edge exists in the graph.
      *  @param edge The specified edge.
      *  @return True if the specified edge exists in the graph.
      */
@@ -414,7 +407,7 @@ public class Graph implements Cloneable {
     }
 
     /** Return True if the specified node exists in the
-     *  graph; otherwise, return false.
+     *  graph.
      *  @param node The specified node.
      *  @return True if the specified node exists in the
      *  graph.
@@ -674,25 +667,25 @@ public class Graph implements Cloneable {
         return Collections.unmodifiableList(_incidentEdgeList(node));
     }
 
-    /** Return the collection of edges that make a node n2 a neighbor of a
-     *  node n1. In other words, return the set of edges that are incident to
-     *  both n1 and n2. Each element of the returned collection is an instance
-     *  of {@link Edge}.
-     *  @param n1 The node n1.
-     *  @param n2 The node n2.
-     *  @return The collection of edges that make n2 a neighbor of n1.
+    /** Return the collection of edges that make a node node2 a neighbor of a
+     *  node node1. In other words, return the set of edges that are incident to
+     *  both node1 and node2. Each element of the returned collection is an 
+     *  instance of {@link Edge}.
+     *  @param node1 The node node1.
+     *  @param node2 The node node2.
+     *  @return The collection of edges that make node2 a neighbor of node1.
      *  @see DirectedGraph#predecessorEdges(Node, Node)
      *  @see DirectedGraph#successorEdges(Node, Node)
      */
-    public Collection neighborEdges(Node n1, Node n2) {
-        Collection edgeCollection = this.incidentEdges(n1);
+    public Collection neighborEdges(Node node1, Node node2) {
+        Collection edgeCollection = this.incidentEdges(node1);
         Iterator edges = edgeCollection.iterator();
         ArrayList commonEdges = new ArrayList();
         while (edges.hasNext()) {
             Edge edge = (Edge)edges.next();
-            if (edge.source() == n2) {
+            if (edge.source() == node2) {
                 commonEdges.add(edge);
-            } else if (edge.sink() == n2) {
+            } else if (edge.sink() == node2) {
                 commonEdges.add(edge);
             }
         }
@@ -706,7 +699,7 @@ public class Graph implements Cloneable {
      *  is node X. In other words, a neighbor of X is a node that is adjacent
      *  to X. All elements in the returned collection are unique nodes.
      *  @param node The node whose neighbors are to be returned.
-     *  @return The neighbors of the node.
+     *  @return The neighbors of the node as a collection.
      */
     public Collection neighbors(Node node) {
         Collection incidentEdgeCollection = incidentEdges(node);
@@ -819,8 +812,6 @@ public class Graph implements Cloneable {
      *  Each element in the returned collection is an instance of {@link Node}.
      *  @param weight The specified weight.
      *  @return The nodes in this graph that have the specified weight.
-     *  @exception NullPointerException If the specified weight
-     *  is null.
      *  @exception IllegalArgumentException If the specified weight
      *  is not a node weight in this graph.
      */
@@ -836,8 +827,6 @@ public class Graph implements Cloneable {
      *  @param collection The specified collection of weights.
      *  @return The nodes in this graph whose weights are contained
      *  in a specified collection.
-     *  @exception NullPointerException If any specified weight
-     *  is null.
      *  @exception IllegalArgumentException If any specified weight
      *  is not a node weight in this graph.
      */
@@ -924,7 +913,8 @@ public class Graph implements Cloneable {
 
     /** Return the collection of all self-loop edges in this graph.
      *  Each element in the returned collection is an {@link Edge}.
-     *  This operation takes <i>O(E)</i> time.
+     *  This operation takes <i>O(E)</i> time, where E is the number
+     *  of edges in the graph.
      *  @return The self-loop edges in this graph.
      */
     public Collection selfLoopEdges() {
@@ -996,6 +986,7 @@ public class Graph implements Cloneable {
      *  edges. Node and edge weights are preserved.
      *  In derived classes, this
      *  method returns the same type of graph as is returned by
+     *  FIXME: what if nodes and edges are not consistent?
      *  {@link ptolemy.graph.Graph#_emptyGraph()}.
      *  @param nodes The subset of nodes; each element is an instance
      *  of {@link Node}.
