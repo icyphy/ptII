@@ -48,10 +48,14 @@ TCL_SRCS = \
 	ExpoRK23.tcl \
 	RampBE.tcl \
 	RampFE.tcl \
-	RampRK23.tcl
+	RampRK23.tcl \
+	WaveBE.tcl \
+	WaveFE.tcl \
+	WaveBERK23.tcl
 
 
 JSRCS = \
+	WaveBERK23.java 
 
 # Non-graphical Java demos written in Tcl
 # Since there are no demos, we use a dummy file so that the script that builds
