@@ -755,15 +755,14 @@ public class SDFCodeGenerator extends CompositeActorApplication
                 } // for (int channel = 0; channel < inputWidth; channel++) ...
 
 
-                ApplicationUtility.trace("connected buffers for port " + port.getName() +
-                        " of actor " + actor.getName());
+                ApplicationUtility.trace("connected buffers for port " + 
+                 port.getName() + " of actor " + actor.getName());
                 for (int ch = 0; ch < inputWidth; ch++) {
                     ApplicationUtility.trace("ch " + ch + ": " + bufferNames[ch]);
                 }
 
                 actorInfo.inputBufferNameMap.put(port, bufferNames);
                 actorInfo.inputBufferLengthMap.put(port, bufferLengths);
-
 
             } // if (port.isInput()) ...
         } // while (portItr.hasNext()) ...

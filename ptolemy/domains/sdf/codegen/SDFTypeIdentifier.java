@@ -98,7 +98,7 @@ public class SDFTypeIdentifier extends PtolemyTypeIdentifier {
     }
 
     // additional actor kind
-    public static final int TYPE_KIND_SDF_ATOMIC_ACTOR = TYPE_KIND_TYPED_IO_PORT + 1;
+    public static final int TYPE_KIND_SDF_ATOMIC_ACTOR = LAST_PTOLEMY_TYPE_KIND + 1;
 
     // additional port kind
     public static final int TYPE_KIND_SDF_IO_PORT = TYPE_KIND_SDF_ATOMIC_ACTOR + 1;

@@ -263,7 +263,13 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
     public static final int TYPE_KIND_NO_TOKEN_EXCEPTION
     = TYPE_KIND_NO_ROOM_EXCEPTION + 1;
 
-    // actor type
+    // actor interface kind
+    public static final int TYPE_KIND_ACTOR
+    = TYPE_KIND_NO_TOKEN_EXCEPTION + 1;
+
+    public static final int LAST_PTOLEMY_TYPE_KIND = TYPE_KIND_ACTOR;
+
+    // atomic actor type
     public static final ClassDecl TYPED_ATOMIC_ACTOR_DECL;
     public static final TypeNameNode TYPED_ATOMIC_ACTOR_TYPE;
 
@@ -374,8 +380,12 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
     public static final ClassDecl NO_TOKEN_EXCEPTION_DECL;
     public static final TypeNameNode NO_TOKEN_EXCEPTION_TYPE;
 
+    // actor interface type
+    public static final ClassDecl ACTOR_DECL;
+    public static final TypeNameNode ACTOR_TYPE;
+    
     public static final Integer PTOLEMY_TRANSFORMED_KEY =
-    new Integer(RESERVED_JAVA_PROPERTIES);
+     new Integer(RESERVED_JAVA_PROPERTIES);
 
     /** An array indexed by (kind - TYPE_KINDS) containing known declarations
      *  of types in Ptolemy.
@@ -408,7 +418,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
         TYPE_KIND_NO_SUCH_ITEM_EXCEPTION, TYPE_KIND_TYPE_CONFLICT_EXCEPTION,
         TYPE_KIND_INTERNAL_ERROR_EXCEPTION, TYPE_KIND_INVALID_STATE_EXCEPTION,
         TYPE_KIND_NOT_SCHEDULABLE_EXCEPTION, TYPE_KIND_NO_ROOM_EXCEPTION,
-        TYPE_KIND_NO_TOKEN_EXCEPTION };
+        TYPE_KIND_NO_TOKEN_EXCEPTION, TYPE_KIND_ACTOR };
 
     /** An array indexed by (kind - TYPE_KIND_TOKEN) that is the corresponding
      *  Ptolemy type of the kind of token.
@@ -733,8 +743,16 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         NO_TOKEN_EXCEPTION_TYPE = NO_TOKEN_EXCEPTION_DECL.getDefType();
 
+        CompileUnitNode actorUnit = StaticResolution.load(
+                SearchPath.NAMED_PATH.openSource("ptolemy.actor.Actor", true), 1);
+
+        ACTOR_DECL = (ClassDecl) StaticResolution.findDecl(
+                actorUnit, "Actor", CG_INTERFACE);
+
+        ACTOR_TYPE = ACTOR_DECL.getDefType();
+
         _KNOWN_CLASS_DECLS = new ClassDecl[] {
-            COMPLEX_DECL, FIX_POINT_DECL,
+                COMPLEX_DECL, FIX_POINT_DECL,
                 TYPED_ATOMIC_ACTOR_DECL,
                 TOKEN_DECL, BOOLEAN_TOKEN_DECL, SCALAR_TOKEN_DECL,
                 INT_TOKEN_DECL, DOUBLE_TOKEN_DECL, LONG_TOKEN_DECL,
@@ -751,11 +769,12 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
                 NO_SUCH_ITEM_EXCEPTION_DECL, TYPE_CONFLICT_EXCEPTION_DECL,
                 INTERNAL_ERROR_EXCEPTION_DECL, INVALID_STATE_EXCEPTION_DECL,
                 NOT_SCHEDULABLE_EXCEPTION_DECL, NO_ROOM_EXCEPTION_DECL,
-                NO_TOKEN_EXCEPTION_DECL
+                NO_TOKEN_EXCEPTION_DECL,
+                ACTOR_DECL
                 };
 
         _KNOWN_TYPENAMENODES = new TypeNameNode[] {
-            COMPLEX_TYPE, FIX_POINT_TYPE,
+                COMPLEX_TYPE, FIX_POINT_TYPE,
                 TYPED_ATOMIC_ACTOR_TYPE,
                 TOKEN_TYPE, BOOLEAN_TOKEN_TYPE, SCALAR_TOKEN_TYPE,
                 INT_TOKEN_TYPE, DOUBLE_TOKEN_TYPE, LONG_TOKEN_TYPE,
@@ -772,7 +791,8 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
                 NO_SUCH_ITEM_EXCEPTION_TYPE, TYPE_CONFLICT_EXCEPTION_TYPE,
                 INTERNAL_ERROR_EXCEPTION_TYPE, INVALID_STATE_EXCEPTION_TYPE,
                 NOT_SCHEDULABLE_EXCEPTION_TYPE, NO_ROOM_EXCEPTION_TYPE,
-                NO_TOKEN_EXCEPTION_TYPE
+                NO_TOKEN_EXCEPTION_TYPE,
+                ACTOR_TYPE
                 };
 
         _TOKEN_CONTAINED_TYPES = new TypeNode[] {

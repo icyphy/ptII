@@ -51,7 +51,7 @@ equations for the rates between actors are solved to tdetermine the
 firing vector is the least integer solution such that the number of
 tokens created on each channel of each relation is equal to the number
 of tokens consumed.  In some cases, no solution exists.  Such graphs
-are not executable under SDF
+are not executable under SDF.
 <p>
 
 Then the actors are ordered such that each actor only fires when the
@@ -557,7 +557,7 @@ public class SDFScheduler extends Scheduler {
                     else if(!presentFiring.equals(desiredFiring))
                         throw new NotSchedulableException("No solution " +
                                 "exists for the balance equations.\n" +
-                                "Graph is not" +
+                                "Graph is not " +
                                 "consistent under the SDF domain");
                 }
                 catch (NoSuchElementException e) {

@@ -201,7 +201,7 @@ public class DiscreteRandomSource extends RandomSource {
                return true;
             }
         }
-        // We shouldn't get bere, but if we do, we output the last value.
+        // We shouldn't get here, but if we do, we output the last value.
         _current = valuesMatrixToken.getElementAsToken(0, pmfArray.length - 1);
         return true;
     }

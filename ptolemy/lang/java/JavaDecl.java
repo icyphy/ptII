@@ -287,7 +287,7 @@ public abstract class JavaDecl extends Decl implements JavaStaticSemanticConstan
     }
 
     /** Return the Decl associated with the named node. Return null if the
-     *   Decl is not found.
+     *  Decl is not found.
      */
     public static final JavaDecl getDecl(NamedNode node) {
         return (JavaDecl) node.getName().getProperty(DECL_KEY);

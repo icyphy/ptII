@@ -104,7 +104,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
     }
 
     public Object visitClassDeclNode(ClassDeclNode node, LinkedList args) {
-        // check if this is the actor, transform only the actor
+        // check if this is an actor; transform only actors
         String className = node.getName().getIdent();
 
         // we assume class names beginning with "CG_" and ending with the
@@ -113,7 +113,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         if (className.startsWith("CG_") && className.endsWith("_" + _actorName)) {
             return _actorClassDeclNode(node, args);
         }
-
+                
         return node;
     }
 
@@ -1088,6 +1088,32 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
             _isBaseClass = true;
         }
 
+        // remove from the implements list all interfaces that (directly
+        // or indirectly) implement Actor                                 
+        Iterator interfaceItr = node.getInterfaces().iterator();
+        List modifiedInterfaceList = new LinkedList();
+        
+        while (interfaceItr.hasNext()) {
+            TypeNameNode interfaceTypeNode = 
+             (TypeNameNode) interfaceItr.next();
+            
+            ClassDecl interfaceDecl = 
+             (ClassDecl) JavaDecl.getDecl((NamedNode) interfaceTypeNode); 
+             
+            if (!_typePolicy.isSuperInterface(PtolemyTypeIdentifier.ACTOR_DECL,
+                interfaceDecl)) {
+               modifiedInterfaceList.add(interfaceTypeNode);   
+            } else {
+               ApplicationUtility.warn("Interface \"" + 
+                interfaceDecl.getName() + 
+                "\" removed from implements list of class \"" + 
+                node.getName().getIdent() + "\".");
+            }                
+        }
+        
+        node.setInterfaces(modifiedInterfaceList);
+        
+        
         List memberList = node.getMembers();
 
         memberList = TNLManip.traverseList(this, null, memberList);

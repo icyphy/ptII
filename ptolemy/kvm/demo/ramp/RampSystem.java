@@ -53,8 +53,8 @@ public class RampSystem extends TypedCompositeActor {
         setDirector(new SDFDirector(this, "director"));
                 
         try {
-	   Const ramp = new Const(this, "ramp");
-           //Ramp ramp = new Ramp(this, "ramp");
+	       //Const ramp = new Const(this, "ramp");
+           Ramp ramp = new Ramp(this, "ramp");
            FileWriter fileWriter = new FileWriter(this, "fileWriter");
            connect(ramp.output, fileWriter.input);           
 

@@ -341,6 +341,9 @@ public class TypePolicy implements JavaStaticSemanticConstants {
         }
     }
 
+    /** Return true iff decl1 corresponds to an interface that is the same or
+     *  is implemented by the interface correspoinding to decl2. 
+     */
     public boolean isSuperInterface(ClassDecl decl1, ClassDecl decl2) {
         if (decl1 == decl2) {
             return true;
