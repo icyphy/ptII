@@ -216,6 +216,7 @@ test ArrayFIFOQueue-3.5 {Get individual items} {
 ####
 #
 test ArrayFIFOQueue-3.6 {Takearray items} {
+    set array [java::new {Object[]} {5} {}]
     $queue takeArray $array
     list [jdkPrintArray $array] [_testEnums elements $queue]
 } {{{ptolemy.kernel.util.NamedObj {.n1}} {ptolemy.kernel.util.NamedObj {.n2}} {ptolemy.kernel.util.NamedObj {.n3}} {ptolemy.kernel.util.NamedObj {.n4}} {ptolemy.kernel.util.NamedObj {.n5}}} {{}}}

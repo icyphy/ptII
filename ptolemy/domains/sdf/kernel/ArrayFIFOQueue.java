@@ -470,7 +470,6 @@ public final class ArrayFIFOQueue implements Cloneable {
         try {
             if(_queuesize < count) 
                 throw new NoSuchElementException("Empty Queue");
-            obj = new Object[count];
             
             if(count <= (_queuearray.length - _queueback)) {
                 System.arraycopy(_queuearray, _queueback, obj, 0,
