@@ -317,8 +317,11 @@ PTJAR_TMPDIR =  ptjar_tmpdir
 # have OTHER_FILES_TO_BE_JARED set, so we need to copy
 # rather than refer to $(ME)/$(OTHER_FILES_TO_BE_JARED)
 jars: $(PTCLASSJAR) $(PTAUXJAR) subjars $(PTCLASSALLJAR) $(PTAUXALLJAR) \
-		$(OTHER_FILES_TO_BE_JARED) $(OTHER_JARS)
-$(PTCLASSJAR): $(JSRCS) $(JCLASS)
+		$(OTHER_JARS)
+# $(PTCLASSJAR) depends on $(OTHER_FILES_TO_BE_JARED) so that
+# we create actor/lib/security/demo/SiIgnature/ptKeystore before
+# creating Signature.jar
+$(PTCLASSJAR): $(JSRCS) $(JCLASS) $(OTHER_FILES_TO_BE_JARED)
 	rm -rf $(PTJAR_TMPDIR) $@
 	mkdir $(PTJAR_TMPDIR)
 	# Copy any class files from this directory
