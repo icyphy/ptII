@@ -4,7 +4,7 @@
 <entity name="FurutaPendulum" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[777, 566]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[810, 566]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[16, 44]">
     </property>
@@ -53,7 +53,7 @@
         </property>
         <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="565.0, 70.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="610.0, 35.0">
         </property>
     </property>
     <property name="h" class="ptolemy.data.expr.Parameter" value="0.01/2">
@@ -83,10 +83,10 @@ The objective is to swing the pendulum up and then balance it.
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 390.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 340.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={33, 6, 992, 675}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 0, 1025, 682}}">
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -130,12 +130,32 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 530.0">
         </property>
     </property>
+    <property name="annotation4" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The top-level model of
+computation is continuous
+time (CT).</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="540.0, 45.0">
+        </property>
+    </property>
     <entity name="FurutaPendulum" class="ptolemy.domains.ct.lib.DifferentialSystem">
         <property name="stateVariableNames" class="ptolemy.data.expr.Parameter" value="{&quot;x1&quot;, &quot;x2&quot;, &quot;x3&quot;, &quot;x4&quot;}">
         </property>
         <property name="initialStates" class="ptolemy.data.expr.Parameter" value="[-3.0, 0.01, 0.0, 0.0]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 75.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 60.0">
         </property>
         <property name="alfa" class="ptolemy.data.expr.Parameter" value="0.00260569">
         </property>
@@ -193,7 +213,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
             </property>
         </port>
         <entity name="x1" class="ptolemy.domains.ct.lib.Integrator">
-            <property name="initialState" class="ptolemy.data.expr.Parameter" value="-3.0">
+            <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialStates(0,0)">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -208,12 +228,6 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </entity>
         <entity name="x1_dot" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x2">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -235,7 +249,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
             </port>
         </entity>
         <entity name="x2" class="ptolemy.domains.ct.lib.Integrator">
-            <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.01">
+            <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialStates(0,1)">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -250,12 +264,6 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </entity>
         <entity name="x2_dot" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="1.0/(alfa*beta+pow(alfa*sin(x1),2.0)-pow(gamma*cos(x1),2.0))*((alfa*beta+pow(alfa*sin(x1), 2.0))*pow(x4,2.0)*sin(x1)*cos(x1)-pow(gamma*x2,2.0)*sin(x1)*cos(x1)+2.0*alfa*gamma*x2*x4*sin(x1)*pow(cos(x1),2.0)-gamma*cos(x1)*g*u+(alfa*beta+pow(alfa*sin(x1),2.0))*epsilon/alfa*sin(x1))">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -277,7 +285,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
             </port>
         </entity>
         <entity name="x3" class="ptolemy.domains.ct.lib.Integrator">
-            <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialStates(0,2)">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -292,12 +300,6 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </entity>
         <entity name="x3_dot" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x4">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -319,7 +321,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
             </port>
         </entity>
         <entity name="x4" class="ptolemy.domains.ct.lib.Integrator">
-            <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialStates(0,3)">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -334,12 +336,6 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </entity>
         <entity name="x4_dot" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="1/(alfa*beta+pow(alfa*sin(x1),2.0)-pow(gamma*cos(x1),2.0))*(-gamma*alfa*pow(x4,2.0)*sin(x1)*pow(cos(x2),2.0)-gamma*epsilon*sin(x1)*cos(x1)+gamma*alfa*pow(x2,2.0)*sin(x1)-2*pow(alfa,2.0)*x2*x4*sin(x1)*cos(x1)+alfa*g*u)">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -363,12 +359,6 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         <entity name="output_Theta" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x1">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -387,12 +377,6 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </entity>
         <entity name="output_dTheta" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x2">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -413,12 +397,6 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         <entity name="output_Phi" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x3">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -437,12 +415,6 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </entity>
         <entity name="output_dPhi" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x4">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -549,13 +521,13 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={571, 122, 508, 355}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={504, 512, 508, 249}}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 277]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 194]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 145.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 130.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -576,7 +548,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
     <entity name="ZOH1" class="ptolemy.domains.ct.lib.ZeroOrderHold">
         <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 75.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 60.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -592,7 +564,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
     <entity name="ZOH2" class="ptolemy.domains.ct.lib.ZeroOrderHold">
         <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="-2.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 275.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 260.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -608,7 +580,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
     <entity name="Sampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="h">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 275.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 260.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -626,7 +598,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
     <entity name="ZOH3" class="ptolemy.domains.ct.lib.ZeroOrderHold">
         <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 329.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="440.0, 314.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -644,13 +616,13 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={371, 332, 508, 355}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 431, 508, 332}}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 277]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="635.0, 275.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="705.0, 260.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -671,7 +643,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
     <entity name="PeriodicSampler2" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="h">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="550.0, 230.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="620.0, 215.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -689,7 +661,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
     <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="h">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="548.0, 154.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="620.0, 150.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -705,7 +677,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </port>
     </entity>
     <entity name="3D Viewer" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="690.0, 195.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="760.0, 180.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[721, 591]">
         </property>
@@ -795,7 +767,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
             </property>
             <property name="iterationSynchronized" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="backgroundColor" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
+            <property name="backgroundColor" class="ptolemy.data.expr.Parameter" value="[0.75, 0.75, 0.75]">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="575.0, 375.0">
             </property>
@@ -1100,7 +1072,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         <link port="Translate4.sceneGraphOut" relation="relation6"/>
     </entity>
     <entity name="controller" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 275.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 260.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
         </property>
@@ -1442,6 +1414,8 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                     </property>
                     <property name="style1" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
                     </property>
+                    <property name="style2" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.hdf.kernel.HDFFSMDirector">
+                    </property>
                 </property>
             </property>
             <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
@@ -1617,8 +1591,6 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
-                    <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
-                    </property>
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                 </relation>
@@ -1638,8 +1610,6 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-                    </property>
-                    <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
                     </property>
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                     </property>
@@ -1661,8 +1631,6 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
-                    <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
-                    </property>
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                 </relation>
@@ -1682,8 +1650,6 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-                    </property>
-                    <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
                     </property>
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                     </property>
@@ -3077,23 +3043,23 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
         <link port="modal controller.mode" relation="relation7"/>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="442.0, 197.0">
+        <vertex name="vertex1" value="512.0, 182.0">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="431.0, 213.0">
+        <vertex name="vertex1" value="501.0, 198.0">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="420.0, 227.0">
+        <vertex name="vertex1" value="490.0, 212.0">
         </vertex>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="452.0, 181.0">
+        <vertex name="vertex1" value="522.0, 166.0">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="270.0, 75.0">
+        <vertex name="vertex1" value="340.0, 60.0">
         </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">

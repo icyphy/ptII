@@ -16,7 +16,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 40.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 974, 459}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 974, 466}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[759, 350]">
     </property>
@@ -62,6 +62,27 @@ and displays both the time-domain signal and a simple spectral estimate
         <property name="_location" class="ptolemy.kernel.util.Location" value="-10.0, 310.0">
         </property>
     </property>
+    <property name="annotation3" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The model of computation is
+synchronous dataflow (SDF).</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 15.0">
+        </property>
+    </property>
     <entity name="AudioCapture" class="ptolemy.actor.lib.javasound.AudioCapture">
         <property name="sampleRate" class="ptolemy.data.expr.Parameter" value="8000">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
@@ -97,19 +118,15 @@ and displays both the time-domain signal and a simple spectral estimate
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 125.0">
         </property>
-        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="multiport"/>
             <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="transferSize">
             </property>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
         </port>
     </entity>
     <entity name="Chop" class="ptolemy.domains.sdf.lib.Chop">
@@ -122,10 +139,6 @@ and displays both the time-domain signal and a simple spectral estimate
         <property name="usePastInputs" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 125.0">
-        </property>
-        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -151,10 +164,6 @@ and displays both the time-domain signal and a simple spectral estimate
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="375.0, 135.0">
         </property>
-        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="128">
@@ -177,10 +186,6 @@ and displays both the time-domain signal and a simple spectral estimate
     <entity name="AbsoluteValue" class="ptolemy.actor.lib.AbsoluteValue">
         <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 135.0">
         </property>
-        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="128">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -189,13 +194,9 @@ and displays both the time-domain signal and a simple spectral estimate
         </port>
     </entity>
     <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
-        <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="128">
+        <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="128">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="540.0, 135.0">
-        </property>
-        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -215,13 +216,12 @@ and displays both the time-domain signal and a simple spectral estimate
             <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </port>
+        <port name="arrayLength" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
     </entity>
     <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
         <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 135.0">
-        </property>
-        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="128">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
         </property>
         <port name="multiply" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -245,10 +245,6 @@ and displays both the time-domain signal and a simple spectral estimate
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 280.0">
-        </property>
-        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="128">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -277,10 +273,6 @@ and displays both the time-domain signal and a simple spectral estimate
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="375.0, 65.0">
         </property>
-        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -298,13 +290,9 @@ and displays both the time-domain signal and a simple spectral estimate
         </configure>
     </entity>
     <entity name="SequenceToArray2" class="ptolemy.domains.sdf.lib.SequenceToArray">
-        <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="128">
+        <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="128">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 65.0">
-        </property>
-        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -323,6 +311,9 @@ and displays both the time-domain signal and a simple spectral estimate
             </property>
             <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
+        </port>
+        <port name="arrayLength" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
         </port>
     </entity>
     <entity name="ArrayPlotter2" class="ptolemy.actor.lib.gui.ArrayPlotter">
@@ -343,10 +334,6 @@ and displays both the time-domain signal and a simple spectral estimate
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="8000.0/128.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="665.0, 135.0">
-        </property>
-        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -373,54 +360,22 @@ and displays both the time-domain signal and a simple spectral estimate
         </configure>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="128">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="128">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="128">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="215.0, 125.0">
         </vertex>
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="128">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="500">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="128">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <link port="AudioCapture.output" relation="relation"/>
     <link port="Chop.input" relation="relation"/>
