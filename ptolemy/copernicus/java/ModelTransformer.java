@@ -98,7 +98,6 @@ fields for any toplevel attributes of the model.
 @version $Id$
 @since Ptolemy II 2.0
 */
-
 public class ModelTransformer extends SceneTransformer {
     /** Construct a new transformer
      */
@@ -111,7 +110,6 @@ public class ModelTransformer extends SceneTransformer {
      * properly initialized so that resolved types and other static
      * properties of the model can be inspected.
      */
-
     public static ModelTransformer v(CompositeActor model) {
         return new ModelTransformer(model);
     }
@@ -127,21 +125,6 @@ public class ModelTransformer extends SceneTransformer {
     /** Return the name of the field that is created for the
      *  given entity.
      */
-    public static String getFieldNameForEntity(Entity entity,
-            NamedObj context) {
-        return StringUtilities.sanitizeName(entity.getName(context));
-    }
-
-    /** Return the name of the field that is created for the
-     *  given entity.
-     */
-    public static String getFieldNameForPort(Port port, NamedObj context) {
-        return StringUtilities.sanitizeName(port.getName(context));
-    }
-
-    /** Return the name of the field that is created for the
-     *  given entity.
-     */
     public static String getFieldNameForAttribute(Attribute attribute,
             NamedObj context) {
         return StringUtilities.sanitizeName(attribute.getName(context));
@@ -150,9 +133,9 @@ public class ModelTransformer extends SceneTransformer {
     /** Return the name of the field that is created for the
      *  given entity.
      */
-    public static String getFieldNameForRelation(Relation relation,
+    public static String getFieldNameForEntity(Entity entity,
             NamedObj context) {
-        return StringUtilities.sanitizeName(relation.getName(context));
+        return StringUtilities.sanitizeName(entity.getName(context));
     }
 
     /** Given an entity that we are generating code for, return a
@@ -168,6 +151,21 @@ public class ModelTransformer extends SceneTransformer {
             throw new RuntimeException(
                     "Failed to find entity for field " + field);
         }
+    }
+
+    /** Return the name of the field that is created for the
+     *  given entity.
+     */
+    public static String getFieldNameForPort(Port port, NamedObj context) {
+        return StringUtilities.sanitizeName(port.getName(context));
+    }
+
+    /** Return the name of the field that is created for the
+     *  given entity.
+     */
+    public static String getFieldNameForRelation(Relation relation,
+            NamedObj context) {
+        return StringUtilities.sanitizeName(relation.getName(context));
     }
 
     /** Given an entity that we are generating code for, return a
@@ -217,6 +215,9 @@ public class ModelTransformer extends SceneTransformer {
         return Options.getString(options, "targetPackage")
             + ".CGModel" + StringUtilities.sanitizeName(model.getName());
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                   ////
 
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("ModelTransformer.internalTransform("
