@@ -52,7 +52,7 @@ immediately, but with a future time stamp, so that even if the
 actor no longer exists after the time delay elapses, the
 destination actor will still see the token. If there is no
 input token, then no output token is produced.
-@see Delay
+@see TimedDelay
 
 @author Jie Liu and Edward A. Lee
 @version $Id$

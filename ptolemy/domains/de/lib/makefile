@@ -49,13 +49,13 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	Delay.java \
 	DETransformer.java \
 	Merge.java \
 	Sampler.java \
 	Server.java \
 	SingleEvent.java \
 	TimeGap.java \
+	TimedDelay.java \
 	Timer.java \
 	VariableDelay.java \
 	WaitingTime.java

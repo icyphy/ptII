@@ -1,4 +1,4 @@
-/* An actor that delays the input by the amount spacified through another port.
+/* An actor that delays the input by the amount specified through another port.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -42,11 +42,13 @@ import ptolemy.actor.TypedIOPort;
 //////////////////////////////////////////////////////////////////////////
 //// VariableDelay
 /**
-This actor works exactly as the ptolemy.domains.de.lib.Delay actor,
+This actor works exactly as the ptolemy.domains.de.lib.TimedDelay actor,
 except that the amount of time delayed is specified by a incoming
 token throught the delay port, in stead of a parameter
 
-@see ptolemy.domains.de.lib.Delay
+@see ptolemy.domains.de.lib.TimedDelay
+@see ptolemy.domains.de.lib.Server
+@see ptolemy.domains.sdf.lib.SampleDelay
 @author Jie Liu
 @version $Id$
 */
