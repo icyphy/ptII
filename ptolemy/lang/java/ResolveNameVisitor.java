@@ -69,11 +69,15 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
 
-        System.out.print("Resolve name on ");
-        Object identProperty = node.getProperty(IDENT_KEY);
-        String identString = (identProperty == null) ? 
-               "<unidentified>" : (String)identProperty;
-        System.out.println(identString);
+        String identString = new String("");
+
+        if (StaticResolution.traceLoading) {
+            System.out.print("Resolve name on ");
+            Object identProperty = node.getProperty(IDENT_KEY);
+            identString = (identProperty == null) ? 
+                    "<unidentified>" : (String)identProperty;
+            System.out.println(identString);
+        }
         
         _currentPackage = (PackageDecl) node.getDefinedProperty(PACKAGE_KEY);
 
@@ -84,7 +88,8 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
 
         TNLManip.traverseList(this, childArgs, node.getDefTypes());
 
-        System.out.println("Finished resolve name on " + identString);
+        if (StaticResolution.traceLoading)
+            System.out.println("Finished resolve name on " + identString);
                 
         return node;
     }
@@ -364,8 +369,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         
         if (StaticResolution.debugLoading) {
             System.out.println("Calling resolveAName from " + 
-                    "ResolveNameVisitor.visitObjectNode(" + 
-                    name.getIdent() + ")");
+                    "ResolveNameVisitor.visitObjectNode(" + name.getIdent() + ")");
         }
         return StaticResolution.resolveAName(name, ctx.scope,
                 ctx.currentClass, _currentPackage,
