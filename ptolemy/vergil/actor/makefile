@@ -71,6 +71,7 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
 	'ActorController$$1.class' \
+	'ActorController$$DebugListenerAction.class' \
 	'ActorController$$EntityLayout.class' \
 	'ActorController$$LookInsideAction.class' \
 	'ActorEditorGraphController$$1.class' \
