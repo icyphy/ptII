@@ -274,7 +274,7 @@ public class Variable extends Attribute
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         Variable newvar = (Variable)super.clone(workspace);
-    
+
         // _currentExpression and _initialExpression are preserved in clone
         if (_currentExpression != null) {
             newvar._needsEvaluation = true;
@@ -282,7 +282,7 @@ public class Variable extends Attribute
         newvar._dependencyLoop = false;
         // _noTokenYet and _initialToken are preserved in clone
         newvar._parserScope = null;
-      
+
         // set _declaredType and _varType
         if (_declaredType instanceof StructuredType &&
                 !_declaredType.isConstant()) {
@@ -292,7 +292,7 @@ public class Variable extends Attribute
         }
         // _typeAtMost is preserved
         newvar._parseTree = null;
-   
+
         newvar._constraints = new LinkedList();
         newvar._typeTerm = null;
         return newvar;
@@ -489,7 +489,7 @@ public class Variable extends Attribute
         if (_currentExpression != null) {
             _needsEvaluation = true;
         }
-        
+
         if(_variablesDependentOn != null) {
             Iterator entries = _variablesDependentOn.entrySet().iterator();
             while (entries.hasNext()) {
@@ -612,7 +612,7 @@ public class Variable extends Attribute
             // Every variable that this may shadow in its new location
             // must invalidate all their dependants.
             _invalidateShadowedSettables(container);
-            
+
             // This variable must still be valid.
             // NOTE: This has the side effect of validating everything
             // that depends on this variable. If the container is being
@@ -1213,7 +1213,7 @@ public class Variable extends Attribute
         Iterator scopeAttributes = object.attributeList(
                 ScopeExtendingAttribute.class).iterator();
         while (scopeAttributes.hasNext()) {
-            ScopeExtendingAttribute attribute = 
+            ScopeExtendingAttribute attribute =
                 (ScopeExtendingAttribute)scopeAttributes.next();
             Iterator variables = attribute.attributeList(
                     Variable.class).iterator();
@@ -1598,7 +1598,7 @@ public class Variable extends Attribute
             Variable result = null;
 
             // FIXME: use _variablesDependentOn as a cache.
-            
+
             // Search through the hierarchy to find the referenced
             // object.
             NamedObj container = (NamedObj)getContainer();
@@ -1636,7 +1636,7 @@ public class Variable extends Attribute
         // container.
         private Variable _searchIn(NamedObj container, String name) {
             Attribute result = container.getAttribute(name);
-            if (result != null  
+            if (result != null
                     && result instanceof Variable
                     && result != Variable.this)
                 return (Variable)result;
@@ -1645,7 +1645,7 @@ public class Variable extends Attribute
             while (extenders.hasNext()) {
                 ScopeExtender extender = (ScopeExtender)extenders.next();
                 result = extender.getAttribute(name);
-                if (result != null  
+                if (result != null
                         && result instanceof Variable
                         && result != Variable.this)
                     return (Variable)result;

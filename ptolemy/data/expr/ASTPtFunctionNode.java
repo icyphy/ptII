@@ -165,11 +165,11 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
 
     public void jjtClose() {
         super.jjtClose();
-        // We cannot assume that the result of a function call is 
-        // constant, even when the arguments to the function are. 
+        // We cannot assume that the result of a function call is
+        // constant, even when the arguments to the function are.
         _isConstant = false;
     }
-    
+
     /** Traverse this node with the given visitor.
      */
     public void visit(ParseTreeVisitor visitor)
@@ -351,7 +351,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
             }
             // Now have the arguments converted, look through all the
             // classes registered with the parser for the appropriate
-            // function. 
+            // function.
             result = CachedMethod.findAndRunMethod
                 (_funcName, argTypes, argValues, CachedMethod.FUNCTION);
         }
@@ -389,7 +389,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
 
     // Convert a token to its underlying java type and return its value
     // (Object) and type (Class).
-    public static Object[] convertTokenToJavaType(ptolemy.data.Token token) 
+    public static Object[] convertTokenToJavaType(ptolemy.data.Token token)
             throws ptolemy.kernel.util.IllegalActionException {
         Object[] retval = new Object[2];
         if (token instanceof DoubleToken) {
