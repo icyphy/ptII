@@ -39,7 +39,7 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// VariableDelay
 /**
-   This actor extends from the TimedDelay actor.
+   This actor delays its inputs by a variable delay.
    It works in a similar way as the TimedDelay actor except that the
    amount of time delayed is specified by an incoming token through
    the delay port (a parameter port).
@@ -48,8 +48,8 @@ import ptolemy.kernel.util.Workspace;
    @author Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (liuj)
-   @Pt.AcceptedRating Red (liuj)
+   @Pt.ProposedRating Green (hyzheng)
+   @Pt.AcceptedRating Yellow (hyzheng)
 */
 public class VariableDelay extends TimedDelay {
 
@@ -69,30 +69,17 @@ public class VariableDelay extends TimedDelay {
     ///////////////////////////////////////////////////////////////////
     ////                       ports and parameters                ////
 
-    /** The amount specifying delay.
+    /** The amount specifying delay. Its default value is 1.0.
      */
     public PortParameter delay;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the parameter.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class has
-     *   has an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        VariableDelay newObject = (VariableDelay)super.clone(workspace);
-        return newObject;
-    }
-
     /** Update the delay parameter from the delay port and ensure the delay
-     *  is not negative. Call super.fire method to consume inputs and generate
-     *  outputs.
-     *  @exception IllegalActionException If there is no director,
+     *  is not negative. Call the fire method of super class to consume 
+     *  inputs and generate outputs.
+     *  @exception IllegalActionException If the super class throws it,
      *  or a negative delay is received.
      */
     public void fire() throws IllegalActionException {
@@ -100,9 +87,10 @@ public class VariableDelay extends TimedDelay {
         _delay = ((DoubleToken)delay.getToken()).doubleValue();
         if (_delay < 0) {
             throw new IllegalActionException("Can not have a " +
-                    "negative delay. Check whether overflow happens.");
+                    "negative delay: " + _delay + ". " +
+                    "Check whether overflow happens.");
         }
-        // NOTE: the newDelay may be 0.0, which may change
+        // NOTE: _delay may be 0.0, which may change
         // the causality property of the model.
         // We leave the model designers to decide whether the
         // zero delay is really what they want.

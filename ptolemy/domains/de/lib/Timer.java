@@ -28,8 +28,6 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.de.lib;
 
-import java.util.HashMap;
-
 import ptolemy.actor.util.CalendarQueue;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
@@ -46,27 +44,27 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// Timer
 /**
-   A timer actor extends the DETransformer actor and produces an event with
-   a time delay specified by its input.
+   A timer actor delays an event with a time delay specified by its input.
 
    <p> When a timer actor receives an input, if the input value is
    bigger than 0.0, the timer schedules itself to fire again some time
-   later to produce an output specified by the <i>value</i>
-   parameter. The amount of delay is specified by the input value. If
-   the input value is 0.0, an output is produced immediately. If there
-   is no input token, then no output is produced.
+   later to generate an output. The amount of delay is specified by the 
+   input value. The value of output is specified by the <i>value</i>
+   parameter of this actor. If the input value is 0.0, an output is 
+   produced immediately. If the input is less than 0.0, an exception 
+   will be thrown. If there is no input token, then no output is produced.
 
    <p> This actor is different from the {@link
-   ptolemy.domains.de.lib.NonInterruptibleTimer} actor. If the
-   NonInterruptibleTimer actor has not finished processing the
-   previous input, a new input has to be delayed for processing. The
-   Timer actor begins processing inputs upon their arrival.
+   ptolemy.domains.de.lib.NonInterruptibleTimer} actor because the
+   NonInterruptibleTimer actor delays the processing of a new input if
+   it has not finished processing the previous input. While the
+   Timer actor begins processing inputs immediately after their arrival.
 
    @author Jie Liu, Edward A. Lee, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (liuj)
+   @Pt.ProposedRating Yellow (hyzheng)
+   @Pt.AcceptedRating Yellow (hyzheng)
 */
 public class Timer extends DETransformer {
 

@@ -64,8 +64,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Edward A. Lee, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating Red (hyzheng)
-   @Pt.AcceptedRating Red (hyzheng)
+   @Pt.ProposedRating Green (hyzheng)
+   @Pt.AcceptedRating Green (hyzheng)
 */
 public class Merge extends DETransformer  {
 
@@ -96,29 +96,31 @@ public class Merge extends DETransformer  {
     ///////////////////////////////////////////////////////////////////
     ////                       ports and parameters                ////
 
-    /** The flag to indicate whether the input events can be discarded.
+    /** A flag to indicate whether the input events can be discarded.
+     *  Its default value is false.
      */
     public Parameter discardEvents;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read the first available tokens from input channels and
+    /** Read the first available token from input channels and
      *  send it to the output port. If the discardEvents parameter
      *  is true, consume all the available events of the other channels
      *  and discard them. Otherwise, if the other channels have tokens,
      *  request a refiring at the current time to process them.
-     *  @exception IllegalActionException If there is no director.
+     *  @exception IllegalActionException If there is no director, or 
+     *  the input can not be read, or the output can not be sent.
      */
     public void fire() throws IllegalActionException {
         boolean discard =
             ((BooleanToken)discardEvents.getToken()).booleanValue();
         Token firstAvailableToken = null;
-        Token currentToken = null;
         // If tokens can be discarded, this actor sends
-        // out the first available event only but discards all the
-        // other events. Otherwise, handle one event for each firing
-        // and request refiring at the current time to handle the
+        // out the first available event only. It discards all 
+        // remaining events from other input channels. 
+        // Otherwise, this actor handles one event at each firing
+        // and requests refiring at the current time to handle the
         // the remaining events.
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
@@ -131,11 +133,12 @@ public class Merge extends DETransformer  {
                     if (discard) {
                         // this event is not the first available
                         // event, consume the token from the input channel
-                        currentToken = input.get(i);
+                        input.get(i);
                     } else {
                         // Refiring the actor to handle the other events
                         // that are still in channels
                         getDirector().fireAtCurrentTime(this);
+                        break;
                     }
                 }
             }
