@@ -66,7 +66,7 @@ We calculate delta time as "period / (rate * repetitions)" where:
 @author C. Fong
 @version $Id$
 */
-public class DTReceiver extends SDFReceiver implements Receiver {
+public class DTReceiver extends SDFReceiver {
 
     /** Construct an empty receiver with no container.
      */
@@ -203,7 +203,8 @@ public class DTReceiver extends SDFReceiver implements Receiver {
     	    connectedPort = (IOPort) portListIterator.next();
 
     	    if (connectedPort.isOutput() == true) {
-                Receiver[][] remoteReceivers = connectedPort.getRemoteReceivers();
+                Receiver[][] remoteReceivers = 
+                                   connectedPort.getRemoteReceivers();
 
                 for(int i=0;i<connectedPort.getWidth();i++) {
                     for(int j=0;j<remoteReceivers[i].length;j++) {
@@ -212,13 +213,14 @@ public class DTReceiver extends SDFReceiver implements Receiver {
                             _fromPort = connectedPort;
                             if (_fromPort == null) {
                                 throw new InternalErrorException(
-                                        "internal DT error: Receiver with null source");
+                                   "DT error:Receiver with null source");
                             }
                             break foundReceiver;
                         }
                     }
                 }
-    	    } else if (connectedPort.getContainer() instanceof TypedCompositeActor) {
+    	    } else if (connectedPort.getContainer() 
+    	                          instanceof TypedCompositeActor) {
     	        // FIXME: should use at isAtomic() insteadof instanceof?
     	        _from = (Actor) connectedPort.getContainer();
     	        _fromPort = connectedPort;
@@ -270,12 +272,11 @@ public class DTReceiver extends SDFReceiver implements Receiver {
     }
 
 
-    /** Return the time interval between tokens for
-     *  this receiver. Delta time is defined as 
-     *  "period / (token flow rate)"; where period
-     *  is the director's <i>period</i> parameter
-     *  and token flow rate is the number of tokens
-     *  flowing through this receiver per iteration
+    /** Return the time interval between tokens for this receiver.
+     *  Delta time is defined as "period / (token flow rate)"; where 
+     *  period is the director's <i>period</i> parameter and token
+     *  flow rate is the number of tokens flowing through this 
+     *  receiver per iteration
      *
      *  @return The time interval between tokens
      */
@@ -322,7 +323,6 @@ public class DTReceiver extends SDFReceiver implements Receiver {
     }
 
     /** Return true if get() will succeed in returning a token.
-     *  <FIXME: mention DE and CT maybe>
      *
      *  @return A boolean indicating whether there is a token in this
      *  receiver.
