@@ -28,10 +28,6 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.de.kernel;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
@@ -199,30 +195,7 @@ public class DEIOPort extends TypedIOPort {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         DEIOPort newObject = (DEIOPort)super.clone(workspace);
-        newObject._delayToSet = new HashSet();
         return newObject;
-    }
-
-    /** Add the specified port to the set of output ports that
-     *  have delayed events triggered by this input port.
-     *  @param output The output port with delayed events.
-     *  @exception IllegalActionException If this port is not an input,
-     *   or if the argument is not an output port.
-     */
-    public void delayTo(IOPort output) throws IllegalActionException {
-        if (!isInput() || !output.isOutput()) {
-            throw new IllegalActionException(this,
-                    "Invalid delayTo relationship.  " +
-                    "Must be input.delayTo(output).");
-        }
-        _delayToSet.add(output);
-    }
-
-    /** Return the set of ports that have delayed events triggered
-     *  by this one (as opposed to instantaneous events).
-     */
-    public Set getDelayToPorts() {
-        return _delayToSet;
     }
 
     /** Send a token to the receivers connected on the specified channel
@@ -290,9 +263,6 @@ public class DEIOPort extends TypedIOPort {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    // List of ports triggered immediately by this input port.
-    private Set _delayToSet = new HashSet();
 
     // The delay to use in transferring tokens.
     // Be careful to set this back to zero after using it.
