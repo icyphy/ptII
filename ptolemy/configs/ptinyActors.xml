@@ -18,5 +18,6 @@
             <input source="ptolemy/actor/lib/array.xml"/>
             <input source="ptolemy/actor/lib/busses.xml"/>
             <input source="ptolemy/actor/lib/signalprocessing.xml"/>
+	    <input source="ptolemy/actor/lib/jxta/jxta.xml"/>
             <input source="ptolemy/domains/ptinyDomains.xml"/>
 </group>

@@ -81,6 +81,7 @@
       <configure>
         <?moml
           <group>
+            <entity name="p2p actors" class="ptolemy.moml.P2PLibrary"/>
 	    <input source="ptolemy/apps/apps.xml"/>
             <input source="ptolemy/configs/automataLibrary.xml"/>
 	    <!-- Javacomm serial actors depend on javacomm being present  -->
