@@ -56,13 +56,10 @@ JSIMPLE_TESTS = \
 
 # Graphical Java demos that use Tcl.
 JGRAPHICAL_TESTS = \
-	ex.tcl \
-	AdjustRamp.tcl \
-	AdjustSecOrder.tcl \
-	Coyote1.tcl \
-	Exponential.tcl \
-	SecOrder.tcl \
-	Ramp.tcl 
+	ClockSystem.tcl \
+	Demo.tcl \
+	RampSystem.tcl \
+	SamplerSystem.tcl
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) #$(JSIMPLE_TESTS) 
 
