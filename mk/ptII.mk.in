@@ -263,10 +263,13 @@ PTJNI_ARCHITECTURE =	@PTJNI_ARCHITECTURE@
 # $PTII/makefile if gcc or cc was found
 PTJNI_DIR =	@PTJNI_DIR@
 
-# JNI shared library suffix, under Solaris this would be -fPIC
+# JNI shared library suffix, under Solaris this would be -fPIC.
 PTJNI_SHAREDLIBRARY_CFLAG =	@PTJNI_SHAREDLIBRARY_CFLAG@
 
-# JNI shared library suffix
+# JNI shared library prefix, under Solaris this would be lib.
+PTJNI_SHAREDLIBRARY_PREFIX =	@PTJNI_SHAREDLIBRARY_PREFIX@
+
+# JNI shared library suffix, under Windows this would be dll.
 PTJNI_SHAREDLIBRARY_SUFFIX =	@PTJNI_SHAREDLIBRARY_SUFFIX@
 
 # Set to joystick if Joystick.jar was found.
