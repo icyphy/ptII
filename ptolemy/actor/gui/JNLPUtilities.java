@@ -46,7 +46,7 @@ import java.net.URL;
 
 //////////////////////////////////////////////////////////////////////////
 //// JNLPUtilities
-/** This class contains utilities for use with JNLP, aka Web Start
+/** This class contains utilities for use with JNLP, aka Web Start.
 
 <p>For more information about Web Start, see
 <a href="http://java.sun.com/products/javawebstart/" target="_top"><code>http://java.sun.com/products/javawebstart</a></code>
