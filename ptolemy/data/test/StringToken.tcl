@@ -108,7 +108,7 @@ test StringToken-3.2 {Test adding String and long} {
     set res3 [$tok2 add $tok1]
 
     list [$res1 toString] [$res2 toString] [$res3 toString]
-} {{"foo3"} {"3foo"} {"3foo"}}
+} {{"foo3L"} {"3Lfoo"} {"3Lfoo"}}
 
 ######################################################################
 ####
@@ -278,7 +278,7 @@ test StringToken-13.6 {Test convert from LongToken} {
     set result {}
     catch {set result [[java::call ptolemy.data.StringToken convert $t] toString]} msg
     list $msg
-} {{"1"}}
+} {{"1L"}}
 
 test StringToken-13.7 {Test convert from StringToken} {
     set t [java::new {ptolemy.data.StringToken java.lang.String} "One"]

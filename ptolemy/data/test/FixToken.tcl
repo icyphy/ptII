@@ -598,7 +598,7 @@ test FixToken-13.5 {Test convert from IntToken} {
     set result {}
     catch {set result [[java::call ptolemy.data.FixToken convert $t] toString]} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.IntToken '1L' to the type fix because the type of the token is higher or incomparable with the given type.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.IntToken '1' to the type fix because the type of the token is higher or incomparable with the given type.}}
 
 test FixToken-13.6 {Test convert from LongToken} {
     set t [java::new {ptolemy.data.LongToken long} 1]
@@ -606,7 +606,7 @@ test FixToken-13.6 {Test convert from LongToken} {
     set result {}
     catch {set result [[java::call ptolemy.data.FixToken convert $t] toString]} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.LongToken '1' to the type fix because the type of the token is higher or incomparable with the given type.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.LongToken '1L' to the type fix because the type of the token is higher or incomparable with the given type.}}
 
 test FixToken-13.7 {Test convert from StringToken} {
     set t [java::new {ptolemy.data.StringToken java.lang.String} "One"]
