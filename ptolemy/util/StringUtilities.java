@@ -550,7 +550,7 @@ public class StringUtilities {
     }
 
     /** Perform file prefix substitution.
-     *  If <i>string</i> starts with <i>prefix<i>, then we return a
+     *  If <i>string</i> starts with <i>prefix</i>, then we return a
      *  new string that consists of the value or <i>replacement</i>
      *  followed by the value of <i>string</i> with the value of
      *  <i>prefix</i> removed.  For example,
