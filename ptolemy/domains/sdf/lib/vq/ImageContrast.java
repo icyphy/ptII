@@ -52,11 +52,29 @@ public final class ImageContrast extends SDFAtomicActor {
 	/* below is what we want to enlarge an input signal which is assumed 
          * to be quantized as 255 pixtel in y axis and is also quantized in 
          * time axis. and change it into scale of 128 to 126
-         */
+         */ public void fire() throws IllegalActionException {
+       
+	int i, j;
+	int numpartitions = xframesize * yframesize / xpartsize / ypartsize;
 
-	for (i = 0, 
-	    inSignal[i] = (inSignal - inmin) 
-
+        message = (ImageToken) image.get(0);
+        frame = message.intArrayRef();
+	
+	/*enlagreing the input signal*/
+	for (i = 0, i < xframesize , i++){
+	    for (j = 0, j < yframesize, j++){
+		inSignal[i,j] = (inSignal[i,j] - inMin)* 
+		    yframesize / (inMax-inMin); 
+	    }
+	}
+	
+	/*diminish the input signal*/
+	for (i = xframesize - 1, i >= 0 , i--){
+	    for (j = jframesize - 1, j >= 0 , j--){
+	    inSignal[i,j] = (inSignal[i,j] - inMin)* 
+		    yframesize / (inMax-inMin); 
+	    }
+	}
 
 
 
@@ -92,6 +110,7 @@ public final class ImageContrast extends SDFAtomicActor {
         partition = ((SDFIOPort) getPort("partition"));
         image = ((SDFIOPort) getPort("image"));
         part = new int[xpartsize*ypartsize];
+	inSignal = new int[xframesize*yframesize];
         partitions = new ImageToken[3168];
     }
 
@@ -108,7 +127,9 @@ public final class ImageContrast extends SDFAtomicActor {
         //    for(i = 0; i < xframesize; i += xpartsize, a--) {
         for(j = 0, a = 0 ; j < yframesize; j += ypartsize)
             for(i = 0; i < xframesize; i += xpartsize, a++) {
-                for(y = 0; y < ypartsize; y++)
+		inSignal[i,j] = (inSignal[i,j] - inMin)* 
+		    yframesize / (inMax-inMin); 
+		for(y = 0; y < ypartsize; y++)
                     System.arraycopy(frame, (j + y) * xframesize + i,
                             part, y * xpartsize, xpartsize);
                 partitions[a] = new ImageToken(part, ypartsize, xpartsize);
@@ -128,7 +149,8 @@ public final class ImageContrast extends SDFAtomicActor {
     private int yframesize;
     private int xpartsize;
     private int ypartsize;
-
+           /*added this lines*/
+    private int inSignal[];
 }
 
 
