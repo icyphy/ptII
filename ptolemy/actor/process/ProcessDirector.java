@@ -424,7 +424,7 @@ public class ProcessDirector extends Director {
      *  This count is used to detect deadlocks for termination and other
      *  reasons.
      */
-    synchronized void _decreaseActiveCount() {
+    protected synchronized void _decreaseActiveCount() {
 	_actorsActive--;
 	if (_checkForDeadlock() || _checkForPause()) {
 	    //Wake up the director waiting for a deadlock
