@@ -54,7 +54,7 @@
 #  PTVERSION =	2.0
 #  PTDIST =	$(PTPACKAGE)$(PTVERSION)
 #  PTZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
-#  JARFILE = 	$(PTPACKAGE).jar
+#  PTCLASSJAR = 	$(PTPACKAGE).jar
 # 
 #  3. It should have a fixtmpdist rule that makes any modifications
 #  that are necessary to adm/tmp/$(PTDIST).  For example:
@@ -187,9 +187,9 @@ installjdist:
 
 updatewebsite: $(PTDISTS)
 	@echo "Updating website"
-	(cd $(JDESTDIR); rm -rf $(PTPACKAGE); mkdir $(PTPACKAGE))
-	cp $(PTDISTS) $(JDESTDIR)/$(PTPACKAGE)
-
-	(cd $(JDESTDIR); $(GNUTAR) -zxf $(PTPACKAGE)/$(PTDIST).tar.gz;\
-	 chmod g+ws $(PTPACKAGE))
-	(cd $(JDESTDIR)/$(PTPACKAGE); chmod g+w $(PTDISTS))
+	(cd $(JDESTDIR); rm -rf $(PTDIST); mkdir -p $(PTDIST)/$(PTPACKAGE_DIR))
+	cp $(PTDISTS) $(JDESTDIR)/$(PTDIST)/$(PTPACKAGE_DIR)
+	(cd $(JDESTDIR); $(GNUTAR) \
+		-zxf $(PTDIST)/$(PTPACKAGE_DIR)/$(PTDIST).tar.gz;\
+	 chmod g+ws $(PTDIST))
+	(cd $(JDESTDIR)/$(PTDIST)/$(PTPACKAGE_DIR); chmod g+w $(PTDISTS))

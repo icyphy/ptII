@@ -52,13 +52,13 @@ DIRS = 		expr test # doc
 CLASSPATH = ../..
 
 # Used to build zip files
-TYPACKAGE = 	ptolemy.data
-TYPACKAGE_ROOTDIR = $(CLASSPATH)
-TYPACKAGE_DIR = ptolemy/data
-TYVERSION =	1.0
-TYDIST =	$(TYPACKAGE)$(TYVERSION)
-TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
-JARFILE = 	$(TYPACKAGE).jar
+PTPACKAGE = 	ptolemy.data
+PTPACKAGE_ROOTDIR = $(CLASSPATH)
+PTPACKAGE_DIR = ptolemy/data
+PTVERSION =	1.0
+PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTCLASSZIP =		$(PTPACKAGE_DIR)/$(TYPACKAGE).zip
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	BooleanMatrixToken.java \
@@ -95,7 +95,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 LIB = dummylib
 
 all: jclass
-install: jclass javadocs $(JARFILE)
+install: jclass javadocs $(PTCLASSJAR)
 docs: javadocs
 
 depend:

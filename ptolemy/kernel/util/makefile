@@ -48,13 +48,13 @@ DIRS = 		test #doc
 CLASSPATH = 	../../..
 
 # Used to build zip files
-TYPACKAGE = 	ptolemy.kernel.util
-TYPACKAGE_ROOTDIR = $(CLASSPATH)
-TYPACKAGE_DIR = ptolemy/kernel/util
-TYVERSION =	1.0
-TYDIST =	$(TYPACKAGE)$(TYVERSION)
-TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
-JARFILE = 	$(TYPACKAGE).jar
+PTPACKAGE = 	ptolemy.kernel.util
+PTPACKAGE_ROOTDIR = $(CLASSPATH)
+PTPACKAGE_DIR = ptolemy/kernel/util
+PTVERSION =	1.0
+PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTCLASSZIP =		$(PTPACKAGE_DIR)/$(TYPACKAGE).zip
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	Attribute.java \
@@ -84,7 +84,7 @@ OPTIONAL_FILES = \
 	'CrossRefList$$CrossRefEnumeration.class' \
 	'NamedList$$NamedListEnumeration.class' \
 	'Workspace$$ReadDepth.class' \
-	$(JARFILE)
+	$(PTCLASSJAR)
 
 JCLASS = $(JSRCS:%.java=%.class)
 
@@ -92,7 +92,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 LIB = dummylib
 
 all: jclass
-install: jclass javadocs $(JARFILE)
+install: jclass javadocs $(PTCLASSJAR)
 docs: javadocs
 
 depend:

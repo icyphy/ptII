@@ -48,13 +48,13 @@ DIRS =
 CLASSPATH =	../..
 
 # Used to build zip files
-TYPACKAGE = 	ptolemy.audio
-TYPACKAGE_ROOTDIR = $(CLASSPATH)
-TYPACKAGE_DIR = ptolemy/audio
-TYVERSION =	1.0
-TYDIST =	$(TYPACKAGE)$(TYVERSION)
-TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
-JARFILE = 	$(TYPACKAGE).jar
+PTPACKAGE = 	ptolemy.audio
+PTPACKAGE_ROOTDIR = $(CLASSPATH)
+PTPACKAGE_DIR = ptolemy/audio
+PTVERSION =	1.0
+PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTCLASSZIP =		$(PTPACKAGE_DIR)/$(TYPACKAGE).zip
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	Audio.java \
@@ -69,7 +69,7 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(JARFILE)
+	$(PTCLASSJAR)
 
 JCLASS = $(JSRCS:%.java=%.class)
 
@@ -77,7 +77,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 LIB = dummylib
 
 all: jclass
-install: jclass javadocs $(JARFILE)
+install: jclass javadocs $(PTCLASSJAR)
 docs: javadocs
 
 depend:

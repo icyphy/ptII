@@ -45,7 +45,7 @@ JPACKAGE_DIR = 	ptolemy/domains/pn/lib
 JVERSION =	1.0
 JDIST =		$(JPACKAGE)$(JVERSION)
 JZIP =		$(JPACKAGE_DIR)/$(JPACKAGE).zip
-JARFILE = 	$(JPACKAGE).jar
+PTCLASSJAR = 	$(JPACKAGE).jar
 
 CLASSPATH = ../../../..
 
@@ -66,7 +66,7 @@ MISC_FILES =  $(DIRS) doc # test
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(JARFILE) \
+	$(PTCLASSJAR) \
 	'PNSieve$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)

@@ -47,13 +47,13 @@ DIRS = 		test # doc
 CLASSPATH = ../../..$(CLASSPATHSEPARATOR)$(JAVACCDIR)/JavaCC.zip
 
 # Used to build zip files
-TYPACKAGE = 	ptolemy.data.expr
-TYPACKAGE_ROOTDIR = $(CLASSPATH)
-TYPACKAGE_DIR = ptolemy/data/expr
-TYVERSION =	1.0
-TYDIST =	$(TYPACKAGE)$(TYVERSION)
-TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
-JARFILE = 	$(TYPACKAGE).jar
+PTPACKAGE = 	ptolemy.data.expr
+PTPACKAGE_ROOTDIR = $(CLASSPATH)
+PTPACKAGE_DIR = ptolemy/data/expr
+PTVERSION =	1.0
+PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTCLASSZIP =		$(PTPACKAGE_DIR)/$(TYPACKAGE).zip
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	ASTPtBitwiseNode.java \
@@ -116,7 +116,7 @@ JCLASS =  \
 LIB = dummylib
 
 all:  $(OPTIONAL_JSRCS) $(JCLASS)
-install: PtParser javadocs $(JARFILE)
+install: PtParser javadocs $(PTCLASSJAR)
 docs: javadocs
 
 depend:

@@ -45,13 +45,13 @@ DIRS = 		test #lib #doc #demo
 CLASSPATH = ../..
 
 # Used to build zip files
-TYPACKAGE = 	ptolemy.schemetic
-TYPACKAGE_ROOTDIR = $(CLASSPATH)
-TYPACKAGE_DIR = ptolemy/schematic
-TYVERSION =	1.0
-TYDIST =	$(TYPACKAGE)$(TYVERSION)
-TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
-JARFILE = 	$(TYPACKAGE).jar
+PTPACKAGE = 	ptolemy.schemetic
+PTPACKAGE_ROOTDIR = $(CLASSPATH)
+PTPACKAGE_DIR = ptolemy/schematic
+PTVERSION =	1.0
+PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTCLASSZIP =		$(PTPACKAGE_DIR)/$(TYPACKAGE).zip
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	Domain.java \
@@ -79,7 +79,7 @@ MISC_FILES =	$(DIRS) doc package.html
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(JARFILE)
+	$(PTCLASSJAR)
 
 JCLASS = $(JSRCS:%.java=%.class)
 
@@ -87,7 +87,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 LIB = dummylib
 
 all: jclass
-install: jclass javadocs $(JARFILE)
+install: jclass javadocs $(PTCLASSJAR)
 docs: javadocs
 
 depend:

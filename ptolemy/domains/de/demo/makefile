@@ -46,7 +46,7 @@ CLASSPATH = ../../../..
 JAVA_HOME_ENV = /usr/tools/pure/jdk1.1.6
 QUANTIFY_JAVA_HOME_ENV = /usr/tools/pure/quantify-4.2-solaris2
 
-TYPACKAGE_DIR = ptolemy/domains/de/demo
+PTPACKAGE_DIR = ptolemy/domains/de/demo
 
 JSRCS = \
 	ABROApplet.java \
@@ -242,7 +242,7 @@ KRUFT = clockapplet.jar
 clockapplet.jar: $(JSRCS) $(JCLASS)
 	(cd $(CLASSPATH); \
 		$(JAR) cf \
-		$(TYPACKAGE_DIR)/clockapplet.jar \
+		$(PTPACKAGE_DIR)/clockapplet.jar \
 		$(CLOCK_CLASSFILES))
 depend:
 	@echo "no dependencies in this directory"

@@ -82,8 +82,8 @@
 # JFLAGS	Flags to pass to javac.
 # JAVADOC	The 'javadoc' program
 # JDOCFLAGS	Flags to pass to javadoc.
-# TYZIP		Zip file of classes to be produced.
-# JARFILE	Jar file of classes to be produced.
+# PTCLASSZIP		Zip file of classes to be produced.
+# PTCLASSJAR	Jar file of classes to be produced.
 # JBEANCLASSES  Classes that are included in the jar file as Java Beans.
 # JDIST		The name and version of the tar.gz and zip files of the sources
 # JTESTHTML	Test html file for a java class.
@@ -286,12 +286,12 @@ htest-netscape: $(JTESTHTML) $(JCLASS)
 # Create a zip file of the .class files
 # We cd up one level so that the zip file has the proper package name
 # We remove the file in case it is a symbolic link
-tyzip: $(TYZIP)
-$(TYZIP): $(JSRCS) $(JCLASS)
+tyzip: $(PTCLASSZIP)
+$(PTCLASSZIP): $(JSRCS) $(JCLASS)
 	(cd $(CLASSPATH); rm -f $@; $(JAR) -c0Mf $@ $(PTPACKAGE_DIR)/*.class)
 
-jars: $(JARFILE) 
-$(JARFILE): $(JSRCS) $(JCLASS)
+jars: $(PTCLASSJAR) 
+$(PTCLASSJAR): $(JSRCS) $(JCLASS)
 	@if [ "$(JBEANCLASSES)" != "" ]; then \
 		echo "Creating manifest.tmp"; \
 		rm -f manifest.tmp; \
@@ -493,7 +493,7 @@ htmlchek:
 checkjunk:
 	@checkextra -v $(SRCS) $(HDRS) $(EXTRA_SRCS) $(MISC_FILES) \
 		$(OPTIONAL_FILES) $(JSRCS) makefile SCCS \
-		$(JCLASS) $(OBJS) $(LIBR) $(TYDISTS) $(JARFILE)
+		$(JCLASS) $(OBJS) $(LIBR) $(PTDISTS) $(PTCLASSJAR)
 	@if [ "x$(DIRS)" != "x" ]; then \
 		set $(DIRS); \
 		for x do \
@@ -512,7 +512,7 @@ checkjunk:
 CRUD=*.o *.so core *~ *.bak ,* LOG* *.class \
 	config.cache config.log config.status manifest.tmp \
 	$(JCLASS) $(PTPACKAGE).zip $(PTPACKAGE).jar \
-	$(TYDISTS) $(JARFILE) $(KRUFT)  
+	$(PTDISTS) $(PTCLASSJAR) $(KRUFT)  
 
 clean:
 	rm -f $(CRUD)

@@ -48,7 +48,7 @@ JPACKAGE_DIR = 	collections
 JVERSION =	1.0
 JDIST =		$(JPACKAGE)$(JVERSION)
 JZIP =		collections/collections.zip
-JARFILE = 	$(JPACKAGE).jar
+PTCLASSJAR = 	$(JPACKAGE).jar
 
 CLASSPATH = ..
 
@@ -146,7 +146,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 LIB = dummylib
 
 all: suball jclass
-install: subinstall jclass javadocs $(JARFILE)
+install: subinstall jclass javadocs $(PTCLASSJAR)
 docs: javadocs
 
 depend:

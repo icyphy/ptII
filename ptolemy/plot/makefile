@@ -100,11 +100,11 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: sources jclass $(PTZIP) $(JARFILE) ptolemy.plotapplet.jar
+all: sources jclass $(PTZIP) $(PTCLASSJAR) ptolemy.plotapplet.jar
 	-chmod a+x ptplot
 	rm -f pxgraph
 	ln -s ptplot pxgraph
-install: sources jclass javadocs subinstall $(JARFILE) $(TYZIP) ptolemy.plotapplet.jar
+install: sources jclass javadocs subinstall $(PTCLASSJAR) $(PTCLASSZIP) ptolemy.plotapplet.jar
 	-chmod a+x ptplot
 	rm -f pxgraph
 	ln -s ptplot pxgraph
@@ -148,7 +148,7 @@ PTPACKAGE_DIR = ptolemy/plot
 PTVERSION =	2.0a1
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
-JARFILE = 	$(PTPACKAGE).jar
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Include rules necessary to build a distribution
 include $(ROOT)/mk/ptdist.mk

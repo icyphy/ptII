@@ -45,7 +45,7 @@ JPACKAGE_DIR = 	ptolemy/domains/pn/kernel/demo
 JVERSION =	1.0
 JDIST =		$(JPACKAGE)$(JVERSION)
 JZIP =		$(JPACKAGE_DIR)/$(JPACKAGE).zip
-JARFILE = 	$(JPACKAGE).jar
+PTCLASSJAR = 	$(JPACKAGE).jar
 
 CLASSPATH = ../../../../..
 
