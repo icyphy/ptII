@@ -840,7 +840,7 @@ echo $ac_n "checking  the JDK version to see if we need to increase heap size fo
 echo "configure:841: checking  the JDK version to see if we need to increase heap size for javadoc" >&5
 JDOCSIZE=
 case "$JVERSION" in
-	1.2.*)  JDOCSIZE="-JXmx132m"
+	1.2.*)  JDOCSIZE="-J-Xmx132m"
 		echo "$ac_t""yes, use $JDOCSIZE" 1>&6
 	;;
 	*) echo "$ac_t""no, not necessary" 1>&6
