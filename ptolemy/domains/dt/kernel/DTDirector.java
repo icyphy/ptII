@@ -69,6 +69,15 @@ port rates, and the schedule. These local times obey the following constraint:
 
 The exact way that local time increments during an iteration is described in
 detail in the DTReceiver documentation.
+<p>
+<h1> Period Parameter </hi>
+The DT director has a <i>period</i> parameter which specifies the amount
+of time per iteration. For hierarchical DT, this period parameter only makes
+sense on the top-level. The user cannot explicitly set the period parameter
+for a DT subsystem inside a another DT system. For heterogeneous hierarchies 
+(e.g. DT inside DE or DT inside CT), the period parameter specifies the 
+time interval between firings the DT subsystem. The DT subsystem will
+not fire on times that are not integer multiples of the period parameter.
 <p>.
 <h1>DT Features</h1>
 The design of the DT domain is motivated by the following criteria:
@@ -219,8 +228,10 @@ public class DTDirector extends SDFDirector {
     }
 
     /** Go through the schedule and iterate every actor with calls to
-     *  prefire() , fire() , and postfire().  <more info>
-     *
+     *  prefire() , fire() , and postfire().  If this director is not
+     *  in the top-level, get the outside director's current time; and 
+     *  check whether the returned time is an integer multiple of the 
+     *  <i>period</i> parameter. If it is not, then don't fire. 
      *  @exception IllegalActionException If an actor executed by this
      *  director return false in its prefire().
      */
@@ -311,7 +322,10 @@ public class DTDirector extends SDFDirector {
     }
 
 
-    /** Return the current time. <more info>
+    /** If an actor is firing, return the local time of the actor. 
+     *  If the actor currently firing is an opaque composite actor
+     *  that is not directed by DT, return that director's current time.
+     *
      *  @return the current time
      */
     public double getCurrentTime() {
