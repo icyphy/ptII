@@ -167,10 +167,10 @@ public class DelayLine extends SDFTransformer {
 	InequalityTerm valuesTerm = valuesArrType.getElementTypeTerm();
 
 	Inequality ineq1 = new Inequality(input.getTypeTerm(), outputTerm);
-	//Inequality ineq2 = new Inequality(outputTerm, valuesTerm);
+	Inequality ineq2 = new Inequality(outputTerm, valuesTerm);
 
 	result.add(ineq1);
-	//result.add(ineq2);
+	result.add(ineq2);
 	return result;
     }
 
