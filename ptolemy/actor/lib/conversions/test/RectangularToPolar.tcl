@@ -70,8 +70,8 @@ test RectangularToPolar-1.1 {test 1} {
 
     [$e0 getManager] execute
     set result [list [enumToTokenValues [$rec1 getRecord 0]] \
-         [enumToTokenValues [$rec2 getRecord 0]]]
-    ptclose $result {5.0 0.927}
+	    [enumToTokenValues [$rec2 getRecord 0]]]
+    ptclose $result {5.0 0.9272952}
 } {1}
 
 ######################################################################
