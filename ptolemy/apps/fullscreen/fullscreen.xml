@@ -18,6 +18,7 @@
 </entity>
 <entity name="ImageToString" class="ptolemy.apps.fullscreen.ImageToString">
 </entity>
+<entity name="SlideShow" class="ptolemy.apps.fullscreen.SlideShow"/>
 <entity name="URLToImage" class="ptolemy.apps.fullscreen.URLToImage">
 </entity>
       </group>

@@ -61,8 +61,8 @@ OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-JAVAC =		c:/jdk1.4/bin/javac
-JAVA =		c:/jdk1.4/bin/java
+JAVAC =		/cygdrive/c/j2sdk1.4.0-beta3/bin/javac
+JAVA =		/cygdrive/c/j2sdk1.4.0-beta3/bin/java
 
 all: jclass
 	@echo "To run the demo, run 'make demo'"
