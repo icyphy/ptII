@@ -39,7 +39,14 @@ import ptolemy.data.Token;
 //////////////////////////////////////////////////////////////////////////
 //// GiottoReceiver
 /**
-A receiver for the Giotto domain.  FIXME: Description of how this works.
+A receiver for the Giotto domain. It uses double-buffering.
+An actor may write to a receiver using put at any time.
+However, a new token will only be available to get
+if update has been called before.
+The update method makes the token from the last put invocation
+available to get.
+The Giotto Director (@see ptolemy.domains.giotto.kernel.GiottoDirector)
+delays calls to update according to the Giotto semantics.
 
 @author  Christoph Meyer Kirsch and Edward A. Lee
 @version $Id$
@@ -102,7 +109,6 @@ public class GiottoReceiver extends AbstractReceiver {
 
     /** Update the receiver by making any token that has been
      *  passed to put() available to get().
-     *  FIX ME: not needed.
      */
     public void update() {
         _token = _nextToken;
