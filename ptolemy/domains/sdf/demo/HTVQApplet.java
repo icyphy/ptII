@@ -117,7 +117,7 @@ public class HTVQApplet extends Applet implements Runnable {
 
             ImageSequence source = new ImageSequence(c, "Source");
             source.setBaseURL(getDocumentBase());
-            /*         Parameter filename = (Parameter) 
+            /*         Parameter filename = (Parameter)
                 source.getAttribute("File Name Template");
             filename.setToken(new StringToken(
                     "file:/users/ptII/ptolemy/domains/sdf/lib/vq" +
@@ -161,7 +161,7 @@ public class HTVQApplet extends Applet implements Runnable {
         validate();
 	DebugListener debugger = new DebugListener();
 	Debug.register(debugger);
-	
+
 	Debug.println("testing");
  }
 
@@ -173,7 +173,7 @@ public class HTVQApplet extends Applet implements Runnable {
                 // Start the CurrentTimeThread.
             //             Thread ctt = new CurrentTimeThread();
             //  ctt.start();
-	
+
             validate();
                 _manager.run();
 
