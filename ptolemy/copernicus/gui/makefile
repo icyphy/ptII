@@ -44,7 +44,7 @@ include $(CONFIG)
 PTPACKAGE = 	kernel
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-DIRS =
+DIRS =		test
 
 # Keep this list alphabetized.
 JSRCS = \
@@ -59,6 +59,15 @@ MISC_FILES =	$(DIRS) cg
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	'GeneratorTableau$$1.class' \
+	'GeneratorTableau$$2.class' \
+	'GeneratorTableau$$3.class' \
+	'GeneratorTableau$$4.class' \
+	'GeneratorTableau$$5.class' \
+	'GeneratorTableau$$6.class' \
+	'GeneratorTableau$$Factory.class' \
+	'GeneratorTableau$$GeneratorFrame.class' \
+	'GeneratorTableau$$_Exec.class' \
 	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
