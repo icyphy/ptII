@@ -104,8 +104,8 @@ test RecordType-2.0 {Test convert} {
     set r1 [java::new {ptolemy.data.RecordToken} $l1 $v1]
 
     list [[$empRT convert $r1] toString] [[$sdRT convert $r1] toString] \
-         [[$varRT convert $r1] toString]
-} {{{extra=2.5, name="foo", value=1}} {{extra=2.5, name="foo", value=1.0}} {{extra=2.5, name="foo", value=1}}}
+        [[[$r1 getType] convert $r1] toString]
+} {{{}} {{name="foo", value=1.0}} {{extra=2.5, name="foo", value=1}}}
 
 ######################################################################
 ####

@@ -49,7 +49,7 @@ import java.util.Set;
 /**
 A class representing the type of a RecordToken.
 
-@author Yuhong Xiong
+@author Yuhong Xiong, Elaine Cheong and Steve Neuendorffer
 $Id$
 */
 
@@ -113,9 +113,12 @@ public class RecordType extends StructuredType {
         }
     }
 
-    /** Convert the argument token into a RecordToken having this type,
-     *  if losslessly conversion can be done.  The argument must be an
-     *  RecordToken, and its type must be a subtype of this record type.
+    /** Convert the argument token into a RecordToken having this
+     *  type, if lossless conversion can be done.  The argument must
+     *  be an RecordToken, and its type must be a subtype of this
+     *  record type.  The argument token must have at least the fields
+     *  of this type.  Extra fields in the argument token that are not
+     *  in this type are removed.
      *  @param token A token.
      *  @return An RecordToken.
      *  @exception IllegalActionException If lossless conversion
@@ -129,9 +132,8 @@ public class RecordType extends StructuredType {
         }
 
         RecordToken recordToken = (RecordToken)token;
-        // The converted token has the same set of labels as the argument.
-        // That is, fields not in this type are not cut off.
-        Object[] labelArray = recordToken.labelSet().toArray();
+        // The converted token has the same set of labels as this type.
+        Object[] labelArray = labelSet().toArray();
 
         // Arrays that will be used to create the new token.
         String[] labelStringArray = new String[labelArray.length];
@@ -145,11 +147,7 @@ public class RecordType extends StructuredType {
             Type newFieldType = get(label);
 
             // If the type of the field is specified, then convert it.
-            if (newFieldType != null) {
-                values[i] = newFieldType.convert(fieldToken);
-            } else {
-                values[i] = fieldToken;
-            }
+            values[i] = newFieldType.convert(fieldToken);
 
             // Store the label for each field.
             labelStringArray[i] = label;
