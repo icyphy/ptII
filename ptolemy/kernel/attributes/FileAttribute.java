@@ -69,7 +69,7 @@ the home directory of the Ptolemy II installation, or the string
 which refers to the user's home directory.  These values are
 obtained from the Java properties <i>ptolemy.ptII.dir</i>,
 <i>user.dir</i>, and <i>user.home</i>, respectively.  These
-properties are normally set when a Ptolemy II application starts.            
+properties are normally set when a Ptolemy II application starts.
 <p>
 @author Edward A. Lee
 @version $Id$
