@@ -335,12 +335,14 @@ public class DDEDirector extends ProcessDirector {
         }
         
         if( _pendingMutations ) {
+	    /* FIXME
             try {
                 _processTopologyRequests();
             } catch( TopologyChangeFailedException e ) {
                 throw new IllegalActionException("TopologyChangeFailed: " 
                         + e.getMessage());
             }
+	    */
         }
         return false;
     }
@@ -374,10 +376,10 @@ public class DDEDirector extends ProcessDirector {
     
     /** Mutate the model that this director controls.
      *  FIXME
-     */
     protected void _processTopologyRequests() throws
             TopologyChangeFailedException {
     }
+     */
     
     /** Mutate the model that this director controls.
      *  FIXME
