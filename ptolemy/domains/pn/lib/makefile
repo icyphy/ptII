@@ -49,13 +49,8 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
 	PNAlternate.java \
-	PNGalaxySieve.java \
 	PNInterleave.java \
-	PNRamp.java \
 	PNRedirect.java \
-	PNSieve.java \
-	PNSink.java \
-	TimedRamp.java \
 	PNAdder.java \
 	PNAudioSource.java \
 	PNAudioPacker.java \
@@ -69,6 +64,7 @@ JSRCS = \
 	PNRDMainController.java \
 	PNImageSink.java \
 	PNImageSource.java \
+	PNSink.java \
 	MatrixPacker.java \
 	MatrixUnpacker.java \
 	RandomValueSource.java \
