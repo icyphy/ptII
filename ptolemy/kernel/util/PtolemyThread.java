@@ -54,7 +54,7 @@ class just by using the Thread class. Obviously, some efficiency will be lost
 as the workspace has to store and then search the readDepth fields in a hash
 table. (as was mentioned in the previous paragraph)
 
-@author Lukito Muliadi
+@author Lukito Muliadi, contributor: Edward A. Lee 
 @version $Id$
 @since Ptolemy II 0.2
 */
@@ -136,6 +136,7 @@ public class PtolemyThread extends Thread implements Debuggable {
     /** Append a listener to the current set of debug listeners.
      *  If the listener is already in the set, do not add it again.
      *  @param listener The listener to which to send debug messages.
+     *  @since Ptolemy II 2.3
      */
     public synchronized void addDebugListener(DebugListener listener) {
         if (_debugListeners == null) {
@@ -160,6 +161,7 @@ public class PtolemyThread extends Thread implements Debuggable {
      *  been previously registered, then do nothing.
      *  @param listener The listener to remove from the list of listeners
      *   to which debug messages are sent.
+     *  @since Ptolemy II 2.3
      */
     public synchronized void removeDebugListener(DebugListener listener) {
         if (_debugListeners == null) {
@@ -177,6 +179,7 @@ public class PtolemyThread extends Thread implements Debuggable {
 
     /** Send a debug event to all debug listeners that have registered.
      *  @param event The event.
+     *  @since Ptolemy II 2.3
      */
     protected final void _debug(DebugEvent event) {
         if (_debugging) {
@@ -204,6 +207,7 @@ public class PtolemyThread extends Thread implements Debuggable {
      *  listeners.  Thus, you should avoid, if possible, constructing
      *  the message from parts.
      *  @param message The message.
+     *  @since Ptolemy II 2.3
      */
     protected final void _debug(String message) {
         if (_debugging) {
@@ -225,10 +229,14 @@ public class PtolemyThread extends Thread implements Debuggable {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** @serial Flag that is true if there are debug listeners. */
+    /** @serial Flag that is true if there are debug listeners.
+     *  @since Ptolemy II 2.3
+     */
     protected boolean _debugging = false;
 
-    /** @serial The list of DebugListeners registered with this object. */
+    /** @serial The list of DebugListeners registered with this object.
+     *  @since Ptolemy II 2.3
+     */
     protected LinkedList _debugListeners = null;
 
     ///////////////////////////////////////////////////////////////////
