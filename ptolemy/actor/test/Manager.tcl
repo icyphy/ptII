@@ -344,7 +344,7 @@ test Manager-12.0 {Test execution by fine grain methods} {
 #
 test Manager-13.0 {Test execution by in another thread} {
     $manager startRun
-    sleep 1
+    sleep 2
     enumToTokenValues [$rec getRecord 0]
 } {0 1}
 
