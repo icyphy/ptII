@@ -2138,7 +2138,7 @@ echo "${ECHO_T}'$CLASSPATHSEPARATOR'" >&6
 #--------------------------------------------------------------------
 
 # These directories are always excluded from Eclipse
-ECLIPSE_EXCLUDING_SRC=""
+ECLIPSE_EXCLUDING_SRC="ptolemy/codegen/c/actor/lib/oldJava/|ptolemy/codegen/c/lib/dsp/"
 
 # Jar files to include in the Eclipse library
 #ECLIPSE_CLASSPATHENTRY_LIBS='<classpathentry kind="lib" path="lib/diva.jar"/>'
