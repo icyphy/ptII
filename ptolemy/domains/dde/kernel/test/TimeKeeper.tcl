@@ -425,12 +425,13 @@ test TimeKeeper-8.1 {Check sendOutNullTokens} {
 
     set rcvrs [$inPort getReceivers]
     set rcvr [java::cast ptolemy.domains.dde.kernel.TimedQueueReceiver [$rcvrs get {0 0}]]
+    set ddeRcvr [java::cast ptolemy.domains.dde.kernel.DDEReceiver $rcvr]
 
     $rcvr setCapacity 1
 
     set hasRoom [$rcvr hasRoom]
     $keeper setCurrentTime 5.0
-    $keeper sendOutNullTokens
+    $keeper sendOutNullTokens $ddeRcvr
     set noRoom [$rcvr hasRoom]
 
     set val [$rcvr getRcvrTime]

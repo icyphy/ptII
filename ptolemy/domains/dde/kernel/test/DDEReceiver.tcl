@@ -211,6 +211,182 @@ test DDEReceiver-2.4 {Send Ignore and Real through multiport.} {
     list $time0 $time1 $time2 $time3 $time4 
 } {4.0 5.0 6.0 7.0 8.0}    
 
+######################################################################
+####
+#
+test DDEReceiver-3.1 {Check is...Boundary() for single layer boundary} {
+    set wspc [java::new ptolemy.kernel.util.Workspace]
+    set mgr [java::new ptolemy.actor.Manager $wspc "manager"]
+    set toplevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
+    set wormhole [java::new ptolemy.actor.TypedCompositeActor $toplevel "wormhole"]
+    set topdir [java::new ptolemy.domains.dde.kernel.DDEDirector $toplevel "topdirector"]
+    set wormdir [java::new ptolemy.domains.dde.kernel.DDEDirector $wormhole "wormdirector"]
+    
+    # Assign Directors/Managers
+    $toplevel setManager $mgr
+    $toplevel setDirector $topdir
+    $wormhole setDirector $wormdir
+    
+    # Instantiate Actors
+    set actorSend [java::new ptolemy.domains.dde.kernel.test.DDEPutToken $toplevel "actorSend" 3]
+    set actorRcvr [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "actorRcvr" 3]
+    set actorThru [java::new ptolemy.domains.dde.kernel.test.FlowThrough $wormhole "actorThru"]
+    set actorInner [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $wormhole "actorInner" 3]
+
+    # Add Ports to the Wormhole
+    set wormin [java::new ptolemy.actor.TypedIOPort $wormhole "input" true false]
+    set wormout [java::new ptolemy.actor.TypedIOPort $wormhole "output" false true]
+    
+    # Get Ports for the Atomic Actors
+    set rcvrPort [$actorRcvr getPort "input"]
+    set sendPort [$actorSend getPort "output"]
+    set flowinPort [$actorThru getPort "input"]
+    set flowoutPort [$actorThru getPort "output"]
+    set innerPort [$actorInner getPort "input"]
+    
+    # Connect Inside Wormhole Ports
+    $wormhole connect $wormin $flowinPort
+    $wormhole connect $innerPort $flowoutPort 
+    $wormhole connect $flowoutPort $wormout 
+
+    # Connect Outer Ports
+    $toplevel connect $sendPort $wormin
+    $toplevel connect $wormout $rcvrPort
+    
+    # Create Receivers
+    $toplevel initialize
+    
+    set iopFlowin [java::cast ptolemy.actor.TypedIOPort $flowinPort]
+    set rcvrs [$iopFlowin getReceivers]
+    set rcvr [java::cast ptolemy.domains.dde.kernel.DDEReceiver [$rcvrs get {0 0}]]
+    set val1a [$rcvr isInsideBoundary]
+    set val1b [$rcvr isConnectedToBoundary]
+    set val1c [$rcvr isOutsideBoundary]
+    
+    set iopInnerPort [java::cast ptolemy.actor.TypedIOPort $innerPort]
+    set rcvrs [$iopInnerPort getReceivers]
+    set rcvr [java::cast ptolemy.domains.dde.kernel.DDEReceiver [$rcvrs get {0 0}]]
+    set val2a [$rcvr isInsideBoundary]
+    set val2b [$rcvr isConnectedToBoundary]
+    set val2c [$rcvr isOutsideBoundary]
+    
+    set iopRcvrPort [java::cast ptolemy.actor.TypedIOPort $rcvrPort]
+    set rcvrs [$iopRcvrPort getReceivers]
+    set rcvr [java::cast ptolemy.domains.dde.kernel.DDEReceiver [$rcvrs get {0 0}]]
+    set val3a [$rcvr isInsideBoundary]
+    set val3b [$rcvr isConnectedToBoundary]
+    set val3c [$rcvr isOutsideBoundary]
+    
+    set iopWormOut [java::cast ptolemy.actor.TypedIOPort $wormout]
+    set rcvrs [$iopWormOut getInsideReceivers]
+    set rcvr [java::cast ptolemy.domains.dde.kernel.DDEReceiver [$rcvrs get {0 0}]]
+
+    set val4a [$rcvr isInsideBoundary]
+    set val4b [$rcvr isConnectedToBoundary]
+    set val4c [$rcvr isOutsideBoundary]
+    
+    set iopWormIn [java::cast ptolemy.actor.TypedIOPort $wormin]
+    set rcvrs [$iopWormIn getReceivers]
+    set rcvr [java::cast ptolemy.domains.dde.kernel.DDEReceiver [$rcvrs get {0 0}]]
+    set val5a [$rcvr isInsideBoundary]
+    set val5b [$rcvr isConnectedToBoundary]
+    set val5c [$rcvr isOutsideBoundary]
+    
+    list $val1a $val1b $val1c $val2a $val2b $val2c $val3a $val3b $val3c $val4a $val4b $val4c $val5a $val5b $val5c
+    
+} {0 1 0 0 0 0 0 0 0 1 0 0 0 0 1}
+
+######################################################################
+####
+#
+test DDEReceiver-3.2 {Check is...Boundary() for multilayered boundaries} {
+    set wspc [java::new ptolemy.kernel.util.Workspace]
+    set mgr [java::new ptolemy.actor.Manager $wspc "manager"]
+    set toplevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
+    set outerworm [java::new ptolemy.actor.TypedCompositeActor $toplevel "outerworm"]
+    set innerworm [java::new ptolemy.actor.TypedCompositeActor $outerworm "innerworm"]
+    set topdir [java::new ptolemy.domains.dde.kernel.DDEDirector $toplevel "topdirector"]
+    set outerwormdir [java::new ptolemy.domains.dde.kernel.DDEDirector $outerworm "outerwormdirector"]
+    set innerwormdir [java::new ptolemy.domains.dde.kernel.DDEDirector $innerworm "innerwormdirector"]
+    
+    # Assign Directors/Managers
+    $toplevel setManager $mgr
+    $toplevel setDirector $topdir
+    $outerworm setDirector $outerwormdir
+    $innerworm setDirector $innerwormdir
+    
+    # Instantiate Atomic Actors
+    set actorSend [java::new ptolemy.domains.dde.kernel.test.DDEPutToken $toplevel "actorSend" 3]
+    set actorRcvr [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "actorRcvr" 3]
+    set actorThru [java::new ptolemy.domains.dde.kernel.test.FlowThrough $innerworm "actorThru"]
+    set actorInner [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $innerworm "actorInner" 3]
+
+    # Add Ports to the Inner Wormhole
+    set innerwormin [java::new ptolemy.actor.TypedIOPort $innerworm "input" true false]
+    set innerwormout [java::new ptolemy.actor.TypedIOPort $innerworm "output" false true]
+    
+    # Add Ports to the Outer Wormhole
+    set outerwormin [java::new ptolemy.actor.TypedIOPort $outerworm "input" true false]
+    set outerwormout [java::new ptolemy.actor.TypedIOPort $outerworm "output" false true]
+    
+    # Get Ports for the Atomic Actors
+    set rcvrPort [$actorRcvr getPort "input"]
+    set sendPort [$actorSend getPort "output"]
+    set flowinPort [$actorThru getPort "input"]
+    set flowoutPort [$actorThru getPort "output"]
+    set innerPort [$actorInner getPort "input"]
+    
+    # Connect Interior Inner Wormhole Ports
+    $innerworm connect $innerwormin $flowinPort
+    $innerworm connect $innerPort $flowoutPort 
+    $innerworm connect $flowoutPort $innerwormout 
+
+    # Connect Interior Outer Wormhole Ports
+    $outerworm connect $outerwormin $innerwormin 
+    $outerworm connect $innerwormout $outerwormout 
+    
+    # Connect Interior Top Level Ports
+    $toplevel connect $sendPort $outerwormin
+    $toplevel connect $outerwormout $rcvrPort
+    
+    # Create Receivers
+    $toplevel initialize
+    
+    set iopInnerWormOut [java::cast ptolemy.actor.TypedIOPort $innerwormout]
+    set rcvrs [$iopInnerWormOut getInsideReceivers]
+    set rcvr [java::cast ptolemy.domains.dde.kernel.DDEReceiver [$rcvrs get {0 0}]]
+    set val4a [$rcvr isInsideBoundary]
+    set val4b [$rcvr isConnectedToBoundary]
+    set val4c [$rcvr isOutsideBoundary]
+    
+    set iopInnerWormIn [java::cast ptolemy.actor.TypedIOPort $innerwormin]
+    set rcvrs [$iopInnerWormIn getReceivers]
+    set rcvr [java::cast ptolemy.domains.dde.kernel.DDEReceiver [$rcvrs get {0 0}]]
+    set val5a [$rcvr isInsideBoundary]
+    set val5b [$rcvr isConnectedToBoundary]
+    set val5c [$rcvr isOutsideBoundary]
+    
+    set iopOuterWormOut [java::cast ptolemy.actor.TypedIOPort $outerwormout]
+    set rcvrs [$iopOuterWormOut getInsideReceivers]
+    set rcvr [java::cast ptolemy.domains.dde.kernel.DDEReceiver [$rcvrs get {0 0}]]
+    set val6a [$rcvr isInsideBoundary]
+    set val6b [$rcvr isConnectedToBoundary]
+    set val6c [$rcvr isOutsideBoundary]
+    
+    set iopOuterWormIn [java::cast ptolemy.actor.TypedIOPort $outerwormin]
+    set rcvrs [$iopOuterWormIn getReceivers]
+    set rcvr [java::cast ptolemy.domains.dde.kernel.DDEReceiver [$rcvrs get {0 0}]]
+    set val7a [$rcvr isInsideBoundary]
+    set val7b [$rcvr isConnectedToBoundary]
+    set val7c [$rcvr isOutsideBoundary]
+    
+    list $val4a $val4b $val4c $val5a $val5b $val5c $val6a $val6b $val6c $val7a $val7b $val7c 
+    
+} {1 0 0 0 1 1 1 0 0 0 0 1}
+
+
+
+
 
 
 
