@@ -30,7 +30,6 @@ package ptolemy.domains.fsm.kernel;
 
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -206,8 +205,11 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             return;
         }
 
-        Iterator actors = _enabledRefinements.iterator();
+        // FIXME: we need to check whether a preemptive transition is enabled. 
+        // If so, we need to skip the firing of refinements and return 
+        // immediately. 
 
+        Iterator actors = _enabledRefinements.iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor)actors.next();
             if (_debugging && _verbose) {
@@ -485,131 +487,71 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         // The reason is that when refining step size, we want to find the
         // largest step size that satisfies all the step size constraints to 
         // reduce the computation cost.
-        // Both non-preemptive and preemptive transitions are checked below.
+
+        // Not all non-preemptive and preemptive transitions are checked below,
+        // because if a non-preemptive transition is enabled, the preemptive 
+        // transitions never even get a chance to evaluate. 
         try {
+            Transition enabledTransition;
             // Check if there is any preemptive transition enabled.
-            Transition preemptiveTr
+            enabledTransition 
                 = _ctrl._checkTransition(
                         _currentState.preemptiveTransitionList());
-            if (preemptiveTr != null) {
+            
+            if (enabledTransition != null) {
                 if (_debugging && _verbose) {
-                    _debug("Find enabled transition:  " +
-                            preemptiveTr.getGuardExpression());
+                    _debug("Find enabled preemptive transition:  " +
+                            enabledTransition.getGuardExpression());
                 }
-            }
-
-            // Check if there is any non-preemptive transition enabled.
-            Transition nonPreemptiveTr
-                = _ctrl._checkTransition(
+            } else {
+                // Check if there is any non-preemptive transition enabled.
+                enabledTransition
+                    = _ctrl._checkTransition(
                         _currentState.nonpreemptiveTransitionList());
-            if (nonPreemptiveTr != null) {
-                if (_debugging && _verbose) {
-                    _debug("Find enabled transition:  " +
-                            nonPreemptiveTr.getGuardExpression());
+                if (enabledTransition != null) {
+                    if (_debugging && _verbose) {
+                        _debug("Find enabled non-preemptive transition:  " +
+                                enabledTransition.getGuardExpression());
+                    }
                 }
-            }
-
-            // Check if there is any event detected for preemptive transitions.
-            Transition preemptiveTrWithEvent =
-                _checkEvent(_currentState.preemptiveTransitionList());
-            if (preemptiveTrWithEvent != null) {
-                if (_debugging) {
-                    _debug("Detected event for transition:  " +
-                            preemptiveTrWithEvent.getGuardExpression());
-                }
-            }
-
-            // Check if there is any events detected for
-            // nonpreemptive transitions.
-            Transition nonPreemptiveTrWithEvent =
-                _checkEvent(_currentState.nonpreemptiveTransitionList());
-            if (nonPreemptiveTrWithEvent != null) {
-                if (_debugging) {
-                    _debug("Detected event for transition:  " +
-                            nonPreemptiveTrWithEvent.getGuardExpression());
-                }
-            }
-
-            // If no transition is enabled, use the transition with event 
-            // detected instead.
-            if (preemptiveTr == null) {
-                preemptiveTr = preemptiveTrWithEvent;
-            }
-            if (nonPreemptiveTr == null) {
-                nonPreemptiveTr = nonPreemptiveTrWithEvent;
             }
 
             double errorTolerance = dir.getErrorTolerance();
             // If there is no transition enabled, the last step size is 
             // accurate for transitions. The states will be committed at 
             // the postfire method.
-            if (nonPreemptiveTr == null && preemptiveTr == null) {
+            if (enabledTransition == null) {
                 _hasEvent = false;
-            } else if (nonPreemptiveTr != null) {
-                // There is one non-preemptive transition enabled.
+            } else {
+                // There is one transition enabled.
                 // We check the maximum difference of all relations that change
                 // their status with the current step size for
                 // step size refinement.
-                RelationList relationList = nonPreemptiveTr.getRelationList();
-                _distanceToBoundaryNonPreemptive = 
-                    relationList.maximumDifference();
+                RelationList relationList = enabledTransition.getRelationList();
+                _distanceToBoundary = relationList.maximumDifference();
 
                 if (_debugging && _verbose) {
-                    _debug("The guard " + nonPreemptiveTr.getGuardExpression() 
+                    _debug("The guard " + enabledTransition.getGuardExpression() 
                             + " has the biggest difference to boundary as " 
-                            + _distanceToBoundaryNonPreemptive);
+                            + _distanceToBoundary);
                 }
 
-                _nonpreemptiveTransitionAccurate =
-                    (_distanceToBoundaryNonPreemptive < errorTolerance);
+                _outputAccurate = _distanceToBoundary < errorTolerance;
 
-                if (!_nonpreemptiveTransitionAccurate) {
+                if (!_outputAccurate) {
                     // Retrive the previous distance of the relation which has 
                     // the biggest difference with the current step size.
                     // This previous distance will be used to refine the 
                     // step size.
-                    _lastDistanceToBoundaryNonPremptive = 
+                    _lastDistanceToBoundary = 
                         relationList.getPreviousMaximumDistance();
+                    // FIXME: Do we need this?
+                    // _hasEvent = false;
                 } else {
                     _hasEvent = true;
-                    // FIXME: why requesting refiring here? should this go to
-                    // the postfire() method?
-                    // dir.fireAt(container, getModelTime());
-                }
-            } else {
-                // There is one preemptive transition enabled.
-                // We check the maximum difference of all relations that change
-                // their status with the current step size for 
-                // step size refinement.
-                RelationList relationList = preemptiveTr.getRelationList();
-                _distanceToBoundaryPreemptive = 
-                    relationList.maximumDifference();
-
-                if (_debugging && _verbose) {
-                    _debug("The guard " + preemptiveTr.getGuardExpression() 
-                            + " has the biggest difference to boundary as " 
-                            + _distanceToBoundaryPreemptive);
-                }
-
-                _preemptiveTransitionAccurate =
-                    (_distanceToBoundaryPreemptive < errorTolerance);
-
-                if (!_preemptiveTransitionAccurate) {
-                    // Retrive the previous distance of the relation which has the
-                    // biggest difference with the current step size.
-                    // This previous distance will be used to refine the step size.
-                    _lastDistanceToBoundaryPremptive = 
-                        relationList.getPreviousMaximumDistance();
-                } else {
-                    _hasEvent = true;
-                    // FIXME: why requesting refiring here? should this go to
-                    // the postfire() method?
-                    // dir.fireAt(container, getModelTime());
                 }
             }
-            return result 
-                    && _nonpreemptiveTransitionAccurate
-                    && _preemptiveTransitionAccurate;
+            return result && _outputAccurate;
         } catch (Exception e) {
             // Can not request refirng 
             // or multiple enabled transitions are found.
@@ -809,8 +751,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 }
             }
         }
-        _preemptiveTransitionAccurate = true;
-        _nonpreemptiveTransitionAccurate = true;
+        _outputAccurate = true;
         return super.prefire();
     }
 
@@ -861,48 +802,20 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             }
         }
 
-        if (_preemptiveTransitionAccurate && _nonpreemptiveTransitionAccurate) {
-            // do nothing
-        } else {
-            double refinedStepSizeNonPreemptive = result;
-            double refinedStepSizePreemptive = result;
+        if (!_outputAccurate) {
+            double refinedStepSize = result;
             double errorTolerance = dir.getErrorTolerance();
             double currentStepSize = dir.getCurrentStepSize();
 
             // Linear interpolation to refine the step size.
             // Note the step size is refined such that the distanceToBoundary
             // is half of errorTolerance.
-            if (!_nonpreemptiveTransitionAccurate) {
-            refinedStepSizeNonPreemptive = currentStepSize * (_lastDistanceToBoundaryNonPremptive + errorTolerance/2)
-                / (_lastDistanceToBoundaryNonPremptive + _distanceToBoundaryNonPreemptive);
-            }
+            refinedStepSize = 
+                currentStepSize * 
+                (_lastDistanceToBoundary + errorTolerance/2) / 
+                (_lastDistanceToBoundary + _distanceToBoundary);
 
-            if (!_preemptiveTransitionAccurate) {
-                refinedStepSizePreemptive = currentStepSize * (_lastDistanceToBoundaryPremptive + errorTolerance/2)
-                / (_lastDistanceToBoundaryPremptive + _distanceToBoundaryPreemptive);
-            }
-
-            double refinedStepSize = Math.min(
-                    refinedStepSizeNonPreemptive, refinedStepSizePreemptive);
             result = Math.min(result, refinedStepSize);
-        }
-        return result;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                 ////
-
-    // This method detects any events happened during one step size.
-    private Transition _checkEvent(List transitionList) {
-        Transition result = null;
-        Iterator transitionRelations = transitionList.iterator();
-        while (transitionRelations.hasNext() 
-                && !_stopRequested 
-                && result == null) {
-            Transition transition = (Transition) transitionRelations.next();
-            if (transition.getRelationList().hasEvent()) {
-                result = transition;
-            }
         }
         return result;
     }
@@ -914,16 +827,10 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
     private FSMActor _ctrl = null;
 
     // Lcoal variable to indicate the distance to boundary.
-    private double _distanceToBoundaryNonPreemptive = 0.0;
-
-    // Lcoal variable to indicate the distance to boundary.
-    private double _distanceToBoundaryPreemptive = 0.0;
+    private double _distanceToBoundary = 0.0;
 
     // Lcoal variable to indicate the last distance to boundary.
-    private double _lastDistanceToBoundaryNonPremptive = 0.0;
-
-    // Lcoal variable to indicate the last distance to boundary.
-    private double _lastDistanceToBoundaryPremptive = 0.0;
+    private double _lastDistanceToBoundary = 0.0;
 
     // Lcoal variable to indicate the last step size.
     private double _lastStepSize = 0.0;
@@ -934,11 +841,6 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
     // Cached reference to current state.
     private State _currentState = null;
 
-    // Lcoal variable to indicate whether the
-    // the enabled nonpreemptive transition is accurate.
-    private boolean _nonpreemptiveTransitionAccurate = true;
-
-    // Lcoal variable to indicate whether
-    // the enabled preemptive transition is accurate.
-    private boolean _preemptiveTransitionAccurate = true;
+    // Lcoal variable to indicate whether the output is accurate.
+    private boolean _outputAccurate = true;
 }
