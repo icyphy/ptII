@@ -38,6 +38,8 @@ import java.util.List;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineEvent;
+import javax.sound.sampled.LineListener;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
@@ -185,7 +187,7 @@ import javax.sound.sampled.TargetDataLine;
   audio output port. A future version of this class may support
   multiple objects playing to the output port simultaneously.
 
-   @author Brian K. Vogel and Neil E. Turner
+   @author Brian K. Vogel and Neil E. Turner and Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 1.0
    @see ptolemy.media.javasound.SoundReader
@@ -423,38 +425,30 @@ public class LiveSound {
 
         if (_debug) {
             System.out.println("LiveSound: getSamples(): invoked");
-            //System.out.println("LiveSound: getSamples(): " +
-            //               "_transferSize = " + _transferSize);
         }
-        int numBytesRead;
-
+       
         // Real-time capture.
-        numBytesRead = _targetLine.read(_data, 0,
+        int numBytesRead = _targetLine.read(_captureData, 0,
                 _transferSize * _frameSizeInBytes);
 
-
-        if (numBytesRead == _data.length) {
-            // Convert byte array to double array.
-            _audioInDoubleArray = _byteArrayToDoubleArray(_data,
-                    _bytesPerSample,
-                    _channels);
-            return _audioInDoubleArray;
-        } else if (numBytesRead != _data.length) {
-            // Read fewer samples than productionRate many samples.
-            // NOTE: There appears to be a java sound bug that
-            // causes AudioInputStream.read(array) to sometimes
-            // return fewer bytes than requested, even though
-            // the end of the file has not yet been reached.
-            _audioInDoubleArray = _byteArrayToDoubleArray(_data,
-                    _bytesPerSample,
-                    _channels);
-            return _audioInDoubleArray;
-        } else if (numBytesRead == -1) {
-            // Ran out of samples to play. This generally means
-            // that the end of the sound file has been reached.
-            return null;
+        // Check if we need to reallocate.
+        if ((_channels != _audioInDoubleArray.length) ||
+                (_transferSize != _audioInDoubleArray[0].length)) {
+            // Reallocate
+            _audioInDoubleArray = new double[_channels][_transferSize];
         }
-        return null;
+        
+        if (numBytesRead == _captureData.length) {
+            // Convert byte array to double array.
+            _byteArrayToDoubleArray(
+                    _audioInDoubleArray, 
+                    _captureData,
+                    _bytesPerSample,
+                    _channels);
+            return _audioInDoubleArray;
+        } else {
+            throw new IOException("Failed to capture correct number of bytes");
+        }
     }
 
     /** Get the array length (in samples per channel) to use
@@ -559,15 +553,23 @@ public class LiveSound {
         }
         // Convert array of double valued samples into
         // the proper byte array format.
-        _data = _doubleArrayToByteArray(samplesArray,
+        _doubleArrayToByteArray(
+                _playbackData,
+                samplesArray,
                 _bytesPerSample,
                 _channels);
-
-        // Note: _data is a byte array containing data to
+        
+        // Note: _playbackData is a byte array containing data to
         // be written to the output device.
         // Note: consumptionRate is amount of data to write, in bytes.
         // Now write the array to output device.
-        _sourceLine.write(_data, 0, _transferSize * _frameSizeInBytes);
+        int written = _sourceLine.write(
+                _playbackData, 0, _playbackData.length);
+
+        if(written != _playbackData.length) {
+            System.out.println("dropped!");
+
+        }
     }
 
     /** Remove a live sound listener. If the listener is
@@ -1032,61 +1034,67 @@ public class LiveSound {
      * For each channel, m, doubleArray[m] is a single dimensional
      * array containing samples for channel m.
      */
-    private static double[][] _byteArrayToDoubleArray(byte[] byteArray,
+    private static void _byteArrayToDoubleArray(double[][] doubleArray,
+            byte[] byteArray,
             int bytesPerSample,
             int channels) {
         int lengthInSamples = byteArray.length / (bytesPerSample*channels);
-        // Check if we need to reallocate.
-        if ((channels != _doubleArray.length) ||
-                (lengthInSamples != _doubleArray[0].length)) {
-            // Reallocate
-            _doubleArray = new double[channels][lengthInSamples];
-        }
+      
         //double maxSampleReciprocal = 1/(Math.pow(2, 8 * bytesPerSample - 1));
         // Could use above line, but hopefully, code below will
         // be faster.
         double maxSampleReciprocal;
-        if (bytesPerSample == 2) {
-            // 1 / 32768
-            maxSampleReciprocal = 3.0517578125e-5;
-        } else if (bytesPerSample == 1) {
-            // 1 / 128
-            maxSampleReciprocal = 7.8125e-3;
-        } else if (bytesPerSample == 3) {
-            // 1 / 8388608
-            maxSampleReciprocal = 1.1920928955e07;
-        } else if (bytesPerSample == 4) {
-            // 1 / 147483648e9
-            maxSampleReciprocal = 4.655661287308e-10;
-        } else {
+        switch(bytesPerSample) {
+        case 1:
+            maxSampleReciprocal = 1.0 / 128;
+            break;
+        case 2:
+            maxSampleReciprocal = 1.0 / 32768;
+            break;
+        case 3:
+            maxSampleReciprocal = 1.0 / 8388608;
+            break;
+        case 4:
+            maxSampleReciprocal = 1.0 / 147483648e9;
+            break;
+        default:
             // Should not happen.
             maxSampleReciprocal = 0;
         }
 
         // Check if we need to reallocate.
-        // Note: This test is really not needed since bytesPerSample
-        // is set in the constructor. It should never change.
-        if (bytesPerSample != _b.length) {
-            _b = new byte[bytesPerSample];
+        if (bytesPerSample != _captureBytes.length) {
+            _captureBytes = new byte[bytesPerSample];
         }
 
         for (int currSamp = 0; currSamp < lengthInSamples; currSamp++) {
-
             // For each channel,
             for (int currChannel = 0; currChannel < channels; currChannel++) {
-                for (int i = 0; i < bytesPerSample; i += 1) {
+                for (int i = 0; i < bytesPerSample; i++) {
                     // Assume we are dealing with big endian.
-                    _b[i] = byteArray[currSamp * bytesPerSample * channels +
-                            bytesPerSample * currChannel + i];
+                    _captureBytes[i] =
+                        byteArray[currSamp * bytesPerSample * channels +
+                                bytesPerSample * currChannel + i];
                 }
-                int result = (_b[0] >> 7) ;
-                for (int i = 0; i < bytesPerSample; i += 1)
-                    result = (result << 8) + (_b[i] & 0xff);
-                _doubleArray[currChannel][currSamp] =
+                // Note: preserve sign of high order bits.
+                int result = _captureBytes[0];
+                int j = 1;
+                // Shift and add in low order bits.
+                switch(bytesPerSample) {
+                case 4:
+                    result <<= 8;
+                    result += _captureBytes[j++] | 0xff;
+                case 3:
+                    result <<= 8;
+                    result += _captureBytes[j++] | 0xff;
+                case 2:
+                    result <<= 8;
+                    result += _captureBytes[j++] | 0xff;
+                }  
+                doubleArray[currChannel][currSamp] =
                     ((double) result * maxSampleReciprocal);
             }
         }
-        return _doubleArray;
     }
 
     /* Convert a double array of audio samples into a byte array of
@@ -1104,62 +1112,85 @@ public class LiveSound {
      * array representation of <i>doubleArray</i>. The length of
      * the returned array is (doubleArray.length*bytesPerSample*channels).
      */
-    private static byte[] _doubleArrayToByteArray(double[][] doubleArray,
+    private static void _doubleArrayToByteArray(
+            byte[] byteArray, double[][] doubleArray,
             int bytesPerSample, int channels) {
         // All channels had better have the same number
         // of samples! This is not checked!
         int lengthInSamples = doubleArray[0].length;
-        //double  maxSample = Math.pow(2, 8 * bytesPerSample - 1);
+
+        //double  maxSample = Math.pow(2, 8 * bytesPerSample - 1) - 1;
         // Could use above line, but hopefully, code below will
         // be faster.
+
+        // Note: maxSample is maximum positive number, which ensures
+        // that maximum negative number is also in range.
+
         double maxSample;
-        double maxDoubleValuedSample;
-        if (bytesPerSample == 2) {
-            maxSample = 32768;
-        } else if (bytesPerSample == 1) {
-            maxSample = 128;
-        } else if (bytesPerSample == 3) {
-            maxSample = 8388608;
-        } else if (bytesPerSample == 4) {
-            maxSample = 147483648e9;
-        } else {
+        switch (bytesPerSample) {
+        case 1:
+            maxSample = 127;
+            break;
+        case 2:
+            maxSample = 32767;
+            break;
+        case 3:
+            maxSample = 8388607;
+            break;
+        case 4:
+            maxSample = 147483647e9;
+            break;
+        default:
             // Should not happen.
             maxSample = 0;
         }
-        maxDoubleValuedSample = (maxSample - 2)/maxSample;
-        byte[] byteArray =
-            new byte[lengthInSamples * bytesPerSample * channels];
-        byte[] b = new byte[bytesPerSample];
+      
+        // Check if we need to reallocate.
+        if (bytesPerSample != _playbackBytes.length) {
+            _playbackBytes = new byte[bytesPerSample];
+        }
+
         for (int currSamp = 0; currSamp < lengthInSamples; currSamp++) {
 
             int l;
             // For each channel,
             for (int currChannel = 0; currChannel < channels; currChannel++) {
+                double sample = doubleArray[currChannel][currSamp];
                 // Perform clipping, if necessary.
-                if (doubleArray[currChannel][currSamp] >=
-                        maxDoubleValuedSample) {
-                    l = (int)maxSample - 2;
-                } else if (doubleArray[currChannel][currSamp] <=
-                        -maxDoubleValuedSample) {
-                    l = (int)(-maxSample) + 2;
-                } else {
-                    // signed integer representation of current sample of the
-                    // current channel.
-                    l =
-                        (int)(doubleArray[currChannel][currSamp] * maxSample);
-                }
+                if (sample >= 1.0) {
+                    sample = 1.0;
+                } else if (sample <= -1.0) {
+                    sample = -1.0;
+                } 
+                // signed integer representation of current sample of the
+                // current channel.
+                // Note: Floor instead of cast to remove deadrange at zero.
+                l = (int)Math.floor(sample * maxSample);
+
                 // Create byte representation of current sample.
-                for (int i = 0; i < bytesPerSample; i += 1, l >>= 8)
-                    b[bytesPerSample - i - 1] = (byte) l;
+                // Note: unsigned Shift right.
+                switch(bytesPerSample) {
+                case 4:
+                    _playbackBytes[3] = (byte)l;
+                    l >>>= 8;
+                case 3:
+                    _playbackBytes[2] = (byte)l;
+                    l >>>= 8;
+                case 2:
+                    _playbackBytes[1] = (byte)l;
+                    l >>>= 8;
+                case 1:
+                    _playbackBytes[0] = (byte)l;
+                }
                 // Copy the byte representation of current sample to
                 // the linear signed pcm big endian formatted byte array.
                 for (int i = 0; i < bytesPerSample; i += 1) {
                     byteArray[currSamp * bytesPerSample * channels +
-                            bytesPerSample * currChannel + i] = b[i];
+                            bytesPerSample * currChannel + i] = 
+                        _playbackBytes[i];
                 }
             }
         }
-        return byteArray;
     }
 
     private static void _flushCaptureBuffer() {
@@ -1220,7 +1251,9 @@ public class LiveSound {
         int targetBufferLengthInBytes = _transferSize *
             _frameSizeInBytes;
         // Array of audio samples in byte format.
-        _data = new byte[_transferSize * _frameSizeInBytes];
+        _captureData = new byte[_transferSize * _frameSizeInBytes];
+        _audioInDoubleArray = new double[_channels][_transferSize];
+ 
         _bytesPerSample = _bitsPerSample / 8;
         // Start the target data line
         _targetLine.start();
@@ -1233,10 +1266,10 @@ public class LiveSound {
         boolean bigEndian = true;
 
         AudioFormat format = new AudioFormat((float)_sampleRate,
-                _bitsPerSample,
-                _channels, signed, bigEndian);
+                _bitsPerSample, _channels, signed, bigEndian);
 
         _frameSizeInBytes = format.getFrameSize();
+      
         DataLine.Info sourceInfo = new DataLine.Info(SourceDataLine.class,
                 format,
                 AudioSystem.NOT_SPECIFIED);
@@ -1248,12 +1281,13 @@ public class LiveSound {
             // Open line and suggest a buffer size (in bytes) to use or
             // the internal audio buffer.
             _sourceLine.open(format, _bufferSize * _frameSizeInBytes);
+   
         } catch (LineUnavailableException ex) {
             throw new IOException("Unable to open the line for " +
                     "real-time audio playback: " + ex);
         }
         // Array of audio samples in byte format.
-        _data = new byte[_transferSize * _frameSizeInBytes * _channels];
+        _playbackData = new byte[_transferSize * _frameSizeInBytes * _channels];
         _bytesPerSample = _bitsPerSample / 8;
         // Start the source data line
         _sourceLine.start();
@@ -1287,15 +1321,17 @@ public class LiveSound {
 
     // Array of audio samples in double format.
     private static double[][] _audioInDoubleArray;
-    private static byte[] _b = new byte[1];
+    private static byte[] _captureBytes = new byte[1];
+    private static byte[] _playbackBytes = new byte[1];
     private static int _bitsPerSample = 16;
-    private static int _bufferSize = 4096;
+    private static int _bufferSize = 1024;
     private static int _bytesPerSample;
     // true is audio capture is currently active
     private static boolean _captureIsActive = false;
     private static int _channels = 1;
     // Array of audio samples in byte format.
-    private static byte[] _data;
+    private static byte[] _captureData;
+    private static byte[] _playbackData;
 
     // for debugging;
     //private static boolean _debug = true;
