@@ -82,6 +82,7 @@ PTCLASSALLJARS = \
 	logic/logic.jar \
 	javasound/javasound.jar \
 	net/net.jar \
+	string/string.jar \
 	xslt/xslt.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
