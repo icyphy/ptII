@@ -46,7 +46,8 @@ TCL_SRCS = \
 	ExampleSystem.tcl \
 	testDefs.tcl
 
-JSRCS =
+JSRCS = \
+	TestCompositeEntity.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
