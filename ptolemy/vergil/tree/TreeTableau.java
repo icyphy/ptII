@@ -46,6 +46,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
+import javax.swing.JScrollPane;
 
 //////////////////////////////////////////////////////////////////////////
 //// TreeTableau
@@ -103,7 +104,7 @@ public class TreeTableau extends Tableau {
 	public TreeFrame(CompositeEntity entity) {
             super(entity);
 	    PTree pane = new PTree(new FullTreeModel(entity));
-	    getContentPane().add(pane, BorderLayout.CENTER);
+	    getContentPane().add(new JScrollPane(pane), BorderLayout.CENTER);
 	}
 	
         ///////////////////////////////////////////////////////////////
