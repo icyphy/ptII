@@ -62,14 +62,15 @@ test ComponentPort-1.1 {Get information about an instance of ComponentPort} {
 } {{
   class:         pt.kernel.ComponentPort
   fields:        
-  methods:       deepGetDownAlias deepGetLinkedEntities deepGetLinkedPor
-    ts deepGetLinkedRelations {equals java.lang.Object} get
-    Class getContainer getDownAlias getFullName getLinkedRe
-    lations getName hashCode {link pt.kernel.Relation} noti
-    fy notifyAll numLinks {setContainer pt.kernel.Entity} {
-    setDownAlias pt.kernel.AliasRelation} {setName java.lan
-    g.String} toString {unlink pt.kernel.Relation} unlinkAl
-    l wait {wait long} {wait long int}
+  methods:       {_checkRelation pt.kernel.Relation} deepGetConnectedPor
+    ts deepGetDownAlias deepGetLinkedEntities deepGetLinked
+    Relations {equals java.lang.Object} getClass getContain
+    er getDownAlias getFullName getLinkedRelations getName 
+    hashCode {link pt.kernel.Relation} notify notifyAll num
+    Links {setContainer pt.kernel.Entity} {setDownAlias pt.
+    kernel.AliasRelation} {setName java.lang.String} toStri
+    ng {unlink pt.kernel.Relation} unlinkAll wait {wait lon
+    g} {wait long int}
     
   constructors:  pt.kernel.ComponentPort {pt.kernel.ComponentPort pt.ker
     nel.ComponentEntity java.lang.String}
