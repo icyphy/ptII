@@ -4496,16 +4496,27 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     private NamedObj _parse(MoMLParser parser, URL base, String source)
             throws Exception {
         _xmlFile = fileNameToURL(source, base);
-        InputStream input = _xmlFile.openStream();
+        InputStream input = null;
         try {
-            NamedObj toplevel = parser.parse(_xmlFile, input);
-            input.close();
-            return toplevel;
-        } catch (CancelException ex) {
-            // Parse operation cancelled.
-            return null;
+            input = _xmlFile.openStream();
+            try {
+                NamedObj toplevel = parser.parse(_xmlFile, input);
+                input.close();
+                return toplevel;
+            } catch (CancelException ex) {
+                // Parse operation cancelled.
+                return null;
+            }
         } finally {
-            input.close();
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (Throwable throwable) {
+                    System.out.println("Ignoring failure to close stream "
+                            + "on " + _xmlFile);
+                    throwable.printStackTrace();
+                }
+            }
             _xmlFile = null;
         }
     }
