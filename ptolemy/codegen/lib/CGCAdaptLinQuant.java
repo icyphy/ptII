@@ -109,15 +109,15 @@ public class CGCAdaptLinQuant extends ClassicCGCActor {
     /**
      */
     public void  generatePreinitializeCode() {
-        
+        //# line 55 "/users/ptolemy/src/domains/cgc/stars/CGCAdaptLinQuant.pl"
 addInclude("<stdio.h>");
      }
 
     /**
      */
     public void  generateFireCode() {
-        
-addCode(adaptlinquant); 
+        //# line 58 "/users/ptolemy/src/domains/cgc/stars/CGCAdaptLinQuant.pl"
+addCode(adaptlinquant);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////

@@ -129,14 +129,14 @@ public class CGCAudioBase extends ClassicCGCActor {
     /**
      */
     public void  wrapup() {
-        
-addCode(closeFile); 
+        //# line 412 "/users/ptolemy/src/domains/cgc/stars/CGCAudioBase.pl"
+addCode(closeFile);
      }
 
     /**
      */
     public void  generatePreinitializeCode() {
-        
+        //# line 389 "/users/ptolemy/src/domains/cgc/stars/CGCAudioBase.pl"
 addInclude("<stdio.h>");
       /* Define strcmp function */
       addInclude("<string.h>");
@@ -156,7 +156,7 @@ addInclude("<stdio.h>");
       addProcedure(audio_controlDef, "CGCAudioBase_audio_control");
       addProcedure(audio_gainDef,    "CGCAudioBase_audio_gain");
       addProcedure(audio_balanceDef, "CGCAudioBase_audio_balance");
-      addCode("$starSymbol(counter) = 0; \n");
+      addCode("$starSymbol(counter) = 0;\n");
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////

@@ -45,7 +45,7 @@ public class CGCAddInt extends ClassicCGCActor {
         output = new ClassicPort(this, "output", false, true);
         output.setTypeEquals(BaseType.INT);
 
-/*     
+/*     //# line 23 "/users/ptolemy/src/domains/cgc/stars/CGCAddInt.pl"
 noInternalState();
 */
     }
@@ -68,20 +68,20 @@ noInternalState();
     /**
      */
     public int  myExecTime() {
-        
+        //# line 35 "/users/ptolemy/src/domains/cgc/stars/CGCAddInt.pl"
 return input.numberPorts();
      }
 
     /**
      */
     public void  generateFireCode() {
-        
-StringBuffer out = new StringBuffer("\t$ref(output) = ");
+        //# line 26 "/users/ptolemy/src/domains/cgc/stars/CGCAddInt.pl"
+StringList out = "\t$ref(output) = ";
 		for (int i = 1; i <= input.numberPorts(); i++) {
-			out.append("$ref(input#" + i  + ")");
-			if (i < input.numberPorts()) out.append(" + ");
-			else out.append(";\n");
+			out << "$ref(input#" << i << ")";
+			if (i < input.numberPorts()) out << " + ";
+			else out << ";\n";
 		}
-		addCode(out); 
+		addCode(out);
      }
 }

@@ -50,42 +50,118 @@ PTPACKAGE =     lib
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS =        \
-	CGCAbs.java \
-	CGCAdaptLinQuant.java \
-	CGCAdd.java \
-	CGCAddCx.java \
-	CGCAddInt.java \
-	CGCAudioBase.java \
-	CGCBlackHole.java \
-	CGCConst.java \
-	CGCConstInt.java \
-	CGCCos.java \
-	CGCCxToRect.java \
-	CGCExp.java \
-	CGCFloor.java \
-	CGCGain.java \
-	CGCIIDGaussian.java \
-	CGCLimit.java \
-	CGCLog.java \
-	CGCMpyCx.java \
-	CGCMpyInt.java \
-	CGCOrderTwoInt.java \
-	CGCPolarToRect.java \
-	CGCQuantizer.java \
-	CGCRamp.java \
-	CGCRampInt.java \
-	CGCRect.java \
-	CGCRectToCx.java \
-	CGCRectToPolar.java \
-	CGCSGIAudio.java \
-	CGCSgn.java \
-	CGCSin.java \
-	CGCSleep.java \
-	CGCSqrt.java \
-	CGCSubCx.java \
-	CGCSubInt.java \
-	CGCThresh.java
+JSRCS =        CGCAbs.java \
+CGCAdaptLinQuant.java \
+CGCAdd.java \
+CGCAddCx.java \
+CGCAddFix.java \
+CGCAddInt.java \
+CGCAudioBase.java \
+CGCBitsToInt.java \
+CGCBlackHole.java \
+CGCBusFork.java \
+CGCChop.java \
+CGCChopVarOffset.java \
+CGCCollect.java \
+CGCCommutator.java \
+CGCConst.java \
+CGCConstCx.java \
+CGCConstFix.java \
+CGCConstInt.java \
+CGCCopy.java \
+CGCCos.java \
+CGCCxToFix.java \
+CGCCxToFloat.java \
+CGCCxToRect.java \
+CGCDB.java \
+CGCDeMux.java \
+CGCDeScrambler.java \
+CGCDelay.java \
+CGCDistributor.java \
+CGCDivByInt.java \
+CGCDownSample.java \
+CGCExp.java \
+CGCExpr.java \
+CGCFix.java \
+CGCFixToCx.java \
+CGCFixToFix.java \
+CGCFixToFloat.java \
+CGCFixToInt.java \
+CGCFloatToCx.java \
+CGCFloatToFix.java \
+CGCFloatToInt.java \
+CGCFloor.java \
+CGCFork.java \
+CGCGain.java \
+CGCGainFix.java \
+CGCGainInt.java \
+CGCIIDGaussian.java \
+CGCIIDUniform.java \
+CGCImpulse.java \
+CGCIntToBits.java \
+CGCIntToFix.java \
+CGCIntToFloat.java \
+CGCIntegrator.java \
+CGCLimit.java \
+CGCLinQuantIdx.java \
+CGCLog.java \
+CGCLogic.java \
+CGCMaxMin.java \
+CGCModulo.java \
+CGCModuloInt.java \
+CGCMonoIn.java \
+CGCMonoOut.java \
+CGCMpy.java \
+CGCMpyCx.java \
+CGCMpyFix.java \
+CGCMpyInt.java \
+CGCMux.java \
+CGCOrderTwoInt.java \
+CGCPcwzLinear.java \
+CGCPolarToRect.java \
+CGCPrinter.java \
+CGCQuant.java \
+CGCQuantIdx.java \
+CGCQuantizer.java \
+CGCRamp.java \
+CGCRampFix.java \
+CGCRampInt.java \
+CGCReciprocal.java \
+CGCRect.java \
+CGCRectFix.java \
+CGCRectToCx.java \
+CGCRectToPolar.java \
+CGCRepeat.java \
+CGCReverse.java \
+CGCSGIAudio.java \
+CGCSGIAudioIn.java \
+CGCSGIAudioOut.java \
+CGCScrambler.java \
+CGCSelect.java \
+CGCSgn.java \
+CGCSin.java \
+CGCSleep.java \
+CGCSpread.java \
+CGCSqrt.java \
+CGCStereoIn.java \
+CGCStereoOut.java \
+CGCSub.java \
+CGCSubCx.java \
+CGCSubFix.java \
+CGCSubInt.java \
+CGCSwitch.java \
+CGCTable.java \
+CGCTableCx.java \
+CGCTableInt.java \
+CGCTest.java \
+CGCThresh.java \
+CGCTrainer.java \
+CGCUpSample.java \
+CGCWaveForm.java \
+CGCXMgraph.java \
+CGCXYgraph.java \
+CGCXgraph.java \
+CGCXscope.java \
 
 OTHER_FILES_TO_BE_JARED = 	lib.xml
 

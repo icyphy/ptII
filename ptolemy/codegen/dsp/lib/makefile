@@ -51,8 +51,24 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS =        CGCBiquad.java \
-	CGCDirichlet.java
-
+CGCDTMFPostTest.java \
+CGCDirichlet.java \
+CGCFFTCx.java \
+CGCFIR.java \
+CGCFIRFix.java \
+CGCFastFIR.java \
+CGCGAL.java \
+CGCGGAL.java \
+CGCGoertzel.java \
+CGCGoertzelBase.java \
+CGCGoertzelPower.java \
+CGCIIR.java \
+CGCLMS.java \
+CGCLMSOscDet.java \
+CGCParametricEq.java \
+CGCRaisedCosine.java \
+CGCSinc.java \
+CGCWindow.java \
 
 OTHER_FILES_TO_BE_JARED = 	lib.xml
 

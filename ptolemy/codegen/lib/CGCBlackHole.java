@@ -45,7 +45,7 @@ public class CGCBlackHole extends ClassicCGCActor {
         input = new ClassicPort(this, "input", true, false);
         input.setMultiport(true);
 
-/*     
+/*     //# line 25 "/users/ptolemy/src/domains/cgc/stars/CGCBlackHole.pl"
 noInternalState();
 */
     }
@@ -63,14 +63,14 @@ noInternalState();
     /**
      */
     public int  myExecTime() {
-        
+        //# line 31 "/users/ptolemy/src/domains/cgc/stars/CGCBlackHole.pl"
 return 0;
      }
 
     /**
      */
     public void  generateFireCode() {
-        
-addCode("/* This star generates no code */"); 
+        //# line 28 "/users/ptolemy/src/domains/cgc/stars/CGCBlackHole.pl"
+addCode("/* This star generates no code */");
      }
 }

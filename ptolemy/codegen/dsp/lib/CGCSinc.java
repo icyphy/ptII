@@ -1,7 +1,7 @@
-/* Abs, CGC domain: CGCAbs.java file generated from /users/ptolemy/src/domains/cgc/stars/CGCAbs.pl by ptlang
+/* Sinc, CGC domain: CGCSinc.java file generated from /users/ptolemy/src/domains/cgc/dsp/stars/CGCSinc.pl by ptlang
 */
 /*
-Copyright (c) 1990-1996 The Regents of the University of California.
+Copyright (c) 1990-1997 The Regents of the University of California.
 All rights reserved.
 See the file $PTOLEMY/copyright for copyright notice,
 limitation of liability, and disclaimer of warranty provisions.
@@ -18,18 +18,33 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-//// CGCAbs
+//// CGCSinc
 /**
-Output the absolute value of the input value.
+This star computes the sinc of its input given in radians.
+The sinc function is defined as sin(x)/x, with value 1.0 when x = 0.
 <p>
-Outputs absolute value of the input.
-<a name="absolute value"></a>
+The discrete-time Fourier transform (DTFT) of a sampled sinc function is 
+an ideal lowpass filter [1-2].
+Modulating a sampled sinc function by a cosine function gives an
+ideal bandpass signal.
+This star defines the sinc function <i>without</i> using <i>pi</i>,
+as is the convention in [2-3].
+<h3>References</h3>
+<p>[1]  
+A. V. Oppenheim and R. W. Schafer, <i>Discrete-Time Signal Processing</i>,
+Prentice-Hall: Englewood Cliffs, NJ, 1989.
+<p>[2]  
+A. V. Oppenheim and A. Willsky, <i>Signals and Systems</i>,
+Prentice-Hall: Englewood Cliffs, NJ, 1983.
+<p>[3]  
+R. N. Bracewell, <i>The Fourier Transform and Its Applications</i>,
+McGraw-Hill: New York, 1986.
 
- @Author William Chen
- @Version $Id$, based on version 1.2 of /users/ptolemy/src/domains/cgc/stars/CGCAbs.pl, from Ptolemy Classic 
+ @Author Brian L. Evans
+ @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCSinc.pl, from Ptolemy Classic 
  @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
-public class CGCAbs extends ClassicCGCActor {
+public class CGCSinc extends ClassicCGCActor {
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -39,7 +54,7 @@ public class CGCAbs extends ClassicCGCActor {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public CGCAbs(CompositeEntity container, String name)
+    public CGCSinc(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new ClassicPort(this, "input", true, false);
@@ -54,12 +69,12 @@ public class CGCAbs extends ClassicCGCActor {
     ////                     ports and parameters                  ////
 
     /**
-     * input of type double.
+The input x to the sinc function.
      */
     public ClassicPort input;
 
     /**
-     * output of type double.
+The output of the sinc function.
      */
     public ClassicPort output;
 
@@ -68,15 +83,20 @@ public class CGCAbs extends ClassicCGCActor {
 
     /**
      */
+    public void  generatePreinitializeCode() {
+        //# line 47 "/users/ptolemy/src/domains/cgc/dsp/stars/CGCSinc.pl"
+addModuleFromLibrary("ptdspSinc", "src/utils/libptdsp", "ptdsp");
+     }
+
+    /**
+     */
     public void  generateFireCode() {
-        //# line 27 "/users/ptolemy/src/domains/cgc/stars/CGCAbs.pl"
-addCode(abs);
+        //# line 50 "/users/ptolemy/src/domains/cgc/dsp/stars/CGCSinc.pl"
+addCode(sinc);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String abs = 
-        "		double t = $ref(input);\n"
-        + "		if (t < 0.0) t = -t;\n"
-        + "		$ref(output) = t;\n";
+    public String sinc = 
+        "	        $ref(output) = Ptdsp_Sinc((double)$ref(input));\n";
 }

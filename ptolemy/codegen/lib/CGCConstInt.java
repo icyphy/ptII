@@ -46,7 +46,7 @@ public class CGCConstInt extends ClassicCGCActor {
         level = new Parameter(this, "level");
         level.setExpression("0");
 
-/*     
+/*     //# line 25 "/users/ptolemy/src/domains/cgc/stars/CGCConstInt.pl"
 noInternalState();
 */
     }
@@ -69,14 +69,14 @@ noInternalState();
     /**
      */
     public int  myExecTime() {
-        
+        //# line 31 "/users/ptolemy/src/domains/cgc/stars/CGCConstInt.pl"
 return 0;
      }
 
     /**
      */
     public void  generateFireCode() {
-        
-addCode("\t$ref(output) = $val(level); \n");
+        //# line 28 "/users/ptolemy/src/domains/cgc/stars/CGCConstInt.pl"
+addCode("\t$ref(output) = $val(level);\n");
      }
 }

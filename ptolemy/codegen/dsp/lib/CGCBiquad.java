@@ -6,7 +6,7 @@ All rights reserved.
 See the file $PTOLEMY/copyright for copyright notice,
 limitation of liability, and disclaimer of warranty provisions.
  */
-package ptolemy.codegen.dsp.lib;
+package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
@@ -131,18 +131,18 @@ public class CGCBiquad extends ClassicCGCActor {
     /**
      */
     public void  generatePreinitializeCode() {
-        
+        //# line 77 "/users/ptolemy/src/domains/cgc/dsp/stars/CGCBiquad.pl"
 addInclude("<math.h>");
           addGlobal(mainDecl);
-	  addCode(settapDef); 
+	  addCode(settapDef);
      }
 
     /**
      */
     public void  generateFireCode() {
-        
-addCode(localDecl); 
-	  addCode(iirfilter); 
+        //# line 96 "/users/ptolemy/src/domains/cgc/dsp/stars/CGCBiquad.pl"
+addCode(localDecl);
+	  addCode(iirfilter);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////

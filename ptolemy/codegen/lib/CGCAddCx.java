@@ -45,7 +45,7 @@ public class CGCAddCx extends ClassicCGCActor {
         output = new ClassicPort(this, "output", false, true);
         output.setTypeEquals(BaseType.COMPLEX);
 
-/*     
+/*     //# line 22 "/users/ptolemy/src/domains/cgc/stars/CGCAddCx.pl"
 noInternalState();
 */
     }
@@ -68,18 +68,18 @@ noInternalState();
     /**
      */
     public int  myExecTime() {
-        
+        //# line 41 "/users/ptolemy/src/domains/cgc/stars/CGCAddCx.pl"
 return 2*input.numberPorts();
      }
 
     /**
      */
     public void  generateFireCode() {
-        
-addCode(startOp); 
+        //# line 25 "/users/ptolemy/src/domains/cgc/stars/CGCAddCx.pl"
+addCode(startOp);
 	int i;
 	for (i=2;i<=input.numberPorts();i++) 
-	    addCode(doOp(i)); 
+	    addCode(doOp(i));
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////

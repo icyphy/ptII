@@ -45,7 +45,7 @@ public class CGCAdd extends ClassicCGCActor {
         output = new ClassicPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
 
-/*     
+/*     //# line 23 "/users/ptolemy/src/domains/cgc/stars/CGCAdd.pl"
 noInternalState();
 */
     }
@@ -68,22 +68,22 @@ noInternalState();
     /**
      */
     public int  myExecTime() {
-        
+        //# line 37 "/users/ptolemy/src/domains/cgc/stars/CGCAdd.pl"
 return input.numberPorts();
      }
 
     /**
      */
     public void  generateFireCode() {
-        
-StringBuffer out = new StringBuffer("\t$ref(output) = ");
+        //# line 26 "/users/ptolemy/src/domains/cgc/stars/CGCAdd.pl"
+StringList out = "\t$ref(output) = ";
 		for (int i = 1; i <= input.numberPorts(); i++) {
-			out.append("$ref(input#" + i  + ")");
+			out << "$ref(input#" << i << ")";
 			if (i < input.numberPorts())
-			  out.append(" + ");
+			  out << " + ";
 			else
-			  out.append(";\n");
+			  out << ";\n";
 		}
-		addCode(out); 
+		addCode(out);
      }
 }

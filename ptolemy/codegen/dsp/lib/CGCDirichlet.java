@@ -6,7 +6,7 @@ All rights reserved.
 See the file $PTOLEMY/copyright for copyright notice,
 limitation of liability, and disclaimer of warranty provisions.
  */
-package ptolemy.codegen.dsp.lib;
+package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
@@ -91,15 +91,15 @@ The output of the Dirichlet kernel.
     /**
      */
     public void  generatePreinitializeCode() {
-        
+        //# line 51 "/users/ptolemy/src/domains/cgc/dsp/stars/CGCDirichlet.pl"
 addInclude("<math.h>");
      }
 
     /**
      */
     public void  generateFireCode() {
-        
-addCode(dirichlet); 
+        //# line 54 "/users/ptolemy/src/domains/cgc/dsp/stars/CGCDirichlet.pl"
+addCode(dirichlet);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
