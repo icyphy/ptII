@@ -50,7 +50,7 @@ import java.util.List;
 /**
 This application executes Ptolemy II models specified on the
 command line.  The exact facilities that are available are determined
-by the configuration file ptolemy/configurations/runConfiguration.xml,
+by the configuration file ptolemy/configs/runConfiguration.xml,
 which is loaded before any command-line arguments are processed.
 If there are no command-line arguments at all, then this class
 does nothing.
@@ -171,7 +171,7 @@ public class PtExecuteApplication extends MoMLApplication
      */
     protected Configuration _createDefaultConfiguration() throws Exception {
         URL inurl = specToURL(
-                "ptolemy/configurations/runConfiguration.xml");
+                "ptolemy/configs/runConfiguration.xml");
         MoMLParser parser = new MoMLParser();
         _configuration = (Configuration)parser.parse(inurl, inurl.openStream());
         return _configuration;

@@ -45,10 +45,10 @@ import javax.swing.UIManager;
 /**
 This application opens run control panels for models specified on the
 command line.  The exact facilities that are available are determined
-by the configuration file ptolemy/configurations/runPanelConfiguration.xml,
+by the configuration file ptolemy/configs/runPanelConfiguration.xml,
 which is loaded before any command-line arguments are processed.
 If there are no command-line arguments at all, then the file
-ptolemy/configurations/runBlankConfiguration.xml is read instead.
+ptolemy/configs/runBlankConfiguration.xml is read instead.
 
 @author Edward A. Lee and Steve Neuendorffer
 @version $Id$
@@ -103,7 +103,7 @@ public class PtolemyApplication extends MoMLApplication {
      */
     protected Configuration _createDefaultConfiguration() throws Exception {
         URL inurl = specToURL(
-                "ptolemy/configurations/runPanelConfiguration.xml");
+                "ptolemy/configs/runPanelConfiguration.xml");
         MoMLParser parser = new MoMLParser();
         NamedObj toplevel = parser.parse(inurl, inurl.openStream());
         return (Configuration)toplevel;
@@ -117,7 +117,7 @@ public class PtolemyApplication extends MoMLApplication {
      */
     protected Configuration _createEmptyConfiguration() throws Exception {
         URL inurl = specToURL(
-                "ptolemy/configurations/runBlankConfiguration.xml");
+                "ptolemy/configs/runBlankConfiguration.xml");
         MoMLParser parser = new MoMLParser();
         NamedObj toplevel = parser.parse(inurl, inurl.openStream());
         return (Configuration)toplevel;
