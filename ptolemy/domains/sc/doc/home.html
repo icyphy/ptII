@@ -8,6 +8,20 @@
 <body>
 <h1>Star Charts</h1>
 <P>
-The Star Charts domain . . .
+The Star Charts [1] domain implements hierarchical 
+extended finite state machine (FSM) in Ptolemy II. 
+FSM is a very intuitive and well-understood tool 
+to model and specify discrete control logic. In the
+Star Charts domain, states of an FSM can be hierarchically 
+clustered to help specifying complex control logic.
+When modeling a control component in a large system, the FSM 
+model constructed in this domain can be embedded in
+other domains in which the rest of the system are modeled. 
+When modeling a modal system, states of an 
+FSM model can be refined by subsystems in other domains, 
+e.g. CT and DE. The behavior of this model is the behavior 
+of its current subsystem (the subsystem refining its current 
+state) plus state transitions triggered by external events 
+or events detected in the current subsystem.
 </body>
 </html>
