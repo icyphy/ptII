@@ -62,6 +62,7 @@ JSRCS = \
 	InlineTokenTransformer.java \
 	Main.java \
 	ModelTransformer.java \
+	NamedObjConstructorAnalysis.java \
 	TokenInstanceofEliminator.java \
 	TokenToNativeTransformer.java \
 	TokenTypeAnalysis.java \
@@ -144,7 +145,7 @@ compileDemo: $(JCLASS)
 		-p wjtp.ffat targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.ffpt targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.idt targetPackage:$(TARGETPACKAGE) \
-		-p wjtp.iat targetPackage:$(TARGETPACKAGE) \
+		-p wjtp.iat debug,targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.ipt targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.itt targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.ttn disabled,targetPackage:$(TARGETPACKAGE) \

@@ -38,6 +38,7 @@ import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.Variable;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
@@ -189,7 +190,7 @@ public class ModelTransformer extends SceneTransformer {
 
         // Now instantiate all the stuff inside the model.
         _composite(body, thisLocal, _model, thisLocal, _model, 
-                modelClass, options);
+                modelClass, new HashSet(), options);
 
         units.add(Jimple.v().newReturnVoidStmt());
         
@@ -247,15 +248,15 @@ public class ModelTransformer extends SceneTransformer {
     private void _composite(JimpleBody body, Local containerLocal,
             CompositeEntity container, Local thisLocal, 
             CompositeEntity composite, EntitySootClass modelClass,
-            Map options) {
+            HashSet createdSet, Map options) {
 
         // create fields for attributes.
         createFieldsForAttributes(body, container, containerLocal,
-                composite, thisLocal, modelClass);
-        _ports(body, containerLocal, container, thisLocal, 
-                composite, modelClass);
-        _entities(body, containerLocal, container, thisLocal,
-                composite, modelClass, options);
+                composite, thisLocal, modelClass, createdSet);
+        _ports(body, containerLocal, container, 
+                thisLocal, composite, modelClass);
+        _entities(body, containerLocal, container, 
+                thisLocal, composite, modelClass, createdSet, options);
  
         // handle the communication
         _relations(body, thisLocal, composite, modelClass);
@@ -349,7 +350,7 @@ public class ModelTransformer extends SceneTransformer {
     public static void createFieldsForAttributes(JimpleBody body, 
             NamedObj context,
             Local contextLocal, NamedObj namedObj, Local namedObjLocal, 
-            SootClass theClass) {
+            SootClass theClass, HashSet createdSet) {
         // A local that we will use to set the value of our
         // settable attributes.
         Local attributeLocal = Jimple.v().newLocal("attribute",
@@ -359,18 +360,30 @@ public class ModelTransformer extends SceneTransformer {
                 PtolemyUtilities.settableType);
 	body.getLocals().add(settableLocal);
 
-        NamedObj classObject = _findDeferredInstance(namedObj);
+        /*    NamedObj classObject = _findDeferredInstance(namedObj);
+        System.out.println("Class object for " + namedObj.getFullName());
+        System.out.println(classObject.exportMoML());
+        */
 
         for(Iterator attributes = namedObj.attributeList().iterator();
 	    attributes.hasNext();) {
 	    Attribute attribute = (Attribute)attributes.next();
+ 
+            // FIXME: This is horrible...  I guess we need an attribute for
+            // persistance? 
+            if(attribute instanceof Variable &&
+                    !(attribute instanceof Parameter)) {
+                continue;
+            }
+
             String className = attribute.getClass().getName();
             Type attributeType = RefType.v(className);
             String attributeName = attribute.getName(context);
             String fieldName = getFieldNameForAttribute(attribute, context);
            
             Local local;
-            if(classObject.getAttribute(attribute.getName()) != null) {
+            if(createdSet.contains(attribute.getFullName())) {
+                //    System.out.println("already has " + attributeName);
                 // If the class for the object already creates the
                 // attribute, then get a reference to the existing attribute.
                 local = attributeLocal;
@@ -379,11 +392,17 @@ public class ModelTransformer extends SceneTransformer {
                                 PtolemyUtilities.getAttributeMethod,
                                 StringConstant.v(attributeName))));
             } else {
+                //   System.out.println("creating " + attributeName);
                 // If the class does not create the attribute,
                 // then create a new attribute with the right name.
                 local = PtolemyUtilities.createNamedObjAndLocal(
                         body, className,
                         namedObjLocal, attribute.getName());
+                Attribute classAttribute =
+                    (Attribute)_findDeferredInstance(attribute);
+                updateCreatedSet(namedObj.getFullName() + "."
+                        + attribute.getName(),
+                        classAttribute, classAttribute, createdSet);
             }
 
             // Create a new field for the attribute, and initialize
@@ -416,7 +435,7 @@ public class ModelTransformer extends SceneTransformer {
             // FIXME: configurable??
             // recurse so that we get all parameters deeply.
             createFieldsForAttributes(body, context, contextLocal, 
-                    attribute, local, theClass);
+                    attribute, local, theClass, createdSet);
 	}
     }
 
@@ -424,7 +443,7 @@ public class ModelTransformer extends SceneTransformer {
     private void _entities(JimpleBody body, Local containerLocal,
             CompositeEntity container, Local thisLocal, 
             CompositeEntity composite, EntitySootClass modelClass,
-            Map options) {
+            HashSet createdSet, Map options) {
         CompositeEntity classObject = (CompositeEntity)
             _findDeferredInstance(composite);
         // A local that we will use to get existing entities
@@ -447,26 +466,41 @@ public class ModelTransformer extends SceneTransformer {
             // a valid Java identifier.)
             local = PtolemyUtilities.createNamedObjAndLocal(body, className,
                     thisLocal, entity.getName());
+                         
+            Entity classEntity = (Entity)_findDeferredInstance(entity);
             
-            
+            if(!(entity instanceof CompositeEntity) ||
+                    className.equals(entity.getMoMLInfo().className)) {
+                // If the entity is NOT a moml class....
+                // Then record the things inside the master as things
+                // that automagically get created when we construct the
+                // object.  Otherwise, we'll go through and create 
+                // them manually later.
+                updateCreatedSet(
+                        composite.getFullName() + "." + entity.getName(),
+                        classEntity, classEntity, createdSet);
+            }
+           
+ 
 	    _entityLocalMap.put(entity, local);
 
             if(entity instanceof CompositeEntity) {
                 _composite(body, containerLocal, container, local, 
-                        (CompositeEntity)entity, modelClass, options);
+                        (CompositeEntity)entity, modelClass, createdSet, 
+                        options);
             } else {
                 _ports(body, thisLocal, composite, local, entity, modelClass);
              
-                    // If we are doing deep codegen, then we
-                    // include a field for each actor.
-                    // The name of the field is the sanitized version
-                    // of the entity's name.
-                    String entityFieldName = 
-                        getFieldNameForEntity(entity, container);
-                    SootUtilities.createAndSetFieldFromLocal(
-                            body, local, modelClass,
-                            PtolemyUtilities.actorType, entityFieldName);
-               
+                // If we are doing deep codegen, then we
+                // include a field for each actor.
+                // The name of the field is the sanitized version
+                // of the entity's name.
+                String entityFieldName = 
+                    getFieldNameForEntity(entity, container);
+                SootUtilities.createAndSetFieldFromLocal(
+                        body, local, modelClass,
+                        PtolemyUtilities.actorType, entityFieldName);
+                
             }
 	}
     }
@@ -823,6 +857,47 @@ public class ModelTransformer extends SceneTransformer {
         return deferredObject;
     }
 
+    // Add the full names of all named objects contained in the given object
+    // to the given set, assuming that the object is contained within the 
+    // given context.
+    public static void updateCreatedSet(String prefix,
+            NamedObj context, NamedObj object, HashSet set) {
+        if(object == context) {
+            //  System.out.println("creating " + prefix);
+            set.add(prefix);
+        } else {
+            String name = prefix + "." + object.getName(context);
+            // System.out.println("creating " + name);
+            set.add(name);
+        }
+        if(object instanceof CompositeEntity) {
+            CompositeEntity composite = (CompositeEntity) object;
+            for(Iterator entities = composite.entityList().iterator();
+                entities.hasNext();) {
+                Entity entity = (Entity)entities.next();
+                updateCreatedSet(prefix, context, entity, set);
+            }
+            for(Iterator relations = composite.relationList().iterator();
+                relations.hasNext();) {
+                Relation relation = (Relation) relations.next();
+                updateCreatedSet(prefix, context, relation, set);
+            }
+        }
+        if(object instanceof Entity) {
+            Entity entity= (Entity) object;
+            for(Iterator ports = entity.portList().iterator();
+                ports.hasNext();) {
+                Port port = (Port)ports.next();
+                updateCreatedSet(prefix, context, port, set);
+            }
+        }
+        for(Iterator attributes = object.attributeList().iterator();
+            attributes.hasNext();) {
+            Attribute attribute = (Attribute)attributes.next();
+            updateCreatedSet(prefix, context, attribute, set);
+        }
+    }
+ 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

@@ -172,7 +172,7 @@ public class Main extends KernelMain {
                 ClassWriter.v()));
         Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot3",
                 JimpleWriter.v()));
-      
+
         // Set about removing reference to attributes and parameters.
         // Anywhere where a method is called on an attribute or
         // parameter, replace the method call with the return value
@@ -186,9 +186,9 @@ public class Main extends KernelMain {
                 InlineParameterTransformer.v(_toplevel)));
 
         Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot4",
-                ClassWriter.v()));
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot4",
                 JimpleWriter.v()));
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot4",
+                ClassWriter.v()));
         
         // Anywhere we have a method call on a token that can be
         // statically evaluated (usually, these will have been

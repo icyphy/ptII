@@ -118,6 +118,13 @@ public class InlineParameterTransformer extends SceneTransformer {
             _createTokenAndExpressionFields(
                     entityClass, entity, entity,
                     attributeToValueFieldMap, debug);
+            for(Iterator ports = entity.portList().iterator();
+                ports.hasNext();) {
+                Port port = (Port)ports.next();
+                _createTokenAndExpressionFields(
+                        entityClass, entity, port,
+                        attributeToValueFieldMap, debug);
+            }           
         }
 
         for(Iterator i = _model.entityList().iterator();
@@ -133,13 +140,14 @@ public class InlineParameterTransformer extends SceneTransformer {
                 methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
                 
-                // What about static methods?
+                // What about static methods?  They don't have a this
+                // local
                 if(method.isStatic()) {
                     continue;
                 }
                 JimpleBody body = (JimpleBody)method.retrieveActiveBody();
 
-                // Add a this local...  note that we might not have one.
+                // Add a this local...
                 Local thisLocal;
                 try {
                     thisLocal = body.getThisLocal();
@@ -182,7 +190,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                 Value value = stmt.getInvokeExpr();
                 if(value instanceof InstanceInvokeExpr) {
                     InstanceInvokeExpr r = (InstanceInvokeExpr)value;
-                    // if(debug) System.out.println("invoking = " + r.getMethod());
+                    if(debug) System.out.println("invoking = " + r.getMethod());
                     if(r.getBase().getType() instanceof RefType) {
                         RefType type = (RefType)r.getBase().getType();
                         // Remove calls to validate().
@@ -307,8 +315,11 @@ public class InlineParameterTransformer extends SceneTransformer {
 
                                 } else if(r.getMethod().getName().equals("getToken")) {
                                     // replace the method call with a field ref.
-                                    box.setValue(Jimple.v().newStaticFieldRef(
-                                            (SootField)attributeToValueFieldMap.get(attribute)));
+                                    SootField tokenField = (SootField)attributeToValueFieldMap.get(attribute);
+                                    if(tokenField == null) {
+                                        throw new RuntimeException("No tokenField found for attribute " + attribute);
+                                    }
+                                    box.setValue(Jimple.v().newStaticFieldRef(tokenField));
                                     doneSomething = true;
                                 } else if(r.getMethod().getName().equals("setToken")) {
                                     // Call attribute changed AFTER we set the token.
@@ -319,10 +330,14 @@ public class InlineParameterTransformer extends SceneTransformer {
                                     // replace the entire statement
                                     // (which must be an invokeStmt anyway)
                                     // with an assignment to the field of the first argument.
+                                    SootField tokenField = (SootField)attributeToValueFieldMap.get(attribute);
+                                    if(tokenField == null) {
+                                        throw new RuntimeException("No tokenField found for attribute " + attribute);
+                                    }
+                                  
                                     body.getUnits().swapWith(stmt, 
                                             Jimple.v().newAssignStmt(
-                                                    Jimple.v().newStaticFieldRef((SootField)
-                                                            attributeToValueFieldMap.get(attribute)),
+                                                    Jimple.v().newStaticFieldRef(tokenField),
                                                     r.getArg(0)));
                                     doneSomething = true;
                                 } else if(r.getMethod().getName().equals("getExpression")) {
@@ -330,6 +345,9 @@ public class InlineParameterTransformer extends SceneTransformer {
                                     // to its toString method to get the expression.
                                     SootField tokenField = 
                                         (SootField)attributeToValueFieldMap.get(attribute);
+                                    if(tokenField == null) {
+                                        throw new RuntimeException("No tokenField found for attribute " + attribute);
+                                    }
                                     String localName = "_CGTokenLocal";
                                     Local tokenLocal = Jimple.v().newLocal(localName,
                                             tokenField.getType());
@@ -367,6 +385,9 @@ public class InlineParameterTransformer extends SceneTransformer {
                                     // Create code to instantiate the token
                                     SootField tokenField = 
                                         (SootField)attributeToValueFieldMap.get(attribute);
+                                    if(tokenField == null) {
+                                        throw new RuntimeException("No tokenField found for attribute " + attribute);
+                                    }
                                     String localName = "_CGTokenLocal";
                                     Local tokenLocal = 
                                         PtolemyUtilities.buildConstantTokenLocal(
@@ -428,10 +449,12 @@ public class InlineParameterTransformer extends SceneTransformer {
         return doneSomething;
     }            
 
-    /** Attempt to determine the constant value of the given local, which is assumed to have a variable
-     *  type.  Walk backwards through all the possible places that the local may have been defined and
-     *  try to symbolically evaluate the value of the variable. If the value can be determined, 
-     *  then return it, otherwise throw an exception
+    /** Attempt to determine the constant value of the given local,
+     *  which is assumed to have a variable type.  Walk backwards
+     *  through all the possible places that the local may have been
+     *  defined and try to symbolically evaluate the value of the
+     *  variable. If the value can be determined, then return it,
+     *  otherwise throw an exception
      */ 
     public static Attribute getAttributeValue(SootMethod method, Local local, 
             Unit location, LocalDefs localDefs, LocalUses localUses) {
@@ -440,17 +463,20 @@ public class InlineParameterTransformer extends SceneTransformer {
             DefinitionStmt stmt = (DefinitionStmt)definitionList.get(0);
             Value value = (Value)stmt.getRightOp();
             if(value instanceof Local) {
-                return getAttributeValue(method, (Local)value,
+                return getAttributeValue(method, 
+                        (Local)value,
                         stmt, localDefs, localUses);
             } else if(value instanceof CastExpr) {
-                return getAttributeValue(method, (Local)((CastExpr)value).getOp(),
+                return getAttributeValue(method, 
+                        (Local)((CastExpr)value).getOp(),
                         stmt, localDefs, localUses);
             } else if(value instanceof FieldRef) {
                 SootField field = ((FieldRef)value).getField();
                 ValueTag tag = (ValueTag)field.getTag("_CGValue");
                 if(tag == null) {
                     // return null;
-                    throw new RuntimeException("Could not determine the static value of "
+                    throw new RuntimeException(
+                            "Could not determine the static value of "
                             + local + " in " + method);
                 } else {
                     return (Attribute)tag.getObject();
@@ -467,8 +493,12 @@ public class InlineParameterTransformer extends SceneTransformer {
                              SootField field = ((FieldRef)useStmt.getLeftOp()).getField();
                              ValueTag tag = (ValueTag)field.getTag("_CGValue");
                              if(tag == null) {
-                                 throw new RuntimeException("Could not determine the static value of "
-                                         + local + " in " + method);
+                                 System.out.println("Failed usage: " + useStmt);
+                                 // We came to a field store that we did not create... hopefully
+                                 // there is one that we created.
+                                 //  continue;
+                                 //throw new RuntimeException("Could not determine the static value of "
+                                 //        + local + " in " + method);
                                  // return null;
                              } else {
                                  return (Attribute)tag.getObject();

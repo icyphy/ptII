@@ -91,7 +91,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
     }
 
     public String getDeclaredOptions() { 
-        return super.getDeclaredOptions();
+        return super.getDeclaredOptions() + " targetPackage";
     }
 
     protected void internalTransform(String phaseName, Map options) {
@@ -119,6 +119,13 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                 Scene.v().loadClassAndSupport(className);
             _getAttributeFields(entityClass, entity, entity,
                     attributeToFieldMap);
+            // And get the attributes of ports too...
+            for(Iterator ports = entity.portList().iterator();
+                ports.hasNext();) {
+                Port port = (Port)ports.next();
+                _getAttributeFields(entityClass, entity, port,
+                        attributeToFieldMap);
+            }           
             classToObjectMap.put(entityClass, entity);
         }
 
@@ -172,27 +179,11 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                                     // perform type analysis to determine what the 
                                     // type of the base is.
                                     
-                                    // FIXME: This is not enough.
                                     Local baseLocal = (Local)r.getBase();
-                                    RefType type = (RefType)baseLocal.getType();
-                                    NamedObj object = (NamedObj)classToObjectMap.get(type.getSootClass());
-                                    SootField attributeField;
-                                    if(object != null) {
-                                        // Then we are dealing with a getAttribute call on one of the
-                                        // classes we are generating.
-                                        Attribute attribute = object.getAttribute(name);
-                                        attributeField = (SootField)
-                                            attributeToFieldMap.get(attribute);
-                                    } else {
-                                        // Walk back and get the definition of the field.
-                                        SootField baseField = _getFieldDef(baseLocal, unit, localDefs);
-                                        attributeField = baseField.getDeclaringClass().getFieldByName(
-                                                baseField.getName() + "_" + name);
-                                    }
-                                    if(attributeField != null) {
-                                        box.setValue(Jimple.v().newInstanceFieldRef(
-                                                r.getBase(), attributeField));
-                                    }                                
+                                    Value newFieldRef = _createAttributeField(
+                                            baseLocal, name, unit, localDefs, 
+                                            classToObjectMap, attributeToFieldMap);
+                                    box.setValue(newFieldRef);
                                 } else {
                                     String string = "Attribute cannot be statically determined";
                                     throw new RuntimeException(string);
@@ -205,15 +196,51 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
         }
     }
 
-    /** Attempt to determine the constant value of the 
-     *  given local, which is assumed to have a variable
-     *  type.  Walk backwards through all the possible
-     *   places that the local may have been defined and
-     *  try to symbolically evaluate the value of the 
-     *  variable. If the value can be determined, 
-     *  then return it, otherwise return null.
+    // Given a local variable that refers to a namedObj, and the name
+    // of an attribute in that object, return a new field ref that
+    // refers to that attribute.
+    private static FieldRef _createAttributeField(Local baseLocal, 
+            String name, Unit unit, LocalDefs localDefs, Map classToObjectMap, Map attributeToFieldMap) {
+        // FIXME: This is not enough.
+        RefType type = (RefType)baseLocal.getType();
+        NamedObj object = (NamedObj)classToObjectMap.get(type.getSootClass());
+        System.out.println("name = " + name);
+        System.out.println("object = " + object);
+        if(object != null) {
+            // Then we are dealing with a getAttribute call on one of the
+            // classes we are generating.
+            Attribute attribute = object.getAttribute(name);
+            SootField attributeField = (SootField)
+                attributeToFieldMap.get(attribute);
+            if(attributeField != null) {
+                return Jimple.v().newInstanceFieldRef(
+                        baseLocal, attributeField);
+            } else {
+                return null;
+            }
+        } else {
+            // Walk back and get the definition of the field.
+            DefinitionStmt definition = 
+                _getFieldDef(baseLocal, unit, localDefs);
+            InstanceFieldRef fieldRef = (InstanceFieldRef)definition.getRightOp();
+            SootField baseField = fieldRef.getField();
+            System.out.println("baseField = " + baseField);
+            return _createAttributeField((Local)fieldRef.getBase(),
+                    baseField.getName() + "." + name, definition, 
+                    localDefs, classToObjectMap, attributeToFieldMap);
+            //baseField.getDeclaringClass().getFieldByName(
+            //    baseField.getName() + "_" + name);
+        }
+    }        
+
+    /** Attempt to determine the constant value of the given local,
+     *  which is assumed to have a variable type.  Walk backwards
+     *  through all the possible places that the local may have been
+     *  defined and try to symbolically evaluate the value of the
+     *  variable. If the value can be determined, then return it,
+     *  otherwise return null.
      */ 
-    private static SootField _getFieldDef(Local local, 
+    private static DefinitionStmt _getFieldDef(Local local, 
             Unit location, LocalDefs localDefs) {
         List definitionList = localDefs.getDefsOfAt(local, location);
         if(definitionList.size() == 1) {
@@ -222,7 +249,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
             if(value instanceof CastExpr) {
                 return _getFieldDef((Local)((CastExpr)value).getOp(), stmt, localDefs);
             } else if(value instanceof FieldRef) {
-                return ((FieldRef)value).getField();
+                return stmt;
             } else {
                 throw new RuntimeException("unknown value = " + value);
             }
@@ -247,27 +274,22 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
             attributes.hasNext();) {
             Attribute attribute = (Attribute)attributes.next();
                     
-            String fieldName = SootUtilities.sanitizeName(attribute.getName());
+            String fieldName = ModelTransformer.getFieldNameForAttribute(
+                    attribute, container);
             
-            SootField field;
             if(!theClass.declaresFieldByName(fieldName)) {
-                // Check to see if the ModelTransformer created a field.
-                fieldName = ModelTransformer.getFieldNameForAttribute(
-                        attribute, container);
-                if(!theClass.declaresFieldByName(fieldName)) {
-                    throw new RuntimeException("Class " + theClass 
-                            + " does not declare field for attribute "
-                            + attribute.getFullName());
-                }
+                throw new RuntimeException("Class " + theClass 
+                        + " does not declare field for attribute "
+                        + attribute.getFullName());
             }
+            
             // retrieve the existing field.
-            field = theClass.getFieldByName(fieldName);   
+            SootField field = theClass.getFieldByName(fieldName);   
             // Make the field final and private.
             field.setModifiers((field.getModifiers() & Modifier.STATIC) | 
                     Modifier.FINAL | Modifier.PRIVATE);
 
-            field.addTag(new ValueTag(
-                    attribute));
+            field.addTag(new ValueTag(attribute));
             attributeToFieldMap.put(attribute, field);
             // call recursively
             _getAttributeFields(theClass, container, 

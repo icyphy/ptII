@@ -58,7 +58,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
     }
 
     public String getDeclaredOptions() { 
-        return super.getDeclaredOptions();
+        return super.getDeclaredOptions() + " targetPackage";
     }
 
     protected void internalTransform(String phaseName, Map options) {
@@ -88,7 +88,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
             classToObjectMap.put(entityClass, entity);
         }
 
-        // Loop over all the classes and replace getAttribute calls.
+        // Loop over all the classes and replace getPort calls.
         for(Iterator i = _model.entityList().iterator();
             i.hasNext();) {
             Entity entity = (Entity)i.next();

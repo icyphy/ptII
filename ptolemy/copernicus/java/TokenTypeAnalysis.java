@@ -75,7 +75,8 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
         Map map = (Map)getFlowAfter(unit);
         Object object = map.get(local);
         if(object == null) {
-            throw new RuntimeException("Unknown token type for object: " + local);
+            throw new RuntimeException("Unknown token type for object: " 
+                    + local);
         }
         return (ptolemy.data.type.Type)object;
     }
@@ -88,7 +89,8 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
         Map map = (Map)getFlowBefore(unit);
         Object object = map.get(local);
         if(object == null) {
-            throw new RuntimeException("Unknown token type for unit: " + local + " in " + unit);
+            throw new RuntimeException("Unknown token type for unit: " 
+                    + local + " in " + unit);
         }
         return (ptolemy.data.type.Type)object;
     }
@@ -100,14 +102,18 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
     public void inlineTypeLatticeMethods(SootMethod method,
             Unit unit, ValueBox box, StaticInvokeExpr expr, 
             LocalDefs localDefs) {
-        SootMethod tokenTokenCompareMethod = PtolemyUtilities.typeLatticeClass.getMethod(
-                "int compare(ptolemy.data.Token,ptolemy.data.Token)");
-        SootMethod tokenTypeCompareMethod = PtolemyUtilities.typeLatticeClass.getMethod(
-                "int compare(ptolemy.data.Token,ptolemy.data.type.Type)");
-        SootMethod typeTokenCompareMethod = PtolemyUtilities.typeLatticeClass.getMethod(
-                "int compare(ptolemy.data.type.Type,ptolemy.data.Token)");
-        SootMethod typeTypeCompareMethod = PtolemyUtilities.typeLatticeClass.getMethod(
-                "int compare(ptolemy.data.type.Type,ptolemy.data.type.Type)");
+        SootMethod tokenTokenCompareMethod = 
+            PtolemyUtilities.typeLatticeClass.getMethod(
+                    "int compare(ptolemy.data.Token,ptolemy.data.Token)");
+        SootMethod tokenTypeCompareMethod = 
+            PtolemyUtilities.typeLatticeClass.getMethod(
+                    "int compare(ptolemy.data.Token,ptolemy.data.type.Type)");
+        SootMethod typeTokenCompareMethod = 
+            PtolemyUtilities.typeLatticeClass.getMethod(
+                    "int compare(ptolemy.data.type.Type,ptolemy.data.Token)");
+        SootMethod typeTypeCompareMethod = 
+            PtolemyUtilities.typeLatticeClass.getMethod(
+                 "int compare(ptolemy.data.type.Type,ptolemy.data.type.Type)");
         
         ptolemy.data.type.Type type1;
         ptolemy.data.type.Type type2;
@@ -136,7 +142,8 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
             type2 = PtolemyUtilities.getTypeValue(
                     method, typeLocal2, unit, localDefs);
         } else {
-            throw new RuntimeException("attempt to inline unhandled typeLattice method: " + unit);
+            throw new RuntimeException(
+                    "attempt to inline unhandled typeLattice method: " + unit);
         }
         box.setValue(IntConstant.v(TypeLattice.compare(type1, type2)));
     }
@@ -200,9 +207,12 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                         out.put(leftOp, in.get(r.getBase()));
                     } else if(methodName.equals("getElement") ||
                             methodName.equals("arrayValue")) {
-                        ptolemy.data.type.Type arrayType = (ptolemy.data.type.Type)in.get(r.getBase());
-                        if(arrayType != null && arrayType instanceof ArrayType) {
-                            out.put(leftOp, ((ArrayType)arrayType).getElementType());
+                        ptolemy.data.type.Type arrayType = 
+                            (ptolemy.data.type.Type)in.get(r.getBase());
+                        if(arrayType != null &&
+                                arrayType instanceof ArrayType) {
+                            out.put(leftOp, 
+                                    ((ArrayType)arrayType).getElementType());
                         }
                     }
                 } else if(SootUtilities.derivesFrom(baseClass,
@@ -265,7 +275,7 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
             } else if(rightOp instanceof CastExpr) {
                 CastExpr castExpr = (CastExpr)rightOp;
                 Type type = castExpr.getType();
-                //            RefType tokenType = PtolemyUtilities.getBaseTokenType(type);
+                // RefType tokenType = PtolemyUtilities.getBaseTokenType(type);
                 //if(tokenType != null) {
                 out.put(leftOp, in.get(castExpr.getOp()));
                 // } else {
@@ -280,7 +290,8 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                         PtolemyUtilities.tokenClass)) {
                     // Then the rightOp of the expression is the type of the
                     // constructor.
-                    out.put(leftOp, PtolemyUtilities.getTokenTypeForSootType(type));
+                    out.put(leftOp, 
+                            PtolemyUtilities.getTokenTypeForSootType(type));
                 } else {
                     // Otherwise there is nothing to be done.
                 }
@@ -290,7 +301,8 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                 Type type = newExpr.getBaseType();
                 RefType tokenType = PtolemyUtilities.getBaseTokenType(type);
                 if(tokenType != null) {
-                    out.put(leftOp, PtolemyUtilities.getTokenTypeForSootType(tokenType));
+                    out.put(leftOp,
+                            PtolemyUtilities.getTokenTypeForSootType(tokenType));
                 }
                 // Otherwise there is nothing to be done.
             }// else FieldRef?
@@ -336,7 +348,8 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
             if(in1Type.equals(in2Type)) {
                 out.put(object, in1Type);
             } else {
-                out.put(object, TypeLattice.lattice().leastUpperBound(in1Type, in2Type));
+                out.put(object, TypeLattice.lattice().leastUpperBound(in1Type,
+                        in2Type));
             }
         }
         //      System.out.println("result = " + out);
