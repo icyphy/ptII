@@ -45,7 +45,7 @@ import collections.LinkedList;
 Base class of directors for the process orientated domains. It provides 
 default implementations for methods that are common across such domains.
 
-@author Neil Smyth, Mudit Goel
+@author Mudit Goel, Neil Smyth 
 @version $Id$
 */
 public class ProcessDirector extends Director {
@@ -118,6 +118,7 @@ public class ProcessDirector extends Director {
             _checkForPause();
         }
     }
+
  
     /** This invokes the initialize() methods of all its deeply contained 
      *  actors. It also creates receivers for all the ports and increases the
@@ -187,7 +188,7 @@ public class ProcessDirector extends Director {
             ProcessThread pnt = (ProcessThread)threads.nextElement();
             pnt.start();        
         }
-        //_threadList.clear(); // see comment in initilaize
+        //_threadList.clear(); // Should it be cleared or given to manager?
         return true;
     }
 
