@@ -942,7 +942,8 @@ public class Variable extends Attribute implements Typeable, Settable {
     }
 
     /** Notify the container, if there is one, by calling its
-     *  attributeChanged() method, and then call propagate().
+     *  attributeChanged() method, and then call propagate().  Also
+     *  validate any instances of Settable that this variable may contain.
      *  @see #propagate()
      *  @exception IllegalActionException If the change is not acceptable
      *   to the container, or if the expression cannot be evaluated.
@@ -953,6 +954,11 @@ public class Variable extends Attribute implements Typeable, Settable {
             container.attributeChanged(this);
         }
         propagate();
+        Iterator attributes = attributeList(Settable.class).iterator();
+        while(attributes.hasNext()) {
+            Settable attribute = (Settable)attributes.next();
+            attribute.validate();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
