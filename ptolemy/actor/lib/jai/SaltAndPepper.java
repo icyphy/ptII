@@ -1,5 +1,6 @@
-/*
-@Copyright (c) 1998-2004 The Regents of the University of California.
+/* Randomly change values in a double matrix to 0.0 or 255.0.
+
+@Copyright (c) 2004 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -36,6 +37,19 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.DoubleToken;
 
+//////////////////////////////////////////////////////////////////////////
+//// SaltAndPepper
+/** Randomly change values in a double matrix to 0.0 or 255.0.
+
+<p>This actor reads in a double matrix and then randomly changes 
+some of the matrix elements to 0.0 or to 255.0.  Some of the elements
+remain unchanged.  If the double matrix represents an image, then
+the image would appear to have Salt and Pepper scattered on it.
+
+@author James Yeh, Contributor: Christopher Hylands Brooks
+@version $Id$
+@since Ptolemy II 3.2
+*/
 public class SaltAndPepper extends Transformer {
 
     /** Construct an actor with the given container and name.
@@ -52,11 +66,29 @@ public class SaltAndPepper extends Transformer {
         input.setTypeEquals(BaseType.DOUBLE_MATRIX);
         output.setTypeEquals(BaseType.DOUBLE_MATRIX);
 
-        probability = new Parameter(this, "probability", new DoubleToken("0.1F"));
+        probability =
+            new Parameter(this, "probability", new DoubleToken("0.1F"));
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** The probability that a pixel will be turned black or white.
+     *  This parameter contains a double between 0.0 and 1.0, the
+     *  initial default value is 0.1.  With the initial default value
+     *  of 0.1, then there is a 5% chance a pixel will be turned
+     *  white, a 5% chance that the pixel will be turned black
+     *  and a 90% chance that the pixel will remain unchanged.
+     */
     public Parameter probability;
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** React to a change in the value of an attribute.
+     *  @param attribute The attribute whose type changed.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == probability) {
@@ -66,6 +98,12 @@ public class SaltAndPepper extends Transformer {
         }
     }
 
+    /** Read in a matrix of doubles, randomly change some matrix
+     *  elements to either 0.0 or 255.0 and send the results to the
+     *  output.
+     *  @exception IllegalActionException If there is a problem reading
+     *  or writing a token.
+     */
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -87,6 +125,9 @@ public class SaltAndPepper extends Transformer {
         }
         output.send(0, new DoubleMatrixToken(data));
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private double _probability;
 }
