@@ -179,7 +179,7 @@ public class IORelation extends ComponentRelation {
      *  outside, and the output ports that we are linked to from the inside.
      *  I.e., enumerate the ports through or to which we could send data.
      *  This method synchronizes on the workspace.
-     *  @see pt.kernel.Relation#linkedPorts.
+     *  @see pt.kernel.Relation#linkedPorts
      *  @return An enumeration of the linked input ports
      */	
     public Enumeration linkedDestinationPorts() {
@@ -193,7 +193,7 @@ public class IORelation extends ComponentRelation {
      *  If the given port is null or is not linked to this relation,
      *  then enumerate all the input ports.
      *  This method synchronizes on the workspace.
-     *  @see pt.kernel.Relation#linkedPortsExcept.
+     *  @see pt.kernel.Relation#linkedPorts(pt.kernel.Port)
      *  @param except The port not included in the returned Enumeration.
      *  @return An enumeration of IOPort objects.
      */	
@@ -222,7 +222,7 @@ public class IORelation extends ComponentRelation {
      *  I.e. enumerate the ports from or through which we might receive
      *  data.
      *  This method synchronizes on the workspace.
-     *  @see pt.kernel.Relation#linkedPorts.
+     *  @see pt.kernel.Relation#linkedPorts
      *  @return Ann enumeration of the linked input ports
      */	
     public Enumeration linkedSourcePorts() {
@@ -235,7 +235,7 @@ public class IORelation extends ComponentRelation {
      *  If the given port is null or is not linked to this relation,
      *  then enumerate all the output ports.
      *  This method synchronizes on the workspace.
-     *  @see pt.kernel.Relation#linkedPortsExcept.
+     *  @see pt.kernel.Relation#linkedPorts(pt.kernel.Port)
      *  @param except The port not included in the returned Enumeration.
      *  @return An enumeration of IOPort objects.
      */	
