@@ -98,6 +98,9 @@ since the classpath typically has several directories, and it
 would not be obvious where to create the file.  The asURL()
 method also recognizes the "$CLASSPATH" string, but not the asFile()
 method (which is typically used when accessing a file for writing).
+NOTE: If the container of this parameter also contains a variable
+named CLASSPATH, then the value of that variable is used instead
+of the Java classpath.
 <p>
 @author Edward A. Lee
 @version $Id$
@@ -121,13 +124,6 @@ public class FileParameter extends StringParameter {
     public FileParameter(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
-        // Create a dummy variable in scope that will be sustituted
-        // for references to $CLASSPATH.
-        StringParameter classpath = new StringParameter(this, "CLASSPATH");
-        classpath.setVisibility(Settable.NONE);
-        classpath.setPersistent(false);
-        classpath.setExpression(_CLASSPATH_VALUE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -404,6 +400,34 @@ public class FileParameter extends StringParameter {
      */
     public void setBaseDirectory(URI directory) {
         _baseDirectory = directory;
+    }
+
+    /** Override the base class to create a parameter CLASSPATH in the
+     *  container if there isn't one already.  The parameter that is
+     *  created is neither user-visible nor persistent. Its value is
+     *  a dummy marker value that is used as an indicator to search
+     *  the classpath.
+     *  @param container The proposed container of this variable.
+     *  @exception IllegalActionException If the container will not accept
+     *   a variable as its attribute, or this variable and the container
+     *   are not in the same workspace, or the proposed container would
+     *   result in recursive containment.
+     *  @exception NameDuplicationException If the container already has
+     *   an attribute with the name of this variable.
+     */
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
+        
+        super.setContainer(container);
+
+        // Create a dummy variable in scope that will be sustituted
+        // for references to $CLASSPATH.
+        if (container.getAttribute("CLASSPATH") == null) {
+            StringParameter classpath = new StringParameter(container, "CLASSPATH");
+            classpath.setVisibility(Settable.NONE);
+            classpath.setPersistent(false);
+            classpath.setExpression(_CLASSPATH_VALUE);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
