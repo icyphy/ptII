@@ -950,35 +950,10 @@ public class HDFFSMDirector extends FSMDirector {
                                          "Updating consumption " +
                                                 "rate of port: " +
                                    inputPortOutside.getFullName());
-		    // Get the port to which "refineInPort" is
-		    // connected on the inside.
-		    List listOfPorts = refineInPort.insidePortList();
-		    // Just get the first port from the list
-		    // since they all must have the same rate.
-		    int refineInPortRate;
-		    if (listOfPorts.isEmpty()) {
-			// Set the rate to 0, since this port is 
-			// not connected
-			// to anything on the inside.
-			refineInPortRate = 0;
-		    } else {
-			IOPort portWithRateInfo =
-			    (IOPort)listOfPorts.get(0);
 
-			refineInPortRate =
-			    _getTokenConsumptionRate(portWithRateInfo); 
-		    }
-		    if (_debug_info) System.out.println(getName() + 
-                 " : _updateInputTokenConsumptionRates(): Port: " + 
-                          refineInPort.getFullName() + " rate = " + 
-                             _getTokenConsumptionRate(refineInPort));
-		    if (_debug_info) System.out.println(getName() + 
-                 " : _updateInputTokenConsumptionRates(): New " + 
-					 "consumption rate is " +
-						  refineInPortRate);
-                    _setTokenConsumptionRate(refineInPortContainer,
-                            inputPortOutside,
-                            refineInPortRate);
+
+		    int portRateToSet = SDFScheduler.getTokenConsumptionRate(refineInPort);
+		    SDFScheduler.setTokenConsumptionRate(inputPortOutside, portRateToSet);
 		}
 	    }
 	}
@@ -995,12 +970,15 @@ public class HDFFSMDirector extends FSMDirector {
      */
     private void _updateOutputTokenProductionRates(TypedCompositeActor actor)
             throws IllegalActionException {
+	if (_debug_info) System.out.println(getName() + 
+		    " : _updateOutputTokenProductionRates invoked " +
+                    " for actor = " + actor.getName());
 	// Get the current refinement's container.
 	CompositeActor refineOutPortContainer =
 	    (CompositeActor) actor.getContainer();
 	// Get all of the ouput ports of the container of this director.
 	List containerPortList = refineOutPortContainer.outputPortList();
-	// Set all of the port rates to zero.
+	// Set all of the external port rates to zero.
 	Iterator containerPorts = containerPortList.iterator();
 	while (containerPorts.hasNext()) {
 	    IOPort containerPort = (IOPort)containerPorts.next();
@@ -1008,15 +986,19 @@ public class HDFFSMDirector extends FSMDirector {
                             containerPort,
                             0);
 	}
-	// Get all of its input ports.
+	// Get all of the current refinement's output ports.
 	Iterator refineOutPorts = actor.outputPortList().iterator();
 	while (refineOutPorts.hasNext()) {
 	    IOPort refineOutPort =
 		(IOPort)refineOutPorts.next();
-	    if (_debug_info) System.out.println(getName() + 
+	    if (_debug_info) { 
+		System.out.println(getName() + 
                " : _updateOutputTokenProductionRates(): Current " +
-                                        "port of refining actor " +
-                                       refineOutPort.getFullName());
+                                        "port of refining actor = " +
+                                       refineOutPort.getFullName() +
+				 " with rate = " + 
+		      SDFScheduler.getTokenProductionRate(refineOutPort));
+	    }
 	    // Get all of the output ports this port is
 	    // linked to on the outside (should only consist
 	    // of 1 port).
@@ -1050,29 +1032,9 @@ public class HDFFSMDirector extends FSMDirector {
                                             "Updating production " +
                             "rate of port: " +
                             outputPortOutside.getFullName());
-		    // Get the port to which "refineOutPort" is
-		    // connected on the inside.
-		    List listOfPorts = refineOutPort.insidePortList();
-		    // Just get the first port from the list
-		    // since they all must have the same rate.
-		    int refineOutPortRate;
-		    if (listOfPorts.isEmpty()) {
-			// Set the rate to 0.
-			refineOutPortRate = 0;
-		    } else {
-			IOPort portWithRateInfo =
-			    (IOPort)listOfPorts.get(0);
 
-			refineOutPortRate =
-			    _getTokenProductionRate(portWithRateInfo);
-		    }
-		    if (_debug_info) System.out.println(getName() + 
-                      " : _updateOutputTokenProductionRates(): New " +
-                                                "production rate is " +
-                            refineOutPortRate);
-                    _setTokenProductionRate(refineOutPortContainer,
-                            outputPortOutside,
-                            refineOutPortRate);
+		    int portRateToSet = SDFScheduler.getTokenProductionRate(refineOutPort);
+		    SDFScheduler.setTokenProductionRate(outputPortOutside, portRateToSet);
 		}
 	    }
 	}
