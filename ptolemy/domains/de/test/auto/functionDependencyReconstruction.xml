@@ -1,21 +1,21 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="DEE_FSM_DEE" class="ptolemy.actor.TypedCompositeActor">
+<entity name="functionDependencyReconstruction" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 746}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={160, 20, 843, 579}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 628]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[628, 461]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 314.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{314.0, 230.5}">
     </property>
     <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,1.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model has a feedback loop. In the loop, there are two modal models. &#10;Each one has two states, one state has a TimedDelay inserted, the other &#10;one has nothing but a wire. Except that these two modal models can not &#10;stay at the same state, their behaviors are exactly the same. &#10;&#10;For this model, the DEE director can find a schedule for correct &#10;execution based on the analysis of the input-output dependency &#10;relations.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model has a feedback loop. In the loop, there are two modal models. &#10;Each one has two states, one state has a TimedDelay inserted, the other &#10;one has nothing but a wire. Except that these two modal models can not &#10;stay at the same state, their behaviors are exactly the same. &#10;&#10;For this model, the DE director can find a schedule for correct &#10;execution based on the analysis of the input-output dependency &#10;relations.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 290.0">
         </property>
@@ -26,10 +26,10 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 55.0]">
         </property>
     </property>
-    <entity name="modal model" class="ptolemy.domains.fsm.modal.ModalModel">
-        <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
+    <entity name="original" class="ptolemy.domains.fsm.modal.ModalModel">
+        <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
         </property>
-        <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
+        <property name="_Director" class="ptolemy.domains.fsm.kernel.FSMDirector">
             <property name="timePrecisionInDigits" class="ptolemy.data.expr.Parameter" value="10">
             </property>
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
@@ -177,13 +177,15 @@ to another. Then delete this annotation.</text>
                 </property>
             </port>
             <entity name="TimedDelay" class="ptolemy.domains.de.lib.TimedDelay">
+                <property name="delay" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
                 <property name="TimedDelayIcon" class="ptolemy.vergil.icon.EditorIcon">
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={232, 253, 815, 518}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 215.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{275.0, 215.0}">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -242,9 +244,9 @@ to another. Then delete this annotation.</text>
         <link port="noDelay.trigger" relation="triggerRelation"/>
     </entity>
     <entity name="opposite" class="ptolemy.domains.fsm.modal.ModalModel">
-        <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
+        <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
         </property>
-        <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
+        <property name="_Director" class="ptolemy.domains.fsm.kernel.FSMDirector">
             <property name="timePrecisionInDigits" class="ptolemy.data.expr.Parameter" value="10">
             </property>
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
@@ -392,6 +394,8 @@ to another. Then delete this annotation.</text>
                 </property>
             </port>
             <entity name="TimedDelay" class="ptolemy.domains.de.lib.TimedDelay">
+                <property name="delay" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
                 <property name="TimedDelayIcon" class="ptolemy.vergil.icon.EditorIcon">
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={232, 253, 815, 518}, maximized=false}">
                     </property>
@@ -457,6 +461,8 @@ to another. Then delete this annotation.</text>
         <link port="noDelay.trigger" relation="triggerRelation"/>
     </entity>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 0.5}">
+        </property>
         <doc>Create a set of pulses</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 245.0">
         </property>
@@ -466,6 +472,8 @@ to another. Then delete this annotation.</text>
         </property>
     </entity>
     <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+        <property name="time" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="5.0">
         </property>
         <property name="SingleEventIcon" class="ptolemy.vergil.icon.EditorIcon">
@@ -478,11 +486,16 @@ to another. Then delete this annotation.</text>
         </property>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 2.0}">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="560.0, 105.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 100.0]">
+        </property>
+    </entity>
+    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 100.0]">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -492,16 +505,18 @@ to another. Then delete this annotation.</text>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="465.0, 105.0">
+        <vertex name="vertex1" value="[380.0, 100.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="modal model.input" relation="relation5"/>
-    <link port="modal model.output" relation="relation3"/>
-    <link port="modal model.trigger" relation="relation2"/>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="original.input" relation="relation5"/>
+    <link port="original.output" relation="relation3"/>
+    <link port="original.trigger" relation="relation2"/>
     <link port="opposite.input" relation="relation3"/>
     <link port="opposite.output" relation="relation"/>
     <link port="opposite.trigger" relation="relation2"/>
@@ -510,5 +525,7 @@ to another. Then delete this annotation.</text>
     <link port="Merge.input" relation="relation"/>
     <link port="Merge.output" relation="relation5"/>
     <link port="SingleEvent.output" relation="relation4"/>
-    <link port="NonStrictTest.input" relation="relation"/>
+    <link port="NonStrictTest.input" relation="relation6"/>
+    <link port="CurrentTime.output" relation="relation6"/>
+    <link port="CurrentTime.trigger" relation="relation"/>
 </entity>
