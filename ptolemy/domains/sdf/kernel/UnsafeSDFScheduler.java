@@ -88,7 +88,7 @@ for traversing the hierarchy this way.  In particular, it is difficult
 to ensure that we have properly included all of the scheduling
 constraints without traversing channel-by channel, using receivers.
 The result is that this implementation can be significantly faster
-than the original implementation, but has imcomplete error checking.
+than the original implementation, but has incomplete error checking.
 I.e., it will return a valid schedule when, in fact, no valid schedule
 exists.  The simplest example is if you have a relation connected to
 an input port and not connected to any output port.  It will never
