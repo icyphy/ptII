@@ -688,10 +688,10 @@ public class Pxgraph extends Frame {
                     "     http://ptolemy.eecs.berkeley.edu/java\n"+
                     "-->\n"+
                     "<applet name =\""+getTitle()+"\""+
-                    " code=\"ptplot.Plot\""+
+                    " code=\"ptplot.PlotApplet\""+
                     " width="+dim.width+" height="+dim.height+"\n"+
                     "    codebase=\""+plotclassdir+"\"\n"+
-                    "    archive=\"ptplot/ptplot.zip\"\n"+
+                    "    archive=\"ptplot/ptplot.jar\"\n"+
                     "    alt=\"If you had a java-enabled "+
                     "browser, you would see an applet here.\"\n>\n"+
                     "<param name=\"pxgraphargs\" value=\"");
