@@ -622,6 +622,9 @@ public class Director extends Attribute implements Executable {
                     + ") < (getCurrentTime() = " + getCurrentTime() + ")");
         }
         _currentTime = newTime;
+        if (_debugging) {
+            _debug("--- Set current time to: " + newTime);
+        }
     }
 
     /** Terminate any currently executing model with extreme prejudice.
