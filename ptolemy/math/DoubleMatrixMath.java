@@ -297,12 +297,12 @@ public class DoubleMatrixMath {
      *  second matrix.  If the two matrices are not the same size,
      *  throw an IllegalArgumentException.
      */
-    public static final double[][] divideElements(final double[][] matrix1,
+    public static final double[][] divide(final double[][] matrix1,
             final double[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
-        _checkSameDimension("divideElements", matrix1, matrix2);
+        _checkSameDimension("divide", matrix1, matrix2);
 
         double[][] returnValue = new double[rows][columns];
         for (int i = 0; i < rows; i++) {
@@ -593,6 +593,10 @@ public class DoubleMatrixMath {
      *  must equal the number of rows of matrix2. If matrix1 is of
      *  size m x n, and matrix2 is of size n x p, the returned matrix
      *  will have size m x p.
+     *  <p>Note that this method is different from the other multiply()
+     *  methods in that this method does not do pointwise multiplication.
+     *
+     *  @see #multiplyElements(double[][], double[][])
      *  @param matrix1 The first matrix of doubles.
      *  @param matrix2 The second matrix of doubles.
      *  @return A new matrix of doubles.
@@ -616,6 +620,9 @@ public class DoubleMatrixMath {
      *  multiplication of the two matrix arguments.  If the two
      *  matrices are not the same size, throw an
      *  IllegalArgumentException.
+     *  <p>Note that this method does pointwise matrix multiplication.
+     *  See {@link #multiply(double[][], double[][])} for standard
+     *  matrix multiplication.
      */
     public static final double[][] multiplyElements(final double[][] matrix1,
             final double[][] matrix2) {

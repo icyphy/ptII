@@ -349,12 +349,12 @@ public class LongMatrixMath {
      *  second matrix.  If the two matrices are not the same size,
      *  throw an IllegalArgumentException.
      */
-    public static final long[][] divideElements(final long[][] matrix1,
+    public static final long[][] divide(final long[][] matrix1,
             final long[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
-        _checkSameDimension("divideElements", matrix1, matrix2);
+        _checkSameDimension("divide", matrix1, matrix2);
 
         long[][] returnValue = new long[rows][columns];
         for (int i = 0; i < rows; i++) {
@@ -472,11 +472,8 @@ public class LongMatrixMath {
      *  If the two matrices are not the same size, throw an
      *  IllegalArgumentException.
      */
-    public static final long[][] moduloElements(final long[][] matrix1,
+    public static final long[][] modulo(final long[][] matrix1,
             final long[][] matrix2) {
-        // This method is named moduleElements so as to match
-        // multipyElements and divideElements.
-
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
@@ -576,6 +573,11 @@ public class LongMatrixMath {
      *  must equal the number of rows of matrix2. If matrix1 is of
      *  size m x n, and matrix2 is of size n x p, the returned matrix
      *  will have size m x p.
+     *
+     *  <p>Note that this method is different from the other multiply()
+     *  methods in that this method does not do pointwise multiplication.
+     *
+     *  @see #multiplyElements(long[][], long[][])
      *  @param matrix1 The first matrix of longs.
      *  @param matrix2 The second matrix of longs.
      *  @return A new matrix of longs.
@@ -599,6 +601,9 @@ public class LongMatrixMath {
      *  multiplication of the two matrix arguments.  If the two
      *  matrices are not the same size, throw an
      *  IllegalArgumentException.
+     *  <p>Note that this method does pointwise matrix multiplication.
+     *  See {@link #multiply(long[][], long[][])} for standard
+     *  matrix multiplication.
      */
     public static final long[][] multiplyElements(final long[][] matrix1,
             final long[][] matrix2) {

@@ -346,12 +346,12 @@ public class IntegerMatrixMath {
      *  second matrix.  If the two matrices are not the same size,
      *  throw an IllegalArgumentException.
      */
-    public static final int[][] divideElements(final int[][] matrix1,
+    public static final int[][] divide(final int[][] matrix1,
             final int[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
-        _checkSameDimension("divideElements", matrix1, matrix2);
+        _checkSameDimension("divide", matrix1, matrix2);
 
         int[][] returnValue = new int[rows][columns];
         for (int i = 0; i < rows; i++) {
@@ -467,15 +467,12 @@ public class IntegerMatrixMath {
      *  If the two matrices are not the same size, throw an
      *  IllegalArgumentException.
      */
-    public static final int[][] moduloElements(final int[][] matrix1,
+    public static final int[][] modulo(final int[][] matrix1,
             final int[][] matrix2) {
-        // This method is named moduleElements so as to match
-        // multipyElements and divideElements.
-
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
-        _checkSameDimension("moduloElements", matrix1, matrix2);
+        _checkSameDimension("modulo", matrix1, matrix2);
 
         int[][] returnValue = new int[rows][columns];
         for (int i = 0; i < rows; i++) {
@@ -570,6 +567,11 @@ public class IntegerMatrixMath {
      *  must equal the number of rows of matrix2. If matrix1 is of
      *  size m x n, and matrix2 is of size n x p, the returned matrix
      *  will have size m x p.
+     *
+     *  <p>Note that this method is different from the other multiply()
+     *  methods in that this method does not do pointwise multiplication.
+     *
+     *  @see #multiplyElements(int[][], int[][])
      *  @param matrix1 The first matrix of ints.
      *  @param matrix2 The second matrix of ints.
      *  @return A new matrix of ints.
@@ -593,6 +595,9 @@ public class IntegerMatrixMath {
      *  multiplication of the two matrix arguments.  If the two
      *  matrices are not the same size, throw an
      *  IllegalArgumentException.
+     *  <p>Note that this method does pointwise matrix multiplication.
+     *  See {@link #multiply(int[][], int[][])} for standard
+     *  matrix multiplication.
      */
     public static final int[][] multiplyElements(final int[][] matrix1,
             final int[][] matrix2) {

@@ -375,12 +375,12 @@ public class ComplexMatrixMath {
      *  If the two matrices are not the same size, throw an
      *  IllegalArgumentException.
      */
-    public static final Complex[][] divideElements(final Complex[][] matrix1,
+    public static final Complex[][] divide(final Complex[][] matrix1,
             final Complex[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
-        _checkSameDimension("divideElements", matrix1, matrix2);
+        _checkSameDimension("divide", matrix1, matrix2);
 
         Complex[][] returnValue = new Complex[rows][columns];
         for (int i = 0; i < rows; i++) {
@@ -692,12 +692,18 @@ public class ComplexMatrixMath {
      *  must equal the number of rows of matrix2. If matrix1 is of
      *  size m x n, and matrix2 is of size n x p, the returned matrix
      *  will have size m x p.
+     *
+     *  <p>Note that this method is different from the other multiply()
+     *  methods in that this method does not do pointwise multiplication.
+     *
+     *  @see #multiplyElements(Complex[][], Complex[][])
      *  @param matrix1 The first matrix of complex numbers.
      *  @param matrix2 The second matrix of complex numbers.
      *  @return A new matrix of complex numbers.
      */
     public static final Complex[][] multiply(Complex[][] matrix1,
             Complex[][] matrix2) {
+
         Complex[][] returnValue =
             new Complex[_rows(matrix1)][matrix2[0].length];
         for (int i = 0; i < _rows(matrix1); i++) {
@@ -716,6 +722,9 @@ public class ComplexMatrixMath {
      *  multiplication of the two matrix arguments.
      *  If the two matrices are not the same size, throw an
      *  IllegalArgumentException.
+     *  <p>Note that this method does pointwise matrix multiplication.
+     *  See {@link #multiply(Complex[][], Complex[][])} for standard
+     *  matrix multiplication.
      */
     public static final Complex[][] multiplyElements(final Complex[][] matrix1,
             final Complex[][] matrix2) {
