@@ -135,47 +135,51 @@ public class ImageDisplay extends Sink implements Placeable {
 	ObjectToken objectToken = (ObjectToken) input.get(0);
 	Image image = (Image) objectToken.getValue();
 
-	int xsize = image.getWidth(null);
-	int ysize = image.getHeight(null);
-        if((_oldxsize != xsize) || (_oldysize != ysize)) {
-            _oldxsize = xsize;
-            _oldysize = ysize;
+	if (image == null) {
+	    System.err.println("Warning: ImageDisplay Image was null!");
+	} else {
+	    int xsize = image.getWidth(null);
+	    int ysize = image.getHeight(null);
+	    if((_oldxsize != xsize) || (_oldysize != ysize)) {
+		_oldxsize = xsize;
+		_oldysize = ysize;
 
-	    if(_picture != null)
-		_container.remove(_picture);
-
-	    _picture = new Picture(xsize, ysize);
-	    _picture.setImage(image);
-	    _picture.setBackground(null);
-	    _container.add("Center", _picture);
-	    _container.validate();
-	    _container.invalidate();
-	    _container.repaint();
-	    _container.doLayout();
-	    Container c = _container.getParent();
-	    while(c.getParent() != null) {
-		c.invalidate();
-		c.validate();
-		c = c.getParent();
+		if(_picture != null)
+		    _container.remove(_picture);
+		
+		_picture = new Picture(xsize, ysize);
+		_picture.setImage(image);
+		_picture.setBackground(null);
+		_container.add("Center", _picture);
+		_container.validate();
+		_container.invalidate();
+		_container.repaint();
+		_container.doLayout();
+		Container c = _container.getParent();
+		while(c.getParent() != null) {
+		    c.invalidate();
+		    c.validate();
+		    c = c.getParent();
 	    
+		}
+		if(_frame != null) {
+		    _frame.pack();
+		}
 	    }
-	    if(_frame != null) {
-		_frame.pack();
-	    }
+
+	    // display it.
+	    _picture.displayImage();
+	    _picture.repaint();
+
+	    Runnable painter = new Runnable() {
+		    public void run() {
+			_container.paint(_container.getGraphics());
+		    }
+		};
+	    // Make sure the image gets updated.
+	    SwingUtilities.invokeLater(painter);
+	    Thread.yield();
 	}
-
-        // display it.
-        _picture.displayImage();
-        _picture.repaint();
-
-        Runnable painter = new Runnable() {
-            public void run() {
-                _container.paint(_container.getGraphics());
-            }
-        };
-        // Make sure the image gets updated.
-        SwingUtilities.invokeLater(painter);
-        Thread.yield();
     }
 
     /** Set the background */
