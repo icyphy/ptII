@@ -29,14 +29,15 @@ package ptolemy.domains.fsm.kernel;
 
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.Receiver;
+import ptolemy.actor.TypedActor;
+import ptolemy.actor.util.DFUtilities;
 import ptolemy.data.expr.ASTPtAssignmentNode;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ParseTreeFreeVariableCollector;
@@ -53,23 +54,28 @@ import ptolemy.kernel.util.Workspace;
 
 /**
    This director extends FSMDirector by consuming only input tokens that
-   are needed in the current state. An input port will consume one
-   token if the port name appears in: (1) at least one guard expression in any
-   transition leaving the current state and/or (2) the output actions
-   of the enabled transition.
+   are needed in the current state. An input port will consume at most one
+   token if:
+   1. The port is referred by any guard expression of the preemptive
+   transitions leaving the current state, the output actions
+   and/or set actions of the enabled transition.
+   2. No preemptive transition is enabled and the port is referred by
+   the refinements of the current state, any guard expression of the
+   nonpreemptive transitions leaving the current state, the output
+   actions and/or set actions of the enabled transition.
+   <p>
+   A port is said to be referred by a guard/output action/set action
+   expression of a transition if the port name appears in that expression.
+   A port is said to be referred by a state refinement if the it is
+   not a dangling port and has a consumption rate greater than zero in
+   the refinement.
 
    FIXME: This is highly preliminary. Missing capabilities:
-   FIXME: The input ports appeared in SetActions of the enabled transition
-   should also be included.
-   FIXME: Doesn't handle multi-ports.
    FIXME: Currently this director uses the default receiver of FSMDirector,
    which is a mailbox, so there is no way to consume more than one token.
    This director could use a different receiver and support a syntax in
    the guard expression language to support consumption of more than one
    token.
-   FIXME: The current implementation also does not support state
-   refinement. That is, the refinement is not examined to determine
-   whether to consume a token.
 
    @author Rachel Zhou
    @version $Id$
@@ -78,6 +84,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (cxh)
 */
 public class NonStrictFSMDirector extends FSMDirector {
+
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -115,50 +122,267 @@ public class NonStrictFSMDirector extends FSMDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Get the enabled transition and the referred input ports in its
-     *  outputActions. If they are not referred by the guard expressions,
-     *  transfer these inputs before the super class fire() is called.
+    /** Fire the modal model. The preemptive transitions from the current
+     *  state are examined. If there is more than one transition enabled,
+     *  an exception is thrown. If there is exactly one preemptive transition
+     *  enabled, then it is chosen. Get additional input ports referred by
+     *  the output actions and set actions of the enabled transition and
+     *  executed the output actions. The refinements of the current state will
+     *  not be fired.
+     *  <p>
+     *  If no preemptive transition is enabled, get additional input ports
+     *  referred by the refinements of the current state and transfer at most
+     *  one token from these input ports. Fire the refinements. After this,
+     *  get additional input ports referred by the nonpreemptive transitions
+     *  from the current state and transfer at most one token from these input
+     *  ports. Then examine the nonpreemptive transitions. If there is more
+     *  than one transition enabled, an exception is thrown. If there is
+     *  exactly one nonpreemptive transition enabled, then it is chosen. Get
+     *  additional input ports referred by the output actions and set actions
+     *  of the enabled transition and executed the output actions.
      *  @exception IllegalActionException If the super class throws it.
      */
     public void fire() throws IllegalActionException {
         FSMActor controller = getController();
         controller._readInputs();
+        CompositeActor container = (CompositeActor) getContainer();
+        List inputPortList = container.inputPortList();
 
         State currentState = controller.currentState();
         Transition enabledTransition = controller._checkTransition(currentState
-                .nonpreemptiveTransitionList());
-        getOutputActionsReferredInputPorts(enabledTransition);
+                .preemptiveTransitionList());
+        _enabledTransition = enabledTransition;
 
-        CompositeActor container = (CompositeActor) getContainer();
-        List inputPortList = container.inputPortList();
-        _consumeToken = true;
+        if (enabledTransition == null) {
+            // Get the inputs needed by the refinement.
+            Actor[] actors = currentState.getRefinement();
+            getRefinementReferredInputPorts(currentState);
 
-        for (int i = 0; i < inputPortList.size(); i++) {
-            IOPort port = (IOPort) inputPortList.get(i);
-
-            if (_outputActionReferredInputPorts.contains(port)
-                    && !_guardReferredInputPorts.contains(port)) {
-                Receiver[][] insideReceivers = (Receiver[][]) port.getReceivers();
-                super.transferInputs(port);
-                controller._readInputs();
+            // Transfer additional inputs needed by the refinement.
+            for (int i = 0; i < inputPortList.size(); i ++) {
+                IOPort port = (IOPort) inputPortList.get(i);
+                if (_refinementReferredInputPorts.contains(port)
+                        && !_referredInputPorts.contains(port)) {
+                    super.transferInputs(port);
+                    controller._readInputs();
+                    _referredInputPorts.add(port);
+                }
             }
+
+            // Fire the refinement.
+            if (actors != null) {
+                for (int i = 0; i < actors.length; ++i) {
+                    if (_stopRequested) {
+                        break;
+                    }
+                    if (actors[i].prefire()) {
+                        actors[i].fire();
+                        actors[i].postfire();
+                    }
+                }
+            }
+            controller._readOutputsFromRefinement();
+
+            // Choose nonpreemptive transition.
+            enabledTransition = controller
+            ._checkTransition(currentState.nonpreemptiveTransitionList());
+            _enabledTransition = enabledTransition;
         }
 
-        super.fire();
+        if (enabledTransition != null) {
+            // Get additional inputs needed for output actions and set actions
+            // of the enabled transition.
+            getOutputActionsReferredInputPorts(enabledTransition);
+            getSetActionsReferredInputPorts(enabledTransition);
+            for (int i = 0; i < inputPortList.size(); i++) {
+                IOPort port = (IOPort) inputPortList.get(i);
+
+                if (_outputActionReferredInputPorts.contains(port)
+                        && ! _referredInputPorts.contains(port)) {
+                    super.transferInputs(port);
+                    controller._readInputs();
+                    _referredInputPorts.add(port);
+                }
+            }
+            controller._readInputs();
+            // execute output actions.
+            Iterator actions = enabledTransition.choiceActionList().iterator();
+
+            while (actions.hasNext()) {
+                Action action = (Action) actions.next();
+                action.execute();
+            }
+
+            // Get additional input ports needed by set actions of
+            // the enabeld transition.
+            for (int i = 0; i < inputPortList.size(); i ++) {
+                IOPort port = (IOPort) inputPortList.get(i);
+                if (_setActionReferredInputPorts.contains(port)
+                        && !_referredInputPorts.contains(port)) {
+                    super.transferInputs(port);
+                    controller._readInputs();
+                    _referredInputPorts.add(port);
+                }
+            }
+            controller._readInputs();
+        }
+        controller._lastChosenTransition = enabledTransition;
     }
 
-    /** Given a state, get a list of referred input ports in the guard
-     *  expressions of all the transitions that go out from this state.
-     * @param currentState The given state.
-     * @exception IllegalActionException If there is no controller or if
-     *  the guard expression is illegal.
+    /** Given a state, get a set of input ports referred in the guards of
+     *  the preemptive transitions leaving that state.
+     *  @param state The given state.
+     *  @throws IllegalActionException If there is no controller or
+     *   if any guard expression is illegal.
      */
-    public void getGuardReferredInputPorts(State currentState)
-            throws IllegalActionException {
-        _guardReferredInputPorts.clear();
+    public void getNonpreemptiveTransitionsReferredInputPorts(State state)
+    throws IllegalActionException {
+        List nonpreemptiveTransitionList = state.nonpreemptiveTransitionList();
+        _nonpreemptiveTransitionsInputs
+            = getTransitionReferredInputPorts(nonpreemptiveTransitionList);
+    }
 
-        Iterator transitions = currentState.nonpreemptiveTransitionList()
-            .iterator();
+    /** Given a transition, get a set of input ports referred in the
+     *  outputActions of that transition.
+     *  @param transition The transition.
+     *  @exception IllegalActionException If there is no controller or if
+     *  the outputActions is illegal.
+     */
+    public void getOutputActionsReferredInputPorts(Transition transition)
+            throws IllegalActionException {
+        _outputActionReferredInputPorts.clear();
+
+        String string = transition.outputActions.getExpression();
+        PtParser parser = new PtParser();
+        ASTPtRootNode parseTree;
+        ParseTreeFreeVariableCollector variableCollector = new ParseTreeFreeVariableCollector();
+        FSMActor controller = getController();
+        ParserScope scope = controller.getPortScope();
+
+        if (!string.equals("")) {
+            Map map = parser.generateAssignmentMap(string);
+            Set set = new HashSet();
+            for (Iterator names = map.keySet().iterator(); names.hasNext();) {
+                String name = (String) names.next();
+
+                ASTPtAssignmentNode node = (ASTPtAssignmentNode) map.get(name);
+                parseTree = node.getExpressionTree();
+                set = variableCollector.collectFreeVariables(parseTree, scope);
+                getReferredInputPorts(set, _outputActionReferredInputPorts);
+            }
+        }
+    }
+
+    /** Given a state, get a set of input ports referred in the guards of
+     *  the nonpreemptive transitions leaving that state.
+     *  @param state The given state.
+     *  @throws IllegalActionException If there is no controller or
+     *   if any guard expression is illegal.
+     */
+    public void getPreemptiveTransitionsReferredInputPorts(State state)
+            throws IllegalActionException {
+        List preemptiveTransitionList = state.preemptiveTransitionList();
+        _preemptiveTransitionsInputs
+            = getTransitionReferredInputPorts(preemptiveTransitionList); 
+    }
+
+    /** Given a set of ports, get those are input ports and put them
+     *  in the indicated referred set.
+     *  @param set The given set of ports
+     *  @param referredList The referred list.
+     */
+    public void getReferredInputPorts(Set portSet, Set referredInputPorts) {
+        CompositeActor container = (CompositeActor) getContainer();
+        List inputPortList = container.inputPortList();
+
+        for (int i = 0; i < inputPortList.size(); i++) {
+            IOPort inputPort = (IOPort) inputPortList.get(i);
+
+            if (portSet.contains(inputPort.getName())) {
+                referredInputPorts.add(inputPort);
+            }
+        }
+    }
+
+    /** Given a state, get a set of input ports referred by the refinements
+     *  of that state.
+     * @param state The given state.
+     * @throws IllegalActionException If refinement with given name is not
+     *  found, or if the port rate does not contain a valid expression.
+     */
+    public void getRefinementReferredInputPorts(State state)
+            throws IllegalActionException {
+        _refinementReferredInputPorts.clear();
+        TypedActor[] refinements = state.getRefinement();
+        CompositeActor container = (CompositeActor) getContainer();
+        if (refinements != null) {
+            for (int i = 0; i < refinements.length; i ++) {
+                Iterator inputPorts = refinements[i].inputPortList().iterator();
+                while (inputPorts.hasNext()) {
+                    IOPort inputPort = (IOPort) inputPorts.next();
+                    if (inputPort.getWidth() != 0
+                            && DFUtilities.getRate(inputPort) > 0) {
+                        Iterator inputPortsOutside
+                                = inputPort.deepConnectedInPortList().iterator();
+                        while (inputPortsOutside.hasNext()) {
+                            IOPort inputPortOutside
+                                    = (IOPort) inputPortsOutside.next();
+                            if (inputPortOutside.getContainer() == container
+                                    && !_refinementReferredInputPorts
+                                        .contains(inputPortOutside)) {
+                                _refinementReferredInputPorts.add(inputPortOutside);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /** Given a transition, get a set of input ports referred in the set
+     *  actions of that transition.
+     *  @param state The given state.
+     *  @throws IllegalActionException If there is no controller or
+     *   if any set action expression is illegal.     
+     */
+    public void getSetActionsReferredInputPorts(Transition transition)
+            throws IllegalActionException {
+        _setActionReferredInputPorts.clear();
+
+        String string = transition.setActions.getExpression();
+        PtParser parser = new PtParser();
+        ASTPtRootNode parseTree;
+        ParseTreeFreeVariableCollector variableCollector
+                = new ParseTreeFreeVariableCollector();
+        FSMActor controller = getController();
+        ParserScope scope = controller.getPortScope();
+
+        if (!string.equals("")) {
+            Map map = parser.generateAssignmentMap(string);
+            Set set = new HashSet();
+
+            for (Iterator names = map.keySet().iterator(); names.hasNext();) {
+                String name = (String) names.next();
+
+                ASTPtAssignmentNode node = (ASTPtAssignmentNode) map.get(name);
+                parseTree = node.getExpressionTree();
+                set = variableCollector.collectFreeVariables(parseTree, scope);
+                getReferredInputPorts(set, _setActionReferredInputPorts);
+            }
+        }
+    }
+
+    /** Given a list of transitions, get a list of referred input ports
+     *  in the guard expressions of all the transitions leaving this state.
+     *  @param currentState The given state.
+     *  @exception IllegalActionException If there is no controller or if
+     *   the guard expression is illegal.
+     */
+    public Set getTransitionReferredInputPorts(List transitionList)
+            throws IllegalActionException {
+        Set transitionsReferredInputPorts = new HashSet();
+
+        Iterator transitions = transitionList.iterator();
 
         while (transitions.hasNext()) {
             Transition transition = (Transition) transitions.next();
@@ -175,93 +399,43 @@ public class NonStrictFSMDirector extends FSMDirector {
             FSMActor controller = getController();
             ParserScope scope = controller.getPortScope();
             Set set = variableCollector.collectFreeVariables(parseTree, scope);
-            getReferredInputPorts(set, _guardReferredInputPorts);
+            getReferredInputPorts(set, transitionsReferredInputPorts);
         }
+        return transitionsReferredInputPorts;
     }
 
-    /** Given a transition, get a list of referred input ports in the
-     *  outputActions of that transition.
-     * @param transition The transition.
-     * @exception IllegalActionException If there is no controller or if
-     *  the outputActions is illegal.
-     */
-    public void getOutputActionsReferredInputPorts(Transition transition)
-            throws IllegalActionException {
-        _outputActionReferredInputPorts.clear();
-
-        String string = transition.outputActions.getExpression();
-        PtParser parser = new PtParser();
-        ASTPtRootNode parseTree;
-        ParseTreeFreeVariableCollector variableCollector = new ParseTreeFreeVariableCollector();
-        FSMActor controller = getController();
-        ParserScope scope = controller.getPortScope();
-
-        if (string != "") {
-            Map map = parser.generateAssignmentMap(string);
-            Set set = new HashSet();
-
-            for (Iterator names = map.keySet().iterator(); names.hasNext();) {
-                String name = (String) names.next();
-
-                ASTPtAssignmentNode node = (ASTPtAssignmentNode) map.get(name);
-                parseTree = node.getExpressionTree();
-                set = variableCollector.collectFreeVariables(parseTree, scope);
-                getReferredInputPorts(set, _outputActionReferredInputPorts);
-            }
-        }
-    }
-
-    /** Given a set of ports, get those are input ports and put them
-     *  in the indicated referred list.
-     * @param set The given set of ports
-     * @param referredList The referred list.
-     */
-    public void getReferredInputPorts(Set set, List referredList) {
-        CompositeActor container = (CompositeActor) getContainer();
-        List inputPortList = container.inputPortList();
-
-        for (int i = 0; i < inputPortList.size(); i++) {
-            IOPort inputPort = (IOPort) inputPortList.get(i);
-
-            if (set.contains(inputPort.getName())) {
-                referredList.add(inputPort);
-            }
-        }
-    }
-
-    /** Initialize the director. Get the referred input ports
-     *  in the guard expressions of all the transitions that go out
-     *  from the initial state.
+    /** Initialize the director. Get the referred input ports in the guard
+     *  expressions of all preemptive transitions leaving the initial state.
      *  @exception IllegalActionException If the super class throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _consumeToken = false;
-
         FSMActor controller = getController();
-
-        getGuardReferredInputPorts(controller.getInitialState());
+        getPreemptiveTransitionsReferredInputPorts(controller.getInitialState());
+        _referredInputPorts.clear();
+        _referredInputPorts.addAll(_preemptiveTransitionsInputs);
     }
 
-    /** Get the referred input ports in the guard expressions
-     *  of all the transitions that go out from the current state.
-     *  Then call super class postfire().
+    /** Call the postfire() method of the super class. Get the referred
+     *  input ports in the guard expressions of all preemptive transitions
+     *  that go out from the current state.
      *  @exception IllegalActionException If the super class throws it.
      */
     public boolean postfire() throws IllegalActionException {
         boolean postfireValue = super.postfire();
         FSMActor controller = getController();
-        getGuardReferredInputPorts(controller.currentState());
-        _consumeToken = false;
+        getPreemptiveTransitionsReferredInputPorts(controller.currentState());
+        _referredInputPorts.clear();
+        _referredInputPorts.addAll(_preemptiveTransitionsInputs);
         return postfireValue;
     }
 
-    /** Override by super class by only transferring inputs for those
-     *  input ports that appear in at least one guard expression
-     *  of all the transitions that go out from the current state.
+    /** Override the super class by only transferring inputs for those
+     *  input ports that are referred by the guard expressions of the
+     *  preemptive transitions leaving the current state.
      */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
-        if (_guardReferredInputPorts.contains(port)) {
+        if (_preemptiveTransitionsInputs.contains(port)) {
             return super.transferInputs(port);
         } else {
             return true;
@@ -270,14 +444,27 @@ public class NonStrictFSMDirector extends FSMDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // A flag indicates whether the receiver is a peek one or not.
-    private boolean _consumeToken;
 
-    // A list of input ports that appear at least in one guard
-    // expression in all the transitions that go from the current state,
-    private LinkedList _guardReferredInputPorts = new LinkedList();
+    // A set of input ports that are referred by the guard expressions
+    // of the nonpreemptive transitions leaving the current state.
+    private Set _nonpreemptiveTransitionsInputs = new HashSet();
 
-    // A list of input ports that appear in the output actions of
+    // A set of input ports that are referred by the output actions of
     // the enabled transition.
-    private LinkedList _outputActionReferredInputPorts = new LinkedList();
+    private Set _outputActionReferredInputPorts = new HashSet();
+
+    // A set of input ports that are referred by the guard expressions
+    // of the preemptive transitions leaving the current state.
+    private Set _preemptiveTransitionsInputs = new HashSet();
+
+    // A set of input ports that are referred.    
+    private Set _referredInputPorts = new HashSet();
+
+    // A set of input ports that are referred by the refinements
+    // of the current state.
+    private Set _refinementReferredInputPorts = new HashSet();
+
+    // A set of input ports that are referred by the set actions of
+    // the enabled transition.
+    private Set _setActionReferredInputPorts = new HashSet();
 }
