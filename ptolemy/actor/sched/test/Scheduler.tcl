@@ -323,9 +323,80 @@ test Scheduler-6.4 {Test Schedule.firingIterator} {
                                  $actor8]
     set iterationCount8 [$firing8 getIterationCount]
 
-    list $iterationCount1 [$actor1 getName] $iterationCount2 [$actor2 getName] $iterationCount3 [$actor3 getName] $iterationCount4 [$actor4 getName] $iterationCount5 [$actor5 getName] $iterationCount6 [$actor6 getName] $iterationCount7 [$actor7 getName] $iterationCount8 [$actor8 getName]
+    list \
+	    $iterationCount1 [$actor1 getName] $iterationCount2 [$actor2 getName] $iterationCount3 [$actor3 getName] $iterationCount4 [$actor4 getName] $iterationCount5 [$actor5 getName] $iterationCount6 [$actor6 getName] $iterationCount7 [$actor7 getName] $iterationCount8 [$actor8 getName]
     
 } {1 A 1 B 1 C 1 B 1 C 1 B 1 C 2 D}
+
+######################################################################
+####
+# 
+test Scheduler-6.4.1 {Test Firing.ActorIterator} {
+    # Uses test 6.4 above
+
+    # We call _testIterator so as to 
+    # get better test coverage of Firing.actorIterator()
+
+    _testIterator actorIterator $firing1 $firing2 $firing3 $firing4 $firing5 $firing6 $firing7 $firing8
+} {{A A} {B B} {C C} {B B} {C C} {B B} {C C} {D D D}}
+
+######################################################################
+####
+# 
+test Scheduler-6.4.2 {Test Firing.FiringIterator} {
+    # Uses test 6.4 above
+    # Cover Firings.firingIterator()
+    set firings [_testIterator firingIterator $firing1 $firing2 $firing3 $firing4 $firing5 $firing6 $firing7 $firing8]
+
+    objectsToStrings $firings
+} {{Fire Actor ptolemy.actor.test.TestActor {..A}} {Fire Actor ptolemy.actor.test.TestActor {..B}} {Fire Actor ptolemy.actor.test.TestActor {..C}} {Fire Actor ptolemy.actor.test.TestActor {..B}} {Fire Actor ptolemy.actor.test.TestActor {..C}} {Fire Actor ptolemy.actor.test.TestActor {..B}} {Fire Actor ptolemy.actor.test.TestActor {..C}} {Fire Actor ptolemy.actor.test.TestActor {..D} 2 times}}
+
+######################################################################
+####
+# 
+test Scheduler-6.4.3 {Test Firing.ActorIterator.remove()} {
+    # Uses test 6.4 above
+
+    # remove() is unsupported
+    set firingIterator [$firing8 firingIterator]
+    catch {$firingIterator remove} errMsg1
+
+    set actorIterator [$firing8 actorIterator]
+    catch {$actorIterator remove} errMsg2
+
+
+    list $errMsg1 $errMsg2
+} {java.util.NoSuchElementException java.lang.UnsupportedOperationException}
+
+######################################################################
+####
+# 
+test Scheduler-6.4.4 {Test Firing.next(), hasNext()} {
+    # Uses test 6.4 above
+
+    set firingIterator [$firing8 firingIterator]
+    $firing8 setActor $a
+
+    catch {$firingIterator hasNext} errMsg1
+    catch {$firingIterator next} errMsg2
+
+    list $errMsg1 $errMsg2
+} {}
+
+######################################################################
+####
+# 
+test Scheduler-6.4.5 {Test Firing.ActorIterator.next(), hasNext} {
+    # Uses test 6.4 above
+
+    set actorIterator [$firing8 actorIterator]
+    $firing8 setActor $a
+
+    catch {$actorIterator hasNext} errMsg1
+    catch {$actorIterator next} errMsg2
+
+    list $errMsg1 $errMsg2
+} {{java.util.ConcurrentModificationException: Schedule structure changed while iterator is active.} {java.util.ConcurrentModificationException: Schedule structure changed while iterator is active.}}
 
 ######################################################################
 ####
@@ -714,3 +785,5 @@ test Scheduler-6.8 { Schedule.actorIterator for another schedule} {
     catch {set actor1 [$actorIterator next]} errMsg2
     list $errMsg
 } {{java.util.ConcurrentModificationException: Schedule structure changed while iterator is active.}}
+
+
