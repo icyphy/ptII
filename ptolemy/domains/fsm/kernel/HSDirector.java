@@ -404,8 +404,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      *  @return True if the emabled refinements may produce events.
      */
     public boolean hasCurrentEvent() {
-        // FIXME: delegate the method to the enabled refinement.
-        boolean eventPresent = false;
+         boolean eventPresent = false;
         Iterator actors = _enabledRefinements.iterator();
         while (!eventPresent && actors.hasNext()) {
             Actor actor = (Actor)actors.next();
