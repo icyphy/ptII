@@ -74,72 +74,7 @@ public class MoMLSimpleApplication implements ChangeListener {
                 "MoMLSimpleApplication");
         toplevel.setManager(manager);
         toplevel.addChangeListener(this);
-
-        // First, we gc and then print the memory stats
-        // BTW to get more info about gc, 
-        // use java -verbose:gc . . .
-        System.gc();
-        Thread.sleep(1000);
-
-        long startTime = System.currentTimeMillis();
-
-        Runtime runtime = Runtime.getRuntime();
-
-        // Get the memory stats before we get the model name
-        // just to be sure that getting the model name does
-        // not skew are data too much
-        long totalMemory1 = runtime.totalMemory()/1024;
-        long freeMemory1 = runtime.freeMemory()/1024;
-
-        String modelName = toplevel.getName();
-
-        System.out.println(modelName +
-                ": Stats before execution:    "
-                + Manager.timeAndMemory(startTime,
-                        totalMemory1, freeMemory1));
-
-        // Second, we run and print memory stats.
         manager.execute();
-
-        long totalMemory2 = runtime.totalMemory()/1024;
-        long freeMemory2 = runtime.freeMemory()/1024;
-        String standardStats = Manager.timeAndMemory(startTime,
-                totalMemory2, freeMemory2);
-
-        System.out.println(modelName +
-                ": Execution stats:           "
-                + standardStats);
-
-        // Third, we gc and print memory stats.
-        System.gc();
-        Thread.sleep(1000);
-
-        long totalMemory3 = runtime.totalMemory()/1024;
-        long freeMemory3 = runtime.freeMemory()/1024;
-        System.out.println(modelName +
-                ": After Garbage Collection:  "
-                + Manager.timeAndMemory(startTime,
-                        totalMemory3, freeMemory3));
-        System.out.println(modelName +
-                ": construction size:         "
-                + totalMemory1 + "K - " + freeMemory1 + "K = "
-                + (totalMemory1 - freeMemory1) + "K");
-        System.out.println(modelName +
-                ": model alloc. while exec. : "
-                + freeMemory1 + "K - " + freeMemory3 + "K = "
-                + (freeMemory1 - freeMemory3) + "K");
-        System.out.println(modelName +
-                ": model alloc. runtime data: "
-                + freeMemory3 + "K - " + freeMemory2 + "K = "
-                + (freeMemory3 - freeMemory2) + "K");
-
-        // Print out the standard stats at the end
-        // so as not to break too many scripts
-        System.out.println(standardStats
-                + " Stat: " + (totalMemory1 - freeMemory1)
-                + "K StatRT: " + (freeMemory1 - freeMemory3)
-                + "K DynRT: " + (freeMemory3 - freeMemory2)
-                + "K");
     }
 
     ///////////////////////////////////////////////////////////////////
