@@ -66,14 +66,23 @@ public class PTMLParser extends HandlerBase{
         attributes.putAt(name, value);
     }
         
+    /**
+     * Implement com.microstar.xml.XMLHandler.charData
+     */
+    public void charData(char c[],int offset, int length)
+    throws Exception {
+        String s = new String(c,offset,length);
+        current.appendPCData(s);
+    }
+
     /** 
      * Implement com.microstar.xml.XMLHandler.endDocument
      * If we've finished the parse and didn't get back to the root of the
      * parse tree, then something is wrong, and throw an exception.
      */
     public void endDocument() throws Exception {
-        if(current!=root) 
-            throw new IllegalActionException("internal error in PTMLParser");
+               if(current!=root) 
+                throw new IllegalActionException("internal error in PTMLParser");
     }
 
     /** 
@@ -83,7 +92,7 @@ public class PTMLParser extends HandlerBase{
      * example, if the element is an Icon contained within an IconLibrary, 
      * then the icon should be added to the library's list of icons.
      */
-    public void endElement() throws Exception {
+    public void endElement(String name) throws Exception {
         XMLElement parent= current.getParent();
         if(parent instanceof IconLibrary) {
             if(current instanceof Icon) {

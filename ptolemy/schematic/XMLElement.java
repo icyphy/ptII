@@ -202,8 +202,9 @@ public class XMLElement extends Object {
             s = s + value;
             s = s + "\"";
         }
-        s = s + ">\n";
+        s = s + ">";
         Enumeration children = childElements();
+        if(children.hasMoreElements()) s = s + "\n";
         while(children.hasMoreElements()) {
             XMLElement child = (XMLElement) children.nextElement();
             s = s + child.toString();
