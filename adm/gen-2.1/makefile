@@ -642,7 +642,7 @@ remote1distjsall_2:
 	    $(MAKE) $(MFLAGS) $(MAKEVARS) \
 		AUXCLASSPATH="$(CLASSPATHSEPARATOR)$(JSCLASSPATH)" \
 		install)
-	(cd $(REMOTE1PTIIDIST)/ptolemy/copernicus/applet;
+	(cd $(REMOTE1PTIIDIST)/ptolemy/copernicus/applet; \
 		$(MAKE) $(MFLAGS) $(MAKEVARS) \
 			JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true \
 			jsall JSINSTRFLAGS=;)
