@@ -80,7 +80,7 @@ public interface Nameable {
 
     /** Return the name of the object.
      *  @return The name of the object.
-     *  @see #setName(name)
+     *  @see #setName(String)
      */
     public String getName();
 
