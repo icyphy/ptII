@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="LevelCrossingDetector" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
     </property>
     <property name="Continuous Time (CT) Solver" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -21,22 +21,22 @@
         </property>
         <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
         </property>
-        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
-        </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
         </property>
         <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
         </property>
+        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
+        </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 35.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {87, 58, 928, 620}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={66, 44, 919, 606}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[713, 511]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[704, 488]">
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -57,7 +57,7 @@ Period: 2.0</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="5.0, 70.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 85.0]">
         </property>
     </property>
     <property name="level" class="ptolemy.data.expr.Parameter" value="0.5">
@@ -72,7 +72,7 @@ Period: 2.0</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 35.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 40.0]">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -94,7 +94,7 @@ Period: 2.0</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 220.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 235.0]">
         </property>
     </property>
     <property name="level2" class="ptolemy.data.expr.Parameter" value="2.5">
@@ -109,7 +109,7 @@ Period: 2.0</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 60.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 65.0]">
         </property>
     </property>
     <property name="annotation3" class="ptolemy.kernel.util.Attribute">
@@ -146,7 +146,7 @@ is checked, the event has value as parameter
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 130.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 120.0]">
         </property>
     </property>
     <property name="level3" class="ptolemy.data.expr.Parameter" value="1.3">
@@ -161,7 +161,7 @@ is checked, the event has value as parameter
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 85.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 90.0]">
         </property>
     </property>
     <property name="annotation4" class="ptolemy.kernel.util.Attribute">
@@ -183,17 +183,17 @@ detectors.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 25.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 25.0]">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{356.5, 255.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{352.0, 244.0}">
     </property>
     <entity name="Signals" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {16, 365, 420, 319}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={14, 269, 420, 326}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[412, 271]">
         </property>
@@ -256,13 +256,13 @@ detectors.</text></svg></configure>
     <entity name="Events" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {448, 365, 417, 322}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={439, 271, 417, 329}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[409, 274]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 260.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 260.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -380,7 +380,7 @@ detectors.</text></svg></configure>
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="285.0, 335.0">
+        <vertex name="vertex1" value="[280.0, 335.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -415,6 +415,7 @@ detectors.</text></svg></configure>
     <link port="LevelCrossingDetector.output" relation="relation5"/>
     <link port="LevelCrossingDetector.trigger" relation="relation4"/>
     <link port="ContinuousClock.output" relation="relation4"/>
+    <link port="LevelCrossingDetector3.input" relation="relation6"/>
     <link port="LevelCrossingDetector3.output" relation="relation2"/>
     <link port="LevelCrossingDetector3.trigger" relation="relation6"/>
     <link port="Integrator.input" relation="relation7"/>
