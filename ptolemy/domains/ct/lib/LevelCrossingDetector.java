@@ -185,33 +185,34 @@ public class LevelCrossingDetector extends Transformer
      */
     public void fire() throws IllegalActionException {
         CTDirector director = (CTDirector)getDirector();
+
+        //consume the input.
+        _thisTrigger = ((DoubleToken) trigger.get(0)).doubleValue();
+        if (_debugging)
+            _debug(getFullName() + " consuming trigger Token" +
+                    _thisTrigger);
+        if ((input.getWidth() != 0) && input.hasToken(0)) {
+            _inputToken = input.get(0);
+        } else {
+            _inputToken = null;
+        }
+
         if (director.isDiscretePhase()) {
             if (hasCurrentEvent()) {
                 // Emit event.
                 if (_debugging) {
-		    _debug(getFullName() + " Emitting event: " +
-                        (_inputToken != null
-			 ? _inputToken.toString()
-			 : "inputToken == null, sending "
-			 + "defaultEventValue.getToken()"));
-		}
+                    _debug(getFullName() + " Emitting event: " +
+                           (_inputToken != null
+                            ? _inputToken.toString()
+                            : "inputToken == null, sending "
+                            + "defaultEventValue.getToken()"));
+                }
                 if (_inputToken != null) {
                     output.send(0, _inputToken);
                 } else {
                     output.send(0, defaultEventValue.getToken());
                 }
                 _eventNow = false;
-            }
-        } else {
-            //consume the input.
-            _thisTrigger = ((DoubleToken) trigger.get(0)).doubleValue();
-            if (_debugging)
-                _debug(getFullName() + " consuming trigger Token" +
-                        _thisTrigger);
-            if ((input.getWidth() != 0) && input.hasToken(0)) {
-                _inputToken = input.get(0);
-            } else {
-                _inputToken = null;
             }
         }
     }
@@ -261,6 +262,25 @@ public class LevelCrossingDetector extends Transformer
             _eventNow = false;
             return true;
         }
+
+        // If at breakpoints, no step size refinement is necessary.
+        // The step size is 0.0, and it is always accurate.
+        if(((CTDirector)getDirector()).isBreakpointIteration()) {
+            // Check if the discontinuity generates events.
+            if ((_lastTrigger - _level) * (_thisTrigger - _level)
+                          < 0.0) {
+                if (_enabled) {
+                    _eventNow = true;
+                    if (_debugging)
+                        _debug(getFullName() + " detected event at "
+                                + getDirector().getCurrentTime());
+                    _enabled = false;
+                }
+                _eventMissed = false;
+            }
+            return true;
+        }
+
         if (_debugging) {
             _debug(this.getFullName() + " This trigger " + _thisTrigger);
             _debug(this.getFullName() + " The last trigger " + _lastTrigger);
