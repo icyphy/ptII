@@ -317,7 +317,7 @@ public class SerialComm extends TypedAtomicActor
 
         } catch (Exception ex) {
 	    // Maybe the port was the problem, _debug() the available ports.
-	    if (_debugging) _debug("Enumarating available ports."
+	    if (_debugging) _debug("Enumerating available ports."
 	            + "  Testing which, if any, are serial ports. {");
 	    Enumeration allPorts = CommPortIdentifier.getPortIdentifiers();
 	    while (allPorts.hasMoreElements()) {
