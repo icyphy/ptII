@@ -62,7 +62,7 @@ public class ArrayType extends StructuredType {
         try {
             _declaredElementType = (Type)elementType.clone();
         } catch (CloneNotSupportedException cnse) {
-            throw new InternalErrorException("ArrayType: The specified type " +
+            throw new InternalErrorException("The specified type " +
                     elementType + " cannot be cloned.");
         }
         _elementType = _declaredElementType;
@@ -106,18 +106,6 @@ public class ArrayType extends StructuredType {
         }
 
         ArrayToken argumentArrayToken = (ArrayToken)token;
-
-        // if the argument array token is empty, return an empty array
-        // token.
-        if (argumentArrayToken.length() == 0) {
-            if (getElementType().equals(BaseType.UNKNOWN)) {
-                // Since any type is a substitution instance of UNKNOWN, just
-                // return the argument.
-                return token;
-            } else {
-                return new ArrayToken(getElementType());
-            }
-        }
 
         Token[] argumentArray = argumentArrayToken.arrayValue();
         Token[] resultArray = new Token[argumentArray.length];

@@ -106,24 +106,6 @@ test ArrayType-2.1 {Test convert} {
          [[$c2 getType] toString] [$c2 toString]
 } {{{int}} {{0, 1}} {{string}} {{"0", "1"}}}
 
-test ArrayType-2.2 {Test converting empty array token} {
-    set doubleType [java::field ptolemy.data.type.BaseType DOUBLE]
-    set emptyDoubleArray [java::new {ptolemy.data.ArrayToken ptolemy.data.type.Type} $doubleType]
-
-    set unknownType [java::field ptolemy.data.type.BaseType UNKNOWN]
-    set emptyUnknownArray [java::new {ptolemy.data.ArrayToken ptolemy.data.type.Type} $unknownType]
-
-    set c1 [$natArrayType convert $emptyDoubleArray]
-    set c2 [$natArrayType convert $emptyUnknownArray]
-    set c3 [$strArrayType convert $emptyDoubleArray]
-    set c4 [$strArrayType convert $emptyUnknownArray]
-
-    list [[$c1 getType] toString] [$c1 toString] \
-         [[$c2 getType] toString] [$c2 toString] \
-         [[$c3 getType] toString] [$c3 toString] \
-         [[$c4 getType] toString] [$c4 toString] 
-} {{{double}} {{}} {{unknown}} {{}} {{string}} {{}} {{string}} {{}}}
-
 ######################################################################
 ####
 # 

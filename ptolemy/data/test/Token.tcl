@@ -209,7 +209,7 @@ test Token-3.1 {Test zero} {
     set p [java::new ptolemy.data.Token]
     catch {$p1 zero} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Token.zero: Additive identity not supported on ptolemy.data.Token.}}
+} {{ptolemy.kernel.util.IllegalActionException: Additive identity not supported on ptolemy.data.Token.}}
 
 ######################################################################
 ####

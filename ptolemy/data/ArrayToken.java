@@ -34,6 +34,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.type.Type;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.type.ArrayType;
 
 //////////////////////////////////////////////////////////////////////////
@@ -41,7 +42,8 @@ import ptolemy.data.type.ArrayType;
 /**
 A token that contains an array of tokens.  The operations between arrays
 are defined pointwise, and require that the lengths of arrays are of
-similar lengths.
+similar lengths.  The elements of an ArrayToken are all assumed to have the
+same type, and zero length array tokens cannot be created.
 
 @author Yuhong Xiong, Steve Neuendorffer
 @version $Id$
@@ -50,26 +52,18 @@ similar lengths.
 
 public class ArrayToken extends AbstractNotConvertibleToken {
 
-    /** Construct an ArrayToken with the specified token array. All the
-     *  tokens in the array must have the same type, otherwise an
-     *  exception will be thrown. Also, this array cannot have length
-     *  zero because the element type cannot be determined. To construct
-     *  an array token with a zero-length array, use the constructor that
-     *  takes a Type argument.
+    /** Construct an ArrayToken with the specified token array. All
+     *  the tokens in the array must have the same type, otherwise an
+     *  exception will be thrown.  Generally, the type of the array
+     *  created is determined by the type of the first element in the
+     *  given array.  An array of length zero implies an element type
+     *  of BaseType.UNKOWN.
      *  @param value An array of tokens.
      *  @exception IllegalActionException If the tokens in the array
-     *   do not have the same type, or the length of the array is zero.
+     *   do not have the same type.
      */
     public ArrayToken(Token[] value) throws IllegalActionException {
         _initialize(value);
-    }
-
-    /** Construct an empty ArrayToken with the specified type.
-     *  @param type The element type of this array token.
-     */
-    public ArrayToken(Type type) {
-        _value = new Token[0];
-        _elementType = type;
     }
 
     /** Construct an ArrayToken from the specified string.
@@ -183,14 +177,18 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  @return A Type.
      */
     public Type getElementType() {
-        return _elementType;
+        if(_value.length > 0) {
+            return _value[0].getType();
+        } else {
+            return BaseType.UNKNOWN;
+        }
     }
 
     /** Return the type of this ArrayToken.
      *  @return An ArrayType.
      */
     public Type getType() {
-        return new ArrayType(_elementType);
+        return new ArrayType(getElementType());
     }
 
     /** Return a hash code value for this token. This method returns the
@@ -510,19 +508,19 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     // initialize this token using the specified array.
     private void _initialize(Token[] value) throws IllegalActionException {
         if (value.length == 0) {
-            throw new IllegalActionException("ArrayToken._initialize: The "
+            throw new IllegalActionException("The "
                     + "length of the specified array is zero.");
         }
 
-        _elementType = value[0].getType();
+        Type elementType = value[0].getType();
         int length = value.length;
         _value = new Token[length];
         for (int i = 0; i < length; i++) {
-            if (_elementType.equals(value[i].getType())) {
+            if (elementType.equals(value[i].getType())) {
                 _value[i] = value[i];
             } else {
-                throw new IllegalActionException("ArrayToken._initialize: "
-                        + "Elements of the array do not have the same type:"
+                throw new IllegalActionException(
+                        "Elements of the array do not have the same type:"
                         + "value[0]=" + value[0].toString()
                         + " value[" + i + "]=" + value[i]);
             }
@@ -533,5 +531,4 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     ////                         private variables                 ////
 
     private Token[] _value;
-    private Type _elementType;
 }

@@ -69,14 +69,7 @@ test ArrayToken-1.2 {trigger exception when creating empty array using wrong con
     catch {java::new {ptolemy.data.ArrayToken} $valArray} msg
 
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: ArrayToken._initialize: The length of the specified array is zero.}}
-
-test ArrayToken-1.3 {create empty array token} {
-    set dt [java::field ptolemy.data.type.BaseType DOUBLE]
-    set valToken [java::new {ptolemy.data.ArrayToken ptolemy.data.type.Type} $dt]
-    list [$valToken toString] [$valToken length] \
-         [[$valToken getElementType] toString] [[$valToken getType] toString]
-} {{{}} 0 double {{double}}}
+} {{ptolemy.kernel.util.IllegalActionException: The length of the specified array is zero.}}
 
 ######################################################################
 ####
