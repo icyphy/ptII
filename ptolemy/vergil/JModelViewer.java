@@ -30,7 +30,8 @@
 
 package ptolemy.vergil;
 
-import ptolemy.vergil.graph.*;
+import ptolemy.vergil.ptolemy.kernel.ViewerGraphController;
+import ptolemy.vergil.ptolemy.kernel.PtolemyGraphModel;
 import ptolemy.kernel.*;
 import diva.graph.*;
 import diva.gui.*;
