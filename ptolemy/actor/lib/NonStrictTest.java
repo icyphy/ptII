@@ -182,7 +182,7 @@ public class NonStrictTest extends Transformer {
      *  "ptolemy.ptII.isRunningNightlyBuild" property exists and is not empty.
      *  To run the test suite in the Nightly Build mode, use
      *  <pre>
-     *  make JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true tests
+     *  make nightly
      *  </pre>
      */   
     public static boolean isRunningNightlyBuild() {
@@ -286,7 +286,9 @@ public class NonStrictTest extends Transformer {
         + "  returned true, indicating that the\n" 
         + "  ptolemy.ptII.isRunningNightlyBuild property is set.\n" 
         + "  The trainingMode parameter should not be set in files\n"
-        + "  that are checked into the nightly build!";
+        + "  that are checked into the nightly build!"
+        + "  To run the tests in nightly build mode, use"
+        + "     make nightly";
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
