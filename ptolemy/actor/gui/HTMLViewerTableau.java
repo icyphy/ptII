@@ -142,10 +142,14 @@ public class HTMLViewerTableau extends Tableau {
         ////                         public methods                    ////
 
 	/** If the specified effigy already contains a tableau named
-         *  "htmlTableau", then show it; otherwise, create a new instance
-         *  of HTMLViewerTableau in the specified effigy, and name it
-         *  "htmlTableau".  If the specified effigy is not an instance of
-         *  HTMLEffigy, then do not create a tableau and return null.
+         *  "htmlTableau", then return that tableau; otherwise, create
+         *  a new instance of HTMLViewerTableau in the specified
+         *  effigy, and name it "htmlTableau".  If the specified
+         *  effigy is not an instance of HTMLEffigy, then do not
+         *  create a tableau and return null.  It is the
+         *  responsibility of callers of this method to check the
+         *  return value and call show().
+         *
 	 *  @param effigy The effigy.
 	 *  @return A HTML viewer tableau, or null if one cannot be
 	 *    found or created.
@@ -168,7 +172,10 @@ public class HTMLViewerTableau extends Tableau {
                             (HTMLEffigy)effigy, "htmlTableau");
                 }
                 ((HTMLViewer)tableau.getFrame()).setPage(effigy.url.getURL());
-                tableau.show();
+                // Don't call show() here.  If show() is called here,
+                // then you can't set the size of the window after
+                // createTableau() returns.  This will affect how
+                // centering works.
                 return tableau;
 	    } else {
 		return null;

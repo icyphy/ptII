@@ -224,10 +224,13 @@ public class RunTableau extends Tableau {
         ////                         public methods                    ////
 
 	/** If the specified effigy already contains a tableau named
-         *  "runTableau", then show it; otherwise, create a new instance
-         *  of RunTableau in the specified effigy, and name it "runTableau".
-         *  If the specified effigy is not an instance of
-         *  PtolemyEffigy, then do not create a tableau and return null.
+         *  "runTableau", then return that tableau; otherwise, create
+         *  a new instance of RunTableau in the specified effigy, and
+         *  name it "runTableau".  If the specified effigy is not an
+         *  instance of PtolemyEffigy, then do not create a tableau
+         *  and return null. It is the responsibility of callers of
+         *  this method to check the return value and call show().
+         *
 	 *  @param effigy The model effigy.
 	 *  @return A new run tableau if the effigy is a PtolemyEffigy,
 	 *    or null otherwise.
@@ -243,7 +246,6 @@ public class RunTableau extends Tableau {
                     tableau = new RunTableau(
                             (PtolemyEffigy)effigy, "runTableau");
                 }
-                tableau.show();
                 return tableau;
 	    } else {
 		return null;

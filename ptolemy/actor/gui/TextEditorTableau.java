@@ -118,10 +118,14 @@ public class TextEditorTableau extends Tableau {
         ////                         public methods                    ////
 
 	/** If the specified effigy already contains a tableau named
-         *  "textTableau", then show it; otherwise, create a new instance
-         *  of TextEditorTableau in the specified effigy, and name it
-         *  "textTableau".  If the specified effigy is not an instance of
-         *  TextEffigy, then do not create a tableau and return null.
+         *  "textTableau", then return that tableau; otherwise, create
+         *  a new instance of TextEditorTableau in the specified
+         *  effigy, and name it "textTableau" and return that tableau.
+         *  If the specified effigy is not an instance of TextEffigy,
+         *  then do not create a tableau and return null.  It is the
+         *  responsibility of callers of this method to check the
+         *  return value and call show().
+         *
 	 *  @param effigy The effigy.
 	 *  @return A text editor tableau, or null if one cannot be
 	 *    found or created.
@@ -138,12 +142,11 @@ public class TextEditorTableau extends Tableau {
                     tableau = new TextEditorTableau(
                             (TextEffigy)effigy, "textTableau");
                 }
-                tableau.show();
                 return tableau;
 	    } else {
                 // The effigy is not an instance of TextEffigy.
                 // See whether it contains an instance of TextEffigy,
-                // and if it does, show that effigy.
+                // and if it does return that instance.
                 List effigies = effigy.entityList(TextEffigy.class);
                 if (effigies.size() > 0) {
                     TextEffigy textEffigy = (TextEffigy)effigies.get(0);
@@ -161,9 +164,11 @@ public class TextEditorTableau extends Tableau {
                         // that gives a textual description of the data?
                         String moml = ((PtolemyEffigy)effigy)
                             .getModel().exportMoML();
-                        textEffigy = TextEffigy.newTextEffigy(effigy, moml);
+                        textEffigy =
+                            TextEffigy.newTextEffigy(effigy, moml);
                     } else {
-                        textEffigy = TextEffigy.newTextEffigy(effigy, url, url);
+                        textEffigy =
+                            TextEffigy.newTextEffigy(effigy, url, url);
                     }
                     TextEditorTableau textTableau =
                         (TextEditorTableau)createTableau(textEffigy);
