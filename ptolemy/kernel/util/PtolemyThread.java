@@ -144,7 +144,9 @@ public class PtolemyThread extends Thread {
      *  This field is made 'package friendly' because only the Workspace class
      *  should access this field.
      */
-    int readDepth;
+    // FIXME: This should really be 'package friendly'.
+    // After the bug in JavaScope got fixed, remove the word 'public' (lmuliadi)
+    public int readDepth;
 }
 
 
