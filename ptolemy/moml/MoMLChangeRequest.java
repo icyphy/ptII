@@ -170,17 +170,17 @@ public class MoMLChangeRequest extends ChangeRequest {
      *  @param undoable whether or not this change should be treated
      *   as an incremental change that is undoable
      */
-     public void setUndoable(boolean undoable) {
+    public void setUndoable(boolean undoable) {
         _undoable = undoable;
-     }
+    }
 
-     /** Set whether or not the undo from this change should be merged with
-      *  the previous undoable change
-      *  @param mergeWithPrevious whether or not this change should be merged
-      */
-     public void setMergeWithPreviousUndo(boolean mergeWithPrevious) {
+    /** Set whether or not the undo from this change should be merged with
+     *  the previous undoable change
+     *  @param mergeWithPrevious whether or not this change should be merged
+     */
+    public void setMergeWithPreviousUndo(boolean mergeWithPrevious) {
         _mergeWithPreviousUndo = mergeWithPrevious;
-     }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

@@ -119,7 +119,7 @@ public abstract class Overflow implements Cloneable, Serializable {
         if (overflow != null)
             return overflow;
         throw new IllegalArgumentException(
-            "Unknown overflow strategy \"" + name + "\"." );
+                "Unknown overflow strategy \"" + name + "\"." );
     }
 
     /** Return a hash code value for this object.
@@ -136,13 +136,13 @@ public abstract class Overflow implements Cloneable, Serializable {
      *  @param type An instance of Overflow.
      *  @return True if the argument is compatible with this type.
      */
-//    public boolean isCompatible(Overflow type) {
-//        if (this == UNKNOWN) {
-//            return true;
-//        }
-//        int typeInfo = OverflowLattice.compare(this, type);
-//        return (typeInfo == CPO.SAME || typeInfo == CPO.HIGHER);
-//    }
+    //    public boolean isCompatible(Overflow type) {
+    //        if (this == UNKNOWN) {
+    //            return true;
+    //        }
+    //        int typeInfo = OverflowLattice.compare(this, type);
+    //        return (typeInfo == CPO.SAME || typeInfo == CPO.HIGHER);
+    //    }
 
     /** Return the value of minus infinity, or null if unrepresentable.
      *  <p>
@@ -228,7 +228,7 @@ public abstract class Overflow implements Cloneable, Serializable {
             BigInteger minValue = quant.getMinimumUnscaledValue();
             BigInteger maxValue = quant.getMaximumUnscaledValue();
             if ((0 <= integerValue.compareTo(minValue))
-             && (integerValue.compareTo(maxValue) <= 0))
+                    && (integerValue.compareTo(maxValue) <= 0))
                 return integerValue;
             integerValue = integerValue.subtract(minValue);
             BigInteger modValue = quant.getModuloUnscaledValue();
@@ -304,11 +304,11 @@ public abstract class Overflow implements Cloneable, Serializable {
             BigInteger minValue = quant.getMinimumUnscaledValue();
             if (integerValue.compareTo(minValue) < 0)
                 throw new ArithmeticException(
-                    "Minimum overflow threshold exceeded.");
+                        "Minimum overflow threshold exceeded.");
             BigInteger maxValue = quant.getMaximumUnscaledValue();
             if (integerValue.compareTo(maxValue) > 0)
                 throw new ArithmeticException(
-                    "Maximum overflow threshold exceeded.");
+                        "Maximum overflow threshold exceeded.");
             return integerValue;
         }
     }

@@ -71,27 +71,27 @@ public class ReaderProcessWriter {
             float sampleRate = soundReader.getSampleRate();
             if (_debug) {
                 System.out.println("Sample rate of the input file is " +
-                                   sampleRate + " Hz.");
+                        sampleRate + " Hz.");
             }
             // Number of bits per sample.
             int bitsPerSample = soundReader.getBitsPerSample();
             if (_debug) {
                 System.out.println("Bits per sample for the input file is " +
-                                   bitsPerSample);
+                        bitsPerSample);
             }
             // 1 for mono, 2 for stereo, etc.
             int channels = soundReader.getChannels();
-             if (_debug) {
+            if (_debug) {
                 System.out.println("Number of channels for the input file is " +
-                                   channels);
+                        channels);
             }
             int putSamplesSize = getSamplesSize;
             // Construct a sound writer object that is used to write
             // audio samples to a sound file.
             SoundWriter soundWriter = new SoundWriter(writeFile, sampleRate,
-                                                            bitsPerSample,
-                                                            channels,
-                                                            putSamplesSize);
+                    bitsPerSample,
+                    channels,
+                    putSamplesSize);
 
             double[][] capturedSamplesArray =
                 new double[channels][getSamplesSize];

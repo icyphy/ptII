@@ -132,7 +132,7 @@ public abstract class Rounding implements Cloneable, Serializable {
         if (rounding != null)
             return rounding;
         throw new IllegalArgumentException(
-            "Unknown rounding strategy \"" + name + "\"." );
+                "Unknown rounding strategy \"" + name + "\"." );
     }
 
     /** Return a hash code value for this object.
@@ -149,13 +149,13 @@ public abstract class Rounding implements Cloneable, Serializable {
      *  @param type An instance of Rounding.
      *  @return True if the argument is compatible with this type.
      */
-//    public boolean isCompatible(Rounding type) {
-//        if (this == UNKNOWN) {
-//            return true;
-//        }
-//        int typeInfo = RoundingLattice.compare(this, type);
-//        return (typeInfo == CPO.SAME || typeInfo == CPO.HIGHER);
-//    }
+    //    public boolean isCompatible(Rounding type) {
+    //        if (this == UNKNOWN) {
+    //            return true;
+    //        }
+    //        int typeInfo = RoundingLattice.compare(this, type);
+    //        return (typeInfo == CPO.SAME || typeInfo == CPO.HIGHER);
+    //    }
 
     /** Return the value of intPart after adjustment for loss of fracPart.
      *  @return The rounded value.
@@ -247,7 +247,7 @@ public abstract class Rounding implements Cloneable, Serializable {
         }
     }
     public static final RoundHalfCeiling HALF_CEILING =
-        new RoundHalfCeiling();
+    new RoundHalfCeiling();
     public static final RoundHalfCeiling NEAREST = HALF_CEILING;
 
     /** The round to nearest and halves towards zero rounding strategy */
@@ -322,7 +322,7 @@ public abstract class Rounding implements Cloneable, Serializable {
         }
     }
     public static final RoundUnnecessary UNNECESSARY =
-        new RoundUnnecessary();
+    new RoundUnnecessary();
 
     /** The round away from zero rounding strategy */
     public static class RoundUp extends Rounding {
@@ -366,7 +366,7 @@ public abstract class Rounding implements Cloneable, Serializable {
      *  the rounded value of intPart + fracPart, which is positive.
      */
     protected abstract boolean _roundUp(BigInteger intPart,
-        double fracPart);
+            double fracPart);
 
     ///////////////////////////////////////////////////////////////////
     ////                    package private method                 ////

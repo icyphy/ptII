@@ -92,55 +92,55 @@ public class Precision implements Cloneable, Serializable {
      *   supplied does not match one of the known formats.
      */
     public Precision(String precision) throws IllegalArgumentException {
-            // Check which format is used
-            boolean done = false;
-            int type = 0;
-            StringTokenizer st = new StringTokenizer(precision);
-            if ( precision.indexOf('/', 0) != -1 ) {
-                done = true;
-                type = 1;
-                st = new StringTokenizer(precision,"/()\"");
-            }
-            if ( precision.indexOf('.', 0) != -1 ) {
-                done = true;
-                type = 2;
-                st = new StringTokenizer(precision,".()\"");
-            }
-            // throw an exception
-            if (( done == false ) || ( st.countTokens() <1) ||
-                    (st.countTokens() > 2 )) {
-                throw new IllegalArgumentException("The precision string " +
-                        precision + " uses an incorrect " +
-                        "precision format" );
-            }
-            int  first = 0;
-            int second = 0;
+        // Check which format is used
+        boolean done = false;
+        int type = 0;
+        StringTokenizer st = new StringTokenizer(precision);
+        if ( precision.indexOf('/', 0) != -1 ) {
+            done = true;
+            type = 1;
+            st = new StringTokenizer(precision,"/()\"");
+        }
+        if ( precision.indexOf('.', 0) != -1 ) {
+            done = true;
+            type = 2;
+            st = new StringTokenizer(precision,".()\"");
+        }
+        // throw an exception
+        if (( done == false ) || ( st.countTokens() <1) ||
+                (st.countTokens() > 2 )) {
+            throw new IllegalArgumentException("The precision string " +
+                    precision + " uses an incorrect " +
+                    "precision format" );
+        }
+        int  first = 0;
+        int second = 0;
 
-            // The string might contain only a single number...
-            try {
-                first = (new Integer(st.nextToken())).intValue();
-                second = (new Integer(st.nextToken())).intValue();
-            } catch ( Exception e ) {
-                throw new IllegalArgumentException("A precision string " +
-                        " consists of two integers separated " +
-                        " by a '/', or '.' token" );
-            }
+        // The string might contain only a single number...
+        try {
+            first = (new Integer(st.nextToken())).intValue();
+            second = (new Integer(st.nextToken())).intValue();
+        } catch ( Exception e ) {
+            throw new IllegalArgumentException("A precision string " +
+                    " consists of two integers separated " +
+                    " by a '/', or '.' token" );
+        }
 
-            // Depending on the type, interpret the two values
-            if ( type == 1 ) {
-                _length = first;
-                _integerBits = second;
-            }
+        // Depending on the type, interpret the two values
+        if ( type == 1 ) {
+            _length = first;
+            _integerBits = second;
+        }
 
-            if ( type == 2 ) {
-                _length = first + second;
-                _integerBits = first;
-            }
-            _fraction = _length - _integerBits;
-            if (_length <= 0) {
-                throw new IllegalArgumentException("Incorrect definition of " +
-                        "Precision. Do not use negative total length ");
-            }
+        if ( type == 2 ) {
+            _length = first + second;
+            _integerBits = first;
+        }
+        _fraction = _length - _integerBits;
+        if (_length <= 0) {
+            throw new IllegalArgumentException("Incorrect definition of " +
+                    "Precision. Do not use negative total length ");
+        }
     }
 
     /** Construct a Precision object based on the provided numbers.

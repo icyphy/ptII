@@ -116,9 +116,9 @@ public class MoMLUndoChangeRequest extends ChangeRequest {
     /** Mark this change request as a redo, thus negating the effect of
      *  the last undo action.
      */
-     public void setRedoable() {
+    public void setRedoable() {
         _undoIsRedo = true;
-     }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -132,20 +132,20 @@ public class MoMLUndoChangeRequest extends ChangeRequest {
         // Check to see whether there is a parser...
         if (_context == null) {
             throw new InternalErrorException("_context == null "
-                                             + " FIXME: We require a context "
-                                             + "to carry out an undo. "
-                                             + "If there is no context, then "
-                                             + "there is no parser to carry "
-                                             + "out an undo on."
-                                             + "\n UndoChange was:\n"
-                                             + getDescription()
-                                             + "\n Source was:\n"
-                                             + getSource());
+                    + " FIXME: We require a context "
+                    + "to carry out an undo. "
+                    + "If there is no context, then "
+                    + "there is no parser to carry "
+                    + "out an undo on."
+                    + "\n UndoChange was:\n"
+                    + getDescription()
+                    + "\n Source was:\n"
+                    + getSource());
         }
         // Get the parser to request an undo on...
         NamedObj toplevel = _context.toplevel();
         ParserAttribute parserAttribute =
-                (ParserAttribute)toplevel.getAttribute("_parser");
+            (ParserAttribute)toplevel.getAttribute("_parser");
         // No parser associated with this model??
         if (parserAttribute == null) {
             // If there is a context, but no parser, then there is
@@ -175,13 +175,13 @@ public class MoMLUndoChangeRequest extends ChangeRequest {
         _parser = parserAttribute.getParser();
         _parser.reset();
 
-         // NOTE: To see what is being parsed, uncomment the following:
+        // NOTE: To see what is being parsed, uncomment the following:
         /*
-        System.out.println("****** Executing Undo MoML change:");
-        System.out.println(getDescription());
-        if (_context != null) {
-            System.out.println("------ in context " + _context.getFullName());
-        }
+          System.out.println("****** Executing Undo MoML change:");
+          System.out.println(getDescription());
+          if (_context != null) {
+          System.out.println("------ in context " + _context.getFullName());
+          }
         */
 
         try {

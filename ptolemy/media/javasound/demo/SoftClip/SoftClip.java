@@ -68,19 +68,19 @@ public class SoftClip {
         int getSamplesSize = 256;
 
         /*
-        SoundCapture soundCapture =
-            new SoundCapture(sampleRate, sampleSizeInBits,
-                    channels, inBufferSize,
-                    getSamplesSize);
+          SoundCapture soundCapture =
+          new SoundCapture(sampleRate, sampleSizeInBits,
+          channels, inBufferSize,
+          getSamplesSize);
         */
         // Construct a sound playback object that plays audio
         //through the computer's speaker.
         /*
-        SoundPlayback soundPlayback = new SoundPlayback(sampleRate,
-                sampleSizeInBits,
-                channels,
-                outBufferSize,
-                putSamplesSize);
+          SoundPlayback soundPlayback = new SoundPlayback(sampleRate,
+          sampleSizeInBits,
+          channels,
+          outBufferSize,
+          putSamplesSize);
         */
 
 
