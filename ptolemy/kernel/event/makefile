@@ -57,6 +57,7 @@ JSRCS = \
 	ChangeRequest.java \
 	Connect.java \
 	InitializeActor.java \
+	Link.java \
 	RemoveActor.java \
 	SetParameter.java \
 	StandardOutChangeListener.java

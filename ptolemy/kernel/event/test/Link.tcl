@@ -1,4 +1,4 @@
-# Test Connect
+# Test Link
 #
 # @Author: Edward A. Lee
 #
@@ -37,52 +37,29 @@ if {[string compare test [info procs test]] == 1} then {
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
-# If a file contains non-graphical tests, then it should be named .tcl
-# If a file contains graphical tests, then it should be called .itcl
-#
-# It would be nice if the tests would work in a vanilla itkwish binary.
-# Check for necessary classes and adjust the auto_path accordingly.
-#
-
 ######################################################################
-#### Connect
+#### Link
 #
-
-test Connect-1.0 {test adding a new entity and connecting it} {
+test Link-1.0 {test adding a new link} {
     set e0 [sdfModel]
     set const [java::new ptolemy.actor.lib.Const $e0 const]
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
-    $e0 connect \
+
+    set relation [$e0 connect \
             [java::field [java::cast ptolemy.actor.lib.Source $const] output] \
-            [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+            [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]]
     set m [$e0 getManager]
-    $m addChangeListener \
-            [java::new ptolemy.kernel.event.StandardOutChangeListener]
-    set dir [$e0 getDirector]
-    $dir addDebugListener \
-            [java::new ptolemy.kernel.util.StreamListener]
     $m initialize
     $m iterate
-    set ramp [java::new ptolemy.actor.lib.Ramp $e0 ramp]
-    set c1 [java::new ptolemy.kernel.event.SetParameter $e0 \
-            [java::field $ramp step] 0.01]
-    set c2 [java::new ptolemy.kernel.event.Connect $e0 \
-            [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
-            [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]]
-    set c3 [java::new ptolemy.kernel.event.InitializeActor $e0 $ramp]
-    set c4 [java::new ptolemy.kernel.event.SetParameter $e0 \
-            [java::field $ramp init] 0.01]
-    set changelist [java::new ptolemy.kernel.event.ChangeList $e0 "list"]
-    $m requestChange $changelist
-    $changelist add $c1
-    $changelist add $c4
-    $changelist add $c2
-    $changelist add $c3
-
-    $m iterate
+    set rec2 [java::new ptolemy.actor.lib.Recorder $e0 rec2]
+    set recinput [java::field [java::cast ptolemy.actor.lib.Sink $rec2] input]
+    set c1 [java::new ptolemy.kernel.event.Link $e0 $recinput $relation]
+    set c2 [java::new ptolemy.kernel.event.InitializeActor $e0 $rec2]
+    $m requestChange $c1
+    $m requestChange $c2
     $m iterate
     $m iterate
     $m wrapup
     list [enumToTokenValues [$rec getRecord 0]] \
-            [enumToTokenValues [$rec getRecord 1]]
-} {{1 1 1 1} {_ 0.01 0.02 0.03}}
+            [enumToTokenValues [$rec2 getRecord 0]]
+} {{1 1 1} {1 1}}

@@ -41,7 +41,7 @@ A request to connect two ports.  When this request is executed, if
 the container of either port implements the Actor interface, then both
 the schedule and the type resolution are invalidated, forcing them to
 be recomputed at the next opportunity. In addition,
-if either port is an IOPort and is also an input, then call its
+if either port is an IOPort and is also an input, then this method calls its
 createReceivers() method.  Notice that will result in the loss of any
 data that might be present in the port.
 
@@ -78,14 +78,14 @@ public class Connect extends ChangeRequest {
      */	
     public void execute() throws ChangeFailedException {
         try {
-            ComponentEntity portContainer
+            ComponentEntity firstContainer
                     = (ComponentEntity)_firstPort.getContainer();
-            if (portContainer == null) {
+            if (firstContainer == null) {
                 throw new ChangeFailedException(this, "Cannot connect. "
                 + "First port has no container: " + _firstPort.getFullName());
             }
             CompositeEntity container
-                    = (CompositeEntity)portContainer.getContainer();
+                    = (CompositeEntity)firstContainer.getContainer();
             if (container == null) {
                 throw new ChangeFailedException(this, "Cannot connect. "
                 + "First port's container has no container: "
@@ -108,7 +108,6 @@ public class Connect extends ChangeRequest {
             }
 
             // Invalidate schedule and type resolution if appropriate.
-            Nameable firstContainer = _firstPort.getContainer();
             Nameable secondContainer = _secondPort.getContainer();
             if (firstContainer instanceof Actor) {
                 Director director = ((Actor)firstContainer).getDirector();
