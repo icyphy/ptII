@@ -1054,7 +1054,7 @@ public class FSMActor extends CompositeEntity
                         "Error creating input variables for port.\n"
                         + ex.getMessage());
             }
-            String shadowArrayName = shadowName + "$";
+            String shadowArrayName = shadowName + "Array";
             previousAttribute = getAttribute(shadowArrayName);
             try {
                 if (previousAttribute != null) {
@@ -1542,7 +1542,7 @@ public class FSMActor extends CompositeEntity
     // For other domains, _firingsPerScheduleIteration will always be 1
     // and _firingsSoFar will always be 0.
     private int _firingsSoFar = 0;
-    private int _firingsPerIteration = 1;
+    //private int _firingsPerIteration = 1;
     
     // Hashtable to save an array of tokens for each port.
     // This is used in HDF when multiple tokens are consumed
