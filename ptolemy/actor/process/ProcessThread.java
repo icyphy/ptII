@@ -124,11 +124,11 @@ public class ProcessThread extends PtolemyThread {
 			_actor.fire();
 			iterate =  _actor.postfire();
 		    }
-		    if( _threadStopRequested && iterate) {
+		    if ( _threadStopRequested && iterate) {
  		        _director.registerStoppedThread();
 			while( _threadStopRequested ) {
 			    synchronized(this) {
-                                workspace.wait(this);
+                                wait();
 			    }
 			}
 		    }
@@ -136,6 +136,8 @@ public class ProcessThread extends PtolemyThread {
             }
         } catch (TerminateProcessException t) {
             // Process was terminated.
+	} catch( InterruptedException e) {
+            _manager.notifyListenersOfException(e);
         } catch (IllegalActionException e) {
             _manager.notifyListenersOfException(e);
         } finally {
@@ -161,7 +163,7 @@ public class ProcessThread extends PtolemyThread {
      *  that are contained by the composite actor that contains
      *  this director.
      */
-    public synchronized void stopThread() {
+    public void stopThread() {
 	_threadStopRequested = true;
     }
 
