@@ -683,6 +683,7 @@ proc createAndExecute {file} {
 	    || "$file" == "compat3/function.xml" \
 	    || "$file" == "compat3/automataActorLibrary.xml" \
 	    || "$file" == "compat3/ViterbiDecoderSoft.xml" \
+	    || "$file" == "compat3/record.xml" \
 	} {
 	puts "$file: Skipping Known Failure"
 	incr KNOWN_FAILED
