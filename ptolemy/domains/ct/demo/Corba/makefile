@@ -50,7 +50,7 @@ JSRCS = \
 	NonlinearClientApplication.java \
 	NonlinearServant.java	
 
-EXTRA_SRCS =	$(JSRCS) Corba
+EXTRA_SRCS =	$(JSRCS) NonlinearClient NonlinearClient.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -72,7 +72,7 @@ all: jclass $(PTCLASSJAR)
 install: all
 
 demo: $(PTCLASSJAR)
-	./Corba
+	./NonlinearClient
 
 depend:
 	@echo "no dependencies in this directory"

@@ -64,7 +64,7 @@ To execute the model in the applet, please follow these steps:
 
 6. Start the client model using appletviewer:
    
-   prompt> appletviewer SimpleCorbaDemo.htm
+   prompt> appletviewer NonlinearClient.htm
    
    The default parameter settings should work. If you change the
    ORBInitialPort, please specify it in the query box.
