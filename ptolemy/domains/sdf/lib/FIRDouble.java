@@ -42,6 +42,9 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.sdf.kernel.*;
 
+import java.util.LinkedList;
+import java.util.List;
+
 //////////////////////////////////////////////////////////////////////////
 //// FIRDouble
 /**
@@ -144,6 +147,15 @@ public class FIRDouble extends FIR {
         if (_taps.length%_interp != 0) datalength++;
         _data = new double[datalength];
         _mostRecent = datalength;
+    }
+
+    /** Override the supper class method so that the type constraints there
+     *  are not used. This class has the types of the ports and the taps
+     *  parameter fixed to double, so no constraints are needed.
+     *  @return an empty list.
+     */
+    public List typeConstraintList() {
+        return new LinkedList();
     }
 
     ///////////////////////////////////////////////////////////////////
