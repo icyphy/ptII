@@ -54,6 +54,7 @@ JSRCS = \
 	Merge.java \
 	Sampler.java \
 	Server.java \
+	TimeBomb.java \
 	WaitingTime.java
 
 EXTRA_SRCS =	$(JSRCS)
