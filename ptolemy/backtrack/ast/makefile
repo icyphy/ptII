@@ -36,9 +36,8 @@ DIRS =
 # Root of the Java directory
 ROOT =		../../..
 
-JREFACTORY = $(ROOT)/lib/jrefactory.jar
-
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JREFACTORY)
+# JREFACTORY_JAR is set in $PTII/mk/ptII.mk
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JREFACTORY_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
