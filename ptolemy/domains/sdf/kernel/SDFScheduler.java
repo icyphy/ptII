@@ -37,6 +37,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.*;
 import ptolemy.math.Fraction;
+import ptolemy.moml.MoMLChangeRequest;
 
 import java.util.*;
 
@@ -557,6 +558,7 @@ public class SDFScheduler extends Scheduler {
     protected void _localMemberInitialize() {
         _firingVector = new TreeMap(new NamedObjComparator());
         _firingVectorValid = true;
+        addDebugListener(new StreamListener());
     }
 
     /** Return the scheduling sequence.  An exception will be thrown if the
@@ -878,8 +880,11 @@ public class SDFScheduler extends Scheduler {
         // Get the rate of this port.
         int currentRate = _getRate(currentPort);
 
-        // port rates of less than zero are not valid.
+        // Port rates of less than zero are not valid.
         if(currentRate < 0) {
+            throw new NotSchedulableException(
+                    currentPort, "Rate cannot be less than zero.  It was: " +
+                    currentRate);
         }
             
         // Propagate to anything that this port is connected to.  For
@@ -890,15 +895,12 @@ public class SDFScheduler extends Scheduler {
         if(currentPort.getContainer() == container) {
             // Find all the ports that are deeply connected to 
             // current port on the inside.
-            // NOTE that deepInsidePortList() is not sufficient, 
-            // since it will only return currentPort, since it is opaque.
-            List deepInsidePorts = new LinkedList();
-            for(Iterator insidePorts = currentPort.insidePortList().iterator();
-                insidePorts.hasNext();) {
-                IOPort port = (IOPort)insidePorts.next();
-                deepInsidePorts.addAll(port.deepInsidePortList());
+            connectedPorts = currentPort.deepInsidePortList().iterator();
+            _debug("deepInsidePortList of " + currentPort);
+            while(connectedPorts.hasNext()) {
+                _debug(connectedPorts.next().toString());
             }
-            connectedPorts = deepInsidePorts.iterator();
+            connectedPorts = currentPort.deepInsidePortList().iterator();
         } else {
             connectedPorts = currentPort.deepConnectedPortList().iterator();
         }
@@ -961,11 +963,10 @@ public class SDFScheduler extends Scheduler {
             
             // Now, compare the firing ratio that was computed before
             // with what we just determined.
-            // This should be either 0, or equal to desiredFiring.
-          
-            // The firing that we computed previously, or null
+            // This should be either           
+            // the firing that we computed previously, or null
             // if the port is an external port, or _minusOne if
-            // we have not computed the rate for this actor yet.
+            // we have not computed the firing ratio for this actor yet.
             Fraction presentFiring = (Fraction)firings.get(connectedActor);
             if(_debugging) {
                 _debug("presentFiring of connectedActor " 
@@ -982,6 +983,11 @@ public class SDFScheduler extends Scheduler {
                         new Fraction(currentRate, 1));
                 Fraction previousRate = 
                     (Fraction) externalRates.get(connectedPort);
+                if(previousRate == null) {
+                    System.out.println("Scheduler = " + getFullName());
+                    System.out.println("port = " + connectedPort);
+                }
+               
                 if(previousRate.equals(Fraction.ZERO)) {
                     externalRates.put(connectedPort, rate);
                 } else if(!rate.equals(previousRate)) {
@@ -1335,7 +1341,7 @@ public class SDFScheduler extends Scheduler {
 
         if (_debugging) {
             _debug("Schedule is:");
-            Iterator schedule = newSchedule.iterator();
+            Iterator schedule = newSchedule.actorIterator();
             while(schedule.hasNext()) {
                 _debug(((ComponentEntity) schedule.next()).toString());
             }
@@ -1351,43 +1357,31 @@ public class SDFScheduler extends Scheduler {
      */
     private void _setBufferSizes(Map minimumBufferSizes) {
         Director director = (Director) getContainer();
-        CompositeActor container = (CompositeActor) director.getContainer();
+        final CompositeActor container = 
+            (CompositeActor)director.getContainer();
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("<group>\n");
+        
         Iterator relations = container.relationList().iterator();
         while(relations.hasNext()) {
             Relation relation = (Relation)relations.next();
             int bufferSize = 
                 ((Integer)minimumBufferSizes.get(relation)).intValue();
-            
-            Parameter parameter = (Parameter)
-                    relation.getAttribute("bufferSize");
-            if(parameter == null) {
-                // This needs to be done in a mutation, since
-                // we may not be able to grab write access to the
-                // workspace.
-                final Relation finalRelation = relation;
-                final int finalBufferSize = bufferSize;
-                ChangeRequest request = new ChangeRequest(this,
-                        "set buffer size") {
-                    protected void _execute() throws Exception {
-                        Parameter parameter = new Parameter(
-                                finalRelation, "bufferSize");
-                        parameter.setToken(new IntToken(finalBufferSize));
-                    }
-                };
-                relation.requestChange(request);
-            } else {
-                try {
-                    parameter.setToken(new IntToken(bufferSize));
-                } catch (IllegalActionException ex) {
-                    throw new InternalErrorException(ex.toString());
-                }
-            }
-            
+            buffer.append("<relation name=\"");
+            buffer.append(relation.getName(container));
+            buffer.append("\">\n");
+            buffer.append("<property name=\"bufferSize\" class=\"ptolemy.data.expr.Parameter\" value=\"" + bufferSize + "\"/>\n");
+            buffer.append("</relation>\n");
+
             if (_debugging) {
                 _debug("Relation " + relation.getName());
                 _debug("bufferSize = " + bufferSize);
             }
         }
+        buffer.append("</group>");
+        container.requestChange(new MoMLChangeRequest(
+                this, container, buffer.toString()));
+
     }
 
     /** Push the rates calculated for this system up to the contained Actor.
@@ -1785,12 +1779,6 @@ public class SDFScheduler extends Scheduler {
                         remainingActors, pendingActors);
             }
         }
-        //        catch (NoSuchElementException e) {
-            // Once we've exhausted pendingActors, this exception will be
-            // thrown, causing us to terminate the loop.
-	    // FIXME this is a bad way to do this.  Don't communicate using
-            // exceptions.
-        //   done = true;
        
         if(!remainingActors.isEmpty()) {
             // If there are any actors left that we didn't get to, then
