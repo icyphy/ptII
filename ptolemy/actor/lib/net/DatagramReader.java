@@ -157,6 +157,25 @@ Well-known Ports
 Reference:  http://192.168.1.1/Forward.htm
 (A webpage hosted from within the Linksys BEFSR41 Cable/DSL Router)
 
+<p>NOTE: This actor can also be configured to handle multicase datagram
+socket. A MulticastSocket is a DatagramSocket with additional capabilities
+to join groups of other multicast hosts on the internet. A multicast group
+is specified by a class D IP address and a standard UDP port number. 
+When one member sends a packet to a multicast group, all recipients 
+subscribing to that host and port reiceive the packet. 
+Currently, The parameter <i>defaultReturnAddress</i> is overloaded to specify
+a multicast datagram IP address. When the return address is a multicast IP
+address, The parameter <i>localSocketNumber</i> is used to specify the 
+UDP port number for the multicast group. A multicast IP address 
+ranges from 224.0.0.0 to 239.255.255.255, inclusive. To send a packet to the
+group, the sender can be either a DatagramSocket or a MulticastSocket. The 
+only diffence is that MulticastSocket allows you to control the time-to-live
+of the datagram. Don't use 224.0.0.1 ~ 224.255.255.255 when the live time of
+is specified larger than 1. 
+
+<p>FIXME: we might not want to overload the <i>defaultReturnAddress</i> and
+the <i>localSocketNumber</i> parameter...
+
 <p>Another useful tidbit is the command 'netstat'.  This works in a
 DOS prompt and also in the UNIX-like Bash shell.  In either shell,
 enter 'netstat -an'.  This command shows current port allocations!  Ports
@@ -310,6 +329,9 @@ public class DatagramReader extends TypedAtomicActor {
     /** This actor's local socket (a.k.a. port) number.  <b>This is a
      *  system resource allocated to this actor.</b> No other actor
      *  with the same local socket number may run at the same time.
+     *  Currently, When the return address is a multicast IP address,
+     *  this parameter is also used to specify the UDP port number 
+     *  for the multicast group. 
      */
     public Parameter localSocketNumber;
 
@@ -375,7 +397,10 @@ public class DatagramReader extends TypedAtomicActor {
      *  false.  If blocking were true, the actor would simply stall in
      *  fire() until a datagram arrives.  Type is string.  Default value
      *  is "localhost".
-     *  */
+     *  Currently, this parameter can be overloaded to specify a multicast
+     *  datagram IP address. A multicast IP address ranges from
+     *  224.0.0.0 to 239.255.255.255, inclusive.
+     */
     public Parameter defaultReturnAddress;
 
     /** The default the <i>returnSocketNumber</i> output.  This token is
@@ -951,6 +976,19 @@ public class DatagramReader extends TypedAtomicActor {
         }
     }
 
+	/** Request that execution of the current iteration stop as soon
+	 *  as possible. Wake up the manager thread if it is blocking on
+	 *  fire() of this actor.
+	 */
+	public void stop() {
+		super.stop();
+		synchronized(_syncFireAndThread) {
+			if (_fireIsWaiting) {
+				_syncFireAndThread.notifyAll();
+			}
+		}
+	}
+	
     /** Release resources acquired in the initialize() method,
      *  specifically the evaluation variable, the DatagramSocket, and
      *  the SocketReadingThread.  This method also gets called from
