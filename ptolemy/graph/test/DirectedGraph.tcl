@@ -58,10 +58,11 @@ test DirectedGraph-1.1 {Get information about the class} {
   class:         pt.graph.DirectedGraph
   fields:        
   methods:       {add java.lang.Object} {addEdge java.lang.Object java.l
-    ang.Object} {contains java.lang.Object} {equals java.la
-    ng.Object} getClass hashCode isAcyclic isDirected notif
-    y notifyAll numNodes {reacheableNodes java.lang.Object}
-     toString topSort wait {wait long} {wait long int}
+    ang.Object} allEdges allNodes {contains java.lang.Objec
+    t} {equals java.lang.Object} getClass hashCode isAcycli
+    c isDirected notify notifyAll numEdges numNodes {reache
+    ableNodes java.lang.Object} toString topSort wait {wait
+     long} {wait long int}
     
   constructors:  pt.graph.DirectedGraph {pt.graph.DirectedGraph int}
     
