@@ -80,7 +80,7 @@ public class AudioPlayer extends Sink implements ControllerListener {
     public AudioPlayer(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-    
+
         input.setTypeEquals(BaseType.OBJECT);
     }
 
@@ -109,7 +109,7 @@ public class AudioPlayer extends Sink implements ControllerListener {
         }
         try {
             _player = Manager.createRealizedPlayer(input);
-            _player.addControllerListener(this); 
+            _player.addControllerListener(this);
             _player.prefetch();
         } catch (IOException ex) {
             throw new IllegalActionException(this,
@@ -118,7 +118,7 @@ public class AudioPlayer extends Sink implements ControllerListener {
             throw new IllegalActionException(this,
                     "Exception thrown by media framework: " + ex.toString());
         }
-        
+
         _player.setMediaTime(_startTime);
 
         _frame = new JFrame();
@@ -127,16 +127,16 @@ public class AudioPlayer extends Sink implements ControllerListener {
         _container.add(controlPanel);
         _frame.pack();
         _frame.show();
-        
+
         return super.postfire();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The container that contains the control panel components. */ 
+    /** The container that contains the control panel components. */
     private Container _container;
-    
+
     /** The JFrame where the the container is put. */
     private JFrame _frame;
 

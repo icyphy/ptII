@@ -131,20 +131,20 @@ public class VideoCamera extends Source implements ControllerListener {
         // FIXME: output should perhaps be named "video"?
         // In case there is audio track.
         // Don't derive from source in this case.
-        output.setTypeEquals(BaseType.OBJECT);    
+        output.setTypeEquals(BaseType.OBJECT);
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////    
+    ////                     ports and parameters                  ////
 
-    /** The type of video format to use.  This is a string valued 
+    /** The type of video format to use.  This is a string valued
      *  attribute that defaults to the type RGB.
      */
     public StringAttribute formatName;
 
-    /** This parameter lets the user select the device to use.  
+    /** This parameter lets the user select the device to use.
      *  Typically this parameter is of no concern and should be left
-     *  at 0.  However, if a computer has more than one useable 
+     *  at 0.  However, if a computer has more than one useable
      *  cameras, this parameter can be used to choose amongst them.
      */
     public Parameter deviceNumber;
@@ -205,7 +205,7 @@ public class VideoCamera extends Source implements ControllerListener {
             throw new IllegalActionException(this,
                     "Unrecognized interpolation type: " + typeName);
         }
-        
+
         // Get the list of devices that are compatible with the
         // chosen video format.
         // FIXME: Devicelist should be a static private member
@@ -234,7 +234,7 @@ public class VideoCamera extends Source implements ControllerListener {
         CaptureDeviceInfo captureDeviceInfo
             = (CaptureDeviceInfo) deviceList.get(((IntToken)deviceNumber.
                                   getToken()).intValue());
-        
+
         // Create a locator for this device.
         MediaLocator locator = captureDeviceInfo.getLocator();
 
@@ -356,7 +356,7 @@ public class VideoCamera extends Source implements ControllerListener {
      *********************************************************/
 
     public class PreAccessCodec implements Codec {
-        
+
         public PreAccessCodec() throws IllegalActionException {
         }
         /**

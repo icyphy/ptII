@@ -88,7 +88,7 @@ public class VideoPlayer extends Sink implements ControllerListener {
     public synchronized void controllerUpdate(ControllerEvent event) {
         notifyAll();
     }
-    
+
     /** Accept an ObjectToken containing a DataSource, and set it up
      *  for playing.
      *  @exception IllegalActionException If there is no director,
@@ -104,7 +104,7 @@ public class VideoPlayer extends Sink implements ControllerListener {
         }
         try {
             _player = Manager.createRealizedPlayer(input);
-            _player.addControllerListener(this); 
+            _player.addControllerListener(this);
             _player.prefetch();
         } catch (IOException ex) {
             throw new IllegalActionException(this,
@@ -113,9 +113,9 @@ public class VideoPlayer extends Sink implements ControllerListener {
             throw new IllegalActionException(this,
                     "Exception thrown by media framework: " + ex.toString());
         }
-        
+
         _player.setMediaTime(_startTime);
-        
+
         _frame = new JFrame();
         _container = _frame.getContentPane();
         _container.setLayout(new BorderLayout());
@@ -126,15 +126,15 @@ public class VideoPlayer extends Sink implements ControllerListener {
         _container.validate();
         _frame.pack();
         _frame.show();
-        
+
         _player.start();
         return super.postfire();
     }
-    
-    
-    /** The container that contains the control panel components. */ 
+
+
+    /** The container that contains the control panel components. */
     private Container _container;
-    
+
     /** The JFrame where the the container is put. */
     private JFrame _frame;
 

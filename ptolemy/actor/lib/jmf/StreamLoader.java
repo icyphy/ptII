@@ -71,7 +71,7 @@ public class StreamLoader extends Source {
     }
 
     public FileParameter fileOrURL;
-    
+
     public void initialize() throws IllegalActionException {
         super.initialize();
         URL url = fileOrURL.asURL();

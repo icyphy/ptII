@@ -76,7 +76,7 @@ public class MovieReader extends Source implements ControllerListener {
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
-     */    
+     */
     public MovieReader(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -96,10 +96,10 @@ public class MovieReader extends Source implements ControllerListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** An attempt is made to acquire the file name.  If it is 
+    /** An attempt is made to acquire the file name.  If it is
      *  successful, create the DataSource that encapsulates the file.
      *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If the URL is null, or 
+     *  @exception IllegalActionException If the URL is null, or
      *  invalid.
      */
     public void attributeChanged(Attribute attribute)
@@ -119,10 +119,10 @@ public class MovieReader extends Source implements ControllerListener {
             super.attributeChanged(attribute);
         }
     }
- 
-    /** The controller listener.  This method controls the 
+
+    /** The controller listener.  This method controls the
      *  initializing of the player.  It also senses when the
-     *  file is done playing, in which case it closes the 
+     *  file is done playing, in which case it closes the
      *  player.
      *  @param event The controller event.
      */
@@ -144,7 +144,7 @@ public class MovieReader extends Source implements ControllerListener {
             _playerOpen = false;
         }
     }
-    
+
     /** Send a JMFImageToken out through the output port.
      *  @exception IllegalActionException If there's no director.
      */
@@ -154,12 +154,12 @@ public class MovieReader extends Source implements ControllerListener {
     }
 
     /** An attempt is made to acquire both the frame grabbing and
-     *  frame positioning controls.  If both succeed, the first 
+     *  frame positioning controls.  If both succeed, the first
      *  frame is acquired.
      *  @exception IllegalActionException If the either frame
      *  grabbing control or frame positioning control cannot
      *  be acquired, or if a contained method throws it.
-     */   
+     */
     public void initialize() throws IllegalActionException {
         super.initialize();
         try {
@@ -172,7 +172,7 @@ public class MovieReader extends Source implements ControllerListener {
                     + "JMF2.1.1/bin.  The original exception was: "
                     + _dataSource);
         }
-        
+
         _player.addControllerListener(this);
 
         _player.realize();
@@ -182,7 +182,7 @@ public class MovieReader extends Source implements ControllerListener {
                     "Failed to realize player");
         }
 
-        _framePositioningControl = 
+        _framePositioningControl =
             (FramePositioningControl)_player.getControl(
                     "javax.media.control.FramePositioningControl");
 
@@ -191,17 +191,17 @@ public class MovieReader extends Source implements ControllerListener {
                     "Failed to get Frame Poisitioning Control");
         }
 
-        _frameGrabbingControl = 
+        _frameGrabbingControl =
             (FrameGrabbingControl)_player.getControl(
                     "javax.media.control.FrameGrabbingControl");
-        
+
         if (_frameGrabbingControl == null) {
             throw new IllegalActionException(null,
                     "Failed to get Frame Grabbing Control");
         }
 
         _player.prefetch();
-        
+
         if (!_waitForState(Controller.Prefetched)) {
             throw new IllegalActionException(null,
                     "Failed to prefetch player");
@@ -211,10 +211,10 @@ public class MovieReader extends Source implements ControllerListener {
 
         _frame = _frameGrabbingControl.grabFrame();
         _framePositioningControl.skip(1);
-        
+
     }
-    
-    /** If the player is no longer open, then disconnect the 
+
+    /** If the player is no longer open, then disconnect the
      *  datasource.  If the player is still open, acquire the next
      *  frame.
      *  @return false if the player is no longer open, otherwise
@@ -222,8 +222,8 @@ public class MovieReader extends Source implements ControllerListener {
      */
     public boolean postfire() throws IllegalActionException {
         if (_playerOpen == false) {
-           _dataSource.disconnect(); 
-           return false;  
+           _dataSource.disconnect();
+           return false;
         } else {
             _frame = _frameGrabbingControl.grabFrame();
             _framePositioningControl.skip(1);
@@ -243,7 +243,7 @@ public class MovieReader extends Source implements ControllerListener {
                 while (_player.getState() != state && _stateTransitionOK)
                     _waitSync.wait();
             } catch (Exception e) {
-                throw new IllegalActionException(null, e, 
+                throw new IllegalActionException(null, e,
                         "Failed block the processor until it state"
                         + " transition completed.");
             }
@@ -256,28 +256,28 @@ public class MovieReader extends Source implements ControllerListener {
 
     // The datasource that encapsulates the video file.
     private DataSource _dataSource;
-    
+
     // The individual frame to be sent to the output port.
     private Buffer _frame;
-    
+
     // The Frame grabbing control class that allows individual frames
     // to be acquired from the file.
     private FrameGrabbingControl _frameGrabbingControl;
-    
+
     // The Frame positioning control class that allows control over
     // which frame is the current one.
     private FramePositioningControl _framePositioningControl;
-    
+
     // The player.
     private Player _player;
-    
+
     // Boolean that keeps track of whether the player is open or not.
     private boolean _playerOpen = true;
 
     // Boolean that keeps track of whether the player initialization
     // has gone through smoothly.
     private boolean _stateTransitionOK = true;
-    
+
     // Object to allow synchronization in this actor.
     private Object _waitSync = new Object();
 
@@ -285,4 +285,4 @@ public class MovieReader extends Source implements ControllerListener {
 
 
 
-    
+
