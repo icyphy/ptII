@@ -35,9 +35,9 @@
 MAJOR_VERSION = 	4.0
 MINOR_VERSION =		alpha
 
-VERSION=	$(MAJOR_VERSION)$(MINOR_VERSION)
+VERSION=	$(MAJOR_VERSION)-$(MINOR_VERSION)
 # Version string for lame filesystems that don't like more than one .
-WINDOWS_VERSION =	4.0$(MINOR_VERSION)
+WINDOWS_VERSION =	4_0_$(MINOR_VERSION)
 
 # Even if you are building tar files from ptdesign, this should probably
 # still say ptolemy
@@ -66,7 +66,7 @@ PTII_FTP = /vol/ptolemy/pt0/ptweb/ptolemyII/ptII1.0
 # Use tar 1.13.20 or later so that -X works
 # Versions later than 1.13 can be found at ftp://alpha.gnu.org/gnu/tar/
 # 1.12 can be found at ftp://gatekeeper.dec.com/pub/GNU/tar/
-# make USER=cxh PTIIHOME=/cygdrive/c/users/cxh/ptII COMPRESS=gzip TAR=/usr/local/bin/tar 
+# make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII COMPRESS=gzip TAR=/usr/local/bin/tar 
 # make USER=cxh PTIIHOME=/cygdrive/d/tmp/ptII COMPRESS=gzip TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII3.1alpha PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
@@ -124,6 +124,7 @@ PTII_FULL = 	  $(GENDIR)/ptII$(VERSION).tar.$(SUFFIX)
 PTII_FULL_ZIP =    $(GENDIR)/ptII$(VERSION).src.zip
 # Source only, no .class, .jar or javadoc
 PTII_SRC =   $(GENDIR)/ptII$(VERSION).src.tar.$(SUFFIX)
+PTII_SRC_JAR =   $(GENDIR)/ptII$(VERSION).src.jar
 
 VERGIL = 	  $(GENDIR)/vergil$(VERSION).src.tar.$(SUFFIX)
 
@@ -235,7 +236,7 @@ $(PTII_FULL_ZIP): $(PTIIDIST)
 	ls -l $@
 
 
-ptii_src: $(PTII_SRC)
+ptii_src: $(PTII_SRC) $(PTII_SRC_JAR)
 $(PTII_SRC): $(PTII_FULL)
 	@echo "#"
 	@echo "# Now creating PTII_SRC: $@"
@@ -256,6 +257,36 @@ $(PTII_SRC): $(PTII_FULL)
 		cd ..; \
 		echo "#  Starting tar of $@"; \
 		$(TAR) -zcf $(PTII_SRC) ptII$(VERSION));
+
+###############
+# Build a jar file for use inside the installer
+# Create a jar file for use in the installer.
+# 1. The files that are jar'd do not include the large pdf docs, since
+# the installer already includes those
+# 2. The top directory of the jar file is not ptII$(VERSION), instead
+# it is _inside_ ptII$(VERSION) so that when the installer unjars it
+# the files come out in the right location
+
+# Location of the jar binary.  Cygwin /bin/jar is broken.
+JAR=c:/j2sdk1.4.2_04/bin/jar
+
+# The Jar file that we create.
+src.jar: $(PTII_SRC_JAR)
+$(PTII_SRC_JAR): src_jar
+	(cd src_jar/ptII$(VERSION); $(JAR) -cvf ../../ptII$(VERSION).src.jar .)
+
+# The directory we jar up.
+src_jar: $(PTII_SRC) 
+	mkdir src_jar;
+	tar -xf $(PTII_SRC)
+	rm -f src_jar/ptII$(VERSION)/doc/design/hyvisual.pdf
+	rm -f src_jar/ptII$(VERSION)/doc/design/ptIIdesign1-intro.pdf
+	rm -f src_jar/ptII$(VERSION)/doc/design/ptIIdesign2-software.pdf
+	rm -f src_jar/ptII$(VERSION)/doc/design/ptIIdesign3-domains.pdf
+	rm -f src_jar/ptII$(VERSION)/doc/design/visualsense.pdf
+
+###############
+
 
 update_ftp: update_ptii_ftp untar
 update_ptii_ftp:
