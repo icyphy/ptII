@@ -264,8 +264,7 @@ public class SDFScheduler extends Scheduler{
             Debug.println("normalizing Actor " + 
                     ((ComponentEntity) actor).getName());
             Fraction reps = (Fraction) Firings.at(actor);
-            reps = Fraction.multiply(reps,lcmFraction);
-            reps.simplify();
+            reps = reps.multiply(lcmFraction);
             if(reps.getDenominator() != 1)
                 throw new ArithmeticException("Failed to properly perform " +
                         "fraction normalization");
@@ -330,7 +329,7 @@ public class SDFScheduler extends Scheduler{
                     // the firing that we think the connected actor should be,
                     // based on currentActor
                     Fraction desiredFiring =
-                        Fraction.multiply(currentFiring,
+                        currentFiring.multiply(
                                 new Fraction(currentRate, connectedRate));
 
                     // What the firing for connectedActor already is set to.
@@ -339,9 +338,7 @@ public class SDFScheduler extends Scheduler{
                         Fraction presentFiring =
                             (Fraction) Firings.at(connectedActor);
 
-                        desiredFiring.simplify();
-
-                        if(Fraction.equals(presentFiring, Fraction.ZERO)) {
+			if(presentFiring.equals(Fraction.ZERO)) {
                             // create the entry in the firing table
                             Firings.putAt(connectedActor, desiredFiring);
 
@@ -352,7 +349,7 @@ public class SDFScheduler extends Scheduler{
                             PendingActors.include(connectedActor);
                         }
 
-                        else if(!Fraction.equals(presentFiring, desiredFiring))
+                        else if(!presentFiring.equals(desiredFiring))
                             throw new NotSchedulableException("Graph is not" +
                                     "consistent under the SDF domain");
                     }
@@ -423,7 +420,7 @@ public class SDFScheduler extends Scheduler{
                     // the firing that we think the connected actor should be,
                     // based on currentActor
                     Fraction desiredFiring =
-                        Fraction.multiply(currentFiring,
+                        currentFiring.multiply(
                                 new Fraction(currentRate, connectedRate));
 
                     // What the firing for connectedActor already is set to.
@@ -432,9 +429,7 @@ public class SDFScheduler extends Scheduler{
                         Fraction presentFiring =
                             (Fraction) Firings.at(connectedActor);
 
-                        desiredFiring.simplify();
-
-                        if(Fraction.equals(presentFiring, Fraction.ZERO)) {
+                        if(presentFiring.equals(Fraction.ZERO)) {
                             Firings.putAt(connectedActor, desiredFiring);
 
                             // Remove them from RemainingActors
@@ -443,7 +438,7 @@ public class SDFScheduler extends Scheduler{
                             // and add them to the PendingActors.
                             PendingActors.include(connectedActor);
                         }
-                        else if(!Fraction.equals(presentFiring, desiredFiring))
+                        else if(!presentFiring.equals(desiredFiring))
                             throw new NotSchedulableException("Graph is not" +
                                     "consistent under the SDF domain");
                     }
