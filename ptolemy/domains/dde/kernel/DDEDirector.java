@@ -386,14 +386,14 @@ public class DDEDirector extends ProcessDirector {
 	long actorsActive = _getActiveActorsCount();
 
 	// All threads are stopped due to stopFire()
-	if( threadsStopped != 0 && threadsStopped >= actorsActive ) {
+	if( threadsStopped > 0 && threadsStopped >= actorsActive ) {
 	    return true; 
 	} 
 
 	// Some threads are stopped due to stopFire() while others
 	// are blocked waiting to read or write data.
 	if( threadsStopped + _readBlocks + _writeBlocks >= actorsActive ) {
-	    if( threadsStopped != 0 ) {
+	    if( threadsStopped > 0 ) {
 	        return true; 
 	    }
 	}
