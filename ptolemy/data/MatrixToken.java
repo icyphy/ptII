@@ -784,7 +784,7 @@ public abstract class MatrixToken extends Token {
      */
     public final Token multiply(Token rightArgument)
             throws IllegalActionException {
-        UnsizedMatrixType type = (UnsizedMatrixType)getType();
+        // UnsizedMatrixType type = (UnsizedMatrixType)getType();
         // Get the corresponding element type for this matrix type,
         // and try a scalar operation.
         Type elementType = getElementType();
