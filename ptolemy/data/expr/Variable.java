@@ -40,6 +40,7 @@ import ptolemy.graph.*;
 import collections.LinkedList;
 
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
 import java.io.Writer;
@@ -355,12 +356,12 @@ public class Variable extends Attribute implements Typeable {
             if (container != null) {
                 NamedObj containerContainer =
                     (NamedObj)container.getContainer();
-                Enumeration level1 = container.getAttributes();
+                Iterator level1 = container.attributeList().iterator();
                 Attribute var = null;
-                while (level1.hasMoreElements()) {
+                while (level1.hasNext()) {
                     // add the variables in the same NamedObj to _scope,
                     // excluding this
-                    var = (Attribute)level1.nextElement();
+                    var = (Attribute)level1.next();
                     if ((var instanceof Variable) && (var != this)) {
                         if (!_isLegalInScope((Variable)var)) {
                             continue;
@@ -380,9 +381,10 @@ public class Variable extends Attribute implements Typeable {
                     }
                 }
                 if (containerContainer != null) {
-                    Enumeration level2 = containerContainer.getAttributes();
-                    while (level2.hasMoreElements()) {
-                        var = (Attribute)level2.nextElement();
+                    Iterator level2 =
+                        containerContainer.attributeList().iterator();
+                    while (level2.hasNext()) {
+                        var = (Attribute)level2.next();
                         try {
                             if (var instanceof Variable) {
                                 if (_isLegalInScope((Variable)var)) {
@@ -569,11 +571,18 @@ public class Variable extends Attribute implements Typeable {
 
             _destroyParseTree();
             if (_scope != null) {
+                Iterator vars = _scope.elementList().iterator();
+                while (vars.hasNext()) {
+                    Variable var = (Variable)vars.next();
+                    var._removeScopeDependent(this);
+                }
+                /*
                 Enumeration vars = _scope.elements();
                 while (vars.hasMoreElements()) {
                     Variable var = (Variable)vars.nextElement();
                     var._removeScopeDependent(this);
                 }
+                */
             }
             if (_scopeVariables != null) {
                 _scopeVariables.removeAll();
