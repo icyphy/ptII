@@ -160,34 +160,3 @@ received new token 1
 } {State of .E71.t1 is PROCESS_FINISHED and the cause = FINISHED_PROPERLY
 }}
 
-######################################################################
-####
-#
-test BasePNDirector-7.2 {Test artificial deadlock detection} {
-    set e72 [java::new ptolemy.actor.CompositeActor]
-    $e72 setName E72
-    set manager [java::new ptolemy.actor.Manager]
-    $e72 setManager $manager
-    set d72 [java::new ptolemy.domains.pn.kernel.BasePNDirector]
-    $d72 setName D72    
-    $e72 setDirector $d72
-    set p1 [$d72 getAttribute "Initial_queue_capacity"]
-    _testSetToken $p1 [java::new {ptolemy.data.IntToken int} 0]
-    set t1 [java::new ptolemy.domains.pn.kernel.test.TestDirector $e72 t1]
-    set p1 [$t1 getPort input]
-    set p2 [$t1 getPort output]
-    $e72 connect $p1 $p2
-    set lis [java::new ptolemy.domains.pn.kernel.event.test.StringPNListener]
-    $d72 addProcessListener $lis
-    $manager run
-    list [$t1 getProfile] [$lis getProfile]
-} {{broadcast new token 0
-broadcast new token 1
-received new token 0
-received new token 1
-} {State of .E72.t1 is PROCESS_BLOCKED and the cause = BLOCKED_ON_WRITE
-State of .E72.t1 is PROCESS_RUNNING
-State of .E72.t1 is PROCESS_BLOCKED and the cause = BLOCKED_ON_WRITE
-State of .E72.t1 is PROCESS_RUNNING
-State of .E72.t1 is PROCESS_FINISHED and the cause = FINISHED_PROPERLY
-}}

@@ -118,7 +118,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
             while (!_terminate && !super.hasToken()) {
                 //Only for listeners. Keep it before inform
                 _readblockedactor = (Actor)getContainer().getContainer();
-                director._informOfReadBlock(this);
+                director._informOfReadBlock(this, true);
                 _readpending = true;
                 while (_readpending && !_terminate) {
                     workspace.wait(this);
@@ -382,7 +382,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                 super.put(token);
                 //Check if pending write to the Queue;
                 if (_readpending) {
-                    director._informOfReadUnblock(this);
+                    director._informOfReadUnblock(this, true);
                     //NOTE: Only for listeners. Please keep it after informU
                     _readblockedactor = null;
                     _readpending = false;

@@ -459,8 +459,10 @@ public class BasePNDirector extends ProcessDirector {
      *  of the process blocking on a read. If either of them is detected,
      *  then notify the directing thread of the same.
      */
-    protected synchronized void _informOfReadBlock(PNQueueReceiver receiver) {
+    protected synchronized void _informOfReadBlock(PNQueueReceiver receiver,
+    	    boolean internal) {
 	_readBlockCount++;
+        /*
         if (!_processlisteners.isEmpty()) {
             Actor actor = receiver.getReadBlockedActor();
             PNProcessEvent event = new PNProcessEvent(actor,
@@ -472,6 +474,7 @@ public class BasePNDirector extends ProcessDirector {
                 lis.processStateChanged(event);
             }
         }
+        */
 	if (_isDeadlocked() || _isPaused()) {
 	    notifyAll();
 	}
@@ -484,8 +487,9 @@ public class BasePNDirector extends ProcessDirector {
      *  execution.
      */
     protected synchronized void _informOfReadUnblock
-    (PNQueueReceiver receiver) {
+    (PNQueueReceiver receiver, boolean internal) {
 	_readBlockCount--;
+        /*
         if (!_processlisteners.isEmpty()) {
             Actor actor = receiver.getReadBlockedActor();
             PNProcessEvent event = new PNProcessEvent(actor,
@@ -496,6 +500,7 @@ public class BasePNDirector extends ProcessDirector {
                 lis.processStateChanged(event);
             }
         }
+        */
 	return;
     }
 
@@ -514,6 +519,7 @@ public class BasePNDirector extends ProcessDirector {
         // FIXME: is add correct or should it have been addFirst
         // used to be insertFirst
 	_writeblockedQueues.add(receiver);
+        /*
         //Inform the listeners
         if (!_processlisteners.isEmpty()) {
             Actor actor = receiver.getWriteBlockedActor();
@@ -526,6 +532,7 @@ public class BasePNDirector extends ProcessDirector {
                 lis.processStateChanged(event);
             }
         }
+        */
 	if (_isDeadlocked() || _isPaused()) {
 	    notifyAll();
 	}
