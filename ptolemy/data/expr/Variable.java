@@ -284,6 +284,12 @@ public class Variable extends Attribute
         // _noTokenYet and _initialToken are preserved in clone
         newObject._parserScope = null;
 
+        // Very subtle bug from missing this.
+        // This bug only showed up when using MoML classes (e.g.
+        // SmoothedPeriodogram actors, which are composite actors
+        // in the library), because these are cloned when copied.
+        newObject._variablesDependentOn = null;
+
         // set _declaredType and _varType
         if (_declaredType instanceof StructuredType &&
                 !_declaredType.isConstant()) {
