@@ -44,19 +44,28 @@ output is determined by a parameter set by the user.
 
 public class Const extends TypedAtomicActor {
 
-    /** Construct a constant source.
+    /** Construct a constant source. The value of the constant output
+     *  is determined by the specified expression. If the expression is
+     *  null, it is set to the default value "0".
      *  @param container The container.
      *  @param name The name of this actor.
+     *  @param expr The expression of the constant output.
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Const(TypedCompositeActor container, String name)
+    public Const(TypedCompositeActor container, String name, String expr)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-    	_value = new Parameter(this, "Value", new IntToken(0));
+    	_value = new Parameter(this, "Value");
+	if (expr == null) {
+	    _value.setExpression("0");
+	} else {
+	    _value.setExpression(expr);
+	}
+	_value.evaluate();
     	_output = new TypedIOPort(this, "Output", false, true);
     }
 
