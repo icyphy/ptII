@@ -27,7 +27,7 @@ How to add a configuration
 1. Edit $PTII/ptolemy/configs/makefile
    a.  Add your configuration name to the DIRS line in alphabetical order.
        For example, if the configuration I was adding was 'myconfig'
-DIRS =		doc dsp full hybrid jxta myconfig ptiny test
+DIRS =		doc dsp full hyvisual jxta myconfig ptiny test
    b.  Add a jar file entry to the value of PTCLASSALLJARS.
        This is required if your configuration is to be included in
        the distribution when we ship it.  For example:
@@ -35,7 +35,7 @@ PTCLASSALLJARS = \
 		doc/doc.jar \
 		dsp/dsp.jar \
 		full/full.jar \
-		hybrid/hybrid.jar \
+		hyvisual/hyvisual.jar \
 		jxta/jxta.jar \
 		myconfig/myconfig.jar \
 		ptiny/ptiny.jar
