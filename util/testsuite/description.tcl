@@ -31,6 +31,13 @@
 #######################################################################
 
 
+# The methods in this file should be written in Tcl, not Itcl
+# so that this file can be used with both Itkwish and Tcl8.0.
+#
+# Any methods that call Tcl Blend commands should check to
+# see if the java package is loaded first with:
+# if {[lsearch [package names] java] != -1 } { ...}
+
 ######################################################################
 ####
 # Given a string description returned by the pt.kernel.Nameable description()
@@ -149,32 +156,6 @@ proc _description2DAGInternal {fd contents {parent {}} {oldparent {}}
 
 
 ######################################################################
-#### fullName2HTML
-# Given a fullName of a Entity or Relation, display an HTML
-# description.
-#
-proc fullName2HTML {className fullName} {
-    global TYCHO jrpc
-    startJRPCIfNecessary
-
-    regsub -all {\.} $className {/} fileName
-    set fullFileName $TYCHO/java/$fileName.java
-    set fullDocFileName \
-	    [file dirname $fullFileName]/doc/codeDoc/$className.html
-
-    set m [::tycho::autoName .fullName2HTML]
-    ::tycho::HTMLMessage $m
-    $m insertData "<h1>Description of <code>$fullName</code></h1> \
-	    <menu>\
-	    <li>Source code:\
-	    <a href=\"$fullFileName\"><code>$fullFileName</code></a>\
-	    <li>JavaDoc:\
-	    <a href=\"$fullDocFileName\"><code>$fullDocFileName</code></a>\
-	    "
-    $m centerOnScreen
-}
-
-######################################################################
 ####
 # Given a string description returned by the pt.kernel.Nameable description()
 # method, return a Tcl Blend script that will regenerate the description
@@ -271,3 +252,122 @@ proc description2TclBlend {descriptionString} {
     return $results
 }
 
+######################################################################
+#### getCurrentUniverse
+# Get the java handle for the Current Ptolemy II Universe.
+# This method is used to inspect Ptolemy II objects in a DAG.
+#
+proc getCurrentUniverse {} {
+    global _currentPtolemyIIUniverse
+    if ![info exists _currentPtolemyIIUniverse] {
+	return {}
+    } else {
+	return $_currentPtolemyIIUniverse
+    }
+}
+
+
+######################################################################
+#### getEntityByName
+# Search the current universe for an entity with a particular name 
+# setCurrentUniverse $e0
+# set e [getEntityByName .E0.E10.E9]
+# $e description 3
+#
+proc getEntityByName {name} {
+    if {[lsearch [package names] java] == -1 } {
+	error "Can't call getEntityByName without doing 'package require\
+		java' first."
+    }
+    set universe [getCurrentUniverse]
+    if {$universe == {}} {
+	error "getCurrentUniverse returned {}, so there is no where to look"
+    }
+
+    # Do a little error checking.
+    set description [$universe description \
+	    [java::field pt.kernel.Nameable CONTENTS]]
+    set index [lsearch $description $name]
+    if {$index == -1} {
+	# Not found
+	return {}
+    }
+
+    #set type [lindex $description [incr index -1]]
+
+    set entity $universe
+    set previousEntity $entity
+    # FIXME: we are depending on the name being separated by .
+    set splitList [split $name .]
+    foreach splitElement [lrange $splitList 2 end] {
+	if {$splitElement != {} } {
+	    set previousEntity $entity
+	    set entity [ $entity getEntity $splitElement]
+	    puts "splitElement: $splitElement, $entity"
+	    if {$entity == [java::null]} {
+		break
+	    }
+	}
+    }
+    if {$entity == [java::null]} {
+	set entity $previousEntity
+    }
+    return $entity
+}
+
+######################################################################
+#### fullName2HTML
+# Given a fullName of a Entity or Relation, display an HTML
+# description.
+#
+proc fullName2HTML {className fullName} {
+    global TYCHO jrpc
+    startJRPCIfNecessary
+
+    regsub -all {\.} $className {/} fileName
+    set fullFileName $TYCHO/java/$fileName.java
+    set fullDocFileName \
+	    [file dirname $fullFileName]/doc/codeDoc/$className.html
+
+    set entity [$jrpc send "getEntityByName $fullName"] 
+    set description [split [$jrpc send "$entity description 2"] "\n"]
+    foreach linkLine $description {
+	set elements [split $linkLine]
+	if {[llength $elements] > 0} {
+	    append formattedDescription \
+		    "<li>[lindex $elements 0],\ 
+		    named `[lindex $elements 1]'\n\
+		    is linked to a [lindex $elements 3],\
+		    named `[lindex $elements 4]'\n"
+	}
+    }
+
+    set m [::tycho::autoName .fullName2HTML]
+    ::tycho::HTMLMessage $m
+    $m insertData "<h1>Description of <code>$fullName</code></h1> \
+	    `$fullName' is a `$className'
+	    <menu>\
+	    <li>Source code:\
+	    <a href=\"$fullFileName\"><code>$fullFileName</code></a>\
+	    <li>JavaDoc:\
+	    <a href=\"$fullDocFileName\"><code>$fullDocFileName</code></a>\
+	    <li>Ports:
+	    <menu>$formattedDescription</menu>\
+	    "
+    $m centerOnScreen
+}
+
+######################################################################
+#### setCurrentUniverse
+# Set the java handle for the Current Universe
+#
+proc setCurrentUniverse { universe} {
+    if {[lsearch [package names] java] != -1 } {
+	if ![java::instanceof $universe pt.kernel.CompositeEntity] {
+	    error "$universe is not a CompositeEntity.\nIt is a:\n\
+		    [java::info class $universe]"
+	}
+    }
+    global _currentPtolemyIIUniverse
+    set _currentPtolemyIIUniverse $universe
+}
