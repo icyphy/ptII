@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Green (bilung@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -47,7 +47,7 @@ import ptolemy.math.Complex;
 //////////////////////////////////////////////////////////////////////////
 //// Rician
 /**
-Produce a random sequence with a Rician distribution.
+Produce a random sequence with a Rician distribution. 
 A Rician random variable is defined as follows:
 Let Z = sqrt(X<sup>2</sup> + Y<sup>2</sup>), where X and Y are statistically
 independent Gaussian random variables with means given by parameters
@@ -87,7 +87,7 @@ public class Rician extends RandomSource {
 
         xMean = new Parameter(this, "xMean", new DoubleToken(0.0));
         xMean.setTypeEquals(BaseType.DOUBLE);
-
+       
         yMean = new Parameter(this, "yMean", new DoubleToken(0.0));
         yMean.setTypeEquals(BaseType.DOUBLE);
 
