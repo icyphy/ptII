@@ -17,6 +17,7 @@
 RCS
 SCCS
 CVS
+.cvsignore
 */TAGS
 */tags
 adm
