@@ -33,9 +33,6 @@ package ptolemy.vergil.icon;
 import java.awt.Color;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
-import java.lang.ref.WeakReference;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Iterator;
 
 import javax.swing.SwingUtilities;
