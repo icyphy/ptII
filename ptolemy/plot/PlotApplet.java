@@ -84,7 +84,7 @@ public class PlotApplet extends Applet implements Runnable {
         setLayout(new BorderLayout());
 
         if ( plot() == null) {
-            _newPlot();
+            newPlot();
         }
         add("Center",plot());
         //show();
@@ -154,6 +154,14 @@ public class PlotApplet extends Applet implements Runnable {
 
     }
 
+    /** Create a new Plot object to operate on.  Derived classes can
+     * redefine this method to create multiple Plot objects.
+     */
+    protected void newPlot() {
+        _myPlot = new Plot();
+    }
+        
+
     /** Paint the screen with our plot.
      */
     public void paint(Graphics graphics) {
@@ -188,17 +196,6 @@ public class PlotApplet extends Applet implements Runnable {
         _plotThread.stop();
     }
 
-
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                        ////
-
-    /** Create a new Plot object to operate on.  Derived classes can
-     * redefine this method to create multiple Plot objects.
-     */
-    protected void _newPlot() {
-        _myPlot = new Plot();
-    }
-        
     //////////////////////////////////////////////////////////////////////////
     ////                         protected variables                      ////
 
