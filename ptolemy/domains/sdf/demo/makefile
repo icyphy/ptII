@@ -68,6 +68,7 @@ PTCLASSALLJARS = \
 	Sketch/Sketch.jar \
 	SoundSpectrum/SoundSpectrum.jar \
 	Spectrum/Spectrum.jar \
+	SynthesizedVoice/SynthesizedVoice.jar \
 	Type/Type.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
