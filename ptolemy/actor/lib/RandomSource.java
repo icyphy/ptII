@@ -148,7 +148,11 @@ public abstract class RandomSource extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Generate a new random number. */
+    /** Generate a new random number. 
+     *  @exception IllegalActionException Not thrown in this base class.
+     *  Derived classes may throw it if there are problems getting parameter
+     *  values.   
+     */
     protected abstract void _generateRandomNumber() throws IllegalActionException;
 
     ///////////////////////////////////////////////////////////////////
