@@ -11,7 +11,7 @@
     <property name="CT" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="3.0">
         </property>
         <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
@@ -77,6 +77,8 @@ CTDirector to schedule and execute the model correctly.
         <property name="_hideName" class="ptolemy.data.expr.Parameter">
         </property>
     </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 102, 819, 563}}">
+    </property>
     <entity name="EventSource" class="ptolemy.domains.ct.lib.EventSource">
         <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
         </property>
@@ -84,7 +86,7 @@ CTDirector to schedule and execute the model correctly.
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="163.0, 96.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 60.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -165,7 +167,7 @@ CTDirector to schedule and execute the model correctly.
         </port>
     </entity>
     <entity name="continuous time composite actor" class="ptolemy.domains.ct.kernel.CTCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="417.0, 106.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 105.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
@@ -257,6 +259,8 @@ CTDirector to schedule and execute the model correctly.
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+                </property>
             </relation>
             <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="trigger_isPresent">
@@ -274,6 +278,8 @@ CTDirector to schedule and execute the model correctly.
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
             </relation>
             <link port="const.incomingPort" relation="relation3"/>
@@ -422,7 +428,7 @@ CTDirector to schedule and execute the model correctly.
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="344.0, 205.0">
+            <vertex name="vertex1" value="344.0, 205.0">
             </vertex>
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -437,22 +443,42 @@ CTDirector to schedule and execute the model correctly.
         <link port="sinewave.input" relation="relation5"/>
         <link port="sinewave.output" relation="relation4"/>
     </entity>
-    <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 1.0, 0.995, 0.972508342001, 0.9320285623109, 0.8734531430471, 0.7965328724511, 0.7007647407397, 0.5858345531052, 0.4632592475077, 0.3350322777843, 0.2030041778653, 0.0707071674618, 1.0, 1.0, 1.0, 1.0, 1.0, -0.4160812400118, -0.5047592000275, -0.6214130926452, -0.728649376027, -0.8224559093013, -0.8952851005934, -0.9484498231319, -0.9826882550806, -0.9984539930294, -0.9960238903221, -0.9755487625283, -0.937071057401, -0.9360948342931, 1.0, 1.0, 1.0, 1.0, 1.0, -0.6533367609552, -0.5745443903029, -0.4511461710017, -0.3225094670207, -0.190238721932, -0.0560489151222, 0.078411527745, 0.2115156056527, 0.3416181829205, 0.467013375473, 0.5858806543926, 0.6962062108135, 0.708308974715, 1.0, 1.0, 1.0, 1.0, 1.0, 0.9595954952007, 0.9826686876993, 0.9982314401705, 0.9955680923703, 0.9748628793178, 0.9361568055662, 0.8793741296375, 0.8042840701677, 0.7104146055529, 0.5968691441575, 0.4749899695168, 0.3472769490982, 0.3462827248188, 1.0, 1.0, 1.0, 1.0, 1.0, -0.1454702117866, -0.2434308890332, -0.3726959764796, -0.4966395717751, -0.6135856571619, -0.7214549823568, -0.8166180337604, -0.8906954132229, -0.9450519370353, -0.980449672614, -0.9973561756377, -0.9961765741895, 1.0, 1.0, 1.0, 1.0, 1.0}">
+    <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
+        <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.3">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="535.0, 130.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="435.0, 120.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+            </property>
+        </port>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0,0.9553242937165,0.8253139254735,0.6215843923096,0.3623359768276,1.0,1.0,-0.5048081198582,-0.7373256320525,-0.9039746338582,-0.9898705943034}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="545.0, 130.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="270.0, 190.0">
+        <vertex name="vertex1" value="270.0, 190.0">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -462,10 +488,12 @@ CTDirector to schedule and execute the model correctly.
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="260.0, 225.0">
+        <vertex name="vertex1" value="260.0, 225.0">
         </vertex>
     </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="EventSource.output" relation="relation6"/>
     <link port="Integrator.input" relation="relation2"/>
@@ -478,6 +506,8 @@ CTDirector to schedule and execute the model correctly.
     <link port="continuous time composite actor.trigger" relation="relation6"/>
     <link port="continuous time composite actor.input1" relation="relation7"/>
     <link port="continuous time composite actor.input2" relation="relation4"/>
-    <link port="continuous time composite actor.output" relation="relation8"/>
-    <link port="Test.input" relation="relation8"/>
+    <link port="continuous time composite actor.output" relation="relation3"/>
+    <link port="PeriodicSampler.input" relation="relation3"/>
+    <link port="PeriodicSampler.output" relation="relation5"/>
+    <link port="NonStrictTest.input" relation="relation5"/>
 </entity>

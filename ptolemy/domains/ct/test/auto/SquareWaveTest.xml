@@ -7,7 +7,7 @@
     <property name="CT" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="6.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
         <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
@@ -70,6 +70,8 @@ which takes the parameters and construct a Ptolemy model for you.</text>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={175, 68, 819, 563}}">
     </property>
     <entity name="ContinuousTransferFunction1" class="ptolemy.domains.ct.lib.ContinuousTransferFunction">
         <property name="numerator" class="ptolemy.data.expr.Parameter" value="{500.0}">
@@ -243,38 +245,68 @@ which takes the parameters and construct a Ptolemy model for you.</text>
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{2.0, -2.0}">
         </property>
+        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
         <doc>Create a generalized square wave</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 290.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
+        <port name="start" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+            </property>
+        </port>
     </entity>
-    <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{ 0.0, 2.0 }, { 0.0748697916667, 2.0 }, { 0.2704199530971, 2.0 }, { 0.6370931995149, 2.0 }, { 0.8815585001963, 2.0 }, { 1.2192808921204, 2.0 }, { 1.4347103779569, 2.0 }, { 1.561152365793, 2.0 }, { 1.5981316887918, 2.0 }, { 1.5427283907149, 2.0 }, { 1.385398219743, 2.0 }, { 1.2290486512257, 2.0 }, { 1.0458817183933, 2.0 }, { 0.8243167129654, 2.0 }, { 0.6978225113996, 2.0 }, { 0.6444691391543, 2.0 }, { 0.6657627074807, 2.0 }, { 0.7666294864235, 2.0 }, { 0.8727420365836, 2.0 }, { 0.9937955915858, 2.0 }, { 1.1343655969039, 2.0 }, { 1.2006694679899, 2.0 }, { 1.2071953944797, 2.0 }, { 1.1519522403686, 2.0 }, { 1.0210523879981, 2.0 }, { 0.9200523028538, 2.0 }, { 0.8808008053682, 2.0 }, { 0.889063555005, 2.0 }, { 0.9461977627057, 2.0 }, { 0.9957135051323, 2.0 }, { 1.0568608322358, 2.0 }, { 1.0688434388844, 2.0 }, { 1.0441747389813, 2.0 }, { 1.0119981440068, 2.0 }, { 0.9834804768094, 2.0 }, { 0.9612230281477, 2.0 }, { 0.970808029781, 2.0 }, { 1.0058104544608, 2.0 }, { 1.0194895286965, 2.0 }, { 1.0109995911031, 2.0 }, { 0.9984396025968, 2.0 }, { 0.9913669774177, 2.0 }, { 0.9987983715853, 2.0 }, { 1.0042279707932, 2.0 }, { 1.0005410680339, 2.0 }, { 0.9983719878303, 2.0 }, { 0.9979807078024, 2.0 }, { 0.9979775636718, 2.0 }, { 0.9980215566345, 2.0 }, { 0.9980542428614, 2.0 }, { 0.9980731490421, 2.0 }, { 0.9980832280062, 2.0 }, { 0.9980884220236, 2.0 }, { 0.9980910574202, 2.0 }, { 0.9980937183142, -2.0 }, { 0.9980937183142, -2.0 }, { 0.9600125927731, -2.0 }, { 0.7747543172125, -2.0 }, { 0.4183523739991, -2.0 }, { -0.1894033601958, -2.0 }, { -0.624557660647, -2.0 }, { -1.2203722894008, -2.0 }, { -1.6392762862034, -2.0 }, { -1.9408966549016, -2.0 }, { -2.1285104768609, -2.0 }, { -2.2011672969404, -2.0 }, { -2.1549565325361, -2.0 }, { -1.9809897254358, -2.0 }, { -1.6514465916449, -2.0 }, { -1.2309333732898, -2.0 }, { -0.8174457229461, -2.0 }, { -0.5441030017544, -2.0 }, { -0.3670737663991, -2.0 }, { -0.2853344548357, -2.0 }, { -0.3008575096003, -2.0 }, { -0.419686809109, -2.0 }, { -0.6641443741425, -2.0 }, { -0.9677685819087, -2.0 }, { -1.2074056442847, -2.0 }, { -1.355194613365, -2.0 }, { -1.4241162846165, -2.0 }, { -1.4132113388823, -2.0 }, { -1.3179874250363, -2.0 }, { -1.1144028274613, -2.0 }, { -0.9986760122963, -2.0 }, { -0.8408151540864, -2.0 }, { -0.7625420788238, -2.0 }, { -0.7484755772003, -2.0 }, { -0.8007351573011, -2.0 }, { -0.9301892557009, -2.0 }, { -1.0122596528598, -2.0 }, { -1.1112962147115, -2.0 }, { -1.1476239911645, -2.0 }, { -1.1320790199431, -2.0 }, { -1.0621528786668, -2.0 }, { -0.9750860920398, -2.0 }, { -0.9241158044163, -2.0 }, { -0.9170213094451, -2.0 }, { -0.9506581262705, -2.0 }, { -0.9943674176659, -2.0 }, { -1.0231085802427, -2.0 }, { -1.0479772355071, -2.0 }, { -1.0377928154553, -2.0 }, { -0.9981178910008, -2.0 }, { -0.975758463875, -2.0 }, { -0.9812176331929, -2.0 }, { -1.0054503147536, -2.0 }, { -1.0111010990827, -2.0 }, { -1.0018518872466, -2.0 }, { -0.9960845510694, -2.0 }}">
+    <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
+        <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 255.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 290.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+            </property>
         </port>
     </entity>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="155.0, 290.0">
-        </vertex>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0,1.5985877350781,0.644297059844,1.2111094014232,0.9004914433968,1.0573345603767,0.9746740450975,1.0092423248152,0.9975162369841,1.0003347126904,1.0001067256881}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="505.0, 290.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="ContinuousTransferFunction1.input" relation="relation6"/>
-    <link port="ContinuousTransferFunction1.output" relation="relation"/>
-    <link port="Clock2.output" relation="relation6"/>
-    <link port="Test.input" relation="relation"/>
-    <link port="Test.input" relation="relation6"/>
+    <link port="ContinuousTransferFunction1.input" relation="relation2"/>
+    <link port="ContinuousTransferFunction1.output" relation="relation3"/>
+    <link port="Clock2.output" relation="relation2"/>
+    <link port="PeriodicSampler.input" relation="relation3"/>
+    <link port="PeriodicSampler.output" relation="relation"/>
+    <link port="NonStrictTest.input" relation="relation"/>
 </entity>
