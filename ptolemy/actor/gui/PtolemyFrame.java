@@ -106,53 +106,6 @@ public abstract class PtolemyFrame extends TableauFrame {
         }
     }
 
-    /** Write the model to the specified file.  This method overrides
-     *  the base class to change the name of the model to match that
-     *  of the file before doing the save.  The base class method delegates
-     *  to the top effigy containing the associated Tableau, if there
-     *  is one, and otherwise throws an exception.
-     *  @param file The file to write to.
-     *  @exception IOException If the write fails.
-     */
-/* FIXME: Not needed anymore?
-    protected void _writeFile(File file) throws IOException {
-        // Remove the extension and sanitize the name.
-        String filename = file.getName();
-        int period = filename.lastIndexOf('.');
-        if (period > 0) {
-            filename = filename.substring(0, period);
-        }
-        String newName = _sanitizeName(filename);
-        try {
-            getModel().setName(newName);
-        } catch (Exception ex) {
-            // Ignore... Keep the previous name.
-        }
-
-        super._writeFile(file);
-    }
-*/
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Sanitize a String so that it can be used as an entity name.
-     *  This simply replaces any periods with underscores.
-     *  @param name An arbitrary string.
-     *  @returns A string with no periods.
-     */
-/* FIXME: Not needed anymore?
-    private String _sanitizeName(String name) {
-	char [] nameArray = name.toCharArray();
-	for(int i = 0; i < nameArray.length; i++) {
-	    if (nameArray[i] == '.') {
-		nameArray[i] = '_';
-	    }
-	}
-	return new String(nameArray);
-    }
-*/
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
