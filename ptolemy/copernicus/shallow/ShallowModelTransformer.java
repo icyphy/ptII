@@ -123,7 +123,7 @@ public class ShallowModelTransformer extends SceneTransformer {
 	    Attribute attribute = (Attribute)attributes.next();
 
             // FIXME: This is horrible...  I guess we need an attribute for
-            // persistance?
+            // persistence?
             if (attribute instanceof Variable &&
                     !(attribute instanceof Parameter)) {
                 continue;

@@ -469,7 +469,7 @@ public class MoMLWriter extends Writer {
                     return false;
 
                 // FIXME: This is horrible...  I guess we need an attribute for
-                // persistance?
+                // persistence?
                 if (object instanceof Variable && !(object instanceof Parameter))
                     return false;
 
