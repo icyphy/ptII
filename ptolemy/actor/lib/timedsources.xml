@@ -8,6 +8,8 @@
 <doc>Sources that depend on time.</doc>
 
 <entity name="Clock" class="ptolemy.actor.lib.Clock">
+<doc>Create a set of pulses</doc>
+<entity name="ContinuousClock" class="ptolemy.actor.lib.ContinuousClock">
 <doc>Create a generalized square wave</doc>
 </entity>
 

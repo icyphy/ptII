@@ -106,6 +106,7 @@ JSRCS = \
 	Clock.java \
 	Commutator.java \
 	Const.java \
+	ContinuousClock.java \
 	Counter.java \
 	CurrentTime.java \
 	Differential.java \

@@ -1,4 +1,4 @@
-/* A clock source.
+/* A continuous clock source.
 
  Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (yuhong@eecs.berkeley.edu)
+@ProposedRating Red (hyzheng@eecs.berkeley.edu)
+@AcceptedRating Red (hyzheng@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -50,12 +50,9 @@ import ptolemy.kernel.util.*;
 /**
 This actor produces a periodic signal, a generalized square wave
 that sequences through <i>N</i> output values with arbitrary duty cycles
-and period.  It has various uses.  Its simplest use in the DE domain
-is to generate a sequence of events at regularly spaced
-intervals.  In CT, it can be used to generate a square wave.
-In both domains, however, it can also generate more intricate
-waveforms that cycle through a set of values. It can also generate
-finite pulses by specifying a finite <i>numberOfCycles</i>.
+and period.  It has various uses.  It can be used to generate a square wave.
+It can also generate more intricate waveforms that cycle through a set of values. 
+The set of values may be finite by specifying a finite <i>numberOfCycles</i>.
 Once the specified number of cycles has been completed, then this actor
 will output zeros with the same type as the values in the <i>values</i>
 parameter.
@@ -106,14 +103,14 @@ in the <i>offsets</i> array.
 The type of the output can be any token type. This type is inferred from the
 element type of the <i>values</i> parameter.
 <p>
-This actor is a timed source; the untimed version is Pulse.
+This actor is a timed source.
 
-@author Edward A. Lee
+@author Edward A. Lee, Haiyang Zheng
 @version $Id$
-@since Ptolemy II 0.3
+@since Ptolemy II 2.2
 */
 
-public class Clock extends TimedSource {
+public class ContinuousClock extends TimedSource {
 
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -123,7 +120,7 @@ public class Clock extends TimedSource {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Clock(CompositeEntity container, String name)
+    public ContinuousClock(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
