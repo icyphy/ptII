@@ -31,11 +31,13 @@
 	<dd> Doug Lea's Collections Java package.  This directory
 	will go away once we no longer support JDK1.1
 
-	<dt><a href="../../com"><CODE>com</CODE></a>
-	<dd> Commercial Java packages
+	<dt><CODE>com</CODE></a>
+	<dd> Commercial Java packages, which we are not shipping.
 		<dl>
-		<dt> <a href="../../com/microstar"><CODE>microstar</CODE></a>
+		<dt> <CODE>microstar</CODE>
 		<dd> Microstar Inc's XML Parser 
+		<dt> <CODE>oroinc</CODE>
+		<dd> Oroinc's regular expression parser, for use with Jacl
 		</dl>
 
 	<dt><a href="../../config"><CODE>config</CODE></a>
@@ -45,10 +47,12 @@
 	<dt><CODE>devel/</CODE>
 	<dd> Code that is under development and not to be released.
 
-	<dt><a href="../../diva"><CODE>diva</CODE></a>
+	<dt><CODE>diva</CODE>
 	<dd> The
 	<a href="http://ptolemy.eecs.berkeley.edu/diva/" target="_top">Diva</a> 
-	Dynamic Interactive Visualization software system
+	Dynamic Interactive Visualization software system.
+	Diva is used by some of the demos.  
+	The Diva jar file is at <CODE>$PTII/lib/diva.jar</CODE>
 
 	<dt><a href="../../mk"><CODE>mk</CODE></a>
 	<dd> Makefiles that are included in other makefiles
@@ -68,6 +72,10 @@
 		<dd> Used in directories that contain no source files,
 		only subdirectories.
 
+		<dt> <a href="../../mk/ptdist.mk"><CODE>ptdist.mk</CODE></a>
+		<dd> Used in to build standalone distributions, such
+		as Ptplot
+
 		<dt> <a href="../../mk/ptcommon.mk"><CODE>ptcommon.mk</CODE></a>
 		<dd> Contains rules to build derived files from source files.
 
@@ -84,6 +92,9 @@
 		<a href="../../ptolemy/actor/doc/codeDoc/tree.html"><CODE>documentation</CODE></a>
 		<dd> Functional block code
 			<dl>
+			<dt> <a href="../../ptolemy/actor/lib"><CODE>lib</CODE></a> -
+		<a href="../codeDoc/ptolemy/actor/lib"><CODE>documentation</CODE></a>
+			<dd> Domain Polymorphic actors
 			<dt> <a href="../../ptolemy/actor/util"><CODE>util</CODE></a> -
 		<a href="../../ptolemy/actor/util/doc/codeDoc/tree.html"><CODE>documentation</CODE></a>
 			<dd> Utility classes 
@@ -165,7 +176,7 @@
 	<dd> Ptolemy II Non-Java Utilities
 		<dl>
 		<dt> <a href="../../util/testsuite"><CODE>testsuite</CODE></a>
-		<dd> Test suite infrastructure that uses Tcl Blend
+		<dd> Test suite infrastructure that uses <a href="../install.html#Jacl">Jacl</a>
 		</dl>
 
 
