@@ -34,7 +34,6 @@ import ptolemy.actor.gui.Placeable;
 import ptolemy.actor.lib.SequenceActor;
 import ptolemy.actor.lib.gui.Display;
 import ptolemy.data.IntToken;
-import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -61,7 +60,8 @@ public class TimedDisplay extends Display implements Placeable, SequenceActor {
         int width = input.getWidth();
         for (int i = 0; i < width; i++) {
             if (input.hasToken(i)) {
-                Token token = input.get(i);
+                // Read a token, but don't use the value
+                input.get(i);
                 Director director = getDirector();
                 String value = " ";
 

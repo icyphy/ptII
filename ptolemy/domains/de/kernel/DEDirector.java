@@ -971,7 +971,6 @@ public class DEDirector extends Director {
     protected Actor _dequeueEvents() {
         Actor actorToFire = null;
         DEEvent currentEvent = null, nextEvent = null;
-        int currentDepth = 0;
 
         // If there is no event queue, then there is obviously no
         // actor to fire. (preinitialize() has not been called).

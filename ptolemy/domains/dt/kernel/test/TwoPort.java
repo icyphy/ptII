@@ -141,18 +141,16 @@ public class TwoPort extends TypedAtomicActor {
 
     public final void fire() throws IllegalActionException  {
         int i;
-        int integer, remainder;
-        DoubleToken token;
 
         if (input1.getWidth() >= 1) {
             for (i=0; i < _inrate1;i++) {
-                token = (DoubleToken) (input1.get(0));
+                input1.get(0);
             }
         }
 
         if (input2.getWidth() >= 1) {
             for (i=0; i < _inrate2;i++) {
-                token = (DoubleToken) (input2.get(0));
+                input2.get(0);
             }
         }
 

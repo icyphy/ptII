@@ -309,11 +309,11 @@ public class CorbaActorClient extends TypedAtomicActor {
         if (dir == null) {
             throw new IllegalActionException(this, "No director!");
         }
-        boolean result;
+        // boolean result;
         try {
             _transferInputs();
             try {
-                result = _remoteActor.postfire();
+                /* result =*/ _remoteActor.postfire();
             } catch (CorbaIllegalActionException ex) {
                 throw new IllegalActionException(this,
                         "remote actor throws IllegalActionException"

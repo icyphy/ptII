@@ -105,7 +105,6 @@ public class OnePort extends TypedAtomicActor {
 
     public final void fire() throws IllegalActionException  {
         int i;
-        int remainder;
         DoubleToken token = new DoubleToken(0.0);;
         _buffer = new Token[_inrate];
 

@@ -296,8 +296,8 @@ public class LinearStateSpace extends TypedCompositeActor {
         int m = b.getColumnCount();
         DoubleMatrixToken c = (DoubleMatrixToken)C.getToken();
         int r = c.getRowCount();
-        /* DoubleMatrixToken d = */ (DoubleMatrixToken)D.getToken();
-        /* DoubleMatrixToken x0 = */ (DoubleMatrixToken)initialStates.getToken();
+        /* DoubleMatrixToken d = (DoubleMatrixToken)*/D.getToken();
+        /* DoubleMatrixToken x0 = (DoubleMatrixToken)*/initialStates.getToken();
 
         try {
             _workspace.getWriteAccess();

@@ -37,8 +37,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.sched.Schedule;
-import ptolemy.actor.sched.Scheduler;
+
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -58,7 +57,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 import java.util.ArrayList;
@@ -740,7 +738,6 @@ public class DTDirector extends SDFDirector {
             Iterator allActors = container.deepEntityList().iterator();
             while (allActors.hasNext()) {
                 Actor actor = (Actor) allActors.next();
-                String name = ((Nameable) actor).getFullName();
                 DTActor dtActor = (DTActor) _allActorsTable.get(actor);
                 if (dtActor == null) {
                     _allActorsTable.put(actor, new DTActor(actor));
@@ -756,7 +753,6 @@ public class DTDirector extends SDFDirector {
         // Include the container as an actor.  This is needed for
         // TypedCompositeActors.
 
-        String name = getContainer().getFullName();
         Actor actor = (Actor) getContainer();
         _allActorsTable.put(actor, new DTActor((Actor)getContainer()));
         DTActor dtActor = (DTActor) _allActorsTable.get(actor);
@@ -1020,20 +1016,7 @@ public class DTDirector extends SDFDirector {
 
 
 
-    /** For debugging purposes.  Display the list of inside receivers
-     *  connected to a port.
-     */
-    private void _debugViewPortInsideReceivers(IOPort port)
-            throws IllegalActionException {
-        Receiver[][] portReceivers = port.getInsideReceivers();
 
-        for (int i = 0; i < port.getWidth(); i++) {
-            for (int j = 0; j < portReceivers[i].length; j++) {
-                _debug("  ->" + portReceivers[i][j]);
-                ((DTReceiver)portReceivers[i][j])._debugViewReceiverInfo();
-            }
-        }
-    }
 
 
 

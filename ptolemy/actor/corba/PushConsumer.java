@@ -320,7 +320,7 @@ public class PushConsumer extends Source {
             }
             //try{
                 synchronized(_lock) {
-                    Variable variable = new Variable();
+                    // Variable variable = new Variable();
                     if (_debugging) {
                         _debug("got pushed data:\n" + data.extract_string());
                     }

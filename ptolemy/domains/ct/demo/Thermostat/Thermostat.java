@@ -40,7 +40,7 @@ import ptolemy.actor.lib.Scale;
 import ptolemy.actor.lib.gui.TimedPlotter;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
-import ptolemy.data.expr.Parameter;
+
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.ct.kernel.CTCompositeActor;
 import ptolemy.domains.ct.kernel.CTEmbeddedDirector;
