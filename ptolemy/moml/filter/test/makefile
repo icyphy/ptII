@@ -210,7 +210,7 @@ compat3:
 		echo "Generating $@/ from $(OLDTREE3)"; \
 		(cd $(OLDTREE3); \
 			find . -name "*.xml" -print | \
-			grep auto | \
+			grep auto | grep -v knownFailed | \
 			awk '{print "$(OLDTREE3)/" $$1}' > /tmp/oldxmls); \
 		mkdir $@; \
 		echo "Copying old xmls over"; \
