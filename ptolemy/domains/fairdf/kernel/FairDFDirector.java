@@ -1,6 +1,6 @@
 /* Director implementing dataflow with a notion of fairness.
 
-Copyright (c) 1999-2004 The Regents of the University of California.
+Copyright (c) 2003-2004 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Red (janneck)
-@AcceptedRating Red (reviewmoderator)
 */
 
 package ptolemy.domains.fairdf.kernel;
@@ -55,26 +53,50 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+//////////////////////////////////////////////////////////////////////////
+//// FairDFDirector
 /**
- * This director implements a variant of dataflow that guarantees a degree of fairness in selecting actors to fire.
- * Actors are fired in an unspecified order, subject to the following constraints.
- * <ol>
- * <li> In one iteration of the model, each actor is fired at most once.
- * <li>The iteration ends when all remaining actors (i.e. those that did not fire during the current iteration)
- * cannot fire (i.e. they return false on <tt>prefire()</tt>).
- * </ol>
- * <p>
- * This implementation allows proper rollback, i.e. it may be repeatedly fired without intervening <tt>postfire()</tt>
- * and it restores the queues to their original state.
- *
- * @author Jörn W. Janneck <janneck@eecs.berkeley.edu>
+
+This director implements a variant of dataflow that guarantees a
+degree of fairness in selecting actors to fire.
+
+Actors are fired in an unspecified order, subject to the following constraints.
+
+<ol>
+<li> In one iteration of the model, each actor is fired at most once.
+<li>The iteration ends when all remaining actors (i.e. those that did
+not fire during the current iteration) cannot fire (i.e. they return
+false on <tt>prefire()</tt>).
+</ol>
+<p>
+This implementation allows proper rollback, i.e. it may be repeatedly fired without intervening <tt>postfire()</tt>
+and it restores the queues to their original state.
+
+@author J&#246;rn W. Janneck <janneck@eecs.berkeley.edu>
+@version $Id$
+@ProposedRating Red (janneck)
+@AcceptedRating Red (reviewmoderator)
  */
 
 public class FairDFDirector extends Director {
 
-    ///////////////////////////////////////////////////////////////////
-    //// override:  Director                                       ////
-    ///////////////////////////////////////////////////////////////////
+    public FairDFDirector()
+            throws IllegalActionException, NameDuplicationException {
+        super();
+        init();
+    }
+
+    public FairDFDirector(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
+        super(workspace);
+        init();
+    }
+
+    public FairDFDirector(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+        init();
+    }
 
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -93,11 +115,12 @@ public class FairDFDirector extends Director {
     }
 
     /**
-     * Always return what <tt>super.prefire()</tt> returns, because an DDF model can
-     * potentially always perform an iteration, regardless of the presence of input tokens.
+     * Always return what <tt>super.prefire()</tt> returns, because an
+     * DDF model can potentially always perform an iteration,
+     * regardless of the presence of input tokens.
      *
      * @return Always returns what <tt>super.prefire()</tt> returns.
-     * @throws IllegalActionException If thrown by <tt>super.prefire()</tt>
+     * @exception IllegalActionException If thrown by <tt>super.prefire()</tt>
      */
 
     public boolean prefire() throws IllegalActionException {
@@ -149,29 +172,6 @@ public class FairDFDirector extends Director {
         return new FairDFReceiver();
     }
 
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         FairDFDirector                    ////
-    ///////////////////////////////////////////////////////////////////
-
-    public FairDFDirector()
-            throws IllegalActionException, NameDuplicationException {
-        super();
-        init();
-    }
-
-    public FairDFDirector(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
-        super(workspace);
-        init();
-    }
-
-    public FairDFDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-        super(container, name);
-        init();
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                 ////
 
@@ -181,7 +181,6 @@ public class FairDFDirector extends Director {
      *
      * @param r The receiver.
      */
-
     private void notifyReceiverChange(FairDFReceiver r) {
         modifiedReceivers.add(r);
     }
@@ -190,7 +189,6 @@ public class FairDFDirector extends Director {
      * Undo all changes made to all receivers since the last time they
      * were committed.
      */
-
     private void rollbackReceivers() {
         for (Iterator i = modifiedReceivers.iterator(); i.hasNext(); ) {
             FairDFReceiver r = (FairDFReceiver)i.next();
@@ -202,7 +200,6 @@ public class FairDFDirector extends Director {
     /**
      * Commit the changes made to all receivers instantiated by this director.
      */
-
     private void commitReceivers() {
         for (Iterator i = modifiedReceivers.iterator(); i.hasNext(); ) {
             FairDFReceiver r = (FairDFReceiver)i.next();
@@ -247,9 +244,10 @@ public class FairDFDirector extends Director {
 
 
     /**
-     * This receiver implements a queue that realizes a commit/rollback protocol. It notifies the
-     * enclosing director if it changes its state. The director can commit the state or roll it
-     * back to the last state that has been committed.
+     * This receiver implements a queue that realizes a
+     * commit/rollback protocol. It notifies the enclosing director if
+     * it changes its state. The director can commit the state or roll
+     * it back to the last state that has been committed.
      */
     class FairDFReceiver extends AbstractReceiver {
 
@@ -326,9 +324,10 @@ public class FairDFDirector extends Director {
     }
 
     /**
-     * This is a simplified version of the DDF receiver, which does not support rollback,
-     * and which is more efficient as a result. Because it does not need access to the
-     * director that instantiated it, it can be <tt>static</tt>.
+     * This is a simplified version of the DDF receiver, which does
+     * not support rollback, and which is more efficient as a
+     * result. Because it does not need access to the director that
+     * instantiated it, it can be <tt>static</tt>.
      * <p>
      * Perhaps we should let the user choose whether rollback is needed?
      * <p>
