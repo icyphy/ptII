@@ -42,16 +42,10 @@ import java.net.*;
 import java.util.Enumeration;
 import collections.LinkedList;
 
-import ptolemy.media.*;
-import javax.media.sound.sampled.AudioStream;
-import javax.media.sound.sampled.AudioSystem;
-import javax.media.sound.sampled.AudioFormat;
-import javax.media.sound.sampled.AudioFormat.Encoding;
-import javax.media.sound.sampled.FileStream;
-import javax.media.sound.sampled.OutputChannel;
-import javax.media.sound.sampled.Channel;
-import javax.media.sound.sampled.Mixer;
-import javax.media.sound.sampled.AudioUnavailableException;
+//import ptolemy.media.*;
+import javax.media.sound.sampled.*;
+
+import ptolemy.domains.sdf.kernel.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// AudioSource
@@ -75,12 +69,13 @@ ptolemy.media package documentation.
 @version
 */
 
-public class AudioSource extends SequenceSource {
+public class AudioSource extends SDFAtomicActor {
 
     /** Construct an actor with the given container and name.
      *  In addition to invoking the base class constructors, construct
-     *  the <i>isPeriodic</i> and <i>pathName</i> parameters. Initialize <i>isPeriodic</i>
-     *  to BooleanToken with value false, and <i>pathName</i> to StringToken with value "http://localhost/soundFile.au".
+     *  the <i>pathName</i> and <i>isURL</i> parameters Initialize <i>isURL</i>
+     *  to true and <i>pathName</i> to StringToken with value
+     *  "http://localhost/soundFile.au".
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the actor cannot be contained
@@ -92,31 +87,31 @@ public class AudioSource extends SequenceSource {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-
-	isPeriodic = new Parameter(this, "isPeriodic", new BooleanToken(false));
-	pathName = new Parameter(this, "pathName", new StringToken("http://localhost/soundFile.au"));
+	output = new SDFIOPort(this, "output", false, true);
+        output.setTypeEquals(DoubleToken.class);
+	// FIXME: Allow this to be set as parameter.
+	productionRate = 128;
+	output.setTokenProductionRate(productionRate);
+	pathName = new Parameter(this, "pathName",
+		     new StringToken("http://localhost/soundFile.au"));
+	isURL = new Parameter(this, "isURL", new BooleanToken(true));
+	isURL.setTypeEquals(BooleanToken.class);
 	
-        isPeriodic.setTypeEquals(BooleanToken.class);
-
-
-	// set the type constraints.
-	output.setTypeEquals(DoubleToken.class);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
+    /** The output port. */
+    public SDFIOPort output;
 
-
-    /** An indicator of whether the signal should be periodically
-     *  repeated. There are two possible vaules:
-     *  false: This actor will sequentially output all of the samples
-     *  of an audio file (from beginning to end) and quit when the
-     *  end of the audio is reached.
-     *  true: This actor will continue from the beginning (first sample)
-     *  of the audio file whenever the end is reached.
+    /** Specify whether <i>pathName</i> is a URL or a file.
+     * If <i>isURL</i> is true then <i>pathName</i> is a URL.
+     * Else if <i>isURL</i>  is false then <i>pathName</i> is a
+     * file. The default value of <i>isURL</i> is true.
+     * FIXME: This must be set false (no support for Url yet).
      */
-    public Parameter isPeriodic;
+    public Parameter isURL;
 
     /** The name of the file to read from. This can be a URL or a
      *  file on the file system on which the code is run. This
@@ -153,26 +148,67 @@ public class AudioSource extends SequenceSource {
      *  @return A new actor.
      */
     public Object clone(Workspace ws) {
-        AudioSource newobj = (AudioSource)super.clone(ws);
-	newobj.isPeriodic = (Parameter)newobj.getAttribute("isPeriodic");
-	newobj.pathName = (Parameter)newobj.getAttribute("pathName");
-	// set the type constraints.
-        return newobj;
+	 try {
+	     AudioSource newobj = (AudioSource)super.clone(ws);
+	     newobj.isURL = (Parameter)newobj.getAttribute("isURL");
+	     newobj.pathName = (Parameter)newobj.getAttribute("pathName");
+	     newobj.output = (SDFIOPort)newobj.getPort("output");
+	     // set the type constraints.
+	     return newobj;
+	 } catch (CloneNotSupportedException ex) {
+	     // Errors should not occur here...
+	     throw new InternalErrorException(
+			 "Clone failed: " + ex.getMessage());
+	 }
     }
 
     /** Output the sample value of the sound file corresponding to the
      *  current index.
      */
-    public void fire() {
+    public boolean postfire() throws IllegalActionException {
         try {
-            super.fire();
-	    _sampleValue = audioArray[_index];
-	    sampleValueToken = new DoubleToken(_sampleValue);
-            output.broadcast(sampleValueToken);
+	    int i;
+            
+	    int numBytesRead;
+	   
+		// Read some audio into data[].
+            numBytesRead =
+		     properFormatAudioInputStream.read(data);
+		if (numBytesRead == -1) {
+		    // Ran out of samples to play.
+		    return false;
+		} else if (numBytesRead != data.length) {
+                    // Read few samples than needed to fill up data[].
+		    return false;
+                }
+
+		// Array of audio samples in double format.
+		double[] audioInDoubleArray;
+		// Convert byte array to double array.
+		audioInDoubleArray = _byteArrayToDoubleArray(data, frameSizeInBytes);
+
+                
+
+                DoubleToken[] audioTokenArray = new DoubleToken[productionRate];
+		// Convert to DoubleToken[].
+		// FIXME: I don't think this is very efficient. Currently
+		// creating a new token for each sample!
+		for (i = 0; i < productionRate; i++) {
+                    audioTokenArray[i] = new DoubleToken(audioInDoubleArray[i]);
+	    }
+
+	    
+            output.sendArray(0, audioTokenArray);
+
+
         } catch (IllegalActionException ex) {
             // Should not be thrown because this is an output port.
             throw new InternalErrorException(ex.getMessage());
+        } catch (IOException ex) {
+            
+            throw new InternalErrorException(ex.getMessage());
         }
+	return true;
     }
 
     /** Read in the sound file specified by the <i>pathName</i> parameter
@@ -186,65 +222,125 @@ public class AudioSource extends SequenceSource {
 
 	try {
 
-	    NewAudio na  = new NewAudio(((StringToken)pathName.getToken()).stringValue());
 	    
-	    audioArray = na.getDoubleArray();
+	    //Sound sound = new Sound();
+	    
 
-	    
-	    /* Set the firing count limit equal to the number of samples
-	     * in the sound file for the case where periodic repetition of
-	     * the audio signal is not desired.
-	     */
-	    if (((BooleanToken)isPeriodic.getToken()).booleanValue() == false)
-		{
-		    firingCountLimit.setToken(new IntToken(audioArray.length));
+	    if (((BooleanToken)isURL.getToken()).booleanValue() == true) {
+		// Load audio from a URL.
+		// Create a URL corresponing to the sound file location.
+		URL soundURL =
+		    new URL(((StringToken)pathName.getToken()).stringValue());
+                //		sound.load(soundURL);
+	    } else {
+		// Load audio from a file.
+		File soundFile =
+		    new File(((StringToken)pathName.getToken()).stringValue());
+		//sound.load(soundFile);
+		if (soundFile != null && soundFile.isFile()) {
+		    
+		    try {
+			audioInputStream = AudioSystem.getAudioInputStream(soundFile);
+		    } catch (UnsupportedAudioFileException e) {
+			System.err.println("UnsupportedAudioFileException " + e);
+		    } catch (IOException e) {
+			System.err.println("IOException " + e);
+		    }
+		    
+		    String fileName = soundFile.getName();
 		}
+		
+		// make sure we have something to play
+		if (audioInputStream == null) {
+		    System.err.println("No loaded audio to play back");
+		    return;
+		}
+		
+		AudioFormat origFormat = audioInputStream.getFormat();
+		// Now convert to PCM_SIGNED_BIG_ENDIAN so that can get double
+		// representation of samples.
+		float sampleRate = origFormat.getSampleRate();
+		int sampleSizeInBits = origFormat.getSampleSizeInBits();
+		int channels = origFormat.getChannels();
+		boolean signed = true;
+		boolean bigEndian = true;
+		AudioFormat format = new AudioFormat(sampleRate,
+					  sampleSizeInBits, channels,
+						     signed, bigEndian);
+		//System.out.println("Converted format: " + format.toString());
+		
+		properFormatAudioInputStream = 
+		    AudioSystem.getAudioInputStream(format, audioInputStream);
+		frameSizeInBytes = format.getFrameSize();
+		// Array of audio samples in byte format.
+		data = new byte[productionRate*frameSizeInBytes];
+		
+	    }
+	    
+	    // Put all the samples in a double array.
+            //	    audioArray = sound.getDoubleArray();
 
 	    // Initialize the index to the first sample of the sound file.
 	    _index = 0;
+	   
 
 	} catch (MalformedURLException e) {
 	    System.err.println(e.toString());
-	} catch (FileNotFoundException e) {
-	    System.err.println("VAudioDemoApplet: file not found: "+e);
 	} catch (IOException e) {
-	    System.err.println("VAudioDemoApplet: error reading"+
+	    System.err.println("AudioSource: error reading"+
 			       " input file: " +e);
 	} 
 	
     }
 
-    /** Increment the current sample index. If we are currently at the
-     *  end of the file, reset the current sample index to the beginning
-     *  of the sound file.
-     *  @return False if the number of iterations matches the number requested.
-     *  @exception IllegalActionException If the firingCountLimit parameter
-     *   has an invalid expression.
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   //// 
+
+    /* Convert a byte array of audio samples in linear signed pcm big endian
+     * format into a double array of audio samples (-1,1) range.
+     * FIXME: This method only works for mono (single channel) audio.
      */
-    public boolean postfire() throws IllegalActionException {
-	// _sampleValueToken = _sampleValueToken.add(step.getToken());
-	
+    private double[] _byteArrayToDoubleArray(byte[] byteArray, int _bytesPerSample) {
 
-	// Increment the index to the next sample in the sound file.
-	_index++;
+	//System.out.println("_bytesPerSample = " + _bytesPerSample);
+	//System.out.println("byteArray length = " + byteArray.length);
+	int lengthInSamples = byteArray.length / _bytesPerSample;
+	double[] doubleArray = new double[lengthInSamples];
+	double mathDotPow = Math.pow(2, 8 * _bytesPerSample - 1);
+	    
+	for (int currSamp = 0; currSamp < lengthInSamples; currSamp++) {
 
-	if (_index == audioArray.length)
-	    {
-		// Reached the end of the audio signal array.
-		// Reset to the beginning of the array.
-		_index = 0;
+	    byte[] b = new byte[_bytesPerSample];
+	    for (int i = 0; i < _bytesPerSample; i += 1) {
+		// Assume we are dealing with big endian.
+		b[i] = byteArray[currSamp*_bytesPerSample + i];
 	    }
-        return super.postfire();
+	    long result = (b[0] >> 7) ;
+	    for (int i = 0; i < _bytesPerSample; i += 1)
+		result = (result << 8) + (b[i] & 0xff);
+	    doubleArray[currSamp] = ((double) result/ 
+				     (mathDotPow));
+		}
+	//System.out.println("a value " + doubleArray[34]);
+	return doubleArray;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    private double _sampleValue;
        
-    private int _index;
+    private AudioInputStream  properFormatAudioInputStream;
+
+    private AudioInputStream audioInputStream;
+
+    private int productionRate;
     
     private double[] audioArray;
 
-    private DoubleToken sampleValueToken;
+    private int _index;
+    
+    // An array of length productionRate containing samples to output.
+    // private DoubleToken[] audioTokenArray;
+
+    byte[] data;
+    int frameSizeInBytes;
 }
