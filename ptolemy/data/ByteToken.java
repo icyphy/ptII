@@ -134,11 +134,11 @@ public class ByteToken extends ScalarToken {
             }
             byte sum = (byte)(_value + byteToken.byteValue());
             ByteToken result = new ByteToken(sum);
-            if ( !_isUnitEqual(byteToken)) {
+            if ( !_areUnitsEqual(byteToken)) {
                 throw new IllegalActionException("ByteToken.add: "
-                        + "The units of this token: " + _unitString()
+                        + "The units of this token: " + unitsString()
                         + " are not the same as those of the argument: "
-                        + byteToken._unitString());
+                        + byteToken.unitsString());
             }
             result._unitCategoryExponents = this._copyOfCategoryExponents();
             return result;
@@ -333,7 +333,7 @@ public class ByteToken extends ScalarToken {
             }
 
             if (_value == byteToken.byteValue()
-                    && _isUnitEqual(byteToken)) {
+                    && _areUnitsEqual(byteToken)) {
                 return new BooleanToken(true);
             } else {
                 return new BooleanToken(false);
@@ -370,11 +370,11 @@ public class ByteToken extends ScalarToken {
             } else {
                 byteToken = (ByteToken)token;
             }
-            if ( !_isUnitEqual(byteToken)) {
+            if ( !_areUnitsEqual(byteToken)) {
                 throw new IllegalActionException("ByteToken.isLessThan: "
-                        + "The units of this token: " + _unitString()
+                        + "The units of this token: " + unitsString()
                         + " are not the same as those of the argument: "
-                        + byteToken._unitString());
+                        + byteToken.unitsString());
             }
             if (_value < byteToken.byteValue()) {
                 return new BooleanToken(true);
@@ -443,11 +443,11 @@ public class ByteToken extends ScalarToken {
             byte remainder = (byte) (unsignedConvert(_value)
                     % unsignedConvert(byteToken.byteValue()));
             ByteToken result = new ByteToken(remainder);
-            if ( !_isUnitEqual(byteToken)) {
+            if ( !_areUnitsEqual(byteToken)) {
                 throw new IllegalActionException("ByteToken.modulo: "
-                        + "The units of this token: " + _unitString()
+                        + "The units of this token: " + unitsString()
                         + " are not the same as those of the argument: "
-                        + byteToken._unitString());
+                        + byteToken.unitsString());
             }
             result._unitCategoryExponents = this._copyOfCategoryExponents();
             return result;
@@ -483,11 +483,11 @@ public class ByteToken extends ScalarToken {
         byte remainder = (byte) (unsignedConvert(byteToken.byteValue())
                 % unsignedConvert(_value));
         ByteToken result = new ByteToken(remainder);
-        if ( !_isUnitEqual(byteToken)) {
+        if ( !_areUnitsEqual(byteToken)) {
             throw new IllegalActionException("ByteToken.moduloReverse: "
-                    + "The units of this token: " + _unitString()
+                    + "The units of this token: " + unitsString()
                     + " are not the same as those of the argument: "
-                    + byteToken._unitString());
+                    + byteToken.unitsString());
         }
         result._unitCategoryExponents = this._copyOfCategoryExponents();
         return result;
@@ -573,11 +573,11 @@ public class ByteToken extends ScalarToken {
             byte difference = (byte) (unsignedConvert(_value)
                     - unsignedConvert(byteToken.byteValue()));
             ByteToken result = new ByteToken(difference);
-            if ( !_isUnitEqual(byteToken)) {
+            if ( !_areUnitsEqual(byteToken)) {
                 throw new IllegalActionException("ByteToken.subtract: "
-                        + "The units of this token: " + _unitString()
+                        + "The units of this token: " + unitsString()
                         + " are not the same as those of the argument: "
-                        + byteToken._unitString());
+                        + byteToken.unitsString());
             }
             result._unitCategoryExponents = this._copyOfCategoryExponents();
             return result;
@@ -612,11 +612,11 @@ public class ByteToken extends ScalarToken {
         byte difference = (byte) (unsignedConvert(byteToken.byteValue())
                 - unsignedConvert(_value));
         ByteToken result = new ByteToken(difference);
-        if ( !_isUnitEqual(byteToken)) {
+        if ( !_areUnitsEqual(byteToken)) {
             throw new IllegalActionException("ByteToken.subtractReverse: "
-                    + "The units of this token: " + _unitString()
+                    + "The units of this token: " + unitsString()
                     + " are not the same as those of the argument: "
-                    + byteToken._unitString());
+                    + byteToken.unitsString());
         }
         result._unitCategoryExponents = this._copyOfCategoryExponents();
         return result;
@@ -625,15 +625,15 @@ public class ByteToken extends ScalarToken {
     /** Return the value of this token as a string that can be parsed
      *  by the expression language to recover a token with the same value.
      *  If this token has a unit, the return string also includes a unit
-     *  string produced by the _unitString() method in the super class.
+     *  string produced by the unitsString() method in the super class.
      *  @return A String representing the byte value and the units (if
      *   any) of this token.
-     *  @see ptolemy.data.ScalarToken#_unitString
+     *  @see ptolemy.data.ScalarToken#unitsString
      */
     public String toString() {
 	String unitString = "";
 	if ( !_isUnitless()) {
-	    unitString = " * " + _unitString();
+	    unitString = " * " + unitsString();
 	}
         return Byte.toString(_value) + unitString;
     }

@@ -110,9 +110,6 @@ public class BaseUnit extends Parameter {
                         UnitSystem.getUnitCategoryIndex(category.getName());
 		if (index >= 0) {
 		    ((ScalarToken)token).setUnitCategory(index);
-
-System.out.println("Set the unit category of " + getFullName() + " to " + category.getName());
-
 		}
 	    }
 	    _token = token;

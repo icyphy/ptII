@@ -139,11 +139,11 @@ public abstract class ScalarToken extends Token {
      */
     public ScalarToken inUnitsOf(ScalarToken units)
             throws IllegalActionException {
-        if ( !_isUnitEqual(units)) {
+        if ( !_areUnitsEqual(units)) {
             throw new IllegalActionException("ScalarToken.inUnitsOf: "
-                    + "The units of this token: " + _unitString()
+                    + "The units of this token: " + unitsString()
                     + " are not the same as the units of the argument: "
-                    + units._unitString());
+                    + units.unitsString());
         }
         return (ScalarToken)this.divide(units);
     }
@@ -165,6 +165,74 @@ public abstract class ScalarToken extends Token {
         _unitCategoryExponents = new int[index+1];
         Arrays.fill(_unitCategoryExponents, 0);
         _unitCategoryExponents[index] = 1;
+    }
+
+    /** Return the string representation of the units of this token.
+     *  The general format of the returned string is
+     *  "(l_1 * l_2 * ... * l_m) / (s_1 * s_2 * ... * s_n)".
+     *  For example: "(meter * kilogram) / (second * second)".
+     *  If m or n is 1, then the parenthesis above or below "/" is
+     *  omited. For example: "meter / second".
+     *  If there is no term above "/", the format becomes
+     *  "1 / (s_1 * s_2 * ... * s_n)". For example: "1 / meter".
+     *  If this token does not have a unit, return an empty string.
+     *  @return A string representation of the units of this token.
+     */
+    public String unitsString() {
+        if (_isUnitless(_unitCategoryExponents)) {
+            return "";
+        }
+
+        String positiveUnits = "";
+        String negativeUnits = "";
+        boolean justOnePositive = true;
+        boolean justOneNegative = true;
+        for (int i=0; i<_unitCategoryExponents.length; i++) {
+            int exponent = _unitCategoryExponents[i];
+            if (exponent != 0) {
+                String baseString = null;
+                   baseString = UnitSystem.getBaseUnitName(i);
+                   if (exponent > 0) {
+                    for (int j=0; j<exponent; j++) {
+                        if (positiveUnits.equals("")) {
+                            positiveUnits = baseString;
+                        } else {
+                            positiveUnits += " * " + baseString;
+                            justOnePositive = false;
+                        }
+                    }
+                } else {
+                    for (int j=0; j<-exponent; j++) {
+                        if (negativeUnits.equals("")) {
+                            negativeUnits = baseString;
+                        } else {
+                            negativeUnits += " * " + baseString;
+                            justOneNegative = false;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (positiveUnits.equals("") && negativeUnits.equals("")) {
+            return "";
+        }
+
+        if (positiveUnits.equals("")) {
+            positiveUnits = "1";
+        } else if (justOnePositive) {
+            positiveUnits = positiveUnits;
+        } else {
+            positiveUnits = "(" + positiveUnits + ")";
+        }
+
+        if (negativeUnits.equals("")) {
+            return positiveUnits;
+        } else if (justOneNegative) {
+            return positiveUnits + " / " + negativeUnits;
+        } else {
+            return positiveUnits + " / (" + negativeUnits + ")";
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -196,24 +264,22 @@ public abstract class ScalarToken extends Token {
         return exponents;
     }
 
-    /** Return true if the units of this token is the same as that of the
+    /** Return true if the units of this token are the same as that of the
      *  argument token. If both tokens do not have units, return true.
      *  @param scalarToken A scalar token.
      *  @return True if the units of this token is the same as that of the
      *   argument token; false otherwise.
      */
-    protected boolean _isUnitEqual(ScalarToken scalarToken) {
+    protected boolean _areUnitsEqual(ScalarToken scalarToken) {
         boolean isThisUnitless = _isUnitless(this._unitCategoryExponents);
         boolean isArgumentUnitless =
-                          _isUnitless(scalarToken._unitCategoryExponents);
-
-        if (isThisUnitless && isArgumentUnitless) {
-            return true;
-        }
+                _isUnitless(scalarToken._unitCategoryExponents);
 
         // Either this token, or the argument token, or both have non null
         // exponent arrays.
-        if (isThisUnitless || isArgumentUnitless) {
+        if (isThisUnitless && isArgumentUnitless) {
+            return true;
+        } else if (isThisUnitless || isArgumentUnitless) {
             // one is unitless, the other is not.
             return false;
         } else {
@@ -269,74 +335,6 @@ public abstract class ScalarToken extends Token {
             }
         }
         return _addCategoryExponents(negation);
-    }
-
-    /** Return the string representation of the units of this token.
-     *  The general format of the returned string is
-     *  "(l_1 * l_2 * ... * l_m) / (s_1 * s_2 * ... * s_n)".
-     *  For example: "(meter * kilogram) / (second * second)".
-     *  If m or n is 1, then the parenthesis above or below "/" is
-     *  omited. For example: "meter / second".
-     *  If there is no term above "/", the format becomes
-     *  "1 / (s_1 * s_2 * ... * s_n)". For example: "1 / meter".
-     *  If this token does not have a unit, return an empty string.
-     *  @return A string representation of the units of this token.
-     */
-    protected String _unitString() {
-        if (_isUnitless(_unitCategoryExponents)) {
-            return "";
-        }
-
-        String positiveUnits = "";
-        String negativeUnits = "";
-        boolean justOnePositive = true;
-        boolean justOneNegative = true;
-        for (int i=0; i<_unitCategoryExponents.length; i++) {
-            int exponent = _unitCategoryExponents[i];
-            if (exponent != 0) {
-                String baseString = null;
-                   baseString = UnitSystem.getBaseUnitName(i);
-                   if (exponent > 0) {
-                    for (int j=0; j<exponent; j++) {
-                        if (positiveUnits.equals("")) {
-                            positiveUnits = baseString;
-                        } else {
-                            positiveUnits += " * " + baseString;
-                            justOnePositive = false;
-                        }
-                    }
-                } else {
-                    for (int j=0; j<-exponent; j++) {
-                        if (negativeUnits.equals("")) {
-                            negativeUnits = baseString;
-                        } else {
-                            negativeUnits += " * " + baseString;
-                            justOneNegative = false;
-                        }
-                    }
-                }
-            }
-        }
-
-        if (positiveUnits.equals("") && negativeUnits.equals("")) {
-            return "";
-        }
-
-        if (positiveUnits.equals("")) {
-            positiveUnits = "1";
-        } else if (justOnePositive) {
-            positiveUnits = positiveUnits;
-        } else {
-            positiveUnits = "(" + positiveUnits + ")";
-        }
-
-        if (negativeUnits.equals("")) {
-            return positiveUnits;
-        } else if (justOneNegative) {
-            return positiveUnits + " / " + negativeUnits;
-        } else {
-            return positiveUnits + " / (" + negativeUnits + ")";
-        }
     }
 
     ///////////////////////////////////////////////////////////////////

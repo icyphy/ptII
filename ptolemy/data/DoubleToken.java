@@ -117,11 +117,11 @@ public class DoubleToken extends ScalarToken {
             }
             double sum = _value + doubleToken.doubleValue();
             DoubleToken result = new DoubleToken(sum);
-            if ( !_isUnitEqual(doubleToken)) {
+            if ( !_areUnitsEqual(doubleToken)) {
                 throw new IllegalActionException("DoubleToken.add: "
-                        + "The units of this token: " + _unitString()
+                        + "The units of this token: " + unitsString()
                         + " are not the same as those of the argument: "
-                        + doubleToken._unitString());
+                        + doubleToken.unitsString());
             }
             result._unitCategoryExponents = this._copyOfCategoryExponents();
             return result;
@@ -386,7 +386,7 @@ public class DoubleToken extends ScalarToken {
             }
 
             if (_value == doubleToken.doubleValue()
-                    && _isUnitEqual(doubleToken)) {
+                    && _areUnitsEqual(doubleToken)) {
                 return new BooleanToken(true);
             } else {
                 return new BooleanToken(false);
@@ -419,11 +419,11 @@ public class DoubleToken extends ScalarToken {
             } else {
                 doubleToken = (DoubleToken)token;
             }
-            if ( !_isUnitEqual(doubleToken)) {
+            if ( !_areUnitsEqual(doubleToken)) {
                 throw new IllegalActionException("DoubleToken.isLessThan: "
-                        + "The units of this token: " + _unitString()
+                        + "The units of this token: " + unitsString()
                         + " are not the same as those of the argument: "
-                        + doubleToken._unitString());
+                        + doubleToken.unitsString());
             }
             if (_value < doubleToken.doubleValue()) {
                 return new BooleanToken(true);
@@ -463,11 +463,11 @@ public class DoubleToken extends ScalarToken {
             }
             double remainder = _value % doubleToken.doubleValue();
             DoubleToken result = new DoubleToken(remainder);
-            if ( !_isUnitEqual(doubleToken)) {
+            if ( !_areUnitsEqual(doubleToken)) {
                 throw new IllegalActionException("DoubleToken.modulo: "
-                        + "The units of this token: " + _unitString()
+                        + "The units of this token: " + unitsString()
                         + " are not the same as those of the argument: "
-                        + doubleToken._unitString());
+                        + doubleToken.unitsString());
             }
             result._unitCategoryExponents = this._copyOfCategoryExponents();
             return result;
@@ -498,11 +498,11 @@ public class DoubleToken extends ScalarToken {
 
         double remainder = doubleToken.doubleValue() % _value;
         DoubleToken result = new DoubleToken(remainder);
-        if ( !_isUnitEqual(doubleToken)) {
+        if ( !_areUnitsEqual(doubleToken)) {
             throw new IllegalActionException("DoubleToken.moduloReverse: "
-                    + "The units of this token: " + _unitString()
+                    + "The units of this token: " + unitsString()
                     + " are not the same as those of the argument: "
-                    + doubleToken._unitString());
+                    + doubleToken.unitsString());
         }
         result._unitCategoryExponents = this._copyOfCategoryExponents();
         return result;
@@ -582,11 +582,11 @@ public class DoubleToken extends ScalarToken {
             }
             double difference = _value - doubleToken.doubleValue();
             DoubleToken result = new DoubleToken(difference);
-            if ( !_isUnitEqual(doubleToken)) {
+            if ( !_areUnitsEqual(doubleToken)) {
                 throw new IllegalActionException("DoubleToken.subtract: "
-                        + "The units of this token: " + _unitString()
+                        + "The units of this token: " + unitsString()
                         + " are not the same as those of the argument: "
-                        + doubleToken._unitString());
+                        + doubleToken.unitsString());
             }
             result._unitCategoryExponents = this._copyOfCategoryExponents();
             return result;
@@ -614,11 +614,11 @@ public class DoubleToken extends ScalarToken {
             (DoubleToken)DoubleToken.convert(leftArgument);
         double difference = doubleToken.doubleValue() - _value;
         DoubleToken result = new DoubleToken(difference);
-        if ( !_isUnitEqual(doubleToken)) {
+        if ( !_areUnitsEqual(doubleToken)) {
             throw new IllegalActionException("DoubleToken.subtractReverse: "
-                    + "The units of this token: " + _unitString()
+                    + "The units of this token: " + unitsString()
                     + " are not the same as those of the argument: "
-                    + doubleToken._unitString());
+                    + doubleToken.unitsString());
         }
         result._unitCategoryExponents = this._copyOfCategoryExponents();
         return result;
@@ -634,15 +634,15 @@ public class DoubleToken extends ScalarToken {
      *  fractional digits.  If you really must have better precision,
      *  then use <code>Double.toString(token.doubleValue())</code>.
      *  If this token has a unit, the return string also includes a unit
-     *  string produced by the _unitString() method in the super class.
+     *  string produced by the unitsString() method in the super class.
      *  @return A String representing the double value and the units (if
      *   any) of this token.
-     *  @see ptolemy.data.ScalarToken#_unitString
+     *  @see ptolemy.data.ScalarToken#unitsString
      */
     public String toString() {
 	String unitString = "";
 	if ( !_isUnitless()) {
-	    unitString = " * " + _unitString();
+	    unitString = " * " + unitsString();
 	}
 
         double mag = Math.abs(_value);

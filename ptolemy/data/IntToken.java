@@ -112,11 +112,11 @@ public class IntToken extends ScalarToken {
             }
             int sum = _value + intToken.intValue();
             IntToken result = new IntToken(sum);
-            if ( !_isUnitEqual(intToken)) {
+            if ( !_areUnitsEqual(intToken)) {
                 throw new IllegalActionException("IntToken.add: "
-                        + "The units of this token: " + _unitString()
+                        + "The units of this token: " + unitsString()
                         + " are not the same as those of the argument: "
-                        + intToken._unitString());
+                        + intToken.unitsString());
             }
             result._unitCategoryExponents = this._copyOfCategoryExponents();
             return result;
@@ -310,7 +310,7 @@ public class IntToken extends ScalarToken {
             }
 
             if (_value == intToken.intValue()
-                && _isUnitEqual(intToken)) {
+                && _areUnitsEqual(intToken)) {
                 return new BooleanToken(true);
             } else {
                 return new BooleanToken(false);
@@ -347,11 +347,11 @@ public class IntToken extends ScalarToken {
             } else {
                intToken = (IntToken)token;
             }
-            if ( !_isUnitEqual(intToken)) {
+            if ( !_areUnitsEqual(intToken)) {
                 throw new IllegalActionException("IntToken.isLessThan: "
-                        + "The units of this token: " + _unitString()
+                        + "The units of this token: " + unitsString()
                         + " are not the same as those of the argument: "
-                        + intToken._unitString());
+                        + intToken.unitsString());
             }
             if (_value < intToken.intValue()) {
                 return new BooleanToken(true);
@@ -408,11 +408,11 @@ public class IntToken extends ScalarToken {
             }
             int remainder = _value % intToken.intValue();
             IntToken result = new IntToken(remainder);
-            if ( !_isUnitEqual(intToken)) {
+            if ( !_areUnitsEqual(intToken)) {
                 throw new IllegalActionException("IntToken.modulo: "
-                        + "The units of this token: " + _unitString()
+                        + "The units of this token: " + unitsString()
                         + " are not the same as those of the argument: "
-                        + intToken._unitString());
+                        + intToken.unitsString());
             }
             result._unitCategoryExponents = this._copyOfCategoryExponents();
             return result;
@@ -447,11 +447,11 @@ public class IntToken extends ScalarToken {
 
         int remainder = intToken.intValue() % _value;
         IntToken result = new IntToken(remainder);
-        if ( !_isUnitEqual(intToken)) {
+        if ( !_areUnitsEqual(intToken)) {
             throw new IllegalActionException("IntToken.moduloReverse: "
-                    + "The units of this token: " + _unitString()
+                    + "The units of this token: " + unitsString()
                     + " are not the same as those of the argument: "
-                    + intToken._unitString());
+                    + intToken.unitsString());
         }
         result._unitCategoryExponents = this._copyOfCategoryExponents();
         return result;
@@ -535,11 +535,11 @@ public class IntToken extends ScalarToken {
             }
             int difference = _value - intToken.intValue();
             IntToken result = new IntToken(difference);
-            if ( !_isUnitEqual(intToken)) {
+            if ( !_areUnitsEqual(intToken)) {
                 throw new IllegalActionException("IntToken.subtract: "
-                        + "The units of this token: " + _unitString()
+                        + "The units of this token: " + unitsString()
                         + " are not the same as those of the argument: "
-                        + intToken._unitString());
+                        + intToken.unitsString());
             }
             result._unitCategoryExponents = this._copyOfCategoryExponents();
             return result;
@@ -570,11 +570,11 @@ public class IntToken extends ScalarToken {
         IntToken intToken = (IntToken)IntToken.convert(leftArgument);
         int difference = intToken.intValue() - _value;
         IntToken result = new IntToken(difference);
-        if ( !_isUnitEqual(intToken)) {
+        if ( !_areUnitsEqual(intToken)) {
             throw new IllegalActionException("IntToken.subtractReverse: "
-                    + "The units of this token: " + _unitString()
+                    + "The units of this token: " + unitsString()
                     + " are not the same as those of the argument: "
-                    + intToken._unitString());
+                    + intToken.unitsString());
         }
         result._unitCategoryExponents = this._copyOfCategoryExponents();
         return result;
@@ -583,15 +583,15 @@ public class IntToken extends ScalarToken {
     /** Return the value of this token as a string that can be parsed
      *  by the expression language to recover a token with the same value.
      *  If this token has a unit, the return string also includes a unit
-     *  string produced by the _unitString() method in the super class.
+     *  string produced by the unitsString() method in the super class.
      *  @return A String representing the int value and the units (if
      *   any) of this token.
-     *  @see ptolemy.data.ScalarToken#_unitString
+     *  @see ptolemy.data.ScalarToken#unitsString
      */
     public String toString() {
 	String unitString = "";
 	if ( !_isUnitless()) {
-	    unitString = " * " + _unitString();
+	    unitString = " * " + unitsString();
 	}
         return Integer.toString(_value) + unitString;
     }
