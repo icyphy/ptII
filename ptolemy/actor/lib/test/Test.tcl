@@ -132,9 +132,18 @@ Value was: 1.01. Should have been: 1}}
 ######################################################################
 #### 
 #
-test Test-1.4 {If fire() is not called, throw an Exception} {
+test Test-1.4 {SDF model that triggers parameter is not an array of arrays} {
+    
     # Create a model that has an unconnected test actor 
     set e4 [sdfModel 5]
+    set sdfDirector [$e4 getDirector]
+
+    	
+    set allowDisconnectedGraphsParam \
+	[getParameter $sdfDirector allowDisconnectedGraphs]
+    $allowDisconnectedGraphsParam setToken \
+	[java::new ptolemy.data.BooleanToken true]
+	
     set ramp4 [java::new ptolemy.actor.lib.Ramp $e4 ramp4]
     set test4 [java::new ptolemy.actor.lib.Test $e4 test4]
     $e4 connect \
@@ -151,8 +160,38 @@ test Test-1.4 {If fire() is not called, throw an Exception} {
     catch {[$e4 getManager] execute} errMsg
 
     list [string range $errMsg 0 176]
-} {{ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring
+} {{ptolemy.kernel.util.IllegalActionException: Test fails in iteration 0.
+Width of input is 0, but correctValues parameter is not an array of arrays.
   in .top.test4a}}
+
+
+######################################################################
+#### 
+#
+test Test-1.4.1 {If fire() is not called, throw an Exception} {
+    # It turns out that we can't easily do this in SDF, so we use DE
+
+    # Create a model that has an unconnected test actor 
+    set e5 [deModel 5]
+
+    set clock5 [java::new ptolemy.actor.lib.Clock $e5 clock5]
+    set test5 [java::new ptolemy.actor.lib.Test $e5 test5]
+    $e5 connect \
+	[java::field [java::cast ptolemy.actor.lib.Source $clock5] output] \
+	[java::field [java::cast ptolemy.actor.lib.Sink $test5] input]
+
+    # Unconnected actor
+    set test4a [java::new ptolemy.actor.lib.Test $e5 test5a]
+
+    set trainingMode5 [getParameter $test5 trainingMode]
+    $trainingMode5 setExpression "true" 
+    puts " The next command will produce a warning about training mode,"
+    puts "   which may be ignored."
+    catch {[$e5 getManager] execute} errMsg
+
+    list [string range $errMsg 0 176]
+} {{ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .top.test5a}}
 
 ######################################################################
 #### 
