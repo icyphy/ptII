@@ -37,7 +37,7 @@ import ptolemy.actor.Director;
 import ptolemy.kernel.util.*;
 import ptolemy.domains.ct.kernel.CTBaseIntegrator;
 import ptolemy.data.expr.Variable;
-import ptolemy.data.expr.VariableList;
+import ptolemy.domains.fsm.kernel.util.VariableList;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import java.util.Enumeration;
@@ -83,16 +83,22 @@ public class HSInit extends NamedObj implements TransitionAction {
             // scope.
             FSMController ctrl = (FSMController)_container.getContainer();
             vl = (VariableList)ctrl.getAttribute(FSMController.INPUT_VALUE_VAR_LIST);
-            _valueVar.addToScope(vl);
+            if (vl != null) {
+                _valueVar.addToScope(vl.getVariables());
+            }
             // Add the FSMController's local variable list to ValueVar's
             // scope.
             vl = (VariableList)ctrl.getAttribute(FSMController.LOCAL_VARIABLE_LIST);
-            _valueVar.addToScope(vl);
+            if (vl != null) {
+                _valueVar.addToScope(vl.getVariables());
+            }
             // Add the source state's local input value variable list to ValueVar's
             // scope.
             FSMState st = _container.sourceState();
             vl = (VariableList)st.getAttribute(FSMState.LOCAL_INPUT_VALUE_VAR_LIST);
-            _valueVar.addToScope(vl);
+            if (vl != null) {
+                _valueVar.addToScope(vl.getVariables());
+            }
             _valueVar.setExpression(_expression);
         } /*catch (KernelException ex) {
             throw new InvalidStateException(this, ex.getMessage());

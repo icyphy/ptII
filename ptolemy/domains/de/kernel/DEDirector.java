@@ -473,9 +473,19 @@ public class DEDirector extends Director {
      *  @return The stop time of the simulation.
      */
     public double getStopTime() {
+
+        DoubleToken token = null;
+
         // since _stopTime field is set in the constructor, it is guarantee
         // to be non-null.
-        DoubleToken token = (DoubleToken)_stopTime.getToken();
+        try {
+            token = (DoubleToken)_stopTime.getToken();
+        } catch (IllegalActionException ex) {
+            // Shouldn't occur, since the value of _stopTime is always
+            // given by a token.
+            throw new InternalErrorException(getFullName() + ": "
+                    + "Invalid stop time.");
+        }
         return token.doubleValue();
     }
 
@@ -748,7 +758,7 @@ public class DEDirector extends Director {
     // If there are no events on the event queue, and _stopWhenQueueIsEmpty
     // flag is true (which is set to true by default) then return false,
     // which will have the effect of stopping the simulation.
-    
+
     // FIXME: This should return the actor, not use a private variable.
     // Lukito: Good idea! Also, maybe change the method name to
     // _obtainActorToFire or _getActorToFire

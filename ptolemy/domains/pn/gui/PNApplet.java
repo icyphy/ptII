@@ -147,8 +147,10 @@ public class PNApplet extends PtolemyApplet {
 
     /** Get the initial capacity of the channels from the entry box,
      *  if there is one, or from the director, if not.
+     *  @exception IllegalActionException If the expression of the
+     *   parameter Initial_queue_capacity is not valid.
      */
-    protected int _getQueueSize() {
+    protected int _getQueueSize() throws IllegalActionException {
         int result = 1;
         if(_director != null) {
             Parameter param =

@@ -113,9 +113,10 @@ public class CTTestValueSink extends TypedAtomicActor {
     /** Wrapup. Compare the last token with 1.0. For correct integration,
      *  the last token should be very close to it.
      *  We take 1e-10 as the value resolution.
-     *
+     *  @exception IllegalActionException If testValue has an invalid
+     *   expression.
      */
-    public void wrapup() {
+    public void wrapup() throws IllegalActionException {
         _debug(getName() + " wrapping up.");
         double v = ((DoubleToken)_lastToken).doubleValue();
         double p = ((DoubleToken)testValue.getToken()).doubleValue();

@@ -36,7 +36,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.actor.*;
 import ptolemy.data.expr.Variable;
-import ptolemy.data.expr.VariableList;
+import ptolemy.domains.fsm.kernel.util.VariableList;
 import java.util.Enumeration;
 import collections.LinkedList;
 
@@ -321,9 +321,13 @@ public class FSMTransition extends ComponentRelation {
         Variable act;
         while (actionVariables.hasMoreElements()) {
             act = (Variable)actionVariables.nextElement();
-            act.addToScope(inputVarV.getVariables());
-            act.addToScope(localVars.getVariables());
-            if (!isPreemptive()) {
+            if (inputVarV != null) {
+                act.addToScope(inputVarV.getVariables());
+            }
+            if (localVars != null) {
+                act.addToScope(localVars.getVariables());
+            }
+            if (!isPreemptive() && localInputVarV != null) {
                 act.addToScope(localInputVarV.getVariables());
             }
         }
@@ -331,9 +335,13 @@ public class FSMTransition extends ComponentRelation {
         Variable update;
         while (varUpdates.hasMoreElements()) {
             update = (Variable)varUpdates.nextElement();
-            update.addToScope(inputVarV.getVariables());
-            update.addToScope(localVars.getVariables());
-            if (!isPreemptive()) {
+            if (inputVarV != null) {
+                update.addToScope(inputVarV.getVariables());
+            }
+            if (localVars != null) {
+                update.addToScope(localVars.getVariables());
+            }
+            if (!isPreemptive() && localInputVarV != null) {
                 update.addToScope(localInputVarV.getVariables());
             }
         }
@@ -410,7 +418,7 @@ public class FSMTransition extends ComponentRelation {
 
     /** Return true if this transition is enabled.
      */
-    public boolean isEnabled() {
+    public boolean isEnabled() throws IllegalActionException {
 
         if (_teSet) {
 

@@ -151,8 +151,10 @@ public class SDFApplet extends PtolemyApplet {
     /** Get the number of iterations from the entry box, if there is one,
      *  or from the director, if not.
      *  @return The number of iterations to execute.
+     *  @exception IllegalActionException If the expression of the iteration
+     *   parameter of the SDF director is not valid.
      */
-    protected int _getIterations() {
+    protected int _getIterations() throws IllegalActionException {
         int result = 1;
         if(_director != null) {
             Parameter iterparam =

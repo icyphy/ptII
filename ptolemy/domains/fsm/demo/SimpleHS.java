@@ -40,7 +40,6 @@ import ptolemy.domains.fsm.lib.*;
 import ptolemy.domains.ct.kernel.*;
 import ptolemy.domains.ct.lib.*;
 import ptolemy.data.expr.Variable;
-import ptolemy.data.expr.VariableList;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;

@@ -36,7 +36,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Variable;
-import ptolemy.data.expr.VariableList;
+import ptolemy.domains.fsm.kernel.util.VariableList;
 import java.util.Enumeration;
 import collections.LinkedList;
 
