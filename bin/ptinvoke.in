@@ -160,7 +160,7 @@ case "`basename $0`" in
 	# Ptolemy II Application that uses Jini
 	javastartupclass=ptolemy.actor.gui.PtolemyApplication
 	javasourcedir=ptolemy/actor/gui
-	jarfile=$JINI_JARS
+	jarfile=$JINI_JARS${CLASSPATHSEPARATOR}${PTII}/lib/diva.jar
 	javaflag=$JINI_JFLAG
 	;;
     ptolemy)
