@@ -242,7 +242,7 @@ linger over the port.</text>
 <xLabel>time (in symbol intervals)</xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="2.0"/>
-<yRange min="-0.16884976524466028" max="0.20283858988635178"/>
+<yRange min="-1.2" max="1.2"/>
 <noGrid/>
 <wrap/>
 <default marks="pixels"/>
