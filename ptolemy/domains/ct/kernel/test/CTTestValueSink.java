@@ -96,7 +96,7 @@ public class CTTestValueSink extends CTActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private boolean _success;
+    private boolean _success = false;
 
     private Parameter _param;
 }
