@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (mudit@eecs.berkeley.edu)
+@AcceptedRating Green (bilung@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
