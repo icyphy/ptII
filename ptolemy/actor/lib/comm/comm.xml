@@ -6,12 +6,13 @@
     <?moml
       <group>
 
-<!-- entity name="DensityEstimator"
-class="ptolemy.actor.lib.comm.DensityEstimator"/ -->
+<!-- entity name="DensityEstimator" class="ptolemy.actor.lib.comm.DensityEstimator"/ -->
 
 <entity name="ConvolutionalCoder" class="ptolemy.actor.lib.comm.ConvolutionalCoder"/>
 <entity name="DeScrambler" class="ptolemy.actor.lib.comm.DeScrambler"/>
-<entity name="FlipFlop" class="ptolemy.actor.lib.comm.FlipFlop"/>
+
+<!-- entity name="FlipFlop" class="ptolemy.actor.lib.comm.FlipFlop"/ -->
+
 <entity name="HadamardCode" class="ptolemy.actor.lib.comm.HadamardCode"/>
 <entity name="HammingCoder" class="ptolemy.actor.lib.comm.HammingCoder"/>
 <entity name="HammingDecoder" class="ptolemy.actor.lib.comm.HammingDecoder"/>
