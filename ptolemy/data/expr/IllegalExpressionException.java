@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (liuxj@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 
 */
 
@@ -47,4 +47,3 @@ public class IllegalExpressionException extends RuntimeException {
         super(msg);
     }
 
-}

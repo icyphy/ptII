@@ -26,7 +26,7 @@ or is removed.
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (nsmyth@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.data.expr;
