@@ -130,6 +130,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
         _layoutAction = new LayoutAction();
         _saveInLibraryAction = new SaveInLibraryAction();
         _importLibraryAction = new ImportLibraryAction();
+        _instantiateAttributeAction = new InstantiateAttributeAction();
         _instantiateEntityAction = new InstantiateEntityAction();
     }
 
@@ -151,6 +152,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
         GUIUtilities.addMenuItem(_graphMenu, _saveInLibraryAction);
         GUIUtilities.addHotKey(_jgraph, _importLibraryAction);
         GUIUtilities.addMenuItem(_graphMenu, _importLibraryAction);
+        GUIUtilities.addMenuItem(_graphMenu, _instantiateAttributeAction);
+        GUIUtilities.addHotKey(_jgraph, _instantiateAttributeAction);
         GUIUtilities.addMenuItem(_graphMenu, _instantiateEntityAction);
         GUIUtilities.addHotKey(_jgraph, _instantiateEntityAction);
         _graphMenu.addSeparator();
@@ -235,13 +238,19 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
     protected Action _layoutAction;
     protected Action _saveInLibraryAction;
     protected Action _importLibraryAction;
+    protected Action _instantiateAttributeAction;
     protected Action _instantiateEntityAction;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The most recent class name for instantiating a class. */
-    private String _lastClassName = "ptolemy.actor.lib.Ramp";
+    /** The most recent class name for instantiating an attribute. */
+    private String _lastAttributeClassName
+            = "ptolemy.vergil.kernel.attributes.EllipseAttribute";
+
+    /** The most recent class name for instantiating an entity. */
+    private String _lastEntityClassName
+            = "ptolemy.actor.lib.Ramp";
 
     /** The most recent location for instantiating a class. */
     private String _lastLocation= "";
@@ -456,6 +465,69 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
     };
 
     ///////////////////////////////////////////////////////////////////
+    //// InstantiateAttributeAction
+
+    /** An action to instantiate an entity given a class name. */
+    private class InstantiateAttributeAction extends AbstractAction {
+
+        /** Create a new action to instantiate an entity. */
+        public InstantiateAttributeAction() {
+            super("Instantiate Attribute");
+            putValue("tooltip", "Instantiate an attribute by class name");
+            putValue(GUIUtilities.MNEMONIC_KEY,
+                    new Integer(KeyEvent.VK_A));
+        }
+
+        /** Instantiate a class by first opening a dialog to get
+         *  a class name and then issuing a change request.
+         */
+        public void actionPerformed(ActionEvent e) {
+            Query query = new Query();
+            query.setTextWidth(60);
+            query.addLine("class", "Class name", _lastAttributeClassName);
+            ComponentDialog dialog = new ComponentDialog(
+                    ActorGraphFrame.this, "Instantiate Attribute", query);
+            if (dialog.buttonPressed().equals("OK")) {
+                // Get the associated Ptolemy model.
+                GraphController controller =
+                    _jgraph.getGraphPane().getGraphController();
+                AbstractBasicGraphModel model =
+                    (AbstractBasicGraphModel)controller.getGraphModel();
+                NamedObj context = model.getPtolemyModel();
+
+                _lastAttributeClassName = query.getStringValue("class");
+
+                // Find the root for the instance name.
+                String rootName = _lastAttributeClassName;
+                int period = rootName.lastIndexOf(".");
+                if (period >= 0 && (rootName.length() > period + 1)) {
+                    rootName = rootName.substring(period + 1);
+                }
+
+                // Use the center of the screen as a location.
+                Rectangle2D bounds = getVisibleCanvasRectangle();
+                double x = bounds.getWidth()/2.0;
+                double y = bounds.getHeight()/2.0;
+                
+                // Use the "auto" namespace group so that name collisions
+                // are automatically avoided by appending a suffix to the name.
+                String moml = "<group name=\"auto\"><property name=\""
+                    + rootName
+                    + "\" class=\""
+                    + _lastAttributeClassName
+                    + "\"><property name=\"_location\" "
+                    + "class=\"ptolemy.kernel.util.Location\" value=\""
+                    + x
+                    + ", "
+                    + y
+                    + "\"></property></property></group>";
+                MoMLChangeRequest request = new MoMLChangeRequest(this, context, moml);
+                context.requestChange(request);
+            }
+        }
+    };
+
+    ///////////////////////////////////////////////////////////////////
     //// InstantiateEntityAction
 
     /** An action to instantiate an entity given a class name. */
@@ -475,7 +547,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
         public void actionPerformed(ActionEvent e) {
             Query query = new Query();
             query.setTextWidth(60);
-            query.addLine("class", "Class name", _lastClassName);
+            query.addLine("class", "Class name", _lastEntityClassName);
             query.addLine("location", "Location (URL)", _lastLocation);
             ComponentDialog dialog = new ComponentDialog(
                     ActorGraphFrame.this, "Instantiate Entity", query);
@@ -487,11 +559,11 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                     (AbstractBasicGraphModel)controller.getGraphModel();
                 NamedObj context = model.getPtolemyModel();
 
-                _lastClassName = query.getStringValue("class");
+                _lastEntityClassName = query.getStringValue("class");
                 _lastLocation = query.getStringValue("location");
 
                 // Find the root for the instance name.
-                String rootName = _lastClassName;
+                String rootName = _lastEntityClassName;
                 int period = rootName.lastIndexOf(".");
                 if (period >= 0 && (rootName.length() > period + 1)) {
                     rootName = rootName.substring(period + 1);
@@ -514,7 +586,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                 String moml = "<group name=\"auto\"><entity name=\""
                     + rootName
                     + "\" class=\""
-                    + _lastClassName
+                    + _lastEntityClassName
                     + "\""
                     + source
                     + "><property name=\"_location\" "
