@@ -1072,7 +1072,29 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
             return;
         }
 
-        _nodeToLocal.put(node, _getLocalForName(node.getName()));
+        Local local;
+        try {
+            local = _getLocalForName(node.getName());
+        } catch (IllegalActionException ex) {
+            // Must be a constant.  FIXME: Catching the exception is a
+            // lousy way to figure this out.
+            // Look up for constants.
+            if (ptolemy.data.expr.Constants.get(node.getName()) != null) {
+                System.err.println("tested!");
+                // A named constant that is recognized by the parser.
+                Stmt insertPoint = Jimple.v().newNopStmt();
+                _units.insertBefore(insertPoint, _insertPoint);
+                local = PtolemyUtilities.buildConstantTokenLocal(_body,
+                        insertPoint,
+                        ptolemy.data.expr.Constants.get(node.getName()), 
+                        "token");
+            } else {
+                throw ex;
+
+            }
+        }
+
+        _nodeToLocal.put(node, local);
     }
 
     public void visitLogicalNode(ASTPtLogicalNode node)
