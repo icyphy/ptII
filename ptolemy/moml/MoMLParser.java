@@ -295,7 +295,7 @@ public class MoMLParser extends HandlerBase {
             try {
                 ((Configurable)_current).configure(
                         _base, _configureSource, _currentCharData.toString());
-            } catch (NoClassDefFoundError ex) {
+            } catch (NoClassDefFoundError e) {
                 // If we are running without a display and diva.jar
                 // is not in the classpath, then we may get" 
                 // "java.lang.NoClassDefFoundError: diva/canvas/Figure"
@@ -1174,7 +1174,8 @@ public class MoMLParser extends HandlerBase {
                 _containers.push(_current);
                 _namespaces.push(_namespace);
 		try {
-		    Class newClass = Class.forName(className, true, _classLoader);
+		    Class newClass = Class.forName(className, true,
+                            _classLoader);
 		    _current = _createInstance(newClass, arguments);
 		    _namespace = DEFAULT_NAMESPACE;
 		} catch (NoClassDefFoundError e) {
