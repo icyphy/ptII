@@ -46,11 +46,13 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 
+# Have meaning of life last so that make demo shows it on top.
 MODELS= \
-	meaningOfLife.xml \
-	testDeux.xml \
 	testQuatre.xml \
-	testTrois.xml
+	testTrois.xml \
+	testDeux.xml \
+	meaningOfLife.xml
+
 
 C_FILES = \
 	meaningOfLife.c \
