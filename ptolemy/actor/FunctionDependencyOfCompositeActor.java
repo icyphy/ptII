@@ -99,7 +99,9 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
             FunctionDependency functionDependency = 
                 embeddedActor.getFunctionDependencies();
             // merge the ports graph of the embedded actor into current one
-            _directedGraph.addGraph(functionDependency.getAbstractPortsGraph());
+            if (functionDependency != null) {
+                _directedGraph.addGraph(functionDependency.getAbstractPortsGraph());
+            }
         }
            
         // Next, create the directed edges according to the connections at 
