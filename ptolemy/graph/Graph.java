@@ -1175,11 +1175,10 @@ public class Graph implements Cloneable {
         _edges.remove(edge);
         if (hidden(edge)) {
             _hiddenEdgeSet.remove(edge);
-            return false;
         } else {
             _disconnectEdge(edge);
-            return true;
         }
+        return true;
     }
 
     /** Remove a node from this graph if it exists in the graph.
@@ -1215,7 +1214,7 @@ public class Graph implements Cloneable {
     /** Restore an edge if the edge exists in the graph and is presently
      *  hidden. This is an <em>O(1)</em> operation.
      *  @param edge The edge to restore.
-     *  @return true If the edge is in the graph and was hidden.
+     *  @return True if the edge is in the graph and was hidden.
      *  @exception IllegalArgumentException If the source node and sink node
      *  of the given edge are not both in the graph.
      *  @see #hideEdge(Edge)
