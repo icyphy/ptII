@@ -35,6 +35,8 @@
   </property>
   <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory"/>
 </property>
+<property name="SliderParameter" class="ptolemy.actor.parameters.SliderParameter">
+</property>
 <property name="portParameter" class="ptolemy.actor.parameters.PortParameter">
   <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute"/>
   <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
