@@ -174,12 +174,12 @@ public class Variable extends Parameter {
 
     /** Clone the variable.
      *  The state of the cloned variable will be identical to this 
-     *  varialbe, but without the ParameterListener dependencies 
+     *  variable, but without the ParameterListener dependencies 
      *  set up. These are set up only after first creating all the 
      *  parameters and variables on which the cloned variable will
      *  depend, adding these variables to the scope of the cloned
      *  variable, AND evaluate() is called on the cloned variable.
-     *  @param The workspace in which to place the cloned varialbe.
+     *  @param The workspace in which to place the cloned variable.
      *  @exception CloneNotSupportedException If this variable 
      *   cannot be cloned.
      *  @see ptolemy.data.expr.Parameter#clone()
