@@ -30,7 +30,7 @@ MULTI = true;
 STATIC = false;
 }
 
-PARSER_BEGIN(PtTreeParser)
+PARSER_BEGIN(PtParser)
 package pt.data.parser;
 
 import pt.kernel.*;
@@ -39,60 +39,59 @@ import pt.data.*;
 import java.io.*;
 import java.lang.reflect.*;
 
-public class PtTreeParser {
-  
-  public PtTreeParser() {
+public class PtParser {
+    pt.data.Token _ptToken;
+    NamedList _scope;
+    pt.data.Param _param;
+    
+  public PtParser() {
       this(System.in);
   }
   
-  public double parseFromInput(){    
-    double result = 666;
-    System.out.print("\nEnter an Expression to be parsed: ");
-    System.out.flush();
-    ReInit(System.in);
-    try {
+  public pt.data.Token parseFromInput(){   
+      System.out.print("\nEnter an Expression to be parsed: ");
+      System.out.flush();
+      ReInit(System.in);
+      try {
 	ASTPtSimpleNode n = start();      	
-	result = n.value;
-	System.out.println("Thank you, result is " + result);
-	n.dump("");
-    } catch (ParseException x) {
-      System.out.println("Exiting, parse failed");
-    }
-    System.out.flush();
-    return result;
+        	n.dump("");
+	_ptToken = n.resolve();
+        System.out.println("Thank you, result is " + _ptToken.toString());
+      } catch (Exception x) {
+          System.out.println("Exiting, parse failed");
+      }
+      System.out.flush();
+    return _ptToken;
   }
  
 
- public double parse(String stringIn) {
-   double result = -999;
-   InputStream stream = new ByteArrayInputStream(stringIn.getBytes());
-   this.ReInit(stream);
-   System.out.print("\nParsing expression: ");
-   System.out.println(stringIn.replace('\n', ' ') );
-   try {
+ public pt.data.Token parse(String stringIn) {
+     InputStream stream = new ByteArrayInputStream(stringIn.getBytes());
+     this.ReInit(stream);
+     System.out.print("\nParsing expression: ");
+     System.out.println(stringIn.replace('\n', ' ') );
+     try {
      ASTPtSimpleNode n = start();
      //n.dump("");
-     result = n.value;
-     System.out.println("Thank you, result is " + result);
-    } catch (ParseException x) {
+     _ptToken = n.resolve();
+     System.out.println("Thank you, result is " + _ptToken.toString());
+    } catch (Exception x) {
      System.out.println("Exiting, parse failed");
    }
-    System.out.flush();
-   return result;
+     return _ptToken;
  }  
 
-/*  public double parse(String stringIn, NamedList scope, Param param) {
-    double result = -999;
-    _scope = scope;
-    _param = param;
-    result = parse(stringIn);
-    _scope = null;
-    _param = null;
-    return result;
-  }*/
+    public pt.data.Token parse(String stringIn, NamedList scope, pt.data.Param param) {
+        _scope = scope;
+        _param = param;
+        _ptToken = parse(stringIn);
+        _scope = null;
+        _param = null;
+        return _ptToken;
+    }
 }
 
-PARSER_END(PtTreeParser)
+PARSER_END(PtParser)
 
 SKIP :
 {
@@ -143,177 +142,105 @@ TOKEN : /* literal strings */
 }
 
 ASTPtSimpleNode start() #PtSimpleNode :
-{ASTPtSimpleNode result;}
+{}
 {
-    result = sum() ( <EOL> | <EOF> )?
-	{ jjtThis.value = result.value;
-	  return jjtThis;}
+    sum() ( <EOL> | <EOF> )?
+	{ return jjtThis; }
 }
 
-ASTPtSimpleNode sum() #PtSimpleNode :
-{Token x;
-ASTPtSimpleNode result, side2;}
+void sum() #PtSumNode :
+{Token x;}
 {
-    result = term() ( 
-	( x = <PLUS> | x = <MINUS> ) side2 = term()
+    term() ( 
+	( x = <PLUS> | x = <MINUS> ) term()
 	{
-	  if ( x.kind == PLUS )
-		result.value += side2.value;
-	    else
-		result.value -= side2.value;
+	  jjtThis._tokenList.insertLast(x);
 	}
     )*
-      { jjtThis.value = result.value;
-      return jjtThis; }
 }
 
-ASTPtSimpleNode term() #PtSimpleNode :
-{Token x;
-ASTPtSimpleNode result, side2;}
+void term() #PtProductNode :
+{Token x;}
 {
-    result = exp() ( 
-	( x = <MULTIPLY> | x = <DIVIDE> ) side2 = exp()
+    exp() ( 
+	( x = <MULTIPLY> | x = <DIVIDE> ) exp()
 	{
-	  if ( x.kind == MULTIPLY )
-	        result.value *= side2.value;
-	    else
-		result.value /= side2.value;
+            jjtThis._tokenList.insertLast(x);
 	}
     )*
-      {jjtThis.value = result.value; 
-      return jjtThis; }
 }
 
-ASTPtSimpleNode exp() #PtSimpleNode :
-{ASTPtSimpleNode result, side2; }
+void exp() #PtExpNode :
+{}
 {
-    result = unary() ( LOOKAHEAD( <EXP> )
-	<EXP> side2 = exp()
-	{
-	    result.value = (new Double(Math.pow(result.value, side2.value))).doubleValue();
-	}
-    )*
-      { jjtThis.value = result.value;
-	return jjtThis; }
+    unary() ( LOOKAHEAD( <EXP> ) <EXP>  exp() )*
 }
 
-ASTPtSimpleNode unary() #PtSimpleNode :
-{ASTPtSimpleNode result; }
+void unary() #PtUnaryNode :
+{}
 {
-    <MINUS> result = element()
-      { jjtThis.value = (-result.value);
-      return jjtThis;}
+    <MINUS> element()
+      { jjtThis.isMinus = true;}
     |
-    result = element()
-      { jjtThis.value = result.value;
-	return jjtThis;}
+    element()
 }
 
-ASTPtSimpleNode element() #PtSimpleNode :
+void element() #PtSimpleNode :
 {ASTPtSimpleNode result;}
 {
      <CONSTANT>
-	{   try {
-	    	jjtThis.value = Double.valueOf(token.image).doubleValue();
-		return jjtThis;
+	{   try 
+            {
+                Double value = new Double(token.image);
+                jjtThis._ptToken = new DoubleToken(value.doubleValue());
+               
 	    } catch (NumberFormatException ee) {
 	        System.out.println("Error converting token " + token.image + "to a number");
-	        jjtThis.value = 0;
-		return jjtThis;
+	        throw new ParseException();
 	    }
 	}
 
-  | "("  result = sum() ")"
-    { jjtThis.value = result.value;
-      return jjtThis; }
-
+  | "(" sum() ")"
+   
   |   LOOKAHEAD( <ID> "(" )
-      result = function()
-    { jjtThis.value = result.value;
-      return jjtThis; } 
-
+      function()
+    
   |   <ID>
     { 
-      /*if (_scope != null) {
-	ptToken x = (ptToken)_scope.get(token.image);
-	if (ptToken != null) {
-	  //jjtThis.ptToken = x.clone();
-	  //x.getPublisher().addObserver(_param);
-	  jjtThis.value = 999;
-	  return jjtThis;
-	// }
-      } */
-      if (token.image.equalsIgnoreCase("PI")) {
-	//jjtThis.ptToken = new ptDoubleToken(Math.PI);
-	jjtThis.value = Math.PI;
-	return jjtThis;
-      }
-      else if (token.image.equalsIgnoreCase("E")) {
-	//	jjtThis.ptToken = new ptDoubleToken(Math.E);
-	jjtThis.value = Math.E;
-	return jjtThis;
-      }
-      else {
-	//jjtThis.ptToken = new ptStringToken(token.image);
-	jjtThis.value = 999;
-	return jjtThis;
-      }
-
+        if (_scope != null) {
+            pt.data.Token x = (pt.data.Token)_scope.get(token.image);
+            if (x != null) {
+                jjtThis._ptToken = (pt.data.Token)x.clone();
+                x.getPublisher().addObserver(_param);
+            }
+        } 
+        else if (token.image.equalsIgnoreCase("PI")) {
+            jjtThis._ptToken = new pt.data.DoubleToken(Math.PI);
+        }
+        else if (token.image.equalsIgnoreCase("E")) {
+            jjtThis._ptToken = new pt.data.DoubleToken(Math.E);
+        }
+        else {
+            jjtThis._ptToken = new pt.data.StringToken(token.image);
+        }
     }
 
   |   <STRING>
     {
-      //jjtThis.stringValue = token.image; /*new ptStringToken(token.image);*/
-      int len = token.image.length();
-      //char slash = '\';
-      // Now cut the " from each end of the string
-      String tidied = token.image.substring(1, (len -1));
-      System.out.println("encountered a string \"" + tidied + "\"");
-      jjtThis.value = 999;
-      return jjtThis;
+         // Now cut the " from each end of the string
+        int len = token.image.length();
+        String tidied = token.image.substring(1, (len -1));
+        jjtThis._ptToken = new pt.data.StringToken(tidied);
+        System.out.println("encountered a string \"" + tidied + "\"");    
     }
 }
 
-ASTPtSimpleNode function() #PtSimpleNode :
-{ String funcname;
-  int args = 0;
+void function() #PtFunctionNode :
+{   
   java.util.Stack funcArgStack = new java.util.Stack();
   ASTPtSimpleNode aa, bb; 
-	//FIXME: want ot add matlab & tcl calling ability here later
 }
-{    <ID> {funcname = token.image;} 
-    "(" [ aa = sum() {args++; funcArgStack.push(new Double(aa.value));} ( 
-    "," bb = sum() {args++; funcArgStack.push(new Double(bb.value));})* ] 
-    ")"
-    {
-      Class[] argTypes = new Class[args];
-      Double[] argValues = new Double[args];
-      try {
-	int i;
-	for (i=args-1; i>=0; i--) {
-	  argValues[i] = (Double)funcArgStack.pop();	
-	  argTypes[i] = argValues[i].TYPE;
-	}
-	// Note: Java makes a dintinction between the class objects
-	// for double & Double...
-	Class tmp = Class.forName("java.lang.Math");
-	Method m = tmp.getMethod(funcname, argTypes);
-	Double result = (Double)m.invoke(tmp, argValues);
-	jjtThis.value = result.doubleValue();
-      } catch (Exception ex) {
-	int i;
-	StringBuffer sb = new StringBuffer();
-	for (i=0; i<args; i++) {
-	  if (i==0) {
-	    sb.append(argValues[i].doubleValue());
-	  } else {
-	    sb.append(", " + argValues[i].doubleValue());
-	  }
-	}  
-	System.out.print("Function "+funcname+"(");
-	System.out.println(sb + ") cannot be executed with given arguments");
-      }	
-      return jjtThis;
-    }
+{    <ID> {jjtThis.funcName = token.image;} 
+    "(" [  sum() ( ","  sum()  )* ]  ")"
 }
 
