@@ -320,12 +320,18 @@ public class NamedObj implements Nameable, Debuggable,
      *  yourself if you want it there). This uses the clone() method of
      *  java.lang.Object, which makes a field-by-field copy.
      *  It then adjusts the workspace reference and clones the
-     *  attributes on the attribute list, if there is one.
+     *  attributes on the attribute list, if there is one. In addition,
+     *  if this object has the MoML element name "class", as determined
+     *  by getMoMLElementName(), then the new object will not export
+     *  its contents when exportMoML() is called, but rather will
+     *  declare that it extends this one, and will export only its attributes.
      *  This method read-synchronizes on the workspace.
      *  @param ws The workspace for the new object.
      *  @return A new NamedObj.
      *  @exception CloneNotSupportedException If any of the attributes
      *   cannot be cloned.
+     *  @see #getMoMLElementName()
+     *  @see #exportMoML(Writer, int, String)
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         // NOTE: It is safe to clone an object into a different
@@ -366,6 +372,9 @@ public class NamedObj implements Nameable, Debuggable,
                             ws.getFullName());
                 }
             }
+            if (getMoMLElementName().equals("class")) {
+                newobj._setDeferMoMLDefinitionTo(this);
+            }
             return newobj;
         } finally {
             _workspace.doneReading();
@@ -404,20 +413,25 @@ public class NamedObj implements Nameable, Debuggable,
     }
 
     /** Get the list of other objects that defer their MoML definitions
-     *  to this one.
-     *  @return An unmodifiable list of NamedObj objects.
-     *  @see #setDeferMoMLDefinitionTo(NamedObj)
+     *  to this one because they are clones of it.
+     *  @return An unmodifiable list of NamedObj objects, or null if there
+     *   are none.
+     *  @see #clone(Workspace)
+     *  @see #exportMoML(Writer, int, String)
      */
     public List deferredMoMLDefinitionFrom() {
-        return Collections.unmodifiableList(_deferredFrom);
+        if (_deferredFrom != null) {
+            return Collections.unmodifiableList(_deferredFrom);
+        } else {
+            return null;
+        }
     }
 
     /** Return a full description of the object. This is accomplished
      *  by calling the description method with an argument for full detail.
      *  This method read-synchronizes on the workspace.
      *  @return A description of the object.
-     *  @deprecated Use exportMoML() instead.
-     *  @see #exportMoML(Writer, int)
+     *  @see #exportMoML(Writer, int, String)
      */
     public String description() {
         return description(COMPLETE);
@@ -430,19 +444,19 @@ public class NamedObj implements Nameable, Debuggable,
      *  It read-synchronizes on the workspace.
      *  @param detail The level of detail.
      *  @return A description of the object.
-     *  @deprecated Use exportMoML() instead.
-     *  @see #exportMoML(Writer, int)
+     *  @see #exportMoML(Writer, int, String)
      */
     public String description(int detail) {
         return _description(detail, 0, 0);
     }
 
     /** Get a MoML description of this object.  This might be an empty string
-     *  if there is no MoML description of the object.  This uses the two
-     *  argument version of this method.  It is final to ensure that
+     *  if there is no MoML description of the object.  This uses the
+     *  three-argument version of this method.  It is final to ensure that
      *  derived classes only need to override that method to change
      *  the MoML description.
      *  @return A MoML description, or null if there is none.
+     *  @see #exportMoML(Writer, int, String)
      */
     public final String exportMoML() {
         try {
@@ -457,11 +471,12 @@ public class NamedObj implements Nameable, Debuggable,
 
     /** Get a MoML description of this object with its name replaced by
      *  the specified name.  The description might be an empty string
-     *  if there is no MoML description of the object.  This uses the three
-     *  argument version of this method.  It is final to ensure that
+     *  if there is no MoML description of the object.  This uses the
+     *  three-argument version of this method.  It is final to ensure that
      *  derived classes only override that method to change
      *  the MoML description.
      *  @return A MoML description, or null if there is none.
+     *  @see #exportMoML(Writer, int, String)
      */
     public final String exportMoML(String name) {
         try {
@@ -480,12 +495,13 @@ public class NamedObj implements Nameable, Debuggable,
      *  <pre>
      *      exportMoML(new OutputStreamWriter(System.out))
      *  </pre>
-     *  This method uses the two
-     *  argument version of this method.  It is final to ensure that
+     *  This method uses the three-argument
+     *  version of this method.  It is final to ensure that
      *  derived classes only need to override that method to change
      *  the MoML description.
      *  @exception IOException If an I/O error occurs.
      *  @param output The stream to write to.
+     *  @see #exportMoML(Writer, int, String)
      */
     public final void exportMoML(Writer output) throws IOException {
         exportMoML(output, 0);
@@ -500,7 +516,7 @@ public class NamedObj implements Nameable, Debuggable,
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @exception IOException If an I/O error occurs.
-     *  @see #setDeferMoMLDefinitionTo(NamedObj)
+     *  @see #exportMoML(Writer, int, String)
      */
     public final void exportMoML(Writer output, int depth) throws IOException {
         exportMoML(output, depth, getName());
@@ -526,11 +542,14 @@ public class NamedObj implements Nameable, Debuggable,
      *      &lt;/<i>element</i>&gt;
      *  </pre>
      *  The <i>classname</i> attribute normally gives the Java classname
-     *  of this instance.  However, if setDeferMoMLDefinitionTo() has been
-     *  called with a non-null argument, then it gives the name of the object
-     *  specified in that call.  In addition, in this case, the body contains
-     *  only a description of the attributes.   The _exportMoMLContents()
-     *  method is not called.  For example, the exported MoML might look like:
+     *  of this instance.  However, if this object was cloned from another
+     *  object that identifies itself as a MoML "class", as determined by
+     *  the getMoMLElementName() method, then it gives the name of the object
+     *  from which it was cloned.  In addition, in this case, the body contains
+     *  only the MoML exported by the attributes. I.e., the
+     *  _exportMoMLContents() method is not called in this case.
+     *  For example, if "foo" was cloned from "bar", and "bar" is a
+     *  MoML "class", then the exported MoML looks like:
      *  <pre>
      *      &lt;entity name="foo" class=".bar"&gt;
      *          <i>attributes</i>
@@ -557,7 +576,8 @@ public class NamedObj implements Nameable, Debuggable,
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @param name The name to use in the exported MoML.
      *  @exception IOException If an I/O error occurs.
-     *  @see #setDeferMoMLDefinitionTo(NamedObj)
+     *  @see #clone(Workspace)
+     *  @see #getMoMLElementName()
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
@@ -663,13 +683,17 @@ public class NamedObj implements Nameable, Debuggable,
 	return null;
     }
 
-    /** Return the object that gives a detailed description of this moml
-     *  object when exporting MoML.  For a detailed description of how this
-     *  works, see the setDeferMoMLDefinitionTo method.
-     *  @return The named object that is referred to.
-     *  @see #exportMoML(Writer, int)
+    /** If this object was cloned from another object that identifies
+     *  itself as a MoML "class", as determined by the getMoMLElementName()
+     *  method, then return that other object.  When exportMoML() is called,
+     *  that other object will be referenced, and only the attributes of
+     *  this object will be exported.
+     *  @return The named object from which this was cloned, or null if
+     *   there is no such object.
+     *  @see #clone(Workspace)
      *  @see #deferredMoMLDefinitionFrom()
-     *  @see #setDeferMoMLDefinitionTo(NamedObj)
+     *  @see #exportMoML(Writer, int, String)
+     *  @see #getMoMLElementName()
      */
     public NamedObj getDeferMoMLDefinitionTo() {
 	return _deferTo;
@@ -727,6 +751,8 @@ public class NamedObj implements Nameable, Debuggable,
     /** Get the name of the MoML element used to describe this object.
      *  This defaults to "entity", unless it is set by setMoMLElementName().
      *  @return A MoML element name.
+     *  @see #exportMoML(Writer, int, String)
+     *  @see #setMoMLElementName(String)
      */
     public String getMoMLElementName() {
         return _MoMLElementName;
@@ -794,45 +820,8 @@ public class NamedObj implements Nameable, Debuggable,
 	}
     }
 
-    /** Specify that when generating a MoML description of this named
-     *  object, instead of giving a detailed description, refer to the
-     *  specified other object.  The name of that other object goes
-     *  into the "class" or "extends" attribute of the MoML element
-     *  defining this object.  Normally, this object is a clone
-     *  of the referred to object, or the generated MoML may not
-     *  make much sense.  In addition, calling this method
-     *  suppresses description of the contents of the contents
-     *  of this named object (_exportMoMLContents() is not called).
-     *  Only the attributes are described in the body of the element.
-     *  To re-enabled detailed descriptions, call this method with
-     *  a null argument.  This method is write synchronized on
-     *  the workspace.
-     *  @param referTo The object to refer to.
-     *  @see #exportMoML(Writer, int)
-     *  @see #deferredMoMLDefinitionFrom()
-     */
-    public void setDeferMoMLDefinitionTo(NamedObj deferTo) {
-        try {
-            _workspace.getWriteAccess();
-            if (deferTo == null && _deferTo != null) {
-                if (_deferTo._deferredFrom != null) {
-                    // Removing a previous reference.
-                    _deferTo._deferredFrom.remove(this);
-                }
-            }
-            _deferTo = deferTo;
-            if (deferTo != null) {
-                if (deferTo._deferredFrom == null) {
-                    deferTo._deferredFrom = new LinkedList();
-                }
-                deferTo._deferredFrom.add(this);
-            }
-        } finally {
-            _workspace.doneWriting();
-        }
-    }
-
-    /** Set the name of the MoML element used to describe this object.
+    /** Set the name of the MoML element used to describe this object
+     *  by the exportMoML() methods.
      *  This defaults to "entity" if this method is not called.
      *  Top-level objects should have element name "model" or "class."
      *  Others are "entity", "port", "relation", "property", etc.
@@ -842,6 +831,7 @@ public class NamedObj implements Nameable, Debuggable,
      *  will be generated by exportMoML().  In particular, it will
      *  use the "extends" attribute instead of "class".
      *  @param name A MoML element name.
+     *  @see #exportMoML(Writer, int, String)
      */
     public void setMoMLElementName(String name) {
         _MoMLElementName = name;
@@ -1244,4 +1234,46 @@ public class NamedObj implements Nameable, Debuggable,
 
     /** @serial The name */
     private String _name;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Specify that when generating a MoML description of this named
+     *  object, instead of giving a detailed description, refer to the
+     *  specified other object.  The name of that other object goes
+     *  into the "class" or "extends" attribute of the MoML element
+     *  defining this object.  This method is called when this object
+     *  is constructed by cloning another object that identifies itself
+     *  as a MoML "class".  In addition, calling this method
+     *  suppresses description of the contents of the contents
+     *  of this named object (_exportMoMLContents() is not called).
+     *  Only the attributes are described in the body of the element.
+     *  To re-enabled detailed descriptions, call this method with
+     *  a null argument.  This method is write synchronized on
+     *  the workspace because it modifies the object that is the
+     *  argument to refer back to this one.
+     *  @param referTo The object to refer to.
+     *  @see #exportMoML(Writer, int)
+     *  @see #deferredMoMLDefinitionFrom()
+     */
+    private void _setDeferMoMLDefinitionTo(NamedObj deferTo) {
+        try {
+            _workspace.getWriteAccess();
+            if (_deferTo != null) {
+                if (_deferTo._deferredFrom != null) {
+                    // Removing a previous reference.
+                    _deferTo._deferredFrom.remove(this);
+                }
+            }
+            _deferTo = deferTo;
+            if (deferTo != null) {
+                if (deferTo._deferredFrom == null) {
+                    deferTo._deferredFrom = new LinkedList();
+                }
+                deferTo._deferredFrom.add(this);
+            }
+        } finally {
+            _workspace.doneWriting();
+        }
+    }
 }
