@@ -9,8 +9,6 @@
   
   <input source="lib/channels.xml"/>
 
-  <input source="lib/actors.xml"/>
-  
   <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
   </property>
 
