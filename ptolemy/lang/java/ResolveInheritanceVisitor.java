@@ -108,8 +108,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
         }
 
         if ((modifiers & ABSTRACT_MOD) == 0) {
-            if (_hasAbstractMethod(node, false)) {
-                _hasAbstractMethod(node, true);
+            if (_hasAbstractMethod(node)) {
                 ApplicationUtility.error("ResolveInheritanceVisitor." +
                         "visitClassDeclNode(): " +  me.fullName() +
                         " has abstract methods: it must be declared abstract");
@@ -215,31 +214,16 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
 
     // Return true if there is at least one abstract method in the class
     // environment.
-    private static boolean _hasAbstractMethod(UserTypeDeclNode node,
-            boolean debug ) {
+    private static boolean _hasAbstractMethod(UserTypeDeclNode node) {
         Environ classEnv = JavaDecl.getDecl((NamedNode) node).getEnviron();
 
         Iterator memberItr = classEnv.allProperDecls();
 
-        if (node.getName().getIdent().equals("Variable")) {
-            System.out.println("----Now checking Variable");
-            debug = true;
-        }
-
         while (memberItr.hasNext()) {
             JavaDecl member = (JavaDecl) memberItr.next();
-            if (debug) {
-                System.out.println("ResolveInheritanceVisitor." +
-                            "_hasAbstractMethod: " + member.fullName());
-            }
+
             if ((member.category == CG_METHOD) &&
                     ((member.getModifiers() & ABSTRACT_MOD) != 0)) {
-                if (debug) {
-                    System.out.println("ResolveInheritanceVisitor." +
-                            "_hasAbstractMethod: Found abstract method " +
-                            member.fullName() + " while looking in " +
-                            node.getName().getIdent());
-                }
                 return true;
             }
         }
@@ -251,13 +235,6 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
     private boolean _overriddenIn(JavaDecl member, ClassDecl to) {
         Environ env = to.getEnviron();
         String memberName = member.getName();
-        boolean debug = false;
-        if (to.fullName().equals("ptolemy.data.expr.Variable")) {
-            debug = true;
-            System.out.println("ResolveInheritanceVisitor." +
-                    "_overriddenIn(" +
-                            member.fullName() + "," +  to.fullName() + ")#1");
-        }
 
         if (member.category == CG_FIELD) {
             FieldDecl current = (FieldDecl)
@@ -282,23 +259,11 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
 
                 MethodDecl d = (MethodDecl) methodItr.next();
 
-                if (debug) {
-                    System.out.println("ResolveInheritanceVisitor." +
-                            "_overriddenIn(" +
-                            member.getName() + "," +  to.getName() + ")#2 " + 
-                            d.fullName() + " " +
-                            methodMember.fullName());
-                }
-
                 if (_typePolicy.doMethodsConflict(d, methodMember)) {
 
                     // Note: member is overriden method, d is overriding method
 
                     if (d == methodMember) {
-                        if (debug) {
-                            System.out.println("ResolveInheritanceVisitor." +
-                                    "_overriddenIn(): seeing the same thing twice");
-                        }
                         return true; // seeing the same thing twice
                     }
 
@@ -312,17 +277,6 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
                     boolean inheritAllAbstract =
                         (!isLocalDecl && ((dm & ABSTRACT_MOD) != 0));
 
-                    if (debug) {
-                            System.out.println("ResolveInheritanceVisitor." +
-                                    "_overriddenIn(" +
-                                    member.getName() + "," +
-                                    to.getName() + "): " + 
-                                    "isLocalDecl: " + isLocalDecl +
-                                    " inheritAllAbstract: " +
-                                    inheritAllAbstract +
-                                    d.getContainer().getName() + " " +
-                                    to.getName());
-                                    }
                     TypeNode dtype = d.getType();
 
                     if (!_typePolicy.compareTypes(d.getType(),
@@ -378,38 +332,16 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
 		            break;
                         }
                     }
-                        if (debug) {
-                            System.out.println("ResolveInheritanceVisitor." +
-                                    "_overriddenIn(" +
-                                    member.getName() + "," +
-                                    to.getName() + "): " + 
-                                    "!inheritAllAbstract: " + 
-                                    !inheritAllAbstract);
-                        }
 
                     return !inheritAllAbstract;
                 } // if (doMethodsConflict(dtype, mtype))
             } // while methodItr.hasNext()
-            if (debug) {
-                System.out.println("ResolveInheritanceVisitor." +
-                        "_overriddenIn(): false #1");
-            }
             return false;
         } else if (member.category == CG_CLASS) {
             // Declared inner classes override those in outer scope.
-            if (debug) {
-                System.out.println("ResolveInheritanceVisitor." +
-                        "_overriddenIn(): Declared inner classes override those in outer scope.");
-                        }
-
             return true;
         } else if (member.category == CG_INTERFACE) {
             // Declared inner classes override those in outer scope.
-            if (debug) {
-                System.out.println("ResolveInheritanceVisitor." +
-                        "_overriddenIn(): Declared inner classes override those in outer scope.");
-                        }
-
             return true;
         }
 
