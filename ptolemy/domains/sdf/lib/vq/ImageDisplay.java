@@ -29,30 +29,22 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.domains.sdf.lib.vq;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.*;
-import ptolemy.actor.*;
-import ptolemy.actor.lib.Sink;
 import ptolemy.actor.gui.Placeable;
-import ptolemy.domains.sdf.kernel.*;
+import ptolemy.actor.lib.Sink;
+import ptolemy.data.IntMatrixToken;
+import ptolemy.data.Token;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
 import ptolemy.media.Picture;
 
-import java.io.*;
-import java.text.MessageFormat;
-import java.util.Enumeration;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.BorderLayout;
-import java.awt.event.*;
-import java.awt.image.*;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JWindow;
-import javax.swing.SwingUtilities;
-import java.awt.Dimension;
+import java.awt.Graphics;
 
 //////////////////////////////////////////////////////////////////////////
 //// ImageDisplay

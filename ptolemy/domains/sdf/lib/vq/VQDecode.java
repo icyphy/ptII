@@ -28,16 +28,22 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.domains.sdf.lib.vq;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.*;
-import ptolemy.actor.*;
 import ptolemy.actor.lib.Transformer;
+import ptolemy.data.IntMatrixToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
 import ptolemy.math.IntegerMatrixMath;
-import java.io.*;
-import java.net.*;
+
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 //////////////////////////////////////////////////////////////////////////
 //// VQDecode
