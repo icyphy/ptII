@@ -110,7 +110,8 @@
 </entity>
 <!-- END sinks -->
 
-            <input source="../actor/lib/math.xml"/>
+	    <!-- use ptolemy/ instead of ../ here so that we look in the jar-->
+            <input source="ptolemy/actor/lib/math.xml"/>
 
 <!-- BEGIN flow control -->
 <entity name="flow control" class="ptolemy.moml.EntityLibrary">
@@ -132,9 +133,10 @@
   </configure>
 </entity>
 <!-- END flow control -->
-            <input source="../actor/lib/logic/logic.xml"/>
-            <input source="../actor/lib/conversions/conversions.xml"/>
-            <input source="../actor/lib/signalprocessing.xml"/>
+	    <!-- use ptolemy/ instead of ../ here so that we look in the jar-->
+            <input source="ptolemy/actor/lib/logic/logic.xml"/>
+            <input source="ptolemy/actor/lib/conversions/conversions.xml"/>
+            <input source="ptolemy/actor/lib/signalprocessing.xml"/>
           </group>
         ?>
       </configure>
