@@ -309,8 +309,7 @@ public class Parameter extends ptolemy.kernel.util.Attribute implements Observer
      * a string or a Token yet, the string argument is used to set the 
      * initial state(value and type) of the parameter.
      * @param str The string to be evaluated to set the value of the parameter.
-     * @exception IllegalArgumentException Thrown if try to set the value 
-     *  of this parameter from a null string.
+     * @exception IllegalActionException If the str parameter is null.
      */
     public void setTokenFromExpr(String str) throws IllegalActionException {
         if (str == null) {
