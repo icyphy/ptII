@@ -36,6 +36,7 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.*;
+import ptolemy.data.type.*;
 
 import java.util.*;
 
@@ -58,7 +59,7 @@ the execution sequence of the actors before execution begins.
 <ul>
 <li>The number of tokens accumulated on every relation is bounded, given
 an infinite number of executions of the schedule.
-<li>Deadlock will never occur, given and infinite number of executions of
+<li>Deadlock will never occur, given an infinite number of executions of
 the schedule.
 </ul>
 <h1>Class comments</h1>
@@ -68,11 +69,27 @@ class.  Furthermore, the newReceiver method creates Receivers of type
 SDFReceiver, which extends QueueReceiver to support optimized gets
 and puts of arrays of tokens.
 <p>
-The SDF director has a single parameter, "iterations", corresponding to a
+Actors are assumed to consume and produce exactly one token per channel on
+each firing.  Actors that do not follow this convention should set
+the appropriate parameters on input and output ports to declare the number
+of tokens they produce or consume.  See the 
+@link ptolemy.domains.sdf.kernel.SDFScheduler for more information. 
+The @link ptolemy.domains.sdf.lib.SampleDelay actor is usually used 
+in a model to specify the delay across a relation.
+<p>
+The <i>iterations</i> parameter of this director corresponds to a
 limit on the number of times the director will fire its hierarchy
 before it returns false in postfire.  If this number is not greater
 than zero, then no limit is set and postfire will always return true.
 The default value of the iterations parameter is an IntToken with value zero.
+<p>
+The <i>vectorizationFactor</i> parameter of this director sets the number
+of times that the basic schedule is executed during each firing of this
+director.  This might allow the director to execute the model more efficiently,
+by combining multiple firings of each actor.  The default value of the 
+vectorizationFactor parameter is an IntToken with value one.
+
+
 @see ptolemy.domains.sdf.kernel.SDFScheduler
 @see ptolemy.domains.sdf.kernel.SDFReceiver
 
@@ -87,7 +104,8 @@ public class SDFDirector extends StaticSchedulingDirector {
      *
      *  The SDFDirector will have a default scheduler of type SDFScheduler.
      */
-    public SDFDirector() {
+    public SDFDirector()
+            throws IllegalActionException, NameDuplicationException {
         super();
         _init();
     }
@@ -99,7 +117,8 @@ public class SDFDirector extends StaticSchedulingDirector {
      *
      *  @param workspace The workspace for this object.
      */
-    public SDFDirector(Workspace workspace) {
+    public SDFDirector(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -156,6 +175,20 @@ public class SDFDirector extends StaticSchedulingDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** React to a change in an attribute. If the changed attribute
+     *  matches a parameter of the director, then the corresponding
+     *  local copy of the parameter value will be updated.
+     *  @param attribute The changed parameter.
+     *  @exception IllegalActionException If the parameter set is not valid.
+     */
+    public void attributeChanged(Attribute attribute) 
+            throws IllegalActionException {
+        if(attribute == vectorizationFactor) {
+            invalidateSchedule();
+        }
+        super.attributeChanged(attribute);
+    }
+
     /** Calculate the current schedule, if necessary,
      *  and iterate the contained actors
      *  in the order given by the schedule.  No internal state of the
@@ -197,25 +230,12 @@ public class SDFDirector extends StaticSchedulingDirector {
                             FiringEvent.BEFORE_ITERATE));
 		}
 
-		// FIXME: This is a hack. It does not even check if the
-		// SDF graph contains loops, and may be far from optimal when
-		// the SDF graph contains non-homogeneous actors. However,
-		// the default value of vectorizationFactor = 1,
-		// which should be completely safe for all models.
 		// TODO: I need to modify the scheduler to generate an
 		// optimum vectorized schedule. I.e., first try to
 		// obtain a single appearance schedule. Then, try
 		// to minimize the number of actor activations.
-		int factor =
-                    ((IntToken) (vectorizationFactor.getToken())).intValue();
-		if (factor < 1) {
-		    throw new IllegalActionException(this,
-                            "The supplied vectorization factor is invalid " +
-                            "Valid values consist of positive integers. " +
-                            "The supplied value was: " + factor);
-		}
-		int returnVal =
-                    actor.iterate(factor*iterationCount);
+                int returnVal =
+                    actor.iterate(iterationCount);
 		if (returnVal == COMPLETED) {
 		    _postfirereturns = _postfirereturns && true;
 		} else if (returnVal == NOT_READY) {
@@ -236,8 +256,8 @@ public class SDFDirector extends StaticSchedulingDirector {
     /** Initialize the actors associated with this director and
      *  then compute the schedule.  The schedule is computed
      *  during initialization so that hierarchical opaque composite actors
-     *  can be scheduled properly (since the act of computing the
-     *  schedule sets the rate parameters of the external ports).
+     *  can be scheduled properly, since the act of computing the
+     *  schedule sets the rate parameters of the external ports.
      *  The order in which the actors are initialized is arbitrary.
      *  @exception IllegalActionException If the initialize() method of
      *  one of the associated actors throws it, or if there is no
@@ -250,7 +270,22 @@ public class SDFDirector extends StaticSchedulingDirector {
             throw new IllegalActionException("Attempted to initialize " +
                     "SDF system with no scheduler");
         // force the schedule to be computed.
+        if(_debugging) _debug("Computing schedule");
         Schedule sched = s.getSchedule();
+
+        // FIXME: You probably only want this from the scheduler, but
+        // currently there is no easy way to listen to the scheduler
+        // from inside Vergil.  Hence we'll print the schedule here too...
+        if(_debugging) {
+            Iterator firings = sched.firingIterator();
+            while (firings.hasNext()) {
+		Firing firing = (Firing)firings.next();
+		Actor actor = (Actor)firing.getActor();
+		int iterationCount = firing.getIterationCount();
+                _debug("Actor " + actor + " will fire " + 
+                        iterationCount + " time(s).");
+            }
+        }
     }
 
     /** Return a new receiver consistent with the SDF domain.
@@ -266,7 +301,8 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  Otherwise, return false.  Note that this does not call prefire()
      *  on the contained actors.
      *  @exception IllegalActionException If port methods throw it.
-     *  @return True.
+     *  @return True if all of the input ports of the container of this
+     *  director have enough tokens.
      */
     public boolean prefire() throws IllegalActionException {
         // Set current time based on the enclosing model.
@@ -380,20 +416,21 @@ public class SDFDirector extends StaticSchedulingDirector {
                     "transferOutputs: port argument is not " +
                     "an opaque output port.");
         }
-        boolean trans = false;
-        Receiver[][] insiderecs = port.getInsideReceivers();
-        if (insiderecs != null) {
-            for (int i = 0; i < insiderecs.length; i++) {
-                if (insiderecs[i] != null) {
-                    for (int j = 0; j < insiderecs[i].length; j++) {
-			while (insiderecs[i][j].hasToken()) {
+        boolean tokensWereTransferred = false;
+        Receiver[][] insideReceivers = port.getInsideReceivers();
+        if (insideReceivers != null) {
+            for (int i = 0; i < insideReceivers.length; i++) {
+                if (insideReceivers[i] != null) {
+                    for (int j = 0; j < insideReceivers[i].length; j++) {
+			while (insideReceivers[i][j].hasToken()) {
                             try {
-                                ptolemy.data.Token t = insiderecs[i][j].get();
-                                port.send(i, t);
-                                trans = true;
+                                ptolemy.data.Token token = 
+                                    insideReceivers[i][j].get();
+                                port.send(i, token);
+                                tokensWereTransferred = true;
                             } catch (NoTokenException ex) {
                                 throw new InternalErrorException(
-                                        "Director.transferOutputs: " +
+                                        "SDFDirector.transferOutputs: " +
                                         "Internal error: " +
                                         ex.getMessage());
                             }
@@ -402,7 +439,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                 }
             }
         }
-        return trans;
+        return tokensWereTransferred;
     }
 
 
@@ -411,7 +448,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
     /** Override the base class to indicate that this director does not
      *  need write access on the workspace during an iteration.
-     *  @return False.
+     *  @return false.
      */
     protected boolean _writeAccessRequired() {
         return false;
@@ -421,33 +458,20 @@ public class SDFDirector extends StaticSchedulingDirector {
     ////                         private methods                   ////
 
     /** Initialize the object.   In this case, we give the SDFDirector a
-     *  default scheduler of the class SDFScheduler.
+     *  default scheduler of the class SDFScheduler, an iterations
+     *  parameter and a vectorizationFactor parameter.
      */
-    private void _init() {
-        try {
-            SDFScheduler scheduler = 
-                new SDFScheduler(this, uniqueName("Scheduler"));
-        }
-        catch (Exception e) {
-            // if setScheduler fails, then we should just set it to Null.
-            // this should never happen because we don't override
-            // setScheduler() to do sanity checks.
-            throw new InternalErrorException(
-                    "Could not create Default Scheduler:\n" +
-                    e.getMessage());
-        }
+    private void _init() 
+            throws IllegalActionException, NameDuplicationException {
+        SDFScheduler scheduler = 
+            new SDFScheduler(this, uniqueName("Scheduler"));
 
-        try {
-            iterations
-                = new Parameter(this,"iterations",new IntToken(0));
-	    vectorizationFactor
-                = new Parameter(this,"vectorizationFactor",new IntToken(1));
-        }
-        catch (Exception e) {
-            throw new InternalErrorException(
-                    "Cannot create default iterations parameter:\n" +
-                    e.getMessage());
-        }
+        iterations = 
+            new Parameter(this, "iterations", new IntToken(0));
+        iterations.setTypeEquals(BaseType.INT);
+        vectorizationFactor = 
+            new Parameter(this, "vectorizationFactor", new IntToken(1));
+        vectorizationFactor.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////

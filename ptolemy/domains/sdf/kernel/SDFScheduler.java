@@ -340,6 +340,8 @@ public class SDFScheduler extends Scheduler {
      *  <li>The graph contains cycles without delays (deadlock).
      *  <li>Multiple output ports are connected to the same broadcast
      *  relation. (equivalent to a non-deterministic merge)
+     *  <li>The vectorizationFactor parameter of the director does
+     *  not contain a positive integer.
      *  </ul>
      *
      * @return A Schedule of the deeply contained opaque entities
@@ -348,10 +350,29 @@ public class SDFScheduler extends Scheduler {
      *  schedulable.
      */
     protected Schedule _getSchedule() throws NotSchedulableException {
-        StaticSchedulingDirector dir =
+        StaticSchedulingDirector dir = 
             (StaticSchedulingDirector)getContainer();
+        
+        int vectorizationFactor = 1;
+        if(dir instanceof SDFDirector) {
+            try {
+                SDFDirector director = (SDFDirector)dir;
+                Token token = director.vectorizationFactor.getToken();
+                vectorizationFactor = ((IntToken)token).intValue();
+            } catch (IllegalActionException exception) {
+                throw new NotSchedulableException(this,
+                        "The supplied vectorizationFactor is invalid:" +
+                        exception);
+            }
+        } 
+        if(vectorizationFactor < 1) {
+            throw new NotSchedulableException(this,
+                    "The supplied vectorizationFactor is invalid " +
+                    "Valid values consist of positive integers. " +
+                    "The supplied value was: " + vectorizationFactor);
+        }    
         CompositeActor container = (CompositeActor)(dir.getContainer());
-
+        
         // A linked list containing all the actors
         LinkedList AllActors = new LinkedList();
         Iterator entities = container.deepEntityList().iterator();
@@ -444,7 +465,8 @@ public class SDFScheduler extends Scheduler {
                     + "rate and initial production parameters:\n"
                     + ex.getMessage() + ".");
         }
-        _normalizeFirings(firings, externalRates);
+
+        _normalizeFirings(vectorizationFactor, firings, externalRates);
 
         _setFiringVector(firings);
 
@@ -599,15 +621,21 @@ public class SDFScheduler extends Scheduler {
 
     /** Normalize fractional firing ratios into a firing vector that
      *  corresponds to a single SDF iteration.   Multiply all of the
-     *  fractions by the GCD of their denominators.
+     *  fractions by the GCD of their denominators and by the given 
+     *  vectorizationFactor.  This factor is normally the 
+     *  integer value of the vectorizationFactor parameter of the 
+     *  director.
      *
+     *  @param vectorizationFactor An integer scaling factor to multiply
+     *  the firing vector by.
      *  @param firings Map of firing ratios to be normalized.
      *  @param externalRates Map of token production rates that will
      *  be scaled along with the firings map.
      *  @exception InternalErrorException If the calculated GCD does not
      *  normalize all of the fractions.
      */
-    private void _normalizeFirings(Map firings, Map externalRates) {
+    private void _normalizeFirings(int vectorizationFactor, 
+            Map firings, Map externalRates) {
         Iterator unnormalizedFirings = firings.values().iterator();
         int lcm = 1;
 
@@ -620,7 +648,9 @@ public class SDFScheduler extends Scheduler {
         }
 
         if (_debugging) _debug("lcm = " + (new Integer(lcm)).toString());
-        Fraction lcmFraction = new Fraction(lcm);
+        if (_debugging) _debug("vectorizationFactor = " + vectorizationFactor);
+
+        Fraction lcmFraction = new Fraction(lcm * vectorizationFactor);
     
         Iterator actors = firings.keySet().iterator();
         // now go back through and multiply by the lcm we just found, which
