@@ -36,15 +36,15 @@ import ptolemy.actor.*;
 //// ODESolver
 /**
 Abstract base class for ODE solvers. The key method for the class is 
-proceedOneStep(), which executes the integration method for one successful
+proceedOneStep(), which executes the integration method for one
 step. This method does not consider any breakpoint affect. In general,
-proceedOneStep() will first resolve the integrators' new states,
-then perform error control. If the step is not successful, then the step 
-size will be reduced and try again. How the states are resolved and
-how the errors are controlled are method dependent.  Derived classes
-may implement these methods according to individual ODE solving methods.
-CTDirectors can switch their solver at each iteration
-of simulation seamlessly. 
+resolveState() will resolve the integrators' new states. 
+Step size control (including error control) is performed by the 
+director. But solvers may provide support for it.
+How the states are resolved and how the errors are controlled are
+solver dependent.  Derived classes
+may implement these methods according to individual ODE
+solving algorithm.
 <P>
 The behavior of the integrators also changes
 when changing ODE solver, so this class provides the some methods

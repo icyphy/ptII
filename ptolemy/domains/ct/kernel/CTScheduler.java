@@ -45,6 +45,12 @@ A CT (sub)system can be represented mathematiclly as:<Br>
     dx/dt = f(x, u, t)<Br>
     y = g(x, u, t)<BR>
     e: h(x, u, t) = 0<BR>
+
+where x is the state of the syste, u is the input, y is the output,
+ f() is the state transition map, g() is the output map,
+and h() is the event generation map. This formulation adds the
+event generation map to the usual continuous time modeling
+to specifically handle the interaction with discrete domains.
 <P>
 The system is built by actors. That is, all the functions, f(), g(), 
 and h() are built by chains of actors. The scheduler will cluster and 
@@ -52,18 +58,24 @@ sort the system topology, and will provide the firing order for
 evaluating f(), g() and h(). The firing order for evaluating f() is 
 called the <I> state transition schedule</I>; the firing order for
 evaluating g() is called the <I> output schedule</I>; the firing 
-order for h() is called the <I>event generation schedule</I>;
+order for h() is called the <I>event generation schedule</I>,
+which is a special case of output schedule, and 
 the firing order for all the dynamic actors is called the 
 <I>dynamic actor schedule</I>.
 <P>
 To help the scheduling, a system topology is partitioned into
 several clusters:
-the <I>aritmatic actors</I>, the <I>dynamic actors</I>, 
-the <I>error control actors</I>, the <I>sink actors</I>,
-the <I>memaris actors</I>, and the <I> event generate actors</I>
+the <I>aritmetic actors</I>, the <I>dynamic actors</I>, 
+the <I>step size control actors</I>, the <I>sink actors</I>,
+the <I>stateful actors</I>, and the <I> event generator</I>.
+Aritmetic actors are actors that has no integrators in its 
+function. Dynamic actors is the opposite of arithmetic actors,
+i.e. it has integrators. The most common dynamic actors are 
+integrators, whose output is the state x of the system.
 <P>
 The state schedule is a list of dynamic actors (integrators or actors
-that can produce initial token) which are sorted backward.
+that can produce initial token) which are in the reverse
+topology order.
 <P>
 The state transition schedule is the actors in f() function sorted
 in the topological order, such that, after the integrators emit their
@@ -73,9 +85,6 @@ integrators.
 <P>
 The output schedule is the actors in g() function sorted in the topological
 order. 
-<P>
-The event generation schedule is the actors in the h() function sorted
-in the topological order.
 
 If thers are loops of arithmatic actors or loops of integrators,
 then the (sub)system is not schedulable, and a NotSchedulableException
@@ -379,36 +388,18 @@ public class CTScheduler extends Scheduler{
         }
     }
 
-    /** Return an enumeration of stateful actors.
-     *  This enumeration is locally
-     *  cached. If workspace version equals to the cached version,
-     *  then it returns the cached enumeration.
-     *  Otherwise, it will be reconstructed and cached.
-     *  This method read-synchronizes on the workspace.
-     *  @return An enumeration of Memaris actors.
-     */
-    public Enumeration statefulActors() {
-        try {
-	    workspace().getReadAccess();
-            if(_dynamicversion != workspace().getVersion()) {
-                _classifyActors();
-                _dynamicversion = workspace().getVersion();
-            }
-            return _stateful.elements();
-        } finally {
-            workspace().doneReading();
-        }
-    }
-
     /** Returns an enumeration of the schedule of the output path.
      *  This enumeration is locally cached.
      *  If workspace version equals to the cached version,
      *  then it returns the cached enumeration.
-     *  Otherwise, it calls _schedule to reconstruct, and save
+     *  Otherwise, it reconstructs, and saves
      *  the new version.
-     *  The output schedule lists all the actors in the path from
+     *  The output schedule lists all the actors in the computational
+     *  path from
      *  integrators (or dynamic actors) to sink actors (or composite
-     *  actor's output ports) in the topology order.
+     *  actor's output ports) in the topology order. The firing of
+     *  of the actors in this order corresponds to produce the output
+     *  of the system.
      *  This method read-synchronize on the workspace.
      *  @return An enumeration of the schedule of the output path.
      *  @exception IllegalActionException If the scheduler has no container,
@@ -445,6 +436,27 @@ public class CTScheduler extends Scheduler{
                 _dynamicversion = workspace().getVersion();
             }
             return _sink.elements();
+        } finally {
+            workspace().doneReading();
+        }
+    }
+
+   /** Return an enumeration of stateful actors.
+     *  This enumeration is locally
+     *  cached. If workspace version equals to the cached version,
+     *  then it returns the cached enumeration.
+     *  Otherwise, it will be reconstructed and cached.
+     *  This method read-synchronizes on the workspace.
+     *  @return An enumeration of Memaris actors.
+     */
+    public Enumeration statefulActors() {
+        try {
+	    workspace().getReadAccess();
+            if(_dynamicversion != workspace().getVersion()) {
+                _classifyActors();
+                _dynamicversion = workspace().getVersion();
+            }
+            return _stateful.elements();
         } finally {
             workspace().doneReading();
         }
