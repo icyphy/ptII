@@ -38,32 +38,40 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// CTBaseIntegrator
 /**
-Base class for integrators for continuous time simulation. An integrator
-is a dynamic actor that emit a token (internal state) at the beginning
-of the simulation. For different ODE solving method, the functionality
-of a integrator could be different. This class provide a basic
-implementation of the integrator, and the hook methods that point the
-implementations of action method to the solver.
-<P>
+Base class for integrators for continuous time simulation. 
 An integrator has one input port and one output port. Conceptually,
 the input is the differential of the output. So an ordinary
 differential equation dx/dt = f(x,t) can be represented by:
-                ---------------
-        dx/dt  |               |   x
-     --------->|   Integrator  |----------------->
-    |          |               |         |
-    |           ---------------          |
-    |                                    |
-    |             |---------|            |
-    |-------------| f(x,t)  |<-----------|
-                  |---------|
+<code><P>
+                ---------------<BR>
+        dx/dt  |               |   x<BR>
+     --------->|   Integrator  |-----------------><BR>
+    |          |               |         |<BR>
+    |           ---------------          |<BR>
+    |                                    |<BR>
+    |             |---------|            |<BR>
+    |-------------| f(x,t)  |<-----------|<BR>
+                  |---------|<BR<
+</code><P>
+An integrator
+is a dynamic actor that emit a token (internal state) at the beginning
+of the simulation. An integrator is an error control actor that can control
+the accuracy of the ODE solution by adjusting step sizes. An integrator has
+one memory, which is its state. 
 <P>
-An integrator has one parameter: <code>initialState</code>, which
-can be set use setParam(). The initialState will not impact the simulation
+For different ODE solving method, the functionality
+of a integrator could be different. This class provide a basic
+implementation of the integrator, in which the hook methods points to the
+current ODE solver.
+<P>
+An integrator has one parameter: <code>initialState</code>. At the first
+step of a simulaition, the initialState will be emitted. The  
+initialState will not impact the simulation
 after the simulation starts. The default value of the parameter is 0.
 An integrator has one state, and possibly several auxiliary variables--
-<code>_auxVariabless</code>. The number of <code>_auxVariabless</code> is get
+<code>_auxVariables</code>. The number of <code>_auxVariabless</code> is get
 from the ODE solver.
+
 
 @author Jie Liu
 @version $Id$

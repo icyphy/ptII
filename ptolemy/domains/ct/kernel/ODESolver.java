@@ -34,12 +34,27 @@ import ptolemy.actor.*;
 //////////////////////////////////////////////////////////////////////////
 //// ODESolver
 /**
-Abstract base class for ODE solvers. This class hooks the method in one
-iteration in the CTDirector, ie. prefire(), fire(), and postfire().
-The idea is that CTDirector can switch its solver at each iteration
-of simulation seamlessly. The behavior of the integrators also changes
-when changing ODE solver, so this class provides the action methods
-for the integrators too.
+Abstract base class for ODE solvers. The key method for the class is 
+proceedOneStep(), which executes the integration method for one successful
+step. This method does not consider any breakpoint affect. In general,
+proceedOneStep() will first resolver the integrators' new states,
+then perform error control. If the step is not successful, then the step 
+size will be reduced and try again. How the states are resolved and
+how the errors are controlled are method dependant.  Derived class
+may implement these methods according to individual ODE solving methods.
+CTDirectors can switch their solver at each iteration
+of simulation seamlessly. 
+<P>
+The behavior of the integrators also changes
+when changing ODE solver, so this class provides the some methods
+for the integrators too, including the fire() method, and the error
+contol related methods. Even for one integration method, the integrator's
+fire() method may depends on the round of fires.  Round counter is a counter
+for the number of fire() rounds in one iteration to help the actors that
+may behaves differently under different round. The round can be get by
+the getRound() method. IncrRound method will increase the counter by one,
+and resetRound() will always reset the counter to 0.
+<P>
 Conceptually, ODE solvers do not maintain simulation parameters,
 but they get these parameters from the director. So a set of parameters
 are shared by all the switchable solvers.
@@ -85,80 +100,70 @@ public abstract class ODESolver extends NamedObj {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Abstract method hooks the fire() method of director.
-     *  Different solver may implement it differently.
-     *
-     * @exception IllegalActionException Not thrown in this base
-     *  class. May be needed by the derived class.
+    /** Abstract method, which should return true if the local error
+     *  in the last step is tolerable.
+     *  This is the AND of all the error control actor's response.
+     *  @return true if the local error in the last step is tolerable.
      */
-    public abstract void resolveStates() throws IllegalActionException;
+    public abstract boolean errorTolerable();
 
-    /** Abstract method for resolveing the next step size if the current
-     *  step is a success.
-     *  Different solver may implement it differently.
-     *
-     * @exception IllegalActionException Not thrown in this base
-     *  class. May be needed by the derived class.
+    /** Return the director contains this solver.
+     *  @return the director contains this solver.
      */
-    public abstract void resolveNextStepSize();
-
-
-    /** Increase the round counter by one. Round counter is a counter
-     *  for the number of fire() rounds in one iteration. Some
-     *  CTActors (like the integrator) may behaves differently under
-     *  different round. The round can be get by the round() method.
-     *  And resetRound() will always reset the counter to 0.
-     */
-    public void incrRound() {
-        _round ++ ;
+    public final Nameable getContainer() {
+        return _container;
     }
 
-    /** Reset the round counter to 0.
-     */
-    public void resetRound() {
-        _round = 0;
-    }
-
-    /** Return the round counter record.
+    /** Return the round counter record. Round counter will be increased
+     *  for each round the state transition schedule is fired.
      *
-     *  @return The round of fire().
+     *  @return The round of firing the state transition schedule.
      */
     public int getRound() {
         return _round;
     }
 
+    /** Increase the round counter by one.
+     */
+    public void incrRound() {
+        _round ++ ;
+    }
+
+    /** Abstarct method returns the number of auxilary variable number
+     *  needed by the
+     *  integrators when solving the ODE.
+     *  @return The number of auxilary variables 
+     */
+    public abstract int integratorAuxVariableNumber();
+
     /** Abstract fire() method for integrators.
      *
      *  @param integrator The integrator of that calls this method.
-     * @exception IllegalActionException Not thrown in this base
+     *  @exception IllegalActionException Not thrown in this base
      *  class. May be needed by the derived class.
      */
     public abstract void integratorFire(CTBaseIntegrator integrator)
             throws  IllegalActionException;
 
-    /** Abstract hook method for isSuccess() method of integrators.
+    /** Abstract isSuccess() method for integrators.
      *  @param integrator The integrator of that calls this method.
      *  @return True if the intergrator report a success on the last step.
      */
     public abstract boolean integratorIsSuccess(CTBaseIntegrator integrator);
 
-    /** Abstract hook method for suggestedNextStepSize() method of
-     *  integrators.
+    /** Abstract suggestedNextStepSize() method for integrators.
      *  @param integrator The integrator of that calls this method.
      *  @return The suggested next step by the given integrator.
      */
     public abstract double integratorSuggestedNextStepSize(
         CTBaseIntegrator integrator);
 
-    /** Integrator's aux variable number needed when solving the ODE.
-     *  @return The number of auxilary variables for the solver in each
-     *       integrator.
-     */
-    public abstract int integratorAuxVariableNumber();
-
-    /** Run the CT subsystem for one successful step.
+    /** Solver the ODE for one successful step. In this default 
+     *  implementation, the method will try to resolve the states
+     *  of the system for the given step size. If it is not succeeded,
+     *  the the step will be restarted by startOverLastStep() method.
      *  Different solver may interprete "success" and implement
-     *  it differently.
+     *  it differently. 
      *
      * @exception IllegalActionException Not thrown in this base
      *  class. May be needed by the derived class.
@@ -174,29 +179,43 @@ public abstract class ODESolver extends NamedObj {
         }
     }
 
-    /** Reinitialize the last step and start over again.
+    /** Reset the round counter to 0.
+     */
+    public void resetRound() {
+        _round = 0;
+    }
+
+    /** Abstract method for resolveing the next step size if the current
+     *  step is a success.
+     *  Different solver may implement it differently.
+     *
+     * @exception IllegalActionException Not thrown in this base
+     *  class. May be needed by the derived class.
+     */
+    public abstract void resolveNextStepSize();
+
+    /** Abstract method for resolving the new states of the integrators.
+     *  Different solver may implement it differently.
+     *
+     * @exception IllegalActionException Not thrown in this base
+     *  class. May be needed by the derived class.
+     */
+    public abstract void resolveStates() throws IllegalActionException;
+
+    /** Abstract method for restarting the last integration step with a
+     *  smaller step size.
      *  The typical operations incolved in this method are reset
-     *  the currentTime and currentStepSize of the director.
+     *  the currentTime and halve the currentStepSize of the director.
      */
     public abstract void startOverLastStep();
 
-    /** Return true if the local error in the last step is tolerable.
-     *  @return true if the local error in the last step is tolerable.
-     */
-    public abstract boolean errorTolerable();
-
-    /** Return the director contains this solver.
-     *  @return the director contains this solver.
-     */
-    public final Nameable getContainer() {
-        return _container;
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Make this solver to be the solver of a CTDirector. This method
-     *  should not be called directly. Call the setCurrentODESolver()
+     *  should not be called directly. Call the _instantiateODESolver()
+     *  or the setCurrentODESolver()
      *  method of the director instead.
      *
      *  @param dir The CT director
@@ -213,6 +232,7 @@ public abstract class ODESolver extends NamedObj {
 
     // The CT director that contains this solver.
     private Director _container = null;
+    // The round counter.
     private int _round = 0;
 
 }

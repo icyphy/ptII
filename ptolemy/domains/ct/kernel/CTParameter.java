@@ -37,11 +37,13 @@ import java.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// CTParameter
 /**
-In the CT domain, the actor is the ParameteListener for parameter.
+Parameters for CTActors. 
+In the CT domain, the actors are the ParameteListener for parameter.
+The reason is that parameter should not be changed in the middle of 
+an iteration. The CTActors will set a flag for parameter changes and
+change parameters only at the prefire() stage of an iteration.
 @author  Jie Liu
-@version $Id$
-@see classname
-@see full-classname
+@version $Id$
 */
 public class CTParameter extends Parameter{
     /** Construct a CTParameter in the default workspace with an empty string
@@ -74,6 +76,7 @@ public class CTParameter extends Parameter{
      *  The object is not added to the list of objects in the workspace
      *  unless the container is null.
      *  Increment the version of the workspace.
+     *  The container is added as a parameter listener for the parameter.
      *  @param container The container.
      *  @param name The name of the parameter.
      *  @exception IllegalActionException If the parameter is not of an
@@ -106,6 +109,7 @@ public class CTParameter extends Parameter{
      *  Increment the version of the workspace.
      *  If the name argument is null, then the name is set to the empty
      *  string.
+     *  The container is added as a parameter listener for the parameter.
      *  @param container The container.
      *  @param name The name.
      *  @param token The Token contained by this Parameter.
