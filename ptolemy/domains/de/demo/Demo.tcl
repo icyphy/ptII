@@ -53,7 +53,8 @@ $sys setManager $exec
 #####################
 
 set clock [java::new ptolemy.domains.de.lib.DEClock $sys Clock 1.0 1.0]
-set ramp [java::new ptolemy.domains.de.lib.Ramp $sys Ramp 0 1.0]
+set ramp [java::new {ptolemy.domains.de.lib.Ramp \
+    ptolemy.actor.TypedCompositeActor String String String} $sys Ramp 0 1.0]
 
 # num demands pending = 1, consolidate demands = 1, capacity = 10
 set fifo1 [java::new ptolemy.domains.de.lib.DEFIFOQueue $sys FIFO1 1 true 10]
