@@ -176,7 +176,7 @@ public class LogicFunction extends Transformer {
         }
         if (value != null) {
             if (_negate) value = value.not();
-            output.send(0,(BooleanToken)value);
+            output.send(0, (BooleanToken)value);
         }
     }
 
@@ -188,7 +188,7 @@ public class LogicFunction extends Transformer {
      *  @param in The new input value.  Should never be null.
      *  @param old The old result value, or null if there is none.
      *  @return The result of applying the function.
-     *  @exception IllegalActionException Possibly thrown by BooleanToken.
+     *  @exception IllegalActionException If thrown by BooleanToken operations.
      */
     protected BooleanToken _updateFunction(BooleanToken in, BooleanToken old)
             throws IllegalActionException {
