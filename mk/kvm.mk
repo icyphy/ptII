@@ -35,6 +35,11 @@
 # Usually, this makefile is included right at the bottom of a makefile,
 # just before ptcommon.mk is included.
 #
+# See $PTII/doc/kvm.htm for more documentation
+# See $PTII/ptolemy/kvm/demo/ramp/makefile for an example makefile that
+# includes this makefile.
+#
+#
 # Standard Ptolemy II external makefile variables that this file uses:
 #
 # CLASSPATHSEPARATOR   Either : or ; for Unix or Windows.  Usually set in 
@@ -70,7 +75,7 @@ JAVAC_VERBOSE =	-verbose
 JAVA_VERBOSE =	-verbose:class
 MAKEPALMAPP_VERBOSE = -v -v
 
-# Run the demo via the usual method without any codegen 
+# Run the demo via the usual method without any codegen.
 demo_interpreted: $(PTCLASSJAR)
 	CLASSPATH=$(CLASSPATH) \
 		$(JAVA) ptolemy.actor.gui.CompositeActorApplication \
@@ -132,6 +137,10 @@ preverify:
 
 # Create a Palm binary from the class files in 
 # $(PTII)/$(OUTPKG)/output/$(OUTPKG_DIR)
+#   Note that to build a Palm binary, you should first run the preverifier
+#   and then use the .class files from the output directory that are
+#   created by the preverifier.  If you use the class files that were
+#   created by javac directly, then you may get verifier errors.
 build_prc: $(KVM_DIR)/tools/palm/src/palm/database/MakePalmApp.class
 	@echo "###################################"
 	@echo "# Creating Palm executable from classes in"
@@ -165,6 +174,7 @@ fix:
 		cp tmp $$files; \
 	done)
 
+# FIXME: what about Solaris?
 KVM_BINARY = $(KVM_DIR)/kvm/VmWin/build/kvm.exe
 # Run a Java simulator of the Palm
 # kvm.exe needs to be built by hand, see the kvm instructions. 
@@ -173,7 +183,7 @@ kvm:
 		echo "$(KVM_BINARY) is not found."; \
 		echo "This binary simulates the Palm/KVM environment"; \
 		echo "It is not required but it is useful for debugging"; \
-		echo "To build it, see the kvm instructions"; \
+		echo "To build it, see the kvm instructions."; \
 	else \
 		(cd $(ROOT)/$(OUTPKG_DIR); \
 			$(KVM_BINARY) -classpath \
