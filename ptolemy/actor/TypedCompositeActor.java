@@ -262,7 +262,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 		        InequalityTerm[] greaterVariables =
 			        inequality.getGreaterTerm().getVariables();
 		        boolean added = false;
-		        for (int i=0; i<lesserVariables.length; i++) {
+		        for (int i = 0; i < lesserVariables.length; i++) {
 		            InequalityTerm variable = lesserVariables[i];
 		            if ( !variable.isValueAcceptable()) {
 		                conflicts.add(inequality);
@@ -271,7 +271,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 			    }
 		        }
 		        if (added == false) {
-		            for (int i=0; i<greaterVariables.length; i++) {
+		            for (int i = 0; i < greaterVariables.length; i++) {
 		                InequalityTerm variable = greaterVariables[i];
 			        if ( !variable.isValueAcceptable()) {
 		                    conflicts.add(inequality);

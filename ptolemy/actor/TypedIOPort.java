@@ -286,7 +286,7 @@ public class TypedIOPort extends IOPort implements Typeable {
         try {
             _workspace.getReadAccess();
 	    // check types
-	    for (int i=0; i<tokenArray.length; i++) {
+	    for (int i = 0; i < tokenArray.length; i++) {
                 token = tokenArray[i];
                 int compare = TypeLattice.compare(token.getType(),
                                                   _resolvedType);
@@ -316,7 +316,7 @@ public class TypedIOPort extends IOPort implements Typeable {
                 Type farType = port.getType();
 
                 boolean needConversion = false;
-                for (int k=0; k<tokenArray.length; k++) {
+                for (int k = 0; k < tokenArray.length; k++) {
                     if ( !farType.equals(tokenArray[k].getType())) {
 	                needConversion = true;
 		    }
@@ -603,7 +603,7 @@ public class TypedIOPort extends IOPort implements Typeable {
             try {
                 _workspace.getReadAccess();
                 // check types
-	        for (int i=0; i<tokenArray.length; i++) {
+	        for (int i = 0; i < tokenArray.length; i++) {
                     token = tokenArray[i];
                     int compare = TypeLattice.compare(token.getType(),
                                                       _resolvedType);
@@ -631,7 +631,7 @@ public class TypedIOPort extends IOPort implements Typeable {
                 Type farType = port.getType();
 
                 boolean needConversion = false;
-	        for (int k=0; k<tokenArray.length; k++) {
+	        for (int k = 0; k < tokenArray.length; k++) {
                     if ( !farType.equals(tokenArray[k].getType())) {
 	                needConversion = true;
 	            }

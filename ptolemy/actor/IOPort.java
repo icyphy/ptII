@@ -609,7 +609,7 @@ public class IOPort extends ComponentPort {
                     //iteration++;
                     int depth = sourcePort.depthInHierarchy();
                     Nameable container2 = sourcePort.getContainer();
-                    if (sourcePort.isInput() && depth <=1) {
+                    if (sourcePort.isInput() && depth <= 1) {
                         result.addLast(sourcePort);
                         flag = false;
                     } else if (sourcePort.isOutput() &&
@@ -1897,7 +1897,7 @@ public class IOPort extends ComponentPort {
         Receiver[][] insideReceivers = this.deepGetReceivers();
         for (int i = 0; i < this.getWidth(); i++) {
 	    // NOTE: tokens on a channel are consumed only if the
-	    // corresponding inside reciever is not null. This behavior
+	    // corresponding inside receiver is not null. This behavior
 	    // should be OK for all of the current domains.
             if (insideReceivers != null && insideReceivers[i] != null) {
                 try {

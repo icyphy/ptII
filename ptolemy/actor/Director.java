@@ -29,7 +29,7 @@
 Review changeRequest / changeListener code.
 Review container relationship and new parent class.
 Win added methods fireAtCurrentTime(Actor) and
-fireAtRelativeTime(Actor,double)
+fireAtRelativeTime(Actor, double)
 */
 
 package ptolemy.actor;
