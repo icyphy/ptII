@@ -266,7 +266,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
     /** Return the canonical pathname of the output package, including the last
      *  file separator character.
-     *  @returns the pathname of the output package.
+     *  @return the pathname of the output package.
      */
     public String getPackageDirectoryName() {
 	return _packageDirectoryName;
