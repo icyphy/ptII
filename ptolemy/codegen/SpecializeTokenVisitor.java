@@ -113,7 +113,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
 	if (_debug) {
 	    System.out.println("SpecializedTokenVisitor.specializeTokens(): "
 			       + "\n solver:" + solver
-			       + "\n _cpo:" + _cpo.description()
+			       + "\n _cpo: " + _cpo.description()
 			       + "\n declToTermMap:\n"
 			       + _declToTermMapDescription(declToTermMap)
 			       + "\n solver:\n"
@@ -710,8 +710,48 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
 		if (_debug) {
 		    System.out.println("SpecializedTokenVisitor."
 				       + "_visitCastNode(): "
-				       + " addInequality9");
+				       + " addInequality9"
+				       );
 		}
+
+		System.out.println("PtolemyTypeIdentifier.ARRAY_TOKEN_TYPE): "
+				   + PtolemyTypeIdentifier.ARRAY_TOKEN_DECL
+				   + "(ClassDecl)PtolemyTypeIdentifier.ARRAY_TOKEN_DECL): "
+				   + (ClassDecl) PtolemyTypeIdentifier.ARRAY_TOKEN_DECL
+				   + "\n term.getValue(): " + term.getValue()
+				   + "\n (ClassDecl)term.getValue(): " + (ClassDecl)term.getValue()
+				   + "\n JavaDecl.getDecl(node.getDtype()): "
+				   + JavaDecl.getDecl(node.getDtype())
+				   );
+
+		System.out.println("_cpo.compare((ClassDecl)term.getValue()," 
+				   + "JavaDecl.getDecl(node.getDtype()): "
+				   + _cpo.compare((ClassDecl)term.getValue(),
+						  JavaDecl.getDecl(node.getDtype())));
+		switch (_cpo.compare((ClassDecl)term.getValue(),
+				     JavaDecl.getDecl(node.getDtype()))) {
+		case CPO.LOWER:
+		    break;
+		case CPO.HIGHER:
+		    if (_debug) {
+			System.out.println("SpecializedTokenVisitor."
+					   + "_visitCastNode(): "
+					   + " CPO.HIGHER: resetting term");
+		    }
+		    term = _makeConstantTerm(node.getDtype(), null);
+		    break;
+		case CPO.SAME:
+		    break;
+		case CPO.INCOMPARABLE:
+		    throw new RuntimeException("Internal Error: cpo.compare()"
+					       + " returned an INCOMPARABLE");
+		    //break;
+		default:
+		    throw new RuntimeException("Internal Error: cpo.compare()"
+					       + " returned an unknown value");
+		    //break;
+		}
+		
 
 		_solver.addInequality(new Inequality(term,
 						     _makeConstantTerm(node.getDtype(), null)));
