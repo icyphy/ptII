@@ -94,11 +94,9 @@ public class PlotApplet extends Applet implements Runnable {
         // Need the catch here because applets used as components have
         // no parameters. 
         try {
-            System.out.println("PlotApplet: init: getDocumentBase()"+
-                    getDocumentBase());
             _myPlot.setDocumentBase(getDocumentBase());
         } catch (NullPointerException e) {
-            System.out.println("PlotApplet: init: NullPointerException while"+
+            System.err.println("PlotApplet: init: NullPointerException while"+
                     "handling getDocumentBase" + e);
         }
 
@@ -121,7 +119,6 @@ public class PlotApplet extends Applet implements Runnable {
         String dataurl = null;
         try {
             dataurl = getParameter("dataurl");
-            System.out.println("PlotApplet: dataurl = "+dataurl);
             _myPlot.setDataurl(dataurl);
         } catch (NullPointerException e) {}
 
@@ -133,7 +130,7 @@ public class PlotApplet extends Applet implements Runnable {
             _myPlot.parsePxgraphargs(pxgraphargs);
         } catch (NullPointerException e) {
         } catch (CmdLineArgException e) {
-            System.out.println("Plot: failed to parse `"+pxgraphargs+
+            System.err.println("Plot: failed to parse `"+pxgraphargs+
                     "': " +e);
         }
 
@@ -150,24 +147,8 @@ public class PlotApplet extends Applet implements Runnable {
         _myPlot.paint(graphics);
     }
 
-    /**
-     * Resize this component.
-     */
-    public void resize(int width, int height) {
-        // FIXME: Used for debugging, this method should go away.
-        if (_debug > 8)
-            System.out.println("PlotApplet: resize"+width+" "+height);
-        super.resize(width,height);
-    }
-
     public void run () {
         if (_debug > 8) System.out.println("PlotApplet: run");
-// 	while (true) {
-// 	    try {
-// 		Thread.currentThread().sleep(speed);
-// 	    } catch (InterruptedException e) {
-// 	    }
-        if (_debug > 10) System.out.println("PlotApplet: run calling repaint");
 	repaint();
     }
 
@@ -189,15 +170,6 @@ public class PlotApplet extends Applet implements Runnable {
         _plotThread.stop();
     }
 
-    /**
-     *
-     */
-    public void update (Graphics graphics) {
-        // FIXME: Used for debugging, this method should go away.
-        if (_debug > 8) System.out.println("PlotApplet: update");
-        paint(graphics);
-        //        super.update(graphics);
-    }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         protected variables                      ////
