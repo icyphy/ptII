@@ -127,9 +127,4 @@ public class FileWriter extends ptolemy.actor.lib.Writer {
         // To get the file to close.
         setWriter(null);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private members                   ////
-
-    private boolean _usingStdOut = true;
 }
