@@ -50,7 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	CPort.java \
 	CActorBase.java \
-        GiottoCEmachineFramework.java
+	GiottoCEmachineFrameworkGenerator.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	CActor.xml \
@@ -70,6 +70,8 @@ OPTIONAL_FILES = \
 	doc
 
 all: jclass
+
+install: all jars
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
