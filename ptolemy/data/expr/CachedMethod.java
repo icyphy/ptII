@@ -115,7 +115,7 @@ convert the result back into a Ptolemy token.
 application or method invocation, under the above conversions, the
 findMethod() method attempts to return the most specific Java method
 that can be called.  Generally speaking, conversions are preferred in
-the above order.  If one Java method is not clearly preferrable to all
+the above order.  If one Java method is not clearly preferable to all
 others, then the findMethod() method will throw an exception.  This
 may happen if there are multiple functions defined with varying
 argument types.
