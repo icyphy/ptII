@@ -51,6 +51,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	Absent.java \
 	AbsentToken.java \
+	ButtonTime.java \
 	InstantaneousDialogGenerator.java \
 	NonStrictDelay.java \
 	NonStrictDisplay.java \
