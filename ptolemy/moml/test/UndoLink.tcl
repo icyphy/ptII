@@ -97,7 +97,7 @@ test UndoLink-1.1a {Test undoing a link: outside link, given relation, no index}
 
     set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
         <entity name=".top.level">
-            <link port="a.input" relation="r1"/>
+            <link port="a.multi" relation="r1"/>
         </entity>
     }]
     # Mark the change as being undoable
@@ -129,7 +129,7 @@ test UndoLink-1.1a {Test undoing a link: outside link, given relation, no index}
         </relation>
         <link port="output" relation="r1"/>
         <link port="a.input" relation="r1"/>
-        <link port="a.input" relation="r1"/>
+        <link port="a.multi" relation="r1"/>
     </entity>
 </entity>
 }
