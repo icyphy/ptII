@@ -67,6 +67,8 @@ import java.util.Map;
  * to the resources used by the action environment created during setup.
  *
  * @author Jörn W. Janneck <janneck@eecs.berkeley.edu>
+ * @version $Id$
+ * @since Ptolemy II 3.1
  * @see caltrop.interpreter.ast.Actor
  * @see caltrop.interpreter.ast.Action
  * @see #actionSetup
