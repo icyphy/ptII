@@ -70,14 +70,9 @@ results=$?
 if [ "$results" -eq 0 ]; then
     for arg in $@
     do
-	if [ "$1" -eq "-classpath" ]; then
-	    # FIXME: Why is this necessary?????
-	    # If we don't shift this away, then we end up including the
-	    # classpath itself
+	if [ "$1" = "-classpath" ]; then
 	    shift
-	    # consume -classpath
-	    shift
-	    # consume the classpath itself
+	    echo "third $@: $@"
 	    shift
 	    break
 	fi    
