@@ -64,7 +64,7 @@ The offset time for value 1 is 0.0.
 The offset time for value 0 is 0.33.
 The simulation time is 2.0.
 
-Caution: the test results depend on the step size of the director...</text></svg></configure>
+Caution: the test results depend on the step size...</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -77,7 +77,7 @@ Caution: the test results depend on the step size of the director...</text></svg
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 285.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 290.0">
         </property>
     </property>
     <entity name="ContinuousClock" class="ptolemy.actor.lib.ContinuousClock">
@@ -103,13 +103,13 @@ Caution: the test results depend on the step size of the director...</text></svg
         </port>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="410.0, 225.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="435.0, 225.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
