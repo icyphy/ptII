@@ -45,7 +45,7 @@ testing configurations of actors.  It can also be used in programs that
 invoke Ptolemy models and wish to query the results after the model
 is run.  The input tokens are read in the postfire() method so that
 in domains with fixed-point semantics, only the final, settled value
-is recorded.
+is recorded.  The current time is also recorded for each value.
 
 @author Edward A. Lee
 @version $Id$
@@ -109,12 +109,20 @@ public class Recorder extends Sink {
         return result.elements();
     }
 
+    /** Get the record of the current time of each invocation of postfire().
+     *  @return An enumeration of Double objects.
+     */
+    public Enumeration getTimeRecord() {
+        return _timeRecord.elements();
+    }
+
     /** Initialize the lists used to record input data.
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
         _records = new LinkedList();
+        _timeRecord = new LinkedList();
     }
 
     /** Read at most one token from each input channel and record its value.
@@ -130,6 +138,7 @@ public class Recorder extends Sink {
             }
         }
         _records.insertLast(record);
+        _timeRecord.insertLast(new Double(getDirector().getCurrentTime()));
         return true;
     }
 
@@ -138,6 +147,9 @@ public class Recorder extends Sink {
 
     // A linked list of arrays.
     private LinkedList _records;
+
+    // A linked list of Double objects, which are times.
+    private LinkedList _timeRecord;
 
     // A token to indicate absence.
     private static StringToken _bottom = new StringToken("_");
