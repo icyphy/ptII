@@ -36,6 +36,8 @@ DIRS =
 # Root of the Java directory
 ROOT =		../../../..
 
+CLASSPATH =	$(ROOT)
+
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
@@ -46,7 +48,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-
+	Sign.java
 
 OTHER_FILES_TO_BE_JARED = \
 	README.html \
