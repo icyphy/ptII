@@ -1066,21 +1066,29 @@ public class CTMultiSolverDirector extends CTDirector {
             // As a side effect, actors have state won't be invoked more than 
             // necessary.
 
-            if (_debugging) _debug("  ---> " + getName(), 
+            if (_debugging) {
+                _debug("  ---> " + getName(), 
                 ": iterating pure discrete actors (discrete -> discrete)");
+            }
             _iteratePurelyDiscreteActors(schedule);
-            
-            if (_debugging) _debug("  ---> " + getName(), 
+        
+            if (_debugging) {
+                _debug("  ---> " + getName(), 
                 ": iterating waveform generators (discrete -> continuous)");
+            }
             _iterateWaveformGenerators(schedule);
             
-            if (_debugging) _debug("  ---> " + getName(), 
+            if (_debugging) {
+                _debug("  ---> " + getName(), 
                 ": creating starting states for continuous phase execution");
+            }
             // FIXME: output schedule should not contain event generators.
             _createIterationStartingStates();
 
-            if (_debugging) _debug("  ---> " + getName(), 
+            if (_debugging) {
+                _debug("  ---> " + getName(), 
                 ": generating more events (if any) (continuous -> discrete)");
+            }
             _iterateEventGenerators(schedule);
             
             // FIXME: we need an explicit iteration of all event generators.
@@ -1109,7 +1117,8 @@ public class CTMultiSolverDirector extends CTDirector {
             
             // FIXME: make all event generators call fireAt when events are
             // to be generated. The events are only generated at discrete phase.
-            // FIXME: the above statement is wrong.
+            // FIXME: the above statement is wrong, for example, the 
+            // CTPeriodicSampler.
         }
         
         if (_debugging) {
