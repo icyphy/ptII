@@ -28,6 +28,7 @@ COPYRIGHTENDKEY
 
 package ptolemy.backtrack.ast.transform;
 
+import java.lang.reflect.Field;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -48,6 +49,7 @@ import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.Name;
+import org.eclipse.jdt.core.dom.ParenthesizedExpression;
 import org.eclipse.jdt.core.dom.PrimitiveType;
 import org.eclipse.jdt.core.dom.ReturnStatement;
 import org.eclipse.jdt.core.dom.SimpleName;
@@ -57,8 +59,10 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
 import ptolemy.backtrack.Checkpoint;
+import ptolemy.backtrack.ast.ASTClassNotFoundException;
 import ptolemy.backtrack.ast.Type;
 import ptolemy.backtrack.ast.TypeAnalyzerState;
+import ptolemy.backtrack.ast.UnknownASTException;
 import ptolemy.backtrack.util.FieldRecord;
 
 //////////////////////////////////////////////////////////////////////////
@@ -81,6 +85,8 @@ public class AssignmentTransformer
     public void handle(Assignment node, TypeAnalyzerState state) {
         AST ast = node.getAST();
         Expression leftHand = node.getLeftHandSide();
+        while (leftHand instanceof ParenthesizedExpression)
+            leftHand = ((ParenthesizedExpression)leftHand).getExpression();
         Expression rightHand = node.getRightHandSide();
         Expression newObject = null;
         SimpleName name;
@@ -96,9 +102,29 @@ public class AssignmentTransformer
             newObject = (Expression)ASTNode.copySubtree(ast, object);
         } else {
             name = (SimpleName)leftHand;
-            if (state.isVariable(name.getIdentifier()))
-                return;
+            // Use owner to do this test.
+            // if (state.isVariable(name.getIdentifier()))
+            //     return;
         }
+        
+        Type owner = Type.getOwner(leftHand);
+        boolean isStatic;
+        if (owner == null)  // Not a field.
+            return;
+        else {
+            try {
+                Class c = owner.toClass(state.getClassLoader());
+                Field field = c.getDeclaredField(name.getIdentifier());
+                isStatic = 
+                    java.lang.reflect.Modifier.isStatic(field.getModifiers());
+            } catch (ClassNotFoundException e) {
+                throw new ASTClassNotFoundException(owner.getName());
+            } catch (NoSuchFieldException e) {
+                throw new UnknownASTException();
+            }
+        }
+        if (isStatic && !HANDLE_STATIC_FIELDS)
+            return;
         
         MethodInvocation invocation = ast.newMethodInvocation();
         
@@ -109,6 +135,8 @@ public class AssignmentTransformer
         invocation.setName(newName);
         Expression newRightHand = 
             (Expression)ASTNode.copySubtree(ast, rightHand);
+        if (isStatic)
+            invocation.arguments().add(ast.newSimpleName("$CHECKPOINT"));
         invocation.arguments().add(newRightHand);
         Type.propagateType(invocation, node);
         _replaceNode(node, invocation);
@@ -131,6 +159,8 @@ public class AssignmentTransformer
     
     public static boolean OPTIMIZE_CALL = true;
     
+    public static boolean HANDLE_STATIC_FIELDS = true;
+    
     private void _handleDeclaration(ASTNode node, List bodyDeclarations, 
             TypeAnalyzerState state) {
         Class currentClass = state.getCurrentClass();
@@ -140,6 +170,11 @@ public class AssignmentTransformer
             Object nextDeclaration = bodyIter.next();
             if (nextDeclaration instanceof FieldDeclaration) {
                 FieldDeclaration fieldDecl = (FieldDeclaration)nextDeclaration;
+                boolean isStatic = Modifier.isStatic(fieldDecl.getModifiers());
+                
+                if (isStatic && HANDLE_STATIC_FIELDS != true)
+                    continue;
+                
                 if (Modifier.isPrivate(fieldDecl.getModifiers())) {
                     AST ast = fieldDecl.getAST();
                     Type type = Type.getType(fieldDecl);
@@ -148,8 +183,6 @@ public class AssignmentTransformer
                         VariableDeclarationFragment fragment = 
                             (VariableDeclarationFragment)fragmentIter.next();
                         String fieldName = fragment.getName().getIdentifier();
-                        boolean isStatic = 
-                            Modifier.isStatic(fieldDecl.getModifiers());
                         newDeclarations.add(_createAssignMethod(ast, fieldName, 
                                 type, isStatic));
                         newDeclarations.add(_createFieldRecord(ast, fieldName, 
