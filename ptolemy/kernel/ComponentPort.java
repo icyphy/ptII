@@ -387,7 +387,7 @@ public class ComponentPort extends Port {
      */
     public void setContainer(Entity container)
             throws IllegalActionException, NameDuplicationException {
-        if (!(container instanceof ComponentEntity)) {
+        if (!(container instanceof ComponentEntity) && (container != null)) {
             throw new IllegalActionException(container, this,
                     "ComponentPort can only be contained by ComponentEntity");
         }
