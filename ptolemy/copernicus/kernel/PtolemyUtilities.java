@@ -53,14 +53,6 @@ import soot.Options;
 import soot.RefType;
 import soot.Scene;
 import soot.SceneTransformer;
-import soot.SootClass;
-import soot.SootField;
-import soot.SootMethod;
-import soot.Type;
-import soot.Unit;
-import soot.Value;
-import soot.ValueBox;
-import soot.VoidType;
 
 import soot.jimple.IntConstant;
 import soot.jimple.LongConstant;
@@ -137,7 +129,8 @@ import soot.jimple.toolkits.scalar.DeadAssignmentEliminator;
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyUtilities
 /**
-This class consists of ptolemy-specific static utility methods for use with Soot. 
+This class consists of ptolemy-specific static utility methods for use
+with Soot.
 
 @author Stephen Neuendorffer
 @version $Id$
@@ -241,6 +234,10 @@ public class PtolemyUtilities {
             if(type.equals(ptolemy.data.type.BaseType.UNKNOWN)) {
                 units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
                         Jimple.v().newStaticFieldRef(unknownTypeField)),
+                        insertPoint);
+            } else if(type.equals(ptolemy.data.type.BaseType.GENERAL)) {
+                units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
+                        Jimple.v().newStaticFieldRef(generalTypeField)),
                         insertPoint);
             } else if(type.equals(ptolemy.data.type.BaseType.BOOLEAN)) {
                 units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
@@ -467,6 +464,11 @@ public class PtolemyUtilities {
         // Call the constructor on the object.
         SootMethod constructor =
             SootUtilities.getMatchingMethod(objectClass, "<init>", args);
+        if(constructor == null) {
+            throw new RuntimeException("Could not find 2 argument constructor"
+                    + " for class " + objectClass);
+        }                    
+
         units.add(Jimple.v().newInvokeStmt(
                 Jimple.v().newSpecialInvokeExpr(local,
                         constructor, args)));
@@ -491,7 +493,8 @@ public class PtolemyUtilities {
                 return null;
             }
         } else {
-            // If we have a native type, then ignore because it can't be a token type.
+            // If we have a native type, then ignore because it can't
+            // be a token type.
             return null;
         }
         SootClass objectClass = returnType.getSootClass();
@@ -586,6 +589,8 @@ public class PtolemyUtilities {
                     return ptolemy.data.type.BaseType.BOOLEAN;
                 } else if(field.equals(booleanMatrixTypeField)) {
                     return ptolemy.data.type.BaseType.BOOLEAN_MATRIX;
+                } else if(field.equals(byteTypeField)) {
+                    return ptolemy.data.type.BaseType.BYTE;
                 } else if(field.equals(complexTypeField)) {
                     return ptolemy.data.type.BaseType.COMPLEX;
                 } else if(field.equals(complexMatrixTypeField)) {
@@ -618,7 +623,8 @@ public class PtolemyUtilities {
                 // attribute statically evaluates to null.
                 return null;
             } else {
-                throw new RuntimeException("Unknown type of value: " + value + " in " + method);
+                throw new RuntimeException("Unknown type of value: " + 
+                        value + " in " + method);
             }
         } else {
             String string = "More than one definition of = " + local + "\n";
@@ -788,6 +794,7 @@ public class PtolemyUtilities {
 
     public static SootField booleanTypeField;
     public static SootField booleanMatrixTypeField;
+    public static SootField byteTypeField;
     public static SootField complexTypeField;
     public static SootField complexMatrixTypeField;
    
@@ -811,6 +818,8 @@ public class PtolemyUtilities {
 
     public static SootField fixTypeField;
     public static SootField fixMatrixTypeField;
+
+    public static SootField generalTypeField;
   
     // SootMethod representing
     // ptolemy.kernel.util.Attribute.getAttribute();
@@ -847,6 +856,9 @@ public class PtolemyUtilities {
     // Soot Type representing the ptolemy.actor.TypedIOPort class.
     public static Type ioportType;
 
+    public static SootClass kernelExceptionClass;
+    public static SootClass kernelRuntimeExceptionClass;
+
     public static SootField longTypeField;
     public static SootField longMatrixTypeField;
     
@@ -876,6 +888,8 @@ public class PtolemyUtilities {
     // Soot Type representing the ptolemy.kernel.ComponentRelation class.
     public static Type relationType;
 
+    public static SootClass runtimeExceptionClass;
+    
     // Soot class representing the ptolemy.data.ScalarToken class.
     public static SootClass scalarTokenClass;
 
@@ -1048,9 +1062,11 @@ public class PtolemyUtilities {
         baseTypeClass =
                 Scene.v().loadClassAndSupport("ptolemy.data.type.BaseType");
         unknownTypeField = baseTypeClass.getFieldByName("UNKNOWN");
+        generalTypeField = baseTypeClass.getFieldByName("GENERAL");
         booleanTypeField = baseTypeClass.getFieldByName("BOOLEAN");
         booleanMatrixTypeField = 
             baseTypeClass.getFieldByName("BOOLEAN_MATRIX");
+        byteTypeField = baseTypeClass.getFieldByName("BYTE");
         complexTypeField = baseTypeClass.getFieldByName("COMPLEX");
         complexMatrixTypeField = 
             baseTypeClass.getFieldByName("COMPLEX_MATRIX");
@@ -1067,5 +1083,12 @@ public class PtolemyUtilities {
 
         typeLatticeClass =
             Scene.v().loadClassAndSupport("ptolemy.data.type.TypeLattice");
+
+        kernelExceptionClass =
+            Scene.v().loadClassAndSupport("ptolemy.kernel.util.KernelException");
+        kernelRuntimeExceptionClass =
+            Scene.v().loadClassAndSupport("ptolemy.kernel.util.KernelRuntimeException");
+        runtimeExceptionClass = 
+            Scene.v().loadClassAndSupport("java.lang.RuntimeException");
     }
 }

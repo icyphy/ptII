@@ -123,25 +123,53 @@ public class NamedObjEliminator extends SceneTransformer {
                         
                         Value value = box.getValue();
                         Type type = value.getType();
-                        if(_isRemovableType(type)) {
-                            //  System.out.println("removing " + unit);
-                            body.getUnits().remove(unit);
-                            break;
+                        // Fix kernel exceptions to be runtime exceptions.
+                        if(value instanceof NewExpr) {
+                            NewExpr expr = (NewExpr)value;
+                            SootClass exceptionClass = 
+                                expr.getBaseType().getSootClass();
+                            if(SootUtilities.derivesFrom(
+                                      exceptionClass,
+                                      PtolemyUtilities.kernelExceptionClass) ||
+                                    SootUtilities.derivesFrom(
+                                            exceptionClass,
+                                            PtolemyUtilities.kernelRuntimeExceptionClass)) {
+                                expr.setBaseType(RefType.v(PtolemyUtilities.runtimeExceptionClass));
+                                               
+                            }
                         }
-                        // Fix the constructor...
+                        // Fix the exception constructors.
+                        if(value instanceof SpecialInvokeExpr) {
+                            SpecialInvokeExpr expr = (SpecialInvokeExpr)value;
+                            SootClass exceptionClass = 
+                                ((RefType)expr.getBase().getType())
+                                .getSootClass();
+                            if(SootUtilities.derivesFrom(
+                                      exceptionClass,
+                                      PtolemyUtilities.kernelExceptionClass) ||
+                                    SootUtilities.derivesFrom(
+                                            exceptionClass,
+                                            PtolemyUtilities.kernelRuntimeExceptionClass)) {
+                                box.setValue(Jimple.v().newSpecialInvokeExpr(
+                                                     (Local)expr.getBase(),
+                                                     PtolemyUtilities.runtimeExceptionClass.getMethod("void <init>()"),
+                                                     new LinkedList()));
+                            }
+                        }
+                        // Fix the actor constructor...
                         if(value instanceof SpecialInvokeExpr && 
                                 !method.isStatic() &&
                                 SootUtilities.derivesFrom(theClass,
                                         PtolemyUtilities.actorClass)) {
                             SpecialInvokeExpr expr = (SpecialInvokeExpr)value;
                             if(expr.getBase().equals(body.getThisLocal())) {
-                                System.out.println("replacing unit = " + unit
-                                        + " in method " + method);
+                                System.out.println("replacing constructor = " 
+                                        + unit + " in method " + method);
                                 
                                 // Replace with zero arg object constructor.
                                 box.setValue(Jimple.v().newSpecialInvokeExpr(
                                                      (Local)expr.getBase(),
-                                                     PtolemyUtilities.objectClass.getMethodByName("<init>"),
+                                                     PtolemyUtilities.objectClass.getMethod("void <init>()"),
                                                      new LinkedList()));
                                 break;
                             }
@@ -161,6 +189,19 @@ public class NamedObjEliminator extends SceneTransformer {
                                 body.getUnits().remove(unit);
                                 break;
                             }
+                        }
+                    }
+                    // If any box is removable, then remove the statement.
+                    for(Iterator boxes = unit.getUseAndDefBoxes().iterator();
+                        boxes.hasNext();) {
+                        ValueBox box = (ValueBox)boxes.next();
+                        
+                        Value value = box.getValue();
+                        Type type = value.getType();
+                        if(_isRemovableType(type)) {
+                            //System.out.println("Unit with removable type: " + unit);
+                            body.getUnits().remove(unit);
+                            break;
                         }
                     }
                     // If any locals are removable, then remove them.

@@ -70,7 +70,7 @@ all: jclass
 
 install: all $(PTPACKAGE).jar
 
-demo: compileDemo runOrthoCommDemo timeOrthoCommDemo
+demo: compileDemo runDemo
 
 # OrthogonalCom - There is no .xml file for this model
 MODEL =			OrthogonalCom
