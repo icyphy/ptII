@@ -16,7 +16,7 @@
   </port>
 </entity>
 
-<entity name="Clock" class="ptolemy.actor.lib.Clock">
+<entity name="ContinuousClock" class="ptolemy.domains.ct.lib.ContinuousClock">
   <port name="trigger">
     <property name="_hide" class="ptolemy.kernel.util.Attribute"/>
   </port>
@@ -31,6 +31,12 @@
   </port>
 </entity>
 
+<entity name="DiscreteClock" class="ptolemy.actor.lib.Clock">
+  <port name="trigger">
+    <property name="_hide" class="ptolemy.kernel.util.Attribute"/>
+  </port>
+</entity>
+
 <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
   <port name="trigger">
     <property name="_hide" class="ptolemy.kernel.util.Attribute"/>
@@ -38,7 +44,10 @@
 </entity>
 
 
-<entity name="TriggeredClock" class="ptolemy.actor.lib.TriggeredClock">
+<entity name="TriggeredDiscreteClock" class="ptolemy.actor.lib.TriggeredClock">
+</entity>
+
+<entity name="TriggeredContinuousClock" class="ptolemy.domains.ct.lib.TriggeredContinuousClock">
 </entity>
 
 <entity name="VariableClock" class="ptolemy.actor.lib.VariableClock">
