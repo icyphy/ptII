@@ -95,7 +95,6 @@ ptolemy/domains/giotto/kernel/test/ptolemy.giotto
 ptolemy/domains/gr/lib/Loader3D.java
 ptolemy/domains/gr/lib/Loader3D.class
 ptolemy/domains/gr/lib/experimental
-ptolemy/domains/hdf
 ptolemy/domains/odf
 ptolemy/domains/pbo
 ptolemy/domains/pdf
