@@ -1,8 +1,8 @@
-# Makefile for the Java classes used to test the Ptolemy data classes
+# Makefile for the Java classes used to test the Ptolemy parser classes
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
-# @Version: @(#)makefile	1.1 03/30/98
+# @Version: $Id$
 #
 # @Copyright (c) 1998 The Regents of the University of California.
 # All rights reserved.
@@ -33,15 +33,15 @@
 # by Sun.  These classes came from tcljava, see license.terms for more info.
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
-ME =		java/pt/data/test
+ME =		java/pt/data/parser/test
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
-CLASSPATH = ../../..
+CLASSPATH = ../../../..
 
 TCL_SRCS = \
 
@@ -49,9 +49,9 @@ JSRCS =
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-	IntToken.tcl \
-	ObjectToken.tcl \
-	StringToken.tcl \
+	PtParser.tcl
+
+	
 
 # Graphical Java tests that use Tcl.
 # Since there are no tests, we use a dummy file so that the script that builds
