@@ -164,6 +164,21 @@ public class SearchPath extends Vector {
         // larger than twice the size of the Set.
         Set classSet = new HashSet(281);
 
+        // Array of names of packages that are in the Ptolemy core.
+        // We don't parse java files in these packages, we use
+        // reflection instead.
+        String [] ptolemyCorePackages = {
+            "ptolemy/actor/sched/",
+            "ptolemy/actor/util/",
+            "ptolemy/kernel/",
+            "ptolemy/kernel/util/",
+            "ptolemy/data/",
+            "ptolemy/data/type/",
+            "ptolemy/graph/",
+            "ptolemy/math/" 
+        };
+
+
         // As we find packages, we mark them as done in this array
         // so as to avoid duplication
         boolean [] foundPackages = new boolean [ptolemyCorePackages.length];
@@ -269,21 +284,6 @@ public class SearchPath extends Vector {
     /** Set of Strings that name the .java files in the Ptolemy II core
      */
     public static Set ptolemyClassSet = ptolemyCoreClasses();
-
-    /** Array of names of packages that are in the Ptolemy core.
-     * We don't parse java files in these packages, we use
-     * reflection instead.
-     */
-    public static final String [] ptolemyCorePackages = {
-	"ptolemy/actor/sched/",
-	"ptolemy/actor/util/",
-	"ptolemy/kernel/",
-	"ptolemy/kernel/util/",
-	"ptolemy/data/",
-	"ptolemy/data/type/",
-	"ptolemy/graph/",
-	"ptolemy/math/" 
-    };
 
 
     ///////////////////////////////////////////////////////////////////
