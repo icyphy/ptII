@@ -789,6 +789,7 @@ public class ComplexMatrixMath {
      *  multiplication of the two matrix arguments.
      *  If the two matrices are not the same size, throw an
      *  IllegalArgumentException.
+     *
      *  <p>Note that this method does pointwise matrix multiplication.
      *  See {@link #multiply(Complex[][], Complex[][])} for standard
      *  matrix multiplication.
@@ -816,8 +817,7 @@ public class ComplexMatrixMath {
 
     /** Return a new matrix that is the additive inverse of the
      *  argument matrix.
-     * <p>
-     * @matrix A matrix of complex numbers.
+     * @param matrix A matrix of complex numbers.
      * @return A new matrix of complex numbers, which is the additive
      * inverse of the given matrix.
      */
