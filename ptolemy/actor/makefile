@@ -34,11 +34,9 @@
 # of the notion of dataflow.  These classes are concurrent functional
 # classes:
 #  FIFOQueue
-#  All Param classes
 #  Star
 #  Galaxy
 #  Universe
-#  All particle classes
 # Note that none of these classes would be relevant to FSMs, for example.
 
 # Root of the Java directory
@@ -73,10 +71,6 @@ JSRCS = \
 	FlowPort.java \
 	IOPort.java \
 	IORelation.java \
-	IntParam.java \
-	ObservableParameter.java \
-	Param.java \
-	Parameter.java \
 	RendezvousPort.java \
 
 EXTRA_SRCS =	$(JSRCS)

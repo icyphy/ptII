@@ -25,7 +25,9 @@
                                         COPYRIGHTENDKEY
 */
 
-package pt.kernel;
+package pt.actors;
+
+import pt.kernel.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// IORelation

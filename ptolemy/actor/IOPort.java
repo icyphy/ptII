@@ -28,7 +28,9 @@
 
 */
 
-package pt.kernel;
+package pt.actors;
+
+import pt.kernel.*;
 
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
