@@ -233,12 +233,14 @@ public class Manager extends NamedObj implements Runnable {
         // Make a record of the time execution starts.
         long startTime = (new Date()).getTime();
 
+        _debug("-- Manager execute() called.");
+
         boolean completedSuccessfully = false;
         try {
             initialize();
             // Call iterate() until finish() is called or postfire()
             // returns false.
-            if (_debugging) _debug("Begin to iterate.");
+            _debug("-- Manager beginning to iterate.");
 
             while (!_finishRequested) {
                 if (!iterate()) break;
@@ -445,17 +447,10 @@ public class Manager extends NamedObj implements Runnable {
             if (!_needWriteAccess()) {
                 _workspace.setReadOnly(true);
             }
-            if (_debugging) _debug("Prefire container.");
             if (_container.prefire()) {
                 // Invoke initialize on actors that have been added.
-                if (_debugging) _debug("Fire model.");
                 _container.fire();
-                if (_debugging) _debug("Postfire model.");
                 result = _container.postfire();
-            }
-            if (_debugging) {
-                if (result) _debug("Finish one iteration, returning true.");
-                else _debug("Finish one iteration, returning false.");
             }
         } finally {
             _workspace.setReadOnly(false);
@@ -492,7 +487,7 @@ public class Manager extends NamedObj implements Runnable {
         String errorMessage = shortDescription(throwable) 
 	    + " occurred: " + throwable.getClass()
             + "(" + throwable.getMessage() + ")";
-        _debug(errorMessage);
+        _debug("-- Manager notifying listeners of exception: " + throwable);
         if (_executionListeners == null) {
             System.err.println(errorMessage);
             throwable.printStackTrace();
@@ -984,8 +979,9 @@ public class Manager extends NamedObj implements Runnable {
      */
     protected void _notifyListenersOfCompletion() {
         if (_debugging) {
-            _debug("Completed execution with "
-                    + _iterationCount + " iterations");
+            _debug("-- Manager completed execution with "
+                    + _iterationCount
+                    + " iterations");
         }
         if (_executionListeners != null) {
             Iterator listeners = _executionListeners.iterator();
@@ -1001,7 +997,7 @@ public class Manager extends NamedObj implements Runnable {
      */
     protected void _notifyListenersOfStateChange() {
         if (_debugging) {
-            _debug("State is: " + _state.getDescription());
+            _debug("-- Manager state is now: " + _state.getDescription());
         }
         if (_executionListeners != null) {
             Iterator listeners = _executionListeners.iterator();
@@ -1041,7 +1037,8 @@ public class Manager extends NamedObj implements Runnable {
                 ChangeRequest request = (ChangeRequest)changeRequests.next();
                 request.execute();
                 if (_debugging) {
-                    _debug("Manager executed change request with description: "
+                    _debug("-- Manager executed change request "
+                            + "with description: "
                             + request.getDescription());
                 }
             }
