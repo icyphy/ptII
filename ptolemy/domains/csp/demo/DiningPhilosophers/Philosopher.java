@@ -181,8 +181,7 @@ public class Philosopher extends CSPActor {
                 rate = ((DoubleToken)thinking.getToken()).doubleValue();
                 interval = (int)(_random.nextDouble()*rate*1000);
                 interval = interval/1000;
-                Thread th = Thread.currentThread();
-                th.sleep((long)interval*1000);
+                Thread.sleep((long)interval*1000);
                 delay(interval);
 
                 // Obtain the forks
@@ -208,7 +207,7 @@ public class Philosopher extends CSPActor {
                 rate = ((DoubleToken)eating.getToken()).doubleValue();
                 interval = (int)(_random.nextDouble()*rate*2000);
                 interval = interval/1000;
-                th.sleep((long)interval*1000);
+                Thread.sleep((long)interval*1000);
                 delay(interval);
 
                 // Release the forks.
