@@ -35,7 +35,6 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.kernel.util.*;
 import ptolemy.gui.MessageHandler;
 import ptolemy.moml.MoMLParser;
-import ptolemy.moml.MoMLWriter;
 import ptolemy.moml.URLAttribute;
 
 import java.awt.Dimension;
@@ -88,12 +87,10 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
     ////                         public methods                    ////
 
     /** React to the fact that a change has been successfully executed.
-     *  This method records that the model has been modified.
+     *  This method does nothing.
      *  @param change The change that has been executed.
      */
-    public void changeExecuted(ChangeRequest change) {
-        setModified(true);
-    }
+    public void changeExecuted(ChangeRequest change) {}
 
     /** React to the fact that a change has triggered an error by
      *  reporting the error in a top-level dialog.
@@ -168,10 +165,6 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
         } else {
             name = filename;
         }
-        //        MoMLWriter writer = new MoMLWriter(fout);
-        // NOTE: The following cast is safe because of the check
-        // in _checkContainer().
-        //writer.write(((PtolemyEffigy)topEffigy()).getModel());
 
         // NOTE: The following cast is safe because of the check
         // in _checkContainer().
