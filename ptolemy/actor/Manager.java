@@ -421,7 +421,8 @@ public final class Manager extends NamedObj implements Runnable {
         _simulationThread = null;
 
         long endTime = (new Date()).getTime();
-        System.out.println("ptolemy.actor.Manager run(): elapsed time: " + (endTime - startTime) + " ms");
+        System.out.println("ptolemy.actor.Manager run(): elapsed time: "
+                + (endTime - startTime) + " ms");
     }
 
     /** Start an execution that will run for an unspecified number of
