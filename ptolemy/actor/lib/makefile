@@ -167,6 +167,7 @@ JSRCS = \
 	TriggeredClock.java\
 	TrigFunction.java \
         TriggeredClock.java \
+	TypeTest.java \
 	Uniform.java \
 	URLReader.java \
 	URLDirectoryReader.java \
