@@ -133,12 +133,14 @@ public class BusContentionDemo {
 
 
         // Set up connections
-        inReqs = (IORelation)_topLevelActor.connect( reqIn, p1_ReqOut );
-        inReqs = (IORelation)_topLevelActor.connect( reqIn, p2_ReqOut );
-        inReqs = (IORelation)_topLevelActor.connect( reqIn, p3_ReqOut );
+        inReqs = (IORelation)_topLevelActor.connect(reqIn, p1_ReqOut );
+        inReqs = (IORelation)_topLevelActor.connect(reqIn, p2_ReqOut );
+        inReqs = (IORelation)_topLevelActor.connect(reqIn, p3_ReqOut );
 
-        outContends = (IORelation)_topLevelActor.connect( contendOut, _alarmIn );
-        inContends = (IORelation)_topLevelActor.connect( contendIn, _alarmOut );
+        outContends = (IORelation)_topLevelActor.connect(contendOut,
+                _alarmIn );
+        inContends = (IORelation)_topLevelActor.connect(contendIn,
+                _alarmOut );
 
         outReqs = (IORelation)_topLevelActor.connect( reqOut, p1_ReqIn );
         outReqs = (IORelation)_topLevelActor.connect( reqOut, p2_ReqIn );
