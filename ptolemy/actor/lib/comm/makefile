@@ -49,6 +49,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+        ConvolutionalCoder.java \
 	DeScrambler.java \
 	HadamardCode.java \
 	Scrambler.java
