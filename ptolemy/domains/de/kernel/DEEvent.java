@@ -219,11 +219,13 @@ public final class DEEvent implements Comparable {
         if (_ioPort != null) {
             return "DEEvent(time = " + _timestamp
                 + ", microstep = " + _microstep
+                + ", depth = " + _depth
                 + ", dest = " + ((NamedObj)_actor).getFullName() + "."
                 + _ioPort.getName() + ").";
         } else {
             return "DEEvent(time = " + _timestamp
                 + ", microstep = " + _microstep
+                + ", depth = " + _depth
                 + ", dest = " + ((NamedObj)_actor).getFullName() + ")"
                 + " -- A PURE EVENT.";
         }
