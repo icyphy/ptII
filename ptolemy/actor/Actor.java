@@ -68,6 +68,11 @@ public interface Actor extends Executable {
      */
     public Director getExecutiveDirector();
 
+    /** Return the Manager, if there is one. Otherwise, return null.
+     *  @return The Mangager.
+     */
+    public Manager getManager();
+
     /** Return an enumeration of the input ports of this actor.
      *  Note that implementations should return ports directly
      *  contained by this actor, whether they are transparent or not.

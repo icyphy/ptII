@@ -148,6 +148,23 @@ public class AtomicActor extends ComponentEntity implements Actor {
         return getDirector();
     }
 
+    /** Return the Manager responsible for execution of this actor,
+     *  if there is one. Otherwise, return null.
+     *  @return The manager.
+     */
+    public Manager getManager() {
+	try {
+	    workspace().getReadAccess();
+	    CompositeActor container = (CompositeActor)getContainer();
+	    if (container != null) {
+		return container.getManager();
+	    }
+	    return null;
+	} finally {
+	    workspace().doneReading();
+	}
+    }
+
     /** Do nothing.  Derived classes override this method to define their
      *  their primary run-time action.
      *
