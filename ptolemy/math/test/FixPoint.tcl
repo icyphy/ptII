@@ -1,6 +1,6 @@
 # Tests for the FixPoint Class
 #
-# @Author: Bart Kienhuis
+# @Author: Bart Kienhuis, Ed.Willink
 #
 # @Version: $Id$
 #
@@ -44,303 +44,449 @@ set PI [java::field java.lang.Math PI]
 
 ####################################################################
 
-test FixPoint-1.0 {constructors} {
-    set p0 [java::new ptolemy.math.Precision "(16/4)" ]
-    set p1 [java::new ptolemy.math.Precision "(4.32)" ]
-    set c0 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} 5.5734 $p0 ]
-    set c1 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} 5.5734 $p1 ]
-    set c2 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} -4.23  $p0 ]
-    set c3 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} -4.23  $p1 ]
+test FixPoint-1.0 {constructors-double} {
+    set ctor_double {ptolemy.math.FixPoint double ptolemy.math.Quantization}
+    set ctor_string {ptolemy.math.FixPoint String ptolemy.math.Quantization}
+    set q_20__1 [java::new ptolemy.math.FixPointQuantization "20.-1,saturate,nearest"]
+    set q_20_12 [java::new ptolemy.math.FixPointQuantization "20.12,saturate,nearest"]
+    set q_20_32 [java::new ptolemy.math.FixPointQuantization "20.32,saturate,nearest"]
+    set c0 [java::new $ctor_double 5.5734 $q_20_12]
+    set c1 [java::new $ctor_double 5.5734 $q_20_32]
+    set c2 [java::new $ctor_double -4.23  $q_20_12]
+    set c3 [java::new $ctor_double -4.23  $q_20_32]
+    set c4 [java::new $ctor_double -4.23  $q_20__1]
     list "
-[$c0 toBitString] [ $c0 toString ][[$c0 getError] getDescription] 
-[$c1 toBitString] [ $c1 toString ][[$c1 getError] getDescription] 
-[$c2 toBitString] [ $c2 toString ][[$c2 getError] getDescription] 
-[$c3 toBitString] [ $c3 toString ][[$c3 getError] getDescription] "
+[$c0 toBitString] [ $c0 toString ] 
+[$c1 toBitString] [ $c1 toString ] 
+[$c2 toBitString] [ $c2 toString ] 
+[$c3 toBitString] [ $c3 toString ] 
+[$c4 toBitString] [ $c4 toString ] "
 } {{
-101.100100101101 5.573486328125 No overflow occurred 
-101.10010010110010100101011110101000 5.573400000110269 No overflow occurred 
--101.110001010010 -4.22998046875 No overflow occurred 
--101.11000101000111101011100001010010 -4.2299999999813735 No overflow occurred }}
+101.100100101101 5.573486328125 
+101.10010010110010100101011110101000 5.57340000011026859283447265625 
+-101.110001010010 -4.22998046875 
+-101.11000101000111101011100001010010 -4.2299999999813735485076904296875 
+-100 -4 }}
 
-test FixPoint-1.1 {constructors} {
-    set p0 [java::new ptolemy.math.Precision "(16/4)" ]
-    set p1 [java::new ptolemy.math.Precision "(16/3)" ]
-    set p2 [java::new ptolemy.math.Precision "(16/2)" ]
-    set p3 [java::new ptolemy.math.Precision "(16/1)" ]
-    set c0 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} 5.5734 $p0 ]
-    set c1 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} 5.5734 $p1 ]
-    set c2 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} 5.5734 $p2 ]
-    set c3 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} 5.5734 $p3 ]
+test FixPoint-1.1 {constructors-precision} {
+    set q_20_1 [java::new ptolemy.math.FixPointQuantization "20.1,saturate,nearest"]
+    set q_20_19 [java::new ptolemy.math.FixPointQuantization "20.19,saturate,nearest"]
+    set q_20_20 [java::new ptolemy.math.FixPointQuantization "20.20,saturate,nearest"]
+    set q_20_21 [java::new ptolemy.math.FixPointQuantization "20.21,saturate,nearest"]
+    set q_20_22 [java::new ptolemy.math.FixPointQuantization "20.22,saturate,nearest"]
+    set q_20_24 [java::new ptolemy.math.FixPointQuantization "20.24,saturate,nearest"]
+    set q_20_25 [java::new ptolemy.math.FixPointQuantization "20.25,saturate,nearest"]
+    set q_20_26 [java::new ptolemy.math.FixPointQuantization "20.26,saturate,nearest"]
+    set q_20_27 [java::new ptolemy.math.FixPointQuantization "20.27,saturate,nearest"]
+    set q_20_28 [java::new ptolemy.math.FixPointQuantization "20.28,saturate,nearest"]
+    set q_20_32 [java::new ptolemy.math.FixPointQuantization "20.32,saturate,nearest"]
+    set q_20_128 [java::new ptolemy.math.FixPointQuantization "20.128,saturate,nearest"]
+    set c0 [java::new $ctor_double 5.0735 $q_20_32]
+    set c1 [java::new $ctor_double 5.0735 $q_20_28]
+    set c2 [java::new $ctor_double 5.0735 $q_20_27]
+    set c3 [java::new $ctor_double 5.0735 $q_20_26]
+    set c4 [java::new $ctor_double 5.0735 $q_20_25]
+    set c5 [java::new $ctor_string 5.0735 $q_20_1]
+    set c6 [java::new $ctor_string -14.23 $q_20_32]
+    set c7 [java::new $ctor_string -14.23 $q_20_22]
+    set c8 [java::new $ctor_string -14.23 $q_20_21]
+    set c9 [java::new $ctor_string -14.23 $q_20_20]
+    set c10 [java::new $ctor_string -14.23 $q_20_19]
+    set c11 [java::new $ctor_string -14.23 $q_20_1]
+    set c12 [java::new $ctor_string $PI $q_20_128]
     list "
-[$c0 toBitString] [ $c0 toString ][[$c0 getError] getDescription] 
-[$c1 toBitString] [ $c1 toString ][[$c1 getError] getDescription] 
-[$c2 toBitString] [ $c2 toString ][[$c2 getError] getDescription] 
-[$c3 toBitString] [ $c3 toString ][[$c3 getError] getDescription] "
+[$c0 toBitString] [ $c0 toString ] 
+[$c1 toBitString] [ $c1 toString ] 
+[$c2 toBitString] [ $c2 toString ] 
+[$c3 toBitString] [ $c3 toString ]
+[$c4 toBitString] [ $c4 toString ] 
+[$c5 toBitString] [ $c5 toString ] 
+[$c6 toBitString] [ $c6 toString ] 
+[$c7 toBitString] [ $c7 toString ] 
+[$c8 toBitString] [ $c8 toString ] 
+[$c9 toBitString] [ $c9 toString ]
+[$c10 toBitString] [ $c10 toString ] 
+[$c11 toBitString] [ $c11 toString ] 
+[$c12 toBitString]
+[ $c12 toString ] "
 } {{
-101.100100101101 5.573486328125 No overflow occurred 
-11.1111111111111 3.9998779296875 Overflow occurred 
-1.11111111111111 1.99993896484375 Overflow occurred 
-0.111111111111111 0.999969482421875 Overflow occurred }}
+101.00010010110100001110010101100000 5.073499999940395355224609375 
+101.0001001011010000111001010110 5.073499999940395355224609375 
+101.000100101101000011100101011 5.073499999940395355224609375 
+101.00010010110100001110010110 5.0735000073909759521484375
+101.0001001011010000111001011 5.0735000073909759521484375 
+101.0 5.0 
+-1111.11000101000111101011100001010010 -14.2299999999813735485076904296875 
+-1111.1100010100011110101110 -14.230000019073486328125 
+-1111.110001010001111010111 -14.230000019073486328125 
+-1111.11000101000111101100 -14.229999542236328125
+-1111.1100010100011110110 -14.229999542236328125 
+-1110.0 -14.0 
+11.00100100001111110110101010001000100001011101110100111011100100000011110100001111001010110001110001011101100010111010010111010110
+3.1415926535900000000000000000000000000004017912364873323939340034143393312954900984334226377026055843089125119149684906005859375 }}
 
-test FixPoint-1.2 {constructors} {
-    set p0 [java::new ptolemy.math.Precision "(16/4)" ]
-    set p1 [java::new ptolemy.math.Precision "(16/3)" ]
-    set p2 [java::new ptolemy.math.Precision "(16/2)" ]
-    set p3 [java::new ptolemy.math.Precision "(16/1)" ]
-    set c0 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} -5.5734 $p0 ]
-    set c1 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} -5.5734 $p1 ]
-    set c2 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} -5.5734 $p2 ]
-    set c3 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} -5.5734 $p3 ]
+test FixPoint-1.2 {constructors-string} {
+    set q_20_1 [java::new ptolemy.math.FixPointQuantization "20.1,saturate,nearest"]
+    set c0 [java::new $ctor_string "0.749999" $q_20_1]
+    set c1 [java::new $ctor_string "7.5e-1" $q_20_1]
+    set c2 [java::new $ctor_string "0.125e1" $q_20_1]
+    set c3 [java::new $ctor_string "150e-2" $q_20_1]
+    set c4 [java::new $ctor_string "1.2500001" $q_20_1]
+    set c5 [java::new $ctor_string "1.74999999" $q_20_1]
+    set c6 [java::new $ctor_string "1.750000" $q_20_1]
+    set c7 [java::new $ctor_string "-0.24999999" $q_20_1]
+    set c8 [java::new $ctor_string "-0.025e1" $q_20_1]
+    set c9 [java::new $ctor_string "-2500.001e-4" $q_20_1]
     list "
-[$c0 toBitString] [ $c0 toString ][[$c0 getError] getDescription] 
-[$c1 toBitString] [ $c1 toString ][[$c1 getError] getDescription] 
-[$c2 toBitString] [ $c2 toString ][[$c2 getError] getDescription] 
-[$c3 toBitString] [ $c3 toString ][[$c3 getError] getDescription] "
+[$c0 toBitString] [ $c0 toString ] 
+[$c1 toBitString] [ $c1 toString ] 
+[$c2 toBitString] [ $c2 toString ] 
+[$c3 toBitString] [ $c3 toString ] 
+[$c4 toBitString] [ $c4 toString ] 
+[$c5 toBitString] [ $c5 toString ] 
+[$c6 toBitString] [ $c6 toString ] 
+[$c7 toBitString] [ $c7 toString ] 
+[$c8 toBitString] [ $c8 toString ] 
+[$c9 toBitString] [ $c9 toString ] "
 } {{
--110.011011010011 -5.573486328125 No overflow occurred 
--100.0000000000000 -4.0 Overflow occurred 
--10.00000000000000 -2.0 Overflow occurred 
--1.000000000000000 -1.0 Overflow occurred }}
+0.1 0.5 
+1.0 1.0 
+1.1 1.5 
+1.1 1.5 
+1.1 1.5 
+1.1 1.5 
+10.0 2.0 
+0.0 0.0 
+0.0 0.0 
+-1.1 -0.5 }}
 
 test FixPoint-1.3 {constructors} {
-    set p0 [java::new ptolemy.math.Precision "(1.0)" ]
-    set p1 [java::new ptolemy.math.Precision "(1.1)" ]
-    set p2 [java::new ptolemy.math.Precision "(2.0)" ]
-    set c0 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} 1 $p0 ]
-    set c1 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} -1 $p0 ]
-    set c2 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} 0 $p0 ]
-    set c3 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} 1 $p1 ]
-    set c4 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} -1 $p1 ]
-    set c5 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} 0 $p1 ]
-    set c6 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} 1 $p2 ]
-    set c7 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} -1 $p2 ]
-    set c8 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} 0 $p2 ]
+    set q_20_0 [java::new ptolemy.math.FixPointQuantization "20.0,saturate,nearest"]
+    set q_20_1 [java::new ptolemy.math.FixPointQuantization "20.1,saturate,nearest"]
+    set c0 [java::new $ctor_double 1 $q_20_0]
+    set c1 [java::new $ctor_double -1 $q_20_0]
+    set c2 [java::new $ctor_double 0 $q_20_0]
+    set c3 [java::new $ctor_double 1 $q_20_1]
+    set c4 [java::new $ctor_double -1 $q_20_1]
+    set c5 [java::new $ctor_double 0 $q_20_1]
+    set c6 [java::new $ctor_double 1 $q_20_0]
+    set c7 [java::new $ctor_double -1 $q_20_0]
+    set c8 [java::new $ctor_double 0 $q_20_0]
     list "
-[$c0 toBitString] [ $c0 toString ][[$c0 getError] getDescription]
-[$c1 toBitString] [ $c1 toString ][[$c1 getError] getDescription] 
-[$c2 toBitString] [ $c2 toString ][[$c2 getError] getDescription]
-[$c3 toBitString] [ $c3 toString ][[$c3 getError] getDescription]
-[$c4 toBitString] [ $c4 toString ][[$c4 getError] getDescription] 
-[$c5 toBitString] [ $c5 toString ][[$c5 getError] getDescription]
-[$c6 toBitString] [ $c6 toString ][[$c6 getError] getDescription]
-[$c7 toBitString] [ $c7 toString ][[$c7 getError] getDescription] 
-[$c8 toBitString] [ $c8 toString ][[$c8 getError] getDescription] "
+[$c0 toBitString] [ $c0 toString ]
+[$c1 toBitString] [ $c1 toString ] 
+[$c2 toBitString] [ $c2 toString ]
+[$c3 toBitString] [ $c3 toString ]
+[$c4 toBitString] [ $c4 toString ] 
+[$c5 toBitString] [ $c5 toString ]
+[$c6 toBitString] [ $c6 toString ]
+[$c7 toBitString] [ $c7 toString ] 
+[$c8 toBitString] [ $c8 toString ] "
 } {{
-0 0.0 Overflow occurred
--1 -1.0 No overflow occurred 
-0 0.0 No overflow occurred
-0.1 0.5 Overflow occurred
--1.0 -1.0 No overflow occurred 
-0.0 0.0 No overflow occurred
-1 1.0 No overflow occurred
--1 -1.0 No overflow occurred 
-0 0.0 No overflow occurred }}
+1 1
+-1 -1 
+0 0
+1.0 1.0
+-1.0 -1.0 
+0.0 0.0
+1 1
+-1 -1 
+0 0 }}
 
-test FixPoint-1.4 {constructors} {
-    catch { set p0 [java::new ptolemy.math.Precision "(0.0)" ] } msg
-    set c0 [java::call ptolemy.math.Quantizer \
-		{round double ptolemy.math.Precision} 1 $p0 ]
+test FixPoint-1.4 {constructors-bad} {
+    set q_20_1 [java::new ptolemy.math.FixPointQuantization "20.1,saturate,nearest"]
+    catch { set c0 [java::new $ctor_string "1g6" $q_20_1] } msg
     list $msg
-} {{java.lang.IllegalArgumentException: Incorrect definition of Precision. A FixPoint requires the use of at least a single integer bit to represent the sign.}}
+} {{java.lang.IllegalArgumentException: NumberFormatException while converting "1g6" to a FixPoint.}}
 
 
 ####################################################################
 
 test FixPoint-2.1 {add} {
-    set p0 [java::new ptolemy.math.Precision "(16/4)" ]
-    set p1 [java::new ptolemy.math.Precision "(4.32)" ]
-    set c20 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} 5.5734 $p0 ]
-    set c21 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} -4.23  $p0 ]
-    set c22 [$c20 add $c21]
-    list "[$c22 toBitString] [[$c22 getPrecision] toString]"
-} {{1.010101111111 (4.12)}}
+    set q_20_9 [java::new ptolemy.math.FixPointQuantization "20.9,saturate,nearest"]
+    set q_20_11 [java::new ptolemy.math.FixPointQuantization "20.11,saturate,nearest"]
+    set q_20_12 [java::new ptolemy.math.FixPointQuantization "20.12,saturate,nearest"]
+    set q_20_13 [java::new ptolemy.math.FixPointQuantization "20.13,saturate,nearest"]
+    set add_1 [java::new $ctor_double 5.5734 $q_20_12]
+    set add_2 [java::new $ctor_double -4.23 $q_20_12]
+    set add_3 [$add_1 add $add_2]
+    list "[$add_1 toString] [$add_2 toString] [$add_3 toString] [$add_3 toBitString] [[$add_3 getPrecision] toString]"
+} {{5.573486328125 -4.22998046875 1.343505859375 1.010101111111 (20.12)}}
 
 
 test FixPoint-2.2 {add} {
-    set p2 [java::new ptolemy.math.Precision "(16/5)" ]
-    set c24 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} 5.5734 $p0 ]
-    set c25 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} -4.23  $p2 ]
-    set c26 [$c24 add $c25]
-    list "[$c26 toBitString] [[$c26 getPrecision] toString]"
-} {{1.010101111111 (5.12)}}
+    set add_1 [java::new $ctor_double 5.5734 $q_20_12]
+    set add_2 [java::new $ctor_double -4.23 $q_20_11]
+    set add_3 [$add_1 add $add_2]
+    list "[$add_1 toString] [$add_2 toString] [$add_3 toString] [$add_3 toBitString] [[$add_3 getPrecision] toString]"
+} {{5.573486328125 -4.22998046875 1.343505859375 1.010101111111 (20.12)}}
 
 test FixPoint-2.3 {add} {
-    set p3 [java::new ptolemy.math.Precision "(16/3)" ]
-    set c24 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} 5.5734 $p0 ]
-    set c25 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} -4.23  $p3]
-    set c26 [$c24 add $c25]
-    list "[$c26 toBitString] [[$c26 getPrecision] toString]"
-} {{1.1001001011010 (4.13)}}
+    set add_1 [java::new $ctor_double 5.5734 $q_20_12]
+    set add_2 [java::new $ctor_double -4.0 $q_20_13]
+    set add_3 [$add_1 add $add_2]
+    list "[$add_1 toString] [$add_2 toString] [$add_3 toString] [$add_3 toBitString] [[$add_3 getPrecision] toString]"
+} {{5.573486328125 -4.0 1.573486328125 1.1001001011010 (20.13)}}
 
 test FixPoint-2.4 {add} {
-    set p4 [java::new ptolemy.math.Precision "(14/5)" ]
-    set c24 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} 5.5734 $p0 ]
-    set c25 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} -4.23  $p4]
-    set c26 [$c24 add $c25]
-    list "[$c26 toBitString] [[$c26 getPrecision] toString]"
-} {{1.010101111101 (5.12)}}
+    set add_1 [java::new $ctor_double 5.5734 $q_20_12]
+    set add_2 [java::new $ctor_double -4.231 $q_20_9]
+    set add_3 [$add_1 add $add_2]
+    list "[$add_1 toString] [$add_2 toString] [$add_3 toString] [$add_3 toBitString] [[$add_3 getPrecision] toString]"
+} {{5.573486328125 -4.23046875 1.343017578125 1.010101111101 (20.12)}}
 
 test FixPoint-2.5 {add} {
-    set p5 [java::new ptolemy.math.Precision "(14/3)" ]
-    set c24 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} 5.5734 $p0 ]
-    set c25 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} -4.23  $p5]
-    set c26 [$c24 add $c25]
-    list "[$c26 toBitString] [[$c26 getPrecision] toString]"
-} {{1.100100101101 (4.12)}}
+    set add_1 [java::new $ctor_double 5.5734 $q_20_12]
+    set add_2 [java::new $ctor_double -4.0 $q_20_11]
+    set add_3 [$add_1 add $add_2]
+    list "[$add_1 toString] [$add_2 toString] [$add_3 toString] [$add_3 toBitString] [[$add_3 getPrecision] toString]"
+} {{5.573486328125 -4.0 1.573486328125 1.100100101101 (20.12)}}
 
 ####################################################################
 
 test FixPoint-3.1 {subtract} {
-    set p6 [java::new ptolemy.math.Precision "(16/6)" ]
-    set c31 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} 5.5734 $p6 ]
-    set c32 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} -4.23  $p6 ]
-    set c33 [$c31 subtract $c32]
-    list "[$c33 toBitString] [[$c33 getPrecision] toString]"
-} {{1001.1100110111 (6.10)}}
+    set q_20_10 [java::new ptolemy.math.FixPointQuantization "20.10,saturate,nearest"]
+    set q_20_12 [java::new ptolemy.math.FixPointQuantization "20.12,saturate,nearest"]
+    set sub_1 [java::new $ctor_double 5.5734 $q_20_10]
+    set sub_2 [java::new $ctor_double -4.23 $q_20_10]
+    set sub_3 [$sub_1 subtract $sub_2]
+    list "[$sub_1 toString] [$sub_2 toString] [$sub_3 toString] [$sub_3 toBitString] [[$sub_3 getPrecision] toString]"
+} {{5.5732421875 -4.23046875 9.8037109375 1001.1100110111 (20.10)}}
 
 test FixPoint-3.2 {subtract} {
-    set c31 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} 5.5734 $p6 ]
-    set c32 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} -4.23  $p0 ]
-    set c33 [$c31 subtract $c32]
-    list "[$c33 toBitString] [[$c33 getPrecision] toString]"
-} {{1001.110011011010 (6.12)}}
+    set sub_1 [java::new $ctor_double 5.5734 $q_20_10]
+    set sub_2 [java::new $ctor_double -4.23 $q_20_12]
+    set sub_3 [$sub_1 subtract $sub_2]
+    list "[$sub_1 toString] [$sub_2 toString] [$sub_3 toString] [$sub_3 toBitString] [[$sub_3 getPrecision] toString]"
+} {{5.5732421875 -4.22998046875 9.80322265625 1001.110011011010 (20.12)}}
 
 ####################################################################
 
 test FixPoint-4.1 {multiply} {
-    set c41 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} 5.5734 $p6 ]
-    set c42 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} 4.23   $p6 ]
-    set c43 [$c41 multiply $c42]
-    list "[$c43 toBitString] [[$c43 getPrecision] toString]"
-} {{10111.10010011110100100100 (6.20)}}
+    set q_5_10 [java::new ptolemy.math.FixPointQuantization "5.10,saturate,nearest"]
+    set q_4_12 [java::new ptolemy.math.FixPointQuantization "4.12,saturate,nearest"]
+    set mul_1 [java::new $ctor_double 5.5734 $q_5_10]
+    set mul_2 [java::new $ctor_double 4.23 $q_5_10]
+    set mul_3 [$mul_1 multiply $mul_2]
+    list "[$mul_1 toString] [$mul_2 toString] [$mul_3 toString] [$mul_3 toBitString] [[$mul_3 getPrecision] toString]"
+} {{5.5732421875 4.23046875 23.577426910400390625 10111.10010011110100100100 (5.20)}}
 
 test FixPoint-4.2 {multiply} {
-    set c44 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} 7.5734 $p0 ]
-    set c45 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} -7.23  $p0 ]
-    set c46 [$c44 multiply $c45]
-    list "[$c46 toBitString] [[$c46 getPrecision] toString]"    
-} {{-110111.001111100110110001101010 (7.24)}}
+    set mul_1 [java::new $ctor_double 7.5734 $q_4_12]
+    set mul_2 [java::new $ctor_double -7.23 $q_4_12]
+    set mul_3 [$mul_1 multiply $mul_2]
+    list "[$mul_1 toString] [$mul_2 toString] [$mul_3 toString] [$mul_3 toBitString] [[$mul_3 getPrecision] toString]"
+} {{7.573486328125 -7.22998046875 -54.75615823268890380859375 -110111.001111100110110001101010 (4.24)}}
 
 test FixPoint-4.3 {multiply} {
-    set c47 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} 15.5734 $p6 ]
-    set c48 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} 7.23    $p0 ]
-    set c49 [$c47 multiply $c48]
-    list "[$c49 toBitString] [[$c49 getPrecision] toString]"   
-} {{1110000.100110000001111111101000 (8.24)}}
+    set mul_1 [java::new $ctor_double 15.5734 $q_5_10]
+    set mul_2 [java::new $ctor_double 7.23 $q_4_12]
+    set mul_3 [$mul_1 multiply $mul_2]
+    list "[$mul_1 toString] [$mul_2 toString] [$mul_3 toString] [$mul_3 toBitString] [[$mul_3 getPrecision] toString]"
+} {{15.5732421875 7.22998046875 112.594236850738525390625 1110000.1001100000011111111010 (5.22)}}
+
+test FixPoint-4.4 {multiply} {
+    set mul_1 [java::new $ctor_double -16 $q_5_10]
+    set mul_2 [java::new $ctor_double -16 $q_5_10]
+    set mul_3 [$mul_1 multiply $mul_2]
+    list "[$mul_1 toString] [$mul_2 toString] [$mul_3 toString] [$mul_3 toBitString] [[$mul_3 getPrecision] toString]"
+} {{-16.0 -16.0 256.0 100000000.00000000000000000000 (5.20)}}
 
 ####################################################################
 
 test FixPoint-5.1 {divide} {
-    set c51 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} 5.5734 $p6 ]
-    set c52 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} 4.23   $p6 ]
-    set c53 [$c51 divide $c52]
-    list "[$c53 toBitString] [[$c53 getPrecision] toString]"    
-} {{1.0101000101 (6.10)}}
+    set q_20_2 [java::new ptolemy.math.FixPointQuantization "20.2,saturate,nearest"]
+    set q_20_10 [java::new ptolemy.math.FixPointQuantization "20.10,saturate,nearest"]
+    set q_20_12 [java::new ptolemy.math.FixPointQuantization "20.12,saturate,nearest"]
+    set q_20_28 [java::new ptolemy.math.FixPointQuantization "20.28,saturate,nearest"]
+    set div_1 [java::new $ctor_double 5.5734 $q_20_10]
+    set div_2 [java::new $ctor_double 4.23 $q_20_10]
+    set div_3 [$div_1 divide $div_2]
+    set div_4 [$div_1 divide $div_2 $q_20_28]
+    list "
+[$div_1 toString] [$div_2 toString] [$div_3 toString] [$div_3 toBitString] [[$div_3 getPrecision] toString]
+[$div_1 toString] [$div_2 toString] [$div_4 toString] [$div_4 toBitString] [[$div_4 getPrecision] toString]"
+} {{
+5.5732421875 4.23046875 1.3173828125 1.0101000101 (20.10)
+5.5732421875 4.23046875 1.3174053542315959930419921875 1.0101000101000001011110100011 (20.28)}}
 
 test FixPoint-5.2 {divide} {
-    set c54 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} 7.5734 $p0 ]
-    set c55 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} -7.23  $p0 ]
-    set c56 [$c54 divide $c55]
-    list "[$c56 toBitString] [[$c56 getPrecision] toString]"    
-} {{-10.111100111101 (4.12)}}
+    set div_1 [java::new $ctor_double 7.5734 $q_20_12]
+    set div_2 [java::new $ctor_double -7.23 $q_20_12]
+    set div_3 [$div_1 divide $div_2]
+    list "[$div_1 toString] [$div_2 toString] [$div_3 toString] [$div_3 toBitString] [[$div_3 getPrecision] toString]"
+} {{7.573486328125 -7.22998046875 -1.047607421875 -10.111100111101 (20.12)}}
 
 test FixPoint-5.3 {divide} {
-    set p7 [java::new ptolemy.math.Precision "(32/4)" ]	
-    set c57 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} 7.5734 $p7 ]
-    set c58 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} -7.23  $p7 ]
-    set c59 [$c57 divide $c58]
-    list "[$c59 toBitString] [[$c59 getPrecision] toString]"    
-} {{-10.1111001111010111010001000100 (4.28)}}
+    set div_1 [java::new $ctor_double 7.5734 $q_20_28]
+    set div_2 [java::new $ctor_double -7.23 $q_20_28]
+    set div_3 [$div_1 divide $div_2]
+    list "[$div_1 toString] [$div_2 toString] [$div_3 toString] [$div_3 toBitString] [[$div_3 getPrecision] toString]"
+} {{7.573399998247623443603515625 -7.2300000004470348358154296875 -1.04749654233455657958984375 -10.1111001111010111010001000100 (20.28)}}
+
+test FixPoint-5.4 {divide-by-zero} {
+    set div_1 [java::new $ctor_double 1 $q_20_2]
+    set div_2 [java::new $ctor_double 0 $q_20_2]
+    set div_3 [java::new $ctor_double -1 $q_20_2]
+    catch { set div_4 [$div_1 divide $div_2] } msg
+    set div_5 [$div_1 divide $div_2 $q_20_28]
+    set div_6 [$div_3 divide $div_2 $q_20_28]
+    set div_7 [$div_2 divide $div_2 $q_20_28]
+    list "
+$msg
+[$div_5 toString]
+[$div_6 toString]
+[$div_7 toString]"
+} {{
+java.lang.IllegalArgumentException: ArithmeticException while dividing 1.0 by 0.0.
+524287.9999999962747097015380859375
+-524288.0
+524287.9999999962747097015380859375}}
 
 ####################################################################
 
-test FixPoint-6.1 {equal} {
-    set p8  [java::new ptolemy.math.Precision "(32/5)" ]	
-    set p9  [java::new ptolemy.math.Precision "(33/5)" ]	
-    set p10 [java::new ptolemy.math.Precision "(30/4)" ]	
-    
-    set c61 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} 7.5734 $p7 ]	
-    set c62 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} 7.5734 $p8 ]
-    set c63 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} 7.5734 $p9 ]
-    set c64 [java::call ptolemy.math.Quantizer \
-	    {round double ptolemy.math.Precision} 7.5734 $p10 ]
-
-    list \
-	    [$c61 {equals ptolemy.math.FixPoint} $c61 ] \
-	    [$c61 {equals ptolemy.math.FixPoint} $c62 ] \
-	    [$c61 {equals ptolemy.math.FixPoint} $c63 ] \
-	    [$c61 {equals ptolemy.math.FixPoint} $c64 ] \
-	    [$c62 {equals ptolemy.math.FixPoint} $c61 ]
-
-
-} {1 1 1 0 1}
+test FixPoint-6.1 {equals} {
+    set q_20_26 [java::new ptolemy.math.FixPointQuantization "20.26,saturate,nearest"]
+    set q_20_27 [java::new ptolemy.math.FixPointQuantization "20.27,saturate,nearest"]
+    set q_20_28 [java::new ptolemy.math.FixPointQuantization "20.28,saturate,nearest"]
+    set eq_1 [java::new $ctor_double 7.5734 $q_20_28]	
+    set eq_2 [java::new $ctor_double 7.5734 $q_20_27]
+    set eq_3 [java::new $ctor_double 7.5734 $q_20_28]
+    set eq_4 [java::new $ctor_double 7.5734 $q_20_26]
+    list "
+[$eq_1 toString] [$eq_1 toString] [$eq_1 {equals ptolemy.math.FixPoint} $eq_1 ] 
+[$eq_1 toString] [$eq_2 toString] [$eq_1 {equals ptolemy.math.FixPoint} $eq_2 ] 
+[$eq_1 toString] [$eq_3 toString] [$eq_1 {equals ptolemy.math.FixPoint} $eq_3 ] 
+[$eq_1 toString] [$eq_4 toString] [$eq_1 {equals ptolemy.math.FixPoint} $eq_4 ] 
+[$eq_2 toString] [$eq_1 toString] [$eq_2 {equals ptolemy.math.FixPoint} $eq_1 ] "
+} {{
+7.573399998247623443603515625 7.573399998247623443603515625 1 
+7.573399998247623443603515625 7.573399998247623443603515625 1 
+7.573399998247623443603515625 7.573399998247623443603515625 1 
+7.573399998247623443603515625 7.57340000569820404052734375 0 
+7.573399998247623443603515625 7.573399998247623443603515625 1 }}
 
 ####################################################################
 
 test FixPoint-7.1 {absolute} {
+    set q_20_12 [java::new ptolemy.math.FixPointQuantization "20.12,saturate,nearest"]
+    set q_20_28 [java::new ptolemy.math.FixPointQuantization "20.28,saturate,nearest"]
+    set abs_0 [java::new $ctor_double 5.5734 $q_20_12]
+    set abs_1 [java::new $ctor_double -4.23  $q_20_12]
+    set abs_2 [java::new $ctor_double 7.5734 $q_20_28]	
+    set abs_3 [java::new $ctor_double -8.0 $q_20_28]	
+    list "
+[$abs_0 toBitString] [[$abs_0 abs] toBitString] [[$abs_0 getPrecision] toString] 
+[$abs_1 toBitString] [[$abs_1 abs] toBitString] [[$abs_1 getPrecision] toString] 
+[$abs_2 toBitString] [[$abs_2 abs] toBitString] [[$abs_2 getPrecision] toString] 
+[$abs_3 toBitString] [[$abs_3 abs] toBitString] [[$abs_3 getPrecision] toString] "
+} {{
+101.100100101101 101.100100101101 (20.12) 
+-101.110001010010 100.001110101110 (20.12) 
+111.1001001011001010010101111010 111.1001001011001010010101111010 (20.28) 
+-1000.0000000000000000000000000000 1000.0000000000000000000000000000 (20.28) }}
+####################################################################
 
-    list \
-	    [[$c20 abs] toBitString ] \
-	    [[$c21 abs] toBitString ]\
-	    [[$c61 abs] toBitString ]
+test FixPoint-8.1 {doubleValue} {
+    set q_20__5 [java::new ptolemy.math.FixPointQuantization "20.-5,saturate,nearest"]
+    set q_20_0 [java::new ptolemy.math.FixPointQuantization "20.0,saturate,nearest"]
+    set q_20_12 [java::new ptolemy.math.FixPointQuantization "20.12,saturate,nearest"]
+    set q_20_28 [java::new ptolemy.math.FixPointQuantization "20.28,saturate,nearest"]
+    set q_20_128 [java::new ptolemy.math.FixPointQuantization "20.128,saturate,nearest"]
+    set dV_0 [java::new $ctor_double 5.5735 $q_20_12]
+    set dV_1 [java::new $ctor_double -4.23  $q_20_12]
+    set dV_2 [java::new $ctor_double 7.5734 $q_20_28]	
+    set dV_3 [java::new $ctor_double -8.0 $q_20_28]	
+    set dV_4 [java::new $ctor_double -8.0 $q_20_0]	
+    set dV_5 [java::new $ctor_double 3192 $q_20__5]	
+    set dV_6 [java::new $ctor_double $PI $q_20_128]	
+    list "
+[$dV_0 toBitString] [$dV_0 doubleValue] [[$dV_0 getPrecision] toString] 
+[$dV_1 toBitString] [$dV_1 doubleValue] [[$dV_1 getPrecision] toString] 
+[$dV_2 toBitString] [$dV_2 doubleValue] [[$dV_2 getPrecision] toString] 
+[$dV_3 toBitString] [$dV_3 doubleValue] [[$dV_3 getPrecision] toString] 
+[$dV_4 toBitString] [$dV_4 doubleValue] [[$dV_4 getPrecision] toString] 
+[$dV_5 toBitString] [$dV_5 doubleValue] 
+[$dV_6 toBitString] [$dV_6 doubleValue] [[$dV_6 getPrecision] toString] "
+} {{
+101.100100101101 5.57348632812 (20.12) 
+-101.110001010010 -4.22998046875 (20.12) 
+111.1001001011001010010101111010 7.57339999825 (20.28) 
+-1000.0000000000000000000000000000 -8.0 (20.28) 
+-1000 -8.0 (20.0) 
+110010000000 3200.0 
+11.00100100001111110110101010001000100001011010001100000000000000000000000000000000000000000000000000000000000000000000000000000000 3.14159265359 (20.128) }}
 
-} {101.100100101101 100.001110101110 111.1001001011001010010101111010}
+test FixPoint-9.1 {bigDecimalValue} {
+    set dV_0 [java::new $ctor_double 5.5735 $q_20_12]
+    set dV_1 [java::new $ctor_double -4.23  $q_20_12]
+    set dV_2 [java::new $ctor_double 7.5734 $q_20_28]	
+    set dV_3 [java::new $ctor_double -8.0 $q_20_28]	
+    set dV_4 [java::new $ctor_double -8.0 $q_20_0]	
+    set dV_5 [java::new $ctor_double 3192 $q_20__5]	
+    set dV_6 [java::new $ctor_double $PI $q_20_128]	
+    list "
+[$dV_0 toBitString] [[$dV_0 bigDecimalValue] toString] [[$dV_0 getPrecision] toString] 
+[$dV_1 toBitString] [[$dV_1 bigDecimalValue] toString] [[$dV_1 getPrecision] toString] 
+[$dV_2 toBitString] [[$dV_2 bigDecimalValue] toString] [[$dV_2 getPrecision] toString] 
+[$dV_3 toBitString] [[$dV_3 bigDecimalValue] toString] [[$dV_3 getPrecision] toString] 
+[$dV_4 toBitString] [[$dV_4 bigDecimalValue] toString] [[$dV_4 getPrecision] toString] 
+[$dV_5 toBitString] [[$dV_5 bigDecimalValue] toString] 
+[$dV_6 toBitString] 
+[[$dV_6 bigDecimalValue] toString] [[$dV_6 getPrecision] toString] "
+} {{
+101.100100101101 5.573486328125 (20.12) 
+-101.110001010010 -4.229980468750 (20.12) 
+111.1001001011001010010101111010 7.5733999982476234436035156250 (20.28) 
+-1000.0000000000000000000000000000 -8.0000000000000000000000000000 (20.28) 
+-1000 -8 (20.0) 
+110010000000 3200 
+11.00100100001111110110101010001000100001011010001100000000000000000000000000000000000000000000000000000000000000000000000000000000 
+3.14159265358979311599796346854418516159057617187500000000000000000000000000000000000000000000000000000000000000000000000000000000 (20.128) }}
 
-test FixPoint-7.2 {truncate} {
-    set p6 [java::new ptolemy.math.Precision "(6/3)" ]
-    set c65 [java::call ptolemy.math.Quantizer \
-	    {truncate double ptolemy.math.Precision} -2.4 $p6 ]
-    set c66 [java::call ptolemy.math.Quantizer \
-	    {truncate double ptolemy.math.Precision} 2.4 $p6 ]
-    list [$c65 toBitString] [$c65 doubleValue] [$c66 toBitString] [$c66 doubleValue] 
-} {-11.101 -2.375 10.011 2.375}
+####################################################################
+
+test FixPoint-10.0 {quantize-saturate} {
+    set q0 [java::new ptolemy.math.FixPointQuantization "20.10,grow" ]
+    set q1 [java::new ptolemy.math.FixPointQuantization "3.1,saturate,nearest" ]
+    set q_0 [java::new ptolemy.math.FixPointQuantization "20.0,grow" ]
+    set q_2 [java::new ptolemy.math.FixPointQuantization "20.-2,grow" ]
+    list "
+ 7.000 [[[java::new ptolemy.math.FixPoint "7.000" $q0] quantize $q1] toString]
+ 4.000 [[[java::new ptolemy.math.FixPoint "4.000" $q_2] quantize $q1] toString]
+ 3.250 [[[java::new ptolemy.math.FixPoint "3.250" $q0] quantize $q1] toString]
+ 3.249 [[[java::new ptolemy.math.FixPoint "3.249" $q0] quantize $q1] toString]
+-3.250 [[[java::new ptolemy.math.FixPoint "-3.250" $q0] quantize $q1] toString]
+-3.251 [[[java::new ptolemy.math.FixPoint "-3.251" $q0] quantize $q1] toString]
+-4.000 [[[java::new ptolemy.math.FixPoint "-4.000" $q_0] quantize $q1] toString]
+-7.000 [[[java::new ptolemy.math.FixPoint "-7.000" $q0] quantize $q1] toString] "
+} {{
+ 7.000 3.5
+ 4.000 3.5
+ 3.250 3.5
+ 3.249 3.0
+-3.250 -3.0
+-3.251 -3.5
+-4.000 -4.0
+-7.000 -4.0 }}
+
+test FixPoint-10.1 {quantize-modulo} {
+    set q1 [java::new ptolemy.math.FixPointQuantization "3.1,modulo,nearest" ]
+    list "
+ 7.000 [[[java::new ptolemy.math.FixPoint "7.000" $q0] quantize $q1] toString]
+ 4.000 [[[java::new ptolemy.math.FixPoint "4.000" $q0] quantize $q1] toString]
+ 3.250 [[[java::new ptolemy.math.FixPoint "3.250" $q0] quantize $q1] toString]
+ 3.249 [[[java::new ptolemy.math.FixPoint "3.249" $q0] quantize $q1] toString]
+-3.250 [[[java::new ptolemy.math.FixPoint "-3.250" $q0] quantize $q1] toString]
+-3.251 [[[java::new ptolemy.math.FixPoint "-3.251" $q0] quantize $q1] toString]
+-4.000 [[[java::new ptolemy.math.FixPoint "-4.000" $q0] quantize $q1] toString]
+-7.000 [[[java::new ptolemy.math.FixPoint "-7.000" $q0] quantize $q1] toString] "
+} {{
+ 7.000 -1.0
+ 4.000 -4.0
+ 3.250 3.5
+ 3.249 3.0
+-3.250 -3.0
+-3.251 -3.5
+-4.000 -4.0
+-7.000 1.0 }}
