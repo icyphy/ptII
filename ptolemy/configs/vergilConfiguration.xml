@@ -197,25 +197,5 @@
       </configure>
     </class>
 
-    <!-- The Ellipsis actors. -->
-    <class name="Ellipsis" extends="ptolemy.moml.EntityLibrary">
-      <configure>
-        <?moml
-          <group>
-            <input source="../actor/ellipsis/ellipsis.xml"/>
-          </group>
-        ?>
-      </configure>
-    </class>
-
-    <class name="HIL" extends="ptolemy.moml.EntityLibrary">
-      <configure>
-        <?moml
-          <group>
-            <input source="../apps/pendulum/lib/HIL.xml"/>
-          </group>
-        ?>
-      </configure>
-    </class>
   </entity>
 </entity>
