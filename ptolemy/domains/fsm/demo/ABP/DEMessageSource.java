@@ -88,7 +88,7 @@ public class DEMessageSource extends TypedAtomicActor {
         super.initialize();
         _firstFire = true;
         _msgNum = 0;
-        _nextMsgTime = new Time(this, -1.0);
+        _nextMsgTime = new Time(getDirector(), -1.0);
 
         //System.out.println("DEChannel " + getFullName() +
         //        " initializing at time " + getCurrentTime());
@@ -178,5 +178,5 @@ public class DEMessageSource extends TypedAtomicActor {
     private int _msgNum = 0;
 
     /** @serial The next time to generate a message. */
-    private Time _nextMsgTime = new Time(this, -1.0);
+    private Time _nextMsgTime;
 }

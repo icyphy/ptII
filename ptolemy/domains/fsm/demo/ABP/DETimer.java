@@ -89,13 +89,13 @@ public class DETimer extends TypedAtomicActor {
                 dir.fireAt(this, _expireTime);
             } else {
                 // disable timer
-                _expireTime = new Time(this, -1.0);
+                _expireTime = new Time(dir, -1.0);
             }
 
             //System.out.println("Reset DETimer " + this.getFullName() +
             //        " to expire at " + _expireTime);
 
-        } else if (now.equalTo(_expireTime)){
+        } else if (now.equals(_expireTime)){
             // timer expires
             expired.broadcast(_outToken);
 
@@ -112,7 +112,7 @@ public class DETimer extends TypedAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _expireTime = new Time(this, -1.0);
+        _expireTime = new Time(getDirector(), -1.0);
     }
 
     /** Override the base class to declare that the <i>expired</i>

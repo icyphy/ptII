@@ -473,7 +473,7 @@ public class FSMDirector extends Director
      *  @return The time of the next iteration.
      */
     public double getNextIterationTime() {
-        return getModelNextIterationTime().getTimeValue();
+        return getModelNextIterationTime().getDoubleValue();
     }
 
     /** Return the next iteration time provided by the refinement of the
@@ -494,7 +494,7 @@ public class FSMDirector extends Director
                     // The refinement has a local director.
                     result = Math.min(result,
                             actors[i].getDirector()
-                            .getModelNextIterationTime().getTimeValue());
+                            .getModelNextIterationTime().getDoubleValue());
                     givenByRefinement = true;
                 }
             }

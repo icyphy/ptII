@@ -287,7 +287,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      *  @return The current time.
      */
     public double getCurrentTime() {
-        return getModelTime().getTimeValue();
+        return getModelTime().getDoubleValue();
     }
 
     /** Return the enclosing CT general director of this director, or null if
@@ -303,10 +303,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         if (executiveDirector instanceof CTGeneralDirector) {
             return (CTGeneralDirector) executiveDirector;
         } else {
-            // This should never happen because a modal model with
-            // an HSDirector must be used inside a CT model.
-            throw new InternalErrorException("A modal model with " +
-                "an HSDirector must be used inside a CT model.");
+            return null;
         }
     }
 
@@ -319,10 +316,9 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         if (executiveDirector != null) {
             return getEnclosingCTGeneralDirector().getExecutionPhase();
         } else {
-            // This should never happen because a modal model with
-            // an HSDirector must be used inside a CT model.
-            throw new InternalErrorException("A modal model with " +
-                "an HSDirector must be used inside a CT model.");
+            // For any executive director that is not CTGeneralDirector,
+            // the current execution phase is always FIRINGPURELYDISCRETE_PHASE.
+            return CTExecutionPhase.FIRINGPURELYDISCRETE_PHASE;
         }
     }
 
@@ -369,7 +365,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      *  @return The next iteration time.
      */
     public double getNextIterationTime() {
-        return getModelNextIterationTime().getTimeValue();
+        return getModelNextIterationTime().getDoubleValue();
     }
 
     /** Return the ODE solver.
