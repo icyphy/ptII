@@ -1400,9 +1400,10 @@ public class Graph implements Cloneable {
         return changed;
     }
 
-    /** Validate the weight of a node given the node and its previous weight
-     *  (i.e, the weight of the node when the node was last added
-     *  to the graph or had its node validated, whichever was more recent).
+    /** Validate the weight of a node given the node and its previous weight.
+     *  The previous weight argument should be set to
+     *  the weight of the node when the node was last added
+     *  to the graph or last had its node validated, whichever was more recent.
      *  Operation is equivalent to {@link #validateWeight(Node)}
      *  except that the additional argument is used to improve efficiency.
      *  The previous node weight should be set to null to incidate that
