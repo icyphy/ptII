@@ -179,9 +179,9 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                     // Should never happen that a get or a ConditionalReceive
                     // is already at the receiver.
                     throw new InvalidStateException(getParent().getName() +
-                            ": ConditionalReceive branch trying to rendezvous " +
-                            "with a receiver that already has a get or a " +
-                            "ConditionalReceive waiting.");
+                            ": ConditionalReceive branch trying to " + 
+                            " rendezvous with a receiver that already " +
+                            " has a get or a ConditionalReceive waiting.");
                 }
 
                 // MAIN LOOP
@@ -233,7 +233,8 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                     } else {
                         // CASE 3: ConditionalReceive tried to rendezvous
                         // before a put or a ConditionalSend.
-                        getReceiver()._setConditionalReceive(true,getParent());
+                        getReceiver()._setConditionalReceive(true,
+                                getParent());
                         _checkAndWait();
                         while (true) {
                             if (!isAlive()) {
