@@ -39,6 +39,11 @@ if test -z "$PTII"; then
 	if test -d "$PTOLEMY/tycho/java"; then
 	    echo "\$PTOLEMY/tycho/java exists, setting PTII to that value"
 	    PTII="$PTOLEMY/tycho/java"
+	    # We should not have to call AC_PREFIX_DEFAULT($PTII) here
+	    # but autoconf shuffles things around, so the call to
+	    # AC_PREFIX_DEFAULT($PTII) that is 15 or so lines below
+	    # actually appears at the top of configure.
+	    ac_default_prefix=$PTII
 	else
 	    exit 3
 	fi    
