@@ -60,8 +60,6 @@ public class Port extends NamedObj {
      * @param relation The Relation to which this Port will be connected.
      * @exception java.lang.NullPointerException Signals an attempt
      *  to a pass null object as an argument.
-     * @exception pt.kernel.GraphException Attempt to connect this 
-     *  port to a relation to which it's already connected.
      */	
     public void connectToRelation(Relation relation)
     	    throws NullPointerException {
@@ -140,8 +138,7 @@ public class Port extends NamedObj {
      *  instances of the same class with identical names in the same 
      *  container.
      */
-    public void setEntity(Entity entity) throws 
-	    GraphException, NameDuplicationException {
+    public void setEntity(Entity entity) throws NameDuplicationException {
 	NamedObjList list = entity.getPorts();
 	list.append( this );
 	_entity = entity;
