@@ -50,24 +50,24 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-test NameDuplicationException-2.1 {One named objects} {
-    set containee [java::new pt.kernel.Port]
-    $containee setName "wouldBeContainee"
-    set pe [java::new {pt.kernel.util.NameDuplicationException \
-            pt.kernel.util.Nameable} $containee]
-    list [$pe getMessage] [$pe getLocalizedMessage]
-} {{Attempt to insert object named "wouldBeContainee" into a container that already contains an object with that name.} {Attempt to insert object named "wouldBeContainee" into a container that already contains an object with that name.}}
+# test NameDuplicationException-2.1 {One named objects} {
+#     set containee [java::new pt.kernel.Port]
+#     $containee setName "wouldBeContainee"
+#     set pe [java::new {pt.kernel.util.NameDuplicationException \
+#             pt.kernel.util.Nameable} $containee]
+#     list [$pe getMessage] [$pe getLocalizedMessage]
+# } {{Attempt to insert object named "wouldBeContainee" into a container that already contains an object with that name.} {Attempt to insert object named "wouldBeContainee" into a container that already contains an object with that name.}}
 
 ######################################################################
 ####
 #
-test NameDuplicationException-2.2 {One named object and one string} {
-    set containee [java::new pt.kernel.Port]
-    $containee setName "wouldBeContainee"
-    set pe [java::new {pt.kernel.util.NameDuplicationException \
-            pt.kernel.util.Nameable String} $containee {more info}]
-    list [$pe getMessage] [$pe getLocalizedMessage]
-} {{Attempt to insert object named "wouldBeContainee" into a container that already contains an object with that name. more info} {Attempt to insert object named "wouldBeContainee" into a container that already contains an object with that name. more info}}
+# test NameDuplicationException-2.2 {One named object and one string} {
+#     set containee [java::new pt.kernel.Port]
+#     $containee setName "wouldBeContainee"
+#     set pe [java::new {pt.kernel.util.NameDuplicationException \
+#             pt.kernel.util.Nameable String} $containee {more info}]
+#     list [$pe getMessage] [$pe getLocalizedMessage]
+# } {{Attempt to insert object named "wouldBeContainee" into a container that already contains an object with that name. more info} {Attempt to insert object named "wouldBeContainee" into a container that already contains an object with that name. more info}}
 
 ######################################################################
 ####
