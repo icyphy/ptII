@@ -185,7 +185,8 @@ OPTIONAL_FILES = \
 	'RecordUpdater$$1.class' \
 	'RecordUpdater$$FunctionTerm.class' \
 	'Scale$$1.class' \
-	'Scale$$PortParamFunction.class'
+	'Scale$$PortParamFunction.class' \
+	'Scale$$PortParameterFunction.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

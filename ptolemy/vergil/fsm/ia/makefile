@@ -63,6 +63,8 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
+	'InterfaceAutomatonGraphController$$ComposeWithAction.class' \
+	'InterfaceAutomatonGraphTableau$$Factory.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
