@@ -77,30 +77,31 @@ public class XMLIcon extends EditorIcon implements ValueListener {
      *  @return A figure for this icon.
      */
     public Figure createBackgroundFigure() {
-        // Get the description
-        // The following code is slightly inefficient because it always adds
-        // and removes a listener.  However, the overhead is small compared
-        // to the other overhead involved here, so I'm going to keep the code
-        // simple.
+        // Get the description.
         NamedObj container = (NamedObj)getContainer();
         SingletonConfigurableAttribute description =
             (SingletonConfigurableAttribute)container.getAttribute(
                     "_iconDescription");
-        if(_description != null && _description != description) {
-            // Remove this as a listener if there was a previous description.
-            _description.removeValueListener(this);
-        }
-        _description = description;
-        try {
+        // If the description has changed...
+        if(_description != description) {
+            if(_description != null) {
+                // Remove this as a listener if there
+                // was a previous description.
+                _description.removeValueListener(this);
+            }
+
+            // update the description.
+            _description = description;
+
+            if(_description != null) {
+                // Listen for changes in value to the icon description.
+                _description.addValueListener(this);
+            }
+
+            // we are changing the description attribute, so clear the cache.
             _updatePaintedList();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            _paintedList = null;
         }
-        if(_description != null) {
-            // Listen for changes in value to the icon description.
-            _description.addValueListener(this);
-        }
+        
         if(_paintedList == null) {
        	    return _createDefaultBackgroundFigure();
         } else {
@@ -114,12 +115,7 @@ public class XMLIcon extends EditorIcon implements ValueListener {
     public PaintedList paintedList() {
         // FIXME: Is this update appropriate?  EAL
         if (_paintedList == null) {
-            try {
-                _updatePaintedList();
-            } catch (Exception ex) {
-                // If we fail, then we'll just get a default figure.
-                _paintedList = null;
-            }
+            _updatePaintedList();           
         }
         return _paintedList;
     }
@@ -180,7 +176,7 @@ public class XMLIcon extends EditorIcon implements ValueListener {
     /** Update the painted list of the icon based on the SVG data
      *  in the associated "_iconDescription" parameter, if there is one.
      */
-    private void _updatePaintedList() throws Exception {
+    private void _updatePaintedList() {
         // create a new list because the PaintedList we had before
         // was used to create some PaintedFigures already.
         // FIXME: test for 'svg' processing instruction
@@ -188,16 +184,21 @@ public class XMLIcon extends EditorIcon implements ValueListener {
             _paintedList = null;
             return;
         }
-        String text = _description.value();
-
-   	Reader in = new StringReader(text);
-        // FIXME: Do we need a base here?
-	XmlDocument document = new XmlDocument((URL)null);
-	XmlReader reader = new XmlReader();
-	reader.parse(document, in);
-	XmlElement root = document.getRoot();
-
-        _paintedList = SVGParser.createPaintedList(root);
+        try {
+            String text = _description.value();
+            
+            Reader in = new StringReader(text);
+            // FIXME: Do we need a base here?
+            XmlDocument document = new XmlDocument((URL)null);
+            XmlReader reader = new XmlReader();
+            reader.parse(document, in);
+            XmlElement root = document.getRoot();
+            
+            _paintedList = SVGParser.createPaintedList(root);
+        } catch (Exception ex) {
+            // If we fail, then we'll just get a default figure.
+            _paintedList = null;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
