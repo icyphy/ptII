@@ -52,3 +52,11 @@ Visio
 -----
       + No private fields, no methods from parent classes
       + When all done, generate wmf files, Don't import by reference.
+
+
+Hardcopy
+--------
+     double sided
+     plastic spiral bound
+     clear plastic front cover, solid color back cover
+     Front page to be color, the rest is black and white
