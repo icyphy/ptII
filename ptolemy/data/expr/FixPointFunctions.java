@@ -234,6 +234,13 @@ public class FixPointFunctions {
                         values.getElementAt(j, i), precision)).doubleValue();;
             }
         }
-        return new DoubleMatrixToken(fxa);
+	try {
+            return new DoubleMatrixToken(fxa);
+	} catch (IllegalActionException illegalAction) {
+            // This should not happen since fxa should not be null.
+	    throw new InternalErrorException("FixPointFunction.quantize: "
+		    + "Cannot create the DoubleMatrixToken that contains "
+		    + "the quantized values.");
+	}
     }
 }

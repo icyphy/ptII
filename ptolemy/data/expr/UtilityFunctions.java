@@ -97,7 +97,14 @@ public class UtilityFunctions {
                 result[i][j] = (raw*standardDeviation) + mean;
             }
         }
-        return new DoubleMatrixToken(result);
+	try {
+            return new DoubleMatrixToken(result);
+	} catch (IllegalActionException illegalAction) {
+	    // This should not happen since result should not be null.
+	    throw new InternalErrorException("UtilityFunction.gaussian: "
+		    + "Cannot create the DoubleMatrixToken that contains "
+		    + "Gaussian random numbers.");
+	}
     }
 
     /** Return the approximate number of bytes available for future 

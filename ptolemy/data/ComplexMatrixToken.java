@@ -61,10 +61,15 @@ public class ComplexMatrixToken extends MatrixToken {
      *  Make a copy of the matrix and store the copy,
      *  so that changes on the specified matrix after this token is
      *  constructed will not affect the content of this token.
-     *  @exception NullPointerException If the specified matrix
+     *  @exception IllegalActionException If the specified matrix
      *   is null.
      */
-    public ComplexMatrixToken(final Complex[][] value) {
+    public ComplexMatrixToken(final Complex[][] value)
+            throws IllegalActionException {
+        if (value == null) {
+	    throw new IllegalActionException("ComplexMatrixToken: The "
+	            + "specified matrix is null.");
+	}
         _initialize(value, DO_COPY);
     }
 
@@ -76,10 +81,15 @@ public class ComplexMatrixToken extends MatrixToken {
      *  its contents). This saves some time and memory.
      *  The argument matrix should NOT be modified after this constructor
      *  is called to preserve immutability.
-     *  @exception NullPointerException If the specified matrix
+     *  @exception IllegalActionException If the specified matrix
      *   is null.
      */
-    protected ComplexMatrixToken(final Complex[][] value, int copy) {
+    protected ComplexMatrixToken(final Complex[][] value, int copy)
+            throws IllegalActionException {
+	if (value == null) {
+	    throw new IllegalActionException("ComplexMatrixToken: The "
+		    + "specified matrix is null.");
+	}
         _initialize(value, copy);
     }
 
@@ -409,8 +419,14 @@ public class ComplexMatrixToken extends MatrixToken {
      *   identity.
      */
     public Token one() {
-        return new ComplexMatrixToken(
+        try {
+            return new ComplexMatrixToken(
                 ComplexMatrixMath.identity(_rowCount), DO_NOT_COPY);
+        } catch (IllegalActionException illegalAction) {
+	    // should not happen
+	    throw new InternalErrorException("ComplexMatrixToken.one: "
+		    + "Cannot create identity matrix.");
+	}
     }
 
     /** Return a new Token representing the right multiplicative
@@ -421,8 +437,14 @@ public class ComplexMatrixToken extends MatrixToken {
      *   multiplicative identity.
      */
     public Token oneRight() {
-        return new ComplexMatrixToken(
+	try {
+            return new ComplexMatrixToken(
                 ComplexMatrixMath.identity(_columnCount), DO_NOT_COPY);
+        } catch (IllegalActionException illegalAction) {
+	    // should not happen
+	    throw new InternalErrorException("ComplexMatrixToken.oneRight: "
+		    + "Cannot create identity matrix.");
+	}
     }
 
     /** Return a new Token whose value is the value of the argument Token
@@ -505,8 +527,14 @@ public class ComplexMatrixToken extends MatrixToken {
      *  @return A new ComplexMatrixToken containing the additive identity.
      */
     public Token zero() {
-        return new ComplexMatrixToken(
+	try {
+            return new ComplexMatrixToken(
                 ComplexMatrixMath.zero(_rowCount, _columnCount), DO_NOT_COPY);
+        } catch (IllegalActionException illegalAction) {
+	    // should not happen
+	    throw new InternalErrorException("ComplexMatrixToken.zero: "
+		    + "Cannot create zero matrix.");
+	}
     }
 
     ///////////////////////////////////////////////////////////////////
