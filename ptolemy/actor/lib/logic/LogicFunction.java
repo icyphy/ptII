@@ -231,7 +231,7 @@ public class LogicFunction extends Transformer {
     ////                         protected variables               ////
 
     /** An indicator for the function to compute.
-     *  Valid values are {@link #_AND}, {@link#_OR}, and {@link_XOR}.
+     *  Valid values are {@link #_AND}, {@link #_OR}, and {@link #_XOR}.
      */
     protected int _function;
 
