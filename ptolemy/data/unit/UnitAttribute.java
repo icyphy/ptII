@@ -203,8 +203,8 @@ public class UnitAttribute extends Attribute implements Settable {
         }
     }
 
-    /** Set the Unit Equations.
-     * @param equations A Vector of UnitEquations.
+    /** Set the UnitConstraints.
+     * @param constraints The UnitConstraints.
      */
     public void setUnitConstraints(UnitConstraints constraints) {
         _unitConstraints = constraints;
