@@ -56,7 +56,7 @@ In case of domains like SDF, which need to know the token consumption or
 production rate for all ports to construct a firing schedule,
 this actor defines and sets three different port parameters, namely:
 <UL>
-<LI>Token Consumption Rate
+<LI>TokenConsumptionRate
 <LI>TokenProductionRate
 <LI>TokenInitProduction
 </UL>
@@ -85,7 +85,7 @@ public class Commutator extends AtomicActor{
         super(container, name);
         _input = new IOPort(this, "input", true, false);
         _input.setMultiport(true);
-        Parameter param = new Parameter(_input, "Token Consumption Rate",
+        Parameter param = new Parameter(_input, "TokenConsumptionRate",
                 new IntToken(1));
         param = new Parameter(_input,"TokenProductionRate",
                 new IntToken(1));
@@ -93,7 +93,7 @@ public class Commutator extends AtomicActor{
                 new IntToken(0));
 
         _output = new IOPort(this, "output", false, true);
-        param = new Parameter(_output, "Token Consumption Rate",
+        param = new Parameter(_output, "TokenConsumptionRate",
                 new IntToken(1));
         param = new Parameter(_output,"TokenProductionRate",
                 new IntToken(1));
