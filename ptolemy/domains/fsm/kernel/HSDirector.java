@@ -188,13 +188,18 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         return result;
     }
 
-    /** Return the current time obtained from the executive director.
+    /** Return the current time obtained from the executive director, if
+     *  there is one, and otherwise return the local view of current time.
      *  @return The current time.
      */
     public double getCurrentTime() {
         CompositeActor cont = (CompositeActor)getContainer();
         Director execDir = (Director)cont.getExecutiveDirector();
-        return execDir.getCurrentTime();
+        if (execDir != null) {
+            return execDir.getCurrentTime();
+        } else {
+            return super.getCurrentTime();
+        }
     }
 
     /** Return the next iteration time obtained from the executive director.
