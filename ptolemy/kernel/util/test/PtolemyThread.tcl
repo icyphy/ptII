@@ -71,8 +71,12 @@ test PtolemyThread-1.1 {Test the constructor} {
 
     set results {}
     foreach thread $threads {
-	lappend results [list [$thread getReadDepth] \
-		[$thread getName]]
+	# If the JVM named the threads, then the names could be anything
+	# so we substitute -xxx for the number.
+	set threadName [$thread getName]
+	regsub {Thread-[0-9]*} $threadName {Thread-xxx} newThreadName
+	lappend results [list [$thread getReadDepth] $newThreadName]
+
     }
     list $results [$threadGroup activeCount]
-} {{{0 Thread-0} {0 Thread-2} {0 pthread2} {0 pthread4} {0 Thread-3} {0 pthread6} {0 pthread7}} 3}
+} {{{0 Thread-xxx} {0 Thread-xxx} {0 pthread2} {0 pthread4} {0 Thread-xxx} {0 pthread6} {0 pthread7}} 3}
