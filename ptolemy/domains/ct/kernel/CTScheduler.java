@@ -780,7 +780,16 @@ public class CTScheduler extends Scheduler {
                     // the following code removes event generators
                     // and waveform generators from the list of purely 
                     // continuous actors.
-                    continuousActors.remove(actor);
+                    // NOTE: we only remove actors that are declared to be
+                    // event generators or waveform generators. Some actors,
+                    // such as TriggeredContinuousClock actor, are still treated
+                    // as purely continuous actors even though they have 
+                    // discrete inputs, because they produce continuous signals.
+                    // TESTIT: Clock3, Clock5, and Clock6 in ct/lib/test/auto.
+                    if ((actor instanceof CTEventGenerator) || 
+                            (actor instanceof CTWaveformGenerator)) {
+                        continuousActors.remove(actor);
+                    }
                 }
                 continue;
             }
