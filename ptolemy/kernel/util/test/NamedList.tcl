@@ -62,10 +62,23 @@ test NamedList-1.1 {Get information about an instance of NamedObj} {
 } {{
   class:         pt.kernel.NamedList
   fields:        
-  methods:       getClass hashCode {equals java.lang.Object} toString notify notifyAll {wait long} {wait long int} wait {append pt.kernel.Nameable} first {get java.lang.String} {get int} getElements {getIndexOf pt.kernel.Nameable} {getIndexOf java.lang.String} {insertAfter java.lang.String pt.kernel.Nameable} {insertAt int pt.kernel.Nameable} {insertBefore java.lang.String pt.kernel.Nameable} last {prepend pt.kernel.Nameable} {remove pt.kernel.Nameable} {remove java.lang.String} removeAll size
-  constructors:  pt.kernel.NamedList {pt.kernel.NamedList pt.kernel.Nameable} {pt.kernel.NamedList pt.kernel.NamedList}
-  properties:    elements class {{}}
+  methods:       {append pt.kernel.Nameable} {equals java.lang.Object} f
+    irst {get int} {get java.lang.String} getClass getEleme
+    nts {getIndexOf java.lang.String} {getIndexOf pt.kernel
+    .Nameable} hashCode {insertAfter java.lang.String pt.ke
+    rnel.Nameable} {insertAt int pt.kernel.Nameable} {inser
+    tBefore java.lang.String pt.kernel.Nameable} last notif
+    y notifyAll {prepend pt.kernel.Nameable} {remove java.l
+    ang.String} {remove pt.kernel.Nameable} removeAll size 
+    toString wait {wait long} {wait long int}
+    
+  constructors:  pt.kernel.NamedList {pt.kernel.NamedList pt.kernel.Name
+    able} {pt.kernel.NamedList pt.kernel.NamedList}
+    
+  properties:    class elements {{}}
+    
   superclass:    java.lang.Object
+    
 }}
 
 ######################################################################

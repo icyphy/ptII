@@ -57,10 +57,18 @@ test NamedObj-1.1 {Get information about an instance of NamedObj} {
 } {{
   class:         pt.kernel.NamedObj
   fields:        
-  methods:       getClass hashCode {equals java.lang.Object} toString notify notifyAll {wait long} {wait long int} wait getContainer getFullName getName {setName java.lang.String}
-  constructors:  pt.kernel.NamedObj {pt.kernel.NamedObj java.lang.String} {pt.kernel.NamedObj pt.kernel.Nameable java.lang.String}
-  properties:    fullName class name container
+  methods:       {equals java.lang.Object} getClass getContainer getFull
+    Name getName hashCode notify notifyAll {setName java.la
+    ng.String} toString wait {wait long} {wait long int}
+    
+  constructors:  pt.kernel.NamedObj {pt.kernel.NamedObj java.lang.String
+    } {pt.kernel.NamedObj pt.kernel.Nameable java.lang.Stri
+    ng}
+    
+  properties:    class container fullName name
+    
   superclass:    java.lang.Object
+    
 }}
 
 ######################################################################

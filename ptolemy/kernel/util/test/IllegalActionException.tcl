@@ -57,10 +57,24 @@ test IllegalActionException-1.1 {Get information about an instance of IllegalAct
 } {{
   class:         pt.kernel.IllegalActionException
   fields:        
-  methods:       getClass hashCode {equals java.lang.Object} toString notify notifyAll {wait long} {wait long int} wait getMessage getLocalizedMessage printStackTrace {printStackTrace java.io.PrintStream} {printStackTrace java.io.PrintWriter} fillInStackTrace
-  constructors:  pt.kernel.IllegalActionException {pt.kernel.IllegalActionException java.lang.String} {pt.kernel.IllegalActionException pt.kernel.Nameable} {pt.kernel.IllegalActionException pt.kernel.Nameable java.lang.String} {pt.kernel.IllegalActionException pt.kernel.Nameable pt.kernel.Nameable} {pt.kernel.IllegalActionException pt.kernel.Nameable pt.kernel.Nameable java.lang.String}
-  properties:    message class localizedMessage
+  methods:       {equals java.lang.Object} fillInStackTrace getClass get
+    LocalizedMessage getMessage hashCode notify notifyAll p
+    rintStackTrace {printStackTrace java.io.PrintStream} {p
+    rintStackTrace java.io.PrintWriter} toString wait {wait
+     long} {wait long int}
+    
+  constructors:  pt.kernel.IllegalActionException {pt.kernel.IllegalActi
+    onException java.lang.String} {pt.kernel.IllegalActionE
+    xception pt.kernel.Nameable} {pt.kernel.IllegalActionEx
+    ception pt.kernel.Nameable java.lang.String} {pt.kernel
+    .IllegalActionException pt.kernel.Nameable pt.kernel.Na
+    meable} {pt.kernel.IllegalActionException pt.kernel.Nam
+    eable pt.kernel.Nameable java.lang.String}
+    
+  properties:    class localizedMessage message
+    
   superclass:    pt.kernel.KernelException
+    
 }}
 
 ######################################################################
@@ -95,7 +109,7 @@ test IllegalActionException-3.3 {Create a IllegalActionException with a detail m
     set n1 [java::new pt.kernel.NamedObj]
     catch {set pe [java::new {pt.kernel.IllegalActionException String} $n1]} errmsg
     list $errmsg
-} {{java.lang.IllegalArgumentException: argument type mismatch}}
+} {{expected object of type java.lang.String but got "java0x1fc" (pt.kernel.NamedObj)}}
 
 ######################################################################
 ####

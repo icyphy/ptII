@@ -57,10 +57,20 @@ test NoSuchItemException-1.1 {Get information about an instance of NoSuchItemExc
 } {{
   class:         pt.kernel.NoSuchItemException
   fields:        
-  methods:       getClass hashCode {equals java.lang.Object} toString notify notifyAll {wait long} {wait long int} wait getMessage getLocalizedMessage printStackTrace {printStackTrace java.io.PrintStream} {printStackTrace java.io.PrintWriter} fillInStackTrace
-  constructors:  {pt.kernel.NoSuchItemException java.lang.String} {pt.kernel.NoSuchItemException pt.kernel.Nameable java.lang.String}
-  properties:    message class localizedMessage
+  methods:       {equals java.lang.Object} fillInStackTrace getClass get
+    LocalizedMessage getMessage hashCode notify notifyAll p
+    rintStackTrace {printStackTrace java.io.PrintStream} {p
+    rintStackTrace java.io.PrintWriter} toString wait {wait
+     long} {wait long int}
+    
+  constructors:  {pt.kernel.NoSuchItemException java.lang.String} {pt.ke
+    rnel.NoSuchItemException pt.kernel.Nameable java.lang.S
+    tring}
+    
+  properties:    class localizedMessage message
+    
   superclass:    pt.kernel.KernelException
+    
 }}
 
 ######################################################################
@@ -87,7 +97,7 @@ test NoSuchItemException-3.3 {Create a NoSuchItemException with a detail message
     set n1 [java::new pt.kernel.NamedObj]
     catch {set pe [java::new {pt.kernel.NoSuchItemException String} $n1]} errmsg
     list $errmsg
-} {{java.lang.IllegalArgumentException: argument type mismatch}}
+} {{expected object of type java.lang.String but got "java0x2c4" (pt.kernel.NamedObj)}}
 
 ######################################################################
 ####

@@ -62,10 +62,27 @@ test ComponentEntity-1.1 {Get information about an instance of ComponentEntity} 
 } {{
   class:         pt.kernel.ComponentEntity
   fields:        
-  methods:       getClass hashCode {equals java.lang.Object} toString notify notifyAll {wait long} {wait long int} wait getContainer getFullName getName {setName java.lang.String} {addPort pt.kernel.Port} getConnectedEntities {getConnectedEntities pt.kernel.Port} {getConnectedEntities java.lang.String} getLinkedRelations {getLinkedRelations pt.kernel.Port} {getLinkedRelations java.lang.String} {getPort java.lang.String} getPorts {newPort java.lang.String} removeAllPorts {removePort pt.kernel.Port} {removePort java.lang.String} isAtomic {setContainer pt.kernel.CompositeEntity}
-  constructors:  pt.kernel.ComponentEntity {pt.kernel.ComponentEntity java.lang.String} {pt.kernel.ComponentEntity pt.kernel.CompositeEntity java.lang.String}
-  properties:    fullName connectedEntities class ports atomic name container linkedRelations
+  methods:       {addPort pt.kernel.Port} {equals java.lang.Object} getC
+    lass getConnectedEntities {getConnectedEntities java.la
+    ng.String} {getConnectedEntities pt.kernel.Port} getCon
+    tainer getFullName getLinkedRelations {getLinkedRelatio
+    ns java.lang.String} {getLinkedRelations pt.kernel.Port
+    } getName {getPort java.lang.String} getPorts hashCode 
+    isAtomic {newPort java.lang.String} notify notifyAll re
+    moveAllPorts {removePort java.lang.String} {removePort 
+    pt.kernel.Port} {setContainer pt.kernel.CompositeEntity
+    } {setName java.lang.String} toString wait {wait long} 
+    {wait long int}
+    
+  constructors:  pt.kernel.ComponentEntity {pt.kernel.ComponentEntity ja
+    va.lang.String} {pt.kernel.ComponentEntity pt.kernel.Co
+    mpositeEntity java.lang.String}
+    
+  properties:    atomic class connectedEntities container fullName linke
+    dRelations name ports
+    
   superclass:    pt.kernel.Entity
+    
 }}
 
 ######################################################################

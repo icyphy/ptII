@@ -64,12 +64,19 @@ test CrossRefList-1.1 {Get information about an instance of CrossRefList} {
 } {{
   class:         pt.kernel.CrossRefList
   fields:        
-  methods:       getClass hashCode {equals java.lang.Object} toString notify notifyAll {wait long} {wait long int} wait first getLinks {isLinked java.lang.Object} {link pt.kernel.CrossRefList} size {unlink java.lang.Object} unlinkAll
-  constructors:  {pt.kernel.CrossRefList java.lang.Object} {pt.kernel.CrossRefList java.lang.Object pt.kernel.CrossRefList}
-  properties:    links class
+  methods:       {equals java.lang.Object} first getClass getLinks hashC
+    ode {isLinked java.lang.Object} {link pt.kernel.CrossRe
+    fList} notify notifyAll size toString {unlink java.lang
+    .Object} unlinkAll wait {wait long} {wait long int}
+    
+  constructors:  {pt.kernel.CrossRefList java.lang.Object} {pt.kernel.Cr
+    ossRefList java.lang.Object pt.kernel.CrossRefList}
+    
+  properties:    class links
+    
   superclass:    java.lang.Object
+    
 }}
-
 
 ######################################################################
 ####

@@ -57,10 +57,24 @@ test InvalidStateException-1.1 {Get information about an instance of InvalidStat
 } {{
   class:         pt.kernel.InvalidStateException
   fields:        
-  methods:       getClass hashCode {equals java.lang.Object} toString notify notifyAll {wait long} {wait long int} wait getMessage getLocalizedMessage printStackTrace {printStackTrace java.io.PrintStream} {printStackTrace java.io.PrintWriter} fillInStackTrace
-  constructors:  pt.kernel.InvalidStateException {pt.kernel.InvalidStateException java.lang.String} {pt.kernel.InvalidStateException pt.kernel.Nameable} {pt.kernel.InvalidStateException pt.kernel.Nameable java.lang.String} {pt.kernel.InvalidStateException pt.kernel.Nameable pt.kernel.Nameable} {pt.kernel.InvalidStateException pt.kernel.Nameable pt.kernel.Nameable java.lang.String}
-  properties:    message class localizedMessage
+  methods:       {equals java.lang.Object} fillInStackTrace getClass get
+    LocalizedMessage getMessage hashCode notify notifyAll p
+    rintStackTrace {printStackTrace java.io.PrintStream} {p
+    rintStackTrace java.io.PrintWriter} toString wait {wait
+     long} {wait long int}
+    
+  constructors:  pt.kernel.InvalidStateException {pt.kernel.InvalidState
+    Exception java.lang.String} {pt.kernel.InvalidStateExce
+    ption pt.kernel.Nameable} {pt.kernel.InvalidStateExcept
+    ion pt.kernel.Nameable java.lang.String} {pt.kernel.Inv
+    alidStateException pt.kernel.Nameable pt.kernel.Nameabl
+    e} {pt.kernel.InvalidStateException pt.kernel.Nameable 
+    pt.kernel.Nameable java.lang.String}
+    
+  properties:    class localizedMessage message
+    
   superclass:    pt.kernel.KernelException
+    
 }}
 
 ######################################################################
@@ -95,7 +109,7 @@ test InvalidStateException-3.3 {Create a InvalidStateException with a detail mes
     set n1 [java::new pt.kernel.NamedObj]
     catch {set pe [java::new {pt.kernel.InvalidStateException String} $n1]} errmsg
     list $errmsg
-} {{java.lang.IllegalArgumentException: argument type mismatch}}
+} {{expected object of type java.lang.String but got "java0x222" (pt.kernel.NamedObj)}}
 
 ######################################################################
 ####

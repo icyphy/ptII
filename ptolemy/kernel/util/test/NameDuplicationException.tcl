@@ -59,10 +59,23 @@ test NameDuplicationException-1.1 \
 } {{
   class:         pt.kernel.NameDuplicationException
   fields:        
-  methods:       getClass hashCode {equals java.lang.Object} toString notify notifyAll {wait long} {wait long int} wait getMessage getLocalizedMessage printStackTrace {printStackTrace java.io.PrintStream} {printStackTrace java.io.PrintWriter} fillInStackTrace
-  constructors:  {pt.kernel.NameDuplicationException pt.kernel.Nameable} {pt.kernel.NameDuplicationException pt.kernel.Nameable java.lang.String} {pt.kernel.NameDuplicationException pt.kernel.Nameable pt.kernel.Nameable} {pt.kernel.NameDuplicationException pt.kernel.Nameable pt.kernel.Nameable java.lang.String}
-  properties:    message class localizedMessage
+  methods:       {equals java.lang.Object} fillInStackTrace getClass get
+    LocalizedMessage getMessage hashCode notify notifyAll p
+    rintStackTrace {printStackTrace java.io.PrintStream} {p
+    rintStackTrace java.io.PrintWriter} toString wait {wait
+     long} {wait long int}
+    
+  constructors:  {pt.kernel.NameDuplicationException pt.kernel.Nameable}
+     {pt.kernel.NameDuplicationException pt.kernel.Nameable
+     java.lang.String} {pt.kernel.NameDuplicationException 
+    pt.kernel.Nameable pt.kernel.Nameable} {pt.kernel.NameD
+    uplicationException pt.kernel.Nameable pt.kernel.Nameab
+    le java.lang.String}
+    
+  properties:    class localizedMessage message
+    
   superclass:    pt.kernel.KernelException
+    
 }}
 
 ######################################################################

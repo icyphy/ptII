@@ -62,10 +62,22 @@ test ComponentPort-1.1 {Get information about an instance of ComponentPort} {
 } {{
   class:         pt.kernel.ComponentPort
   fields:        
-  methods:       getClass hashCode {equals java.lang.Object} toString notify notifyAll {wait long} {wait long int} wait getContainer getFullName getName {setName java.lang.String} getLinkedRelations {link pt.kernel.Relation} numLinks {setContainer pt.kernel.Entity} {unlink pt.kernel.Relation} unlinkAll deepGetDownAlias deepGetLinkedRelations deepGetLinkedEntities deepGetLinkedPorts getDownAlias {setDownAlias pt.kernel.AliasRelation}
-  constructors:  pt.kernel.ComponentPort {pt.kernel.ComponentPort pt.kernel.ComponentEntity java.lang.String}
-  properties:    fullName class name container downAlias linkedRelations
+  methods:       deepGetDownAlias deepGetLinkedEntities deepGetLinkedPor
+    ts deepGetLinkedRelations {equals java.lang.Object} get
+    Class getContainer getDownAlias getFullName getLinkedRe
+    lations getName hashCode {link pt.kernel.Relation} noti
+    fy notifyAll numLinks {setContainer pt.kernel.Entity} {
+    setDownAlias pt.kernel.AliasRelation} {setName java.lan
+    g.String} toString {unlink pt.kernel.Relation} unlinkAl
+    l wait {wait long} {wait long int}
+    
+  constructors:  pt.kernel.ComponentPort {pt.kernel.ComponentPort pt.ker
+    nel.ComponentEntity java.lang.String}
+    
+  properties:    class container downAlias fullName linkedRelations name
+    
   superclass:    pt.kernel.Port
+    
 }}
 
 ######################################################################

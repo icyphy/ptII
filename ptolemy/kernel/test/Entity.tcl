@@ -63,10 +63,24 @@ test Entity-1.1 {Get information about an instance of Entity} {
 } {{
   class:         pt.kernel.Entity
   fields:        
-  methods:       getClass hashCode {equals java.lang.Object} toString notify notifyAll {wait long} {wait long int} wait getContainer getFullName getName {setName java.lang.String} {addPort pt.kernel.Port} getConnectedEntities {getConnectedEntities pt.kernel.Port} {getConnectedEntities java.lang.String} getLinkedRelations {getLinkedRelations pt.kernel.Port} {getLinkedRelations java.lang.String} {getPort java.lang.String} getPorts {newPort java.lang.String} removeAllPorts {removePort pt.kernel.Port} {removePort java.lang.String}
+  methods:       {addPort pt.kernel.Port} {equals java.lang.Object} getC
+    lass getConnectedEntities {getConnectedEntities java.la
+    ng.String} {getConnectedEntities pt.kernel.Port} getCon
+    tainer getFullName getLinkedRelations {getLinkedRelatio
+    ns java.lang.String} {getLinkedRelations pt.kernel.Port
+    } getName {getPort java.lang.String} getPorts hashCode 
+    {newPort java.lang.String} notify notifyAll removeAllPo
+    rts {removePort java.lang.String} {removePort pt.kernel
+    .Port} {setName java.lang.String} toString wait {wait l
+    ong} {wait long int}
+    
   constructors:  pt.kernel.Entity {pt.kernel.Entity java.lang.String}
-  properties:    fullName connectedEntities class ports name container linkedRelations
+    
+  properties:    class connectedEntities container fullName linkedRelati
+    ons name ports
+    
   superclass:    pt.kernel.NamedObj
+    
 }}
 
 

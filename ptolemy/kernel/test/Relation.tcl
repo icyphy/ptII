@@ -62,10 +62,20 @@ test Relation-1.1 {Get information about an instance of Relation} {
 } {{
   class:         pt.kernel.Relation
   fields:        
-  methods:       getClass hashCode {equals java.lang.Object} toString notify notifyAll {wait long} {wait long int} wait getContainer getFullName getName {setName java.lang.String} getLinkedEntities getLinkedPorts {getLinkedPortsExcept pt.kernel.Port} numLinks
-  constructors:  pt.kernel.Relation {pt.kernel.Relation java.lang.String}
-  properties:    fullName class linkedEntities name container linkedPorts
+  methods:       {equals java.lang.Object} getClass getContainer getFull
+    Name getLinkedEntities getLinkedPorts {getLinkedPortsEx
+    cept pt.kernel.Port} getName hashCode notify notifyAll 
+    numLinks {setName java.lang.String} toString wait {wait
+     long} {wait long int}
+    
+  constructors:  pt.kernel.Relation {pt.kernel.Relation java.lang.String
+    }
+    
+  properties:    class container fullName linkedEntities linkedPorts nam
+    e
+    
   superclass:    pt.kernel.NamedObj
+    
 }}
 
 ######################################################################

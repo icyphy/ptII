@@ -62,10 +62,20 @@ test Port-1.1 {Get information about an instance of Port} {
 } {{
   class:         pt.kernel.Port
   fields:        
-  methods:       getClass hashCode {equals java.lang.Object} toString notify notifyAll {wait long} {wait long int} wait getContainer getFullName getName {setName java.lang.String} getLinkedRelations {link pt.kernel.Relation} numLinks {setContainer pt.kernel.Entity} {unlink pt.kernel.Relation} unlinkAll
-  constructors:  pt.kernel.Port {pt.kernel.Port pt.kernel.Entity java.lang.String}
-  properties:    fullName class name container linkedRelations
+  methods:       {equals java.lang.Object} getClass getContainer getFull
+    Name getLinkedRelations getName hashCode {link pt.kerne
+    l.Relation} notify notifyAll numLinks {setContainer pt.
+    kernel.Entity} {setName java.lang.String} toString {unl
+    ink pt.kernel.Relation} unlinkAll wait {wait long} {wai
+    t long int}
+    
+  constructors:  pt.kernel.Port {pt.kernel.Port pt.kernel.Entity java.la
+    ng.String}
+    
+  properties:    class container fullName linkedRelations name
+    
   superclass:    pt.kernel.NamedObj
+    
 }}
 
 ######################################################################
