@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Green (johnr@eecs.berkeley.edu)
+
 */
 
 package pt.kernel;
@@ -93,15 +93,7 @@ public class ComponentEntity extends Entity {
     public ComponentEntity(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container.workspace(), name);
-        try {
-            workspace().getWriteAccess();
-            container._addEntity(this);
-            // "super" call above puts this on the workspace list. Remove it.
-            workspace().remove(this);
-            _container = container;
-        } finally {
-            workspace().doneWriting();
-        }
+        setContainer(container);
     }
 
     //////////////////////////////////////////////////////////////////////////
