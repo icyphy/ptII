@@ -114,7 +114,7 @@ public class ChannelInput extends TypedAtomicActor {
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void put
-            (Token token, WirelessIOPort port, Token properties)
+    (Token token, WirelessIOPort port, Token properties)
             throws IllegalActionException {
         if (_receptions == null) {
             _receptions = new LinkedList();

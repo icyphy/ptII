@@ -64,5 +64,5 @@ public interface WirelessMedia {
 
     public void transmit(Token token, WirelessIOPort port,
             RecordToken properties)
-                throws IllegalActionException;
+            throws IllegalActionException;
 }

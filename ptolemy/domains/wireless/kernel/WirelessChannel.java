@@ -81,7 +81,7 @@ or the transmit() public method.
 @since Ptolemy II 2.1
 */
 public class WirelessChannel extends TypedAtomicActor
-        implements WirelessMedia, ValueListener {
+    implements WirelessMedia, ValueListener {
 
     /** Construct a relation with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -141,8 +141,8 @@ public class WirelessChannel extends TypedAtomicActor
             Token value = defaultProperties.getToken();
             if (value != null && !(value instanceof RecordToken)) {
                 throw new IllegalActionException(this,
-                "Expected a record for defaultProperties but got: "
-                + value);
+                        "Expected a record for defaultProperties but got: "
+                        + value);
             }
         } else {
             super.attributeChanged(attribute);
@@ -180,7 +180,7 @@ public class WirelessChannel extends TypedAtomicActor
                         WirelessIOPort castPort = (WirelessIOPort)port;
                         if (castPort.isInput()) {
                             String channelName
-                                    = castPort.outsideChannel.stringValue();
+                                = castPort.outsideChannel.stringValue();
                             if (channelName.equals(getName())) {
                                 result.add(port);
                             }
@@ -313,7 +313,7 @@ public class WirelessChannel extends TypedAtomicActor
                         WirelessIOPort castPort = (WirelessIOPort)port;
                         if (castPort.isOutput()) {
                             String channelName
-                                    = castPort.outsideChannel.stringValue();
+                                = castPort.outsideChannel.stringValue();
                             if (channelName.equals(getName())) {
                                 result.add(port);
                             }
@@ -354,7 +354,7 @@ public class WirelessChannel extends TypedAtomicActor
             // WirelessReceiver.
             if (!(getDirector() instanceof WirelessDirector)) {
                 throw new IllegalActionException(this,
-                "WirelessChannel can only work with a WirelessDirector.");
+                        "WirelessChannel can only work with a WirelessDirector.");
             }
             Iterator receivers = _receiversInRange(port, properties).iterator();
             if (_debugging) {
@@ -368,7 +368,7 @@ public class WirelessChannel extends TypedAtomicActor
             }
             while (receivers.hasNext()) {
                 WirelessReceiver receiver
-                        = (WirelessReceiver)receivers.next();
+                    = (WirelessReceiver)receivers.next();
                 _transmitTo(token, port, receiver, properties);
             }
         } finally {
@@ -513,7 +513,7 @@ public class WirelessChannel extends TypedAtomicActor
         if (_receiversInRangeCache != null
                 && _receiversInRangeCache.containsKey(sourcePort)
                 && ((Long)_receiversInRangeCacheVersion.get(sourcePort))
-                    .longValue() == workspace().getVersion()
+                .longValue() == workspace().getVersion()
                 && _receiversInRangeCacheValid) {
             // Cached list is valid. Return that.
             return (List)_receiversInRangeCache.get(sourcePort);
@@ -617,7 +617,7 @@ public class WirelessChannel extends TypedAtomicActor
         if (token != null) {
             if (receiver.hasRoom()) {
                 WirelessIOPort destination = (WirelessIOPort)
-                        receiver.getContainer();
+                    receiver.getContainer();
                 Token newToken = destination.convert(token);
                 // Bundle the properties.
                 Token transformedProperties = _transformProperties(

@@ -86,7 +86,7 @@ a receiver may be out of range of a transmitter).
 */
 
 public class WirelessIOPort
-        extends TypedIOPort implements ChangeListener {
+    extends TypedIOPort implements ChangeListener {
 
     /** Construct a port with the specified container and name
      *  that is neither an input nor an output.  The specified container
@@ -188,15 +188,15 @@ public class WirelessIOPort
             Token value = insideTransmitProperties.getToken();
             if (value != null && !(value instanceof RecordToken)) {
                 throw new IllegalActionException(this,
-                "Expected a record for insideTransmitProperties but got: "
-                + value);
+                        "Expected a record for insideTransmitProperties but got: "
+                        + value);
             }
         } else if (attribute == outsideTransmitProperties) {
             Token value = outsideTransmitProperties.getToken();
             if (value != null && !(value instanceof RecordToken)) {
                 throw new IllegalActionException(this,
-                "Expected a record for outsideTransmitProperties but got: "
-                + value);
+                        "Expected a record for outsideTransmitProperties but got: "
+                        + value);
             }
         } else {
             super.attributeChanged(attribute);
@@ -324,7 +324,7 @@ public class WirelessIOPort
         Nameable container = getContainer();
         if (container instanceof CompositeEntity) {
             ComponentEntity entity
-                    = ((CompositeEntity)container).getEntity(channelName);
+                = ((CompositeEntity)container).getEntity(channelName);
             if (entity instanceof WirelessMedia) {
                 _insideChannel = (WirelessMedia)entity;
             }
@@ -371,8 +371,8 @@ public class WirelessIOPort
             Nameable containersContainer = container.getContainer();
             if (containersContainer instanceof CompositeEntity) {
                 ComponentEntity channel
-                        = ((CompositeEntity)containersContainer)
-                        .getEntity(channelName);
+                    = ((CompositeEntity)containersContainer)
+                    .getEntity(channelName);
                 if (channel instanceof WirelessMedia) {
                     _outsideChannel = (WirelessMedia)channel;
                 }

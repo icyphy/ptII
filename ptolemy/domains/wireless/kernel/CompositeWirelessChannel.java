@@ -57,7 +57,7 @@ A composite channel that can contains a model inside for its computation.
 @since Ptolemy II 2.1
 */
 public class CompositeWirelessChannel extends TypedCompositeActor
-        implements WirelessMedia{
+    implements WirelessMedia{
     /** Create an actor with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This actor will use the
@@ -81,9 +81,9 @@ public class CompositeWirelessChannel extends TypedCompositeActor
         super(container, name);
 
         _attachText("_iconDescription", "<svg>\n" +
-                    "<polygon points=\"-25,0 8,-8 2,2 25,0 -8,8 -2,-2 -25,0\" " +
-                    "style=\"fill:blue\"/>\n" +
-                    "</svg>\n");
+                "<polygon points=\"-25,0 8,-8 2,2 25,0 -8,8 -2,-2 -25,0\" " +
+                "style=\"fill:blue\"/>\n" +
+                "</svg>\n");
         _init();
     }
 
@@ -184,8 +184,8 @@ public class CompositeWirelessChannel extends TypedCompositeActor
             throws IllegalActionException, NameDuplicationException {
 
         try {
-        channelInput = new ChannelInput(this, "ChannelInput");
-        channelOutput = new ChannelOutput(this, "ChannelOutput");
+            channelInput = new ChannelInput(this, "ChannelInput");
+            channelOutput = new ChannelOutput(this, "ChannelOutput");
         } catch (NameDuplicationException ex) {
             throw new InternalErrorException("NameDuplication");
         } catch (IllegalActionException ex) {

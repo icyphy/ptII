@@ -109,24 +109,24 @@ public class ModelTopology {
             String theChannelName) throws IllegalActionException {
         List result = new LinkedList();
         Iterator entities = container.entityList().iterator();
-            while (entities.hasNext()) {
-                Entity entity = (Entity)entities.next();
-                Iterator ports = entity.portList().iterator();
-                while (ports.hasNext()) {
-                    Port port = (Port)ports.next();
-                    if (port instanceof WirelessIOPort) {
-                        WirelessIOPort castPort = (WirelessIOPort)port;
-                        if (castPort.isInput()) {
-                            String channelName
-                                    = castPort.outsideChannel.stringValue();
-                            if (channelName.equals(theChannelName)) {
-                                result.add(port);
-                            }
+        while (entities.hasNext()) {
+            Entity entity = (Entity)entities.next();
+            Iterator ports = entity.portList().iterator();
+            while (ports.hasNext()) {
+                Port port = (Port)ports.next();
+                if (port instanceof WirelessIOPort) {
+                    WirelessIOPort castPort = (WirelessIOPort)port;
+                    if (castPort.isInput()) {
+                        String channelName
+                            = castPort.outsideChannel.stringValue();
+                        if (channelName.equals(theChannelName)) {
+                            result.add(port);
                         }
                     }
                 }
             }
-            return result;
+        }
+        return result;
 
     }
 
@@ -148,20 +148,20 @@ public class ModelTopology {
             throws IllegalActionException {
         List result = new LinkedList();
         Iterator ports = container.portList().iterator();
-            while (ports.hasNext()) {
-                Port port = (Port)ports.next();
-                if (port instanceof WirelessIOPort) {
-                    WirelessIOPort castPort = (WirelessIOPort)port;
-                    if (castPort.isOutput()) {
-                        String channelName =
-                            castPort.insideChannel.stringValue();
-                        if (channelName.equals(theChannelName)) {
-                            result.add(port);
-                        }
+        while (ports.hasNext()) {
+            Port port = (Port)ports.next();
+            if (port instanceof WirelessIOPort) {
+                WirelessIOPort castPort = (WirelessIOPort)port;
+                if (castPort.isOutput()) {
+                    String channelName =
+                        castPort.insideChannel.stringValue();
+                    if (channelName.equals(theChannelName)) {
+                        result.add(port);
                     }
                 }
             }
-            return result;
+        }
+        return result;
     }
 
     /** Return the location of the given port. If the container of the
@@ -185,8 +185,8 @@ public class ModelTopology {
         //    location = (Locatable)port.getAttribute(LOCATION_ATTRIBUTE_NAME,
         //            Locatable.class);
         //} else {
-            location = (Locatable)portContainer.getAttribute(
-                    LOCATION_ATTRIBUTE_NAME, Locatable.class);
+        location = (Locatable)portContainer.getAttribute(
+                LOCATION_ATTRIBUTE_NAME, Locatable.class);
         //}
         if (location == null) {
             throw new IllegalActionException(
@@ -214,20 +214,20 @@ public class ModelTopology {
             String theChannelName) throws IllegalActionException {
         List result = new LinkedList();
         Iterator ports = container.portList().iterator();
-            while (ports.hasNext()) {
-                Port port = (Port)ports.next();
-                if (port instanceof WirelessIOPort) {
-                    WirelessIOPort castPort = (WirelessIOPort)port;
-                    if (castPort.isInput()) {
-                        String channelName =
-                            castPort.insideChannel.stringValue();
-                        if (channelName.equals(theChannelName)) {
-                            result.add(port);
-                        }
+        while (ports.hasNext()) {
+            Port port = (Port)ports.next();
+            if (port instanceof WirelessIOPort) {
+                WirelessIOPort castPort = (WirelessIOPort)port;
+                if (castPort.isInput()) {
+                    String channelName =
+                        castPort.insideChannel.stringValue();
+                    if (channelName.equals(theChannelName)) {
+                        result.add(port);
                     }
                 }
             }
-            return result;
+        }
+        return result;
     }
 
     /** Return a list of output ports that can potentially send data
@@ -247,24 +247,24 @@ public class ModelTopology {
             String theChannelName) throws IllegalActionException {
         List result = new LinkedList();
         Iterator entities = container.entityList().iterator();
-            while (entities.hasNext()) {
-                Entity entity = (Entity)entities.next();
-                Iterator ports = entity.portList().iterator();
-                while (ports.hasNext()) {
-                    Port port = (Port)ports.next();
-                    if (port instanceof WirelessIOPort) {
-                        WirelessIOPort castPort = (WirelessIOPort)port;
-                        if (castPort.isOutput()) {
-                            String channelName
-                                    = castPort.outsideChannel.stringValue();
-                            if (channelName.equals(theChannelName)) {
-                                result.add(port);
-                            }
+        while (entities.hasNext()) {
+            Entity entity = (Entity)entities.next();
+            Iterator ports = entity.portList().iterator();
+            while (ports.hasNext()) {
+                Port port = (Port)ports.next();
+                if (port instanceof WirelessIOPort) {
+                    WirelessIOPort castPort = (WirelessIOPort)port;
+                    if (castPort.isOutput()) {
+                        String channelName
+                            = castPort.outsideChannel.stringValue();
+                        if (channelName.equals(theChannelName)) {
+                            result.add(port);
                         }
                     }
                 }
             }
-            return result;
+        }
+        return result;
     }
 
     ///////////////////////////////////////////////////////////////////

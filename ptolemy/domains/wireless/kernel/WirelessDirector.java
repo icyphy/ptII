@@ -184,7 +184,7 @@ public class WirelessDirector extends DEDirector {
         double[] randomLocation = new double[dimensions];
 
         Iterator actors
-                = ((CompositeActor)getContainer()).deepEntityList().iterator();
+            = ((CompositeActor)getContainer()).deepEntityList().iterator();
         while (actors.hasNext()) {
             Entity node = (Entity)actors.next();
 
@@ -196,7 +196,7 @@ public class WirelessDirector extends DEDirector {
                 ArrayToken lowHigh = (ArrayToken)rangeValue.getElement(i);
                 if (lowHigh.length() < 2) {
                     throw new IllegalActionException(this,
-                    "Invalid range: " + range.getExpression());
+                            "Invalid range: " + range.getExpression());
                 }
                 double low =
                     ((DoubleToken)lowHigh.getElement(0)).doubleValue();
@@ -204,7 +204,7 @@ public class WirelessDirector extends DEDirector {
                     ((DoubleToken)lowHigh.getElement(1)).doubleValue();
                 if (high < low) {
                     throw new IllegalActionException(this,
-                    "Invalid range: " + range.getExpression());
+                            "Invalid range: " + range.getExpression());
                 }
                 randomLocation[i] = low + (_random.nextDouble())*(high - low);
             }
@@ -224,7 +224,7 @@ public class WirelessDirector extends DEDirector {
             throws IllegalActionException {
         try {
             Locatable myLocation =
-                    (Locatable)node.getAttribute("_location", Locatable.class);
+                (Locatable)node.getAttribute("_location", Locatable.class);
             if (myLocation != null) {
                 myLocation.setLocation(location);
             } else {

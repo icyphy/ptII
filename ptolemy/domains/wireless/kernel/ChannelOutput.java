@@ -90,15 +90,15 @@ public class ChannelOutput extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         if (_debugging) _debug("invoking fire, try to send data. \n");
-            if (reception.hasToken(0)) {
-                ObjectToken t = (ObjectToken)reception.get(0);
-                Reception rec = (Reception)t.getValue();
-                LinkedList recvs = (LinkedList) rec.receivers;
-                for (int i = 0; i < recvs.size(); i++) {
-                    WirelessReceiver r = (WirelessReceiver)recvs.removeFirst();
-                    _transmitTo(rec.token, r, rec.properties);
-                }
+        if (reception.hasToken(0)) {
+            ObjectToken t = (ObjectToken)reception.get(0);
+            Reception rec = (Reception)t.getValue();
+            LinkedList recvs = (LinkedList) rec.receivers;
+            for (int i = 0; i < recvs.size(); i++) {
+                WirelessReceiver r = (WirelessReceiver)recvs.removeFirst();
+                _transmitTo(rec.token, r, rec.properties);
             }
+        }
     }
 
 
@@ -125,7 +125,7 @@ public class ChannelOutput extends TypedAtomicActor {
         if (token != null) {
             if (receiver.hasRoom()) {
                 WirelessIOPort destination = (WirelessIOPort)
-                        receiver.getContainer();
+                    receiver.getContainer();
                 Token newToken = destination.convert(token);
                 // Bundle the properties.
                 receiver.put(newToken, properties);
