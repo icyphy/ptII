@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red (bart@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.moml;
@@ -51,7 +51,7 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// MoMLWriter
 /**
-This is a writer that is capable of writing an MoML descriptiong of a
+This is a writer that is capable of writing an MoML description of a
 Ptolemy model to another writer.
 
 @author Steve Neuendorffer
@@ -94,17 +94,17 @@ public class MoMLWriter extends Writer {
      *  that was passed in the constructor.  If a null writer was
      *  given to the constructor, then do nothing.
      *
-     *  @param  cbuf  Array of characters
-     *  @param  off   Offset from which to start writing characters
-     *  @param  len   Number of characters to write
+     *  @param input Array of characters
+     *  @param offset Offset from which to start writing characters
+     *  @param length Number of characters to write
      *
      *  @exception IOException If an I/O error occurs
      */
-    public void write(char cbuf[], int off, int len)
+    public void write(char input[], int offset, int length)
             throws IOException {
         synchronized(lock) {
             if(_writer != null)
-                _writer.write(cbuf, off, len);
+                _writer.write(input, offset, length);
         }
     }
 
@@ -143,7 +143,7 @@ public class MoMLWriter extends Writer {
     public void write(NamedObj object, int depth, String name)
         throws IOException {
         synchronized(lock) {
-            // Alot of things aren't presistent and are just skipped.
+            // A lot of things aren't persistent and are just skipped.
             if(object instanceof NotPersistent)
                 return;
             // Documentation uses a special tag with no class.
@@ -270,7 +270,7 @@ public class MoMLWriter extends Writer {
                     }
                 }
                 catch (Exception ex) {
-                    System.out.println("Exception occured during parsing:\n");
+                    System.out.println("Exception occurred during parsing:\n");
                     ex.printStackTrace();
                     deferredObject = null;
                 }
