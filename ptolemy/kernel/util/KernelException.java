@@ -235,7 +235,7 @@ public class KernelException extends Exception {
         String prefix;
 
         // KernelException.getFullName() returns the empty string if
-        // argument was null, and it returns "<Unamed Object>" if the
+        // argument was null, and it returns "<Unnamed Object>" if the
         // argument was the empty string, so if the return value of
         // getFullName() is the empty string, then the argument was
         // null, so we adjust accordingly.
