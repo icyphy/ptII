@@ -31,18 +31,18 @@
 package ptolemy.actor.gui;
 
 // Ptolemy imports
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.ExecutionListener;
-import ptolemy.actor.Manager;
-import ptolemy.gui.MessageHandler;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLParser;
-
 import java.net.URL;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.ExecutionListener;
+import ptolemy.actor.Manager;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.MoMLParser;
+import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtExecuteApplication

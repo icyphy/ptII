@@ -31,9 +31,9 @@
 package ptolemy.actor.gui;
 
 // Ptolemy imports
-import ptolemy.gui.MessageHandler;
-
 import java.net.URL;
+
+import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyApplication

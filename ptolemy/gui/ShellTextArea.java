@@ -49,6 +49,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
+import ptolemy.util.MessageHandler;
+
 //////////////////////////////////////////////////////////////////////////
 //// ShellTextArea
 

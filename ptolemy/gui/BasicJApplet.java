@@ -37,6 +37,8 @@ import java.io.PrintWriter;
 
 import javax.swing.JApplet;
 
+import ptolemy.util.MessageHandler;
+
 //////////////////////////////////////////////////////////////////////////
 //// BasicJApplet
 /**

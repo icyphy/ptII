@@ -31,16 +31,16 @@ COPYRIGHTENDKEY
 package jni;
 
 // Ptolemy imports
-import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.MoMLApplication;
-import ptolemy.gui.MessageHandler;
-import ptolemy.moml.MoMLParser;
-import ptolemy.vergil.VergilErrorHandler;
-
 import java.net.URL;
 
 import javax.swing.SwingUtilities;
+
+import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.MoMLApplication;
+import ptolemy.moml.MoMLParser;
+import ptolemy.util.MessageHandler;
+import ptolemy.vergil.VergilErrorHandler;
 
 // Java imports
 

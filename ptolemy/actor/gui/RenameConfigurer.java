@@ -30,7 +30,8 @@
 
 package ptolemy.actor.gui;
 
-import ptolemy.gui.MessageHandler;
+import javax.swing.BoxLayout;
+
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
 import ptolemy.kernel.Port;
@@ -40,8 +41,7 @@ import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
-
-import javax.swing.BoxLayout;
+import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
 //// RenameConfigurer

@@ -29,8 +29,6 @@
 
 package ptolemy.gui;
 
-import ptolemy.util.StringUtilities;
-
 import java.awt.Component;
 import java.awt.Dimension;
 import java.io.PrintWriter;
@@ -39,6 +37,10 @@ import java.io.StringWriter;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+
+import ptolemy.util.CancelException;
+import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
 
 
 //////////////////////////////////////////////////////////////////////////

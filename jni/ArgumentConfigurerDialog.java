@@ -30,9 +30,15 @@
 
 package jni;
 
+import java.awt.Frame;
+import java.net.URL;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import ptolemy.actor.gui.Configuration;
 import ptolemy.gui.ComponentDialog;
-import ptolemy.gui.MessageHandler;
 import ptolemy.gui.Query;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.ChangeListener;
@@ -41,13 +47,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
-
-import java.awt.Frame;
-import java.net.URL;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
 //// ArgumentConfigurerDialog

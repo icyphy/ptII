@@ -55,8 +55,6 @@ import java.util.Stack;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
-import ptolemy.gui.CancelException;
-import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
@@ -75,6 +73,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.util.CancelException;
+import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
 import com.microstar.xml.HandlerBase;

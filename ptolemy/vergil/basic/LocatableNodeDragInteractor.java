@@ -36,13 +36,13 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
-import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.undo.UndoStackAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLUndoEntry;
+import ptolemy.util.MessageHandler;
 import ptolemy.vergil.toolbox.SnapConstraint;
 import diva.canvas.Figure;
 import diva.canvas.event.LayerEvent;

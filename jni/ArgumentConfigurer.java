@@ -30,17 +30,17 @@ COPYRIGHTENDKEY
 
 package jni;
 
-import ptolemy.gui.MessageHandler;
-import ptolemy.gui.Query;
-import ptolemy.gui.QueryListener;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.moml.MoMLChangeRequest;
-
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
 import javax.swing.BoxLayout;
+
+import ptolemy.gui.Query;
+import ptolemy.gui.QueryListener;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
 //// ArgumentConfigurer

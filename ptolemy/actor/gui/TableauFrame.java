@@ -49,12 +49,12 @@ import javax.swing.filechooser.FileFilter;
 
 import ptolemy.data.expr.FileParameter;
 import ptolemy.gui.GraphicalMessageHandler;
-import ptolemy.gui.MessageHandler;
 import ptolemy.gui.StatusBar;
 import ptolemy.gui.Top;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////

@@ -48,7 +48,9 @@ PTPACKAGE = 	util
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	CancelException.java \
 	ClassUtilities.java \
+	MessageHandler.java \
 	StringUtilities.java \
 	XSLTUtilities.java
 

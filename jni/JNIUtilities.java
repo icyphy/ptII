@@ -30,16 +30,6 @@ COPYRIGHTENDKEY
 
 package jni;
 
-import ptolemy.actor.Actor;
-import ptolemy.data.StringToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.gui.MessageHandler;
-import ptolemy.gui.StreamExec;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.util.StringUtilities;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -47,6 +37,16 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
+
+import ptolemy.actor.Actor;
+import ptolemy.data.StringToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.gui.StreamExec;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
 
 
 //////////////////////////////////////////////////////////////////////////

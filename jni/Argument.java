@@ -30,18 +30,18 @@
 
 package jni;
 
-import ptolemy.gui.MessageHandler;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.StringTokenizer;
+
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
-
-import java.io.IOException;
-import java.io.Writer;
-import java.util.StringTokenizer;
 
 //////////////////////////////////////////////////////////////////////////
 //// Argument

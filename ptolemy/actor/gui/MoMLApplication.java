@@ -31,24 +31,6 @@
 package ptolemy.actor.gui;
 
 // Java imports
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
-import ptolemy.data.expr.Variable;
-import ptolemy.gui.GraphicalMessageHandler;
-import ptolemy.gui.MessageHandler;
-import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.attributes.VersionAttribute;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.moml.Documentation;
-import ptolemy.moml.MoMLParser;
-import ptolemy.moml.filter.BackwardCompatibility;
-import ptolemy.util.StringUtilities;
-
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -61,6 +43,24 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.UIManager;
+
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
+import ptolemy.data.expr.Variable;
+import ptolemy.gui.GraphicalMessageHandler;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.attributes.VersionAttribute;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.Documentation;
+import ptolemy.moml.MoMLParser;
+import ptolemy.moml.filter.BackwardCompatibility;
+import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
 
 
 //////////////////////////////////////////////////////////////////////////

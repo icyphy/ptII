@@ -29,8 +29,13 @@
 
 package ptolemy.actor.gui;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URL;
+import java.util.List;
+
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.ChangeListener;
@@ -41,13 +46,8 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.ParserAttribute;
+import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URL;
-import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyEffigy

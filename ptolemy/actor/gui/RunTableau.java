@@ -29,17 +29,6 @@
 
 package ptolemy.actor.gui;
 
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Manager;
-import ptolemy.gui.CancelException;
-import ptolemy.gui.MessageHandler;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Debuggable;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
-
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -47,6 +36,17 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Manager;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Debuggable;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.CancelException;
+import ptolemy.util.MessageHandler;
 
 
 //////////////////////////////////////////////////////////////////////////

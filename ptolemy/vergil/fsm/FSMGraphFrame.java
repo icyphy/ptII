@@ -42,14 +42,14 @@ import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TextEffigy;
 import ptolemy.domains.fsm.kernel.FSMActor;
-import ptolemy.gui.CancelException;
 import ptolemy.gui.ComponentDialog;
-import ptolemy.gui.MessageHandler;
 import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
+import ptolemy.util.CancelException;
+import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
 import diva.graph.GraphPane;
 

@@ -29,10 +29,15 @@
 
 package ptolemy.actor.gui;
 
+import java.awt.Frame;
+import java.net.URL;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.swing.SwingUtilities;
+
 import ptolemy.actor.gui.style.StyleConfigurer;
-import ptolemy.gui.CancelException;
 import ptolemy.gui.ComponentDialog;
-import ptolemy.gui.MessageHandler;
 import ptolemy.gui.Query;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeListener;
@@ -41,14 +46,9 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.util.CancelException;
+import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
-
-import java.awt.Frame;
-import java.net.URL;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// EditParametersDialog

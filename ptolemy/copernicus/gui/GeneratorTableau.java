@@ -29,30 +29,6 @@
 
 package ptolemy.copernicus.gui;
 
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.Configurer;
-import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.PtolemyEffigy;
-import ptolemy.actor.gui.PtolemyFrame;
-import ptolemy.actor.gui.Tableau;
-import ptolemy.actor.gui.TableauFactory;
-import ptolemy.copernicus.kernel.Copernicus;
-import ptolemy.copernicus.kernel.GeneratorAttribute;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.StringToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.StringParameter;
-import ptolemy.data.expr.Variable;
-import ptolemy.gui.JTextAreaExec;
-import ptolemy.gui.MessageHandler;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -72,6 +48,29 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
+
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.Configurer;
+import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.PtolemyEffigy;
+import ptolemy.actor.gui.PtolemyFrame;
+import ptolemy.actor.gui.Tableau;
+import ptolemy.actor.gui.TableauFactory;
+import ptolemy.copernicus.kernel.Copernicus;
+import ptolemy.copernicus.kernel.GeneratorAttribute;
+import ptolemy.data.StringToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
+import ptolemy.data.expr.Variable;
+import ptolemy.gui.JTextAreaExec;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
 //// GeneratorTableau

@@ -27,7 +27,7 @@
 @AcceptedRating Yellow (janneck@eecs.berkeley.edu)
 */
 
-package ptolemy.gui;
+package ptolemy.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -54,7 +54,6 @@ the derived class GraphicalMessageHandler.
 @author  Edward A. Lee, Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 1.0
-@deprecated Use ptolemy.util.MessageHandler.
 */
 public class MessageHandler {
 

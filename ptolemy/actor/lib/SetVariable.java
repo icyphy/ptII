@@ -41,6 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
 //// SetVariable
@@ -56,6 +57,14 @@ of the actors).
 Note that the variable name is observed during preinitialize().
 If it is changed after that, the change will not take effect
 until the next time the model is executed.
+<p>
+The variable can be either any attribute that implements
+the Settable interface. If it is in addition an instance of
+Variable, then the input token is used directly to set the
+value, and the type of the variable is constrained to be
+the same as the type of the input. Otherwise, then input
+token is converted to a string and the setExpression() method
+on the variable is used to set the value.
 
 @author Edward A. Lee
 @version $Id$
@@ -108,8 +117,7 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener {
     public void changeFailed(
             ChangeRequest change,
             java.lang.Exception exception) {
-        // FIXME
-        System.out.println(exception.toString());
+        MessageHandler.error("Failed to set variable.", exception);
     }
 
     /** Read at most one token from the input port and issue a change

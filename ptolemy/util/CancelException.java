@@ -27,7 +27,7 @@
 @AcceptedRating Green (janneck@eecs.berkeley.edu)
 */
 
-package ptolemy.gui;
+package ptolemy.util;
 
 //////////////////////////////////////////////////////////////////////////
 //// CancelException
@@ -44,7 +44,6 @@ reported to the user.
 @author Edward A. Lee
 @version $Id$
 @since Ptolemy II 1.0
-@deprecated Use ptolemy.util.CancelException.
 */
 
 public class CancelException extends Exception {

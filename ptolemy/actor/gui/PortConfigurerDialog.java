@@ -67,7 +67,6 @@ import javax.swing.table.TableColumn;
 import ptolemy.actor.TypeAttribute;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.unit.Units;
-import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.ChangeListener;
@@ -76,6 +75,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////

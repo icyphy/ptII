@@ -33,8 +33,6 @@ package ptolemy.vergil;
 // Ptolemy imports
 import java.io.File;
 import java.io.FileWriter;
-import java.io.FilenameFilter;
-import java.net.URI;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
@@ -49,14 +47,13 @@ import ptolemy.actor.gui.ModelDirectory;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.data.expr.Parameter;
 import ptolemy.gui.GraphicalMessageHandler;
-import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.moml.Documentation;
 import ptolemy.moml.MoMLParser;
+import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.BasicGraphFrame;
 

@@ -30,14 +30,6 @@
 package ptolemy.actor.gui;
 
 // Ptolemy imports
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
-import ptolemy.actor.Manager;
-import ptolemy.data.expr.Parameter;
-import ptolemy.gui.CloseListener;
-import ptolemy.gui.MessageHandler;
-import ptolemy.kernel.util.IllegalActionException;
-
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -58,6 +50,14 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
+
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
+import ptolemy.actor.Manager;
+import ptolemy.data.expr.Parameter;
+import ptolemy.gui.CloseListener;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
 //// ModelPane

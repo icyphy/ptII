@@ -29,6 +29,7 @@
 
 package ptolemy.gui;
 
+import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
 import java.awt.BorderLayout;

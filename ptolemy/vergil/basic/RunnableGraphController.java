@@ -30,17 +30,6 @@
 
 package ptolemy.vergil.basic;
 
-import diva.gui.GUIUtilities;
-
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.ExecutionListener;
-import ptolemy.actor.Manager;
-import ptolemy.gui.MessageHandler;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.vergil.toolbox.FigureAction;
-
 import java.awt.Event;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -51,6 +40,16 @@ import javax.swing.ImageIcon;
 import javax.swing.JMenu;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
+
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.ExecutionListener;
+import ptolemy.actor.Manager;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.MessageHandler;
+import ptolemy.vergil.toolbox.FigureAction;
+import diva.gui.GUIUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// RunnableGraphController

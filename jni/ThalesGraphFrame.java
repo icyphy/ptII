@@ -30,25 +30,6 @@ COPYRIGHTENDKEY
 
 package jni;
 
-import diva.graph.GraphPane;
-
-import ptolemy.actor.Actor;
-import ptolemy.actor.Director;
-import ptolemy.actor.gui.DebugListenerTableau;
-import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.TextEffigy;
-import ptolemy.gui.CancelException;
-import ptolemy.gui.ComponentDialog;
-import ptolemy.gui.MessageHandler;
-import ptolemy.gui.Query;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.vergil.actor.ActorEditorGraphController;
-import ptolemy.vergil.actor.ActorGraphModel;
-import ptolemy.vergil.actor.ActorGraphTableau;
-import ptolemy.vergil.basic.BasicGraphFrame;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -56,6 +37,24 @@ import java.net.URL;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+
+import ptolemy.actor.Actor;
+import ptolemy.actor.Director;
+import ptolemy.actor.gui.DebugListenerTableau;
+import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.TextEffigy;
+import ptolemy.gui.ComponentDialog;
+import ptolemy.gui.Query;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.CancelException;
+import ptolemy.util.MessageHandler;
+import ptolemy.vergil.actor.ActorEditorGraphController;
+import ptolemy.vergil.actor.ActorGraphModel;
+import ptolemy.vergil.actor.ActorGraphTableau;
+import ptolemy.vergil.basic.BasicGraphFrame;
+import diva.graph.GraphPane;
 
 //////////////////////////////////////////////////////////////////////////
 //// ThalesGraphFrame

@@ -30,7 +30,12 @@
 
 package ptolemy.vergil.actor;
 
-import diva.graph.GraphPane;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -40,22 +45,16 @@ import ptolemy.actor.gui.DebugListenerTableau;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TextEffigy;
-import ptolemy.gui.CancelException;
 import ptolemy.gui.ComponentDialog;
-import ptolemy.gui.MessageHandler;
 import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
+import ptolemy.util.CancelException;
+import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
+import diva.graph.GraphPane;
 
 //////////////////////////////////////////////////////////////////////////
 //// ActorGraphFrame

@@ -30,6 +30,32 @@
 
 package ptolemy.vergil.actor;
 
+import java.awt.Color;
+import java.awt.Shape;
+import java.awt.event.ActionEvent;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
+
+import javax.swing.SwingUtilities;
+
+import ptolemy.actor.IOPort;
+import ptolemy.actor.gui.DebugListenerTableau;
+import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.Tableau;
+import ptolemy.actor.gui.TextEffigy;
+import ptolemy.actor.parameters.ParameterPort;
+import ptolemy.data.type.Typeable;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.StringAttribute;
+import ptolemy.util.MessageHandler;
+import ptolemy.vergil.basic.BasicGraphController;
+import ptolemy.vergil.basic.BasicGraphFrame;
+import ptolemy.vergil.kernel.AttributeController;
+import ptolemy.vergil.toolbox.FigureAction;
+import ptolemy.vergil.toolbox.MenuActionFactory;
 import diva.canvas.CanvasUtilities;
 import diva.canvas.Figure;
 import diva.canvas.Site;
@@ -42,33 +68,6 @@ import diva.graph.GraphController;
 import diva.graph.NodeRenderer;
 import diva.util.java2d.Polygon2D;
 import diva.util.java2d.ShapeUtilities;
-
-import ptolemy.actor.IOPort;
-import ptolemy.actor.gui.DebugListenerTableau;
-import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.Tableau;
-import ptolemy.actor.gui.TextEffigy;
-import ptolemy.actor.parameters.ParameterPort;
-import ptolemy.data.type.Typeable;
-import ptolemy.gui.MessageHandler;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.StringAttribute;
-import ptolemy.vergil.basic.BasicGraphController;
-import ptolemy.vergil.basic.BasicGraphFrame;
-import ptolemy.vergil.kernel.AttributeController;
-import ptolemy.vergil.toolbox.FigureAction;
-import ptolemy.vergil.toolbox.MenuActionFactory;
-
-import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.geom.AffineTransform;
-import java.awt.Shape;
-import java.awt.geom.Ellipse2D;
-
-import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// IOPortController
