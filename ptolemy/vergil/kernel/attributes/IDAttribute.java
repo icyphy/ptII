@@ -124,6 +124,7 @@ public class IDAttribute extends SingletonAttribute {
         lastUpdated = new StringAttribute(this, "lastUpdated");
         _updateDate();
         lastUpdated.setVisibility(Settable.NOT_EDITABLE);
+        lastUpdated.setPersistent(true);
 
         author = new StringAttribute(this, "author");
         String userName = null;
