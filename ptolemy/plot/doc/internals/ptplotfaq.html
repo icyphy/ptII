@@ -39,6 +39,7 @@ infrastructure.
 	<LI> <A HREF="#mydata"><B>3.1 Plot my own data?</B></A>
 	<LI> <A HREF="#binarydata"><B>3.2 How do I plot binary data?</B></A>
 	<LI> <A HREF="#logaxes"><B>3.3 How do I plot log axes?</B></A>
+	<LI> <A HREF="#appletprinting"><B>3.4 How do I print an plot from a Plot applet?</B></A>
 	</MENU>
 
 </MENU>
@@ -87,8 +88,13 @@ to the tar and zip files.
 <DT> <A NAME="platforms that Ptplot runs under"><B>2.2 What platforms does Ptplot run under?</B></A>
 <DD> Ptplot was develop under JDK1.1.4.  The only part of Ptplot
 that requires JDK1.1 is the printing method in the Pxgraph class and
-the Message class, which is used by the Pxgraph class.  The rest of
-the code should compile under JDK1.0.2
+the Message class, which is used by the Pxgraph class for the 'About' window.
+The rest of the code should compile under JDK1.0.2.  The code contains
+comments that indicate the various 1.0.2/1.1 compatibility issues.
+ <br> Everything else compiles under JDK1.0.2.  The ptplot.zip file we
+supply was built with JDK1.0.2.  We chose to do this so that we could
+support Netscape3.x.  The next release might only support JDK1.1 and
+later. 
 
 <DT> <A NAME="ptplot installation, what do I need"><B>2.3 What do I need to Install Ptplot?</B></A>
 <DD> 
@@ -161,6 +167,32 @@ easier to read.
 <DT> <A NAME="logaxes"><B>3.3 How do I plot log axes?</B></A>
 <DD> Ptplot1.1 does not support Log axes.  We hope to support log axes 
 in the future, many people have asked for this feature.
+
+
+<DT>  <A HREF="appletprinting"><B>3.4 How do I print an plot from a Plot applet?</B></A>
+<DD> Unfortunately, most browsers cannot print applets.  There are
+workarounds, but in general, it is hard, and involves security
+violations.
+
+<A HREF="http://www.best.com/~pvdl/javafaq.html"><CODE>http://www.best.com/~pvdl/javafaq.html</CODE></A> says:
+
+<BLOCKQUOTE>
+4.1.11 How do I print a page with an applet?  
+
+ <P>A. Browsers are starting to introduce support for this. Until they all
+have it, your best bet is to print a screendump.  Using the browser to
+print the page may leave a blank where the applet is.  Putting print
+support in the applet will print the applet only, not the rest of the
+browser page.
+</BLOCKQUOTE>
+
+For more information about printing, join the JavaSoft Developer
+Connection (it is free) and search for printing.
+
+ <P>Note that printing is supported from standalong Pxgraph applications in
+the Pxgraph class.  Note that printing in the Pxgraph class requires
+JDK1.1 and later.
+
 </DL>
 
 <p>
