@@ -513,7 +513,7 @@ public class PlotterBase extends TypedAtomicActor
 
     /** The base specified in configure(). */
     protected URL _base;
-    
+
     /** Container into which this plot should be placed. */
     protected Container _container;
 
@@ -525,7 +525,7 @@ public class PlotterBase extends TypedAtomicActor
 
     /** The source specified in configure(). */
     protected String _source;
-    
+
     /** The text specified in configure(). */
     protected String _text;
 
