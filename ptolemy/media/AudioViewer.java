@@ -25,7 +25,8 @@
                                         COPYRIGHTENDKEY
 */
 
-package ptolemy.plot.apps;
+package ptolemy.audio;
+
 import ptolemy.plot.*;
 import java.awt.*;
 import java.awt.event.*;
