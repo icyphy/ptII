@@ -41,7 +41,7 @@ infrastructure.
 	<LI> <A HREF="#mydata"><B>3.1 Plot my own data?</B></A>
 	<LI> <A HREF="#binarydata"><B>3.2 How do I plot binary data?</B></A>
 	<LI> <A HREF="#endian"><B>3.3 How do I handle endian issues in binary data?</B></A>
-	<LI> <A HREF="#appletprinting"><B>3.4 How do I print an plot from a Plot applet?</B></A>
+	<LI> <A HREF="#appletprinting"><B>3.4 How do I print a plot from a Plot applet?</B></A>
 	<LI> <A HREF="#twofiles"><B>3.5 How do I plot two datafiles in an applet?</B></A>
 	<LI> <A HREF="#simpleapp"><B>3.6 How do I create a simple standalone Plot application?</B></A>
 	</MENU>
@@ -222,7 +222,7 @@ example that use the above flags.
 The 
 <a href="http://www.afu.com/javafaq.html">Java Programmer's FAQ</a>
 has more information about endian issues.
-<DT>  <A NAME="appletprinting"><B>3.3 How do I print an plot from a Plot applet?</B></A>
+<DT>  <A NAME="appletprinting"><B>3.3 How do I print a plot from a Plot applet?</B></A>
 <DD> Unfortunately, most browsers cannot print applets.  There are
 work arounds, but in general, it is hard, and involves security
 violations.
@@ -271,6 +271,14 @@ Note that you can also bring up the X11 pxgraph version from
 after starting the Java version by typing an <CODE>x</CODE>.
 For more information, see 
 <A HREF="#xgraph"><B>1.6 What is the relationship between xgraph and ptplot?</B></A>.
+ <p>To generate a GIF image, you might try first generating PostScript
+and then using <CODE>pstogif</CODE>, which is part of Ghostview, available
+at 
+<a href="http://www.cs.wisc.edu/~ghost"><CODE>http://www.cs.wisc.edu/~ghost/</CODE></a>.  Below is an example:
+<pre>
+pxgraph -print -o /tmp/data.ps demo/data.plt
+pstogif /tmp/data.ps
+</pre>
 
 <DT>  <A NAME="twofiles"><B>3.5 How do I plot two datafiles in an applet? </B></A>
 <DD>The <CODE>pxgraphargs</CODE> applet parameter can be used to pass
