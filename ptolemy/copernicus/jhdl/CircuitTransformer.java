@@ -67,7 +67,7 @@ import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.copernicus.kernel.MustAliasAnalysis;
 import ptolemy.copernicus.java.ActorTransformer;
-
+import ptolemy.copernicus.jhdl.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// CircuitTransformer
@@ -183,7 +183,16 @@ public class CircuitTransformer extends SceneTransformer {
                 }
             }
         }
-                  
+
+//  	System.out.println("Writing "+_model.getName()+".dot");
+//  	try {
+//  	    FileWriter dotFile=new FileWriter(_model.getName()+".dot");
+//  	    dotFile.write(PtDirectedGraphToDotty.convert(combinedGraph,_model.getName()));
+//  	    dotFile.close();
+//  	} catch (IOException e){
+//  	    System.out.println(e);
+//  	}
+
 	//          // remove the extra nodes for ports.
 	//          for(Iterator nodes = removeSet.iterator();
 	//              nodes.hasNext();) {
@@ -201,7 +210,8 @@ public class CircuitTransformer extends SceneTransformer {
 	//          }
             
         Set removeSet = new HashSet();
-
+	Map replaceMap = new HashMap();
+	
 	//Flatten the actors
 	for(Iterator cnodes=combinedGraph.nodes().iterator(); cnodes.hasNext();){
 	    Node cnode=(Node)cnodes.next();
@@ -209,7 +219,7 @@ public class CircuitTransformer extends SceneTransformer {
 	    //Skip ports; only Entity's are expanded
 	    if (!(cnode.weight() instanceof Entity)) continue;
 
-	    removeSet.add(cnode);
+	    //removeSet.add(cnode);
   
 	    String className =
 		ActorTransformer.getInstanceClassName((Entity)cnode.weight(),
@@ -221,47 +231,47 @@ public class CircuitTransformer extends SceneTransformer {
 		new CircuitAnalysis((Entity)cnode.weight(), entityClass);
 	    DirectedGraph operatorGraph = analysis.getOperatorGraph();
 
-	    for(Iterator nodes = operatorGraph.nodes().iterator();
-		nodes.hasNext();) {
+	    replaceMap.put(cnode, operatorGraph);
+	}
+
+
+	for (Iterator removeNodes = replaceMap.keySet().iterator(); removeNodes.hasNext();){
+
+	    Node removeNode = (Node)removeNodes.next();
+
+	    combinedGraph.removeNode(removeNode);
+
+	    DirectedGraph operatorGraph = (DirectedGraph)replaceMap.get(removeNode);
+	    
+	    for(Iterator nodes = operatorGraph.nodes().iterator(); nodes.hasNext();) {
 		Node node = (Node)nodes.next();
-		//Ports are already in combinedGraph, don't add them again
-		if (!combinedGraph.containsNode(node))
-		    combinedGraph.addNode(node);
-		else if (!(node.weight() instanceof Port))
-		    removeSet.remove(cnode);
+		combinedGraph.addNode(node);
 	    }
 
-	    for(Iterator nodes = operatorGraph.nodes().iterator();
-		nodes.hasNext();) {
-		Node node = (Node)nodes.next();
-		List succList = new LinkedList(operatorGraph.successors(node));
-		for(Iterator succs = succList.iterator();
-		    succs.hasNext();) {
-		    Node succ = (Node)succs.next();
-		    combinedGraph.addEdge(node, succ);
-		}
-	    }
-	  
+	    for(Iterator edges = operatorGraph.edges().iterator(); edges.hasNext();) {
+		combinedGraph.addEdge((Edge)edges.next());
+	    }	    
+
 	}
 	
         // Remove all the nodes that were not required above.
-        for(Iterator nodes = removeSet.iterator();
-            nodes.hasNext();) {
-	    Node node = (Node)nodes.next();
-            List predList = new LinkedList(combinedGraph.predecessors(node));
-            for(Iterator preds = predList.iterator();
-                preds.hasNext();) {
-                Node pred = (Node)preds.next();
-                combinedGraph.removeEdge((Edge)combinedGraph.successorEdges(pred, node).toArray()[0]);
-            }
-            List succList = new LinkedList(combinedGraph.successors(node));
-            for(Iterator succs = succList.iterator();
-                succs.hasNext();) {
-                Node succ = (Node)succs.next();
-                combinedGraph.removeEdge((Edge)combinedGraph.successorEdges(node, succ).toArray()[0]);
-            }
-            combinedGraph.removeNode(node);
-        }
+//          for(Iterator nodes = removeSet.iterator();
+//              nodes.hasNext();) {
+//  	    Node node = (Node)nodes.next();
+//              List predList = new LinkedList(combinedGraph.predecessors(node));
+//              for(Iterator preds = predList.iterator();
+//                  preds.hasNext();) {
+//                  Node pred = (Node)preds.next();
+//                  combinedGraph.removeEdge((Edge)combinedGraph.successorEdges(pred, node).toArray()[0]);
+//              }
+//              List succList = new LinkedList(combinedGraph.successors(node));
+//              for(Iterator succs = succList.iterator();
+//                  succs.hasNext();) {
+//                  Node succ = (Node)succs.next();
+//                  combinedGraph.removeEdge((Edge)combinedGraph.successorEdges(node, succ).toArray()[0]);
+//              }
+//              combinedGraph.removeNode(node);
+//          }
 
 	
 	//  	System.out.println("Tails:");
@@ -275,39 +285,39 @@ public class CircuitTransformer extends SceneTransformer {
 
 	
         // Remove all the loner nodes (not connected to any other node
-	removeSet=new HashSet();
-	Set loners=new HashSet();
-	loners.addAll(combinedGraph.sinkNodes());
-	loners.retainAll(combinedGraph.sourceNodes());
-	removeSet.addAll(loners);
+//  	removeSet=new HashSet();
+//  	Set loners=new HashSet();
+//  	loners.addAll(combinedGraph.sinkNodes());
+//  	loners.retainAll(combinedGraph.sourceNodes());
+//  	removeSet.addAll(loners);
 	
-        for(Iterator nodes = removeSet.iterator();
-            nodes.hasNext();) {
-	    Node node = (Node)nodes.next();
-            List predList = new LinkedList(combinedGraph.predecessors(node));
-            for(Iterator preds = predList.iterator();
-                preds.hasNext();) {
-                Node pred = (Node)preds.next();
-                combinedGraph.removeEdge((Edge)combinedGraph.successorEdges(pred, node).toArray()[0]);
-            }
-            List succList = new LinkedList(combinedGraph.successors(node));
-            for(Iterator succs = succList.iterator();
-                succs.hasNext();) {
-                Node succ = (Node)succs.next();
-                combinedGraph.removeEdge((Edge)combinedGraph.successorEdges(node, succ).toArray()[0]);
-            }
-            combinedGraph.removeNode(node);
-        }
+//          for(Iterator nodes = removeSet.iterator();
+//              nodes.hasNext();) {
+//  	    Node node = (Node)nodes.next();
+//              List predList = new LinkedList(combinedGraph.predecessors(node));
+//              for(Iterator preds = predList.iterator();
+//                  preds.hasNext();) {
+//                  Node pred = (Node)preds.next();
+//                  combinedGraph.removeEdge((Edge)combinedGraph.successorEdges(pred, node).toArray()[0]);
+//              }
+//              List succList = new LinkedList(combinedGraph.successors(node));
+//              for(Iterator succs = succList.iterator();
+//                  succs.hasNext();) {
+//                  Node succ = (Node)succs.next();
+//                  combinedGraph.removeEdge((Edge)combinedGraph.successorEdges(node, succ).toArray()[0]);
+//              }
+//              combinedGraph.removeNode(node);
+//          }
 
 
-	//  	System.out.println("Writing "+_model.getName()+".dot");
-	//  	try {
-	//  	    FileWriter dotFile=new FileWriter(_model.getName()+".dot");
-	//  	    dotFile.write(DirectedGraphToDotty.convert(combinedGraph,_model.getName()));
-	//  	    dotFile.close();
-	//  	} catch (IOException e){
-	//  	    System.out.println(e);
-	//  	}
+	System.out.println("Writing "+_model.getName()+".dot");
+	try {
+	    FileWriter dotFile=new FileWriter(_model.getName()+".dot");
+	    dotFile.write(PtDirectedGraphToDotty.convert(combinedGraph,_model.getName()));
+	    dotFile.close();
+	} catch (IOException e){
+	    System.out.println(e);
+	}
 
 	//          // Write as a circuit.
 	//          try {

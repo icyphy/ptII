@@ -47,6 +47,7 @@ import soot.jimple.toolkits.scalar.DeadAssignmentEliminator;
 import soot.jimple.toolkits.scalar.UnreachableCodeEliminator;
 import soot.jimple.toolkits.scalar.Evaluator;
 import soot.toolkits.graph.BriefBlockGraph;
+import soot.toolkits.graph.Block;
 import soot.toolkits.graph.CompleteUnitGraph;
 import soot.toolkits.scalar.*;
 import soot.dava.*;
@@ -67,6 +68,7 @@ import ptolemy.data.expr.Variable;
 import ptolemy.graph.*;
 import ptolemy.copernicus.kernel.*;
 import ptolemy.copernicus.java.*;
+import ptolemy.copernicus.jhdl.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// CircuitAnalysis
@@ -83,7 +85,7 @@ public class CircuitAnalysis {
 	DirectedGraph graph = new DirectedGraph();
         _graph = graph;
        
-        System.out.println("className = " + entity.getClass().getName());
+        //System.out.println("className = " + entity.getClass().getName());
 
 	//Handle cases that have been predefined and don't need analyzing
 	//  	if (_pd.isDefined(entity)){
@@ -97,7 +99,7 @@ public class CircuitAnalysis {
 	
         // Analyze the bodies of the appropriate methods for things that
         // are not sample delays.
-        Set requiredNodeSet = new HashSet();
+        _requiredNodeMap = new HashMap();
 
 	//  	try {
 	//  	  byucc.util.flowgraph.JavaControlFlowGraph jcfg =
@@ -114,45 +116,50 @@ public class CircuitAnalysis {
 	//  	catch (IOException e){
 	//  	  System.out.println(e);
 	//  	}
+
+	DirectedGraph graph1 = new DirectedGraph();
+	DirectedGraph graph2 = new DirectedGraph();
+	DirectedGraph graph3 = new DirectedGraph();
 	
         if(theClass.declaresMethodByName("prefire")) {
-            _analyze(graph, requiredNodeSet,
-		     theClass.getMethodByName("prefire"));
+            _analyze(graph1, theClass.getMethodByName("prefire"));
         }
         if(theClass.declaresMethodByName("fire")) {
-            _analyze(graph, requiredNodeSet,
-		     theClass.getMethodByName("fire"));
+            _analyze(graph2, theClass.getMethodByName("fire"));
         }
         if(theClass.declaresMethodByName("postfire")) {
-            _analyze(graph, requiredNodeSet,
-		     theClass.getMethodByName("postfire"));
+            _analyze(graph3, theClass.getMethodByName("postfire"));
         }
 
-
+	_appendGraph(graph, graph1);
+	_appendGraph(graph, graph2);
+	_appendGraph(graph, graph3);
+	
         // get rid of non-essential nodes of 
-        boolean changed = true;
-        while(changed) {
-            changed = false;
-            for(Iterator nodes = graph.nodes().iterator();
-                nodes.hasNext();) {
-                Node node = (Node)nodes.next();
-                if(requiredNodeSet.contains(node)) {
-                    continue;
-                }
-                HashSet set = new HashSet(graph.successors(node));
-                set.retainAll(requiredNodeSet);
-                if(set.isEmpty()) {
-                    continue;
-                }
-                requiredNodeSet.add(node);
-                changed = true;
-            }
-        }
+//          boolean changed = true;
+//          while(changed) {
+//              changed = false;
+//              for(Iterator nodes = graph.nodes().iterator();
+//                  nodes.hasNext();) {
+//                  Node node = (Node)nodes.next();
+//                  if(requiredNodeSet.contains(node)) {
+//                      continue;
+//                  }
+//                  HashSet set = new HashSet(graph.successors(node));
+//                  set.retainAll(requiredNodeSet);
+//                  if(set.isEmpty()) {
+//                      continue;
+//                  }
+//                  requiredNodeSet.add(node);
+//                  changed = true;
+//              }
+//          }
 
         //System.out.println("Original graph:\r\n" + graph + "\r\n");
-	//  	System.out.println(DirectedGraphToDotty.convert(graph,
-	//  							entity.getName()));
+	System.out.println(SynthesisToDotty.convert(graph)); //, entity.getName()));
 
+	/* This isn't ready yet.. this should act on graphs at each node,
+	   not the top-level control flow graph
         // Go though and eliminate unnecessary nodes.  These are nodes
         // that are not the names of output ports and have no targets,
         // or locals
@@ -198,7 +205,7 @@ public class CircuitAnalysis {
             }
             graph.removeNode(node);
         }
-
+	*/
         //System.out.println("Filtered graph:\r\n" + graph + "\r\n");
     }
 
@@ -246,187 +253,327 @@ public class CircuitAnalysis {
 	    };
     }
   
-    protected void _analyze(DirectedGraph graph, 
-			    Set requiredNodeSet, SootMethod method) {
+    protected void _analyze(DirectedGraph graph, SootMethod method) {
         Body body = method.retrieveActiveBody();
         CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
         // this will help us figure out where locals are defined.
         SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
         SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, localDefs);
 
-
-	BriefBlockGraph test=new BriefBlockGraph(body);
-	//System.out.println(DirectedGraphToDotty.convert(test, "test"));
-	
 	//Inline methods
 	Inliner inliner = getInliner();
 	inliner.inline(body);
 	
-        for(Iterator units = body.getUnits().iterator();
-            units.hasNext();) {
-            Stmt stmt = (Stmt)units.next();
-            if(stmt instanceof AssignStmt) {
-                Object leftOp = ((AssignStmt)stmt).getLeftOp();
+	BriefBlockGraph bbgraph=new BriefBlockGraph(body);
+	//System.out.println(BlockGraphToDotty.convert(bbgraph, "bbgraph"));
+	List blockList=bbgraph.getBlocks();
+	DirectedGraph dataFlowGraph; //[] = new DirectedGraph[blockList.size()];
+	Map blockToSuperBlockMap = new HashMap();
+	
+	for (int blockNum=0; blockNum < blockList.size(); blockNum++){
+	    Block block=(Block)blockList.get(blockNum);
+	    Set requiredNodeSet = new HashSet();
+	    dataFlowGraph=new DirectedGraph();
 
-                if(leftOp instanceof FieldRef) {
-                    SootField field = ((FieldRef)leftOp).getField();
-                    // Then treat as a local.
-                    if(!graph.containsNodeWeight(field)) {
-                        graph.addNodeWeight(field);
-                    }
-                    leftOp = field;
-                }
+	    _blockDataFlow(block, dataFlowGraph, method, localDefs, localUses, requiredNodeSet);
 
-                if(graph.containsNodeWeight(leftOp)) {
-                    // Insert a delay.
-		    //Object delayNode = new String("delay" + count++);
-		    Object delayNode = new RegisterDelay();
-                    graph.addNodeWeight(delayNode);
-                    graph.addEdge(delayNode, leftOp);
-                    leftOp = delayNode;
-                } else {
-                    graph.addNodeWeight(leftOp);
-                }
+	    SuperBlock sb=new SuperBlock(block, dataFlowGraph);
+	    blockToSuperBlockMap.put(block, sb);
+
+	    for (Iterator i=requiredNodeSet.iterator(); i.hasNext();){
+		_requiredNodeMap.put(i.next(), sb);
+	    }
+	    
+	} // for (int blockNum=0; blockNum < blockList.size(); blockNum++)
+
+	//Add all dataflow graphs for each block to the main graph
+	graph.addNodeWeights(blockToSuperBlockMap.values());
+
+	//graph.addNodeWeights(blockList);
+
+	//Connect the graph so it has the same structure as bbgraph
+	for (Iterator blocks=blockList.iterator(); blocks.hasNext();){
+	    Block block=(Block)blocks.next();
+	    //Get successors to this block and add an edge to graph for each one
+	    for (Iterator succs=block.getSuccs().iterator(); succs.hasNext();){
+		Block succ=(Block)succs.next();
+		graph.addEdge(blockToSuperBlockMap.get(block),
+			      blockToSuperBlockMap.get(succ));
+		//graph.addEdge(block, succ);
+	    }
+	}
+
+	if (!graph.isAcyclic()){  //Loops not supported yet
+	    _graph=null;
+	    throw new RuntimeException("Loops currently not supported");
+	}
+
+	_controlFlowAnalysis(graph);
+
+	System.out.println(PtDirectedGraphToDotty.convert(graph));	
+
+	_extractDataFlow(graph);
+    } // Method _analyze
+
+    protected void _extractDataFlow(DirectedGraph graph){
+	Set keys=_requiredNodeMap.keySet();
+	for (Iterator i=keys.iterator(); i.hasNext(); ){
+	    Port port=(Port)i.next();
+	    GraphNode gn=(GraphNode)_requiredNodeMap.get(port);
+	    DirectedGraph dg=new DirectedGraph();
+	    gn.createDataFlow(dg, port);
+	}
+	
+    }
+    
+    protected void _controlFlowAnalysis(DirectedGraph graph){
+	//Get a topological sort
+
+	Map nodeToLabel = new HashMap();
+	SuperBlock sorted[]=null;
+	
+	try {
+	    Object []temp=graph.attemptTopologicalSort(graph.nodes()).toArray();
+	    sorted=new SuperBlock[temp.length];   
+	    for (int i=0; i < temp.length; i++){
+		sorted[i]=(SuperBlock)((Node)temp[i]).weight();
+	    }
+	} catch (IllegalActionException e){
+	    throw new RuntimeException(e.toString());
+	}
+
+	//sorted[0].addLabel(new Label(), null);
+	
+	for (int i=0; i < sorted.length; i++){
+	    sorted[i].combineLabels(graph);
+	    for (Iterator succs = graph.successors(graph.node(sorted[i])).iterator();
+		 succs.hasNext();){
+		Node succ = (Node)succs.next();
+		
+		sorted[i].propagateLabelsTo((SuperBlock)succ.weight());
+	    }
+	}
+	
+    }
+    
+    protected void _blockDataFlow(Block block, DirectedGraph localGraph,
+				  SootMethod method,
+				  SimpleLocalDefs localDefs,
+				  SimpleLocalUses localUses,
+				  Set requiredNodeSet){
+
+	//Maps values to Nodes, so that we can grab the most recent
+	//Node to add edges to
+	Map nodeMap=new HashMap();
+	
+	for(Iterator units = block.iterator(); units.hasNext();) {
+	    Stmt stmt = (Stmt)units.next();
+	    if(stmt instanceof AssignStmt) {
+		Object leftOp = ((AssignStmt)stmt).getLeftOp();
+		
+		if(leftOp instanceof FieldRef) {
+		    SootField field = ((FieldRef)leftOp).getField();
+		    // Then treat as a local.
+		    leftOp = field;
+		}
+
+		//if(!localGraph.containsNodeWeight(leftOp)) {
+		Node leftOpNode=localGraph.addNodeWeight(leftOp);
+		    //} 
                                 
-                Value rightOp = ((AssignStmt)stmt).getRightOp();
-                if(rightOp instanceof FieldRef) {
-                    SootField field = ((FieldRef)rightOp).getField();
-                    ValueTag tag = (ValueTag)field.getTag("_CGValue");
-                    if(tag == null || !(tag.getObject() instanceof Token)) {
+		Value rightOp = ((AssignStmt)stmt).getRightOp();
+		//System.err.println(rightOp.getClass().toString());
+		if(rightOp instanceof FieldRef) {
+		    SootField field = ((FieldRef)rightOp).getField();
+		    ValueTag tag = (ValueTag)field.getTag("_CGValue");
+		    if(tag == null || !(tag.getObject() instanceof Token)) {
 			//This represents some state that is being read
-                        // Then treat as a local.
-                        if(!graph.containsNodeWeight(field)) {
-                            graph.addNodeWeight(field);
-                        }
-                        graph.addEdge(field, leftOp);
-                    } else {
+			// Then treat as a local.
+			if(!localGraph.containsNodeWeight(field)) {
+			    nodeMap.put(field, localGraph.addNodeWeight(field));
+			}
+			localGraph.addEdge((Node)nodeMap.get(field),
+					   leftOpNode);
+		    } else {
 			//This is a token that has been initialized to some
 			//value
-                        // Get the constant value of the token.
-			//                          String valueString = 
-			//                              ((Token)tag.getObject()).toString();
-			//                          requiredNodeSet.add(valueString);
-			//                          if(!graph.containsNodeWeight(valueString)) {
-			//                              graph.addNodeWeight(valueString);
-			//                          }
-			//                          graph.addEdge(valueString, leftOp);
+			// Get the constant value of the token.
 			Token valueToken=(Token)tag.getObject();
-                        requiredNodeSet.add(valueToken);
-                        if(!graph.containsNodeWeight(valueToken)) {
-                            graph.addNodeWeight(valueToken);
-                        }
-			//                          graph.addEdge(valueString, leftOp);
-                        graph.addEdge(valueToken, leftOp);
-                    }   
-                } else if(rightOp instanceof Local) {
-                    if(!graph.containsNodeWeight(rightOp)) {
-                        graph.addNodeWeight(rightOp);
-                    }
-                    graph.addEdge(rightOp, leftOp);
-                } else if(rightOp instanceof InvokeExpr) {
-                    InvokeExpr invokeExpr = (InvokeExpr)rightOp;
-                    SootMethod invokedMethod = invokeExpr.getMethod();
-                    //String opName = invokedMethod.getName() + count++;
-                    if(rightOp instanceof VirtualInvokeExpr) {
-                        Value base = ((VirtualInvokeExpr)invokeExpr).getBase();
-                        if(invokedMethod.getName().equals("get")) {
-                            Port port = InlinePortTransformer.getPortValue(
+			//requiredNodeSet.add(valueToken);  //Is this node really required?
+			if(!localGraph.containsNodeWeight(valueToken)) {
+			    nodeMap.put(valueToken, localGraph.addNodeWeight(valueToken));
+			}
+			localGraph.addEdge((Node)nodeMap.get(valueToken),
+					   leftOpNode);
+		    }   
+		} else if(rightOp instanceof Local) {
+		    if(!localGraph.containsNodeWeight(rightOp)) {
+			nodeMap.put(rightOp, localGraph.addNodeWeight(rightOp));
+		    }
+		    localGraph.addEdge((Node)nodeMap.get(rightOp),
+				       leftOpNode);
+		} else if(rightOp instanceof InvokeExpr) {
+		    InvokeExpr invokeExpr = (InvokeExpr)rightOp;
+		    SootMethod invokedMethod = invokeExpr.getMethod();
+		    boolean connectArguments=true;
+
+		    if(rightOp instanceof InstanceInvokeExpr) {
+			Value base = ((InstanceInvokeExpr)invokeExpr).getBase();
+			
+			if(invokedMethod.getName().equals("get")) {
+			    //FIXME:  Make sure this is really a port.get() call, not just any get()
+			    Port port = InlinePortTransformer.getPortValue(
 									   method, (Local)base, stmt, localDefs, 
 									   localUses);
-                            // String portName = port.getName();
-                            if(!graph.containsNodeWeight(port)) {
-				graph.addNodeWeight(port);
-				//    			      graph.addNodeWeight(port.getName());
-                            }
-			    requiredNodeSet.add(port);
-			    graph.addEdge(port, leftOp);
-			    //  			    requiredNodeSet.add(port.getName());
-			    //  			    graph.addEdge(port.getName(), leftOp);
-                            continue;
-                        } else {
+			    if(!localGraph.containsNodeWeight(port)) {
+				nodeMap.put(port, localGraph.addNodeWeight(port));
+			    }
+			    //requiredNodeSet.add(port); //Is this node really required?
+			    localGraph.addEdge((Node)nodeMap.get(port),
+					       leftOpNode);
+
+			    connectArguments=false;//Don't create nodes for the arguments below
+			} else {
+
 			    //This is for all methods that have not been
 			    //inlined yet (and aren't "get"s).  Must handle
 			    //these eventually
-			    //                              graph.addNodeWeight(opName);
-			    //                              graph.addEdge(base, opName);
-                            graph.addNodeWeight(invokedMethod);
-                            graph.addEdge(base, invokedMethod);
-                        }
-                    }
-                    for(Iterator arguments = 
-                            ((InvokeExpr)rightOp).getArgs().iterator();
-                        arguments.hasNext();) {
-                        Value argument = (Value)arguments.next();
-                        if(!graph.containsNodeWeight(argument)) {
-                            graph.addNodeWeight(argument);
-                        }
-                        graph.addEdge(argument, invokedMethod);
-                    }
-                    graph.addEdge(invokedMethod, leftOp);
-                } else if (rightOp instanceof BinopExpr){
-		    Value op1=((BinopExpr)rightOp).getOp1();
-		    Value op2=((BinopExpr)rightOp).getOp2();
-		    //  		  Marker op1Marker=new Marker("op1");
-		    //  		  Marker op2Marker=new Marker("op2");
-		  
-		    graph.addNodeWeight(rightOp);
-		    //  		  graph.addNodeWeight(op1Marker);
-		    //  		  graph.addNodeWeight(op2Marker);
-		    if (!graph.containsNodeWeight(op1)){
-			graph.addNodeWeight(op1);
-		    }
-		    if (!graph.containsNodeWeight(op2)){
-			graph.addNodeWeight(op2);
+			    nodeMap.put(invokedMethod,
+					localGraph.addNodeWeight(invokedMethod));
+			    if (!localGraph.containsNodeWeight(base))
+				nodeMap.put(base, localGraph.addNodeWeight(base));
+			    Node baseNode=(Node)nodeMap.get(base);
+
+			    //Fix situations such as r=r.toString();, so that r is in the localGraph
+			    //(added as the leftOp) but not in nodeMap yet.  So just use leftOp.
+			    if (baseNode == null) baseNode=leftOpNode;
+			    
+			    localGraph.addEdge(baseNode,
+					       (Node)nodeMap.get(invokedMethod),
+					       "base");
+			}
+		    } else {
+			//StaticInvokeExpr
+			nodeMap.put(invokedMethod, localGraph.addNodeWeight(invokedMethod));
 		    }
 
-		    //  		  graph.addEdge(op1, op1Marker);
-		    //  		  graph.addEdge(op2, op2Marker);
-		    //  		  graph.addEdge(op1Marker, rightOp);
-		    //  		  graph.addEdge(op2Marker, rightOp);
-		    graph.addEdge(op1, rightOp, "op1");
-		    graph.addEdge(op2, rightOp, "op2");
-		    graph.addEdge(rightOp, leftOp);
+		    if (connectArguments){
+			//This is skipped for a "get" method call
+
+			int argCount=0;
+			for(Iterator arguments = 
+				((InvokeExpr)rightOp).getArgs().iterator();
+			    arguments.hasNext();) {			    
+			    Value argument = (Value)arguments.next();
+			    if(!localGraph.containsNodeWeight(argument)) {
+				nodeMap.put(argument, localGraph.addNodeWeight(argument));
+			    }
+			    localGraph.addEdge((Node)nodeMap.get(argument),
+					       (Node)nodeMap.get(invokedMethod),
+					       new Integer(argCount++));
+			}
+			localGraph.addEdge((Node)nodeMap.get(invokedMethod),
+					   leftOpNode);
+		    }
+		    
+		} else if (rightOp instanceof BinopExpr){
+		    Value op1=((BinopExpr)rightOp).getOp1();
+		    Value op2=((BinopExpr)rightOp).getOp2();
+		  
+		    nodeMap.put(rightOp, localGraph.addNodeWeight(rightOp));
+		    
+		    if (!localGraph.containsNodeWeight(op1)){
+			nodeMap.put(op1, localGraph.addNodeWeight(op1));
+		    }
+		    if (!localGraph.containsNodeWeight(op2)){
+			nodeMap.put(op2, localGraph.addNodeWeight(op2));
+		    }
+
+		    localGraph.addEdge((Node)nodeMap.get(op1),
+				       (Node)nodeMap.get(rightOp), "op1");
+		    localGraph.addEdge((Node)nodeMap.get(op2),
+				       (Node)nodeMap.get(rightOp), "op2");
+		    localGraph.addEdge((Node)nodeMap.get(rightOp),
+				       leftOpNode);
 		} else if (rightOp instanceof UnopExpr){
 		    if (rightOp instanceof NegExpr){
 			Value op=((UnopExpr)rightOp).getOp();
 		    
-			graph.addNodeWeight(rightOp);
-			if (!graph.containsNodeWeight(op)){
-			    graph.addNodeWeight(op);
+			nodeMap.put(rightOp, localGraph.addNodeWeight(rightOp));
+			if (!localGraph.containsNodeWeight(op)){
+			    nodeMap.put(op, localGraph.addNodeWeight(op));
 			}
-			graph.addEdge(op, rightOp);
-			graph.addEdge(rightOp, leftOp);
+			localGraph.addEdge((Node)nodeMap.get(op),
+					   (Node)nodeMap.get(rightOp));
+			localGraph.addEdge((Node)nodeMap.get(rightOp),
+					   leftOpNode);
 		    }
+		} else {
+		    //If its nothing above, just add a node for it with
+		    //an edge to leftOp.  Constants will be caught here.
+
+		    if (!localGraph.containsNodeWeight(rightOp)){
+			nodeMap.put(rightOp, localGraph.addNodeWeight(rightOp));
+		    }
+		    localGraph.addEdge((Node)nodeMap.get(rightOp),
+				       leftOpNode);
 		}
+
+		nodeMap.put(leftOp, leftOpNode);
 		// end of AssignStmt 'if'
-            } else if(stmt instanceof InvokeStmt) {
-                Object op = ((InvokeStmt)stmt).getInvokeExpr();
-                if(op instanceof VirtualInvokeExpr) {
-                    VirtualInvokeExpr invokeExpr = 
-                        (VirtualInvokeExpr)op;
-                    SootMethod invokedMethod = invokeExpr.getMethod();
-                    Value base = invokeExpr.getBase();
-                    if(invokedMethod.getName().equals("send")) {
-                        Port port = InlinePortTransformer.getPortValue(
+	    } else if(stmt instanceof InvokeStmt) {
+		Object op = ((InvokeStmt)stmt).getInvokeExpr();
+		if(op instanceof VirtualInvokeExpr) {
+		    VirtualInvokeExpr invokeExpr = 
+			(VirtualInvokeExpr)op;
+		    SootMethod invokedMethod = invokeExpr.getMethod();
+		    Value base = invokeExpr.getBase();
+		    if(invokedMethod.getName().equals("send")) {
+			Port port = InlinePortTransformer.getPortValue(
 								       method, (Local)base, stmt, localDefs, 
 								       localUses);
-                        // String portName = port.getName();
-                        if(!graph.containsNodeWeight(port)) {
-                            graph.addNodeWeight(port);
-                        }
-                        requiredNodeSet.add(port);
+			// String portName = port.getName();
+			if(!localGraph.containsNodeWeight(port)) {
+			    nodeMap.put(port, localGraph.addNodeWeight(port));
+			}
+			requiredNodeSet.add(port);
                            
-                        Value tokenValue = invokeExpr.getArg(1);
-                        if(!graph.containsNodeWeight(tokenValue)) {
-                            graph.addNodeWeight(tokenValue);
-                        }
-                        graph.addEdge(tokenValue, port);
-                    }
-                }
-            }
-        }
+			Value tokenValue = invokeExpr.getArg(1);
+			if(!localGraph.containsNodeWeight(tokenValue)) {
+			    nodeMap.put(tokenValue, localGraph.addNodeWeight(tokenValue));
+			}
+			localGraph.addEdge((Node)nodeMap.get(tokenValue),
+					   (Node)nodeMap.get(port));
+		    }
+		} // if(op instanceof VirturalInvokeExpr)
+	    } // else if(stmt instanceof InvokeStmt)
+	} // for(Iterator units = block.iterator(); units.hasNext();) 
     }
 
+    protected void _appendGraph(DirectedGraph graph, DirectedGraph append){
+
+	Collection sinks = graph.sinkNodes();
+	Collection sources = append.sourceNodes();
+	
+	for (Iterator i=append.nodes().iterator(); i.hasNext();){
+	    Node node=(Node)i.next();
+	    graph.addNode(node);
+	}
+
+	for (Iterator i=append.edges().iterator(); i.hasNext();){
+	    graph.addEdge((Edge)i.next());
+	}
+
+	for (Iterator i=sinks.iterator(); i.hasNext(); ){
+	    Node first=(Node)i.next();
+	    for (Iterator j=sources.iterator(); j.hasNext(); ){
+		Node second=(Node)j.next();
+		graph.addEdge(first, second);
+	    }
+	}
+	
+    }
+    
     protected ptolemy.data.type.Type _getPortType(Port port) 
 	throws RuntimeException {
 	ptolemy.data.type.Type t=null;
@@ -446,7 +593,7 @@ public class CircuitAnalysis {
     }
 
     private DirectedGraph _graph;
-    private Set _requiredNodeSet;
+    private Map _requiredNodeMap;
     private int count = 0;
     private static Predefined _predefined=new Predefined();
 }

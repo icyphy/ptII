@@ -1,6 +1,6 @@
-# Makefile for Ptolemy II JHDL code generation
+# Ptolemy code generation for JHDL demos
 #
-# @Authors: Steve Neuendorffer, Christopher Hylands
+# @Authors: (makefile only) Christopher Hylands- based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
@@ -29,58 +29,50 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/copernicus/jhdl
+ME =		ptolemy/copernicus/jhdl/util
+
+DIRS =
 
 # Root of the Java directory
-ROOT =		../../..
+ROOT =		../../../..
 
-# $PTII/configure looks for Soot and JHDL and sets
-# variables in $PTII/mk/ptII.mk
 CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)$(CLASSPATHSEPARATOR)$(JHDL_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS =		demo util
+# Used to build jar files
+PTPACKAGE = 	util
+PTDIST =	$(PTPACKAGE)$(PTVERSION)
+#PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Keep this list alphabetized.
-JSRCS = \
-	CircuitAnalysis.java \
-	CircuitCreator.java \
-	CircuitTransformer.java \
-	Inliner.java \
-	JHDLTransformer.java \
-	Main.java \
-	Predefined.java \
-	RegisterDelay.java
+JSRCS =		BlockGraphToDotty.java \
+		DirectedGraphToDotty.java \
+		Label.java \
+		MuxNode.java \
+		SuperBlock.java \
+		SynthesisToDotty.java \
+		PtDirectedGraphToDotty.java
 
-OTHER_FILES_TO_BE_JARED = \
-	compileCommandTemplate.txt \
-	runCommandTemplate.txt
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
-
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED) \
-	JHDLClass.java
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	doc \
-	'Main$$IgnoreAllApplicationClasses.class'
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-	@echo "To run the demo, run 'make demo'"
-
-install: all
+install: jclass $(PTCLASSJAR)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
+
+
 
