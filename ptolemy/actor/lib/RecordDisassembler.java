@@ -171,6 +171,9 @@ public class RecordDisassembler extends TypedAtomicActor {
         return constraints;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
     // This class implements a monotonic function of the type of a
     // port and a parameter.
     // The function value is determined by:
