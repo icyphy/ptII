@@ -51,6 +51,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = JAIAffineTransform.java \
 	JAIBandCombine.java \
 	JAIBandSelect.java \
+	JAIBorder.java \
 	JAIBoxFilter.java \
 	JAIBMPWriter.java \
 	JAIConvolve.java \

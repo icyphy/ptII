@@ -24,6 +24,22 @@
 	</entity>
 	<entity name="JAIBandSelect" class="ptolemy.actor.lib.jai.JAIBandSelect">
 	</entity>
+	<entity name="JAIBorder" class="ptolemy.actor.lib.jai.JAIBorder">
+	  <property name="borderType">
+	      <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+	          <property name="Constant" value="Constant"
+	      	            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="Copy" value="Copy"
+			    class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="Reflect" value="Reflect"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="Wrap" value="Wrap"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="Zero" value="Zero"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+	      </property>   
+	  </property>
+	</entity>	
 	<entity name="JAIBoxFilter" class="ptolemy.actor.lib.jai.JAIBoxFilter">
 	</entity>
 	<entity name="JAIBMPWriter" class="ptolemy.actor.lib.jai.JAIBMPWriter">
