@@ -47,6 +47,7 @@ PTPACKAGE = 	attributes
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	DocumentationAttribute.java \
 	EllipseAttribute.java \
 	FilledShapeAttribute.java \
 	ImageAttribute.java \

@@ -16,6 +16,7 @@
 <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute"/>
 <property name="polygon" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute"/>
 <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute"/>
+<property name="Documentation" class="ptolemy.vergil.kernel.attributes.DocumentationAttribute"/>
       </group>
     ?>
   </configure>
