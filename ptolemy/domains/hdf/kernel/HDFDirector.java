@@ -168,17 +168,40 @@ public class HDFDirector extends SDFDirector {
      *  container.
      */
     public void fire() throws IllegalActionException {
+	if (_debug_info) { 
+	    System.out.println(getName() + " : fire() invoked.");
+	}
         TypedCompositeActor container = ((TypedCompositeActor)getContainer());
-
+	
         if (container == null) {
             throw new InvalidStateException("HDFDirector " + getName() +
                     " fired, but it has no container!");
         } else {
+	    if (_debug_info) { 
+		System.out.println(getName() + " : fire(): " +
+				   " Schedule is ");
+		Schedule tSched = getSchedule();
+		Iterator tFirings = tSched.firingIterator();
+		while (tFirings.hasNext()) {
+		    Firing firing = (Firing)tFirings.next();
+		    Actor actor = (Actor)firing.getActor();
+		    System.out.println(" : " +
+				       ((NamedObj)actor).getName() + 
+				       " ");
+		}
+	    }
+
+
 	    Schedule sched = getSchedule();
 	    Iterator firings = sched.firingIterator();
             while (firings.hasNext()) {
 		Firing firing = (Firing)firings.next();
 		Actor actor = (Actor)firing.getActor();
+		if (_debug_info) { 
+		    System.out.println(getName() + " : fire(): " +
+				       " firing actor : " +
+				       ((NamedObj)actor).getName());
+		}
 		int iterationCount = firing.getIterationCount();
 
 		if(_debugging) {
@@ -239,6 +262,7 @@ public class HDFDirector extends SDFDirector {
 	Scheduler scheduler = 
 	    getScheduler();
 	Schedule schedule;
+	//return scheduler.getSchedule();
 	if (isScheduleValid()) {
 	    // This will return a the current schedule.
 	    schedule = scheduler.getSchedule();
@@ -260,7 +284,7 @@ public class HDFDirector extends SDFDirector {
 		rates = rates + String.valueOf(rate);
 	    }
 	    Iterator outputPorts = _outputPortList.iterator();
-	    while (inputPorts.hasNext()) {
+	    while (outputPorts.hasNext()) {
 		IOPort outputPort = (IOPort)outputPorts.next();
 		int rate = 
 		    SDFScheduler.getTokenProductionRate(outputPort);
@@ -430,6 +454,11 @@ public class HDFDirector extends SDFDirector {
 		 temporaryInputPortList.iterator();
 	     while (inputPortIterator.hasNext()) {
 		 IOPort inputPort = (IOPort)inputPortIterator.next();
+		 if (_debug_info) { 
+		     System.out.println(getName() + 
+					"Found input port : " +
+					inputPort.getName());
+		 }
 		 inputPortList.add(inputPort);
 	     }
 	 }
@@ -455,6 +484,11 @@ public class HDFDirector extends SDFDirector {
 		 temporaryOutputPortList.iterator();
 	     while (outputPortIterator.hasNext()) {
 		 IOPort outputPort = (IOPort)outputPortIterator.next();
+		 if (_debug_info) { 
+		     System.out.println(getName() + 
+					"Found output port : " +
+					outputPort.getName());
+		 }
 		 outputPortList.add(outputPort);
 	     }
 	 }

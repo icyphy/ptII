@@ -591,7 +591,7 @@ public class HDFFSMDirector extends FSMDirector {
                                 ptolemy.data.Token t = 
 				    insiderecs[i][j].get();
 				if(_debug_info) System.out.println(getName() + 
-                                        "transferOutputs(): sending token.");
+                                      " : transferOutputs(): sending token.");
                                 port.send(i, t);
                                 trans = true;
                             } catch (NoTokenException ex) {
