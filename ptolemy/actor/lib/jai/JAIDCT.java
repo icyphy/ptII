@@ -1,6 +1,6 @@
 /* Calculates the discrete cosine transform of a RenderedOp.
 
-@Copyright (c) 2002-2003 The Regents of the University of California.
+@Copyright (c) 2003 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -45,22 +45,21 @@ import javax.media.jai.RenderedOp;
 //////////////////////////////////////////////////////////////////////////
 //// JAIDCT
 /**
-   Calculate the discrete cosine transform of an image.  Even though the
-   input image data may be 3 bytes (one for each band) per pixel, the
-   output image data is of a higher resolution (doubles), not suitable for
-   displaying or saving.  To display or save the output of this image,
-   use the JAIDataCaster actor to cast the data to an appropriate type
-   (for instance, byte).  The output of the DCT is zero padded to the
-   next power of 2 in each dimension (unless that dimensions is already
-   a power of two, in which case, nothing happens).
+Calculate the discrete cosine transform of an image.  Even though the
+input image data may be 3 bytes (one for each band) per pixel, the
+output image data is of a higher resolution (doubles), not suitable for
+displaying or saving.  To display or save the output of this image,
+use the {@link JAIDataConvert} actor to cast the data to an appropriate type
+(for instance, byte).  The output of the DCT is zero padded to the
+next power of 2 in each dimension (unless that dimensions is already
+a power of two, in which case, nothing happens).
 
-   @see JAIDataCaster
-   @see JAIIDCT
-   @author James Yeh
-   @version $Id$
-   @since Ptolemy II 3.0
+@see JAIDataConvert
+@see JAIIDCT
+@author James Yeh
+@version $Id$
+@since Ptolemy II 3.1
 */
-
 public class JAIDCT extends Transformer {
 
     /** Construct an actor with the given container and name.
