@@ -37,6 +37,8 @@ a separate plugin or a complete Netscape installation.
 the applets with the JDK1.2 <CODE>appletviewer</CODE> command.
  <p>See the <a href="troubleshooting.htm#plugin">Plugin section of the Ptolemy II Troubleshooting guide</a> for details.
 
+<h2>Optional packages that are shipped with Ptolemy</h2>
+
 <h3><a name="Jacl">Jacl</a></h3>
 Jacl is a 100% Java implementation of Tcl that we use for testing Ptolemy II.
 
@@ -46,7 +48,7 @@ Tcl files that use Jacl to test the Ptolemy II Java code.
  <p>Jacl is <B>only</B> necessary if you are planning on running
 the Ptolemy II test suite.
 
- <p>We use a customized version of Jacl called Ptjacl.
+ <p>We ship a customized version of Jacl called Ptjacl.
 The primary difference between Ptjacl and Jacl1.1 is that Ptjacl
 is shipped as one jar file.
 
@@ -69,6 +71,14 @@ Diva is a visualization package used by some of the demos.
  <p>The Diva sources and documentation are available at
 <a href="http://www-cad.eecs.berkeley.edu/diva/" target="_top"><CODE>http://www-cad.eecs.berkeley.edu/diva/</CODE></a>
 
+
+<h2>Optional packages not shipped with Ptolemy</h2>
+
+<h3>Java3d</h3>
+The GR domain demos require Java3d, which can be installed from
+<a href="http://java.sun.com/products/java-media/3D/"><CODE>http://java.sun.com/products/java-media/3D/</CODE></a>.
+
+You need not install Java3d if you are not planning on using GR domain.
 
 <h3><a name="javacc">JavaCC</a></h3>
 JavaCC is the Java Compiler Compiler, which similar to <CODE>yacc</CODE>
@@ -231,10 +241,6 @@ If <CODE>make</CODE> cannot be found, then
 you may also need to add the Cygwin bin directory
 <CODE>c:\cygwin\usr\bin</CODE>
 to your path.
-
-<li> Optional: Install Jacl, see the instructions
-<a href="#Jacl">above</a>.
-
 
 <li> Optional: Install JavaCC, see the instructions
 <a href="#javacc">above</a>.
