@@ -1,0 +1,279 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="LocalZeno" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.0.1">
+    </property>
+    <property name="DDE Director" class="ptolemy.domains.dde.kernel.DDEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="90.0">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="80.0, 55.140625">
+        </property>
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 124]">
+    </property>
+    <entity name="Clock" class="ptolemy.domains.dde.demo.LocalZeno.ListenClock">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="90.0">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="20.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{5.0, 10.0, 15.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 1, 1}">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="100.0, 200.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="UpperJoin" class="ptolemy.domains.dde.demo.LocalZeno.ListenWire">
+        <property name="_location" class="ptolemy.moml.Location" value="260.0, 120.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="UpperFork" class="ptolemy.domains.dde.demo.LocalZeno.ListenFork">
+        <property name="_location" class="ptolemy.moml.Location" value="340.0, 80.0">
+        </property>
+        <port name="output1" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output2" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="UpperFeedBack" class="ptolemy.domains.dde.demo.LocalZeno.ListenFeedBackDelay">
+        <property name="nullDelay" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="realDelay" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="245.5078125, 39.015625">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="LowerJoin" class="ptolemy.domains.dde.demo.LocalZeno.ListenWire">
+        <property name="_location" class="ptolemy.moml.Location" value="260.0, 280.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="LowerFork" class="ptolemy.domains.dde.demo.LocalZeno.ListenFork">
+        <property name="_location" class="ptolemy.moml.Location" value="340.0, 240.0">
+        </property>
+        <port name="output1" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output2" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="LowerFeedBack" class="ptolemy.domains.dde.demo.LocalZeno.ZenoDelay">
+        <property name="nullDelay" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="realDelay" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="330.5390625, 360.140625">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="UpperRcvr" class="ptolemy.domains.dde.demo.LocalZeno.ListenSink">
+        <property name="numTokens" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="481.5, 124.015625">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="LowerRcvr" class="ptolemy.domains.dde.demo.LocalZeno.ListenSink">
+        <property name="numTokens" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="481.5, 200.140625">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="upperTime" class="ptolemy.domains.dde.lib.TimeAdvance">
+        <property name="outputValue" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="430.0, 34.015625">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="lowerTime" class="ptolemy.domains.dde.lib.TimeAdvance">
+        <property name="outputValue" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="445.0, 315.140625">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="505.0, 30.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="1:CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="525.0, 315.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="FileWriter" class="ptolemy.actor.lib.FileWriter">
+        <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
+        </property>
+        <doc>Write out tokens to a file or stdout</doc>
+        <property name="_location" class="ptolemy.moml.Location" value="555.0, 125.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="4:FileWriter" class="ptolemy.actor.lib.FileWriter">
+        <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
+        </property>
+        <doc>Write out tokens to a file or stdout</doc>
+        <property name="_location" class="ptolemy.moml.Location" value="570.0, 175.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="_R" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex" value="180.0, 200.0">
+        </vertex>
+    </relation>
+    <relation name="_R2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="_R3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="_R4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="_R5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="_R6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="_R7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="_R8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="_R9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="_R10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="_R12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Clock.output" relation="_R"/>
+    <link port="UpperJoin.output" relation="_R2"/>
+    <link port="UpperJoin.input" relation="_R"/>
+    <link port="UpperJoin.input" relation="_R5"/>
+    <link port="UpperFork.output1" relation="_R3"/>
+    <link port="UpperFork.output1" relation="_R10"/>
+    <link port="UpperFork.output2" relation="_R4"/>
+    <link port="UpperFork.input" relation="_R2"/>
+    <link port="UpperFeedBack.input" relation="_R4"/>
+    <link port="UpperFeedBack.output" relation="_R5"/>
+    <link port="LowerJoin.output" relation="_R6"/>
+    <link port="LowerJoin.input" relation="_R"/>
+    <link port="LowerJoin.input" relation="_R9"/>
+    <link port="LowerFork.output1" relation="_R7"/>
+    <link port="LowerFork.output1" relation="_R12"/>
+    <link port="LowerFork.output2" relation="_R8"/>
+    <link port="LowerFork.input" relation="_R6"/>
+    <link port="LowerFeedBack.input" relation="_R8"/>
+    <link port="LowerFeedBack.output" relation="_R9"/>
+    <link port="UpperRcvr.input" relation="_R3"/>
+    <link port="LowerRcvr.input" relation="_R7"/>
+    <link port="upperTime.output" relation="relation"/>
+    <link port="upperTime.input" relation="_R10"/>
+    <link port="lowerTime.output" relation="relation6"/>
+    <link port="lowerTime.input" relation="_R12"/>
+    <link port="CurrentTime.output" relation="relation12"/>
+    <link port="CurrentTime.trigger" relation="relation"/>
+    <link port="1:CurrentTime.output" relation="relation13"/>
+    <link port="1:CurrentTime.trigger" relation="relation6"/>
+    <link port="FileWriter.input" relation="relation12"/>
+    <link port="4:FileWriter.input" relation="relation13"/>
+</entity>

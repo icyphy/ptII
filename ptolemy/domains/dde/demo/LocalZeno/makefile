@@ -58,7 +58,9 @@ JSRCS = \
 	ZenoDelay.java
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) \
-	LocalZeno.htm
+	LocalZeno.htm \
+	LocalZeno.xml \
+	LocalZenoTest.xml
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -90,7 +92,7 @@ all: jclass $(PTCLASSJAR)
 install: all
 
 demo:
-	CLASSPATH="$(CLASSPATH)" appletviewer LocalZeno.htm
+	CLASSPATH="$(CLASSPATH)" appletviewer -J-Dsun.java2d.d3d=false LocalZeno.htm
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
