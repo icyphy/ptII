@@ -55,6 +55,12 @@ import ptolemy.moml.filter.RemoveGraphicalClasses;
 
 public class CheckSize {
 
+    /** Check the size, zoom and location of the models named
+     *  by the args.
+     *  @param args An array of Strings naming the models to be checked.
+     *  @exception Exception If there is a problem reading a model.
+     *
+     */   
     public CheckSize(String[] args) throws Exception {
         int width, height;
         double x, y, zoom;
@@ -160,6 +166,12 @@ public class CheckSize {
         }
     }
 
+    /** Check the size, zoom and location of the models named
+     *  by the args.
+     *  @param args An array of Strings naming the models to be checked.
+     *  @exception Exception If there is a problem reading a model.
+     *
+     */   
     public static void main(String[] args) {
         try {
             new CheckSize(args);

@@ -46,6 +46,8 @@ import java.util.TimerTask;
 */
 public class WatchDog {
     /** Create a timer that will go off after timeToDie milliseconds.
+     *  @param timeToDie The time in millesconds when the timer will
+     *  go off.
      */
     public WatchDog(final long timeToDie) {
 
@@ -112,6 +114,8 @@ public class WatchDog {
         _timer.schedule(doTimeToDie, timeToDie);
     }
 
+    /** Cancel the currently pending watchdog.
+     */
     public void cancel() {
         System.out.println("util.testsuite.WatchDog.cancel(): canceling "
                 + (new Date()));
@@ -127,6 +131,8 @@ public class WatchDog {
 
     /** Determine whether the JVM will exit when the time interval
      *  has passed.  This method is used for testing this class.
+     *  @param exitOnTimeOut True if the JVM will exit when
+     *  the time interval has passed.   
      */
     public void setExitOnTimeOut(boolean exitOnTimeOut) {
         _exitOnTimeOut = exitOnTimeOut;
