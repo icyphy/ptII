@@ -1,10 +1,10 @@
-# Makefile for the Java classes used to implement the Ptolemy kernel
+# Makefile for the Ptolemy Java graph classes.
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1997 The Regents of the University of California.
+# @Copyright (c) 1998 The Regents of the University of California.
 # All rights reserved.
 # 
 # Permission is hereby granted, without written agreement and without
@@ -63,7 +63,6 @@ JSRCS = \
 	StaticDirectedGraph.java \
 	StaticUndirectedGraph.java
    
-	
 EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
