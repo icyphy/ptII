@@ -83,8 +83,8 @@ JSRCS = \
 	ModelPane.java \
 	MoMLApplet.java \
 	MoMLApplication.java \
-	MoMLStatisticalApplication.java \
 	MoMLSimpleApplication.java \
+	MoMLSimpleStatisticalApplication.java \
 	Placeable.java \
 	PortConfigurer.java \
 	PortConfigurerDialog.java \
