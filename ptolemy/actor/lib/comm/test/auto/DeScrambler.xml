@@ -42,34 +42,6 @@ The output of the "Equal" should be all "true".</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 25.0">
         </property>
     </property>
-    <entity name="Scrambler2" class="ptolemy.actor.lib.comm.Scrambler">
-        <property name="polynomial" class="ptolemy.data.expr.Parameter" value="023">
-        </property>
-        <property name="initial" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 165.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
-    <entity name="DeScrambler" class="ptolemy.actor.lib.comm.DeScrambler">
-        <property name="polynomial" class="ptolemy.data.expr.Parameter" value="023">
-        </property>
-        <property name="initial" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="385.0, 165.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true}">
         </property>
@@ -113,6 +85,34 @@ The output of the "Equal" should be all "true".</text></svg></configure>
             <property name="multiport"/>
         </port>
     </entity>
+    <entity name="Scrambler" class="ptolemy.actor.lib.comm.Scrambler">
+        <property name="polynomial" class="ptolemy.data.expr.Parameter" value="023">
+        </property>
+        <property name="initialState" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 165.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="DeScrambler" class="ptolemy.actor.lib.comm.DeScrambler">
+        <property name="polynomial" class="ptolemy.data.expr.Parameter" value="023">
+        </property>
+        <property name="initialState" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="385.0, 165.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="175.0, 165.0">
         </vertex>
@@ -143,13 +143,13 @@ The output of the "Equal" should be all "true".</text></svg></configure>
             </property>
         </property>
     </relation>
-    <link port="Scrambler2.input" relation="relation4"/>
-    <link port="Scrambler2.output" relation="relation"/>
-    <link port="DeScrambler.input" relation="relation"/>
-    <link port="DeScrambler.output" relation="relation2"/>
     <link port="NonStrictTest.input" relation="relation3"/>
     <link port="Equals.input" relation="relation4"/>
     <link port="Equals.input" relation="relation2"/>
     <link port="Equals.output" relation="relation3"/>
     <link port="Bernoulli.output" relation="relation4"/>
+    <link port="Scrambler.input" relation="relation4"/>
+    <link port="Scrambler.output" relation="relation"/>
+    <link port="DeScrambler.input" relation="relation"/>
+    <link port="DeScrambler.output" relation="relation2"/>
 </entity>

@@ -62,20 +62,6 @@ In this case, input is always boolean "true".
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="Scrambler2" class="ptolemy.actor.lib.comm.Scrambler">
-        <property name="polynomial" class="ptolemy.data.expr.Parameter" value="0440001">
-        </property>
-        <property name="initial" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 150.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true, true, true, true, true, true, true, true, true, true, true, true, true, false, false, false, true, true, true, true, true, true, true, true, true, true, true, false, false, false, false, false, false, true, true, true, true, true, true, true, true, false, false, false, true, true, true, false, false, false, true, true, true, true, true, false, false, false, false, false, false, false, false, false, false, false, false, true, true, false, false, false, true, true, true, true, true, true, true, true, true, false, false, true, false, false, false, false, false, true, true, true, true, true, true, false, false, true, true, true}">
         </property>
@@ -92,20 +78,26 @@ In this case, input is always boolean "true".
             <property name="output"/>
         </port>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
+    <entity name="Scrambler" class="ptolemy.actor.lib.comm.Scrambler">
+        <property name="polynomial" class="ptolemy.data.expr.Parameter" value="0440001">
         </property>
+        <property name="initialState" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 150.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <link port="Const.output" relation="relation"/>
-    <link port="Scrambler2.input" relation="relation"/>
-    <link port="Scrambler2.output" relation="relation2"/>
     <link port="NonStrictTest.input" relation="relation2"/>
+    <link port="Scrambler.input" relation="relation"/>
+    <link port="Scrambler.output" relation="relation2"/>
 </entity>

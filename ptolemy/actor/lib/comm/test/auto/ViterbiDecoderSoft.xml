@@ -50,7 +50,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="480.0, 100.0">
         </property>
     </property>
-    <property name="initial" class="ptolemy.data.expr.Parameter" value="0">
+    <property name="initialState" class="ptolemy.data.expr.Parameter" value="0">
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -80,7 +80,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 165.0">
         </property>
     </property>
-    <property name="uncodeBlockSize" class="ptolemy.data.expr.Parameter" value="2">
+    <property name="uncodedRate" class="ptolemy.data.expr.Parameter" value="2">
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -95,7 +95,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 65.0">
         </property>
     </property>
-    <property name="trueAmp" class="ptolemy.data.expr.Parameter" value="0.0">
+    <property name="trueLevel" class="ptolemy.data.expr.Parameter" value="0.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -112,7 +112,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="480.0, 120.0">
         </property>
     </property>
-    <property name="falseAmp" class="ptolemy.data.expr.Parameter" value="1.0">
+    <property name="falseLevel" class="ptolemy.data.expr.Parameter" value="1.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -162,31 +162,6 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
-        <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="repeat(uncodeBlockSize*delay, false)">
-        </property>
-        <doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 415.0">
-        </property>
-        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-            <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-            <property name="output"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="20">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-        </port>
-    </entity>
     <entity name="Equals" class="ptolemy.actor.lib.logic.Equals">
         <property name="_location" class="ptolemy.kernel.util.Location" value="635.0, 415.0">
         </property>
@@ -214,52 +189,6 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="ConvolutionalCoder" class="ptolemy.actor.lib.comm.ConvolutionalCoder">
-        <property name="uncodeBlockSize" class="ptolemy.data.expr.Parameter" value="uncodeBlockSize">
-        </property>
-        <property name="polynomialArray" class="ptolemy.data.expr.Parameter" value="polynomialArray">
-        </property>
-        <property name="initial" class="ptolemy.data.expr.Parameter" value="initial">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 325.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="2">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="3">
-            </property>
-        </port>
-    </entity>
-    <entity name="ViterbiDecoder" class="ptolemy.actor.lib.comm.ViterbiDecoder">
-        <property name="uncodeBlockSize" class="ptolemy.data.expr.Parameter" value="uncodeBlockSize">
-        </property>
-        <property name="polynomialArray" class="ptolemy.data.expr.Parameter" value="polynomialArray">
-        </property>
-        <property name="delay" class="ptolemy.data.expr.Parameter" value="delay">
-        </property>
-        <property name="softDecoding" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="amplitude" class="ptolemy.data.expr.Parameter" value="{trueAmp, falseAmp}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="520.0, 335.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="inputType" class="ptolemy.actor.TypeAttribute" value="double">
-            </property>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="3">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="2">
-            </property>
-        </port>
-    </entity>
     <entity name="Bernoulli" class="ptolemy.actor.lib.Bernoulli">
         <property name="seed" class="ptolemy.data.expr.Parameter" value="0L">
         </property>
@@ -277,9 +206,9 @@
         </port>
     </entity>
     <entity name="BooleanToAnything2" class="ptolemy.actor.lib.conversions.BooleanToAnything">
-        <property name="falseValue" class="ptolemy.data.expr.Parameter" value="falseAmp">
+        <property name="falseValue" class="ptolemy.data.expr.Parameter" value="falseLevel">
         </property>
-        <property name="trueValue" class="ptolemy.data.expr.Parameter" value="trueAmp">
+        <property name="trueValue" class="ptolemy.data.expr.Parameter" value="trueLevel">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 325.0">
         </property>
@@ -288,6 +217,77 @@
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+        </port>
+    </entity>
+    <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
+        <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="repeat(uncodedRate*delay, false)">
+        </property>
+        <doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 415.0">
+        </property>
+        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="output"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="20">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </port>
+    </entity>
+    <entity name="ConvolutionalCoder" class="ptolemy.actor.lib.comm.ConvolutionalCoder">
+        <property name="uncodedRate" class="ptolemy.data.expr.Parameter" value="uncodedRate">
+        </property>
+        <property name="polynomialArray" class="ptolemy.data.expr.Parameter" value="polynomialArray">
+        </property>
+        <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialState">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 325.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="3">
+            </property>
+        </port>
+    </entity>
+    <entity name="ViterbiDecoder" class="ptolemy.actor.lib.comm.ViterbiDecoder">
+        <property name="uncodedRate" class="ptolemy.data.expr.Parameter" value="uncodedRate">
+        </property>
+        <property name="polynomialArray" class="ptolemy.data.expr.Parameter" value="polynomialArray">
+        </property>
+        <property name="delay" class="ptolemy.data.expr.Parameter" value="delay">
+        </property>
+        <property name="softDecoding" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="constellation" class="ptolemy.data.expr.Parameter" value="{trueLevel, falseLevel}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="520.0, 335.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="inputType" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="3">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
         </port>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -326,19 +326,19 @@
             </property>
         </property>
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="3">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-    </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="22">
             <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
             </property>
         </property>
     </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="3">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="3">
             <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
             </property>
@@ -348,17 +348,17 @@
     <link port="AddSubtract.plus" relation="relation6"/>
     <link port="AddSubtract.output" relation="relation2"/>
     <link port="Gaussian.output" relation="relation"/>
-    <link port="SampleDelay.input" relation="relation4"/>
-    <link port="SampleDelay.output" relation="relation3"/>
     <link port="Equals.input" relation="relation7"/>
     <link port="Equals.input" relation="relation3"/>
     <link port="Equals.output" relation="relation5"/>
     <link port="NonStrictTest.input" relation="relation5"/>
+    <link port="Bernoulli.output" relation="relation4"/>
+    <link port="BooleanToAnything2.input" relation="relation8"/>
+    <link port="BooleanToAnything2.output" relation="relation6"/>
+    <link port="SampleDelay.input" relation="relation4"/>
+    <link port="SampleDelay.output" relation="relation3"/>
     <link port="ConvolutionalCoder.input" relation="relation4"/>
-    <link port="ConvolutionalCoder.output" relation="relation9"/>
+    <link port="ConvolutionalCoder.output" relation="relation8"/>
     <link port="ViterbiDecoder.input" relation="relation2"/>
     <link port="ViterbiDecoder.output" relation="relation7"/>
-    <link port="Bernoulli.output" relation="relation4"/>
-    <link port="BooleanToAnything2.input" relation="relation9"/>
-    <link port="BooleanToAnything2.output" relation="relation6"/>
 </entity>

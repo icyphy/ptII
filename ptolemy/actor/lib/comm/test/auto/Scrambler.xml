@@ -121,34 +121,6 @@ Dot-product should be -1.</text></svg></configure>
             <property name="output"/>
         </port>
     </entity>
-    <entity name="Scrambler" class="ptolemy.actor.lib.comm.Scrambler">
-        <property name="polynomial" class="ptolemy.data.expr.Parameter" value="045">
-        </property>
-        <property name="initial" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 200.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
-    <entity name="Scrambler2" class="ptolemy.actor.lib.comm.Scrambler">
-        <property name="polynomial" class="ptolemy.data.expr.Parameter" value="045">
-        </property>
-        <property name="initial" class="ptolemy.data.expr.Parameter" value="2">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 450.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
     <entity name="BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
         <property name="falseValue" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
@@ -169,6 +141,34 @@ Dot-product should be -1.</text></svg></configure>
         <property name="trueValue" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 450.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Scrambler" class="ptolemy.actor.lib.comm.Scrambler">
+        <property name="polynomial" class="ptolemy.data.expr.Parameter" value="045">
+        </property>
+        <property name="initialState" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 200.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Scrambler2" class="ptolemy.actor.lib.comm.Scrambler">
+        <property name="polynomial" class="ptolemy.data.expr.Parameter" value="045">
+        </property>
+        <property name="initialState" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 450.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -233,10 +233,10 @@ Dot-product should be -1.</text></svg></configure>
     <link port="SequenceToArray2.input" relation="relation5"/>
     <link port="SequenceToArray2.output" relation="relation3"/>
     <link port="Test.input" relation="relation8"/>
-    <link port="Scrambler.output" relation="relation"/>
-    <link port="Scrambler2.output" relation="relation6"/>
     <link port="BooleanToAnything.input" relation="relation"/>
     <link port="BooleanToAnything.output" relation="relation2"/>
     <link port="BooleanToAnything2.input" relation="relation6"/>
     <link port="BooleanToAnything2.output" relation="relation5"/>
+    <link port="Scrambler.output" relation="relation"/>
+    <link port="Scrambler2.output" relation="relation6"/>
 </entity>

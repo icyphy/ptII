@@ -20,42 +20,6 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
-    <entity name="HammingCoder" class="ptolemy.actor.lib.comm.HammingCoder">
-        <property name="uncodeBlockSize" class="ptolemy.data.expr.Parameter" value="4">
-        </property>
-        <property name="codeBlockSize" class="ptolemy.data.expr.Parameter" value="7">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 145.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="4">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="7">
-            </property>
-        </port>
-    </entity>
-    <entity name="HammingDecoder" class="ptolemy.actor.lib.comm.HammingDecoder">
-        <property name="uncodeBlockSize" class="ptolemy.data.expr.Parameter" value="4">
-        </property>
-        <property name="codeBlockSize" class="ptolemy.data.expr.Parameter" value="7">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="385.0, 145.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="7">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="4">
-            </property>
-        </port>
-    </entity>
     <entity name="Equals" class="ptolemy.actor.lib.logic.Equals">
         <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 295.0">
         </property>
@@ -99,6 +63,42 @@
             <property name="multiport"/>
         </port>
     </entity>
+    <entity name="HammingCoder" class="ptolemy.actor.lib.comm.HammingCoder">
+        <property name="uncodedRate" class="ptolemy.data.expr.Parameter" value="4">
+        </property>
+        <property name="codedRate" class="ptolemy.data.expr.Parameter" value="7">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 145.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="4">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="7">
+            </property>
+        </port>
+    </entity>
+    <entity name="HammingDecoder" class="ptolemy.actor.lib.comm.HammingDecoder">
+        <property name="uncodedRate" class="ptolemy.data.expr.Parameter" value="4">
+        </property>
+        <property name="codedRate" class="ptolemy.data.expr.Parameter" value="7">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="375.0, 145.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="7">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="4">
+            </property>
+        </port>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="150.0, 295.0">
         </vertex>
@@ -108,15 +108,9 @@
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="315.0, 145.0">
+        <vertex name="vertex1" value="290.0, 145.0">
         </vertex>
         <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="7">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="4">
             <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
             </property>
         </property>
@@ -127,13 +121,15 @@
             </property>
         </property>
     </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Equals.input" relation="relation2"/>
+    <link port="Equals.input" relation="relation3"/>
+    <link port="Equals.output" relation="relation4"/>
+    <link port="NonStrictTest.input" relation="relation4"/>
+    <link port="Bernoulli.output" relation="relation2"/>
     <link port="HammingCoder.input" relation="relation2"/>
     <link port="HammingCoder.output" relation="relation"/>
     <link port="HammingDecoder.input" relation="relation"/>
     <link port="HammingDecoder.output" relation="relation3"/>
-    <link port="Equals.input" relation="relation3"/>
-    <link port="Equals.input" relation="relation2"/>
-    <link port="Equals.output" relation="relation4"/>
-    <link port="NonStrictTest.input" relation="relation4"/>
-    <link port="Bernoulli.output" relation="relation2"/>
 </entity>
