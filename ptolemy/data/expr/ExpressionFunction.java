@@ -31,7 +31,6 @@ package ptolemy.data.expr;
 
 import ptolemy.kernel.util.IllegalActionException;
 
-import ptolemy.matlab.Engine;
 import java.lang.reflect.Method;
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;

@@ -40,7 +40,6 @@ import ptolemy.math.FixPoint;
 import ptolemy.math.IntegerMatrixMath;
 import ptolemy.math.DoubleMatrixMath;
 import ptolemy.math.ComplexMatrixMath;
-import ptolemy.matlab.Engine;
 import java.lang.Math;                /* Needed for javadoc */
 import java.util.Iterator;
 import java.util.StringTokenizer;
