@@ -1648,21 +1648,22 @@ testMatrixMatrixScalar within $types
 
 ######################################################################
 ####
-##  *ArrayMath Test out boolean within(xxx[], xxx[], xxx[][])
+##  *ArrayMath Test out boolean within(xxx[], xxx[], xxx[])
 
-# FIXME: no boolean within(Complex[], Complex[], Complex[])
-# FIXME: no boolean within(double[], double[], double[])
-# FIXME: no boolean within(float[], float[], float[])
-# FIXME: no boolean within(int[], int[], int[])
-# FIXME: no boolean within(long[], long[], long[])
+# FIXED (FIXME): no boolean within(Complex[], Complex[], Complex[])
+# FIXED (FIXME): no boolean within(double[], double[], double[])
+# FIXED (FIXME): no boolean within(float[], float[], float[])
+# FIXED (FIXME): no boolean within(int[], int[], int[])
+# FIXED (FIXME): no boolean within(long[], long[], long[])
 
-#set types [list \
-#  	[list Double double double {1}] \
-#  	[list Float float float {1}] \
-#  	[list Integer int int {1}] \
-#  	[list Long long long {1}]]
-#
-#  testArrayMathArrayArrayArray within $types
+set types [list \
+        [list Complex ptolemy.math.Complex complex {1}] \
+  	[list Double double double {0}] \
+  	[list Float float float {0}] \
+  	[list Integer int int {0}] \
+  	[list Long long long {0}]]
+
+testArrayMathArrayArrayArray within $types
 
 ######################################################################
 ####
