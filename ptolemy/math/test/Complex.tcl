@@ -1,6 +1,6 @@
 # Tests for the Complex Class
 #
-# @Author: Edward A. Lee
+# @Author: Edward A. Lee, Christopher Hylands
 #
 # @Version: $Id$
 #
