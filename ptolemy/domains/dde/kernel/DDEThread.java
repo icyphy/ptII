@@ -153,10 +153,10 @@ public class DDEThread extends ProcessThread {
      *  thread.
      */
     public void wrapup() throws IllegalActionException {
-	System.out.println( ((Nameable)getActor()).getName() + 
+	System.out.println( ((Nameable)getActor()).getName() +
                 ": noticeOfTermination().");
 	noticeOfTermination();
-	System.out.println( ((Nameable)getActor()).getName() + 
+	System.out.println( ((Nameable)getActor()).getName() +
                 ": super.wrapup().");
 	super.wrapup();
     }
