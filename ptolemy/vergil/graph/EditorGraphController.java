@@ -164,39 +164,17 @@ public class EditorGraphController extends ViewerGraphController {
             FigureLayer layer = (FigureLayer) event.getLayerSource();
             final String name = container.uniqueName("link");
 
-            // Queue a change request to create the new edge.
-            ChangeRequest request = new ChangeRequest(this, "new connection") {
-                protected void _execute() throws Exception {
-                    Link link = new Link(container, name);
-                }
-            };
-            container.requestChange(request);
-
-            // The following is necessary because diva has something
-            // truly funky that prevents the following code from working
-            // if it is put inside the _execute() method above.
-	    // SN: This is because mouse events are getting handled in the
-	    // swing thread when this is executed outside of the swing thread.
-            // FIXME: This creates a risk of lockup of the user
-            // interface if the change request is not executed
-            // for any reason.
+	    // Create the new edge.
+	    Link link = new Link();
+            
             try {
-                request.waitForCompletion();
-                Link link = (Link)container.getAttribute(name);
-
-                // Add it to the editor
-                getLinkController().addEdge(link,
+		// Add it to the editor
+                addEdge(link,
                         sourceObject,
                         ConnectorEvent.TAIL_END,
                         event.getLayerX(),
                         event.getLayerY());
 
-                // NOTE: The following sequence of code, for some
-                // inexplicable reason, does not work if its put in
-                // the _execute() method above.  In theory, it should
-                // not be possible... it's behavior should be identical.
-                // There must be something very funky going on in diva.
-            
                 // Add it to the selection so it gets a manipulator, and
                 // make events go to the grab-handle under the mouse
                 Figure ef = getFigure(link);

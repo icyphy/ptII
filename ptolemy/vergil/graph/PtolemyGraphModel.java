@@ -44,6 +44,7 @@ import ptolemy.vergil.toolbox.EditorIcon;
 import diva.graph.AbstractGraphModel;
 import diva.graph.GraphEvent;
 import diva.graph.GraphException;
+import diva.graph.GraphUtilities;
 import diva.graph.MutableGraphModel;
 import diva.graph.toolbox.*;
 import diva.graph.modular.ModularGraphModel;
@@ -95,6 +96,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
      */
     public PtolemyGraphModel(CompositeEntity toplevel) {
 	super(toplevel);
+	_linkSet = new HashSet();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -233,8 +235,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    // Go through all the links, creating a list of
 	    // those we are connected to.
 	    List portLinkList = new LinkedList();
-	    List linkList = getToplevel().attributeList(Link.class);
-	    Iterator links = linkList.iterator();
+	    Iterator links = _linkSet.iterator();
 	    while(links.hasNext()) {
 		Link link = (Link)links.next();
 		Object head = link.getHead();
@@ -275,8 +276,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    // Go through all the links, creating a list of 
 	    // those we are connected to.
 	    List portLinkList = new LinkedList();
-	    List linkList = getToplevel().attributeList(Link.class);
-	    Iterator links = linkList.iterator();
+	    Iterator links = _linkSet.iterator();
 	    while(links.hasNext()) {
 		Link link = (Link)links.next();
 		Object tail = link.getTail();
@@ -450,12 +450,29 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	 *  be a location representing a port, a port or a vertex.
 	 */
 	public void setHead(final Object edge, final Object head) {
+	    Link link = (Link)edge;
 	    try {
-		((Link)edge).unlink();		
-		((Link)edge).setHead(head);
-		((Link)edge).link();
+		link.unlink();		
 	    } catch (Exception ex) {
 		throw new GraphException(ex);
+	    }
+	    link.setHead(head);
+	    try {
+		// This should remove the links and 
+		// must not leave the model in an inconsistent state.
+		link.link();
+	    } catch (Exception ex) {
+		// If we fail here, then we remove the link entirely.
+		//_linkSet.remove(link);
+		link.setHead(null);
+		link.setTail(null);
+		throw new GraphException(ex);
+	    }
+	    if(GraphUtilities.isPartiallyContainedEdge(edge, getRoot(),
+						    PtolemyGraphModel.this)) {
+		_linkSet.add(edge);
+	    } else {
+		_linkSet.remove(edge);
 	    }
 	}	
 	
@@ -467,12 +484,29 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	 *  be a location representing a port, a port or a vertex.
 	 */
 	public void setTail(final Object edge, final Object tail) {
+	    Link link = (Link)edge;
 	    try {
-		((Link)edge).unlink();		
-		((Link)edge).setTail(tail);
-		((Link)edge).link();
+		link.unlink();		
 	    } catch (Exception ex) {
 		throw new GraphException(ex);
+	    }
+	    link.setTail(tail);
+	    try {
+		// This should remove the links and 
+		// must not leave the model in an inconsistent state.
+		link.link();
+	    } catch (Exception ex) {
+		// If we fail here, then we remove the link entirely.
+		//_linkSet.remove(link);
+		link.setHead(null);
+		link.setTail(null);
+		throw new GraphException(ex);
+	    }
+	    if(GraphUtilities.isPartiallyContainedEdge(edge, getRoot(),
+						  PtolemyGraphModel.this)) {
+		_linkSet.add(edge);
+	    } else {
+		_linkSet.remove(edge);
 	    }
 	}	
     }
@@ -525,8 +559,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    // Go through all the links, creating a list of
 	    // those we are connected to.
 	    List portLinkList = new LinkedList();
-	    List linkList = getToplevel().attributeList(Link.class);
-	    Iterator links = linkList.iterator();
+	    Iterator links = _linkSet.iterator();
 	    while(links.hasNext()) {
 		Link link = (Link)links.next();
 		Object head = link.getHead();
@@ -565,8 +598,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    // Go through all the links, creating a list of 
 	    // those we are connected to.
 	    List portLinkList = new LinkedList();
-	    List linkList = getToplevel().attributeList(Link.class);
-	    Iterator links = linkList.iterator();
+	    Iterator links = _linkSet.iterator();
 	    while(links.hasNext()) {
 		Link link = (Link)links.next();
 		Object tail = link.getTail();
@@ -727,8 +759,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    // Go through all the links, creating a list of 
 	    // those we are connected to.
 	    List vertexLinkList = new LinkedList();
-	    List linkList = getToplevel().attributeList(Link.class);
-	    Iterator links = linkList.iterator();
+	    Iterator links = _linkSet.iterator();
 	    while(links.hasNext()) {
 		Link link = (Link)links.next();
 		Object head = link.getHead();
@@ -759,8 +790,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    // Go through all the links, creating a list of 
 	    // those we are connected to.
 	    List vertexLinkList = new LinkedList();
-	    List linkList = getToplevel().attributeList(Link.class);
-	    Iterator links = linkList.iterator();
+	    Iterator links = _linkSet.iterator();
 	    while(links.hasNext()) {
 		Link link = (Link)links.next();
 		Object tail = link.getTail();
@@ -803,8 +833,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	// Go through all the links that currently exist, and remove ports
 	// from the linkedPortList that already have a Link object.
 	// FIXME this could get expensive 
-	List linkList = getToplevel().attributeList(Link.class);
-	Iterator links = linkList.iterator();
+	Iterator links = _linkSet.iterator();
 	while(links.hasNext()) {
 	    Link link = (Link)links.next();
 	    // only consider links that are associated with this relation.
@@ -867,7 +896,8 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 
 	    Link link;
 	    try {
-		link = new Link(getToplevel(), getToplevel().uniqueName("link"));
+		link = new Link();
+		_linkSet.add(link);
 	    } 
 	    catch (Exception e) {
 		throw new InternalErrorException("Failed to create " +
@@ -905,8 +935,8 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 		
 		Link link;
 		try {
-		    link = new Link(getToplevel(), 
-				    getToplevel().uniqueName("link"));
+		    link = new Link();
+		    _linkSet.add(link);
 		}
 		catch (Exception e) {
 		    throw new InternalErrorException(
@@ -943,6 +973,9 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
+    // The set of all links in the model.
+    private Set _linkSet;
+
     // The models of the different types of nodes and edges.
     private LinkModel _linkModel = new LinkModel();
     private ToplevelModel _toplevelModel = new ToplevelModel();

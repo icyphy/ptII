@@ -80,7 +80,7 @@ represented as a node.
 @author Steve Neuendorffer
 @version $Id$
 */
-public class Link extends Attribute {
+public class Link {
 
     /** Construct an attribute with the specified container and name.
      *  The location contained by the attribute is initially null,
@@ -92,9 +92,8 @@ public class Link extends Attribute {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public Link(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
-        super(container, name);
+    public Link() {
+        super();
     }
 
     /** Return the head of this link.   This may be a port, or a vertex
@@ -151,17 +150,24 @@ public class Link extends Attribute {
 	ComponentPort port;
 	ComponentRelation relation;
 	Vertex vertex;
-	CompositeEntity container = (CompositeEntity) getContainer();
-	
+		
         if(_head == null || _tail == null) return;
 	// Deal with the fact that we might be trying to attach to an 
 	// external port.
 	Object head;
+	CompositeEntity container;
 	if(_head instanceof Location &&
 	   ((Location)_head).getContainer() instanceof ComponentPort) {
 	    head = ((Location)_head).getContainer();
+	    // The container of the external port
+	    container = (CompositeEntity)((NamedObj)head).getContainer();
 	} else {
 	    head = _head;
+	    // head is either a vertex in a relation or an internal port in 
+	    // a component entity.
+	    Object temp = ((NamedObj)head).getContainer();
+	    temp = ((NamedObj)temp).getContainer();
+	    container = (CompositeEntity)temp;
 	}
 	Object tail;
 	if(_tail instanceof Location &&
@@ -177,13 +183,30 @@ public class Link extends Attribute {
 	    setRelation(relation);
           
 	    port = (ComponentPort)head;
-            port.link(relation);
-	    _checkReceivers(container, port);
-
-	    port = (ComponentPort)tail;
-            port.link(relation);
-	    _checkReceivers(container, port);
-	    _checkSchedule(container);
+	    try {
+		port.link(relation);
+		_checkReceivers(container, port);
+	    } catch (IllegalActionException ex) {
+		// remove the relation and the link.
+		port.unlink(relation);
+		relation.setContainer(null);
+		ex.fillInStackTrace();
+		throw ex;
+	    }
+	    
+	    try {
+		port = (ComponentPort)tail;
+		port.link(relation);
+		_checkReceivers(container, port);
+		_checkSchedule(container);
+	    } catch (IllegalActionException ex) {
+		// remove the relation and both links.
+		port.unlink(relation);
+		((ComponentPort)head).unlink(relation);
+		relation.setContainer(null);
+		ex.fillInStackTrace();
+		throw ex;
+	    }
 	    return;
         }
 	    
@@ -217,17 +240,24 @@ public class Link extends Attribute {
 	ComponentPort port;
 	Vertex vertex;
 	ComponentRelation relation;
-	CompositeEntity container = (CompositeEntity) getContainer();
 
 	if(_head == null || _tail == null) return;
 	// Deal with the fact that we might be trying to attach to an 
 	// external port.
 	Object head;
+	CompositeEntity container;
 	if(_head instanceof Location &&
 	   ((Location)_head).getContainer() instanceof ComponentPort) {
 	    head = ((Location)_head).getContainer();
+	    // The container of the external port
+	    container = (CompositeEntity)((NamedObj)head).getContainer();
 	} else {
 	    head = _head;
+	    // head is either a vertex in a relation or an internal port in 
+	    // a component entity.
+	    Object temp = ((NamedObj)head).getContainer();
+	    temp = ((NamedObj)temp).getContainer();
+	    container = (CompositeEntity)temp;
 	}
 	Object tail;
 	if(_tail instanceof Location &&
@@ -329,28 +359,12 @@ public class Link extends Attribute {
      *  @param bracket The number of surrounding brackets (0, 1, or 2).
      *  @return A string describing this variable.
      */
-    protected String _description(int detail, int indent, int bracket) {
-        try {
-            workspace().getReadAccess();
-            String result;
-	    if (bracket == 1 || bracket == 2) {
-                result = super._description(detail, indent, 1);
-            } else {
-                result = super._description(detail, indent, 0);
-            }
-            result += " head {\n";
-	    result += _getIndentPrefix(indent+1) + _head.toString() + "\n";
-	    
-            result += _getIndentPrefix(indent) + "} tail {\n";
-	    result += _getIndentPrefix(indent+1) + _tail.toString() + "\n";
-	    result += _getIndentPrefix(indent) + "}";
-            if (bracket == 2) {
-                result += "}";
-            }
-            return result;
-        } finally {
-            workspace().doneReading();
-        }
+    protected String toString(int detail, int indent, int bracket) {
+	String result;
+	result = "{" + getClass().getName() + ":";
+	result += " head {" + _head ;
+	result +=  "} tail {\n" + _tail + "}}";
+	return result;
     }
 
     private Object _head; 
