@@ -1,8 +1,8 @@
 # Tests for the CSPReceiver class
 #
-# @Author: Christopher Hylands
+# @Author: John S. Davis II
 #
-# @Version: : NamedObj.tcl,v 1.33 1998/12/05 05:37:32 cxh Exp $
+# @Version: : CSPReceiver.tcl,v 1.33 1998/12/05 05:37:32 cxh Exp $
 #
 # @Copyright (c) 1999 The Regents of the University of California.
 # All rights reserved.
@@ -47,5 +47,114 @@ if {[info procs enumToObjects] == "" } then {
 ######################################################################
 ####
 #
-test CSPReceiver-2.1 {} {
-} {}
+test CSPReceiver-2.1 {Constructors and Containers} {
+    set rcvr1 [java::new ptolemy.domains.csp.kernel.CSPReceiver]
+    set val1 [$rcvr1 getContainer]
+
+    set port [java::new ptolemy.actor.IOPort]
+    set rcvr2 [java::new ptolemy.domains.csp.kernel.CSPReceiver $port]
+    set val2 [$rcvr2 getContainer]
+
+    set rcvr3 [java::new ptolemy.domains.csp.kernel.CSPReceiver]
+    $rcvr3 setContainer $port
+    set val3 [$rcvr3 getContainer]
+
+    list [expr {$val1 == [java::null]}] [expr {$val2 == $port}] [expr {$val3 == $port}]
+} {1 1 1}
+
+######################################################################
+####
+#
+test CSPReceiver-3.1 {get(), put(), No tokens - deadlock!} {
+    set wspc [java::new ptolemy.kernel.util.Workspace]
+    set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
+    set manager [java::new ptolemy.actor.Manager $wspc "manager"]
+    set dir [java::new ptolemy.domains.csp.kernel.CSPDirector $wspc "director"]
+    $topLevel setDirector $dir
+    $topLevel setManager $manager
+    set actorA [java::new ptolemy.domains.csp.kernel.test.CSPPut $topLevel "actorA" 0] 
+    set actorB [java::new ptolemy.domains.csp.kernel.test.CSPGet $topLevel "actorB" 1] 
+
+    set input [java::new ptolemy.data.Token]
+    
+    set portA [java::field $actorA outputPort]
+    #set portA [$actorA getPort "output"]
+    set portB [java::field $actorB inputPort]
+    # set portB [$actorB getPort "input"]
+
+    set rel [$topLevel connect $portB $portA "rel"]
+
+    $manager run
+
+    set output [$actorB getToken 0] 
+
+    list [expr {$output == [java::null]}]
+} {1}
+
+######################################################################
+####
+#
+test CSPReceiver-3.2 {get(), put(), One token} {
+    set wspc [java::new ptolemy.kernel.util.Workspace]
+    set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
+    set manager [java::new ptolemy.actor.Manager $wspc "manager"]
+    set dir [java::new ptolemy.domains.csp.kernel.CSPDirector $wspc "director"]
+    $topLevel setDirector $dir
+    $topLevel setManager $manager
+    set actorA [java::new ptolemy.domains.csp.kernel.test.CSPPut $topLevel "actorA" 1] 
+    set actorB [java::new ptolemy.domains.csp.kernel.test.CSPGet $topLevel "actorB" 1] 
+
+    set input [java::new ptolemy.data.Token]
+    $actorA setToken $input 0
+    
+    set portA [java::field $actorA outputPort]
+    set portB [java::field $actorB inputPort]
+
+    set rel [$topLevel connect $portB $portA "rel"]
+
+    $manager run
+
+    set output [$actorB getToken 0] 
+
+    list [expr {$output == $input}]
+} {1}
+
+######################################################################
+####
+#
+test CSPReceiver-3.3 {get(), put(), Two tokens and then deadlock!} {
+    set wspc [java::new ptolemy.kernel.util.Workspace]
+    set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
+    set manager [java::new ptolemy.actor.Manager $wspc "manager"]
+    set dir [java::new ptolemy.domains.csp.kernel.CSPDirector $wspc "director"]
+    $topLevel setDirector $dir
+    $topLevel setManager $manager
+    set actorA [java::new ptolemy.domains.csp.kernel.test.CSPPut $topLevel "actorA" 2] 
+    set actorB [java::new ptolemy.domains.csp.kernel.test.CSPGet $topLevel "actorB" 3] 
+
+    set input1 [java::new ptolemy.data.Token]
+    set input2 [java::new ptolemy.data.Token]
+    $actorA setToken $input1 0
+    $actorA setToken $input2 1
+    
+    set portA [java::field $actorA outputPort]
+    set portB [java::field $actorB inputPort]
+
+    set rel [$topLevel connect $portB $portA "rel"]
+
+    $manager run
+
+    set output1 [$actorB getToken 0] 
+    set output2 [$actorB getToken 1] 
+    set output3 [$actorB getToken 2] 
+
+    list [expr {$output1 == $input1}] [expr {$output2 == $input2}] [expr {$output3 == [java::null]}]
+} {1 1 1}
+
+
+
+
+
+
+
+
