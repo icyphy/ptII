@@ -29,7 +29,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 130.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 140.0">
         </property>
     </property>
     <property name="1:annotation" class="ptolemy.kernel.util.Attribute">
@@ -49,7 +49,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 170.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 190.0">
         </property>
     </property>
     <property name="2:1:annotation" class="ptolemy.kernel.util.Attribute">
@@ -197,7 +197,7 @@
             </property>
             <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Packets from the Fast Interface">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={494, 401, 292, 222}}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 180.0">
             </property>
@@ -304,7 +304,7 @@
             </property>
             <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Packets from the Slow Interface">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={494, 401, 292, 222}}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 180.0">
             </property>
@@ -369,6 +369,8 @@
             <property name="input"/>
             <property name="multiport"/>
             <property name="push" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
             </property>
         </port>
         <port name="step" class="ptolemy.actor.parameters.ParameterPort">
@@ -465,7 +467,7 @@
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Dropped Packets">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={832, 405, 292, 222}}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 410.0">
         </property>
@@ -632,16 +634,6 @@
         <link port="Sleep.input" relation="relation"/>
         <link port="Sleep.output" relation="relation2"/>
     </entity>
-    <entity name="UnsignedByteArrayToString" class="ptolemy.actor.lib.conversions.UnsignedByteArrayToString">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 300.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="400.0, 215.0">
         </vertex>
@@ -670,8 +662,6 @@
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="channel1.in" relation="relation"/>
@@ -686,7 +676,7 @@
     <link port="Ramp.trigger" relation="relation4"/>
     <link port="MonitorValue - q1 length.input" relation="relation9"/>
     <link port="MonitorValue - q2 length.input" relation="relation10"/>
-    <link port="DatagramReader.output" relation="relation6"/>
+    <link port="DatagramReader.output" relation="relation4"/>
     <link port="Display.input" relation="relation5"/>
     <link port="QueueControl.q1_len" relation="relation9"/>
     <link port="QueueControl.pkt_in" relation="relation2"/>
@@ -698,6 +688,4 @@
     <link port="Interface - fast.out" relation="relation"/>
     <link port="Interface - slow.in" relation="2:relation8"/>
     <link port="Interface - slow.out" relation="relation3"/>
-    <link port="UnsignedByteArrayToString.input" relation="relation6"/>
-    <link port="UnsignedByteArrayToString.output" relation="relation4"/>
 </entity>
