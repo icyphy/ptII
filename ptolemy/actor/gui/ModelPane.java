@@ -345,12 +345,12 @@ public class ModelPane extends JPanel implements CloseListener {
     }
 
     /** If the model has a manager and is executing, then
-     *  stop execution by calling the finish() method of the manager.
+     *  stop execution by calling the stop() method of the manager.
      *  If there is no manager, do nothing.
      */
     public void stopRun() {
         if (_manager != null) {
-            _manager.finish();
+            _manager.stop();
         }
     }
 

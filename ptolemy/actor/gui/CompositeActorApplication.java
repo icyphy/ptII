@@ -243,14 +243,14 @@ public class CompositeActorApplication {
     }
 
     /** If the specified model has a manager and is executing, then
-     *  stop execution by calling the finish() method of the manager.
+     *  stop execution by calling the stop() method of the manager.
      *  If there is no manager, do nothing.
      *  @param model The model to stop.
      */
     public void stopRun(CompositeActor model) {
         Manager manager = model.getManager();
         if (manager != null) {
-            manager.finish();
+            manager.stop();
         }
     }
 

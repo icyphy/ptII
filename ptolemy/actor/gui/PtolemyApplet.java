@@ -243,12 +243,12 @@ public class PtolemyApplet extends BasicJApplet
      *  stop its execution. It is called when the Web page
      *  that contains this applet has been replaced by another page,
      *  and also just before the applet is to be destroyed.
-     *  In this base class, this method calls the finish() method
+     *  In this base class, this method calls the stop() method
      *  of the manager. If there is no manager, do nothing.
      */
     public void stop() {
         if (_manager != null && _setupOK) {
-            _manager.finish();
+            _manager.stop();
         }
     }
 
@@ -412,7 +412,7 @@ public class PtolemyApplet extends BasicJApplet
     protected void _stop() {
         // If an exception occurred during init, do not finish.
         if (!_setupOK) return;
-	_manager.finish();
+	_manager.stop();
     }
 
     ///////////////////////////////////////////////////////////////////
