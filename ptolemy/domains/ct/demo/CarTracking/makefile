@@ -34,10 +34,8 @@ ME =		ptolemy/domains/ct/demo/CarTracking
 # Root of the Java directory
 ROOT =		../../../../../
 
-JINI_JAR_PATH = $(ROOT)/vendors/sun/jini/jini1_0_1/lib
-JINI_JAR =	$(JINI_JAR_PATH)/jini-jspaces.jar
-
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JINI_JAR)
+# JINI_JARS is defined in $PTII/mk/ptII.mk, which is created by $PTII/configure
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JINI_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -49,8 +47,9 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 TCL_SRCS = 
 
+#	BangBangController.java \
+
 JSRCS = \
-	BangBangController.java \
 	CarInformationPublisher.java \
 	CarInformationSubscriber.java \
 	CTSubscriber.java \
@@ -78,7 +77,10 @@ OPTIONAL_FILES = \
 	doc \
 	$(PTCLASSJAR)
 
-JCLASS = $(JSRCS:%.java=%.class)
+JCLASS = $(JSRCS:%.java=%.class) \
+	CarInformationSubscriber_Stub.class \
+	CTSubscriber_Stub.class \
+	DERealTimeSubscriber_Stub.class
 
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
@@ -89,6 +91,15 @@ install: all
 
 depend:
 	@echo "no dependencies in this directory"
+
+CarInformationSubscriber_Stub.class: CarInformationSubscriber.java
+	$(RMIC) -classpath $(CLASSPATH) ptolemy.domains.ct.demo.$(PTPACKAGE).CarInformationSubscriber
+
+CTSubscriber_Stub.class: CTSubscriber.java
+	$(RMIC) -classpath $(CLASSPATH) ptolemy.domains.ct.demo.$(PTPACKAGE).CTSubscriber
+
+DERealTimeSubscriber_Stub.class: DERealTimeSubscriber.java
+	$(RMIC) -classpath $(CLASSPATH) ptolemy.domains.ct.demo.$(PTPACKAGE).DERealTimeSubscriber
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
