@@ -76,10 +76,6 @@ public class FileUtilities {
             output = new BufferedOutputStream(
                         new FileOutputStream(destinationFile));
 
-            // The resource pointed to might be a pdf file, which
-            // is binary, so we are careful to read it byte by
-            // byte and not do any conversions of the bytes.
-
             int c;
             while (( c = input.read()) != -1) {
                 output.write(c);
