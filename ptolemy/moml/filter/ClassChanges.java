@@ -219,6 +219,9 @@ public class ClassChanges implements MoMLFilter {
 
         _classChanges.put("ptolemy.domains.gr.lib.ViewScreen",
                 "ptolemy.domains.gr.lib.ViewScreen3D");
+
+        _classChanges.put("ptolemy.domains.sr.lib.Latch",
+                "ptolemy.domains.sr.lib.Current");
     }
 
     // Set of class names that are obsolete and should be simply
