@@ -212,16 +212,17 @@ public abstract class BaseType implements Type, Serializable {
     public static final UnsizedMatrixType.BooleanMatrixType BOOLEAN_MATRIX =
     new UnsizedMatrixType.BooleanMatrixType();
 
-    /** The byte data type */
-    public static class ByteType extends BaseType {
-        private ByteType() {
-            super(ByteToken.class, "byte");
+    /** The unsigned byte data type */
+    public static class UnsignedByteType extends BaseType {
+        private UnsignedByteType() {
+            super(UnsignedByteToken.class, "unsignedByte");
         }
         public Token convert(Token t) throws IllegalActionException {
-            return ByteToken.convert(t);
+            return UnsignedByteToken.convert(t);
         }
     }
-    public static final ByteType BYTE = new ByteType();
+    public static final UnsignedByteType UNSIGNED_BYTE =
+      new UnsignedByteType();
 
     /** The complex data type */
     public static class ComplexType extends BaseType {

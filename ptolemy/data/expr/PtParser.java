@@ -138,14 +138,10 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
      */
     public LinkedList getUndefinedList(String stringIn)
             throws IllegalActionException {
-                //    InputStream stream = new ByteArrayInputStream(stringIn.getBytes());
-
-                // _scope = null;
- //       _parserScope = null;
-        Reader reader = new StringReader(stringIn);
-        this.ReInit(reader);
         //debug = true;
         String str = stringIn.replace('\n', ' ');
+        Reader reader = new StringReader(str);
+        this.ReInit(reader);
         try {
             // Parse the expression to obtain the parse tree
             _undefined = new LinkedList();
@@ -168,9 +164,9 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
      */
     public ASTPtRootNode generateParseTree(String stringIn)
             throws IllegalActionException {
-        Reader reader = new StringReader(stringIn);
-        this.ReInit(reader);
         String str = stringIn.replace('\n', ' ');
+        Reader reader = new StringReader(str);
+        this.ReInit(reader);
         ASTPtRootNode rootNode;
         try {
             // Parse the expression to obtain the parse tree
@@ -1621,20 +1617,6 @@ String tidied, x;
     return retval;
   }
 
-  final private boolean jj_3_1() {
-    if (jj_scan_token(46)) return true;
-    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    return false;
-  }
-
-  final private boolean jj_3_4() {
-    if (jj_scan_token(ID)) return true;
-    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    if (jj_scan_token(43)) return true;
-    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    return false;
-  }
-
   final private boolean jj_3_3() {
     if (jj_scan_token(47)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
@@ -1651,8 +1633,22 @@ String tidied, x;
     return false;
   }
 
+  final private boolean jj_3_1() {
+    if (jj_scan_token(46)) return true;
+    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+    return false;
+  }
+
+  final private boolean jj_3_4() {
+    if (jj_scan_token(ID)) return true;
+    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+    if (jj_scan_token(43)) return true;
+    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+    return false;
+  }
+
   public PtParserTokenManager token_source;
-  SimpleCharStream jj_input_stream;
+  ASCII_CharStream jj_input_stream;
   public Token token, jj_nt;
   private int jj_ntk;
   private Token jj_scanpos, jj_lastpos;
@@ -1668,7 +1664,7 @@ String tidied, x;
   private int jj_gc = 0;
 
   public PtParser(java.io.InputStream stream) {
-    jj_input_stream = new SimpleCharStream(stream, 1, 1);
+    jj_input_stream = new ASCII_CharStream(stream, 1, 1);
     token_source = new PtParserTokenManager(jj_input_stream);
     token = new Token();
     jj_ntk = -1;
@@ -1689,7 +1685,7 @@ String tidied, x;
   }
 
   public PtParser(java.io.Reader stream) {
-    jj_input_stream = new SimpleCharStream(stream, 1, 1);
+    jj_input_stream = new ASCII_CharStream(stream, 1, 1);
     token_source = new PtParserTokenManager(jj_input_stream);
     token = new Token();
     jj_ntk = -1;

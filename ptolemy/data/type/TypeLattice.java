@@ -452,7 +452,7 @@ public class TypeLattice {
 
             _basicLattice.addNodeWeight(BaseType.BOOLEAN);
             _basicLattice.addNodeWeight(BaseType.BOOLEAN_MATRIX);
-            _basicLattice.addNodeWeight(BaseType.BYTE);
+            _basicLattice.addNodeWeight(BaseType.UNSIGNED_BYTE);
             _basicLattice.addNodeWeight(BaseType.COMPLEX);
             _basicLattice.addNodeWeight(BaseType.COMPLEX_MATRIX);
             _basicLattice.addNodeWeight(BaseType.DOUBLE);
@@ -498,7 +498,7 @@ public class TypeLattice {
             _basicLattice.addEdge(BaseType.INT_MATRIX, BaseType.LONG_MATRIX);
             _basicLattice.addEdge(BaseType.INT, BaseType.LONG);
             _basicLattice.addEdge(BaseType.INT, BaseType.INT_MATRIX);
-            _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.BYTE);
+            _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.UNSIGNED_BYTE);
 
             _basicLattice.addEdge(BaseType.INT_MATRIX, BaseType.DOUBLE_MATRIX);
             _basicLattice.addEdge(BaseType.DOUBLE_MATRIX,
@@ -510,7 +510,7 @@ public class TypeLattice {
 
             _basicLattice.addEdge(BaseType.DOUBLE, BaseType.COMPLEX);
             _basicLattice.addEdge(BaseType.INT, BaseType.DOUBLE);
-            _basicLattice.addEdge(BaseType.BYTE, BaseType.INT);
+            _basicLattice.addEdge(BaseType.UNSIGNED_BYTE, BaseType.INT);
 
             _basicLattice.addEdge(arrayRep, BaseType.GENERAL);
             _basicLattice.addEdge(BaseType.UNKNOWN, arrayRep);

@@ -110,13 +110,14 @@ public class IntToken extends ScalarToken {
                             token, "int"));
         }
 
-        compare = TypeLattice.compare(BaseType.BYTE, token);
+        compare = TypeLattice.compare(BaseType.UNSIGNED_BYTE, token);
         if (compare == CPO.SAME || compare == CPO.HIGHER) {
-            ByteToken byteToken = ByteToken.convert(token);
-            return new IntToken(byteToken.intValue());
+            UnsignedByteToken unsignedByteToken =
+	      UnsignedByteToken.convert(token);
+            return new IntToken(unsignedByteToken.intValue());
         }
 
-        // The argument is below ByteToken in the type hierarchy,
+        // The argument is below UnsignedByteToken in the type hierarchy,
         // but I don't recognize it.
         throw new IllegalActionException(
                 notSupportedConversionMessage(token, "int"));

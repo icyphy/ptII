@@ -3,8 +3,8 @@
 /* Input file to JJTree and JavaCC to generate Ptolemy II Parser */
 
 options {
-LOOKAHEAD=1;                                                                      
-STATIC = false;                           
+LOOKAHEAD=1;                                                                   
+STATIC = false;                          
 }
 
 PARSER_BEGIN(PtParser)
@@ -150,14 +150,10 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants/*@egen*/ 
      */
     public LinkedList getUndefinedList(String stringIn)
             throws IllegalActionException {
-                //    InputStream stream = new ByteArrayInputStream(stringIn.getBytes());
-                
-                // _scope = null;
- //       _parserScope = null;
-        Reader reader = new StringReader(stringIn);
-	this.ReInit(reader);
         //debug = true;
         String str = stringIn.replace('\n', ' ');
+        Reader reader = new StringReader(str);
+	this.ReInit(reader);
         try {
             // Parse the expression to obtain the parse tree
             _undefined = new LinkedList();
@@ -180,9 +176,9 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants/*@egen*/ 
      */
     public ASTPtRootNode generateParseTree(String stringIn)
             throws IllegalActionException {
-        Reader reader = new StringReader(stringIn);
-	this.ReInit(reader);
         String str = stringIn.replace('\n', ' ');
+        Reader reader = new StringReader(str);
+        this.ReInit(reader);
         ASTPtRootNode rootNode;
         try {
             // Parse the expression to obtain the parse tree
