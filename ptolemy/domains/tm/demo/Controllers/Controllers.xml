@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Controllers" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.0.1">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[747, 481]">
     </property>
@@ -56,11 +56,11 @@
         <property name="_location" class="ptolemy.moml.Location" value="60.0, 38.0">
         </property>
     </property>
-    <property name="preemptive" class="ptolemy.data.expr.Parameter" value="true">
+    <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <property name="priority1" class="ptolemy.data.expr.Parameter" value="2">
     </property>
-    <property name="priority2" class="ptolemy.data.expr.Parameter" value="1">
+    <property name="priority2" class="ptolemy.data.expr.Parameter" value="3">
     </property>
     <property name="executionTime1" class="ptolemy.data.expr.Parameter" value="0.042">
     </property>
@@ -282,11 +282,11 @@ preemptive ones can.
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>TimedPlotter</title>
+<title>Output of Plant 1</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="30.0"/>
-<yRange min="-0.10468755018974017" max="0.3093741327821534"/>
+<yRange min="0.0" max="0.19628322347253235"/>
 </plot>?>
         </configure>
     </entity>
@@ -311,6 +311,12 @@ preemptive ones can.
         </property>
         <doc>Create a constant sequence</doc>
         <property name="_location" class="ptolemy.moml.Location" value="55.0, 115.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -371,6 +377,12 @@ preemptive ones can.
         </property>
         <doc>Create a constant sequence</doc>
         <property name="_location" class="ptolemy.moml.Location" value="60.0, 215.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -613,6 +625,12 @@ preemptive ones can.
             </property>
             <property name="executionTime" class="ptolemy.data.expr.Parameter" value="executionTime1">
             </property>
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                </property>
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -630,6 +648,12 @@ preemptive ones can.
             <property name="priority" class="ptolemy.data.expr.Parameter" value="priority2">
             </property>
             <property name="executionTime" class="ptolemy.data.expr.Parameter" value="executionTime2">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                </property>
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -672,11 +696,11 @@ preemptive ones can.
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>TimedPlotter9</title>
+<title>Output of Plant 2</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="30.0"/>
-<yRange min="0.0" max="0.1284684223206446"/>
+<yRange min="0.0" max="0.13182833344628034"/>
 </plot>?>
         </configure>
     </entity>
