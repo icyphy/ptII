@@ -64,6 +64,7 @@ public class PNImageSource extends AtomicActor {
     ////                         public methods                    ////
 
     public void initialize() throws IllegalActionException {
+        super.initialize();
 	String filename =((StringToken)_filename.getToken()).stringValue();
         if (_file != null && !filename.equals("")) {
             try {
