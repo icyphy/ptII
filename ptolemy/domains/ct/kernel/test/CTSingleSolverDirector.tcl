@@ -97,7 +97,7 @@ test CTSingleSolverDirector-2.1 {Get default values} {
 	    [$dir getSuggestedNextStepSize] \
 	    [$dir getTimeResolution] \
 	    [$dir getValueResolution]
-} {.System.DIR.CT_Forward_Euler_Solver 0.1 0.0 0.0 0.1 0.0001 20 1.0 1e-05 0.1 0.0 1.0 0.1 1e-10 1e-06}
+} {.System.DIR.CT_Forward_Euler_Solver 0.1 0.0 0.0 0.1 0.0001 20 1.0 1e-05 0.1 0.0 1.79769313486e+308 0.1 1e-10 1e-06}
 
 
 ######################################################################
@@ -281,6 +281,10 @@ test CTSingleSolverDirector-3.1 {register a breakpoint} {
     set sys [java::new ptolemy.actor.TypedCompositeActor]
     $sys setName System
     set dir [java::new ptolemy.domains.ct.kernel.CTSingleSolverDirector $sys DIR]
+    set stoptime [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute StopTime]]
+    set token [java::new ptolemy.data.DoubleToken 1.0]
+    $stoptime setToken $token
     $dir preinitialize
     $dir initialize
     $dir fireAt $sys 0.1
