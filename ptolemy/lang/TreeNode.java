@@ -153,9 +153,8 @@ public abstract class TreeNode extends TrackedPropertyMap
         if (index >= 0) {
             return childReturnValueAt(index);
         } else {
-            // FIXME: Should throw an exception.
-            ApplicationUtility.error("Child not found");
-            return null;
+            throw new RuntimeException("TreeNode.childReturnValueFor(): " +
+                    "Child not found");
         }
     }
 
