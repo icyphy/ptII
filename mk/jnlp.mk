@@ -108,11 +108,12 @@ DSP_JNLP_JARS =	\
 # This list is used to create the ptII/signed directory, so each
 # jar file should be named once in one of the *ONLY_JNLP_JARS
 HYBRID_SYSTEMS_ONLY_JNLP_JARS = \
+	doc/design/hyvisual.jar \
+	doc/codeDocHybridSystems.jar \
 	ptolemy/domains/ct/ct.jar \
 	ptolemy/domains/fsm/fsm.jar \
 	ptolemy/domains/sdf/lib/lib.jar \
-	ptolemy/domains/sdf/kernel/kernel.jar \
-	doc/codeDocHybridSystems.jar 
+	ptolemy/domains/sdf/kernel/kernel.jar
 
 HYBRID_SYSTEMS_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/HybridSystemsApplication.jar
