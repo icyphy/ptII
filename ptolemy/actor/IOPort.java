@@ -1380,10 +1380,22 @@ public class IOPort extends ComponentPort {
      *  @exception IllegalActionException If the link would cross levels of
      *   the hierarchy, or the relation is incompatible,
      *   or the port has no container, or the port is not in the
-     *   same workspace as the relation.
+     *   same workspace as the relation, or if this port is not a multiport
+     *   and the index is greater than zero or if another link already exists.
      */
     public void insertLink(int index, Relation relation)
             throws IllegalActionException {
+        if (!isMultiport()) {
+             if (index > 0) {
+                throw new IllegalActionException(this,
+                "Cannot insert link at an index greater than zero in a " +
+                "port that is not a multiport.");
+             } else if (numLinks() > 0) {
+                 throw new IllegalActionException(this,
+                "Cannot insert a second link in a port that is not a " +
+                "multiport.");
+             }
+        }
         super.insertLink(index, relation);
         _invalidate();
     }
