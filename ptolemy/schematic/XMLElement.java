@@ -111,7 +111,7 @@ public class XMLElement extends Object {
      *
      *  @return an Enumeration of XMLElements
      */
-    /*   public Enumeration childElements(String type) {
+    public Enumeration childElements(String type) {
         LinkedList filter = new LinkedList();
         Enumeration elements = childElements();
         while(elements.hasMoreElements()) {
@@ -120,7 +120,7 @@ public class XMLElement extends Object {
                 filter.insertFirst(el);
         }
         return filter.elements();
-    }*/
+    }
 
     /**
      * Return the value of the attribute with the given name.
@@ -135,7 +135,7 @@ public class XMLElement extends Object {
      * Return the first child element of this element with the given type
      * @throws NoSuchElementException if no element with the given type exists.
      */
-    /*    public XMLElement getChildElement(String type)
+    public XMLElement getChildElement(String type)
     throws NoSuchElementException {
        Enumeration elements = childElements();
         while(elements.hasMoreElements()) {
@@ -145,7 +145,7 @@ public class XMLElement extends Object {
         }
         throw new NoSuchElementException("XMLElement does not contain a " +
                 "child element with type " + type);
-    }*/
+    }
 
 
     /** Return the type of this XMLElement.  The type is immutably set when
@@ -197,7 +197,7 @@ public class XMLElement extends Object {
     /**
      * Test if a child element of this element has the given type
      */
-    /*    public boolean hasChildElement(String type) {
+    /*public boolean hasChildElement(String type) {
         Enumeration elements = childElements();
         while(elements.hasMoreElements()) {
             XMLElement el = (XMLElement) elements.nextElement();
@@ -205,7 +205,7 @@ public class XMLElement extends Object {
                 return true;
         }
         return false;
-    }*/
+        }*/
 
     /**
      * Remove an attribute from this element
