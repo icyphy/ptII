@@ -6,7 +6,7 @@
   <!-- SingleWindow Effigy -->
   <entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
   	<entity name="Navigable Graph Editor" class="ptolemy.actor.gui.NavigableEffigy$Factory">
-      <entity name="blank" class="ptolemy.actor.TypedCompositeActor"/>
+      <entity name="blank" class="thales.actor.TypedCompositeActor"/>
     </entity>
   </entity>
   <!-- END SingleWindow Effigy factories-->
