@@ -55,7 +55,8 @@ public class ClassUtilities {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Given a jar url of the format jar:<i>url<i>!/{entry}, return
+    /** Lookup a jar URL and return the resource.
+     *  Given a jar url of the format jar:<i>url<i>!/{entry}, return
      *  the resource, if any of the {entry}.
      *  If the string does not contain <code>!/</code>, then return null.
      *  Web Start uses jar URL, and there are some cases where
