@@ -59,6 +59,7 @@ JSRCS = \
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
+	ArrayStringFormat.tcl \
 	Complex.tcl \
 	ComplexArrayMath.tcl \
 	ComplexMatrixMath.tcl \
