@@ -35,7 +35,6 @@ import ptolemy.vergil.basic.NamedObjController;
 import ptolemy.vergil.basic.NodeControllerFactory;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.toolbox.AttributeBoundsManipulator;
-import diva.canvas.interactor.BoundsManipulator;
 import diva.canvas.interactor.SelectionInteractor;
 import diva.graph.GraphController;
 
@@ -112,10 +111,22 @@ public class ResizableAttributeControllerFactory
             // the prototype is what gets the mouse events!  I.e., not
             // the instance decorator that is created from the prototype!
             NamedObj container = (NamedObj) getContainer();
-            BoundsManipulator manipulator =
+            _manipulator =
                 new AttributeBoundsManipulator(container);
 
-            interactor.setPrototypeDecorator(manipulator);
+            interactor.setPrototypeDecorator(_manipulator);
         }
+        
+        /** Specify the snap resolution. The default snap resolution is 5.0.
+         *  This overrides the base class to set the snap resolution on the
+         *  bounds manipulator as well as the drag interactor.
+         *  @param resolution The snap resolution.
+         */
+        public void setSnapResolution(double resolution) {
+            super.setSnapResolution(resolution);
+            _manipulator.setSnapResolution(resolution);
+        }
+        
+        private AttributeBoundsManipulator _manipulator;
     }
 }

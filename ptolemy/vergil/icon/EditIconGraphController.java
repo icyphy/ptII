@@ -89,19 +89,23 @@ public class EditIconGraphController extends BasicGraphController {
         throw new InternalErrorException("An icon edit has no edges.");
     }
 
-    /** Return the node controller appropriate for the given object.
-     *  If the object is an instance of Vertex, then return the
-     *  local relation controller.  If it implements Locatable,
-     *  then determine whether it is an Entity, Attribute, or Port,
-     *  and return the appropriate default controller.
-     *  If the argument is an instance of Port, then return the
-     *  local port controller.
+    /** Return the node controller appropriate for the specified object.
+     *  If the specified object is an instance of Locatable and
+     *  its container contains a NodeControllerFactory
+     *  (which is an attribute), then invoke that factory
+     *  to create a node controller.  Otherwise,
+     *  if the object implements Locatable and is contained by an
+     *  instance of Attribute, then return the attribute controller.
+     *  Otherwise, throw a runtime exception.
      *  @param object A Vertex, Locatable, or Port.
+     *  @exception RuntimeException If the specified object is not
+     *   a Locatable contained by an Attribute.
      */
     public NodeController getNodeController(Object object) {
         // Defer to the superclass if it can provide a controller.
         NodeController result = super.getNodeController(object);
         if (result != null) {
+            ((NamedObjController)result).setSnapResolution(_SNAP_RESOLUTION);
             return result;
         }
 
@@ -141,6 +145,8 @@ public class EditIconGraphController extends BasicGraphController {
         super._createControllers();
         _attributeController = new AttributeController(this,
                 AttributeController.FULL);
+        // Set the snap resolution smaller than the default of 5.0.
+        _attributeController.setSnapResolution(_SNAP_RESOLUTION);
     }
 
     /** Initialize all interaction on the graph pane. This method
@@ -170,4 +176,7 @@ public class EditIconGraphController extends BasicGraphController {
 
     // The selection interactor for drag-selecting nodes
     private SelectionDragger _selectionDragger;
+    
+    // Default snap resolution.
+    private static double _SNAP_RESOLUTION = 1.0;
 }

@@ -28,6 +28,7 @@ COPYRIGHTENDKEY
 
 package ptolemy.vergil.actor;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -48,6 +49,7 @@ import ptolemy.actor.gui.DebugListenerTableau;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TextEffigy;
+import ptolemy.data.expr.Variable;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.KernelException;
@@ -230,6 +232,50 @@ public abstract class ActorController extends AttributeController {
     /** The action that handles removing a custom icon. */
     protected RemoveIconAction _removeIconAction = new RemoveIconAction();
 
+    private LabelFigure _createPortLabelFigure(
+            String string, Font font, double x, double y, int direction) {
+        LabelFigure label;
+        if (direction == SwingConstants.SOUTH) {
+            // The 1.0 argument is the padding.
+            label = new LabelFigure(
+                    string, font, 1.0, SwingConstants.SOUTH_WEST);
+            // Shift the label down so it doesn't
+            // collide with ports.
+            label.translateTo(x, y + 5);
+            // Rotate the label.
+            AffineTransform rotate = AffineTransform
+                .getRotateInstance(Math.PI/2.0, x, y + 5);
+            label.transform(rotate);
+        } else if (direction == SwingConstants.EAST) {
+            // The 1.0 argument is the padding.
+            label = new LabelFigure(
+                    string, font, 1.0, SwingConstants.SOUTH_WEST);
+            // Shift the label right so it doesn't
+            // collide with ports.
+            label.translateTo(x + 5, y);
+        } else if (direction == SwingConstants.WEST) {
+            // The 1.0 argument is the padding.
+            label = new LabelFigure(
+                    string, font, 1.0, SwingConstants.SOUTH_EAST);
+            // Shift the label left so it doesn't
+            // collide with ports.
+            label.translateTo(x - 5, y);
+        } else { // Must be north.
+            // The 1.0 argument is the padding.
+            label = new LabelFigure(
+                    string, font, 1.0, SwingConstants.SOUTH_WEST);
+            // Shift the label right so it doesn't
+            // collide with ports.  It will probably 
+            // collide with the actor name.
+            label.translateTo(x, y - 5);
+            // Rotate the label.
+            AffineTransform rotate = AffineTransform
+                .getRotateInstance(-Math.PI/2.0, x, y - 5);
+            label.transform(rotate);
+        }
+        return label;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -247,7 +293,7 @@ public abstract class ActorController extends AttributeController {
     private PortDialogFactory _portDialogFactory;
 
     private static Font _portLabelFont = new Font("SansSerif", Font.PLAIN, 10);
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -284,8 +330,6 @@ public abstract class ActorController extends AttributeController {
                 Port port = (Port) nodes.next();
                 StringAttribute cardinal =
                     (StringAttribute)port.getAttribute("_cardinal");
-                StringAttribute ordinal  =
-                    (StringAttribute)port.getAttribute("_ordinal");
 
                 if (cardinal == null) {
                     if (!(port instanceof IOPort)) {
@@ -416,57 +460,47 @@ public abstract class ActorController extends AttributeController {
                 double y = site.getY() - portBounds.getCenterY();
                 portFigure.translate(x, y);
 
+                // If the actor contains an attribute named "_showRate",
+                // then visualize the rate information.
+                if (port.getAttribute("_showRate") != null) {
+                    // Infer the rate.  See SDFUtilities.
+                    String rateString = "";
+                    Variable rateParameter = null;
+                    if (port.isInput()) {
+                        rateParameter = 
+                            (Variable)port.getAttribute("tokenConsumptionRate");
+                        if (rateParameter == null) {
+                            String altName = "_tokenConsumptionRate";
+                            rateParameter = (Variable)port.getAttribute(altName);
+                        }
+                    } else if (port.isOutput()) {
+                        rateParameter = 
+                            (Variable)port.getAttribute("tokenConsumptionRate");
+                        if (rateParameter == null) {
+                            String altName = "_tokenConsumptionRate";
+                            rateParameter = (Variable)port.getAttribute(altName);
+                        }  
+                    } 
+                    if(rateParameter != null) {
+                        try {
+                            rateString = rateParameter.getToken().toString();
+                        } catch (KernelException ex) {
+                            // Ignore.
+                        }
+                    }
+                    LabelFigure labelFigure = 
+                        _createPortLabelFigure(rateString, 
+                                _portLabelFont, x, y, direction);
+                    labelFigure.setFillPaint(Color.BLUE);
+                    figure.add(labelFigure);
+                }
                 // If the port contains an attribute named "_showName",
                 // then render the name of the port as well.
                 if (port.getAttribute("_showName") != null) {
-                    LabelFigure label = null;
-                    if (port.isOutput() && port.isInput()) {
-                        // The 1.0 argument is the padding.
-                        label = new LabelFigure(
-                                port.getName(),
-                                _portLabelFont,
-                                1.0,
-                                SwingConstants.NORTH_WEST);
-                        // Shift the label right so it doesn't
-                        // collide with ports.
-                        label.translateTo(x, y - 5);
-                        // Rotate the label.
-                        AffineTransform rotate = AffineTransform
-                            .getRotateInstance(Math.PI/2.0, x, y + 5);
-                        label.transform(rotate);
-                    } else if (port.isOutput()) {
-                        // The 1.0 argument is the padding.
-                        label = new LabelFigure(
-                                port.getName(),
-                                _portLabelFont,
-                                1.0,
-                                SwingConstants.SOUTH_WEST);
-                        // Shift the label right so it doesn't
-                        // collide with ports.
-                        label.translateTo(x + 5, y);
-                    } else if (port.isInput()) {
-                        // The 1.0 argument is the padding.
-                        label = new LabelFigure(
-                                port.getName(),
-                                _portLabelFont,
-                                1.0,
-                                SwingConstants.SOUTH_EAST);
-                        // Shift the label right so it doesn't
-                        // collide with ports.
-                        label.translateTo(x - 5, y);
-                    } else {
-                        // Not an input or output.
-                        // The 1.0 argument is the padding.
-                        label = new LabelFigure(
-                                port.getName(),
-                                _portLabelFont,
-                                1.0,
-                                SwingConstants.NORTH);
-                        // Shift the label right so it doesn't
-                        // collide with ports.
-                        label.translateTo(x, y + 5);
-                    }
-                    figure.add(label);
+                    LabelFigure labelFigure = 
+                        _createPortLabelFigure(port.getName(),
+                                _portLabelFont, x, y, direction);
+                    figure.add(labelFigure);
                 }
             }
         }
