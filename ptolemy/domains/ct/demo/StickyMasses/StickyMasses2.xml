@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Together" class="ptolemy.actor.TypedCompositeActor">
+<entity name="_Controller" class="ptolemy.actor.TypedCompositeActor">
     <property name="Continuous Time (CT) Director" class="ptolemy.domains.ct.kernel.CTMultiSolverDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -74,7 +74,8 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Displacement of Masses</title>
@@ -84,7 +85,8 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
 <yRange min="-0.13549033016777562" max="2.9999997395833335"/>
 <noGrid/>
 </plot>?>
-                </configure>    </entity>
+        </configure>
+    </entity>
     <entity name="Sticky Mass model" class="ptolemy.vergil.ptolemy.fsm.modal.ModalModel">
         <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
@@ -137,43 +139,43 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
             <port name="V1" class="ptolemy.vergil.ptolemy.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="35.0, 36.75">
+                <property name="_location" class="ptolemy.moml.Location" value="35.0, 36.666666666666664">
                 </property>
             </port>
             <port name="V2" class="ptolemy.vergil.ptolemy.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="35.0, 91.75">
+                <property name="_location" class="ptolemy.moml.Location" value="35.0, 91.66666666666667">
                 </property>
             </port>
             <port name="P1" class="ptolemy.vergil.ptolemy.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="40.0, 221.75">
+                <property name="_location" class="ptolemy.moml.Location" value="35.0, 211.66666666666666">
                 </property>
             </port>
             <port name="P2" class="ptolemy.vergil.ptolemy.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="35.0, 151.75">
+                <property name="_location" class="ptolemy.moml.Location" value="35.0, 151.66666666666666">
                 </property>
             </port>
             <port name="touched" class="ptolemy.vergil.ptolemy.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="49.0, 286.75">
+                <property name="_location" class="ptolemy.moml.Location" value="44.0, 281.6666666666667">
                 </property>
             </port>
             <port name="Stickiness" class="ptolemy.vergil.ptolemy.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="55.5, 401.5">
+                <property name="_location" class="ptolemy.moml.Location" value="50.5, 396.6666666666667">
                 </property>
             </port>
             <port name="Force" class="ptolemy.vergil.ptolemy.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="43.0, 341.75">
+                <property name="_location" class="ptolemy.moml.Location" value="38.0, 336.6666666666667">
                 </property>
             </port>
             <entity name="init" class="ptolemy.domains.fsm.kernel.State">
@@ -211,7 +213,7 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.ptolemy.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="510.0, 175.0">
+                <property name="_location" class="ptolemy.moml.Location" value="515.0, 185.0">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
@@ -355,20 +357,6 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
             <port name="touched" class="ptolemy.vergil.ptolemy.fsm.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.moml.Location" value="464.0, 355.0">
-                </property>
-            </port>
-            <port name="Stickiness" class="ptolemy.vergil.ptolemy.fsm.modal.RefinementPort">
-                <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="60.5, 185.0">
-                </property>
-                <property name="type" class="ptolemy.actor.TypeAttribute" value="double">
-                </property>
-            </port>
-            <port name="Force" class="ptolemy.vergil.ptolemy.fsm.modal.RefinementPort">
-                <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="48.0, 125.0">
-                </property>
-                <property name="type" class="ptolemy.actor.TypeAttribute" value="double">
                 </property>
             </port>
             <entity name="1:ZD" class="ptolemy.domains.ct.lib.ZeroCrossingDetector">
@@ -605,13 +593,6 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 <property name="_location" class="ptolemy.moml.Location" value="202.0, 240.0">
                 </property>
             </port>
-            <port name="V2" class="ptolemy.vergil.ptolemy.fsm.modal.RefinementPort">
-                <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="42.0, 250.0">
-                </property>
-                <property name="type" class="ptolemy.actor.TypeAttribute" value="double">
-                </property>
-            </port>
             <port name="P1" class="ptolemy.vergil.ptolemy.fsm.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.moml.Location" value="367.0, 275.0">
@@ -620,13 +601,6 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
             <port name="P2" class="ptolemy.vergil.ptolemy.fsm.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.moml.Location" value="367.0, 335.0">
-                </property>
-            </port>
-            <port name="touched" class="ptolemy.vergil.ptolemy.fsm.modal.RefinementPort">
-                <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="54.0, 320.0">
-                </property>
-                <property name="type" class="ptolemy.actor.TypeAttribute" value="double">
                 </property>
             </port>
             <port name="Stickiness" class="ptolemy.vergil.ptolemy.fsm.modal.RefinementPort">
@@ -796,13 +770,9 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
         <link port="Separate.P1" relation="P1Relation"/>
         <link port="Separate.P2" relation="P2Relation"/>
         <link port="Separate.touched" relation="touchedRelation"/>
-        <link port="Separate.Stickiness" relation="StickinessRelation"/>
-        <link port="Separate.Force" relation="ForceRelation"/>
         <link port="Together.V1" relation="V1Relation"/>
-        <link port="Together.V2" relation="V2Relation"/>
         <link port="Together.P1" relation="P1Relation"/>
         <link port="Together.P2" relation="P2Relation"/>
-        <link port="Together.touched" relation="touchedRelation"/>
         <link port="Together.Stickiness" relation="StickinessRelation"/>
         <link port="Together.Force" relation="ForceRelation"/>
     </entity>
