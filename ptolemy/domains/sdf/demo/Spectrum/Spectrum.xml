@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="modulation" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Spectrum" class="ptolemy.actor.TypedCompositeActor">
     <property name="SDF1" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
         </property>
@@ -112,8 +112,9 @@ Try changing the parameters in the run window.</text>
         <property name="phase" class="ptolemy.data.expr.Parameter" value="0.0">
             <doc>The phase, in radians.</doc>
         </property>
-        <doc>This composite actor generates a sine wave.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="68.0, 312.0">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
         </property>
         <property name="annotation" class="ptolemy.kernel.util.Attribute">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -136,6 +137,11 @@ Try changing the parameters in the run window.</text>
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
+            <property name="_location" class="ptolemy.moml.Location" value="172.0, 45.0">
+            </property>
+        </property>
+        <doc>This composite actor generates a sine wave.</doc>
+        <property name="_location" class="ptolemy.moml.Location" value="68.0, 312.0">
         </property>
     </entity>
     <entity name="Signal Source" class="ptolemy.actor.lib.Sinewave">
@@ -148,8 +154,9 @@ Try changing the parameters in the run window.</text>
         <property name="phase" class="ptolemy.data.expr.Parameter" value="0.0">
             <doc>The phase, in radians.</doc>
         </property>
-        <doc>This composite actor generates a sine wave.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="66.0, 240.0">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
         </property>
         <property name="annotation" class="ptolemy.kernel.util.Attribute">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -172,6 +179,11 @@ Try changing the parameters in the run window.</text>
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
+            <property name="_location" class="ptolemy.moml.Location" value="172.0, 45.0">
+            </property>
+        </property>
+        <doc>This composite actor generates a sine wave.</doc>
+        <property name="_location" class="ptolemy.moml.Location" value="66.0, 240.0">
         </property>
     </entity>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
@@ -209,7 +221,8 @@ Try changing the parameters in the run window.</text>
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Spectrum</title>
@@ -219,7 +232,8 @@ Try changing the parameters in the run window.</text>
 <yRange min="-21.208318390214906" max="36.538209132222235"/>
 <noGrid/>
 </plot>?>
-                                                </configure>    </entity>
+        </configure>
+    </entity>
     <entity name="Spectrum" class="ptolemy.domains.sdf.lib.Spectrum">
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
         </property>
@@ -240,6 +254,8 @@ frequencies from -pi to pi radians per second,
 centered at zero frequency.</text>
            </svg>
            </configure>
+            </property>
+            <property name="_hideName" class="ptolemy.data.expr.Parameter">
             </property>
         </property>
         <property name="order" class="ptolemy.data.expr.Parameter" value="8">
@@ -265,7 +281,8 @@ centered at zero frequency.</text>
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Time-Domain Plot</title>
@@ -275,18 +292,29 @@ centered at zero frequency.</text>
 <yRange min="-1.154037151526568" max="1.1568297032397656"/>
 <noGrid/>
 </plot>?>
-                                                </configure>    </entity>
+        </configure>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="256">
+        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="242.0, 310.0">
         </vertex>
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="256">
+        </property>
     </relation>
     <link port="Noise Source.output" relation="relation2"/>
     <link port="Carrier Source.output" relation="relation3"/>
