@@ -77,6 +77,7 @@ public class CTZeroOrderHold extends TypedAtomicActor
         output.setInput(false);
         output.setOutput(true);
         output.setTypeEquals(DoubleToken.class);
+        _lastToken = new DoubleToken(0.0);
     }
 
     ////////////////////////////////////////////////////////////////////////
