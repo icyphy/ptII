@@ -50,6 +50,8 @@ On each firing, evaluate an expression that may include references
 to the inputs, current time, and a count of the firing.  The ports are
 referenced by the variables that have the same name as the port.
 To use this class, instantiate it, then add ports (instances of TypedIOPort).
+You can add ports by setting the <i>inputPorts</i> parameter to a
+comma-separated list of names.
 The type is polymorphic, with the only constraint that the
 types of the inputs must all be less than (in the type order)
 the type of the output.  What this means (loosely) is that
@@ -67,9 +69,9 @@ The expressions evaluated by this actor can refer to the current
 time by the variable name "time" and to the current iteration count
 by the variable named "iteration."
 <p>
-This actor could be used instead of many of the arithmetic actors,
-such as AddSubtract, MultiplyDivide, and Sine.  However, those actors
-will be more efficient, and sometimes more convenient to use.
+This actor can be used instead of many of the arithmetic actors,
+such as AddSubtract, MultiplyDivide, and TrigFunction.  However, those actors
+will be usually be more efficient, and sometimes more convenient to use.
 <p>
 NOTE: There are a number of limitations in the current implementation.
 First, the type constraints on the ports are the default, that input
@@ -291,8 +293,12 @@ public class Expression extends TypedAtomicActor {
     private void _updateInputPorts()
             throws IllegalActionException {
 	List _existingPorts = inputPortList();
-	StringTokenizer names = new StringTokenizer(inputPorts.getExpression(),
-		 ", \t", false);
+        String portSpec = inputPorts.getExpression();
+        if (portSpec == null) {
+            // No port specification has been given.  Ignore.
+            return;
+        }
+	StringTokenizer names = new StringTokenizer(portSpec, ", \t", false);
 	while (names.hasMoreTokens()) {
 	    String portName = names.nextToken();
 	    IOPort port = (IOPort)getPort(portName);
@@ -301,15 +307,14 @@ public class Expression extends TypedAtomicActor {
 		    // A port with specified name already exists, but is not an
 		    // input port.
 		    port.setInput(true);
-		} else {
-		    _existingPorts.remove(port);
 		}
+                _existingPorts.remove(port);
 	    } else {
 		try {
 		    port = (IOPort)newPort(portName);
 		} catch (NameDuplicationException ex) {
-		    throw new InternalErrorException("This should not happen: "
-		            + ex.getMessage());
+		    throw new InternalErrorException(
+                            "Unexpected name collision: " + ex.getMessage());
 		}
 		port.setInput(true);
 	    }
