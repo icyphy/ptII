@@ -31,14 +31,14 @@ import java.util.Vector;
 
 public class GreenFinder extends TypedAtomicActor {
     public GreenFinder(CompositeEntity container, String name)
-	    throws IllegalActionException, NameDuplicationException {
-	super(container, name);
-	input = new TypedIOPort(this, "input", true, false);
-	outputX = new TypedIOPort(this, "outputX", false, true);
-	outputY = new TypedIOPort(this, "outputY", false, true);
-	input.setTypeEquals(BaseType.OBJECT);
-	outputX.setTypeEquals(BaseType.DOUBLE);
-	outputY.setTypeEquals(BaseType.DOUBLE);
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+        input = new TypedIOPort(this, "input", true, false);
+        outputX = new TypedIOPort(this, "outputX", false, true);
+        outputY = new TypedIOPort(this, "outputY", false, true);
+        input.setTypeEquals(BaseType.OBJECT);
+        outputX.setTypeEquals(BaseType.DOUBLE);
+        outputY.setTypeEquals(BaseType.DOUBLE);
 
 
     }
@@ -49,63 +49,63 @@ public class GreenFinder extends TypedAtomicActor {
     }
     
     public void initialize() throws IllegalActionException {
-	super.initialize();
-	for (int i = 0; i < histSize; i += 1) {
-	    if (i > yLow && i < yHigh) {
-		yClass[i] = 1; }
-	    else {
-		yClass[i] = 0; }	    
-	    if (i > uLow && i < uHigh) {
-		uClass[i] = 1; }
-	    else {
-		uClass[i] = 0; } 
-	    if (i > vLow && i < vHigh) {
-		vClass[i] = 1; }
-	    else { vClass[i] = 0; }	    
-	}
+        super.initialize();
+        for (int i = 0; i < histSize; i += 1) {
+            if (i > yLow && i < yHigh) {
+                yClass[i] = 1; }
+            else {
+                yClass[i] = 0; }            
+            if (i > uLow && i < uHigh) {
+                uClass[i] = 1; }
+            else {
+                uClass[i] = 0; } 
+            if (i > vLow && i < vHigh) {
+                vClass[i] = 1; }
+            else { vClass[i] = 0; }            
+        }
     }
     
     public void fire() throws IllegalActionException {
-	super.fire();
-	if (input.hasToken(0)) {	    
-	    ObjectToken objectToken = (ObjectToken) input.get(0);
-	    Buffer in = (Buffer) objectToken.getValue();
-	    VideoFormat videoFormat = (VideoFormat)in.getFormat();
-	    YUVFormat yuvFormat = (YUVFormat) videoFormat;
-	    byte[] data = (byte[])in.getData();
-	    if (data != null) {
-		System.arraycopy(data, yuvFormat.getOffsetY(), YArray, 0, YArray.length);
-		System.arraycopy(data, yuvFormat.getOffsetU(), UArray, 0, UArray.length);
-		System.arraycopy(data, yuvFormat.getOffsetV(), VArray, 0, VArray.length);
-		
-		for (int x = 0; x < frameWidth; x += 1) {
-		    for (int y = 0; y < frameHeight; y += 1) {
-			int yComp = getYComponent(x, y);
-			int uComp = getUComponent(x, y);
-			int vComp = getVComponent(x, y);
-			
-			int compInClass = yClass[yComp] & uClass[uComp] & vClass[vComp];
-			if (compInClass==1) {
-			    sumX += x;
-			    sumY += y;
-			    inCount += 1;
-			}		
-		    }
-		}
-		if (inCount > 0) {
-		    double xLocation = (double) sumX/inCount;
-		    double yLocation = (double) (frameHeight - sumY/inCount);
-		    outputX.send(0, new DoubleToken(xLocation));
-		    outputY.send(0, new DoubleToken(yLocation));
-		    if (_debugging) {
-			_debug("just sent " + (int)xLocation + "and " + (int)yLocation);
-		    }
-		}
-		inCount = 0;
-		sumX = 0;
-		sumY = 0;
-	    }
-	}
+        super.fire();
+        if (input.hasToken(0)) {            
+            ObjectToken objectToken = (ObjectToken) input.get(0);
+            Buffer in = (Buffer) objectToken.getValue();
+            VideoFormat videoFormat = (VideoFormat)in.getFormat();
+            YUVFormat yuvFormat = (YUVFormat) videoFormat;
+            byte[] data = (byte[])in.getData();
+            if (data != null) {
+                System.arraycopy(data, yuvFormat.getOffsetY(), YArray, 0, YArray.length);
+                System.arraycopy(data, yuvFormat.getOffsetU(), UArray, 0, UArray.length);
+                System.arraycopy(data, yuvFormat.getOffsetV(), VArray, 0, VArray.length);
+                
+                for (int x = 0; x < frameWidth; x += 1) {
+                    for (int y = 0; y < frameHeight; y += 1) {
+                        int yComp = getYComponent(x, y);
+                        int uComp = getUComponent(x, y);
+                        int vComp = getVComponent(x, y);
+                        
+                        int compInClass = yClass[yComp] & uClass[uComp] & vClass[vComp];
+                        if (compInClass==1) {
+                            sumX += x;
+                            sumY += y;
+                            inCount += 1;
+                        }                
+                    }
+                }
+                if (inCount > 0) {
+                    double xLocation = (double) sumX/inCount;
+                    double yLocation = (double) (frameHeight - sumY/inCount);
+                    outputX.send(0, new DoubleToken(xLocation));
+                    outputY.send(0, new DoubleToken(yLocation));
+                    if (_debugging) {
+                        _debug("just sent " + (int)xLocation + "and " + (int)yLocation);
+                    }
+                }
+                inCount = 0;
+                sumX = 0;
+                sumY = 0;
+            }
+        }
     }
     /* Return the int representing the Y band at this pixel*/
     public int getYComponent(int point) {
@@ -171,5 +171,5 @@ public class GreenFinder extends TypedAtomicActor {
     public TypedIOPort outputX;
     public TypedIOPort outputY;
 }
-	   
-	    
+           
+            

@@ -23,8 +23,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION 2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION 2
+                                                COPYRIGHTENDKEY
 */
 
 package ptolemy.actor.lib.jmf;
@@ -69,10 +69,10 @@ public class JAIImageReader extends Source {
     public JAIImageReader(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	output.setTypeEquals(BaseType.OBJECT); 
-	imageURLTemplate = new Parameter(this, "imageURLTemplate",
-	    new StringToken("ptolemy/actor/lib/jmf/"
-			    + "goldhill.gif"));
+        output.setTypeEquals(BaseType.OBJECT); 
+        imageURLTemplate = new Parameter(this, "imageURLTemplate",
+            new StringToken("ptolemy/actor/lib/jmf/"
+                            + "goldhill.gif"));
     
 }
     
@@ -97,8 +97,8 @@ public class JAIImageReader extends Source {
      *   or if a token is received that contains a null image.
      */    
     public void fire() throws IllegalActionException {
-	super.fire();
-	output.send(0, new ObjectToken(image1));
+        super.fire();
+        output.send(0, new ObjectToken(image1));
     }       
     
     /** Initialize this actor.
@@ -106,18 +106,18 @@ public class JAIImageReader extends Source {
      *  @exception IllegalActionException If a contained method throws it.
      */
     public void initialize() throws IllegalActionException {
-	super.initialize();
+        super.initialize();
         
-	StringToken urlToken = (StringToken)imageURLTemplate.getToken();
-	String fileRoot = urlToken.stringValue();
-	
-	FileSeekableStream stream = null;
-	try {
-	    stream = new FileSeekableStream(fileRoot);
-	}
-	catch (IOException e) {
-	}
-	image1 = JAI.create("stream", stream);
+        StringToken urlToken = (StringToken)imageURLTemplate.getToken();
+        String fileRoot = urlToken.stringValue();
+        
+        FileSeekableStream stream = null;
+        try {
+            stream = new FileSeekableStream(fileRoot);
+        }
+        catch (IOException e) {
+        }
+        image1 = JAI.create("stream", stream);
     }
 }
-	    
+            
