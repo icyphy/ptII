@@ -289,4 +289,10 @@ test ParseTreeEvaluator-17.1 {Test correct scoping in function definitions.} {
     list [theTest "function(x) x + 3.0"] [theTest "function(x:int) x + 3.0"]
 } {{(function(x) (x+3.0))} {(function(x:int) (x+3.0))}}
 
+####################################################################
+
+test ParseTreeEvaluator-18.1 {Test correct scoping in function definitions.} {
+    list [theTest "(1+i)*\[1, 2\]"] \
+         [theTest "\[1, 2\]*(1+i)"]
+ } {{[1.0 + 1.0i, 2.0 + 2.0i]} {[1.0 + 1.0i, 2.0 + 2.0i]}}
 

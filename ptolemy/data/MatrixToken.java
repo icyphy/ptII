@@ -615,7 +615,7 @@ public abstract class MatrixToken extends Token {
             }
         }
 
-        // Must be a matrix...
+        // Argument must be a matrix or incomparable.
         typeInfo = TypeLattice.compare(getType(), rightArgument);
         if (typeInfo == CPO.SAME) {
             Token result = _doMultiply(rightArgument);
@@ -637,9 +637,25 @@ public abstract class MatrixToken extends Token {
             Token result = rightArgument.multiplyReverse(this);
             return result;
         } else {
+            // Items being multiplied are incomparable.
+            // However, multiplication may still be possible because
+            // the LUB of the types might support it. E.g., [double]*complex,
+            // where the LUB is [complex].
+            Type lubType = (Type)TypeLattice.lattice()
+                    .leastUpperBound(getType(), rightArgument.getType());
+            // If the LUB is a new type, try it.
+            if (!lubType.equals(getType())) {
+                Token lub = lubType.convert(this);
+                // Caution: convert() might return this again, e.g.
+                // if lubType is general.  Only proceed if the conversion
+                // returned a new type.
+                if (!(lub.getType().equals(getType()))) {
+                    return lub.multiply(rightArgument);
+                }
+            }
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("multiply",
-                            this, rightArgument));
+                    this, rightArgument));
         }
     }
 
@@ -677,7 +693,7 @@ public abstract class MatrixToken extends Token {
             return result;
         }
 
-        // Must be a matrix...
+        // Must be a matrix or incomparable.
         typeInfo = TypeLattice.compare(leftArgument, getType());
         // We would normally expect this to be LOWER, since this will almost
         // always be called by subtract, so put that case first.
@@ -702,9 +718,25 @@ public abstract class MatrixToken extends Token {
             Token result = leftArgument.multiply(this);
             return result;
         } else {
+            // Items being multiplied are incomparable.
+            // However, multiplication may still be possible because
+            // the LUB of the types might support it. E.g., [double]*complex,
+            // where the LUB is [complex].
+            Type lubType = (Type)TypeLattice.lattice()
+                    .leastUpperBound(getType(), leftArgument.getType());
+            // If the LUB is a new type, try it.
+            if (!lubType.equals(getType())) {
+                Token lub = lubType.convert(this);
+                // Caution: convert() might return this again, e.g.
+                // if lubType is general.  Only proceed if the conversion
+                // returned a new type.
+                if (!(lub.getType().equals(getType()))) {
+                    return lub.multiplyReverse(leftArgument);
+                }
+            }
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("multiplyReverse",
-                            this, leftArgument));
+                    leftArgument, this));
         }
     }
 

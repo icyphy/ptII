@@ -71,16 +71,18 @@ test UtilityFunctions-1.0 {Check readFile method} {
 ####
 # 
 test UtilityFunctions-1.1 {Check readFile method on a file that does not exist} {
-    # To be honest, I think that if the file cannot be read,
-    # we should throw something.
     set parser [java::new ptolemy.data.expr.PtParser]
-    
     set tree [$parser generateParseTree "readFile(\"not a file\")"]
 
     #$tree displayParseTree " "
-    set res [$tree evaluateParseTree]
-    $res toString
-} {""}
+    catch {set res [$tree evaluateParseTree]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Error invoking function public static ptolemy.data.StringToken ptolemy.data.expr.UtilityFunctions.readFile(java.lang.String) throws ptolemy.kernel.util.IllegalActionException
+
+Because:
+File not found
+Because:
+not a file (The system cannot find the file specified)}}
 
 ######################################################################
 ####

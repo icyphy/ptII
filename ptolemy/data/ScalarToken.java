@@ -775,12 +775,34 @@ public abstract class ScalarToken extends Token
                 throw new IllegalActionException(null, ex,
                         notSupportedMessage("multiply", this, rightArgument));
             }
-        } else if (typeInfo == CPO.LOWER) {
+        } else if (typeInfo == CPO.LOWER
+                || rightArgument instanceof MatrixToken) {
+            // NOTE: If the right argument is an instance of MatrixToken,
+            // then we try reversing the multiply.  This is because the
+            // code below for incomparable types won't work because
+            // automatic conversion from double to [double] is not
+            // supported.  Perhaps it should be?
             return rightArgument.multiplyReverse(this);
         } else {
+            // Items being multiplied are incomparable.
+            // However, multiplication may still be possible because
+            // the LUB of the types might support it. E.g., [double]*complex,
+            // where the LUB is [complex].
+            Type lubType = (Type)TypeLattice.lattice()
+                    .leastUpperBound(getType(), rightArgument.getType());
+            // If the LUB is a new type, try it.
+            if (!lubType.equals(getType())) {
+                Token lub = lubType.convert(this);
+                // Caution: convert() might return this again, e.g.
+                // if lubType is general.  Only proceed if the conversion
+                // returned a new type.
+                if (!(lub.getType().equals(getType()))) {
+                    return lub.multiply(rightArgument);
+                }
+            }
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("multiply",
-                            this, rightArgument));
+                    this, rightArgument));
         }
     }
 
@@ -820,12 +842,34 @@ public abstract class ScalarToken extends Token
             }
         } else if (typeInfo == CPO.SAME) {
             return ((ScalarToken)leftArgument)._doMultiply(this);
-        } else if (typeInfo == CPO.HIGHER) {
+        } else if (typeInfo == CPO.HIGHER
+                || leftArgument instanceof MatrixToken) {
+            // NOTE: If the left argument is an instance of MatrixToken,
+            // then we try reversing the multiply.  This is because the
+            // code below for incomparable types won't work because
+            // automatic conversion from double to [double] is not
+            // supported.  Perhaps it should be?
             return leftArgument.multiply(this);
         } else {
+            // Items being multiplied are incomparable.
+            // However, multiplication may still be possible because
+            // the LUB of the types might support it. E.g., [double]*complex,
+            // where the LUB is [complex].
+            Type lubType = (Type)TypeLattice.lattice()
+                    .leastUpperBound(getType(), leftArgument.getType());
+            // If the LUB is a new type, try it.
+            if (!lubType.equals(getType())) {
+                Token lub = lubType.convert(this);
+                // Caution: convert() might return this again, e.g.
+                // if lubType is general.  Only proceed if the conversion
+                // returned a new type.
+                if (!(lub.getType().equals(getType()))) {
+                    return lub.multiplyReverse(leftArgument);
+                }
+            }
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("multiplyReverse",
-                            this, leftArgument));
+                    leftArgument, this));
         }
     }
 
