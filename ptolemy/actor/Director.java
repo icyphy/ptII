@@ -430,9 +430,14 @@ public class Director extends NamedObj implements Executable {
 
     /** Set the current time.
      *  Do nothing in this base class implementation.
+     *  @exception IllegalActionException If time cannot be changed 
+     *   due to the state of the simulation. Only thrown in derived 
+     *   classes.
+     *  @param newTime The new current simulation time.
+     *  
      */
     // FIXME: complete this.
-    public void setCurrentTime(double time) {
+    public void setCurrentTime(double newTime) throws IllegalActionException {
         
     }
 
