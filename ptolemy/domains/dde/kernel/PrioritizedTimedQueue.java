@@ -44,7 +44,7 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// PrioritizedTimedQueue
 /**
-/* A FIFO queue with time and priority attributes that is used for
+A FIFO queue with time and priority attributes that is used for
 storing tokens with time stamps. A "time stamp" is a time value that
 is associated with a token and is used to order the consumption of a
 token with respect to other time stamped tokens. To help organize the
