@@ -278,6 +278,12 @@ public class DDFDirector extends Director {
             return (next + i - 1) < queue.size();
         }
 
+        /** Clear this receiver of any contained tokens.
+             */
+        public void clear() {
+            queue.clear();
+        }
+        
         public void put(Token token) throws NoRoomException {
             queue.add(token);
             added += 1;
@@ -349,6 +355,12 @@ public class DDFDirector extends Director {
 
         public boolean hasToken(int i) {
             return i <= queue.size();
+        }
+
+        /** Clear this receiver of any contained tokens.
+             */
+        public void clear() {
+            queue.clear();
         }
 
         public void put(Token token) throws NoRoomException {
