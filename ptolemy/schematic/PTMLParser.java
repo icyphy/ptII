@@ -99,12 +99,6 @@ public class PTMLParser extends HandlerBase{
      * parse tree, then something is wrong, and throw an exception.
      */
     public void endDocument() throws Exception {
-        if(current!=root)
-            throw new XmlException(
-                    "internal error in PTMLParser",
-                    _currentExternalEntity(),
-                    parser.getLineNumber(),
-                    parser.getColumnNumber());
     }
 
     /**
@@ -115,6 +109,8 @@ public class PTMLParser extends HandlerBase{
      * then the icon should be added to the library's list of icons.
      */
     public void endElement(String name) throws Exception {
+        if(DEBUG)
+            System.out.println("Ending Element:"+name);
         XMLElement parent= current.getParent();
         if(parent!=null)
             parent.applySemanticsToChild(current);
@@ -232,6 +228,8 @@ public class PTMLParser extends HandlerBase{
      */
     public void startElement(String name) {
         XMLElement e;
+        if(DEBUG)
+            System.out.println("Starting Element"+name);
 
         if(name.equals("domainlibrary")) {
             e=new DomainLibrary(attributes);
@@ -297,7 +295,7 @@ public class PTMLParser extends HandlerBase{
     private XMLElement current;
     private XMLElement root;
     private XmlParser parser = new XmlParser();
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
     private static final String XMLLOCATION = "file:/users/neuendor/";
 
 }

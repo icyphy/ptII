@@ -51,8 +51,8 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 #
 test PTMLParser-2.1 {parser tests} {
-    set e0 [java::new ptolemy.schematic.PTMLParser "file:/users/neuendor/ptII/ptolemy/schematic/test/exampleschematic.ptml"]
-    set element [$e0 parse]
+    set e0 [java::new ptolemy.schematic.PTMLParser]
+    set element [$e0 parse "file:/users/neuendor/ptII/ptolemy/schematic/test/exampleschematic.ptml"]
     list [$element toString]
 } {{<Document>
 <schematic version="1.0" name="SDF">
@@ -142,8 +142,8 @@ test PTMLParser-2.6 {semantic tests:schematic.port} {
 ####
 #
 test PTMLParser-3.1 {Constructor tests} {
-    set e0 [java::new ptolemy.schematic.PTMLParser "file:/users/neuendor/ptII/ptolemy/schematic/test/examplelibrary.ptml"]
-    set element [$e0 parse]
+    set e0 [java::new ptolemy.schematic.PTMLParser]
+    set element [$e0 parse "file:/users/neuendor/ptII/ptolemy/schematic/test/examplelibrary.ptml"]
     list [$element toString]
 } {{<Document>
 <iconlibrary version="1.0" name="SDF">
