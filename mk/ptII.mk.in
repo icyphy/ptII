@@ -139,7 +139,7 @@ LEJOS_DIR = @LEJOS_DIR@
 PTBACKTRACK_DIR =	@PTBACKTRACK_DIR@
 
 # Eclipse jar files used by ptolemy/backtrack 
-PTBACKTRACK_JARS =	"@PTBACKTRACK_JARS@"
+PTBACKTRACK_JARS =	@PTBACKTRACK_JARS@
 
 # Used by Mescal. Set to -I$PTII/mescal/include or -I/usr/local/include
 # if we found boost/static_assert.hpp
