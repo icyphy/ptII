@@ -26,7 +26,7 @@
 
   <!-- Specify name of this application, used by actor/gui/HTMLAbout.java -->
   <property name="_applicationName"
-            class="ptolemy.data.expr.StringParameter"
+            class="ptolemy.kernel.util.StringAttribute"
             value="HyVisual"/>
 
   <!-- Specify the help file to open. -->
