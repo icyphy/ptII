@@ -51,6 +51,8 @@ proc javaPrintArray {javaArrayObj} {
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
+set a0 [java::new {double[]} 0]
+set a1 [java::new {double[]} 1 [list 0.043]]
 set a2 [java::new {double[]} 5 [list 236.1 -36.21 4826.2 5.0 65.4]]
 set a4 [java::new {double[]} 5 [list 23.7 -0.00367 4826.2 5.0 0.000654]]
 set l [list 1 2 -3 4.1 0.0 -0.0 +0.0 \
@@ -130,8 +132,26 @@ test DoubleArrayStat-3.1 {standardDeviation sample true} {
 
 ####################################################################
 test DoubleArrayStat-3.2 {standardDeviation sample false} {
-    set r [java::call ptolemy.math.DoubleArrayStat standardDeviation $a2 true]
+    set r [java::call ptolemy.math.DoubleArrayStat standardDeviation $a2 false]
     epsilonDiff [list $r] {1905.713562426421}
+} {}
+
+####################################################################
+test DoubleArrayStat-3.3 {standardDeviation sample true, empty array} {
+    catch {set r [java::call ptolemy.math.DoubleArrayStat standardDeviation $a0 true]} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: ptolemy.math.DoubleArrayStat.variance() : variance and standard deviation of an empty array are not defined.}}
+
+####################################################################
+test DoubleArrayStat-3.4 {standardDeviation sample true, length 1 array} {
+    catch {set r [java::call ptolemy.math.DoubleArrayStat standardDeviation $a1 true]} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: ptolemy.math.DoubleArrayStat.variance() : sample variance and standard deviation of an array of length less than 2 are not defined.}}
+
+####################################################################
+test DoubleArrayStat-3.5 {standardDeviation sample false, length 1 array} {
+    set r [java::call ptolemy.math.DoubleArrayStat standardDeviation $a1 false]
+    epsilonDiff [list $r] {0.0}
 } {}
 
 ####################################################################
@@ -141,10 +161,22 @@ test DoubleArrayStat-3.1 {sumOfElements} {
 } 5096.49
 
 ####################################################################
+test DoubleArrayStat-3.1 {sumOfElements empty array} {
+    set r [java::call ptolemy.math.DoubleArrayStat sumOfElements $a0]
+    list $r
+} 0.0
+
+####################################################################
 test DoubleArrayStat-3.1 {sumOfSquares} {
     set r [java::call ptolemy.math.DoubleArrayStat sumOfSquares $a2]
     list $r
 } 23353562.9741
+
+####################################################################
+test DoubleArrayStat-3.1 {sumOfSquares empty array} {
+    set r [java::call ptolemy.math.DoubleArrayStat sumOfSquares $a0]
+    list $r
+} 0.0
 
 ####################################################################
 test DoubleArrayStat-3.1 {variance sample} {
@@ -156,13 +188,29 @@ test DoubleArrayStat-3.1 {variance sample} {
 ####################################################################
 test DoubleArrayStat-3.1 {variance sample true} {
     set r [java::call ptolemy.math.DoubleArrayStat variance $a2 true]
-    epsilonDiff [list $r] {4539680.22750001}
+    epsilonDiff [list $r] {4539680.227519999}
 } {}
 
 ####################################################################
-test DoubleArrayStat-3.1 {variance sample false} {
-    set r [java::call ptolemy.math.DoubleArrayStat variance $a2 true]
+test DoubleArrayStat-3.2 {variance sample false} {
+    set r [java::call ptolemy.math.DoubleArrayStat variance $a2 false]
     epsilonDiff [list $r] {3631744.182016002}
 } {}
 
+####################################################################
+test DoubleArrayStat-3.3 {variance sample true, empty array} {
+    catch {set r [java::call ptolemy.math.DoubleArrayStat variance $a0 true]} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: ptolemy.math.DoubleArrayStat.variance() : variance and standard deviation of an empty array are not defined.}}
 
+####################################################################
+test DoubleArrayStat-3.4 {variance sample true, length 1 array} {
+    catch {set r [java::call ptolemy.math.DoubleArrayStat variance $a1 true]} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: ptolemy.math.DoubleArrayStat.variance() : sample variance and standard deviation of an array of length less than 2 are not defined.}}
+
+####################################################################
+test DoubleArrayStat-3.5 {variance sample false, length 1 array} {
+    set r [java::call ptolemy.math.DoubleArrayStat variance $a1 false]
+    epsilonDiff [list $r] {0.0}
+} {}
