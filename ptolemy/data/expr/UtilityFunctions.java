@@ -1168,8 +1168,8 @@ public class UtilityFunctions {
      *  specified array is empty, then it is returned.
      *  This method is identical to sort(), and is provided only
      *  for naming uniformity.
-     *  @see sort(ArrayToken)
-     *  @see sortDescending(ArrayToken)
+     *  @see #sort(ArrayToken)
+     *  @see #sortDescending(ArrayToken)
      *  @param array An array of scalar tokens.
      *  @return A new sorted array.
      *  @exception IllegalActionException If the array contains
