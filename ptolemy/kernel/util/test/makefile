@@ -53,6 +53,7 @@ JSIMPLE_TESTS = \
 	Attribute.tcl \
 	CrossRefList.tcl \
 	IllegalActionException.tcl \
+	InternalErrorException.tcl \
 	InvalidStateException.tcl \
 	KernelException.tcl \
 	NameDuplicationException.tcl \
