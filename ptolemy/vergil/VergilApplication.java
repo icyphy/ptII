@@ -50,9 +50,11 @@ import ptolemy.vergil.basic.BasicGraphFrame; // VERGIL_USER_LIBRARY_NAME
 
 import javax.swing.SwingUtilities;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.net.URI;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
@@ -361,16 +363,42 @@ public class VergilApplication extends MoMLApplication {
         for (i = 0; i < _commandFlags.length; i++) {
             result += " " + _commandFlags[i];
         }
+        
+        try {
+            // Look for configuration directories in ptolemy/configs
+            // This will likely fail if ptolemy/configs is in a jar file
+            URI configurationURI =
+                new URI(specToURL("ptolemy/configs").toExternalForm());
+            File configurationDirectory = new File(configurationURI);
+            ConfigurationFilenameFilter filter = 
+                new ConfigurationFilenameFilter();
+            File [] configurationDirectories =
+                configurationDirectory.listFiles(filter);
+            System.out.println("ConfigurationDirectory = "
+                    + configurationDirectory + " configurationDirectories = "
+                    + configurationDirectories);
+            if (configurationDirectories != null) {
+                result += "\n";
+                for(i = 0; i < configurationDirectories.length; i++) {
+                    result += " -" + configurationDirectories[i].getName()
+                        + "   <read in " + configurationDirectories[i]
+                        + "/configuration.xml>\n";
+                } 
+            }
+        } catch (Exception ex) {
+            result += "Warning: Failed to find any configurations in "
+                + "ptolemy/configs" + ex;
+
+        }
         return result;
     }
 
-    /** The command-line options that are either present or not. */
-    protected String _commandFlags[] = {
-        "-<configurationDirectory, for example -ptiny>  ",
-    };
+    // _commandOptions is static because
+    // _usage() may be called from the constructor of the parent class,
+    //  in which case non-static variables are null?
 
     /** The command-line options that take arguments. */
-    protected String _commandOptions[][] = {
+    protected static String _commandOptions[][] = {
         {"-config", 
          "<configuration URL, defaults to ptolemy/configs/vergilConfiguration.xml>"},
     };
@@ -422,7 +450,6 @@ public class VergilApplication extends MoMLApplication {
         return true;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -438,4 +465,42 @@ public class VergilApplication extends MoMLApplication {
 
     // Flag indicating that the previous argument was -conf
     private boolean _expectingConfiguration = false;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** Look for directories that contain files named configuration.xml
+     *  and intro.htm.
+     */
+    class ConfigurationFilenameFilter implements FilenameFilter {
+
+        /** Return true if the specified file names a directory
+         *  that contains a file named configuration.xml
+         *  and a file named intro.htm   
+         *  @param directory the directory in which the potential
+         *  directory was found.   
+         *  @param name the name of the directory or file.
+         *  @return true if the file is a directory that
+         *  contains a file called configuration.xml
+         */
+        public boolean accept(File directory, String name ) {
+            try {
+                File configurationDirectory = new File(directory, name);
+                if (!configurationDirectory.isDirectory()) {
+                    return false;
+                }
+                File configurationFile = new File(configurationDirectory,
+                        "configuration.xml");
+                File introFile = new File(configurationDirectory,
+                        "intro.htm");
+                if (configurationFile.isFile()
+                        && introFile.isFile()) {
+                    return true;
+                }
+            } catch (Exception ex) {
+                return false;
+            }
+            return false;
+        }
+    }
 }
