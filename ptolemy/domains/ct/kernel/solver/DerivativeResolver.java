@@ -73,7 +73,8 @@ In that case, use ImpulseBESolver as the breakpoint solver for a better result.
 @author Jie Liu
 @version $Id$
 */
-public class DerivativeResolver extends ODESolver {
+public class DerivativeResolver extends ODESolver 
+    implements BreakpointODESolver {
 
     /** Construct a solver in the default workspace with the name
      *  "CT_Derivative_Resolver". The solver is added to the list of

@@ -148,6 +148,12 @@ public class CTMultiSolverDirector extends CTDirector {
     /** React to a change in an attribute. If the changed attribute matches
      *  a parameter of the director, then the corresponding private copy of the
      *  parameter value will be updated.
+     *  In particular, if the <i>ODESolver</i> or the 
+     *  <i>breakpointODESolver</i> parameters are changed, then 
+     *  the corresponding solvers will be instantiated. If the ODEsolver
+     *  instantiated is an instance of BreakpointODESolver, then
+     *  an IllegalActionException will be thrown, and the original 
+     *  ODESolver will be unchanged.
      *  @param param The changed parameter.
      *  @exception IllegalActionException If the new solver that is specified
      *   is not valid.
@@ -158,7 +164,12 @@ public class CTMultiSolverDirector extends CTDirector {
             if(_debugging) _debug(getFullName() + " updating  ODE solver...");
             _solverClassName =
                 ((StringToken)ODESolver.getToken()).stringValue();
-            _defaultSolver = _instantiateODESolver(_solverClassName);
+            ODESolver defaultSolver = _instantiateODESolver(_solverClassName);
+            if (defaultSolver instanceof BreakpointODESolver) {
+                throw new IllegalActionException(this, _solverClassName + 
+                        " can only be used as a breakpoint ODE solver.");
+            } 
+            _defaultSolver = defaultSolver;
             _setCurrentODESolver(_defaultSolver);
         } else if (attribute == breakpointODESolver) {
             if(_debugging) _debug(getName() +" updating breakpoint solver...");

@@ -58,7 +58,8 @@ a breakpointSolver.
 @author  Jie Liu
 @version $Id$
 */
-public class ImpulseBESolver extends BackwardEulerSolver {
+public class ImpulseBESolver extends BackwardEulerSolver 
+    implements BreakpointODESolver {
 
     /** Construct a solver in the default workspace with an empty
      *  string as name. The solver is added to the list of objects in

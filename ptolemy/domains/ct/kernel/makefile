@@ -56,6 +56,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	CTBaseIntegrator.java \
+	BreakpointODESolver.java \
 	CTCompositeActor.java \
 	CTDirector.java \
 	CTDynamicActor.java \
