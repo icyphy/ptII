@@ -28,6 +28,7 @@ COPYRIGHTENDKEY
 package ptolemy.actor.gui;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 
@@ -191,6 +192,10 @@ public class HTMLViewerTableau extends Tableau {
                     String urlString = effigy.uri.getURI().toString();
                     URL anotherURL =
                         JNLPUtilities.jarURLEntryResource(urlString);
+                    if (anotherURL == null && urlString.indexOf("#") != -1) {
+                        anotherURL =
+                            _entryResourceWithoutFragment(urlString);
+                    }
                     if (anotherURL == null) {
                         try {
                             anotherURL = _absolutePTIIURLToJarURL(urlString);
@@ -238,7 +243,6 @@ public class HTMLViewerTableau extends Tableau {
     public static URL _absolutePTIIURLToJarURL(String urlName) 
             throws java.net.URISyntaxException,
             java.net.MalformedURLException {
-
             // Try looking up the URL as a resource relative to $PTII.
         String ptIIDirAsURLName = StringUtilities.getProperty(
                 "ptolemy.ptII.dirAsURL");
@@ -265,10 +269,19 @@ public class HTMLViewerTableau extends Tableau {
             URI relativeURI = uri.relativize(ptIIDirAsURI);
             
             if (relativeURI.toURL().sameFile(ptIIDirAsURI.toURL())) {
+                int offset = 0;
+                if (urlName.startsWith("jar:")) {
+                    offset = 4;
+                }
                 // Hmm, should this be
                 relativePath = uri.toString()
-                    .substring(ptIIDirAsURI.toString().length());
+                    .substring(ptIIDirAsURI.toString().length() + offset);
                 //relativePath = urlName.substring(ptIIDirAsURLName.length());
+
+                if (relativePath.startsWith("/")) {
+                    relativePath = relativePath.substring(1);
+                }
+
             }
         }
         if (relativePath == null) {
@@ -283,21 +296,45 @@ public class HTMLViewerTableau extends Tableau {
                 // "package-summary.html#package_description"
                 // So, we get the resource without the
                 // trailing # and then append it
-                String relativePathBase = 
-                    relativePath.substring(0,
-                            relativePath.lastIndexOf("#"));
-                anotherURL = Thread.currentThread()
-                    .getContextClassLoader()
-                    .getResource(relativePathBase);
-
-                if (anotherURL != null) {
-                    anotherURL = new URL(anotherURL.toString()
-                        + relativePath.substring(
-                                relativePath.lastIndexOf("#")));
+                try {
+                    anotherURL = _entryResourceWithoutFragment(relativePath);
+                } catch (IOException ex) {
+                    // Ignored
                 }
-                
             }
             return anotherURL;
         }
+    }
+
+
+    // Given a string that contains a URL that has a # character signifiying
+    // a fragment, strip the fragment off and look up the URL as a resource.
+    // getResource() does not work on paths that look like:
+    // "package-summary.html#package_description"
+    // So, we get the resource without the
+    // trailing # and then append it.  If the resource cannot be found,
+    // we return null
+    // @param urlString A string representing a jar URL or a relative URL.
+    private static URL _entryResourceWithoutFragment(String urlString) 
+            throws IOException, MalformedURLException {
+
+        String urlStringBase =
+                    urlString.substring(0,
+                            urlString.lastIndexOf("#"));
+
+        URL anotherURL = null;
+        if (urlStringBase.startsWith("jar:")) {
+            anotherURL = JNLPUtilities.jarURLEntryResource(urlStringBase);
+        } else {
+            anotherURL = Thread.currentThread()
+                .getContextClassLoader()
+                .getResource(urlStringBase);
+        }
+        if (anotherURL != null) {
+            anotherURL = new URL(anotherURL.toString()
+                    + urlString.substring(
+                            urlString.lastIndexOf("#")));
+        }
+        return anotherURL;
     }
 }
