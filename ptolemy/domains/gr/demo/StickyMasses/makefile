@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2003 The Regents of the University of California.
+# @Copyright (c) 2003 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -80,7 +80,7 @@ demo_ptolemy:
 	"$(PTII)/bin/ptolemy" StickyMasses.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" StickyMassesm.xml
+	"$(PTII)/bin/vergil" StickyMasses.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
