@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 1998-2000 The Regents of the University of California.
+ * All rights reserved. See the file COPYRIGHT for details.
+ *
+ */
+
 package ptolemy.vergil.icon;
 
 // Diva imports.
@@ -32,6 +38,8 @@ import javax.swing.Action;
 import javax.swing.KeyStroke;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JColorChooser;
+import javax.swing.JDialog;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -77,35 +85,33 @@ public class IconEditor {
     public static void main(String argv[]) {
 
         /** 
-	 * Setup the windows for the icon editor application.  These windows include 
-	 * a window for the possible shapes, possible colors, possible line thicknesses, 
-	 * and the main drawing and saving window.
+	 * Setup the window for the icon editor application.  This window includes 
+	 * a toolbar of shapes, a toolbar of thicknesses, a button to choose the color, 
+	 * and the main drawing window and a save button.
 	 *
 	 * For drawing_board, I used a BasicFrame with a false argument, which tells 
-	 * BasicFrame not to set the size of the window or make it visible.
+	 * BasicFrame not to set the size of the window or make it visible.  The string
+	 * "Edit Icon" is the name of the window.
 	 *
 	 */
-	BasicFrame drawing_board = new BasicFrame("Edit Icon", false);
+        BasicFrame drawing_board = new BasicFrame("Edit Icon", false);
 
-	// The other three windows use the standard JFrame.
-	JFrame colors = new JFrame("Colors");
-	JFrame thickness = new JFrame("Thickness");
-	JFrame shapes = new JFrame("Shapes");
-
-	// Make a new instance of the IconEditor class with the four new frames.
-	new IconEditor(drawing_board, colors, thickness, shapes);
+	// Make a new instance of the IconEditor class with the drawing_board.
+	new IconEditor(drawing_board);
     }
   
-    public IconEditor(BasicFrame drawing_board, JFrame colors, JFrame thickness, JFrame shapes) {
+    public IconEditor(BasicFrame drawing_board) {
 
+        // Instantiate the color chooser for the color button.
+        colorChooser = new JColorChooser();
+      
         // Make a canvas for the drawing_board to use for drawing.
-        JCanvas canvas = new JCanvas();
+        canvas = new JCanvas();
 	drawing_board.getContentPane().add("Center", canvas);
 
-
-	// Add the save button and add it to the drawing_board.
+	// Create the save button and add it to the drawing_board.
 	JButton but = new JButton("Save");
-	but.addActionListener(save_action);
+	but.addActionListener(saveAction);
 	drawing_board.getContentPane().add("South", but);
 	
 
@@ -117,6 +123,7 @@ public class IconEditor {
 
 	ActionListener deletionListener = new ActionListener() {
 	    public void actionPerformed(ActionEvent evt) {
+	        m.clearSelection();
 	        System.out.println("Delete!");
 	    }
 	};
@@ -132,13 +139,16 @@ public class IconEditor {
 	 * frames.
 	 *
 	 */
-
-	JToolBar colorToolBar = new JToolBar();
-	colors.getContentPane().add("North", colorToolBar);
-	JToolBar thicknessToolBar = new JToolBar();
-	thickness.getContentPane().add("North", thicknessToolBar);
-	JToolBar shapesToolBar = new JToolBar();
-	shapes.getContentPane().add("North", shapesToolBar);
+	
+	//	JToolBar colorToolBar = new JToolBar(JToolBar.VERTICAL);
+	//drawing_board.getContentPane().add("West", colorToolBar);
+	//colors.getContentPane().add("North", colorToolBar);
+	JToolBar thicknessToolBar = new JToolBar(JToolBar.VERTICAL);
+	drawing_board.getContentPane().add("East", thicknessToolBar);
+	//thickness.getContentPane().add("North", thicknessToolBar);
+	JToolBar shapesToolBar = new JToolBar(JToolBar.HORIZONTAL);
+	drawing_board.getContentPane().add("North", shapesToolBar);
+	//shapes.getContentPane().add("North", shapesToolBar);
 
 
 	// Create the File menu on the drawing_board frame.
@@ -148,7 +158,7 @@ public class IconEditor {
 	menuBar.add(menuFile);
 
 	// A layout action which, as of now, just does the same action as clicking the save button.
-	Action action = save_action;
+	Action action = saveAction;
 	GUIUtilities.addMenuItem(menuFile, action, 'L', 
 				 "Automatically layout the model");
     
@@ -172,85 +182,49 @@ public class IconEditor {
 	String my_thickness3 = "gifs/my_thickness3.gif";
 	String my_thickness4 = "gifs/my_thickness4.gif";
 	String my_thickness5 = "gifs/my_thickness5.gif";
-	String black = "gifs/black.gif";
-	String darkgray = "gifs/darkgray.gif";
-	String gray = "gifs/gray.gif";
-	String lightgray = "gifs/lightgray.gif";
-	String white = "gifs/white.gif";
-	String blue = "gifs/blue.gif";
-	String cyan = "gifs/cyan.gif";
-	String green = "gifs/green.gif";
-	String orange = "gifs/orange.gif";
-	String magenta = "gifs/magenta.gif";
-	String pink = "gifs/pink.gif";
-	String red = "gifs/red.gif";
-	String yellow = "gifs/yellow.gif";
-
 						
 	/**
 	 * Now that I have the names of all the gif files, I need to make them buttons and add them  
-	 * to the appropriate toolbars in the four different windows.
+	 * to the appropriate toolbars in the main window.
 	 *
 	 */
 
-	GUIUtilities.addToolBarButton(shapesToolBar, rectangle_action,
+	GUIUtilities.addToolBarButton(shapesToolBar, rectangleAction,
 				      "Rectangle", new ImageIcon(my_rectangle));
-	GUIUtilities.addToolBarButton(shapesToolBar, line_action,
+	GUIUtilities.addToolBarButton(shapesToolBar, lineAction,
 				      "Straight Line", new ImageIcon(my_line));
-	GUIUtilities.addToolBarButton(shapesToolBar, quadratic_action,
+	GUIUtilities.addToolBarButton(shapesToolBar, quadraticAction,
 				      "Quadratic Curve", new ImageIcon(my_quad));
-	GUIUtilities.addToolBarButton(shapesToolBar, cubic_action,
+	GUIUtilities.addToolBarButton(shapesToolBar, cubicAction,
 				      "Cubic Curve", new ImageIcon(my_cubic));
-	GUIUtilities.addToolBarButton(shapesToolBar, circle_action, 
+	GUIUtilities.addToolBarButton(shapesToolBar, circleAction, 
 				      "Circle", new ImageIcon(my_circle));
-	GUIUtilities.addToolBarButton(shapesToolBar, ellipse_action, 
+	GUIUtilities.addToolBarButton(shapesToolBar, ellipseAction, 
 				      "Ellipse", new ImageIcon(my_ellipse));
-	GUIUtilities.addToolBarButton(shapesToolBar, fill_action, 
+	GUIUtilities.addToolBarButton(shapesToolBar, fillAction, 
 				      "Fill Shape", new ImageIcon(my_fill));
 	
-	GUIUtilities.addToolBarButton(thicknessToolBar, thickness1_action,
+	GUIUtilities.addToolBarButton(thicknessToolBar, thickness1Action,
 				      "Thickness of Outline", new ImageIcon(my_thickness1));
-	GUIUtilities.addToolBarButton(thicknessToolBar, thickness2_action,
+	GUIUtilities.addToolBarButton(thicknessToolBar, thickness2Action,
 				      "Thickness of Outline", new ImageIcon(my_thickness2));
-	GUIUtilities.addToolBarButton(thicknessToolBar, thickness3_action,
+	GUIUtilities.addToolBarButton(thicknessToolBar, thickness3Action,
 				      "Thickness of Outline", new ImageIcon(my_thickness3));
-	GUIUtilities.addToolBarButton(thicknessToolBar, thickness4_action,
+	GUIUtilities.addToolBarButton(thicknessToolBar, thickness4Action,
 				      "Thickness of Outline", new ImageIcon(my_thickness4));
-	GUIUtilities.addToolBarButton(thicknessToolBar, thickness5_action,
+	GUIUtilities.addToolBarButton(thicknessToolBar, thickness5Action,
 				      "Thickness of Outline", new ImageIcon(my_thickness5));
 	
-	GUIUtilities.addToolBarButton(colorToolBar, black_action,
-				      "Black", new ImageIcon(black));
-	GUIUtilities.addToolBarButton(colorToolBar, dark_Gray_action,
-				      "Dark Gray", new ImageIcon(darkgray));
-	GUIUtilities.addToolBarButton(colorToolBar, gray_action,
-				      "Gray", new ImageIcon(gray));
-	GUIUtilities.addToolBarButton(colorToolBar, light_Gray_action,
-				      "Light Gray", new ImageIcon(lightgray));
-	GUIUtilities.addToolBarButton(colorToolBar, white_action,
-				      "White", new ImageIcon(white));
-	GUIUtilities.addToolBarButton(colorToolBar, blue_action,
-				      "Blue", new ImageIcon(blue));
-	GUIUtilities.addToolBarButton(colorToolBar, cyan_action,
-				      "Blue", new ImageIcon(cyan));
-	GUIUtilities.addToolBarButton(colorToolBar, green_action,
-				      "Blue", new ImageIcon(green));
-	GUIUtilities.addToolBarButton(colorToolBar, magenta_action,
-				      "Blue", new ImageIcon(magenta));
-	GUIUtilities.addToolBarButton(colorToolBar, orange_action,
-				      "Blue", new ImageIcon(orange));
-	GUIUtilities.addToolBarButton(colorToolBar, pink_action,
-				      "Blue", new ImageIcon(pink));
-	GUIUtilities.addToolBarButton(colorToolBar, red_action,
-				      "Blue", new ImageIcon(red));
-	GUIUtilities.addToolBarButton(colorToolBar, yellow_action,
-				      "Blue", new ImageIcon(yellow));
-	
+
+	colorButton = new JButton("Colors");
+	colorButton.addActionListener(colorAction);
+	colorButton.setBackground((Color)strokeColor);
+	drawing_board.getContentPane().add("West", colorButton);
 	
 	// OK, now let's add a few figures into the foreground of the canvas
 	pane = (GraphicsPane)canvas.getCanvasPane();
 	layer = pane.getForegroundLayer();
-	
+	layer.setPickHalo(3.0);
 	
 	// Make them draggable.
 	interactor1.addInteractor(new DragInteractor());
@@ -260,7 +234,6 @@ public class IconEditor {
 	interactor1.setPrototypeDecorator(new PathManipulator());
 	interactor2.setPrototypeDecorator(new BoundsManipulator());
 	interactor3.setPrototypeDecorator(new CircleManipulator());
-
 
 	/**
 	 * This is the call to getFigure() which reads in some xml code and returns
@@ -272,39 +245,17 @@ public class IconEditor {
 	 *
 	 */
 
-	/**
-	 * Construct the layout of the different windows.  These lines need to be changed as 
-	 * features are added to the icon editor.
-	 *
-	 */
-	drawing_board.setSize(300, 200);
-	colors.setSize(340, 75);
-	thickness.setSize(190, 75);
-	shapes.setSize(260, 75);
+	// Sets the size of the window in pixels.
+	drawing_board.setSize(500, 605);
 
-	/**
-	 * This layout makes the windows appear in the top-left corner of the screen, stacked
-	 * downward.
-	 *
-	 */
-	colors.setLocation(0, 275);
-	thickness.setLocation(0, 350);
-	shapes.setLocation(0, 0);
+	// This layout makes the windows appear in the top-left corner of the screen.
 	drawing_board.setLocation(0, 75);
 	
+	// There is no need for the user to be able to resize the window.
+	drawing_board.setResizable(false);
 	
-	// There is no need for the user to be able to resize these windows.
-	colors.setResizable(false);
-	shapes.setResizable(false);
-	thickness.setResizable(false);
-	
-
-	// Only set the windows visible now so the user doesn't see them being constructed.
-	colors.setVisible(true);
+	// Only set the window visible now so the user doesn't see it being constructed.
 	drawing_board.setVisible(true);
-	thickness.setVisible(true);
-	shapes.setVisible(true);
-	
     }
 
     /**
@@ -340,6 +291,12 @@ public class IconEditor {
      *
      */
 
+    // Create the object for the color chooser.
+    JButton colorButton;
+    JColorChooser colorChooser;
+    JCanvas canvas;
+    JDialog dialog;
+
     // Here are the interactors for each shape
     BasicSelectionModel m = new BasicSelectionModel();
     SelectionInteractor interactor1 = new SelectionInteractor(m);
@@ -349,7 +306,7 @@ public class IconEditor {
     // This is the current shape, line thickness, and paint color.
     BasicFigure current_shape = null;
     float outline_thickness = 1.0f;
-    Paint stroke_color = Color.black;
+    Paint strokeColor = new Color(0, 170, 170);//Color.black;
 
     // Window objects
     GraphicsPane pane;
@@ -362,32 +319,22 @@ public class IconEditor {
      * explicitly the action taken for each pushed button.
      *
      */
-    private SaveAction save_action = new SaveAction();
-    private RectangleAction rectangle_action = new RectangleAction();
-    private LineAction line_action = new LineAction();
-    private QuadraticAction quadratic_action = new QuadraticAction();
-    private CubicAction cubic_action = new CubicAction();
-    private CircleAction circle_action = new CircleAction();
-    private EllipseAction ellipse_action = new EllipseAction();
-    private FillAction fill_action = new FillAction();
-    private Thickness1Action thickness1_action = new Thickness1Action();
-    private Thickness2Action thickness2_action = new Thickness2Action();
-    private Thickness3Action thickness3_action = new Thickness3Action();
-    private Thickness4Action thickness4_action = new Thickness4Action();
-    private Thickness5Action thickness5_action = new Thickness5Action();
-    private BlackAction black_action = new BlackAction();
-    private DarkGrayAction dark_Gray_action = new DarkGrayAction();
-    private GrayAction gray_action = new GrayAction();
-    private LightGrayAction light_Gray_action = new LightGrayAction();
-    private WhiteAction white_action = new WhiteAction();
-    private BlueAction blue_action = new BlueAction();
-    private CyanAction cyan_action = new CyanAction();
-    private GreenAction green_action = new GreenAction();
-    private MagentaAction magenta_action = new MagentaAction();
-    private OrangeAction orange_action = new OrangeAction();
-    private PinkAction pink_action = new PinkAction();
-    private RedAction red_action = new RedAction();
-    private YellowAction yellow_action = new YellowAction();
+    private SaveAction saveAction = new SaveAction();
+    private RectangleAction rectangleAction = new RectangleAction();
+    private LineAction lineAction = new LineAction();
+    private QuadraticAction quadraticAction = new QuadraticAction();
+    private CubicAction cubicAction = new CubicAction();
+    private CircleAction circleAction = new CircleAction();
+    private EllipseAction ellipseAction = new EllipseAction();
+    private FillAction fillAction = new FillAction();
+    private Thickness1Action thickness1Action = new Thickness1Action();
+    private Thickness2Action thickness2Action = new Thickness2Action();
+    private Thickness3Action thickness3Action = new Thickness3Action();
+    private Thickness4Action thickness4Action = new Thickness4Action();
+    private Thickness5Action thickness5Action = new Thickness5Action();
+    private ColorAction colorAction = new ColorAction();
+    private OkAction okAction = new OkAction();
+    private CancelAction cancelAction = new CancelAction();
 
     /**
      * Here are the definitions for all the actions that take place 
@@ -413,7 +360,7 @@ public class IconEditor {
 	}
         public void actionPerformed(ActionEvent e) {
 	    current_shape = new BasicFigure(new PaintedShape(new Rectangle2D.Double(8.0, 10.0, 20.0, 20.0), 
-							     outline_thickness, stroke_color));
+							     outline_thickness, strokeColor));
 	    System.out.println("You have chosen a rectangle");
 	    layer.add(current_shape);
 	    current_shape.setInteractor(interactor2);
@@ -426,7 +373,7 @@ public class IconEditor {
 	}
         public void actionPerformed(ActionEvent e) {
 	    current_shape = new BasicFigure(new PaintedPath(new Line2D.Double(45.0, 10.0, 65.0, 30.0), 
-							     outline_thickness, stroke_color));
+							     outline_thickness, strokeColor));
 	    System.out.println("You have chosen a straight line");
 	    layer.add(current_shape);
 	    current_shape.setInteractor(interactor1);
@@ -439,7 +386,7 @@ public class IconEditor {
 	}
         public void actionPerformed(ActionEvent e) {
             current_shape = new BasicFigure(new PaintedPath(new QuadCurve2D.Double(77.0, 10.0, 87.0, 20.0, 97.0, 30.0), 
-							     outline_thickness, stroke_color));
+							     outline_thickness, strokeColor));
 	    System.out.println("You have chosen a quadratic curve");
 	    layer.add(current_shape);
 	    current_shape.setInteractor(interactor1);
@@ -452,7 +399,7 @@ public class IconEditor {
 	}
         public void actionPerformed(ActionEvent e) {
             current_shape = new BasicFigure(new PaintedPath(new CubicCurve2D.Double(110.0, 10.0, 117.0, 17.0, 123.0, 23.0, 130.0, 30.0), 
-							     outline_thickness, stroke_color));
+							     outline_thickness, strokeColor));
 	    System.out.println("You have chosen a cubic curve");
 	    layer.add(current_shape);
 	    current_shape.setInteractor(interactor1);
@@ -464,8 +411,8 @@ public class IconEditor {
             super("Circle");
 	}
         public void actionPerformed(ActionEvent e) {
-            current_shape = new BasicFigure(new PaintedShape(new Ellipse2D.Double(148.0, 10.0, 20.0, 20.0), 
-							     outline_thickness, stroke_color)); 
+	    current_shape = new BasicFigure(new PaintedShape(new Ellipse2D.Double(148.0, 10.0, 20.0, 20.0), 
+							    outline_thickness, strokeColor)); 
 	    System.out.println("You have chosen a circle");
 	    layer.add(current_shape);
 	    current_shape.setInteractor(interactor3);
@@ -478,7 +425,7 @@ public class IconEditor {
 	}
         public void actionPerformed(ActionEvent e) {
 	    current_shape = new BasicFigure(new PaintedShape(new Ellipse2D.Double(183.0, 10.0, 20.0, 30.0), 
-							     outline_thickness, stroke_color)); 
+							     outline_thickness, strokeColor)); 
 	    System.out.println("You have chosen an ellipse");
 	    layer.add(current_shape);
 	    current_shape.setInteractor(interactor2);
@@ -543,13 +490,15 @@ public class IconEditor {
 	    System.out.println("Thickness 5");
 	}
     }
-
+  /*
     private class BlackAction extends AbstractAction {
         public BlackAction() {
             super("Color");
 	}
         public void actionPerformed(ActionEvent e) {
-            stroke_color = Color.black;
+	    dialog = JColorChooser.createDialog(canvas, "Choose A Color", true, colorChooser, okAction, cancelAction);
+	    dialog.setVisible(true);
+	    //strokeColor = Color.black;
 	    System.out.println("Black");
 	}
     }
@@ -559,7 +508,7 @@ public class IconEditor {
             super("Color");
 	}
         public void actionPerformed(ActionEvent e) {
-	    stroke_color = Color.darkGray;
+	    strokeColor = Color.darkGray;
 	    System.out.println("Dark Gray");
 	}
     }
@@ -569,7 +518,7 @@ public class IconEditor {
 	    super("Color");
 	}
         public void actionPerformed(ActionEvent e) {
-	    stroke_color = Color.gray;
+	    strokeColor = Color.gray;
 	    System.out.println("Gray");
 	}
     }
@@ -579,7 +528,7 @@ public class IconEditor {
 	    super("Color");
 	}
         public void actionPerformed(ActionEvent e) {
-	    stroke_color = Color.lightGray;
+	    strokeColor = Color.lightGray;
 	    System.out.println("Light Gray");
 	}
     }
@@ -589,7 +538,7 @@ public class IconEditor {
             super("Color");
 	}
         public void actionPerformed(ActionEvent e) {
-	    stroke_color = Color.white;
+	    strokeColor = Color.white;
 	    System.out.println("White");
 	}
     }
@@ -599,7 +548,7 @@ public class IconEditor {
 	    super("Color");
 	}
         public void actionPerformed(ActionEvent e) {
-	    stroke_color = Color.blue;
+	    strokeColor = Color.blue;
 	    System.out.println("Blue");
 	}
   }
@@ -609,7 +558,7 @@ public class IconEditor {
 	    super("Color");
 	}
         public void actionPerformed(ActionEvent e) {
-	    stroke_color = Color.cyan;
+	    strokeColor = Color.cyan;
 	    System.out.println("Cyan");
 	}
     }
@@ -619,7 +568,7 @@ public class IconEditor {
 	    super("Color");
 	}
         public void actionPerformed(ActionEvent e) {
-	    stroke_color = Color.green;
+	    strokeColor = Color.green;
 	    System.out.println("Green");
 	}
     }
@@ -629,7 +578,7 @@ public class IconEditor {
 	    super("Color");
 	}
         public void actionPerformed(ActionEvent e) {
-	    stroke_color = Color.magenta;
+	    strokeColor = Color.magenta;
 	    System.out.println("Magenta");
 	}
     }
@@ -639,7 +588,7 @@ public class IconEditor {
 	    super("Color");
 	}
         public void actionPerformed(ActionEvent e) {
-	    stroke_color = Color.orange;
+	    strokeColor = Color.orange;
 	    System.out.println("Orange");
 	}
     }
@@ -649,7 +598,7 @@ public class IconEditor {
 	    super("Color");
 	}
         public void actionPerformed(ActionEvent e) {
-	    stroke_color = Color.pink;
+	    strokeColor = Color.pink;
 	    System.out.println("Pink");
 	}
     }
@@ -659,7 +608,7 @@ public class IconEditor {
             super("Color");
 	}
         public void actionPerformed(ActionEvent e) {
-	    stroke_color = Color.red;
+	    strokeColor = Color.red;
 	    System.out.println("Red");
 	}
     }
@@ -669,11 +618,44 @@ public class IconEditor {
 	    super("Color");
 	}
         public void actionPerformed(ActionEvent e) {
-	    stroke_color = Color.yellow;
+	    strokeColor = Color.yellow;
 	    System.out.println("Yellow");
 	}
     }
+  */
+    private class ColorAction extends AbstractAction {
+        public ColorAction() {
+	    super("Color");
+	}
+        public void actionPerformed(ActionEvent e) {
+	    dialog = JColorChooser.createDialog(canvas, "Choose A Color", true, colorChooser, okAction, cancelAction);
+	    dialog.setVisible(true);
+	}
+    }
   
+    private class OkAction extends AbstractAction {
+        public OkAction() {
+	    super("Ok");
+	}
+        public void actionPerformed(ActionEvent e) {
+	    Color thisColor = colorChooser.getColor();
+	    colorButton.setBackground(thisColor);
+	    colorButton.repaint();
+	    strokeColor = thisColor;
+	    System.out.println("Ok!");
+	}
+    }
+
+
+    private class CancelAction extends AbstractAction {
+        public CancelAction() {
+	    super("Ok");
+	}
+        public void actionPerformed(ActionEvent e) {
+	    System.out.println("Cancel!");
+	}
+    }
+
 }
 
 
