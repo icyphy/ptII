@@ -51,7 +51,8 @@ proc javaPrintArray {javaArrayObj} {
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
-set a2 [java::new {double[]} 5 [list 236.1 -36.21 4826.2 5 65.4]]
+set a2 [java::new {double[]} 5 [list 236.1 -36.21 4826.2 5.0 65.4]]
+set a4 [java::new {double[]} 5 [list 23.7 -0.00367 4826.2 5.0 0.000654]]
 set l [list 1 2 -3 4.1 0.0 -0.0 +0.0 \
 	    [java::field java.lang.Double POSITIVE_INFINITY] \
 	    [java::field java.lang.Double NEGATIVE_INFINITY] \
@@ -100,9 +101,9 @@ test DoubleArrayStat-3.1 {mean} {
 
 ####################################################################
 test DoubleArrayStat-3.1 {productOfElements} {
-    set r [java::call ptolemy.math.DoubleArrayStat productOfElements $a2]
-    list $r
-}  1019.298
+    set r [java::call ptolemy.math.DoubleArrayStat productOfElements $a4]
+    epsilonDiff [list $r] [list -1.37267422284600]
+} {}
 
 ####################################################################
 test DoubleArrayStat-1.1 {relativeEntropy} {
@@ -110,16 +111,28 @@ test DoubleArrayStat-1.1 {relativeEntropy} {
            $p2]
     set br [java::call ptolemy.math.SignalProcessing close $r \
             0.49424632141]
-    list $br
-} {1}
+    set rl [java::new {double[]} 1 [list $r]]
+    epsilonDiff [list $r] [list 0.49424632141]
+} {}
 
 ####################################################################
 test DoubleArrayStat-3.1 {standardDeviation} {
     set r [java::call ptolemy.math.DoubleArrayStat standardDeviation $a2]
-    set br [java::call ptolemy.math.SignalProcessing close $r \
-            2130.652535614383]
-    list $br
-} {1}
+    set er [java::call ptolemy.math.DoubleArrayStat standardDeviation $a2 false]
+    epsilonDiff [list $r] [list $er]
+} {}
+
+####################################################################
+test DoubleArrayStat-3.1 {standardDeviation sample true} {
+    set r [java::call ptolemy.math.DoubleArrayStat standardDeviation $a2 true]
+    epsilonDiff [list $r] {2130.652535614383}
+} {}
+
+####################################################################
+test DoubleArrayStat-3.2 {standardDeviation sample false} {
+    set r [java::call ptolemy.math.DoubleArrayStat standardDeviation $a2 true]
+    epsilonDiff [list $r] {1905.713562426421}
+} {}
 
 ####################################################################
 test DoubleArrayStat-3.1 {sumOfElements} {
@@ -134,10 +147,22 @@ test DoubleArrayStat-3.1 {sumOfSquares} {
 } 23353562.9741
 
 ####################################################################
-test DoubleArrayStat-3.1 {variance} {
+test DoubleArrayStat-3.1 {variance sample} {
     set r [java::call ptolemy.math.DoubleArrayStat variance $a2]
-    set br [java::call ptolemy.math.SignalProcessing close $r \
-            4539680.22750001]
-    list $br
-} {1}
+    set er [java::call ptolemy.math.DoubleArrayStat variance $a2 false] 
+    epsilonDiff [list $r] [list $er]
+} {}
+
+####################################################################
+test DoubleArrayStat-3.1 {variance sample true} {
+    set r [java::call ptolemy.math.DoubleArrayStat variance $a2 true]
+    epsilonDiff [list $r] {4539680.22750001}
+} {}
+
+####################################################################
+test DoubleArrayStat-3.1 {variance sample false} {
+    set r [java::call ptolemy.math.DoubleArrayStat variance $a2 true]
+    epsilonDiff [list $r] {3631744.182016002}
+} {}
+
 

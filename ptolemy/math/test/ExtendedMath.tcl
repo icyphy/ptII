@@ -1,6 +1,6 @@
 # Tests for the ExtendedMath
 #
-# @Author: Christopher Hylands
+# @Author: Christopher Hylands, Jeff Tsay
 #
 # @Version: $Id$
 #
@@ -99,12 +99,20 @@ test ExtendedMath-3.0 {cosh} {
     ExtendedMathApply cosh {1.55490999729 1.12762596521 1.0 1.12762596521 1.53140558169 1.81065556732 11.5919532755}
 } {}
 
+test ExtendedMath-5.0 {log2} {
+    ExtendedMathApply log2  {1.0 1.80735492205760 14.82113618574405 -8.11778737810714} {2.0 3.5 28947.2 0.0036}
+} {}
+
+test ExtendedMath-6.0 {log10} {
+    ExtendedMathApply log10  {1.0 0.54406804435028 4.46160656172981 -2.44369749923271} {10.0 3.5 28947.2 0.0036}
+} {}
+
 ####################################################################
-test ExtendedMath-4.0 {sinh} {
+test ExtendedMath-7.0 {sinh} {
     ExtendedMathApply sinh {-1.19069101772 -0.521095305494 0.0 0.521095305494 1.15982889066 1.50946135541 11.5487393573}
 } {}
 
 ####################################################################
-test ExtendedMath-5.0 {sgn} {
+test ExtendedMath-8.0 {sgn} {
     ExtendedMathApply sgn {-1 -1 1 1 1 1 1}
 } {}

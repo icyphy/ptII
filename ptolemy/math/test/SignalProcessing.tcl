@@ -40,6 +40,38 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
+####################################################################
+#### SignalProcessingApply
+# Apply mathop to a number of arguments, returning the results.
+#
+proc SignalProcessingApply {mathoperation expectedresults {testvalues {}}} {
+    set results {}
+    set operationresults {}
+    if {$testvalues == {} } {
+	set testvalues [list -1.01 -0.5 0 0.5 .99 1.2 \
+		[java::field java.lang.Math PI]]
+    }
+    foreach testvalue $testvalues expectedresult $expectedresults {
+	if [catch { set operationresult [java::call ptolemy.math.SignalProcessing \
+		$mathoperation $testvalue]} errMsg] {
+	    set diffresult $errMsg
+	} else {
+	    lappend operationresults $operationresult
+	    set diffresult [epsilonDiff $operationresult $expectedresult]
+	}
+	if {"$diffresult" != ""} {
+	    lappend results $diffresult
+	}
+    }
+
+    if {"$results" != ""} {
+	# If we got an error, include the results that was actually returned
+	set results "Result was:$operationresults\nErrors:$results"
+    }
+
+    return $results
+}
+
 set PI [java::field java.lang.Math PI]
 
 # Complex numbers to be used
@@ -628,7 +660,7 @@ test SignalProcessing-13.1 {sampleWave line} {
 } {}
 
 ####################################################################
-test SignalProcessing-13.1 {sampleWave raisedCosine} {
+test SignalProcessing-13.1 {sampleWave raisedCosine with + excess} {
     set rcGen [java::new ptolemy.math.SignalProcessing\$RaisedCosineSampleGenerator 3.2 0.6]
     set rcOut [java::call ptolemy.math.SignalProcessing sampleWave 10 -4.0 \
     1.0 $rcGen]
@@ -639,14 +671,25 @@ test SignalProcessing-13.1 {sampleWave raisedCosine} {
 } {}
 
 ####################################################################
-test SignalProcessing-13.2 {sampleWave raisedCosine excess 0} {
-    set rcGen [java::new ptolemy.math.SignalProcessing\$RaisedCosineSampleGenerator 3.2 0.0]
+test SignalProcessing-14.1 {sampleWave sqrtRaisedCosine excess 0} {
+    set rcGen [java::new ptolemy.math.SignalProcessing\$SqrtRaisedCosineSampleGenerator 3.2 0.0]
     set rcOut [java::call ptolemy.math.SignalProcessing sampleWave 10 -4.0 \
     1.0 $rcGen]
     epsilonDiff [$rcOut getrange 0] { \
     -0.18006326323142 0.06623912340961 0.47052798214592 0.84692799250337 \
     1.0 0.84692799250337 0.47052798214592 0.06623912340961 \
     -0.18006326323142 -0.19980393662457}
+} {}
+
+####################################################################
+test SignalProcessing-14.2 {sampleWave sqrtRaisedCosine with + excess} {
+    set rcGen [java::new ptolemy.math.SignalProcessing\$SqrtRaisedCosineSampleGenerator 3.2 0.6]
+    set rcOut [java::call ptolemy.math.SignalProcessing sampleWave 10 -4.0 \
+    1.0 $rcGen]
+    epsilonDiff [$rcOut getrange 0] { \
+    0.17438182313721 0.20718917974530 0.68522677547354 -0.39845263819892 \
+    0.42705752605031 0.26563509213261 0.19439712599740 -0.05179729493632 \
+    -0.07868930341112 -0.01288736524732}
 } {}
 
 ####################################################################
@@ -660,6 +703,14 @@ test SignalProcessing-13.2 {sampleWave sinusoid} {
   -0.27516333805160}
 } {}
 
+####################################################################
+test SignalProcessing-14.0 {sinc} {
+    SignalProcessingApply sinc {0.0  -0.20674833578317 0.41349667156634 1.0 \
+	    0.41349667156634  -0.20674833578317  0.0} \
+{-6.28318530717959 -4.18879020478639 -2.09439510239320 0.0 \
+2.09439510239319 4.18879020478639 6.28318530717959}
+} {}
+  
 # Used to test sawtooth, square and triangle
 proc _testSignalProcessingFunction { function period phase \
 	starttime endtime steptime} {

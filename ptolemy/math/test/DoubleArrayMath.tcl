@@ -89,6 +89,56 @@ test DoubleArrayMath-2.3 {add with two empty arrays} {
 } {}
 
 ####################################################################
+test DoubleArrayMath-3.1 {append with two empty arrays} {
+    set ar [java::call ptolemy.math.DoubleArrayMath append $a0 $b0]
+    jdkPrintArray $ar
+} {}
+
+####################################################################
+test DoubleArrayMath-3.2 {append with 1 empty array, one non-empty array} {
+    set ar [java::call ptolemy.math.DoubleArrayMath append $a0 $a1]
+    epsilonDiff [$ar getrange 0] [$a1 getrange 0]
+} {}
+
+####################################################################
+test DoubleArrayMath-3.3 {append with one non-empty array, 1 empty array} {
+    set ar [java::call ptolemy.math.DoubleArrayMath append $a1 $a0]
+    epsilonDiff [$ar getrange 0] [$a1 getrange 0]
+} {}
+
+####################################################################
+test DoubleArrayMath-3.4 {append with 2 non-empty arrays} {
+    set ar [java::call ptolemy.math.DoubleArrayMath append $a1 $a2]
+    epsilonDiff [$ar getrange 0] \
+    [list 3.7 -6.6 0.0003 -3829 -3.261 4826.2 236.1 -36.21 5 65.4]
+} {}
+
+####################################################################
+test DoubleArrayMath-4.1 {append with two empty arrays} {
+    set ar [java::call ptolemy.math.DoubleArrayMath append $a0 -4 0 $b0 8 0]
+    jdkPrintArray $ar
+} {}
+
+####################################################################
+test DoubleArrayMath-4.2 {append with 1 empty array, one non-empty array} {
+    set ar [java::call ptolemy.math.DoubleArrayMath append $a0 -4 0 $a1 2 3]
+    epsilonDiff [$ar getrange 0] [list 0.0003 -3829 -3.261]
+} {}
+
+####################################################################
+test DoubleArrayMath-4.3 {append with one non-empty array, 1 empty array} {
+    set ar [java::call ptolemy.math.DoubleArrayMath append $a1 2 3 $a0 8 0]
+    epsilonDiff [$ar getrange 0] [list 0.0003 -3829 -3.261]
+} {}
+
+####################################################################
+test DoubleArrayMath-4.4 {append with 2 non-empty arrays} {
+    set ar [java::call ptolemy.math.DoubleArrayMath append $a1 3 1 $a2 1 2]
+    epsilonDiff [$ar getrange 0] \
+    [list -3829 236.1 -36.21]
+} {}
+
+####################################################################
 test DoubleArrayMath-11.1 {divide} {
     set ar [java::call ptolemy.math.DoubleArrayMath divide $a1 $a2]
     # jdkPrintArray is defined in $PTII/util/testsuite/testDefs.tcl
@@ -208,6 +258,54 @@ test DoubleArrayMath-12.3 {multiply with two empty arrays} {
 } {}
 
 ####################################################################
+test DoubleArrayMath-13.1 {resize int of empty array} {
+    set ar [java::call ptolemy.math.DoubleArrayMath resize $a0 5]
+    jdkPrintArray $ar
+} {0.0 0.0 0.0 0.0 0.0}
+
+####################################################################
+test DoubleArrayMath-13.2 {resize int truncation of end of array} {
+    set ar [java::call ptolemy.math.DoubleArrayMath resize $a1 3]
+    epsilonDiff [$ar getrange 0] {3.7 -6.6 0.0003}
+} {}
+
+####################################################################
+test DoubleArrayMath-13.3 {resize int padding of end of array} {
+    set ar [java::call ptolemy.math.DoubleArrayMath resize $a1 7]
+    epsilonDiff [$ar getrange 0] {3.7 -6.6 0.0003 -3829 -3.261 0.0 0.0}
+} {}
+
+####################################################################
+test DoubleArrayMath-13.4 {resize int empty output} {
+    set ar [java::call ptolemy.math.DoubleArrayMath resize $a1 0]
+    jdkPrintArray $ar
+} {}
+
+####################################################################
+test DoubleArrayMath-14.1 {resize int int of empty array} {
+    set ar [java::call ptolemy.math.DoubleArrayMath resize $a0 5 4]
+    jdkPrintArray $ar
+} {0.0 0.0 0.0 0.0 0.0}
+
+####################################################################
+test DoubleArrayMath-14.2 {resize int int truncation of end of array} {
+    set ar [java::call ptolemy.math.DoubleArrayMath resize $a1 3 1]
+    epsilonDiff [$ar getrange 0] {-6.6 0.0003 -3829}
+} {}
+
+####################################################################
+test DoubleArrayMath-14.3 {resize int int begin trunc padding of end} {
+    set ar [java::call ptolemy.math.DoubleArrayMath resize $a1 7 2]
+    epsilonDiff [$ar getrange 0] {0.0003 -3829 -3.261 0.0 0.0 0.0 0.0}
+} {}
+
+####################################################################
+test DoubleArrayMath-13.4 {resize int int empty output} {
+    set ar [java::call ptolemy.math.DoubleArrayMath resize $a1 0 -3]
+    jdkPrintArray $ar
+} {}
+
+####################################################################
 test DoubleArrayMath-12.1 {subtract} {
     set ar [java::call ptolemy.math.DoubleArrayMath subtract $a1 $a2]
     # jdkPrintArray is defined in $PTII/util/testsuite/testDefs.tcl
@@ -239,3 +337,5 @@ test DoubleArrayMath-13.2 {within with unequally sized arrays} {
     catch {set br [java::call ptolemy.math.DoubleArrayMath {within double[] double[] double} $b1 $a1 0.002]} errMsg
     list $errMsg
 } {{java.lang.IllegalArgumentException: ptolemy.math.DoubleArrayMath.within() : input arrays must have the same length, but the first array has length 3 and the second array has length 5.}}
+
+

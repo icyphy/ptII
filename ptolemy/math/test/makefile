@@ -91,19 +91,20 @@ KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 	$(JTCLSH) alljtests.tcl
 
-test_jcam: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) DoubleArrayMath.tcl
+test_jcam: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) ComplexArrayMath.tcl
 	   $(JTCLSH) ComplexArrayMath.tcl
 
 test_jdam: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) DoubleArrayMath.tcl
 	   $(JTCLSH) DoubleArrayMath.tcl
 
-test_jdas: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) DoubleArrayMath.tcl
+test_jdas: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) DoubleArrayStat.tcl
 	   $(JTCLSH) DoubleArrayStat.tcl
+
+test_jem:  $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) ExtendedMath.tcl
+	   $(JTCLSH) ExtendedMath.tcl
 
 test_jsp: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) SignalProcessing.tcl
 	  $(JTCLSH) SignalProcessing.tcl
-
-
 
 depend:
 	@echo "no dependencies in this directory"
