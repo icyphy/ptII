@@ -39,11 +39,11 @@ import soot.Transform;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
+import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringUtilities;
-import ptolemy.kernel.util.VersionAttribute;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.moml.filter.BackwardCompatibility;
