@@ -35,6 +35,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.graph.analysis.CycleExistenceAnalysis;
@@ -100,6 +101,7 @@ public class DirectedGraph extends Graph {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
 
     /** Find all the nodes that can be reached backward from the
      *  specified node.
@@ -592,6 +594,20 @@ public class DirectedGraph extends Graph {
         return (Collection)_sourceNodeAnalysis.nodes();
     }
 
+    /** Return a list of disconnected subgraphs of this subgraph. 
+     */
+    public LinkedList subgraphs() {
+        LinkedList subgraphList = new LinkedList();
+        LinkedList remainingNodes = (LinkedList)nodes();
+        while (!remainingNodes.isEmpty()) {
+            DirectedGraph subgraph = new DirectedGraph();
+            Node node = (Node)remainingNodes.getFirst();
+            _connectedSubGraph(node, subgraph, remainingNodes);
+            subgraphList.add(subgraph);
+        }
+        return subgraphList;
+    }
+    
     /** Return the collection of edges that make a node n2 a successor of a
      *  node n1. In other words, return the collection of edges directed
      *  from n1 to n2.
@@ -738,6 +754,54 @@ public class DirectedGraph extends Graph {
         }
     }
 
+    /** Given a node, get all the edges and nodes that are connected
+     *  to it directly and/or indirectly. Add them in the given graph.
+     *  Remove the nodes from the remainning nodes.
+     *  FIXME: Hidden edges not considered.
+     * @param node The given node.
+     * @param graph The given graph.
+     * @param remainingNodes Set of nodes that haven't been reached.
+     */
+    protected void _connectedSubGraph (Node node, DirectedGraph graph,
+            Collection remainingNodes) {
+        if (!graph.containsNode(node)) {
+            graph.addNode(node);
+            remainingNodes.remove(node);
+        }
+        // Handle source nodes.
+        Iterator inputEdges = inputEdges(node).iterator();
+        while (inputEdges.hasNext()) {
+            Edge inputEdge = (Edge) inputEdges.next();
+            if (!graph.containsEdge(inputEdge)) {
+                Node sourceNode = inputEdge.source();
+                if (!graph.containsNode(sourceNode)) {
+                    graph.addNode(sourceNode);
+                    _connectedSubGraph (sourceNode, graph, remainingNodes);
+                    remainingNodes.remove(sourceNode);
+                }
+                if (!graph.containsEdge(inputEdge)) {
+                    graph.addEdge(sourceNode, node);
+                }
+            }
+        }
+        // Handle sink nodes.
+        Iterator outputEdges = outputEdges(node).iterator();
+        while (outputEdges.hasNext()) {
+            Edge outputEdge = (Edge) outputEdges.next();
+            if (!graph.containsEdge(outputEdge)) {
+                Node sinkNode = outputEdge.source();
+                if (!graph.containsNode(sinkNode)) {
+                    graph.addNode(sinkNode);
+                    _connectedSubGraph (sinkNode, graph, remainingNodes);
+                    remainingNodes.remove(sinkNode);
+                }
+                if (!graph.containsEdge(outputEdge)) {
+                    graph.addEdge(node, sinkNode);
+                }
+            }
+        }
+    }
+    
     /* Disconnect an edge from a node that it is incident to by modifying
      * the adjacency information (incident, input, and output edge sets)
      * that is associated with the node in this graph.
