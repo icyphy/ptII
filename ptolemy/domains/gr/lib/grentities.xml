@@ -8,81 +8,41 @@
   <doc>3D Graphics actors</doc>
 
 <entity name="Box3D" class="ptolemy.domains.gr.lib.Box3D">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.source</configure>
-</rendition>
 </entity>
 
 <entity name="CircularSweep3D" class="ptolemy.domains.gr.lib.CircularSweep3D">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.source</configure>
-</rendition>
 </entity>
 
 
 <entity name="Cone3D" class="ptolemy.domains.gr.lib.Cone3D">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.source</configure>
-</rendition>
 </entity>
 
 <entity name="Cylinder3D" class="ptolemy.domains.gr.lib.Cylinder3D">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.source</configure>
-</rendition>
 </entity>
 
 <entity name="PolyCylinder3D" class="ptolemy.domains.gr.lib.PolyCylinder3D">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.source</configure>
-</rendition>
 </entity>
 
 <entity name="Sphere3D" class="ptolemy.domains.gr.lib.Sphere3D">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.source</configure>
-</rendition>
 </entity>
 
 <entity name="TextString3D" class="ptolemy.domains.gr.lib.TextString3D">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.source</configure>
-</rendition>
 </entity>
 
 <entity name="Torus3D" class="ptolemy.domains.gr.lib.Torus3D">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.source</configure>
-</rendition>
 </entity>
 
 
 <entity name="Rotate3D" class="ptolemy.domains.gr.lib.Rotate3D">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.source</configure>
-</rendition>
 </entity>
 
 <entity name="Scale3D" class="ptolemy.domains.gr.lib.Scale3D">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.source</configure>
-</rendition>
 </entity>
 
 <entity name="Translate3D" class="ptolemy.domains.gr.lib.Translate3D">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.source</configure>
-</rendition>
 </entity>
 
 <entity name="ViewScreen" class="ptolemy.domains.gr.lib.ViewScreen">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<![CDATA[
-	<xmlgraphic>
-	<rectangle coords="0 0 60 40" fill="white"/>
-	</xmlgraphic>
-]]>
-</rendition>
 </entity>
 
       </group>

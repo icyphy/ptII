@@ -35,6 +35,8 @@ import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.NonpersistentProcessedString;
+import ptolemy.kernel.util.ProcessedString;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.actor.TypedActor;
@@ -92,6 +94,16 @@ public class State extends ComponentEntity {
         outgoingPort = new ComponentPort(this, "outgoingPort");
         refinementName = new Parameter(this, "refinementName");
         refinementName.setTypeEquals(BaseType.STRING);
+
+	ProcessedString icon;
+	icon = (ProcessedString)getAttribute("iconDescription");
+	if(icon == null) {
+	    icon = new NonpersistentProcessedString(this, "iconDescription");
+	}
+	icon.setInstruction("graphml");
+	icon.setString("<xmlgraphic>\n" + 
+		"<ellipse coords=\"0 0 40 40\" fill=\"white\"/>\n" +
+		"</xmlgraphic>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

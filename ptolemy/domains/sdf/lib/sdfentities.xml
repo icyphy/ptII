@@ -8,9 +8,6 @@
 <doc>Synchronous dataflow actors</doc>
 
 <entity name="Delay" class="ptolemy.domains.sdf.lib.Delay">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.transformer</configure>
-</rendition>
 <doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>
 </entity>
 
@@ -18,3 +15,8 @@
     ?>
   </configure>
 </entity>
+
+
+
+
+

@@ -8,51 +8,27 @@
 <doc>Discrete-event actors</doc>
 
 <entity name="Delay" class="ptolemy.domains.de.lib.Delay">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.transformer</configure>
-</rendition>
 </entity>
 
 <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.transformer</configure>
-</rendition>
 </entity>
 
 <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.transformer</configure>
-</rendition>
 </entity>
 
 <entity name="Server" class="ptolemy.domains.de.lib.Server">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.transformer</configure>
-</rendition>
 </entity>
 
 <entity name="VirtualTimeBomb" class="ptolemy.domains.de.lib.TimeBomb">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.transformer</configure>
-</rendition>
 </entity>
 
 <entity name="VariableDelay" class="ptolemy.domains.de.lib.VariableDelay">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.transformer</configure>
-</rendition>
 </entity>
 
 <entity name="WaitingTime" class="ptolemy.domains.de.lib.WaitingTime">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.transformer</configure>
-</rendition>
 </entity>
 
 <entity name="WaitingTime1" class="ptolemy.domains.de.lib.WaitingTime1">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.transformer</configure>
-</rendition>
 </entity>
 
       </group>

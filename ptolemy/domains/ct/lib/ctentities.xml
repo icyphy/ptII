@@ -9,44 +9,23 @@
 <doc>Continuous-time actors</doc>
 
 <entity name="CTPeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.transformer</configure>
-</rendition>
 </entity>
 <entity name="CTTriggeredSampler" class="ptolemy.domains.ct.lib.CTTriggeredSampler">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.transformer</configure>
-</rendition>
 </entity>
 <!--
 <entity name="IPCInterface" class="ptolemy.domains.ct.lib.IPCInterface">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.transformer</configure>
-</rendition>
 </entity>
 -->
 <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.integral</configure>
-</rendition>
 </entity>
 
 <entity name="ThresholdMonitor" class="ptolemy.domains.ct.lib.ThresholdMonitor">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.transformer</configure>
-</rendition>
 </entity>
 
 <entity name="ZeroCrossingDetector" class="ptolemy.domains.ct.lib.ZeroCrossingDetector">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.transformer</configure>
-</rendition>
 </entity>
 
 <entity name="ZeroOrderHold" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.transformer</configure>
-</rendition>
 </entity>
 
       </group>

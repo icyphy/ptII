@@ -56,5 +56,16 @@ public class Integrator extends CTBaseIntegrator {
     public Integrator(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
+
+	ProcessedString icon;
+	icon = (ProcessedString)getAttribute("iconDescription");
+	if(icon == null) {
+	    icon = new NonpersistentProcessedString(this, "iconDescription");
+	}
+	icon.setInstruction("graphml");
+	icon.setString("<xmlgraphic>\n" + 
+	    "<rectangle coords=\"0 0 60 40\" fill=\"white\"/>\n" +
+	    "<line coords=\"33 10 29 13 27 15 30 20 33 25 31 27 27 30\"/>\n" +
+	    "</xmlgraphic>\n");
     }
 }
