@@ -202,8 +202,16 @@ public class BasePNDirector extends ProcessDirector {
         return newobj;
     }
 
-
-
+    /** Initialize and set the state variables to the their initial values
+     */
+    public void initialize() throws IllegalActionException {
+	super.initialize();
+	_readBlockCount = 0;
+	_mutationBlockCount = 0;
+	_writeBlockCount = 0;
+	_writeblockedQs = new LinkedList();
+	_processlisteners = new LinkedList();
+    }
 
     /** Return a new receiver compatible with this director. The receiver
      *  is an instance of PNQueueReceiver. Set the initial capacity
@@ -510,21 +518,21 @@ public class BasePNDirector extends ProcessDirector {
     ////                       protected variables                 ////
 
     /** The count of processes blocked on a read from a receiver. */
-    protected int _readBlockCount = 0;
+    protected int _readBlockCount;
 
     /** The count of processes waiting for the requests for topology changes
      *  to be processed. 
      */
-    protected int _mutationBlockCount = 0;
+    protected int _mutationBlockCount;
 
     /** The count of processes blocked on a write to a receiver. */
-    protected int _writeBlockCount = 0;
+    protected int _writeBlockCount;
 
     /** The list of receivers blocked on a write to a receiver. */
-    protected LinkedList _writeblockedQs = new LinkedList();
+    protected LinkedList _writeblockedQs;
 
-    private LinkedList _processlisteners = new LinkedList();
-    //PNProcessMulticaster _processListeners = null;
+    private LinkedList _processlisteners;
+
 }
 
 
