@@ -2,8 +2,8 @@
 /*@egen*//* Input file to JJTree and JavaCC to generate Ptolemy II Parser */
 
 options {
-LOOKAHEAD=1;                                                                   
-STATIC = false;                         
+LOOKAHEAD=1;                                                                      
+STATIC = false;                          
 }
 
 PARSER_BEGIN(PtParser)
@@ -390,13 +390,14 @@ SKIP :
  	" "
   |	"\r"
   |	"\t"
+  |     "\n"
 }
-
+/*
 TOKEN :
 {
 	< EOL: "\n" >
 }
-
+*/
 TOKEN : /* Arithmetic operators */
 {
 	< PLUS: "+" >
@@ -486,7 +487,7 @@ ASTPtRootNode start()             :
 {/*@bgen(jjtree) PtRootNode */
     try {
 /*@egen*/
-    funcIf() ( <EOL> | <EOF> )?/*@bgen(jjtree)*/
+    funcIf() <EOF>/*@bgen(jjtree)*/
         {
           jjtree.closeNodeScope(jjtn000, true);
           jjtc000 = false;
@@ -500,11 +501,11 @@ ASTPtRootNode start()             :
       } else {
         jjtree.popNode();
       }
-      if (jjte000 instanceof ParseException) {
-        throw (ParseException)jjte000;
-      }
       if (jjte000 instanceof RuntimeException) {
         throw (RuntimeException)jjte000;
+      }
+      if (jjte000 instanceof ParseException) {
+        throw (ParseException)jjte000;
       }
       throw (Error)jjte000;
     } finally {
@@ -535,11 +536,11 @@ void funcIf()       :
      } else {
        jjtree.popNode();
      }
-     if (jjte001 instanceof ParseException) {
-       throw (ParseException)jjte001;
-     }
      if (jjte001 instanceof RuntimeException) {
        throw (RuntimeException)jjte001;
+     }
+     if (jjte001 instanceof ParseException) {
+       throw (ParseException)jjte001;
      }
      throw (Error)jjte001;
    } finally {
@@ -573,11 +574,11 @@ void logicalOr()       :
      } else {
        jjtree.popNode();
      }
-     if (jjte001 instanceof ParseException) {
-       throw (ParseException)jjte001;
-     }
      if (jjte001 instanceof RuntimeException) {
        throw (RuntimeException)jjte001;
+     }
+     if (jjte001 instanceof ParseException) {
+       throw (ParseException)jjte001;
      }
      throw (Error)jjte001;
    } finally {
@@ -611,11 +612,11 @@ void logicalAnd()       :
      } else {
        jjtree.popNode();
      }
-     if (jjte001 instanceof ParseException) {
-       throw (ParseException)jjte001;
-     }
      if (jjte001 instanceof RuntimeException) {
        throw (RuntimeException)jjte001;
+     }
+     if (jjte001 instanceof ParseException) {
+       throw (ParseException)jjte001;
      }
      throw (Error)jjte001;
    } finally {
@@ -649,11 +650,11 @@ void bitwiseOr()       :
      } else {
        jjtree.popNode();
      }
-     if (jjte001 instanceof ParseException) {
-       throw (ParseException)jjte001;
-     }
      if (jjte001 instanceof RuntimeException) {
        throw (RuntimeException)jjte001;
+     }
+     if (jjte001 instanceof ParseException) {
+       throw (ParseException)jjte001;
      }
      throw (Error)jjte001;
    } finally {
@@ -687,11 +688,11 @@ void bitwiseXor()       :
      } else {
        jjtree.popNode();
      }
-     if (jjte001 instanceof ParseException) {
-       throw (ParseException)jjte001;
-     }
      if (jjte001 instanceof RuntimeException) {
        throw (RuntimeException)jjte001;
+     }
+     if (jjte001 instanceof ParseException) {
+       throw (ParseException)jjte001;
      }
      throw (Error)jjte001;
    } finally {
@@ -725,11 +726,11 @@ void bitwiseAnd()       :
      } else {
        jjtree.popNode();
      }
-     if (jjte001 instanceof ParseException) {
-       throw (ParseException)jjte001;
-     }
      if (jjte001 instanceof RuntimeException) {
        throw (RuntimeException)jjte001;
+     }
+     if (jjte001 instanceof ParseException) {
+       throw (ParseException)jjte001;
      }
      throw (Error)jjte001;
    } finally {
@@ -765,11 +766,11 @@ void logicalEquals()       :
      } else {
        jjtree.popNode();
      }
-     if (jjte001 instanceof ParseException) {
-       throw (ParseException)jjte001;
-     }
      if (jjte001 instanceof RuntimeException) {
        throw (RuntimeException)jjte001;
+     }
+     if (jjte001 instanceof ParseException) {
+       throw (ParseException)jjte001;
      }
      throw (Error)jjte001;
    } finally {
@@ -806,11 +807,11 @@ void relational()       :
      } else {
        jjtree.popNode();
      }
-     if (jjte001 instanceof ParseException) {
-       throw (ParseException)jjte001;
-     }
      if (jjte001 instanceof RuntimeException) {
        throw (RuntimeException)jjte001;
+     }
+     if (jjte001 instanceof ParseException) {
+       throw (ParseException)jjte001;
      }
      throw (Error)jjte001;
    } finally {
@@ -846,11 +847,11 @@ void sum()       :
      } else {
        jjtree.popNode();
      }
-     if (jjte001 instanceof ParseException) {
-       throw (ParseException)jjte001;
-     }
      if (jjte001 instanceof RuntimeException) {
        throw (RuntimeException)jjte001;
+     }
+     if (jjte001 instanceof ParseException) {
+       throw (ParseException)jjte001;
      }
      throw (Error)jjte001;
    } finally {
@@ -886,11 +887,11 @@ void term()       :
      } else {
        jjtree.popNode();
      }
-     if (jjte001 instanceof ParseException) {
-       throw (ParseException)jjte001;
-     }
      if (jjte001 instanceof RuntimeException) {
        throw (RuntimeException)jjte001;
+     }
+     if (jjte001 instanceof ParseException) {
+       throw (ParseException)jjte001;
      }
      throw (Error)jjte001;
    } finally {
@@ -928,11 +929,11 @@ void unary()       :
      } else {
        jjtree.popNode();
      }
-     if (jjte001 instanceof ParseException) {
-       throw (ParseException)jjte001;
-     }
      if (jjte001 instanceof RuntimeException) {
        throw (RuntimeException)jjte001;
+     }
+     if (jjte001 instanceof ParseException) {
+       throw (ParseException)jjte001;
      }
      throw (Error)jjte001;
    } finally {
@@ -966,11 +967,11 @@ void unary()       :
      } else {
        jjtree.popNode();
      }
-     if (jjte002 instanceof ParseException) {
-       throw (ParseException)jjte002;
-     }
      if (jjte002 instanceof RuntimeException) {
        throw (RuntimeException)jjte002;
+     }
+     if (jjte002 instanceof ParseException) {
+       throw (ParseException)jjte002;
      }
      throw (Error)jjte002;
    } finally {
@@ -1003,11 +1004,11 @@ void unary()       :
      } else {
        jjtree.popNode();
      }
-     if (jjte003 instanceof ParseException) {
-       throw (ParseException)jjte003;
-     }
      if (jjte003 instanceof RuntimeException) {
        throw (RuntimeException)jjte003;
+     }
+     if (jjte003 instanceof ParseException) {
+       throw (ParseException)jjte003;
      }
      throw (Error)jjte003;
    } finally {
@@ -1043,11 +1044,11 @@ void element()       :
     } else {
       jjtree.popNode();
     }
-    if (jjte001 instanceof ParseException) {
-      throw (ParseException)jjte001;
-    }
     if (jjte001 instanceof RuntimeException) {
       throw (RuntimeException)jjte001;
+    }
+    if (jjte001 instanceof ParseException) {
+      throw (ParseException)jjte001;
     }
     throw (Error)jjte001;
   } finally {
@@ -1164,8 +1165,13 @@ String tidied, x;
                     Long value = new Long(x.substring(0, len-1 ));
                     jjtn003._ptToken = new LongToken(value.longValue());
                 } else {
-                   Integer value = new Integer(x);
-                   jjtn003._ptToken = new IntToken(value.intValue()); 
+		    try { 
+                        Integer value = new Integer(x);
+                        jjtn003._ptToken = new IntToken(value.intValue()); 
+                    } catch (NumberFormatException nfe) {
+                        Long value = new Long(x);
+                        jjtn003._ptToken = new LongToken(value.longValue());
+                    }
                 }
 		jjtn003._isConstant = true;
             } catch (NumberFormatException ee) {
@@ -1384,11 +1390,11 @@ void function()                 :
       } else {
         jjtree.popNode();
       }
-      if (jjte000 instanceof ParseException) {
-        throw (ParseException)jjte000;
-      }
       if (jjte000 instanceof RuntimeException) {
         throw (RuntimeException)jjte000;
+      }
+      if (jjte000 instanceof ParseException) {
+        throw (ParseException)jjte000;
       }
       throw (Error)jjte000;
     } finally {
@@ -1450,11 +1456,11 @@ void matrixConstruct()                        :
     } else {
       jjtree.popNode();
     }
-    if (jjte000 instanceof ParseException) {
-      throw (ParseException)jjte000;
-    }
     if (jjte000 instanceof RuntimeException) {
       throw (RuntimeException)jjte000;
+    }
+    if (jjte000 instanceof ParseException) {
+      throw (ParseException)jjte000;
     }
     throw (Error)jjte000;
   } finally {

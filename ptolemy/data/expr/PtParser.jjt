@@ -390,13 +390,14 @@ SKIP :
  	" "
   |	"\r"
   |	"\t"
+  |     "\n"
 }
-
+/*
 TOKEN :
 {
 	< EOL: "\n" >
 }
-
+*/
 TOKEN : /* Arithmetic operators */
 {
 	< PLUS: "+" >
@@ -480,7 +481,7 @@ TOKEN : /* literal strings */
 ASTPtRootNode start() #PtRootNode :
 {}
 {
-    funcIf() ( <EOL> | <EOF> )?
+    funcIf() <EOF>
 	{ return jjtThis; }
 }
 
