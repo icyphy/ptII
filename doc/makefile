@@ -133,6 +133,10 @@ OPTIONAL_FILES =	\
 	uml
 
 # Java packages for copernicus 
+
+# Don't include copernicus.jhdl because it requires byucc.jhdl from JHDL.jar
+#JHDLPACKAGE = 		ptolemy.copernicus.jhdl
+
 # Javadoc can't deal with packages that end with 'java', see
 # http://developer.java.sun.com/developer/bugParade/bugs/4507380.html
 # So, we expand the ptolemy.copernicus.java package
@@ -141,7 +145,7 @@ COPERNICUSPACKAGES = \
 			ptolemy.copernicus.kernel \
 			ptolemy.copernicus.c \
 			ptolemy/copernicus/java/*.java \
-			ptolemy.copernicus.jhdl \
+			$(JHDLPACKAGE)
 			ptolemy.copernicus.shallow
 
 PTINYPACKAGES = \
