@@ -48,6 +48,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = Decl.java \
+        ChildList.java \
         GenerateVisitor.java \
         Interrogator.java \
 	ITreeNode.java \
