@@ -36,12 +36,9 @@ import java.awt.event.*;
 import java.util.Enumeration;
 
 import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
 import ptolemy.data.*;
-import ptolemy.data.expr.*;
-import ptolemy.actor.*;
 import ptolemy.actor.lib.*;
-import ptolemy.actor.util.Query;
+import ptolemy.actor.util.*;
 import ptolemy.actor.util.PtolemyApplet;
 import ptolemy.domains.sdf.kernel.*;
 import ptolemy.domains.sdf.lib.*;
@@ -66,13 +63,14 @@ public class Pulses extends SDFApplet {
         super.init();
         try {
             _query = new Query();
+            _query.addQueryListener(new ParameterListener());
             _query.line("exbw", "Excess bandwidth (%)", "100");
             _query.line("symint", "Symbol interval", "16");
             _query.onoff("sqrt", "Square root pulse", false);
             add(_query);
 
             // The 0 argument requests only a go button.
-            _createRunControls(this, 0);
+            add(_createRunControls(1));
 
             // Create and configure impulse source
             Pulse impulse = new Pulse(_toplevel, "impulse");
@@ -156,4 +154,15 @@ public class Pulses extends SDFApplet {
 
     private Query _query;
     RaisedCosine _yours;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** Listener executes the system when any parameter is changed.
+     */
+    class ParameterListener implements QueryListener {
+        public void changed(String name) {
+            _go();
+        }
+    }
 }

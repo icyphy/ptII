@@ -30,27 +30,26 @@
 
 package ptolemy.domains.sdf.demo;
 
-import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Enumeration;
 
-// FIXME: Trim this list.
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.*;
-import ptolemy.actor.*;
-import ptolemy.actor.lib.*;
 import ptolemy.actor.util.PtolemyApplet;
 import ptolemy.domains.sdf.kernel.*;
-import ptolemy.domains.sdf.lib.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// SDFApplet
 /**
 A base class for applets that use the SDF domain.
-It provides a "Go" button to run the model.
+It creates and configures a director.
+It defines an applet parameter, "iterations", which it uses to set
+the iterations parameter of the director.  If that parameter is not
+set by the applet, then when (and if) the applet requests run controls,
+it creates a dialog box on the screen in which the applet user can
+enter the number of iterations.  If the applet parameter "defaultiterations"
+is given, then the value of this parameter is the default value in the
+dialog box.
 
 @author Edward A. Lee
 @version $Id$
@@ -59,6 +58,24 @@ public class SDFApplet extends PtolemyApplet {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Describe the applet parameters.
+     *  @return An array describing the applet parameters.
+     */
+    public String[][] getParameterInfo() {
+        String basepinfo[][] = super.getParameterInfo();
+        String[][] pinfo = new String[basepinfo.length + 2][];
+        for (int i = 0; i < basepinfo.length; i++) {
+            pinfo[i] = basepinfo[i];
+        }
+        String newinfo[][] = {
+            {"iterations", "", "number of interations"},
+            {"defaultiterations", "1", "default number of interations"}
+        };
+        pinfo[basepinfo.length] = newinfo[0];
+        pinfo[basepinfo.length+1] = newinfo[1];
+        return pinfo;
+    }
 
     /** Initialize the applet. The number of iterations is given by an
      *  applet parameter "iterations".  The default value is one.
@@ -76,6 +93,7 @@ public class SDFApplet extends PtolemyApplet {
             String iterspec = getParameter("iterations");
             if (iterspec != null) {
                 iterations = (Integer.decode(iterspec)).intValue();
+                _iterationsgiven = true;
             }
         } catch (Exception ex) {
             report("Warning: iteration parameter failed: ", ex);
@@ -97,11 +115,84 @@ public class SDFApplet extends PtolemyApplet {
         }
     }
 
+    ////////////////////////////////////////////////////////////////////////
+    ////                         protected methods                      ////
+
+    /** In addition to creating the buttons provided by the base class,
+     *  if the number of iterations has not been specified, then create
+     *  a dialog box for that number to be entered.  The panel containing
+     *  the buttons and the entry box is returned.
+     *  @param numbuttons The number of buttons to create.
+     */
+    protected Panel _createRunControls(int numbuttons) {
+        Panel panel = super._createRunControls(numbuttons);
+        if (!_iterationsgiven) {
+            // To keep the label and entry box together, put them
+            // in a new panel.
+            Panel iterpanel = new Panel();
+            iterpanel.add(new Label("Number of iterations:"));
+            
+            // Process the defaultiterations parameter.
+            String defiterspec = getParameter("defaultiterations");
+            if (defiterspec == null) {
+                defiterspec = "1";
+            }
+
+            _iterationsbox = new TextField(defiterspec, 10);
+            _iterationsbox.addActionListener(new IterBoxListener());
+            iterpanel.add(_iterationsbox);
+            panel.add(iterpanel);
+        }
+        return panel;
+    }
+
+    /** Get the number of iterations from the entry box, if there is one,
+     *  and then execute the system.
+     */
+    protected void _go() {
+        if(_iterationsbox != null) {
+            try {
+                int iterations =
+                        (new Integer(_iterationsbox.getText())).intValue();
+
+                Parameter iterparam =
+                        (Parameter)_director.getAttribute("Iterations");
+
+                iterparam.setToken(new IntToken(iterations));
+            } catch (Exception ex) {
+                report("Unable to set number of iterations:\n", ex);
+            }
+        }
+        super._go();
+    }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                         protected members                 ////
 
     /** The director for the top-level composite actor, created in the
-     *  init() method. */
+     *  init() method.
+     */
     protected SDFDirector _director;
+
+    /** True if the number of iterations has been given via an applet
+     *  parameter.  Note that this is set by the init() method.
+     */
+    protected boolean _iterationsgiven = false;
+    
+    /** The entry box containing the number of iterations, or null if
+     *  there is none.
+     */
+    protected TextField _iterationsbox;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** Listener for the iterations box.  When the applet user hits
+     *  return, the model executes.
+     */
+    class IterBoxListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            _go();
+        }
+    }
 }

@@ -70,13 +70,14 @@ public class ExpressionApplet extends SDFApplet {
             add(controlpanel);
 
             _query = new Query();
+            _query.addQueryListener(new ParameterListener());
             controlpanel.add("West", _query);
             _query.line("expr", "Expression", "cos(slow) + cos(fast)", 30);
 
             // Create a "Go" button.
             Panel runcontrols = new Panel();
             controlpanel.add("East", runcontrols);
-            _createRunControls(runcontrols, 0);
+            runcontrols.add(_createRunControls(1));
 
             // Create and configure ramp1
             Ramp ramp1 = new Ramp(_toplevel, "ramp1");
@@ -127,4 +128,15 @@ public class ExpressionApplet extends SDFApplet {
 
     private Query _query;
     private Expression _expr;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** Listener executes the system when any parameter is changed.
+     */
+    class ParameterListener implements QueryListener {
+        public void changed(String name) {
+            _go();
+        }
+    }
 }

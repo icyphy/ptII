@@ -64,7 +64,7 @@ public class ComSystem extends SDFApplet {
     public void init() {
         super.init();
         // The 1 argument requests a go and a stop button.
-        _createRunControls(this, 1);
+        add(_createRunControls(2));
         try {
             // Create and configure data source
             CoinFlip data = new CoinFlip(_toplevel, "data");
