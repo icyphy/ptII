@@ -249,7 +249,10 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                 rcvr.notifyAll();
             }
         }
-        _registerBlockAndWait();
+        getController()._readBranchBlocked(true);
+        getReceiver()._checkFlagsAndWait();
+        getController()._readBranchUnblocked(true);
+        // _registerBlockAndWait();
         return true;
     }
 
@@ -271,7 +274,10 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                 controller._branchSucceeded(getID());
                 return;
             }
-            _registerBlockAndWait();
+            getController()._readBranchBlocked(true);
+            getReceiver()._checkFlagsAndWait();
+            getController()._readBranchUnblocked(true);
+            // _registerBlockAndWait();
             if (!isAlive()) {
                 controller._branchFailed(getID());
                 return;
@@ -291,7 +297,10 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
             ConditionalBranchController controller)
             throws InterruptedException {
         rcvr._setConditionalReceive(true, controller);
-        _registerBlockAndWait();
+        getController()._readBranchBlocked(true);
+        getReceiver()._checkFlagsAndWait();
+        getController()._readBranchUnblocked(true);
+        // _registerBlockAndWait();
         while (true) {
             if (!isAlive()) {
                 // reset state of receiver
@@ -314,7 +323,10 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                 }
             }
             //can't rendezvous this time, but still alive
-            _registerBlockAndWait();
+            getController()._readBranchBlocked(true);
+            getReceiver()._checkFlagsAndWait();
+            getController()._readBranchUnblocked(true);
+            // _registerBlockAndWait();
         }
     }
 }

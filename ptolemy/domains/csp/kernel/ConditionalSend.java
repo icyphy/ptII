@@ -252,7 +252,10 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                 rcvr.notifyAll();
             }
         }
-        _registerBlockAndWait();
+        getController()._writeBranchBlocked();
+        getReceiver()._checkFlagsAndWait();
+        getController()._writeBranchUnblocked();
+        // _registerBlockAndWait();
         return true;
     }
 
@@ -276,7 +279,10 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                 controller._branchSucceeded(getID());
                 return;
             } else {
-                _registerBlockAndWait();
+        	getController()._writeBranchBlocked();
+        	getReceiver()._checkFlagsAndWait();
+        	getController()._writeBranchUnblocked();
+                // _registerBlockAndWait();
             }
             if (!isAlive()) {
                 controller._branchFailed(getID());
@@ -298,7 +304,10 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
         // ConditionalReceive. Once enter this part of main
         // loop, do not leave.
         rcvr._setConditionalSend(true, controller);
-        _registerBlockAndWait();
+        getController()._writeBranchBlocked();
+        getReceiver()._checkFlagsAndWait();
+        getController()._writeBranchUnblocked();
+        // _registerBlockAndWait();
         while (true) {
             if (!isAlive()) {
                 // reset state of receiver controlling
@@ -320,7 +329,10 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                 }
             }
             //cannot rendezvous this time, still alive
-            _registerBlockAndWait();
+            getController()._writeBranchBlocked();
+            getReceiver()._checkFlagsAndWait();
+            getController()._writeBranchUnblocked();
+            // _registerBlockAndWait();
         }
     }
 }

@@ -221,12 +221,12 @@ public abstract class ConditionalBranch {
      *  branch is no longer blocked.
      * @exception InterruptedException If this method is interrupted
      *  while waiting.
-     */
     protected void _registerBlockAndWait() throws InterruptedException {
         // getController()._branchBlocked();
         getReceiver()._checkFlagsAndWait();
         // getController()._branchUnblocked();
     }
+     */
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables                 ////
