@@ -13,41 +13,21 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="190.0, 90.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 65.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={265, 63, 815, 509}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={334, 48, 815, 516}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
-    <property name="annotation" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">To see the Python Script itself,
-right click on the Python Script actor
-and select "Look Inside"</text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 60.0">
-        </property>
-    </property>
-    <entity name="PythonScript" class="ptolemy.actor.lib.python.PythonScript">
+    <entity name="PythonActor" class="ptolemy.actor.lib.python.PythonScript">
         <property name="script" class="ptolemy.kernel.util.StringAttribute" value="# This is a test script.&#10;class Main :&#10;  &quot;test method calls&quot;&#10;  s = &quot;&quot;&#10;  def fire(self) :&#10;    # read input, compute, send output&#10;    self.s = self.s + &quot;fire &quot;&#10;    return&#10;  def initialize(self) :&#10;    self.s = self.s + &quot;initialize &quot;&#10;    return&#10;  def postfire(self) : &#10;    self.s = self.s + &quot;postfire &quot;&#10;    return&#10;  def prefire(self) :&#10;    self.s = self.s + &quot;prefire &quot;&#10;    return 1&#10;  def preinitialize(self) :&#10;    self.s = self.s + &quot;preinitialize &quot;&#10;    return&#10;  def stop(self) :&#10;    self.s = self.s + &quot;stop &quot;&#10;    return&#10;  def stopFire(self) :&#10;    self.s = self.s + &quot;stopFire &quot;&#10;    return&#10;  def terminate(self) :&#10;    self.s = self.s + &quot;terminate &quot;&#10;    return&#10;  def wrapup(self) :&#10;    self.s = self.s + &quot;wrapup &quot;&#10;    #self.actor.debug(self.s)&#10;    #self.actor.debug(self.result.getExpression())&#10;    if self.s != self.result.getExpression() :&#10;      raise Exception, &quot;test failed&quot;&#10;    return&#10;">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
             </property>
         </property>
-       <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorConfigureFactory">
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
             </property>
             <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="80">
@@ -57,7 +37,9 @@ and select "Look Inside"</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 175.0">
         </property>
-        <property name="result" class="ptolemy.kernel.util.StringAttribute" value="preinitialize stopFire initialize prefire fire postfire wrapup ">
+        <property name="result" class="ptolemy.kernel.util.StringAttribute" value="preinitialize stopFire stopFire initialize prefire fire postfire wrapup ">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
         <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
             <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
@@ -76,6 +58,8 @@ and select "Look Inside"</text></svg></configure>
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 175.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
         <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
             <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
@@ -98,6 +82,6 @@ and select "Look Inside"</text></svg></configure>
             </property>
         </property>
     </relation>
-    <link port="PythonScript.input" relation="relation"/>
+    <link port="PythonActor.input" relation="relation"/>
     <link port="Ramp.output" relation="relation"/>
 </entity>
