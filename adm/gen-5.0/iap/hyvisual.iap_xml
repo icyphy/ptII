@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- This script was automatically generated using Zero G's InstallAnywhere 6.1 Enterprise, Build 2325
      STATUS: Fully Functional LICENSED Edition
-     DATE:   Sat Feb 26 23:20:03 PST 2005 -->
+     DATE:   Sun Feb 27 18:43:24 PST 2005 -->
 <InstallAnywhere_Deployment_Project increments="4466">
 	<!-- ** DO NOT EDIT ** Essential authorization and configuration data ** DO NOT EDIT ** -->
 	<essentialScriptInfo>
@@ -10,7 +10,7 @@
 		<scriptID>12,42,11,90,81,50,48,52,54,57,82,74,55,66,67,81</scriptID>
 		<buildID>3,13,71,87,105,110,100,111,119,115,32,88,80,44,32,53,46,49,44,32,120,56,54,59,32,74,97,118,97,32,49,46,51,46,49,95,48,56,44,32,83,117,110,32,77,105,99,114,111,115,121,115,116,101,109,115,32,73,110,99,46,44,32,104,116,116,112,58,47,47,106,97,118,97,46,115,117,110,46,99,111,109,47,59,32,101,110,44,32,85,83,59,32,67,112,49,50,53,50</buildID>
 		<!-- The authorizationID may change between project saves and builds.  This does not effect the integrity of the project, nor do changes in this value represent changes in the actual InstallAnywhere project. -->
-		<authorizationID>1,0,0,0,83,-96,-109,96,80,112,116,103,88,98,113,97,113,65,65,88,74,65,72,71,70,69,64,69,66,69,48,79,87,5,2,15,15,-33,98,2,1,0,0</authorizationID>
+		<authorizationID>1,0,0,0,83,-48,-77,112,80,112,116,103,88,98,113,97,113,65,65,88,74,65,72,71,70,69,64,69,66,69,48,79,87,5,2,12,4,-40,102,2,1,0,0</authorizationID>
 	</essentialScriptInfo>
 	<installationObjects uniqueObjects="217">
 		<object class="com.zerog.ia.installer.Installer" objectID="a3d1e30197df">
@@ -958,7 +958,7 @@ Press ""Done"" to quit the installer.]]></string>
 				<object class="java.util.Properties">
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.project.save.last.date]]></string>
-						<string><![CDATA[February 26, 2005 11:20:03 PM PST]]></string>
+						<string><![CDATA[February 27, 2005 6:43:24 PM PST]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.options.optimization.platform.merge]]></string>
