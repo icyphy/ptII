@@ -49,7 +49,6 @@ import java.util.Iterator;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.gui.MessageHandler;
-import ptolemy.moml.Icon;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.toolbox.EditorIcon;
 import ptolemy.vergil.toolbox.PtolemyTransferable;
