@@ -1213,7 +1213,7 @@ public class PortConfigurerDialog extends PtolemyDialog
         }
 
         /** Get the cell editor value.
-         *  @returns The string value of the selected item in the combobox.
+         *  @return The string value of the selected item in the combobox.
          */
         public Object getCellEditorValue() {
             // FIXME: do we need to get jTextField like this each time?
@@ -1376,7 +1376,7 @@ public class PortConfigurerDialog extends PtolemyDialog
         }
 
         /** Get the cell editor value.
-         *  @returns The string value of the selected item in the combobox.
+         *  @return The string value of the selected item in the combobox.
          */
         public Object getCellEditorValue() {
             // FIXME: do we need to get comboBox like this each time?
@@ -2031,7 +2031,7 @@ public class PortConfigurerDialog extends PtolemyDialog
     private static String _SINGLETON_PARAMETER = "ptolemy.data.expr.SingletonParameter";
 
     /** When you click on the "Show Name" column header, toggle this value.
-     * @see toggleShowAllNames()
+     * @see #PortTableModel.toggleShowAllNames()
      */
     private boolean _showAllNames = false;
     private static String _STRING_ATTRIBUTE = "ptolemy.kernel.util.StringAttribute";
