@@ -63,7 +63,7 @@ EXTRA_SRCS =
 # want make checkjunk to barf on them.
 MISC_FILES =
 
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
 	'ModelValidator$$1.class' \
 	'ModelValidator$$MyEntityResolver.class' \
 	'NavigableEffigy$$Factory.class' \
