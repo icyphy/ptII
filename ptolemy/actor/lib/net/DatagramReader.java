@@ -1126,10 +1126,8 @@ public class DatagramReader extends TypedAtomicActor {
                         getDirector().fireAtCurrentTime(
                                 DatagramReader.this);
                     } catch (IllegalActionException ex) {
-
-                        System.out.println(this
-                                + "!!thread catch fireAtCurrentTime!!");
-                        throw new RuntimeException("-fireAt* catch-");
+                        ex.printStackTrace();
+                        throw new RuntimeException("Exception caused by fireAt.");
                     }
                 }
             }
