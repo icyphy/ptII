@@ -82,13 +82,16 @@ public class MovieReader extends Source implements ControllerListener {
         super(container, name);
         output.setTypeEquals(BaseType.OBJECT);
         fileOrURL = new FileParameter(this, "fileOrURL");
+        fileOrURL.setExpression(
+                "file:///C:/program%20files/quicktime/Sample.mov");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
     /** The file name or URL from which to read.  This is a string with
-     *  any form accepted by File Attribute.
+     *  any form accepted by File Attribute.  The default value
+     *  is the string "file:///C:/program%20files/quicktime/Sample.mov".
      *  @see FileParameter
      */
     public FileParameter fileOrURL;
@@ -111,8 +114,8 @@ public class MovieReader extends Source implements ControllerListener {
             } else {
                 try {
                     _dataSource = Manager.createDataSource(url);
-                } catch (Exception error) {
-                    throw new IllegalActionException("Invalid URL");
+                } catch (Exception ex) {
+                    throw new IllegalActionException(this, ex, "Invalid URL");
                 }
             }
         } else {
