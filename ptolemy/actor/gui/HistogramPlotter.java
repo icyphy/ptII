@@ -30,15 +30,20 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.gui;
 
+import ptolemy.actor.*;
+import ptolemy.actor.lib.Sink;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.type.*;
 import ptolemy.data.expr.*;
-import ptolemy.actor.*;
 import ptolemy.plot.*;
+import ptolemy.plot.plotml.HistogramMLParser;
 
+// Java imports.
 import java.awt.Container;
+import java.io.InputStream;
+import java.net.URL;
 
 /**
 A histogram plotter.  This plotter contains an instance of the Histogram
@@ -49,7 +54,7 @@ is plotted on this instance.
 @author  Edward A. Lee
 @version $Id$
  */
-public class HistogramPlotter extends TypedAtomicActor implements Placeable {
+public class HistogramPlotter extends Sink implements Configurable, Placeable {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -62,10 +67,6 @@ public class HistogramPlotter extends TypedAtomicActor implements Placeable {
     public HistogramPlotter(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
-        // create the input port and make it a multiport.
-        input = new TypedIOPort(this, "input", true, false);
-        input.setMultiport(true);
         input.setTypeEquals(BaseType.DOUBLE);
         fillOnWrapup = new Parameter(this, "fillOnWrapup",
                 new BooleanToken(true));
@@ -75,15 +76,12 @@ public class HistogramPlotter extends TypedAtomicActor implements Placeable {
     ////                     ports and parameters                  ////
 
     /** If true, fill the histogram when wrapup is called.
-     *  This parameter has type BooleanToken, and default value true.
+     *  This parameter has type BOOLEAN and default value true.
      */
     public Parameter fillOnWrapup;
 
     /** The histogram object. */
     public transient Histogram histogram;
-
-    /** Input port, which has type DoubleToken. */
-    public TypedIOPort input;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -100,10 +98,26 @@ public class HistogramPlotter extends TypedAtomicActor implements Placeable {
                 (HistogramPlotter)super.clone(ws);
         newobj.histogram = null;
         newobj._container = null;
-        newobj.input = (TypedIOPort)newobj.getPort("input");
         newobj.fillOnWrapup
                  = (Parameter)newobj.getAttribute("fillOnWrapup");
         return newobj;
+    }
+
+    /** Configure the histogram with data from the specified input stream,
+     *  which is assumed to be in PlotML format.  This should be called
+     *  after place(), if place() is going to be called at all.
+     *  @param base The base relative to which references within the input
+     *   stream are found, or null if this is not known.
+     *  @param in InputStream
+     *  @exception Exception If the stream cannot be read or its syntax
+     *   is incorrect.
+     */
+    public void configure(URL base, InputStream in) throws Exception {
+        if (histogram == null) {
+            place(_container);
+        }
+        HistogramMLParser parser = new HistogramMLParser(histogram);
+        parser.parse(base, in);
     }
 
     /** If the histogram has not already been created, create it using
@@ -121,9 +135,9 @@ public class HistogramPlotter extends TypedAtomicActor implements Placeable {
         histogram.repaint();
     }
 
-    /** Specify the GUI container into which this histogram should be placed.
-     *  This method needs to be called before the first call to initialize().
-     *  Otherwise, the histogram will be placed in its own frame.
+    /** Specify the graphical container into which this histogram should be 
+     *  placed. This method needs to be called before the first call to
+     *  initialize(). Otherwise, the histogram will be placed in its own frame.
      *  The histogram is also placed in its own frame if this method
      *  is called with the argument null. If the argument is an instance
      *  of Histogram, then plot data to that instance.  If a container has been
@@ -145,6 +159,7 @@ public class HistogramPlotter extends TypedAtomicActor implements Placeable {
                 histogram = new Histogram();
                 _container.add(histogram);
                 histogram.setButtons(true);
+                histogram.setBackground(_container.getBackground());
             }
         }
     }
