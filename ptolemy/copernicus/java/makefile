@@ -96,15 +96,23 @@ demo: shallowDemo deepDemo
 shallowDemo: compileShallowDemo runShallowDemo
 deepDemo: compileDeepDemo runDeepDemo
 
-SOURCEPACKAGE = ptolemy.domains.sdf.demo.OrthogonalCom
-MODEL = OrthogonalCom 
-#SOURCECLASS = $(SOURCEPACKAGE).$(MODEL)
-SOURCECLASS = $(ROOT)/ptolemy/actor/lib/test/auto/IIR.xml
+SHALLOWTARGETPACKAGE = ptolemy.copernicus.java.cg.shallow
+
+# Orthocom
+DEEPSOURCEPACKAGE = ptolemy.domains.sdf.demo.OrthogonalCom
+DEEPMODEL = OrthogonalCom 
+DEEPSOURCECLASS = $(SOURCEPACKAGE).$(MODEL)
+DEEPTARGETCLASS = $(SHALLOWTARGETPACKAGE).CGToplevelModel
+
+# IIR
+MODEL = IIR
+SOURCECLASS = $(ROOT)/ptolemy/actor/lib/test/auto/$(MODEL).xml
+SHALLOWTARGETCLASS = $(SHALLOWTARGETPACKAGE).CG$(MODEL)
+
 
 DEEPTARGETPACKAGE = ptolemy.copernicus.java.cg.deep
-SHALLOWTARGETPACKAGE = ptolemy.copernicus.java.cg.shallow
 DEEPTARGETCLASS = $(DEEPTARGETPACKAGE).$(MODEL)
-SHALLOWTARGETCLASS = $(SHALLOWTARGETPACKAGE).$(MODEL)
+
 
 JVM_SIZE = -Xmx256m
 
@@ -115,7 +123,7 @@ JVM_SIZE = -Xmx256m
 SOOT_USER_ARGS =
 
 compileShallowDemo: $(JCLASS)
-	@echo "generate shallow code for $(SOURCEPACKAGE)"
+	@echo "generate shallow code for $(SOURCECLASS)"
 	$(JAVA) $(JVM_SIZE) \
 	 -classpath "$(CLASSPATH)" \
 	ptolemy.copernicus.java.Main $(SOURCECLASS) -d "$(ROOT)"  \
@@ -128,17 +136,15 @@ compileShallowDemo: $(JCLASS)
 
 runShallowDemo:
 	@echo "Run the model"
-	$(JAVA) \
-	-Xfuture -classpath "$(CLASSPATH)" \
-	ptolemy.actor.gui.CompositeActorApplication \
-	-iterations 50 \
-	-class $(SHALLOWTARGETCLASS)
+	$(JAVA) -Xfuture -classpath "$(ROOT)" \
+		ptolemy.actor.gui.CompositeActorApplication \
+		-class $(SHALLOWTARGETCLASS)
 
 compileDeepDemo: $(JCLASS)
-	@echo "generate deep code for $(SOURCEPACKAGE)"
+	@echo "generate deep code for $(DEEPSOURCEPACKAGE)"
 	$(JAVA) $(JVM_SIZE) \
 	 -classpath "$(CLASSPATH)" \
-	ptolemy.copernicus.java.Main $(SOURCECLASS) -d "$(ROOT)"  \
+	ptolemy.copernicus.java.Main $(DEEPSOURCECLASS) -d "$(ROOT)"  \
 		-p wjtp.at deep,targetPackage:$(DEEPTARGETPACKAGE) \
 		-p wjtp.mt deep,targetPackage:$(DEEPTARGETPACKAGE) \
 		-p wjtp.clt deep,targetPackage:$(DEEPTARGETPACKAGE) \
