@@ -115,6 +115,9 @@ to change to a great extent in the later versions of this class. A developer
 must keep that in mind while building applications by using this mechanism. It
 is highly recommended that the user do not use this mechanism as the future
 changes might not be compatible with the current listener mechanism.<p>
+<P>
+FIXME: Currently this director does not properly deal with
+       topology mutations.
 
 @author Mudit Goel
 @version $Id$
@@ -295,6 +298,9 @@ public class TimedPNDirector extends BasePNDirector {
      *  calling process) to resume. The count of mutation-blocked processes
      *  is decreased by the directing thread.
      *  This method is synchronized on the director.
+     *  <p>
+     *  FIXME: Currently this director does not properly deal with
+     *         topology mutations.
      *
      *  @param request An object with commands to perform topology changes
      *  and to inform the topology listeners of the same.
@@ -304,9 +310,10 @@ public class TimedPNDirector extends BasePNDirector {
      */
     public void requestChange(ChangeRequest request) {
 	synchronized(this) {
-	    _mutationsRequested = true;
+	    // _mutationsRequested = true;
 	    _informOfMutationBlock();
             super.requestChange(request);
+            /*
 	    while(_mutationsRequested) {
 		try {
 		    wait();
@@ -314,6 +321,7 @@ public class TimedPNDirector extends BasePNDirector {
 		    System.err.println(e.toString());
 		}
 	    }
+            */
 	}
     }
 
