@@ -30,13 +30,20 @@
 
 package ptolemy.domains.sdf.lib;
 
+import ptolemy.actor.AtomicActor;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.*;
-import ptolemy.data.type.*;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.ScalarToken;
+import ptolemy.data.Token;
+import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// DotProduct

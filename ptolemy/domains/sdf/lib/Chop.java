@@ -31,14 +31,14 @@
 package ptolemy.domains.sdf.lib;
 
 import ptolemy.actor.Director;
-import ptolemy.data.Token;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.domains.sdf.lib.SDFTransformer;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Chop
@@ -184,22 +184,22 @@ public class Chop extends SDFTransformer {
         if (attribute == numberToRead
                 || attribute == numberToWrite
                 || attribute == offset) {
-            nread = ((IntToken)numberToRead.getToken()).intValue();
-            nwrite = ((IntToken)numberToWrite.getToken()).intValue();
+            nRead = ((IntToken)numberToRead.getToken()).intValue();
+            nWrite = ((IntToken)numberToWrite.getToken()).intValue();
             offsetValue = ((IntToken)offset.getToken()).intValue();
             usePast = ((BooleanToken)usePastInputs.getToken()).booleanValue();
 
-            if (nread <= 0) {
+            if (nRead <= 0) {
                 throw new IllegalActionException(this,
-                "Invalid numberToRead: " + nread);
+                "Invalid numberToRead: " + nRead);
             }
-            if (nwrite <= 0) {
+            if (nWrite <= 0) {
                 throw new IllegalActionException(this,
-                "Invalid numberToWrite: " + nread);
+                "Invalid numberToWrite: " + nRead);
             }
 
-            input.setTokenConsumptionRate(nread);
-            output.setTokenProductionRate(nwrite);
+            input.setTokenConsumptionRate(nRead);
+            output.setTokenProductionRate(nWrite);
             Director director = getDirector();
             if (director != null) {
                 director.invalidateSchedule();
@@ -208,22 +208,22 @@ public class Chop extends SDFTransformer {
             // NOTE: The following computation gets repeated when each of
             // these gets set, but it's a simple calculation, so we live
             // with it.
-            // The variables hiLim and loLim indicate the range of
+            // The variables hiLimit and loLimit indicate the range of
             // output indexes that come directly from the input block
             // that is read.
-            hiLim = offsetValue + nread - 1;
-            if (hiLim >= nwrite) hiLim = nwrite - 1;
+            hiLimit = offsetValue + nRead - 1;
+            if (hiLimit >= nWrite) hiLimit = nWrite - 1;
 
             if (offsetValue >= 0) {
-                loLim = offsetValue;
+                loLimit = offsetValue;
                 inidx = 0;
             } else {
-                loLim = 0;
+                loLimit = 0;
                 inidx = -offsetValue;
             }
 
             if (attribute == numberToWrite) {
-                buffer = new Token[nwrite];
+                buffer = new Token[nWrite];
             }
             if (attribute == offset || attribute == usePastInputs) {
                 if (offsetValue > 0) {
@@ -243,12 +243,12 @@ public class Chop extends SDFTransformer {
     public void fire() throws IllegalActionException {
         int inputIndex = inidx;
         int pastBufferIndex = 0;
-        Token[] inBuffer = input.get(0, nread);
+        Token[] inBuffer = input.get(0, nRead);
         Token zero = inBuffer[0].zero();
-        for (int i = 0; i < nwrite; i++) {
-            if (i > hiLim) {
+        for (int i = 0; i < nWrite; i++) {
+            if (i > hiLimit) {
                 buffer[i] = zero;
-            } else if (i < loLim) {
+            } else if (i < loLimit) {
                 if (usePast) {
                     if (pastNeedsInitializing) {
                         // Fill past buffer with zeros.
@@ -271,27 +271,27 @@ public class Chop extends SDFTransformer {
             // Copy input buffer into past buffer.  Have to be careful
             // here because the buffer might be longer than the
             // input window.
-            int startCopy = nread - offsetValue;
+            int startCopy = nRead - offsetValue;
             int length = pastBuffer.length;
             int destination = 0;
             if (startCopy < 0) {
                 // Shift older data.
-                destination = pastBuffer.length - nread;
-                System.arraycopy(pastBuffer, nread,
+                destination = pastBuffer.length - nRead;
+                System.arraycopy(pastBuffer, nRead,
                         pastBuffer, 0, destination);
                 startCopy = 0;
-                length = nread;
+                length = nRead;
             }
             System.arraycopy(inBuffer, startCopy, pastBuffer,
                     destination, length);
         }
-        output.send(0, buffer, nwrite);
+        output.send(0, buffer, nWrite);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
-    int hiLim, inidx, loLim, nread, nwrite, offsetValue;
+    int hiLimit, inidx, loLimit, nRead, nWrite, offsetValue;
     Token[] buffer, pastBuffer;
     boolean usePast, pastNeedsInitializing;
 }

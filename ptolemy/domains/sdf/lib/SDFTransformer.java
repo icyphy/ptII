@@ -1,4 +1,5 @@
-/* A base class for SDF actors that transform an input stream into an output stream.
+/* A base class for SDF actors that transform an input stream into an
+output stream.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -30,10 +31,11 @@
 
 package ptolemy.domains.sdf.lib;
 
-import ptolemy.actor.*;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.actor.TypedAtomicActor;
 import ptolemy.domains.sdf.kernel.SDFIOPort;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// SDFTransformer

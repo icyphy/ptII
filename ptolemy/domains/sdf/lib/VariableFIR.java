@@ -30,17 +30,20 @@
 
 package ptolemy.domains.sdf.lib;
 
-import ptolemy.actor.*;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
-import ptolemy.data.Token;
+import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.type.ArrayType;
-import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
-import ptolemy.graph.InequalityTerm;
-import ptolemy.domains.sdf.kernel.*;
+import ptolemy.data.expr.Variable;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.util.Settable.Visibility;
 
 //////////////////////////////////////////////////////////////////////////
 //// VariableFIR
@@ -124,8 +127,10 @@ public class VariableFIR extends FIR {
             // rates correctly for the blockSize, so we redo it.
             IntToken blockSizeToken = (IntToken)(blockSize.getToken());
             _blockSizeValue = blockSizeToken.intValue();
-            output.setTokenProductionRate(_interp*_blockSizeValue);
-            input.setTokenConsumptionRate(_dec*_blockSizeValue);
+            output.setTokenProductionRate(_interpolationValue
+                    * _blockSizeValue);
+            input.setTokenConsumptionRate(_decimationValue
+                    *_blockSizeValue);
             Director director = getDirector();
             if (director != null) {
                 director.invalidateSchedule();
@@ -164,7 +169,7 @@ public class VariableFIR extends FIR {
 
             _reinitializeNeeded = true;
         }
-        for (int i=0; i < _blockSizeValue; i++) {
+        for (int i = 0; i < _blockSizeValue; i++) {
             super.fire();
         }
     }
@@ -178,10 +183,10 @@ public class VariableFIR extends FIR {
      */
     public boolean prefire() throws IllegalActionException {
         // If an attribute has changed since the last fire(), or if
-        // this is the first fire(), then renitialize.
+        // this is the first fire(), then reinitialize.
         if (_reinitializeNeeded) _reinitialize();
 
-        if (input.hasToken(0, _dec * _blockSizeValue) &&
+        if (input.hasToken(0, _decimationValue * _blockSizeValue) &&
                 newTaps.hasToken(0)) return super.prefire();
         else return false;
     }

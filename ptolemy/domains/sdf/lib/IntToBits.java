@@ -30,15 +30,14 @@
 
 package ptolemy.domains.sdf.lib;
 
-import ptolemy.actor.*;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.Parameter;
-import ptolemy.domains.sdf.kernel.*;
-import ptolemy.actor.lib.*;
-import ptolemy.math.Complex;
+import ptolemy.data.type.Type;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 ///////////////////////////////////////////////////////////////
 /// IntToBits

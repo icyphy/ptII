@@ -30,15 +30,20 @@
 
 package ptolemy.domains.sdf.lib;
 
-import ptolemy.actor.*;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.Parameter;
-import ptolemy.domains.sdf.kernel.*;
+import ptolemy.data.type.Type;
 import ptolemy.graph.InequalityTerm;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// LineCoder
@@ -86,8 +91,8 @@ public class LineCoder extends SDFTransformer {
      *  The number of values in this array must be at least
      *  2<sup><i>wordLength</i></sup>, or an exception
      *  will be thrown.  The number of tokens consumed by this actor when
-     *  it fires is log<sub>2</sub>(<i>tablesize</i>), where
-     *  <i>tablesize</i> is the length of the table.  If all of these
+     *  it fires is log<sub>2</sub>(<i>tableSize</i>), where
+     *  <i>tableSize</i> is the length of the table.  If all of these
      *  values are <i>false</i>, then the first array entry is produced
      *  as an output.  If only the first one is true, then then second
      *  array value is produced.  In general, the <i>N</i> inputs consumed
@@ -143,15 +148,15 @@ public class LineCoder extends SDFTransformer {
      *  @exception IllegalActionException If a runtime type error occurs.
      */
     public void fire() throws IllegalActionException {
-        int tableaddress = 0;
+        int tableAddress = 0;
         Token tokens[] = input.get(0, _wordLength);
         for (int i = 0; i < _wordLength; i++) {
             boolean data = ((BooleanToken)tokens[i]).booleanValue();
             if (data) {
-                tableaddress |= 1 << i;
+                tableAddress |= 1 << i;
             }
         }
-        output.send(0, _table[tableaddress]);
+        output.send(0, _table[tableAddress]);
     }
 
     /** Set up the consumption constant.
@@ -165,14 +170,14 @@ public class LineCoder extends SDFTransformer {
         _wordLength = ((IntToken)(wordLength.getToken())).intValue();
         input.setTokenConsumptionRate(_wordLength);
 
-        ArrayToken tabletoken = (ArrayToken)table.getToken();
+        ArrayToken tableToken = (ArrayToken)table.getToken();
         int size = (int)Math.pow(2, _wordLength);
-        if (tabletoken.length() < size) {
+        if (tableToken.length() < size) {
             throw new IllegalActionException(this, "Table parameter must " +
                     "have at least " + size + " entries, but only has " +
-                    tabletoken.length());
+                    tableToken.length());
         }
-        _table = tabletoken.arrayValue();
+        _table = tableToken.arrayValue();
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -30,16 +30,23 @@
 
 package ptolemy.domains.sdf.lib;
 
+import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.Type;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.util.Settable.Visibility;
 
 //////////////////////////////////////////////////////////////////////////
 //// LMS
@@ -82,7 +89,7 @@ where <i>tapData</i> is the contents of the delay line at
 the tap in question.
 This assumes that the <i>decimation</i> parameter is set
 to 1 (the default).  If it has a value different from 1,
-the algorithm is slighly more involved.  Similarly, this
+the algorithm is slightly more involved.  Similarly, this
 assumes that the <i>errorDelay</i> is 1.
 
 @author Edward A. Lee
@@ -156,7 +163,7 @@ public class LMSAdaptive extends FIR {
     public Parameter stepSize;
 
     /** The output of tap values.  This has the same type as the
-     *  intialTaps.
+     *  initialTaps.
      */
     public TypedIOPort tapValues;
 
