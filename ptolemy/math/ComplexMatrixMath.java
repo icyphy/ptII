@@ -767,7 +767,7 @@ public class ComplexMatrixMath {
 
         sb.append(asf.matrixEndString());
 
-        return new String(sb);
+        return sb.toString();
     }
 
 

@@ -676,7 +676,7 @@ public class ComplexArrayMath {
 
         sb.append(format.vectorEndString());
 
-        return sb.toString()
+        return sb.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
