@@ -424,7 +424,7 @@ public class ActorRecursion extends TypedCompositeActor {
                         IOPort port = farReceiver.getContainer();
 
                         // Having a self-loop doesn't make it deferrable.
-                        if (port == outputPort) {
+                        if (port.getContainer() == outputPort.getContainer()) {
                             continue;
                         }
 

@@ -555,10 +555,12 @@ public class DDFDirector extends Director {
     /** Check the input ports of the container composite actor (if there
      *  are any) to see whether they have enough tokens, and return true
      *  if they do. If there are no input ports, then also return true.
-     *  Otherwise, return false. Note that this does not call prefire()
-     *  on the contained actors.
-     *  Initialize numberOfFirings to zero for those actors for which
-     *  positive requiredFiringsPerIteration has been defined.
+     *  Otherwise, return false. If an input port does not have a 
+     *  parameter <i>tokenConsumptionRate</i>, then skip checking on that 
+     *  port because it will transfer all tokens (if there are any)
+     *  to the inside. Note the difference from SDF domain.
+     *  Finally, Initialize numberOfFirings to zero for those actors for 
+     *  which positive requiredFiringsPerIteration has been defined.
      *  @return true If all of the input ports of the container of this
      *   director have enough tokens.
      *  @exception IllegalActionException If any called method throws
@@ -586,7 +588,7 @@ public class DDFDirector extends Director {
             int[] rate = _getTokenConsumptionRate(inputPort);
 
             for (int i = 0; i < inputPort.getWidth(); i++) {
-                if (!inputPort.hasToken(i, rate[i])) {
+                if (rate[i] >= 0 && !inputPort.hasToken(i, rate[i])) {
                     if (_debugging) {
                         _debug("Channel " + i + " of port "
                                 + inputPort.getFullName()
@@ -660,24 +662,39 @@ public class DDFDirector extends Director {
 
         for (int i = 0; i < port.getWidth(); i++) {
             try {
-                for (int k = 0; k < rate[i]; k++) {
-                    if (port.hasToken(i)) {
-                        Token t = port.get(i);
+                if (rate[i] >= 0) {
+                    for (int k = 0; k < rate[i]; k++) {
+                        if (port.hasToken(i)) {
+                            Token t = port.get(i);
 
+                            if (_debugging) {
+                                _debug(getName(),
+                                        "transferring input from channel " + i
+                                        + " of input port " + port.getName());
+                            }
+
+                            port.sendInside(i, t);
+                            wasTransferred = true;
+                        } else {
+                            throw new IllegalActionException(this, port,
+                                    "Channel " + i + "should consume " + rate[i]
+                                    + " tokens, but there were only " + k
+                                    + " tokens available.");
+                        }
+                    }
+                } else {
+                     while (port.hasToken(i)) {
+                        Token token = port.get(i);
+                        
                         if (_debugging) {
                             _debug(getName(),
                                     "transferring input from channel " + i
-                                    + " of input port " + port.getName());
+                                    + " of port " + port.getName());
                         }
 
-                        port.sendInside(i, t);
+                        port.sendInside(i, token);
                         wasTransferred = true;
-                    } else {
-                        throw new IllegalActionException(this, port,
-                                "Channel " + i + "should consume " + rate[i]
-                                + " tokens, but there were only " + k
-                                + " tokens available.");
-                    }
+                    }       
                 }
             } catch (NoTokenException ex) {
                 // this shouldn't happen.
@@ -1040,7 +1057,13 @@ public class DDFDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Get token consumption rate for the given port.
+    /** Get token consumption rate for the given port. If the port is an
+     *  input port of an actor controlled by this director, the default
+     *  rate is 1 unless explicitly specified by a <i>tokenConsumptionRate</i>
+     *  parameter. If the port is an input port of the container of this
+     *  director, the default value is -1 unless explicitly specified by
+     *  a <i>tokenConsumptionRate</i> parameter. -1 means consuming all 
+     *  tokens (if there are any) contained by the port. 
      *  @param port The port to get token consumption rate.
      *  @return An int array of token consumption rates.
      *  @exception IllegalActionException If parameter throws it or the
@@ -1049,7 +1072,11 @@ public class DDFDirector extends Director {
     private int[] _getTokenConsumptionRate(IOPort port)
             throws IllegalActionException {
         int[] rate = new int[port.getWidth()];
-        Arrays.fill(rate, 1);
+        if (port.getContainer() != getContainer()) {
+            Arrays.fill(rate, 1);
+        } else {
+            Arrays.fill(rate, -1);   
+        }
 
         Variable rateVariable = DFUtilities.getRateVariable(port,
                 "tokenConsumptionRate");
@@ -1162,20 +1189,28 @@ public class DDFDirector extends Director {
         return tokenConsumptionRate;
     }
 
-    /** Get token production rate for the given port. The convention 
-     *  is that if a parameter named <i>tokenproductionRate</i> is 
-     *  defined, return the value in that parameter. Otherwise, return
-     *  an array of -1 which means the director should transfer all
-     *  tokens contained in the port to the outside. Note the difference
-     *  from SDF domain.
+    /** Get token production rate for the given port. The port argument
+     *  should always be an output port of the container of this director.
+     *  The convention is that if a parameter named <i>tokenproductionRate</i> 
+     *  is defined, return the value in that parameter. Otherwise, return
+     *  an array of -1 which means the director should transfer all tokens 
+     *  contained in the port to the outside. Note the difference from SDF 
+     *  domain.
      *  @param port The port to get token production rate.
      *  @return An int array of token production rate.
      *  @exception IllegalActionException If parameter throws it
      *   or the length of tokenProductionRate array is less
-     *   than port inside width.
+     *   than port inside width or the port in the argument is 
+     *   not an output port of the container of this director.
      */
     private int[] _getTokenProductionRate(IOPort port)
             throws IllegalActionException {
+        
+        if (port.getContainer() != getContainer()) {
+           throw new IllegalActionException(this, "The port in the "
+                   + "argument is not an output port of the container of "
+                   + getName());      
+        }
         
         int[] rate = new int[port.getWidthInside()];
         Arrays.fill(rate, -1);
