@@ -84,7 +84,7 @@ public class ColtBinomial extends ColtRandomSource {
         randomElementClass = getRandomElementClass(container);
 
         if(randomElement == null)
-                System.err.println("randomElement is null!");
+            System.err.println("randomElement is null!");
 
         rng = new Binomial(1, 0.5, randomElement);
     }
