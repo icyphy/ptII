@@ -254,9 +254,10 @@ THALESPACKAGES = \
 # Packages used by VisualSense
 VISUALSENSEPACKAGES = \
 			ptolemy.domains.wireless.kernel \
-			ptolemy.domains.wireless.lib \
-			ptolemy.domains.wireless.lib.network \
-			ptolemy.domains.wireless.lib.network.mac
+			ptolemy.domains.wireless.lib
+
+#			ptolemy.domains.wireless.lib.network \
+#			ptolemy.domains.wireless.lib.network.mac
 
 ALLPACKAGES =		$(COMPACKAGES) \
 			$(COPERNICUSPACKAGES) \
