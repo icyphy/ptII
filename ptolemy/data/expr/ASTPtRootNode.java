@@ -80,7 +80,7 @@ public class ASTPtRootNode implements Node {
      *  LinkedList. Note that here token refers to tokens returned by the
      *  lexical analyzer.
      */
-    protected LinkedList _tokenList = new LinkedList();
+    protected LinkedList _lexicalTokens = new LinkedList();
 
     /** Stores the ptolemy.data.Tokens of each of the children nodes */
     protected ptolemy.data.Token[] childTokens;
