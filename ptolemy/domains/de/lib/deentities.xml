@@ -53,6 +53,9 @@
 </entity>
 
 <entity name="VariableDelay" class="ptolemy.domains.de.lib.VariableDelay">
+    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+        <property name="attributeName" value="delay"/>
+    </property>
 </entity>
 
 

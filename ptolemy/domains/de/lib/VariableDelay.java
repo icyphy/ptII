@@ -30,13 +30,11 @@
 
 package ptolemy.domains.de.lib;
 
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.de.kernel.DEIOPort;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
@@ -46,7 +44,7 @@ import ptolemy.kernel.util.Workspace;
 /**
 This actor works exactly as the ptolemy.domains.de.lib.TimedDelay actor,
 except that the amount of time delayed is specified by an incoming
-token through the delay port, instead of a parameter.
+token through the delay port parameter.
 
 @see ptolemy.actor.FunctionDependency
 @see ptolemy.domains.de.lib.TimedDelay
@@ -70,51 +68,27 @@ public class VariableDelay extends DETransformer {
     public VariableDelay(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        defaultDelay = new Parameter(this,
-                "defaultDelay", new DoubleToken(1.0));
-        defaultDelay.setTypeEquals(BaseType.DOUBLE);
-        delay = new DEIOPort(this, "delay", true, false);
+
+        delay = new PortParameter(this, "delay");
+        delay.setExpression("1.0");
         delay.setTypeEquals(BaseType.DOUBLE);
+
+        _attachText("_iconDescription", "<svg>\n" +
+                "<rect x=\"0\" y=\"0\" "
+                + "width=\"60\" height=\"20\" "
+                + "style=\"fill:white\"/>\n" +
+                "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                       ports and parameters                ////
 
-    /** The amount of default delay.  This value is used if no token
-     *  has ever received from the delay port. The default is 0.0.
-     *  This parameter must contain a DoubleToken
-     *  with a non-negative value, or an exception will be thrown when
-     *  it is set.
+    /** The amount specifying delay.
      */
-    public Parameter defaultDelay;
-
-    /** The input port for specifying delay.
-     */
-    public DEIOPort delay;
+    public PortParameter delay;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** If the attribute is <i>delay</i>, then check that the value
-     *  is non-negative.
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If the delay is negative.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == defaultDelay) {
-            double newValue =
-                ((DoubleToken)(defaultDelay.getToken())).doubleValue();
-            if ( newValue < 0.0) {
-                throw new IllegalActionException(this,
-                        "Cannot have negative delay.");
-            } else {
-                _delay = newValue;
-            }
-        } else {
-            super.attributeChanged(attribute);
-        }
-    }
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the parameter.
@@ -126,15 +100,6 @@ public class VariableDelay extends DETransformer {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         VariableDelay newObject = (VariableDelay)super.clone(workspace);
-//      FIXME:
-//      The following code is not necessary with the usage of IODependence.
-//      The code will be deleted after the IODependence matures enough.
-//        try {
-//            newObject.input.delayTo(newObject.output);
-//            newObject.delay.delayTo(newObject.output);
-//        } catch (IllegalActionException ex) {
-//            throw new InternalErrorException("Clone failed.");
-//        }
         return newObject;
     }
 
@@ -145,13 +110,13 @@ public class VariableDelay extends DETransformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        delay.update();
+        _delay = ((DoubleToken)delay.getToken()).doubleValue();
+        
         if (input.hasToken(0)) {
             _currentInput = input.get(0);
         } else {
             _currentInput = null;
-        }
-        if (delay.hasToken(0)) {
-            _delay = ((DoubleToken)delay.get(0)).doubleValue();
         }
     }
 
@@ -173,7 +138,7 @@ public class VariableDelay extends DETransformer {
      */
     public void removeDependencies() {
         removeDependency(input, output);
-        removeDependency(delay, output);  
+//        removeDependency(delay, output);  
 }
 
     ///////////////////////////////////////////////////////////////////
