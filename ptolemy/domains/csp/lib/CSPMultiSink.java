@@ -56,10 +56,6 @@ public class CSPMultiSink extends CSPActor {
     /** Construct a CSPMultiSink in the default workspace with an 
      *  empty string as its name. The actor is created with a single 
      *  input port named "input". 
-     *  @exception IllegalActionException If the port cannot be 
-     *   contained by this actor.
-     *  @exception NameDuplicationException If the port name coincides 
-     *   with a port already in this actor.
      */
     public CSPMultiSink() {
         super();
