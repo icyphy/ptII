@@ -98,15 +98,14 @@ test BasePNDirector-5.1 {Test action methods} {
     
 } {W.E0.A1.fire W.E0.A1.initialize W.E0.A1.postfire W.E0.A1.prefire W.E0.A1.wrapup W.E0.A2.fire W.E0.A2.initialize W.E0.A2.postfire W.E0.A2.prefire W.E0.A2.wrapup}
 
-#test BasePNDirector-5.2 (Test creation of a receiver) {
-#    set r1 [$d3 newReceiver]
-#    #FIXME: Check if this is correct!
-#    set p1 [$d4 [getAttribute Initial_queue_capacity]]
-#    $p1 setToken [new IntToken 5]
-#    set r2 [$d4 newReceiver]
-#    list [$r1 getCapacity] [$r2 getCapacity]
-#} {1 5}
-
+test BasePNDirector-5.2 {Test creation of a receiver} {
+    set r1 [$d3 newReceiver]
+    #FIXME: Check if this is correct!
+    set p1 [$d4 getAttribute "Initial_queue_capacity"]
+    $p1 setToken [java::new {ptolemy.data.IntToken int} 5]
+    set r2 [$d4 newReceiver]
+    list [$r1 getCapacity] [$r2 getCapacity]
+} {1 5}
 #############################################
 
 test BasePNDirector-6.1 {Test an application} {
