@@ -4,7 +4,7 @@
 <entity name="LinearDifferenceEquationSystem" class="ptolemy.actor.TypedCompositeActor">
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[659, 450]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[45, 398]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[75, 102]">
     </property>
     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
@@ -27,7 +27,7 @@
         </property>
         <property name="initialStates" class="ptolemy.data.expr.Parameter" value="[1.0; 1.0]">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="324.5, 168.5">
+        <property name="_location" class="ptolemy.moml.Location" value="355.0, 180.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -43,7 +43,7 @@
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="60.0, 119.5">
+        <property name="_location" class="ptolemy.moml.Location" value="20.0, 115.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -51,41 +51,19 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-        </port>
-    </entity>
-    <entity name="VectorAssembler" class="ptolemy.actor.lib.VectorAssembler">
-        <property name="_location" class="ptolemy.moml.Location" value="195.0, 169.5">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
         </port>
     </entity>
     <entity name="1:Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="60.0, 209.5">
+        <property name="_location" class="ptolemy.moml.Location" value="15.0, 215.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
-    <entity name="VectorDisassembler" class="ptolemy.actor.lib.VectorDisassembler">
-        <property name="_location" class="ptolemy.moml.Location" value="498.0, 249.5">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
             <property name="multiport"/>
         </port>
     </entity>
@@ -94,7 +72,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="461.5, 49.5">
+        <property name="_location" class="ptolemy.moml.Location" value="565.0, 45.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -106,7 +84,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="566.5, 149.5">
+        <property name="_location" class="ptolemy.moml.Location" value="565.0, 220.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -118,39 +96,125 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="580.0, 315.0">
+        <property name="_location" class="ptolemy.moml.Location" value="575.0, 385.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
     </entity>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    <entity name="MatrixToDouble" class="ptolemy.domains.sdf.lib.MatrixToDouble">
+        <property name="rows" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="columns" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="340.0, 305.0">
+        </property>
+        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="output"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+        </port>
+    </entity>
+    <entity name="Distributor" class="ptolemy.actor.lib.Distributor">
+        <property name="_location" class="ptolemy.moml.Location" value="450.0, 305.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Commutator" class="ptolemy.actor.lib.Commutator">
+        <property name="_location" class="ptolemy.moml.Location" value="125.0, 180.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+        </port>
+    </entity>
+    <entity name="DoubleToMatrix" class="ptolemy.domains.sdf.lib.DoubleToMatrix">
+        <property name="rows" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="columns" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="195.0, 180.0">
+        </property>
+        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="output"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="LinearDifferenceEquationSystem.input" relation="relation"/>
     <link port="LinearDifferenceEquationSystem.output" relation="relation8"/>
-    <link port="LinearDifferenceEquationSystem.state" relation="relation5"/>
-    <link port="Const.output" relation="relation3"/>
-    <link port="VectorAssembler.input" relation="relation3"/>
-    <link port="VectorAssembler.input" relation="relation4"/>
-    <link port="VectorAssembler.output" relation="relation"/>
-    <link port="1:Const.output" relation="relation4"/>
-    <link port="VectorDisassembler.input" relation="relation5"/>
-    <link port="VectorDisassembler.output" relation="relation10"/>
-    <link port="VectorDisassembler.output" relation="relation13"/>
+    <link port="LinearDifferenceEquationSystem.state" relation="relation12"/>
+    <link port="Const.output" relation="relation15"/>
+    <link port="1:Const.output" relation="relation14"/>
     <link port="Test.input" relation="relation8"/>
     <link port="Test9.input" relation="relation10"/>
-    <link port="Test12.input" relation="relation13"/>
+    <link port="Test12.input" relation="relation11"/>
+    <link port="MatrixToDouble.input" relation="relation12"/>
+    <link port="MatrixToDouble.output" relation="relation5"/>
+    <link port="Distributor.input" relation="relation5"/>
+    <link port="Distributor.output" relation="relation10"/>
+    <link port="Distributor.output" relation="relation11"/>
+    <link port="Commutator.input" relation="relation14"/>
+    <link port="Commutator.input" relation="relation15"/>
+    <link port="Commutator.output" relation="relation13"/>
+    <link port="DoubleToMatrix.input" relation="relation13"/>
+    <link port="DoubleToMatrix.output" relation="relation"/>
 </entity>
