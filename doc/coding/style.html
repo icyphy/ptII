@@ -122,7 +122,11 @@ unless the name is long.  This makes it easier to distinguish between
 methods and variables.  However, avoiding capitalization in variable
 names is up to the implementer.
 
- <P>Method and variable names should avoid using underscores internally. 
+ <P><CODE>static final</CODE> constants should be in uppercase, with
+  words separated by underscores if necessary.
+
+ <P>Method and variable names should avoid using underscores internally, except
+if they are <CODE>static final</CODE> constants.
 
 <h2><a name="java exceptions conventions">Java exceptions conventions</a></h2>
 Java exception classes that are part of the <CODE>pt.kernel.util</CODE> package
