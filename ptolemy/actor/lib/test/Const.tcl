@@ -227,7 +227,9 @@ test Const-3.1 {check out ReadFile with a multiline file} {
     # This is sort of lame, the \n chars get converted to spaces in
     # PtParser.generateParseTree()
     enumToTokenValues [$rec getRecord 0]
-} {{" bar "}}
+} {{"
+bar
+"}}
 
 # FIXME: Need a mechanism to test a change in parameter during a run.
 
