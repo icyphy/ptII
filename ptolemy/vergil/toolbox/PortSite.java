@@ -113,6 +113,16 @@ public class PortSite extends AbstractSite {
             } else if (_port.isOutput()) {
                 // Port is an output only.
                 x = bounds.getX() + bounds.getWidth();
+            } else {
+                // Port is both an input and an output.
+                double offset = bounds.getWidth()/2.0 - (_count/2)*_snap;
+                // If there are an even number of ports, skip the middle
+                // position to get symmetry.
+                boolean skipOne = (_count/2)*2 == _count;
+                if (skipOne && _number >= _count/2) {
+                    offset += _snap;
+                }
+                x = bounds.getX() + _snap * _number + offset;
             }
         } else {
             if (_cardinal.equalsIgnoreCase( "WEST" ) ) {
@@ -156,6 +166,9 @@ public class PortSite extends AbstractSite {
                 if (skipOne && _number >= _count/2) offset += _snap;
 
                 y = bounds.getY() + _snap * _number + offset;
+            } else {
+                // Port is neither an input and an output.
+                y = bounds.getY() + bounds.getHeight();
             }
         } else {
             if (_cardinal.equalsIgnoreCase( "SOUTH" ) ) {

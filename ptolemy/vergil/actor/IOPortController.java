@@ -41,6 +41,7 @@ import diva.canvas.toolbox.BasicFigure;
 import diva.graph.GraphController;
 import diva.graph.NodeRenderer;
 import diva.util.java2d.Polygon2D;
+import diva.util.java2d.ShapeUtilities;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.DebugListenerTableau;
@@ -64,6 +65,8 @@ import ptolemy.vergil.toolbox.MenuActionFactory;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.geom.AffineTransform;
+import java.awt.Shape;
+import java.awt.geom.Ellipse2D;
 
 import javax.swing.SwingUtilities;
 
@@ -130,11 +133,57 @@ public class IOPortController extends AttributeController {
             // do not render it.
             if (port.getAttribute("_hide") != null) return null;
 
-            Polygon2D.Double polygon = new Polygon2D.Double();
-            polygon.moveTo(-4, 4);
-            polygon.lineTo(4, 0);
-            polygon.lineTo(-4, -4);
-            polygon.closePath();
+            boolean isInput = false;
+            boolean isOutput = false;
+            boolean isInputOutput = false;
+            // Figure out what type of port we're dealing with.
+            // If ports are not IOPorts, then draw then as ports with
+            // no direction.
+            if (port instanceof IOPort) {
+                isInput = ((IOPort)port).isInput();
+                isOutput = ((IOPort)port).isOutput();
+                isInputOutput = isInput && isOutput;
+            } 
+            
+            // The shape that the port will have.  These are all
+            // created as oriented to the West, i.e. the left side of
+            // the actor.
+            Shape shape;
+
+            if(isInputOutput) {
+                Polygon2D.Double polygon = new Polygon2D.Double();
+                polygon.moveTo(0, -4);
+                polygon.lineTo(-4, -4);
+                polygon.lineTo(-2, 0);
+                polygon.lineTo(-4, 4);
+                polygon.lineTo(4, 4);
+                polygon.lineTo(2, 0);
+                polygon.lineTo(4, -4);
+                polygon.lineTo(0, -4);
+                polygon.closePath();
+                shape = polygon;
+            } else if(isInput) {
+                Polygon2D.Double polygon = new Polygon2D.Double();
+                polygon.moveTo(-4, 0);
+                polygon.lineTo(-4, 4);
+                polygon.lineTo(4, 0);
+                polygon.lineTo(-4, -4);
+                polygon.lineTo(-4, 0);
+                polygon.closePath();
+                shape = polygon;
+            } else if(isOutput) {
+                Polygon2D.Double polygon = new Polygon2D.Double();
+                polygon.moveTo(4, 0);
+                polygon.lineTo(4, -4);
+                polygon.lineTo(-4, 0);
+                polygon.lineTo(4, 4);
+                polygon.lineTo(4, 0);
+                polygon.closePath();
+                shape = polygon;
+            } else {
+                shape = new Ellipse2D.Double(-4, -4, 8, 8);
+            }
+
             Color fill;
             float lineWidth = (float)1.5;
             if (port instanceof ParameterPort) {
@@ -153,10 +202,11 @@ public class IOPortController extends AttributeController {
             // connectors exit the port.  Note that this direction is the
             // same direction that is used to layout the port in the
             // Entity Controller.
-            StringAttribute cardinal = (StringAttribute)port.getAttribute("_cardinal");
+            StringAttribute cardinal = 
+                (StringAttribute)port.getAttribute("_cardinal");
 
             int direction;
-
+            double rotation;
             //             if (!(port instanceof IOPort)) {
             //                 direction = SwingUtilities.SOUTH;
             //             } else if (((IOPort)port).isInput() && ((IOPort)port).isOutput()) {
@@ -170,92 +220,45 @@ public class IOPortController extends AttributeController {
             //                 direction = SwingUtilities.SOUTH;
             //             }
 
-            if ( cardinal == null && port instanceof IOPort )
-                {
-                    if (((IOPort)port).isInput() && ((IOPort)port).isOutput()) {
-                        direction = SwingUtilities.SOUTH;
-                        AffineTransform transform = new AffineTransform();
-                        transform.setToRotation( Math.toRadians( -90 ));
-                        polygon.transform( transform );
-                    } else if (((IOPort)port).isInput()) {
-                        direction = SwingUtilities.WEST;
-                    } else if (((IOPort)port).isOutput()) {
-                        direction = SwingUtilities.EAST;
-                    } else {
-                        // should never happen
-                        direction = SwingUtilities.SOUTH;
-                        AffineTransform transform = new AffineTransform();
-                        transform.setToRotation( Math.toRadians( -90 ) );
-                        polygon.transform( transform );
-                    }
-                }
-            else if ( port instanceof IOPort )
-                {
-                    if ( cardinal.getExpression().equalsIgnoreCase("NORTH") ) {
-                        direction = SwingUtilities.NORTH;
-                        if ( ((IOPort)port).isInput() && !((IOPort)port).isOutput() ) {
-                            AffineTransform transform = new AffineTransform();
-                            transform.setToRotation( Math.toRadians( 90 ) );
-                            polygon.transform( transform );
-                        }
-                        else {
-                            AffineTransform transform = new AffineTransform();
-                            transform.setToRotation( Math.toRadians( -90 ) );
-                            polygon.transform( transform );
-                        }
-                    }
-                    else if ( cardinal.getExpression().equalsIgnoreCase("SOUTH") ) {
-                        direction = SwingUtilities.SOUTH;
-                        if ( ((IOPort)port).isInput() && !((IOPort)port).isOutput() ) {
-                            AffineTransform transform = new AffineTransform();
-                            transform.setToRotation( Math.toRadians( -90 ) );
-                            polygon.transform( transform );
-                        }
-                        else {
-                            AffineTransform transform = new AffineTransform();
-                            transform.setToRotation( Math.toRadians( 90 ) );
-                            polygon.transform( transform );
-                        }
-                    }
-                    else if ( cardinal.getExpression().equalsIgnoreCase("EAST") ) {
-                        direction = SwingUtilities.EAST;
-                        if ( ((IOPort)port).isInput() && !((IOPort)port).isOutput() ) {
-                            AffineTransform transform = new AffineTransform();
-                            transform.setToRotation( Math.toRadians( 180 ) );
-                            polygon.transform( transform );
-                        }
-                    }
-                    else if ( cardinal.getExpression().equalsIgnoreCase("WEST") ) {
-                        direction = SwingUtilities.WEST;
-                        if ( ((IOPort)port).isOutput() && !((IOPort)port).isInput() ) {
-                            AffineTransform transform = new AffineTransform();
-                            transform.setToRotation( Math.toRadians( 180 ) );
-                            polygon.transform( transform );
-                        }
-                    }
-                    else {// this shouldn't happen either
-                        direction = SwingUtilities.SOUTH;
-                        if ( ((IOPort)port).isInput() && !((IOPort)port).isOutput() ) {
-                            AffineTransform transform = new AffineTransform();
-                            transform.setToRotation( Math.toRadians( -90 ) );
-                            polygon.transform( transform );
-                        }
-                        else {
-                            AffineTransform transform = new AffineTransform();
-                            transform.setToRotation( Math.toRadians( 90 ) );
-                            polygon.transform( transform );
-                        }
-                    }
-                }
-            else
-                {
+            
+            if (cardinal == null) {
+                if (isInputOutput) {
                     direction = SwingUtilities.SOUTH;
-                    AffineTransform transform = new AffineTransform();
-                    transform.setToRotation( Math.toRadians( 90 ) );
-                    polygon.transform( transform );
+                    rotation = -90;
+                } else if (isInput) {
+                    direction = SwingUtilities.WEST;
+                    rotation = 0;
+                } else if (isOutput) {
+                    direction = SwingUtilities.EAST;
+                    rotation = 180;
+                } else {
+                    // should never happen
+                    direction = SwingUtilities.SOUTH;
+                    rotation = -90;
                 }
+            } else if (cardinal.getExpression().equalsIgnoreCase("NORTH")) {
+                direction = SwingUtilities.NORTH;
+                rotation = 90;
+            } else if (cardinal.getExpression().equalsIgnoreCase("SOUTH")) {
+                direction = SwingUtilities.SOUTH;
+                rotation = -90;
+            } else if (cardinal.getExpression().equalsIgnoreCase("EAST")) {
+                direction = SwingUtilities.EAST;
+                rotation = 180;
+            } else if (cardinal.getExpression().equalsIgnoreCase("WEST")) {
+                direction = SwingUtilities.WEST;
+                rotation = 0;
+            } else {// this shouldn't happen either
+                direction = SwingUtilities.SOUTH;
+                rotation = -90;
+            }
 
-            Figure figure = new BasicFigure(polygon, fill, (float)1.5) {
+            // Transform the port shape so it is facing the right way.
+            AffineTransform transform = 
+                AffineTransform.getRotateInstance(Math.toRadians(rotation));
+            shape = ShapeUtilities.transformModify(shape, transform);
+            
+            Figure figure = new BasicFigure(shape, fill, (float)1.5) {
                     // Override this because we want to show the type.
                     // It doesn't work to set it once because the type
                     // has not been resolved, and anyway, it may change.

@@ -267,58 +267,45 @@ public class ActorController extends AttributeController {
             Vector eastPorts = new Vector ();
             Vector southPorts = new Vector ();
             Vector northPorts = new Vector ();
-            int westPortCount = 0;
-            int eastPortCount = 0;
-            int southPortCount = 0;
-            int northPortCount = 0;
-
+     
             while (nodes.hasNext()) {
                 Port port = (Port) nodes.next();
-                StringAttribute cardinal = (StringAttribute)port.getAttribute("_cardinal");
-                StringAttribute ordinal  = (StringAttribute)port.getAttribute("_ordinal");
+                StringAttribute cardinal =
+                    (StringAttribute)port.getAttribute("_cardinal");
+                StringAttribute ordinal  =
+                    (StringAttribute)port.getAttribute("_ordinal");
 
                 if (cardinal == null) {
                     if (!(port instanceof IOPort)) {
-                        southPortCount++;
                         southPorts.add(port);
                     } else {
                         IOPort ioport = (IOPort) port;
                         if (ioport.isInput() && ioport.isOutput()) {
-                            southPortCount++;
                             southPorts.add(port);
                         } else if (ioport.isInput()) {
-                            westPortCount++;
                             westPorts.add(port);
                         } else if (ioport.isOutput()) {
-                            eastPortCount++;
                             eastPorts.add(port);
                         } else {
-                            southPortCount++;
                             southPorts.add(port);
                         }
                     }
                 }
                 else {
                     if (!(port instanceof IOPort)) {
-                        southPortCount++;
                         southPorts.add(port);
                     } else {
                         String value = cardinal.getExpression();
                         IOPort ioport = (IOPort) port;
                         if ( value.equalsIgnoreCase("SOUTH") ) {
-                            southPortCount++;
                             southPorts.add(port);
                         } else if ( value.equalsIgnoreCase("WEST") ) {
-                            westPortCount++;
                             westPorts.add(port);
                         } else if ( value.equalsIgnoreCase("EAST") ) {
-                            eastPortCount++;
                             eastPorts.add(port);
                         } else if ( value.equalsIgnoreCase("NORTH") ) {
-                            northPortCount++;
                             northPorts.add( port );
                         } else {
-                            southPortCount++;
                             southPorts.add(port);
                         }
                     }
@@ -328,62 +315,18 @@ public class ActorController extends AttributeController {
                 (CompositeFigure)getLayoutTarget().getVisualObject(node);
 
             _reOrderPorts( westPorts );
-            _placePortFigures(figure, westPorts, westPortCount,
+            _placePortFigures(figure, westPorts,
                     SwingConstants.WEST);
             _reOrderPorts( eastPorts );
-            _placePortFigures(figure, eastPorts, eastPortCount,
+            _placePortFigures(figure, eastPorts,
                     SwingConstants.EAST);
             _reOrderPorts( southPorts );
-            _placePortFigures(figure, southPorts, southPortCount,
+            _placePortFigures(figure, southPorts,
                     SwingConstants.SOUTH);
             _reOrderPorts( northPorts );
-            _placePortFigures(figure, northPorts, northPortCount,
+            _placePortFigures(figure, northPorts,
                     SwingConstants.NORTH);
         }
-
-        // FIXME: Old pre-cardinal direction layout
-        //         public void layout(Object node) {
-        //             GraphModel model = getController().getGraphModel();
-        //             Iterator nodes = model.nodes(node);
-        //             LinkedList inputs = new LinkedList();
-        //             LinkedList outputs = new LinkedList();
-        //             LinkedList inputOutputs = new LinkedList();
-        //             int inCount = 0;
-        //             int outCount = 0;
-        //             int inputOutputCount = 0;
-
-        //             while (nodes.hasNext()) {
-        //                 Port port = (Port) nodes.next();
-        //                 if (!(port instanceof IOPort)) {
-        //                     inputOutputCount++;
-        //                     inputOutputs.addLast(port);
-        //                 } else {
-        //                     IOPort ioport = (IOPort) port;
-        //                     if (ioport.isInput() && ioport.isOutput()) {
-        //                         inputOutputCount++;
-        //                         inputOutputs.addLast(port);
-        //                     } else if (ioport.isInput()) {
-        //                         inCount++;
-        //                         inputs.addLast(port);
-        //                     } else if (ioport.isOutput()) {
-        //                         outCount++;
-        //                         outputs.addLast(port);
-        //                     } else {
-        //                         inputOutputCount++;
-        //                         inputOutputs.addLast(port);
-        //                     }
-        //                 }
-        //             }
-        //             CompositeFigure figure =
-        //                 (CompositeFigure)getLayoutTarget().getVisualObject(node);
-
-        //             _placePortFigures(figure, inputs, inCount,
-        //                     SwingConstants.WEST);
-        //             _placePortFigures(figure, outputs, outCount,
-        //                     SwingConstants.EAST);
-        //             _placePortFigures(figure, inputOutputs, inputOutputCount,
-        //                     SwingConstants.SOUTH);
-        //        }
 
         ///////////////////////////////////////////////////////////////
         ////                     private methods                   ////
@@ -433,12 +376,10 @@ public class ActorController extends AttributeController {
 
         // Place the ports.
         private void _placePortFigures(
-                CompositeFigure figure,
-                List portList,
-                int count,
-                int direction) {
+                CompositeFigure figure, List portList, int direction) {
             Iterator ports = portList.iterator();
             int number = 0;
+            int count = portList.size();
             while (ports.hasNext()) {
                 IOPort port = (IOPort)ports.next();
                 Figure portFigure = getController().getFigure(port);
