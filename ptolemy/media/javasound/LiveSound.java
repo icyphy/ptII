@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (vogel@eecs.berkeley.edu)
+@ProposedRating Red (net@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -430,15 +430,14 @@ public class LiveSound {
 
         // Real-time capture.
         numBytesRead = _targetLine.read(_data, 0,
-                _transferSize*_frameSizeInBytes);
+                _transferSize * _frameSizeInBytes);
 
 
         if (numBytesRead == _data.length) {
             // Convert byte array to double array.
-            _audioInDoubleArray =
-                _byteArrayToDoubleArray(_data,
-                        _bytesPerSample,
-                        _channels);
+            _audioInDoubleArray = _byteArrayToDoubleArray(_data,
+                    _bytesPerSample,
+                    _channels);
             return _audioInDoubleArray;
         } else if (numBytesRead != _data.length) {
             // Read fewer samples than productionRate many samples.
@@ -446,10 +445,9 @@ public class LiveSound {
             // causes AudioInputStream.read(array) to sometimes
             // return fewer bytes than requested, even though
             // the end of the file has not yet been reached.
-            _audioInDoubleArray =
-                _byteArrayToDoubleArray(_data,
-                        _bytesPerSample,
-                        _channels);
+            _audioInDoubleArray = _byteArrayToDoubleArray(_data,
+                    _bytesPerSample,
+                    _channels);
             return _audioInDoubleArray;
         } else if (numBytesRead == -1) {
             // Ran out of samples to play. This generally means
@@ -457,7 +455,6 @@ public class LiveSound {
             return null;
         }
         return null;
-
     }
 
     /** Get the array length (in samples per channel) to use
@@ -573,7 +570,7 @@ public class LiveSound {
         // be written to the output device.
         // Note: consumptionRate is amount of data to write, in bytes.
         // Now write the array to output device.
-        _sourceLine.write(_data, 0, _transferSize*_frameSizeInBytes);
+        _sourceLine.write(_data, 0, _transferSize * _frameSizeInBytes);
     }
 
     /** Remove a live sound listener. If the listener is
@@ -1082,14 +1079,14 @@ public class LiveSound {
             for (int currChannel = 0; currChannel < channels; currChannel++) {
                 for (int i = 0; i < bytesPerSample; i += 1) {
                     // Assume we are dealing with big endian.
-                    _b[i] = byteArray[currSamp*bytesPerSample*channels +
-                            bytesPerSample*currChannel + i];
+                    _b[i] = byteArray[currSamp * bytesPerSample * channels +
+                            bytesPerSample * currChannel + i];
                 }
                 int result = (_b[0] >> 7) ;
                 for (int i = 0; i < bytesPerSample; i += 1)
                     result = (result << 8) + (_b[i] & 0xff);
                 _doubleArray[currChannel][currSamp] =
-                    ((double) result*maxSampleReciprocal);
+                    ((double) result * maxSampleReciprocal);
             }
         }
         return _doubleArray;
@@ -1160,8 +1157,8 @@ public class LiveSound {
                 // Copy the byte representation of current sample to
                 // the linear signed pcm big endian formatted byte array.
                 for (int i = 0; i < bytesPerSample; i += 1) {
-                    byteArray[currSamp*bytesPerSample*channels +
-                            bytesPerSample*currChannel + i] = b[i];
+                    byteArray[currSamp * bytesPerSample * channels +
+                            bytesPerSample * currChannel + i] = b[i];
                 }
             }
         }
@@ -1218,7 +1215,7 @@ public class LiveSound {
             // Note: 2nd parameter is the buffer size (in bytes).
             // Larger values increase latency but may be required if
             // garbage collection, etc. is an issue.
-            _targetLine.open(format, _bufferSize*_frameSizeInBytes);
+            _targetLine.open(format, _bufferSize * _frameSizeInBytes);
         } catch (LineUnavailableException ex) {
             throw new IOException("Unable to open the line for " +
                     "real-time audio capture: " + ex);
@@ -1226,8 +1223,8 @@ public class LiveSound {
         int targetBufferLengthInBytes = _transferSize *
             _frameSizeInBytes;
         // Array of audio samples in byte format.
-        _data = new byte[_transferSize*_frameSizeInBytes];
-        _bytesPerSample = _bitsPerSample/8;
+        _data = new byte[_transferSize * _frameSizeInBytes];
+        _bytesPerSample = _bitsPerSample / 8;
         // Start the target data line
         _targetLine.start();
     }
@@ -1253,14 +1250,14 @@ public class LiveSound {
             _sourceLine = (SourceDataLine) AudioSystem.getLine(sourceInfo);
             // Open line and suggest a buffer size (in bytes) to use or
             // the internal audio buffer.
-            _sourceLine.open(format, _bufferSize*_frameSizeInBytes);
+            _sourceLine.open(format, _bufferSize * _frameSizeInBytes);
         } catch (LineUnavailableException ex) {
             throw new IOException("Unable to open the line for " +
                     "real-time audio playback: " + ex);
         }
         // Array of audio samples in byte format.
-        _data = new byte[_transferSize*_frameSizeInBytes*_channels];
-        _bytesPerSample = _bitsPerSample/8;
+        _data = new byte[_transferSize * _frameSizeInBytes * _channels];
+        _bytesPerSample = _bitsPerSample / 8;
         // Start the source data line
         _sourceLine.start();
     }
