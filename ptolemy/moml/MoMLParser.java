@@ -851,6 +851,15 @@ public class MoMLParser extends HandlerBase {
         }
         buffered.close();
 
+        if (_toplevel == null) {
+            // If we try to read a HSIF file but Ptolemy is not properly
+            // configured, then we may end up here.
+            throw new Exception(
+                    "Toplevel was null?  Perhaps the xml does not contain "
+                    + "a Ptolemy model?\n base ='" + base + "',\n reader = '"
+                    + reader + "'");
+        }
+
         // Add a parser attribute to the toplevel to indicate a parser
         // responsible for handling changes, unless there already is a
         // parser, in which case we just set the parser.
