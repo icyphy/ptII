@@ -1,0 +1,65 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="security" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+
+        <entity name="AsymmetricDecryption"
+                class="ptolemy.domains.sdf.lib.security.AsymmetricDecryption">
+          <doc>Creates and sends a key to an AsymmetricEncryption
+          actor and decrypts incoming data based on a given
+          asymmetric algorithm.</doc>
+        </entity>
+      
+        <entity name="AsymmetricEncryption"
+                class="ptolemy.domains.sdf.lib.security.AsymmetricEncryption">
+	  <doc>Receives a key from an AsymmetricDecryption actor and
+	  uses it to encrypt a data input based on a given asymmetric
+	  algorithm.</doc>
+	</entity>  
+
+	<entity name="Decryption"
+	        class="ptolemy.domains.sdf.lib.security.Decryption">
+	  <doc>Creates and sends a key to an encryptor and decrypts
+	  incoming data.</doc>
+	</entity>  
+
+	<entity name="ServiceInformation"
+	        class="ptolemy.domains.sdf.lib.security.ServiceInformation">
+	  <doc>Determine the cryptographic services available on the
+	  system.</doc>
+	</entity>  	  
+
+        <entity name="SignatureSigner"
+	        class="ptolemy.domains.sdf.lib.security.SignatureSigner">
+	  <doc>Creates a signature for the given piece of data and
+	  creates the key to be sent to the signature verifier.</doc>
+        </entity>
+
+        <entity name="SignatureVerifier"
+                class="ptolemy.domains.sdf.lib.security.SignatureVerifier">
+          <doc>Receives a key from an AsymmetricDecryption actor and
+          uses it to encrypt a data input based on a given asymmetric
+          algorithm.</doc>
+        </entity>
+	      
+        <entity name="SymmetricDecryption"
+	        class="ptolemy.domains.sdf.lib.security.SymmetricDecryption">
+          <doc>Receives a key from a SymmetricEncryption actor and
+          uses it to decrypt a data input based on a given symmetric
+          algorithm.</doc>
+        </entity>
+
+	<entity name="SymmetricEncryption"
+                class="ptolemy.domains.sdf.lib.security.SymmetricEncryption">
+	  <doc>Creates and sends a key to a SymmetricDecryption and
+	  encrypts incoming data based on a given symmetric
+	  algorithm.</doc>
+        </entity>
+
+      </group>
+    ?>
+  </configure>
+</entity>
