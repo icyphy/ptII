@@ -46,6 +46,6 @@ if {[info procs enumToObjects] == "" } then {
 
 ######################################################################
 ####
-#
-test BackwardEulerSolver-2.1 {} {
+# This solver is tested in ct.test
+test BackwardEulerSolver-2.1 {} {    
 } {}

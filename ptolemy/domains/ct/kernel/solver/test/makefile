@@ -51,13 +51,12 @@ JSRCS = \
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
 	BackwardEulerSolver.tcl \
+	DerivativeResolver.tcl \
 	ExplicitRK23Solver.tcl \
 	FixedStepSolver.tcl \
 	ForwardEulerSolver.tcl \
-	ImplicitMethodSolver.tcl \
 	ImpulseBESolver.tcl \
-	TrapezoidalRuleSolver.tcl \
-	VariableStepSolver.tcl
+	TrapezoidalRuleSolver.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds

@@ -53,8 +53,8 @@ This solver uses the following formula to solve it:
 <pre>
     x(t+h) = x(t) + h*x'(t+h)
 </pre>
-where x(t) is the previous state, x(t+h) is the current (to be resolved)
-state, h is the step size, and x'(t+h) is the derivative of x(t+h).
+where x(t) is the current state, x(t+h) is the next 
+state, h is the step size, and x'(t+h) is the derivative of x at t+h.
 The formula above is an algebraic equation, and this method uses fixed
 point iteration to solve it.
 <P>
@@ -64,8 +64,7 @@ step sizes when the fixed-point iteration does not converge.
 @author Jie Liu
 @version $Id$
 */
-public class BackwardEulerSolver extends FixedStepSolver
-    implements ImplicitMethodSolver{
+public class BackwardEulerSolver extends FixedStepSolver {
 
     /** Construct a solver in the default workspace with the
      *  name "CT_Backward_Euler_Solver".
@@ -97,29 +96,28 @@ public class BackwardEulerSolver extends FixedStepSolver
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return 1. The integrator only need one auxiliary variable.
-     *
+    /** Return 1 to indicate that an integrator under this solver needs 
+     *  one auxiliary variable.
      *  @return 1.
      */
     public int getIntegratorAuxVariableCount() {
         return 1;
     }
 
-    /** Return 0. No history information is needed.
+    /** Return 0 to indicate that no history information is needed by 
+     *  this solver.
      *  @return 0.
      */
     public int getHistoryCapacityRequirement() {
         return 0;
     }
 
-    /** Provide the fire() method for the integrators under this solver.
-     *  For the given integrator, do x(n+1) = x(n)+h*x'(n+1). Test if this
-     *  calculation converge for this integrator and report it to the
-     *  solver by calling voteForConvergence().
+    /** Provide the fire() method for the integrator under this solver.
+     *  For the given integrator, do x(n+1) = x(n)+h*x'(n+1) and test
+     *  whether this calculation converges.
      *
-     *  @param integrator The integrator of that calls this method.
-     *  @exception IllegalActionException Not thrown in this base
-     *  class. May be needed by the derived class.
+     *  @param integrator The integrator that uses the fire() method.
+     *  @exception IllegalActionException If there is no director.
      */
     public void integratorFire(CTBaseIntegrator integrator)
             throws IllegalActionException {
@@ -132,7 +130,7 @@ public class BackwardEulerSolver extends FixedStepSolver
         double pstate = integrator.getState() + f*(dir.getCurrentStepSize());
         double cerror = Math.abs(pstate-integrator.getTentativeState());
         if( !(cerror < dir.getValueResolution())) {
-            voteForConvergence(false);
+            _voteForConvergence(false);
         }
         integrator.setTentativeState(pstate);
         integrator.setTentativeDerivative(f);
@@ -140,19 +138,18 @@ public class BackwardEulerSolver extends FixedStepSolver
         integrator.output.broadcast(new DoubleToken(pstate));
     }
 
-    /** Return true if the overall vote result is true.
-     *  @return True if all the votes are true.
-     */
-    public boolean isConverged() {
-        return _converge;
-    }
 
-    /** Resolve the state of the integrators at time
-     *  CurrentTime+CurrentStepSize. It gets the state transition
-     *  schedule from the scheduler and fire until the fixed point.
-     *
-     * @exception IllegalActionException Not thrown in this base
-     *  class. May be needed by the derived class.
+    /** Advance time by the current step size and return true if 
+     *  the state of the integrators are resolved accurately at that time.
+     *  It resolves the states by getting the state transition
+     *  schedule from the scheduler and trying to iteration until
+     *  the fixed point is reached. Return false if the fixed point
+     *  is not reached after <i>maxIterations</i> number of iterations.
+     *  This method only resoles the 
+     *  tentative state. It is the director's job to update the 
+     *  states.
+     *  @exception IllegalActionException If there is no director or
+     *  no scheduler.
      */
     public boolean resolveStates() throws IllegalActionException {
         _debug(getFullName() + ": resolveState().");
@@ -171,16 +168,17 @@ public class BackwardEulerSolver extends FixedStepSolver
         Iterator actors = sch.scheduledDynamicActorList().iterator();
         while(actors.hasNext()) {
             CTDynamicActor next = (CTDynamicActor)actors.next();
-            _debug(getFullName() + " Guessing..."+((Nameable)next).getName());
+            _debug(getFullName(), " ask ", ((Nameable)next).getName(),
+                   " to emit tentative output");
             next.emitTentativeOutputs();
         }
-        _setConverge(false);
+        _setConvergence(false);
         int iterations = 0;
-        while(!isConverged()) {
+        while(!_isConverged()) {
             if(dir.STAT) {
                 dir.NFUNC ++;
             }
-            _setConverge(true);
+            _setConvergence(true);
             incrementRound();
             actors = sch.scheduledStateTransitionActorList().iterator();
             while(actors.hasNext()) {
@@ -203,24 +201,33 @@ public class BackwardEulerSolver extends FixedStepSolver
         return true;
     }
 
-    /** Vote for whether a fixed point has reached. The final result
-     *  is the <i>and</i> of all votes.
-     *
-     *  @param converge True if vote for convergence.
-     */
-    public void voteForConvergence(boolean converge) {
-        _converge = _converge && converge;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Return true if all integrators agree that the fixed-point 
+     *  iteration has converged. Integrators vote for convergence
+     *  by calling the _voteForConvergence() with a true arguments.
+     *  And the value returned here is the <i>AND</i> of all votes.
+     *  @return True if all the votes are true.
+     */
+    protected boolean _isConverged() {
+        return _converge;
+    }
 
     /** Set the convergence flag.
      *  @param converge The flag setting.
      */
-    protected void _setConverge(boolean converge) {
+    protected void _setConvergence(boolean converge) {
         _converge = converge;
     }
+
+    /** Vote on whether a fixed point has reached.
+     *  @param converge True if vote for convergence.
+     */
+    protected void _voteForConvergence(boolean converge) {
+        _converge = _converge && converge;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

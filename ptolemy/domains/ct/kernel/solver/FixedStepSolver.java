@@ -70,9 +70,7 @@ public abstract class FixedStepSolver extends ODESolver {
     ////                         public methods                    ////
 
     /** Return true always, since no error control is performed.
-     *  The method is final, and all extended classes should comply to
-     *  this.
-     *
+     *  @see ptolemy.domains.ct.kernel.CTStepSizeControlActor#isThisStepAccurate
      *  @param integrator The integrator that wants to do the test.
      *  @return True always.
      */
@@ -81,9 +79,8 @@ public abstract class FixedStepSolver extends ODESolver {
     }
 
     /** Return the current step size of the director, since no step
-     *  size control is performed. The method is final, and all extended
-     *  classes should comply to this.
-     *
+     *  size control is performed. 
+     *  @see ptolemy.domains.ct.kernel.CTStepSizeControlActor#predictedStepSize
      *  @param integrator The integrator that want to predict the step size.
      *  @return The current step size of the director.
      */

@@ -91,26 +91,26 @@ public class ForwardEulerSolver extends FixedStepSolver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Always return 1.
+    /** Return 1 to indicate that this solver needs one auxiliary variable
+     *  from each integrator when solving the ODE.
      *  @return 1.
      */
     public int getIntegratorAuxVariableCount() {
         return 1;
     }
 
-    /** Always return 0. No history information is needed.
+    /** Return 0 to indicate that this solver needs no history information.
      *  @return 0.
      */
     public int getHistoryCapacityRequirement() {
         return 0;
     }
 
-    /** The fire() method for integrators under this solver. It performs
-     *  the ODE solving algorithm.
+    /** Perform the fire() method for the argument integrator. This implements
+     *  the ODE solving algorithm as shown in the class comment.
      *
-     *  @param integrator The integrator of that calls this method.
-     *  @exception IllegalActionException Not thrown in this
-     *  class. May be needed by derived classes if there is any.
+     *  @param integrator The integrator that calls this method.
+     *  @exception IllegalActionException If there is no director.
      */
     public void integratorFire(CTBaseIntegrator integrator)
             throws IllegalActionException {
@@ -128,12 +128,14 @@ public class ForwardEulerSolver extends FixedStepSolver {
     }
 
 
-    /** Always return true, indicating that the states of the system
-     *  is "correctly" resolved.
-     *  The resolved states are at time
-     *  CurrentTime+CurrentStepSize. It gets the state transition
+    /** Advance the current time by the current step size and resolve
+     *  the state of the system. This method always returns true to
+     *  indicate that the state is found accurately.
+     *  This gets the state transition
      *  schedule from the scheduler and fire for one iteration
-     *  (which consists of 1 round).
+     *  (which consists of 1 round). This method only resoles the 
+     *  tentative state. It is the director's job to update the 
+     *  states.
      *
      * @return True.
      * @exception IllegalActionException If the firing of some actors

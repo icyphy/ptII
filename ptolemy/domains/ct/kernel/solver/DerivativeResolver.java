@@ -45,8 +45,9 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// DerivativeResolver
 /**
-This "odesolver" resolves the derivative with respect to the current time
-and current state of the system. For example, if the ODE is
+This solver finds the derivatives of the state variables of an ODE 
+with respect to the current time. 
+For example, if the ODE is
 <pre>
     x' = f(x,t)
 </pre>,
@@ -60,15 +61,15 @@ This method calculate
 </pre>
 
 <P>
-The derivative is obtained by
-firing the system for one iteration.
-This is used for preparing the history for other
-methods. This is typically used as a breakpoint solver.
-Note that time does not progress after one iteration of this solver.
-So it can not be used as an ODESolver.
-It assumes that the state is continuous after the breakpoint.
+The derivative is obtained by firing the system for one iteration.
+This is used for preparing the history for other methods. 
+Note that time does not progress under this solver.
+So, this class implements BreakpointODESolver and can only be
+used as a breakpoint solver.
+It assumes that the state variable is continuous after the breakpoint.
 This may not be true if there are impulses in the system.
-In that case, use ImpulseBESolver as the breakpoint solver for a better result.
+In that case, use ImpulseBESolver as the breakpoint solver for a 
+better result.
 
 @author Jie Liu
 @version $Id$
@@ -88,7 +89,7 @@ public class DerivativeResolver extends ODESolver
     /** Construct a solver in the given workspace with the name
      *  "CT_Derivative_Resolver".
      *  If the workspace argument is null, use the default workspace.
-     *  The director is added to the list of objects in the workspace.
+     *  The solver is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
      *
      *  @param workspace Object for synchronization and version tracking
@@ -106,14 +107,15 @@ public class DerivativeResolver extends ODESolver
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return 1. The integrator only need one auxiliary variable.
-     *  @return 1.
+    /** Return 0 to indicate that the solver needs no auxiliary variable.
+     *  @return 0.
      */
     public final int getIntegratorAuxVariableCount() {
-        return 1;
+        return 0;
     }
 
-    /** Return 0. No history information is needed by this solver.
+    /** Return 0 to indicate that no history information is needed 
+     *  by this solver.
      *  @return 0.
      */
     public final int getHistoryCapacityRequirement() {
@@ -121,7 +123,7 @@ public class DerivativeResolver extends ODESolver
     }
 
     /** Provides the fire() method for the given integrator.
-     *  It remembers the input token, and use it for x'(t).
+     *  This remembers the input token, and use it for x'(t).
      *
      *  @param integrator The integrator of that calls this method.
      *  @exception IllegalActionException Not thrown in this base

@@ -46,6 +46,6 @@ if {[info procs enumToObjects] == "" } then {
 
 ######################################################################
 ####
-#
+# This solver is tested in ct.test
 test ExplicitRK23Solver-2.1 {} {
 } {}

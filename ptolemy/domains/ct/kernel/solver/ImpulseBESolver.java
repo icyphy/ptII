@@ -43,17 +43,25 @@ import java.util.Iterator;
 //// ImpulseBESolver
 /**
 This class implements the impulse backward Euler ODE solver. This solver
-uses two backward Euler solving processes to handle Dirac Delta functions
-in a CT system. The first backward Euler process has a positive
-step size, h, and the second backward Euler process has a negative step
-size, -h, where h is the minimum step size.
+uses two backward Euler solving processes to handle Dirac delta functions
+in a CT system. The first backward Euler process use the minimum step size
+h, and the second backward Euler process use the negative step
+size, -h. That is, for ODE
+<pre>
+    x'=f(x, t), x(0)=x0
+</pre>
+This solver do the following two steps
+<pre>
+    x(t+h) = x(t) + h * x'(t+h)
+    x(t+) = x(t+h) - h * x'(t+)
+</pre>
 <P>
 By using this solver, we can find the state of the system at t+, which is
 the time at which the impulse occurs, but the effect of the impulse is
 taken care of.
 <P>
 This ODE solver does not advance time. So it can only be used as
-a breakpointSolver.
+a breakpoint solver.
 
 @author  Jie Liu
 @version $Id$
@@ -91,10 +99,18 @@ public class ImpulseBESolver extends BackwardEulerSolver
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Perform two successive backward Euler ODE solving method, with
+    /** Perform two successive backward Euler ODE solving processes, with
      *  step size h and -h, respectively, where h is the minimum
-     *  step size.
+     *  step size. Note that the state of the dynamic actors are updated
+     *  after the first Backward Euler solving process. This is OK,
+     *  since we have alrady used the minimum step size. This method 
+     *  does not update the states after the second Backward Euler solving
+     *  process, so the director that uses this solver should do it.
+     * 
+     *  @see BackwardEulerSolver#resolveState
      *  @return True if the state is successfully resolved.
+     *  @exception IllegalActionException If it is thrown by the
+     *  resolveStates() method of the BackwardEulerSolver.resolveState().
      */
     public boolean resolveStates() throws IllegalActionException {
         CTDirector dir = (CTDirector) getContainer();
@@ -104,8 +120,9 @@ public class ImpulseBESolver extends BackwardEulerSolver
             Iterator actors = ((CTScheduler)dir.getScheduler()
                                ).scheduledDynamicActorList().iterator();
             while(actors.hasNext()) {
-                Actor next = (Actor)actors.next();
-                _debug(getFullName() + "update..."+((Nameable)next).getName());
+                Actor next = (Actor)actors.next(); 
+                _debug(getFullName(),
+                        "update state ...", ((Nameable)next).getName());
                 next.postfire();
             }
 
@@ -125,6 +142,6 @@ public class ImpulseBESolver extends BackwardEulerSolver
     ////                         private variables                 ////
 
     // The static name.
-    private static final String _DEFAULT_NAME="CT_ImpulseBE_Solver" ;
+    private static final String _DEFAULT_NAME = "CT_ImpulseBE_Solver" ;
 
 }

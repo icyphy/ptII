@@ -43,7 +43,8 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// TrapezoidalRuleSolver
 /**
-NOTE: This class is under significant rework. Please don't use it!
+NOTE: The step size control mechanism in this class is not very elegant.
+Please avoiding using this class if possible.
 
 This is a second order variable step size ODE solver that uses the
 trapezoidal rule algorithm. For an ODE
@@ -62,7 +63,7 @@ to find x(t+h) and x'(t+h).
 @author Jie Liu
 @version $Id$
 */
-public class TrapezoidalRuleSolver extends ODESolver{
+public class TrapezoidalRuleSolver extends ODESolver {
 
     /** Construct a solver in the default workspace with an empty
      *  string as name. The solver is added to the list of objects in
@@ -75,7 +76,7 @@ public class TrapezoidalRuleSolver extends ODESolver{
 
     /** Construct a solver in the given workspace.
      *  If the workspace argument is null, use the default workspace.
-     *  The director is added to the list of objects in the workspace.
+     *  The solver is added to the list of objects in the workspace.
      *  The name of the solver is set to "CT_Trapezoidal_Rule_Solver".
      *  Increment the version number of the workspace.
      *
@@ -95,26 +96,27 @@ public class TrapezoidalRuleSolver extends ODESolver{
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Integrator's auxiliary variable number needed when solving the ODE.
+    /** Return 2 to indicate that an integrator under this solver needs
+     *  2 auxiliary variables.
      *  @return 2.
      */
     public int getIntegratorAuxVariableCount() {
         return 2;
     }
 
-    /** Return the number of history points needed.
-     *  @return 2.
+    /** Return 0 to indicate that this solver needs no 
+     *  history information.
+     *  @return 0.
      */
     public int getHistoryCapacityRequirement() {
-        return 2;
+        return 0;
     }
 
     /** The fire() method for integrators under this solver. It performs
      *  the ODE solving algorithm.
      *
      *  @param integrator The integrator of that calls this method.
-     *  @exception IllegalActionException Not thrown in this
-     *  class. May be needed by the derived class.
+     *  @exception IllegalActionException If there is no director.
      */
     public void integratorFire(CTBaseIntegrator integrator)
             throws IllegalActionException {
@@ -123,7 +125,10 @@ public class TrapezoidalRuleSolver extends ODESolver{
             throw new IllegalActionException( this,
                     " must have a CT director.");
         }
-        double f1 = (integrator.getHistory(0))[1];;
+        // Tf there's no enough history, use the derivative resolver
+        // to start the method.
+            
+        double f1 = integrator.getDerivative();
         double h = dir.getCurrentStepSize();
         double pstate;
         if (getRound() == 0) {
@@ -137,7 +142,7 @@ public class TrapezoidalRuleSolver extends ODESolver{
             pstate = integrator.getState() + (h*(f1+f2))/(double)2.0;
             double cerror = Math.abs(pstate-integrator.getTentativeState());
             if( !(cerror < dir.getValueResolution())) {
-                voteForConvergence(false);
+                _voteForConvergence(false);
             }
             integrator.setTentativeDerivative(f2);
         }
@@ -145,18 +150,19 @@ public class TrapezoidalRuleSolver extends ODESolver{
         integrator.output.broadcast(new DoubleToken(pstate));
     }
 
-    /** Perform the isThisStepAccurate() test for integrators under
-     *  this solver.
-     *  It calculates the tentative state and test for local
-     *  truncation error.
-     *  @param integrator The integrator of that calls this method.
+    /** Perform the isThisStepAccurate() test for the integrator under
+     *  this solver. This method calculates the tentative state 
+     *  and test whether the local
+     *  truncation error (an estimation of the local error) is less
+     *  than the error tolerance
+     *  @param integrator The integrator that calls this method.
      *  @return True if the intergrator report a success on the this step.
      */
     public boolean integratorIsAccurate(CTBaseIntegrator integrator) {
         CTDirector dir = (CTDirector)getContainer();
         double errtol = dir.getErrorTolerance();
         double[] k = integrator.getAuxVariables();
-        double lte = 0.5*Math.abs(integrator.getTentativeState() - k[0]);
+        double lte = 0.1*Math.abs(integrator.getTentativeState() - k[0]);
         integrator.setAuxVariables(1, lte);
         _debug("Integrator: "+ integrator.getName() +
                 " local truncation error = " + lte);
@@ -186,22 +192,13 @@ public class TrapezoidalRuleSolver extends ODESolver{
         double lte = (integrator.getAuxVariables())[1];
         double h = dir.getCurrentStepSize();
         double errtol = dir.getErrorTolerance();
-        double newh = 5.0*h;
-        if(lte>dir.getValueResolution()) {
-            newh = h* Math.max(0.5, Math.pow((3.0*errtol/lte), 1.0/3.0));
+        double newh = h;
+        if(lte/errtol < 0.1) {
+            newh = h* Math.min(2, Math.pow((3.0*errtol/lte), 1.0/3.0));
         }
         _debug("integrator: " + integrator.getName() +
                 " suggests next step size = " + newh);
         return newh;
-    }
-
-    /** Return true if the fixed point iteration is converged. This is
-     *  the result of all voteForConvergence() in the current integration
-     *  step.
-     *  @return True if all the votes are true.
-     */
-    public boolean isConverged() {
-        return _converge;
     }
 
     /** Resolve the state of the integrators at time
@@ -236,7 +233,7 @@ public class TrapezoidalRuleSolver extends ODESolver{
         dir.setCurrentTime(dir.getCurrentTime()+dir.getCurrentStepSize());
         _setConverge(false);
         int iterations = 0;
-        while(!isConverged()) {
+        while(!_isConverged()) {
             if(dir.STAT) {
                 dir.NFUNC ++;
             }
@@ -277,16 +274,17 @@ public class TrapezoidalRuleSolver extends ODESolver{
         return true;
     }
 
-    /** Vote for whether a fixed point has reached. The final result
-     *  is the <i>and</i> of all votes.
-     *  @param converge True if vote for converge.
-     */
-    public void voteForConvergence(boolean converge) {
-        _converge = _converge && converge;
-    }
-
     ////////////////////////////////////////////////////////////////////////
     ////                       protected methods                        ////
+    /** Return true if the fixed point iteration is converged. This is
+     *  the result of all _voteForConvergence() in the current integration
+     *  step.
+     *  @return True if all the votes are true.
+     */
+    protected boolean _isConverged() {
+        return _converge;
+    }
+
     /** Set the convergence flag. Usually called to reset the flag to false
      *  at the beginning of an integration step.
      *  @param converge The flag setting.
@@ -294,6 +292,15 @@ public class TrapezoidalRuleSolver extends ODESolver{
     protected void _setConverge(boolean converge) {
         _converge = converge;
     }
+
+    /** Vote for whether a fixed point has reached. The final result
+     *  is the <i>and</i> of all votes.
+     *  @param converge True if vote for converge.
+     */
+    protected void _voteForConvergence(boolean converge) {
+        _converge = _converge && converge;
+    }
+
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 

@@ -68,8 +68,8 @@ successful, and the next integration step is predicted as:
 <pre>
     h' = 0.8*Math.pow((ErrorTolerance/LTE), 1.0/3.0)
 <pre>
-This is a second order method, but use a third order procedure to estimate
-local truncation error.
+This is a second order method, but uses a third order procedure to estimate
+the local truncation error.
 
 @author  Jie Liu
 @version $Id$
@@ -105,26 +105,27 @@ public class ExplicitRK23Solver extends ODESolver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return 4. Four auxiliary variables are needed for this solver.
+    /** Return 4 to indicate that four auxiliary variables are 
+     *  needed by this solver.
      *  @return 4.
      */
     public final int getIntegratorAuxVariableCount() {
         return 4;
     }
 
-    /** Return 1 always. The history information about the last
-     *  step is needed.
-     *  @return 1.
+    /** Return 0 to indicate that no history information is needed
+     *  by this solver.
+     *  @return 0.
      */
     public final int getHistoryCapacityRequirement() {
         return 0;
     }
 
     /** Provide the fire() method for integrators under this solver.
-     *  It performs the ODE solving algorithm.
+     *  This performs the ODE solving algorithm.
      *
      *  @param integrator The integrator of that calls this method.
-     *  @exception IllegalActionException If no director.
+     *  @exception IllegalActionException If there is no director.
      */
     public void integratorFire(CTBaseIntegrator integrator)
             throws IllegalActionException {
@@ -140,7 +141,7 @@ public class ExplicitRK23Solver extends ODESolver {
         double[] k = integrator.getAuxVariables();
         switch (r) {
         case 0:
-            //derivative at t;
+            // Get the derivative at t;
             double k0 = integrator.getDerivative();
             integrator.setAuxVariables(0, k0);
             outvalue = xn + h * k0 *_B[0][0];
@@ -165,7 +166,7 @@ public class ExplicitRK23Solver extends ODESolver {
     }
 
     /** Return true if the integration is accurate for the given
-     *  integrator. It estimates the local truncation error for that
+     *  integrator. This estimates the local truncation error for that
      *  integrator and compare it with the error tolerance.
      *
      *  @param integrator The integrator of that calls this method.
@@ -223,14 +224,16 @@ public class ExplicitRK23Solver extends ODESolver {
         return newh;
     }
 
-    /** Return true always.
-     *  Resolve the state of the integrators at time:
-     *  CurrentTime+CurrentStepSize. It gets the state transition
+    /** Advance the current time by the current step size, and 
+     *  resolve the state of the integrators at that time.
+     *  This method always returns true since this class implements
+     *  an explicit method. xIt gets the state transition
      *  schedule from the scheduler and fire for one iteration,
      *  (which consists of 4 rounds).
      *
-     * @exception IllegalActionException Not thrown in this base
-     *  class. May be needed by the derived class.
+     * @exception IllegalActionException If there is no director,
+     *  no scheduler, or one of the actors throw it in its fire()
+     *  method or emitTentativeOutput() method.
      */
     public boolean resolveStates() throws IllegalActionException {
         _debug(getFullName() + ": resolveState().");
@@ -282,7 +285,8 @@ public class ExplicitRK23Solver extends ODESolver {
             actors = sch.scheduledStateTransitionActorList().iterator();
             while(actors.hasNext()) {
                 Actor next = (Actor)actors.next();
-                _debug(getFullName() + " firing..."+((Nameable)next).getName());
+                _debug(getFullName(), " firing... ",
+                        ((Nameable)next).getName());
                 next.fire();
             }
             incrementRound();
