@@ -28,6 +28,8 @@
 # Programmer:  Christopher Hylands
 
 # Variables
+#  If you change the version number, then edit ptII/adm/bin/ptIInightly-mail
+#  and ptolemy/web/nightly/toc.htm on the website
 MAJOR_VERSION = 	1.1
 MINOR_VERSION =		devel
 
