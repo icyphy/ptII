@@ -563,7 +563,7 @@ public class IconEditor {
 		    }
 		}
 		else {
-		    ((BasicFigure) figure).setFillPaint (_strokeColor);
+		    ((BasicFigure) figure).setStrokePaint (_strokeColor);
 		}
 	    }
 	}
