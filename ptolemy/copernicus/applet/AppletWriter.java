@@ -181,7 +181,7 @@ public class AppletWriter extends SceneTransformer {
 	    // NOTE: This property is set by the vergil startup script.
 	    _ptIIDirectory = System.getProperty("ptolemy.ptII.dir");
         } catch (SecurityException security) {
-            throw new InternalErrorException(this, security,
+            throw new InternalErrorException(null, security,
                                            "Could not find "
                                            + "'ptolemy.ptII.dir'"
 					   + " property.  Vergil should be "
