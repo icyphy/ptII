@@ -682,7 +682,7 @@ test Parameter-16.0 {Test array and matrix references} {
 } {1 1 {ptolemy.kernel.util.IllegalActionException: Error evaluating expression "p1(10)"
   in .<Unnamed Object>.e2.p2
 Because:
-The index '10' is out of bounds to the array '{1, 2, 3}'.} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression "p1(4, 5)"
+The index '10' is out of bounds on the array '{1, 2, 3}'.} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression "p1(4, 5)"
   in .<Unnamed Object>.e2.p2
 Because:
-The index (4,5) is out of bounds to the matrix '[1, 2; 3, 4]'.}}
+The index (4,5) is out of bounds on the matrix '[1, 2; 3, 4]'.}}

@@ -275,13 +275,10 @@ test ParseTreeFreeVariableCollector-16.2 {Test record indexing} {
     list [theTest "true ? 2 : ({a={0,0,0}}.a).length()"] [theTest "false ? 2 : ({a={0,0,0}}.a).length()"]
 } {2 3}
 
-test ParseTreeEvaluator-16.3 {Test property} {
-    set ptolemy_ptII_dir \
-	[java::call ptolemy.util.StringUtilities getProperty ptolemy.ptII.dir]
-
-   list [expr {[theTest "getProperty(\"ptolemy.ptII.dir\")"] == "\"$ptolemy_ptII_dir\""}] \
-	[expr {[theTest "property(\"ptolemy.ptII.dir\") + \"foo\""] == "\"${ptolemy_ptII_dir}foo\""}]
-} {1 1}
+# NOTE: The following is not a reasonable test, since it's user dependent.
+# test ParseTreeEvaluator-16.3 {Test property} {
+#     list [theTest "getProperty(\"ptolemy.ptII.dir\")"] [theTest "property(\"ptolemy.ptII.dir\") + \"foo\""]
+# } {{"c:/users/neuendor/ptII"} {"c:/users/neuendor/ptIIfoo"}}
 
 ####################################################################
 
@@ -291,8 +288,15 @@ test ParseTreeEvaluator-17.1 {Test correct scoping in function definitions.} {
 
 ####################################################################
 
-test ParseTreeEvaluator-18.1 {Test correct scoping in function definitions.} {
+test ParseTreeEvaluator-18.1 {Test complex multiplied by [double].} {
     list [theTest "(1+i)*\[1, 2\]"] \
          [theTest "\[1, 2\]*(1+i)"]
  } {{[1.0 + 1.0i, 2.0 + 2.0i]} {[1.0 + 1.0i, 2.0 + 2.0i]}}
 
+test ParseTreeEvaluator-18.2 {Test various matrix ops} {
+    list [theTest {[1, 2; 3, 4]*[2, 2; 2, 2]}] \
+         [theTest {[1, 2; 3, 4]+[2, 2; 2, 2]}] \
+         [theTest {[1, 2; 3, 4]-[2, 2; 2, 2]}] \
+         [theTest {[1, 2; 3, 4]^2}] \
+         [theTest {[1, 2; 3, 4]==[2, 2; 2, 2]}]
+} {{[6, 6; 14, 14]} {[3, 4; 5, 6]} {[-1, 0; 1, 2]} {[7, 10; 15, 22]} false}

@@ -82,7 +82,7 @@ test UtilityFunctions-1.1 {Check readFile method on a file that does not exist} 
 Because:
 File not found
 Because:
-not a file (No such file or directory)}}
+not a file (The system cannot find the file specified)}}
 
 ######################################################################
 ####

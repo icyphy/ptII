@@ -671,15 +671,18 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         ptolemy.data.Token result = node.jjtGetChild(0).getToken();
         for(int i = 1; i < numChildren; i++) {
             int times = 1;
+            ptolemy.data.Token token = node.jjtGetChild(i).getToken();
+            if(!(token instanceof ScalarToken)) {
+                throw new IllegalActionException(
+                        "Exponent must be an integer.\n" +
+                        "Use pow(10,3.5) for non-integer exponents");
+            }
             try {
-                times = ((ptolemy.data.ScalarToken)
-                    node.jjtGetChild(i).getToken()).intValue();
+                times = ((ptolemy.data.ScalarToken)token).intValue();
             } catch (IllegalActionException ex) {
                 throw new IllegalActionException(
-                        "Only integral power numbers (e.g. 10^3) " +
-                        "are allowed. Please check expression and use " +
-                        "pow(10,3.5) instead to express non-integer " +
-                        "powers.");
+                        "Exponent must be an integer.\n" +
+                        "Use pow(10,3.5) for non-integer exponents");
             }
 
             result = result.pow(times);
@@ -757,11 +760,9 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         } else {
             if(!((leftToken instanceof ScalarToken) &&
                     (rightToken instanceof ScalarToken))) {
-                _assert(true, node,
+                throw new IllegalActionException(
                         "The " + operator.image +
-                        " operator cannot be applied between " +
-                        leftToken.getClass().getName() + " and " +
-                        rightToken.getClass().getName());
+                        " operator can only be applied between scalars.");
             }
             ScalarToken leftScalar = (ScalarToken)leftToken;
             ScalarToken rightScalar = (ScalarToken)rightToken;
@@ -806,25 +807,36 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         ptolemy.data.Token bitsToken = node.jjtGetChild(1).getToken();
         ptolemy.data.Token result = null;
 
-        _assert(token instanceof ScalarToken, node,
-                "The " + operator + " operator cannot be applied " +
-                "to a token that is not a ScalarToken.");
-
-        _assert(bitsToken instanceof ScalarToken, node,
-                "The " + operator + " operator cannot be applied " +
-                "with a number of bits that is not a ScalarToken.");
-
-        if(operator.kind == PtParserConstants.SHL) {
-            result = ((ScalarToken)token).leftShift(
-                    ((ScalarToken)bitsToken).intValue());
-        } else if(operator.kind == PtParserConstants.SHR) {
-            result = ((ScalarToken)token).rightShift(
-                    ((ScalarToken)bitsToken).intValue());
-        } else if(operator.kind == PtParserConstants.LSHR) {
-            result = ((ScalarToken)token).logicalRightShift(
-                    ((ScalarToken)bitsToken).intValue());
-        } else {
-            _assert(false, node, "Invalid operation");
+        if (!(token instanceof ScalarToken)) {
+            throw new IllegalActionException(
+                    "The " + operator + " operator requires " +
+                    "the left operand to be a scalar.");
+        }
+        if (!(bitsToken instanceof ScalarToken)) {
+            throw new IllegalActionException(
+                    "The " + operator + " operator requires " +
+                    "the right operand to be a scalar.");
+        }
+        // intValue() is used rather than testing for IntToken
+        // because any token with an intValue() is OK.  However,
+        // we need a try...catch to generate a proper error message.
+        try {
+            if(operator.kind == PtParserConstants.SHL) {
+                result = ((ScalarToken)token).leftShift(
+                        ((ScalarToken)bitsToken).intValue());
+            } else if(operator.kind == PtParserConstants.SHR) {
+                result = ((ScalarToken)token).rightShift(
+                        ((ScalarToken)bitsToken).intValue());
+            } else if(operator.kind == PtParserConstants.LSHR) {
+                result = ((ScalarToken)token).logicalRightShift(
+                        ((ScalarToken)bitsToken).intValue());
+            } else {
+                _assert(false, node, "Invalid operation");
+            }
+        } catch (IllegalActionException ex) {
+            throw new IllegalActionException(
+                    "The " + operator + " operator requires " +
+                    "the right operand to have an integer value.");
         }
         node.setToken(result);
     }
@@ -952,20 +964,21 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             ptolemy.data.Token value,
             ptolemy.data.Token index) throws IllegalActionException {
         if(!(value instanceof ArrayToken)) {
-            _assert(true, node, "Cannot use array "
-                    + "indexing on '" + value.toString()
-                    + "' because its value is not an ArrayToken.");
+            throw new IllegalActionException(
+                    "Array indexing cannot be applied to '"
+                    + value.toString()
+                    + "' because its value is not an array.");
         }
         if(!(index instanceof IntToken)) {
-            _assert(true, node, "The array index '"
-                    + index + "' is not an integer.");
+            throw new IllegalActionException(
+                    "Array indexing requires an integer. Got: " + index);
         }
         int integerIndex = ((IntToken)index).intValue();
         try {
             return ((ArrayToken)value).getElement(integerIndex);
         } catch (ArrayIndexOutOfBoundsException ex) {
             throw new IllegalActionException("The index '"
-                    + index + "' is out of bounds to the array '"
+                    + index + "' is out of bounds on the array '"
                     + value + "'.");
         }
     }
@@ -984,17 +997,19 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             ptolemy.data.Token rowIndex,
             ptolemy.data.Token columnIndex) throws IllegalActionException {
         if(!(value instanceof MatrixToken)) {
-            _assert(true, node, "Cannot use matrix "
-                + "indexing on '" + value.toString()
-                + "' because its value is not a MatrixToken.");
+            throw new IllegalActionException(
+                    "Matrix indexing cannot be applied to '"
+                    + value.toString()
+                    + "' because its value is not a matrix.");
         }
         if(!(rowIndex instanceof IntToken)) {
-            _assert(true, node, "The row index '"
-                    + rowIndex + "' is not an integer.");
+            throw new IllegalActionException(
+                    "Matrix row index must be an integer. Got: " + rowIndex);
         }
         if(!(columnIndex instanceof IntToken)) {
-            _assert(true, node, "The column index '"
-                + rowIndex + "' is not an integer.");
+            throw new IllegalActionException(
+                    "Matrix column index must be an integer. Got: "
+                    + columnIndex);
         }
         int integerRowIndex = ((IntToken)rowIndex).intValue();
         int integerColumnIndex = ((IntToken)columnIndex).intValue();
@@ -1004,7 +1019,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         } catch (ArrayIndexOutOfBoundsException ex) {
             throw new IllegalActionException("The index ("
                     + rowIndex + "," + columnIndex
-                    + ") is out of bounds to the matrix '"
+                    + ") is out of bounds on the matrix '"
                     + value + "'.");
         }
     }
