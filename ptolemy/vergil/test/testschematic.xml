@@ -42,9 +42,6 @@
         </port>
     </entity>
     <relation name="R1" class="ptolemy.actor.TypedIORelation">
-        <vertex name="root" class="ptolemy.moml.Vertex">
-            <location value="100.0, 50.0"/>
-        </vertex>
     </relation>
     <link port="Ramp1.output" relation="R1"/>
     <link port="Plotter1.input" relation="R1"/>

@@ -18,11 +18,3 @@
   <!-- FIXME: Link parameters with on-screen controls here. -->
 
   <relation name="r1" class="ptolemy.actor.TypedIORelation">
-    <vertex name="v1"><location value="120, 100"/></vertex>
-    <vertex name="v2" pathTo="v1"><location value="120,120"/></vertex>
-    <vertex name="v3" pathTo="v2"><location value="180,120"/></vertex>
-    <vertex name="v4" pathTo="v3"><location value="180,100"/></vertex>
-  </relation>
-  <link port="ramp.output" relation="r1" vertex="v1"/>
-  <link port="display.input" relation="r1" vertex="v4"/>
-</entity>

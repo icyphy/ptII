@@ -185,9 +185,6 @@
     <relation name="_R11" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="_R12" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex">
-            <location value="368.5714416503906, 228.5"/>
-        </vertex>
     </relation>
     <relation name="_R13" class="ptolemy.actor.TypedIORelation">
     </relation>

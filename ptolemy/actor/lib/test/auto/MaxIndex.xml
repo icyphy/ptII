@@ -75,29 +75,14 @@
     <relation name="relation24" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation25" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex">
-            <location value="331.5, 122.0"/>
-        </vertex>
     </relation>
     <relation name="relation28" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex">
-            <location value="331.5, 162.0"/>
-        </vertex>
     </relation>
     <relation name="relation31" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex">
-            <location value="330.5, 193.0"/>
-        </vertex>
     </relation>
     <relation name="relation34" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex">
-            <location value="329.5, 226.0"/>
-        </vertex>
     </relation>
     <relation name="relation38" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex">
-            <location value="206.5, 169.0"/>
-        </vertex>
     </relation>
     <link port="Ramp0.output" relation="relation4"/>
     <link port="TrigFunction1.input" relation="relation4"/>

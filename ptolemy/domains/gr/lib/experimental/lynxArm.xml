@@ -618,13 +618,8 @@
         <relation name="relation21" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex0" class="ptolemy.moml.Vertex">
-            </vertex>
         </relation>
         <relation name="relation0" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex0" class="ptolemy.moml.Vertex">
-                <location value="496.0, 152.0"/>
-            </vertex>
         </relation>
         <relation name="relation1" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -2139,9 +2134,6 @@
         <relation name="relation13" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation0" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex0" class="ptolemy.moml.Vertex">
-                <location value="501.0, 224.0"/>
-            </vertex>
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -2896,9 +2888,6 @@
         <relation name="relation32" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation33" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex0" class="ptolemy.moml.Vertex">
-                <location value="524.0, 193.0"/>
-            </vertex>
         </relation>
         <link port="port1" relation="relation33"/>
         <link port="PolyCylinder3D0.output" relation="relation3"/>

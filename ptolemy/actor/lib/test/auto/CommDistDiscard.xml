@@ -75,9 +75,6 @@
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex">
-            <location value="247.0, 125.0"/>
-        </vertex>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
         </property>
     </relation>

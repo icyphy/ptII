@@ -849,13 +849,8 @@
             <relation name="relation21" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex0" class="ptolemy.moml.Vertex">
-                </vertex>
             </relation>
             <relation name="relation0" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex0" class="ptolemy.moml.Vertex">
-                    <location value="496.0, 152.0"/>
-                </vertex>
             </relation>
             <relation name="relation1" class="ptolemy.actor.TypedIORelation">
             </relation>
@@ -2560,9 +2555,6 @@
             <relation name="relation13" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation0" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex0" class="ptolemy.moml.Vertex">
-                    <location value="501.0, 224.0"/>
-                </vertex>
             </relation>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
             </relation>
@@ -3409,9 +3401,6 @@
             <relation name="relation32" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation33" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex0" class="ptolemy.moml.Vertex">
-                    <location value="524.0, 193.0"/>
-                </vertex>
             </relation>
             <link port="port1" relation="relation33"/>
             <link port="PolyCylinder3D0.output" relation="relation3"/>
@@ -4518,9 +4507,6 @@
                 </port>
             </entity>
             <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex0" class="ptolemy.moml.Vertex">
-                    <location value="224.0, 297.0"/>
-                </vertex>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             </relation>
@@ -4531,33 +4517,18 @@
             <relation name="relation17" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation25" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex0" class="ptolemy.moml.Vertex">
-                    <location value="236.0, 424.0"/>
-                </vertex>
             </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex0" class="ptolemy.moml.Vertex">
-                    <location value="199.0, 161.0"/>
-                </vertex>
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation14" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation0" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex0" class="ptolemy.moml.Vertex">
-                    <location value="436.0, 281.0"/>
-                </vertex>
             </relation>
             <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex0" class="ptolemy.moml.Vertex">
-                    <location value="111.0, 397.0"/>
-                </vertex>
             </relation>
             <relation name="relation1" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex0" class="ptolemy.moml.Vertex">
-                    <location value="114.0, 466.0"/>
-                </vertex>
             </relation>
             <relation name="relation11" class="ptolemy.actor.TypedIORelation">
             </relation>
@@ -4876,33 +4847,18 @@
                 </port>
             </entity>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex0" class="ptolemy.moml.Vertex">
-                    <location value="73.0, 315.0"/>
-                </vertex>
             </relation>
             <relation name="relation19" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation20" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex0" class="ptolemy.moml.Vertex">
-                    <location value="288.0, 381.0"/>
-                </vertex>
             </relation>
             <relation name="relation23" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex0" class="ptolemy.moml.Vertex">
-                    <location value="130.0, 247.0"/>
-                </vertex>
             </relation>
             <relation name="relation31" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation0" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex0" class="ptolemy.moml.Vertex">
-                    <location value="162.0, 76.0"/>
-                </vertex>
             </relation>
             <relation name="relation1" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex0" class="ptolemy.moml.Vertex">
-                    <location value="134.0, 134.0"/>
-                </vertex>
             </relation>
             <relation name="relation9" class="ptolemy.actor.TypedIORelation">
             </relation>
@@ -4915,19 +4871,10 @@
             <relation name="relation8" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex0" class="ptolemy.moml.Vertex">
-                    <location value="257.0, 234.0"/>
-                </vertex>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex0" class="ptolemy.moml.Vertex">
-                    <location value="377.0, 188.0"/>
-                </vertex>
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex0" class="ptolemy.moml.Vertex">
-                    <location value="467.0, 302.0"/>
-                </vertex>
             </relation>
             <link port="x" relation="relation0"/>
             <link port="y" relation="relation1"/>
@@ -5109,36 +5056,18 @@
         <relation name="relation21" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation26" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex0" class="ptolemy.moml.Vertex">
-                <location value="268.0, 182.0"/>
-            </vertex>
         </relation>
         <relation name="relation27" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex0" class="ptolemy.moml.Vertex">
-                <location value="258.0, 206.0"/>
-            </vertex>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex0" class="ptolemy.moml.Vertex">
-                <location value="79.0, 91.0"/>
-            </vertex>
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex0" class="ptolemy.moml.Vertex">
-                <location value="89.0, 279.0"/>
-            </vertex>
         </relation>
         <relation name="relation0" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex0" class="ptolemy.moml.Vertex">
-                <location value="363.0, 135.0"/>
-            </vertex>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex0" class="ptolemy.moml.Vertex">
-                <location value="254.0, 251.0"/>
-            </vertex>
         </relation>
         <relation name="relation22" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -5196,24 +5125,12 @@
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation1" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex">
-            <location value="135.0, 163.0"/>
-        </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex">
-            <location value="44.0, 204.0"/>
-        </vertex>
     </relation>
     <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex">
-            <location value="178.0, 190.0"/>
-        </vertex>
     </relation>
     <relation name="relation19" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex">
-            <location value="159.0, 204.0"/>
-        </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>

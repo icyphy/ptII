@@ -178,19 +178,10 @@
             </port>
         </entity>
         <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex0" class="ptolemy.moml.Vertex">
-                <location value="415.0, 161.0"/>
-            </vertex>
         </relation>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex0" class="ptolemy.moml.Vertex">
-                <location value="388.0, 421.0"/>
-            </vertex>
         </relation>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex0" class="ptolemy.moml.Vertex">
-                <location value="236.0, 162.0"/>
-            </vertex>
         </relation>
         <relation name="relation15" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -199,8 +190,6 @@
         <relation name="relation21" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex0" class="ptolemy.moml.Vertex">
-            </vertex>
         </relation>
         <relation name="relation17" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -634,9 +623,6 @@
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex0" class="ptolemy.moml.Vertex">
-                <location value="244.0, 473.0"/>
-            </vertex>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -700,9 +686,6 @@
         <link port="Translate20.output" relation="relation18"/>
     </class>
     <relation name="relation1" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex">
-            <location value="255.0, 192.0"/>
-        </vertex>
     </relation>
     <link port="damped_pendulum_ODE.port12" relation="relation1"/>
     <link port="pendulum_view.port1" relation="relation1"/>
