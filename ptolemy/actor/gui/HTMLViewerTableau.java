@@ -181,7 +181,7 @@ public class HTMLViewerTableau extends Tableau {
 		    // be found.  If we are under Web Start, it could be
 		    // that we are looking in the wrong Jar file, so
 		    // we try again.
-		    String urlString = effigy.uri.toString();
+		    String urlString = effigy.uri.getURI().toString();
 		    URL anotherURL =
 			JNLPUtilities.jarURLEntryResource(urlString);
 		    if (anotherURL == null) {
