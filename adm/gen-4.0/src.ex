@@ -10,6 +10,7 @@
 .netscape
 *.o
 *.obj
+*.psd
 *.so
 *.snapshot
 */#auto#*
