@@ -47,6 +47,8 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
+	ParamTest.java 
+
 #	RampApplet.java \
 #	SDFPort.java \
 #	SDFRamp.java \
@@ -60,6 +62,7 @@ JSRCS = \
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
+	IntParam.tcl \
 	NamedObj.tcl \
 	NamedObjList.tcl \
 	ParamList.tcl
