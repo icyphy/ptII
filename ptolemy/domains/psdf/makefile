@@ -54,6 +54,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
+	psdf.xml \
 	synthesis-copyright.htm
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
