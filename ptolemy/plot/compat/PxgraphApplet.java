@@ -54,8 +54,8 @@ import java.net.URL;
  *  @author Edward A. Lee
  *  @version $Id$
  *  @see PxgraphParser
- *  @see PlotBox
- *  @see Plot
+ *  @see ptolemy.plot.PlotBox
+ *  @see ptolemy.plot.Plot
  */
 public class PxgraphApplet extends PlotApplet {
 
