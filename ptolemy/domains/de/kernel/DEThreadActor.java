@@ -36,6 +36,7 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import java.util.Enumeration;
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// DEThreadActor
@@ -168,9 +169,9 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
 
     // Empty all receivers of all input ports.
     private void _emptyPorts() {
-        Enumeration ports = inputPorts();
-        while (ports.hasMoreElements()) {
-            IOPort port = (IOPort)ports.nextElement();
+        Iterator ports = inputPortList().iterator();
+        while (ports.hasNext()) {
+            IOPort port = (IOPort)ports.next();
             for (int ch = 0; ch < port.getWidth(); ch++) {
                 try {
                     while (port.hasToken(ch)) {
