@@ -102,66 +102,6 @@ public class DDEReceiver extends TimedQueueReceiver
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Remove ignored tokens from this receiver. If the receiver
-     *  time of this receiver is equal to TimedQueueReceiver.IGNORE,
-     *  then take the oldest token off of the queue. If after doing
-     *  so no other tokens are on the queue, then set the receiver
-     *  time of this receiver to be equal to the current time of the
-     *  time keeper controlling this receiver.
-     * @see ptolemy.domains.dde.kernel.TimedQueueReceiver
-     */
-    public synchronized void clearIgnoredTokens() {
-        if( getRcvrTime() != TimedQueueReceiver.IGNORE ) {
-            return;
-        }
-
-	String actorName = ((Nameable)getContainer().
-                getContainer()).getName();
-
-	// If this is an Outside Boundary Port, then we need 
-	// to pass the IGNORE token into the interior. 
-	/*
-	if( isOutsideBoundary() ) {
-	    IOPort port = (IOPort)getContainer(); 
-	    Director insideDir = 
-		    ((Actor)port.getContainer()).getDirector();
-	    if( insideDir instanceof DDEDirector ) {
-		Receiver[][] rcvrs = null;
-		try {
-		    rcvrs = port.deepGetReceivers();
-		} catch( IllegalActionException e ) {
-		    // FIXME: Do Something
-		}
-		for(int i = 0; i < rcvrs.length; i++ ) {
-		    for(int j = 0; j < rcvrs[i].length; j++ ) {
-			DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j];
-			rcvr.put( new Token(), TimedQueueReceiver.IGNORE );
-		    }
-		}
-	    }
-	}
-	*/
-
-	// Remove Ignored Token
-	super.get();
-
-	// Set the receiver time if queue is empty
-	if( (getRcvrTime() == TimedQueueReceiver.IGNORE)
-		&& !super.hasToken() ) {
-	    Thread thread = Thread.currentThread();
-	    DDEThread ddeThread;
-	    if( thread instanceof DDEThread ) {
-		ddeThread = (DDEThread)thread;
-		TimeKeeper keeper = ddeThread.getTimeKeeper();
-		if( actorName.equals("wormhole") ) {
-		    double time = keeper.getCurrentTime();
-		}
-		
-		setRcvrTime( keeper.getCurrentTime() );
-	    }
-	}
-    }
-
     /** Do a blocking read on the queue. If no token is available,
      *  then inform the director that this receiver is blocking on
      *  a read and wait until a token becomes available. When a
@@ -458,11 +398,7 @@ public class DDEReceiver extends TimedQueueReceiver
 		return false;
 	    } else {
 		_ignoreNotSeen = true;
-		// clearIgnoredTokens();
 		timeKeeper.updateIgnoredReceivers();
-		// Call the next line since
-                // TimeKeeper.updateIgnoredReceivers()
-		// has not been called.
 		timeKeeper.setIgnoredTokens(false);
 		return false;
 	    }
@@ -517,15 +453,19 @@ public class DDEReceiver extends TimedQueueReceiver
             } else {
                 director.addInternalReadBlock();
             }
+            /*
             System.out.println("***Actor: " + actorName + " has blocked."
                     + "  Number of blocks = " + 
                     director._internalReadBlocks );
+            */
 	    while( _readPending && !_terminate ) {
 		workspace.wait( this );
 	    }
+            /*
             System.out.println("***Actor: " + actorName + " no longer blocked."
                     + "  Number of blocks = " + 
                     director._internalReadBlocks );
+            */
 	}
 
 	////////////////////
@@ -579,11 +519,7 @@ public class DDEReceiver extends TimedQueueReceiver
 		return false;
 	    } else {
 		_ignoreNotSeen = true;
-		// clearIgnoredTokens();
 		timeKeeper.updateIgnoredReceivers();
-		// Call the next line since
-                // TimeKeeper.updateIgnoredReceivers()
-		// has not been called.
 		timeKeeper.setIgnoredTokens(false);
 		return false;
 	    }
@@ -781,9 +717,11 @@ public class DDEReceiver extends TimedQueueReceiver
                     } else {
 		        director.removeInternalReadBlock();
                     }
+                    /*
                     System.out.println("***Actor: " + name + 
                             " no longer blocked." + "  Number of blocks = " + 
                             director._internalReadBlocks );
+                    */
 		    _readPending = false;
 		    notifyAll();
 		}
