@@ -81,7 +81,7 @@ OTHER_FILES_TO_BE_JARED = \
 	runWelcomeWindow.xml \
 	utilitiesLibrary.xml \
 	utilityCompositeActor.xml \
-	utilityIntRangeParameter.xml
+	utilityIntRangeParameter.xml \
 	utilityModalModel.xml \
 	utilityParameter.xml \
 	utilityPortParameter.xml \
