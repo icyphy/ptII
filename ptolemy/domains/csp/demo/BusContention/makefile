@@ -76,6 +76,8 @@ OPTIONAL_FILES = \
 	'BusContentionApplet$$LocalEdgeRenderer.class' \
 	'BusContentionApplet$$StateListener.class' \
 	'BusContentionApplet$$ThreadRenderer.class' \
+	'ExecEvent$$1.class' \
+	'ExecEvent$$ExecEventType.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
