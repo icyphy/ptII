@@ -39,6 +39,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -146,7 +147,7 @@ public class PortConfigurerDialog
         // Create the TableModel and set certain cell editors and renderers
         _setupTableModel();
         _initColumnSizes();
-        setContents(_portTable);
+        setScrollableContents(_portTable);
         // The following sets up a listener for mouse clicks on the header cell
         // of the Show Name column. A click causes the values in this column to
         // all change.
@@ -406,7 +407,7 @@ public class PortConfigurerDialog
             }
             setHorizontalAlignment(SwingConstants.CENTER);
             if (!table.isCellEditable(row, col))
-                setBackground(Color.red);
+                setBackground(_CLASS_ELEMENT_HIGHLIGHT_COLOR);
             else
                 setBackground(Color.white);
             return this;
@@ -428,7 +429,7 @@ public class PortConfigurerDialog
             setOpaque(true);
             setText((String) value);
             if (!table.isCellEditable(row, col))
-                setBackground(Color.red);
+                setBackground(_CLASS_ELEMENT_HIGHLIGHT_COLOR);
             else
                 setBackground(Color.white);
             return this;
@@ -855,6 +856,13 @@ public class PortConfigurerDialog
         _buttons.add(_removeButton);
     }
 
+    protected URL _getHelpURL() {
+        URL helpURL =
+            getClass().getClassLoader().getResource(
+                "ptolemy/actor/gui/doc/portConfigurerDialog.htm");
+        return helpURL;
+    }
+
     // The button semantics are
     // Add - Add a new port.
     protected void _processButtonPress(String button) {
@@ -1126,6 +1134,10 @@ public class PortConfigurerDialog
     }
     ///////////////////////////////////////////////////////////////////
     //// private variables ////
+    // Fourth argument makes this highlight transluscent, which enables
+    // combination with other highlights.
+    private static Color _CLASS_ELEMENT_HIGHLIGHT_COLOR =
+        new Color(255, 0, 0, 64);
     private boolean _hideAllPorts = false;
     // Following is true if we have full units capability.
     private boolean _units = true;
@@ -1143,4 +1155,8 @@ public class PortConfigurerDialog
     private boolean _showAllNames = false;
     // The various buttons.
     private JButton _applyButton, _commitButton, _addButton, _removeButton;
+    /* (non-Javadoc)
+     * @see ptolemy.actor.gui.PtolemyDialog#_getHelpURL()
+     */
+
 }

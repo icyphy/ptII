@@ -127,10 +127,12 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
 
     public void setContents(JComponent contents) {
         _contents = contents;
+        getContentPane().add(_contents, BorderLayout.CENTER);
+    }
+
+    public void setScrollableContents(JComponent contents) {
+        _contents = contents;
         JScrollPane scrollPane = new JScrollPane(_contents);
-        //        JViewport xx = new JViewport();
-        //        xx.setView(((JTable) _contents).getTableHeader());
-        //        scrollPane.setColumnHeader(xx);
         getContentPane().add(scrollPane, BorderLayout.CENTER);
     }
 
@@ -150,6 +152,11 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
 
     protected abstract void _createExtendedButtons(JPanel _buttons);
 
+    /** Get the URL that is the help for this dialog.
+     * @return URL that is the help for this dialog.
+     */
+    protected abstract URL _getHelpURL();
+
     protected boolean _isDirty() {
         return _dirty;
     }
@@ -163,26 +170,10 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
      */
 
     protected void _processButtonPress(String button) {
-        if (button.equals("Help")) {
-            {
-                URL toRead =
-                    getClass().getClassLoader().getResource(
-                        "ptolemy/actor/gui/doc/portDialog.htm");
-                if (toRead != null && _configuration != null) {
-                    try {
-                        _configuration.openModel(
-                            null,
-                            toRead,
-                            toRead.toExternalForm());
-                    } catch (Exception ex) {
-                        MessageHandler.error("Help screen failure", ex);
-                    }
-                } else {
-                    MessageHandler.error("No help available.");
-                }
-            }
-        } else if (button.equals("Cancel")) {
+        if (button.equals("Cancel")) {
             _cancel();
+        } else if (button.equals("Help")) {
+            _showHelp();
         } else {
             //TODO throw an exception here
         }
@@ -196,10 +187,26 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
         _dirty = b;
     }
 
+    protected void _showHelp() {
+        URL toRead = _getHelpURL();
+        if (toRead != null && _configuration != null) {
+            try {
+                _configuration.openModel(null, toRead, toRead.toExternalForm());
+            } catch (Exception ex) {
+                MessageHandler.error("Help screen failure", ex);
+            }
+        } else {
+            MessageHandler.error("No help available.");
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                   ////
 
+    protected Configuration _configuration;
     protected boolean _debug = false;
+
+    protected JButton _helpButton, _cancelButton;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -229,8 +236,6 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
-    private JButton _helpButton, _cancelButton;
-    private Configuration _configuration;
     private JComponent _contents;
     // The following is true if any of the values have been changed but not
     // applied.
