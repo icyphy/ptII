@@ -96,8 +96,10 @@ public class XYPlotter extends Plotter implements Placeable {
      *  base class and then creates new ports and parameters.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class has an
+     *   attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) {
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
         XYPlotter newobj = (XYPlotter)super.clone(ws);
         newobj.inputX = (TypedIOPort)newobj.getPort("inputX");
         newobj.inputX.setMultiport(true);
@@ -106,6 +108,19 @@ public class XYPlotter extends Plotter implements Placeable {
         newobj.inputY.setMultiport(true);
         newobj.inputY.setTypeEquals(DoubleToken.class);
         return newobj;
+    }
+
+    /** Clear the datasets that this actor will use.
+     *  @exception IllegalActionException If the parent class throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        // Assume the two inputs have the same width.
+        int width = inputX.getWidth();
+        int offset = ((IntToken)startingDataset.getToken()).intValue();
+        for (int i = width - 1; i >= 0; i--) {
+            plot.clear(i + offset);
+        }
     }
 
     /** Read at most one input from each channel of each input port
@@ -132,6 +147,7 @@ public class XYPlotter extends Plotter implements Placeable {
             throw new IllegalActionException(this,
                     " The number of input channels mismatch.");
         }
+        int offset = ((IntToken)startingDataset.getToken()).intValue();
         for (int i = widthX - 1; i >= 0; i--) {
             if (inputX.hasToken(i)) {
                 xValue = ((DoubleToken)inputX.get(i)).doubleValue();
@@ -142,7 +158,7 @@ public class XYPlotter extends Plotter implements Placeable {
                 hasY = true;
             }
             if(hasX && hasY) {
-                plot.addPoint(i, xValue, yValue, true);
+                plot.addPoint(i + offset, xValue, yValue, true);
             }
         }
         return super.postfire();
