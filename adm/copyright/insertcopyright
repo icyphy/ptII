@@ -255,7 +255,7 @@ while [ $1x != x ] ; do
     case $F in
 	*Makefile|*makefile|*make.template|*.mk|*.tcl|*.itcl) \
 			shcomments=yes;;
-	*.c|*.h|*.cc|*.cpp|*.html|*.java )   shcomments=no;;
+	*.c|*.h|*.cc|*.cpp|*.html|*.java|*.mmm )   shcomments=no;;
 	*) echo "Panic, cannot handle $F, skipping"; continue;;
     esac
 
