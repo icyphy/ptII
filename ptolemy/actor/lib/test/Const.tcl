@@ -244,4 +244,4 @@ test Const-4.1 {Check out Strings with double quotes in them} {
     $p setToken $nt
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {{"This has a double quote " in it and a backslashed double quote \" in it"}}
+} {{"This has a double quote \" in it and a backslashed double quote \" in it"}}
