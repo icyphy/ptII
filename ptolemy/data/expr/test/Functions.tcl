@@ -997,7 +997,7 @@ test Function-matrixToArray {Test matrixToArray} {
 
 test Function-merge {Test merge of records} {
     list [evaluate {merge({a=1, b=2}, {a=3, c=3})}] \
-        } {{{a=1, b=2, c=3}}}
+        } {{{a = 1, b = 2, c = 3}}}
 
 ####################################################################
 # multiplyElements

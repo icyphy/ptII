@@ -72,7 +72,7 @@ test RecordType-1.1 {Create a non-empty instance} {
     set r [java::new {ptolemy.data.type.RecordType} $l $v]
     set sdRT [java::cast ptolemy.data.type.RecordType [$r clone]]
     list [$r toString] [$sdRT toString]
-} {{{name=string, value=double}} {{name=string, value=double}}}
+} {{{name = string, value = double}} {{name = string, value = double}}}
 
 ######################################################################
 ####
@@ -87,13 +87,13 @@ test RecordType-1.2 {Create an instance with an UNKNOWN field} {
     set r [java::new {ptolemy.data.type.RecordType} $l $v]
     set varRT [java::cast ptolemy.data.type.RecordType [$r clone]]
     list [$r toString] [$varRT toString]
-} {{{name=string, value=unknown}} {{name=string, value=unknown}}}
+} {{{name = string, value = unknown}} {{name = string, value = unknown}}}
 
 ######################################################################
 ####
 # 
 test RecordType-2.0 {Test convert} {
-    # token is {name="foo", value=1, extra=2.5}
+    # token is {name = "foo", value = 1, extra = 2.5}
     set l1 [java::new {String[]} {3} {{name} {value} {extra}}]
 
     set nt1 [java::new {ptolemy.data.StringToken String} foo]
@@ -105,7 +105,7 @@ test RecordType-2.0 {Test convert} {
 
     list [[$empRT convert $r1] toString] [[$sdRT convert $r1] toString] \
         [[[$r1 getType] convert $r1] toString]
-} {{{}} {{name="foo", value=1.0}} {{extra=2.5, name="foo", value=1}}}
+} {{{}} {{name = "foo", value = 1.0}} {{extra = 2.5, name = "foo", value = 1}}}
 
 ######################################################################
 ####
@@ -132,7 +132,7 @@ test RecordType-3.2 {Test get} {
 ####
 # 
 test RecordType-4.0 {Test isCompatible} {
-    # token is {name="foo", value=1, extra=2.5}
+    # token is {name = "foo", value = 1, extra = 2.5}
     set l1 [java::new {String[]} {3} {{name} {value} {extra}}]
 
     set nt1 [java::new {ptolemy.data.StringToken String} foo]
@@ -151,7 +151,7 @@ test RecordType-4.0 {Test isCompatible} {
 ####
 # 
 test RecordType-4.1 {Test isCompatible} {
-    # token is {name="foo", value="bar", extra=2.5}
+    # token is {name = "foo", value = "bar", extra = 2.5}
     set l1 [java::new {String[]} {3} {{name} {value} {extra}}]
 
     set nt1 [java::new {ptolemy.data.StringToken String} foo]
@@ -255,7 +255,7 @@ test RecordType-8.1 {Test initialize} {
     set unknown [java::field ptolemy.data.type.BaseType UNKNOWN]
     $sdRT initialize $unknown
     $sdRT toString
-} {{name=string, value=double}}
+} {{name = string, value = double}}
 
 ######################################################################
 ####
@@ -264,7 +264,7 @@ test RecordType-8.2 {Test initialize} {
     set unknown [java::field ptolemy.data.type.BaseType UNKNOWN]
     $varRT initialize $unknown
     $varRT toString
-} {{name=string, value=unknown}}
+} {{name = string, value = unknown}}
 
 ######################################################################
 ####
@@ -272,7 +272,7 @@ test RecordType-8.2 {Test initialize} {
 test RecordType-9.0 {Test updateType} {
     catch {$empRT updateType $sdRT} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: RecordType.updateType: This type is a constant and the argument is not the same as this type. This type: {} argument: {name=string, value=double}}}
+} {{ptolemy.kernel.util.IllegalActionException: RecordType.updateType: This type is a constant and the argument is not the same as this type. This type: {} argument: {name = string, value = double}}}
 
 ######################################################################
 ####
@@ -280,7 +280,7 @@ test RecordType-9.0 {Test updateType} {
 test RecordType-9.1 {Test updateType} {
     catch {$sdRT updateType $empRT} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: RecordType.updateType: This type is a constant and the argument is not the same as this type. This type: {name=string, value=double} argument: {}}}
+} {{ptolemy.kernel.util.IllegalActionException: RecordType.updateType: This type is a constant and the argument is not the same as this type. This type: {name = string, value = double} argument: {}}}
 
 ######################################################################
 ####
@@ -288,7 +288,7 @@ test RecordType-9.1 {Test updateType} {
 test RecordType-9.2 {Test updateType} {
     catch {$sdRT updateType $varRT} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: RecordType.updateType: This type is a constant and the argument is not the same as this type. This type: {name=string, value=double} argument: {name=string, value=unknown}}}
+} {{ptolemy.kernel.util.IllegalActionException: RecordType.updateType: This type is a constant and the argument is not the same as this type. This type: {name = string, value = double} argument: {name = string, value = unknown}}}
 
 ######################################################################
 ####
@@ -296,5 +296,5 @@ test RecordType-9.2 {Test updateType} {
 test RecordType-9.3 {Test updateType} {
     $varRT updateType $sdRT
     $varRT toString
-} {{name=string, value=double}}
+} {{name = string, value = double}}
 

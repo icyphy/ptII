@@ -53,9 +53,9 @@ to a record with particular fields, create an instance of this
 class and call setTypeEquals() with that instance as an argument.
 <p>
 Note that a record type with more fields is a subtype of a record
-type with a subset of the fields.  For example, {x=double, y=int}
-is a subtype of {x=double}. When a record of type
-{x=double, y=int} is converted to one of type {x=double},
+type with a subset of the fields.  For example, {x = double, y = int}
+is a subtype of {x = double}. When a record of type
+{x = double, y = int} is converted to one of type {x = double},
 the extra field is discarded. The converted record, therefore,
 will have exactly the fields in the type.
 <p>
@@ -393,7 +393,7 @@ public class RecordType extends StructuredType {
     }
 
     /** Return the string representation of this type. The format is
-     *  {<lable>=<type>, <label>=<type>, ...}.
+     *  {<i>label</i> = <i>type</i>, <i>label</i> = <i>type</i>, ...}.
      *  The record fields are listed in the lexicographical order of the
      *  labels determined by the java.lang.String.compareTo() method.
      *  @return A String.
@@ -422,7 +422,7 @@ public class RecordType extends StructuredType {
             if (i != 0) {
                 s += ", ";
             }
-            s += label + "=" + type;
+            s += label + " = " + type;
         }
         return s + "}";
     }

@@ -430,7 +430,7 @@ test ParseTreeEvaluator-13.2 {Test record construction.} {
     list [evaluate {{a=1,b=2.4}} ] \
          [evaluate {{b=1,a=2.4}} ] \
          [evaluate {{a=1, b=2}=={b=2, a=1}}]
- } {{{a=1, b=2.4}} {{a=2.4, b=1}} true}
+ } {{{a = 1, b = 2.4}} {{a = 2.4, b = 1}} true}
 
 ######################################################################
 ####
@@ -467,7 +467,7 @@ test ParseTreeEvaluator-17.2 {Test function in function.} {
 
 test ParseTreeEvaluator-17.3 {Test record in function.} {
     list [evaluate "function(x:{a=int,b=int}) x.a+x.b"] [evaluate "function(x:{a=int,b=int}) x.a"]
-} {{(function(x:{a=int, b=int}) (x.a()+x.b()))} {(function(x:{a=int, b=int}) x.a())}}
+} {{(function(x:{a = int, b = int}) (x.a()+x.b()))} {(function(x:{a = int, b = int}) x.a())}}
 
 test ParseTreeEvaluator-17.4 {Test double in function.} {
     list [evaluate "function(x:double) double"]
@@ -617,7 +617,7 @@ test ParseTreeEvaluator-26.1 {Test record operations} {
     list [evaluate {{a=1,b=2}.a}] \
          [evaluate {{a=1,b=2}.a()}] \
          [evaluate {{foodCost=40, hotelCost=100} + {foodCost=20, taxiCost=20}}]
- } {1 1 {{foodCost=60}}}
+ } {1 1 {{foodCost = 60}}}
 
 ####################################################################
 

@@ -884,7 +884,7 @@ test PtParser-16.1 {Test method calls on arrays, matrices, etc.} {
     set res5 [ $evaluator evaluateParseTree $root]
 
     list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] [$res5 toString]
-} {{{{x=2}, {x=3}, {x=4}}} {{2, 4, 8}} {{5, 1, 2, 3}} {[1, 2, 3; 11, 12, 13]} {{"one", "two", "thr"}}}
+} {{{{x = 2}, {x = 3}, {x = 4}}} {{2, 4, 8}} {{5, 1, 2, 3}} {[1, 2, 3; 11, 12, 13]} {{"one", "two", "thr"}}}
 
 test PtParser-16.2 {Test record indexing} {
     set evaluator [java::new ptolemy.data.expr.ParseTreeEvaluator]
