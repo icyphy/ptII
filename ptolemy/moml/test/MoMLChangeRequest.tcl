@@ -929,6 +929,116 @@ test MoMLChangeRequest-9.1 {test values of all instances} {
 	[$iiipD getExpression] \
 } {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1}
 
+test MoMLChangeRequest-9.1.1 {test parent relationships} {
+	set toplevel [java::cast ptolemy.kernel.CompositeEntity $toplevel]
+	set iABC1 [$toplevel getEntity {cA.cAB.iABC}]
+	set iABC2 [$toplevel getEntity {cA.iAB.iABC}]
+	set iABC3 [$toplevel getEntity {cD.cAB.iABC}]
+	set iABC4 [$toplevel getEntity {cD.iAB.iABC}]
+	set iABC5 [$toplevel getEntity {iA.cAB.iABC}]
+	set iABC6 [$toplevel getEntity {iA.iAB.iABC}]
+	set iABC7 [$toplevel getEntity {iD.cAB.iABC}]
+	set iABC8 [$toplevel getEntity {iD.iAB.iABC}]
+
+	list \
+	[[$iABC1 getParent] getFullName]\
+	[[$iABC2 getParent] getFullName]\
+	[[$iABC3 getParent] getFullName]\
+	[[$iABC4 getParent] getFullName]\
+	[[$iABC5 getParent] getFullName]\
+	[[$iABC6 getParent] getFullName]\
+	[[$iABC7 getParent] getFullName]\
+	[[$iABC8 getParent] getFullName]
+} {.top.cA.cAB.cABC .top.cA.iAB.cABC .top.cD.cAB.cABC .top.cD.iAB.cABC .top.iA.cAB.cABC .top.iA.iAB.cABC .top.iD.cAB.cABC .top.iD.iAB.cABC}
+
+test MoMLChangeRequest-9.1.2 {test parent relationships} {
+	set iAB1 [$toplevel getEntity {cA.iAB}]
+	set iAB2 [$toplevel getEntity {cD.iAB}]
+	set iAB3 [$toplevel getEntity {iA.iAB}]
+	set iAB4 [$toplevel getEntity {iD.iAB}]
+
+	list \
+	[[$iAB1 getParent] getFullName]\
+	[[$iAB2 getParent] getFullName]\
+	[[$iAB3 getParent] getFullName]\
+	[[$iAB4 getParent] getFullName]\
+} {.top.cA.cAB .top.cD.cAB .top.iA.cAB .top.iD.cAB}
+
+test MoMLChangeRequest-9.1.3 {test parent relationships} {
+	set cD [$toplevel getEntity {cD}]
+	set iA [$toplevel getEntity {iA}]
+	set iD [$toplevel getEntity {iD}]
+
+	list \
+	[[$cD getParent] getFullName]\
+	[[$iA getParent] getFullName]\
+	[[$iD getParent] getFullName]
+} {.top.cA .top.cA .top.cD}
+
+test MoMLChangeRequest-9.1.4 {test derivedLevel values} {
+	set toplevel [java::cast ptolemy.kernel.CompositeEntity $toplevel]
+	list \
+	[[$toplevel getAttribute {cA.cAB.cABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {cA.cAB.iABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {cA.iAB.cABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {cA.iAB.iABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {cD.cAB.cABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {cD.cAB.iABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {cD.iAB.cABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {cD.iAB.iABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {iA.cAB.cABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {iA.cAB.iABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {iA.iAB.cABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {iA.iAB.iABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {iD.cAB.cABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {iD.cAB.iABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {iD.iAB.cABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {iD.iAB.iABC.p}] getDerivedLevel] \
+} {2147483647 1 2 1 3 1 2 1 3 1 2 1 3 1 2 1}
+
+test MoMLChangeRequest-9.1.5 {test derivedLevel values} {
+	set toplevel [java::cast ptolemy.kernel.CompositeEntity $toplevel]
+	list \
+	[[$toplevel getEntity {cA.cAB.cABC}] getDerivedLevel] \
+	[[$toplevel getEntity {cA.cAB.iABC}] getDerivedLevel] \
+	[[$toplevel getEntity {cA.iAB.cABC}] getDerivedLevel] \
+	[[$toplevel getEntity {cA.iAB.iABC}] getDerivedLevel] \
+	[[$toplevel getEntity {cD.cAB.cABC}] getDerivedLevel] \
+	[[$toplevel getEntity {cD.cAB.iABC}] getDerivedLevel] \
+	[[$toplevel getEntity {cD.iAB.cABC}] getDerivedLevel] \
+	[[$toplevel getEntity {cD.iAB.iABC}] getDerivedLevel] \
+	[[$toplevel getEntity {iA.cAB.cABC}] getDerivedLevel] \
+	[[$toplevel getEntity {iA.cAB.iABC}] getDerivedLevel] \
+	[[$toplevel getEntity {iA.iAB.cABC}] getDerivedLevel] \
+	[[$toplevel getEntity {iA.iAB.iABC}] getDerivedLevel] \
+	[[$toplevel getEntity {iD.cAB.cABC}] getDerivedLevel] \
+	[[$toplevel getEntity {iD.cAB.iABC}] getDerivedLevel] \
+	[[$toplevel getEntity {iD.iAB.cABC}] getDerivedLevel] \
+	[[$toplevel getEntity {iD.iAB.iABC}] getDerivedLevel] \
+} {2147483647 2147483647 1 1 2 2 1 1 2 2 1 1 2 2 1 1}
+
+test MoMLChangeRequest-9.1.6 {test derivedLevel values} {
+	set toplevel [java::cast ptolemy.kernel.CompositeEntity $toplevel]
+	list \
+	[[$toplevel getEntity {cA.cAB}] getDerivedLevel] \
+	[[$toplevel getEntity {cA.iAB}] getDerivedLevel] \
+	[[$toplevel getEntity {cD.cAB}] getDerivedLevel] \
+	[[$toplevel getEntity {cD.iAB}] getDerivedLevel] \
+	[[$toplevel getEntity {iA.cAB}] getDerivedLevel] \
+	[[$toplevel getEntity {iA.iAB}] getDerivedLevel] \
+	[[$toplevel getEntity {iD.cAB}] getDerivedLevel] \
+	[[$toplevel getEntity {iD.iAB}] getDerivedLevel] \
+} {2147483647 2147483647 1 1 1 1 1 1}
+
+test MoMLChangeRequest-9.1.7 {test derivedLevel values} {
+	set toplevel [java::cast ptolemy.kernel.CompositeEntity $toplevel]
+	list \
+	[[$toplevel getEntity {cA}] getDerivedLevel] \
+	[[$toplevel getEntity {cD}] getDerivedLevel] \
+	[[$toplevel getEntity {iA}] getDerivedLevel] \
+	[[$toplevel getEntity {iD}] getDerivedLevel] \
+} {2147483647 2147483647 2147483647 2147483647}
+
 test MoMLChangeRequest-9.2 {test propagation of change from master class} {
     set toplevel [java::cast ptolemy.actor.CompositeActor $toplevel]
     set context [java::cast ptolemy.actor.CompositeActor [$toplevel getEntity "cA.cAB.cABC"]]
@@ -1416,6 +1526,45 @@ test MoMLChangeRequest-11.2.2 {test paste with inherited and overridden values} 
 </entity>
 }}
 
+test MoMLChangeRequest-11.2.2.1 {test paste with inherited and overridden values} {
+    set export [$toplevel getEntity "cA.iABcopy"]
+    set cABC [$toplevel getEntity "cA.iABcopy.cABC"]
+    set iABC [$toplevel getEntity "cA.iABcopy.iABC"]
+    set p1 [$toplevel getAttribute "cA.iABcopy.cABC.p"]
+    set p2 [$toplevel getAttribute "cA.iABcopy.iABC.p"]
+    list \
+    [$export getDerivedLevel] \
+    [$cABC getDerivedLevel] \
+    [$iABC getDerivedLevel] \
+    [$p1 getDerivedLevel] \
+    [$p2 getDerivedLevel] \
+} {2147483647 1 1 2 1}
+
+test MoMLChangeRequest-11.2.2.2 {test paste with inherited and overridden values} {
+    set export [$toplevel getEntity "cD.iABcopy"]
+    set cABC [$toplevel getEntity "cD.iABcopy.cABC"]
+    set iABC [$toplevel getEntity "cD.iABcopy.iABC"]
+    set p1 [$toplevel getAttribute "cD.iABcopy.cABC.p"]
+    set p2 [$toplevel getAttribute "cD.iABcopy.iABC.p"]
+    list \
+    [$export getDerivedLevel] \
+    [$cABC getDerivedLevel] \
+    [$iABC getDerivedLevel] \
+    [$p1 getDerivedLevel] \
+    [$p2 getDerivedLevel] \
+} {1 1 1 2 1}
+
+test MoMLChangeRequest-11.2.2.3 {test paste with inherited and overridden values} {
+    set export [$toplevel getEntity "cA.iABcopy"]
+    $export exportMoML
+} {<entity name="iABcopy" class="cAB">
+    <class name="cABC" extends="ptolemy.actor.CompositeActor">
+        <property name="p" class="ptolemy.data.expr.Parameter" value="6">
+        </property>
+    </class>
+</entity>
+}
+
 # Check propagation of the paste.
 test MoMLChangeRequest-11.2.3 {test paste with inherited and overridden values} {
     $toplevel exportMoML
@@ -1581,6 +1730,27 @@ test MoMLChangeRequest-12.2 {then check undo} {
 	[$iiipD getExpression] \
 } {4 9 6 6 8 8 7 7 4 9 12 11 10 10 10 10}
 
+test MoMLChangeRequest-12.2.1 {check derivedLevel values} {
+	set toplevel [java::cast ptolemy.kernel.CompositeEntity $toplevel]
+	list \
+	[[$toplevel getAttribute {cA.cAB.cABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {cA.cAB.iABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {cA.iAB.cABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {cA.iAB.iABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {cD.cAB.cABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {cD.cAB.iABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {cD.iAB.cABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {cD.iAB.iABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {iA.cAB.cABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {iA.cAB.iABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {iA.iAB.cABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {iA.iAB.iABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {iD.cAB.cABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {iD.cAB.iABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {iD.iAB.cABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {iD.iAB.iABC.p}] getDerivedLevel] \
+} {2147483647 1 2 1 3 1 2 1 3 1 2 1 3 1 2 1}
+
 test MoMLChangeRequest-12.3 {check propagation of deletion higher up} {
     set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
         <deleteEntity name="cA.iAB"/>
@@ -1672,3 +1842,66 @@ test MoMLChangeRequest-12.4 {then check undo} {
 	[$iicpD getExpression] \
 	[$iiipD getExpression] \
 } {4 9 6 6 8 8 7 7 4 9 12 11 10 10 10 10}
+
+test MoMLChangeRequest-12.4.1 {check derivedLevel values} {
+	set toplevel [java::cast ptolemy.kernel.CompositeEntity $toplevel]
+	list \
+	[[$toplevel getAttribute {cA.cAB.cABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {cA.cAB.iABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {cA.iAB.cABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {cA.iAB.iABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {cD.cAB.cABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {cD.cAB.iABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {cD.iAB.cABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {cD.iAB.iABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {iA.cAB.cABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {iA.cAB.iABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {iA.iAB.cABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {iA.iAB.iABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {iD.cAB.cABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {iD.cAB.iABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {iD.iAB.cABC.p}] getDerivedLevel] \
+	[[$toplevel getAttribute {iD.iAB.iABC.p}] getDerivedLevel] \
+} {2147483647 1 2 1 3 1 2 1 3 1 2 1 3 1 2 1}
+
+test MoMLChangeRequest-12.4.2 {test parent relationships} {
+	set toplevel [java::cast ptolemy.kernel.CompositeEntity $toplevel]
+	set iABC1 [$toplevel getEntity {cA.cAB.iABC}]
+	set iABC2 [$toplevel getEntity {cA.iAB.iABC}]
+	set iABC3 [$toplevel getEntity {cD.cAB.iABC}]
+	set iABC4 [$toplevel getEntity {cD.iAB.iABC}]
+	set iABC5 [$toplevel getEntity {iA.cAB.iABC}]
+	set iABC6 [$toplevel getEntity {iA.iAB.iABC}]
+	set iABC7 [$toplevel getEntity {iD.cAB.iABC}]
+	set iABC8 [$toplevel getEntity {iD.iAB.iABC}]
+
+	list \
+	[[$iABC1 getParent] getFullName]\
+	[[$iABC2 getParent] getFullName]\
+	[[$iABC3 getParent] getFullName]\
+	[[$iABC4 getParent] getFullName]\
+	[[$iABC5 getParent] getFullName]\
+	[[$iABC6 getParent] getFullName]\
+	[[$iABC7 getParent] getFullName]\
+	[[$iABC8 getParent] getFullName]
+} {.top.cA.cAB.cABC .top.cA.iAB.cABC .top.cD.cAB.cABC .top.cD.iAB.cABC .top.iA.cAB.cABC .top.iA.iAB.cABC .top.iD.cAB.cABC .top.iD.iAB.cABC}
+
+test MoMLChangeRequest-12.4.3 {test children relationships} {
+	list \
+	[listToFullNames [[$toplevel getEntity {cA.cAB.cABC}] getChildren]] \
+	[listToFullNames [[$toplevel getEntity {cA.iAB.cABC}] getChildren]] \
+	[listToFullNames [[$toplevel getEntity {cD.cAB.cABC}] getChildren]] \
+	[listToFullNames [[$toplevel getEntity {cD.iAB.cABC}] getChildren]] \
+	[listToFullNames [[$toplevel getEntity {iA.cAB.cABC}] getChildren]] \
+	[listToFullNames [[$toplevel getEntity {iA.iAB.cABC}] getChildren]] \
+	[listToFullNames [[$toplevel getEntity {iD.cAB.cABC}] getChildren]] \
+	[listToFullNames [[$toplevel getEntity {iD.iAB.cABC}] getChildren]] \
+} {.top.cA.cAB.iABC .top.cA.iAB.iABC .top.cD.cAB.iABC .top.cD.iAB.iABC .top.iA.cAB.iABC .top.iA.iAB.iABC .top.iD.cAB.iABC .top.iD.iAB.iABC}
+
+test MoMLChangeRequest-12.4.4 {test children relationships} {
+	list \
+	[listToFullNames [[$toplevel getEntity {cA.cAB}] getChildren]] \
+	[listToFullNames [[$toplevel getEntity {cD.cAB}] getChildren]] \
+	[listToFullNames [[$toplevel getEntity {iA.cAB}] getChildren]] \
+	[listToFullNames [[$toplevel getEntity {iD.cAB}] getChildren]] \
+} {{.top.cA.iABcopy .top.cA.iAB} {.top.cD.iABcopy .top.cD.iAB} {.top.iA.iABcopy .top.iA.iAB} {.top.iD.iABcopy .top.iD.iAB}}
