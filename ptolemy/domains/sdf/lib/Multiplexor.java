@@ -41,15 +41,17 @@ import ptolemy.kernel.util.*;
 //// Multiplexor
 /**
 A polymorphic multiplexor.
-This actor has two input ports. One is a multiport, from which the available
-Tokens to be chosen are received. The other input port receives IntTokens
-representing the channel containing the the Token to send to the output.
-Because Tokens are immutable, the same Token is sent without additional creation
-of another Token.
+
+This actor has two input ports. One is a multiport, from which the
+available Tokens to be chosen are received. The other input port
+receives IntTokens representing the channel containing the the Token
+to send to the output.  Because Tokens are immutable, the same Token
+is sent without additional creation of another Token.
 <p>
 The input port may receive Tokens of any type.
-<p>
+
 @author Jeff Tsay
+@version $Id$
 */
 
 public class Multiplexor extends SDFAtomicActor {
