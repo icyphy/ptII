@@ -181,7 +181,8 @@ public class Translate3D extends GRTransform {
 
         if (applyTransform) {
             Transform3D transform = new Transform3D();
-                transform.setTranslation(new Vector3d(xOffset, yOffset, zOffset));
+                transform.setTranslation(new Vector3d(xOffset,
+                        yOffset, zOffset));
                 _transformNode.setTransform(transform);
         }
 
