@@ -47,8 +47,7 @@ import ptolemy.kernel.util.Workspace;
 Output to the <i>output</i> port the value in the array of tokens
 specified by the <i>table</i> parameter at the index specified by the
 <i>input</i> port.  The index must be an integer.  If the index is out
-of range, no token is output.  Despite the name, this actor
-actually looks up values in an array of tokens, not a two dimensional table.
+of range, no token produced.
 
 <p>LookupTable is different from ArrayElement in that in
 ArrayElement, the array is read in as input, and the index is a parameter,
@@ -85,6 +84,7 @@ public class LookupTable extends Transformer {
 
         // Set parameters.
         table = new Parameter(this, "table");
+        table.setExpression("{0, 1}");
 
 	// Set type constraints.
         input.setTypeEquals(BaseType.INT);
@@ -97,8 +97,8 @@ public class LookupTable extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** The table array that we lookup elements in.  This token is
-     *  of type ArrayToken.  This parameter has no initial default value.
+    /** The table array that we look up elements in.  This parameter
+     *  is an array with default value {0, 1}.
      */
     public Parameter table;
 

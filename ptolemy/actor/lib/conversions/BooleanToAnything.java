@@ -1,4 +1,4 @@
-/* An actor that converts a LongToken into a DoubleToken.
+/* An actor that converts a boolean token into any other data type.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -24,37 +24,36 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Green (cxh@eecs.berkeley.edu)
-@AcceptedRating Green (cxh@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.conversions;
 
 import ptolemy.actor.lib.Transformer;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.LongToken;
-import ptolemy.data.Token;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// LongToDouble
+//// BooleanToAnything
 /**
-This actor converts a LongToken into a DoubleToken.
+This actor converts a boolean input token into any data type.
+A <i>true</i> at the input results in an output with value given
+by the <i>trueValue</i> parameter.
+A <i>false</i> at the input results in an output with value given
+by the <i>falseValue</i> parameter.
 <p>
-Note that a double cannot be losslessly converted to a long, and vice
-versa, as both have 64 bit representations in Java.
-<p>
-@author Christopher Hylands
+@author Edward A. Lee
 @version $Id$
 
-@see ptolemy.data.DoubleToken
-@see ptolemy.data.LongToken
+@see ptolemy.data.BooleanToken
 */
 
-public class LongToDouble extends Transformer {
+public class BooleanToAnything extends Transformer {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -64,26 +63,42 @@ public class LongToDouble extends Transformer {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public LongToDouble(CompositeEntity container, String name)
+    public BooleanToAnything(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        input.setTypeEquals(BaseType.LONG);
-	output.setTypeEquals(BaseType.DOUBLE);
+
+        falseValue = new Parameter(this, "falseValue", new IntToken(0));
+        trueValue = new Parameter(this, "trueValue", new IntToken(1));
+
+        input.setTypeEquals(BaseType.BOOLEAN);
+	output.setTypeAtLeast(trueValue);
+	output.setTypeAtLeast(falseValue);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** The value produced at the output when a <i>false</i> input is read. */
+    public Parameter falseValue;
+
+    /** The value produced at the output when a <i>true</i> input is read. */
+    public Parameter trueValue;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read exactly one token from the input and output the converted
-     *  value.
+    /** Read exactly one token from the input and output the token
+     *  given by either the <i>falseValue</i> or <i>trueValue</i>
+     *  parameter.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        LongToken inputToken = (LongToken)input.get(0);
-	Long inputValue = new Long(inputToken.longValue());
-	DoubleToken result = new DoubleToken(inputValue.doubleValue());
-
-        output.send(0, result);
+        BooleanToken inputToken = (BooleanToken)input.get(0);
+        if (inputToken.booleanValue()) {
+            output.send(0, trueValue.getToken());
+        } else {
+            output.send(0, falseValue.getToken());
+        }
     }
 
     /** Return false if the input port has no token, otherwise return
