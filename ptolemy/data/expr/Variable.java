@@ -523,7 +523,10 @@ public class Variable extends Attribute
         if (_needsEvaluation) _evaluate();
         // All the value dependents now need evaluation also.
         if (_valueListeners != null) {
-            Iterator listeners = _valueListeners.iterator();
+            // Avoid co-modification exception.
+            LinkedList list = new LinkedList();
+            list.addAll(_valueListeners);
+            Iterator listeners = list.iterator();
             while (listeners.hasNext()) {
                 ValueListener listener = (ValueListener)listeners.next();
                 // Avoid doing this more than once if the the value
