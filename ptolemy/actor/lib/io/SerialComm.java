@@ -49,12 +49,12 @@ import java.util.*;
 //// SerialComm
 /**
 This actor sends and receives integer arrays via the serial port.
-Each integer represents a byte, and is truncated to 8 bits prior 
+Each integer represents a byte, and is truncated to 8 bits prior
 to transmission.
 
-This actor contains a nested class which implements the 
+This actor contains a nested class which implements the
 SerialPortEventListener to recieve from the serial port and calls
-the director's fireAt method to broadcast the bytes received as 
+the director's fireAt method to broadcast the bytes received as
 an array of integers.
 
 This actor has a parameter 'serialPortName' for the serial port.
@@ -62,7 +62,7 @@ This actor has a parameter 'serialPortName' for the serial port.
 (Based on my RxDatagram, and on the IRLink class writen by Xiaojun Liu)
 @version $Id$
 */
-public class SerialComm extends TypedAtomicActor 
+public class SerialComm extends TypedAtomicActor
         implements SerialPortEventListener {
 
     public SerialComm(CompositeEntity container, String name)
@@ -120,7 +120,7 @@ public class SerialComm extends TypedAtomicActor
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
 
-    /** If the parameter changed is <i>serialPortName</i>, then hope 
+    /** If the parameter changed is <i>serialPortName</i>, then hope
      * the model is not running and do nothing.  Likewise if baudRate.
      */
     public void attributeChanged(Attribute attribute)
@@ -134,7 +134,7 @@ public class SerialComm extends TypedAtomicActor
 
     /** Broadcasts the data if received, & outputs bitstream if token.
      */
-    public void fire() throws IllegalActionException {      
+    public void fire() throws IllegalActionException {
         //System.out.println("Actor is fired");
 
         try {
@@ -198,7 +198,7 @@ public class SerialComm extends TypedAtomicActor
     }
 
 
-    /** serialEvent - The one and only method 
+    /** serialEvent - The one and only method
      *  required to implement SerialPortEventListener
      */
     public void serialEvent(SerialPortEvent e) {
