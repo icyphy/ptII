@@ -45,8 +45,9 @@ import ptolemy.math.SignalProcessing;
 /** This actor implements a forward FFT of a real input array of
 doubles. The order of the FFT determines the number of tokens that
 will be consumped and produced. The order gives the size of the
-transform as the base-2 logarithm of order. The result of the FFT is a
-new array of Complex's.
+transform as the base-2 logarithm of order. The default order is 8,
+which means that 2^8=256 tokes are read and 2^8=256 tokes are
+produced. The result of the FFT is a new array of Complex's.
 
 @author Bart Kienhuis.
 @version $Id$
@@ -86,8 +87,7 @@ public class FFT extends TypedAtomicActor {
     /** The output port. */
     public SDFIOPort output;
 
-    /** The order of the FFT.
-     */
+    /** The order of the FFT. */
     public Parameter order;
 
     ///////////////////////////////////////////////////////////////////
