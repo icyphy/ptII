@@ -86,10 +86,6 @@ public class SequenceToArray extends SDFTransformer {
 	output.setTypeEquals(new ArrayType(BaseType.NAT));
     }
 
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -132,10 +128,4 @@ public class SequenceToArray extends SDFTransformer {
 	result.add(ineq);
 	return result;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
 }

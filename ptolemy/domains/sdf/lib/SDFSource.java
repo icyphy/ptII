@@ -106,15 +106,9 @@ public abstract class SDFSource extends SDFAtomicActor {
      */
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
-	try {
-	    SDFSource newobj = (SDFSource)super.clone(ws);
-	    newobj.output = (SDFIOPort)newobj.getPort("output");
-	    return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+        SDFSource newobj = (SDFSource)super.clone(ws);
+        newobj.output = (SDFIOPort)newobj.getPort("output");
+        return newobj;
     }
 
 
