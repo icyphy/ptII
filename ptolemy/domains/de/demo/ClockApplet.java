@@ -84,8 +84,8 @@ public class ClockApplet extends Applet {
             // Set up the directors
             _localDirector = new DECQDirector("DE Director");
             topLevel.setDirector(_localDirector);
-            _executiveDirector = new Director("Executive Director");
-            topLevel.setExecutiveDirector(_executiveDirector);
+            _executiveDirector = new Manager("Executive Director");
+            topLevel.setManager(_executiveDirector);
             
             // Set up the actors and connections
             DEClock clock = new DEClock(topLevel, "Clock", 1.0, 1.0);
@@ -110,7 +110,7 @@ public class ClockApplet extends Applet {
     private CompositeActor topLevel;
     // FIXME: Under jdk 1.2, the following can (and should) be private
     public DECQDirector _localDirector;
-    public Director _executiveDirector;
+    public Manager _executiveDirector;
 
     public TextField _stopTimeBox = new TextField("10.0", 10);
     double _stopTime = 10.0;

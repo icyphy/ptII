@@ -11,29 +11,31 @@ Demo of DE simulation applet</H1></CENTER>
 
 <H3>
 DE Simulation:</H3>
-Note that this requires that private members of CrossRefList be made public,
-or else everything has to be compiled under jdk 1.2.
-<P>The following applet uses the Ptolemy II Discrete Event (DE) domain
+The following applet uses the Ptolemy II Discrete Event (DE) domain
 to simulate a bus stop where passengers arrive with random probability
 (according to Poisson process with unity mean inter-arrival time), and
 buses arrive with either a fix inter-arrival time or random probability
 (again according to Poisson process with variable mean inter-arrival time).
-<P>The top plot shows the passengers and buses arrival times. The buses
+<P>
+The top plot shows the passengers and buses arrival times. The buses
 and passengers arrivals are plotted in red and blue impulses. All passengers
 arriving before and at the time bus <I>i</I> arrives and after the time
 bus
 <I>i-1</I> arrives will get on bus <I>i</I>. On each bus arrival, all
 passengers getting on that bus report their wait times. The wait times
 are plotted on the same plot using green impulses.
-<P>The bottom plot shows the distribution histogram of all wait times.
+<P>
+The bottom plot shows the distribution histogram of all wait times.
 The bin width used is equal to 0.1.
 <P>You can interact with the applet by choosing one of two bus arrival
 time distribution, the stop time of the simulation, and the mean inter-arrival
 time of the bus.
-<P>One can observe that if the bus arrives in fixed interval, <I>T</I>,
+<P>
+One can observe that if the bus arrives in fixed interval, <I>T</I>,
 then the average waiting time will be equal to <I>0.5*T</I> and will be
 uniformly distributed from 0 to <I>T</I>.
-<BR>On the other hand, if the bus arrives according to Poisson process,
+<BR>
+On the other hand, if the bus arrives according to Poisson process,
 then the average waiting time will be equal to <I>T</I> and will be exponentially
 distributed with mean <I>T</I>, where <I>T</I> is equal to the mean inter-arrival
 time.
@@ -45,7 +47,7 @@ time.
    archive="ptolemy/domains/de/demo/clockapplet.jar"
    code=ptolemy.domains.de.demo.HistogramApplet.class
    codebase=../../../..
-   width=600 height=400>
+   width=700 height=500>
 <BR><I>If you were able to run applets, you would have a waveform demo
 here.</I>
 <BR></APPLET></CENTER>
@@ -61,7 +63,27 @@ a
 <A HREF="../lib/DEPlot.java">Plot</A> Actor, and a
 <A HREF="../lib/DEStatistics.java">Statistics</A>
 Actor.
-<BR><IMG SRC="Histogram.gif" HEIGHT=251 WIDTH=566>
+<BR>
+<MAP Name="ActorsMap">
+<AREA Shape="rect" Coords="19,17,80,32"
+	Href="../lib/DEClock.java">
+<AREA Shape="rect" Coords="20,43,81,59"
+	Href="../lib/DEPoisson.java">
+<AREA Shape="rect" Coords="9,184,94,239"
+	Href="../lib/DEPoisson.java">
+<AREA Shape="rect" Coords="159,94,244,149"
+	Href="../lib/DEWaitingTime.java">
+<AREA Shape="rect" Coords="299,44,384,99"
+	Href="../lib/DEStatistics.java">
+<AREA Shape="rect" Coords="299,144,384,199"
+	Href="../lib/DEHistogram.java">
+<AREA Shape="rect" Coords="469,9,554,64"
+	Href="../lib/DEPlot.java">
+</MAP>
+<CENTER>
+<IMG SRC="Histogram.gif" HEIGHT=251 WIDTH=566
+Alt="Imagemap" Usemap="#ActorsMap" Ismap>
+</CENTER>
 <BR>
 <HR>Copyright &copy; 1998 The Regents of the University of California.
 All rights reserved.

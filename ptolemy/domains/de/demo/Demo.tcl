@@ -44,8 +44,8 @@ $sys setName DEDemo
 # Create directors and associate them with the top level composite actor.
 set dir [java::new ptolemy.domains.de.kernel.DECQDirector DELocalDirector]
 $sys setDirector $dir
-set exec [java::new ptolemy.actor.Director]
-$sys setExecutiveDirector $exec
+set exec [java::new ptolemy.actor.Manager]
+$sys setManager $exec
 
 
 #####################

@@ -130,7 +130,7 @@ public class HistogramApplet extends Applet implements Runnable {
         simulationParam.add(sb);
         _meanIntervalLabel = new Label("Mean interarrival time = 1");
         sb.add(_meanIntervalLabel, "South");
-        _meanIntervalScrollbar = new Scrollbar(Scrollbar.HORIZONTAL, 1, 1, 1,30);
+        _meanIntervalScrollbar = new Scrollbar(Scrollbar.HORIZONTAL, 1, 1, 1,10);
         sb.add(_meanIntervalScrollbar, "North");
         _sbListener = new IntervalSbListener();
         _meanIntervalScrollbar.addAdjustmentListener(_sbListener);
@@ -165,8 +165,8 @@ public class HistogramApplet extends Applet implements Runnable {
             _poisson = new DEPoisson(topLevel, "Poisson Bus", 1.0, 1.0);
             _localDirector = new DECQDirector("DE Director");
             topLevel.setDirector(_localDirector);
-            _executiveDirector = new Director("Executive Director");
-            topLevel.setExecutiveDirector(_executiveDirector);
+            _executiveDirector = new Manager("Executive Director");
+            topLevel.setManager(_executiveDirector);
             
             // Create the actors.
             // The connections are created after appropriate source is chosen.
@@ -238,7 +238,8 @@ public class HistogramApplet extends Applet implements Runnable {
                 _meanInterval.setToken(new DoubleToken((double)value));
 
                 // Start the simulation.
-                _executiveDirector.go();
+                // This won't start a thread.
+                _executiveDirector.run();
                 
                 double average = _stat.getAverage();
                 double variance = _stat.getVariance();
@@ -272,7 +273,7 @@ public class HistogramApplet extends Applet implements Runnable {
 
     // FIXME: Under jdk 1.2, the following can (and should) be private
     private DECQDirector _localDirector;
-    private Director _executiveDirector;
+    private Manager _executiveDirector;
 
     private TextField _stopTimeBox;
     private double _stopTime = 100.0;

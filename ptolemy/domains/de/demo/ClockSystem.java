@@ -53,8 +53,8 @@ public class ClockSystem {
         // Set up the directors
         localDirector = new DECQDirector("DE Director");
         topLevel.setDirector(localDirector);
-        executiveDirector = new Director("Executive Director");
-        topLevel.setExecutiveDirector(executiveDirector);
+        executiveDirector = new Manager("Executive Director");
+        topLevel.setManager(executiveDirector);
 
         // Set up the actors and connections
         DEClock clock = new DEClock(topLevel, "Clock", 1.0, 1.0);
@@ -95,5 +95,5 @@ public class ClockSystem {
     // The top-level system.
     private CompositeActor topLevel;
     private DECQDirector localDirector;
-    private Director executiveDirector;
+    private Manager executiveDirector;
 }
