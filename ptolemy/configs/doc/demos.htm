@@ -9,17 +9,14 @@ Quick Tour
 <!-- 
 Note:  demos should go with in the directory of their respective
 domains.
-demo xml files should usually be lower case, and have the
+demo xml files should usually be upper case, and have the
 same name as the directory they reside in, so we should
-have sdf/demo/foo/foo.xml.
+have sdf/demo/Foo/Foo.xml.
+The reason that the xml files are upcased is so that if
+we do codegen, we get Foo.java instead of foo.java
 
-One exception is that if the demo contains a java file that
-also implements the demo, then the directory name will be capitalized,
-so we will have
-sdf/demo/Foo/Foo.java
-and
-sdf/demo/Foo/Foo.xml
-
+These demos should be in the same order as the ones listed in
+     ptII/doc/tour/toc.htm
 -->
 
 
@@ -42,8 +39,7 @@ This model is build using the <i>synchronous dataflow</i> (SDF) domain,
 which statically schedules the firing of the actors.
 </br></li>
 
-<li><a href="../../domains/dt/demo/Eye/Eye.xml">
-Eye diagram of a PAM communications signal</a>.
+<li><a href="../../domains/dt/demo/Eye/Eye.xml">Eye diagram of a PAM communications signal</a>.
 <br> This example shows a simple pulse-amplitude moduldation, physical
 layer communication system.  It illustrates the discrete-time (DT)
 domain, live parameter editing and
@@ -58,8 +54,7 @@ which uses an underlying solver for ordinary differential equations,
 the Expression actor, and the X-Y plotter.
 </br></li>
 
-<li><a href="../../domains/de/demo/Inspection/Inspection.xml">
-Inspection paradox</a>.
+<li><a href="../../domains/de/demo/Inspection/Inspection.xml">Inspection paradox</a>.
 <br> This example shows
 a famous paradox in probability called the inspection paradox.
 It illustrates use of the discrete-event (DE) domain, where random
@@ -69,16 +64,14 @@ are reported.  This technique heavily uses Ptolemy II's polymorphic
 type system to do string manipulation.
 </br></li>
 
-<li><a href="../../domains/ct/demo/StickyMasses/StickyMasses.xml">
-Hybrid system model</a>.
+<li><a href="../../domains/ct/demo/StickyMasses/StickyMasses.xml">Hybrid system model</a>.
 <br> This example illustrates the use of the finite-state-machine (FSM)
 domain together with another domain to get a <i>modal model</i>.
 A special case of modal models are <i>hybrid systems</i>, where FSM
 is combined with CT, as in this example.
 </br></li>
 
-<li><a href="../../domains/gr/demo/Pendulum/Pendulum.xml">
-Pendulum model</a>.<br>
+<li><a href="../../domains/gr/demo/Pendulum/Pendulum.xml">Pendulum model</a>.<br>
 <font color="red">NOTE: This model requires that you have
 installed Java 3D from Sun
 (see http://java.sun.com/products/java-media/3D/).</font>
@@ -88,8 +81,7 @@ can be assembled and dynamically manipulated.  Note that clicking
 and dragging in the graphics window rotates the model.
 </br></li>
 
-<li><a href="../../actor/lib/javasound/demo/KarplusStrong/KarplusStrong.xml">
-Karplus-Strong Algorithm</a>.<br>
+<li><a href="../../actor/lib/javasound/demo/KarplusStrong/KarplusStrong.xml">Karplus-Strong Algorithm</a>.<br>
 <font color="red">NOTE: This model requires that you have
 the 1.3 version of Java (see http://java.sun.com/j2se/).</font>
 This example shows the Karplus-Strong algorithm, which synthesizes
@@ -98,8 +90,7 @@ It illustrates the audio capabilities of Ptolemy II, which require
 version 1.3 of Java, and a reasonable capable computer.
 </br></li>
 
-<li><a href="../../moml/demo/networked.xml">
-Network Integration</a>.<br>
+<li><a href="../../moml/demo/networked.xml">Network Integration</a>.<br>
 This model contains a component that is defined on the Ptolemy project
 website.  When you open the model, you will be alerted to the fact
 that it requires loading a model definition from a remote source.
@@ -111,8 +102,7 @@ You can open that definition by clicking on the hyperlink, or by
 using the "Open URL" command in the File menu.
 </br></li>
 
-<li><a href="../../data/type/demo/router.xml">
-Record Types and Type Propagation</a>.<br>
+<li><a href="../../data/type/demo/router.xml">Record Types and Type Propagation</a>.<br>
 This model illustrates the very sophisticated type system
 in Ptolemy II, where type constraints propagate transparently.
 This example illustrates composite types, where records are
@@ -121,6 +111,5 @@ models a packet in a packet-switched network, where variable
 delays may result in out-of-order arrival of packets.
 </li>
 </ul>
-<p></p>
 </body>
 </html>
