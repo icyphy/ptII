@@ -165,7 +165,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: sources jclass
 
 install: all jars \
-		$(PXGRAPHAPPLETJAR) $(PLOTMLAPPLETJAR) $(PLOTAPPLICATIONJAR) \
+		$(PXGRAPHAPPLETJAR) $(PLOTMLAPPLETJAR) $(PLOTAPPLICATIONJAR)
 	(cd ../../bin; $(MAKE) install)
 
 
