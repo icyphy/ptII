@@ -76,11 +76,11 @@ public class ABP extends TypedCompositeActor {
         
         DEDirector director = new DEDirector(this, "DEDirector");
 
-        Parameter forwardRate = new Parameter(this, "forwardRate");
-        forwardRate.setExpression("0.3");
+        Parameter forwardLossRate = new Parameter(this, "forwardLossRate");
+        forwardLossRate.setExpression("0.3");
 
-        Parameter backwardRate = new Parameter(this, "backwardRate");
-        backwardRate.setExpression("0.2");
+        Parameter backwardLossRate = new Parameter(this, "backwardLossRate");
+        backwardLossRate.setExpression("0.2");
 
         Parameter stopTime = new Parameter(this, "stopTime");
         stopTime.setExpression("100.0");
@@ -90,16 +90,18 @@ public class ABP extends TypedCompositeActor {
         DETimer timer = new DETimer(this, "Timer");
 
         // forward packet channel
-        DEChannel forward = new DEChannel(this, "ForwardChannel");
-        forward.dropRate.setExpression("forwardRate");
-        forward.maxDelay.setToken(new DoubleToken(5.0));
-        forward.minDelay.setToken(new DoubleToken(0.5));
+        LossyDelayChannel forward
+                = new LossyDelayChannel(this, "ForwardChannel");
+        forward.lossProbability.setExpression("forwardLossRate");
+        forward.maximumDelay.setToken(new DoubleToken(5.0));
+        forward.minimumDelay.setToken(new DoubleToken(0.5));
 
         // backward packet channel
-        DEChannel backward = new DEChannel(this, "BackwardChannel");
-        backward.dropRate.setExpression("backwardRate");
-        backward.maxDelay.setToken(new DoubleToken(2.0));
-        backward.minDelay.setToken(new DoubleToken(0.2));
+        LossyDelayChannel backward
+                = new LossyDelayChannel(this, "BackwardChannel");
+        backward.lossProbability.setExpression("backwardLossRate");
+        backward.maximumDelay.setToken(new DoubleToken(2.0));
+        backward.minimumDelay.setToken(new DoubleToken(0.2));
 
         // the plot
         TimedPlotter plot = new TimedPlotter(this, "Plot");
@@ -117,6 +119,7 @@ public class ABP extends TypedCompositeActor {
         plot.plot.setImpulses(true);
         plot.plot.setMarksStyle("dots");
         plot.fillOnWrapup.setToken(new BooleanToken(false));
+        plot.legend.setExpression("received, sent, alternating");
 
         // sender - a hierarchical FSM
         TypedCompositeActor sender = new TypedCompositeActor(this, "Sender");

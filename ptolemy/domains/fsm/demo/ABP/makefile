@@ -51,9 +51,9 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	ABP.java \
-	DEChannel.java \
 	DEMessageSource.java \
-	DETimer.java
+	DETimer.java \
+	LossyDelayChannel.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	ABP.htm \

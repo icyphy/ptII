@@ -49,38 +49,31 @@
 </NOEMBED></EMBED>
 </OBJECT>
 </center>
-
-The discrete event (DE) model of computation is very popular in modeling
-distributed or parallel hardware and software and their communication infrastructure
-[1]. An important special case is the modeling of communication protocols.
-A hardware or software implementation of any practical communication protocol
-will go through a large number of states during its execution, so its behavior
-can be very well captured using hierarchical FSM's. The example presented
-here demonstrates the use of discrete event model and hierarchical FSM's
-to model the alternating bit protocol (ABP). See [2] for a detailed discussion
-of the protocol.
-
-<H2>The Model</H2>
-
-<H3>Top level</H3>
-The alternating bit protocol is used for reliable transmission of data
-between a sender and a receiver over an unreliable channel. The top level
-configuration of the model is shown below. This top level block diagram
-executes under the DE semantics.
+<p>
+This model demonstrates the use of the discrete event (DE) domain
+combined with and hierarchical finite state machines (FSM's)
+to model the alternating bit protocol (ABP). The ABP [2]
+is a popular mechanism for achieving reliable, ordered delivery
+of messages over channels with unreliable delivery and variable delay.
+The top level of the model, which operates in the DE domain,
+is shown below:
 <CENTER>
 <P><IMG SRC="img/ABPModel.gif" ></CENTER>
-
-<BR>&nbsp;
-<H3>The components</H3>
-<B>Message source. </B>This is a DE atomic actor with a parameter <I>MaxDelay</I>.
-After the simulation starts, it will wait for a random delay uniformly
-distributed between <I>0</I> and <I>MaxDelay</I>, and then send a <I>request</I>
+<p>
+The components in the model include:
+<p>
+<B>Message source. </B>
+This is a DE atomic actor with a parameter <I>MaxDelay</I>.
+After execution starts, it will wait for a random delay uniformly
+distributed between zero and <I>MaxDelay</I>, and then send a <I>request</I>
 to the sender. When it receives a <I>next</I> from the sender, it will
 again wait for a random delay uniformly distributed between <I>0</I> and
 <I>MaxDelay</I>, and then send a new <I>msgIn</I> with sequence number
-increased by <I>1</I> to the sender. In this demo, <I>MaxDelay</I> is set
+increased by one to the sender. In this demo, <I>MaxDelay</I> is set
 to <I>0.5</I>.
-<P><B>Timer. </B>The timer has an input <I>setTimer</I> of type DoubleToken.
+<P>
+<B>Timer. </B>
+The timer has an input <I>setTimer</I> of type DoubleToken.
 The value of the input token gives the delay before the next timer expire.
 The timer is reset every time it gets an input token.
 <P><B>Channel. </B>The channel models an unreliable connection in a packet
@@ -89,18 +82,21 @@ randomly. A channel has three parameters: <I>DropRate</I>, <I>MinDelay</I>
 and <I>MaxDelay</I>. <I>DropRate</I> is the probability that an input packet
 gets dropped. Packet delay in the channel is uniformly distributed between
 <I>MinDelay</I> and <I>MaxDelay</I>.
-
-<P><B>Plot. </B>The plot shows the result of data transmission. In the
+<P>
+<B>Plot. </B>
+The plot shows the result of data transmission. In the
 plot, the red data gives the sequence number of the messages coming out
 from the receiver. The blue data gives the sequence number of the messages
 going to the sender. The third data is the "alternating bit" that the protocol
 uses to number the packets going through the channel.
 <P><B>Sender. </B>The sender implements the sending part of ABP and is
-a hierarchical FSM as shown below.
+a hierarchical FSM as shown below:
 <CENTER>
 <P><IMG SRC="img/Sender.gif" ></CENTER>
 
-<P><B>Receiver. </B>The receiver is a flat FSM as shown below.
+<P>
+<B>Receiver. </B>
+The receiver is a flat FSM as shown below:
 <CENTER>
 <P><IMG SRC="img/Receiver.gif" ></CENTER>
 
