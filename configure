@@ -1060,9 +1060,9 @@ PTJHDL_DIR=
 # Directory that contains the jhdl jar files
 JHDL_JAR='${PTII}/vendors/jhdl/JHDL_0_3_4.jar'
 
-# We only need to look for jhdl if $PTII/ptolemy/apps/soot exists
-if test ! -d "$PTII/ptolemy/apps/soot"; then
-    echo "$ac_t""$PTII/ptolemy/apps/soot is not present, so we need not
+# We only need to look for jhdl if $PTII/ptolemy/copernicus/jhdl exists
+if test ! -d "$PTII/ptolemy/copernicus/jhdl"; then
+    echo "$ac_t""$PTII/ptolemy/coperniucs/jhdl is not present, so we need not
 find the Jhdl - a Java Optimization Framework" 1>&6
     JHDL_JAR='${PTII}/vendors/jhdl/JHDL_0_3_4.jar'
 else
@@ -1592,9 +1592,9 @@ fi
 #       If not, look in $PTII/vendors/sun/soot
 #--------------------------------------------------------------------
 
-# PTSOOT_DIR is set to soot and used in
-# $PTII/ptolemy/apps/makefile if soot was found
-PTSOOT_DIR=
+# PTCOPERNICUS_DIR is set to coperniucs and used in
+# $PTII/ptolemy/makefile if soot was found
+PTCOPERNICUS_DIR=
 
 # Directory that contains the soot jar files
 SOOT_DIR='${PTII}/vendors/soot/1.2.2'
@@ -1609,9 +1609,9 @@ JAVA_SYSTEM_JAR='$(PTJAVA_DIR)/jre/lib/rt.jar'
 # and under /bin/sh $(FOO) does not work, but ${FOO} does
 SOOT_CLASSES='${SOOT_DIR}/sootclasses.jar${CLASSPATHSEPARATOR}${SOOT_DIR}/jasminclasses.jar${CLASSPATHSEPARATOR}${JAVA_SYSTEM_JAR}'
 
-# We only need to look for soot if $PTII/ptolemy/apps/soot exists
-if test ! -d "$PTII/ptolemy/apps/soot"; then
-    echo "$ac_t""$PTII/ptolemy/apps/soot is not present, so we need not
+# We only need to look for soot if $PTII/ptolemy/copernicus exists
+if test ! -d "$PTII/ptolemy/copernicus"; then
+    echo "$ac_t""$PTII/ptolemy/copernicus is not present, so we need not
 find the Soot - a Java Optimization Framework" 1>&6
     SOOT_DIR='${PTII}/vendors/soot/1.2.2'
 else
@@ -1653,9 +1653,9 @@ echo "configure:1637: checking for \$SOOT_DIR/jasminclasses.jar" >&5
 	# Note that we don't substitute in the ${PTII} or $(SOOT_DIR) here
 	SOOT_DIR='${PTII}/vendors/soot/1.2.2'
     else
-	# Set to soot and used in
-	# $PTII/ptolemy/apps/makefile if soot was found
-	PTSOOT_DIR=soot
+	# Set to copernicus and used in
+	# $PTII/ptolemy/makefile if soot was found
+	PTCOPERNICUS_DIR=copernicus
     fi
 
     echo $ac_n "checking for rt.jar by compiling config/SystemJar.java""... $ac_c" 1>&6
@@ -1917,6 +1917,9 @@ fi
 # $PTII/vendors/lejos
 
 
+# Set to copernicus and used in $PTII/ptolemy/makefile if Soot was found
+
+
 # ptjacl.jar file, used to run the test suites
 
 
@@ -1964,9 +1967,6 @@ fi
 
 # Set to tini and used in
 # $PTII/ptolemy/apps/makefile if TINI was found
-
-
-# Set to soot and used in $PTII/ptolemy/apps/makefile if Soot was found
 
 
 # Set to waba and used in
@@ -2159,6 +2159,7 @@ s%@JODE_CLASSES@%$JODE_CLASSES%g
 s%@KVM_CLASSES@%$KVM_CLASSES%g
 s%@KVM_DIR@%$KVM_DIR%g
 s%@LEJOS_DIR@%$LEJOS_DIR%g
+s%@PTCOPERNICUS_DIR@%$PTCOPERNICUS_DIR%g
 s%@PTJACL_JAR@%$PTJACL_JAR%g
 s%@PTJACL_JFLAG@%$PTJACL_JFLAG%g
 s%@PTJAVA_DIR@%$PTJAVA_DIR%g
@@ -2171,7 +2172,6 @@ s%@PTKVM_DIR@%$PTKVM_DIR%g
 s%@PTLEGO_DIR@%$PTLEGO_DIR%g
 s%@PTLEJOS_DIR@%$PTLEJOS_DIR%g
 s%@PTTINI_DIR@%$PTTINI_DIR%g
-s%@PTSOOT_DIR@%$PTSOOT_DIR%g
 s%@PTWABA_DIR@%$PTWABA_DIR%g
 s%@PTII_DEFAULT@%$PTII_DEFAULT%g
 s%@SOOT_CLASSES@%$SOOT_CLASSES%g
