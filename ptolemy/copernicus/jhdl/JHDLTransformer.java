@@ -37,8 +37,6 @@ import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.moml.*;
 
-import byucc.jhdl.Version;
-
 import soot.*;
 import soot.jimple.*;
 import soot.jimple.toolkits.invoke.SiteInliner;
@@ -73,8 +71,10 @@ class JHDLTransformer extends SceneTransformer {
         // in the classpath.  We call this here so that
         // we find out sooner rather than later.
         try {
-            byucc.jhdl.Version.GetFullVersion();
-        } catch (NoClassDefFoundError error) {
+            // We check this at run time, not compile time so that
+            // GeneratorTableau will compile if JHDL is not present.
+            Class.forName("byucc.jhdl.Version");
+        } catch (ClassNotFoundException error) {
             // To test this, run make JHDL_JAR= demo
             throw new NoClassDefFoundError("byucc.jhdl.Version."
                     + "GetFullVersion() not "
