@@ -126,7 +126,7 @@ public class HTMLAbout {
                     + "  <li><a href=\"about:demos\"><code>about:demos</code></a>"
                     + "   Open up all the .xml in"
                     + "   <code>ptolemy/configs/doc/completeDemos.htm</code>.\n"
-                    + "   (May fail in Ptiny, DSP or Hyvisual configurations).\n"
+                    + "   (May fail in Ptiny, DSP, HyVisual or VisualSense configurations).\n"
                     + "  <li><a href=\"about:demos#ptolemy/configs/doc/demos.htm\">"
                     + "   <code>about:demos#ptolemy/configs/doc/demos.htm</code></a>\n"
                     + "   Open up the .xml files in\n"
@@ -152,7 +152,7 @@ public class HTMLAbout {
         if (_configurationExists("hyvisual")) {
             needCloser = true;
             htmlBuffer.append(
-                    "<li>Hyvisual\n"
+                    "<li>HyVisual\n"
                     + " <ul>\n"
                     + "  <li><a href=\"about:demos#ptolemy/configs/hyvisual/intro.htm\">"
                     + "   <code>about:demos#ptolemy/configs/hyvisual/intro.htm</code></a>"
@@ -184,6 +184,18 @@ public class HTMLAbout {
 //             + "<code>about:runAllDemosdemos#ptolemy/configs/doc/demosPtiny.htm</code></a>"
 //             + "\nRun all the .xml files in\n"
 //             + "<code>ptolemy/configs/doc/completeDemosPtiny.htm</code>.\n"
+
+        if (_configurationExists("visualsense")) {
+            needCloser = true;
+            htmlBuffer.append(
+                    "<li>VisualSense\n"
+                    + " <ul>\n"
+                    + "  <li><a href=\"about:demos#ptolemy/configs/visualsense/intro.htm\">"
+                    + "   <code>about:demos#ptolemy/configs/visualsense/intro.htm</code></a>"
+                    + "   \nOpen up the .xml files in\n"
+                    + "   <code>ptolemy/configs/visualsense/intro.htm</code>.\n"
+                    + " </ul>\n");
+        }           
 
         if (needCloser) {
             htmlBuffer.append("</ul>\n");
