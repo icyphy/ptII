@@ -309,6 +309,16 @@ public class Variable extends Attribute
             throws IOException {
     }
 
+    /** If setTypeEquals() has been called, then return the type specified
+     *  there. Otherwise, return BaseType.UNKNOWN.
+     *  @return The declared type of this variable.
+     *  @see setTypeEquals(Type)
+     *  @see BaseType
+     */
+    public Type getDeclaredType() {
+        return _declaredType;
+    }
+
     /** Get the expression currently used by this variable. The expression
      *  is either the value set by setExpression(), or a string representation
      *  of the value set by setToken(), or an empty string if no value
