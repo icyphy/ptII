@@ -169,6 +169,10 @@ public class ClassChanges implements MoMLFilter {
         // Renamed in 3.1-devel
         _classChanges.put("ptolemy.vergil.icon.ImageEditorIcon",
                 "ptolemy.vergil.icon.ImageIcon");
+                
+        // Replaced FileAttribute with FileParameter in 3.2-devel
+        _classChanges.put("ptolemy.kernel.attributes.FileAttribute",
+                "ptolemy.data.expr.FileParameter");
     }
     
     // Set of class names that are obsolete and should be simply
