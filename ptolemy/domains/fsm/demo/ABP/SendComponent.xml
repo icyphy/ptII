@@ -94,17 +94,7 @@
         </property>
     </relation>
     <relation name="sendTr2" class="ptolemy.domains.fsm.kernel.Transition">
-        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!ack_isPresent &amp;&amp; expired_isPresent &amp;&amp; trying">
-        </property>
-        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-	<property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="pktOut = msg * 2; monitor = 0; setTimer = 5.0">
-	</property>
-    </relation>
-    <relation name="sendTr3" class="ptolemy.domains.fsm.kernel.Transition">
-        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="ack_isPresent &amp;&amp; ack != 0 &amp;&amp; expired_isPresent &amp;&amp; trying">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(!ack_isPresent || ack != 0) &amp;&amp; expired_isPresent &amp;&amp; trying">
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -132,23 +122,13 @@
         </property>
         <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
         </property>
-	<property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="pktOut = msg * 2 + 1; monitor = 1; setTimer = 5.0">
+	<property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="pktOut = msgIn * 2 + 1; monitor = 1; setTimer = 5.0">
         </property>
         <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="trying = true; msg = msgIn">
 	</property>
     </relation>
     <relation name="sendTr6" class="ptolemy.domains.fsm.kernel.Transition">
-        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!ack_isPresent &amp;&amp; expired_isPresent &amp;&amp; trying">
-        </property>
-        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-	<property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="pktOut = msg * 2 + 1; monitor = 1; setTimer = 5.0">
-	</property>
-    </relation>
-    <relation name="sendTr7" class="ptolemy.domains.fsm.kernel.Transition">
-        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="ack_isPresent &amp;&amp; ack != 1 &amp;&amp; expired_isPresent &amp;&amp; trying">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(!ack_isPresent || ack != 1) &amp;&amp; expired_isPresent &amp;&amp; trying">
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -171,18 +151,18 @@
     </relation>
     <link port="S0.incomingPort" relation="sendTr1"/>
     <link port="S0.incomingPort" relation="sendTr2"/>
-    <link port="S0.incomingPort" relation="sendTr3"/>
     <link port="S0.incomingPort" relation="sendTr8"/>
     <link port="S0.outgoingPort" relation="sendTr1"/>
     <link port="S0.outgoingPort" relation="sendTr2"/>
-    <link port="S0.outgoingPort" relation="sendTr3"/>
     <link port="S0.outgoingPort" relation="sendTr4"/>
     <link port="S1.incomingPort" relation="sendTr4"/>
     <link port="S1.incomingPort" relation="sendTr5"/>
     <link port="S1.incomingPort" relation="sendTr6"/>
-    <link port="S1.incomingPort" relation="sendTr7"/>
     <link port="S1.outgoingPort" relation="sendTr5"/>
     <link port="S1.outgoingPort" relation="sendTr6"/>
-    <link port="S1.outgoingPort" relation="sendTr7"/>
     <link port="S1.outgoingPort" relation="sendTr8"/>
 </class>
+
+
+
+
