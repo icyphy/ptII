@@ -269,6 +269,42 @@ public class Histogram extends PlotBox {
         _binWidth = width;
     }
 
+    /** Write plot data information to the specified output stream in PlotML.
+     *  @param output A buffered print writer.
+     */
+    public synchronized void writeData(PrintWriter output) {
+        super.writeData(output);
+        for (int dataset = 0; dataset < _points.size(); dataset++) {
+            // Write the dataset directive
+            String legend = getLegend(dataset);
+            if (legend != null) {
+                output.println("<dataset name=\"" + legend + "\">");
+            } else {
+                output.println("<dataset>");
+            }
+            // Write the data
+            Vector pts = (Vector)_points.elementAt(dataset);
+            for (int pointnum = 0; pointnum < pts.size(); pointnum++) {
+                Double pt = (Double)pts.elementAt(pointnum);
+                output.println("<p y=\"" + pt.doubleValue() + "\"/");
+            }
+            output.println("</dataset>");
+        }
+    }
+
+    /** Write plot format information to the specified output stream.
+     *  @param output A buffered print writer.
+     */
+    public synchronized void writeFormat(PrintWriter output) {
+        super.writeFormat(output);
+        output.println(
+                "<barGraph width=\"" + _barwidth
+                + "\" offset=\"" + _baroffset + "\"/>");
+
+        output.println("<bin width=\"" + _binWidth
+                + "\" offset=\"" + _binOffset + "\"/>");
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -487,40 +523,6 @@ public class Histogram extends PlotBox {
             }
         }
         return false;
-    }
-
-    /** Write plot information to the specified output stream.
-     *  Derived classes should override this method to first call
-     *  the parent class method, then add whatever additional information
-     *  they wish to add to the stream.
-     *  @param output A buffered print writer.
-     */
-    protected void _write(PrintWriter output) {
-        super._write(output);
-
-        output.println(
-                "<barGraph width=\"" + _barwidth
-                + "\" offset=\"" + _baroffset + "\"/>");
-
-        output.println("<bin width=\"" + _binWidth
-                + " offset=\"" + _binOffset + "\">");
-
-        for (int dataset = 0; dataset < _points.size(); dataset++) {
-            // Write the dataset directive
-            String legend = getLegend(dataset);
-            if (legend != null) {
-                output.println("<dataset name=\"" + legend + "\">");
-            } else {
-                output.println("<dataset>");
-            }
-            // Write the data
-            Vector pts = (Vector)_points.elementAt(dataset);
-            for (int pointnum = 0; pointnum < pts.size(); pointnum++) {
-                Double pt = (Double)pts.elementAt(pointnum);
-                output.println("<p y=\"" + pt.doubleValue() + "\"/");
-            }
-            output.println("</dataset>");
-        }
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -1074,8 +1074,8 @@ public class PlotBox extends JPanel implements Printable {
      *  definition).  This makes is somewhat verbose.  To get
      *  smaller files, use the two argument version of write().
      *  The output is buffered, and is flushed and
-     *  closed before exiting.  Derived classes should override _write()
-     *  rather than this method.
+     *  closed before exiting.  Derived classes should override
+     *  writeFormat and writeData rather than this method.
      *  @param out An output stream.
      */
     public void write(OutputStream out) {
@@ -1084,22 +1084,38 @@ public class PlotBox extends JPanel implements Printable {
 
     /** Write the current data and plot configuration to the
      *  specified stream in PlotML syntax.  PlotML is an XML
-     *  dialect for plot data. The URL (relative or absolute) for the DTD is
+     *  scheme for plot data. The URL (relative or absolute) for the DTD is
      *  given as the second argument.  If that argument is null,
      *  then the PlotML PUBLIC DTD is referenced, resulting in a file
      *  that can be read by a PlotML parser without any external file
      *  references, as long as that parser has local access to the DTD.
      *  The output is buffered, and is flushed and
-     *  closed before exiting.  Derived classes should override _write()
-     *  rather than this method.
+     *  closed before exiting.  Derived classes should override
+     *  writeFormat and writeData rather than this method.
      *  @param out An output stream.
      *  @param dtd The reference (URL) for the DTD, or null to use the
      *   PUBLIC DTD.
      */
     public synchronized void write(OutputStream out, String dtd) {
+        write(new OutputStreamWriter(out), dtd);
+    }
+
+    /** Write the current data and plot configuration to the
+     *  specified stream in PlotML syntax.  PlotML is an XML
+     *  scheme for plot data. The URL (relative or absolute) for the DTD is
+     *  given as the second argument.  If that argument is null,
+     *  then the PlotML PUBLIC DTD is referenced, resulting in a file
+     *  that can be read by a PlotML parser without any external file
+     *  references, as long as that parser has local access to the DTD.
+     *  The output is buffered, and is flushed and
+     *  closed before exiting.
+     *  @param out An output writer.
+     *  @param dtd The reference (URL) for the DTD, or null to use the
+     *   PUBLIC DTD.
+     */
+    public synchronized void write(Writer out, String dtd) {
         // Auto-flush is disabled.
-        PrintWriter output = new PrintWriter(new BufferedOutputStream(out),
-                false);
+        PrintWriter output = new PrintWriter(new BufferedWriter(out), false);
         if (dtd == null) {
             output.println("<?xml version=\"1.0\" standalone=\"yes\"?>");
             output.println(
@@ -1112,13 +1128,71 @@ public class PlotBox extends JPanel implements Printable {
         }
         output.println("<plot>");
         output.println("<!-- Ptolemy plot, version 3.1, PlotML format. -->");
-        _write(output);
+        writeFormat(output);
+        writeData(output);
         output.println("</plot>");
         output.flush();
-        // Avoid closing standard out.
-        if(out != System.out) {
-            output.close();
+        // NOTE: We used to close the stream, but if this is part
+        // of an exportMoML operation, that is the wrong thing to do.
+        // if(out != System.out) {
+        //    output.close();
+        // }
+    }
+
+    /** Write plot data information to the specified output stream in PlotML.
+     *  In this base class, there is no data to write, so this method
+     *  returns without doing anything.
+     *  @param output A buffered print writer.
+     */
+    public synchronized void writeData(PrintWriter output) {
+    }
+
+    /** Write plot format information to the specified output stream in PlotML.
+     *  Derived classes should override this method to first call
+     *  the parent class method, then add whatever additional format
+     *  information they wish to add to the stream.
+     *  @param output A buffered print writer.
+     */
+    public synchronized void writeFormat(PrintWriter output) {
+        // NOTE: If you modify this, you should change the _DTD variable
+        // accordingly.
+        if (_title != null) output.println(
+                "<title>" + _title + "</title>");
+        if (_xlabel != null) output.println(
+                "<xLabel>" + _xlabel + "</xLabel>");
+        if (_ylabel != null) output.println(
+                "<yLabel>" + _ylabel + "</yLabel>");
+        if (_xRangeGiven) output.println(
+                "<xRange min=\"" + _xlowgiven + "\" max=\""
+                + _xhighgiven + "\"/>");
+        if (_yRangeGiven) output.println(
+                "<yRange min=\"" + _ylowgiven + "\" max=\""
+                + _yhighgiven + "\"/>");
+        if (_xticks != null && _xticks.size() > 0) {
+            output.println("<xTicks>");
+            int last = _xticks.size() - 1;
+            for (int i = 0; i <= last; i++) {
+                output.println("  <tick label=\""
+                        + (String)_xticklabels.elementAt(i) + "\" position=\""
+                        + (Double)_xticks.elementAt(i) + "\"/>");
+            }
+            output.println("</xTicks>");
         }
+        if (_yticks != null && _yticks.size() > 0) {
+            output.println("<yTicks>");
+            int last = _yticks.size() - 1;
+            for (int i = 0; i <= last; i++) {
+                output.println("  <tick label=\""
+                        + (String)_yticklabels.elementAt(i) + "\" position=\""
+                        + (Double)_yticks.elementAt(i) + "\"/>");
+            }
+            output.println("</yTicks>");
+        }
+        if (_xlog) output.println("<xLog/>");
+        if (_ylog) output.println("<yLog/>");
+        if (!_grid) output.println("<noGrid/>");
+        if (_wrap) output.println("<wrap/>");
+        if (!_usecolor) output.println("<noColor/>");
     }
 
     /** Write the current data and plot configuration to the
@@ -1945,55 +2019,6 @@ public class PlotBox extends JPanel implements Printable {
      */
     protected void _setPadding(double padding) {
 	_padding = padding;
-    }
-
-    /** Write plot information to the specified output stream in PlotML.
-     *  Derived classes should override this method to first call
-     *  the parent class method, then add whatever additional information
-     *  they wish to add to the stream.
-     *  It is not synchronized, so its caller should be.
-     *  @param output A buffered print writer.
-     */
-    protected void _write(PrintWriter output) {
-        // NOTE: If you modify this, you should change the _DTD variable
-        // accordingly.
-        if (_title != null) output.println(
-                "<title>" + _title + "</title>");
-        if (_xlabel != null) output.println(
-                "<xLabel>" + _xlabel + "</xLabel>");
-        if (_ylabel != null) output.println(
-                "<yLabel>" + _ylabel + "</yLabel>");
-        if (_xRangeGiven) output.println(
-                "<xRange min=\"" + _xlowgiven + "\" max=\""
-                + _xhighgiven + "\"/>");
-        if (_yRangeGiven) output.println(
-                "<yRange min=\"" + _ylowgiven + "\" max=\""
-                + _yhighgiven + "\"/>");
-        if (_xticks != null && _xticks.size() > 0) {
-            output.println("<xTicks>");
-            int last = _xticks.size() - 1;
-            for (int i = 0; i <= last; i++) {
-                output.println("  <tick label=\""
-                        + (String)_xticklabels.elementAt(i) + "\" position=\""
-                        + (Double)_xticks.elementAt(i) + "\"/>");
-            }
-            output.println("</xTicks>");
-        }
-        if (_yticks != null && _yticks.size() > 0) {
-            output.println("<yTicks>");
-            int last = _yticks.size() - 1;
-            for (int i = 0; i <= last; i++) {
-                output.println("  <tick label=\""
-                        + (String)_yticklabels.elementAt(i) + "\" position=\""
-                        + (Double)_yticks.elementAt(i) + "\"/>");
-            }
-            output.println("</yTicks>");
-        }
-        if (_xlog) output.println("<xLog/>");
-        if (_ylog) output.println("<yLog/>");
-        if (!_grid) output.println("<noGrid/>");
-        if (_wrap) output.println("<wrap/>");
-        if (!_usecolor) output.println("<noColor/>");
     }
 
     /** Write plot information to the specified output stream in the

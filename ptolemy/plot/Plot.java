@@ -710,6 +710,113 @@ public class Plot extends PlotBox {
         _xPersistence = persistence;
     }
 
+    /** Write plot data information to the specified output stream in PlotML.
+     *  @param output A buffered print writer.
+     */
+    public synchronized void writeData(PrintWriter output) {
+        super.writeData(output);
+        for (int dataset = 0; dataset < _points.size(); dataset++) {
+
+            StringBuffer options = new StringBuffer();
+
+            Format fmt = (Format)_formats.elementAt(dataset);
+
+            if (!fmt.connectedUseDefault) {
+                if (_isConnected(dataset)) {
+                    options.append(" connected=\"yes\"");
+                } else {
+                    options.append(" connected=\"no\"");
+                }
+            }
+
+            if (!fmt.impulsesUseDefault) {
+                if (fmt.impulses) options.append(" stems=\"yes\"");
+                else output.println(" stems=\"no\"");
+            }
+
+            if (!fmt.marksUseDefault) {
+                switch(fmt.marks) {
+                case 0:
+                    options.append(" marks=\"none\"");
+                case 1:
+                    options.append(" marks=\"points\"");
+                case 2:
+                    options.append(" marks=\"dots\"");
+                case 3:
+                    options.append(" marks=\"various\"");
+                case 4:
+                    options.append(" marks=\"pixels\"");
+                }
+            }
+
+            String legend = getLegend(dataset);
+            if (legend != null) {
+                options.append(" name=\"" + getLegend(dataset) + "\"");
+            }
+
+            output.println("<dataset" + options.toString() + ">");
+
+            // Write the data
+            Vector pts = (Vector)_points.elementAt(dataset);
+            for (int pointnum = 0; pointnum < pts.size(); pointnum++) {
+                PlotPoint pt = (PlotPoint)pts.elementAt(pointnum);
+                if (!pt.connected) {
+                    output.print("<m ");
+                } else {
+                    output.print("<p ");
+                }
+                output.print("x=\"" + pt.x + "\" y=\"" + pt.y + "\"");
+                if (pt.errorBar) {
+                    output.print(" lowErrorBar=\"" + pt.yLowEB
+                            + "\" highErrorBar=\"" + pt.yHighEB + "\"");
+                }
+                output.println("/>");
+            }
+
+            output.println("</dataset>");
+        }
+    }
+
+    /** Write plot format information to the specified output stream in
+     *  PlotML, an XML scheme.
+     *  @param output A buffered print writer.
+     */
+    public synchronized void writeFormat(PrintWriter output) {
+        super.writeFormat(output);
+
+        if (_reusedatasets) output.println("<reuseDatasets/>");
+
+        StringBuffer defaults = new StringBuffer();
+
+        if (!_connected) defaults.append(" connected=\"no\"");
+
+        switch(_marks) {
+        case 1:
+            defaults.append(" marks=\"points\"");
+            break;
+        case 2:
+            defaults.append(" marks=\"dots\"");
+            break;
+        case 3:
+            defaults.append(" marks=\"various\"");
+            break;
+        case 4:
+            defaults.append(" marks=\"pixels\"");
+            break;
+        }
+
+        // Write the defaults for formats that can be controlled by dataset
+        if (_impulses) defaults.append(" stems=\"yes\"");
+
+        if (defaults.length() > 0) {
+            output.println("<default" + defaults.toString() + "/>");
+        }
+
+        if (_bars) output.println(
+                "<barGraph width=\"" + _barwidth
+                + "\" offset=\"" + _baroffset + "\"/>");
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -1337,111 +1444,6 @@ public class Plot extends PlotBox {
     }
 
     /** Write plot information to the specified output stream in
-     *  PlotML, an XML extension.
-     *  Derived classes should override this method to first call
-     *  the parent class method, then add whatever additional information
-     *  they wish to add to the stream.
-     *  It is not synchronized, so its caller should be.
-     *  @param output A buffered print writer.
-     */
-    protected void _write(PrintWriter output) {
-        super._write(output);
-
-        if (_reusedatasets) output.println("<reuseDatasets/>");
-
-        StringBuffer defaults = new StringBuffer();
-
-        if (!_connected) defaults.append(" connected=\"no\"");
-
-        switch(_marks) {
-        case 1:
-            defaults.append(" marks=\"points\"");
-            break;
-        case 2:
-            defaults.append(" marks=\"dots\"");
-            break;
-        case 3:
-            defaults.append(" marks=\"various\"");
-            break;
-        case 4:
-            defaults.append(" marks=\"pixels\"");
-            break;
-        }
-
-        // Write the defaults for formats that can be controlled by dataset
-        if (_impulses) defaults.append(" stems=\"yes\"");
-
-        if (defaults.length() > 0) {
-            output.println("<default" + defaults.toString() + "/>");
-        }
-
-        if (_bars) output.println(
-                "<barGraph width=\"" + _barwidth
-                + "\" offset=\"" + _baroffset + "\"/>");
-
-        for (int dataset = 0; dataset < _points.size(); dataset++) {
-
-            StringBuffer options = new StringBuffer();
-
-            Format fmt = (Format)_formats.elementAt(dataset);
-
-            if (!fmt.connectedUseDefault) {
-                if (_isConnected(dataset)) {
-                    options.append(" connected=\"yes\"");
-                } else {
-                    options.append(" connected=\"no\"");
-                }
-            }
-
-            if (!fmt.impulsesUseDefault) {
-                if (fmt.impulses) options.append(" stems=\"yes\"");
-                else output.println(" stems=\"no\"");
-            }
-
-            if (!fmt.marksUseDefault) {
-                switch(fmt.marks) {
-                case 0:
-                    options.append(" marks=\"none\"");
-                case 1:
-                    options.append(" marks=\"points\"");
-                case 2:
-                    options.append(" marks=\"dots\"");
-                case 3:
-                    options.append(" marks=\"various\"");
-                case 4:
-                    options.append(" marks=\"pixels\"");
-                }
-            }
-
-            String legend = getLegend(dataset);
-            if (legend != null) {
-                options.append(" name=\"" + getLegend(dataset) + "\"");
-            }
-
-            output.println("<dataset" + options.toString() + ">");
-
-            // Write the data
-            Vector pts = (Vector)_points.elementAt(dataset);
-            for (int pointnum = 0; pointnum < pts.size(); pointnum++) {
-                PlotPoint pt = (PlotPoint)pts.elementAt(pointnum);
-                if (!pt.connected) {
-                    output.print("<m ");
-                } else {
-                    output.print("<p ");
-                }
-                output.print("x=\"" + pt.x + "\" y=\"" + pt.y + "\"");
-                if (pt.errorBar) {
-                    output.print(" lowErrorBar=\"" + pt.yLowEB
-                            + "\" highErrorBar=\"" + pt.yHighEB + "\"");
-                }
-                output.println("/>");
-            }
-
-            output.println("</dataset>");
-        }
-    }
-
-    /** Write plot information to the specified output stream in
      *  the "old syntax," which predates PlotML.
      *  Derived classes should override this method to first call
      *  the parent class method, then add whatever additional information
@@ -1451,7 +1453,7 @@ public class Plot extends PlotBox {
      *  @deprecated
      */
     protected void _writeOldSyntax(PrintWriter output) {
-        super._write(output);
+        super._writeOldSyntax(output);
 
         // NOTE: NumSets is obsolete, so we don't write it.
 

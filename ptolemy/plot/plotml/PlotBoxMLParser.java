@@ -34,8 +34,11 @@ package ptolemy.plot.plotml;
 import ptolemy.plot.PlotBox;
 
 // Java imports.
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.io.StringReader;
 import java.net.URL;
 import java.util.Hashtable;
@@ -43,7 +46,6 @@ import java.util.Stack;
 
 // XML imports.
 import com.microstar.xml.*;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotBoxMLParser
@@ -180,12 +182,34 @@ public class PlotBoxMLParser extends HandlerBase {
      *  @exception Exception If the parser fails.
      */
     public void parse(URL base, InputStream input) throws Exception {
+        parse(base, new InputStreamReader(input));
+    }
+
+    /** Parse the given stream as a PlotML file.
+     *  A variety of exceptions might be thrown if the parsed
+     *  data does not represent a valid PlotML file.
+     *  @param reader The stream from which to read XML.
+     *  @exception Exception If the parser fails.
+     */
+    public void parse(URL base, Reader reader) throws Exception {
         _parser.setHandler(this);
+        _base = base;
+        Reader buffered = new BufferedReader(reader);
         if (base == null) {
-            _parser.parse(null, null, input, null);
+            _parser.parse(null, null, buffered);
         } else {
-            _parser.parse(base.toExternalForm(), null, input, null);
+            _parser.parse(base.toExternalForm(), null, buffered);
         }
+    }
+
+    /** Parse the given text as PlotML.
+     *  A variety of exceptions might be thrown if the parsed
+     *  data does not represent valid PlotML data.
+     *  @param text The PlotML data.
+     *  @exception Exception If the parser fails.
+     */
+    public void parse(URL base, String text) throws Exception {
+        parse(base, new StringReader(text));
     }
 
     /** Resolve an external entity. If the first argument is the
@@ -377,7 +401,7 @@ public class PlotBoxMLParser extends HandlerBase {
     protected Hashtable _attributes;
 
     /** The current character data for the current element. */
-    protected StringBuffer _currentCharData;
+    protected StringBuffer _currentCharData = new StringBuffer();
 
     /** The parser. */
     protected XmlParser _parser = new XmlParser();
@@ -387,6 +411,9 @@ public class PlotBoxMLParser extends HandlerBase {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
+
+    // The URL w.r.t. which to resolve external references.
+    private URL _base;
 
     // The external entities being parsed.
     private Stack _externalEntities = new Stack();

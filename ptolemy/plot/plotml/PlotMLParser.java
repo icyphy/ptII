@@ -197,6 +197,9 @@ public class PlotMLParser extends PlotBoxMLParser {
             if (ex instanceof XmlException) {
                 throw (XmlException)ex;
             } else {
+                // FIXME: Temporary for debugging.
+                System.err.println(ex.toString());
+                ex.printStackTrace();
                 String msg = "XML element \"" + elementName
                     + "\" triggers exception:\n  " + ex.toString();
                 throw new XmlException(msg,
