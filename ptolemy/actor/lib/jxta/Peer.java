@@ -326,15 +326,12 @@ public class Peer extends TypedAtomicActor implements QueryHandler, DiscoveryLis
         }
 
         // now print out each discovered peer
-
-        String response = null;
         PeerAdvertisement newAdv = null;
 
         Enumeration responses = response.getResponses();
         while (responses.hasMoreElements()) {
-
             try {
-                response = (String)responses.nextElement();
+                String response = (String)responses.nextElement();
 
                 // create an advertisement object from each element
                 newAdv = (PeerAdvertisement)
