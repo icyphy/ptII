@@ -111,8 +111,18 @@ public class Precision {
 					     "precision format" );
 	}
 
-	int  first = (new Integer(st.nextToken())).intValue();
-	int second = (new Integer(st.nextToken())).intValue();
+        int  first = 0;
+        int second = 0;
+
+        // The string might contain only a single number...
+        try { 
+            first = (new Integer(st.nextToken())).intValue();
+            second = (new Integer(st.nextToken())).intValue();
+        } catch ( Exception e ) {
+            throw new IllegalArgumentException("A precision string " +
+                    " consists of two integers separated " +
+                    " by a '/', '^', or '.' token" );
+        }
 
 	// Depending on the type, interpret the two values
 	if ( type == 1 ) {
