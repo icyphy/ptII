@@ -54,7 +54,7 @@ the scheduler to enforce this requirement.
 <p>
 <i>Terminology</i>
 A schedule (or schedule loop) has the form
-(n,S<sub>1</sub>,S<sub>2</sub>...,S<sub>m</sub>) where n is a positive
+(n, S<sub>1</sub>, S<sub>2</sub>..., S<sub>m</sub>) where n is a positive
 integer called the iteration count, and S<sub>i</sub> is either another
 schedule loop or an actor. The schedule can be expressed as a sequence
 S<sub>1</sub>S<sub>2</sub>...S<sub>m</sub> where S<sub>i</sub> is either
@@ -87,8 +87,8 @@ Then add the schedule elements S<sub>1</sub>, S<sub>2</sub>, S<sub>3</sub>, and
 set an iteration count of 1, which is the default. S<sub>1</sub> will be an
 instance of Firing with a reference to actor A and an iteration count of 1.
 S<sub>2</sub> will be an instance of Schedule with elements
-S<sub>2,1</sub>, S<sub>2,2</sub>, and an iteration count of 3.
-S<sub>2,1</sub>, S<sub>2,2</sub> will each be an instance of Firing
+S<sub>2, 1</sub>, S<sub>2, 2</sub>, and an iteration count of 3.
+S<sub>2, 1</sub>, S<sub>2, 2</sub> will each be an instance of Firing
 with an iteration count of 1 and a reference to actors B and C,
 respectively. S<sub>3</sub> will be an instance of Firing with
 a reference to actor D and an iteration count of 2. The code to create

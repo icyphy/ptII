@@ -144,9 +144,9 @@ public abstract class ScheduleElement {
     /** Increment the version of this schedule element and if this schedule
      *  element has a parent schedule, increment the version of the parent
      *  schedule as well. This method will therefore cause a version update
-     *  to propogate up to all parent schedule elements. This method is
+     *  to propagate up to all parent schedule elements. This method is
      *  called when a structure change is made to this schedule element, and
-     *  is also called by the immidiate children of this schedule element
+     *  is also called by the immediate children of this schedule element
      *  when they are modified.
      */
     protected void _incrementVersion() {

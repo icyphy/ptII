@@ -30,8 +30,7 @@
 
 package ptolemy.actor.sched;
 
-import ptolemy.actor.*;
-import ptolemy.kernel.*;
+import ptolemy.actor.Actor;
 import ptolemy.kernel.util.*;
 
 import java.util.List;
@@ -206,7 +205,7 @@ public class Firing extends ScheduleElement {
 	}
 
 	/** Throw an exception, since removal is not allowed. It really
-	 *  dosn't make sense to remove an actor from an actor invocation
+	 *  doesn't make sense to remove an actor from an actor invocation
 	 *  sequence anyway.
 	 */
 	public void remove() {
