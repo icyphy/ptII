@@ -104,6 +104,18 @@ public class ArrayElement extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Override the base class to set type constraints.
+     *  @return A new instance of ArrayAverage.
+     */
+    public Object clone() throws CloneNotSupportedException {
+        ArrayAverage newObject = (ArrayAverage)super.clone();
+        newObject.input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+        ArrayType inputArrayType = (ArrayType)newObject.input.getType();
+        InequalityTerm elementTerm = inputArrayType.getElementTypeTerm();
+        newObject.output.setTypeAtLeast(elementTerm);
+        return newObject;
+    }
+
     /** Consume at most one array from the input port and produce
      *  one of its elements on the output port.  If there is no token
      *  on the input, then no output is produced.
