@@ -210,7 +210,7 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
         loadSource();
 
         // builds scopes for all recently loaded classes, including
-	// this one
+	    // this one
         StaticResolution.buildScopes();
 
         // If class didn't load, give it a dummy scope, etc
