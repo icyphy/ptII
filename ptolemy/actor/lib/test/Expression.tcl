@@ -72,7 +72,7 @@ test Expression-2.1 {run with default empty expression} {
     set m [$e0 getManager]
     catch {$m execute} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .top.expr:
+} {{ptolemy.kernel.util.IllegalActionException: Object name: .top.expr:
 Expression yields a null result: }}
 
 test Expression-3.1 {run with a simple expression} {

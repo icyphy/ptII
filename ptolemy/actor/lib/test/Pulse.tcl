@@ -131,8 +131,8 @@ test Pulse-3.1 {test indexes that are out of order} {
         $indexesParam getToken
     } msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .top.pulse.indexes:
-.top.pulse:
+} {{ptolemy.kernel.util.IllegalActionException: Object name: .top.pulse.indexes:
+Object name: .top.pulse:
 Value of indexes is not nondecreasing and nonnegative.}}
 
 test Pulse-3.2 {test negative indexes} {
@@ -142,8 +142,8 @@ test Pulse-3.2 {test negative indexes} {
         $indexesParam getToken
     } msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .top.pulse.indexes:
-.top.pulse:
+} {{ptolemy.kernel.util.IllegalActionException: Object name: .top.pulse.indexes:
+Object name: .top.pulse:
 Value of indexes is not nondecreasing and nonnegative.}}
 
 test Pulse-3.3 {test values and indexes of different dimensions} {
@@ -155,7 +155,7 @@ test Pulse-3.3 {test values and indexes of different dimensions} {
         [$e0 getManager] execute
     } msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .top.pulse:
+} {{ptolemy.kernel.util.IllegalActionException: Object name: .top.pulse:
 Parameters values and indexes have different lengths.}}
 
 ######################################################################

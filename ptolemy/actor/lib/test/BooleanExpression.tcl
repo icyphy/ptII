@@ -79,7 +79,7 @@ test BooleanExpression-2.1 {run with default empty BooleanExpression} {
     set m [$e0 getManager]
     catch {$m execute} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .top.expr:
+} {{ptolemy.kernel.util.IllegalActionException: Object name: .top.expr:
 Expression yields a null result: }}
 
 test BooleanExpression-3.1 {run with a simple BooleanExpression} {
