@@ -94,13 +94,68 @@ public class TypeSpecializerAnalysis {
      *  Ptolemy type.  Exclude locals in the given set from the typing algorithm.
      */
     public TypeSpecializerAnalysis(SootClass theClass, Set unsafeLocals) {
-        _class = theClass;
         _unsafeLocals = unsafeLocals;
 
         _solver = new InequalitySolver(TypeLattice.lattice());
         _objectToInequalityTerm = new HashMap();
 
-        _collectConstraints(_debug);
+        _collectConstraints(theClass, _debug);
+
+        boolean succeeded;
+        try {
+            succeeded = _solver.solveLeast();
+        } catch (RuntimeException ex) {
+            System.out.println("Type Assignment:");
+            Iterator variables = _solver.variables();
+            while (variables.hasNext()) {
+                System.out.println("InequalityTerm: "
+                        + variables.next().toString());
+            }
+            throw ex;
+        }
+        if (_debug) {
+            System.out.println("Type Assignment:");
+            Iterator variables = _solver.variables();
+            while (variables.hasNext()) {
+                System.out.println("InequalityTerm: "
+                        + variables.next().toString());
+            }
+        }
+        if(succeeded) {
+            if(_debug) System.out.println("solution FOUND!");
+        } else {
+           System.out.println("Unsatisfied Inequalities:");
+            Iterator inequalities = _solver.unsatisfiedInequalities();
+            while (inequalities.hasNext()) {
+                System.out.println("Inequality: "
+                        + inequalities.next().toString());
+            }
+            System.err.println("Unsatisfied Inequalities:");
+            inequalities = _solver.unsatisfiedInequalities();
+            while (inequalities.hasNext()) {
+                System.err.println("Inequality: "
+                        + inequalities.next().toString());
+            }
+          
+            //       throw new RuntimeException("NO Type solution found!");
+        }
+    }
+
+    /** Specialize all token types that appear in the given list of class.
+     *  Return a map from locals and fields in the class to their new specific
+     *  Ptolemy type.  Exclude locals in the given set from the typing algorithm.
+     *  @param list A list of SootClass.
+     */
+    public TypeSpecializerAnalysis(List list, Set unsafeLocals) {
+        _unsafeLocals = unsafeLocals;
+
+        _solver = new InequalitySolver(TypeLattice.lattice());
+        _objectToInequalityTerm = new HashMap();
+
+        for(Iterator classes = list.iterator(); classes.hasNext();) {
+            SootClass theClass = (SootClass)classes.next();
+            _collectConstraints(theClass, _debug);
+        }
 
         boolean succeeded;
         try {
@@ -175,7 +230,7 @@ public class TypeSpecializerAnalysis {
      */
     public void inlineTypeLatticeMethods(SootMethod method,
             Unit unit, ValueBox box, StaticInvokeExpr expr,
-            LocalDefs localDefs) {
+            LocalDefs localDefs, LocalUses localUses) {
         SootMethod tokenTokenCompareMethod =
             PtolemyUtilities.typeLatticeClass.getMethod(
                     "int compare(ptolemy.data.Token,ptolemy.data.Token)");
@@ -200,21 +255,21 @@ public class TypeSpecializerAnalysis {
             Local typeLocal = (Local)expr.getArg(0);
             Local tokenLocal = (Local)expr.getArg(1);
             type1 = PtolemyUtilities.getTypeValue(
-                    method, typeLocal, unit, localDefs);
+                    method, typeLocal, unit, localDefs, localUses);
             type2 = getSpecializedType(tokenLocal);
         } else if (expr.getMethod().equals(tokenTypeCompareMethod)) {
             Local tokenLocal = (Local)expr.getArg(0);
             Local typeLocal = (Local)expr.getArg(1);
             type1 = getSpecializedType(tokenLocal);
             type2 = PtolemyUtilities.getTypeValue(
-                    method, typeLocal, unit, localDefs);
+                    method, typeLocal, unit, localDefs, localUses);
         } else if (expr.getMethod().equals(typeTypeCompareMethod)) {
             Local typeLocal1 = (Local)expr.getArg(0);
             Local typeLocal2 = (Local)expr.getArg(1);
             type1 = PtolemyUtilities.getTypeValue(
-                    method, typeLocal1, unit, localDefs);
+                    method, typeLocal1, unit, localDefs, localUses);
             type2 = PtolemyUtilities.getTypeValue(
-                    method, typeLocal2, unit, localDefs);
+                    method, typeLocal2, unit, localDefs, localUses);
         } else {
             throw new RuntimeException(
                     "attempt to inline unhandled typeLattice method: " + unit);
@@ -222,10 +277,10 @@ public class TypeSpecializerAnalysis {
         box.setValue(IntConstant.v(TypeLattice.compare(type1, type2)));
     }
 
-    private void _collectConstraints(boolean debug) {
-        if (debug) System.out.println("collecting constraints for " + _class);
+    private void _collectConstraints(SootClass entityClass, boolean debug) {
+        if (debug) System.out.println("collecting constraints for " + entityClass);
         // Loop through all the fields.
-        for (Iterator fields = _class.getFields().iterator();
+        for (Iterator fields = entityClass.getFields().iterator();
              fields.hasNext();) {
             SootField field = (SootField)fields.next();
             // Ignore things that aren't reference types.
@@ -262,7 +317,7 @@ public class TypeSpecializerAnalysis {
         }
 
         // Loop through all the methods.
-        for (Iterator methods = _class.getMethods().iterator();
+        for (Iterator methods = entityClass.getMethods().iterator();
              methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
             Body body = method.retrieveActiveBody();
@@ -330,7 +385,6 @@ public class TypeSpecializerAnalysis {
                 }
             }
         }
-
     }
   
     // Given an object (which must be either a local, or a field) of
@@ -645,7 +699,7 @@ public class TypeSpecializerAnalysis {
             NewArrayExpr newExpr = (NewArrayExpr)value;
             Type type = newExpr.getBaseType();
             RefType tokenType = PtolemyUtilities.getBaseTokenType(type);
-            if (tokenType != null) {
+            if (tokenType != null && objectToInequalityTerm.get(newExpr) == null) {
                 InequalityTerm typeTerm = new VariableTerm(
                         PtolemyUtilities.getTokenTypeForSootType(tokenType),
                         newExpr);
@@ -697,14 +751,13 @@ public class TypeSpecializerAnalysis {
     private static void _createInequalityTerm(boolean debug, Object object, Type type,
             Map objectToInequalityTerm) {
         RefType tokenType = PtolemyUtilities.getBaseTokenType(type);
-        if (tokenType != null) {
+        if (tokenType != null && objectToInequalityTerm.get(object) == null) {
             if (debug) System.out.println("creating inequality term for " + object);
             if (debug) System.out.println("type " + type);
 
-            InequalityTerm term =
-                new VariableTerm(
-                        PtolemyUtilities.getTokenTypeForSootType(tokenType),
-                        object);
+            InequalityTerm term = new VariableTerm(
+                    PtolemyUtilities.getTokenTypeForSootType(tokenType),
+                    object);
             objectToInequalityTerm.put(object, term);
         }
     }
@@ -824,7 +877,6 @@ public class TypeSpecializerAnalysis {
     private InequalitySolver _solver;
     private Map _objectToInequalityTerm;
     private Set _unsafeLocals;
-    private SootClass _class;
     private boolean _debug = false;
 }
 

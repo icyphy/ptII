@@ -106,7 +106,7 @@ public class InstanceEqualityEliminator extends SceneTransformer
     }
 
 
-    public void removeInstanceEqualities(JimpleBody body,
+    public static void removeInstanceEqualities(JimpleBody body,
             InvokeGraph invokeGraph, boolean debug) {
         CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
 

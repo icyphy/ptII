@@ -171,13 +171,11 @@ public class TypeSpecializer extends SceneTransformer {
                         if (debug) System.out.println("newArrayExpr = " + newArrayExpr);
                         
                         Type baseType = newArrayExpr.getBaseType();
-                        if (baseType instanceof RefType) {
-                            RefType refType = (RefType) baseType;
-                            if(SootUtilities.derivesFrom(refType.getSootClass(),
-                                       PtolemyUtilities.tokenClass)) {
-                                RefType type = (RefType)typeAnalysis.getSpecializedSootType(newArrayExpr);
-                                box.setValue(Jimple.v().newNewArrayExpr(type, newArrayExpr.getSize()));
-                            }
+                        Type newType = 
+                            typeAnalysis.getSpecializedSootType(newArrayExpr);
+                        if (newType != null && !newType.equals(baseType)) {
+                            if(debug) System.out.println("replacing with " + newType);
+                            box.setValue(Jimple.v().newNewArrayExpr(newType, newArrayExpr.getSize()));
                         }
                     }
                 }
@@ -191,6 +189,7 @@ public class TypeSpecializer extends SceneTransformer {
                 if (!(assignStmt.getLeftOp() instanceof FieldRef)) {
                     continue;
                 }
+                if(debug) System.out.println("checking assignment to field " + assignStmt);
                 FieldRef ref = (FieldRef)((AssignStmt)assignStmt).getLeftOp();
                 SootField field = ref.getField();
                 Type type = field.getType();
@@ -199,6 +198,7 @@ public class TypeSpecializer extends SceneTransformer {
                 Type newType = 
                     typeAnalysis.getSpecializedSootType(field);
                 if (newType != null && !newType.equals(type)) {
+                    if(debug) System.out.println("inserting cast");
                     Local tempLocal = 
                         Jimple.v().newLocal("fieldUpdateLocal", newType);
                     body.getLocals().add(tempLocal);
@@ -229,6 +229,7 @@ public class TypeSpecializer extends SceneTransformer {
                 Type replacementType =
                     SootUtilities.createIsomorphicType(field.getType(),
                             type);
+                if(debug) System.out.println("replacing with " + type);
                 field.setType(type);
                 map.put(field, typeAnalysis.getSpecializedType(field));
             }

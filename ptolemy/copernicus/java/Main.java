@@ -363,7 +363,8 @@ public class Main extends KernelMain {
                 new Transform("wjtp.finalSnapshot",
                         JimpleWriter.v()));
 
-        //        _addStandardOptimizations(Scene.v().getPack("wjtp"));
+        _addStandardOptimizations(Scene.v().getPack("wjtp"));
+        _addStandardOptimizations(Scene.v().getPack("wjtp"));
 
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.watchDogCancel",
@@ -396,6 +397,7 @@ public class Main extends KernelMain {
 	    System.err.println("Code generation of '" + args[0]
                     + "' failed:");
             ex.printStackTrace(System.err);
+            System.err.flush();
 	    System.exit(2);
         }
     }

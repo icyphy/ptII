@@ -37,6 +37,7 @@ import soot.toolkits.scalar.ForwardFlowAnalysis;
 import soot.toolkits.scalar.LocalDefs;
 import soot.toolkits.scalar.SimpleLocalDefs;
 import soot.toolkits.scalar.SimpleLocalUses;
+import soot.toolkits.scalar.LocalUses;
 
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
@@ -111,7 +112,7 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
      */
     public void inlineTypeLatticeMethods(SootMethod method,
             Unit unit, ValueBox box, StaticInvokeExpr expr,
-            LocalDefs localDefs) {
+            LocalDefs localDefs, LocalUses localUses) {
         SootMethod tokenTokenCompareMethod =
             PtolemyUtilities.typeLatticeClass.getMethod(
                     "int compare(ptolemy.data.Token,ptolemy.data.Token)");
@@ -136,21 +137,21 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
             Local typeLocal = (Local)expr.getArg(0);
             Local tokenLocal = (Local)expr.getArg(1);
             type1 = PtolemyUtilities.getTypeValue(
-                    method, typeLocal, unit, localDefs);
+                    method, typeLocal, unit, localDefs, localUses);
             type2 = getTypeOfBefore(tokenLocal, unit);
         } else if (expr.getMethod().equals(tokenTypeCompareMethod)) {
             Local tokenLocal = (Local)expr.getArg(0);
             Local typeLocal = (Local)expr.getArg(1);
             type1 = getTypeOfBefore(tokenLocal, unit);
             type2 = PtolemyUtilities.getTypeValue(
-                    method, typeLocal, unit, localDefs);
+                    method, typeLocal, unit, localDefs, localUses);
         } else if (expr.getMethod().equals(typeTypeCompareMethod)) {
             Local typeLocal1 = (Local)expr.getArg(0);
             Local typeLocal2 = (Local)expr.getArg(1);
             type1 = PtolemyUtilities.getTypeValue(
-                    method, typeLocal1, unit, localDefs);
+                    method, typeLocal1, unit, localDefs, localUses);
             type2 = PtolemyUtilities.getTypeValue(
-                    method, typeLocal2, unit, localDefs);
+                    method, typeLocal2, unit, localDefs, localUses);
         } else {
             throw new RuntimeException(
                     "attempt to inline unhandled typeLattice method: " + unit);

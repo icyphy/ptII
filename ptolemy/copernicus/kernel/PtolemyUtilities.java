@@ -578,6 +578,10 @@ public class PtolemyUtilities {
             return ptolemy.data.type.BaseType.UNKNOWN;
         } else if (className.equals("ptolemy.data.ScalarToken")) {
             return ptolemy.data.type.BaseType.UNKNOWN;
+        } else if (className.equals("ptolemy.data.AbstractNotConvertibleToken")) {
+            return ptolemy.data.type.BaseType.UNKNOWN;
+        } else if (className.equals("ptolemy.data.AbstractConvertibleToken")) {
+            return ptolemy.data.type.BaseType.UNKNOWN;
         } else if (className.equals("ptolemy.data.MatrixToken")) {
             return ptolemy.data.type.BaseType.UNKNOWN;
         } else {
@@ -598,17 +602,18 @@ public class PtolemyUtilities {
      *  otherwise throw an exception
      */
     public static ptolemy.data.type.Type getTypeValue(SootMethod method,
-            Local local, Unit location, LocalDefs localDefs) {
+            Local local, Unit location, LocalDefs localDefs, 
+            LocalUses localUses) {
         List definitionList = localDefs.getDefsOfAt(local, location);
         if (definitionList.size() == 1) {
             DefinitionStmt stmt = (DefinitionStmt)definitionList.get(0);
             Value value = (Value)stmt.getRightOp();
             if (value instanceof Local) {
                 return getTypeValue(method, (Local)value,
-                        stmt, localDefs);
+                        stmt, localDefs, localUses);
             } else if (value instanceof CastExpr) {
                 return getTypeValue(method, (Local)((CastExpr)value).getOp(),
-                        stmt, localDefs);
+                        stmt, localDefs, localUses);
             } else if (value instanceof FieldRef) {
                 SootField field = ((FieldRef)value).getField();
                 if (field.equals(unknownTypeField)) {
@@ -646,6 +651,30 @@ public class PtolemyUtilities {
                 } else {
                     throw new RuntimeException("Unknown type field: " + field);
                 }
+            } else if (value instanceof NewExpr) {
+                // If we get to an object creation, then try
+                // to figure out where the object is initialized
+                Iterator pairs = localUses.getUsesOf(stmt).iterator();
+                while (pairs.hasNext()) {
+                    UnitValueBoxPair pair = (UnitValueBoxPair)pairs.next();
+                    if (pair.getUnit() instanceof InvokeStmt) {
+                        InvokeStmt useStmt = (InvokeStmt)pair.getUnit();
+                        if(useStmt.getInvokeExpr() instanceof SpecialInvokeExpr) {
+                            SpecialInvokeExpr constructorExpr = (SpecialInvokeExpr) useStmt.getInvokeExpr();
+                            if(constructorExpr.getMethod().getSignature().equals(
+                                       "<ptolemy.data.type.ArrayType: void <init>(ptolemy.data.type.Type)>")) {
+                                Local arg1Local = (Local)constructorExpr.getArg(0);
+                                ptolemy.data.type.Type elementType = 
+                                    getTypeValue(method, arg1Local,
+                                            useStmt, localDefs, localUses);
+                                return new ptolemy.data.type.ArrayType(elementType);
+                            } else {
+                                throw new RuntimeException("ArrayType(unknown): " + stmt);
+                            }
+                        }
+                    }
+                }
+                throw new RuntimeException("unknown constructor");
             } else if (value instanceof NullConstant) {
                 // If we get to an assignment from null, then the
                 // attribute statically evaluates to null.
