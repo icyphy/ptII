@@ -236,14 +236,13 @@ public class DTReceiver extends SDFReceiver implements Receiver {
 
         Actor actor = (Actor) super.getContainer().getContainer();
         IOPort currentPort = (IOPort) super.getContainer();
-        DTDirector director = (DTDirector) ((Actor) actor).getDirector();
+        Director director =  ((Actor) actor).getDirector();
 
         // FIXME: need to consider different cases for
         // TypedComposositeActor ports
-        try {
-            director.setActorLocalTime(_localTime, actor);
-        } catch (Exception e) {
-            // FIXME: process exception
+        if (director instanceof DTDirector ) {
+            DTDirector dtDirector = (DTDirector) director;
+            dtDirector.setActorLocalTime(_localTime, actor);
         }
 
         String sourceName = ((Nameable) _to).getName();
