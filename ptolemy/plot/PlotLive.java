@@ -25,16 +25,17 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 PT_COPYRIGHT_VERSION_2
                                                 COPYRIGHTENDKEY
 */
-package ptolemy.plot;
+package pt.plot;
 
 import java.awt.*;
+import java.awt.event.*;
 import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotLive
 /**
  * Plot signals dynamically, where points can be added at any time
- * and the the display will be updated.  This should be normally used
+ * and the display will be updated.  This should be normally used
  * with some finite persistence so that old points are erased as new
  * points are added.  Unfortunately, the most efficient way to erase
  * old points is to draw graphics using the "exclusive or" mode, which
@@ -44,152 +45,175 @@ import java.util.*;
  * disappear.
  * <p>
  * This class is abstract, so it must be used by creating a derived
- * class.  To use it, create a derived class with <code>init()</code>
- * and <code>addPoints()</code> methods. The <code>init()</code>
- * method can call methods in the <code>Plot</code> or
- * <code>PlotBox</code> classes (both of which are base classes) to
- * set the static properties of the graph, such as the title, axis
- * ranges, and axis labels.  The <code>addPoints()</code> method
- * should call <code>addPoint()</code> of the <code>Plot</code> base
+ * class.  To use it, create a derived class with an
+ * addPoints() method. Your class may also set graph parameters like
+ * titles and axis labels in the constructor by calling
+ * methods in the Plot or PlotBox classes (both of which are base classes).
+ * The addPoints() method should call addPoint() of the Plot base
  * class to dynamically add points to the plot.  This method is called
- * within a thread separate from the applet thread.
- * <p>
- * The <code>init()</code> method <i>must</i> call
- * <code>super.init()</code> somewhere in its body; along with general
- * initialization, this reads a file given by a URL if the dataurl
- * applet parameter is specified.  Thus, the initial configuration can
- * be specified in a separate file rather than in Java code.
+ * within a thread separate from the applet thread, so the zooming
+ * mechanism and buttons remain live.
  *
  * @author Edward A. Lee, Christopher Hylands
  * @version $Id$
  */
 public abstract class PlotLive extends Plot implements Runnable {
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    //////////////////////////////////////////////////////////////////////////
+    ////                         public methods                           ////
 
-    /**
-     * Handle button presses to enable or disable plotting.
-     * @deprecated As of JDK1.1 in java.awt.component
-     * but we need to compile under 1.0.2 for netscape3.x compatibility.
+    /** Redefine in derived classes to add points to the plot.
+     *  Adding many points at once will make the plot somewhat faster
+     *  because the thread yields between calls to this method.
+     *  However, the plot will also be somewhat less responsive to user
+     *  inputs such as zooming, filling, or stopping.  In the derived-class
+     *  implementation, this method should probably be synchronized.
      */
-    public boolean action (Event evt, Object arg) {
-        if (evt.target == _startButton) {
-            _plotting = true;
-            return true;
-        } else if (evt.target == _stopButton) {
-            _plotting = false;
-            return true;
-        } else {
-            return super.action (evt, arg); // action() is deprecated in 1.1
-            // but we need to compile under
-            // jdk1.0.2 for netscape3.x
+    public abstract void addPoints();
+
+    /** Make start and stop buttons.
+     *  This method is deprecated.  Use setButtons() instead.
+     *  @deprecated
+     */
+    public void makeButtons() {
+        if (_startButton == null) {
+            _startButton = new Button("start");
+            _startButton.addActionListener(new StartButtonListener());
+            add(_startButton);
         }
+        _startButton.setVisible(true);
+
+        if (_stopButton == null) {
+            _stopButton = new Button("stop");
+            _stopButton.addActionListener(new StopButtonListener());
+            add(_stopButton);
+        }
+        _stopButton.setVisible(true);
+        _stopButton.setEnabled(false);
+        _startButton.setEnabled(true);
     }
 
-    /**
-     * Redefine in derived classes to add points to the plot.
-     * Adding many points at once will make the plot somewhat faster
-     * because the thread yields between calls to this method.
-     * However, the plot will also be somewhat less responsive to user
-     * inputs such as zooming, filling, or stopping.
+    /** Pause the plot.  To resume, call start().
      */
-    public synchronized /*abstract*/ void addPoints() {
-        // JDK1.2bet2 does not allow us to have a synchronized abstract
-        // see Java Language Specification 8.4.3 Method Modifiers
-        // http://java.sun.com/docs/books/jls/html/8.doc.html#78188
+    public void pause() {
+        _paused = true;
+        _plotting = false;
+        _stopButton.setEnabled(false);
+        _startButton.setEnabled(true);
     }
 
-    /**
-     * Create a start and stop buttons, by which the user can invoke
-     * <code>enable()</code> and <code>disable</code>.  Alternatively,
-     * a derived class might invoke these directly and dispense with
-     * the buttons.  This should be called within the
-     * <code>init()</code> method in derived classes.
-     */
-    public void makeButtons () {
-        if (_debug >8 ) System.out.println("PlotLive: makeButtons");
-        // So that the buttons appear at the upper right...
-        // Note that this infringes on the title space... maybe not good.
-        _startButton = new Button("start");
-        add(_startButton);
-        _stopButton = new Button("stop");
-        add(_stopButton);
-    }
-
-    /**
-     * This is the body of a thread that monitors which of the start
-     * or stop buttons have been pushed most recently, or which of the
-     * <code>enable()</code> or <code>disable()</code> methods has
-     * been called most recently, to determine whether to patiently
-     * wait or to call the <code>addPoints()</code> method.  Between
-     * calls to <code>addPoints()</code>, it calls
-     * <code>Thread.yield()</code> so that the thread does not hog all
-     * the resources.  This somewhat slows down execution, so derived
-     * classes may wish to plot quite a few points in their
-     * <code>addPoints()</code> method, if possible.  However,
-     * plotting more points at once may also decrease the
-     * responsiveness of the user interface.
+    /** This is the body of a thread that repeatedly calls addPoints()
+     *  if the plot is active.  To make the plot active, call start().
+     *  To pause the plot, call pause().  To stop the plot and destroy
+     *  the thread, call stop().  The next time start() is called, a new
+     *  thread will be started. Between calls to addPoints(), this method calls
+     *  Thread.yield() so that the thread does not hog all
+     *  the resources.  This somewhat slows down execution, so derived
+     *  classes may wish to plot quite a few points in their
+     *  addPoints() method, if possible.  However,
+     *  plotting more points at once may also decrease the
+     *  responsiveness of the user interface.
      */
     public void run() {
-        if (_debug >8 ) System.out.println("PlotLive: run");
-        while (Thread.currentThread() == _plotLiveThread) {
+        while (_plotting || _paused) {
             if (_plotting) {
                 addPoints();
                 Thread.yield();
-            } else {
-                try {
-                    // NOTE: Using wait here with notifyAll in the action
-                    // method leads to inexplicable deadlocks.
-                    // So we just sleep.
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {}
+            } else if (_paused) {
+                // NOTE: Cannot synchronize this entire method because then
+                // the Thread.yield() call above does not yield to any
+                // synchronized methods (like _drawPlot()).
+                synchronized(this) {
+                    try {
+                        wait();
+                    } catch (InterruptedException e) {}
+                }
             }
         }
     }
 
-    /**
-     * If plotting is set to true, then we plot.
+    /** If the argument is true, make a start, stop, and fill button 
+     *  visible at the upper right.  Otherwise, make the buttons invisible.
+     *  NOTE: The buttons may infringe on the title space,
+     *  if the title is long.  In an application, it is preferable to provide
+     *  a menu with the commands.  This way, when printing the plot,
+     *  the printed plot will not have spurious buttons.  Thus, this method
+     *  should be used only by applets, which normally do not have menus.
      */
-    public void setPlotting( boolean plotting) {
-        _plotting = plotting;
+    public void setButtons (boolean visible) {
+        super.setButtons(visible);
+
+        if (_startButton == null) {
+            _startButton = new Button("start");
+            _startButton.addActionListener(new StartButtonListener());
+            add(_startButton);
+        }
+        _startButton.setVisible(visible);
+
+        if (_stopButton == null) {
+            _stopButton = new Button("stop");
+            _stopButton.addActionListener(new StopButtonListener());
+            add(_stopButton);
+        }
+        _stopButton.setVisible(visible);
+
+        if (visible) {
+            _stopButton.setEnabled(false);
+            _startButton.setEnabled(true);
+        }
     }
 
-    /**
-     * Start the widget. It creates a thread to plot live data, if
-     * this has not been already done.  However, we don't actually
-     * start plotting until either the start button is called, or
-     * setPlotting(true) is called.
+    /** Make the plot active.  Start a new thread if necessary.
      */
-    public void start() {
-        if (_debug >8 ) System.out.println("PlotLive: start");
+    public synchronized void start() {
+        _plotting = true;
+        _paused = false;
+        _stopButton.setEnabled(true);
+        _startButton.setEnabled(false);
         if (_plotLiveThread == null) {
             _plotLiveThread = new Thread(this, "PlotLive Thread");
             _plotLiveThread.start();
+        } else {
+            synchronized(this) {
+                notifyAll();
+            }
         }
     }
 
-    /**
-     * Stop the widget.
+    /** Stop the plot.  The plot thread exits.  This should be called by
+     *  an applet's stop() method.
      */
     public void stop() {
-        if (_debug >8 ) System.out.println("PlotLive: stop");
-        if (_plotLiveThread != null) {
-            // Don't stop the thread, just set it to null.
-            //_plotLiveThread.stop();
-            _plotLiveThread = null;
-        }
+        _plotting = false;
+        _paused = false;
+        _plotLiveThread = null;
     }
 
+    //////////////////////////////////////////////////////////////////////////
+    ////                       private variables                          ////
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    private Thread _plotLiveThread = null;
 
-    private Thread _plotLiveThread;
-
-    // True if we are actually plotting
+    // True if we are actually plotting.
     private boolean _plotting = false;
+    // True if we are paused.
+    private boolean _paused = false;
 
     private Button _startButton, _stopButton;
 
+    //////////////////////////////////////////////////////////////////////////
+    ////                         inner classes                            ////
+
+    class StartButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent event) {
+            start();
+        }
+    }
+
+    // Despite the name, the stop button calls pause.
+    class StopButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent event) {
+            pause();
+        }
+    }
 }

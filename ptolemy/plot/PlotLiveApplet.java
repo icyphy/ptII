@@ -2,9 +2,7 @@
 
 @Author: Edward A. Lee and Christopher Hylands
 
-@Version: $Id$
-
-@Copyright (c) 1997 The Regents of the University of California.
+@Copyright (c) 1997- The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -29,91 +27,41 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 PT_COPYRIGHT_VERSION_2
                                                 COPYRIGHTENDKEY
 */
-package ptplot;
+package pt.plot;
 
 import java.applet.Applet;
 import java.awt.*;
-import java.net.*;              // Need URL
 
 //////////////////////////////////////////////////////////////////////////
-//// PlotLiveDemoApplet
-/** 
+//// PlotLiveApplet
+
+/** An Applet for the PlotLive class.  Derived classes should redefine
+ *  newPlot() to return a concrete instance of PlotLive.
+ *
+ *  @author Edward A. Lee, Christopher Hylands
+ *  @version $Id$
  */
-public class PlotLiveDemoApplet extends Applet implements Runnable {
+public class PlotLiveApplet extends PlotApplet {
 
-    public void init() {
-        if (_debug > 8) System.out.println("PlotLiveDemoApplet: init");
-        int width,height;
-        setLayout(new BorderLayout());
-
-        _myPlotLiveDemo = new PlotLiveDemo();
-        add("Center",_myPlotLiveDemo);
-        //        show();
-
-        _myPlotLiveDemo.resize(300,300);
-        _myPlotLiveDemo.init();
-        super.init();
-    }
-
-    /**
-     * Return a string describing this applet.
+    /** Return a string describing this applet.
+     *  @return A description of the applet.
      */
     public String getAppletInfo() {
-        return "PlotLiveDemoApplet 1.1: Demo of PlotLive.\n" +
+        return "PlotLiveApplet 1.2: Demo of PlotLive.\n" +
             "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
             "    Christopher Hylands, @eecs.berkeley.edu\n" +
             "($Id$)";
     }
 
-    /** 
+    /** Start the plot thread.
      */
-    public void paint(Graphics graphics) {
-        if (_debug > 8) System.out.println("PlotLiveDemoApplet: paint");
-        _myPlotLiveDemo.paint(graphics);
+    public void start() {
+        ((PlotLive)plot()).start();
     }
 
-    public void resize(int width, int height) {
-        if (_debug > 8)
-            System.out.println("PlotLiveDemoApplet: resize"+width+" "+height);
-        super.resize(width,height);
+    /** Stop the plot thread.
+     */
+    public void stop() {
+        ((PlotLive)plot()).stop();
     }
-    public void run () {
-        if (_debug > 8) System.out.println("PlotLiveDemoApplet: run");
-// 	while (true) {
-// 	    try {
-// 		Thread.currentThread().sleep(speed);
-// 	    } catch (InterruptedException e) {
-// 	    }
-        if (_debug > 10) System.out.println("PlotLiveDemoApplet: run calling repaint");
-	repaint();
-    }
-
-    public void start () {
-        if (_debug > 8) System.out.println("PlotLiveDemoApplet: start");
-	_plotThread = new Thread(this);
-        _plotThread.start();
-        _myPlotLiveDemo.start();
-        super.start();
-    }
-
-    public void stop () {
-        if (_debug > 8) System.out.println("PlotLiveDemoApplet: stop");
-        _plotThread.stop();
-        super.stop();
-    }
-
-//     public void update (Graphics graphics) {
-//         if (_debug > 8) System.out.println("PlotLiveDemoApplet: update");
-//         paint(graphics);
-//         super.update(graphics);
-//     }
-
-    protected int _debug = 0;
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
-
-    private PlotLiveDemo _myPlotLiveDemo;
-    private Thread _plotThread;
-
 }
-
