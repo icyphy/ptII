@@ -51,7 +51,7 @@ import java.util.LinkedList;
 import java.util.Iterator;
 import java.util.Enumeration;
 
-//This need to use the Schdule class.
+//This need to use the Schedule class.
 
 //////////////////////////////////////////////////////////////////////////
 //// CTScheduler
@@ -136,7 +136,7 @@ public class CTScheduler extends Scheduler{
     /** Construct a CT scheduler in the default workspace
      *  with the default name "CTScheduler". There is no director
      *  containing this scheduler. To attach this schduler to a
-     *  CTDirector, call setSchduler() on the CTDirector.
+     *  CTDirector, call setScheduler() on the CTDirector.
      */
     public CTScheduler() {
         this(null);
@@ -145,7 +145,7 @@ public class CTScheduler extends Scheduler{
     /** Construct a CT scheduler in the given workspace
      *  with the name "CTScheduler". There is no director
      *  containing this scheduler. To attach this schduler to a
-     *  CTDirector, call setSchduler() on the CTDirector.
+     *  CTDirector, call setScheduler() on the CTDirector.
      *
      *  @param workspace The workspace.
      */
@@ -172,11 +172,11 @@ public class CTScheduler extends Scheduler{
     public List arithmaticActorList() {
         try {
             workspace().getReadAccess();
-            if(_wsversion != workspace().getVersion()) {
+            if(_workspaceVersion != workspace().getVersion()) {
                 _classifyActors();
-                _wsversion = workspace().getVersion();
+                _workspaceVersion = workspace().getVersion();
             }
-            return _arith;
+            return _arithmetic;
         } finally {
             workspace().doneReading();
         }
@@ -200,7 +200,7 @@ public class CTScheduler extends Scheduler{
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         CTScheduler newObject = (CTScheduler) super.clone(workspace);
-        newObject._wsversion = -1;
+        newObject._workspaceVersion = -1;
         return newObject;
     }
 
@@ -215,11 +215,11 @@ public class CTScheduler extends Scheduler{
     public List dynamicActorList() {
         try {
 	    workspace().getReadAccess();
-            if(_wsversion != workspace().getVersion()) {
+            if(_workspaceVersion != workspace().getVersion()) {
                 _classifyActors();
-                _wsversion = workspace().getVersion();
+                _workspaceVersion = workspace().getVersion();
             }
-            return _dynam;
+            return _dynamic;
         } finally {
             workspace().doneReading();
         }
@@ -256,11 +256,11 @@ public class CTScheduler extends Scheduler{
     public List eventGeneratorList() {
         try {
 	    workspace().getReadAccess();
-            if(_wsversion != workspace().getVersion()) {
+            if(_workspaceVersion != workspace().getVersion()) {
                 _classifyActors();
-                _wsversion = workspace().getVersion();
+                _workspaceVersion = workspace().getVersion();
             }
-            return _evgen;
+            return _eventGenerators;
         } finally {
             workspace().doneReading();
         }
@@ -313,8 +313,8 @@ public class CTScheduler extends Scheduler{
             if(!isValid()) {
                 schedule();
             }
-            _wsversion = workspace().getVersion();
-            return _outputssc;
+            _workspaceVersion = workspace().getVersion();
+            return _outputSSC;
         } finally {
             workspace().doneReading();
         }
@@ -357,8 +357,8 @@ public class CTScheduler extends Scheduler{
             if(!isValid()) {
                 schedule();
             }
-            _wsversion = workspace().getVersion();
-            return _stateschedule;
+            _workspaceVersion = workspace().getVersion();
+            return _stateSchedule;
         } finally {
             workspace().doneReading();
         }
@@ -389,8 +389,8 @@ public class CTScheduler extends Scheduler{
             if(!isValid()) {
                 schedule();
             }
-            _wsversion = workspace().getVersion();
-            return _outputschedule;
+            _workspaceVersion = workspace().getVersion();
+            return _outputSchedule;
         } finally {
             workspace().doneReading();
         }
@@ -415,7 +415,7 @@ public class CTScheduler extends Scheduler{
             if(!isValid()) {
                 schedule();
             }
-            return _transitionschedule;
+            return _transitionSchedule;
         } finally {
             workspace().doneReading();
         }
@@ -433,9 +433,9 @@ public class CTScheduler extends Scheduler{
     public List sinkActorList() {
         try {
 	    workspace().getReadAccess();
-            if(_wsversion != workspace().getVersion()) {
+            if(_workspaceVersion != workspace().getVersion()) {
                 _classifyActors();
-                _wsversion = workspace().getVersion();
+                _workspaceVersion = workspace().getVersion();
             }
             return _sink;
         } finally {
@@ -464,9 +464,9 @@ public class CTScheduler extends Scheduler{
     public List statefulActorList() {
         try {
 	    workspace().getReadAccess();
-            if(_wsversion != workspace().getVersion()) {
+            if(_workspaceVersion != workspace().getVersion()) {
                 _classifyActors();
-                _wsversion = workspace().getVersion();
+                _workspaceVersion = workspace().getVersion();
             }
             return _stateful;
         } finally {
@@ -503,8 +503,8 @@ public class CTScheduler extends Scheduler{
             if(!isValid()) {
                 schedule();
             }
-            _wsversion = workspace().getVersion();
-            return _statessc;
+            _workspaceVersion = workspace().getVersion();
+            return _stateSSC;
         } finally {
             workspace().doneReading();
         }
@@ -539,84 +539,84 @@ public class CTScheduler extends Scheduler{
      */
     public String toString() {
         String res = new String();
-        Iterator iter;
+        Iterator iterator;
         res += "CTSchedule {\n";
         res += "    arithmaticActors {\n";
-        iter = arithmaticActorList().iterator();
+        iterator = arithmaticActorList().iterator();
         try {
-            while(iter.hasNext()) {
+            while(iterator.hasNext()) {
                 res += "\t" +
-                    ((NamedObj)iter.next()).getFullName() + "\n";
+                    ((NamedObj)iterator.next()).getFullName() + "\n";
             }
             res += "    }\n";
             res += "    dynamicActors {\n";
-            iter = dynamicActorList().iterator();
-            while(iter.hasNext()) {
+            iterator = dynamicActorList().iterator();
+            while(iterator.hasNext()) {
                 res += "\t" +
-                    ((NamedObj)iter.next()).getFullName() + "\n";
+                    ((NamedObj)iterator.next()).getFullName() + "\n";
             }
             res += "    }\n";
             res += "    stateTransitionSSCActors {\n";
-            iter = stateTransitionSSCActorList().iterator();
-            while(iter.hasNext()) {
+            iterator = stateTransitionSSCActorList().iterator();
+            while(iterator.hasNext()) {
                 res += "\t" +
-                    ((NamedObj)iter.next()).getFullName() + "\n";
+                    ((NamedObj)iterator.next()).getFullName() + "\n";
             }
             res += "    }\n";
             res += "    outputSSCActors {\n";
-            iter = outputSSCActorList().iterator();
-            while(iter.hasNext()) {
+            iterator = outputSSCActorList().iterator();
+            while(iterator.hasNext()) {
                 res += "\t" +
-                    ((NamedObj)iter.next()).getFullName() + "\n";
+                    ((NamedObj)iterator.next()).getFullName() + "\n";
             }
             res += "    }\n";
             res += "    eventGenerators {\n";
-            iter = eventGeneratorList().iterator();
-            while(iter.hasNext()) {
+            iterator = eventGeneratorList().iterator();
+            while(iterator.hasNext()) {
                 res += "\t" +
-                    ((NamedObj)iter.next()).getFullName() + "\n";
+                    ((NamedObj)iterator.next()).getFullName() + "\n";
             }
             res += "    }\n";
             res += "    eventInterpreters {\n";
-            iter = waveformGeneratorList().iterator();
-            while(iter.hasNext()) {
+            iterator = waveformGeneratorList().iterator();
+            while(iterator.hasNext()) {
                 res += "\t" +
-                    ((NamedObj)iter.next()).getFullName() + "\n";
+                    ((NamedObj)iterator.next()).getFullName() + "\n";
             }
             res += "    }\n";
             res += "    statefulActors {\n";
-            iter = statefulActorList().iterator();
-            while(iter.hasNext()) {
+            iterator = statefulActorList().iterator();
+            while(iterator.hasNext()) {
                 res += "\t" +
-                    ((NamedObj)iter.next()).getFullName() + "\n";
+                    ((NamedObj)iterator.next()).getFullName() + "\n";
             }
             res += "    }\n";
             res += "    sinkActors {\n";
-            iter = sinkActorList().iterator();
-            while(iter.hasNext()) {
+            iterator = sinkActorList().iterator();
+            while(iterator.hasNext()) {
                 res += "\t" +
-                    ((NamedObj)iter.next()).getFullName() + "\n";
+                    ((NamedObj)iterator.next()).getFullName() + "\n";
             }
             res += "    }\n";
             res += "    dynamicActorSchedule {\n";
-            iter = scheduledDynamicActorList().iterator();
-            while(iter.hasNext()) {
+            iterator = scheduledDynamicActorList().iterator();
+            while(iterator.hasNext()) {
                 res += "\t" +
-                    ((NamedObj)iter.next()).getFullName() + "\n";
+                    ((NamedObj)iterator.next()).getFullName() + "\n";
             }
             res += "    }\n";
             res += "    stateTransitionSchedule {\n";
-            iter = scheduledStateTransitionActorList().iterator();
-            while(iter.hasNext()) {
+            iterator = scheduledStateTransitionActorList().iterator();
+            while(iterator.hasNext()) {
                 res += "\t" +
-                    ((NamedObj)iter.next()).getFullName() + "\n";
+                    ((NamedObj)iterator.next()).getFullName() + "\n";
             }
             res += "    }\n";
             res += "    outputSchedule {\n";
-            iter = scheduledOutputActorList().iterator();
-            while(iter.hasNext()) {
+            iterator = scheduledOutputActorList().iterator();
+            while(iterator.hasNext()) {
                 res += "\t" +
-                    ((NamedObj)iter.next()).getFullName() + "\n";
+                    ((NamedObj)iterator.next()).getFullName() + "\n";
             }
             res += "    }\n";
             res += "}\n";
@@ -639,11 +639,11 @@ public class CTScheduler extends Scheduler{
     public List waveformGeneratorList() {
         try {
 	    workspace().getReadAccess();
-            if(_wsversion != workspace().getVersion()) {
+            if(_workspaceVersion != workspace().getVersion()) {
                 _classifyActors();
-                _wsversion = workspace().getVersion();
+                _workspaceVersion = workspace().getVersion();
             }
-            return _wavegen;
+            return _waveGenerators;
         } finally {
             workspace().doneReading();
         }
@@ -661,42 +661,43 @@ public class CTScheduler extends Scheduler{
      *  schedulable.
      */
     protected void _classifyActors() throws NotSchedulableException {
-        if(_wsversion == -1) {
+        if(_workspaceVersion == -1) {
             _sink = new LinkedList();
-            _dynam = new LinkedList();
-            _arith = new LinkedList();
-            _evgen = new LinkedList();
-            _wavegen = new LinkedList();
+            _dynamic = new LinkedList();
+            _arithmetic = new LinkedList();
+            _eventGenerators = new LinkedList();
+            _waveGenerators = new LinkedList();
             _stateful = new LinkedList();
         }else {
             _sink.clear();
-            _dynam.clear();
-            _arith.clear();
-            _evgen.clear();
-            _wavegen.clear();
+            _dynamic.clear();
+            _arithmetic.clear();
+            _eventGenerators.clear();
+            _waveGenerators.clear();
             _stateful.clear();
         }
 
-        CompositeActor ca = (CompositeActor) getContainer().getContainer();
-        Iterator actors = ca.deepEntityList().iterator();
+        CompositeActor compositeActor =
+            (CompositeActor)getContainer().getContainer();
+        Iterator actors = compositeActor.deepEntityList().iterator();
         while(actors.hasNext()) {
             Actor a = (Actor) actors.next();
             if (a instanceof CTStatefulActor) {
                 _stateful.addLast(a);
             }
             if (a instanceof CTEventGenerator) {
-                _evgen.addLast(a);
+                _eventGenerators.addLast(a);
             }
             if (a instanceof CTWaveformGenerator) {
-                _wavegen.addLast(a);
+                _waveGenerators.addLast(a);
             }
             if (_successorList(a).isEmpty()) {
                 _sink.addLast(a);
             }
             if (a instanceof CTDynamicActor) {
-                _dynam.addLast(a);
+                _dynamic.addLast(a);
             } else {
-                _arith.addLast(a);
+                _arithmetic.addLast(a);
             }
             // Step size control (SSC) actors are classified according to
             // their location in the schedule. So they are created
@@ -711,7 +712,7 @@ public class CTScheduler extends Scheduler{
         }
     }
 
-    /** Return the predecessive actors of the given actor in the topology.
+    /** Return the predecessors of the given actor in the topology.
      *  If the argument is null, returns null.
      *  If the actor is a source, returns an empty list.
      *  @param The specified actor.
@@ -721,20 +722,20 @@ public class CTScheduler extends Scheduler{
         if(actor == null) {
             return null;
         }
-        LinkedList pre = new LinkedList();
-        Iterator inports = actor.inputPortList().iterator();
-        while(inports.hasNext()) {
-            IOPort inp = (IOPort) inports.next();
-            Iterator outports = inp.deepConnectedOutPortList().iterator();
-            while(outports.hasNext()) {
-                IOPort outp = (IOPort) outports.next();
-                Actor act = (Actor)outp.getContainer();
-                if(!pre.contains(act)) {
-                    pre.addLast(act);
+        LinkedList predecessors = new LinkedList();
+        Iterator inPorts = actor.inputPortList().iterator();
+        while(inPorts.hasNext()) {
+            IOPort port = (IOPort) inPorts.next();
+            Iterator outPorts = port.deepConnectedOutPortList().iterator();
+            while(outPorts.hasNext()) {
+                IOPort outPort = (IOPort)outPorts.next();
+                Actor pre = (Actor)outPort.getContainer();
+                if(!predecessors.contains(pre)) {
+                    predecessors.addLast(pre);
                 }
             }
         }
-        return pre;
+        return predecessors;
     }
 
     /** Return an enumeration of the detail schedules. The first
@@ -748,86 +749,85 @@ public class CTScheduler extends Scheduler{
      * is wrong or arithmetic loop exists.
      */
     protected Enumeration _schedule() throws NotSchedulableException {
-        // Uncomment this line to show when the schdule is recomputed.
-        // System.out.println("Recompute schedule.");
         CTDirector dir = (CTDirector)getContainer();
         if(dir == null) {
             return null;
         }
-        CompositeActor ca = (CompositeActor)(dir.getContainer());
-        if(ca == null) {
+        CompositeActor container = (CompositeActor)(dir.getContainer());
+        if(container == null) {
             return null;
         }
-        _stateschedule = new LinkedList();
-        _transitionschedule = new LinkedList();
-        _outputschedule = new LinkedList();
-        _statessc = new LinkedList();
-        _outputssc = new LinkedList();
-        LinkedList _scheList = new LinkedList();
+        _stateSchedule = new LinkedList();
+        _transitionSchedule = new LinkedList();
+        _outputSchedule = new LinkedList();
+        _stateSSC = new LinkedList();
+        _outputSSC = new LinkedList();
+        LinkedList _scheduleList = new LinkedList();
 
         _classifyActors();
-        DirectedAcyclicGraph g =  _toArithGraph(ca.deepEntityList());
-        DirectedAcyclicGraph gd = _toGraph(dynamicActorList());
-        if(!g.isAcyclic()) {
+        DirectedAcyclicGraph arithmetic
+            = _toArithmeticGraph(container.deepEntityList());
+        DirectedAcyclicGraph dynamic = _toGraph(dynamicActorList());
+        if(!arithmetic.isAcyclic()) {
             throw new NotSchedulableException("Arithmetic loop found.");
         }
-        int numofdyn = _dynam.size();
-        if(numofdyn > 0) {
-            Object[] dynactors = _dynam.toArray();
+        int dynamicSize = _dynamic.size();
+        if(dynamicSize > 0) {
+            Object[] dynamicActors = _dynamic.toArray();
             // Dynamic actors are reverse ordered.
-            Object[] xsort = gd.topologicalSort(dynactors);
-            for(int i = 0; i < xsort.length; i++) {
-                Actor a = (Actor)xsort[i];
-                _stateschedule.addFirst(a);
+            Object[] xSorted = dynamic.topologicalSort(dynamicActors);
+            for(int i = 0; i < xSorted.length; i++) {
+                Actor a = (Actor)xSorted[i];
+                _stateSchedule.addFirst(a);
                 if (a instanceof CTStepSizeControlActor) {
                     // Note: they are not ordered, but addFirst() is
                     // considered more efficient.
-                    _statessc.addFirst(a);
+                    _stateSSC.addFirst(a);
                 }
             }
-            _scheList.addLast(_stateschedule);
+            _scheduleList.addLast(_stateSchedule);
             // State transition map
-            Object[] fx = g.backwardReachableNodes(dynactors);
-            Object[] fxsort = g.topologicalSort(fx);
-            for(int i = 0; i < fxsort.length; i++) {
-                Actor a = (Actor)fxsort[i];
-                _transitionschedule.addLast(a);
+            Object[] fx = arithmetic.backwardReachableNodes(dynamicActors);
+            Object[] fxSorted = arithmetic.topologicalSort(fx);
+            for(int i = 0; i < fxSorted.length; i++) {
+                Actor a = (Actor)fxSorted[i];
+                _transitionSchedule.addLast(a);
                 if (a instanceof CTStepSizeControlActor) {
                     // Note: they are not ordered, but addFirst() is
                     // considered more efficient.
-                    _statessc.addFirst(a);
+                    _stateSSC.addFirst(a);
                 }
             }
-            _scheList.addLast(_transitionschedule);
+            _scheduleList.addLast(_transitionSchedule);
         }
 
         // construct an array of sink actors.
-        int numofsink = _sink.size();
-        if(numofsink > 0) {
-            Object[] sinkactors =  _sink.toArray();
+        int sinkSize = _sink.size();
+        if(sinkSize > 0) {
+            Object[] sinkActors =  _sink.toArray();
             //Output map.
-            Object[] gx = g.backwardReachableNodes(sinkactors);
-            Object[] gxsort = g.topologicalSort(gx);
-            for(int i = 0; i < gxsort.length; i++) {
-                Actor a = (Actor)gxsort[i];
-                _outputschedule.addLast(a);
+            Object[] gx = arithmetic.backwardReachableNodes(sinkActors);
+            Object[] gxSorted = arithmetic.topologicalSort(gx);
+            for(int i = 0; i < gxSorted.length; i++) {
+                Actor a = (Actor)gxSorted[i];
+                _outputSchedule.addLast(a);
                 if (a instanceof CTStepSizeControlActor) {
-                    _outputssc.addLast(a);
+                    _outputSSC.addLast(a);
                 }
             }
             // add sinks to the output schedule
-            for (int i = 0; i < sinkactors.length; i++) {
-                Actor a = (Actor)sinkactors[i];
-                _outputschedule.addLast(a);
+            for (int i = 0; i < sinkActors.length; i++) {
+                Actor a = (Actor)sinkActors[i];
+                _outputSchedule.addLast(a);
                 if (a instanceof CTStepSizeControlActor) {
-                    _outputssc.addLast(a);
+                    _outputSSC.addLast(a);
                 }
             }
 
-            _scheList.addLast(_outputschedule);
+            _scheduleList.addLast(_outputSchedule);
         }
-        setValid(true);
-        return Collections.enumeration(_scheList);
+
+        return Collections.enumeration(_scheduleList);
     }
 
     /** Return the successive actors of the given actor in the topology.
@@ -840,20 +840,20 @@ public class CTScheduler extends Scheduler{
         if(actor == null) {
             return null;
         }
-        LinkedList post = new LinkedList();
+        LinkedList successors = new LinkedList();
         Iterator outports = actor.outputPortList().iterator();
         while(outports.hasNext()) {
             IOPort outp = (IOPort) outports.next();
-            Iterator inports = outp.deepConnectedInPortList().iterator();
-            while(inports.hasNext()) {
-                IOPort inp = (IOPort)inports.next();
-                Actor act = (Actor)inp.getContainer();
-                if(!post.contains(act)) {
-                    post.addLast(act);
+            Iterator inPorts = outp.deepConnectedInPortList().iterator();
+            while(inPorts.hasNext()) {
+                IOPort inPort = (IOPort)inPorts.next();
+                Actor post = (Actor)inPort.getContainer();
+                if(!successors.contains(post)) {
+                    successors.addLast(post);
                 }
             }
         }
-        return post;
+        return successors;
     }
 
     /** Convert the given list of actors to a directed acyclic graph.
@@ -867,34 +867,31 @@ public class CTScheduler extends Scheduler{
      *  @param actorlist The list of actors to be scheduled.
      *  @return A graph representation of the actors.
      */
-    protected DirectedAcyclicGraph _toArithGraph(List actorlist) {
-        //CTDirector dir = (CTDirector)getContainer();
-        //CompositeActor ca = (CompositeActor)(dir.getContainer());
-
-        DirectedAcyclicGraph g = new DirectedAcyclicGraph();
+    protected DirectedAcyclicGraph _toArithmeticGraph(List list) {
+        DirectedAcyclicGraph graph = new DirectedAcyclicGraph();
         // Create the nodes.
-        Iterator actors = actorlist.iterator();
+        Iterator actors = list.iterator();
         while (actors.hasNext()) {
-            Actor a = (Actor)actors.next();
-            g.add(a);
+            Actor actor = (Actor)actors.next();
+            graph.add(actor);
         }
 
         // Create the edges.
-        Iterator allactors = actorlist.iterator();
-        while (allactors.hasNext()) {
-            Actor a = (Actor) allactors.next();
-            if(!(a instanceof CTDynamicActor)) {
-                // Find the successors of a
-                Iterator successors = _successorList(a).iterator();
+        actors = list.iterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            if(!(actor instanceof CTDynamicActor)) {
+                // Find the successors of the actor
+                Iterator successors = _successorList(actor).iterator();
                 while (successors.hasNext()) {
-                    Actor s = (Actor) successors.next();
-                    if(actorlist.contains(s)) {
-                        g.addEdge(a, s);
+                    Actor successor = (Actor)successors.next();
+                    if(list.contains(successor)) {
+                        graph.addEdge(actor, successor);
                     }
                 }
             }
         }
-	return g;
+	return graph;
     }
 
     /** Convert the given actors to a directed acyclic graph.
@@ -907,9 +904,7 @@ public class CTScheduler extends Scheduler{
      *  @return A graph representation of the actors.
      */
     protected DirectedAcyclicGraph _toGraph(List actorlist) {
-        //        CTDirector dir = (CTDirector)getContainer();
-        //CompositeActor ca = (CompositeActor)(dir.getContainer());
-
+        
         DirectedAcyclicGraph g = new DirectedAcyclicGraph();
         // Create the nodes.
         Iterator actors = actorlist.iterator();
@@ -939,27 +934,27 @@ public class CTScheduler extends Scheduler{
     // The static name of the scheduler.
     private static final String _STATIC_NAME = "CTScheduler";
     // schedule lists
-    private LinkedList _stateschedule;
-    private LinkedList _transitionschedule;
-    private LinkedList _outputschedule;
+    private LinkedList _stateSchedule;
+    private LinkedList _transitionSchedule;
+    private LinkedList _outputSchedule;
 
     // A LinkedList of the dynamic actors.
-    private transient LinkedList _dynam;
+    private transient LinkedList _dynamic;
     // A LinkedList of the sink actors.
     private transient LinkedList _sink;
     // A LinkedList of the arithmetic actors.
-    private transient LinkedList _arith;
+    private transient LinkedList _arithmetic;
     // A linkedList of SSC actors in the state and transition schedule.
-    private transient LinkedList _statessc;
+    private transient LinkedList _stateSSC;
     // A linkedList of SSC actors in the state and transition schedule.
-    private transient LinkedList _outputssc;
+    private transient LinkedList _outputSSC;
     // A linkedList of event generators.
-    private transient LinkedList _evgen;
+    private transient LinkedList _eventGenerators;
     // A linkedList of waveform generators.
-    private transient LinkedList _wavegen;
+    private transient LinkedList _waveGenerators;
     // A linkedList of stateful actors.
     private transient LinkedList _stateful;
 
     // Version of the lists.
-    private transient long _wsversion = -1;
+    private transient long _workspaceVersion = -1;
 }
