@@ -114,7 +114,7 @@ public class TimedDelay extends DETransformer {
 
     /** If the attribute is <i>delay</i>, then ensure that the value
      *  is non-negative.
-     *  NOTE: the newDelay may be 0.0, which may change the causality
+     *  <p>NOTE: the newDelay may be 0.0, which may change the causality
      *  property of the model. We leave the model designers to decide
      *  whether the zero delay is really what they want.
      *  @param attribute The attribute that changed.
