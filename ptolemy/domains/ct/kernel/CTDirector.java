@@ -411,6 +411,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
     /** Return the current integration step size. This method is final
      *  for performance reason.
      *  @return The current step size.
+     *  @see #setCurrentStepSize
      */
     public double getCurrentStepSize() {
         return _currentStepSize;
@@ -536,6 +537,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  at the end of last integration step. It is the prediction
      *  of the new step size. 
      *  @return The suggested next step size.
+     *  @see #setSuggestedNextStepSize
      */
     public final double getSuggestedNextStepSize() {
         // This method is final for performance reason.
@@ -764,6 +766,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
     /** Set the current step size. The current step size is used during an 
      *  iteration and must not be changed in the middle of an iteration.
      *  @param stepSize The step size to be set.
+     *  @see #getCurrentStepSize
      */
     public void setCurrentStepSize(double stepSize) {
         if (_debugging) {
@@ -785,6 +788,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  the maximum step size, then set the suggested next step size to 
      *  the maximum step size.
      *  @param stepsize The suggested next step size.
+     *  @see #getSuggestedNextStepSize
      */
     public void setSuggestedNextStepSize(double stepsize) {
         if (stepsize > getMaxStepSize()) {

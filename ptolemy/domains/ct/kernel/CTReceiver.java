@@ -153,6 +153,7 @@ public class CTReceiver extends Mailbox {
 
     /** Return the signal type of this receiver.
      *  @return The signal type of the receiver.
+     *  @see #setSignalType
      */
     public SignalType getSignalType() {
         return _type;
@@ -181,6 +182,7 @@ public class CTReceiver extends Mailbox {
     /** Set the signal type of this receiver. This method must be called
      *  by the CTScheduler before any get() method are called.
      *  @param type The SignalType to set to the receiver.
+     *  @see #getSignalType
      */
     public void setSignalType(SignalType type) {
         _type = type;

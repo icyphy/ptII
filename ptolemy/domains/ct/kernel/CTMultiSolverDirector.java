@@ -70,9 +70,6 @@ import ptolemy.kernel.util.Workspace;
    model is a discrete-event model) or CTEmbeddedDirector (if the outer model is
    a CT or FSM one.)
    <P>
-   FIXME: Define initial and final states. Need to introduce tagged-signal
-   model. Define iterations.
-   <p>
    This director recognizes actors that implement the CTStepSizeControlActor
    interface and adjusts the step size by polling such actors. If all actors 
    are content with the current step size, then it attempts to raise the
@@ -283,12 +280,12 @@ public class CTMultiSolverDirector extends CTDirector {
             _debug(getName(), " fire: <<< ");
         }
 
-        // FIXME: 
-        // Why not setting the iteration begin time in the prefire method?
-        // One possible source of bugs is that prefire method changes 
-        // model time?
-
         // set the start time of the current iteration
+        // The begin time of an iteration can be changed only by directors.
+        // On the other hand, the model time may be changed by ODE solvers. 
+        // The reason is that when the CurrentTime actor is involved in a 
+        // multi-step integration, it needs to report the current time at the
+        // intermediate steps. The CurrentTime actor reports the model time.
         _setIterationBeginTime(getModelTime());
         
         // discrete phase of execution to resolve the final states at the 
@@ -568,7 +565,7 @@ public class CTMultiSolverDirector extends CTDirector {
     }
 
     /** Fire all the actors in the output schedule.  
-     *  <p?
+     *  <p>
      *  If they have not be prefired, prefire them first. The abstract 
      *  semantics require that prefire() be called exactly once in an iteration.  
      *  This is important because, for example, time can only be tested 

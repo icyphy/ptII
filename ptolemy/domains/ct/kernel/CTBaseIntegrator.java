@@ -201,6 +201,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
      *  auxiliary variables have never been created.
      *
      *  @return The auxiliary variables in a double array.
+     *  @see @see #setAuxVariables
      */
     public double[] getAuxVariables() {
         return _auxVariables;
@@ -238,6 +239,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
 
     /** Return the history capacity.
      *  @return The maximum capacity of the history information.
+     *  @see #setHistoryCapacity
      */
     public final int getHistoryCapacity() {
         return _history.getCapacity();
@@ -455,6 +457,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
      *  @param value The value to be set.
      *  @exception InvalidStateException If the index is out of the range
      *  of the auxiliary variable array.
+     *  @see #getAuxVariables
      */
     public void setAuxVariables(int index, double value)
             throws InvalidStateException {
@@ -470,6 +473,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
      *  that uses the history. If the argument is less than 0,
      *  the capacity is set to 0.
      *  @param cap The capacity.
+     *  @see #getHistoryCapacity
      */
     public final void setHistoryCapacity(int cap) {
         _history.setCapacity(cap);
@@ -489,6 +493,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
      *  the ODE solver resolved in one step. It may not
      *  be the final state due to error control or event detection.
      *  @param value The value to be set.
+     *  @see #getTentativeState
      */
     public final void setTentativeState(double value) {
         _tentativeState = value;
@@ -561,6 +566,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
 
         /** Return the maximum capacity.
          *  @return The capacity.
+         *  @see #setCapacity
          */
         public int getCapacity() {
             return _capacity;
@@ -657,6 +663,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
          *  will be lost. If the argument is less than 0, it is set
          *  to 0.
          *  @param capacity The new capacity.
+         *  @see #getCapacity
          */
         public void setCapacity(int capacity) {
             _capacity = (capacity>0) ? capacity : 0;
