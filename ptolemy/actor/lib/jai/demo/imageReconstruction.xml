@@ -2,11 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="imageReconstruction" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-        </property>
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
@@ -18,35 +16,51 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 40.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1035, -62, 815, 509}}">
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: James Yeh</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 370.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{300.0, 200.0}">
+    </property>
+    <property name="annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Read in two images, combine them, recover one of the images">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 15.0]">
+        </property>
     </property>
     <entity name="JAIImageReader" class="ptolemy.actor.lib.jai.JAIImageReader">
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/jai/demo/bridge.png">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 100.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 100.0}">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="JAIImageReader2" class="ptolemy.actor.lib.jai.JAIImageReader">
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/jai/demo/camera.png">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 170.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 205.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="JAIBorder" class="ptolemy.actor.lib.jai.JAIBorder">
         <property name="leftPadding" class="ptolemy.data.expr.Parameter" value="0">
@@ -73,14 +87,8 @@
         </property>
         <property name="constants" class="ptolemy.data.expr.Parameter" value="{0.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 100.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{180.0, 85.0}">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="JAIBorder2" class="ptolemy.actor.lib.jai.JAIBorder">
         <property name="leftPadding" class="ptolemy.data.expr.Parameter" value="0">
@@ -107,14 +115,8 @@
         </property>
         <property name="constants" class="ptolemy.data.expr.Parameter" value="{0.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 170.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 205.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="JAIDFT" class="ptolemy.actor.lib.jai.JAIDFT">
         <property name="scalingType" class="ptolemy.kernel.util.StringAttribute" value="none">
@@ -137,14 +139,8 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="265.0, 100.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 85.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="JAIDFT2" class="ptolemy.actor.lib.jai.JAIDFT">
         <property name="scalingType" class="ptolemy.kernel.util.StringAttribute" value="none">
@@ -167,47 +163,20 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="265.0, 170.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 205.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="JAIMagnitude" class="ptolemy.actor.lib.jai.JAIMagnitude">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 100.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 85.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="JAIPhase" class="ptolemy.actor.lib.jai.JAIPhase">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 170.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 205.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="JAIPolarToComplex" class="ptolemy.actor.lib.jai.JAIPolarToComplex">
         <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 135.0">
         </property>
-        <port name="magnitude" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="phase" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="JAIIDFT" class="ptolemy.actor.lib.jai.JAIIDFT">
         <property name="scalingType" class="ptolemy.kernel.util.StringAttribute" value="dimensions">
@@ -230,14 +199,8 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 260.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 340.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="JAIDataConvert" class="ptolemy.actor.lib.jai.JAIDataConvert">
         <property name="dataFormat" class="ptolemy.kernel.util.StringAttribute" value="byte">
@@ -256,14 +219,8 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 260.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 340.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="JAICrop" class="ptolemy.actor.lib.jai.JAICrop">
         <property name="xOrigin" class="ptolemy.data.expr.Parameter" value="0">
@@ -274,43 +231,41 @@
         </property>
         <property name="height" class="ptolemy.data.expr.Parameter" value="256">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="265.0, 260.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 340.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
-    <entity name="JAIPNGWriter" class="ptolemy.actor.lib.jai.JAIPNGWriter">
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/jai/demo/result.png">
+    <entity name="Recoverd Camera Image Display" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {380, 232, 264, 304}, maximized = false}">
         </property>
-        <property name="confirmOverwrite" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[256, 256]">
         </property>
-        <property name="bitDepth" class="ptolemy.data.expr.Parameter" value="8">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 340.0]">
         </property>
-        <property name="adam7Interlacing" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="setGamma" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.455000013113">
-        </property>
-        <property name="setBackground" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="background" class="ptolemy.data.expr.Parameter" value="{0, 0, 0}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 260.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
+    <entity name="Original Camera Image Display" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {380, 232, 264, 304}, maximized = false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[256, 256]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 270.0]">
+        </property>
+    </entity>
+    <entity name="Original Bridge Image Display" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {380, 232, 264, 304}, maximized = false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[256, 256]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 150.0]">
+        </property>
+    </entity>
+    <entity name="Combined Image Display" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {380, 232, 264, 304}, maximized = false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[256, 256]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 265.0]">
+        </property>
+    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -323,11 +278,21 @@
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[115.0, 205.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[115.0, 100.0]">
+        </vertex>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[325.0, 295.0]">
+        </vertex>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -354,5 +319,8 @@
     <link port="JAIDataConvert.output" relation="relation11"/>
     <link port="JAICrop.input" relation="relation11"/>
     <link port="JAICrop.output" relation="relation12"/>
-    <link port="JAIPNGWriter.input" relation="relation12"/>
+    <link port="Recoverd Camera Image Display.input" relation="relation12"/>
+    <link port="Original Camera Image Display.input" relation="relation2"/>
+    <link port="Original Bridge Image Display.input" relation="relation"/>
+    <link port="Combined Image Display.input" relation="relation9"/>
 </entity>
