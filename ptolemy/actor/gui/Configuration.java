@@ -63,7 +63,7 @@ This is a base class for a composite entity that defines the
 configuration of an application that uses Ptolemy II classes.
 It must contain, at a minimum, an instance of ModelDirectory, called
 "directory", and an instance of EffigyFactory, called "effigyFactory".
-The openModel() method delegates to the effigy factor the opening of a model.
+The openModel() method delegates to the effigy factory the opening of a model.
 It may also contain an instance of TableauFactory, called "tableauFactory".
 A tableau is a visual representation of the model in a top-level window.
 This class uses those instances to manage a collection of models,
