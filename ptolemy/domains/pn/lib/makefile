@@ -37,7 +37,7 @@ ME =		java/pt/domains/pn/stars
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
-JAVAHOME =      /opt/jdk1.2latest
+#JAVAHOME =      /opt/jdk1.2latest
 
 DIRS = 		demo #test doc
 
