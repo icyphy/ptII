@@ -64,4 +64,5 @@ test VergilConfiguration-1.1 {make sure that everything inside the configuration
     # force everything to get expanded
     set configuration [java::cast ptolemy.kernel.CompositeEntity $object]
     catch {$configuration description} result
+    list $result
 } {0}
