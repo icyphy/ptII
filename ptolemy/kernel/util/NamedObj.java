@@ -1229,7 +1229,7 @@ public class NamedObj implements Nameable, Debuggable,
             icon.configure(null, null, description);
 	} catch (Exception ex) {
 	    throw new InternalErrorException(
-                    "Error creating default icon for " + 
+                    "Error creating default icon for " +
                     getFullName() + ":" + ex);
 	}
     }

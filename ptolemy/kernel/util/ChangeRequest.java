@@ -79,7 +79,7 @@ public abstract class ChangeRequest {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add a new change listener to this request.  The listener will get 
+    /** Add a new change listener to this request.  The listener will get
      *  notified when the change is executed, or the change fails.  This
      *  listener is notified first, and then any listeners that were
      *  given by setListeners.
@@ -170,7 +170,7 @@ public abstract class ChangeRequest {
         return _errorReported;
     }
 
-    /** Remove the given change listener from this request.  
+    /** Remove the given change listener from this request.
      *  The listener will no longer be
      *  notified when the change is executed, or the change fails.
      */

@@ -64,7 +64,7 @@ public class StreamListener implements DebugListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Print a string representation of the event to the stream 
+    /** Print a string representation of the event to the stream
      *  associated with this listener.
      */
     public void event(DebugEvent event) {

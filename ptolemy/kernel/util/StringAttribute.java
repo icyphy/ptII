@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
@@ -104,7 +104,7 @@ public class StringAttribute extends Attribute implements UserSettable {
         String value = getExpression();
         String valueTerm = "";
         if(value != null && !value.equals("")) {
-            valueTerm = " value=\"" + 
+            valueTerm = " value=\"" +
                 StringUtilities.escapeForXML(value) + "\"";
         }
 

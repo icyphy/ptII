@@ -71,7 +71,7 @@ public class ConfigurableAttribute
     /** Construct a new attribute with
      *  no container and an empty string as a name. You can then change
      *  the name with setName(). If the workspace argument is null, then
-     *  use the default workspace. 
+     *  use the default workspace.
      *  Add the attribute to the workspace directory.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the actor.
@@ -162,12 +162,12 @@ public class ConfigurableAttribute
         }
         if (_text != null) {
             output.write(_getIndentPrefix(depth)
-                    + "<configure" + sourceSpec + ">" 
+                    + "<configure" + sourceSpec + ">"
                     + _text
                     + "</configure>\n");
         }
     }
-	
+
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 

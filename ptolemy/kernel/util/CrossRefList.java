@@ -392,7 +392,7 @@ public final class CrossRefList implements Serializable  {
                 }
             } else {
                 // Index is not the first.
-                
+
                 // Chain down the list, creating empty links if necessary.
                 // First chaining step is special, setting "previous" to
                 // get us started.
