@@ -15,7 +15,12 @@ public class TutorialApplet3 extends PtolemyApplet {
 
 	// Create the director.
 	DEDirector director = new DEDirector(toplevel, "director");
-	director.stopTime.setExpression("30.0");
+	String stopTime = getParameter("stopTime");
+	if (stopTime == null) {
+	    director.stopTime.setExpression("10.0");
+	} else {
+	    director.stopTime.setExpression(stopTime);
+	}
 
 	// Create two actors.
 	Clock clock = new Clock(toplevel,"clock");

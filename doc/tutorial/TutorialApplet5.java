@@ -13,6 +13,9 @@ import ptolemy.kernel.util.Workspace;
 import java.awt.BorderLayout;
 
 public class TutorialApplet5 extends PtolemyApplet implements QueryListener {
+    private Clock _clock;
+    private Query _query = new Query();
+
     public NamedObj _createModel(Workspace workspace) 
 	throws Exception {
         TypedCompositeActor toplevel = new TypedCompositeActor(workspace);
@@ -20,7 +23,12 @@ public class TutorialApplet5 extends PtolemyApplet implements QueryListener {
 
 	// Create the director.
 	DEDirector director = new DEDirector(toplevel, "director");
-	director.stopTime.setExpression("30.0");
+	String stopTime = getParameter("stopTime");
+	if (stopTime == null) {
+	    director.stopTime.setExpression("10.0");
+	} else {
+	    director.stopTime.setExpression(stopTime);
+	}
 
 	// Create two actors.
 	_clock = new Clock(toplevel,"clock");
@@ -45,7 +53,7 @@ public class TutorialApplet5 extends PtolemyApplet implements QueryListener {
 	_query.setBackground(getBackground());
 	_query.addLine("period", "Period", "2.0");
 	_query.addQueryListener(this);
-	getContentPane().add( _query, BorderLayout.SOUTH );
+	getContentPane().add(_query, BorderLayout.SOUTH);
     }
 
     public void changed(String name) {
@@ -56,8 +64,4 @@ public class TutorialApplet5 extends PtolemyApplet implements QueryListener {
             report("Error executing model.", ex);
         }
     }
-
-    private Clock _clock;
-    private Query _query = new Query();
-
 }

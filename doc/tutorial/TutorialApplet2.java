@@ -15,7 +15,7 @@ public class TutorialApplet2 extends PtolemyApplet {
 
 	// Create the director.
 	DEDirector director = new DEDirector(toplevel, "director");
-	director.stopTime.setExpression("10");
+	director.stopTime.setExpression("10.0");
 
 	// Create two actors.
 	Clock clock = new Clock(toplevel,"clock");

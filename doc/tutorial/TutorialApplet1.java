@@ -16,7 +16,7 @@ public class TutorialApplet1 extends TypedCompositeActor {
 	// Create the director
 	DEDirector director = new DEDirector(this, "director");
 	setDirector(director);
-	director.stopTime.setExpression("30.0");
+	director.stopTime.setExpression("10.0");
 
 	// Create two actors.
 	Clock clock = new Clock(this,"clock");
