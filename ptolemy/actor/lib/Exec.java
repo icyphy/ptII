@@ -118,13 +118,18 @@ public class Exec extends TypedAtomicActor {
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
+
+        waitFor = new Parameter(this, "waitFor");
+        waitFor.setTypeEquals(BaseType.BOOLEAN);
+        waitFor.setToken(BooleanToken.TRUE);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
 
-    /** Indicator of whether fire method blocks on the process.
+    /** Indicator of whether fire method blocks on the process and waits
+     *  for output.  
      *  If true, fire() waits until there is output from the subprocess.
      *  The type is boolean with default true.
      */
@@ -170,6 +175,13 @@ public class Exec extends TypedAtomicActor {
      */
     public TypedIOPort output;
 
+    /** Indicator of whether fire method blocks until the process exits.
+     *  If true, fire() waits until the underlying java.lang.Process.waitFor()
+     *  method returns, indicating that the process has exited.
+     *  The type is boolean with an initial default value of false.
+     */
+    public Parameter waitFor;
+
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
 
@@ -182,6 +194,9 @@ public class Exec extends TypedAtomicActor {
         if (attribute == blocking) {
             _blocking =
                 ((BooleanToken)blocking.getToken()).booleanValue();
+        } else if (attribute == waitFor) {
+            _waitFor =
+                ((BooleanToken)waitFor.getToken()).booleanValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -240,6 +255,22 @@ public class Exec extends TypedAtomicActor {
             String outputString;
             if (_debugging) {
                 _debug("Exec: about to call _outputGobbler.*GetAndReset");
+            }
+
+            if (_waitFor) {
+                // See ptolemy.gui.JTextAreaExec for similar waitFor() code;
+                try {
+                    int processReturnCode = _process.waitFor();
+                    synchronized(this) {
+                        _process = null;
+                    }
+                    // FIXME: throw an exception if we get a non zero code?
+                    // if (processReturnCode != 0) break;
+                } catch (InterruptedException interrupted) {
+                    throw new InternalErrorException(this, interrupted,
+                            "_process.waitFor() was interrupted");
+                }
+
             }
 
             if (_blocking) {
@@ -743,4 +774,8 @@ public class Exec extends TypedAtomicActor {
     // Instance count of output and error threads, used for debugging.
     // When the value is greater than 1000, we reset to 0.
     private static int _streamReaderThreadCount = 0;
+
+    // Whether we wait for the subprocess to finish.  See Process.waitFor().
+    private boolean _waitFor;
+
 }
