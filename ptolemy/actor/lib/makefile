@@ -73,6 +73,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+	comm/comm.jar \
 	conversions/conversions.jar \
 	gui/gui.jar \
 	hoc/hoc.jar \
@@ -80,9 +81,6 @@ PTCLASSALLJARS = \
 	logic/logic.jar \
 	javasound/javasound.jar \
 	net/net.jar
-
-# Don't include comm.jar, it requires javacomm
-#        comm/comm.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
