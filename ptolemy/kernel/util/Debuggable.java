@@ -39,7 +39,7 @@ This is an interface for objects that debug listeners can be attached to.
 @version $Id$
 */
 
-public interface Debuggable {
+public interface Debuggable extends Nameable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
