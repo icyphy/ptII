@@ -71,7 +71,7 @@ public class PlotApplet extends Applet {
 
     /** Return information about parameters.
      */
-    public String[][] getParameterInfo () {
+    public String[][] getParameterInfo() {
         String pinfo[][] = {
             {"background", "hexcolor value", "background color"},
             {"foreground", "hexcolor value", "foreground color"},
