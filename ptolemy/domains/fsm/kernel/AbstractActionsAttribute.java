@@ -123,6 +123,8 @@ public abstract class AbstractActionsAttribute extends Action {
              throws IllegalActionException {
         super.setExpression(expression);
 
+        if (expression == null) return;
+
         // Initialize the lists that store the commands to be executed.
         _destinationNames = new LinkedList();
         _numbers = new LinkedList();
