@@ -80,7 +80,7 @@ public class ComponentDialog extends JDialog {
      *  @param title The title to put on the window.
      *  @param component The component to insert in the dialog.
      *  @param buttons An array of labels for buttons at the bottom
-     *   of the dialog. 
+     *   of the dialog.
      */
     public ComponentDialog(
             JFrame owner, String title, Component component, String[] buttons) {
@@ -94,13 +94,13 @@ public class ComponentDialog extends JDialog {
             _buttons = buttons;
         }
 
-        _optionPane = new JOptionPane(array, 
+        _optionPane = new JOptionPane(array,
                 JOptionPane.QUESTION_MESSAGE,
                 JOptionPane.YES_NO_OPTION,
                 null,
                 _buttons,
                 _buttons[0]);
-        
+
         getContentPane().add(_optionPane);
 
         setLocationRelativeTo(owner);
@@ -116,7 +116,7 @@ public class ComponentDialog extends JDialog {
 
                 // PropertyChange is an extremely non-selective listener,
                 // so we have to filter...
-                if (isVisible() 
+                if (isVisible()
                         && (e.getSource() == _optionPane)
                         && (prop.equals(JOptionPane.VALUE_PROPERTY) ||
                         prop.equals(JOptionPane.INPUT_VALUE_PROPERTY))) {

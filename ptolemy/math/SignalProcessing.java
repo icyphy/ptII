@@ -993,9 +993,9 @@ public class SignalProcessing {
         return (point < 0.5)?(4.0*point-1.0):(((1.0-point)*4.0)-1.0);
     }
 
-   
-    /** Return a new array that is the result of inserting (n-1) zeroes 
-     *  between each successive sample in the input array, resulting in an 
+
+    /** Return a new array that is the result of inserting (n-1) zeroes
+     *  between each successive sample in the input array, resulting in an
      *  array of length n * L, where L is the length of the original array.
      *  @param x The input array of doubles.
      *  @param n An integer specifying the upsampling factor.
@@ -1492,7 +1492,7 @@ public class SignalProcessing {
 
         if (x.length < size) {
            x = inverse ? DoubleArrayMath.padMiddle(x, size) :
-                         DoubleArrayMath.resize(x, size);           
+                         DoubleArrayMath.resize(x, size);
         }
         return x;
     }
@@ -1507,10 +1507,10 @@ public class SignalProcessing {
         int size = 1 << order;
 
         // Zero pad the array if necessary
-        if (x.length < size) {           
-           x = (inverse == INVERSE_TRANSFORM) ? 
+        if (x.length < size) {
+           x = (inverse == INVERSE_TRANSFORM) ?
                ComplexArrayMath.padMiddle(x, size) :
-               ComplexArrayMath.resize(x, size);           
+               ComplexArrayMath.resize(x, size);
         }
 
         return x;

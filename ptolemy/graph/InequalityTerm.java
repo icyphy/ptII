@@ -88,7 +88,7 @@ public interface InequalityTerm {
      *  If this InequalityTerm is a simple variable that can be set to any
      *  CPO element, set the value of the variable to the specified argument.
      *  In this case, this method is equivalent to <code>setValue()</code>
-     *  with the same argument.  
+     *  with the same argument.
      *  In some applications, this term is a structured object that only part
      *  of it is a simple variable. In this case, set that variable part to
      *  the specified argument.

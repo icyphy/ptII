@@ -84,7 +84,7 @@ public class Complex implements Cloneable, Serializable {
         this.imag = imag;
     }
 
-    
+
 
     // NOTE: There is no need for a constructor that takes a Complex
     // argument because instances of this class are immutable.  There
@@ -569,7 +569,7 @@ public class Complex implements Cloneable, Serializable {
      */
     public final double imag;
 
-    /** A Complex number representing zero. Reference this to save 
+    /** A Complex number representing zero. Reference this to save
      *  memory usage.
      */
     public static final Complex ZERO = new Complex(0.0, 0.0);
@@ -577,7 +577,7 @@ public class Complex implements Cloneable, Serializable {
     /** A Complex number representing one. Reference this to save
      *  memory usage.
      */
-    public static final Complex ONE = new Complex(1.0, 0.0); 
+    public static final Complex ONE = new Complex(1.0, 0.0);
 
     /** A Complex number representing <i>i</i>. Reference this to save
      *  memory usage.

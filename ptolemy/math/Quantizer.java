@@ -35,11 +35,11 @@ import java.lang.*;
 import java.math.BigInteger;
 import java.math.BigDecimal;
 import ptolemy.math.*;
- 
+
 //////////////////////////////////////////////////////////////////////////
 //// Quantizer
 /**
- * 
+ *
  * @author Bart Kienhuis
  * @version $Id$
  */
@@ -48,11 +48,11 @@ public class Quantizer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
- 
+
     /**
        Return a Fixvalue for the value and precision given. The value is
        rounded to the nearest value that can be presented with the given
-       precision, possibly introducing quantization errors.  
+       precision, possibly introducing quantization errors.
        @param value The value for which to create a Fixpoint
        @param precision The precision of the Fixpoint
        @return A Fixvalue for the value with a given precision
@@ -72,7 +72,7 @@ public class Quantizer {
         if ( x > maxValue ) {
 	    overflow = true;
 	    x = maxValue;
-	} 
+	}
         if ( x < minValue ) {
             overflow = true;
             x = minValue;
@@ -83,7 +83,7 @@ public class Quantizer {
         // a value of which we drop the fraction part. The integer remaining
         // will be represented by the BigInteger.
         int number = precision.getFractionBitLength();
-        double resolution = Math.pow(2,-(number+1));       
+        double resolution = Math.pow(2,-(number+1));
 
         BigDecimal multiplier;
         if ( x >= 0 ) {
@@ -105,14 +105,14 @@ public class Quantizer {
             fxp.setError( FixPoint.OVERFLOW );
         }
 
-        return fxp; 
+        return fxp;
     }
-    
-    
+
+
     /**
        Return a Fixvalue for the value and precision given. The value is
        rounded to the nearest value that can be presented with the given
-       precision, possibly introducing quantization errors.  
+       precision, possibly introducing quantization errors.
        @param value The value for which to create a Fixpoint
        @param precision The precision of the Fixpoint
        @return A Fixvalue for the value with a given precision
@@ -132,7 +132,7 @@ public class Quantizer {
         if ( x > maxValue ) {
 	    overflow = true;
 	    x = maxValue;
-	} 
+	}
         if ( x < minValue ) {
             overflow = true;
             x = minValue;
@@ -153,19 +153,19 @@ public class Quantizer {
 //         } else {
 //             resolution = tmp;
 //         }
-        
+
 //         BigDecimal multiplier;
 //         if ( x >= 0 ) {
 //             multiplier = new BigDecimal( x + resolution );
 //         } else {
 //             multiplier = new BigDecimal( x - resolution );
 //         }
-//         BigDecimal kl = 
+//         BigDecimal kl =
 //             _twoRaisedTo[precision.getFractionBitLength()].multiply( multiplier );
 
         int number = precision.getFractionBitLength();
         // double resolution = Math.pow(2,-(number+1)) - Math.pow(2,-(number+2));
-        double resolution = 0;       
+        double resolution = 0;
         int i=0;
 
         BigDecimal multiplier;
@@ -178,7 +178,7 @@ public class Quantizer {
              resolution += Math.pow(2,-(number+i));
             }
             multiplier = new BigDecimal( x + resolution );
-        } else { 
+        } else {
 
             // When negative, subtract a small number
             // to bring the number close to x=y line
@@ -199,7 +199,7 @@ public class Quantizer {
         if ( overflow ) {
             //fxp.setError( OVERFLOW );
         }
-        return fxp; 
+        return fxp;
     }
 
 
@@ -213,7 +213,7 @@ public class Quantizer {
     /** Calculate the table containing 2^x, with 0 < x < 64. Purpose
         is to speed up calculations involving calculating 2^x. The table is
         calculated using BigDecimal, since this make the transformation from
-        string of bits to a double easier.  
+        string of bits to a double easier.
     */
     private static BigDecimal[] _twoRaisedTo = new BigDecimal[128];
 
@@ -227,6 +227,6 @@ public class Quantizer {
         }
     }
 
- 
+
 
 }

@@ -158,7 +158,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  The sample variance is computed as follows :
      *  <p>
      *  <pre>
-     *  variance<sub>sample</sub> = 
+     *  variance<sub>sample</sub> =
      *       (sum(X<sup>2</sup>) - (sum(X) / N)<sup>2</sup>) / (N - 1)
      *  </pre>
      *  <p>

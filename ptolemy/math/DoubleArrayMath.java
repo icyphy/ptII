@@ -62,7 +62,7 @@ public class DoubleArrayMath {
      *  If the two arrays do not have the same length, throw an
      *  IllegalArgumentException.
      */
-    public static final double[] add(final double[] array1, 
+    public static final double[] add(final double[] array1,
      final double[] array2) {
         int length = _commonLength(array1, array2, "DoubleArrayMath.add");
         double[] retval = new double[length];
@@ -87,7 +87,7 @@ public class DoubleArrayMath {
      *  of array1. This method simply calls
      *  append(array1, 0, array1.length, array2, 0, array2.length)
      */
-    public static final double[] append(final double[] array1, 
+    public static final double[] append(final double[] array1,
      final double[] array2) {
         return append(array1, 0, array1.length, array2, 0, array2.length);
     }
@@ -107,7 +107,7 @@ public class DoubleArrayMath {
      *  @param length2 The number of elements of array2 to append.
      *  @return A new array of doubles.
      */
-    public static final double[] append(final double[] array1, 
+    public static final double[] append(final double[] array1,
      final int idx1, final int length1, final double[] array2, final int idx2,
      final int length2) {
         double[] retval = new double[length1 + length2];
@@ -147,7 +147,7 @@ public class DoubleArrayMath {
      *  If the two arrays do not have the same length, throw an
      *  IllegalArgumentException.
      */
-    public static final double dotProduct(final double[] array1, 
+    public static final double dotProduct(final double[] array1,
      final double[] array2) {
         int length = _commonLength(array1, array2,
                                    "DoubleArrayMath.dotProduct");
@@ -172,7 +172,7 @@ public class DoubleArrayMath {
      *  @param top The top limit.
      *  @return A new array with values in the range [bottom, top].
      */
-    public static final double[] limit(final double[] array, 
+    public static final double[] limit(final double[] array,
      final double bottom, final double top) {
         double[] result = new double[array.length];
         for (int i = 0; i < array.length; i++) {
@@ -197,7 +197,7 @@ public class DoubleArrayMath {
      *  If the two arrays do not have the same length, throw an
      *  IllegalArgumentException.
      */
-    public static final double[] multiply(final double[] array1, 
+    public static final double[] multiply(final double[] array1,
      final double[] array2) {
         int length = _commonLength(array1, array2, "DoubleArrayMath.multiply");
         double[] retval = new double[length];
@@ -209,7 +209,7 @@ public class DoubleArrayMath {
 
     /** Return a new array of doubles that is formed by padding the
      *  middle of the array with 0's. If either the length of the
-     *  input array is odd, the sample with index ceil(L/2) will be 
+     *  input array is odd, the sample with index ceil(L/2) will be
      *  repeated in the output array, where L is the length of the input array.
      *  If the length of the input and output arrays are equal, return
      *  a copy of the input array.
@@ -217,8 +217,8 @@ public class DoubleArrayMath {
      *  @param array An array of doubles.
      *  @param newLength The desired length of the returned array.
      *  @return A new array of doubles.
-     */    
-    public static final double[] padMiddle(final double[] array, 
+     */
+    public static final double[] padMiddle(final double[] array,
      final int newLength) {
         int length = array.length;
 
@@ -239,19 +239,19 @@ public class DoubleArrayMath {
 
         System.arraycopy(array, 0, retval, 0, halfLengthCeil);
 
-        System.arraycopy(array,  halfLengthFloor, retval, 
-         newLength - halfLengthCeil, halfLengthCeil); 
-        
+        System.arraycopy(array,  halfLengthFloor, retval,
+         newLength - halfLengthCeil, halfLengthCeil);
+
 
         return retval;
     }
- 
-          
+
+
     /** Return a new array of doubles that is formed by raising each
      *  element to the specified exponent.
      *  If the length of the array is 0, return a new array of length 0.
      */
-    public static final double[] pow(final double[] array, 
+    public static final double[] pow(final double[] array,
      final double exponent) {
         int length = array.length;
         double[] retval = new double[length];
@@ -270,7 +270,7 @@ public class DoubleArrayMath {
      *  @param newLength The desired length of the output array.
      *  @return A new array of doubles of length newLength.
      */
-    public static final double[] resize(final double[] array, 
+    public static final double[] resize(final double[] array,
      final int newLength) {
         return resize(array,  newLength, 0);
     }
@@ -291,7 +291,7 @@ public class DoubleArrayMath {
      *  @param startIdx The starting index for the input array.
      *  @return A new array of doubles of length newLength.
      */
-    public static final double[] resize(double[] array, 
+    public static final double[] resize(double[] array,
      final int newLength, final int startIdx) {
 
         double[] retval = new double[newLength];
@@ -328,7 +328,7 @@ public class DoubleArrayMath {
      *  @param array2 The second array of doubles.
      *  @return A new array of doubles.
      */
-    public static final double[] subtract(final double[] array1, 
+    public static final double[] subtract(final double[] array1,
      final double[] array2) {
         int length = _commonLength(array1, array2, "DoubleArrayMath.subtract");
         double[] retval = new double[length];
@@ -430,7 +430,7 @@ public class DoubleArrayMath {
      *  If the two arrays do not have the same length, throw an
      *  IllegalArgumentException.
      */
-    public static final boolean within(final double[] array1, 
+    public static final boolean within(final double[] array1,
      final double[] array2, double maxError) {
         int length = _commonLength(array1, array2, "DoubleArrayMath.within");
 
@@ -478,7 +478,7 @@ public class DoubleArrayMath {
      *  without parentheses.
      *  @return The common length of both arrays.
      */
-    public static final int _commonLength(final double[] array1, 
+    public static final int _commonLength(final double[] array1,
      final double[] array2,
             String methodName) {
         if (array1 == null) {
@@ -495,7 +495,7 @@ public class DoubleArrayMath {
             throw new IllegalArgumentException("ptolemy.math." + methodName +
                     "() : input arrays must have the same length, " +
                     "but the first array has length " + array1.length +
-                    " and the second array has length " + 
+                    " and the second array has length " +
                     array2.length + ".");
         }
 

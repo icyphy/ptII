@@ -44,7 +44,7 @@ and Hughes, 2nd ed. in C, 1996.
 The setValues() method specifies the reference values as a double
 array. setIndexes() specifies the indexes of those values as an
 int array. These two arrays must have the same length, and the indexes
-must be increasing and non-negative; otherwise an exception will be thrown. 
+must be increasing and non-negative; otherwise an exception will be thrown.
 The values are periodic if a positive period is set by setPeriod(). In
 this case, the period must be greater than the largest index, and
 values within the index range 0 to (period-1) are repeated indefinitely.
@@ -56,7 +56,7 @@ The default reference values are {1.0, 0.0} and the indexes are {0, 1}.
 The default period is 2 and the order is 0.
 <p>
 
-@author Sarah Packman, Yuhong Xiong 
+@author Sarah Packman, Yuhong Xiong
 @version $Id$
 */
 
@@ -114,8 +114,8 @@ public class Interpolation {
         }
 
 	_indexes = indexes;
-    } 
- 
+    }
+
     /** Set the value repetition period.
      *  @param period An int.
      *  @exception IllegalArgumentException If the period is negative.

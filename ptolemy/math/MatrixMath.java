@@ -772,8 +772,8 @@ public class MatrixMath {
     private static final int _checkSquare(String caller, double[][] matrix) {
         if (_rows(matrix) != _columns(matrix)) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.MatrixMath." + caller + 
-                    "() : matrix argument " + _dimensionString(matrix) + 
+                    "ptolemy.math.MatrixMath." + caller +
+                    "() : matrix argument " + _dimensionString(matrix) +
                     " is not a square matrix.");
         }
         return _rows(matrix);

@@ -109,7 +109,7 @@ public class StatusBar extends JPanel {
 
     // A panel for the progress bar.
     private JPanel _progressPanel;
-    
+
     // The label that displays the status message.
     // Use JTextField instead of JLabel because there appears to be no
     // way to control the width of a label except by writing text to it.

@@ -89,7 +89,7 @@ public class ComplexArrayMath {
     }
 
     /** Return a new array that is the result of appending length2 elements
-     *  of array2, starting from the array1[idx2] to length1 elements of 
+     *  of array2, starting from the array1[idx2] to length1 elements of
      *  array1, starting from array1[idx1].
      *  Appending empty arrays is supported. In that case, the corresponding
      *  idx may be any number. Allow System.arraycopy() to throw array access
@@ -119,9 +119,9 @@ public class ComplexArrayMath {
     }
 
 
-    /** Return a new array of complex numbers that is formed by taking the 
+    /** Return a new array of complex numbers that is formed by taking the
      *  complex-conjugate of each element in the argument array.
-     *  If the argument has length 0, return a new array of complex numbers, 
+     *  If the argument has length 0, return a new array of complex numbers,
      *  with length 0.
      */
     public static final Complex[] conjugate(Complex[] array) {
@@ -251,7 +251,7 @@ public class ComplexArrayMath {
 
     /** Return a new array of Complex numbers that is formed by padding the
      *  middle of the array with 0's. If either the length of the
-     *  input array is odd, the sample with index ceil(L/2) will be 
+     *  input array is odd, the sample with index ceil(L/2) will be
      *  repeated in the output array, where L is the length of the input array.
      *  If the length of the input and output arrays are equal, return
      *  a copy of the input array.
@@ -259,8 +259,8 @@ public class ComplexArrayMath {
      *  @param array An array of complex numbers.
      *  @param newLength The desired length of the returned array.
      *  @return A new array of complex numbers.
-     */    
-    public static final Complex[] padMiddle(final Complex[] array, 
+     */
+    public static final Complex[] padMiddle(final Complex[] array,
      final int newLength) {
         int length = array.length;
 
@@ -281,9 +281,9 @@ public class ComplexArrayMath {
 
         System.arraycopy(array, 0, retval, 0, halfLengthCeil);
 
-        System.arraycopy(array,  halfLengthFloor, retval, 
-         newLength - halfLengthCeil, halfLengthCeil); 
-        
+        System.arraycopy(array,  halfLengthFloor, retval,
+         newLength - halfLengthCeil, halfLengthCeil);
+
         for (int i = halfLengthCeil; i < newLength - halfLengthCeil; i++) {
             retval[i] = Complex.ZERO;
         }
@@ -672,7 +672,7 @@ public class ComplexArrayMath {
         if (array1.length != array2.length) {
             throw new IllegalArgumentException("ptolemy.math." + methodName +
                     "() : input arrays must have the same length, " +
-                    "but the first array has length " + array1.length + 
+                    "but the first array has length " + array1.length +
                     " and the second array has length " + array2.length + ".");
         }
 

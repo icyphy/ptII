@@ -210,14 +210,14 @@ public class Query extends JPanel {
         _entries.put(name, buttons);
     }
 
-    /** Create a slider with the specified name, label, default 
+    /** Create a slider with the specified name, label, default
      *  value, maximum, and minimum.
      *  @param name The name used to identify the slider.
-     *  @param label The label to attach to the slider.     
+     *  @param label The label to attach to the slider.
      *  @param defaultValue Initial position of slider.
      *  @param maximum Maximum value of slider.
      *  @param minimum Minimum value of slider.
-     *  @exception IllegalArgumentException If the desired default value 
+     *  @exception IllegalArgumentException If the desired default value
      *   is not between the minimum and maximum.
      */
     public void addSlider(String name, String label, int defaultValue,
@@ -375,7 +375,7 @@ public class Query extends JPanel {
      *  @exception IllegalArgumentException If the value does not parse
      *   to the appropriate type.
      */
-    public void set(String name, String value) 
+    public void set(String name, String value)
             throws NoSuchElementException, IllegalArgumentException {
         Object result = _entries.get(name);
         if(result == null) {
@@ -467,7 +467,7 @@ public class Query extends JPanel {
      *   display.  This is a runtime exception, so it
      *   need not be declared explicitly.
      */
-    public void setDisplay(String name, String value) 
+    public void setDisplay(String name, String value)
             throws  NoSuchElementException, IllegalArgumentException {
         Object result = _entries.get(name);
         if(result == null) {
@@ -484,8 +484,8 @@ public class Query extends JPanel {
         }
     }
 
-    /** For line, display, check box, slider, radio button, or choice 
-     *  entries made, if the second argument is false, then it will 
+    /** For line, display, check box, slider, radio button, or choice
+     *  entries made, if the second argument is false, then it will
      *  be disabled.
      *  @param name The name of the entry.
      *  @param value If false, disables the entry.
@@ -592,7 +592,7 @@ public class Query extends JPanel {
      *  @exception IllegalArgumentException If the entry type does not
      *   have a string representation (this should not be thrown).
      */
-    public String stringValue(String name) 
+    public String stringValue(String name)
             throws NoSuchElementException, IllegalArgumentException {
         Object result = _entries.get(name);
         if(result == null) {
