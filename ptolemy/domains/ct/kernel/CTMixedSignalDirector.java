@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (liuj@eecs.berkeley.edu)
-
+@AcceptedRating Red (liuj@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.ct.kernel;
@@ -78,7 +78,8 @@ the fire end time and the first detected event time.
 @see classname
 @see full-classname
 */
-public class CTMixedSignalDirector extends CTMultiSolverDirector{
+public class CTMixedSignalDirector extends CTMultiSolverDirector
+        implements CTEmbeddedDirector {
     /** Construct a CTMixedSignalDirector with no name and no Container.
      *  All parameters take their default values. The scheduler is a
      *  CTScheduler.
@@ -196,10 +197,13 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
             _fireOneIteration();
             if (_stopByEvent()) {
                 exe.fireAt(ca, getCurrentTime());
+                _isFireSuccessful = false;
+                _refinedStep = getCurrentTime() - getOutsideTime();
                 _setEventPhase(true);
                 return;
             } else if (getCurrentTime()>=getFireEndTime()) {
                 exe.fireAt(ca, getCurrentTime());
+                _isFireSuccessful = true;
                 return;
             } 
         }
@@ -264,6 +268,16 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
         _initialize();
     }
 
+    /** Return true if this is an embedded director and the current fire
+     *  is successful. The success is determined by asking all the 
+     *  step size control actors in the output schedule. If this is a 
+     *  top level director, then return true always.
+     *  @return True if the current step is successful.
+     */
+    public boolean isThisStepSuccessful() {
+        return _isFireSuccessful;
+    }       
+
     /** If this is a top-level director, returns true if the current time
      *  is less than the stop time, otherwise, return true always.
      *  If this is a top-level director, and the current time is greater
@@ -278,6 +292,12 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
         } else {
             return true;
         }
+    }
+
+    /** Return the suggested next step size.
+     */
+    public double predictedStepSize() {
+        return getSuggestedNextStepSize();
     }
 
     /** Returns true always, indicating that the (sub)system is always ready
@@ -387,7 +407,18 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
         return true;
     }
 
-
+    /** Return the refines step size if the current fire is not successful.
+     *  @return The refined step size.
+     */
+    public double refinedStepSize() {
+        if(!_isFireSuccessful) {
+            return _refinedStep;
+        } else {
+            Director exdir = 
+                ((CompositeActor)getContainer()).getExecutiveDirector();
+            return exdir.getNextIterationTime() - exdir.getCurrentTime();
+        }
+    } 
 
     /** Update the given parameter. If the parameter name is MaxRunAheadLength,
      *  update it. Otherwise pass it to the super class.
@@ -602,4 +633,10 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
 
     // whether in the emit event phase;
     private boolean _eventPhase = false;
+
+    // If this fire is successful (not interrupted by events) 
+    private boolean _isFireSuccessful;
+    
+    // The refined step size if this fire is not successful
+    private double _refinedStep;
 }
