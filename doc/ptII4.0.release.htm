@@ -937,7 +937,7 @@ Version 4.0 has the following limitations:
 <h3>Release Limitations</h3>
 <ul>
 
-<li> Some of he documentation has not yet been updated
+<li> Some of the documentation has not yet been updated
 <menu>
 <li> The three volume design doc has not yet been updated
 
@@ -990,6 +990,9 @@ see <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/mac.htm#in_brows
 
 <li> Applet issues:
 	<ul>
+
+	<li> The GR applets do not work well under Java 1.5.0-beta.
+	Use 1.4.2-04 instead.
 
 	<li> Applets seems to be trying to download tmp.jar, which
 	is not found.
@@ -1262,6 +1265,10 @@ he set them by hand:
 </pre>
 he was able to get farther with the recompilation of the Matlab interface.
 
+<li>Matlab interface has problems work with gcc-3.3
+Under Windows, the Matlab interface has problems at runtime with gcc-3.3.
+<br>Under Windows, we recommend using gcc-3.2.
+
 <li> The actor.lib.comm.SerialComm actor requires that Javacomm is installed
 
 <a href="http://java.sun.com/products/javacomm/index.html#in_browser" target="_top"><CODE>http://java.sun.com/products/javacomm/index.html</CODE></a>.
@@ -1358,6 +1365,17 @@ have constraints on their element types can cause problems.
 <li>It is difficult to add actors to the libraries.
 <li>No dynamic class reloading.
 
+
+<li> Plot windows don't resize when control panel is resized
+ <br>If a model with plotters
+is executed using the run button on the toolbar, and
+then re-executed using the run control panel accessed through
+the View menu, then resizing the run control panel does not
+cause the plots to resize to fit.
+<br>Workaround:
+Close the model and re-open it, and then run first using the
+run control panel.
+
 <li>There is no mechanism in the UI to save a model as a class,
 nor to save a submodel as a class.
 
@@ -1385,6 +1403,18 @@ incorrectly shows the slider as a subitem of the actor.
 
 
 <li> The JNI user interface does not permit creation of new JNI actors.
+
+<b>If you follow the instructions in 
+<a href="codeDoc/jni/JNIUtilities.html">JNIUtilities</a>, then
+eventually you will get a NameDuplicationException.
+<p>The resulting model will be missing
+<pre>
+&lt;property name="output" class="jni.Argument" value="false,false,true,double"&gt;
+&lt;/property&gt;
+</pre>
+We are working with the original authors on a solution.
+<br>In the short term, one workaround is to edit the xml file directly
+and add the appropriate property by hand.
 
 <li> JNI will not work with Hierarchical classes, subclasses, and inner
 classes
