@@ -323,7 +323,7 @@ public final class FixPoint implements Cloneable, Serializable {
     /** Return a string representation of the value of this Fixpoint.
      * @return A string representation of the value of this Fixpoint
      */
-    public String toString(){
+    public String toString() {
   	return "" + doubleValue();
     }
 
