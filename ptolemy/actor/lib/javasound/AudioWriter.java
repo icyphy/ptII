@@ -56,7 +56,7 @@ the samples to the specified sound file. Any existing file
 with the same name will be silently overwritten. The input port
 is of type DoubleToken. Each DoubleToken read from the input
 port represents one sample of the audio data and should be in
-the range [-1, 1]. Any samples that are outside of this range
+the range [-1.0, 1.0]. Any samples that are outside of this range
 will be hard clipped to fall within this range before they are
 written to the sound file. Single channel (mono) and two
 channel (stereo) formats are supported. For single channel
@@ -90,8 +90,9 @@ to grant applets more privileges.
 Note: Requires Java 2 v1.3.0 or later.
 @author  Brian K. Vogel
 @version  $Id$
-@see ptolemy.media.javasound.AudioReader
-@see ptolemy.media.javasound.SoundWriter
+@see AudioReader
+@see AudioCapture
+@see AudioPlayer
 */
 public class AudioWriter extends Sink {
 
@@ -133,14 +134,14 @@ public class AudioWriter extends Sink {
      *  supported. For example, to write samples to a file with the
      *  name "test.au" in the directory "c:\tmp", this parameter
      *  should be set to the value c:\tmp\test.au. To write samples
-     *  to a file with name name "test.au" in the current directory,
+     *  to a file with name "test.au" in the current directory,
      *  this parameter should be set to the value test.au. The default
-     *  value of this parameter is test.wav, which creates a file called
+     *  value of this parameter is "test.wav", which creates a file called
      *  test.wav in the current directory and writes samples to this file.
      *  <p>
      *  The audio format to use is determined by the file extension.
      *  E.g., "outfile.wav" will create a WAV format file.
-     *  The supported file formats are AU, WAV, and , AIFF.
+     *  The supported file formats are AU, WAV, and, AIFF.
      *  <p>
      *  If this parameter is changed during execution, all data
      *  written so far will be saved, and the sound file will be
@@ -153,7 +154,7 @@ public class AudioWriter extends Sink {
     public StringAttribute pathName;
 
     /** The desired sample rate to use, in Hz. Valid values
-     *  include : 8000, 11025, 22050, 44100, and 48000.
+     *  include: 8000, 11025, 22050, 44100, and 48000.
      *  The default value of the sample rate is 8000 Hz.
      *  <p>
      *  If this parameter is changed during execution, all data
@@ -180,6 +181,7 @@ public class AudioWriter extends Sink {
 
     /** The number of audio channels to use. Supported values are
      *  1 (single channel) and 2 (stereo). The default value is 1.
+     *  The default value is an IntToken of value 1.
      *  <p>
      *  If this parameter is changed during execution, all data
      *  written so far will be saved, and the sound file will be
@@ -308,7 +310,7 @@ public class AudioWriter extends Sink {
      *  channel 1 if stereo mode is used), then read 1 token
      *  from the corresponding channels and write the token
      *  values to the specified sound file. Otherwise, do nothing,
-     *  and return a value of NOT_READY.
+     *  and return a value of false.
      *  @exception IllegalActionException If there is a problem
      *   writing the audio sample(s) to the specified file.
      */

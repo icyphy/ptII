@@ -100,7 +100,9 @@ Note: Requires Java 2 v1.3.0 or later.
 @author  Brian K. Vogel
 @version  $Id$
 @see ptolemy.media.javasound.LiveSound
-@see ptolemy.actor.lib.javasound.AudioCapture
+@see AudioCapture
+@see AudioReader
+@see AudioWriter
 */
 public class AudioPlayer extends Sink implements LiveSoundListener {
 
@@ -277,8 +279,8 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
 
     /** Obtain access to the audio playback hardware, and start playback.
      *  An exception will occur if there is a problem starting
-     *  playback. This will occur if another AudioPlayer actor has
-     *  already started audio playback.
+     *  playback. This will occur if another AudioPlayer actor is
+     *  playing audio.
      *  @exception IllegalActionException If there is a problem 
      *   begining audio playback.
      */
@@ -457,7 +459,7 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
     /** Stop audio playback and free up any audio resources used
      *  for audio playback.
      *  @exception IllegalActionException If there is a problem
-     *   stoping audio playback.
+     *   stopping audio playback.
      */
     public void wrapup() throws IllegalActionException {
 	super.wrapup();

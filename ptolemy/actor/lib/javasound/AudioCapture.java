@@ -74,7 +74,7 @@ AudioPlayback actors both share access to the audio hardware, which
 is associated with a single sample rate, bit resolution, and
 number of channels.
 <ul>
-<li><i>sampleRate</i> should be set to desired sample rate, in Hz.
+<li><i>sampleRate</i> should be set to the desired sample rate, in Hz.
 The default value is 8000. Allowable values are 8000, 11025,
 22050, 44100, and 48000 Hz. Note that Java does not support
 96000 Hz operation, even if the audio hardware supports it.
@@ -84,9 +84,10 @@ Note that Java does not support 20 or 24 bit audio, even if the
 audio hardware supports it.
 <li><i>channels</i> should be set to desired number of audio
 channels. The default value is 1 (for mono audio). Allowable
-values are 1 and 2. Note that more than two channels of audio is
-not currently supported in Java, even if the audio hardware
-supports it.
+values are 1 and 2 (for stereo). Note that more than two 
+channels of audio is not currently supported in Java, even if 
+the audio hardware supports it.
+</ul>
 <p>
 It should be noted that at most one AudioCapture and one AudioPlayer
 actor may be used simultaneously. Otherwise, an exception will
@@ -106,7 +107,7 @@ Note: Requires Java 2 v1.3.0 or later.
 @version $Id$
 @see ptolemy.media.javasound.LiveSound
 @see AudioPlayback
-@see SoundWriter
+@see SoundReader
 @see SoundWriter
 */
 public class AudioCapture extends Source implements LiveSoundListener {
@@ -159,7 +160,7 @@ public class AudioCapture extends Source implements LiveSoundListener {
      *  automatically cause the parameters of an AudioPlayer actor 
      *  to be set to the same values as the parameters of this actor.
      *  <p>
-     *  An exception will be occur if this parameter is set to an
+     *  An exception will occur if this parameter is set to an
      *  unsupported sample rate.
      */
     public Parameter sampleRate;
@@ -259,13 +260,14 @@ public class AudioCapture extends Source implements LiveSoundListener {
 
     /** Read parameter values and begin the sound capture process.
      *  An exception will occur if there is a problem starting
-     *  capture. This will occur if another AudioCapture actor has
-     *  already started audio capture.
+     *  the audio capture. This will occur if another AudioCapture actor has
+     *  already started capturing.
      *  @exception IllegalActionException If there is a problem
      *   starting audio capture.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+	// FIXME: remove this after debug.
 	if (_debugInfo) {
 	    System.out.println("AudioCapture: initialize(): invoked");
 	}
@@ -370,8 +372,10 @@ public class AudioCapture extends Source implements LiveSoundListener {
 	}
     }
 
-    /** Notify this actor that the an audio parameter of LiveSound has
-     *  changed.
+    /** React to a change in an audio parameters of LiveSound. 
+     *  LiveSound will call this method when an audio parameter
+     *  such as the sample rate, number of channels, or bit
+     *  resolution changes.
      *
      *  @param event The live sound change event.
      */
@@ -439,11 +443,10 @@ public class AudioCapture extends Source implements LiveSoundListener {
      *  often enough to prevent overflow of the internal audio capture
      *  buffer. Overflow should be avoided, since it will result in loss
      *  of data. This method will block until the samples have been
-     *  written, so it is not possible to invoke this method too
+     *  read, so it is not possible to invoke this method too
      *  frequently.
      *
-     *  @return True Unless there is a problem capturing audio, in
-     *   which case an exception will occur.
+     *  @return True 
      *  @exception IllegalActionException If audio cannot be captured.
      */
     public boolean postfire() throws IllegalActionException {

@@ -54,7 +54,7 @@ import ptolemy.media.javasound.*;
 This actor sequentially outputs the samples from an sound file, 
 specified as a URL. Although the sound file must be specified 
 as a URL, it is still possible to specify files on the local 
-file system. The audio samples that a read from the file are 
+file system. The audio samples that are read from the file are 
 converted to DoubleTokens that may range from [-1.0, 1.0].
 Thus, the output type of this actor is DoubleToken.
 <p>
@@ -62,7 +62,7 @@ Thus, the output type of this actor is DoubleToken.
 <p>
 The <i>sourceURL</i> parameter should be set to the name of the file,
 specified as a fully qualified URL. The default value is
-http://ptolemy.eecs.berkeley.edu/~vogel/sounds/test.wav.
+file:///tmp/test.wav
 The sound file is not periodically repeated by this actor, so
 postfire() will return false when the end of the sound
 file is reached.
@@ -99,26 +99,25 @@ public class AudioReader extends Source {
         output.setTypeEquals(BaseType.DOUBLE);
 	output.setMultiport(true);
 	sourceURL = new StringAttribute(this, "sourceURL");
-	//sourceURL.setExpression("file:c:\tmp\voice.wav");
-	sourceURL.setExpression("http://ptolemy.eecs.berkeley.edu/~vogel/sounds/test.wav");
+	sourceURL.setExpression("file:///tmp/test.wav");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
 
     /** The URL of the file to read from. The default value of this 
-     * parameter is the URL
-     *  http://ptolemy.eecs.berkeley.edu/~vogel/sounds/test.wav.
+     *  parameter is the URL
+     *  file:///tmp/test.wav
      *  Supported file formats are  WAV, AU, and AIFF. The sound
      *  file format is determined from the file extension.
      *  It is possible to load a file from the local
-     *  file system by using the prefix "file:" instead of "http://".
+     *  file system by using the prefix "file://" instead of "http://".
      *  Relative file paths are not allowed, so the complete path
      *  must be specified. As an example, to reference the file
-     *  test.wav, located at c:\tmp\test.wav, <i>sourceURL</i>
-     *  should be set to file:c:\tmp\test.wav.
+     *  test.wav, located at "/tmp/test.wav", <i>sourceURL</i>
+     *  should be set to "file:///tmp/test.wav"
      *  <p>
-     *  An exception will be occur if the path references a
+     *  An exception will occur if the path references a
      *  non-existent or unsupported sound file.
      */
     public StringAttribute sourceURL;
@@ -140,7 +139,7 @@ public class AudioReader extends Source {
 		try {
 		    _initializeReader();
 		} catch (IOException ex) {
-		    throw new IllegalActionException(
+		    throw new IllegalActionException(this,
 				 "Cannot read audio:\n" +
 				  ex);
 		}
@@ -162,7 +161,7 @@ public class AudioReader extends Source {
 	try {
 	    _initializeReader();
 	} catch (IOException ex) {
-	    throw new IllegalActionException(
+	    throw new IllegalActionException(this,
 			 "Cannot read audio:\n" +
 			 ex);
 	}
@@ -200,9 +199,9 @@ public class AudioReader extends Source {
 		    // Read in audio data.
 		    _audioInDoubleArray = _soundReader.getSamples();
 		} catch (Exception ex) {
-		    throw new IllegalActionException(
-                            "Cannot read audio: " +
-                            ex.getMessage());
+		    throw new IllegalActionException(this,
+                            "Unable to open the sound file for reading: " +
+                            ex);
 		}
 		_getSamplesArrayPointer = 0;
 		// Check that the read was successful
@@ -288,7 +287,7 @@ public class AudioReader extends Source {
 	    try {
 		_soundReader.closeFile();
 	    } catch (IOException ex) {
-		throw new IllegalActionException(
+		throw new IllegalActionException(this,
                         "Problem closing sound file: \n" +
                         ex.getMessage());
 	    }
