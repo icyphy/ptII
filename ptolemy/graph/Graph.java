@@ -1191,9 +1191,6 @@ public class Graph implements Cloneable {
      *  @see #hideEdge(Edge).
      */
     public boolean restoreEdge(Edge edge) {
-        if (!containsEdge(edge)) {
-            return false;
-        }
         if (_hiddenEdgeSet.remove(edge)) {
             // Make sure the source and sink are still in the graph.
             if (!containsNode(edge.source())) {
