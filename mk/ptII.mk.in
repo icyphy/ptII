@@ -144,6 +144,11 @@ CALTROP_DIR = @CALTROP_DIR@
 # Used in bin/ptinvoke.in
 CHIC_DIR = @CHIC_DIR@
 
+# Directory that contains colt.jar
+# Colt is a "Open Source Libraries for High Performance Scientific
+# and Technical Computing in Java" used in bin/ptinvoke.in
+COLT_JAR = @COLT_JAR@
+
 # Directory that contains the CaffeineMark Java Benchmark kit
 # used by C code generation in copernicus/c
 CMKIT_DIR = @CMKIT_DIR@
@@ -280,6 +285,9 @@ PTCHIC_DIR = @PTCHIC_DIR@
 # PTCM_DIR is set to cm and used in $PTII/ptolemy/copernicus/c/test/makefile
 # if the CaffeineMark Java Benchmark kit is found.
 PTCM_DIR =	@PTCM_DIR@
+
+# Set to colt and used in $PTII/ptolemy/actor/lib/makefile if colt was found.
+PTCOLT_DIR =    @PTCOLT_DIR@
 
 # Set to comm and used in
 # $PTII/ptolemy/actor/lib/makefile if the Java Communications API was found
