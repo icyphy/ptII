@@ -45,7 +45,8 @@ TCL_SRCS = \
 
 JSRCS = \
 	IdentityActor.java \
-	TestActor.java
+	TestActor.java \
+	TestProcessActor.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
