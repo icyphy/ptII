@@ -45,7 +45,7 @@ ME =		ptolemy
 DIRS = util kernel plot graph moml data actor gui math media	\
 	$(PTMATLAB_DIR)	domains	$(PTCOPERNICUS_DIR) \
 	vergil hsif $(PTCHIC_DIR) \
-	apps $(PTCAL_DIR) configs
+	apps $(PTCAL_DIR) caltrop configs
 
 # Root of Ptolemy II directory
 ROOT =		..
