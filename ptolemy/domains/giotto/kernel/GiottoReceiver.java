@@ -35,6 +35,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
 import ptolemy.data.Token;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// GiottoReceiver
@@ -61,8 +62,10 @@ public class GiottoReceiver extends AbstractReceiver {
 
     /** Construct an empty GiottoReceiver with the specified container.
      *  @param container The container.
+     *  @throws IllegalActionException If the container does
+     *   not accept this receiver.
      */
-    public GiottoReceiver(IOPort container) {
+    public GiottoReceiver(IOPort container) throws IllegalActionException {
         super(container);
     }
 
@@ -88,11 +91,26 @@ public class GiottoReceiver extends AbstractReceiver {
         return true;
     }
 
+    /** Return true if the argument is 1, and there is no token in the
+     *  receiver.
+     *  @return True if the argument is 1, and there is room for one token.
+     */
+    public final boolean hasRoom(int numberOfTokens) {
+        return (numberOfTokens == 1 && _token == null);
+    }
+
     /** Return true if there is a token available.
      *  @return True if there is a token available.
      */
     public boolean hasToken() {
         return (_token != null);
+    }
+
+    /** Return true if the argument is 1, and there is a token available.
+     *  @return True if the argument is 1, and there is a token available.
+     */
+    public final boolean hasToken(int numberOfTokens) {
+        return (numberOfTokens == 1 && _token != null);
     }
 
     /** Put a token into this receiver. If the argument is null,

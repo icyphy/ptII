@@ -1,4 +1,4 @@
-/* A class for indicating that a receiver failed to accept a token.
+/* A base class for runtime exceptions.
 
  Copyright (c) 1997-2000 The Regents of the University of California.
  All rights reserved.
@@ -28,30 +28,25 @@
 @AcceptedRating Green (bart@eecs.berkeley.edu)
 */
 
-package ptolemy.actor;
-
-import ptolemy.kernel.util.KernelRuntimeException;
-import ptolemy.kernel.util.Nameable;
+package ptolemy.kernel.util;
 
 //////////////////////////////////////////////////////////////////////////
-//// NoRoomException
+//// KernelRuntimeException
 /**
-This exception is thrown when an attempt is made to put a token
-into a receiver that does not have room to accommodate one.
-To avoid this exception, code should use the hasRoom() method in the
-Receiver interface to determine whether there is room for a token.
+Base class for runtime exceptions.  This class extends the basic
+Java RuntimeException with a constructor that can take a Nameable as
+an argument.
 
-@author Lukito Muliadi
+@author Edward A. Lee
 @version $Id$
-@see Receiver
 */
-public class NoRoomException extends KernelRuntimeException {
+public class KernelRuntimeException extends RuntimeException {
 
     /** Construct an exception with the given error message.
      *  @param message The message.
      */
-    public NoRoomException(String message) {
-        super(message);
+    public KernelRuntimeException(String message) {
+        _setMessage(message);
     }
 
     /** Construct an exception originating from the given object,
@@ -59,7 +54,41 @@ public class NoRoomException extends KernelRuntimeException {
      *  @param object The originating object.
      *  @param message The message.
      */
-    public NoRoomException(Nameable object, String message) {
-        super(object, message);
+    public KernelRuntimeException(Nameable object, String message) {
+        String name;
+        if (object == null) {
+            name = new String("");;
+        } else {
+            try {
+                name = object.getFullName();
+            } catch (InvalidStateException ex) {
+                name = object.getName();
+            }
+        }
+        _setMessage(name + ": " + message);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Return the error message. */
+    public String getMessage() {
+        return _message;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Set the error message to the given string.
+     *  @param message The message.
+     */
+    protected void _setMessage(String message) {
+        _message = message;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // The error message.
+    private String _message ;
 }

@@ -25,10 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red (eal@eecs.berkeley.edu)
-
-7/22/00: Downgraded from yellow (neuendor) to red by EAL.
-         Changed the signature of the configure() method.
+@AcceptedRating Green (bart@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel.util;
@@ -41,7 +38,7 @@ import java.net.URL;
 /**
 Objects that can be configured by reading a file or configuration information
 given as text, typically in XML format, should implement this interface.
-This enables a user interface to recognize that such file-based
+This enables a user of a component to recognize that such file-based
 configuration is possible, and permits configuration to be specified
 via the MoML configure element.
 For example, a plotter actor implements this interface to
@@ -54,6 +51,8 @@ the filter specification to be given using markup.
 <p>
 This interface can also be used for actors which load configuration
 information from non-XML formats, such as GIF images or binary lookup tables.
+The <i>source</i> argument of the configure() method simply points
+to such a file.
 
 @author Edward A. Lee
 @version $Id$

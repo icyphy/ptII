@@ -34,6 +34,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.Mailbox;
 import ptolemy.actor.NoRoomException;
 import ptolemy.data.Token;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTReceiver
@@ -58,8 +59,10 @@ public class CTReceiver extends Mailbox {
 
     /** Construct an empty CTReceiver with the specified container.
      *  @param container The port that contains the receiver.
+     *  @exception IllegalActionException If this receiver cannot be
+     *   contained by the proposed container.
      */
-    public CTReceiver(IOPort container) {
+    public CTReceiver(IOPort container) throws IllegalActionException {
         super(container);
     }
 

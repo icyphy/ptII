@@ -396,10 +396,8 @@ public class Manager extends NamedObj implements Runnable {
      *  invoked, and true is returned.
      *  Otherwise, fire() will be called once, followed by
      *  postfire(). The return value of postfire() is returned.
-     *  Note that this method ignores finish and pause requests.
-     *  If you wish to use finish() or pause() to control the execution,
-     *  then you should execute the model using execute(), run(), or
-     *  startRun().
+     *  Note that this method ignores finish and pause requests
+     *  and thus determines a minimum granularity of the execution.
      *  Set the state of the manager to ITERATING.
      *  This method is read synchronized on the workspace.
      *
@@ -492,13 +490,16 @@ public class Manager extends NamedObj implements Runnable {
     }
 
     /** Set a flag requesting that execution pause at the next opportunity
-     *  (between iterations).  Call stopFire() on the toplevel composite
-     *  actor to ensure that the manager's execution thread becomes active
-     *  again.   This is necessary in the case of PN, where an iteration
-     *  only ends if deadlock occurs, which may never happen.
-     *  The thread controlling the execution will be
-     *  suspended the next time through the iteration loop.  To resume
-     *  execution, call resume() from another thread.
+     *  (between iterations).  This method calls stopFire() on the
+     *  toplevel composite actor to ensure that the manager's execution
+     *  thread becomes active again. Actors are expected to react to
+     *  stopFire() by returning as soon as possible from their fire()
+     *  methods, thus completing an iteration.  For example, in the case
+     *  of PN, an iteration only ends if deadlock occurs, which may
+     *  never happen.  Calling stopFire() truncates the iteration.
+     *  The thread controlling the execution (the one that calls execute())
+     *  will be suspended the next time through the iteration loop.
+     *  To resume execution, call resume().
      *  @see Executable#stopFire
      */
     public void pause() {
@@ -703,7 +704,7 @@ public class Manager extends NamedObj implements Runnable {
      *  This method also calls terminate on the toplevel composite actor.
      *  <p>
      *  This method is not synchronized because we want it to
-     *  happen as soon as possible.
+     *  execute as soon as possible.
      *  @deprecated
      */
     public void terminate() {
@@ -832,11 +833,8 @@ public class Manager extends NamedObj implements Runnable {
      *  and no further requests are processed.
      *  Note that change requests processed successfully
      *  prior to the failed request are not undone.
-     *
-     *  @exception IllegalActionException If any of the pending requests have
-     *   already been implemented.
      */
-    protected void _processChangeRequests() throws IllegalActionException {
+    protected void _processChangeRequests() {
         while (_changeRequests != null) {
             _setState(MUTATING);
 

@@ -23,13 +23,14 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Green (neuendor@eecs.berkeley.edu)
 
 */
 
 package ptolemy.actor;
 
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.data.Token;
 
 //////////////////////////////////////////////////////////////////////////
@@ -50,48 +51,82 @@ public class Mailbox extends AbstractReceiver {
 
     /** Construct an empty Mailbox with the specified container.
      *  @param container The container.
+     *  @throws IllegalActionException If the container does
+     *   not accept this receiver.
      */
-    public Mailbox(IOPort container) {
+    public Mailbox(IOPort container) throws IllegalActionException {
 	super(container);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Get the contained Token.  If there is none, thrown an exception.
+    /** Get the contained Token.  If there is none, throw an exception.
      *  The token is removed.
-     *  @return A token.
-     *  @exception NoTokenException If the Mailbox is empty.
+     *  @return The token contained by this mailbox.
+     *  @exception NoTokenException If this mailbox is empty.
      */
     public Token get() throws NoTokenException {
         if(_token == null) {
             throw new NoTokenException(getContainer(),
                     "Attempt to get data from an empty mailbox.");
         }
-        Token t = _token;
+        Token token = _token;
         _token = null;
-        return t;
+        return token;
     }
 
-    /** Return true if the Mailbox is empty.
-     *  @return True if the Mailbox is empty.
+    /** Return true if this mailbox is empty.
+     *  @return True if this mailbox is empty.
      */
     public boolean hasRoom() {
         return (_token == null);
     }
 
-    /** Return true if the Mailbox is not empty.
-     *  @return True if the Mailbox is not empty.
+    /** Return true if the argument is 1 and the mailbox is empty,
+     *  and otherwise return false.
+     *  @param numberOfTokens The number of tokens to put into the mailbox.
+     *  @exception IllegalArgumentException If the argument is not positive.
+     *   This is a runtime exception, so it does not need to be declared
+     *   explicitly.
+     */
+    public boolean hasRoom(int numberOfTokens) throws IllegalArgumentException {
+	if(numberOfTokens < 1) {
+	    throw new IllegalArgumentException(
+                    "hasRoom() requires a positive argument.");
+        }
+	if(numberOfTokens == 1) return (_token == null);
+	return false;
+    }
+
+    /** Return true if this mailbox is not empty.
+     *  @return True if this mailbox is not empty.
      */
     public boolean hasToken() {
         return (_token != null);
     }
 
+    /** Return true if the argument is 1 and this mailbox is not empty,
+     *  and otherwise return false.
+     *  @param numberOfTokens The number of tokens to get from the receiver.
+     *  @return True if the argument is 1 and this mailbox is not empty.
+     *  @exception IllegalArgumentException If the argument is not positive.
+     *   This is a runtime exception, so it does not need to be declared
+     *   explicitly.
+     */
+    public boolean hasToken(int numberOfTokens)
+            throws IllegalArgumentException {
+	if(numberOfTokens < 1)
+	    throw new IllegalArgumentException(
+                    "hasToken() requires a positive argument.");
+	if(numberOfTokens == 1) return (_token != null);
+	return false;
+    }
+
     /** Put a token into the mailbox.  If the argument is null, then the
      *  mailbox will not contain a token after this returns.
      *  @param token The token to be put into the mailbox.
-     *  @exception NoRoomException If the Mailbox already contains
-     *   a previously put token that has not been gotten.
+     *  @exception NoRoomException If this mailbox is not empty.
      */
     public void put(Token token) throws NoRoomException {
         if(_token != null) {

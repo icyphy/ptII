@@ -32,10 +32,9 @@
 package ptolemy.actor;
 
 
-import ptolemy.actor.util.FIFOQueue;	/* Needed by javadoc */
+import ptolemy.actor.util.FIFOQueue;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
-
 
 import java.util.NoSuchElementException;
 import java.util.Enumeration;
@@ -68,8 +67,10 @@ public class QueueReceiver extends AbstractReceiver {
 
     /** Construct an empty receiver with the specified container.
      *  @param container The container of the receiver.
+     *  @throws IllegalActionException If the container does
+     *   not accept this receiver.
      */
-    public QueueReceiver(IOPort container) {
+    public QueueReceiver(IOPort container) throws IllegalActionException {
         super(container);
     }
 
@@ -90,7 +91,6 @@ public class QueueReceiver extends AbstractReceiver {
     public List elementList() {
         return _queue.elementList();
     }
-
 
     /** Remove the first token (the oldest one) from the receiver and
      *  return it. If there is no token in the receiver, throw an
@@ -125,7 +125,7 @@ public class QueueReceiver extends AbstractReceiver {
      *  exception is thrown.
      *  @param offset The offset from the oldest token in the receiver.
      *  @return The token at the desired offset in the receiver or its
-     history.
+     *   history.
      *  @exception NoTokenException If the offset is out of range.
      */
     public Token get(int offset) {
@@ -155,48 +155,51 @@ public class QueueReceiver extends AbstractReceiver {
         return _queue.getHistoryCapacity();
     }
 
-    /** Return true if put() will succeed in accepting a token.
-     *  @return A boolean indicating whether a token can be put in this
-     *   receiver.
+    /** Return true if the next call to put() will succeed without
+     *  a NoRoomException.
+     *  @return True if the queue has room for one more token.
      */
     public boolean hasRoom() {
 	return !_queue.isFull();
     }
 
-    /** Return true if the receiver has room for putting the given number of
+    /** Return true if the queue has room to put the given number of
      *  tokens into it (via the put() method).
-     *  Returning true in this method should also guarantee that calling
-     *  the put() method will not result in an exception.
-     *  @exception IllegalActionException If the number of tokens is less
-     *  than one.
+     *  @param numberOfTokens The number of tokens to put into the queue.
+     *  @return True if the queue has room for the specified number of tokens.
+     *  @exception IllegalArgumentException If the number of tokens is less
+     *   than one.  This is a runtime exception, and hence does not need to
+     *   be explicitly declared by the caller.
      */
-    public boolean hasRoom(int tokens) throws IllegalActionException {
-	if(tokens < 1)
-	    throw new IllegalActionException("The number of " +
-                    "tokens must be greater than 0");
-	return (_queue.size() + tokens) < _queue.getCapacity();
+    public boolean hasRoom(int numberOfTokens) throws IllegalArgumentException {
+	if(numberOfTokens < 1)
+	    throw new IllegalArgumentException(
+                    "The number of tokens must be greater than 0");
+	return (_queue.size() + numberOfTokens) < _queue.getCapacity();
     }
 
-    /** Return true if get() will succeed in returning a token.
-     *  @return A boolean indicating whether there is a token in this
-     *   receiver.
+    /** Return true if the next call to get() will succeed without a
+     *  a NoTokenException.
+     *  @return True if the queue has at least one token in it.
      */
     public boolean hasToken() {
         return _queue.size() > 0;
     }
 
-    /** Return true if get() will succeed in returning a token the given
-     *  number of times.
-     *  @return A boolean indicating whether there are the given number of
-     *  tokens in this receiver.
-     *  @exception IllegalActionException If the number of tokens is less
-     *  than one.
+    /** Return true if the specified number of tokens is available in the
+     *  queue.
+     *  @param numberOfTokens The number of tokens to get from the queue.
+     *  @return True if the specified number of tokens is available.
+     *  @exception IllegalArgumentException If the number of tokens is less
+     *   than one.  This is a runtime exception, and hence does not need to
+     *   be explicitly declared by the caller.
      */
-    public boolean hasToken(int tokens) throws IllegalActionException {
-	if(tokens < 1)
-	    throw new IllegalActionException("The number of " +
-                    "tokens must be greater than 0");
-        return _queue.size() >= tokens;
+    public boolean hasToken(int numberOfTokens)
+            throws IllegalArgumentException {
+	if(numberOfTokens < 1)
+	    throw new IllegalArgumentException(
+                    "The number of tokens must be greater than 0");
+        return _queue.size() >= numberOfTokens;
     }
 
     /** Enumerate the tokens stored in the history queue, which are

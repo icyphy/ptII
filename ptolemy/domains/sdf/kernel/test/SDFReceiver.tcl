@@ -174,16 +174,14 @@ test SDFReceiver-2.2 {Check put and get and hasToken with more than 1 token in t
     catch {$receiver hasToken 0} result5
 
     list $result1 $result2 $result3 $result4 [$receivedToken toString] [$receivedToken2 toString] [$receivedToken3 toString] [$receivedToken4 toString] $result5 $result6
-} {0 1 1 0 {"foo"} {"bar"} {"foo"} {"bar"} {ptolemy.kernel.util.IllegalActionException: The number of tokens must be greater than 0} {ptolemy.actor.NoTokenException: :
-Offset 2 out of range with 2 tokens in the receiver and 0 in history.}}
+} {0 1 1 0 {"foo"} {"bar"} {"foo"} {"bar"} {ptolemy.kernel.util.IllegalActionException: The number of tokens must be greater than 0} {ptolemy.actor.NoTokenException: : Offset 2 out of range with 2 tokens in the receiver and 0 in history.}}
 
 test SDFReceiver-2.3 {Check noTokenException} {
     # uses previous setup.
     catch {$receiver get} result1
     catch {$receiver {getArray int} 2} result2
     list $result1 $result2
-} {{ptolemy.actor.NoTokenException: :
-Attempt to get token from an empty QueueReceiver.} {java.util.NoSuchElementException: The FIFOQueue does not contain enough elements!}}
+} {{ptolemy.actor.NoTokenException: : Attempt to get token from an empty QueueReceiver.} {java.util.NoSuchElementException: The FIFOQueue does not contain enough elements!}}
 
 ######################################################################
 ####
@@ -275,7 +273,7 @@ test SDFReceiver-5.1 {Check hasRoom} {
     catch {$receiver hasRoom 0} result4
     
     list $result1 $result2 $result3 $result4
-} {1 1 1 {ptolemy.kernel.util.IllegalActionException: The number of tokens must be greater than 0}}
+} {1 1 1 {java.lang.IllegalArgumentException: The number of tokens must be greater than 0}}
 
 test SDFReceiver-5.2 {Check setCapacity} {
     set receiver [java::new ptolemy.domains.sdf.kernel.SDFReceiver]

@@ -67,6 +67,7 @@ public class SDFReceiver extends AbstractReceiver {
     }
 
     /** Construct an empty receiver with no container and given size.
+     *  @param size The size of the queue in the receiver.
      */
     public SDFReceiver(int size) {
         super();
@@ -75,16 +76,22 @@ public class SDFReceiver extends AbstractReceiver {
 
     /** Construct an empty receiver with the specified container.
      *  @param container The container of the receiver.
+     *  @throws IllegalActionException If the container does
+     *   not accept this receiver.
      */
-    public SDFReceiver(IOPort container) {
+    public SDFReceiver(IOPort container) throws IllegalActionException {
         super(container);
 	_queue = new ArrayFIFOQueue();
     }
 
     /** Construct an empty receiver with the specified container and size.
      *  @param container The container of the receiver.
+     *  @param size The size of the queue in the receiver.
+     *  @throws IllegalActionException If the container does
+     *   not accept this receiver.
      */
-    public SDFReceiver(IOPort container, int size) {
+    public SDFReceiver(IOPort container, int size)
+            throws IllegalActionException {
         super(container);
 	_queue = new ArrayFIFOQueue(size);
     }
@@ -132,7 +139,7 @@ public class SDFReceiver extends AbstractReceiver {
      *  exception is thrown.
      *  @param offset The offset from the oldest token in the receiver.
      *  @return The token at the desired offset in the receiver or its
-     history.
+     *   history.
      *  @exception NoTokenException If the offset is out of range.
      */
     public Token get(int offset) {
@@ -198,16 +205,17 @@ public class SDFReceiver extends AbstractReceiver {
     }
 
     /** Return true if put() will succeed in accepting the specified
-     *  number of tokesn.
+     *  number of tokens.
      *  @param tokens The number of tokens.
      *  @return A boolean indicating whether a token can be put in this
      *   receiver.
-     *  @exception IllegalActionException If the number of tokens is less
-     *  than one.
+     *  @exception IllegalArgumentException If the argument is less
+     *   than one.  This is a runtime exception, so it need not be
+     *   declared explicitly by the caller.
      */
-    public boolean hasRoom(int tokens) throws IllegalActionException {
+    public boolean hasRoom(int tokens) throws IllegalArgumentException {
 	if(tokens < 1)
-	    throw new IllegalActionException("The number of " +
+	    throw new IllegalArgumentException("The number of " +
                     "tokens must be greater than 0");
 	if (_queue.getCapacity() == INFINITE_CAPACITY) {
 	    // queue has infinite capacity, so it can accept any
@@ -229,12 +237,13 @@ public class SDFReceiver extends AbstractReceiver {
      *  number of times.
      *  @return A boolean indicating whether there are the given number of
      *  tokens in this receiver.
-     *  @exception IllegalActionException If the number of tokens is less
-     *  than one.
+     *  @exception IllegalArgumentException If the argument is less
+     *   than one.  This is a runtime exception, so it need not be
+     *   declared explicitly by the caller.
      */
-    public boolean hasToken(int tokens) throws IllegalActionException {
+    public boolean hasToken(int tokens) throws IllegalArgumentException {
 	if(tokens < 1)
-	    throw new IllegalActionException("The number of " +
+	    throw new IllegalArgumentException("The number of " +
                     "tokens must be greater than 0");
         return _queue.size() >= tokens;
     }

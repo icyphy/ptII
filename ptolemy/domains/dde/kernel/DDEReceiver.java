@@ -110,19 +110,24 @@ public class DDEReceiver extends PrioritizedTimedQueue
     }
 
     /** Construct an empty receiver with the specified container.
-     * @param container The IOPort that contains this receiver.
+     *  @param container The IOPort that contains this receiver.
+     *  @exception IllegalActionException If this receiver cannot be
+     *   contained by the proposed container.
      */
-    public DDEReceiver(IOPort container) {
+    public DDEReceiver(IOPort container) throws IllegalActionException {
         super(container);
 	_boundaryDetector = new BoundaryDetector(this);
     }
 
     /** Construct an empty receiver with the specified IOPort
      *  container and priority.
-     * @param container The IOPort that contains this receiver.
-     * @param priority The priority of this receiver.
+     *  @param container The IOPort that contains this receiver.
+     *  @param priority The priority of this receiver.
+     *  @exception IllegalActionException If this receiver cannot be
+     *   contained by the proposed container.
      */
-    public DDEReceiver(IOPort container, int priority) {
+    public DDEReceiver(IOPort container, int priority)
+            throws IllegalActionException {
         super(container, priority);
 	_boundaryDetector = new BoundaryDetector(this);
     }
@@ -328,11 +333,8 @@ public class DDEReceiver extends PrioritizedTimedQueue
      *  that can be obtained by calling the get() method.
      *  Returning true in this method should also guarantee that calling
      *  the get() method will not result in an exception.
-     *
-     *  @exception IllegalActionException If the Receiver implementation
-     *    does not support this query.
      */
-    public boolean hasToken(int tokens) throws IllegalActionException {
+    public boolean hasToken(int tokens) {
         return true;
 	// FIXME hack - consults neuendor's new mechanism.
     }

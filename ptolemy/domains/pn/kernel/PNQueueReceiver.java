@@ -85,8 +85,10 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 
     /** Construct an empty receiver with the specified container.
      *  @param container The container of this receiver.
+     *  @throws IllegalActionException If the container does
+     *   not accept this receiver.
      */
-    public PNQueueReceiver(IOPort container) {
+    public PNQueueReceiver(IOPort container) throws IllegalActionException {
         super(container);
 	_boundaryDetector = new BoundaryDetector(this);
     }
@@ -190,47 +192,35 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         }
     }
 
-    /** Return true since a channel in the Kahn process networks
+    /** Return true, since a channel in the Kahn process networks
      *  model of computation is of infinite capacity and always has room.
-     *  @return true
+     *  @return True.
      */
     public boolean hasRoom() {
 	return true;
     }
 
-    /** Return true if the receiver has room for putting the given number of
-     *  tokens into it (via the put() method).
-     *  Returning true in this method should also guarantee that calling
-     *  the put() method will not result in an exception.
-     *  @return true;
-     *  @exception IllegalActionException If the number of tokens is less
-     *  than one.
+    /** Return true, since a channel in the Kahn process networks
+     *  model of computation is of infinite capacity and always has room.
+     *  @return True.
      */
-    public boolean hasRoom(int tokens) throws IllegalActionException {
-	if(tokens < 1)
-	    throw new IllegalActionException("The number of " +
-                    "tokens must be greater than 0");
+    public boolean hasRoom(int tokens) {
 	return true;
     }
 
-    /** Return true since a call to the get() method of the receiver will
+    /** Return true, since a call to the get() method of the receiver will
      *  always return a token if the call to get() ever returns.
-     *  @return true
+     *  @return True.
      */
     public boolean hasToken() {
 	return true;
     }
 
-    /** Return true if get() will succeed in returning a token the given
-     *  number of times.
-     *  @return true
-     *  @exception IllegalActionException If the number of tokens is less
-     *  than one.
+    /** Return true, since a call to the get() method of the receiver will
+     *  always return a token if the call to get() ever returns.
+     *  @return True.
      */
-    public boolean hasToken(int tokens) throws IllegalActionException {
-	if(tokens < 1)
-	    throw new IllegalActionException("The number of " +
-                    "tokens must be greater than 0");
+    public boolean hasToken(int tokens) {
         return true;
     }
 

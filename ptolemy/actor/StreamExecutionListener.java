@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+@AcceptedRating Green (bart@eecs.berkeley.edu)
 */
 
 package ptolemy.actor;
@@ -44,15 +44,14 @@ This implementation prints information about each event to a stream.
 */
 public class StreamExecutionListener implements ExecutionListener {
 
-    /** Create an execution listener that sends
-     *  messages to the standard output.
+    /** Create a listener that sends messages to the standard output.
      */
     public StreamExecutionListener() {
         _output = System.out;
     }
 
-    /** Create an execution listener that sends
-     *  messages to the given output stream.
+    /** Create a listener that sends messages to the given output stream.
+     *  @param out The output stream to send the messages to.
      */
     public StreamExecutionListener(OutputStream out) {
         _output = new PrintStream(out);
@@ -61,7 +60,8 @@ public class StreamExecutionListener implements ExecutionListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Report an execution failure.
+    /** Report an execution failure by printing a message to output
+     *  stream specified to the constructor.
      */
     public void executionError(Manager manager, Exception ex) {
         _output.println("Execution error.");
@@ -69,8 +69,8 @@ public class StreamExecutionListener implements ExecutionListener {
         ex.printStackTrace(_output);
     }
 
-    /** Report that the current execution finished.
-     *
+    /** Report that the current execution finished  by printing a
+     *  message to output stream specified to the constructor.
      *  @param manager The manager controlling the execution.
      */
     public void executionFinished(Manager manager) {
@@ -78,8 +78,8 @@ public class StreamExecutionListener implements ExecutionListener {
                 + manager.getIterationCount() + " iterations");
     }
 
-    /** Called to report that the manager has changed state.
-     *
+    /** Report that the manager has changed state by printing a
+     *  message to output stream specified to the constructor.
      *  @param manager The manager controlling the execution.
      */
     public void managerStateChanged(Manager manager) {

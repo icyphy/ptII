@@ -30,7 +30,6 @@
 
 package ptolemy.domains.rtp.kernel;
 
-import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.actor.AbstractReceiver;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
@@ -38,6 +37,8 @@ import ptolemy.actor.NoTokenException;
 import ptolemy.actor.process.ProcessReceiver;
 import ptolemy.actor.process.Branch;
 import ptolemy.data.Token;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InvalidStateException;
 
 //////////////////////////////////////////////////////////////////////////
 //// RTPReceiver
@@ -57,8 +58,10 @@ public class RTPReceiver extends AbstractReceiver implements ProcessReceiver {
 
     /** Construct an empty RTPReceiver with the specified container.
      *  @param container The container.
+     *  @throws IllegalActionException If the container does
+     *   not accept this receiver.
      */
-    public RTPReceiver(IOPort container) {
+    public RTPReceiver(IOPort container) throws IllegalActionException {
         super(container);
     }
 
@@ -162,10 +165,25 @@ public class RTPReceiver extends AbstractReceiver implements ProcessReceiver {
         return true;
     }
 
+    /** Return true, since writing to the receiver is always allowed.
+     *  @return True.
+     */
+    public boolean hasRoom(int numberOfTokens) {
+        return true;
+    }
+
     /** Return true if there is a token available.
      *  @return True if there is a token available.
      */
     public boolean hasToken() {
+        return true;
+    }
+
+    /** Return true, since the get() method will stall until a
+     *  token is available.
+     *  @return True.
+     */
+    public boolean hasToken(int numberOfTokens) {
         return true;
     }
 

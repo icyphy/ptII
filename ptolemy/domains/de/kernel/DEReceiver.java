@@ -81,8 +81,10 @@ public class DEReceiver extends AbstractReceiver {
 
     /** Construct an empty DEReceiver with the specified container.
      *  @param container The container.
+     *  @throws IllegalActionException If the container does
+     *   not accept this receiver.
      */
-    public DEReceiver(IOPort container) {
+    public DEReceiver(IOPort container) throws IllegalActionException {
         super(container);
     }
 
@@ -132,11 +134,12 @@ public class DEReceiver extends AbstractReceiver {
         return (!_tokens.isEmpty());
     }
 
-    /** Return true if there are n tokens tokens available to the get() method.
-     *  @return True if there are more tokens.
+    /** Return true if there are <i>numberOfTokens</i>
+     *  tokens tokens available to the get() method.
+     *  @return True if there are <i>numberOfTokens</i> tokens available.
      */
-    public final boolean hasToken(int n) {
-        return (_tokens.size() >= n);
+    public final boolean hasToken(int numberOfTokens) {
+        return (_tokens.size() >= numberOfTokens);
     }
 
     /** Put a token into this receiver. Note that

@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Green (bart@eecs.berkeley.edu)
 
 */
 
@@ -39,122 +39,126 @@ import ptolemy.data.Token;
 //// Receiver
 /**
 Interface for objects that can hold tokens. An implementation of this
-interface has two key methods: put and get. Put deposits a token into the
-receiver. Get retrieves a token that has been put. The order of
+interface has two key methods: put() and get(). The put() method
+deposits a token into the receiver. The get() method retrieves
+a token that has been put. The order of
 the retrieved tokens depends on specific implementations, and does not
 necessarily match the order in which tokens have been put.
 <p>
 All implementations of this interface must follow these rules, regardless
 of the number of threads that are accessing the receiver:
 <ul>
-<li> If hasToken() returns true then calling get() should not result in a
-NoTokenException being thrown.
-<li> If hasRoom() returns true then calling put() should not result in a
-NoRoomException being thrown.
+<li> If hasToken() returns true, then the next call to get() must not
+result in a NoTokenException being thrown.
+<li> If hasRoom() returns true, then the next call to put() must not
+result in a NoRoomException being thrown.
 </ul>
-In general, this means that threaded domains will provide a higher level of
-synchronization for receivers.
+In general, this means that multithreaded domains must provide
+synchronization for receivers. Note that both NoTokenException
+and NoRoomException are runtime exceptions, so they need not be
+declared explicitly.
 <p>
 Objects that implement this interface can only be contained
 by an instance of IOPort.
 
 @author Jie Liu, Edward A. Lee, Lukito Muliadi
 @version $Id$
+@see Token
 */
 public interface Receiver {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Get a token from this receiver. Note that the thrown exception
-     *  is a runtime exception.
+    /** Get a token from this receiver.
+     *  @return A token read from the receiver.
      *  @exception NoTokenException If there is no token.
      */
-    public Token get();
+    public Token get() throws NoTokenException;
 
-    /** Get an array of tokens from this receiver. The parameter
-     *  specifies the number of valid tokens to get in the returned
-     *  array. The length of the returned array can be greater than
-     *  <i>vectorLength</i>, in which case, only the first <i>vectorLength</i>
-     *  elements are guaranteed to be valid. This is allowed so that
-     *  an implementation of this method can choose to reallocate
-     *  the returned token array only when the vector length is increased.
-     *  @param vectorLength The number of valid tokens to get in the
+    /** Get an array of tokens from this receiver. The <i>numberOfTokens</i>
+     *  argument specifies the number of tokens to get. In an implementation,
+     *  the length of the returned array is allowed to be greater than
+     *  <i>numberOfTokens</i>, in which case, only the first
+     *  <i>numberOfTokens</i> elements are the ones that have been read
+     *  from the receiver. In some domains, this allows the implementation
+     *  to be more efficient.
+     *  @param numberOfTokens The number of tokens to get in the
      *   returned array.
-     *  @exception NoTokenException If there are not <i>vectorLength</i>
+     *  @return An array of tokens read from the receiver.
+     *  @exception NoTokenException If there are not <i>numberOfTokens</i>
      *   tokens.
      */
-    public Token[] getArray(int vectorLength);
+    public Token[] getArray(int numberOfTokens) throws NoTokenException;
 
     /** Return the container of this receiver, or null if there is none.
-     *  @return The IOPort containing this receiver.
+     *  @return The port containing this receiver.
      */
     public IOPort getContainer();
 
-    /** Return true if the receiver has room for putting a token into
+    /** Return true if the receiver has room to put a token into it
      *  (via the put() method).
-     *  Returning true in this method should also guarantee that calling
-     *  the put() method will not result in an exception.
-     *
-     *  @exception IllegalActionException If the Receiver implementation
-     *    does not support this query.
+     *  Returning true in this method guarantees that the next call to
+     *  put() will not result in an exception.
+     *  @return True if the next call to put() will not result in a
+     *   NoRoomException.
      */
-    public boolean hasRoom() throws IllegalActionException;
+    public boolean hasRoom();
 
-    /** Return true if the receiver has room for putting the given number of
+    /** Return true if the receiver has room to put the specified number of
      *  tokens into it (via the put() method).
-     *  Returning true in this method should also guarantee that calling
-     *  the put() method will not result in an exception.
-     *
-     *  @exception IllegalActionException If the Receiver implementation
-     *  does not support this query, or the number of tokens is less
-     *  than one.
+     *  Returning true in this method guarantees that the next
+     *  <i>numberOfTokens</i> calls to put() or a corresponding call
+     *  to putArray() will not result in an exception.
+     *  @param numberOfTokens The number of tokens to put into this receiver.
+     *  @return True if the next <i>numberOfTokens</i> calls to put()
+     *   will not result in a NoRoomException.
      */
-    public boolean hasRoom(int tokens) throws IllegalActionException;
+    public boolean hasRoom(int numberOfTokens);
 
     /** Return true if the receiver contains a token that can be obtained
-     *  by calling the get() method.
-     *  Returning true in this method should also guarantee that calling
-     *  the get() method will not result in an exception.
-     *
-     *  @exception IllegalActionException If the Receiver implementation
-     *    does not support this query.
+     *  by calling the get() method.  In an implementation,
+     *  returning true in this method guarantees that the next
+     *  call to get() will not result in an exception.
+     *  @return True if the next call to get() will not result in a
+     *   NoTokenException.
      */
-    public boolean hasToken() throws IllegalActionException;
+    public boolean hasToken();
 
-    /** Return true if the receiver contains the given number of tokens
-     *  that can be obtained by calling the get() method.
-     *  Returning true in this method should also guarantee that calling
-     *  the get() method will not result in an exception.
-     *
-     *  @exception IllegalActionException If the Receiver implementation
-     *  does not support this query, or the number of tokens is less
-     *  than one.
+    /** Return true if the receiver contains the specified number of tokens.
+     *  In an implementation, returning true in this method guarantees
+     *  that the next <i>numberOfTokens</i> calls to get(), or a 
+     *  corresponding call to getArray(), will not result in an exception.
+     *  @param numberOfTokens The number of tokens desired.
+     *  @return True if the next <i>numberOfTokens</i> calls to get()
+     *   will not result in a NoTokenException.
      */
-    public boolean hasToken(int tokens) throws IllegalActionException;
+    public boolean hasToken(int numberOfTokens);
 
-    /** Put a token into this receiver. Note that the thrown exception
-     *  is a runtime exception, therefore the caller is not required to
-     *  catch it.
-     *  @exception NoRoomException If the token cannot be put.
+    /** Put the specified token into this receiver.
+     *  @param token The token to put into the receiver.
+     *  @exception NoRoomException If there is no room in the receiver.
      */
-    public void put(Token t);
+    public void put(Token token) throws NoRoomException;
 
-    /** Put a portion of a token array into this receiver. The first
-     *  <i>vectorLength</i> elements of the token array are put
-     *  into this receiver. Note that the thrown exception is a runtime
-     *  exception, therefore the caller is not required to catch it.
-     *  @param tokenArray The array containing data to put into this
+    /** Put a portion of the specified token array into this receiver.
+     *  The first <i>numberOfTokens</i> elements of the token array are put
+     *  into this receiver.  The ability to specify a longer array than
+     *  needed allows certain domains to have more efficient implementations.
+     *  @param tokenArray The array containing tokens to put into this
      *   receiver.
-     *  @param vectorLength The number of elements of of the token
+     *  @param numberOfTokens The number of elements of the token
      *   array to put into this receiver.
      *  @exception NoRoomException If the token array cannot be put.
      */
-    public void putArray(Token[] tokenArray, int vectorLength);
+    public void putArray(Token[] tokenArray, int numberOfTokens)
+             throws NoRoomException;
 
     /** Set the container.
+     *  @param port The container.
      *  @exception IllegalActionException If the container is not of
-     *  an appropriate subclass of IOPort.
+     *   an appropriate subclass of IOPort for the particular receiver
+     *   implementation.
      */
     public void setContainer(IOPort port) throws IllegalActionException;
 }

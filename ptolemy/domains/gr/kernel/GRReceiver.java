@@ -34,6 +34,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.Mailbox;
 import ptolemy.actor.NoRoomException;
 import ptolemy.data.Token;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// GRReceiver
@@ -56,8 +57,10 @@ public class GRReceiver extends Mailbox {
 
     /** Construct an empty GRReceiver with the specified container.
      *  @param container The port that contains the receiver.
+     *  @exception IllegalActionException If this receiver cannot be
+     *   contained by the proposed container.
      */
-    public GRReceiver(IOPort container) {
+    public GRReceiver(IOPort container) throws IllegalActionException {
         super(container);
     }
 

@@ -117,24 +117,27 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
     }
 
     /** Construct an empty queue with the specified IOPort container.
-     * @param container The IOPort that contains this receiver.
+     *  @param container The IOPort that contains this receiver.
+     *  @exception IllegalActionException If this receiver cannot be
+     *   contained by the proposed container.
      */
-    public PrioritizedTimedQueue(IOPort container) {
-	_container = container;
+    public PrioritizedTimedQueue(IOPort container)
+             throws IllegalActionException {
+	super(container);
     }
 
     /** Construct an empty queue with the specified IOPort container
      *  and priority.
-     * @param container The IOPort that contains this receiver.
-     * @param priority The priority of this receiver.
+     *  @param container The IOPort that contains this receiver.
+     *  @param priority The priority of this receiver.
+     *  @exception IllegalActionException If this receiver cannot be
+     *   contained by the proposed container.
      */
-    public PrioritizedTimedQueue(IOPort container, int priority) {
-	_container = container;
+    public PrioritizedTimedQueue(IOPort container, int priority)
+             throws IllegalActionException {
+	super(container);
 	_priority = priority;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -156,7 +159,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 	Token token = null;
         Event event = (Event)_queue.take();
         if (event == null) {
-            throw new NoTokenException(_container,
+            throw new NoTokenException(getContainer(),
                     "Attempt to get token from an empty "
                     + "PrioritizedTimedQueue.");
         }
@@ -199,13 +202,6 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
         return _queue.getCapacity();
     }
 
-    /** Return the IOPort container of this receiver.
-     * @return The containing IOPort.
-     */
-    public IOPort getContainer() {
-        return _container;
-    }
-
     /** Return the last time of this receiver. This method
      *  is not synchronized so the caller should be.
      * @return The last time.
@@ -234,6 +230,21 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
         return !_queue.isFull();
     }
 
+    /** Return true if the queue capacity minus the queue size is
+     *  greater than the argument.
+     *  @param numberOfTokens The number of tokens to put into the queue.
+     *  @exception IllegalArgumentException If the argument is not positive.
+     *   This is a runtime exception, so it does not need to be declared
+     *   explicitly.
+     */
+    public boolean hasRoom(int numberOfTokens) throws IllegalArgumentException {
+	if(numberOfTokens < 1) {
+	    throw new IllegalArgumentException(
+                    "hasRoom() requires a positive argument.");
+        }
+	return (_queue.getCapacity() - _queue.size() > numberOfTokens);
+    }
+
     /** Return true if there are tokens stored on the queue. Return
      *  false if the queue is empty.
      * @return True if the queue is not empty; return
@@ -241,6 +252,21 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      */
     public boolean hasToken() {
         return _queue.size() > 0;
+    }
+
+    /** Return true if queue size is at least the argument.
+     *  @param numberOfTokens The number of tokens to get from the queue.
+     *  @return True if the queue has enough tokens.
+     *  @exception IllegalArgumentException If the argument is not positive.
+     *   This is a runtime exception, so it does not need to be declared
+     *   explicitly.
+     */
+    public boolean hasToken(int numberOfTokens)
+            throws IllegalArgumentException {
+	if(numberOfTokens < 1)
+	    throw new IllegalArgumentException(
+                    "hasToken() requires a positive argument.");
+	return (_queue.size() > numberOfTokens);
     }
 
     /** Throw an exception, since this method is not used in
@@ -267,12 +293,12 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      */
     public void put(Token token, double time) throws NoRoomException {
 	if( time < _lastTime && time != INACTIVE && time != IGNORE ) {
-	    NamedObj actor = (NamedObj)_container.getContainer();
+	    NamedObj actor = (NamedObj)getContainer().getContainer();
 	    throw new IllegalArgumentException(actor.getName() +
 		    " - Attempt to set current time to the past; time = "
                     + time + ". The _lastTime was " + _lastTime);
 	} else if( time < 0.0 && time != INACTIVE && time != IGNORE ) {
-	    NamedObj actor = (NamedObj)_container.getContainer();
+	    NamedObj actor = (NamedObj)getContainer().getContainer();
 	    throw new IllegalArgumentException(actor.getName() +
 		    " - Attempt to set current time to a" +
 		    " a negative value = " + time);
@@ -308,7 +334,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 
 	try {
 	    if (!_queue.put(event)) {
-		throw new NoRoomException (_container,
+		throw new NoRoomException (getContainer(),
                     "Queue is at capacity. Cannot insert token.");
 	    }
 	} catch( NoRoomException e ) {
@@ -332,7 +358,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
         // local time parameters
         Event event = (Event)_queue.take();
         if (event == null) {
-            throw new NoTokenException(_container,
+            throw new NoTokenException(getContainer(),
                     "Attempt to get token from an empty "
                     + "PrioritizedTimedQueue.");
         }
@@ -372,7 +398,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      */
     public void reset() {
         DDEDirector director = (DDEDirector)
-            ((Actor)_container.getContainer()).getDirector();
+            ((Actor)getContainer().getContainer()).getDirector();
 	double time = director.getCurrentTime();
 	_rcvrTime = time;
 	_lastTime = time;
@@ -385,13 +411,6 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      */
     public void setCapacity(int capacity) throws IllegalActionException {
         _queue.setCapacity(capacity);
-    }
-
-    /** Set the IOPort container.
-     * @param port The IOPort which contains this receiver.
-     */
-    public void setContainer(IOPort port) {
-        _container = port;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -476,9 +495,6 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
     // Initially the value is set so that execution will continue
     // indefinitely.
     private double _completionTime = ETERNITY;
-
-    // The IOPort which contains this receiver.
-    private IOPort _container;
 
     // The queue in which this receiver stores tokens.
     private FIFOQueue _queue = new FIFOQueue();

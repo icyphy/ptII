@@ -85,8 +85,10 @@ public class DTReceiver extends SDFReceiver implements Receiver {
 
     /** Construct an empty receiver with the specified container.
      *  @param container The container of the receiver.
+     *  @throws IllegalActionException If the container does
+     *   not accept this receiver.
      */
-    public DTReceiver(IOPort container) {
+    public DTReceiver(IOPort container) throws IllegalActionException {
         super(container);
         _init();
     }
@@ -94,8 +96,11 @@ public class DTReceiver extends SDFReceiver implements Receiver {
     /** Construct an empty receiver with the specified container and size.
      *  @param container The container of the receiver.
      *  @param size  The size of the buffer for the receiver.
+     *  @throws IllegalActionException If the container does
+     *   not accept this receiver.
      */
-    public DTReceiver(IOPort container, int size) {
+    public DTReceiver(IOPort container, int size)
+            throws IllegalActionException {
         super(container,size);
         _init();
     }

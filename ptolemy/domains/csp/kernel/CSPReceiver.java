@@ -69,8 +69,10 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
 
     /** Construct a CSPReceiver with the specified container.
      *  @param container The port containing this receiver.
+     *  @exception IllegalActionException If this receiver cannot be
+     *   contained by the proposed container.
      */
-    public CSPReceiver(IOPort container) {
+    public CSPReceiver(IOPort container) throws IllegalActionException {
      	super(container);
 	_boundaryDetector = new BoundaryDetector(this);
     }
@@ -165,8 +167,11 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     }
 
     /** Return true. This method returns true in all cases
-     *  to prevent the possibility of busy waiting with
-     *  polymorphic actors.
+     *  to indicate that the next call to put() will succeed
+     *  without throwing a NoRoomException, as indeed it will,
+     *  even if not right away.  Note that if this were to return
+     *  true only if a rendezvous was pending, then polymorphic actors
+     *  would busy wait.
      *  @return True.
      */
     public synchronized boolean hasRoom() {
@@ -174,33 +179,39 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     }
 
     /** Return true. This method returns true in all cases
-     *  to prevent the possibility of busy waiting with
-     *  polymorphic actors.
+     *  to indicate that any number of calls to put() will succeed
+     *  without throwing a NoRoomException, as indeed they will,
+     *  even if not right away.  Note that if this were to return
+     *  true only if a rendezvous was pending, then polymorphic actors
+     *  would busy wait.
      *  @return True.
      */
     public boolean hasRoom(int tokens) {
 	return true;
-	// FIXME
     }
 
-    /** True if a put is waiting to rendezvous.
-     *  @return True if a put is waiting to rendezvous.
+    /** Return true. This method returns true in all cases
+     *  to indicate that the next call to get() will succeed
+     *  without throwing a NoTokenException, as indeed it will,
+     *  even if not right away.  Note that if this were to return
+     *  true only if a rendezvous was pending, then polymorphic actors
+     *  would busy wait.
+     *  @return True.
      */
     public synchronized boolean hasToken() {
         return true;
     }
 
-    /** Return true if the receiver contains the given number of tokens
-     *  that can be obtained by calling the get() method.
-     *  Returning true in this method should also guarantee that calling
-     *  the get() method will not result in an exception.
-     *
-     *  @exception IllegalActionException If the Receiver implementation
-     *    does not support this query.
+    /** Return true. This method returns true in all cases
+     *  to indicate that any number of calls to get() will succeed
+     *  without throwing a NoTokenException, as indeed they will,
+     *  even if not right away.  Note that if this were to return
+     *  true only if a rendezvous was pending, then polymorphic actors
+     *  would busy wait.
+     *  @return True.
      */
-    public boolean hasToken(int tokens) throws IllegalActionException {
+    public boolean hasToken(int tokens) {
         return true;
-	// FIXME hack
     }
 
     /** Return true if this receiver is connected to the inside of a

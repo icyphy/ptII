@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (neuendor@eecs.berkeley.edu)
-@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+@AcceptedRating Green (bart@eecs.berkeley.edu)
 */
 
 package ptolemy.actor;
@@ -41,7 +41,7 @@ or an object that is communicating with a front end. Most of the
 events that are reported are state changes in the manager.
 <p>
 Some execution events happen in response to an asynchronous request.
-For example, when the pause() method of a manager is called a flag is set, and
+For example, when the pause() method of a manager is called, a flag is set, and
 at the end of the next toplevel iteration, the manager will notice the flag
 and pause execution. In such cases, the execution listeners are not notified
 when the request occurs, but only when the execution thread has actually
@@ -55,19 +55,22 @@ been suspended.
 public interface ExecutionListener {
 
     /** Report an execution failure.   This method will be called
-     *  when an exception is caught at the top level of execution.
+     *  when an exception is caught by a manager.
      *  Exceptions are reported this way when the run() or startRun()
      *  methods of the manager are used to perform the execution.
-     *  If instead of the execute() method is used, then exceptions are
-     *  not caught, and are instead just passed up to the caller.
+     *  If instead the execute() method is used, then exceptions are
+     *  not caught, and are instead just passed up to the caller of
+     *  the execute() method.  Those exceptions are not reported
+     *  here (unless, of course, the caller of the execute() method does
+     *  so).
      *
      *  @param manager The manager controlling the execution.
-     *  @param exception The exception that was caught.
+     *  @param exception The exception to report.
      */
     public void executionError(Manager manager, Exception exception);
 
-    /** Report that the current execution finished and
-     *  the wrapup sequence completed normally. The number of successfully
+    /** Report that the current execution has finished and
+     *  the wrapup sequence has completed normally. The number of successfully
      *  completed iterations can be obtained by calling getIterationCount()
      *  on the manager.
      *

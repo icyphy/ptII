@@ -84,8 +84,11 @@ public class MailboxBoundaryReceiver extends Mailbox
 
     /** Construct an empty MailboxBoundaryReceiver with the specified
      *  container.
+     *  @exception IllegalActionException If the container cannot contain
+     *   this receiver.
      */
-    public MailboxBoundaryReceiver(IOPort container) {
+    public MailboxBoundaryReceiver(IOPort container)
+            throws IllegalActionException {
         super(container);
 	_boundaryDetector = new BoundaryDetector(this);
     }

@@ -61,6 +61,7 @@ JSRCS = \
 	DebugEvent.java \
 	DebugListener.java \
 	KernelException.java \
+	KernelRuntimeException.java \
 	IllegalActionException.java \
 	InternalErrorException.java \
 	InvalidStateException.java \

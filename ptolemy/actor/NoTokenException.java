@@ -24,20 +24,20 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (lmuliadi@eecs.berkeley.edu)
-@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+@ProposedRating Green (lmuliadi@eecs.berkeley.edu)
+@AcceptedRating Green (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.actor;
 
-import ptolemy.kernel.util.InvalidStateException;
+import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.Nameable;
 
 //////////////////////////////////////////////////////////////////////////
 //// NoTokenException
 /**
 This exception is thrown when an attempt is made to get a token
-from a receiver that doesn't contain one.
+from a receiver that does not contain one.
 To avoid this exception, code should use the hasToken() method in the
 Receiver interface to determine if there is a token waiting.
 
@@ -45,55 +45,21 @@ Receiver interface to determine if there is a token waiting.
 @version $Id$
 @see Receiver
 */
-public class NoTokenException extends RuntimeException {
+public class NoTokenException extends KernelRuntimeException {
 
-    /** Construct a NoTokenException with the given message.
+    /** Construct an exception with the given message.
      *  @param message The message.
      */
     public NoTokenException(String message) {
-        _setMessage(message);
+        super(message);
     }
 
-    /** Construct a NoTokenException originating from the given object,
+    /** Construct an exception originating from the given object,
      *  with the given error message.
-     *  @param obj The originating object.
+     *  @param object The originating object.
      *  @param message The message.
      */
-    public NoTokenException(Nameable obj, String message) {
-        String name;
-        if (obj == null) {
-            name = new String("");;
-        } else {
-            try {
-                name = obj.getFullName();
-            } catch (InvalidStateException ex) {
-                name = obj.getName();
-            }
-        }
-        _setMessage(name + ":\n" + message);
+    public NoTokenException(Nameable object, String message) {
+        super(object, message);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Return the error message. */
-    public String getMessage() {
-        return _message;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Set the error message to the given string.
-     *  @param message The message.
-     */
-    protected void _setMessage(String message) {
-        _message = message;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // The error message.
-    private String _message ;
 }
