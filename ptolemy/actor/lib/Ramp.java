@@ -100,21 +100,6 @@ public class Ramp extends SequenceSource {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Override the base class to reinitialize the state if either
-     *  the <i>step</i> or the <i>init</i> parameter is changed.
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == step) {
-            _step = step.getToken();
-            _stateToken = init.getToken();
-        } else if (attribute == init) {
-            _stateToken = init.getToken();
-        }
-    }
     
     /** Notify the director when type changes in the parameters occur.
      *  This will cause type resolution to be redone at the next opportunity.
@@ -167,7 +152,6 @@ public class Ramp extends SequenceSource {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _stateToken = init.getToken();
-	_step = step.getToken();
     }
 
     /** Invoke a specified number of iterations of this actor. Each
@@ -194,10 +178,12 @@ public class Ramp extends SequenceSource {
 	if (count > _resultArray.length) {
 	    _resultArray = new Token[count];
 	}
+	// Cache the token in parameter step.
+	Token stepCache = step.getToken();
 	for (int i = 0; i < count; i++) {
 	    _resultArray[i] = _stateToken;
 	    try {
-		_stateToken = _stateToken.add(_step);
+		_stateToken = _stateToken.add(stepCache);
 	    } catch (IllegalActionException ex) {
 		// Should not be thrown because
 		// we have already verified that the tokens can be added.
@@ -225,7 +211,7 @@ public class Ramp extends SequenceSource {
      */
     public boolean postfire() throws IllegalActionException {
         try {
-            _stateToken = _stateToken.add(_step);
+	    _stateToken = _stateToken.add(step.getToken());
         } catch (IllegalActionException ex) {
             // Should not be thrown because
             // we have already verified that the tokens can be added.
@@ -238,7 +224,6 @@ public class Ramp extends SequenceSource {
     ////                         private variables                 ////
 
     private Token _stateToken = null;
-    private Token _step = null;
     private Token[] _resultArray = new Token[1];
 }
 
