@@ -173,7 +173,7 @@ public class CSPDirector extends ProcessDirector {
     }
 
     /** Reset flags to initialize values.
-     * @exception IllegalActionException if the super class throws it.
+     * @exception IllegalActionException If the super class throws it.
      */
     public void initialize() throws IllegalActionException {
 	_actorsBlocked = 0;
