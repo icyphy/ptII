@@ -114,7 +114,7 @@ public class Dataflow extends AbstractDDI implements DDI {
      * between the result of prefire() and successive calls to
      * fire()?</b>
      *
-     * @throws IllegalActionException If an error occurs during the
+     * @exception IllegalActionException If an error occurs during the
      * interpretation of the action.
 
      */
@@ -221,7 +221,7 @@ public class Dataflow extends AbstractDDI implements DDI {
      * Select a firable action among the actions of the actor, if possible.
      *
      * @return True, if an action could be selected.
-     * @throws IllegalActionException If an error occurred during the
+     * @exception IllegalActionException If an error occurred during the
      * action selection.
      *
      * @see SDF#_selectAction

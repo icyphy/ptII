@@ -419,7 +419,7 @@ public class SDF extends AbstractDDI implements DDI {
      * between the result of prefire() and successive calls to
      * fire()?</b>
      *
-     * @throws IllegalActionException If an error occurs during the
+     * @exception IllegalActionException If an error occurs during the
      * interpretation of the action.
      */
     public void fire() throws IllegalActionException {
@@ -466,7 +466,7 @@ public class SDF extends AbstractDDI implements DDI {
 
     /**
      * In SDF, selecting which initializer to fire is already done in preinitialize().
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public void initialize() throws IllegalActionException {
         _clearInputChannels();
@@ -515,7 +515,7 @@ public class SDF extends AbstractDDI implements DDI {
      * Select a firable action among the actions of the actor, if possible.
      *
      * @return True, if an action could be selected.
-     * @throws IllegalActionException If an error occurred during the action selection.
+     * @exception IllegalActionException If an error occurred during the action selection.
      *
      * @see SDF#_selectAction
      */

@@ -129,7 +129,7 @@ public class CalInterpreter extends TypedAtomicActor {
      * used for interpretation.
      *
      * @param attribute The attribute that changed.
-     * @throws IllegalActionException If an error occurs parsing or
+     * @exception IllegalActionException If an error occurs parsing or
      * transforming the CAL source code.
      */
     public void attributeChanged(Attribute attribute)
@@ -154,7 +154,7 @@ public class CalInterpreter extends TypedAtomicActor {
      * the definitions of state variables and creating the
      * corresponding bindings.
      *
-     * @throws IllegalActionException If an error occurred during the
+     * @exception IllegalActionException If an error occurred during the
      * retrieval of parameter values or the evaluation of actor state
      * variable values.
      */
@@ -180,7 +180,7 @@ public class CalInterpreter extends TypedAtomicActor {
     /**
      * Initialize the actor, clearing its input channels.
      *
-     * @throws IllegalActionException If the superclass throws it.
+     * @exception IllegalActionException If the superclass throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -201,7 +201,7 @@ public class CalInterpreter extends TypedAtomicActor {
      * Commit the last state changes.
      *
      * @return Returns whatever <tt>super.postfire()</tt> returns.
-     * @throws IllegalActionException If the superclass throws it.
+     * @exception IllegalActionException If the superclass throws it.
      */
     public boolean postfire() throws IllegalActionException {
         // FIXMELATER: commit state changes.
