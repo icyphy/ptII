@@ -42,9 +42,9 @@ import ptolemy.util.MessageHandler;
 /** An instance of FunctionDependencyOfModalModel describes the function
     dependency information of a modal model.
 
-    @see ptolemy.actor.FunctionDependencyOfCompositeActor
+    @see ptolemy.actor.util.FunctionDependencyOfCompositeActor
     @author Haiyang Zheng
-    @version $Id $
+    @version $Id$
     @since Ptolemy II 4.0
     @Pt.ProposedRating Red (hyzheng)
     @Pt.AcceptedRating Red (hyzheng)
