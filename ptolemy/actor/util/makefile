@@ -78,6 +78,7 @@ MISC_FILES =	$(DIRS) doc
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	'CalendarQueue$$CQEntry.class' \
+	'CalendarQueue$$CQLinkedList.class' \
 	'CalendarQueue$$EntryComparator.class' \
 	'CalendarQueue$$SortedLinkedList.class' \
 	#codeDoc
