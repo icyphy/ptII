@@ -35,8 +35,13 @@ DIRS = 		test \
 		util \
 		xml
 
+	# lib is no longer included
 	#lib doc demo
 
+	# demo is not included in the standard build because
+	# it requires jdk1.2 and diva
+	# demo
+ 
 # Root of the Java directory
 ROOT =		../..
 
