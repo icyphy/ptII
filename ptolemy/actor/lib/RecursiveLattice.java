@@ -104,7 +104,7 @@ Prentice-Hall, Englewood Cliffs, NJ, 1988.
 @see IIR
 @see LevinsonDurbin
 @see Lattice
-@see VariableRecursiveLattice
+@see ptolemy.domains.sdf.lib.VariableRecursiveLattice
 @author Edward A. Lee
 @version $Id$
 */
