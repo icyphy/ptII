@@ -118,6 +118,24 @@ public class TypedIOPort extends IOPort {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Clone this port into the specified workspace. The new port is
+     *  <i>not</i> added to the directory of that workspace (you must
+     *  do this yourself if you want it there).
+     *  The result is a new port with no connections and no container.
+     *  The new port will have the same declared and resolved types
+     *  as this one.
+     *
+     *  @param ws The workspace for the cloned object.
+     *  @exception CloneNotSupportedException If one or more of the
+     *   attributes cannot be cloned.
+     *  @return A new TypedIOPort.
+     */
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
+        TypedIOPort newobj = (TypedIOPort)super.clone(ws);
+	newobj._typeTerm = null;
+	return newobj;
+    }
+
     /** Return the declared type of this port.  The type is represented
      *  by an instance of Class associated with a token type.
      *  If the type is undeclared, returns null.
