@@ -110,17 +110,16 @@ public class CSPSieve extends CSPActor {
 	}
     }
 
-    ////////////////////////////////////////////////////////////////////////
-            ////                         private methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
-            /*  Create and return a new TopologyChangeRequest object that
-             *  adds a new sieve.
-             *  @param value The prime the new filter should sieve.
-             *  JFIXME
-             private TopologyChangeRequest _makeChangeRequest(final int value) {
-             TopologyChangeRequest request = new TopologyChangeRequest(this) {
-
-             public void constructEventQueue() {
+    /*  Create and return a new TopologyChangeRequest object that
+     *  adds a new sieve.
+     *  @param value The prime the new filter should sieve.
+     *  JFIXME
+     private TopologyChangeRequest _makeChangeRequest(final int value) {
+     TopologyChangeRequest request = new TopologyChangeRequest(this) {
+     public void constructEventQueue() {
              System.out.println("TopologyRequest event q being constructed!");
              TypedCompositeActor container =  
              (TypedCompositeActor)getContainer();
@@ -149,11 +148,11 @@ public class CSPSieve extends CSPActor {
             */
 
 
-            ///////////////////////////////////////////////////////////////////
-            ////                         private variables                 ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
-            // The input port
-            private TypedIOPort _input;
+    // The input port
+    private TypedIOPort _input;
 
     // The output port
     private TypedIOPort _output;
