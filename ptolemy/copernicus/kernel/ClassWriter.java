@@ -37,6 +37,10 @@ import soot.util.*;
 import soot.toolkits.graph.*;
 import java.util.*;
 import java.io.*;
+
+//////////////////////////////////////////////////////////////////////////
+//// ClassWriter
+
 /**
 Write all of the application classes out to class files.  Jasmin files
 for the classes will be created in a temporary directory and then
@@ -81,8 +85,7 @@ public class ClassWriter extends SceneTransformer {
      *  <code>outDir</code> option to specify where the .class
      *  file should be written
      */
-    protected void internalTransform(String phaseName, Map options)
-    {
+    protected void internalTransform(String phaseName, Map options) {
         System.out.println("ClassWriter.internalTransform("
                 + phaseName + ", " + options + ")");
 
