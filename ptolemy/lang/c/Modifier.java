@@ -35,7 +35,8 @@ import ptolemy.lang.java.JavaStaticSemanticConstants;
 //// Modifier
 /** This class contains helper methods for use in C code
  *  generation to interpret constants defined in JavaStaticSemanticConstants. 
-@author Shuvra S. Bhattacharyya 
+ *  @author Shuvra S. Bhattacharyya 
+ *  @version $Id$
  */
 public class Modifier implements JavaStaticSemanticConstants {
 

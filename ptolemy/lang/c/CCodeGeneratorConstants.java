@@ -41,6 +41,7 @@ import ptolemy.lang.java.JavaStaticSemanticConstants;
  *  into C code. 
  *
  *  @author Shuvra S. Bhattacharyya 
+ *  @version $Id$
  */
 public interface CCodeGeneratorConstants extends JavaStaticSemanticConstants {
 

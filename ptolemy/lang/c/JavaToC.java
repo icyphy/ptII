@@ -50,6 +50,7 @@ import ptolemy.lang.java.PackageResolutionVisitor;
  *  source files into equivalent C source files.
  *
  *  @author Shuvra S. Bhattacharyya
+ *  @version $Id$
  */
 public class JavaToC {
     public static void main(String[] args) {
