@@ -1,7 +1,6 @@
-
 /* A Petri net transition.
 
- Copyright (c) 1999 The Regents of the University of California.
+ Copyright (c) 2001 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -67,7 +66,6 @@ A Petri net transition
 @author  Yuke Wang and Edward A. Lee
 @version $Id$
 */
-
 public class Transition extends Transformer {
 
     /** Create a new actor in the specified container with the specified
@@ -92,9 +90,6 @@ public class Transition extends Transformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         ports and parameters              ////
-
-    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /**  Fire has two parts: to modify the marking in the output places and
@@ -106,11 +101,7 @@ public class Transition extends Transformer {
      *   Furthermore, the arcs can be marked as a "Weight" parameter or
      *   not marked. Not-marked arcs are treated as default weight 1.
      *   Loops can exist as well.
-     *
-     *
-     *
-     **/
-
+     */
     public void fire() throws IllegalActionException {
 
         System.out.print("start to increase the place marking for outputs");
@@ -120,7 +111,8 @@ public class Transition extends Transformer {
 
             IORelation weights = (IORelation) outRelations.next();
             if (weights != null) {
-                Iterator placePorts = weights.linkedDestinationPortList().iterator();
+                Iterator placePorts =
+                    weights.linkedDestinationPortList().iterator();
                 while(placePorts.hasNext()) {
                     IOPort placePort = (IOPort) placePorts.next();
                     Place place = (Place) placePort.getContainer();
@@ -130,9 +122,11 @@ public class Transition extends Transformer {
                     if (temporaryAttribute == null) {
                         place.increaseMarking(1);
                         System.out.print("default value 1");
-                        System.out.print(" source place "+ place.getFullName() +
-                                " original tokens " +i);
-                        System.out.println(" new token  " + place.getMarking());
+                        System.out.print(" source place "
+                                + place.getFullName()
+                                + " original tokens " + i);
+                        System.out.println(" new token "
+                                + place.getMarking());
                     }
                     else if (temporaryAttribute instanceof Variable) {
                         Variable tAttribute = (Variable) temporaryAttribute;
@@ -141,9 +135,11 @@ public class Transition extends Transformer {
                             ScalarToken wToken = (ScalarToken) weightToken;
                             int j = wToken.intValue();
                             place.increaseMarking(j);
-                            System.out.print("source place "+ place.getFullName() +
-                                    " original tokens " +i);
-                            System.out.println("  new token  " + place.getMarking());
+                            System.out.print("source place "
+                                    + place.getFullName()
+                                    + " original tokens " + i);
+                            System.out.println("  new token  "
+                                    + place.getMarking());
                         }
                     }
                     place.setTemporaryMarking(place.getMarking());
@@ -153,14 +149,17 @@ public class Transition extends Transformer {
                 System.out.println("the arc weight is null");
         }
 
-        System.out.print("start to decrease the place marking for input places"  );
-        System.out.println("the input width is" + input.getWidth());
+        System.out.print("start to decrease the place " +
+                "marking for input places"  );
+        System.out.println("the input width is "
+                + input.getWidth());
 
         Iterator inRelations = input.linkedRelationList().iterator();
         while(inRelations.hasNext())  {
             IORelation weights = (IORelation) inRelations.next();
             if (weights != null) {
-                Iterator placePorts = weights.linkedSourcePortList().iterator();
+                Iterator placePorts =
+                    weights.linkedSourcePortList().iterator();
                 while(placePorts.hasNext()) {
                     IOPort placePort = (IOPort) placePorts.next();
                     Place place = (Place) placePort.getContainer();
@@ -171,9 +170,11 @@ public class Transition extends Transformer {
                     if (temporaryAttribute == null) {
                         place.decreaseMarking(1);
                         System.out.print("default value 1");
-                        System.out.print(" source place "+ place.getFullName()+
-                                " original tokens " +i);
-                        System.out.println("  new token  " + place.getMarking());
+                        System.out.print(" source place "
+                                + place.getFullName()
+                                + " original tokens " +i);
+                        System.out.println("  new token  "
+                                + place.getMarking());
                     }
                     else if (temporaryAttribute instanceof Variable) {
                         Variable tAttribute = (Variable) temporaryAttribute;
@@ -182,9 +183,11 @@ public class Transition extends Transformer {
                             ScalarToken wToken = (ScalarToken) weightToken;
                             int j = wToken.intValue();
                             place.decreaseMarking(j);
-                            System.out.print("source place "+ place.getFullName() +
-                                    " original tokens " +i);
-                            System.out.println("  new token  " + place.getMarking());
+                            System.out.print("source place "
+                                    + place.getFullName()
+                                    + " original tokens " + i);
+                            System.out.println("  new token  "
+                                    + place.getMarking());
                         }
                     }
                     place.setTemporaryMarking(place.getMarking());
@@ -198,26 +201,26 @@ public class Transition extends Transformer {
     /** Prefire is similar with fire. It checks all the input places
      *  to see whether the marking in that place is bigger than
      *  the weight on the arc or not.
-
-     *  We assume the petrinet is specified by arcs connecting places and
-     *  transitions. Arcs can be marked by Weight attribute, or it can be unmarked.
-     *  multiple arcs can be between a place and a transition.
-     *  Unmarked arcs are treated as weight 1.
+     *  We assume the petrinet is specified by arcs connecting places
+     *  and transitions. Arcs can be marked by Weight attribute, or it
+     *  can be unmarked.  multiple arcs can be between a place and a
+     *  transition.  Unmarked arcs are treated as weight 1.
      *
-     *  To monitor the multiple links, we use the temporaryMarking varialbe.
-     *  TemporaryMarking starts with the same marking as the currentMarking.
-     *  Each time a link is seen, the temporaryMarking decreases the value
-     *  of the weight on the link. If at the end, the temporaryMarking is
-     *  less than 0, then the sum of the weights of all links between
-     *  the place and the transition is bigger than the marking in the place
-     *  the transition is not ready to fire.
-     **/
-
+     *  To monitor the multiple links, we use the temporaryMarking
+     *  varialbe.  TemporaryMarking starts with the same marking as
+     *  the currentMarking.  Each time a link is seen, the
+     *  temporaryMarking decreases the value of the weight on the
+     *  link. If at the end, the temporaryMarking is less than 0, then
+     *  the sum of the weights of all links between the place and the
+     *  transition is bigger than the marking in the place the
+     *  transition is not ready to fire.
+     */
     public boolean prefire() throws IllegalActionException {
 
         int k = input.getWidth();
         boolean readyToFire = true;
-        System.out.println("--inside the prefire for transition--the width is" + k);
+        System.out.println("--inside the prefire for transition--"
+                + " the width is" + k);
 
         Iterator inRelations = input.linkedRelationList().iterator();
         while(inRelations.hasNext())  {
@@ -226,7 +229,8 @@ public class Transition extends Transformer {
                 Iterator temporaryPlacePorts =
                     inWeights.linkedSourcePortList().iterator();
                 while(temporaryPlacePorts.hasNext()) {
-                    IOPort temporaryPlacePort = (IOPort) temporaryPlacePorts.next();
+                    IOPort temporaryPlacePort =
+                        (IOPort) temporaryPlacePorts.next();
                     Place temporaryPlace = (Place)
                         temporaryPlacePort.getContainer();
                     int i = temporaryPlace.getMarking();
@@ -239,13 +243,15 @@ public class Transition extends Transformer {
         while(relations.hasNext())  {
             IORelation weights = (IORelation) relations.next();
             if (weights != null) {
-                Iterator placePorts = weights.linkedSourcePortList().iterator();
+                Iterator placePorts =
+                    weights.linkedSourcePortList().iterator();
                 while(placePorts.hasNext()) {
                     IOPort placePort = (IOPort) placePorts.next();
                     Place place = (Place) placePort.getContainer();
                     int i = place.getMarking();
-                    System.out.print("source place "+ place.getFullName() +
-                            " tokens  "+ i + " " + place.getTemporaryMarking());
+                    System.out.print("source place "+ place.getFullName()
+                            + " tokens  " + i + " "
+                            + place.getTemporaryMarking());
 
                     Attribute temporaryAttribute = (Attribute)
                         weights.getAttribute("Weight");
@@ -277,32 +283,7 @@ public class Transition extends Transformer {
         }
 
         return readyToFire;
-
     }
-
-
-
-
-
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
 }
 
 

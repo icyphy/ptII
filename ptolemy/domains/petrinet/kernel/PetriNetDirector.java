@@ -1,7 +1,6 @@
-
 /* Petri net director.
 
- Copyright (c) 1999 The Regents of the University of California.
+ Copyright (c) 2001 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -50,12 +49,6 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
-
-//import ptolemy.graph.*;
-//import ptolemy.kernel.*;
-//import ptolemy.kernel.util.*;
-//import ptolemy.data.*;
-
 import java.util.Iterator;
 import java.util.Random;
 import java.util.LinkedList;
@@ -102,15 +95,12 @@ public class PetriNetDirector extends Director {
      *  random seed is the time.
      *  There is also a possibility for infinite loop.
      */
-
-
     public void fire() throws IllegalActionException {
-
         int i = 0;
-
         Nameable container = getContainer();
         if (container instanceof NamedObj)
-            System.out.println("the top container is" + container.getFullName());
+            System.out.println("the top container is"
+                    + container.getFullName());
 
         Transition nextTransition = _chooseTransition();
         while (nextTransition != null) {
@@ -123,24 +113,12 @@ public class PetriNetDirector extends Director {
         }
     }
 
-
-
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /** The method first accumulates all the enabled transitions, and
      * then randomly choose one to fire.
      */
-
     private Transition _chooseTransition()  throws IllegalActionException {
         Nameable container = getContainer();
         if (container instanceof CompositeActor) {
@@ -178,16 +156,5 @@ public class PetriNetDirector extends Director {
         }
         return null;
     }
-
-
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // private we have to set the current state here
-    // we also need the initial state, which is the places with markings.
-
-
 }
 
