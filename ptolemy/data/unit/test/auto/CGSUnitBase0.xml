@@ -27,6 +27,85 @@
         <property name="_location" class="ptolemy.moml.Location" value="395.0, 45.0">
         </property>
     </property>
+    <property name="CGSUnitBase" class="ptolemy.data.unit.UnitSystem">
+        <property name="cm" class="ptolemy.data.unit.BaseUnit" value="1.0">
+            <property name="Length" class="ptolemy.data.unit.UnitCategory">
+            </property>
+        </property>
+        <property name="gram" class="ptolemy.data.unit.BaseUnit" value="1.0">
+            <property name="Mass" class="ptolemy.data.unit.UnitCategory">
+            </property>
+        </property>
+        <property name="second" class="ptolemy.data.unit.BaseUnit" value="1.0">
+            <property name="Time" class="ptolemy.data.unit.UnitCategory">
+            </property>
+        </property>
+        <property name="meter" class="ptolemy.data.expr.Parameter" value="100*cm">
+        </property>
+        <property name="kilogram" class="ptolemy.data.expr.Parameter" value="1000*gram">
+        </property>
+        <property name="ampere" class="ptolemy.data.unit.BaseUnit" value="1.0">
+            <property name="electricCurrent" class="ptolemy.data.unit.UnitCategory">
+            </property>
+        </property>
+        <property name="squareAmpere" class="ptolemy.data.expr.Parameter" value="0.01*(lightSpeed^2)*cm*gram/(second^2)">
+        </property>
+        <property name="kelvin" class="ptolemy.data.expr.Parameter" value="1.38065E-23*kilogram*(meter^2)/(second^2)">
+        </property>
+        <property name="mole" class="ptolemy.data.expr.Parameter" value="6.022142E+23">
+        </property>
+        <property name="candela" class="ptolemy.data.expr.Parameter" value="kilogram*(meter^2)/(second^3)/683">
+        </property>
+        <property name="volt" class="ptolemy.data.expr.Parameter" value="kilogram*(meter^2)/(second^3)/ampere">
+        </property>
+        <property name="ohm" class="ptolemy.data.expr.Parameter" value="volt/ampere">
+        </property>
+        <property name="mho" class="ptolemy.data.expr.Parameter" value="ampere/volt">
+        </property>
+        <property name="coulomb" class="ptolemy.data.expr.Parameter" value="ampere*second">
+        </property>
+        <property name="esu" class="ptolemy.data.expr.Parameter" value="coulomb/(299792458.0*10)">
+        </property>
+        <property name="statvolt" class="ptolemy.data.expr.Parameter" value="299.792458*volt">
+        </property>
+        <property name="gauss" class="ptolemy.data.expr.Parameter" value="statvolt/(meter/100)">
+        </property>
+        <property name="electronCharge" class="ptolemy.data.expr.Parameter" value="1.6021765E-19*coulomb">
+        </property>
+        <property name="farad" class="ptolemy.data.expr.Parameter" value="ampere*second/volt">
+        </property>
+        <property name="henry" class="ptolemy.data.expr.Parameter" value="volt*second/ampere">
+        </property>
+        <property name="planckConstant" class="ptolemy.data.expr.Parameter" value="hBar*2*pi">
+        </property>
+        <property name="planckConstantReduced" class="ptolemy.data.expr.Parameter" value="1.0545716E-34*joule*second">
+        </property>
+        <property name="hBar" class="ptolemy.data.expr.Parameter" value="planckConstantReduced">
+        </property>
+        <property name="lightSpeed" class="ptolemy.data.expr.Parameter" value="299792458.0*meter/second">
+        </property>
+        <property name="dyne" class="ptolemy.data.expr.Parameter" value="gram*cm/second^2">
+        </property>
+        <property name="newton" class="ptolemy.data.expr.Parameter" value="kilogram*meter/second^2">
+        </property>
+        <property name="joule" class="ptolemy.data.expr.Parameter" value="newton*meter">
+        </property>
+        <property name="erg" class="ptolemy.data.expr.Parameter" value="dyne*cm">
+        </property>
+        <property name="kg" class="ptolemy.data.expr.Parameter" value="kilogram">
+        </property>
+        <property name="amp" class="ptolemy.data.expr.Parameter" value="ampere">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <rect x="-30" y="-15" width="60" height="30" style="fill:grey"></rect>
+      </svg>
+    </configure>
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="310.0, 115.0">
+        </property>
+    </property>
     <entity name="Clock8" class="ptolemy.actor.lib.Clock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100.0">
         </property>
@@ -47,8 +126,8 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{7777.0}">
+    <entity name="Test1" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0,1.0}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
@@ -71,11 +150,24 @@
             <property name="multiport"/>
         </port>
     </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{cm/gram/meter*kg/10, 1.0, 1.0, cm/gram/meter}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="165.0, 245.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="115.0, 95.0">
         </vertex>
     </relation>
     <link port="Clock8.output" relation="relation"/>
-    <link port="Test.input" relation="relation"/>
+    <link port="Test1.input" relation="relation"/>
     <link port="Test0.input" relation="relation"/>
+    <link port="Test2.input" relation="relation"/>
 </entity>

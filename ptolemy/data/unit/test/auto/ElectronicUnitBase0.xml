@@ -109,7 +109,7 @@
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
         </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{1.0}">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
         </property>
         <doc>Create a generalized square wave</doc>
         <property name="_location" class="ptolemy.moml.Location" value="55.0, 95.0">
@@ -447,7 +447,7 @@
         </port>
     </entity>
     <entity name="Test28" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
@@ -470,44 +470,28 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="ScaleB" class="ptolemy.actor.lib.Scale">
-        <property name="factor" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="285.0, 95.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
-    <entity name="ScaleA" class="ptolemy.actor.lib.Scale">
-        <property name="factor" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
-            </property>
-        </property>
+    <entity name="SynchronizerA" class="ptolemy.actor.lib.Synchronizer">
         <property name="_location" class="ptolemy.moml.Location" value="165.0, 95.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="multiport"/>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="SynchronizerB" class="ptolemy.actor.lib.Synchronizer">
+        <property name="_location" class="ptolemy.moml.Location" value="285.0, 95.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
         </port>
     </entity>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
@@ -552,8 +536,8 @@
     <link port="Test27.input" relation="relation32"/>
     <link port="Test28.input" relation="relation32"/>
     <link port="Test0.input" relation="relation"/>
-    <link port="ScaleB.input" relation="relation11"/>
-    <link port="ScaleB.output" relation="relation32"/>
-    <link port="ScaleA.input" relation="relation"/>
-    <link port="ScaleA.output" relation="relation11"/>
+    <link port="SynchronizerA.input" relation="relation"/>
+    <link port="SynchronizerA.output" relation="relation11"/>
+    <link port="SynchronizerB.input" relation="relation11"/>
+    <link port="SynchronizerB.output" relation="relation32"/>
 </entity>
