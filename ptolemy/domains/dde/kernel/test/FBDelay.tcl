@@ -85,7 +85,7 @@ test FBDelay-2.1 {Cycle null tokens with actor/lib/clock} {
     $clockOut setMultiport true
 
     set actorRcvr [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "actorRcvr" 3]
-    set join [java::new ptolemy.domains.dde.kernel.test.FlowThru $toplevel "join"]
+    set join [java::new ptolemy.domains.dde.kernel.test.FlowThrough $toplevel "join"]
     set fork [java::new ptolemy.domains.dde.kernel.test.TwoPut $toplevel "fork"]
     set fBack [java::new ptolemy.domains.dde.kernel.FBDelay $toplevel "fBack"]
 
@@ -145,7 +145,7 @@ test FBDelay-3.1 {Cycle real tokens with actor/lib/clock} {
     $clockOut setMultiport true
 
     set actorRcvr [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "actorRcvr" 3]
-    set join [java::new ptolemy.domains.dde.kernel.test.FlowThru $toplevel "join"]
+    set join [java::new ptolemy.domains.dde.kernel.test.FlowThrough $toplevel "join"]
     set fork [java::new ptolemy.domains.dde.kernel.test.TwoPut $toplevel "fork"]
     set fBack [java::new ptolemy.domains.dde.kernel.FBDelay $toplevel "fBack"]
     set sink [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "sink" 1]
@@ -210,11 +210,11 @@ test FBDelay-4.1 {Dual cycle with 0 delay in lower cycle with actor/lib/clock} {
     $clockOut setMultiport true
 
     set rcvr1 [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "rcvr1" 3]
-    set join1 [java::new ptolemy.domains.dde.kernel.test.FlowThru $toplevel "join1"]
+    set join1 [java::new ptolemy.domains.dde.kernel.test.FlowThrough $toplevel "join1"]
     set fork1 [java::new ptolemy.domains.dde.kernel.test.TwoPut $toplevel "fork1"]
     set fBack1 [java::new ptolemy.domains.dde.kernel.FBDelay $toplevel "fBack1"]
     set rcvr2 [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "rcvr2" 3]
-    set join2 [java::new ptolemy.domains.dde.kernel.test.FlowThru $toplevel "join2"]
+    set join2 [java::new ptolemy.domains.dde.kernel.test.FlowThrough $toplevel "join2"]
     set fork2 [java::new ptolemy.domains.dde.kernel.test.TwoPut $toplevel "fork2"]
     set fBack2 [java::new ptolemy.domains.dde.kernel.FBDelay $toplevel "fBack2"]
 
@@ -291,11 +291,11 @@ test FBDelay-4.2 {Dual cycle with very small delay in lower cycle with actor/lib
     $stopTime setToken [java::new ptolemy.data.DoubleToken 27.0]
     
     set rcvr1 [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "rcvr1" 3]
-    set join1 [java::new ptolemy.domains.dde.kernel.test.FlowThru $toplevel "join1"]
+    set join1 [java::new ptolemy.domains.dde.kernel.test.FlowThrough $toplevel "join1"]
     set fork1 [java::new ptolemy.domains.dde.kernel.test.TwoPut $toplevel "fork1"]
     set fBack1 [java::new ptolemy.domains.dde.kernel.FBDelay $toplevel "fBack1"]
     set rcvr2 [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "rcvr2" 3]
-    set join2 [java::new ptolemy.domains.dde.kernel.test.FlowThru $toplevel "join2"]
+    set join2 [java::new ptolemy.domains.dde.kernel.test.FlowThrough $toplevel "join2"]
     set fork2 [java::new ptolemy.domains.dde.kernel.test.TwoPut $toplevel "fork2"]
     set fBack2 [java::new ptolemy.domains.dde.kernel.FBDelay $toplevel "fBack2"]
 
