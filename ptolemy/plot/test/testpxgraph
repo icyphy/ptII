@@ -8,12 +8,13 @@ pxgraph=./pxgraph
 # Create a small test file
 
 tmpfile=/tmp/testpxgraph.$$
+# Note that we don't have a DataSets starting the file, and
+# that we use tabs, spaces and commas to separate the values
 cat > $tmpfile <<EOF
-DataSet: First dataset
-0,0
-1,1
+0  0
+1	1
 2,2
-3,-0.2
+3 -0.2
 EOF
 
 # Test out Flags in order
@@ -36,12 +37,13 @@ $pxgraph -test -P -nl -binary bin.plt
 $pxgraph -test -P -nl $tmpfile
 $pxgraph -test -rv $tmpfile
 $pxgraph -test -tk $tmpfile
+$pxgraph -test -v $tmpfile
 
 # Test out Options in order
 $pxgraph -test -bd Blue $tmpfile
 $pxgraph -test -bg Green $tmpfile
 $pxgraph -test -brb 1.0 -bar $tmpfile
-$pxgraph -test -brw 0.3 -bar $tmpfile
+$pxgraph -test -brw 0.8 -bar $tmpfile
 $pxgraph -test -fg Pink $tmpfile
 $pxgraph -test -gw 10 $tmpfile
 $pxgraph -test -lf 9x15 $tmpfile
