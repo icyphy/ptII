@@ -279,24 +279,21 @@ public class GeneratorTableau extends Tableau {
 							       );
                             }
 			    // True if we should run jode, jad or javap
-			    boolean disassemble = false;
+			    boolean decompile = false;
 			    boolean show =
 				((BooleanToken)options.show.getToken())
 				.booleanValue();
 			    boolean run =
 				((BooleanToken)options.run.getToken())
 				.booleanValue();
-			    boolean runAsApplet = false;
-			    boolean runAsDeep = false;
+			    boolean isApplet = false;
+			    boolean isDeep = false;
 			    List execCommands = new LinkedList();
 
 			    String packageNameString =
 				options.packageName.getExpression();
 			    String codeGenerator =
 				options.codeGenerator.getExpression();
-
-			    System.out.println("GeneratorTableau: codeGenerator= " +
-					       codeGenerator);
 
 			    if (codeGenerator.equals(options
 						     .sootApplet.
@@ -313,7 +310,7 @@ public class GeneratorTableau extends Tableau {
 				} catch (Exception ex) {
 				    throw new IllegalActionException(model, ex, null);
 				}
-				runAsApplet = true;
+				isApplet = true;
 			    } else if (codeGenerator.equals(options
 							    .sootC.
 							    getExpression())){
@@ -329,7 +326,7 @@ public class GeneratorTableau extends Tableau {
 						   directoryName);
 				exec.updateStatusBar("C Code generation "
 						     + "complete.");
-				disassemble = true;
+				decompile = true;
 
 			    } else if (codeGenerator.equals(options
 							    .sootDeep.
@@ -345,8 +342,8 @@ public class GeneratorTableau extends Tableau {
 								      "java"
 								      /* Generate deep code. */));
 
-				disassemble = true;
-				runAsDeep = true;
+				decompile = true;
+				isDeep = true;
 				} catch (Exception ex) {
 				    throw new IllegalActionException(model, ex, null);
 				}
@@ -386,7 +383,7 @@ public class GeneratorTableau extends Tableau {
 				//    .Main.generate((CompositeActor)model,
 				//		   directoryName);
 
-				disassemble = true;
+				decompile = true;
 
 
 			    }
@@ -394,7 +391,7 @@ public class GeneratorTableau extends Tableau {
 
 			    String className = options
 				.packageName.getExpression();
-			    if (runAsDeep) {
+			    if (isDeep) {
 				className = className + ".Main";
 			    } else {
 				if (className.length() > 0
@@ -409,16 +406,14 @@ public class GeneratorTableau extends Tableau {
 			    String runOptions = options
 				.runOptions.getExpression();
 
-			    if (show && disassemble) {
-				// FIXME: we should allow the user
-				// to select between jode, jad and javap.
+			    if (show && decompile) {
 				execCommands.add("javap "
 						 + runOptions
 						 + " "
 						 + className);
 			    }
                             if (run) {
-				if (runAsApplet) {
+				if (isApplet) {
 				    String appletDirectoryName =
 					_getPtolemyPtIIDir() + "/"
 					+ StringUtilities.substitute(
@@ -431,7 +426,7 @@ public class GeneratorTableau extends Tableau {
 						     + appletDirectoryName
 						     + " demo"
 						     );
-				} else if (runAsDeep) {
+				} else if (isDeep) {
 				    execCommands.add("java "
 						     + runOptions
 						     + " " + className);
