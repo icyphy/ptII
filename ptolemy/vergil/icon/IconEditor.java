@@ -24,7 +24,7 @@ import diva.canvas.interactor.PathManipulator;
 import diva.canvas.interactor.BoundsManipulator;
 import diva.canvas.interactor.CircleManipulator;
 import diva.canvas.interactor.BasicSelectionModel;
-//import diva.canvas.toolbox.PaintedFigure;
+import diva.canvas.toolbox.PaintedFigure;
 import diva.canvas.toolbox.BasicFigure;
 
 // Java imports.
@@ -59,11 +59,11 @@ import java.awt.geom.GeneralPath;
 
 //import java.io.StringBufferInputStream;
 import java.net.URL;
-//import java.util.Enumeration;
+import java.util.Enumeration;
 
 // Ptolemy imports.
 import ptolemy.vergil.toolbox.XMLIcon;
-//import ptolemy.vergil.toolbox.GraphicElement;
+import ptolemy.vergil.toolbox.GraphicElement;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -297,6 +297,22 @@ public class IconEditor {
 	_filter.addExtension (FILE_FORMAT_EXTENSION);
 	_filter.setDescription (FILE_FORMAT_EXTENSION + " extension only.");
 	_fileChooser.setFileFilter (_filter);
+
+
+
+
+        System.out.println("trying");
+        Enumeration enum = icon.graphicElements ();
+	System.out.println("enum = " + enum);
+	while (enum.hasMoreElements ()) {
+	    System.out.println("in the loop");
+	    GraphicElement nextGraphic = (GraphicElement) enum.nextElement ();
+	    System.out.println("nextGraphic = " + nextGraphic);
+	    PaintedFigure paintedFigure = new PaintedFigure();
+	    paintedFigure.add(nextGraphic.getPaintedObject());
+	    _layer.add (paintedFigure);
+	}
+
     }
 
     // The getFigure() method, which I'm keeping around in case I need it for 
