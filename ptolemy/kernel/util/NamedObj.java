@@ -1156,11 +1156,13 @@ public class NamedObj implements Nameable, Debuggable,
      *   or the prefix extended by a number.
      */
     public String uniqueName(String prefix) {
-        if (prefix == null)
+        if (prefix == null) {
             prefix = "null";
+        }
         String candidate = prefix;
+        int uniqueNameIndex = 2;
         while (getAttribute(candidate) != null) {
-            candidate = prefix + _uniqueNameIndex++;
+            candidate = prefix + uniqueNameIndex++;
         }
         return candidate;
     }
@@ -1540,12 +1542,6 @@ public class NamedObj implements Nameable, Debuggable,
 
     /** @serial The list of DebugListeners registered with this object. */
     protected LinkedList _debugListeners = null;
-
-    /** An index that is incremented to expedite the search for a unique
-     *  name by the uniqueName() method.  The starting value is 2 so
-     *  that the second instance of something has the number 2 appended.
-     */
-    protected int _uniqueNameIndex = 2;
 
     /** @serial The workspace for this object.
      * This should be set by the constructor and never changed.

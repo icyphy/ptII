@@ -408,12 +408,14 @@ public class Entity extends NamedObj {
      *  @return A unique name.
      */
     public String uniqueName(String prefix) {
-        if (prefix == null)
+        if (prefix == null) {
             prefix = "null";
+        }
         String candidate = prefix;
+        int uniqueNameIndex = 2;
         while (getAttribute(candidate) != null
                 || getPort(candidate) != null) {
-            candidate = prefix + _uniqueNameIndex++;
+            candidate = prefix + uniqueNameIndex++;
         }
         return candidate;
     }

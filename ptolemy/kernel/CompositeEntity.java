@@ -923,12 +923,16 @@ public class CompositeEntity extends ComponentEntity {
      *  @return A unique name.
      */
     public String uniqueName(String prefix) {
+        if (prefix == null) {
+            prefix = "null";
+        }
         String candidate = prefix;
+        int uniqueNameIndex = 2;
         while (getAttribute(candidate) != null
                 || getPort(candidate) != null
                 || getEntity(candidate) != null
                 || getRelation(candidate) != null) {
-            candidate = prefix + _uniqueNameIndex++;
+            candidate = prefix + uniqueNameIndex++;
         }
         return candidate;
     }
