@@ -31,7 +31,7 @@
 package ptolemy.schematic;
 
 import java.util.Enumeration;
-import collections.LinkedList;
+import collections.HashedMap;
 
 //////////////////////////////////////////////////////////////////////////
 //// SchematicPort
@@ -47,10 +47,80 @@ information is in this object...
 public class SchematicPort extends SchematicElement {
 
     /** 
-     * Create a new SchematicPort object.
+     * Create a new SchematicPort object, with no attributes.
      */
-    public SchematicPort () {
-        ;
+    SchematicPort () {
+        super("port");
+    }
+
+    /** 
+     * Create a new SchematicPort object, with the specified attributes.
+     * @param attributes a HashedMap from a String specifying the name of
+     * an attribute to a String specifying the attribute's value.
+     */
+    SchematicPort (HashedMap attributes) {
+        super("port", attributes);
+    }
+
+    /** 
+     * Return a string that represents the type of this port.
+     */
+    public String getType() {
+        return getAttribute("type");
+    }
+
+    /**
+     * Return true if and only if the port is an input port.
+     */
+    public boolean isInput() {
+        return getAttribute("input").equals("true");
+    }
+
+    /**
+     * Return true if and only if the port is a multiport.
+     */
+    public boolean isMultiport() {
+        return getAttribute("multiport").equals("true");
+    }
+
+    /**
+     * Return true if and only if the port is an output port.
+     */
+    public boolean isOutput() {
+        return getAttribute("output").equals("true");
+    }
+
+    /** 
+     * Set whether or not this port is an input port.
+     */
+    public void setInput(boolean flag) {
+        if(flag) setAttribute("input", "true");
+        else setAttribute("input", "false");
+    }
+
+    /**
+     * Set whether or not this port is a multiport.
+     */
+    public void setMultiport(boolean flag) {
+        if(flag) setAttribute("multiport", "true");
+        else setAttribute("multiport", "false");
+    }
+
+    /**
+     * Set whether or not this port is an output port.
+     */
+    public void setOutput(boolean flag) {
+        if(flag) setAttribute("output", "true");
+        else setAttribute("output", "false");
+    }
+
+    /**
+     * Set the type of this port
+     *
+     * @param a String representing the type of this port.
+     */
+    public void setType(String type) {
+        setAttribute("type", type);
     }
 }
 
