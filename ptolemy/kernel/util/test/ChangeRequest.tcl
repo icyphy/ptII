@@ -100,9 +100,10 @@ test ChangeRequest-4.0 {StreamChangeListener} {
     $changeRequest addChangeListener $listener
 
     $t start
-    $t mutate
 
     jdkCapture {
+	$t mutate
+
 	puts "[[java::call Thread currentThread] getName] \
 		Before call to waitForCompletionTask"
 	$t waitForCompletionTask
