@@ -64,8 +64,7 @@ public class EntityTreeModel implements TreeModel {
      *  @param root The root of the tree.
      */
     public EntityTreeModel(NamedObj root) {
-	_root = root;
-	root.addChangeListener(new TreeUpdateListener());
+        setRoot(root);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -131,6 +130,18 @@ public class EntityTreeModel implements TreeModel {
         return false;
     }
 
+    /** Set the object that this treemodel looks at.
+     */
+    public void setRoot(NamedObj root) {
+        if(_root != null) {
+           _root.removeChangeListener(_rootListener);
+        }
+	_root = root;
+        if(_root != null) {
+            _root.addChangeListener(_rootListener);
+        }
+    }
+    
     /** Remove the specified listener.
      *  @param listener The listener to remove.
      */
@@ -174,11 +185,14 @@ public class EntityTreeModel implements TreeModel {
     ////                         protected variables               ////
 
     // The root of the tree.
-    protected NamedObj _root;
+    protected NamedObj _root = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // The list of listeners.
     private List _listenerList = new LinkedList();
+    
+    // The model listener.
+    private ChangeListener _rootListener = new TreeUpdateListener();
 }
