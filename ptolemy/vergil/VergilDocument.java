@@ -153,7 +153,7 @@ public class VergilDocument extends AbstractDocument {
             + "title = " + getTitle()
             + ", file = " + getFile()
             + ", url = " + getURL()
-            + "]\n" + _graph.description();
+            + "]\n" + _graph.exportMoML();
     }
  
     /** 
