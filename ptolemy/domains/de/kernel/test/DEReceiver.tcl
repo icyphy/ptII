@@ -1,4 +1,4 @@
-# Tests for the DECQReceiver class
+# Tests for the DEReceiver class
 #
 # @Author: Lukito Muliadi
 #
@@ -46,9 +46,17 @@ if {[string compare test [info procs test]] == 1} then {
 set comparator [java::new ptolemy.actor.util.test.DoubleCQComparator]
 
 ######################################################################
-####
+#### Test the constructor
 #
-test DETag-2.1 {Test the constructor} {
+test DEReceiver-1.1 {Test the constructor} {
     set rec1 [java::new ptolemy.domains.de.kernel.DEReceiver]
     list
 } {}
+
+######################################################################
+#### Test methods
+#
+test DEReceiver-2.1 {Test the hasRoom method} {
+	#use the above settings
+    list [$rec1 hasRoom]
+} {1}
