@@ -66,7 +66,7 @@ test SingletonAttribute2.1 {setContainer with the same name} {
 } {{ptolemy.kernel.util.SingletonAttribute {.foo}} {ptolemy.kernel.util.SingletonAttribute {.N1.foo}}}
 
 
-test SingletonAttribute2.1 {setContainer with different workspaces} {
+test SingletonAttribute-2.1 {setContainer with different workspaces} {
     set w1 [java::new ptolemy.kernel.util.Workspace W1]
     set w2 [java::new ptolemy.kernel.util.Workspace W2]
     set n1 [java::new ptolemy.kernel.util.NamedObj $w1 N1] 
@@ -76,4 +76,5 @@ test SingletonAttribute2.1 {setContainer with different workspaces} {
     # Cover the catch block in setContainer
     catch {$sa5 setContainer $n2} errMsg
     list $errMsg
-} {}
+} {{ptolemy.kernel.util.IllegalActionException: Cannot set container because workspaces are different.
+  in .N1.foo and .N2}}
