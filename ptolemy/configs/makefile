@@ -99,7 +99,8 @@ PTCLASSALLJARS = \
 		hyvisual/hyvisual.jar \
 		jni/jni.jar \
 		jxta/jxta.jar \
-		ptiny/ptiny.jar
+		ptiny/ptiny.jar \
+		visualsense/visualsense.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
