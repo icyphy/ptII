@@ -172,7 +172,7 @@ public class VariableFIR extends FIR {
     /** Return false if the input does not have enough tokens to fire.
      *  Otherwise, return true.
      *  @return False if the number of input tokens available is not at least
-     *   equal to the <i>decimation</i> parameter multiplied by the 
+     *   equal to the <i>decimation</i> parameter multiplied by the
      *   <i>blockSize</i> parameter.
      *  @exception IllegalActionException If the superclass throws it.
      */

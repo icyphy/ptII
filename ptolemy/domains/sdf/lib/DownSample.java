@@ -61,7 +61,7 @@ is 1, then the next most recent one is sent. The value of <i>phase</i>
 can range up to <i>factor</i>-1, in which case the first one consumed
 is sent. By default, the <i>factor</i> parameter is 2,
 so the input sample rate is twice that of the output.
-The default value for <i>phase</i> is 0. 
+The default value for <i>phase</i> is 0.
 <p>
 This actor is data polymorphic. It can accept any token
 type on the input.

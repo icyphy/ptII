@@ -139,7 +139,7 @@ public class SequenceToArray extends SDFTransformer {
     }
 
     /** Return true if the input port has enough tokens for this actor to
-     *  fire. The number of tokens required is determined by the 
+     *  fire. The number of tokens required is determined by the
      *  value of the <i>arrayLength</i> parameter.
      *  @return boolean True if there are enough tokens at the input port
      *   for this actor to fire.

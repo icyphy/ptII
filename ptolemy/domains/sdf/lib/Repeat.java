@@ -90,7 +90,7 @@ public class Repeat extends SDFTransformer {
      */
     public Parameter numberOfTimes;
 
-    /** The number of tokens in a block.  It is of type integer and has a 
+    /** The number of tokens in a block.  It is of type integer and has a
      *  default value of 1.  It must be greater than zero.
      */
     public Parameter blockSize;
@@ -98,7 +98,7 @@ public class Repeat extends SDFTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the argument is the <i>numberOfTimes</i> parameter or the 
+    /** If the argument is the <i>numberOfTimes</i> parameter or the
      *  <i>blockSize</i> parameter, then
      *  set the rate of the ports, and invalidate
      *  the schedule of the director.
@@ -110,16 +110,16 @@ public class Repeat extends SDFTransformer {
         if(attribute == numberOfTimes || attribute == blockSize) {
             int repetitions = ((IntToken)numberOfTimes.getToken()).intValue();
             int count = ((IntToken)blockSize.getToken()).intValue();
-            if(repetitions < 1) 
-                throw new IllegalActionException(numberOfTimes, 
+            if(repetitions < 1)
+                throw new IllegalActionException(numberOfTimes,
                         "The value of numberOfTimes must be positive, but "
                         + "was set to " + repetitions);
-            
-            if(count < 1) 
+
+            if(count < 1)
                 throw new IllegalActionException(blockSize,
                         "The value of blockSize must be positive, but "
                         + "was set to " + count);
-            
+
             input.setTokenConsumptionRate(count);
             output.setTokenProductionRate(count * repetitions);
             Director dir = getDirector();

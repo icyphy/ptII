@@ -41,12 +41,12 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// DotProduct
 /**
-Compute the dot product of two arrays. This actor has two 
-input ports, from which it receives two ArrayTokens. The elements of the 
-ArrayTokens must be of type ScalarToken. The output is the dot product of 
+Compute the dot product of two arrays. This actor has two
+input ports, from which it receives two ArrayTokens. The elements of the
+ArrayTokens must be of type ScalarToken. The output is the dot product of
 the two arrays.
 <p>
-This actor requires that each input port have a token upon firing. On each 
+This actor requires that each input port have a token upon firing. On each
 firing, it produces exactly one token, which is of type ScalarToken.
 
 @author Jeff Tsay, Paul Whitaker
@@ -76,7 +76,7 @@ public class DotProduct extends TypedAtomicActor {
         ArrayType unknownArrayType = new ArrayType(BaseType.UNKNOWN);
         input1.setTypeEquals(unknownArrayType);
         input2.setTypeEquals(unknownArrayType);
-        
+
         // set the output type to be no less than the element type of the
         // input arrays.
         ArrayType input1Type = (ArrayType)input1.getType();
@@ -108,9 +108,9 @@ public class DotProduct extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read an ArrayToken from each of the input ports, and output the 
+    /** Read an ArrayToken from each of the input ports, and output the
      *  dot product.
-     *  @exception IllegalActionException If there is no director, if 
+     *  @exception IllegalActionException If there is no director, if
      *  the input arrays have unequal widths, or if the input arrays
      *  have no elements..
      */
@@ -147,7 +147,7 @@ public class DotProduct extends TypedAtomicActor {
     }
 
     /** If both of the input ports have at least one token, return
-     *  what the superclass returns (presumably true).  Otherwise return 
+     *  what the superclass returns (presumably true).  Otherwise return
      *  false.
      *  @exception IllegalActionException If there is no director.
      */
