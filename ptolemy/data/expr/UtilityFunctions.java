@@ -283,11 +283,16 @@ public class UtilityFunctions {
 	ArrayToken arrayToken;
 	try {
 	    arrayToken = new ArrayToken(result);
-	} catch (IllegalArgumentException illegalAction) {
+	} catch (IllegalActionException illegalAction) {
 	    // This should not happen since the elements of the array always
 	    // have the same type.
 	    throw new InternalErrorException("UtilityFunctions.repeat: "
 	        + "Cannot construct ArrayToken. " + illegalAction.getMessage());
+	} catch (IllegalArgumentException illegalArgument) {
+	    // This should not happen since the elements of the array always
+	    // have the same type.
+	    throw new InternalErrorException("UtilityFunctions.repeat: "
+	        + "Cannot construct ArrayToken. " + illegalArgument.getMessage());
         }
         return arrayToken;
     }
