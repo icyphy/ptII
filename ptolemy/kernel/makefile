@@ -41,8 +41,7 @@ ME =		java/pt/kernel
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
-DIRS = 		doc
-# DIRS = 		test doc
+DIRS = 		test doc
 
 # Used to build zip files
 JPACKAGE = 	pt/kernel
