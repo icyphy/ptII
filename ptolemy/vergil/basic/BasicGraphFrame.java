@@ -790,8 +790,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                 moml.append("</entity>");
             }
 
-	    container.requestChange(
-                    new MoMLChangeRequest(this, container, moml.toString()));
+            MoMLChangeRequest change =
+                    new MoMLChangeRequest(this, container, moml.toString());
+            change.setUndoable(true);
+            container.requestChange(change);
 	} catch (Exception ex) {
 	    MessageHandler.error("Paste failed", ex);
 	}
