@@ -32,14 +32,42 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.lang;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+/** Static functions for manipulating lists of children of a TreeNode.
+ *  In general, a list may contain TreeNodes or other lists.
+ *
+ *  @author Jeff Tsay
+ */
 public class TNLManip {
 
     private TNLManip() {}
 
+    /** Make a deep clone of a list. */
+    public static final ArrayList cloneList(List list) {
+        Iterator itr = list.iterator();
+        ArrayList retval = new ArrayList(list.size());
+        
+        while (itr.hasNext()) {
+           Object obj = itr.next();
+           
+           if (obj instanceof TreeNode) {
+              retval.add(((TreeNode) obj).clone());
+           } else if (obj instanceof List) {
+              retval.add(cloneList((List) obj));
+           } else {
+              throw new RuntimeException("unknown object in list : " + obj.getClass());
+           }       
+        }
+        return retval;
+    }
+
+    /** Have each member of the list accept the argument visitor. Return a list
+     *  of the return values from each visitation.
+     */
     public static final List traverseList(IVisitor v, TreeNode parent,
      LinkedList args, List childList) {
        Object retval;
@@ -62,7 +90,7 @@ public class TNLManip {
             }
 
          } else if (obj instanceof List) {
-            retval = (Object) traverseList(v, null, args, (List) obj);
+            retval = traverseList(v, null, args, (List) obj);
 
             retList.addLast(retval);
          } else {

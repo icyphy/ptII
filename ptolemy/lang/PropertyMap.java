@@ -41,6 +41,12 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.HashMap;
 
+//////////////////////////////////////////////////////////////////////////
+//// PropertyMap
+/** A subclass on which to base objects that have properties.
+ *
+ *  @author Jeff Tsay
+ */
 public class PropertyMap implements Cloneable {
 
     public PropertyMap() {}

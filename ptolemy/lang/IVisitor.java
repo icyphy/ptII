@@ -32,15 +32,33 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.lang;
 
+//////////////////////////////////////////////////////////////////////////
+//// IVisitor
+
 /** An interface for a Visitor of a node of an abstract syntax tree.
  *
  *  @author Jeff Tsay
  */
 public interface IVisitor {
 
+    /** Return an integer specifying how the nodes should be traversed
+     *  by this visitor.
+     */
     public int traversalMethod();
     
+    /** An integer indicating that the children of a node should be visited 
+     *  before it is visited itself.
+     */
     public static final int TM_CHILDREN_FIRST = 0;
+    
+    /** An integer indicating that the children of a node should be visited 
+     *  after it is visited itself.
+     */    
     public static final int TM_SELF_FIRST = 1;
+
+    /** An integer indicating that the children of a node should not be 
+     *  automatically visited. Therefore, each visitXXX() method has
+     *  responsibility for visiting its children.
+     */        
     public static final int TM_CUSTOM = 2;
 }

@@ -49,8 +49,124 @@ import java.util.LinkedList;
  */
 public abstract class TreeNode extends TrackedPropertyMap {
 
+    /** Accept a visitor, giving the visitor a list of zero arguments. */
+    public Object accept(IVisitor v) {
+        return accept(v, new LinkedList());
+    }
+
+    /** Accept a visitor, giving the visitor a list of arguments. Depending on
+     *  the traversal method, the children of the node may be visited before or
+     *  after this node is visited, or not at all.
+     */
+    public Object accept(IVisitor v, LinkedList visitorArgs) {
+
+        Object retval;
+
+        switch (v.traversalMethod()) {
+
+          case IVisitor.TM_CHILDREN_FIRST:
+          {
+          // Traverse the children first
+          traverseChildren(v, visitorArgs);
+          retval = _acceptHere(v, visitorArgs);
+
+          // remove the children return values to prevent exponential usage
+          // of memory
+          removeProperty(CHILD_RETURN_VALUES_KEY);
+          }
+          break;
+
+          case IVisitor.TM_SELF_FIRST:
+          {
+          // Visit myself first
+          retval = _acceptHere(v, visitorArgs);
+          traverseChildren(v, visitorArgs);
+          }
+          break;
+
+          case IVisitor.TM_CUSTOM:
+          {
+          // Let visitor do custom traversal
+          retval = _acceptHere(v, visitorArgs);
+          }
+          break;
+
+          default:
+          throw new RuntimeException("Unknown traversal method for visitor");
+        } // end switch
+      
+        return retval;
+    }
+    
+    /** Return the list of all direct children of this node. */
+    public List children() { return _childList; } // change this name
+
+    public Object childReturnValueAt(int index) {
+        List retList = (List) getDefinedProperty(CHILD_RETURN_VALUES_KEY);
+        return retList.get(index);
+    }
+
+    public Object childReturnValueFor(Object child) {
+        Iterator itr = _childList.iterator();
+        int index = 0;
+
+        while (itr.hasNext()) {
+          if (child == itr.next()) {
+             return childReturnValueAt(index);
+          }
+          index++;
+        }
+        ApplicationUtility.error("Child not found");
+        return null;
+    }
+
     /** Return the class ID number, which is unique for each sub-type. */    
     public abstract int classID();
+
+    /** Return a clone of this node, cloning all children of the node. */
+    public Object clone() {
+        TreeNode copy = (TreeNode) super.clone();
+            
+        copy._childList = TNLManip.cloneList(_childList);
+        
+        return copy;
+    }
+
+    /** Return the child at the specified index in the child list. */
+    public Object getChild(int index) {
+        return _childList.get(0);
+    }
+
+    /** Return true iff this subclass of TreeNode is a singleton, i.e. there exists only
+     *  one object of the subclass. This method needs to be overridden by 
+     *  singleton classes.
+     */
+    public boolean isSingleton() { return false; }
+
+    /** Set the child at the specified index in the child list. */
+    public void setChild(int index, Object child) {
+        _childList.set(index, child);
+    }
+
+    /** Visit all nodes or lists in in the argument list, and place the list of 
+     *  return values in the CHILD_RETURN_VALUES_KEY property of the node.
+     */
+    public void traverseChildren(IVisitor v, LinkedList args) {
+        List retList = TNLManip.traverseList(v, this, args, _childList);
+
+        setProperty(CHILD_RETURN_VALUES_KEY, retList);
+    }
+    
+    public void setChildren(List childList) {
+        _childList = childList;
+    }
+
+    /** Return a String representation of this node.
+     *  Call the toString() method of all child nodes.
+     */  
+    public String toString() {
+        return toString("");
+    }
 
     /** Return a String representation of this node, indented by ident. 
      *  Call the toString() method of all child nodes.
@@ -124,112 +240,6 @@ public abstract class TreeNode extends TrackedPropertyMap {
 
         return sb.toString();
     }
-
-    /** Return a String representation of this node.
-     *  Call the toString() method of all child nodes.
-     */  
-    public String toString() {
-        return toString("");
-    }
-
-    /** Accept a visitor, giving the visitor a list of zero arguments. */
-    public Object accept(IVisitor v) {
-        return accept(v, new LinkedList());
-    }
-
-    /** Accept a visitor, giving the visitor a list of arguments. Depending on
-     *  the traversal method, the children of the node may be visited before or
-     *  after this node is visited, or not at all.
-     */
-    public Object accept(IVisitor v, LinkedList visitorArgs) {
-
-      Object retval;
-
-      switch (v.traversalMethod()) {
-
-        case IVisitor.TM_CHILDREN_FIRST:
-        {
-        // Traverse the children first
-        traverseChildren(v, visitorArgs);
-        retval = _acceptHere(v, visitorArgs);
-
-        // remove the children return values to prevent exponential usage
-        // of memory
-        removeProperty(CHILD_RETURN_VALUES_KEY);
-        }
-        break;
-
-        case IVisitor.TM_SELF_FIRST:
-        {
-        // Visit myself first
-        retval = _acceptHere(v, visitorArgs);
-        traverseChildren(v, visitorArgs);
-        }
-        break;
-
-        case IVisitor.TM_CUSTOM:
-        {
-        // Let visitor do custom traversal
-        retval = _acceptHere(v, visitorArgs);
-        }
-        break;
-
-        default:
-        throw new RuntimeException("Unknown traversal method for visitor");
-      } // end switch
-      
-      return retval;
-    }
-
-    /** Visit all nodes or lists in in the argument list, and place the list of 
-     *  return values in the CHILD_RETURN_VALUES_KEY property of the node.
-     */
-    public void traverseChildren(IVisitor v, LinkedList args) {
-        List retList = TNLManip.traverseList(v, this, args, _childList);
-
-        setProperty(CHILD_RETURN_VALUES_KEY, retList);
-    }
-
-    /** Return the child at the specified index in the child list. */
-    public Object getChild(int index) {
-        return _childList.get(0);
-    }
-
-    public void setChild(int index, Object child) {
-        _childList.set(index, child);
-    }
-
-    /** Return the list of all direct children of this node. */
-    public List children() { return _childList; } // change this name
-
-    public void setChildren(List childList) {
-        _childList = childList;
-    }
-
-    public Object childReturnValueAt(int index) {
-        List retList = (List) getDefinedProperty(CHILD_RETURN_VALUES_KEY);
-        return retList.get(index);
-    }
-
-    public Object childReturnValueFor(Object child) {
-        Iterator itr = _childList.iterator();
-        int index = 0;
-
-        while (itr.hasNext()) {
-          if (child == itr.next()) {
-             return childReturnValueAt(index);
-          }
-          index++;
-        }
-        ApplicationUtility.error("Child not found");
-        return null;
-    }
-
-    /** Return true iff this subclass of TreeNode is a singleton, i.e. there exists only
-     *  one object of the subclass. This method needs to be overridden by 
-     *  singleton classes.
-     */
-    public boolean isSingleton() { return false; }
 
     /** Accept a visitor at this node only. This method uses reflection and therefore
      *  suffers a performance penalty. This method should be overridden in concrete

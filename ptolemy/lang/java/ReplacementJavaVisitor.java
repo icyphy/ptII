@@ -33,6 +33,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.lang.java;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
@@ -53,6 +54,12 @@ public abstract class ReplacementJavaVisitor extends JavaVisitor {
 
     public ReplacementJavaVisitor(int traversalMethod) {
         super(traversalMethod);  
+        
+        if ((_traversalMethod != TM_CUSTOM) && 
+            (_traversalMethod != TM_CHILDREN_FIRST)) {
+           ApplicationUtility.error("traversal method for replacement must be " +
+            "custom or children first."); 
+        }
     }
 
     public Object visitNameNode(NameNode node, LinkedList args) {
@@ -143,7 +150,13 @@ public abstract class ReplacementJavaVisitor extends JavaVisitor {
      *  values, using the same arguments, and return the node.
      */
     protected Object _defaultVisit(TreeNode node, LinkedList args) {
-        node.setChildren(TNLManip.traverseList(this, node, args, node.children()));
+        if (_traversalMethod == TM_CUSTOM) {
+           node.setChildren(TNLManip.traverseList(this, node, args, node.children()));
+        } else {
+           // traversalMethod == TM_CHILDREN_FIRST
+           node.setChildren((List) node.getDefinedProperty(
+            PropertyMap.CHILD_RETURN_VALUES_KEY));           
+        }
         return node;
     }   
 }

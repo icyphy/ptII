@@ -209,7 +209,7 @@ OuterThisAccessNode C OuterClassAccessNode c 1 TypeNameNode type c
 OuterSuperAccessNode C OuterClassAccessNode c 1 TypeNameNode type c
 MethodCallNode C ExprNode k 0 ExprNode method List args k
 
-// both may have an AbsentTreeNode as the enclosing instace if we are in static code
+// both may have an AbsentTreeNode as the enclosing instance if we are in static code
 AllocateNode C ExprNode k 0 TypeNameNode dtype List args TreeNode enclosingInstance k
 AllocateAnonymousClassNode C ExprNode k 0 TypeNameNode superType List superArgs List members TreeNode enclosingInstance k
 
