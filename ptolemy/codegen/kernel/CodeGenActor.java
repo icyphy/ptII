@@ -103,33 +103,38 @@ public class CodeGenActor extends TypedAtomicActor {
      */
     public void addCode(StringBuffer code) {
         addCode(code.toString(), "default");
-
-        public void addCode(String code, String streamName) {
-            StringBuffer buffer = (StringBuffer)_codeBlocks.get(streamName);
-            if (buffer == null) {
-                buffer = new StringBuffer();
-                _codeBlocks.put(streamName, buffer);
-            }
-            buffer.append(processCode(code));
-        }
-        // NOTE: There is a three argument version
-        // of the addCode() method, but I don't really understand
-        // what the third argument means...
-
-        public String getCode(String streamName) {
-            StringBuffer buffer = (StringBuffer)_codeBlocks.get(streamName);
-            if (buffer == null) {
-                return "";
-            }
-            return buffer.toString();
-        }
-
-        public String processCode(String code) {
-            // FIXME: This should transform the Pt Classic style
-            // macro references like $ref(input).
-            // For now, just leave the code unchanged.
-            return code;
-        }
-
-        private HashMap _codeBlocks = new HashMap();
     }
+
+    /** Add code from the code argument to stream.
+     *  @param code The code to be added.
+     *  @param streamName The name of the stream.     
+     */
+    public void addCode(String code, String streamName) {
+        StringBuffer buffer = (StringBuffer)_codeBlocks.get(streamName);
+        if (buffer == null) {
+            buffer = new StringBuffer();
+            _codeBlocks.put(streamName, buffer);
+        }
+        buffer.append(processCode(code));
+    }
+    // NOTE: There is a three argument version
+    // of the addCode() method, but I don't really understand
+    // what the third argument means...
+
+    public String getCode(String streamName) {
+        StringBuffer buffer = (StringBuffer)_codeBlocks.get(streamName);
+        if (buffer == null) {
+            return "";
+        }
+        return buffer.toString();
+    }
+
+    public String processCode(String code) {
+        // FIXME: This should transform the Pt Classic style
+        // macro references like $ref(input).
+        // For now, just leave the code unchanged.
+        return code;
+    }
+
+    private HashMap _codeBlocks = new HashMap();
+}
