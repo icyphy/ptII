@@ -144,11 +144,6 @@ public class EntityTemplate extends PTMLObject {
     /**
      * Set the Icon that describes this entity.
      */
-    /*
-     * @param iconspec A string specifiying a unique icon within
-     * ptolemy.   This string is in the form
-     * "hierarchical.library.name.iconname"
-     */
     public void setIcon (Icon icon) {
 	_icon = icon;
     }
@@ -180,6 +175,36 @@ public class EntityTemplate extends PTMLObject {
             str += "\n" + _terminalstyle.toString();
         
         return str + ")";
+    }
+
+    /** Return a description of the object.  Lines are indented according to
+     *  to the level argument using the protected method _getIndentPrefix().
+     *  Zero, one or two brackets can be specified to surround the returned
+     *  description.  If one is specified it is the the leading bracket.
+     *  This is used by derived classes that will append to the description.
+     *  Those derived classes are responsible for the closing bracket.
+     *  An argument other than 0, 1, or 2 is taken to be equivalent to 0.
+     *  This method is read-synchronized on the workspace.
+     *  @param indent The amount of indenting.
+     *  @param bracket The number of surrounding brackets (0, 1, or 2).
+     *  @return A description of the object.
+     */
+    protected String _description(int indent) {
+        String result = super._description(indent);
+	result += _getIndentPrefix(indent) + "icon\n";
+	result += _icon._description(indent + 1);
+	result += _getIndentPrefix(indent) + "terminalstyle\n";
+	result += _terminalstyle._description(indent + 1);
+	result += _getIndentPrefix(indent) + "ports\n";
+	Enumeration ports = ports();
+        while (ports.hasMoreElements()) {
+            EntityPort p = (EntityPort) ports.nextElement();
+            result += p._description(indent + 1);
+        }
+	
+        //        result += _getIndentPrefix(indent);
+
+        return result;
     }
 
     public static final String DEFAULTICONNAME = "default";

@@ -9,7 +9,6 @@
 <xmlgraphic>
 <rectangle color="red" fill="pink" coords="0 0 60 40"/>
 <!-- ovals are described in terms of a bounding box -->
-<text font="helvetica" coords="0 60">Load Image</text>
 <polygon coords="10 10 50 30 10 30 50 10" fill="blue"/>
 <ellipse fill="yellow" coords="25 15 10 10"/>
 <line coords="30 20 60 20"/>
@@ -20,7 +19,6 @@
 <xmlgraphic>
 <rectangle color="red" fill="orange" coords="0 0 60 40"/>
 <!-- ovals are described in terms of a bounding box -->
-<text font="helvetica" coords="0 60">Save Image</text>
 <polygon coords="10 10 50 30 10 30 50 10" fill="blue"/>
 <ellipse fill="yellow" coords="25 15 10 10"/>
 <line coords="0 20 30 20"/>

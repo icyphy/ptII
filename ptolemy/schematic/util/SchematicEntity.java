@@ -73,15 +73,16 @@ public class SchematicEntity extends PTMLTemplateObject
      */
     public SchematicEntity (String name, EntityTemplate et) {
         super(name, et);
-	if(et != null) 
-	    _terminalstyle = et.getTerminalStyle();
-	else 
-	    _terminalstyle = null;
         _x = 0;
         _y = 0;
         _ports = new NamedList();
         _terminals = new NamedList();
- 	//setIcon(DEFAULTICONNAME);
+	if(et != null) {
+	    setTerminalStyle(et.getTerminalStyle());
+	}
+	else 
+	    setTerminalStyle(null);
+  	//setIcon(DEFAULTICONNAME);
     }
 
     /**
@@ -122,8 +123,8 @@ public class SchematicEntity extends PTMLTemplateObject
     /**
      * Test if this entity contains the given port.
      */
-    public boolean containsTerminal (SchematicTerminal port) {
-        return _ports.includes(port);
+    public boolean containsTerminal (SchematicTerminal terminal) {
+        return _terminals.includes(terminal);
     }
     
     /**
@@ -194,30 +195,52 @@ public class SchematicEntity extends PTMLTemplateObject
      * Remove a port from the entity. Throw an exception if
      * a port with this name is not contained in the entity.
      */
-    public void removeTerminal (SchematicTerminal port) 
+    public void removeTerminal (SchematicTerminal terminal) 
 	throws IllegalActionException {
         try {
-	    _ports.remove(port);
+	    _terminals.remove(terminal);
 	}
         catch (NoSuchElementException e) {
             throw new IllegalActionException("Entity does not contain a " +
-                    "port with name " + port.getName());
+                    "terminal with name " + terminal.getName());
         }
     }
 
     /** 
      * Reset the TerminalStyle to the TerminalStyle of the 
      * template.
+     * FIXME make this public when figure out what it should do to the 
+     * contained terminals.
      */
-    public void resetTerminalStyle () {
+    private void resetTerminalStyle () {
 	_terminalstyle = ((EntityTemplate) getTemplate()).getTerminalStyle();
     }
 
     /**
      * Set the TerminalStyle that describes this entity.
+     * FIXME  make this public when figure out what it should do to the 
+     * contained terminals.
      */
-    public void setTerminalStyle (TerminalStyle style) {
+    private void setTerminalStyle (TerminalStyle style) {
 	_terminalstyle = style;
+	if(_terminalstyle != null) {
+	    Enumeration templateTerminals = _terminalstyle.terminals();
+	    while(templateTerminals.hasMoreElements()) {
+		Terminal terminal = (Terminal)templateTerminals.nextElement();
+		try {
+		    System.out.println("Adding terminal");
+		    addTerminal(new SchematicTerminal(terminal.getName(), 
+						      terminal));
+		    System.out.println("Finished Adding terminal");
+		    
+		} catch (Exception ex) {
+		    throw new InternalErrorException(ex.getMessage());
+		    // This should never happen, because the terminals in the
+		    // template must follow the same rules as the schematic 
+		    // terminals.
+		}
+	    }
+	}
     }
     
    /**
@@ -360,7 +383,9 @@ public class SchematicEntity extends PTMLTemplateObject
      */
     protected String _description(int indent) {
         String result = super._description(indent);
-        result += _getIndentPrefix(indent) + "ports\n";
+        result += _getIndentPrefix(indent) + "terminalstyle\n";
+	result += _terminalstyle._description(indent + 1);
+	result += _getIndentPrefix(indent) + "ports\n";
         Enumeration els = ports();
         while(els.hasMoreElements()) {
             SchematicPort port = (SchematicPort) els.nextElement();
@@ -373,7 +398,7 @@ public class SchematicEntity extends PTMLTemplateObject
         while(els.hasMoreElements()) {
             SchematicTerminal term = (SchematicTerminal) els.nextElement();
 	    result += term._description(indent + 1);
-            }    
+	}    
         return result;
     }
 

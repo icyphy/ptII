@@ -110,7 +110,7 @@ public class PTMLParser extends HandlerBase{
      */
     public void endElement(String name) throws Exception {
         if(DEBUG)
-            System.out.println("Ending Element:"+name);
+            System.out.println("Ending Element:" + name);
         XMLElement parent= current.getParent();
         if(parent!=null)
             parent.applySemanticsToChild(current);
@@ -296,7 +296,6 @@ public class PTMLParser extends HandlerBase{
     private XMLElement current;
     private XMLElement root;
     private XmlParser parser = new XmlParser();
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
     private String _dtdlocation = null;
 }
-

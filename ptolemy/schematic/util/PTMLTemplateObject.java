@@ -102,13 +102,25 @@ public class PTMLTemplateObject extends PTMLObject {
         _template = obj;
     }
 
+    /** Return a description of the object.  Lines are indented according to
+     *  to the level argument using the protected method _getIndentPrefix().
+     *  Zero, one or two brackets can be specified to surround the returned
+     *  description.  If one is specified it is the the leading bracket.
+     *  This is used by derived classes that will append to the description.
+     *  Those derived classes are responsible for the closing bracket.
+     *  An argument other than 0, 1, or 2 is taken to be equivalent to 0.
+     *  This method is read-synchronized on the workspace.
+     *  @param indent The amount of indenting.
+     *  @param bracket The number of surrounding brackets (0, 1, or 2).
+     *  @return A description of the object.
+     */
     protected String _description(int indent) {
         String result = super._description(indent);
         result += _getIndentPrefix(indent) + "template\n";
         if(_template == null) 
             result += _getIndentPrefix(indent + 1) + "null\n";
         else
-            _template._description(indent + 1);
+            result += _template._description(indent + 1);
         return result;
     }
 

@@ -124,6 +124,32 @@ public class TerminalStyle extends PTMLObject {
         return str + ")";
     }
 
+    /** Return a description of the object.  Lines are indented according to
+     *  to the level argument using the protected method _getIndentPrefix().
+     *  Zero, one or two brackets can be specified to surround the returned
+     *  description.  If one is specified it is the the leading bracket.
+     *  This is used by derived classes that will append to the description.
+     *  Those derived classes are responsible for the closing bracket.
+     *  An argument other than 0, 1, or 2 is taken to be equivalent to 0.
+     *  This method is read-synchronized on the workspace.
+     *  @param indent The amount of indenting.
+     *  @param bracket The number of surrounding brackets (0, 1, or 2).
+     *  @return A description of the object.
+     */
+    protected String _description(int indent) {
+        String result = super._description(indent);
+	result += _getIndentPrefix(indent) + "terminals\n";
+	Enumeration terminals = terminals();
+        while (terminals.hasMoreElements()) {
+            Terminal p = (Terminal) terminals.nextElement();
+            result += p._description(indent + 1) + "\n";
+        }
+	
+        //        result += _getIndentPrefix(indent);
+
+        return result;
+    }
+
     private NamedList _terminals;
 
 }

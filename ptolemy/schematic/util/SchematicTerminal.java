@@ -120,13 +120,13 @@ public class SchematicTerminal extends PTMLTemplateObject
      * null, then set the position of the terminal to the position of the
      * template terminal.
      */
-    public void setTemplate(PTMLObject obj) {
+    /*   public void setTemplate(PTMLObject obj) {
         super.setTemplate(obj);
         if(hasTemplate()) {
             _x = ((Terminal)getTemplate()).getX();
             _y = ((Terminal)getTemplate()).getY();
         }
-    }
+	}*/
 
    /**
      * Set the X location of this Terminal.
