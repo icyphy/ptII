@@ -717,7 +717,7 @@ public class ModelTransformer extends SceneTransformer {
     }
 
     /** Transform the given class so that it properly implements the
-     *  ptolemy Executable interface.  If any of those mehods not
+     *  ptolemy Executable interface.  If any of those methods not
      *  implemented directly by the given class, then they are created
      *  and given minimal bodies.  The generated prefire() and
      *  postfire() methods return true.
