@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		jni/demo/jni
+ME =		jni/demo/HelloWorld
 
 # Root of the Java directory
 ROOT =		../../..
@@ -41,14 +41,13 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	jni
+PTPACKAGE = 	HelloWorld
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
-	fourtyTwo.c \
-	main.c
+	HelloWorld.c
 
 EXTRA_SRCS = \
 	$(JSRCS) \
@@ -62,42 +61,45 @@ MISC_FILES =
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES =
 
+KRUFT = \
+	HelloWorld.h \
+	HelloWorld.dll
+
 JCLASS = $(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
-all: jclass $(PTCLASSJAR)
+all: jclass HelloWorld.dll $(PTCLASSJAR)
 	@echo "To run all the demos, run 'make demo'"
 
 install: all
 
 # Run the demo in all its different formats
-demo: demo_vergil
-
-
-demo_vergil:
-	"$(PTII)/bin/vergil" \
-		ATestForJNIdeux.xml ATestForJNItrois.xml ATestForJNIquatre.xml
+demo: HelloWorld.dll
+	PATH="$(PTII)/$(ME)$(CLASSPATHSEPARATOR)$(PATH)" \
+		CLASSPATH="$(CLASSPATH)$(AUXCLASSPATH)" \
+		"$(JAVA)" \
+		jni.demo.HelloWorld.HelloWorld
 
 
 #HellowWorld.class: HelloWorld.java
 #	javac -classpath $(ROOT) HellowWorld.java
 
 HelloWorld.h: HelloWorld.class
-	javah -classpath $(ROOT) -o HelloWorld.h jni.demo.gcc.HelloWorld
+	javah -classpath $(ROOT) -o HelloWorld.h jni.demo.HelloWorld.HelloWorld
 
-HellowWorld.o: HelloWorld.h
-	gcc -mno-cygwin -I$jdk/include -I$jdk/include/win32 -Wl,--add-stdcall-alias -shared -o HelloWorld.dll HelloWorld.c
+# FIXME: win32 only, need to add PTJAVA_PLATFORM to configure 
+PTJAVA_PLATFORM=win32
+JNI_PLATFORM_INCLUDES= \
+	-I$(PTJAVA_DIR)/include \
+	-I$(PTJAVA_DIR)/include/$(PTJAVA_PLATFORM)
 
-fourtyTwo.o: fourtyTwo.c
-	$(CC) -c $^
-
-// FIXME: .dll is Windows only
-fourtyTwo.dll: fourtyTwo.o
-	gcc -shared -o $@ $^
-
-main: fourtyTwo.dll
-	$(CC) -o main main.c  -L./ -lfourtyTwo
+# PTCC is set in $PTII/mk/ptII.mk
+HelloWorld.dll: HelloWorld.h HelloWorld.c
+	$(PTCC) -mno-cygwin \
+		$(JNI_PLATFORM_INCLUDES) \
+		-Wl,--add-stdcall-alias -shared \
+		-o HelloWorld.dll HelloWorld.c
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
