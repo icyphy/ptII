@@ -68,12 +68,25 @@ how to write a demo using Java.
 */
 public class Butterfly extends TypedCompositeActor {
 
-    /** Create the Butterfly model
-     */
     public Butterfly(Workspace workspace)
+	throws IllegalActionException, NameDuplicationException {
+	this(workspace, "butterfly");
+    }
+
+    public Butterfly(TypedCompositeActor container, String name) 
+	throws IllegalActionException, NameDuplicationException {
+	// If we exportMoML while running as an applet, then
+	// MoMLParser  will call this constructor because the butterfly
+	// is contained by the _toplevel in ButterflyApplet
+	this(container.workspace(), name);
+	setContainer(container);
+    }
+
+    public Butterfly(Workspace workspace, String name)
 	throws IllegalActionException, NameDuplicationException {
 	super(workspace);
 
+	setName("Butterfly");
 	setDirector(new SDFDirector(this, "director"));
 
 	Scale scale1 = new Scale(this,"scale1");
