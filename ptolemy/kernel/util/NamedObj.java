@@ -36,6 +36,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -1247,11 +1248,17 @@ public class NamedObj implements Nameable, Debuggable,
      */
     protected final void _debug(DebugEvent event) {
         if (_debugging) {
+            // We copy this list to that responding to the event may block.
+            // while the execution thread is blocked, we want to be able to
+            // add more debug listeners...
+            // Yes, this is slow, but hey, it's debug code.
+            List list;
             synchronized(this) {
-                Iterator listeners = _debugListeners.iterator();
-                while (listeners.hasNext()) {
-                    ((DebugListener)listeners.next()).event(event);
-                }
+                list = new ArrayList(_debugListeners);
+            }
+            Iterator listeners = list.iterator();
+            while (listeners.hasNext()) {
+                ((DebugListener)listeners.next()).event(event);
             }
         }
     }
@@ -1263,11 +1270,17 @@ public class NamedObj implements Nameable, Debuggable,
      */
     protected final void _debug(String message) {
         if (_debugging) {
+            // We copy this list to that responding to the event may block.
+            // while the execution thread is blocked, we want to be able to
+            // add more debug listeners...
+            // Yes, this is slow, but hey, it's debug code.
+            List list;
             synchronized(this) {
-                Iterator listeners = _debugListeners.iterator();
-                while (listeners.hasNext()) {
-                    ((DebugListener)listeners.next()).message(message);
-                }
+                list = new ArrayList(_debugListeners);
+            }
+            Iterator listeners = list.iterator();
+            while (listeners.hasNext()) {
+                ((DebugListener)listeners.next()).message(message);
             }
         }
     }
