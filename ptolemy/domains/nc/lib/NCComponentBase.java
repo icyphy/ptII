@@ -71,7 +71,7 @@ public class NCComponentBase extends AtomicActor {
             _init();
         } catch (KernelException e) {
             throw new InternalErrorException(
-            "Error constructing parameters of NCActor.");
+            "Error constructing parameters of NCComponentBase.");
         }
     }
 
@@ -100,7 +100,7 @@ public class NCComponentBase extends AtomicActor {
 
     private void _init() throws IllegalActionException, NameDuplicationException {
         source = new FileParameter(this, "source");
-        source.setExpression("$PTII/ptolemy/domains/nc/lib/NCActor.nc");
+        source.setExpression("$PTII/ptolemy/domains/nc/lib/NCComponent.nc");
         source.setVisibility(Settable.EXPERT);
         _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"-20\" y=\"-20\" "
