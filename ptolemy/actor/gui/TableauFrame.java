@@ -35,10 +35,7 @@ import ptolemy.gui.MessageHandler;
 import ptolemy.gui.Top;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.Nameable;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -310,7 +307,8 @@ public abstract class TableauFrame extends Top {
         return super._save();
     }
 
-    /** Query the user for a filename and save the model to that file.
+    /** Query the user for a filename, save the model to that file,
+     *  and open a new window to view the model.
      *  This overrides the base class to update the entry in the
      *  ModelDirectory.
      *  @return True if the save succeeds.
@@ -335,35 +333,22 @@ public abstract class TableauFrame extends Top {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fileDialog.getSelectedFile();
 
-	    // update the name of the model effigy.
-            try {
-		String newKey = file.toURL().toExternalForm();
-		Effigy effigy = (Effigy)getTableau().getContainer();
-		effigy.identifier.setExpression(newKey);
-
-                // If the effigy is contained by another effigy, then
-                // remove it from that container and put in the directory.
-                Effigy topEffigy = effigy.topEffigy();
-                if (effigy != topEffigy) {
-                    effigy.setContainer(
-                            (ModelDirectory)topEffigy.getContainer());
-                }
-
-	    } catch (MalformedURLException ex) {
-                try {
-                    MessageHandler.warning(
-                            "Unable to associate file with a URL: " + ex);
-                } catch (CancelException exception) {}
-            } catch (KernelException ex) {
-                try {
-                    MessageHandler.warning(
-                            "Unable to associate file with a URL: " + ex);
-                } catch (CancelException exception) {}
-            }
-
             _file = file;
 	    _directory = fileDialog.getCurrentDirectory();
-            return _save();
+            boolean result = _save();
+
+            if (result) {
+                // Open a new window on the model.
+                try {
+                    URL newURL = file.toURL();
+                    String newKey = newURL.toExternalForm();
+                    getConfiguration().openModel(newURL, newURL, newKey);
+                } catch (Exception ex) {
+                    MessageHandler.error(
+                            "Unable to open the file just saved.",ex);
+                }
+            }
+            return result;
         }
         // Action was cancelled.
         return false;

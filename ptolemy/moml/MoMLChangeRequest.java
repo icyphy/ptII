@@ -77,7 +77,8 @@ public class MoMLChangeRequest extends ChangeRequest {
      *  Alternatively, it can call waitForCompletion().
      *  External references will be resolved relative to the given base URL.
      *  @param originator The originator of the change request.
-     *  @param parser The parser to execute the request.
+     *  @param parser The parser to execute the request, or null to use
+     *   the default parser.
      *  @param request The mutation request in MoML.
      *  @param base The URL relative to which external references should
      *  be resolved.
@@ -85,7 +86,11 @@ public class MoMLChangeRequest extends ChangeRequest {
     public MoMLChangeRequest(
              Object originator, MoMLParser parser, String request, URL base) {
         super(originator, request);
-        _parser = parser;
+        if (parser == null) {
+            _parser = _staticParser;
+        } else {
+            _parser = parser;
+        }
         _context = parser.getToplevel();
 	_base = base;
     }
@@ -153,7 +158,11 @@ public class MoMLChangeRequest extends ChangeRequest {
             Object originator, MoMLParser parser, NamedObj context,
             String request, URL base) {
         super(originator, request);
-        _parser = parser;
+        if (parser == null) {
+            _parser = _staticParser;
+        } else {
+            _parser = parser;
+        }
         _context = context;
 	_base = base;
     }
@@ -188,7 +197,6 @@ public class MoMLChangeRequest extends ChangeRequest {
         List othersList = context.deferredMoMLDefinitionFrom();
         if (othersList != null) {
 
-
             Iterator others = othersList.iterator();
             while (others.hasNext()) {
                 NamedObj other = (NamedObj)others.next();
@@ -198,8 +206,9 @@ public class MoMLChangeRequest extends ChangeRequest {
                     // that just because this change request is being
                     // executed now that the propogated one is safe to
                     // execute.
-                    // FIXME: undo is going to be very difficult to
-                    // handle here.
+                    // FIXME: undo is going to be difficult to
+                    // handle here.  I guess we just count on undo
+                    // commands propagating as well...
                     MoMLChangeRequest newChange = new MoMLChangeRequest(
                             getOriginator(),
                             _parser,

@@ -38,6 +38,7 @@ import ptolemy.actor.gui.style.*;
 import ptolemy.data.*;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
+import ptolemy.moml.MoMLChangeRequest;
 
 import java.awt.Container;
 import java.awt.Font;
@@ -213,28 +214,56 @@ public class PtolemyQuery extends Query
 
 	// Check if the entry that changed is in the mapping.
 	if (_attributes.containsKey(name)) {
-	    final UserSettable attribute = (UserSettable)(_attributes.get(name));
+	    final UserSettable attribute
+                    = (UserSettable)(_attributes.get(name));
             if ( attribute == null ) {
                 // No associated attribute.
                 return;
             }
 
-            // NOTE: We could use a MoMLChangeRequest, but that
-            // would create a dependence on the moml package, so
-            // for this simple mutation, it's probably not worth it.
-            ChangeRequest request = new ChangeRequest(this, name) {
-                protected void _execute() throws IllegalActionException {
-                    attribute.setExpression(stringValue(name));
+            ChangeRequest request;
 
-                    // Here, we need to handle instances of Variable
-                    // specially.  This is too bad...
-                    if (attribute instanceof Variable) {
-                        // Retrieve the token to force evaluation, so as to
-                        // check the validity of the new value.
-                        ((Variable)attribute).getToken();
+            // NOTE: We must use a MoMLChangeRequest so that changes
+            // propogate to any objects that have been instantiating
+            // using this one as a class.  This is only an issue if
+            // attribute is a NamedObj, so we first check.
+            if (attribute instanceof NamedObj) {
+                // The parent will form the context of the MoML.
+                NamedObj parent = 
+                       (NamedObj)((NamedObj)attribute).getContainer();
+
+                // FIXME: In order for undo to work, the PtolemyQuery
+                // needs to have a MoMLParser given to it rather than
+                // creating a new one.  This will need to be passed to
+                // the MoMLChangeRequest.
+                String moml = "<property name=\""
+                        + name
+                        + "\" value=\""
+                        + stringValue(name)
+                        + "\"/>";
+                request = new MoMLChangeRequest(
+                        this,         // originator
+                        null,         // parser  -- FIXME: see above.
+                        parent,       // context
+                        moml,         // MoML code
+                        null);        // base
+            } else {
+                // If the attribute is not a NamedObj, then we
+                // set its value directly.
+                request = new ChangeRequest(this, name) {
+                    protected void _execute() throws IllegalActionException {
+                        attribute.setExpression(stringValue(name));
+
+                        // Here, we need to handle instances of Variable
+                        // specially.  This is too bad...
+                        if (attribute instanceof Variable) {
+                            // Retrieve the token to force evaluation, so as to
+                            // check the validity of the new value.
+                            ((Variable)attribute).getToken();
+                        }
                     }
-                }
-            };
+                };
+            }
             if(_handler != null) {
                 _handler.requestChange(request);
             } else {

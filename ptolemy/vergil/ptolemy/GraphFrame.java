@@ -503,15 +503,7 @@ public abstract class GraphFrame extends PtolemyFrame
     protected boolean _saveAs() {
         try {
             _saveAsFlag = true;
-            if (super._saveAs()) {
-                // FIXME: the model returned by getModel() is now a clone
-                // of the previous one.  Need to clear and redraw so that
-                // targets of actions refer to the cloned objects and not
-                // the original ones.
-                return true;
-            } else {
-                return false;
-            }
+            return super._saveAs();
         } finally {
             _saveAsFlag = false;
         }

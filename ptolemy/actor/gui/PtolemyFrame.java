@@ -88,34 +88,6 @@ public abstract class PtolemyFrame extends TableauFrame {
         _model = model;
     }
 
-    /** Query the user for a filename and save the model to that file.
-     *  This overrides the base class to clone the model if the save
-     *  succeeds.  This cloning is important because it would be
-     *  very confusing for changes made to this model to affect the
-     *  original model, which may have other references to it.
-     *  For example, it might be an internal model of a hierarchical
-     *  model, and the it would be unexpected for the original model
-     *  to be affected.
-     *  @return True if the save succeeds.
-     */
-    protected boolean _saveAs() {
-        if (super._saveAs()) {
-            try {
-                setModel((CompositeEntity)_model.clone());
-            } catch (CloneNotSupportedException ex) {
-                throw new InternalErrorException("Unable to clone model!");
-            }
-            PtolemyEffigy effigy = (PtolemyEffigy)getEffigy();
-            if (effigy != null) {
-
-                effigy.setModel(getModel());
-            }
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
