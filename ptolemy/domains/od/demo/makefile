@@ -56,6 +56,13 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
         ODStringDemo.java
 
+# Non-graphical Java demos written in Tcl
+# Since there are no demos, we use a dummy file so that the script that builds
+# alljtests.tcl works.  If you add a demo, be sure to add
+# $(JSIMPLE_TESTS) to EXTRA_SRCS
+JSIMPLE_TESTS = \
+        dummy.tcl
+
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -74,6 +81,8 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass
 install: jclass javadocs $(PTCLASSJAR)
 docs: javadocs
+demo:
+	CLASSPATH=$(CLASSPATH) $(PTJAVA_DIR)/bin/java ptolemy.domains.od.demo.ODStringDemo
 
 depend:
 	@echo "no dependencies in this directory"
