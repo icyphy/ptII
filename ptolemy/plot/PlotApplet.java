@@ -52,7 +52,7 @@ The formatting commands are included in the file with the
 the data.
 If no URL is given, then a sample plot is generated.
 
-@author Edward A. Lee, Christopher Hylands
+@author Edward A. Lee, Christopher Hylands, Contributor: Roger Robins 
 @version $Id$
 @since Ptolemy II 0.2
 @see PlotBox
