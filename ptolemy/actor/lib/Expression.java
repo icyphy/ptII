@@ -323,7 +323,7 @@ public class Expression extends TypedAtomicActor {
     // Add a constraint to the type output port of this object.
     private void _setOutputTypeConstraint() {
         // NOTE: uncomment this line to add better type constraints.
-        //      output.setTypeAtLeast(new OutputTypeFunction());
+        output.setTypeAtLeast(new OutputTypeFunction());
     }
 
     private class VariableScope implements ParserScope {
