@@ -57,7 +57,7 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="Copy1:Clock" class="ptolemy.actor.lib.Clock">
+    <entity name="Copy1Clock" class="ptolemy.actor.lib.Clock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="3.0">
@@ -101,6 +101,6 @@
     <link port="Counter.decrement" relation="relation2"/>
     <link port="Counter.output" relation="relation3"/>
     <link port="Clock.output" relation="relation"/>
-    <link port="Copy1:Clock.output" relation="relation2"/>
+    <link port="Copy1Clock.output" relation="relation2"/>
     <link port="Test.input" relation="relation3"/>
 </entity>
