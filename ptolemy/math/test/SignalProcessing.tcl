@@ -30,7 +30,7 @@
 # 						COPYRIGHTENDKEY
 #######################################################################
 
-# Tycho test bed, see $TYCHO/doc/coding/testing.html for more information.
+# Ptolemy II test bed, see $PTII/doc/coding/testing.html for more information.
 
 # NOTE: there is way too much resolution in these numeric tests.
 #  The results are unlikely to be the same on all platforms.
@@ -52,7 +52,8 @@ proc SignalProcessingApply {mathoperation expectedresults {testvalues {}}} {
 		[java::field java.lang.Math PI]]
     }
     foreach testvalue $testvalues expectedresult $expectedresults {
-	if [catch { set operationresult [java::call ptolemy.math.SignalProcessing \
+	if [catch { set operationresult \
+		[java::call ptolemy.math.SignalProcessing \
 		$mathoperation $testvalue]} errMsg] {
 	    set diffresult $errMsg
 	} else {
@@ -213,7 +214,7 @@ test SignalProcessing-3.2 {convolve Complex} {
 } {}
 
 ####################################################################
-test SignalProcessing-2.1 {decibel} {
+test SignalProcessing-4.1 {decibel} {
     epsilonDiff \
 	    [list \
 	    [java::call ptolemy.math.SignalProcessing {decibel double} -10.0] \
@@ -226,14 +227,14 @@ test SignalProcessing-2.1 {decibel} {
 
 
 ####################################################################
-test SignalProcessing-3.1 {decibel array: empty array} {
+test SignalProcessing-4.2 {decibel array: empty array} {
     set dbresults [java::call ptolemy.math.SignalProcessing \
 	    {decibel double[]} $a0]
     $dbresults getrange 0
 } {}
 
 ####################################################################
-test SignalProcessing-3.2 {decibel array} {
+test SignalProcessing-4.3 {decibel array} {
     set dbarray [java::new {double[]} 5 {-10.0 0.0 0.1 1.0 10.0}]
     set dbresults [java::call ptolemy.math.SignalProcessing \
 	    {decibel double[]} $dbarray]
@@ -242,14 +243,14 @@ test SignalProcessing-3.2 {decibel array} {
 } {}
 
 ####################################################################
-test SignalProcessing-3.1 {DCT double[] empty array} {
+test SignalProcessing-5.1 {DCT double[] empty array} {
     catch {set eres [java::call ptolemy.math.SignalProcessing \
 	    {DCT double[]} $a0]} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing : size of transform must be positive.}}
+} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing: size of transform must be positive.}}
 
 ####################################################################
-test SignalProcessing-3.2 {DCT double[] implicit order 0} {
+test SignalProcessing-5.2 {DCT double[] implicit order 0} {
     set dctresult [java::call ptolemy.math.SignalProcessing {DCT double[]} $a1]
     set eresult [java::call ptolemy.math.SignalProcessing \
                  {DCT double[] int int} $a1 0 $normdct]
@@ -257,7 +258,7 @@ test SignalProcessing-3.2 {DCT double[] implicit order 0} {
 } {}
 
 ####################################################################
-test SignalProcessing-3.5 {DCT double[] implicit order 4} {
+test SignalProcessing-5.3 {DCT double[] implicit order 4} {
     set dctresult [java::call ptolemy.math.SignalProcessing \
                    {DCT double[]} $rt1]
     set eresult [java::call ptolemy.math.SignalProcessing \
@@ -266,7 +267,7 @@ test SignalProcessing-3.5 {DCT double[] implicit order 4} {
 } {}
 
 ####################################################################
-test SignalProcessing-4.1 {DCT double[] order 0 normalized} {
+test SignalProcessing-5.4 {DCT double[] order 0 normalized} {
     set dctresult [java::call ptolemy.math.SignalProcessing \
                    {DCT double[] int int} $a1 0 0]
     # this is -36.32 / sqrt(2)
@@ -274,42 +275,42 @@ test SignalProcessing-4.1 {DCT double[] order 0 normalized} {
 } {}
 
 ####################################################################
-test SignalProcessing-4.2 {DCT double[] order 0 un-normalized} {
+test SignalProcessing-5.5 {DCT double[] order 0 un-normalized} {
     set dctresult [java::call ptolemy.math.SignalProcessing \
                    {DCT double[] int int} $a1 0 $unnormdct]
     epsilonDiff [$dctresult getrange 0] {-36.32}
 } {}
 
 ####################################################################
-test SignalProcessing-4.3 {DCT double[] order 0 orthonormal} {
+test SignalProcessing-5.6 {DCT double[] order 0 orthonormal} {
     set dctresult [java::call ptolemy.math.SignalProcessing \
                    {DCT double[] int int} $a1 0 $orthodct]
     epsilonDiff [$dctresult getrange 0] {-36.32}
 } {}
 
 ####################################################################
-test SignalProcessing-4.4 {DCT double[] order 1 normalized} {
+test SignalProcessing-5.7 {DCT double[] order 1 normalized} {
     set dctresult [java::call ptolemy.math.SignalProcessing \
                    {DCT double[] int int} $a2 1 $normdct]
     epsilonDiff [$dctresult getrange 0] {32.236998154294 35.942237687712}
 } {}
 
 ####################################################################
-test SignalProcessing-4.5 {DCT double[] order 1 un-normalized} {
+test SignalProcessing-5.8 {DCT double[] order 1 un-normalized} {
     set dctresult [java::call ptolemy.math.SignalProcessing \
             	   {DCT double[] int int} $a2 1 $unnormdct]   
     epsilonDiff [$dctresult getrange 0] {45.59 35.942237687712}
 } {}
 
 ####################################################################
-test SignalProcessing-4.4 {DCT double[] order 1 orthonormal} {
+test SignalProcessing-5.9 {DCT double[] order 1 orthonormal} {
     set dctresult [java::call ptolemy.math.SignalProcessing \
                    {DCT double[] int int} $a2 1 $orthodct]
     epsilonDiff [$dctresult getrange 0] {32.236998154294 35.942237687712}
 } {}
 
 ####################################################################
-test SignalProcessing-4.7 {DCT double[] order 4 normalized} {
+test SignalProcessing-5.10 {DCT double[] order 4 normalized} {
     set dctresult [java::call ptolemy.math.SignalProcessing \
                    {DCT double[] int int} $rt1 4 $normdct]
     epsilonDiff [$dctresult getrange 0] \
@@ -320,7 +321,7 @@ test SignalProcessing-4.7 {DCT double[] order 4 normalized} {
 } {}
 
 ####################################################################
-test SignalProcessing-4.9 {DCT double[] order 4 orthonormal} {
+test SignalProcessing-5.11 {DCT double[] order 4 orthonormal} {
     set dctresult [java::call ptolemy.math.SignalProcessing \
                    {DCT double[] int int} $rt1 4 $orthodct]
     epsilonDiff [$dctresult getrange 0] \
@@ -331,14 +332,14 @@ test SignalProcessing-4.9 {DCT double[] order 4 orthonormal} {
 } {}
 
 ####################################################################
-test SignalProcessing-4.2 {FFTComplexOut Complex[] : empty array} {
+test SignalProcessing-6.1 {FFTComplexOut Complex[] : empty array} {
     catch {set result [java::call ptolemy.math.SignalProcessing \
 	    {FFTComplexOut ptolemy.math.Complex[]} $ca0]} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing : size of transform must be positive.}}
+} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing: size of transform must be positive.}}
 
 ####################################################################
-test SignalProcessing-4.2 {FFTComplexOut Complex[]} {
+test SignalProcessing-6.2 {FFTComplexOut Complex[]} {
     set c0 [java::new ptolemy.math.Complex 0.0 0.0]
     set c1 [java::new ptolemy.math.Complex 1.0 0.0]
     # Complex array
@@ -350,7 +351,7 @@ test SignalProcessing-4.2 {FFTComplexOut Complex[]} {
 } {{1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i}}
 
 ####################################################################
-test SignalProcessing-5.3 {FFTComplexOut Complex[] order 0} {
+test SignalProcessing-6.3 {FFTComplexOut Complex[] order 0} {
     # NOTE: uses setup from 6.3 above
     set result [java::call ptolemy.math.SignalProcessing \
 	       {FFTComplexOut ptolemy.math.Complex[]} $ca1]
@@ -358,7 +359,7 @@ test SignalProcessing-5.3 {FFTComplexOut Complex[] order 0} {
 } {}
 
 ####################################################################
-test SignalProcessing-5.4 {FFTComplexOut Complex[] order 1} {
+test SignalProcessing-6.4 {FFTComplexOut Complex[] order 1} {
     set c0 [java::new ptolemy.math.Complex 0.0 0.0]
     set c1 [java::new ptolemy.math.Complex 1.0 0.0]
     # Complex array
@@ -369,7 +370,7 @@ test SignalProcessing-5.4 {FFTComplexOut Complex[] order 1} {
 } {{1.0 + 0.0i} {1.0 + 0.0i}}
 
 ####################################################################
-test SignalProcessing-5.5 {FFTComplexOut Complex[] order 2} {
+test SignalProcessing-6.5 {FFTComplexOut Complex[] order 2} {
     set c0 [java::new ptolemy.math.Complex 0.0 0.0]
     set c1 [java::new ptolemy.math.Complex 1.0 0.0]
     # Complex array
@@ -381,7 +382,7 @@ test SignalProcessing-5.5 {FFTComplexOut Complex[] order 2} {
 
 
 ####################################################################
-test SignalProcessing-5.6 {FFTComplexOut Complex[] order 1, w/ larger array} {
+test SignalProcessing-6.6 {FFTComplexOut Complex[] order 1, w/ larger array} {
     set c0 [java::new ptolemy.math.Complex 0.0 0.0]
     set c1 [java::new ptolemy.math.Complex 1.0 0.0]
     # Complex array of size 3, or a order 1 fft, the size should be 2
@@ -392,7 +393,7 @@ test SignalProcessing-5.6 {FFTComplexOut Complex[] order 1, w/ larger array} {
 } {{1.0 + 0.0i} {1.0 + 0.0i}}
 
 ####################################################################
-test SignalProcessing-5.7 {FFTComplexOut Complex[] order 2, smaller array} {
+test SignalProcessing-6.7 {FFTComplexOut Complex[] order 2, smaller array} {
     set c0 [java::new ptolemy.math.Complex 0.0 0.0]
     set c1 [java::new ptolemy.math.Complex 1.0 0.0]
     # Complex array of size 2, hopefully fft will pad
@@ -403,7 +404,7 @@ test SignalProcessing-5.7 {FFTComplexOut Complex[] order 2, smaller array} {
 } {{1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i}}
 
 ####################################################################
-test SignalProcessing-5.8 {FFTComplexOut Complex[] order 4} {
+test SignalProcessing-6.8 {FFTComplexOut Complex[] order 4} {
     set result [java::call ptolemy.math.SignalProcessing \
 	    {FFTComplexOut ptolemy.math.Complex[] int } $cat1 4]
     set efftr [java::call ptolemy.math.ComplexArrayMath \
@@ -412,14 +413,14 @@ test SignalProcessing-5.8 {FFTComplexOut Complex[] order 4} {
 } {}
 
 ####################################################################
-test SignalProcessing-6.1 {FFTComplexOut double[] : empty array} {
+test SignalProcessing-7.1 {FFTComplexOut double[] : empty array} {
     catch {set result [java::call ptolemy.math.SignalProcessing \
 	    {FFTComplexOut double[]} $a0]} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing : size of transform must be positive.}}
+} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing: size of transform must be positive.}}
 
 ####################################################################
-test SignalProcessing-6.3 {FFTComplexOut double[]} {
+test SignalProcessing-7.2 {FFTComplexOut double[]} {
     # Real array
     set impulse [java::new {double[]} 5 [list 1.0 0.0 0.0 0.0 0.0]]
     set result [java::call ptolemy.math.SignalProcessing \
@@ -478,7 +479,7 @@ test SignalProcessing-8.2 {FFTRealOut Complex, order 1} {
 } {}
 
 ###################################################################
-test SignalProcessing-15.1 {generateWindow hamming} {
+test SignalProcessing-9.1 {generateWindow hamming} {
     set winType [java::field ptolemy.math.SignalProcessing \
      WINDOW_TYPE_HAMMING] 
     set result [java::call ptolemy.math.SignalProcessing \
@@ -491,7 +492,7 @@ test SignalProcessing-15.1 {generateWindow hamming} {
 } {} 
 
 ###################################################################
-test SignalProcessing-15.2 {generateWindow rectangular} {
+test SignalProcessing-9.2 {generateWindow rectangular} {
     set winType [java::field ptolemy.math.SignalProcessing \
      WINDOW_TYPE_RECTANGULAR]
     set result [java::call ptolemy.math.SignalProcessing \
@@ -501,7 +502,7 @@ test SignalProcessing-15.2 {generateWindow rectangular} {
 } {} 
 
 ###################################################################
-test SignalProcessing-15.3 {generateWindow blackman} {
+test SignalProcessing-9.3 {generateWindow blackman} {
     set winType [java::field ptolemy.math.SignalProcessing \
      WINDOW_TYPE_BLACKMAN] 
     set result [java::call ptolemy.math.SignalProcessing \
@@ -513,7 +514,7 @@ test SignalProcessing-15.3 {generateWindow blackman} {
 } {}
 
 ###################################################################
-test SignalProcessing-15.4 {generateWindow bartlett even length} {
+test SignalProcessing-9.4 {generateWindow bartlett even length} {
     set winType [java::field ptolemy.math.SignalProcessing \
      WINDOW_TYPE_BARTLETT] 
     set result [java::call ptolemy.math.SignalProcessing \
@@ -525,7 +526,7 @@ test SignalProcessing-15.4 {generateWindow bartlett even length} {
 } {}
 
 ###################################################################
-test SignalProcessing-15.5 {generateWindow bartlett odd length} {
+test SignalProcessing-9.5 {generateWindow bartlett odd length} {
     set winType [java::field ptolemy.math.SignalProcessing \
      WINDOW_TYPE_BARTLETT] 
     set result [java::call ptolemy.math.SignalProcessing \
@@ -534,7 +535,7 @@ test SignalProcessing-15.5 {generateWindow bartlett odd length} {
 } {}
 
 ###################################################################
-test SignalProcessing-15.6 {generateWindow blackman-harris} {
+test SignalProcessing-9.6 {generateWindow blackman-harris} {
     set winType [java::field ptolemy.math.SignalProcessing \
      WINDOW_TYPE_BLACKMAN_HARRIS] 
     set result [java::call ptolemy.math.SignalProcessing \
@@ -547,14 +548,14 @@ test SignalProcessing-15.6 {generateWindow blackman-harris} {
 } {}
 
 ####################################################################
-test SignalProcessing-8.1 {IDCT double[] empty array} {
+test SignalProcessing-10.1 {IDCT double[] empty array} {
     catch {set eres [java::call ptolemy.math.SignalProcessing \
 	    {IDCT double[]} $a0]} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing : size of transform must be positive.}}
+} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing: size of transform must be positive.}}
 
 ####################################################################
-test SignalProcessing-8.2 {IDCT double[] implicit order 0} {
+test SignalProcessing-10.2 {IDCT double[] implicit order 0} {
     set idctresult [java::call ptolemy.math.SignalProcessing \
                     {IDCT double[]} $a1]
     set eresult [java::call ptolemy.math.SignalProcessing \
@@ -563,7 +564,7 @@ test SignalProcessing-8.2 {IDCT double[] implicit order 0} {
 } {}
 
 ####################################################################
-test SignalProcessing-8.5 {IDCT double[] implicit order 4} {
+test SignalProcessing-10.3 {IDCT double[] implicit order 4} {
     set idctresult [java::call ptolemy.math.SignalProcessing \
                    {IDCT double[]} $rt1]
     set eresult [java::call ptolemy.math.SignalProcessing \
@@ -572,7 +573,7 @@ test SignalProcessing-8.5 {IDCT double[] implicit order 4} {
 } {}
 
 ####################################################################
-test SignalProcessing-9.1 {IDCT double[] order 0 normalized} {
+test SignalProcessing-10.4 {IDCT double[] order 0 normalized} {
     set tin [java::new {double[]} 1 [list -25.68211829]]
     set idctresult [java::call ptolemy.math.SignalProcessing \
                    {IDCT double[] int int} $tin 0 0]
@@ -581,7 +582,7 @@ test SignalProcessing-9.1 {IDCT double[] order 0 normalized} {
 } {}
 
 ####################################################################
-test SignalProcessing-9.2 {IDCT double[] order 0 un-normalized} {
+test SignalProcessing-10.5 {IDCT double[] order 0 un-normalized} {
     set tin [java::new {double[]} 1 [list -36.32]]
     set idctresult [java::call ptolemy.math.SignalProcessing \
                     {IDCT double[] int int} $tin 0 $unnormdct]
@@ -590,7 +591,7 @@ test SignalProcessing-9.2 {IDCT double[] order 0 un-normalized} {
 } {}
 
 ####################################################################
-test SignalProcessing-9.3 {IDCT double[] order 0 orthonormal} {
+test SignalProcessing-10.6 {IDCT double[] order 0 orthonormal} {
     set tin [java::new {double[]} 1 [list -36.32]]
     set idctresult [java::call ptolemy.math.SignalProcessing \
                    {IDCT double[] int int} $tin 0 $orthodct]
@@ -598,7 +599,7 @@ test SignalProcessing-9.3 {IDCT double[] order 0 orthonormal} {
 } {}
 
 ####################################################################
-test SignalProcessing-9.4 {IDCT double[] order 1 normalized} {
+test SignalProcessing-10.7 {IDCT double[] order 1 normalized} {
     set tin [java::new {double[]} 2 [list 32.236998154294 35.942237687712]]
     set idctresult [java::call ptolemy.math.SignalProcessing \
                    {IDCT double[] int int} $tin 1 $normdct]    
@@ -606,7 +607,7 @@ test SignalProcessing-9.4 {IDCT double[] order 1 normalized} {
 } {}
 
 ####################################################################
-test SignalProcessing-9.5 {DCT double[] order 1 un-normalized} {
+test SignalProcessing-10.8 {DCT double[] order 1 un-normalized} {
     set tin [java::new {double[]} 2 [list 45.59 35.942237687712]]
     set idctresult [java::call ptolemy.math.SignalProcessing \
             	   {IDCT double[] int int} $tin 1 $unnormdct]       
@@ -614,7 +615,7 @@ test SignalProcessing-9.5 {DCT double[] order 1 un-normalized} {
 } {}
 
 ####################################################################
-test SignalProcessing-9.6 {IDCT double[] order 1 orthonormal} {
+test SignalProcessing-10.9 {IDCT double[] order 1 orthonormal} {
     set tin [java::new {double[]} 2 [list 32.236998154294 35.942237687712]]
     set idctresult [java::call ptolemy.math.SignalProcessing \
                     {IDCT double[] int int} $tin 1 $orthodct]    
@@ -622,7 +623,7 @@ test SignalProcessing-9.6 {IDCT double[] order 1 orthonormal} {
 } {}
 
 ####################################################################
-test SignalProcessing-9.7 {IDCT double[] order 4 normalized} {
+test SignalProcessing-10.10 {IDCT double[] order 4 normalized} {
     set tin [java::new {double[]} 16 [list \
 24.87892398369620 -1.38997635886534 31.62491748877781 -23.10282379888632 \
 8.05506206787482 1.42444992909460 -15.29332143414364 8.66464032828361 \
@@ -634,7 +635,7 @@ test SignalProcessing-9.7 {IDCT double[] order 4 normalized} {
 } {}
 
 ####################################################################
-test SignalProcessing-9.9 {IDCT double[] order 4 orthonormal} {
+test SignalProcessing-10.11 {IDCT double[] order 4 orthonormal} {
     set tin [java::new {double[]} 16 [list \
 8.79602792874811 -0.49143085452134 11.18109680538992 -8.16808168637524 \
 2.84789450553641 0.50361910216175 -5.40700564647427 3.06341296633589 \
@@ -646,14 +647,14 @@ test SignalProcessing-9.9 {IDCT double[] order 4 orthonormal} {
 } {}
 
 ####################################################################
-test SignalProcessing-9.1 {IFFTComplexOut Complex: empty array} {
+test SignalProcessing-11.1 {IFFTComplexOut Complex: empty array} {
     catch {set result [java::call ptolemy.math.SignalProcessing \
 	    IFFTComplexOut $ca0]} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing : size of transform must be positive.}}
+} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing: size of transform must be positive.}}
 
 ####################################################################
-test SignalProcessing-9.3 {IFFTComplexOut Complex : order 1} {
+test SignalProcessing-11.2 {IFFTComplexOut Complex : order 1} {
     # The inverse of test 5.4 above
     set ca2 [java::new {ptolemy.math.Complex[]} 2 [list $c1 $c1 ]]
     set result [java::call ptolemy.math.SignalProcessing \
@@ -662,7 +663,7 @@ test SignalProcessing-9.3 {IFFTComplexOut Complex : order 1} {
 } {{1.0 + 0.0i} {0.0 + 0.0i}}
 
 ####################################################################
-test SignalProcessing-9.4 {IFFTComplexOut Complex: array that is not a power of two in length} {
+test SignalProcessing-11.3 {IFFTComplexOut Complex: array that is not a power of two in length} {
     set ca3 [java::new {ptolemy.math.Complex[]} 3 [list $c1 $c0 $c0 ]]
     set result [java::call ptolemy.math.SignalProcessing \
 	    IFFTComplexOut $ca3]
@@ -670,14 +671,14 @@ test SignalProcessing-9.4 {IFFTComplexOut Complex: array that is not a power of 
 } {{0.25 + 0.0i} {0.25 + 0.0i} {0.25 + 0.0i} {0.25 + 0.0i}}
 
 ####################################################################
-test SignalProcessing-10.3 {IFFTComplexOut: order 0} {
+test SignalProcessing-11.4 {IFFTComplexOut: order 0} {
     set result [java::call ptolemy.math.SignalProcessing \
 	    IFFTComplexOut $ca1]
     epsilonDiff [javaPrintArray $result] {{1.0 + 2.0i}}
 } {}
 
 ####################################################################
-test SignalProcessing-10.4 {IFFTComplexOut Complex: order 1} {
+test SignalProcessing-11.5 {IFFTComplexOut Complex: order 1} {
     # The inverse of test 5.4 above
     set ca2 [java::new {ptolemy.math.Complex[]} 2 [list $c1 $c1]]
     set result [java::call ptolemy.math.SignalProcessing \
@@ -686,7 +687,7 @@ test SignalProcessing-10.4 {IFFTComplexOut Complex: order 1} {
 } {{1.0 + 0.0i} {0.0 + 0.0i}}
 
 ####################################################################
-test SignalProcessing-10.5 {IFFTComplexOut Complex: array that is not a power of two in length} {
+test SignalProcessing-11.6 {IFFTComplexOut Complex: array that is not a power of two in length} {
     set ca3 [java::new {ptolemy.math.Complex[]} 3 [list $c1 $c0 $c0 ]]
     set result [java::call ptolemy.math.SignalProcessing \
 	    IFFTComplexOut $ca3 2]
@@ -694,7 +695,7 @@ test SignalProcessing-10.5 {IFFTComplexOut Complex: array that is not a power of
 } {}
 
 ####################################################################
-test SignalProcessing-10.6 {IFFTComplexOut Complex: array is longer than order} {
+test SignalProcessing-11.7 {IFFTComplexOut Complex: array is longer than order} {
     set ca3 [java::new {ptolemy.math.Complex[]} 3 [list $c1 $c0 $c0 ]]
     set result [java::call ptolemy.math.SignalProcessing \
 	    IFFTComplexOut $ca3 1]
@@ -702,7 +703,7 @@ test SignalProcessing-10.6 {IFFTComplexOut Complex: array is longer than order} 
 } {{0.5 + 0.0i} {0.5 + 0.0i}}
 
 ####################################################################
-test SignalProcessing-11.1 {poleZeroToFreq:} {
+test SignalProcessing-11.8 {poleZeroToFreq:} {
     list "We need tests for poleZeroToFreq with realistic input data"
 } {1} {KNOW_ERROR}
 
@@ -729,7 +730,7 @@ test SignalProcessing-13.1 {sampleWave line} {
 } {}
 
 ####################################################################
-test SignalProcessing-13.1 {sampleWave raisedCosine with + excess} {
+test SignalProcessing-13.2 {sampleWave raisedCosine with + excess} {
     set rcGen [java::new ptolemy.math.SignalProcessing\$RaisedCosineSampleGenerator 3.2 0.6]
     set rcOut [java::call ptolemy.math.SignalProcessing sampleWave 10 -4.0 \
     1.0 $rcGen]
@@ -762,7 +763,7 @@ test SignalProcessing-14.2 {sampleWave sqrtRaisedCosine with + excess} {
 } {}
 
 ####################################################################
-test SignalProcessing-13.2 {sampleWave sinusoid} {
+test SignalProcessing-15.2 {sampleWave sinusoid} {
     set sinGen [java::new ptolemy.math.SignalProcessing\$SinusoidSampleGenerator     -3.0 -2.0]
     set sinOut [java::call ptolemy.math.SignalProcessing sampleWave 9 -5.0 \
     1.25 $sinGen]
@@ -773,7 +774,7 @@ test SignalProcessing-13.2 {sampleWave sinusoid} {
 } {}
 
 ####################################################################
-test SignalProcessing-14.0 {sinc} {
+test SignalProcessing-16.1 {sinc} {
     SignalProcessingApply sinc {0.0  -0.20674833578317 0.41349667156634 1.0 \
 	    0.41349667156634  -0.20674833578317  0.0} \
 {-6.28318530717959 -4.18879020478639 -2.09439510239320 0.0 \
@@ -815,39 +816,39 @@ proc _testSignalProcessingFunction { function period phase \
 }
 
 ####################################################################
-test SignalProcessing-15.1 {sawtooth} {
+test SignalProcessing-16.1 {sawtooth} {
     _testSignalProcessingFunction sawtooth 1.0 0.0 -1.0 2.0 0.2
 } {-2.0 -1.6 -1.2 -0.8 -0.4 0.0 0.4 0.8 -0.8 -0.4 0.0 0.4 0.8 -0.8 -0.4}
 
 ####################################################################
-test SignalProcessing-15.2 {sawtooth: negative period} {
+test SignalProcessing-16.2 {sawtooth: negative period} {
     # FIXME, some of the results are less than -1.0?
     _testSignalProcessingFunction sawtooth -1.0 0.5 -1.0 2.0 0.2
 } {} {KNOWN_ERROR}
 
 ####################################################################
-test SignalProcessing-15.3 {sawtooth: negative phase} {
+test SignalProcessing-16.3 {sawtooth: negative phase} {
     # FIXME, some of the results are less than -1.0?
     _testSignalProcessingFunction sawtooth 1.0 -0.5 -1.0 2.0 0.2
     #{-1.0 0.6 0.2 -0.2 -0.6 -1.0 0.6 0.2 -0.2 -0.6 -1.0 -1.4 -1.8 -2.2 -2.6}
 } {} {KNOWN_ERROR}
 
 ####################################################################
-test SignalProcessing-16.1 {square} {
+test SignalProcessing-17.1 {square} {
     # FIXME, should these vary more at the beginning
     _testSignalProcessingFunction square 1.0 0.5 -1.0 2.0 0.2
     #1.0 1.0 1.0 1.0 1.0 -1.0 -1.0 -1.0 1.0 1.0 -1.0 -1.0 -1.0 1.0 1.0
 } {} {KNOWN_ERROR}
 
 ####################################################################
-test SignalProcessing-16.2 {square: negative period} {
+test SignalProcessing-17.2 {square: negative period} {
     # FIXME, the value goes to -1 and stays there?
     _testSignalProcessingFunction square -1.0 0.5 -1.0 2.0 0.2
     #-1.0 -1.0 -1.0 1.0 1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0
 } {} {KNOWN_ERROR}
 
 ####################################################################
-test SignalProcessing-16.3 {square: negative phase} {
+test SignalProcessing-17.3 {square: negative phase} {
     # FIXME, the value is always -1?
     _testSignalProcessingFunction square -1.0 -0.5 -1.0 2.0 0.2
     #-1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0
@@ -855,37 +856,37 @@ test SignalProcessing-16.3 {square: negative phase} {
 
 
 ####################################################################
-test SignalProcessing-17.1 {sqrtRaisedCosine} {
+test SignalProcessing-18.1 {sqrtRaisedCosine} {
     list "We need tests for sqrtRaisedCosine with realistic input data"
 } {1} {KNOW_ERROR}
 
 ####################################################################
-test SignalProcessing-18.1 {sqrtRaisedCosinePulse} {
+test SignalProcessing-19.1 {sqrtRaisedCosinePulse} {
     list "We need tests for sqrtRaisedCosinePulse with realistic input data"
 } {1} {KNOW_ERROR}
 
 ####################################################################
-test SignalProcessing-19.1 {triangle} {
+test SignalProcessing-20.1 {triangle} {
     # FIXME: Does not look very triangular to me
     _testSignalProcessingFunction triangle 1.0 0.5 -1.0 2.0 0.2
     #-2.0 -1.2 -0.4 0.4 0.8 0.0 -0.8 -0.4 0.4 0.8 0.0 -0.8 -0.4 0.4 0.8
 } {} {KNOWN_ERROR}
 
 ####################################################################
-test SignalProcessing-19.2 {triangle: negative period} {
+test SignalProcessing-20.2 {triangle: negative period} {
     # FIXME: values are less than -1.0
     _testSignalProcessingFunction triangle -1.0 0.5 -1.0 2.0 0.2
     #0.0 0.8 0.4 -0.4 -0.8 0.0 0.8 0.4 -0.4 -1.2 -2.0 -2.8 -3.6 -4.4 -1.2
 } {} {KNOW_ERROR}
 
 ####################################################################
-test SignalProcessing-19.3 {triangle: negative phase} {
+test SignalProcessing-20.3 {triangle: negative phase} {
     # FIXME: values are less than -1.0
     _testSignalProcessingFunction triangle -1.0 -0.5 -1.0 2.0 0.2
     #0.0 0.8 0.4 -0.4 -1.2 -2.0 -2.8 -3.6 -4.4 -1.2 -2.0 -2.8 -3.6 -4.4 -1.2
 } {} {KNOW_ERROR}
 
 ####################################################################
-test SignalProcessing-20.1 {unwrap} {
+test SignalProcessing-21.1 {unwrap} {
     list "We need tests for unwrap with realistic input data"
 } {1} {KNOW_ERROR}
