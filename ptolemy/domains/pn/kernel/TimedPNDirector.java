@@ -241,13 +241,11 @@ public class TimedPNDirector extends BasePNDirector {
         Workspace worksp = workspace();
 	synchronized (this) {
 	    while (!_checkForDeadlock()) {
-		//System.out.println("Waiting with mutations = "+_urgentMutations);
 		worksp.wait(this);
 	    }
             timedmut = _timedMutations;
             //_timedMutations = false;
 	}
-	//System.out.println(" deadlock = "+deadl+" and mut ="+urgentmut);
 	if (_writeBlockCount != 0) {
 	    System.out.println("Artificial deadlock");
 	    _incrementLowestWriteCapacityPort();
@@ -262,7 +260,6 @@ public class TimedPNDirector extends BasePNDirector {
 	} else {
 	    _handleDeadlock();
 	}
-        //System.out.println("Done firing");
     }
 
     /** Suspend the calling process until the time has advanced to atleast the
@@ -285,7 +282,6 @@ public class TimedPNDirector extends BasePNDirector {
                 wait(); //Should I call workspace().wait(this) ?
             }
         } catch (InterruptedException e) {}
-        //System.out.println("Currenttime is "+_currenttime);
         //delayUnblock();
         //FIXME: Unblocked on a delay
     }
@@ -297,20 +293,6 @@ public class TimedPNDirector extends BasePNDirector {
         return _currenttime;
     }
 
-    /** Return false if the simulation has reached a real deadlock. Return
-     *  true otherwise.
-     *  @return false if the director has detected a real deadlock.
-     *  @exception IllegalActionException Not thrown in the PN domain.
-     */
-//     public boolean postfire() throws IllegalActionException {
-//         //System.out.println("Postifre printing " +_notdone);
-// 	if (_readBlockCount == _getActiveActorsCount() ) {
-// 	    //return _notdone;
-// 	    return false;
-// 	} else {
-// 	    return true;
-// 	}
-//     }
 
     /** Set the current time.
      *  @exception IllegalActionException If time cannot be changed
@@ -372,7 +354,6 @@ public class TimedPNDirector extends BasePNDirector {
 	if (_readBlockCount + _writeBlockCount + _delayBlockCount 
 		+ _mutationBlockCount >= _getActiveActorsCount()) {
 	    return true;
-            //System.out.println("aac ="+_actorsActive+" wb ="+_writeBlockCount+" rb = "+_readBlockCount+" db = "+ _delayBlockCount);
 	} else {
 	    return false;
 	}
@@ -382,7 +363,6 @@ public class TimedPNDirector extends BasePNDirector {
      *  @return true if the execution has paused.
      */
     protected synchronized boolean _checkForPause() {
-	//System.out.println("aac ="+_activeActorsCount+" wb ="+_writeBlockCount+" rb = "+_readBlockCount+" *PAUSED*"+"pausedcoint = "+_actorsPaused);
 	if (_readBlockCount + _writeBlockCount + _getPausedActorsCount() +
 		_mutationBlockCount + _delayBlockCount 
 		>= _getActiveActorsCount()) {
@@ -399,7 +379,6 @@ public class TimedPNDirector extends BasePNDirector {
      */
     protected synchronized void _informOfDelayBlock() {
 	_delayBlockCount++;
-	//System.out.println("Readblocked with count "+_readBlockCount);
 	if (_checkForDeadlock() || _checkForPause()) {
 	    notifyAll();
 	}
@@ -514,7 +493,6 @@ public class TimedPNDirector extends BasePNDirector {
 	while (threads.hasMoreElements()) {
 	    ptolemy.actor.process.ProcessThread pnt = (ptolemy.actor.process.ProcessThread)threads.nextElement();
 	    pnt.start();
-	    //System.out.println("Started a thread for "+((Entity)pnt.getActor()).getName());
 	}
     }
 
