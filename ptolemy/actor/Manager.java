@@ -387,7 +387,7 @@ public final class Manager extends NamedObj implements Runnable {
      *  to standard error stream. This is intended to be used by threads
      *  that are involved an execution as a mechanism for reporting
      *  errors.
-     *  @param ex The exeception.
+     *  @param ex The exception.
      */
     public void notifyListenersOfException(Exception ex) {
         _debug(ex.getMessage());
