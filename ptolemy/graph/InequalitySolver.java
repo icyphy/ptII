@@ -130,8 +130,9 @@ public class InequalitySolver {
 	    try {
 	        variable.set(init);
 	    } catch (IllegalActionException ex) {
-		System.out.println("IllegalActionException: should be " +
-			"able to initialize variable.");
+		throw new RuntimeException("InequalitySolver.solve: " +
+			"Can't set variable value(when Initialize variable). "
+			+ ex.getMessage());
 	    }
 	}
 
@@ -197,9 +198,10 @@ public class InequalitySolver {
 
 	    try {
 		updateTerm.set(value);
-	    } catch (IllegalActionException e) {
-		System.out.println("IllegalActionException: Can't " +
-			"set value to variable.");
+	    } catch (IllegalActionException ex) {
+		throw new RuntimeException("InequalitySolver.solve: " +
+			"Can't set variable value(when update variable). " +
+			ex.getMessage());
 	    }
             
             // insert or drop the inequalities affected
