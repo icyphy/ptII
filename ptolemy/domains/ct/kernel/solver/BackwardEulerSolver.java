@@ -114,7 +114,7 @@ public class BackwardEulerSolver extends FixedStepSolver
             if(DEBUG) {
                 System.out.println("Guessing..."+((Nameable)next).getName());
             }
-            next.emitPotentialStates();
+            next.emitTentativeOutputs();
         }
         _setConverge(false);
         int iterations = 0;
