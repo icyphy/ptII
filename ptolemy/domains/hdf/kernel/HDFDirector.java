@@ -326,7 +326,8 @@ public class HDFDirector extends SDFDirector {
                     // and add the key to head of list.
                     _scheduleKeyList.add(0, rateKey);
                 }
-                schedule = (Schedule)_scheduleCache.get(rateKey);
+                //schedule = (Schedule)_scheduleCache.get(rateKey);
+                schedule = scheduler.getSchedule();
             } else {
                 // cache miss.
                 if (_debug_info) {
@@ -415,11 +416,14 @@ public class HDFDirector extends SDFDirector {
     }
     
     public void preinitialize() throws IllegalActionException {
+        //_scheduleKeyList.clear();
         super.preinitialize();
         CompositeActor container = (CompositeActor)getContainer();
         Director exeDirector = container.getExecutiveDirector();
         if (exeDirector == null) {
             //System.out.println(this.getFullName() + " is the top director");
+            //System.out.println(this.getFullName() 
+            //    + " top director is rescheduling.");
             _directorFiringCount = 1;
             updateFiringCount(1, true);
         }
@@ -447,11 +451,20 @@ public class HDFDirector extends SDFDirector {
     }
     
     public boolean postfire() throws IllegalActionException {
+        //System.out.println(getFullName() + " HDF postfire now!");
+        getSchedule();
+        //System.out.println(getFullName() + " HDF get new schedule");
         CompositeActor container = (CompositeActor)getContainer();
+        //Director director = container.getDirector();
         Director exeDirector = container.getExecutiveDirector();
-        if (exeDirector == null) {
-            //System.out.println(this.getFullName() + " is the top director");
-            getSchedule();
+        if (exeDirector == null
+            || ! (exeDirector instanceof HDFDirector)
+            || ! (exeDirector instanceof HDFFSMDirector)
+            ) {
+            //System.out.println(this.getFullName() 
+            //    + " top director is rescheduling.");
+            //invalidateSchedule();
+            //getSchedule();
             _directorFiringCount = 1;
             updateFiringCount(1, false);
         }
@@ -497,6 +510,8 @@ public class HDFDirector extends SDFDirector {
             ComponentEntity entity = (ComponentEntity)entities.next();
             int firingCount = 
                 ((SDFScheduler)scheduler).getFiringCount(entity);
+            //System.out.println(entity.getName() + " firingCount = "
+            // + firingCount);
             //int firingCount = getFiringCount((Actor)entity);
             if (entity instanceof CompositeActor) {
                 //System.out.println("preinitialize():" + entity.getName() + 
@@ -506,6 +521,9 @@ public class HDFDirector extends SDFDirector {
                     firingCount = firingCount * directorFiringCount;
                     ((HDFFSMDirector)director)
                         .setFiringsPerScheduleIteration(firingCount);
+                    //System.out.println(director.getName() + 
+                     //     " firingPerScheduleIteration set by top HDF = "
+                     //      + firingCount);
                     ((HDFFSMDirector)director).updateFiringCount(firingCount, preinitialize);  
                 } else if (director instanceof HDFDirector) {
                     firingCount = firingCount * directorFiringCount;

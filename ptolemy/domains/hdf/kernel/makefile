@@ -48,7 +48,6 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-        HDFActor.java \
 	HDFDirector.java \
 	HDFFSMDirector.java \
 	HDFFSMActor.java
