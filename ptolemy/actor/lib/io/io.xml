@@ -53,6 +53,10 @@
         <doc>Read one expression per line from a text file and output the result of evaluating the expression</doc>
       </entity>
 
+      <entity name="ExpressionWriter" class="ptolemy.actor.lib.io.ExpressionWriter">
+        <doc>Write one token per line to a text file as an expression</doc>
+      </entity>
+
       <entity name="FileWriter" class="ptolemy.actor.lib.FileWriter">
         <doc>Write out tokens to a file or stdout</doc>
       </entity>

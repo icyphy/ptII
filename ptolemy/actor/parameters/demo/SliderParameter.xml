@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="SliderParameter" class="ptolemy.actor.TypedCompositeActor">
+<entity name="IntRangeParameter" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 127, 815, 509}}">
@@ -18,7 +18,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 40.0">
         </property>
     </property>
-    <property name="frequency1" class="ptolemy.actor.parameters.SliderParameter" value="6">
+    <property name="frequency1" class="ptolemy.actor.parameters.IntRangeParameter" value="6">
         <property name="min" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="max" class="ptolemy.data.expr.Parameter" value="100">
@@ -26,7 +26,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 35.0">
         </property>
     </property>
-    <property name="frequency2" class="ptolemy.actor.parameters.SliderParameter" value="62">
+    <property name="frequency2" class="ptolemy.actor.parameters.IntRangeParameter" value="62">
         <property name="min" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="max" class="ptolemy.data.expr.Parameter" value="100">

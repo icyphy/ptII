@@ -31,8 +31,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor.lib.io;
 
 import ptolemy.actor.lib.Sink;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
@@ -47,10 +49,22 @@ import java.io.PrintWriter;
 //// LineWriter
 /**
 This actor reads string-valued input tokens and writes them,
-one line at a time, to a specified file.  It does not include
-include any enclosing quotation marks.  If you need the enclosing
-quotation marks, use ExpressionWriter.  The file is
-specified using any form acceptable to FileAttribute.
+one line at a time, to a specified file.  It does not
+include any enclosing quotation marks in the output.
+If you need the enclosing quotation marks, use ExpressionWriter.
+<p>
+The file is specified by the <i>fileName</i> attribute
+using any form acceptable to FileAttribute.
+<p>
+If the <i>append</i> attribute has value <i>true</i>,
+then the file will be appended to. If it has value <i>false</i>,
+then if the file exists, the user will be queried for permission
+to overwrite, and if granted, the file will be overwritten.
+<p>
+If the <i>confirmOverwrite</i> parameter has value <i>false</i>,
+then this actor will overwrite the specified file if it exists
+without asking.  If <i>true</i> (the default), then if the file
+exists, then this actor will ask for confirmation before overwriting.
 
 @see FileAttribute
 @see ExpressionWriter
@@ -77,6 +91,14 @@ public class LineWriter extends Sink {
         fileName = new FileAttribute(this, "fileName");
         fileName.setExpression("System.out");
 
+        append = new Parameter(this, "append");
+        append.setTypeEquals(BaseType.BOOLEAN);
+        append.setToken(BooleanToken.FALSE);
+
+        confirmOverwrite = new Parameter(this, "confirmOverwrite");
+        confirmOverwrite.setTypeEquals(BaseType.BOOLEAN);
+        confirmOverwrite.setToken(BooleanToken.TRUE);
+
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-25\" y=\"-20\" "
                 + "width=\"50\" height=\"40\" "
@@ -90,6 +112,12 @@ public class LineWriter extends Sink {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
+    /** If <i>true</i>, then append to the specified file.  If <i>false</i>
+     *  (the default), then overwrite any preexisting file after asking
+     *  the user for permission.
+     */
+    public Parameter append;
+
     /** The file name to which to write.  This is a string with
      *  any form accepted by FileAttribute.  The default value is
      *  "System.out".
@@ -97,11 +125,17 @@ public class LineWriter extends Sink {
      */
     public FileAttribute fileName;
 
+    /** If <i>false</i>, then overwrite the specified file if it exists
+     *  without asking.  If <i>true</i> (the default), then if the file
+     *  exists, ask for confirmation before overwriting.
+     */
+    public Parameter confirmOverwrite;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** If the specified attribute is <i>fileName</i> and there is an
-     *  open file being written, then close that file.  The new one will
+     *  open file being written, then close that file.  The new file will
      *  be opened or created when it is next written to.
      *  @param attribute The attribute that has changed.
      *  @exception IllegalActionException If the specified attribute
@@ -111,8 +145,13 @@ public class LineWriter extends Sink {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == fileName) {
-            fileName.close();
-            _writer = null;
+            // Do not close the file if it is the same file.
+            if (_previousFileName != null
+                    && !fileName.getExpression().equals(_previousFileName)) {
+                _previousFileName = fileName.getExpression();
+                fileName.close();
+                _writer = null;
+            }
         } else {
             super.attributeChanged(attribute);
         }
@@ -131,9 +170,11 @@ public class LineWriter extends Sink {
     }
 
     /** Read an input string token and write it to the file.
+     *  If there is no input, do nothing.
      *  If the file is not open for writing then open it. If the file
      *  does not exist, then create it.  If the file already exists,
-     *  then query the user for overwrite. If there is no input, do nothing.
+     *  then query the user for overwrite, unless the <i>append</i>
+     *  parameter has value <i>true</i>.
      *  @exception IllegalActionException If the file cannot be opened
      *   or created, or if the user refuses to overwrite an existing file.
      */
@@ -143,7 +184,14 @@ public class LineWriter extends Sink {
             if (_writer == null) {
                 // Open the file.
                 File file = fileName.asFile();
-                if (file.exists()) {
+                boolean appendValue
+                        = ((BooleanToken)append.getToken()).booleanValue();
+                boolean confirmOverwriteValue
+                        = ((BooleanToken)confirmOverwrite.getToken())
+                        .booleanValue();
+                // Don't ask for confirmation in append mode, since there
+                // will be no loss of data.
+                if (file.exists() && !appendValue && confirmOverwriteValue) {
                     // Query for overwrite.
                     if (!MessageHandler.yesNoQuestion(
                             "OK to overwrite " + file + "?")) {
@@ -151,9 +199,10 @@ public class LineWriter extends Sink {
                                 "Please select another file name.");
                     }
                 }
-                _writer = new PrintWriter(fileName.openForWriting());
+                _writer = new PrintWriter(
+                        fileName.openForWriting(appendValue), true);
             }
-            _writer.println(token.stringValue());
+            _writeToken(token);
         }
         return super.postfire();
     }
@@ -167,7 +216,23 @@ public class LineWriter extends Sink {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Write the specified token to the current writer.
+     *  This is protected so that derived classes can modify the
+     *  format in which the token is written.
+     *  @param token The token to write.
+     */
+    protected void _writeToken(Token token) {
+        // In this base class, the cast is safe.
+        _writer.println(((StringToken)token).stringValue());
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         protected members                 ////
+
+    /** Previous value of fileName parameter. */
+    private String _previousFileName;
 
     /** The current writer. */
     protected PrintWriter _writer;

@@ -42,11 +42,12 @@ This actor reads a file or URL, one line at a time, evaluates each
 line as an expression, and outputs the token resulting from the
 evaluation. The first line in the file determines the data type
 of the output. All other lines must contain expressions that
-evaluate to the same type, or a run-time type error will occur.
+evaluate to the same type or a subtype, or a run-time type error will occur.
 The file or URL is specified using any form acceptable
 to FileAttribute.  If an end of file is reached, then prefire() and
 postfire() will both return false.
 
+@see ExpressionWriter
 @see FileAttribute
 @author  Edward A. Lee
 @version $Id$
@@ -71,7 +72,8 @@ public class ExpressionReader extends LineReader {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Output the data read in the prefire, if there is any.
+    /** Output the data read in the preinitialize() or postfire() if
+     *  there is any.
      *  @exception IllegalActionException If there's no director, or
      *   if the expression read from the file cannot be parsed.
      */

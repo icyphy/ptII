@@ -14,12 +14,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 40.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 127, 815, 509}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={69, 55, 815, 509}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <entity name="LineReader" class="ptolemy.actor.lib.io.LineReader">
-        <property name="fileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="$PTII/makefile">
+        <property name="fileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="$CLASSPATH/makefile">
         </property>
         <doc>Read one line at a time from a text file and output as a string</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 140.0">
@@ -31,12 +31,15 @@
             <property name="input"/>
             <property name="multiport"/>
         </port>
+        <port name="endOfFile" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
     </entity>
     <entity name="LineWriter" class="ptolemy.actor.lib.io.LineWriter">
         <property name="fileName" class="ptolemy.kernel.attributes.FileAttribute" value="System.out">
         </property>
         <doc>Write the value of a string token, one per line, to a text file.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 140.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 130.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

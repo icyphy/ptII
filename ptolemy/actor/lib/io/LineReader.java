@@ -24,13 +24,15 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
                                                 PT_COPYRIGHT_VERSION 2
                                                 COPYRIGHTENDKEY
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (liuj@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.io;
 
+import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Source;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
@@ -49,12 +51,35 @@ import java.net.URL;
 /**
 This actor reads a file or URL, one line at a time, and outputs each line
 as a string.  The file or URL is specified using any form acceptable
-to FileAttribute.  If an end of file is reached, then prefire() and
-postfire() will both return false.
+to FileAttribute. Before an end of file is reached, the <i>endOfFile</i>
+output produces <i>false</i>.  In the iteration where the last line
+of the file is read and produced on the <i>output</i> port, this actor
+produces <i>true</i> on the <i>endOfFile</i> port. In that iteration,
+postfire() returns false.  If the actor is iterated again, after the end
+of file, then prefire() and postfire() will both return false, <i>output</i>
+will produce the string "EOF", and <i>endOfFile</i> will produce <i>true</i>.
+<p>
+In some domains (such as SDF), returning false in postfire()
+causes the model to cease executing.
+In other domains (such as DE), this causes the director to avoid
+further firings of this actor.  So usually, the actor will not be
+invoked again after the end of file is reached.
+<p>
+This actor reads ahead in the file so that it can produce an output
+<i>true</i> on <i>endOfFile</i> in the same iteration where it outputs
+the last line.  It reads the first line in preinitialize(), and
+subsequently reads a new line in each invocation of postfire().  The
+line read is produced on the <i>output</i> in the next iteration
+after it is read.
 <p>
 This actor can skip some lines at the beginning of the file or URL, with
 the number specified by the <i>numberOfLinesToSkip</i> parameter. The
 default value of this parameter is 0.
+<p>
+If you need to reset this line reader to start again at the begining
+of the file, the way to do this is to call initialize() during the run
+of the model.  This can be done, for example, using a modal model
+with a transition where reset is enabled.
 
 @see FileAttribute
 @author  Edward A. Lee, Yuhong Xiong
@@ -76,6 +101,9 @@ public class LineReader extends Source {
 
         output.setTypeEquals(BaseType.STRING);
 
+        endOfFile = new TypedIOPort(this, "endOfFile", false, true);
+        endOfFile.setTypeEquals(BaseType.BOOLEAN);
+
         fileOrURL = new FileAttribute(this, "fileOrURL");
 
         numberOfLinesToSkip = new Parameter(this, "numberOfLinesToSkip",
@@ -95,6 +123,12 @@ public class LineReader extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
+    /** An output port that produces <i>false</i> until the end of file
+     *  is reached, at which point it produces <i>true</i>. The type
+     *  is boolean.
+     */
+    public TypedIOPort endOfFile;
+
     /** The file name or URL from which to read.  This is a string with
      *  any form accepted by FileAttribute.
      *  @see FileAttribute
@@ -113,7 +147,9 @@ public class LineReader extends Source {
     /** If the specified attribute is <i>fileOrURL</i> and there is an
      *  open file being read, then close that file and open the new one;
      *  if the attribute is <i>numberOfLinesToSkip</i> and its value is
-     *  negative, throw an exception.
+     *  negative, then throw an exception.  In the case of <i>fileOrURL</i>,
+     *  do nothing if the file name is the same as the previous value of
+     *  this attribute.
      *  @param attribute The attribute that has changed.
      *  @exception IllegalActionException If the specified attribute
      *   is <i>fileOrURL</i> and the file cannot be opened, or the previously
@@ -123,9 +159,21 @@ public class LineReader extends Source {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == fileOrURL) {
-            fileOrURL.close();
-            _reader = fileOrURL.openForReading();
-            _reachedEOF = false;
+            // NOTE: We do not want to close the file if the file
+            // has not in fact changed.  We check this by just comparing
+            // name, which is not perfect...
+            if (_previousFileOrURL != null
+                    && !fileOrURL.getExpression().equals(_previousFileOrURL)) {
+                _previousFileOrURL = fileOrURL.getExpression();
+                fileOrURL.close();
+                // Ignore if the fileOrUL is blank.
+                if (fileOrURL.getExpression().trim().equals("")) {
+                    _reader = null;
+                } else {
+                    _reader = fileOrURL.openForReading();
+                }
+                _reachedEOF = false;
+            }
         } else if (attribute == numberOfLinesToSkip) {
             int linesToSkip =
                     ((IntToken)numberOfLinesToSkip.getToken()).intValue();
@@ -163,6 +211,28 @@ public class LineReader extends Source {
         }
     }
 
+    /** If this is called after prefire() has been called but before
+     *  wrapup() has been called, then close any
+     *  open file re-open it, skip the number of lines given by the
+     *  <i>numberOfLinesToSkip</i> parameter, and read the first line to
+     *  be produced in the next invocation of prefire(). This occurs if
+     *  this actor is re-initialized during a run of the model.
+     *  @exception IllegalActionException If the file or URL cannot be
+     *   opened, or if the lines to be skipped and the first line to be
+     *   sent out in the fire() method cannot be read.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        if (_firedSinceWrapup) {
+            // It would be better if there were a way to reset the
+            // input stream, but apparently there is not, short of
+            // closing it and reopening it.
+            fileOrURL.close();
+            _reader = null;
+            _openAndReadFirstLine();
+        }
+    }
+
     /** Read the next line from the file. If there is no next line,
      *  return false.  Otherwise, return whatever the superclass returns.
      *  @exception IllegalActionException If there is a problem reading
@@ -178,8 +248,10 @@ public class LineReader extends Source {
                 // In case the return value gets ignored by the domain:
                 _currentLine = "EOF";
                 _reachedEOF = true;
+                endOfFile.broadcast(BooleanToken.TRUE);
                 return false;
             }
+            endOfFile.broadcast(BooleanToken.FALSE);
             return super.postfire();
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex, "Postfire failed");
@@ -191,6 +263,7 @@ public class LineReader extends Source {
      *  @exception IllegalActionException If the superclass throws it.
      */
     public boolean prefire() throws IllegalActionException {
+        _firedSinceWrapup = true;
         if (_reachedEOF) return false;
         else return super.prefire();
     }
@@ -207,7 +280,33 @@ public class LineReader extends Source {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
+        _openAndReadFirstLine();
+    }
 
+    /** Close the reader if there is one.
+     *  @exception IllegalActionException If an IO error occurs.
+     */
+    public void wrapup() throws IllegalActionException {
+        fileOrURL.close();
+        _reader = null;
+        _firedSinceWrapup = false;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected members                 ////
+
+    /** Cache of most recently read data. */
+    protected String _currentLine;
+
+    /** The current reader for the input file. */
+    protected BufferedReader _reader;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Open the file and read the first line.
+     */
+    private void _openAndReadFirstLine() throws IllegalActionException {
         _reader = fileOrURL.openForReading();
         _reachedEOF = false;
         try {
@@ -227,26 +326,16 @@ public class LineReader extends Source {
         }
     }
 
-
-    /** Close the reader if there is one.
-     *  @exception IllegalActionException If an IO error occurs.
-     */
-    public void wrapup() throws IllegalActionException {
-        fileOrURL.close();
-        _reader = null;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected members                 ////
-
-    /** Cache of most recently read data. */
-    protected String _currentLine;
-
-    /** The current reader for the input file. */
-    protected BufferedReader _reader;
-
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
+
+    /** Indicator that the fire() method has been called, but wrapup
+     *  has not.  That is, we are in the middle of a run.
+     */
+    private boolean _firedSinceWrapup = false;
+
+    /** Previous value of fileOrURL parameter. */
+    private String _previousFileOrURL;
 
     /** Indicator that we have reached the end of file. */
     private boolean _reachedEOF = false;

@@ -37,7 +37,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// SliderParameter
+//// IntRangeParameter
 /**
 This is a parameter with type integer with a limited range.
 Its value is an integer token that is constrained to lie
@@ -45,11 +45,13 @@ within the boundaries specified by its two parameters,
 <i>min</i> and <i>max</i>.  These specify the minimum and maximum values.
 A user interface will typically use this
 information to represent the parameter value using a slider.
+The default values for <i>min</i> and <i>max</i> are 0 and 100,
+respectively, and the default value for this parameter is 50.
 <p>
 @author Edward A. Lee
 @version $Id$
 */
-public class SliderParameter extends Parameter {
+public class IntRangeParameter extends Parameter {
 
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
@@ -64,7 +66,7 @@ public class SliderParameter extends Parameter {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public SliderParameter(NamedObj container, String name)
+    public IntRangeParameter(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
@@ -87,10 +89,10 @@ public class SliderParameter extends Parameter {
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** The maximum value. */
+    /** The maximum value. This is has an integer value, and defaults to 100. */
     public Parameter max;
 
-    /** The minimum value. */
+    /** The minimum value. This is has an integer value, and defaults to 0. */
     public Parameter min;
 
     ///////////////////////////////////////////////////////////////////
@@ -129,8 +131,8 @@ public class SliderParameter extends Parameter {
         }
     }
 
-    /** Return the current value of the slider as an integer.
-     *  @return The current slider value.
+    /** Return the current value of this parameter as an integer.
+     *  @return The current value.
      *  @exception IllegalActionException If the expression cannot
      *   be parsed or cannot be evaluated, or if the result of evaluation
      *   violates type constraints, or if the result of evaluation is null
@@ -140,8 +142,8 @@ public class SliderParameter extends Parameter {
         return ((IntToken)getToken()).intValue();
     }
 
-    /** Return the maximum value of the slider as an integer.
-     *  @return The maximum slider value.
+    /** Return the maximum value of this parameter as an integer.
+     *  @return The maximum value.
      *  @exception IllegalActionException If the expression cannot
      *   be parsed or cannot be evaluated, or if the result of evaluation
      *   violates type constraints, or if the result of evaluation is null
@@ -151,8 +153,8 @@ public class SliderParameter extends Parameter {
         return ((IntToken)max.getToken()).intValue();
     }
 
-    /** Return the minimum value of the slider.
-     *  @return The minimum slider value.
+    /** Return the minimum value of this parameter.
+     *  @return The minimum value.
      *  @exception IllegalActionException If the expression cannot
      *   be parsed or cannot be evaluated, or if the result of evaluation
      *   violates type constraints, or if the result of evaluation is null

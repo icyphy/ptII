@@ -50,10 +50,10 @@ PTCLASSALLJARS =
 
 # Keep this list alphabetized.
 JSRCS = \
+	IntRangeParameter.java \
 	LocationParameter.java \
 	ParameterPort.java \
-	PortParameter.java \
-	SliderParameter.java
+	PortParameter.java
 
 EXTRA_SRCS =	$(JSRCS)
 
