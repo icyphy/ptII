@@ -97,7 +97,7 @@ of that call is null. If this method is not called, or called with a null
 argument, type resolution will resolve the variable type according to
 all the type constraints.
 Note that when calling setTypeEquals() with a non-null argument while
-the variable already constains a non-null token, the argument must
+the variable already constrains a non-null token, the argument must
 be a type no less than then the type of the contained token. To set type
 of the variable lower than the type of the currently contained token,
 setToken() must be called with a null argument before setTypeEquals().
