@@ -220,11 +220,15 @@ public class IOPort extends ComponentPort {
             if(recvrs[i] == null) {
                 results += "null";
             } else {
-                for (int j = 0; j< recvrs[i].length; j++) {
-                    results = results.concat(
-                            (recvrs[i][j].getContainer()).getFullName() +
-                            "." + (recvrs[i][j].getClass()).getName() +
-                            " ");
+                // Avoid trailing spaces: get the first results, then the rest.
+                results = results.concat(
+                        (recvrs[i][0].getContainer()).getFullName() +
+                        "." + (recvrs[i][0].getClass()).getName());
+                for (int j = 1; j< recvrs[i].length; j++) {
+                results = results.concat(
+                        " " +
+                        (recvrs[i][j].getContainer()).getFullName() +
+                        "." + (recvrs[i][j].getClass()).getName());
                 }
             }
             results += "\n";
