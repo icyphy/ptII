@@ -37,7 +37,6 @@ DIRS = util ptolemy doc gui #collections
 # Root of Ptolemy II directory
 ROOT =		.
 
-ME =
 # True source directory
 VPATH =		$(ROOT)
 
