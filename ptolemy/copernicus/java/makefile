@@ -124,6 +124,7 @@ compileDeepDemo: $(JCLASS)
 	@echo "generate deep code for $(SOURCEPACKAGE)"
 	$(JAVA) $(JVM_SIZE) \
 	 -classpath "$(CLASSPATH)" \
+	 -Dptolemy.ptII.dir=$(ROOT) \
 	ptolemy.copernicus.java.Main $(SOURCECLASS) -d "$(ROOT)"  \
 		-p wjtp.watchDog time:$(WATCH_DOG_TIMEOUT) \
 		-p wjtp.at targetPackage:$(TARGETPACKAGE) \
