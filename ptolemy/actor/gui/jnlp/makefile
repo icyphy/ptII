@@ -65,12 +65,12 @@ OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-APPLICATION_JARS = \
+OTHER_JARS = \
 	DSPApplication.jar \
 	FullApplication.jar \
 	PtinyApplication.jar
 
-all: jclass $(APPLICATION_JARS)
+all: jclass $(OTHER_JARS)
 install: all
 depend:
 	@echo "no dependencies in this directory"
