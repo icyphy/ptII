@@ -1,4 +1,4 @@
-/* Helper thread for notifing each object in a LinkedList.
+/* Helper thread for calling notifyAll on a LinkedList of locks.
 
 
  Copyright (c) 1998 The Regents of the University of California.
@@ -37,18 +37,17 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// NotifyThread
 /** 
-Helper thread for notifing each object in a LinkedList.
-It is used to create a new thread without any locks. It is mainly
+Helper thread for calling notifyAll on a LinkedList of locks.
+Since this is a new thread without any locks, issueing calling notifyAll on the locks from this thread reduces the possibility of deadlocks. It is mainly
 used to notify a set of objects to wake up objects waiting on a lock.
-
 <p>
 To use this to wake up any threads waiting on a lock, create a new instance 
 of this class with a LinkedList of lock objects to call notifyAll on, then 
 wait for this object.
-
-
+<p>
 @author Neil Smyth
 @version $Id$
+
 */
 
 public class NotifyThread implements Runnable {
@@ -73,7 +72,6 @@ public class NotifyThread implements Runnable {
                 Object nextObj = objs.nextElement();
                 if (nextObj instanceof ProcessReceiver) {
                     ProcessReceiver rec = (ProcessReceiver)nextObj;
-                    System.out.println("Notifying all on: " + rec.getContainer().getName());
                 }
                 synchronized(nextObj) {
                     nextObj.notifyAll();
