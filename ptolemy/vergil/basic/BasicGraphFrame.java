@@ -442,8 +442,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         HashSet namedObjSet = _getSelectionSet();
         StringWriter buffer = new StringWriter();
         try {
-            CompositeEntity container
-                    = (CompositeEntity)_getGraphModel().getRoot();
+            NamedObj container
+                    = (NamedObj)_getGraphModel().getRoot();
             // NOTE: The order in the model must be respected.
             Iterator elements
                     = container.sortContainedObjects(namedObjSet).iterator();
