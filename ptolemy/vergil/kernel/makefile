@@ -56,7 +56,6 @@ JSRCS = \
 	DebugRenderer.java \
 	Link.java \
 	PortDialogFactory.java \
-	PortLocationDialogFactory.java \
 	RelationController.java \
 	RenameDialogFactory.java \
 	SetIconAction.java
