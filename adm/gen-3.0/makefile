@@ -163,9 +163,8 @@ $(PTIIDIST):
 	@echo "  tar -X does not seem to work under Cygwin"
 	-find $(PTIIDIST) -name codeDoc -exec rm -rf {} \;
 	-find $(PTIIDIST) -name CVS -exec rm -rf {} \;
-	@echo "Regenerate the documentation with gr and comm"
-	@echo "  This requires JDK1.3, so run it on doppler"
-	(cd $(PTIIDIST)/doc; make JAVADOC=javadoc JDOCFLAGS="-breakiterator -author -version -J-Xmx132m" GRPACKAGES="ptolemy.domains.gr.kernel ptolemy.domains.gr.lib" COMMPACKAGES="ptolemy.actor.lib.comm")
+	@echo "Regenerate the documentation"
+	(cd $(PTIIDIST)/doc; make JAVADOC=javadoc JDOCFLAGS="-breakiterator -author -version -J-Xmx132m")
 	#@echo "Do make realclean to clean up any trash"
 	#cd $(PTIIDIST); make clean
 	#cd $(PTIIDIST); make
@@ -238,7 +237,7 @@ update_ptii_ftp:
 	#	installshield/ptII$(WINDOWS_VERSION)setup.jar.gz \
 	#	installshield/applet/ptII$(WINDOWS_VERSION)setup.exe \
 	cp -p $(PTII_FULL) $(PTII_SRC) \
-		$(PTII_FTP)
+		$(PTII_FTP) 
 untar:
 	rm -rf $(PTII_FTP)/ptII$(VERSION)
 	cd $(PTII_FTP); $(TAR) -zxf $(PTII_FULL)
