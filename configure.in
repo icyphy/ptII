@@ -570,15 +570,22 @@ else
            else 
 	      if test -d "$PTII/vendors/gc/gc6.1"; then
                   AC_MSG_WARN([Failed to find GC_malloc(), but 
-    \$PTII/vendors/gc/gc6.1 exists.  See the README.txt file in
+    \$PTII/vendors/gc/gc6.1 exists.  See the \$PTII/vendors/gc/README.txt
     that directory if you would like to use the Garbage Collector
     with the C code generator])
               else 
-	          AC_MSG_WARN([Failed to find GC_malloc(), and
+	          if test -d "$PTII/vendors/gc/gc"; then
+                      AC_MSG_WARN([Failed to find GC_malloc(), but 
+    \$PTII/vendors/gc/gc exists.  See the \$PTII/vendors/gc/README.txt
+    that directory if you would like to use the Garbage Collector
+    with the C code generator])
+		  else      
+		      AC_MSG_WARN([Failed to find GC_malloc(), and
     \$PTII/vendors/gc/gc6.1 does not exist.  The Boehm Garbage Collector
     can be downloaded from
     http://www.hpl.hp.com/personal/Hans_Boehm/gc/
     if you wish to use it with the C code generator])
+                  fi
 	      fi
            fi 
        fi
