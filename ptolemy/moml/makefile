@@ -66,6 +66,7 @@ JSRCS =	Documentation.java \
 	MoMLParser.java \
 	MoMLUndoEntry.java \
 	ParserAttribute.java \
+	SharedParameter.java \
 	StreamErrorHandler.java \
 	UndoContext.java \
 	Vertex.java
