@@ -1,4 +1,4 @@
-/* An applet that uses Ptolemy II CT and DE domains.
+/* An applet that uses Ptolemy II FSM and DE domains.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -31,7 +31,9 @@
 package ptolemy.domains.fsm.demo.ABP;
 
 import ptolemy.actor.*;
+import ptolemy.actor.gui.*;
 import ptolemy.domains.de.kernel.*;
+import ptolemy.domains.de.gui.*;
 import ptolemy.domains.de.lib.*;
 import ptolemy.domains.fsm.kernel.*;
 import ptolemy.domains.fsm.lib.*;
@@ -43,145 +45,88 @@ import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.plot.*;
+import ptolemy.gui.Query;
+import ptolemy.gui.QueryListener;
 import java.util.Enumeration;
 import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.BoxLayout;
 
 
 //////////////////////////////////////////////////////////////////////////
-//// SigmaDeltaApplet
+//// ABPApplet
 /**
-An applet that uses Ptolemy II DE domain.
+An applet that uses Ptolemy II FSM and DE domains.
 
-@author Lukito Muliadi
+@author Steve Neuendorffer, Lukito Muliadi
 @version $Id$
 */
-public class ABPApplet extends Applet {
+public class ABPApplet extends DEApplet implements QueryListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** If the argument is the string "regular", then set the
+     *  variable that controls whether bus arrivals will be regular
+     *  or Poisson.  If the argument is anything else, update the
+     *  parameters of the model from the values in the query boxes.
+     *  @param name The name of the entry that changed.
+     */
+    public void changed(String name) {
+        try {
+            _forward.dropRate.setToken
+                (new DoubleToken(_query.doubleValue("forwardRate")));
+            _backward.dropRate.setToken
+                (new DoubleToken(_query.doubleValue("backwardRate")));
+            
+            _go();
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException(ex.toString());
+        }
+    }
+
     /** Initialize the applet.
      */
     public void init() {
-
-        // Process the background parameter.
-        Color background = Color.white;
-        try {
-            String colorspec = getParameter("background");
-            if (colorspec != null) {
-                background = Color.decode(colorspec);
-            }
-        } catch (Exception ex) {}
-        setBackground(background);
-
-        // Initialization
-
-        _stopTimeBox = new TextField("60.0", 10);
-        _fdrBox = new TextField("0.3", 10);
-        _bdrBox = new TextField("0.3", 10);
-        _currentTimeLabel = new Label("Current time = 0.0      ");
-        _goButton = new Button("Go");
-        _pauseButton = new Button(" Pause ");
-        _finishButton = new Button("Finish");
-        _terminateButton = new Button("Terminate");
-
-
-
-        // The applet has two panels, stacked vertically
-        setLayout(new BorderLayout());
-        Panel appletPanel = new Panel();
-        appletPanel.setLayout(new GridLayout(1, 1));
-        add(appletPanel, "Center");
-
-        // _la is the drawing panel for DELogicAnalyzer actor.
-        Plot dePanel = new Plot();
-        appletPanel.add(dePanel);
-
-        // Adding a control panel in the main panel.
-        Panel controlPanel = new Panel();
-        add(controlPanel, "South");
-        // Done adding a control panel.
-
-        // Adding simulation parameter panel in the control panel.
-        Panel simulationParam = new Panel();
-        simulationParam.setLayout(new GridLayout(2, 2));
-        controlPanel.add(simulationParam);
-        // Done adding simulation parameter panel.
-
-        // Adding sample time (minimum service time) in the simulation panel
-        Panel fdrPanel = new Panel();
-        simulationParam.add(fdrPanel);
-        fdrPanel.add(new Label("Forward Drop Rate"));
-        fdrPanel.add(_fdrBox);
-        // done adding sample
-
-        // Adding Stop time in the simulation panel.
-        Panel subSimul = new Panel();
-        simulationParam.add(subSimul);
-        subSimul.add(new Label("Stop time:"));
-        subSimul.add(_stopTimeBox);
-        // Done adding stop time.
-
-        // Adding IST (interrupt service time) in the simulation panel
-        Panel bdrPanel = new Panel();
-        simulationParam.add(bdrPanel);
-        bdrPanel.add(new Label("Backward Drop Rate"));
-        bdrPanel.add(_bdrBox);
-        // done adding IST
-
-        // Adding current time in the sub panel.
-        simulationParam.add(_currentTimeLabel);
-        // Done adding average wait time.
-
-        // Adding go button in the control panel.
-        controlPanel.add(_goButton);
-        controlPanel.add(_pauseButton);
-        controlPanel.add(_finishButton);
-        controlPanel.add(_terminateButton);
-
-        _goButton.addActionListener(new GoButtonListener());
-        _pauseButton.addActionListener(new PauseButtonListener());
-        _finishButton.addActionListener(new FinishButtonListener());
-        _terminateButton.addActionListener(new TerminateButtonListener());
-        // Done adding go button
-
+        super.init();
 
         // Creating the topology.
         try {
-            // the top level composite actor
-            TypedCompositeActor sys = new TypedCompositeActor();
-            sys.setName("ABP_Model");
+            getContentPane().setLayout(
+                    new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
-            // the top level manager
-            Manager mgr = new Manager();
-            sys.setManager(mgr);
-            mgr.addExecutionListener(new MyExecutionListener());
-
-            // the top level DE director
-            DEDirector dedir = new DEDirector(sys,"DETopLevelDirector");
+            _query = new Query();
+            _query.setBackground(getBackground());
+            _query.addLine("forwardRate", "Forward Drop Rate", "0.3");
+            _query.addLine("backwardRate", "Backward Drop Rate", "0.2");
+            _query.addQueryListener(this);
+            getContentPane().add(_query);
 
             // message source
-            DEMessageSource msgSrc = new DEMessageSource(sys,
+            _msgSrc = new DEMessageSource(_toplevel,
                     "MessageSource", 0.5);
 
             // timer
-            DETimer timer = new DETimer(sys, "Timer");
+            _timer = new DETimer(_toplevel, "Timer");
 
             // forward packet channel
-            DEChannel forward = new DEChannel(sys, "ForwardChannel",
-                    0.3, 5.0, 0.5);
+            _forward = new DEChannel(_toplevel, "ForwardChannel");
+            _forward.dropRate.setToken(new DoubleToken(0.3));
+            _forward.maxDelay.setToken(new DoubleToken(5.0));
+            _forward.minDelay.setToken(new DoubleToken(0.5));
 
             // backward packet channel
-            DEChannel backward = new DEChannel(sys, "BackwardChannel",
-                    0.2, 2.0, 0.2);
+            _backward = new DEChannel(_toplevel, "BackwardChannel");
+            _backward.dropRate.setToken(new DoubleToken(0.2));
+            _backward.maxDelay.setToken(new DoubleToken(2.0));
+            _backward.minDelay.setToken(new DoubleToken(0.2));
 
             // the plot
-            ABPPlot plot = new ABPPlot(sys, "Plot", dePanel);
-
+            _plot = new TimedPlotter(_toplevel, "Plot");
+ 
             // sender - a hierarchical FSM
-            TypedCompositeActor sender = new TypedCompositeActor(sys, "Sender");
+            TypedCompositeActor sender = new TypedCompositeActor(_toplevel, "Sender");
             // create ports
             TypedIOPort sdrRequest = (TypedIOPort)sender.newPort("request");
             sdrRequest.setInput(true);
@@ -419,7 +364,7 @@ public class ABPApplet extends Applet {
             sendMonitor.link(sdrR8);
 
             // the receiver FSM
-            DEFSMActor receiver = new DEFSMActor(sys, "Receiver");
+            DEFSMActor receiver = new DEFSMActor(_toplevel, "Receiver");
             // ports
             TypedIOPort recPktIn = (TypedIOPort)receiver.newPort("pktIn");
             recPktIn.setInput(true);
@@ -465,59 +410,74 @@ public class ABPApplet extends Applet {
 
             // connect the top level system
             TypedIORelation sysR1 =
-                (TypedIORelation)sys.newRelation("request");
-            msgSrc.request.link(sysR1);
+                (TypedIORelation)_toplevel.newRelation("request");
+            _msgSrc.request.link(sysR1);
             sdrRequest.link(sysR1);
             TypedIORelation sysR2 =
-                (TypedIORelation)sys.newRelation("msgIn");
-            msgSrc.output.link(sysR2);
+                (TypedIORelation)_toplevel.newRelation("msgIn");
+            _msgSrc.output.link(sysR2);
             sdrMsgIn.link(sysR2);
             TypedIORelation sysR3 =
-                (TypedIORelation)sys.newRelation("pktOut");
-            forward.input.link(sysR3);
+                (TypedIORelation)_toplevel.newRelation("pktOut");
+            _forward.input.link(sysR3);
             sdrPktOut.link(sysR3);
             TypedIORelation sysR4 =
-                (TypedIORelation)sys.newRelation("sdrAck");
-            backward.output.link(sysR4);
+                (TypedIORelation)_toplevel.newRelation("sdrAck");
+            _backward.output.link(sysR4);
             sdrAck.link(sysR4);
             TypedIORelation sysR5 =
-                (TypedIORelation)sys.newRelation("recAck");
-            backward.input.link(sysR5);
+                (TypedIORelation)_toplevel.newRelation("recAck");
+            _backward.input.link(sysR5);
             recAck.link(sysR5);
             TypedIORelation sysR6 =
-                (TypedIORelation)sys.newRelation("msgOut");
+                (TypedIORelation)_toplevel.newRelation("msgOut");
             recMsgOut.link(sysR6);
-            plot.input.link(sysR6);
+            _plot.input.link(sysR6);
             TypedIORelation sysR7 =
-                (TypedIORelation)sys.newRelation("setTimer");
-            timer.set.link(sysR7);
+                (TypedIORelation)_toplevel.newRelation("setTimer");
+            _timer.set.link(sysR7);
             sdrSetTimer.link(sysR7);
             TypedIORelation sysR8 =
-                (TypedIORelation)sys.newRelation("expired");
-            timer.expired.link(sysR8);
+                (TypedIORelation)_toplevel.newRelation("expired");
+            _timer.expired.link(sysR8);
             sdrExpired.link(sysR8);
             TypedIORelation sysR9 =
-                (TypedIORelation)sys.newRelation("pktIn");
-            forward.output.link(sysR9);
+                (TypedIORelation)_toplevel.newRelation("pktIn");
+            _forward.output.link(sysR9);
             recPktIn.link(sysR9);
             TypedIORelation sysR10 =
-                (TypedIORelation)sys.newRelation("next");
-            msgSrc.next.link(sysR10);
+                (TypedIORelation)_toplevel.newRelation("next");
+            _msgSrc.next.link(sysR10);
             sdrNext.link(sysR10);
 
-            plot.input.link(sysR2);
+            _plot.input.link(sysR2);
             TypedIORelation sysR11 =
-                (TypedIORelation)sys.newRelation("monitor");
+                (TypedIORelation)_toplevel.newRelation("monitor");
             sdrMonitor.link(sysR11);
-            plot.input.link(sysR11);
-            String[] deLegends = {"Received", "Sent", "AltBit"};
-            plot.setLegend(deLegends);
+            _plot.input.link(sysR11);
+    
+            // Configure the plotter.
+            _plot.place(getContentPane());
+            _plot.plot.setBackground(getBackground());
+            _plot.plot.setGrid(false);
+            _plot.plot.setTitle("Events");
+            _plot.plot.addLegend(0, "Received");
+            _plot.plot.addLegend(1, "Sent");
+            _plot.plot.addLegend(2, "AltBit");
+            _plot.plot.setXLabel("Time");
+            _plot.plot.setYLabel("Events");
+            _plot.plot.setXRange(0.0, _getStopTime());
+            _plot.plot.setYRange(0.0, 4.0);
+            _plot.plot.setConnected(false);
+            _plot.plot.setImpulses(true);
+            _plot.plot.setMarksStyle("dots");
+            _plot.fillOnWrapup.setToken(new BooleanToken(false));
 
-            // Setting up parameters.
-            _fdRate = (Parameter)forward.getAttribute("DropRate");
-            _bdRate = (Parameter)backward.getAttribute("DropRate");
-            _localDirector = dedir;
-            _manager = mgr;
+            // We are now allowed to run the model.
+            _initCompleted = true;
+
+            // The 2 argument requests a go and stop button.
+            getContentPane().add(_createRunControls(2));
 
         } catch (Exception ex) {
             System.err.println("Setup failed: " + ex.getMessage());
@@ -533,163 +493,62 @@ public class ABPApplet extends Applet {
     public static final String RESET = "-1.0";
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected methods                 ////
 
+    /** Execute the model.  This overrides the base class to read the
+     *  values in the query box first and set parameters.
+     *  @exception IllegalActionException If topology changes on the
+     *   model or parameter changes on the actors throw it.
+     */     
+    protected void _go() throws IllegalActionException {
+        // If an exception occurred during initialization, then we don't
+        // want to run here.  The model is probably not complete.
+        if (!_initCompleted) return;
 
-    /** @serial The thread that runs the simulation. */
-    private boolean _isSimulationRunning;
+        // If the manager is not idle then either a run is in progress
+        // or the model has been corrupted.  In either case, we do not
+        // want to run.
+        if (_manager.getState() != _manager.IDLE) return;
 
-    // FIXME: Under jdk 1.2, the following can (and should) be private
-    /** @serial The director for these applets. */
-    private DEDirector _localDirector;
-    /** @serial The manager for this applet. */
-    private Manager _manager;
+        // Set the values from the query.
+         
+        _forward.dropRate.setToken
+            (new DoubleToken(_query.doubleValue("forwardRate")));
+        _backward.dropRate.setToken
+            (new DoubleToken(_query.doubleValue("backwardRate")));
+ 
+        // The the X range of the plotter to show the full run.
+        // The method being called is a protected member of DEApplet.
+        _plot.plot.setXRange(0.0, _getStopTime());
 
-    private transient TextField _stopTimeBox;
-    private transient TextField _fdrBox;
-    private transient TextField _bdrBox;
-
-    /** @serial Time to stop at. */
-    private  double _stopTime = 100.0;
-
-    private transient Button _goButton;
-    private transient Button _pauseButton;
-    private transient Button _finishButton;
-    private transient Button _terminateButton;
-    private transient Label _currentTimeLabel;
-
-    /** @serial True if the simulation has been paused. */
-    private boolean _isSimulationPaused = false;
-
-    // Parameters of DEProcessor that we want to change.
-
-    /** @serial Forward Drop Rate (minimum service time). */
-    private String _fdr;
-
-    /** @serial Backward Drop Rate (interrupt service time. */
-    private String _bdr;
-
-
-    /** @serial Forward Drop Rate (minimum service time). */
-    private Parameter _fdRate;
-
-    /** @serial Backward Drop Rate (interrupt service time. */
-    private Parameter _bdRate;
-
+        // The superclass sets the stop time of the director based on
+        // the value in the entry box on the screen.  Then it starts
+        // execution of the model in its own thread, leaving the user
+        // interface of this applet live.
+        super._go();
+    }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
+    ////                         private variables                 ////
 
-    // Show simulation progress.
-    private class CurrentTimeThread extends Thread {
-        public void run() {
-            while (_isSimulationRunning) {
-                // get the current time from director.
-                double currenttime = _localDirector.getCurrentTime();
-                _currentTimeLabel.setText("Current time = "+currenttime);
-                try {
-                    sleep(500);
-                } catch (InterruptedException e) {}
-            }
-        }
-    }
+    // Flag to prevent spurious exception being thrown by _go() method.
+    // If this flag is not true, the _go() method will not execute the model.
+    private boolean _initCompleted = false;
 
-    private class MyExecutionListener extends StreamExecutionListener {
-        public void executionFinished(Manager manager) {
-            super.executionFinished(manager);
-            _isSimulationRunning = false;
-        }
-    }
+    private Query _query;
 
-    private class GoButtonListener implements ActionListener {
-        public void actionPerformed(ActionEvent evt) {
-            if (_isSimulationRunning) {
-                System.out.println("Simulation still running.. hold on..");
-                return;
-            }
+    // message source
+    private DEMessageSource _msgSrc;
+    
+    // timer
+    private DETimer _timer;
 
-            try {
-
-                // The simulation is started non-paused (of course :-) )
-                _isSimulationPaused = false;
-                _pauseButton.setLabel(" Pause ");
-
-                // Set the stop time.
-                String timespec = _stopTimeBox.getText();
-                try {
-                    Double spec = Double.valueOf(timespec);
-                    _stopTime = spec.doubleValue();
-                } catch (NumberFormatException ex) {
-                    System.err.println("Invalid stop time: " +ex.getMessage());
-                    return;
-                }
-
-                // Set the minimum service time.
-                try {
-                    _fdr = _fdrBox.getText();
-                    double f1 = (Double.valueOf(_fdr)).doubleValue();
-                    _fdRate.setToken(new DoubleToken(f1));
-                } catch (NumberFormatException ex) {
-                    System.err.println("Invalid minimum service time: " +
-                            ex.getMessage());
-                }
-
-                // Set the interrupt service time.
-                try {
-                    _bdr = _bdrBox.getText();
-                    double f2 = (Double.valueOf(_bdr)).doubleValue();
-                    _bdRate.setToken(new DoubleToken(f2));
-                } catch (NumberFormatException ex) {
-                    System.err.println("Invalid interrupt service time: " +
-                            ex.getMessage());
-                }
-
-                _localDirector.setStopTime(_stopTime);
-
-
-                // Start the CurrentTimeThread.
-                Thread ctt = new CurrentTimeThread();
-                _isSimulationRunning = true;
-                ctt.start();
-
-                _manager.startRun();
-
-            } catch (Exception e) {
-                System.out.println("Error: " + e.getMessage());
-                e.printStackTrace();
-            }
-
-        }
-    }
-
-    private class PauseButtonListener implements ActionListener {
-        public void actionPerformed(ActionEvent evt) {
-
-            if (_isSimulationPaused) {
-                _isSimulationPaused = false;
-                _manager.resume();
-                _pauseButton.setLabel(" Pause ");
-
-            } else {
-                _isSimulationPaused = true;
-                _manager.pause();
-                _pauseButton.setLabel("Resume");
-
-            }
-
-        }
-    }
-
-    private class FinishButtonListener implements ActionListener {
-        public void actionPerformed(ActionEvent evt) {
-            _manager.finish();
-            _isSimulationRunning = false;
-        }
-    }
-
-    private class TerminateButtonListener implements ActionListener {
-        public void actionPerformed(ActionEvent evt) {
-            _manager.finish();
-        }
-    }
+    // forward packet channel
+    private DEChannel _forward;
+    
+    // backward packet channel
+    private DEChannel _backward;
+    
+    // the plot
+    private TimedPlotter _plot;
 }

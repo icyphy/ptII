@@ -60,8 +60,7 @@ public class DEChannel extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public DEChannel(TypedCompositeActor container, String name,
-            double dropRate, double maxDelay, double minDelay)
+    public DEChannel(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         output = new DEIOPort(this, "output", false, true);
@@ -69,9 +68,9 @@ public class DEChannel extends TypedAtomicActor {
         input = new DEIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.INT);
         input.delayTo(output);
-        _dropRate = new Parameter(this, "DropRate", new DoubleToken(dropRate));
-        _maxDelay = new Parameter(this, "MaxDelay", new DoubleToken(maxDelay));
-        _minDelay = new Parameter(this, "MinDelay", new DoubleToken(minDelay));
+        dropRate = new Parameter(this, "dropRate", new DoubleToken(0.3));
+        maxDelay = new Parameter(this, "maxDelay", new DoubleToken(5.0));
+        minDelay = new Parameter(this, "minDelay", new DoubleToken(0.5));
     }
 
 
@@ -89,7 +88,7 @@ public class DEChannel extends TypedAtomicActor {
         double now = dir.getCurrentTime();
         if (input.hasToken(0)) {
             if (Math.random() <
-                    ((DoubleToken)_dropRate.getToken()).doubleValue()) {
+                    ((DoubleToken)dropRate.getToken()).doubleValue()) {
                 // drop the message
                 input.get(0);
             } else {
@@ -97,14 +96,14 @@ public class DEChannel extends TypedAtomicActor {
                 _msgs.add(input.get(0));
                 if (_msgs.size() == 1) {
                     // schedule output time
-                    double minDelay =
-                        ((DoubleToken)_minDelay.getToken()).doubleValue();
-                    double maxDelay =
-                        ((DoubleToken)_maxDelay.getToken()).doubleValue();
-                    double delay = minDelay +
-                        (maxDelay - minDelay)*Math.random();
-                    _nextOutTime = now + delay;
-                    dir.fireAt(this, now + delay);
+                    double minDelayValue =
+                        ((DoubleToken)minDelay.getToken()).doubleValue();
+                    double maxDelayValue =
+                        ((DoubleToken)maxDelay.getToken()).doubleValue();
+                    double delayValue = minDelayValue +
+                        (maxDelayValue - minDelayValue)*Math.random();
+                    _nextOutTime = now + delayValue;
+                    dir.fireAt(this, now + delayValue);
                 }
             }
 
@@ -123,15 +122,16 @@ public class DEChannel extends TypedAtomicActor {
 
             if (_msgs.size() > 0) {
                 // schedule output time
-                double minDelay =
-                    ((DoubleToken)_minDelay.getToken()).doubleValue(
+                double minDelayValue =
+                    ((DoubleToken)minDelay.getToken()).doubleValue(
 );
-                double maxDelay =
-                    ((DoubleToken)_maxDelay.getToken()).doubleValue(
+                double maxDelayValue =
+                    ((DoubleToken)maxDelay.getToken()).doubleValue(
 );
-                double delay = minDelay + (maxDelay - minDelay)*Math.random();
-                _nextOutTime = now + delay;
-                dir.fireAt(this, now + delay);
+                double delayValue = minDelayValue + 
+                    (maxDelayValue - minDelayValue)*Math.random();
+                _nextOutTime = now + delayValue;
+                dir.fireAt(this, now + delayValue);
             }
         }
 
@@ -157,6 +157,15 @@ public class DEChannel extends TypedAtomicActor {
     /** @serial The output port. */
     public DEIOPort output;
 
+    /** @serial Drop Rate. */
+    public Parameter dropRate;
+
+    /** @serial Maximum Delay. */
+    public Parameter maxDelay;
+
+    /** @serial Minimum Delay. */
+    public Parameter minDelay;
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -165,13 +174,4 @@ public class DEChannel extends TypedAtomicActor {
 
     /** @serial Next Out Time. */
     private double _nextOutTime = -1.0;
-
-    /** @serial Drop Rate. */
-    private Parameter _dropRate;
-    /** @serial Maximum Delay. */
-    private Parameter _maxDelay;
-
-    /** @serial Minimum Delay. */
-    private Parameter _minDelay;
-
 }

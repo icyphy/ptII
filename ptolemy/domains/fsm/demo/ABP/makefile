@@ -50,9 +50,7 @@ PTPACKAGE = 	ABP
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	ABP.java \
         ABPApplet.java \
-	ABPPlot.java \
 	DEChannel.java \
 	DEFSMActor.java \
 	DEMessageSource.java \
