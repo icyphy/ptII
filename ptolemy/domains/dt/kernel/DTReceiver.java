@@ -260,7 +260,14 @@ public class DTReceiver extends SDFReceiver implements Receiver {
     }
 
 
-
+    /** Return the time interval between tokens for
+     *  this receiver.
+     *  @return The time interval between tokens
+     */ 
+    public double getDeltaT() {
+        return _deltaT;
+    }
+    
     /** Return the port that feeds this Receiver
      *  @return The port that feeds this receiver.
      */
@@ -268,10 +275,9 @@ public class DTReceiver extends SDFReceiver implements Receiver {
         return (TypedIOPort) _fromPort;
     }
 
-    public double getDeltaT() {
-        return _deltaT;
-    }
-
+    /** Return the token flow rate for this receiver
+     *  @return The token flow rate of this receiver
+     */
     public int getTokenFlowRate() {
         return _periodDivider;
     }
@@ -311,7 +317,7 @@ public class DTReceiver extends SDFReceiver implements Receiver {
     /**  For debugging purposes. Display pertinent information about
      *   this receiver.
      */
-    void displayReceiverInfo() {
+    void _debugViewReceiverInfo() {
         String fromString;
         String toString;
 
@@ -362,32 +368,32 @@ public class DTReceiver extends SDFReceiver implements Receiver {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The director that directs this receiver; should be a DTDirector
-    private DTDirector _localDirector;
-
-    // The dividing factor to the discrete time period
-    private int _periodDivider;
-
     // The amount of time increment for every get() method call
     private double _deltaT;
-
-    // The local cached time
-    private double _localTime;
-
-    // The cached value of the destination token consumption rate
-    private int _inrate;
-
-    // The cached value of the source token production rate
-    private int _outrate;
 
     // The actor feeding this receiver
     private Actor _from;
 
-    // The actor containing this receiver
-    private Actor _to;
-
     // The port feeding this receiver
     private IOPort _fromPort;
+
+    // The cached value of the destination token consumption rate
+    private int _inrate;
+
+    // The director that directs this receiver; should be a DTDirector
+    private DTDirector _localDirector;
+
+    // The local cached time
+    private double _localTime;
+
+    // The cached value of the source token production rate
+    private int _outrate;
+
+    // The dividing factor to the discrete time period
+    private int _periodDivider;
+
+    // The actor containing this receiver
+    private Actor _to;
 
     // The port containing this receiver
     private IOPort _toPort;
