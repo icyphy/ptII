@@ -39,7 +39,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import cern.jet.random.Poisson;
 
 //////////////////////////////////////////////////////////////////////////
-//// Poisson
+//// ColtPoisson
 /**
    Produce a random sequence with a Poisson distribution.  On each
    iteration, a new random number is produced.  The output port is of
@@ -48,13 +48,13 @@ import cern.jet.random.Poisson;
    deviation given by parameters.  In addition, the seed can be
    specified as a parameter to control the sequence that is generated.
 
+
    @author David Bauer and Kostas Oikonomou
    @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Green (bilung)
+   @since Ptolemy II 4.1
+   @Pt.ProposedRating Red (cxh)
+   @Pt.AcceptedRating Red (cxh)
 */
-
 public class ColtPoisson extends ColtRandomSource {
 
     /** Construct an actor with the given container and name.
