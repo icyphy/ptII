@@ -57,29 +57,35 @@ REALCLEAN_STUFF =
 ALLJSRCS = 		ptolemy/plot/*.java \
 			ptolemy/kernel/*.java \
 			ptolemy/kernel/util/*.java \
+			ptolemy/kernel/mutation/*.java \
 			ptolemy/actor/*.java \
 			ptolemy/actor/util/*.java \
 			ptolemy/data/*.java \
 			ptolemy/data/expr/*.java
-
-#			ptolemy/domains/pn/kernel/*.java \
-#			ptolemy/domains/ct/kernel/*.java \
-#			ptolemy/domains/pn/lib/*.java \
-#			ptolemy/domains/ct/lib/*.java
+			ptolemy/domains/ct/kernel/*.java \
+			ptolemy/domains/ct/lib/*.java
+			ptolemy/domains/de/kernel/*.java \
+			ptolemy/domains/de/lib/*.java
+			ptolemy/domains/pn/kernel/*.java \
+			ptolemy/domains/pn/lib/*.java \
 
 all: suball codeDoc/tree.html
 javadocs: codeDoc/tree.html
 codeDoc/tree.html: 	../ptolemy/plot/*.java \
 			../ptolemy/kernel/*.java \
+			../ptolemy/kernel/mutation/*.java \
 			../ptolemy/kernel/util/*.java \
 			../ptolemy/actor/*.java \
 			../ptolemy/actor/util/*.java \
 			../ptolemy/data/*.java \
 			../ptolemy/data/expr/*.java
-#			../ptolemy/domains/pn/kernel/*.java \
-#			../ptolemy/domains/ct/kernel/*.java \
-#			../ptolemy/domains/pn/lib/*.java \
-#			../ptolemy/domains/ct/lib/*.java
+			../ptolemy/domains/ct/lib/*.java
+			../ptolemy/domains/ct/kernel/*.java \
+			../ptolemy/domains/de/lib/*.java
+			../ptolemy/domains/de/kernel/*.java \
+			../ptolemy/domains/pn/kernel/*.java \
+			../ptolemy/domains/pn/lib/*.java \
+
 	if [ ! -d codeDoc ]; then mkdir -p codeDoc; fi
 	(cd ..; CLASSPATH=$(CLASSPATH):$(JAVAHOME)/lib/classes.zip:.. $(JAVADOC) $(JDOCFLAGS) -d doc/codeDoc $(ALLJSRCS) )
 	@for x in codeDoc/*.html; do \
