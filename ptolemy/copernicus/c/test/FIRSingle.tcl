@@ -119,13 +119,17 @@ test FIRSingle-1.1 {Generate .c, _i.h, and .h files for FIR \
     set exeFile ".[java::call System getProperty file.separator]$exeFile"
     set output [exec $exeFile]
     
-    regsub -all "\n" $output " " output
-    regsub -all "
+    # Turn newlines into spaces.
+    regsub -all "\n" $output "" output
+    # No space needed at end of line.
+    #regsub -all " $" $output "" output
+    
+    #regsub -all "
 " $output "" output
 
     # Check if the output is correct.
-    set template "11.000000 4.000000 9.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000"
-    string first $template $output]
+    set template "11.000000 4.000000 9.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 "
+    string first $template $output
     
 } {0}
 

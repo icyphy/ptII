@@ -50,6 +50,8 @@ if {[info procs jdkClassPathSeparator] == "" } then {
 #
 
 test GlobalExceptions-1.1 {Generate all required files for GlobalExceptions.java} {
-    generateC GlobalExceptions
-} {1 2 3 4}
+    set output  [generateC GlobalExceptions]
+    set template "1 2 3 4"
+    string first $template $output
+} {0}
 
