@@ -48,7 +48,7 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	cal
-#PTCLASSJAR = 	$(PTPACKAGE).jar
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS =
