@@ -387,7 +387,7 @@ profileGcj: $(MODEL)_gcj
 # http://jode.sourceforge.net/download.php
 JODE=$(ROOT)/bin/jode
 # Class to disassemble
-DECOMPILERTARGETCLASS =		CGModel$(MODEL)
+DECOMPILERTARGETCLASS =		Model$(MODEL)
 
 # Generate a .java file from a class file and recompile it.
 # Jode
@@ -416,7 +416,7 @@ jodeRecompileDemo:
 jodeRunRecompiledDemo:
 	$(JAVA) $(MEMORYJFLAGS) -Xfuture -classpath "$(DECOMPILERTARGETPATH)$(CLASSPATHSEPARATOR)$(ROOT)" \
 		ptolemy.actor.gui.CompositeActorApplication \
-		-class $(TARGETPACKAGE).CG$(MODEL)
+		-class $(TARGETPACKAGE).$(MODEL)
 
 # Generate .java files from the snapshots
 jadDecompile:
