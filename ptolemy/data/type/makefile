@@ -84,6 +84,7 @@ OPTIONAL_FILES = \
 	'BaseType$$19.class' \
 	'BaseType$$2.class' \
 	'BaseType$$20.class' \
+	'BaseType$$21.class' \
 	'BaseType$$3.class' \
 	'BaseType$$4.class' \
 	'BaseType$$5.class' \
