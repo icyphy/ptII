@@ -159,7 +159,7 @@ preverify:
 build_prc: $(KVM_DIR)/tools/palm/src/palm/database/MakePalmApp.class
 	@echo "###################################"
 	@echo "# Creating Palm executable from classes in"
-	@echo "# $(PTII)/$(OUTPKG)/output/$(OUTPKG_DIR)"
+	@echo "# $(PTII)/$(OUTPKG_DIR)/output/$(OUTPKG_DIR)"
 	@echo "###################################"
 	(cd $(ROOT)/$(OUTPKG_DIR); \
 	$(JAVA) -classpath $(KVM_DIR)/tools/palm/src \
