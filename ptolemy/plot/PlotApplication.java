@@ -118,11 +118,19 @@ public class PlotApplication extends PlotFrame {
      *  @param args The command-line arguments.
      */
     public PlotApplication(String args[]) {
+        this(new Plot(), args);
+    }
+
+    /** Construct a plot with the specified command-line arguments
+     *  and instance of plot.
+     *  @param args The command-line arguments.
+     */
+    public PlotApplication(Plot plot, String args[]) {
 
         // invoke the base class constructor and pass in the argument a Plot
         // object. This makes sure that the plot field is an instance of
         // Plot class.
-        super("PlotApplication", new Plot());
+        super("PlotApplication", plot);
 
         // Handle window closing by exiting the application.
         addWindowListener(new WindowAdapter() {
@@ -164,7 +172,7 @@ public class PlotApplication extends PlotFrame {
     /** Create a new plot window and map it to the screen.
      */
     public static void main(String args[]) {
-        PlotApplication plot = new PlotApplication(args);
+        PlotApplication plot = new PlotApplication(new Plot(), args);
 
         // If the -test arg was set, then exit after 2 seconds.
         if (_test) {
