@@ -4,14 +4,19 @@
 <entitylibrary name="SDF" version="1.0">
 <description>Entities corresponding to SDF Actors</description>
 
-<entity name="LoadImage" icon=".SDF.LoadImage" terminalstyle=".SDF.1out">
+<director name="director" implementation="ptolemy.domains.sdf.SDFDirector">
+<description>The default SDF director</description>
+<parameter name="iterations" value="1" type="int"/>
+</director>
+
+<entity name="LoadImage" icon="SDF.LoadImage" terminalstyle="SDF.1out" implementation="ptolemy.domains.sdf.lib.LoadImage">
 <description>Load an image from a file</description>
 <terminalmap ports="output"/>
 <parameter name="filename" value="test" type="string"/>
 <port name="output" output="true" type="doubleArray"/>
 </entity>
 
-<entity name="SaveImage" icon=".SDF.SaveImage" terminalstyle=".SDF.1in">
+<entity name="SaveImage" icon="SDF.SaveImage" terminalstyle="SDF.1in" implementation="ptolemy.domains.sdf.lib.SaveImage">
 <terminalmap ports="input"/>
 <parameter name="filename" value="testout" type="string"/>
 <port name="input" input="true" type="doubleArray"/>

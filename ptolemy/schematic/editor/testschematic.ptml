@@ -5,7 +5,7 @@
 <description>ramp-recorder...  a good first start</description>
 
 <director name="director" template="sdf.director">
-<parameter name="iterations" value="3" type="ptolemy.data.IntToken"/>
+<parameter name="iterations" value="4" type="ptolemy.data.IntToken"/>
 </director>
 
 <entity name="Ramp1" template="generic.ramp">

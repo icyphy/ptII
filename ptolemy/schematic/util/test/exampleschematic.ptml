@@ -3,6 +3,9 @@
 
 <schematic name="SDF" version="1.0">
 <description>Icons for use within SDF</description>
+<director template="SDF.director">
+<parameter name="iterations" value="3" type="int"/>
+</director>
 
 <entity name="Load BMP File" template="SDF.LoadImage">
 <description>Load the Image that will be transmitted and stored.</description>
@@ -16,11 +19,5 @@
 <relation name="R1">
 <link to="Load BMP File.output" from="Save BMP File.input"/>
 </relation>
-
-<!-- these parameters will get set in the Director -->
-<parameter name="domain" value="SDF" type="string"/>
-<parameter name="starttime" value="1.0" type="double"/>
-<parameter name="endtime" value="7.0" type="double"/>
-
 </schematic>
 

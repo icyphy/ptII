@@ -242,6 +242,13 @@ public class Schematic extends PTMLObject
     }
 
     /**
+     * Return the director of this schematic.  This director may be null.
+     */
+    public SchematicDirector getDirector () {
+        return _director;
+    } 
+
+    /**
      * Return the schematic entity that has the given name.
      * Throw an exception if there is no entity with the
      * given name in this schematic.
@@ -354,6 +361,13 @@ public class Schematic extends PTMLObject
     }
 
     /**
+     * Set the director of this schematic
+     */
+    public void setDirector(SchematicDirector director) {
+	_director = director;
+    }
+
+    /**
      * Return a string representing this schematic.
      */
     public String toString() {
@@ -397,7 +411,12 @@ public class Schematic extends PTMLObject
             result += super._description(indent, 0);
         else 
             result += super._description(indent, 1);
-        result += " entities {\n";
+
+ 	result += _getIndentPrefix(indent) + " director {\n";
+	result += _director._description(indent + 1, 0) + "\n";
+
+ 
+        result += "} entities {\n";
         Enumeration els = entities();
         while(els.hasMoreElements()) {
             SchematicEntity entity = (SchematicEntity) els.nextElement();
@@ -485,6 +504,7 @@ public class Schematic extends PTMLObject
      */
     private Object _semanticObject = null;
 
+    private SchematicDirector _director;
     private NamedList _entities;
     private NamedList _ports;
     private NamedList _terminals;

@@ -62,9 +62,21 @@ public class EntityLibrary extends PTMLObject {
      */
     public EntityLibrary(String name) {
         super(name);
-        _sublibraries = (NamedList) new NamedList();
+	_directors = (NamedList) new NamedList();
         _entities = (NamedList) new NamedList();
+        _sublibraries = (NamedList) new NamedList();
    }
+
+    /**
+     * Add a Director to this library
+     * @exception IllegalActionException If the director has no name.
+     * @exception NameDuplicationException If the name of the director
+     * coincides with the name of another director contained in this library.
+     */
+    public void addDirector(SchematicDirector e)
+        throws IllegalActionException, NameDuplicationException {
+        _directors.append(e);
+    }
 
     /**
      * Add an Entity to this library
@@ -90,70 +102,94 @@ public class EntityLibrary extends PTMLObject {
     }
 
     /**
-     * Test if the library contains an Entity with the given name
+     * Return true if the library contains an director with the given name.
+     */
+    public boolean containsDirector(SchematicDirector entity) {
+        return _directors.includes(entity);
+    }
+
+    /**
+     * Return true if the library contains an entity with the given name.
      */
     public boolean containsEntity(SchematicEntity entity) {
         return _entities.includes(entity);
     }
 
     /**
-     * Test if the library contains the sublibrary
+     * Return true if the library contains the sublibrary
      */
     public boolean containsSubLibrary(EntityLibrary lib) {
         return _sublibraries.includes(lib);
     }
 
     /**
-     * Search for an entity template with the given hierarchical name in 
+     * Search for an director template with the given hierarchical name in 
      * this library and all its deeply contained sublibraries.
-     * @return The found entity template
-     * @exception IllegalActionException If no entity template with the given
-     * name is found.
+     * @return The found director
      */
-    public SchematicEntity findEntity(String dottedName)
-            throws IllegalActionException {
+    public SchematicDirector findDirector(String dottedName) {
         StringTokenizer tokens = new StringTokenizer(dottedName, ".");
         EntityLibrary temp = this;
         int count = tokens.countTokens();
         
         int i;
-        for(i = 0; i < (count - 1); i++) 
-            temp = temp.getSubLibrary((String) (tokens.nextElement()));
+        for(i = 0; i < (count - 1); i++) {
+	    String name = (String) tokens.nextElement();
+	    temp = temp.getSubLibrary(name);
+	    if(temp == null) {
+		return null;
+	    }
+	}            
         
-        return temp.getEntity((String) (tokens.nextElement()));
+	String name = (String) tokens.nextElement();
+	return temp.getDirector(name);
     }
 
     /**
-     * Get the Entity that is stored directly 
-     * in this EntityLibrary with the given name.
+     * Search for an entity template with the given hierarchical name in 
+     * this library and all its deeply contained sublibraries.
+     * @return The found entity
      */
-    public SchematicEntity getEntity(String name)
-            throws IllegalActionException {
-        Enumeration allEntities = entities();
-        while(allEntities.hasMoreElements()) {
-            SchematicEntity entity = (SchematicEntity) allEntities.nextElement();
-            if(name.equals(entity.getName()))
-                return entity;
-        }
-        throw new IllegalActionException("Entity does not exist with " +
-                "the name " + name);
+    public SchematicEntity findEntity(String dottedName) {
+	StringTokenizer tokens = new StringTokenizer(dottedName, ".");
+        EntityLibrary temp = this;
+        int count = tokens.countTokens();
+        
+        int i;
+        for(i = 0; i < (count - 1); i++) {
+	    String name = (String) tokens.nextElement();
+	    temp = temp.getSubLibrary(name);
+	    if(temp == null) {
+		return null;
+	    }
+	}            
+
+	String name = (String) tokens.nextElement();
+	return temp.getEntity(name);
+    }
+
+    /**
+     * Get the director that is stored directly 
+     * in this library with the given name.
+     */
+    public SchematicDirector getDirector(String name) {
+	return (SchematicDirector) _directors.get(name);
     }
     
     /**
-     * Get the Entity that is stored in this EntityLibrary with the specified
+     * Get the entity that is stored directly 
+     * in this library with the given name.
+     */
+    public SchematicEntity getEntity(String name) {
+	return (SchematicEntity) _entities.get(name);
+    }
+    
+    /**
+     * Get the entity that is stored in this EntityLibrary with the specified
      * type signature
      */
-    public EntityLibrary getSubLibrary(String name) 
-        throws IllegalActionException {
-        Enumeration allLibraries = subLibraries();
-        while(allLibraries.hasMoreElements()) {
-            EntityLibrary library = (EntityLibrary) allLibraries.nextElement();
-            if(name.equals(library.getName()))
-                return library;
-        }
-        throw new IllegalActionException(
-                "Entity library does not exist with " +
-                "the name " + name);
+    public EntityLibrary getSubLibrary(String name) {
+	return (EntityLibrary) _sublibraries.get(name);
     }
 
     /** Return the version of this library.
@@ -163,9 +199,18 @@ public class EntityLibrary extends PTMLObject {
     //}
 
     /**
-     * Return the Entitys that are contained in this Entity library.
+     * Return the directors that are contained in this library.
      *
-     * @return an enumeration of Entity
+     * @return an enumeration of SchematicDirector
+     */
+    public Enumeration directors() {
+        return _directors.elements();
+    }
+
+    /**
+     * Return the entities that are contained in this library.
+     *
+     * @return an enumeration of SchematicEntity
      */
     public Enumeration entities() {
         return _entities.elements();
@@ -238,24 +283,35 @@ public class EntityLibrary extends PTMLObject {
             result += super._description(indent, 0);
         else 
             result += super._description(indent, 1);
+
 	result += " sublibraries {\n";
 	Enumeration sublibraries = subLibraries();
         while (sublibraries.hasMoreElements()) {
             EntityLibrary p = (EntityLibrary) sublibraries.nextElement();
             result += p._description(indent + 1, 2);
         }
+
+	result += _getIndentPrefix(indent) + "} directors {\n";
+	Enumeration directors = directors();
+        while (directors.hasMoreElements()) {
+            SchematicDirector p = (SchematicDirector) directors.nextElement();
+            result += p._description(indent + 1, 2) + "\n";
+        }
+
 	result += _getIndentPrefix(indent) + "} entites {\n";
 	Enumeration entities = entities();
         while (entities.hasMoreElements()) {
             SchematicEntity p = (SchematicEntity) entities.nextElement();
             result += p._description(indent + 1, 2) + "\n";
         }
+
         result += _getIndentPrefix(indent) + "}";
         if (bracket == 2) result += "}";
         return result;
     }
 
-    private NamedList _sublibraries;
+    private NamedList _directors;
     private NamedList _entities;
+    private NamedList _sublibraries;
 }
 

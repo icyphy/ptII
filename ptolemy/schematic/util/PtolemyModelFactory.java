@@ -95,12 +95,10 @@ public class PtolemyModelFactory {
 
 	Manager manager = new Manager("manager");
 	container.setManager(manager);
+
 	// FIXME get director from domain library.
-	Director director = new ptolemy.domains.sdf.kernel.SDFDirector();
-	container.setDirector(director);
-	director.setName("director");
-	Parameter iterations = (Parameter)director.getAttribute("iterations");
-	iterations.setToken(new IntToken(3));
+	SchematicDirector director = schematic.getDirector();
+	_addPtolemyDirector(container, director);
 
 	return container;
     }
@@ -145,6 +143,38 @@ public class PtolemyModelFactory {
             
             modelParameter.setToken(valueToken);
         }
+    }
+
+    private void _addPtolemyDirector(TypedCompositeActor container, 
+            SchematicDirector director) 
+            throws IllegalActionException, NameDuplicationException {
+    
+        String implementation = director.getImplementation();
+        if(implementation == null) {
+            throw new IllegalActionException("director cannot be " +
+                    "instantiated, it has no implementation.");
+        }
+        System.out.println("Director implementation = " + implementation);
+        
+        Director newDirector = null;
+        try {
+            Class directorClass = Class.forName(implementation);
+            Class formalArgs[] = new Class[2];
+            formalArgs[0] = Class.forName("ptolemy.actor.TypedCompositeActor");
+            formalArgs[1] = Class.forName("java.lang.String");
+            Constructor directorConstructor = 
+                directorClass.getConstructor(formalArgs);
+            Object actualArgs[] = new Object[2];
+            actualArgs[0] = container;
+            actualArgs[1] = director.getName();
+            newDirector = 
+                (Director)directorConstructor.newInstance(actualArgs);	    
+        } catch (Exception ex) {
+            throw new IllegalActionException("Error creating director: " +
+					     ex);
+        }
+
+        _addParameters(newDirector, director);
     }
 
     private void _addPtolemyEntity(TypedCompositeActor container, 

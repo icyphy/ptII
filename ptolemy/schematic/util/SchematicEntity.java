@@ -509,13 +509,13 @@ public class SchematicEntity extends PTMLTemplateObject
             result += _icon._description(indent + 1, 0) + "\n";
 
 	result += _getIndentPrefix(indent) + "} implementation {\n";
-	if(_terminalstyle == null) 
+	if(_implementation == null) 
             result += _getIndentPrefix(indent + 1) + "null\n";
         else
             result += _getIndentPrefix(indent + 1) + 
                 getImplementation() + "\n";
 
-	result += "} terminalstyle {\n";
+	result += _getIndentPrefix(indent) + "} terminalstyle {\n";
         if(_terminalstyle == null) 
             result += _getIndentPrefix(indent + 1) + "null\n";
         else
@@ -534,6 +534,7 @@ public class SchematicEntity extends PTMLTemplateObject
             SchematicPort port = (SchematicPort) els.nextElement();
 	    result += port._description(indent + 1, 2) + "\n";
         }
+
         result += _getIndentPrefix(indent) + "} terminals {\n";
         els = terminals();
         while(els.hasMoreElements()) {

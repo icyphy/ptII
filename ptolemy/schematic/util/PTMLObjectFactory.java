@@ -68,9 +68,14 @@ public class PTMLObjectFactory {
         while(children.hasMoreElements()) {
             XMLElement child = (XMLElement) children.nextElement();
             String etype = child.getElementType();
-            if(etype.equals("entity")) {
+            if(etype.equals("director")) {
+                // if it's an director, then create it, 
+                // and add it to the list of directors.
+                ptmlobject.addDirector(
+                        _createSchematicDirector(child, iconroot, null));
+            } else if(etype.equals("entity")) {
                 // if it's an Entity, then create it, 
-                // and add it to the list of entitys.
+                // and add it to the list of entities.
                 ptmlobject.addEntity(
                         _createSchematicEntity(child, iconroot, null));
             } else if(etype.equals("sublibrary")) {
@@ -207,6 +212,11 @@ public class PTMLObjectFactory {
                 // if it's a entity, then create it, 
                 // and add it to the list of entities.
                 ptmlobject.addEntity(_createSchematicEntity(child, 
+                        iconLib, entityLib));
+            } else if(etype.equals("director")) {
+                // if it's a director, then create it, 
+                // and add it to the list of directors.
+                ptmlobject.setDirector(_createSchematicDirector(child, 
                         iconLib, entityLib));
             } else if(etype.equals("relation")) {
                 // if it's a relation, then create it, 
@@ -453,6 +463,53 @@ public class PTMLObjectFactory {
         return ptmlobject;
     }
 
+    private static SchematicDirector _createSchematicDirector(XMLElement e,
+            IconLibrary iconroot, EntityLibrary entityLib)
+        throws IllegalActionException, NameDuplicationException {
+
+        _verifyElement(e, "director");
+
+	//	System.out.println("creating director:" + e);
+ 
+        SchematicDirector ptmlobject = 
+            new SchematicDirector();
+
+        Enumeration attributes = e.attributeNames();
+        while(attributes.hasMoreElements()) {
+            String n = (String) attributes.nextElement();
+            if (n.equals("implementation")) {
+                ptmlobject.setImplementation(_getString(e, n));
+            } else if (n.equals("name")) {
+                ptmlobject.setName(_getString(e, n));
+            } else if (n.equals("template")) {
+		if(entityLib == null) {
+		    throw new IllegalActionException("Entity cannot have " +
+			"a template since no entity library is specified.");
+		} else {
+		    String templateString = _getString(e, "template");
+		    SchematicDirector template = 
+			entityLib.findDirector(templateString);
+		    ptmlobject.setTemplate(template);
+		}		
+            } else {
+                _unknownAttribute(ptmlobject, e, n);
+            }
+        }
+        Enumeration children = e.childElements();
+        while(children.hasMoreElements()) {
+            XMLElement child = (XMLElement)children.nextElement();
+	    String etype = child.getElementType();
+	    if(etype.equals("parameter")) {
+                ptmlobject.addParameter(_createSchematicParameter(child));
+            } else if(etype.equals("description")) {
+                ptmlobject.setDocumentation(child.getPCData());
+            } else 
+		_unknownElementType(ptmlobject, child);
+        }
+
+        return ptmlobject;
+    }
+
     private static SchematicEntity _createSchematicEntity(XMLElement e,
             IconLibrary iconroot, EntityLibrary entityLib)
         throws IllegalActionException, NameDuplicationException {
@@ -492,8 +549,6 @@ public class PTMLObjectFactory {
                 ptmlobject.setX(_getDouble(e, n));
             } else if (n.equals("y")) {
                 ptmlobject.setY(_getDouble(e, n));
-            } else if (n.equals("template")) {
-                //ignore..  it's already been used above.
             } else {
                 _unknownAttribute(ptmlobject, e, n);
             }
