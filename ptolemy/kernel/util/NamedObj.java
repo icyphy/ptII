@@ -2257,7 +2257,7 @@ public class NamedObj implements
      *  Object here is presumably cheaper than a list, but it is
      *  truly unfortunate to have to carry this in every NamedObj.
      */
-    protected Object _changeLock = new Object();
+    protected Object _changeLock = new SerializableObject();
 
     /** A list of pending change requests. */
     protected List _changeRequests;
@@ -2639,5 +2639,9 @@ public class NamedObj implements
         }
 
         private Iterator _attributeListIterator = null;
+    }
+    
+    /** Serializable version of the Java Object class. */
+    private class SerializableObject extends Object implements Serializable {
     }
 }

@@ -35,6 +35,11 @@ Need to make sure that the exception is handled reasonably.
 Removed support for setReadOnly().
 -- liuxj
 
+Made _writer, _lastReader, _lastReaderRecord, and _readerRecords
+transient so that object would be serializable. However, serialization
+is probably not right if there are outstanding read or write permissions.
+-- eal
+
 */
 
 package ptolemy.kernel.util;
@@ -637,6 +642,12 @@ public final class Workspace implements Nameable, Serializable {
 
         //System.out.println("-- look up access record for "
         //   + current.getName());
+        
+        // If this object has been serialized and deserialized, then
+        // _readerRecords could be null.
+        if (_readerRecords == null) {
+            _readerRecords = new HashMap();
+        }
 
         AccessRecord record = (AccessRecord)_readerRecords.get(current);
 
@@ -778,7 +789,7 @@ public final class Workspace implements Nameable, Serializable {
     private long _version = 0;
 
     /** @serial The currently writing thread (if any). */
-    private Thread _writer;
+    private transient Thread _writer;
 
     /** @serial The number of pending write requests plus active write
      *  permissions.
@@ -792,9 +803,9 @@ public final class Workspace implements Nameable, Serializable {
 
     /** @serial The last thread that acquires/releases read permission.
      */
-    private Thread _lastReader = null;
-    private AccessRecord _lastReaderRecord = null;
-    private HashMap _readerRecords = new HashMap();
+    private transient Thread _lastReader = null;
+    private transient AccessRecord _lastReaderRecord = null;
+    private transient HashMap _readerRecords = new HashMap();
 
     /** @serial The number of readers.
      *  The use of this field is to increment it every time we have a new
