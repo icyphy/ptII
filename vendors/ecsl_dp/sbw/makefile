@@ -75,10 +75,15 @@ install: jclass jars
 ##################################################
 # Steer By Wire (sbw) demo
 demo: all sbw_ECSL.moml
+	@echo "# Double Click on the Generate Giotto Icon and "
+	@echo "# save the Giotto file as $(PTPACKAGE).giotto"
+	@echo "# Exit vergil, then run \"make demo_gdk\""
 	$(PTII)/bin/vergil sbw_ECSL.moml
 
-sbw_ECSL.moml: sbw_ECSL.xml ecsl2moml
-	../ptolemy/ecsl2moml $<
+# Script that converts from ECSL_DP to MoML
+ECSL2MOML =	../ptolemy/ecsl2moml
+sbw_ECSL.moml: sbw_ECSL.xml $(ECSL2MOML)
+	$(ECSL2MOML) $<
 
 sbw_ECSL.xml: sbw_data_flow_12_1.xml
 	../XML2ECSL/bin/Xml2Ecsl_d $< $@
