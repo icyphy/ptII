@@ -132,9 +132,7 @@ public class UnitUtilities {
 
         if (positiveUnits.equals("")) {
             positiveUnits = "1";
-        } else if (justOnePositive) {
-            positiveUnits = positiveUnits;
-        } else {
+        } else if (!justOnePositive) {
             positiveUnits = "(" + positiveUnits + ")";
         }
 
