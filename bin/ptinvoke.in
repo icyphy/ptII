@@ -68,6 +68,7 @@ case "`basename $0`" in
 	# Invoke the class named by the first argument
 	javastartupclass=$1
 	javasourcedir=
+	shift
 	;;
     ptjacl)
 	# tcl.lang.Shell brings up the Jacl prompt in the current window
