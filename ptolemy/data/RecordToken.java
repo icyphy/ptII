@@ -243,7 +243,10 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  type that contains all of the fields (and types) of the first
      *  record, and all of the fields of the second record that are
      *  not in the first record,  otherwise return BaseType.UNKNOWN.
-     *  @param type The type of the argument to the corresponding function.
+     *  @param type1 The type of the first argument to the
+     *  corresponding function.
+     *  @param type2 The type of the second argument to the
+     *  corresponding function.
      *  @return The type of the value returned from the corresponding function.
      */
     public static Type mergeReturnType(Type type1, Type type2) {
