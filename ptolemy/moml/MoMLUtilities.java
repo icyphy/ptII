@@ -63,7 +63,7 @@ public class MoMLUtilities {
         return string;
     }
 
-    /** Replace all occurances of old in string with new.
+    /** Replace all occurrences of old in string with new.
      *  Instances of new within old are not replaced.
      */
     public static String substitute(String string,
