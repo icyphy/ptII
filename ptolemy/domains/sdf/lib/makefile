@@ -61,7 +61,6 @@ JSRCS = \
 	Autocorrelation.java \
 	BitsToInt.java \
 	Chop.java \
-	Delay.java \
 	DelayLine.java \
         DotProduct.java \
 	DownSample.java \
@@ -74,6 +73,7 @@ JSRCS = \
 	RaisedCosine.java \
 	Repeat.java \
 	SDFTransformer.java \
+	SampleDelay.java \
 	SequenceToArray.java \
         SequenceToDoubleMatrix.java \
 	UpSample.java \

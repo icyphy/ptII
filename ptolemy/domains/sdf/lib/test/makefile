@@ -54,10 +54,10 @@ JSIMPLE_TESTS = \
 	FIRDouble.tcl \
 	FFT.tcl \
 	ArrayToSequence.tcl \
-	BitsToInt.tcl\
-	Delay.tcl\
+	BitsToInt.tcl \
 	IntToBits.tcl \
 	Repeat.tcl \
+	SampleDelay.tcl \
 	SequenceToArray.tcl
 
 # Graphical Java tests that use Tcl.

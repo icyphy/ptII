@@ -45,7 +45,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
-//// Delay
+//// SampleDelay
 /**
 This actor outputs a set of initial tokens during the initialize()
 method, and subsequently passes the input tokens to the output.
@@ -56,12 +56,13 @@ the initial outputs permit the computation to get started. The
 default value for the <i>initialOutputs</i> parameter causes a
 single integer token with value zero to be produced in
 initialize().
+@see ptolemy.domains.de.lib.TimedDelay
 
 @author Steve Neuendorffer, Edward A. Lee
 @version $Id$
 */
 
-public class Delay extends SDFTransformer {
+public class SampleDelay extends SDFTransformer {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -71,7 +72,7 @@ public class Delay extends SDFTransformer {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Delay(CompositeEntity container, String name)
+    public SampleDelay(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
@@ -123,7 +124,7 @@ public class Delay extends SDFTransformer {
      */
     public Object clone(Workspace workspace)
 	    throws CloneNotSupportedException {
-        Delay newObject = (Delay)(super.clone(workspace));
+        SampleDelay newObject = (SampleDelay)(super.clone(workspace));
 
         // set the type constraints
         ArrayType paramType = (ArrayType)newObject.initialOutputs.getType();

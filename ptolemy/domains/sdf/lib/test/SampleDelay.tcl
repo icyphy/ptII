@@ -1,4 +1,4 @@
-# Tests for the Delay class
+# Tests for the SampleDelay class
 #
 # @Author: Christopher Hylands
 #
@@ -47,32 +47,32 @@ if {[info procs enumToObjects] == "" } then {
 ######################################################################
 ####
 #
-test Delay-2.1 {test constructor and clone} {
+test SampleDelay-2.1 {test constructor and clone} {
     set e0 [sdfModel 5]
-    set delaybase [java::new ptolemy.domains.sdf.lib.SampleDelay $e0 delay]
+    set sampleDelayBase [java::new ptolemy.domains.sdf.lib.SampleDelay $e0 SampleDelay]
     # FIXME: If I use a clone instead of the original, the original is
     # tested for type satisfaction!
-    set delay [java::cast ptolemy.domains.sdf.lib.SampleDelay [$delaybase clone]]
-    $delaybase setContainer [java::null]
-    $delay setContainer $e0
-    set initialOutputs [getParameter $delay initialOutputs]
+    set sampleDelay [java::cast ptolemy.domains.sdf.lib.SampleDelay [$sampleDelayBase clone]]
+    $sampleDelayBase setContainer [java::null]
+    $sampleDelay setContainer $e0
+    set initialOutputs [getParameter $sampleDelay initialOutputs]
     # Success here is just not throwing an exception.
     list {}
 } {{}}
 
-test Delay-2.2 {test with the default parameter values} {
+test SampleDelay-2.2 {test with the default parameter values} {
     set ramp [java::new ptolemy.actor.lib.Ramp $e0 ramp]
     set init [getParameter $ramp init]
     set step [getParameter $ramp step]
-    set gain [getParameter $delay gain]
-    # Use clone of delay to make sure that is ok.
+    set gain [getParameter $sampleDelay gain]
+    # Use clone of SampleDelay to make sure that is ok.
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
     $e0 connect \
        [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
-       [java::field [java::cast ptolemy.domains.sdf.lib.SDFTransformer $delay] input]
+       [java::field [java::cast ptolemy.domains.sdf.lib.SDFTransformer $sampleDelay] input]
     set relation [$e0 connect \
        [java::field \
-       [java::cast ptolemy.domains.sdf.lib.SDFTransformer $delay] output] \
+       [java::cast ptolemy.domains.sdf.lib.SDFTransformer $sampleDelay] output] \
        [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]]
 
 #set debugger [java::new ptolemy.kernel.util.StreamListener]
@@ -85,19 +85,19 @@ test Delay-2.2 {test with the default parameter values} {
     enumToTokenValues [$rec getRecord 0]
 } {0 0 1 2 3}
 
-test Delay-2.3 {test with more than one output token} {
+test SampleDelay-2.3 {test with more than one output token} {
     $initialOutputs setExpression {{5, 5}}
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 } {5 5 0 1 2}
 
-test Delay-2.4 {test with type change} {
+test SampleDelay-2.4 {test with type change} {
     $initialOutputs setExpression {{7.0, 4.0}}
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 } {7.0 4.0 0.0 1.0 2.0}
 
-test Delay-2.5 {test with type change to error condition} {
+test SampleDelay-2.5 {test with type change to error condition} {
     $initialOutputs setExpression {{true, false}}
     catch { [$e0 getManager] execute } msg
     # Note, this order of the error message might be platform dependent
@@ -107,16 +107,16 @@ test Delay-2.5 {test with type change to error condition} {
     set containsRecInput [regexp \
 	    {.top.rec.input: matrix} \
 	    $msg]
-    set containsDelayOutput [regexp \
-	    {.top.delay.output: matrix} \
+    set containsSampleDelayOutput [regexp \
+	    {.top.SampleDelay.output: matrix} \
 	    $msg]
-    list $containsException $containsRecInput $containsDelayOutput
+    list $containsException $containsRecInput $containsSampleDelayOutput
 } {1 1 1}
 
-test Delay-3.0 {test in feedback loop} {
+test SampleDelay-3.0 {test in feedback loop} {
     $ramp setContainer [java::null]
     set input \
-            [java::field [java::cast ptolemy.domains.sdf.lib.SDFTransformer $delay] \
+            [java::field [java::cast ptolemy.domains.sdf.lib.SDFTransformer $sampleDelay] \
             input]
     $input unlinkAll
     $input link $relation
