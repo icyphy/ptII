@@ -27,7 +27,7 @@
                                         COPYRIGHTENDKEY
 */
 
-package pt.kernel;
+package pt.kernel.util;
 
 //////////////////////////////////////////////////////////////////////////
 //// IllegalActionException

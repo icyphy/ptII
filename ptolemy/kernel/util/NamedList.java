@@ -32,7 +32,7 @@ capable of returning an enumeration sorted alphabetically by name.
 This is the reason for a Red rating.
 */
 
-package pt.kernel;
+package pt.kernel.util;
 
 import collections.CorruptedEnumerationException;
 

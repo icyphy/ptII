@@ -29,7 +29,7 @@ name in the collection.
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 */
 
-package pt.kernel;
+package pt.kernel.util;
 
 //////////////////////////////////////////////////////////////////////////
 //// NameDuplicationException

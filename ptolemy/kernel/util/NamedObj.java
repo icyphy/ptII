@@ -27,7 +27,7 @@
 @ProposedRating Green (eal@eecs.berkeley.edu)
 */
 
-package pt.kernel;
+package pt.kernel.util;
 
 import java.io.Serializable;
 import java.util.Enumeration;
