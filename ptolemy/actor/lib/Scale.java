@@ -184,7 +184,7 @@ public class Scale extends Transformer {
             
             return new ArrayToken(result);
         } else {
-            return factor.multiply(input);
+            return input.multiply(factor);
         }
     }
 
