@@ -72,7 +72,6 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
-import ptolemy.kernel.util.DropListener;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.StringAttribute;
@@ -567,6 +566,10 @@ public class PortConfigurerDialog
                 }
             }
         }
+        
+        // There may be several change requests generated.
+        // We merge them into one undo action as needed.
+        boolean requestedChange = false;
 
         Iterator actualPorts = portsToBeRemoved.iterator();
         while (actualPorts.hasNext()) {
@@ -612,6 +615,7 @@ public class PortConfigurerDialog
             request.setUndoable(true);
             container.addChangeListener(this);
             container.requestChange(request);
+            requestedChange = true;
         }
 
         //   Iterate over the table rows that represent ports. If a row
@@ -790,7 +794,9 @@ public class PortConfigurerDialog
             MoMLChangeRequest request =
                 new MoMLChangeRequest(this, _target, moml.toString(), null);
             request.setUndoable(true);
-            request.setMergeWithPreviousUndo(true);
+            if (requestedChange) {
+                request.setMergeWithPreviousUndo(true);
+            }
             // NOTE: There is no need to listen for completion
             // or errors in this change request, since, in theory,
             // it will just work.  Will someone report the error
