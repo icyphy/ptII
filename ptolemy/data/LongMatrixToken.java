@@ -331,7 +331,7 @@ public class LongMatrixToken extends MatrixToken {
      *  the matrix contained in this token.
      *  @return A new Token containing the right multiplicative identity.
      */
-    public Token oneR() {
+    public Token oneRight() {
 	long[][] result = new long[_columnCount][_columnCount];
 	for (int i = 0; i < _columnCount; i++) {
 	    for (int j = 0; j < _columnCount; j++) {

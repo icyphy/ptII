@@ -335,7 +335,7 @@ public class ComplexMatrixToken extends MatrixToken {
      *  the matrix contained in this token.
      *  @return A new Token containing the right multiplicative identity.
      */
-    public Token oneR() {
+    public Token oneRight() {
 	Complex[][] result = new Complex[_columnCount][_columnCount];
 	for (int i = 0; i < _columnCount; i++) {
 	    for (int j = 0; j < _columnCount; j++) {
