@@ -142,7 +142,8 @@ This specifies the border color of the <code>pxgraph</code> window.
 <DL>
 <DT><code>-bg</code> <code><i>&lt;color&gt;</i></code> <DD>
 Background color of the <code>pxgraph</code> window.
-<b>Unsupported in the Java version.</b>
+<b>In the Java version, this argument takes hexadecimal color values 
+(<code>fffff</code>), not color names</b>
 <P>
 </DD>
 </DL>
@@ -214,8 +215,8 @@ the values of all known defaults.
 <DT><code>-fg</code> <code><i>&lt;color&gt;</i></code> <DD>
 Foreground color. This color is used to draw all text
 and the normal grid lines in the window.
-<b>Unsupported in the Java version.</b>
-<P>
+<b>In the Java version, this argument takes hexadecimal color values 
+(<code>fffff</code>), not color names</b>
 </DD>
 </DL>
 <DL>
@@ -348,7 +349,8 @@ the graph title. A font name may be specified exactly
 in an abbreviated form: &lt;family&gt;-&lt;size&gt;. The family is
 the family name (like helvetica) and the size is the
 font size in points (like 12). The default for this
-parameter is &quot;helvetica-18".
+parameter is &quot;helvetica-bold-14".
+<b>Unsupported in the Java version.</b>
 <P>
 </DD>
 </DL>
@@ -377,12 +379,14 @@ This is the unit name for the Y axis. Its default is
 <DL>
 <DT><code>-zg</code> <code><i>&lt;color&gt;</i></code> <DD>
 This is the color used to draw the zero grid line.
+<b>Unsupported in the Java version.</b>
 <P>
 </DD>
 </DL>
 <DL>
 <DT><code>-zw</code> <code><i>&lt;width&gt;</i></code> <DD>
 This is the width of the zero grid line in pixels.
+<b>Unsupported in the Java version.</b>
 <P>
 </DD>
 </DL>
@@ -500,11 +504,11 @@ public class Pxgraph extends Frame {
 	//                   a option is unsupported.
 	String commandOptions[][] = {
 	    {"-bd",  "<color>", "Border",  "White", "(Unsupported)"},
-	    {"-bg",  "<color>", "BackGround",  "White", "(Unsupported)"},
+	    {"-bg",  "<color>", "BackGround",  "White", ""},
 	    {"-brb", "<base>", "BarBase",  "0", "(Unsupported)"},
 	    {"-brw", "<width>", "BarWidth",  "1", ""},
 	    {"-bw",  "<size>", "BorderSize",  "1", "(Unsupported)"},
-	    {"-fg",  "<color>", "Foreground",  "Black", "(Unsupported)"},
+	    {"-fg",  "<color>", "Foreground",  "Black", ""},
 	    {"-gw",  "<pixels>", "GridStyle",  "1", "(Unsupported)"},
 	    {"-lf",  "<fontname>", "LabelFont",  "helvetica-12", "(Unsupported)"},
 	    {"-lw",  "<width>", "LineWidth",  "0", "(Unsupported)"},
@@ -568,9 +572,6 @@ public class Pxgraph extends Frame {
         int i = 0, j, argsread;
         String arg;
 
-	// Default URL to be opened
-	String dataurl = "";
-
 	String title = "A plot";
 	int width = 400;      // Default width of the graph
 	int height = 400;     // Default height of the graph
@@ -632,13 +633,9 @@ public class Pxgraph extends Frame {
 				// but setsize is not in JDK1.0.2
 	setTitle(title);
 
-        if (i < args.length) {
-            dataurl=args[i];
-	}
         argsread = i++;
 
         if (_debug > 2) {
-	    System.err.println("Pxgraph: dataurl = " + dataurl);
 	    System.err.println("Pxgraph: title = " + title);
 	    System.err.println("Pxgraph: width = " + width + 
 			       " height = " + height +
