@@ -111,12 +111,6 @@ public class FFT extends SDFTransformer {
             input.setTokenConsumptionRate(_consumptionRate);
             output.setTokenProductionRate(_productionRate);
             
-            inDoubleArray = new double[_consumptionRate];
-            outComplexArray = new Complex[_productionRate];
-            
-            inTokenArray = new DoubleToken[ _consumptionRate ];
-            outTokenArray = new ComplexToken[ _productionRate ];
-
             Director dir = getDirector();
             if (dir != null) {
                 dir.invalidateSchedule();
