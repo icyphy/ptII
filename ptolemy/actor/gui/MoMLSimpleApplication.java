@@ -1,4 +1,4 @@
-/* An application that executes non-graphical 
+/* An application that executes non-graphical
    models specified on the command line.
 
  Copyright (c) 2001 The Regents of the University of California.

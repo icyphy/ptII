@@ -106,7 +106,7 @@ public class Configuration extends CompositeEntity {
     public Tableau createPrimaryTableau(final Effigy effigy) {
         // NOTE: It used to be that the body of this method was
         // actually executed later, in the event thread, so that it can
-        // safely interact with the user interface. 
+        // safely interact with the user interface.
         // However, this does not appear to be necessary, and it
         // makes it impossible to return the tableau.
         // So we no longer do this.
@@ -308,18 +308,18 @@ public class Configuration extends CompositeEntity {
             if (attributes.size() > 0) {
                 // The entity has a URL, which was probably
                 // inserted by MoMLParser.
-                
+
                 URL url = ((URLAttribute)attributes.get(0)).getURL();
-                
+
                 // Set the url and identifier of the effigy.
                 effigy.url.setURL(url);
                 effigy.identifier.setExpression(url.toExternalForm());
-                
+
                 // Put the effigy into the directory
                 ModelDirectory directory = getDirectory();
                 effigy.setName(directory.uniqueName(entity.getName()));
                 effigy.setContainer(directory);
-                
+
                 // Create a default tableau.
                 return createPrimaryTableau(effigy);
             } else {
@@ -327,7 +327,7 @@ public class Configuration extends CompositeEntity {
                 // that is defined within the same file as the parent,
                 // probably.  Create a new PtolemyEffigy
                 // and open a tableau for it.
-                
+
                 // Put the effigy inside the effigy of the parent,
                 // rather than directly into the directory.
                 NamedObj parent = (NamedObj)entity.getContainer();
@@ -343,17 +343,17 @@ public class Configuration extends CompositeEntity {
                     // OK, we can put it into this other effigy.
                     effigy.setName(parentEffigy.uniqueName(entity.getName()));
                     effigy.setContainer(parentEffigy);
-                            
+
                     // Set the identifier of the effigy to be that
                     // of the parent with the model name appended.
                     effigy.identifier.setExpression(
                             parentEffigy.identifier.getExpression()
                             + "#" + entity.getName());
-          
+
                     // Set the url of the effigy to that of
                     // the parent.
                     effigy.url.setURL(parentEffigy.url.getURL());
-                        
+
                     // Indicate success.
                     isContainerSet = true;
                 }
@@ -366,7 +366,7 @@ public class Configuration extends CompositeEntity {
                     effigy.setContainer(directory);
                     effigy.identifier.setExpression(entity.getFullName());
                 }
-                        
+
                 return createPrimaryTableau(effigy);
             }
         }

@@ -95,8 +95,8 @@ public class EditorPaneFactory extends Attribute {
 
     /** Return a new default widget for configuring the specified object.
      *  This is used by the Configurer for objects that do not contain
-     *  an instance of EditorPaneFactory as an attribute.  The resulting 
-     *  component is an instance of the PtolemyQuery class that  
+     *  an instance of EditorPaneFactory as an attribute.  The resulting
+     *  component is an instance of the PtolemyQuery class that
      *  @return An instance of the PtolemyQuery class that is created
      *  with styles according to the type given in each visible attribute.
      */

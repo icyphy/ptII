@@ -63,10 +63,10 @@ CloseListener interface, then they are notified when this dialog
 is closed, and are informed of which button (if any) was used to
 close the dialog.
 <p>
-The dialog is modal, so that (in lieu of a proper undo mechanism) 
+The dialog is modal, so that (in lieu of a proper undo mechanism)
 the Cancel button can properly undo any
 modifications that are made.  This means that the statement that creates
-the dialog will not return until the user dismisses the dialog.  
+the dialog will not return until the user dismisses the dialog.
 The method buttonPressed()
 can then be called to find out whether the user clicked the Commit button
 or the Cancel button (or any other button specified in the constructor).

@@ -134,7 +134,7 @@ public class MoMLApplication {
         MessageHandler.setMessageHandler(new GraphicalMessageHandler());
 
         // Even if the user is set up for foreign locale, use the US locale.
-        // This is because certain parts of Ptolemy (like the expression 
+        // This is because certain parts of Ptolemy (like the expression
         // language) are not localized.
 	// FIXME: This is a workaround for the locale problem, not a fix.
 	try {
@@ -197,7 +197,7 @@ public class MoMLApplication {
 			throw new MalformedURLException();
 		    }
 		} catch (java.security.AccessControlException accessControl) {
-		    throw new MalformedURLException();		    
+		    throw new MalformedURLException();
 		}
                 return file.getCanonicalFile().toURL();
             } catch (MalformedURLException ex2) {
@@ -227,12 +227,12 @@ public class MoMLApplication {
     /** Given a jar url of the format jar:<url>!/{entry}, return
      *  the resource, if any of the {entry}.
      *  If the string does not contain <code>!/</code>, then return null.
-     
+
      *  @param spec The string containing the jar url.
      *  @exception IOException If it cannot convert the specification to
      *   a URL.
      *  @see java.net.JarURLConnection
-     */	
+     */
     public static URL jarURLEntryResource(String spec) throws IOException {
 	// At first glance, it would appear that this method could appear
 	// in specToURL(), but the problem is that specToURL() creates

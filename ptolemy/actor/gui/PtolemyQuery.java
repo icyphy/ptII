@@ -109,13 +109,13 @@ public class PtolemyQuery extends Query
      *  The name of the entry will be set to the name of the attribute,
      *  and the attribute will be attached to the entry, so that if the
      *  attribute is updated, then the entry is updated. If the attribute
-     *  contains an instance of ParameterEditorStyle, then defer to 
+     *  contains an instance of ParameterEditorStyle, then defer to
      *  the style to create the entry, otherwise just create a new line entry.
      *  Only the first style that is found is used to create an entry.
      *  @param attribute The attribute to create an entry for.
      */
     public void addStyledEntry(Settable attribute) {
-        // Note: it would be nice to give 
+        // Note: it would be nice to give
         // multiple styles to specify to create more than one
         // entry for a particular parameter.  However, the style configurer
         // doesn't support it and we don't have a good way of representing

@@ -75,10 +75,10 @@ to handle the part of the dialog that edits the parameters.
 public class Configurer extends JPanel implements CloseListener {
 
     /** Construct a configurer for the specified object.  This stores
-     *  the current values of any Settable attributes of the given object, 
+     *  the current values of any Settable attributes of the given object,
      *  and then defers to any editor pane factories contained by
-     *  the given object to populate this panel with widgets that 
-     *  edit the attributes of the given object.  If there are no 
+     *  the given object to populate this panel with widgets that
+     *  edit the attributes of the given object.  If there are no
      *  editor pane factories, then a default editor pane is created.
      *  @param object The object to configure.
      */

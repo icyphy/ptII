@@ -236,7 +236,7 @@ public class CompositeActorApplication {
                 // Model is already running.  Ignore.
             }
         } else {
-            report("Model " + model.getFullName() + " cannot be executed " 
+            report("Model " + model.getFullName() + " cannot be executed "
                     + "because it does not have a manager.");
         }
     }
@@ -315,7 +315,7 @@ public class CompositeActorApplication {
                     parser._searchForClass(arg, model.getMoMLInfo().source);
                 if(modelClass != null) {
                     model = modelClass;
-                }                    
+                }
 
                 _models.add(model);
 
