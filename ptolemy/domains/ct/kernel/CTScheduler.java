@@ -696,7 +696,13 @@ public class CTScheduler extends Scheduler{
             Enumeration enumsinks = _sink.elements();
             int count = 0;
             while(enumsinks.hasMoreElements()) {
-                sinkactors[count++] = enumsinks.nextElement();
+                Actor a = (Actor)enumsinks.nextElement();
+                if (a instanceof CTStepSizeControlActor) {
+                    // Note: they are not ordered, but insertFirst is
+                    // considered more efficient.
+                    _outputssc.insertFirst(a);
+                }
+                sinkactors[count++] = a;
             }
             //Output map.
             Object[] gx = g.backwardReachableNodes(sinkactors);
@@ -712,6 +718,7 @@ public class CTScheduler extends Scheduler{
             }
             // add sinks to the output schedule
             _outputschedule.appendElements(_sink.elements());
+            
             _scheList.insertLast(_outputschedule);
         }
 
