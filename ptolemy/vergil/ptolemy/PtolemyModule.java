@@ -79,6 +79,7 @@ import ptolemy.domains.de.kernel.*;
 import ptolemy.domains.dde.kernel.*;
 import ptolemy.domains.csp.kernel.*;
 import ptolemy.domains.fsm.kernel.FSMDirector;
+import ptolemy.domains.ct.kernel.*;
 
 /**
  * A module that can be plugged into Vergil that adds support for
@@ -289,6 +290,9 @@ public class PtolemyModule implements Module {
 	    _directorModel.addElement(dir);
 	    dir = new FSMDirector();
 	    dir.setName("FSM");
+	    _directorModel.addElement(dir);
+	    dir = new CTMixedSignalDirector();
+	    dir.setName("CT");
 	    _directorModel.addElement(dir);
 	}
 	catch (Exception ex) {
