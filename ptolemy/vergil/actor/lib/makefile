@@ -49,6 +49,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	FilledShapeAttribute.java \
 	ImageAttribute.java \
 	LineAttribute.java \
 	MonitorImage.java \

@@ -30,15 +30,13 @@
 
 package ptolemy.vergil.actor.lib;
 
+import java.awt.geom.Rectangle2D;
+
 import ptolemy.data.DoubleToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-
-import java.awt.geom.Rectangle2D;
 
 //////////////////////////////////////////////////////////////////////////
 //// RectangleAttribute
@@ -48,7 +46,7 @@ This is an attribute that is rendered as a rectangle.
 @author Edward A. Lee
 @version $Id$
 */
-public class RectangleAttribute extends ShapeAttribute {
+public class RectangleAttribute extends FilledShapeAttribute {
 
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
@@ -67,14 +65,6 @@ public class RectangleAttribute extends ShapeAttribute {
         throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        width = new Parameter(this, "width");
-        width.setTypeEquals(BaseType.DOUBLE);
-        width.setExpression("100.0");
-
-        height = new Parameter(this, "height");
-        height.setTypeEquals(BaseType.DOUBLE);
-        height.setExpression("100.0");
-
         // FIXME: controller for resizing.
         // Create a custom controller.
         // new ImageAttributeControllerFactory(this, "_controllerFactory");
@@ -83,15 +73,6 @@ public class RectangleAttribute extends ShapeAttribute {
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** The vertical extent.
-     *  This is a double that defaults to 100.0.
-     */
-    public Parameter height;
-
-    /** The horizontal extent.
-     *  This is a double that defaults to 100.0.
-     */
-    public Parameter width;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

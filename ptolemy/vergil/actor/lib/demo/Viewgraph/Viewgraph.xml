@@ -63,7 +63,9 @@
         </property>
         <property name="height" class="ptolemy.data.expr.Parameter" value="200.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 500.0">
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.8,0.5}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 415.0">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -87,7 +89,7 @@ attributes with visual elements.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 515.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 440.0">
         </property>
     </property>
     <property name="line2" class="ptolemy.vergil.actor.lib.LineAttribute">

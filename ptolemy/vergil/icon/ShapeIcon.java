@@ -113,6 +113,37 @@ public class ShapeIcon extends EditorIcon {
         return newFigure;
     }
     
+    /** Specify the fill color to use.  This is deferred and executed
+     *  in the Swing thread.
+     *  @param fillColor The fill color to use.
+     */
+    public void setFillColor(Color fillColor) {
+        _fillColor = fillColor;
+        
+        // Update the shapes of all the figures that this icon has
+        // created (which may be in multiple views). This has to be
+        // done in the Swing thread.  Assuming that createBackgroundFigure()
+        // is also called in the Swing thread, there is no possibility of
+        // conflict here where that method is trying to add to the _figures
+        // list while this method is traversing it.
+        Runnable doSet = new Runnable() {
+            public void run() {
+                ListIterator figures = _figures.listIterator();
+                while (figures.hasNext()) {
+                    Object figure = ((WeakReference)figures.next()).get();
+                    if (figure == null) {
+                        // The figure has been garbage collected, so we
+                        // remove it from the list.
+                        figures.remove();
+                    } else {
+                        ((PathFigure)figure).setFillPaint(_fillColor);
+                    }
+                }
+            }
+        };
+        SwingUtilities.invokeLater(doSet);
+    }
+    
     /** Specify the line color to use.  This is deferred and executed
      *  in the Swing thread.
      *  @param lineColor The line color to use.
@@ -211,6 +242,9 @@ public class ShapeIcon extends EditorIcon {
 
     // A list of weak references to figures that this has created.
     private List _figures = new LinkedList();
+    
+    // The specified fill color.
+    private Color _fillColor = Color.white;
 
     // The specified line color.
     private Color _lineColor = Color.black;

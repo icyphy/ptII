@@ -1,4 +1,4 @@
-/* An abstract attribute with a reference to a shape.
+/* An attribute with a reference to a filled two-dimensional shape.
 
  Copyright (c) 2001-2003 The Regents of the University of California.
  All rights reserved.
@@ -30,31 +30,29 @@
 
 package ptolemy.vergil.actor.lib;
 
+import java.awt.Color;
+
 import ptolemy.actor.gui.ColorAttribute;
-import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.vergil.icon.ShapeIcon;
-
-import java.awt.Color;
 
 //////////////////////////////////////////////////////////////////////////
-//// ShapeAttribute
+//// FilledShapeAttribute
 /**
-This is an abstract attribute that is rendered as a shape.
-This base class provides support for a line width and a line color.
-The line color can be "none", in which case no line is drawn.
-Concrete derived classes provide particular shapes.
+This is an abstract attribute that is rendered as a filled shape.
+Concrete subclasses produce particular shapes, such as rectangles
+and circles. Derived classes need to react to changes in the
+<i>width</i> and <i>height</i> parameters in the attributeChanged()
+method by calling setShape() on the protected member _icon.
 <p>
 @author Edward A. Lee
 @version $Id$
 */
-public abstract class ShapeAttribute extends Attribute {
+public abstract class FilledShapeAttribute extends ShapeAttribute {
 
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
@@ -69,24 +67,20 @@ public abstract class ShapeAttribute extends Attribute {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public ShapeAttribute(NamedObj container, String name)
+    public FilledShapeAttribute(NamedObj container, String name)
         throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        // Hide the name.
-        new Attribute(this, "_hideName");
+        width = new Parameter(this, "width");
+        width.setTypeEquals(BaseType.DOUBLE);
+        width.setExpression("100.0");
 
-        _icon = new ShapeIcon(this, "_icon");
-
-        lineWidth = new Parameter(this, "lineWidth");
-        lineWidth.setTypeEquals(BaseType.DOUBLE);
-        lineWidth.setExpression("1.0");
+        height = new Parameter(this, "height");
+        height.setTypeEquals(BaseType.DOUBLE);
+        height.setExpression("100.0");
         
-        lineColor = new ColorAttribute(this, "lineColor");
-        lineColor.setExpression("{0.0, 0.0, 0.0, 1.0}");
-        
-        _none = new Variable(this, "none");
-        _none.setExpression("{1.0, 1.0, 1.0, 0.0}");
+        fillColor = new ColorAttribute(this, "fillColor");
+        fillColor.setExpression("none");
 
         // FIXME: controller for resizing.
         // Create a custom controller.
@@ -101,12 +95,18 @@ public abstract class ShapeAttribute extends Attribute {
      *  transparency. The default is "{0.0, 0.0, 0.0, 1.0}", which
      *  represents an opaque black.
      */
-    public ColorAttribute lineColor;
+    public ColorAttribute fillColor;
     
-    /** The line width.  This is a double that defaults to 1.0.
+    /** The vertical extent.
+     *  This is a double that defaults to 100.0.
      */
-    public Parameter lineWidth;
+    public Parameter height;
 
+    /** The horizontal extent.
+     *  This is a double that defaults to 100.0.
+     */
+    public Parameter width;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -118,31 +118,15 @@ public abstract class ShapeAttribute extends Attribute {
      */
     public void attributeChanged(Attribute attribute)
         throws IllegalActionException {
-        if (attribute == lineWidth) {
-            double lineWidthValue =
-                ((DoubleToken) lineWidth.getToken()).doubleValue();
-            _icon.setLineWidth((float) lineWidthValue);
-        } else if (attribute == lineColor) {
-            Color lineColorValue = lineColor.asColor();
-            if (lineColorValue.getAlpha() == 0f) {
-                // Color is fully transparent, so no line is desired.
-                _icon.setLineColor(null);
+        if (attribute == fillColor) {
+            Color fillColorValue = fillColor.asColor();
+            if (fillColorValue.getAlpha() == 0f) {
+                _icon.setFillColor(null);
             } else {
-                _icon.setLineColor(lineColorValue);
+                _icon.setFillColor(fillColorValue);
             }
         } else {
             super.attributeChanged(attribute);
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                       protected members                   ////
-
-    /** The shape icon. */
-    protected ShapeIcon _icon;
-    
-    /** A color parameter whose value is a fully transparent white
-     *  (alpha = 0.0), which is interepreted as no color.
-     */
-    protected Variable _none;
 }
