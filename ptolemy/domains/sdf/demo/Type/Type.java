@@ -52,7 +52,8 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
 
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
