@@ -7,9 +7,10 @@ import ptolemy.actor.*;
 import java.util.Enumeration;
 import ptolemy.domains.sdf.kernel.*;
 
-import gui.DynamicGraphView;
 
-
+/**
+ * @version $Id$
+ */
 public class SDFRamp extends SDFAtomicActor {
     private int value;
     public IOPort outputport;

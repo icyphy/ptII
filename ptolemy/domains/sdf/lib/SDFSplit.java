@@ -7,10 +7,9 @@ import ptolemy.actor.*;
 import java.util.Enumeration;
 import ptolemy.domains.sdf.kernel.*;
 
-import gui.DynamicGraphView;
-
- 
-
+/**
+ * @version $Id$
+ */
 public class SDFSplit extends SDFAtomicActor {
     public IOPort inputport;
     public IOPort outputport1;
