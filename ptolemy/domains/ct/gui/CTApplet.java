@@ -36,20 +36,12 @@ import ptolemy.actor.gui.PtolemyApplet;
 //// CTApplet
 /**
 A base class for applets that use the CT domain.
-It override the stop() method so that when the applet is stopped, it
-will stop the current execution.
+It is an empty class at this time. General utilities may be add to 
+set default parameters and layout.
 
 @author Jie Liu
 @version $Id$
 */
 public class CTApplet extends PtolemyApplet {
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Override start() so it won't start automatically.
-     */
-    public void start() {
-    }
 
 }
