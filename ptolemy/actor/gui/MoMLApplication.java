@@ -105,6 +105,17 @@ $PTII/bin/moml $PTII/ptolemy/configs/hyvisual/configuration.xml $PTII/ptolemy/do
    The reason the backslashes are necessary is because <code>moml</code>
    is a shell script which tends to strip off the double quotes.
 
+   The -class option can be used to specify a Java class to be loaded.
+   The named class must have a constructor that takes a Workspace
+   as an argument.  
+   In the example below, $PTII/ptolemy/domains/sdf/demo/Butterfly/Butterfly.java
+   is a class that has a constructor Butterfly(Workspace).
+   <pre>
+   $PTII/bin/ptolemy -class ptolemy.domains.sdf.demo.Butterfly.Butterfly
+   </pre> 
+   Note that -class is very well tested now that we have use MoML
+   for almost all models.
+
    <p>
    Derived classes may provide default configurations. In particular, the
    protected method _createDefaultConfiguration() is called before any
@@ -309,6 +320,9 @@ public class MoMLApplication implements ExecutionListener {
      */
     public List models() {
         LinkedList result = new LinkedList();
+        if (_configuration == null) {
+            return result;
+        }
         ModelDirectory directory = (ModelDirectory) _configuration.getEntity(Configuration._DIRECTORY_NAME);
         Iterator effigies = directory.entityList().iterator();
 
@@ -652,9 +666,7 @@ public class MoMLApplication implements ExecutionListener {
             // Ignore blank argument.
         } else {
             if (_expectingClass) {
-                // FIXME: This -class does not work.
-                // Try:
-                // $PTII/bin/vergil -class ptolemy.domains.sdf.demo.Butterfly.Butterfly
+                // $PTII/bin/ptolemy -class ptolemy.domains.sdf.demo.Butterfly.Butterfly
 
                 // Previous argument was -class
                 _expectingClass = false;
@@ -664,6 +676,7 @@ public class MoMLApplication implements ExecutionListener {
 
                 // Instantiate the specified class in a new workspace.
                 Workspace workspace = new Workspace();
+                //Workspace workspace = _configuration.workspace();
 
                 // Get the constructor that takes a Workspace argument.
                 Class[] argTypes = new Class[1];
@@ -678,37 +691,47 @@ public class MoMLApplication implements ExecutionListener {
 
                 // If there is a configuration, then create an effigy
                 // for the class, and enter it in the directory.
+                System.out.println("-class: _configuration: " + _configuration);
                 if (_configuration != null) {
-                    // Create an effigy for the model.
-                    PtolemyEffigy effigy = new PtolemyEffigy(_configuration
-                            .workspace());
-                    effigy.setModel(newModel);
+                    _configuration.openModel(newModel);
 
-                    ModelDirectory directory = (ModelDirectory) _configuration
-                        .getEntity("directory");
+// FIXME: we can probably delete this code.                    
+//                     // Create an effigy for the model.
+//                     PtolemyEffigy effigy = new PtolemyEffigy(_configuration
+//                             .workspace());
+//                     effigy.setModel(newModel);
+//                     System.out.println("-class: effigy: " + effigy);
+
+//                     ModelDirectory directory = (ModelDirectory) _configuration
+//                         .getEntity("directory");
 
                     
-                    // Can't use names with dots, so we subsitute.
-                    String safeName =
-                        StringUtilities.substitute(arg, ".","_" );
-                    effigy.setName(safeName);
+//                     // Can't use names with dots, so we subsitute.
+//                     String safeName =
+//                         StringUtilities.substitute(arg, ".","_" );
+//                     effigy.setName(safeName);
 
-                    if (directory != null) {
-                        if (directory.getEntity(safeName) != null) {
-                            // Name is already taken.
-                            int count = 2;
-                            String newName = safeName + " " + count;
+//                     if (directory != null) {
+//                         if (directory.getEntity(safeName) != null) {
+//                             // Name is already taken.
+//                             int count = 2;
+//                             String newName = safeName + " " + count;
 
-                            while (directory.getEntity(newName) != null) {
-                                count++;
-                            }
+//                             while (directory.getEntity(newName) != null) {
+//                                 count++;
+//                             }
 
-                            effigy.setName(newName);
-                        }
-                    }
+//                             effigy.setName(newName);
+//                         }
+//                     }
 
-                    effigy.setContainer(directory);
+//                     effigy.setContainer(directory);
+                } else {
+                    System.err.println("No configuration found.");
+                    throw new IllegalActionException(newModel,
+                            "No configuration found.");
                 }
+
             } else {
                 if (!arg.startsWith("-")) {
                     // Assume the argument is a file name or URL.
