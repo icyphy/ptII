@@ -361,7 +361,7 @@ public class PortConfigurerDialog
             }
 			Object portInfo[] = (Object[]) (_ports.elementAt(row));
 			Port port = (Port) (portInfo[COL_ACTUAL_PORT]);
-			if (port.isClassElement()
+			if (port != null && port.isClassElement()
 				&& (col == COL_NAME
 					|| col == COL_INPUT
 					|| col == COL_OUTPUT
