@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Units" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -46,8 +46,6 @@
             </property>
         </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
-        </property>
-        <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 55.0">
         </property>
@@ -350,7 +348,7 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 120.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, 5, 1032, 748}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {-4, 5, 1032, 748}, maximized = false}">
     </property>
     <property name="annotation4" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -372,33 +370,19 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 600.0">
         </property>
     </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{408.5, 319.5}">
+    </property>
     <entity name="Scale2" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="volt">
-        </property>
-        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
             </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 395.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
-        </port>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1000 * ohm">
@@ -412,69 +396,24 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 505.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
-        </port>
     </entity>
     <entity name="Display1" class="ptolemy.actor.lib.gui.Display">
-        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-        </property>
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-        </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Voltage">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={130, 403, 290, 227}}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="635.0, 375.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
-        </port>
     </entity>
     <entity name="Scale3" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="-1.0 / ( 1.0e-3 * farad )">
         </property>
-        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 535.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
-        </port>
     </entity>
     <entity name="InUnitsOf" class="ptolemy.actor.lib.conversions.InUnitsOf">
         <property name="units" class="ptolemy.data.expr.Parameter" value="amp">
@@ -487,95 +426,28 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="610.0, 495.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
-        </port>
     </entity>
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
-        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-        </property>
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-        </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Current">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={726, 404, 290, 227}}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="635.0, 435.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
-        </port>
     </entity>
     <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
         <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 445.0">
         </property>
-        <port name="multiply" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
-        </port>
-        <port name="divide" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
-        </port>
     </entity>
     <entity name="Scale1" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="second / volt">
         </property>
-        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 395.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
-        </port>
     </entity>
     <entity name="PeriodicSampler2" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.5">
@@ -587,19 +459,11 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
             <property name="multiport"/>
             <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
             </property>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="multiport"/>
             <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-            </property>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
             </property>
         </port>
     </entity>
@@ -613,41 +477,21 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
             <property name="multiport"/>
             <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
             </property>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="multiport"/>
             <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
             </property>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
         </port>
     </entity>
     <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
-        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-        </property>
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-        </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Current in units of Amps">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={430, 404, 290, 227}}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="720.0, 495.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
-        </port>
     </entity>
     <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="5.0">
@@ -658,18 +502,10 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
             <property name="input"/>
             <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
             </property>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-            </property>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
             </property>
         </port>
     </entity>
