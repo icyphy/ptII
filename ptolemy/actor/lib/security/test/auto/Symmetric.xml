@@ -11,7 +11,7 @@
         </property>
         <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="3">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -21,6 +21,25 @@
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="arraySize" class="ptolemy.data.expr.Parameter" value="5">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 30.0">
+        </property>
     </property>
     <entity name="SymmetricDecryption" class="ptolemy.actor.lib.security.SymmetricDecryption">
         <property name="algorithm" class="ptolemy.data.expr.StringParameter" value="DES">
@@ -102,7 +121,7 @@
         </port>
     </entity>
     <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
-        <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="4">
+        <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="arraySize">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 135.0">
         </property>
@@ -116,14 +135,28 @@
             <property name="input"/>
         </port>
     </entity>
+    <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
+        <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="arraySize">
+        </property>
+        <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 75.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{1ub, 2ub, 3ub, 4ub}, {5ub, 6ub, 7ub, 8ub}, {9ub, 10ub, 11ub, 12ub}, {13ub, 14ub, 15ub, 16ub}, {17ub, 18ub, 19ub, 20ub}}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1ub, 2ub, 3ub, 4ub, 5ub, 6ub, 7ub, 8ub, 9ub, 10ub, 11ub, 12ub, 13ub, 14ub, 15ub}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="505.0, 65.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="525.0, 95.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -151,6 +184,8 @@
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="SymmetricDecryption.input" relation="relation3"/>
     <link port="SymmetricDecryption.output" relation="relation6"/>
     <link port="SymmetricDecryption.keyIn" relation="relation4"/>
@@ -162,5 +197,7 @@
     <link port="Ramp.output" relation="relation"/>
     <link port="SequenceToArray.input" relation="relation"/>
     <link port="SequenceToArray.output" relation="relation2"/>
-    <link port="Test.input" relation="relation6"/>
+    <link port="ArrayToSequence.input" relation="relation6"/>
+    <link port="ArrayToSequence.output" relation="relation7"/>
+    <link port="Test.input" relation="relation7"/>
 </entity>
