@@ -57,9 +57,9 @@ test Entity-1.1 {Get information about an instance of Entity} {
 } {{
   class:         pt.kernel.Entity
   fields:        
-  methods:       getClass hashCode {equals java.lang.Object} toString notify notifyAll {wait long} {wait long int} wait getName {setName java.lang.String} getParams enumEntities {enumEntities java.lang.String} enumRelations {enumRelations java.lang.String} getPortList numberOfConnectedEntities {numberOfConnectedEntities java.lang.String}
+  methods:       getClass hashCode {equals java.lang.Object} toString notify notifyAll {wait long} {wait long int} wait getName {setName java.lang.String} getParams enumEntities {enumEntities java.lang.String} enumRelations {enumRelations java.lang.String} getPorts numberOfConnectedEntities {numberOfConnectedEntities java.lang.String}
   constructors:  pt.kernel.Entity {pt.kernel.Entity java.lang.String}
-  properties:    portList class params name
+  properties:    class ports params name
   superclass:    pt.kernel.NamedObj
 }}
 
@@ -76,10 +76,10 @@ test Entity-2.1 {Construct Entities} {
 ######################################################################
 ####
 # 
-test Entity-2.2 {Construct Entities, call getPortList} {
+test Entity-2.2 {Construct Entities, call getPorts} {
     set e1 [java::new pt.kernel.Entity]
     set e2 [java::new pt.kernel.Entity "My Entity"]
-    list [java::instanceof [$e1 getPortList] pt.kernel.PortList]
+    list [java::instanceof [$e1 getPorts] pt.kernel.NamedObjList]
 } {1}
 
 ######################################################################
