@@ -98,6 +98,7 @@ public abstract class ParameterEditorStyle extends Attribute {
      *  For instance, a check box style would return true if the
      *  argument was a Parameter that contained a boolean token.
      *  @param param The attribute that this annotates.
+     *  @return True if this style is acceptable.
      */
     public abstract boolean acceptable(Settable param);
 
