@@ -125,10 +125,10 @@ public class SoundReader {
 	if (_debug) {
 	    System.out.println("SoundReader: constructor : invoked");
 	    System.out.println("SoundReader: constructor : sourceURL = " +
-			       sourceURL);
+                    sourceURL);
 	    System.out.println("SoundReader: constructor : " +
-			       " getSamplesArraySize = " +
-			       getSamplesArraySize);
+                    " getSamplesArraySize = " +
+                    getSamplesArraySize);
 	}
 	this._sourceURL = sourceURL;
 	this._productionRate = getSamplesArraySize;
@@ -211,16 +211,16 @@ public class SoundReader {
 	    int numBytesRead;
 	    if (_debug) {
 		System.out.println("SoundReader: getSamples(): " +
-		     "bytes available = " +
-		     _properFormatAudioInputStream.available());
+                        "bytes available = " +
+                        _properFormatAudioInputStream.available());
 	    }
-		// Capture audio from file.
-		numBytesRead =
-		    _properFormatAudioInputStream.read(_data);
-		if (_debug) {
-		    System.out.println("SoundReader: getSamples(): " +
-				       "numBytesRead = " + numBytesRead);
-		}
+            // Capture audio from file.
+            numBytesRead =
+                _properFormatAudioInputStream.read(_data);
+            if (_debug) {
+                System.out.println("SoundReader: getSamples(): " +
+                        "numBytesRead = " + numBytesRead);
+            }
 	    if (numBytesRead == _data.length) {
 		// Convert byte array to double array.
 		_audioInDoubleArray =
@@ -234,8 +234,8 @@ public class SoundReader {
 		// that the end of the sound file has been reached.
 		if (_debug) {
 		    System.out.println("SoundReader: getSamples(): " +
-				       "numBytesRead = -1, so " +
-				       "returning null now...");
+                            "numBytesRead = -1, so " +
+                            "returning null now...");
 		}
 		return null;
 	    } else if (numBytesRead != _data.length) {
@@ -296,7 +296,7 @@ public class SoundReader {
 	} else {
 	    throw new IllegalStateException("SoundReader: " +
                     "getSampleSizeInBits() was called while " +
-					    "audio capture was" +
+                    "audio capture was" +
                     " inactive (openFile() was never called).");
 	}
     }
@@ -335,13 +335,13 @@ public class SoundReader {
 	_sampleRate = origFormat.getSampleRate();
 	if (_debug) {
 	    System.out.println("SoundReader: sampling rate = " +
-			       _sampleRate);
+                    _sampleRate);
 	}
 	_sampleSizeInBits = origFormat.getSampleSizeInBits();
 	_bytesPerSample = _sampleSizeInBits/8;
 	if (_debug) {
 	    System.out.println("SoundReader: sample size in bits = " +
-			       _sampleSizeInBits);
+                    _sampleSizeInBits);
 	}
 	_channels = origFormat.getChannels();
 	boolean signed = true;
@@ -359,7 +359,7 @@ public class SoundReader {
 	    // Interpret a failed conversion to mean that
 	    // the input sound file has an unsupported format.
 	    throw new IOException("Unsupported audio file format: " +
-                        e);
+                    e);
 	}
 	_frameSizeInBytes = format.getFrameSize();
 	// Array of audio samples in byte format.

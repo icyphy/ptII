@@ -129,15 +129,15 @@ public class SoundWriter {
 	_isAudioWriterActive = true;
 	if (_debug) {
 	    System.out.println("SoundWriter: constructor : fileName = "
-			       + fileName);
+                    + fileName);
 	    System.out.println("SoundWriter: constructor : bitsPerSample = "
-			       + bitsPerSample);
+                    + bitsPerSample);
 	    System.out.println("SoundWriter: constructor : sampleRate = "
-			       + sampleRate);
+                    + sampleRate);
 	    System.out.println("SoundWriter: constructor : channels = "
-			       + channels);
+                    + channels);
 	    System.out.println("SoundWriter: constructor : putSamplesArraySize = "
-			       + putSamplesArraySize);
+                    + putSamplesArraySize);
 	}
     }
 
@@ -173,8 +173,8 @@ public class SoundWriter {
 	    // Convert array of double valued samples into
 	    // the proper byte array format.
 	    _data = _doubleArrayToByteArray(putSamplesArray,
-					    _bytesPerSample,
-					    _channels);
+                    _bytesPerSample,
+                    _channels);
 	    // Add new audio data to the file buffer array.
 	    for (int i = 0; i < _data.length; i++) {
 		_toFileBuffer.add(new Byte(_data[i]));

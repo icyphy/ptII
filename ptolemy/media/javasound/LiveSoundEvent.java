@@ -90,11 +90,11 @@ public class LiveSoundEvent {
      */
     public static final int CHANNELS = 1;
 
-     /** The value indicates a buffer size change event.
+    /** The value indicates a buffer size change event.
      */
     public static final int BUFFER_SIZE = 2;
 
-     /** The value indicates a bits per channel change event.
+    /** The value indicates a bits per channel change event.
      */
     public static final int BITS_PER_SAMPLE = 3;
 
