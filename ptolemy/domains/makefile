@@ -34,8 +34,9 @@ ME =		ptolemy/domains
 # Domains, in alphabetical order.  If you change this, change
 # PTCLASSALLJARS below
 # DT has to come after SDF, sorry.
-
-DIRS =		csp ct dde de fsm pn sdf dt giotto rtp
+# PTJAVA3D_DIR is set by configure in $PTII/mk/ptII.mk to dd3d if 
+#   Java 3D was found
+DIRS =		csp ct dde de fsm pn sdf dt giotto rtp $(PTJAVA3D_DIR)
 
 # Root of Ptolemy II directory
 ROOT =		../..
