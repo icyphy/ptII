@@ -210,10 +210,10 @@ public class SDFActorTransformerVisitor extends ActorTransformerVisitor {
 
               // a counter for the loop
               NameNode chanNameNode = new NameNode(
-               AbsentTreeNode.instance, "_cg_chan_temp");  
+               AbsentTreeNode.instance, "_cg_chan_temp");
 
               ObjectNode chanObjectNode = new ObjectNode(chanNameNode);
-                
+
               ObjectNode bufferObjectNode = new ObjectNode(
                (NameNode) StaticResolution.makeNameNode(
                "CG_Main." + bufferInfo.codeGenName));
@@ -224,7 +224,7 @@ public class SDFActorTransformerVisitor extends ActorTransformerVisitor {
               // the previous offset
               ArrayAccessNode offsetNode = new ArrayAccessNode(
                new ObjectNode(
-                new NameNode(AbsentTreeNode.instance, 
+                new NameNode(AbsentTreeNode.instance,
                  "_cg_" + varName + "_offset")),
                 (ExprNode) chanObjectNode.clone());
 
@@ -239,35 +239,35 @@ public class SDFActorTransformerVisitor extends ActorTransformerVisitor {
                 (ExprNode) methodArgs.get(0)));
 
               // wrap the put statement in a for loop
-                               
+
               List forInitList = TNLManip.cons(
-               new LocalVarDeclNode(NO_MOD, IntTypeNode.instance, 
-               (NameNode) chanNameNode.clone(), 
+               new LocalVarDeclNode(NO_MOD, IntTypeNode.instance,
+               (NameNode) chanNameNode.clone(),
                new IntLitNode("0")));
-          
+
               LTNode forTestExprNode = new LTNode(
                (ExprNode) chanObjectNode.clone(),
-               new IntLitNode(String.valueOf(port.getWidth())));             
+               new IntLitNode(String.valueOf(port.getWidth())));
 
               List forUpdateList = TNLManip.cons(new PostIncrNode(
-               (ExprNode) chanObjectNode.clone()));              
-                            
+               (ExprNode) chanObjectNode.clone()));
+
               // return value is not an expression, needs to get
               // handled by visitExprStmtNode()
-              return new ForNode(forInitList, forTestExprNode, 
-               forUpdateList, putStmtNode);                 
-                              
+              return new ForNode(forInitList, forTestExprNode,
+               forUpdateList, putStmtNode);
+
            } else {
 
-              // if there is only 1 channel, this is like a regular 
+              // if there is only 1 channel, this is like a regular
               // send(0, t) call
-                         
+
               ObjectNode bufferObjectNode = new ObjectNode(
                (NameNode) StaticResolution.makeNameNode(
                 "CG_Main." + bufferInfo.codeGenName));
 
               ObjectNode offsetNode = new ObjectNode(
-               new NameNode(AbsentTreeNode.instance, "_cg_" + varName + 
+               new NameNode(AbsentTreeNode.instance, "_cg_" + varName +
                 "_offset"));
 
               AssignNode offsetUpdateNode = new AssignNode(
@@ -279,7 +279,7 @@ public class SDFActorTransformerVisitor extends ActorTransformerVisitor {
                new ArrayAccessNode(bufferObjectNode, offsetUpdateNode),
                (ExprNode) methodArgs.get(0));
            }
-           
+
         } else if (methodName.equals("get")) {
            String[] bufferArray = (String[]) _sdfActorInfo.inputBufferNameMap.get(port);
            int[] bufferLengthArray =
@@ -305,13 +305,13 @@ public class SDFActorTransformerVisitor extends ActorTransformerVisitor {
 
               ObjectNode chanObjectNode = new ObjectNode(
                new NameNode(AbsentTreeNode.instance, "_cg_chan_temp_r"));
-                            
+
               // assign the channel to a dummy variable to avoid side effects
               AssignNode chanAssignNode = new AssignNode(chanObjectNode,
                firstArg);
 
               ArrayAccessNode findBufferNode = new ArrayAccessNode(new ObjectNode(
-               new NameNode(AbsentTreeNode.instance, 
+               new NameNode(AbsentTreeNode.instance,
                 "_cg_" + varName + "_chan_buffer")),
                chanAssignNode);
 
@@ -402,7 +402,7 @@ public class SDFActorTransformerVisitor extends ActorTransformerVisitor {
               // the previous offset
               ArrayAccessNode offsetNode = new ArrayAccessNode(
                new ObjectNode(
-                new NameNode(AbsentTreeNode.instance, 
+                new NameNode(AbsentTreeNode.instance,
                  "_cg_" + varName + "_offset")),
                 (ExprNode) chanObjectNode.clone());
 
