@@ -49,6 +49,33 @@ public class TNLManip {
     // Make the constructor private since there are only static methods.
     private TNLManip() {}
 
+    /** Create a new LinkedList with the specified object in it.
+     *  If the object is null, then NullValue.instance is inserted instead.
+     *  @param obj The object to prepend.
+     *  @return The new list.
+     */
+    public static final LinkedList addFirst(Object obj) {
+        return addFirst(obj, new LinkedList());
+    }
+
+    /** Prepend the specified object to the front of the specified list.
+     *  If the object to prepend is null, then NullValue.instance is
+     *  prepended instead.
+     *  @param obj The object to prepend.
+     *  @param list The list to modify.
+     *  @return The modified list.
+     */
+    public static final LinkedList addFirst(Object obj, LinkedList list) {
+        // This used to be called cons, but it is not like the Lisp cons,
+        // it is destructive.
+        if (obj == null) {
+            list.addFirst(NullValue.instance);
+        } else {
+            list.addFirst(obj);
+        }
+        return list;
+    }
+
     /** Return a LinkedList with the same elements in the same
      *  order as in the specified array. If an array element is null,
      *  then the corresponding element in the LinkedList will be
@@ -92,34 +119,6 @@ public class TNLManip {
             }
         }
         return retval;
-    }
-
-    /** Create a new LinkedList with the specified object in it.
-     *  If the object is null, then NullValue.instance is inserted instead.
-     *  FIXME: This method is misnamed because it is not like a Lisp cons.
-     *  @param obj The object to prepend.
-     *  @return The new list.
-     */
-    public static final LinkedList cons(Object obj) {
-        return cons(obj, new LinkedList());
-    }
-
-    /** Prepend the specified object to the front of the specified list.
-     *  If the object to prepend is null, then NullValue.instance is
-     *  prepended instead.
-     *  FIXME: This method is misnamed because it is not like a Lisp cons.
-     *  It is destructive.
-     *  @param obj The object to prepend.
-     *  @param list The list to modify.
-     *  @return The modified list.
-     */
-    public static final LinkedList cons(Object obj, LinkedList list) {
-        if (obj == null) {
-            list.addFirst(NullValue.instance);
-        } else {
-            list.addFirst(obj);
-        }
-        return list;
     }
 
     /** Print the classnames of the specified node and any nodes
