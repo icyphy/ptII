@@ -50,7 +50,7 @@ Encode an input sequence with a convolutional code. The inputs and
 outputs are booleans. The input sequence
 enters a shift register, and the contents of the shift register are
 combined using boolean functions given by the <i>polynomialArray</i>
-parameter. The initialState state of the shift register is given by the
+parameter. The initial state of the shift register is given by the
 <i>initialState</i> parameter, which should be a non-negative integer.
 The <i>uncodedRate</i> parameter, often denoted by <i>k</i> in the
 coding literature, is the number of bits per firing that are shifted
