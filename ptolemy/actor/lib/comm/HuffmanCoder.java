@@ -111,6 +111,10 @@ public class HuffmanCoder extends Transformer {
      */
     public Parameter alphabet;
     
+    /** A port that produces the Huffman code book generated
+     *  based on the probability mass function. It is an array
+     *  of strings.
+     */
     public TypedIOPort huffmanCodeBook;
     
     ////////////////////////////////////////////////////////////////////
@@ -213,18 +217,16 @@ public class HuffmanCoder extends Transformer {
         if (_parametersInvalid) {
             _parametersInvalid = false;
             _codeBook = generateCodeBook(_pmf);
+            // FIXME: only produce the code book if the parameters
+            // have been updated.
+            StringToken[] codeBookTokens = new StringToken[_pmf.length];
+            for (int i = 0; i < _pmf.length; i ++) {
+                codeBookTokens[i] = new StringToken(_codeBook[i]);
+            }
+            huffmanCodeBook.send(0, new ArrayToken(codeBookTokens));
         }
         // Get the input token. Ready for output.
         Token inputToken = (Token)input.get(0);
-        
-        
-        StringToken[] codeBookTokens = new StringToken[_pmf.length];
-        for (int i = 0; i < _pmf.length; i ++) {
-            //System.out.println("codeBook[" + i + "] is " + _codeBook[i]);
-            codeBookTokens[i] = new StringToken(_codeBook[i]);
-        }
-        huffmanCodeBook.send(0, new ArrayToken(codeBookTokens));
-        
         
         // Find the token in the alphabet;
         boolean validInput = false;
