@@ -99,7 +99,7 @@ public final class CrossRefList implements Serializable  {
                         link(p._far._nearList());
                     } catch (IllegalActionException ex) {
                         // This should not be thrown.
-                        throw new InternalErrorException(ex.toString());
+                        throw new InternalErrorException(null, ex, null);
                     }
                 }
             }

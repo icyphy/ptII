@@ -196,7 +196,7 @@ public abstract class AbstractActionsAttribute extends Action {
                 try {
                     evalVariable.setName(variableName);
                 } catch (NameDuplicationException ex) {
-                    throw new InternalErrorException(ex.toString());
+                    throw new InternalErrorException(this, ex, null);
                 }
             } else {
                 Attribute attr = transition.getAttribute(variableName);
@@ -209,7 +209,7 @@ public abstract class AbstractActionsAttribute extends Action {
                         }
                         evalVariable = new Variable(transition, variableName);
                     } catch (NameDuplicationException ex) {
-                        throw new InternalErrorException(ex.toString());
+                        throw new InternalErrorException(this, ex, null);
                     }
                 }
             }

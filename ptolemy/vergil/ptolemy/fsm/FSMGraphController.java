@@ -273,7 +273,7 @@ public class FSMGraphController extends FSMViewerController {
             new SingletonAttribute(state, "_centerName");
         } catch (KernelException ex) {
             // This should not happen.
-            throw new InternalErrorException(ex.toString());
+            throw new InternalErrorException(this, ex, null);
         }
     }
 

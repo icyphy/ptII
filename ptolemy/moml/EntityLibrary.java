@@ -162,7 +162,7 @@ public class EntityLibrary
             // evaluation.
             new Attribute(this, "_libraryMarker");
         } catch (KernelException ex) {
-            throw new InternalErrorException(ex.toString());
+            throw new InternalErrorException(null, ex, null);
         }
     }
 

@@ -521,7 +521,7 @@ public class NamedObj implements Nameable, Debuggable,
             return buffer.toString();
         } catch (IOException ex) {
             // This should not occur.
-            throw new InternalErrorException(ex.toString());
+            throw new InternalErrorException(this, ex, null);
         }
     }
 
@@ -541,7 +541,7 @@ public class NamedObj implements Nameable, Debuggable,
             return buffer.toString();
         } catch (IOException ex) {
             // This should not occur.
-            throw new InternalErrorException(ex.toString());
+            throw new InternalErrorException(this, ex, null);
         }
     }
 

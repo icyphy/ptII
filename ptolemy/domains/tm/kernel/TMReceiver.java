@@ -223,7 +223,7 @@ public class TMReceiver extends AbstractReceiver {
                     priorityValue, -1.0));
 
         } catch (IllegalActionException ex) {
-            throw new InternalErrorException(ex.toString());
+            throw new InternalErrorException(null, ex, null);
         }
     }
 
