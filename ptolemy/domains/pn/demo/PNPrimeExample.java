@@ -50,21 +50,14 @@ public class PNPrimeExample {
         myUniverse.setCycles(Integer.parseInt(args[0]));
         PNRamp ramp = new PNRamp(myUniverse, "ramp");
         ramp.setInitState(2);
-        myUniverse.getDirector().registerNewActor(ramp);
         PNSieve sieve = new PNSieve(myUniverse, "2_sieve");
         sieve.setInitState(2);
-        myUniverse.getDirector().registerNewActor(sieve);
-        //        IORelation queue = new IORelation(myUniverse, "2_queue");
         PNInPort portin = (PNInPort)sieve.getPort("input");
-        //portin.getQueue().setCapacity(1);
-        //port.link(queue);
         PNOutPort portout = (PNOutPort)ramp.getPort("output");
-        //port.link(queue);
         myUniverse.connect(portin, portout, "2_queue");
         portin.getQueue(portout).setCapacity(1);
 
         //System.out.println(myUniverse.description(pt.kernel.Nameable.LIST_PRETTYPRINT));
-        //FIXME: Should I use connect() rather than all the above stuff??
         myUniverse.execute();
         System.out.println("Bye World\n");
         return;

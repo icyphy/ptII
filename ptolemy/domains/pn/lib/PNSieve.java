@@ -40,17 +40,6 @@ import java.util.NoSuchElementException;
 @version $Id$
 */
 public class PNSieve extends PNActor {
-    /** Constructor
-     */	
-    public PNSieve() {
-	super();
-    }
-    
-    /** Constructor
-     */
-    public PNSieve(Workspace workspace) {
-        super(workspace);
-    }
     
     /** Constructor  Adds port   
      * @exception NameDuplicationException is thrown if more than one port 
@@ -88,9 +77,9 @@ public class PNSieve extends PNActor {
                     PNOutPort outport = (PNOutPort)outports.nextElement();
                     data = (IntToken)readFrom(_input, outport);
                     if (data.intValue()%_prime != 0) {
-                        /* is it the next prime? */
+                        // is it the next prime? 
                         if (_output == null) {
-                            /* yes - make the sieve for it */
+                            // yes - make the sieve for it 
                             PNSieve newSieve = new PNSieve((CompositeActor)
                                     getContainer(), data.intValue() + "_sieve");
                             newSieve.setInitState(data.intValue());
@@ -101,11 +90,8 @@ public class PNSieve extends PNActor {
                             PNPort inport = (PNPort)newSieve.getPort("input");
                             inport.link(relation);
                             inport.getQueue(_output).setCapacity(1);
-                            //Thread temp = new Thread(executive().getProcessGroup(), newSieve);
-                            //temp.start();
-                            getDirector().registerNewActor(newSieve);
+			    //THIS IS CURRENTLY VERY IMPORTANT
                             ((PNDirector)getDirector()).setMutate(true);
-                            //workspace().notifyAll();
                         } 
                         else {
                             writeTo(_output, data);
@@ -119,11 +105,9 @@ public class PNSieve extends PNActor {
         } catch (NameDuplicationException e) {
             System.err.println("Exception: " + e.toString());
             //This should never be thrown
-            //System.out.println("Name being duplicated");
         } catch (IllegalActionException e) {
             //This should never be thrown
             System.err.println("Exception: " + e.toString());
-            //System.out.println("IllegalActionException thrown");
         }
     }
     
