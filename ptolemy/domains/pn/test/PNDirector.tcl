@@ -50,18 +50,26 @@ if {[string compare test [info procs test]] == 1} then {
 #############################################
 
 test PNDirector-6.1 {Test an application} {
-    set b1 [java::new ptolemy.actor.CompositeActor]
-    $b1 setName b1
-    set m2 [java::new ptolemy.actor.Manager m2]
-    $b1 setManager $m2
-    set d5 [java::new ptolemy.domains.pn.kernel.PNDirector $b1 "D5"]
-    set r1 [java::new ptolemy.domains.pn.demo.Prime.PNRamp $b1 r1]
-    $r1 setParam "Initial Value"  2
-    set s1 [java::new ptolemy.domains.pn.kernel.test.TestSink $b1 s1]
-    $s1 clear
-    set p1 [$r1 getPort output]
-    set p2 [$s1 getPort input]
-    $b1 connect $p1 $p2
-    $m2 run
-    $s1 getData
-} {23456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100}
+
+    set e0 [java::new ptolemy.actor.TypedCompositeActor]
+    set manager [java::new ptolemy.actor.Manager]
+    set director [java::new ptolemy.domains.pn.kernel.PNDirector]
+    $e0 setDirector $director
+    $e0 setName top
+    $e0 setManager $manager
+
+    # FIXME: why doesn't the getParameter option work.
+    set ramp [java::new ptolemy.actor.lib.Ramp $e0 ramp]
+    set param [java::cast ptolemy.data.expr.Parameter \
+	    [$ramp getAttribute  firingCountLimit]]
+    $param setExpression 20
+
+    set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
+    $e0 connect \
+       [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
+       [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+
+} {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19}
