@@ -375,7 +375,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
     /** Return an empty DAG.
      *  @return An empty DAG.
      */
-    protected static Graph _emptyGraph() {
+    protected Graph _emptyGraph() {
         return new DirectedAcyclicGraph();
     }
 

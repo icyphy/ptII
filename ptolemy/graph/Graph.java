@@ -1072,7 +1072,7 @@ public class Graph {
      *  classes to return an empty graph of the appropriate type.
      *  @return An empty graph.
      */
-    protected static Graph _emptyGraph() {
+    protected Graph _emptyGraph() {
         return new Graph();
     }
 

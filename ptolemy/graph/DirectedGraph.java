@@ -730,7 +730,7 @@ public class DirectedGraph extends Graph {
     /** Return an empty directed graph.
      *  @return An empty directed graph.
      */
-    protected static Graph _emptyGraph() {
+    protected Graph _emptyGraph() {
         return new DirectedGraph();
     }
 
