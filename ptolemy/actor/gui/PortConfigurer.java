@@ -33,12 +33,7 @@ package ptolemy.actor.gui;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.ChangeRequest;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.*;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
 import ptolemy.moml.MoMLChangeRequest;
@@ -78,7 +73,7 @@ public class PortConfigurer extends Query implements QueryListener {
         setTextWidth(15);
 
         // The second column is for type designators.
-        setColumns(2);
+        setColumns(3);
 
         _object = object;
 
@@ -98,6 +93,22 @@ public class PortConfigurer extends Query implements QueryListener {
                 String typeEntryName = port.getName() + " type";
                 addLine(typeEntryName, typeEntryName,
                         port.getType().toString());
+
+                // Add a column that controls on which side
+                // of the icon the port lies.
+                StringAttribute cardinal
+                        = (StringAttribute)port.getAttribute("_cardinal");
+                String cardinalValue = "SOUTH";
+                if (cardinal != null) {
+                   cardinalValue = cardinal.getExpression().toUpperCase();
+                } else if (port.isInput() && !port.isOutput()) {
+                   cardinalValue = "WEST";
+                } else if (port.isOutput() && !port.isInput()) {
+                   cardinalValue = "EAST";
+                }
+                addChoice(port.getName() + " cardinal",
+                        port.getName() + ": cardinal direction",
+                        _cardinals, cardinalValue);
             }
         }
     }
@@ -117,63 +128,94 @@ public class PortConfigurer extends Query implements QueryListener {
             if (candidate instanceof TypedIOPort) {
                 TypedIOPort port = (TypedIOPort)candidate;
                 String name = port.getName();
-                // If port has not changed, skip it.
-                String typeEntryName = name + " type";
-                if (!_changed.contains(name)
-                        && !_changed.contains(typeEntryName)) continue;
 
-                String value = getStringValue(name);
+                // Check whether the positioning information has changed.
+                String nameCardinal = name + " cardinal";
+                if (_changed.contains(nameCardinal)) {
 
-                // First, parse the value, which may be a comma-separated list.
-                Set selectedValues = new HashSet();
-                StringTokenizer tokenizer = new StringTokenizer(value, ",");
-                while (tokenizer.hasMoreTokens()) {
-                    selectedValues.add(tokenizer.nextToken().trim());
-                }
+                    // The context for the MoML should be the first container
+                    // above this port in the hierarchy that defers its
+                    // MoML definition, or the immediate parent
+                    // if there is none.
+                    parent = MoMLChangeRequest.getDeferredToParent(port);
+                    if (parent == null) {
+                        parent = (NamedObj)port.getContainer();
+                    }
+                    foundOne = true;
+                    moml.append("<port name=\"");
+                    moml.append(port.getName(parent));
+                    moml.append("\">");
 
-                // The context for the MoML should be the first container
-                // above this port in the hierarchy that defers its
-                // MoML definition, or the immediate parent
-                // if there is none.
-                parent = MoMLChangeRequest.getDeferredToParent(port);
-                if (parent == null) {
-                    parent = (NamedObj)port.getContainer();
-                }
-                foundOne = true;
-                moml.append("<port name=\"");
-                moml.append(port.getName(parent));
-                moml.append("\">");
-
-                if (selectedValues.contains("input")) {
-                    moml.append("<property name=\"input\"/>");
-                } else {
+                    String cardinalVal = stringValue(nameCardinal);
                     moml.append(
-                            "<property name=\"input\" value=\"false\"/>");
-                }
-                if (selectedValues.contains("output")) {
-                    moml.append("<property name=\"output\"/>");
-                } else {
-                    moml.append(
-                            "<property name=\"output\" value=\"false\"/>");
-                }
-                if (selectedValues.contains("multiport")) {
-                    moml.append("<property name=\"multiport\"/>");
-                } else {
-                    moml.append(
-                            "<property name=\"multiport\" value=\"false\"/>");
-                }
-
-                if (_changed.contains(typeEntryName)) {
-                    // Type designation has changed.
-                    String type = getStringValue(typeEntryName);
-                    moml.append(
-                            "<property name=\"_type\" "
-                            + "class = \"ptolemy.actor.TypeAttribute\" "
+                            "<property name=\"_cardinal\" "
+                            + "class = \"ptolemy.kernel.util.StringAttribute\" "
                             + "value = \""
-                            + type
+                            + cardinalVal
                             + "\"/>");
+                    moml.append("</port>");
                 }
-                moml.append("</port>");
+
+                // If either the I/O designation or the type changed,
+                // then generate additional MoML.
+                String typeEntryName = name + " type";
+                if (_changed.contains(name)
+                        || _changed.contains(typeEntryName)) {
+                    // Change to the type or I/O status.  Create a MoML command.
+                    String value = getStringValue(name);
+
+                    // First, parse the value, which may be a
+                    // comma-separated list.
+                    Set selectedValues = new HashSet();
+                    StringTokenizer tokenizer = new StringTokenizer(value, ",");
+                    while (tokenizer.hasMoreTokens()) {
+                        selectedValues.add(tokenizer.nextToken().trim());
+                    }
+
+                    // The context for the MoML should be the first container
+                    // above this port in the hierarchy that defers its
+                    // MoML definition, or the immediate parent
+                    // if there is none.
+                    parent = MoMLChangeRequest.getDeferredToParent(port);
+                    if (parent == null) {
+                        parent = (NamedObj)port.getContainer();
+                    }
+                    foundOne = true;
+                    moml.append("<port name=\"");
+                    moml.append(port.getName(parent));
+                    moml.append("\">");
+
+                    if (selectedValues.contains("input")) {
+                        moml.append("<property name=\"input\"/>");
+                    } else {
+                        moml.append(
+                                "<property name=\"input\" value=\"false\"/>");
+                    }
+                    if (selectedValues.contains("output")) {
+                        moml.append("<property name=\"output\"/>");
+                    } else {
+                        moml.append(
+                                "<property name=\"output\" value=\"false\"/>");
+                    }
+                    if (selectedValues.contains("multiport")) {
+                        moml.append("<property name=\"multiport\"/>");
+                    } else {
+                        moml.append(
+                            "<property name=\"multiport\" value=\"false\"/>");
+                    }
+
+                    if (_changed.contains(typeEntryName)) {
+                        // Type designation has changed.
+                        String type = getStringValue(typeEntryName);
+                        moml.append(
+                                "<property name=\"_type\" "
+                                + "class = \"ptolemy.actor.TypeAttribute\" "
+                                + "value = \""
+                                + type
+                                + "\"/>");
+                    }
+                    moml.append("</port>");
+                }
             }
         }
 
@@ -206,6 +248,9 @@ public class PortConfigurer extends Query implements QueryListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    // Possible placements of ports.
+    private String[] _cardinals = {"NORTH", "SOUTH", "EAST", "WEST" };
 
     // The set of names of ports that have changed.
     private Set _changed = new HashSet();
