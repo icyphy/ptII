@@ -35,7 +35,7 @@ import ptolemy.kernel.util.InternalErrorException;
 
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -118,7 +118,7 @@ public class Schedule extends ScheduleElement {
     public Schedule() {
         super();
         // This list will contain the schedule elements.
-        _schedule = new LinkedList();
+        _schedule = new ArrayList(3);
         //_firingIteratorVersion = 0;
         // Default tree depth to use for allocation state arrays
         // for the firingIterator() method. The arrays will be
