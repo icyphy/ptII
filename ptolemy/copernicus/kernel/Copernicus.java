@@ -358,7 +358,7 @@ public class Copernicus {
      *  substitute in the value of the Parameter and return the results.
      *
      *  @param inputFileName  The name of the file to read from.
-     *  @param namedObj The NamedObj that conains Parameters to
+     *  @param namedObj The NamedObj that contains Parameters to
      *  be searched for in inputFileName.
      *  @return The contents of inputFileName after doing the substitutions
      */
