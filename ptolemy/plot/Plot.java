@@ -1,4 +1,4 @@
-* A signal plotter.
+/* A signal plotter.
 
 @Copyright (c) 1997-1999 The Regents of the University of California.
 All rights reserved.
