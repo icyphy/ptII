@@ -53,13 +53,13 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// Subscriber
 /**
-A subscriber that read TokenEnties from a Java Space. 
+A subscriber that read TokenEnties from a Java Space.
 The Java Space is identified by the <i>jspaceName</i> parameter.
-Upon preinitialization, this actor register a template of TokenEntries 
-with the name given by the <i>entryName<i> parameter. The Java Space 
+Upon preinitialization, this actor register a template of TokenEntries
+with the name given by the <i>entryName<i> parameter. The Java Space
 will notify the actor if there are new TokenEntries with that name.
 When get notified, this actor starts another thread which reads the
-TokenEntry. In the execution thread, when the actor's fire method 
+TokenEntry. In the execution thread, when the actor's fire method
 is called, the actor outputs the last token read from the Java Space.
 That is if there are more than one notified entries, the old entry
 will be overridden by the new one. If there are no notifications
@@ -126,7 +126,7 @@ public class Subscriber extends Source implements RemoteEventListener {
      *  The default value is 0.0 of type
      *  DoubleToken. Notice that the type of the output port
      *  is determined by the first token read from the Java Space.
-     *  The user should make sure that the type of this token 
+     *  The user should make sure that the type of this token
      *  is compatible with the type of the output port.
      */
     public Parameter defaultToken;
@@ -135,9 +135,9 @@ public class Subscriber extends Source implements RemoteEventListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the attribute is <i>blocking</i> update the local 
+    /** If the attribute is <i>blocking</i> update the local
      *  cache of the parameter value, otherwise pass the call to
-     *  the super class. 
+     *  the super class.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException Not thrown in this class.
      */
@@ -199,7 +199,7 @@ public class Subscriber extends Source implements RemoteEventListener {
         new Thread(nh).start();
     }
 
-    /** Output the latest received token from last time the fire() 
+    /** Output the latest received token from last time the fire()
      *  method is called.
      *  If there's no token available, then the behavior depends
      *  on the "blocking" parameter. If blocking is true, the
@@ -280,7 +280,7 @@ public class Subscriber extends Source implements RemoteEventListener {
     ////                         inner class                       ////
 
     /** The inner class that retrieve token entries from the Java Spaces.
-     *  This class is runnable, and when there is a notification 
+     *  This class is runnable, and when there is a notification
      *  from the Java Space, a thread will be created associated
      *  with this class. The run() method will then read the TokenEntry
      *  from the Java Space.

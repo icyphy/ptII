@@ -53,15 +53,15 @@ import net.jini.core.lease.Lease;
 /**
 An actor that publish TokenEntries to Java Spaces. The Java Space that the
 entries are published to is identified by the <i>jspaceName</i>
-parameter. TokenEntries in Java Spaces has a name, a serial number, 
+parameter. TokenEntries in Java Spaces has a name, a serial number,
 and a Ptolemy token. This actor has a single input port.
 When the actor is fired, it consumes at most one token from the input
 port and publish the token to the Java Space with the name specified by
 the <i>entryName</i> parameter. The serial number of the TokenEntry is
 always set to 0. If there is already an entry in the
 Java Spaces with the entry name, The new token will override the existing
-one. The entry exists in the Java Space as long as the lease time is 
-not expired. The lease time of an entry is specified by the 
+one. The entry exists in the Java Space as long as the lease time is
+not expired. The lease time of an entry is specified by the
 <i>leaseTime</i> parameter in terms of milliseconds.
 
 @see TokenEntry
@@ -120,9 +120,9 @@ public class Publisher extends Sink {
     ////                         public methods                    ////
 
     /** Find the JavaSpaces according to the <i>jspaceName</i> parameter.
-     *  If there are already enties in the Java Space with the 
+     *  If there are already enties in the Java Space with the
      *  specified entry name, then remove all the old entries.
-     *  @exception IllegalActionException If the removal 
+     *  @exception IllegalActionException If the removal
      *  action fails due to network problems, transaction errors,
      *  or any remote exceptions.
      */
@@ -200,7 +200,7 @@ public class Publisher extends Sink {
     }
 
     /** Read one input token, if there is one, from the input port,
-     *  publish an entry into the space for the token read, and 
+     *  publish an entry into the space for the token read, and
      *  return true.
      *  Simply return true if there's no token in the input port.
      *  @exception IllegalActionException If the publication
