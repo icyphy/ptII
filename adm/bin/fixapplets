@@ -66,10 +66,43 @@ do
                         # If q == 5, then we have a standard line like
                         # background = "bar" pxgraphargs = "bif"
 
-                        for (qnf = 1; qnf < q; qnf += 2) {
-                            # Reassemble the tag = value into qf
-                            qf = quotes[qnf] "\"" quotes[qnf + 1] "\" "
-                            #print "q: ", q, qf
+                        if (q == 1 || q == 2 ) {
+                            fewquotes = 1
+                        }
+                        for (qnf = 1; fewquotes == 1 || qnf < q; qnf += 2) {
+                           if (fewquotes == 1) {
+                                # Go through the for loop only once.
+                                fewquotes = 0
+                                if (q ==1) {
+                                    # There were no double quotes in the line
+                                    # we might have codebase=../../..
+                                    #qf = $0
+                                    # Add double quotes around the =
+			            neq=split($0, eq, "=")
+                                    t2 = eq[2]
+                                    if (index(eq[2], " ") == 1) {
+                                        # remove leading space
+                                        t2 = substr(eq[2], 2, length(eq[2]) -1)
+                                    }
+                                    qf = eq[1] "= \"" t2
+                                    # If the line has more than one =,
+                                    # collect them
+                                    for(i=3;i<=neq;i++) {
+                                        qf = qf "=" eq[i]
+                                    }
+                                    qf = qf "\""
+                                 } 
+                                if (q ==2) {
+                                    # We might have archive = "
+                                    qf = $0  
+                                    # Go through the loop only once
+                                    qnf = q
+                                }
+                            } else {
+                                # Reassemble the tag = value into qf
+                                qf = quotes[qnf] "\"" quotes[qnf + 1] "\" "
+                            }
+                            #print "q: ", q, "qnf: ", qnf,  "noquotes: ", noquotes, "-->", qf
 
 			    # Line like   background="#faf0e6"
 		            # We call split twice so that we get the
@@ -79,7 +112,7 @@ do
                             split(qf, words, " ")
 			    split(words[1], n, "=")
 			    nf=split(qf, f, "=")
-
+                            #print "qf: ", qf, "f[2]:", f[2]
                             # Deal with lines that have other = in them, like 
                             # plot/demo/Binary.htm
                             if (nf > 2) {
@@ -104,6 +137,7 @@ do
 				    }				
 				    sawAppletParam = 1
 		                    appletParams[appletParamName] = f[2]
+                                    #print "appletParam:",  appletParamName, f[2]
 				    lastAppletParam = appletParamName
 			        }
 			    }
@@ -138,7 +172,7 @@ do
 			    # archive="
 			    #    ptolemy/ptsupport.jar,
 			    #    ptolemy/domains/sdf/sdf.jar"
-			    appletParams["archive"] = appletParams["archive"] $1
+			    appletParams["archive"] = appletParams["archive"]$1
 			}
 		    }
 		}
