@@ -71,7 +71,7 @@ which takes the parameters and construct a Ptolemy model for you.</text>
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
-    <entity name="ContinuousFransferFunction1" class="ptolemy.domains.ct.lib.ContinuousTransferFunction">
+    <entity name="ContinuousTransferFunction1" class="ptolemy.domains.ct.lib.ContinuousTransferFunction">
         <property name="numerator" class="ptolemy.data.expr.Parameter" value="{500.0}">
         </property>
         <property name="denominator" class="ptolemy.data.expr.Parameter" value="{1.0, 10.0, 1000.0}">
@@ -283,8 +283,8 @@ which takes the parameters and construct a Ptolemy model for you.</text>
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="155.0, 290.0">
         </vertex>
     </relation>
-    <link port="ContinuousFransferFunction1.input" relation="relation6"/>
-    <link port="ContinuousFransferFunction1.output" relation="relation5"/>
+    <link port="ContinuousTransferFunction1.input" relation="relation6"/>
+    <link port="ContinuousTransferFunction1.output" relation="relation5"/>
     <link port="Clock2.output" relation="relation6"/>
     <link port="TimedPlotter4.input" relation="relation5"/>
     <link port="TimedPlotter4.input" relation="relation6"/>
