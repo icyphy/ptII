@@ -54,6 +54,13 @@ public class TotallyOrderedSet {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    /** Return the index-th element. If the index is out of range
+     *  a NoSuchElementException will be thrown.
+     */
+    public Object at(int index) {
+        return _set.at(index);
+    }
+
     /** Clear the set. Remove all the elements.
      */
     public void clear() {
@@ -122,14 +129,15 @@ public class TotallyOrderedSet {
             Object next = elements.nextElement();
             int com = _comparator.compare(obj, next);
             if(com == 0) {
-                break;
+                return;
             }
             if(com < 0) {
                 _set.insertAt(count, obj);
-                break;
+                return;
             }
             count ++;
         }
+        _set.insertLast(obj);
     }
 
     /** return true if the set is empty
