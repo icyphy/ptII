@@ -83,7 +83,8 @@ public class KeyInput3D extends GRActor {
     public void fire() throws IllegalActionException  {
         if (_hasData) {
             keycode.send(0, new IntToken((int)_keycode));
-            System.out.print(" "+(int)_keycode+",");
+            // FIXME: uncomment for debugging
+            //System.out.print(" "+(int)_keycode+",");
             _hasData = false;
         }
     }
