@@ -79,7 +79,8 @@ JSRCS =	Complex.java \
 	Quantization.java \
 	Quantizer.java \
 	Rounding.java \
-	SignalProcessing.java
+	SignalProcessing.java \
+	Utilities.java
 
 EXTRA_SRCS =	$(JSRCS)
 
