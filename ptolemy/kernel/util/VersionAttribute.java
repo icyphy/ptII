@@ -130,7 +130,7 @@ public class VersionAttribute
 	if (_tupleList == null) {
 	    tuples = null;
 	} else {
-	    tuples =_tupleList.iterator();
+	    tuples = _tupleList.iterator();
 	}
         while (versionTuples.hasNext()
 	       || (tuples != null && tuples.hasNext())){
