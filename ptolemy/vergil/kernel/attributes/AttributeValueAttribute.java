@@ -176,12 +176,14 @@ public class AttributeValueAttribute extends AbstractTextAttribute
      *  In this implementation, the specified value is ignored.
      *  @param expression The value of the attribute, which is ignored.
      *  @exception IllegalActionException If the expression is invalid.
+     *  @see #getExpression()
      */
     public void setExpression(String expression) throws IllegalActionException {
     }
 
     /** Set the visibility of this Settable.  This call does nothing.
      *  @param visibility The visibility of this Settable.
+     *  @see #getVisibility()
      */
     public void setVisibility(Settable.Visibility visibility) {
     }

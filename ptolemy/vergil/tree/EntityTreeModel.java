@@ -76,6 +76,7 @@ public class EntityTreeModel implements TreeModel {
 
     /** Add a listener to this model.
      *  @param listener The listener to add.
+     *  @see #removeTreeModelListener(TreeModelListener)
      */
     public void addTreeModelListener(TreeModelListener listener) {
         _listenerList.add(listener);
@@ -112,7 +113,10 @@ public class EntityTreeModel implements TreeModel {
     }
 
     /** Return the index of the given child within the given parent.
-     *  If the parent is not contained in the child, return -1.
+     *  If the parent is not contained in the child or is not an instance
+     *  of CompositeEntity return -1.
+     *  @param parent The parent, which is usually a CompositeEntity.
+     *  @param child The child.
      *  @return The index of the specified child.
      */
     public int getIndexOfChild(Object parent, Object child) {
@@ -125,7 +129,8 @@ public class EntityTreeModel implements TreeModel {
     }
 
     /** Get the root of this tree model.
-     *  @return An Entity.
+     *  @return A NamedObj, usually an Entity.
+     *  @see #setRoot(NamedObj)
      */
     public Object getRoot() {
         return _root;
@@ -133,7 +138,8 @@ public class EntityTreeModel implements TreeModel {
 
     /** Return true if the object is a leaf node.  In this base class,
      *  an object is a leaf node if it is not an instance of CompositeEntity.
-     *  @return True if the node has no children.
+     *  @param object The object in question.
+     *  @return True if the node has no children.  
      */
     public boolean isLeaf(Object object) {
         if (!(object instanceof CompositeEntity)) {
@@ -147,6 +153,8 @@ public class EntityTreeModel implements TreeModel {
     }
 
     /** Set the object that this treemodel looks at.
+     *  @param root The root NamedObj
+     *  @see #getRoot()
      */
     public void setRoot(NamedObj root) {
         if (_root != null) {
@@ -162,6 +170,7 @@ public class EntityTreeModel implements TreeModel {
 
     /** Remove the specified listener.
      *  @param listener The listener to remove.
+     *  @see #addTreeModelListener(TreeModelListener)
      */
     public void removeTreeModelListener(TreeModelListener listener) {
         _listenerList.remove(listener);
@@ -183,6 +192,7 @@ public class EntityTreeModel implements TreeModel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
+    /** A ChangeListener that updates the Tree. */ 
     public class TreeUpdateListener implements ChangeListener {
         /** Trigger an update of the tree.  If the change
          *  request indicates that it is localized, then only
@@ -242,14 +252,16 @@ public class EntityTreeModel implements TreeModel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    // The root of the tree.
+
+    /** The root of the tree. */
     protected NamedObj _root = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The list of listeners.
+
+    /** The list of listeners. */
     private List _listenerList = new LinkedList();
 
-    // The model listener.
+    /** The model listener. */
     private ChangeListener _rootListener = new TreeUpdateListener();
 }

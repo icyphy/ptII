@@ -51,7 +51,7 @@ import ptolemy.kernel.util.NamedObj;
 //// TreeTableau
 
 /**
-   This class provides a tree view for ptolemy models.
+   A tree view for ptolemy models.
 
    @author  Steve Neuendorffer and Edward A. Lee
    @version $Id$
@@ -59,7 +59,16 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.ProposedRating Red (neuendor)
    @Pt.AcceptedRating Red (johnr)
 */
+
 public class TreeTableau extends Tableau {
+    /** Construct a new tableau for the model represented by the given effigy.
+     *  @param container The container.
+     *  @param name The name.
+     *  @exception IllegalActionException If the container does not accept
+     *   this entity (this should not occur).
+     *  @exception NameDuplicationException If the name coincides with an
+     *   attribute already in the container.
+     */
     public TreeTableau(PtolemyEffigy container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
