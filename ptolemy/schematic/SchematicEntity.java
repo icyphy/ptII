@@ -49,9 +49,8 @@ public class SchematicEntity extends SchematicElement {
      */
     public SchematicEntity () {
         super("entity");
-        entitytype = new EntityType();
         ports = (HashedMap) new HashedMap();
-        addChildElement(entitytype);
+        setIcon(DEFAULTICONNAME);
     }
 
     /**
@@ -63,9 +62,8 @@ public class SchematicEntity extends SchematicElement {
      */
     public SchematicEntity (HashedMap attributes) {
         super("entity", attributes);
-        entitytype = new EntityType();
         ports = (HashedMap) new HashedMap();
-        addChildElement(entitytype);
+        if(!hasAttribute("icon")) setIcon(DEFAULTICONNAME);
     }
 
     /**
@@ -73,12 +71,12 @@ public class SchematicEntity extends SchematicElement {
      * specified entity type.
      *
      * @param attributes a HashedMap from a String specifying the name of
-     * an attribute to a String specifying the attribute's value.
+    * an attribute to a String specifying the attribute's value.
      */
     public SchematicEntity (HashedMap attributes, EntityType et) {
         super("entity", attributes);
-        setEntityType(et);
         ports = (HashedMap) new HashedMap();
+        if(!hasAttribute("icon")) setIcon(DEFAULTICONNAME);
     }
 
     /** 
@@ -106,13 +104,10 @@ public class SchematicEntity extends SchematicElement {
     }
 
     /**
-     * Get the object that describes this entity. This object
-     * can be used to instantiate an actor given certain
-     * other information (such as the domain) or to look up
-     * icons in an icon library.
+     * Get the string that specifies the icon for this entity.  
      */
-    public EntityType getEntityType () {
-        return entitytype;
+    public String getIcon () {
+        return getAttribute("icon");
     }
     
     /** 
@@ -158,15 +153,14 @@ public class SchematicEntity extends SchematicElement {
     }
 
     /**
-     * Set the object that describes this entity. This object
-     * can be used to instantiate an actor given certain
-     * other information (such as the domain) or to look up
-     * icons in an icon library.
+     * Set the Icon that describes this entity.   
+     *
+     * @param iconspec A string specifiying a unique icon within
+     * ptolemy.   This string is in the form 
+     * "hierarchical.library.name.iconname"
      */
-    public void setEntityType (EntityType et) {
-        removeChildElement(entitytype);
-        entitytype = et;
-        addChildElement(entitytype);
+    public void setIcon (String iconspec) {
+        setAttribute("icon",iconspec);
     }
 
     /**
@@ -184,15 +178,12 @@ public class SchematicEntity extends SchematicElement {
             // if a parameter, remove the old one and install the new one.
             parameters.putAt(
                     ((SchematicParameter) e).getName(), e);
-        } else if(e instanceof EntityType) {
-            // if an entitytype, remove the old one and install the new one.
-            removeChildElement(entitytype);
-            entitytype = (EntityType) e;
         }
     }
 
-    EntityType entitytype;
-    HashedMap ports;
+    public static final String DEFAULTICONNAME = "default";
+
+    protected HashedMap ports;
 }
 
 
