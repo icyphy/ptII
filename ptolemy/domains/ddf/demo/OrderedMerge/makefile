@@ -2,7 +2,7 @@
 #
 # @Authors: Christopher Brooks (makefile only)
 #
-# @Version: $Id$
+# @Version: makefile,v 1.3 2004/08/04 23:06:55 zgang Exp
 #
 # @Copyright (c) 2004 The Regents of the University of California.
 # All rights reserved.
