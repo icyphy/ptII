@@ -168,8 +168,10 @@ public class Type extends SDFApplet implements ChangeListener {
             // _jgraph.setBorder(new TitledBorder(new LineBorder(Color.black),
             //        "Type Lattice"));
             _jgraph.setBorder(new LineBorder(Color.black));
-            visPanel.add(_jgraph, BorderLayout.WEST);
+            visPanel.add(_jgraph, BorderLayout.WEST);            
+            _jgraph.setMinimumSize(new Dimension(400, 290));
             _jgraph.setPreferredSize(new Dimension(400, 290));
+            _jgraph.setMaximumSize(new Dimension(400, 290));
 
             // Place items in the top-level.
             getContentPane().add(_ioPanel, BorderLayout.NORTH);
@@ -192,9 +194,6 @@ public class Type extends SDFApplet implements ChangeListener {
             _printPanel.setBorder(new LineBorder(Color.black));
             _ioPanel.add(_plotDisplay);
 
-            // Construct the Ptolemy type lattice model
-            final Graph graph = _constructLattice();
-
             // Construct a new trace model
             TraceModel traceModel = new TraceModel();
 
@@ -210,9 +209,6 @@ public class Type extends SDFApplet implements ChangeListener {
 
 	    _addListeners();
 
-            // Display the type lattice
-            _displayGraph(_jgraph, graph);
-
         } catch (Exception ex) {
             report("Setup failed:", ex);
 	}
@@ -223,6 +219,10 @@ public class Type extends SDFApplet implements ChangeListener {
      *  displayed in the Diva animation.
      */
     public void start() {
+        // Construct the Ptolemy type lattice model
+        final Graph graph = _constructLattice();
+        // Display the type lattice
+        _displayGraph(_jgraph, graph);
     }
 
     ///////////////////////////////////////////////////////////////////
