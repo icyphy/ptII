@@ -202,12 +202,16 @@ public class PtolemyQuery extends Query
                             directory = modelFile.getParentFile();
                         }
                     }
+                    URI base = null;
+                    if (directory != null) {
+                        base = directory.toURI();
+                    }
                     // FIXME: Should remember previous browse location?
                     // Last argument is the starting directory.
                     addFileChooser(name,
                             name,
                             attribute.getExpression(),
-                            directory.toURI(),
+                            base,
                             directory);                      
                     attachParameter(attribute, name);
                     foundStyle = true;
