@@ -131,8 +131,9 @@ public class NonStrictFSMDirector extends FSMDirector {
         controller._readInputs();
         CompositeActor container = (CompositeActor) getContainer();
         List inputPortList = container.inputPortList();
-
         State currentState = controller.currentState();
+
+        // Choose a nonpreemptive transition.
         List enabledTransitions = controller._checkTransition(currentState
                 .preemptiveTransitionList());
         Transition enabledTransition = null;
@@ -144,7 +145,7 @@ public class NonStrictFSMDirector extends FSMDirector {
             // Since the size of the list of enabled transitions usually (almost 
             // always) is less than the maximum value of integer. We can safely 
             // do the cast from long to int in the following statement.
-            int randomChoice = (int)Math.round(Math.random()*length);
+            int randomChoice = (int)Math.floor(Math.random()*length);
             // There is tiny chance that randomChoice equals length. 
             // When this happens, we deduct 1 from the randomChoice. 
             if (randomChoice == length) {
@@ -197,8 +198,7 @@ public class NonStrictFSMDirector extends FSMDirector {
                     _referredInputPorts.add(port);
                 }
             }
-            
-            // Choose nonpreemptive transition.
+            // Choose a nonpreemptive transition.
             enabledTransitions = controller._checkTransition(currentState
                     .nonpreemptiveTransitionList());
 
@@ -209,7 +209,7 @@ public class NonStrictFSMDirector extends FSMDirector {
                 // Since the size of the list of enabled transitions usually (almost 
                 // always) is less than the maximum value of integer. We can safely 
                 // do the cast from long to int in the following statement.
-                int randomChoice = (int)Math.round(Math.random()*length);
+                int randomChoice = (int)Math.floor(Math.random()*length);
                 // There is tiny chance that randomChoice equals length. 
                 // When this happens, we deduct 1 from the randomChoice. 
                 if (randomChoice == length) {

@@ -929,7 +929,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         return enabledTransitions;
     }
 
-    /** Return the enabled transition among the given list of transitions.
+    /** Return an enabled transition among the given list of transitions.
+     *  If there are multiple enabled transitions, randomly choose one.  
      *  Execute the choice actions contained by the transition.
      *  Throw an exception if there is more than one transition enabled and 
      *  not all of them are nondeterministic.
@@ -951,7 +952,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             // Since the size of the list of enabled transitions usually (almost 
             // always) is less than the maximum value of integer. We can safely 
             // do the cast from long to int in the following statement.
-            int randomChoice = (int)Math.round(Math.random()*length);
+            int randomChoice = (int)Math.floor(Math.random()*length);
             // There is tiny chance that randomChoice equals length. 
             // When this happens, we deduct 1 from the randomChoice. 
             if (randomChoice == length) {
