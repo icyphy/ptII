@@ -379,11 +379,11 @@ public class Manager extends NamedObj implements Runnable {
             // Initialize the topology
             _container.preinitialize();
 
-            // FIXME: This may not be needed.  It used to be done
+            // NOTE: This is no longer needed.  It used to be done
             // by CompositeActor and AtomicActor.  Also, it is not
             // too clear whether this should be done before or
             // after preinitialize().  EAL 5/22/02.
-            _container.validateSettables();
+            // _container.validateSettables();
 
             resolveTypes();
             _typesResolved = true;
@@ -440,13 +440,13 @@ public class Manager extends NamedObj implements Runnable {
                 while (actors.hasNext()) {
                     Actor actor = (Actor)actors.next();
                     actor.preinitialize();
-                    // FIXME: This may not be needed.  It used to be done
+                    // NOTE: This is no longer needed.  It used to be done
                     // by CompositeActor and AtomicActor.  Also, it is not
                     // too clear whether this should be done before or
                     // after preinitialize().  EAL 5/22/02.
-                    if (actor instanceof NamedObj) {
-                        ((NamedObj)actor).validateSettables();
-                    }
+                    // if (actor instanceof NamedObj) {
+                    //    ((NamedObj)actor).validateSettables();
+                    // }
                 }
             }
             if (!_typesResolved) {
@@ -794,7 +794,7 @@ public class Manager extends NamedObj implements Runnable {
         // nondeterministically, and can leave any objects that the thread
         // operating on in an inconsistent state.
         if (_thread != null) {
-            // FIXME:  stop() in java.lang.Thread has been deprecated
+            // NOTE:  stop() in java.lang.Thread has been deprecated
             _thread.stop();
             try {
                 _thread.join();
