@@ -58,9 +58,9 @@ A variable can be given a token or an expression as its value. To create
 a variable with a token, either call the appropriate constructor, or create
 the variable with the appropriate container and name, and then call
 setToken(). To set the value from an expression, call setExpression().
-The expression is not actually evaluated until you call getToken() or
-getType(). If the expression string is null or empty, or if no value
-has been specified, then getToken() will return null.
+The expression is not actually evaluated until you call getToken(),
+propagate() or getType(). If the expression string is null or empty,
+or if no value has been specified, then getToken() will return null.
 <p>
 Consider for example the sequence:
 <pre>
@@ -75,7 +75,13 @@ Consider for example the sequence:
 Notice that the expression for <code>v3</code> cannot be evaluated
 when it is set because <code>v2</code> and <code>v1</code> do not
 yet have values.  But there is no problem because the expression
-is not evaluated until getToken() is called.
+is not evaluated until getToken() is called.  Equivalently, we
+could have called, for example,
+<pre>
+   v1.propagate();
+</pre>
+This will force v1 to be evaluated, as well as all variables that
+depend on v1.
 <p>
 The expression can only reference variables that are
 added to the scope of this variable using addToScope()
@@ -465,7 +471,7 @@ public class Variable extends Attribute implements Typeable, Settable {
      *   and there are variables that depend on this one.
      */
     public ptolemy.data.Token getToken() throws IllegalActionException {
-        _evaluate();
+        if (_needsEvaluation) _evaluate();
         return _token;
     }
 
@@ -482,7 +488,7 @@ public class Variable extends Attribute implements Typeable, Settable {
      */
     public Type getType() {
         try {
-            _evaluate();
+            if (_needsEvaluation) _evaluate();
             return _varType;
 	} catch (IllegalActionException iae) {
 	    return _declaredType;
@@ -505,6 +511,32 @@ public class Variable extends Attribute implements Typeable, Settable {
      */
     public Visibility getVisibility() {
         return _visibility;
+    }
+
+    /** Force evaluation of this variable and its value dependents
+     *  of this variable.
+     *  This method bypasses the lazy evaluation feature of this class
+     *  by forcing eager evaluation.
+     *  @exception IllegalActionException If the expression cannot
+     *   be parsed or cannot be evaluated, or the expressions of
+     *   one of the dependent variables cannot be parsed or evaluated.
+     */
+    public void propagate() throws IllegalActionException {
+        // Force evaluation.
+        if (_needsEvaluation) _evaluate();
+        // All the value dependents now need evaluation also.
+        if (_valueDependents != null) {
+            Iterator variables = _valueDependents.iterator();
+            while (variables.hasNext()) {
+                Variable var = (Variable)variables.next();
+                // Avoid doing this more than once if the the value
+                // dependent appears more than once.  This also has
+                // the advantage of stopping circular reference looping.
+                if (var._needsEvaluation) {
+                    var.propagate();
+                }
+            }
+        }
     }
 
     /** Remove the items in the enumeration from the scope of this variable.
@@ -967,67 +999,6 @@ public class Variable extends Attribute implements Typeable, Settable {
         }
     }
 
-    /** Evaluate the current expression to a token. If this variable
-     *  was last set directly with a token, then do nothing. In other words,
-     *  the expression is evaluated only if the value of the token was most
-     *  recently given by an expression.  The expression is also evaluated
-     *  if any of the variables it refers to have changed since the last
-     *  evaluation.  If the value of this variable
-     *  changes due to this evaluation, then notify all
-     *  value dependents and notify the container (if there is one) by
-     *  calling its attributeChanged() and attributeTypeChanged() methods,
-     *  as appropriate. An exception is thrown
-     *  if the expression is illegal, for example if a parse error occurs
-     *  or if there is a dependency loop.
-     *  <p>
-     *  If evaluation results in a token that is not of the same type
-     *  as the current type of the variable, then the type of the variable
-     *  is changed, unless the new type is incompatible with statically
-     *  specified types (setTypeEquals() and setTypeAtMost()).
-     *  If the type is changed, the attributeTypeChanged() method of
-     *  the container is called.  The container can reject the change
-     *  by throwing an exception.
-     *  <p>
-     *  Part of this method is read-synchronized on the workspace.
-     *
-     *  @exception IllegalActionException If the expression cannot
-     *   be parsed or cannot be evaluated.
-     */
-    protected void _evaluate() throws IllegalActionException {
-        if (!_needsEvaluation) return;
-        // NOTE: This should probably be a bit smarter and detect any
-        // whitespace-only expression.
-        if (_currentExpression == null || _currentExpression.equals("")) {
-            _setToken(null);
-            return;
-        }
-        // If _dependencyLoop is true, then this call to evaluate() must
-        // have been triggered by evaluating the expression of this variable,
-        // which means that the expression directly or indirectly refers
-        // to itself.
-	if (_dependencyLoop) {
-            _dependencyLoop = false;
-            throw new IllegalActionException("Found dependency loop "
-                    + "when evaluating " + getFullName()
-                    + ": " + _currentExpression);
-        }
-        _dependencyLoop = true;
-
-        try {
-            workspace().getReadAccess();
-            _buildParseTree();
-            Token result = _parseTree.evaluateParseTree();
-            _dependencyLoop = false;
-            _setTokenAndNotify(result);
-        } catch (IllegalActionException ex) {
-            _needsEvaluation = true;
-            throw ex;
-        } finally {
-	    _dependencyLoop = false;
-	    workspace().doneReading();
-	}
-    }
-
     /** Return true if the argument is legal to be added to the scope
      *  of this variable. In this base class, this method only checks
      *  that the argument is in the same workspace as this variable.
@@ -1137,6 +1108,66 @@ public class Variable extends Attribute implements Typeable, Settable {
             _needsEvaluation = true;
         }
         _notifyValueDependents();
+    }
+
+    /** Evaluate the current expression to a token. If this variable
+     *  was last set directly with a token, then do nothing. In other words,
+     *  the expression is evaluated only if the value of the token was most
+     *  recently given by an expression.  The expression is also evaluated
+     *  if any of the variables it refers to have changed since the last
+     *  evaluation.  If the value of this variable
+     *  changes due to this evaluation, then notify all
+     *  value dependents and notify the container (if there is one) by
+     *  calling its attributeChanged() and attributeTypeChanged() methods,
+     *  as appropriate. An exception is thrown
+     *  if the expression is illegal, for example if a parse error occurs
+     *  or if there is a dependency loop.
+     *  <p>
+     *  If evaluation results in a token that is not of the same type
+     *  as the current type of the variable, then the type of the variable
+     *  is changed, unless the new type is incompatible with statically
+     *  specified types (setTypeEquals() and setTypeAtMost()).
+     *  If the type is changed, the attributeTypeChanged() method of
+     *  the container is called.  The container can reject the change
+     *  by throwing an exception.
+     *  <p>
+     *  Part of this method is read-synchronized on the workspace.
+     *
+     *  @exception IllegalActionException If the expression cannot
+     *   be parsed or cannot be evaluated.
+     */
+    private void _evaluate() throws IllegalActionException {
+        // NOTE: This should probably be a bit smarter and detect any
+        // whitespace-only expression.
+        if (_currentExpression == null || _currentExpression.equals("")) {
+            _setToken(null);
+            return;
+        }
+        // If _dependencyLoop is true, then this call to evaluate() must
+        // have been triggered by evaluating the expression of this variable,
+        // which means that the expression directly or indirectly refers
+        // to itself.
+	if (_dependencyLoop) {
+            _dependencyLoop = false;
+            throw new IllegalActionException("Found dependency loop "
+                    + "when evaluating " + getFullName()
+                    + ": " + _currentExpression);
+        }
+        _dependencyLoop = true;
+
+        try {
+            workspace().getReadAccess();
+            _buildParseTree();
+            Token result = _parseTree.evaluateParseTree();
+            _dependencyLoop = false;
+            _setTokenAndNotify(result);
+        } catch (IllegalActionException ex) {
+            _needsEvaluation = true;
+            throw ex;
+        } finally {
+	    _dependencyLoop = false;
+	    workspace().doneReading();
+	}
     }
 
     /*  Set the token value and type of the variable.

@@ -192,6 +192,5 @@ public class RaisedCosine extends FIR {
         tps[0] = SignalProcessing.sampleWave(len, -center, 1.0, rcSg);
 
         taps.setToken(new DoubleMatrixToken(tps));
-        super.preinitialize();
     }
 }
