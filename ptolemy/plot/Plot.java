@@ -1548,8 +1548,8 @@ public class Plot extends PlotBox {
                             Double yHighEB = new Double(yh);
                             connected = _addLegendIfNecessary(connected);
                             addPointWithErrorBars(_currentdataset,
-                                    xptolemy.doubleValue(),
-                                    yptolemy.doubleValue(),
+                                    xpt.doubleValue(),
+                                    ypt.doubleValue(),
                                     yLowEB.doubleValue(),
                                     yHighEB.doubleValue(),
                                     connected);
@@ -1559,16 +1559,16 @@ public class Plot extends PlotBox {
                             // but not fieldsplit3 >0, but just in case:
 
                             connected = _addLegendIfNecessary(connected);
-                            addPoint(_currentdataset, xptolemy.doubleValue(),
-                                    yptolemy.doubleValue(), connected);
+                            addPoint(_currentdataset, xpt.doubleValue(),
+                                    ypt.doubleValue(), connected);
                             return true;
                         }
                     } else {
                         // There were no more fields, so this is
                         // a regular ptolemy.
                         connected = _addLegendIfNecessary(connected);
-                        addPoint(_currentdataset, xptolemy.doubleValue(),
-                                yptolemy.doubleValue(), connected);
+                        addPoint(_currentdataset, xpt.doubleValue(),
+                                ypt.doubleValue(), connected);
                         return true;
                     }
                 } catch (NumberFormatException e) {
@@ -1654,18 +1654,18 @@ public class Plot extends PlotBox {
 
         // FIXME: Ignoring sweeps for now.
         PlotPoint pt = new PlotPoint();
-        ptolemy.x = x;
-        ptolemy.y = y;
-        ptolemy.connected = connected;
+        pt.x = x;
+        pt.y = y;
+        pt.connected = connected;
 
         if (errorBar) {
             if (yLowEB < _yBottom) _yBottom = yLowEB;
             if (yLowEB > _yTop) _yTop = yLowEB;
             if (yHighEB < _yBottom) _yBottom = yHighEB;
             if (yHighEB > _yTop) _yTop = yHighEB;
-            ptolemy.yLowEB = yLowEB;
-            ptolemy.yHighEB = yHighEB;
-            ptolemy.errorBar = true;
+            pt.yLowEB = yLowEB;
+            pt.yHighEB = yHighEB;
+            pt.errorBar = true;
         }
 
         Vector pts = _points[dataset];
@@ -1711,11 +1711,11 @@ public class Plot extends PlotBox {
         PlotPoint pt = (PlotPoint)pts.elementAt(index);
         // Use long here because these numbers can be quite large
         // (when we are zoomed out a lot).
-        long ypos = _lry - (long)((ptolemy.y - _yMin) * _yscale);
-        long xpos = _ulx + (long)((ptolemy.x - _xMin) * _xscale);
+        long ypos = _lry - (long)((pt.y - _yMin) * _yscale);
+        long xpos = _ulx + (long)((pt.x - _xMin) * _xscale);
 
         // Draw the line to the previous point.
-        if (ptolemy.connected) _drawLine(graphics, dataset, xpos, ypos,
+        if (pt.connected) _drawLine(graphics, dataset, xpos, ypos,
                 _prevx[dataset], _prevy[dataset], true);
 
         // Save the current point as the "previous" point for future
@@ -1727,10 +1727,10 @@ public class Plot extends PlotBox {
         if (_marks != 0) _drawPoint(graphics, dataset, xpos, ypos, true);
         if (_impulses) _drawImpulse(graphics, xpos, ypos, true);
         if (_bars) _drawBar(graphics, dataset, xpos, ypos, true);
-        if (ptolemy.errorBar)
+        if (pt.errorBar)
             _drawErrorBar(graphics, dataset, xpos,
-                    _lry - (long)((ptolemy.yLowEB - _yMin) * _yscale),
-                    _lry - (long)((ptolemy.yHighEB - _yMin) * _yscale), true);
+                    _lry - (long)((pt.yLowEB - _yMin) * _yscale),
+                    _lry - (long)((pt.yHighEB - _yMin) * _yscale), true);
 
         // Restore the color, in case the box gets redrawn.
         graphics.setColor(_foreground);
@@ -1763,8 +1763,8 @@ public class Plot extends PlotBox {
 
         Vector pts = _points[dataset];
         PlotPoint pt = (PlotPoint)pts.elementAt(index);
-        long ypos = _lry - (long) ((ptolemy.y - _yMin) * _yscale);
-        long xpos = _ulx + (long) ((ptolemy.x - _xMin) * _xscale);
+        long ypos = _lry - (long) ((pt.y - _yMin) * _yscale);
+        long xpos = _ulx + (long) ((pt.x - _xMin) * _xscale);
 
         // Erase line to the next point, if appropriate.
         if (index < pts.size() - 1) {
@@ -1781,10 +1781,10 @@ public class Plot extends PlotBox {
         if (_marks != 0) _drawPoint(graphics, dataset, xpos, ypos, true);
         if (_impulses) _drawImpulse(graphics, xpos, ypos, true);
         if (_bars) _drawBar(graphics, dataset, xpos, ypos, true);
-        if (ptolemy.errorBar)
+        if (pt.errorBar)
             _drawErrorBar(graphics, dataset, xpos,
-                    _lry - (long)((ptolemy.yLowEB - _yMin) * _yscale),
-                    _lry - (long)((ptolemy.yHighEB - _yMin) * _yscale), true);
+                    _lry - (long)((pt.yLowEB - _yMin) * _yscale),
+                    _lry - (long)((pt.yHighEB - _yMin) * _yscale), true);
 
         // Restore the color, in case the box gets redrawn.
         graphics.setColor(_foreground);
