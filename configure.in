@@ -1,7 +1,10 @@
 dnl	This file is an input file used by the GNU "autoconf" program to
 dnl	generate the file "configure", which is run to configure the
 dnl	Makefile in this directory.
-AC_INIT(ptolemy/kernel/util/NamedObj.java)
+
+dnl Don't look for ptolemy/kernel/util/NamedObj.java here, or
+dnl else we won't be able to rebuild after make extraclean.
+AC_INIT(mk/ptII.mk.in)
 
 # Version: $Id$
 # Copyright (c) 1997- The Regents of the University of California.
