@@ -93,7 +93,6 @@ public class PtolemyQuery extends Query
 	this.addQueryListener(this);
 	_parameters = new HashMap();
 
-	_ignoreValueChanged = 0;
 	_ignoreChanged = 0;
 
 	_varToListOfEntries = new HashMap();
@@ -119,7 +118,6 @@ public class PtolemyQuery extends Query
 	this.addQueryListener(this);
 	_parameters = new HashMap();
 	this._director = director;
-	_ignoreValueChanged = 0;
 	_ignoreChanged = 0;
 
 	_varToListOfEntries = new HashMap();
@@ -197,7 +195,11 @@ public class PtolemyQuery extends Query
      *  variable has a director, then queue a change request with
      *  the director. If the variable does not have a director,
      *  then set the variable imediately, without queuing
-     *  a change request.
+     *  a change request. It is assumed that the variable only
+     *  has a director if its container is an Actor, although
+     *  the director may be several levels up. If a director
+     *  cannot be obtained from the variable, then this method
+     *  sets the variable directly.
      *  @param name The name of the entry that has changed.
      */
     // FIXME: This only works with a Parameter, not a Variable.
@@ -205,41 +207,29 @@ public class PtolemyQuery extends Query
     // FIXME: It is stupid to assume the every variable that has
     // a director will be contained by an actor.
     public void changed(String name) {
+	//System.out.println("PtolemyQuery: changed(): invoked");
+	
+	//System.out.println("PtolemyQuery: changed(): name=" + name + ".");
+	//System.out.println("PtolemyQuery: changed(): stringValue(name) " +
+	//	   stringValue(name));
 	// Check if the entry that changed is in the mapping.
 	if (_parameters.containsKey(name)) {
-	    
+	    //System.out.println("PtolemyQuery: changed(): containsKey");
 	    Variable var = (Variable)(_parameters.get(name));
+	    //System.out.println("PtolemyQuery: changed(): getFullName of var" +
+	    //	   var.getFullName() + ".");
 	    // Check if we should ignore 
             if (((Boolean)_ignoreEntryChange.get(name)).booleanValue() == false) {
 		// Don't ignore.
-
-		//System.out.println("PtolemyQuery: changed(): getFullName of var" +
-		//	   var.getFullName() + ".");
-		//System.out.println("PtolemyQuery: changed(): name=" + name + ".");
-		//System.out.println("PtolemyQuery: changed(): stringValue(name) " +
-		//	   stringValue(name));
+		//System.out.println("PtolemyQuery: changed(): don't ignore");
+		
 		
 		// Ignore the return call to valueChanged() when the variable
 		// is updated.
 		// Increment the number of times requestChange() is called.
 		// Since the mapping is functional, only increment once.
-		_ignoreValueChanged = _ignoreValueChanged + 1;
 		
-		if (_constructorDirector == false) {
-		    // Director not specified in constructor,
-		    // so get it from the variable.
-		    // Get the director from the variable.
-		    _director = ((Actor)var.getContainer()).getDirector();
-		}
-
-		if (_director == null) {
-		    // FIXME: Modify interface defn so that can throw
-		    // exception here?
-		    //System.out.println("Could not get" +
-		    //  " director from variable: " + var.getFullName());
-		    var.setExpression(stringValue(name));
-		} else {
-
+		if (_constructorDirector == true) {
 		    // Queue a change request with the director.
 		    // FIXME: 1st param to SetParameter does what?
 		    // Set the variable.
@@ -249,7 +239,45 @@ public class PtolemyQuery extends Query
 		    // Write a SetVariable class to fix this. This should be
 		    // fairly trivial to do.
 		    _director.requestChange(new SetParameter((Parameter)var, (Parameter)var, stringValue(name)));
-		}
+		} else {
+		    // Director not specified in constructor,
+		    // so get it from the variable.
+		    // Get the director from the variable.
+		    
+
+		    Nameable container = var.getContainer();
+		    while (container != null) {
+			//System.out.println("PtolemyQuery: changed: while." + var.getFullName());
+			// Reason for casting to Actor: Actor has getDirector(),
+			// NamedObj dos not.
+			Director director;
+			if (container instanceof Actor) {
+			    //System.out.println("PtolemyQuery: changed: intance of Actor");
+			   director = ((Actor)container).getDirector();
+			} else {
+			    director = null;
+			}
+
+			if (director != null) {
+			    //System.out.println("PtolemyQuery: changed: queueing mutation");
+			    director.requestChange(new SetParameter((Parameter)var, (Parameter)var, stringValue(name)));
+			    break;
+			} else {
+			    container = container.getContainer();
+			}
+		    }
+		    
+		    // container == null iff attempt to find a director was 
+		    // unsuccessfull.
+		    // So just set the variable here, since there is no
+		    // director to queue a mutation request with.
+		    if (container == null) {
+			//System.out.println("PtolemyQuery: changed: conainer null, setting variable without queueing");
+			var.setExpression(stringValue(name));
+		    }
+		} 
+
+		
 		
 	    } else {
 		// Don't ignore next time this method is called.
@@ -266,7 +294,7 @@ public class PtolemyQuery extends Query
      *  @param variable The variable that has changed.
      */
     public void valueChanged(Variable variable) {
-
+	//System.out.println("PtolemyQuery: valueChanged: invoked");
 	    // Check that variable is attached to at least one entry.
 	    if (_parameters.containsValue(variable)) {
 		
@@ -332,8 +360,7 @@ public class PtolemyQuery extends Query
     // ignoreVarChangePart2
     private Map _ignoreVarChangePart1;
     
-    // Number of calls to valueChanged() to ignore.
-    private int _ignoreValueChanged;
+
     // Number of calls to calls changed() to ignore.
     private int _ignoreChanged;
     private Director _director;
