@@ -1,6 +1,6 @@
 /* Thread that manages the execution of active actors in the CI domain.
 
- Copyright (c) 2002-2003 The Regents of the University of California.
+ Copyright (c) 2002 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -33,7 +33,6 @@ package ptolemy.domains.ci.kernel;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
-import ptolemy.actor.Receiver;
 import ptolemy.actor.IOPort;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.*;
@@ -45,181 +44,92 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// ActiveActorManager
 /**
-Construct a thread to iterate the active actor through the execution cycle
-until a stop has been requested. It increases the count of active
-actors in the director. At the end of the termination,
-calls wrapup on the actor.
+An active actor manager iterates the active actor through the execution
+cycle until stop is requested. If the active actor pulls data from its
+input ports and its prefire() returns false, the actor manager will notify
+the CI director to process the pull request by the actor.
 
 @author Xiaojun Liu, Yang Zhao
 @version $Id$
+@since Ptolemy II 2.1
 */
 public class ActiveActorManager extends PtolemyThread {
 
     /** Construct a thread to be used for the execution of the
      *  iteration methods of the actor. This increases the count of active
      *  actors in the director.
-     *  @param actor The actor that needs to be executed.
+     *  @param actor The actor that is managed.
      *  @param director The director responsible for the execution of this
-     *  actor.
+     *   actor.
      */
     public ActiveActorManager(Actor actor, CIDirector director) {
         super();
         _actor = actor;
         _director = director;
-        _manager = ((CompositeActor)
-                ((NamedObj)actor).getContainer()).getManager();
-        _name = ((Nameable)_actor).getName();
-        _setFlags();
-        director._activeCount++;
+        CompositeActor container =
+                (CompositeActor)((NamedObj)actor).getContainer();
+        _manager = container.getManager();
+        _init();
+        director._addActorManager(this);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Request that execution of the actor controlled by this
-     *  thread continue.
-     */
-    public void cancelStopThread() {
-        _threadStopRequested = false;
-    }
-
-    /** Return the actor being executed by this thread
-     *  @return The actor being executed by this thread.
-     */
-    public Actor getActor() {
-        return _actor;
-    }
 
     /** Iterate the actor through the execution cycle
      *  until a stop has been requested. At the end of the termination,
      *  calls wrapup on the actor.
      */
     public void run() {
-
-        System.out.println("Manager of " + ((NamedObj)_actor).getName()
-                + " running...");
-
         boolean iterate = true;
-        System.out.println("Manager of " + ((NamedObj)_actor).getName()
-                + " point 1");
         try {
-            System.out.println("Manager of " + ((NamedObj)_actor).getName()
-                    + " point 2");
-            System.out.println("  my state " + iterate + " "
-                    + _director._stopRequested);
             while (iterate && !_director._stopRequested) {
-                System.out.println("Manager of " + ((NamedObj)_actor).getName()
-                        + " point 3");
-                /*// If a stop has been requested, then
-                if(_threadStopRequested) {
-                    // Tell the director we're stopped
-                    _director._actorHasStopped();
-                    // And wait until the flag has been cleared.
-                    synchronized(_director) {
-                        while(_threadStopRequested) {
-                            workspace.wait(_director);
-                        }
-                    }
-                }*/
-
-                System.out.println("Manager of "
-                        + ((NamedObj)_actor).getName() + " iterating...");
-
                 // container is checked for null to detect the
-                // deletion of the actor from the topology.
+                // deletion of the actor from the topology
                 if (((Entity)_actor).getContainer() != null) {
                     if (_actor.prefire()) {
-
-                        System.out.println("Manager firing actor "
-                                + ((NamedObj)_actor).getName());
-
                         _actor.fire();
                         iterate = _actor.postfire();
                         if (_period > 0) {
                             try {
                                 sleep(_period);
-                            } catch (InterruptedException ex) {}
+                            } catch (InterruptedException ex) {
+                                //FIXME: better way to handle?
+                                ex.printStackTrace();
+                            }
                         }
                     } else {
                         if (_isPushSource) {
                             // this should be the case when the actor is an
-                            // async data source, e.g. datagram receiver
+                            // async data source, e.g. a datagram receiver
                             yield();
                         } else {
-                            /*_director._requestAsyncPull(_actor);
-                            if (_receiver == null) {
-                                IOPort input = (IOPort)_actor.inputPortList().
-                                        iterator().next();
-                                _receiver = (input.getReceivers())[0][0];
-                            }*/
-
-                            System.out.println("Wait for input to "
-                                    + "pulled actor "
-                                    + ((Nameable)_actor).getName());
-
-                            /*synchronized(_receiver) {
-                                try {
-                                    _director._requestAsyncPull(_actor);
-                                    _receiver.wait();
-                                } catch (InterruptedException ex) {}
-                            }*/
-
-                            synchronized(_actor) {
+                            synchronized (_actor) {
                                 try {
                                     if (!_actor.prefire()) {
                                         _director._requestAsyncPull(_actor);
                                         _actor.wait();
                                     }
-                                } catch (InterruptedException ex) {}
+                                } catch (InterruptedException ex) {
+                                    //FIXME: better way to handle?
+                                    ex.printStackTrace();
+                                }
                             }
-
-                            System.out.println("Wake up from waiting - "
-                                    + ((Nameable)_actor).getName());
-
                         }
                     }
                 }
             }
         } catch (IllegalActionException e) {
-
-            System.out.println("Manager of " + ((NamedObj)_actor).getName()
-                    + " caught exception : " + e.getMessage());
-
             _manager.notifyListenersOfException(e);
         }
-        _director._activeCount--;
-        synchronized (_director) {
-            _director.notifyAll();
-        }
-        System.out.println("Manager stopped - " +
-                ((Nameable)_actor).getName());
-    }
-
-    /** Request that execution of the actor controlled by this
-     *  thread stop.
-     */
-    public void stopThread() {
-        _threadStopRequested = true;
-    }
-
-    /** End the execution of the actor under the control of this
-     *  thread. Subclasses are encouraged to override this method
-     *  as necessary for domain specific functionality.
-     * @exception IllegalActionException If an error occurs while
-     *  ending execution of the actor under the control of this
-     *  thread.
-     */
-    public void wrapup() throws IllegalActionException {
-        _actor.wrapup();
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                ////
+    ////                         private methods                   ////
 
-    // check actor connection, and set the _isPushSource flag and
-    // _period value, which are used in the run() method.
-
-    private void _setFlags() {
+    // check actor connection, and set the _isPushSource flag and _period
+    // value, which are used in the run() method.
+    private void _init() {
         boolean hasInput = false;
         boolean outputIsPush = false;
         Iterator inputPorts = _actor.inputPortList().iterator();
@@ -233,7 +143,7 @@ public class ActiveActorManager extends PtolemyThread {
         while (outputPorts.hasNext()) {
             IOPort port = (IOPort)outputPorts.next();
             if (port.getWidth() > 0) {
-                if (port.getAttribute("push") != null) outputIsPush = true;
+                outputIsPush |= CIDirector._isPushPort(port);
             }
         }
         _isPushSource = !hasInput && outputIsPush;
@@ -242,8 +152,8 @@ public class ActiveActorManager extends PtolemyThread {
             _period = 0;
             try {
                 _period = ((IntToken)p.getToken()).intValue();
-            } catch (IllegalActionException ex) {
-                //ignore for now
+            } catch (Exception ex) {
+                // ignore, so period will have default value 0
             }
         } else {
             _period = (int)_director._interval;
@@ -253,31 +163,20 @@ public class ActiveActorManager extends PtolemyThread {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // the active actor executed.
+    // The active actor being managed.
     private Actor _actor;
 
-    //the CI director.
+    // The CI director that executes non-active actors.
     private CIDirector _director;
 
-    //
+    // The manager of the Ptolemy model.
     private Manager _manager;
 
-    //name of the active actor executed.
-    private String _name;
-
-    //flag that indicates that this thread has been requested to stop.
-    private boolean _threadStopRequested = false;
-
-    //
-    private boolean _preparingToWrapup = false;
-
-    //???
-    private Receiver _receiver;
-
-    //flag indicates that whether an actor is a push source.
+    // Flag that indicates whether the managed actor is a push source.
     private boolean _isPushSource = false;
 
-    //how often to interate the actor.
+    // The period of one iteration of the managed actor.
     private int _period = 0;
 
 }
+

@@ -1,6 +1,6 @@
-/* A receiver for the component interaction domain.
+/* Receiver for the component interaction (CI) domain.
 
- Copyright (c) 2002-2003 The Regents of the University of California.
+ Copyright (c) 2002 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -26,52 +26,42 @@
 
 @ProposedRating Yellow (liuxj@eecs.berkeley.edu)
 @AcceptedRating Red (liuxj@eecs.berkeley.edu)
-
 */
 
 package ptolemy.domains.ci.kernel;
 
-import ptolemy.actor.AbstractReceiver;
-import ptolemy.actor.Actor;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.NoRoomException;
-import ptolemy.actor.NoTokenException;
-
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.data.Token;
+import ptolemy.actor.*;
 
-
-import java.util.NoSuchElementException;
-import java.util.Collections;
 import java.util.List;
 import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// CIReceiver
-/** An implementation of the ptolemy.actor.Receiver interface for the
-CI domain. When a token is put into a CIReceiver,
-that receiver check whether the port is push or pull, and
-whether the current thread equals to the director thread. If it is a push port
-and the current thread equals to the director thread, the director will
-add the actor contains the port to _actorsToFire list. If it is a push port
-and the current thread doesn't equal to the director thread, the active actor
-thread will add the actor to _asyncPushedActors list. If it is a pull port,
-the current thread has to equal to the director thread. The director will check
-whether the actor which contains the port has been pulled. if so and the prefire
-is true, the director will remove this actor from _asyncPulledActors list and
-add it to _actorToFire list; if the prefire return false, the director will then
-register actors providing data to this actor to be fired.
-<p>
-There is nothing special about get() and hasToken() methods.
+/**
+An implementation of the ptolemy.actor.Receiver interface for the
+CI domain. When a token is put into a CIReceiver, that receiver checks
+whether the port containing the receiver is push or pull, and whether the
+current thread is the same as the director thread. If it is a push port
+and the current thread is the same as the director thread, the actor is
+added to a list of actors to be fired by the director, so that the model
+executes as data-driven. If it is a push port and the current thread is not
+the same as the director thread, the active actor thread will notify the
+director to process the pushed data. If it is a pull port, the director will
+check whether the actor containing the port has been pulled. If so and its
+prefire() is true, the director will fire the actor; if prefire() returns
+false, the director then recursively registers actors providing data to this
+actor as being pulled, so that the model executes as demand-driven.
 <p>
 @author Xiaojun Liu, Yang Zhao
 @version $Id$
-@since Ptolemy II 1.0
-@see ptolemy.actor.Receiver
+@since Ptolemy II 2.1
 */
 public class CIReceiver extends AbstractReceiver {
+
     /** Construct an empty receiver working with the given CI director.
-     *
+     *  @param director The director that creates this receiver.
      */
     public CIReceiver(CIDirector director) {
         _director = director;
@@ -90,10 +80,7 @@ public class CIReceiver extends AbstractReceiver {
         return (Token)_tokens.removeFirst();
     }
 
-    /** Return true if the receiver has room to put a token into it
-     *  (via the put() method).
-     *  Returning true in this method guarantees that the next call to
-     *  put() will not result in an exception.
+    /** Return true. The receiver acts as an infinite FIFO queue.
      *  @return True if the next call to put() will not result in a
      *   NoRoomException.
      */
@@ -115,9 +102,7 @@ public class CIReceiver extends AbstractReceiver {
     }
 
     /** Return true if the receiver contains a token that can be obtained
-     *  by calling the get() method.  In an implementation,
-     *  returning true in this method guarantees that the next
-     *  call to get() will not result in an exception.
+     *  by calling the get() method.
      *  @return True if the next call to get() will not result in a
      *   NoTokenException.
      */
@@ -142,29 +127,13 @@ public class CIReceiver extends AbstractReceiver {
      *  @exception NoRoomException If there is no room in the receiver.
      */
     public synchronized void put(Token token) throws NoRoomException {
-        // token.setTime(_director.getCurrentTime());
         _tokens.add(token);
         _notify();
     }
 
     /** Put a portion of the specified token array into this receiver.
      *  The first <i>numberOfTokens</i> elements of the token array are put
-     *  into this receiver by repeated calling put().
-     *  The ability to specify a longer array than
-     *  needed allows certain domains to have more efficient implementations.
-     *  <p>
-     *  This implementation works by calling put() repeatedly.
-     *  The caller may feel free to reuse the array after this method returns.
-     *  Derived classes may offer more efficient implementations.
-     *  This implementation is not synchronized, so it
-     *  is not suitable for multithreaded domains
-     *  where there might be multiple threads writing to
-     *  the same receiver. It <i>is</i> suitable, however,
-     *  for multithreaded domains where only one thread
-     *  is writing to the receiver.  This is true even if
-     *  a separate thread is reading from the receiver, as long
-     *  as the put() and get() methods are properly synchronized.
-     *
+     *  into this receiver.
      *  @param tokenArray The array containing tokens to put into this
      *   receiver.
      *  @param numberOfTokens The number of elements of the token
@@ -173,38 +142,30 @@ public class CIReceiver extends AbstractReceiver {
      */
     public synchronized void putArray(Token[] tokenArray, int numberOfTokens)
             throws NoRoomException {
-            for (int i = 0; i < numberOfTokens; i++) {
-                _tokens.add(tokenArray[i]);
-            }
+        for (int i = 0; i < numberOfTokens; i++) {
+            _tokens.add(tokenArray[i]);
+        }
         _notify();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /*
-       if the container is a push port,
-           if the current thread != director thread
-               add actor as async pushed actor
-           else
-               add actor as sync pushed actor
-       else the container is a pull port
-           if the current thread != director thread
-               // can only happen when an active actor is followed by an actor
-               // with pull input, not a legal model
-           else
-               if the actor is pulled
-                   if actor.prefire
-                       add actor as sync pushed actor - actor to fire
-                   else
-                       requestSyncPull(actor)
-    */
+    // Checks whether the port containing the receiver is push or pull,
+    // and whether the current thread is the same as the director thread.
+    // If it is a push port and the current thread is the same as the
+    // director thread, the actor is added to a list of actors to be fired
+    // by the director. If it is a push port and the current thread is not
+    // the same as the director thread, the active actor thread will notify
+    // the director to process the pushed data. If it is a pull port, the
+    // director will check whether the actor containing the port has been
+    // pulled. If so and its prefire() is true, the director will fire the
+    // actor; if prefire() returns false, the director then recursively
+    // registers actors providing data to this actor as being pulled, so that
+    // the model executes as demand-driven.
     private void _notify() {
         IOPort port = (IOPort)getContainer();
-        boolean isPush = false;
-        if (port.getAttribute("push") != null) {
-            isPush = true;
-        }
+        boolean isPush = CIDirector._isPushPort(port);
         Actor actor = (Actor)port.getContainer();
         if (isPush) {
             if (Thread.currentThread() != _director._getThread()) {
@@ -213,9 +174,9 @@ public class CIReceiver extends AbstractReceiver {
                 _director._addSyncPushedActor(actor);
             }
         } else {
-            // assume current thread is director thread
-            // this requires that an active push actor do not connect directly
-            // to an active pull actor
+            //FIXME: this does not allow an active source actor (with push
+            // output) to be connected directly to a sync actor with pull
+            // input
             if (_director._isPulled(actor)) {
                 try {
                     if (actor.prefire()) {
@@ -224,23 +185,26 @@ public class CIReceiver extends AbstractReceiver {
                         _director._requestSyncPull(actor);
                     }
                 } catch (IllegalActionException ex) {
-                    //FIXME: ignore for now
+                    //FIXME: better way to handle this
+                    ex.printStackTrace();
                 }
             }
-        }
-        // an active actor may be waiting
-        synchronized (actor) {
-            actor.notifyAll();
+            if (CIDirector._isActive(actor)) {
+                synchronized (actor) {
+                    actor.notifyAll();
+                }
+            }
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The director.
+    // The CI director that created this receiver.
     private CIDirector _director;
 
-    //List for storing tokens.
+    // List for storing tokens.
     private LinkedList _tokens = new LinkedList();
 
 }
+
