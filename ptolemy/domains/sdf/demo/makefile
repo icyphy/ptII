@@ -55,7 +55,7 @@ PTCLASSALLJARS = \
 	FixFIR/FixFIR.jar \
 	FixPoint/FixPoint.jar \
 	HTVQ/HTVQ.jar \
-	LMSAdaptive/FixPoint.jar \
+	LMSAdaptive/LMSAdaptive.jar \
 	MaximumEntropySpectrum/MaximumEntropySpectrum.jar \
 	Sketch/Sketch.jar \
 	Spectrum/Spectrum.jar \
