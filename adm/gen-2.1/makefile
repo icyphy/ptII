@@ -412,7 +412,7 @@ $(REMOTE1PTIIDIST): $(PTII_FULL)
 	@echo "# Now untaring on `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
-	(cd $(REMOTE1HOME); $(TAR) -xf $(GENDIR)/`basename $(PTII_FULL) .gz`)
+	(cd $(REMOTE1HOME); $(TAR) -zxf $(PTII_FULL))
 
 remote1configure:
 	@echo "#"
@@ -1092,6 +1092,9 @@ remote6nuke:
 
 # untarthe remote dist.  Usually this is run on the remote machine
 remote6ptiidist: $(REMOTE6PTIIDIST)
+
+# $(REMOTE6PTIIDIST) is the same as $(REMOTE1PTIIDIST), so we comment
+# out this rule.
 #$(REMOTE6PTIIDIST): $(PTII_FULL)
 #	@echo "#"
 #	@echo "# Now untaring on `hostname`"
@@ -1154,9 +1157,9 @@ remote6autojsall:
 		for x do \
 		    if [ -w $$x/test/auto ] ; then \
 			( cd $$x/test ; \
-			echo making jstest_jsimple in $$x/test ; \
+			echo making jstest_jauto in $$x/test ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) \
-				jstest_jsimple; \
+				jstest_jauto; \
 			);  \
 		    fi ; \
 		done ; \
