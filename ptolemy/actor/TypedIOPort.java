@@ -290,7 +290,8 @@ public class TypedIOPort extends IOPort implements Typeable {
                 // Note that the getRemoteReceivers() method doesn't throw
                 // any non-runtime exception.
                 farReceivers = getRemoteReceivers();
-                if (farReceivers == null || farReceivers[channelIndex] == null) {
+                if (farReceivers == null ||
+                        farReceivers[channelIndex] == null) {
                     return;
                 }
             } finally {
@@ -386,7 +387,8 @@ public class TypedIOPort extends IOPort implements Typeable {
                 // Note that the getRemoteReceivers() method doesn't throw
                 // any non-runtime exception.
                 farReceivers = getRemoteReceivers();
-                if (farReceivers == null || farReceivers[channelIndex] == null) {
+                if (farReceivers == null ||
+                        farReceivers[channelIndex] == null) {
                     System.out.println("returning now...");
                     return;
                 }
@@ -399,7 +401,8 @@ public class TypedIOPort extends IOPort implements Typeable {
                 Type farType = port.getType();
                 if (farType.isEqualTo(token.getType())) {
                     // Good, no conversion necessary.
-                    farReceivers[channelIndex][j].putArray(tokenArray, vectorLength);
+                    farReceivers[channelIndex][j].putArray(tokenArray,
+                            vectorLength);
                 } else {
 		    // Note: This is very bad for performance!
 		    // For better efficiency, make sure

@@ -1292,7 +1292,8 @@ public class IOPort extends ComponentPort {
                 // Note that the getRemoteReceivers() method doesn't throw
                 // any non-runtime exception.
                 farReceivers = getRemoteReceivers();
-                if (farReceivers == null || farReceivers[channelIndex] == null) return;
+                if (farReceivers == null ||
+                        farReceivers[channelIndex] == null) return;
             } finally {
                 _workspace.doneReading();
             }
@@ -1343,12 +1344,14 @@ public class IOPort extends ComponentPort {
                 // Note that the getRemoteReceivers() method doesn't throw
                 // any non-runtime exception.
                 farReceivers = getRemoteReceivers();
-                if (farReceivers == null || farReceivers[channelIndex] == null) return;
+                if (farReceivers == null ||
+                        farReceivers[channelIndex] == null) return;
             } finally {
                 _workspace.doneReading();
             }
             for (int j = 0; j < farReceivers[channelIndex].length; j++) {
-                farReceivers[channelIndex][j].putArray(tokenArray, vectorLength);
+                farReceivers[channelIndex][j].
+                    putArray(tokenArray, vectorLength);
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
             // NOTE: This may occur if the port is not an output port.

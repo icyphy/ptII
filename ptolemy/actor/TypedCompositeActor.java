@@ -171,7 +171,8 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 		    Receiver[][] receivers = sourcePort.getRemoteReceivers();
 
 		    List destinationPorts = _receiverToPort(receivers);
-		    result.addAll(_checkTypesFromTo(sourcePort, destinationPorts));
+		    result.addAll(_checkTypesFromTo(sourcePort,
+                            destinationPorts));
 		}
 	    }
 
@@ -291,7 +292,8 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                     Receiver[][] receivers = sourcePort.getRemoteReceivers();
 
                     List destinationPorts = _receiverToPort(receivers);
-                    result.addAll(_typeConstraintsFromTo(sourcePort, destinationPorts));
+                    result.addAll(_typeConstraintsFromTo(sourcePort,
+                            destinationPorts));
 		}
             }
 
@@ -302,7 +304,8 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                 TypedIOPort sourcePort = (TypedIOPort)boundaryPorts.next();
                 Receiver[][] receivers = sourcePort.deepGetReceivers();
                 List destinationPorts = _receiverToPort(receivers);
-                result.addAll(_typeConstraintsFromTo(sourcePort, destinationPorts));
+                result.addAll(_typeConstraintsFromTo(sourcePort,
+                        destinationPorts));
             }
 
 	    // collect constraints from contained Typeables
@@ -414,7 +417,8 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
     // assuming the source port is connected to all the ports in the
     // group of destination ports.  Return an list of
     // TypedIOPorts that have type conflicts.
-    private List _checkTypesFromTo(TypedIOPort sourcePort, List destinationPortList) {
+    private List _checkTypesFromTo(TypedIOPort sourcePort,
+            List destinationPortList) {
 	List result = new LinkedList();
 
 	boolean isUndeclared = sourcePort.getTypeTerm().isSettable();
