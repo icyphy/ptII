@@ -815,6 +815,8 @@ public class DDFDirector extends Director {
      *  IllegalActionException if any exceeds maximum receiver capacity.
      *  @param actor Each downstream receiver connected to this actor
      *   is checked against maximum receiver capacity.
+     *  @param capacity The capacity that is checked against.  If
+     *  the value of this parameter is 0, then no checking is done.
      *  @exception IllegalActionException If any downstream receiver
      *   connected to this actor exceeds maximum receiver capacity.
      */
