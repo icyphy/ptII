@@ -908,6 +908,7 @@ remote4: $(PTII_FULL) $(GENLOGDIR)
 	ssh $(REMOTE4HOST) "cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
 		remote4nuke remote4ptiidist remote4configure \
 		remote4distclean remote4build \
+		remote4done \
 		 >& $(REMOTE4LOG)" &
 
 
