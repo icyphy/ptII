@@ -1135,12 +1135,9 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
 
         SootMethod method = expression.getMethod();
         StringBuffer code = new StringBuffer();
-        // We clone the expression and make modifications only to its
-        // clone.
-        InstanceInvokeExpr expressionClone = (InstanceInvokeExpr)
-                expression.clone();
 
-        expressionClone.getBase().apply(this);
+
+        expression.getBase().apply(this);
         StringBuffer instanceName = _pop();
 
 
@@ -1174,7 +1171,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
                 SootMethod actualMethod = actualClass.getMethod(method
                         .getSubSignature());
 
-                expressionClone.setMethod(actualMethod);
+                expression.setMethod(actualMethod);
 
                 cast = "(" + CNames.instanceNameOf(actualClass) + ")";
             }
@@ -1186,7 +1183,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         code.append("("
                 + cast
                 + instanceName
-                + _generateArguments(expressionClone, 1)
+                + _generateArguments(expression, 1)
                 + ")");
 
         _push(code);
