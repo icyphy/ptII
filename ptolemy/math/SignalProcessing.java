@@ -530,7 +530,7 @@ public final class SignalProcessing {
     /** A small number, used by algorithms to detect whether a double is close
      *  to zero.
      */
-    static final double EPSILON = 1.0e-9;
+    public static final double EPSILON = 1.0e-9;
 
     /////////////////////////////////////////////////////////////////////////
     ////                         private methods                         ////
