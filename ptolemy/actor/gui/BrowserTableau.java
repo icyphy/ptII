@@ -79,11 +79,15 @@ public class BrowserTableau extends Tableau {
 
     /** Make this tableau visible by calling
      *        {@link BrowserLauncher#openURL(String)}
-     *  with URL from the effigy.  Most browsers are smart enough
-     *  so that if the browser is already displaying the URL, then
+     *  with URI from the effigy.  Most browsers are smart enough
+     *  so that if the browser is already displaying the URI, then
      *  that window will be brought to the foreground.  We are limited
      *  by the lack of communication between Java and the browser,
      *  so this is the best we can do.
+     *  If the URI ends in "#in_browser", we strip it off before
+     *  passing the URI to the browser.  #in_browser is used by 
+     *  {@link ptolemy.actor.gui.HTMLViewer to force a hyperlink to be
+     *  opened in a browser.
      */
     public void show() {
         // FIXME: Unfortunately, the _config.showAll() at the bottom
@@ -135,7 +139,12 @@ public class BrowserTableau extends Tableau {
                             null, null);
                 }
             }
-            BrowserLauncher.openURL(url);
+	    String inBrowser = "#in_browser";
+	    if (url.endsWith(inBrowser)) {
+		// Strip off any trailing #in_browser, see HTMLViewer. 
+		url = url.substring(0, url.length() - inBrowser.length());
+	    }
+  	    BrowserLauncher.openURL(url);
             try {
                 // We set the container to null immediately because
                 // once we spawn the browser process, we have no
