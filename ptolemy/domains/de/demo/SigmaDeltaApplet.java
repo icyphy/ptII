@@ -83,14 +83,14 @@ public class SigmaDeltaApplet extends Applet {
         _finishButton = new Button("Finish");
         _terminateButton = new Button("Terminate");
 
-        
+
 
         // The applet has two panels, stacked vertically
         setLayout(new BorderLayout());
         Panel appletPanel = new Panel();
         appletPanel.setLayout(new GridLayout(2,1));
         add(appletPanel, "Center");
-        
+
         // _la is the drawing panel for DELogicAnalyzer actor.
         Plot ctPanel = new Plot();
         Plot dePanel = new Plot();
@@ -139,7 +139,7 @@ public class SigmaDeltaApplet extends Applet {
         lambdaPanel.add(new Label("lambda:"));
         lambdaPanel.add(_lambdaBox);
         // done adding lambda
-        
+
         // Adding go button in the control panel.
         controlPanel.add(_goButton);
         controlPanel.add(_pauseButton);
@@ -166,18 +166,18 @@ public class SigmaDeltaApplet extends Applet {
             sys.setManager(_manager);
 
             // CT subsystem
-            TypedCompositeActor ctsub = new TypedCompositeActor(sys, 
+            TypedCompositeActor ctsub = new TypedCompositeActor(sys,
                     "CTSubsystem");
             TypedIOPort subin = new TypedIOPort(ctsub, "Pin");
             subin.setInput(true);
-            
+
             TypedIOPort subout = new TypedIOPort(ctsub, "Pout");
             subout.setOutput(true);
 
-            CTMixedSignalDirector ctdir = 
+            CTMixedSignalDirector ctdir =
                 new CTMixedSignalDirector("CTEmbDir");
             ctsub.setDirector(ctdir);
-            
+
 
             // ---------------------------------
             // Create the actors.
@@ -188,7 +188,7 @@ public class SigmaDeltaApplet extends Applet {
             CTSin sine = new CTSin(ctsub, "Sin");
             CTZeroOrderHold hold = new CTZeroOrderHold(ctsub, "Hold");
             CTAdd add1 = new CTAdd(ctsub, "Add1");
-            
+
             CTIntegrator intgl1 = new CTIntegrator(ctsub, "Integrator1");
             CTIntegrator intgl2 = new CTIntegrator(ctsub, "Integrator2");
             CTGain gain0 = new CTGain(ctsub, "Gain0");
@@ -201,9 +201,9 @@ public class SigmaDeltaApplet extends Applet {
             String[] ctLegends = {"Position","Input","Control"};
             ctPlot.setLegend(ctLegends);
 
-            CTPeriodicalSampler sampler = 
+            CTPeriodicalSampler sampler =
                 new CTPeriodicalSampler(ctsub, "Sample");
-            
+
             // CTPorts
             IOPort sineout = (IOPort)sine.getPort("output");
             IOPort add1in = (IOPort)add1.getPort("input");
@@ -255,19 +255,19 @@ public class SigmaDeltaApplet extends Applet {
             Parameter firdelay = (Parameter)fir.getAttribute("Delay");
             firdelay.setExpression("0.02");
             firdelay.parameterChanged(null);
-            
+
             DETestLevel quan = new DETestLevel(sys, "Quantizer");
             DEStatistics accu = new DEStatistics(sys, "Accumulator");
             DEClock clk = new DEClock(sys, "ADClock", 1, 1);
             DEPlot deplot = new DEPlot(sys, "DEPlot", dePanel);
             String[] deLegends = {"Accumulator", "Quantizer"};
             deplot.setLegend(deLegends);
-            DEFIRfilter mav = new DEFIRfilter(sys, "MAV", "0.1 0.1 0.1 0.1" + 
+            DEFIRfilter mav = new DEFIRfilter(sys, "MAV", "0.1 0.1 0.1 0.1" +
                     " 0.1 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05");
             DEProcessor processor = new DEProcessor(sys, "processor",
                     0.8, 0.1, 3.0);
 
-            
+
             // DE ports
             IOPort firin = (IOPort)fir.getPort("input");
             IOPort firout = (IOPort)fir.getPort("output");
@@ -283,7 +283,7 @@ public class SigmaDeltaApplet extends Applet {
             IOPort deplotin = (IOPort)deplot.getPort("input");
             IOPort processorIn = processor.input;
             IOPort processorOut = processor.output;
-            
+
             // DE connections.
             Relation dr0 = sys.connect(subout, processorIn, "DR0");
             Relation dr1 = sys.connect(processorOut, firin, "DR1");
@@ -297,7 +297,7 @@ public class SigmaDeltaApplet extends Applet {
             deplotin.link(dr3);
 
             // CT Director parameters
-            Parameter initstep = 
+            Parameter initstep =
                 (Parameter)ctdir.getAttribute("InitialStepSize");
             initstep.setExpression("0.001");
             initstep.parameterChanged(null);
@@ -305,7 +305,7 @@ public class SigmaDeltaApplet extends Applet {
                 (Parameter)ctdir.getAttribute("MinimumStepSize");
             minstep.setExpression("1e-6");
             minstep.parameterChanged(null);
-            
+
             Parameter solver1 =
                 (Parameter)ctdir.getAttribute("BreakpointODESolver");
             StringToken token1 = new StringToken("ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
@@ -319,19 +319,19 @@ public class SigmaDeltaApplet extends Applet {
             solver2.parameterChanged(null);
 
             // CTActorParameters
-            
+
             Parameter freq = (Parameter)sine.getAttribute("AngleFrequency");
             freq.setExpression("0.5");
             freq.parameterChanged(null);
-            
+
             Parameter g0 = (Parameter)gain0.getAttribute("Gain");
             g0.setExpression("50.0");
             g0.parameterChanged(null);
-            
+
             Parameter g1 = (Parameter)gain1.getAttribute("Gain");
             g1.setExpression("-2.50");
             g1.parameterChanged(null);
-            
+
             Parameter g2 = (Parameter)gain2.getAttribute("Gain");
             g2.setExpression("-250.0");
             g2.parameterChanged(null);
@@ -343,7 +343,7 @@ public class SigmaDeltaApplet extends Applet {
             Parameter ts = (Parameter)sampler.getAttribute("SamplePeriod");
             ts.setExpression("0.02");
             ts.parameterChanged(null);
-            
+
             // Setting up parameters.
             _minimumServiceTime = (Parameter)processor.getAttribute("MST");
             _interruptServiceTime = (Parameter)processor.getAttribute("IST");
@@ -374,7 +374,7 @@ public class SigmaDeltaApplet extends Applet {
     private Button _pauseButton;
     private Button _finishButton;
     private Button _terminateButton;
-    
+
 
     private Label _currentTimeLabel;
     private boolean _isSimulationPaused = false;
@@ -436,15 +436,15 @@ public class SigmaDeltaApplet extends Applet {
                     System.err.println("Invalid stop time: " + ex.getMessage());
                     return;
                 }
-                
+
                 // Set the minimum service time.
                 try {
                     String s = _mstBox.getText();
                     Double d = Double.valueOf(s);
                     _minimumServiceTime.setToken(new DoubleToken(d.doubleValue()));
-                    
+
                 } catch (NumberFormatException ex) {
-                    System.err.println("Invalid minimum service time: " + 
+                    System.err.println("Invalid minimum service time: " +
                                        ex.getMessage());
                 }
 
@@ -453,9 +453,9 @@ public class SigmaDeltaApplet extends Applet {
                     String s = _istBox.getText();
                     Double d = Double.valueOf(s);
                     _interruptServiceTime.setToken(new DoubleToken(d.doubleValue()));
-                    
+
                 } catch (NumberFormatException ex) {
-                    System.err.println("Invalid interrupt service time: " + 
+                    System.err.println("Invalid interrupt service time: " +
                                        ex.getMessage());
                 }
 
@@ -464,12 +464,12 @@ public class SigmaDeltaApplet extends Applet {
                     String s = _lambdaBox.getText();
                     Double d = Double.valueOf(s);
                     _lambda.setToken(new DoubleToken(d.doubleValue()));
-                    
+
                 } catch (NumberFormatException ex) {
-                    System.err.println("Invalid lambda: " + 
+                    System.err.println("Invalid lambda: " +
                                        ex.getMessage());
                 }
-                
+
 
                 _localDirector.setStopTime(_stopTime);
 

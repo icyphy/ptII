@@ -76,7 +76,7 @@ public class AdderApplet extends Applet implements Runnable {
         // Initialization
 
         _ATextField = new TextField("1 0 0 1 1 0 1 1 0 1 1 0 0 1 1 1 0 " +
-                "1 1 0 1 1 1 1 0 0 1 1 1 0 0 0 1 1 1 1 1 0 1 0 1 0 1 1 " + 
+                "1 1 0 1 1 1 1 0 0 1 1 1 0 0 0 1 1 1 1 1 0 1 0 1 0 1 1 " +
                 "0 0 1 1 1 0 0 1 0 0 0 0", 50);
         _BTextField = new TextField("0 0 1 0 1 1 1 1 0 1 1 0 1 0 1 0 0 " +
                 "1 1 1 0 1 0 1 0 1 1 0 0 1 1 1 0 0 1 1 1 0 0 0 1 1 1 1 " +

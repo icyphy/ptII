@@ -126,7 +126,7 @@ public class DEApplet extends PtolemyApplet {
             // in a new panel.
             Panel stoptimepanel = new Panel();
             stoptimepanel.add(new Label("Stop time:"));
-            
+
             // Process the defaultiterations parameter.
             String defstopspec = getParameter("defaultstoptime");
             if (defstopspec == null) {
@@ -183,7 +183,7 @@ public class DEApplet extends PtolemyApplet {
      *  parameter.  Note that this is set by the init() method.
      */
     protected boolean _stoptimegiven = false;
-    
+
     /** The entry box containing the stop time, or null if
      *  there is none.
      */

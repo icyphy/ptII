@@ -336,7 +336,7 @@ public class HistogramApplet extends Applet implements Runnable {
 
     public class GoButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent evt) {
-            
+
             if (_isSimulationRunning) {
                 System.out.println("Simulation still running.. hold on..");
                 return;
@@ -353,8 +353,8 @@ public class HistogramApplet extends Applet implements Runnable {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                throw new InternalErrorException("Error in GoButton" + 
-                       "Listener class : " + e.getMessage()); 
+                throw new InternalErrorException("Error in GoButton" +
+                       "Listener class : " + e.getMessage());
             }
 
         }

@@ -122,7 +122,7 @@ public class HierarchyApplet extends Applet {
 
             // Set up block A
 
-            TypedCompositeActor blockA = new TypedCompositeActor(sys, 
+            TypedCompositeActor blockA = new TypedCompositeActor(sys,
                     "BlockA");
             blockA.setDirector(new DEDirector("Director A"));
 

@@ -85,7 +85,7 @@ public class InterruptApplet extends Applet {
         setLayout(new BorderLayout());
         Plot appletPanel = new Plot();
         add(appletPanel, "Center");
-        
+
         // Adding a control panel in the main panel.
         Panel controlPanel = new Panel();
         add(controlPanel, "South");
@@ -128,7 +128,7 @@ public class InterruptApplet extends Applet {
         lambdaPanel.add(new Label("lambda:"));
         lambdaPanel.add(_lambdaBox);
         // done adding lambda
-        
+
         // Adding go button in the control panel.
         controlPanel.add(_goButton);
         controlPanel.add(_pauseButton);
@@ -164,14 +164,14 @@ public class InterruptApplet extends Applet {
             // create a processor with min service time = 1.0
             // interrupt service time = 0.1
             // mean interarrival time = 3.0
-            DEProcessor processor = new DEProcessor(sys, 
+            DEProcessor processor = new DEProcessor(sys,
                     "processor",
                     0.8, 0.1, 3.0);
-            DEPlot plot = new DEPlot(sys, "Processor Input v.s. Output", 
+            DEPlot plot = new DEPlot(sys, "Processor Input v.s. Output",
                     appletPanel);
-            
+
             DESampler sampler = new DESampler(sys, "Sampler");
-            
+
             // -----------------------
             // Creating connections
             // -----------------------
@@ -213,7 +213,7 @@ public class InterruptApplet extends Applet {
     private Button _pauseButton;
     private Button _finishButton;
     private Button _terminateButton;
-    
+
 
     private Label _currentTimeLabel;
     private boolean _isSimulationPaused = false;
@@ -281,9 +281,9 @@ public class InterruptApplet extends Applet {
                     String s = _mstBox.getText();
                     Double d = Double.valueOf(s);
                     _minimumServiceTime.setToken(new DoubleToken(d.doubleValue()));
-                    
+
                 } catch (NumberFormatException ex) {
-                    System.err.println("Invalid minimum service time: " + 
+                    System.err.println("Invalid minimum service time: " +
                                        ex.getMessage());
                 }
 
@@ -292,9 +292,9 @@ public class InterruptApplet extends Applet {
                     String s = _istBox.getText();
                     Double d = Double.valueOf(s);
                     _interruptServiceTime.setToken(new DoubleToken(d.doubleValue()));
-                    
+
                 } catch (NumberFormatException ex) {
-                    System.err.println("Invalid interrupt service time: " + 
+                    System.err.println("Invalid interrupt service time: " +
                                        ex.getMessage());
                 }
 
@@ -303,9 +303,9 @@ public class InterruptApplet extends Applet {
                     String s = _lambdaBox.getText();
                     Double d = Double.valueOf(s);
                     _lambda.setToken(new DoubleToken(d.doubleValue()));
-                    
+
                 } catch (NumberFormatException ex) {
-                    System.err.println("Invalid lambda: " + 
+                    System.err.println("Invalid lambda: " +
                                        ex.getMessage());
                 }
 
