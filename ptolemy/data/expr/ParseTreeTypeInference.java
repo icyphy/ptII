@@ -120,7 +120,8 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
     public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
             throws IllegalActionException {
         int argCount = node.jjtGetNumChildren() - 1;
-
+        String functionName = node.getFunctionName();
+      
         // Get the child types.
         Type[] childTypes = new Type[argCount];
         for (int i = 0; i < argCount; i++) {
@@ -131,37 +132,42 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             }
         }
 
-        Type baseType = _inferChild(node, 0);
+        Type baseType = null;
+        if (_scope != null && functionName != null) {
+            baseType = _scope.getType(functionName);
+        }
 
-        // Handle as an array or matrix index into a named
-        // variable reference.
-        if (baseType instanceof FunctionType) {
-            _setType(node, ((FunctionType)baseType).getReturnType());
-            return;
-        } else if (argCount == 1) {
-            if (baseType instanceof ArrayType) {
-                _setType(node, ((ArrayType)baseType).getElementType());
-                return;            } else {
+        if(baseType != null || functionName == null) {
+            baseType = _inferChild(node, 0);
+            
+            // Handle as an array or matrix index into a named
+            // variable reference.
+            if (baseType instanceof FunctionType) {
+                _setType(node, ((FunctionType)baseType).getReturnType());
+                return;
+            } else if (argCount == 1) {
+                if (baseType instanceof ArrayType) {
+                    _setType(node, ((ArrayType)baseType).getElementType());
+                    return;         
+                } else {
                     _assert(true, node, "Cannot use array "
                             + "indexing on '" + node.getFunctionName()
                             + "' because it does not have an array type.");
                 }
-        } else if (argCount == 2) {
-            if (baseType instanceof UnsizedMatrixType) {
-                _setType(node, ((UnsizedMatrixType) baseType).getElementType());
-                return;
-            } else {
-                _assert(true, node, "Cannot use matrix "
-                        + "indexing on '" + node.getFunctionName()
-                        + "' because it does not have a matrix type.");
+            } else if (argCount == 2) {
+                if (baseType instanceof UnsizedMatrixType) {
+                    _setType(node, ((UnsizedMatrixType) baseType).getElementType());
+                    return;
+                } else {
+                    _assert(true, node, "Cannot use matrix "
+                            + "indexing on '" + node.getFunctionName()
+                            + "' because it does not have a matrix type.");
+                }
             }
-        }
-
-        String functionName = node.getFunctionName();
-        if (functionName == null) {
             throw new IllegalActionException("Wrong number of indices "
-                    + "when referencing " + node.getFunctionName());
-        }
+                    + "when referencing " + functionName);
+        }            
+
 
         // Psuedo-temporary hack for casts....
         if (functionName.compareTo("cast") == 0 && argCount == 2) {
@@ -305,7 +311,24 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             return;
         }
 
-        _setType(node, _getTypeForName(node.getName()));
+        String name = node.getName();
+
+        if (_scope != null) {
+            Type type = _scope.getType(name);
+            if (type != null) {
+                _setType(node, type);
+                return;
+            }
+        }
+
+        // Look up for constants.
+        if (Constants.get(name) != null) {
+            // A named constant that is recognized by the parser.
+            _setType(node, Constants.get(name).getType());
+            return;
+        }
+        throw new IllegalActionException(
+                "The ID " + name + " is undefined.");
     }
 
     /** Set the type of the given node to be boolean.
@@ -508,8 +531,9 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             // A named constant that is recognized by the parser.
             return Constants.get(name).getType();
         }
-
-        return BaseType.GENERAL;
+        throw new IllegalActionException(
+                "The ID " + name + " is undefined.");
+        //        return BaseType.GENERAL;
     }
 
     /** Loop through all of the children of this node,

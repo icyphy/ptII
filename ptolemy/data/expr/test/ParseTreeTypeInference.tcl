@@ -612,9 +612,11 @@ test ParseTreeTypeInference-13.0 {Test array reference.} {
     set root1 [ $p1 generateParseTree "v1(0+1,2)+v1(0, v2-1)"]
     set res1 [ [ $evaluator evaluateParseTree $root1 $scope] getType ]
     set type1 [inferTypesScope $root1 $scope]
+    
     set root2 [ $p1 generateParseTree "cast(complex,v1(0+1,2)+v1(0, v2-1).add(v2))"]
     set res2 [ [ $evaluator evaluateParseTree $root2 $scope] getType ]
     set type2 [inferTypesScope $root2 $scope]
+    
     list [$res1 equals $type1] [$res2 equals $type2]
 } {1 1}
 
@@ -719,4 +721,10 @@ test ParseTreeTypeInference-17.3 {Test nested function definitions.} {
     list [theTest "cast(function(x:int) double, function(x) x + 3.0)"] 
 } {{function(a0:int) double}}
 
+####################################################################
+
+test ParseTreeTypeInference-27.0 {Test Error message} {
+    catch {list [evaluate {1.0+im}]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: The ID im is undefined.}}
 

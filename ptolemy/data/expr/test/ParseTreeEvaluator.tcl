@@ -614,3 +614,10 @@ test ParseTreeEvaluator-26.1 {Test record operations} {
          [evaluate {{a=1,b=2}.a()}] \
          [evaluate {{foodCost=40, hotelCost=100} + {foodCost=20, taxiCost=20}}]
  } {1 1 {{foodCost=60}}}
+
+####################################################################
+
+test ParseTreeEvaluator-27.0 {Test Error message} {
+    catch {list [evaluate {1.0+im}]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: The ID im is undefined.}}
