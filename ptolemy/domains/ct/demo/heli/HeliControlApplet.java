@@ -136,7 +136,7 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
             // Set up the top level composite actor, director and manager
             TypedCompositeActor sys = new TypedCompositeActor();
             sys.setName("HeliControlSystem");
-            _dir = new CTMultiSolverDirector("CTSingleSolverDirector");
+            _dir = new CTMultiSolverDirector("OutterDirector");
             sys.setDirector(_dir);
             _manager = new Manager("Manager");
             _manager.addExecutionListener(new MyExecutionListener());
@@ -149,6 +149,13 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
             // Create the composite actors.
             // ---------------------------------
             CTCompositeActor sub = new CTCompositeActor(sys, "Linearizers");
+            CTEmbeddedNRDirector subdir = 
+                new CTEmbeddedNRDirector("CTInnerDirector");
+
+            //subdir.setVERBOSE(true);
+            //subdir.setDEBUG(true);
+
+            sub.setDirector(subdir);
             TypedIOPort subinPx = new TypedIOPort(sub, "inputPx");
             subinPx.setInput(true);
             subinPx.setOutput(false);
@@ -182,16 +189,31 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
             subinD4Pz.setOutput(false);
             
             TypedIOPort suboutVx = new TypedIOPort(sub, "outputVx");
-            suboutVx.setInput(true);
-            suboutVx.setOutput(false);
+            suboutVx.setInput(false);
+            suboutVx.setOutput(true);
             TypedIOPort suboutVz = new TypedIOPort(sub, "outputVz");
-            suboutVz.setInput(true);
-            suboutVz.setOutput(false);
+            suboutVz.setInput(false);
+            suboutVz.setOutput(true);
 
             // ---------------------------------
             // Create the actors.
             // ---------------------------------
 
+            // sub system
+            //CTButtonEvent button = new CTButtonEvent(sys, "Button");
+            HoverLinearizer hover = new HoverLinearizer(sub, "Hover");
+            CTZeroOrderHold hPx = new CTZeroOrderHold(sub, "HPx");
+            CTZeroOrderHold hDPx = new CTZeroOrderHold(sub, "HDPx");
+            CTZeroOrderHold hDDPx = new CTZeroOrderHold(sub, "HDDPx");
+            CTZeroOrderHold hD3Px = new CTZeroOrderHold(sub, "HD3Px");
+            CTZeroOrderHold hD4Px = new CTZeroOrderHold(sub, "HD4Px");
+            CTZeroOrderHold hPz = new CTZeroOrderHold(sub, "HPz");
+            CTZeroOrderHold hDPz = new CTZeroOrderHold(sub, "HDPz");
+            CTZeroOrderHold hDDPz = new CTZeroOrderHold(sub, "HDDPz");
+            CTZeroOrderHold hD3Pz = new CTZeroOrderHold(sub, "HD3Pz");
+            CTZeroOrderHold hD4Pz = new CTZeroOrderHold(sub, "HD4Pz");
+            
+            
             // CTActors
 
             HelicopterActor heli = new HelicopterActor(sys, "Helicopter");
@@ -199,8 +221,7 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
             XZHigherDerivatives higher = new XZHigherDerivatives(sys, 
                     "XZHigherDerivatives");
 
-            //CTButtonEvent button = new CTButtonEvent(sys, "Button");
-            HoverLinearizer hover = new HoverLinearizer(sub, "Hover");
+            
             
             CTIntegrator Px = new CTIntegrator(sys, "IntegratorPx");
             CTIntegrator DPx = new CTIntegrator(sys, "IntegratorDPx");
@@ -336,18 +357,30 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
             subinDDPz.link(rDDPz);
             subinD3Pz.link(rD3Pz);
             subinD4Pz.link(rD4Pz);
-
-            sub.connect(subinPx, hover.inputPx);
-            sub.connect(subinDPx, hover.inputDPx);
-            sub.connect(subinDDPx, hover.inputDDPx);
-            sub.connect(subinD3Px, hover.inputD3Px);
-            sub.connect(subinD4Px, hover.inputD4Px);
             
-            sub.connect(subinPz, hover.inputPz);
-            sub.connect(subinDPz, hover.inputDPz);
-            sub.connect(subinDDPz, hover.inputDDPz);
-            sub.connect(subinD3Pz, hover.inputD3Pz);
-            sub.connect(subinD4Pz, hover.inputD4Pz);
+            sub.connect(hPx.input, subinPx);
+            sub.connect(hDPx.input, subinDPx);
+            sub.connect(hDDPx.input, subinDDPx);
+            sub.connect(hD3Px.input, subinD3Px);
+            sub.connect(hD4Px.input, subinD4Px);
+            
+            sub.connect(hPz.input, subinPz);
+            sub.connect(hDPz.input, subinDPz);
+            sub.connect(hDDPz.input, subinDDPz);
+            sub.connect(hD3Pz.input, subinD3Pz);
+            sub.connect(hD4Pz.input, subinD4Pz);
+
+            sub.connect(hPx.output, hover.inputPx);
+            sub.connect(hDPx.output, hover.inputDPx);
+            sub.connect(hDDPx.output, hover.inputDDPx);
+            sub.connect(hD3Px.output, hover.inputD3Px);
+            sub.connect(hD4Px.output, hover.inputD4Px);
+            
+            sub.connect(hPz.output, hover.inputPz);
+            sub.connect(hDPz.output, hover.inputDPz);
+            sub.connect(hDDPz.output, hover.inputDDPz);
+            sub.connect(hD3Pz.output, hover.inputD3Pz);
+            sub.connect(hD4Pz.output, hover.inputD4Pz);
 
             sub.connect(suboutVx, hover.outputVx);
             sub.connect(suboutVz, hover.outputVz);
@@ -365,7 +398,7 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
 
             Parameter minstep =
                 (Parameter)_dir.getAttribute("MinimumStepSize");
-            minstep.setExpression("1e-60");
+            minstep.setExpression("1e-6");
             minstep.parameterChanged(null);
             
             Parameter solver1 =
@@ -375,13 +408,39 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
             solver1.setToken(token1);
             solver1.parameterChanged(null);
            
-            
             Parameter solver2 =
                 (Parameter)_dir.getAttribute("ODESolver");
             StringToken token2 = new StringToken(
                     "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
             solver2.setToken(token2);
             solver2.parameterChanged(null);
+
+            // sub dir parameters
+             initstep = 
+                (Parameter)subdir.getAttribute("InitialStepSize");
+            initstep.setExpression("0.01");
+            initstep.parameterChanged(null);
+
+             minstep =
+                (Parameter)subdir.getAttribute("MinimumStepSize");
+            minstep.setExpression("1e-6");
+            minstep.parameterChanged(null);
+            
+            solver1 =
+                (Parameter)subdir.getAttribute("BreakpointODESolver");
+            token1 = new StringToken(
+                    "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
+            solver1.setToken(token1);
+            solver1.parameterChanged(null);
+           
+            
+            solver2 =
+                (Parameter)subdir.getAttribute("ODESolver");
+            token2 = new StringToken(
+                    "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver");
+            solver2.setToken(token2);
+            solver2.parameterChanged(null);
+
 
             // CTActorParameters
             Parameter Pxi = (Parameter)Px.getAttribute("InitialState");
@@ -433,6 +492,8 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
             _paramStopT = (Parameter)_dir.getAttribute("StopTime");
             //System.out.println(sys.description());
             System.out.println(_dir.getScheduler().description());
+            System.out.println(subdir.getScheduler().description());
+
         } catch (Exception ex) {
             System.err.println("Setup failed: " + ex.getMessage());
             ex.printStackTrace();
