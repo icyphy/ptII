@@ -32,6 +32,7 @@ package ptolemy.copernicus.java;
 
 import ptolemy.copernicus.kernel.CastAndInstanceofEliminator;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
+import ptolemy.data.type.BaseType;
 
 import soot.Body;
 import soot.BodyTransformer;
@@ -123,7 +124,9 @@ public class TokenInstanceofEliminator extends BodyTransformer
 
                     // Don't try to replace non-instantiable types, since they
                     // might be more refined later.
-                    if(!type.isInstantiable()) {
+                    // General, is unfortuantely, considered instantiable.
+                    if(!type.isInstantiable() ||
+                            type.equals(BaseType.GENERAL)) {
                         continue;
                     }
 

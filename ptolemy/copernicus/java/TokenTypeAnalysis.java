@@ -100,13 +100,13 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
     /** Return the set of other fields and locals that must reference
      *  the same object as the given field, at a point before
      *  the given unit.  If no information is available about the local,
-     *  then return ptolemy.data.type.BaseType.GENERAL
+     *  then return ptolemy.data.type.BaseType.UNKNOWN;
      */
     public ptolemy.data.type.Type getTypeOfAfter(Local local, Unit unit) {
         Map map = (Map)getFlowAfter(unit);
         Object object = map.get(local);
         if (object == null) {
-            return ptolemy.data.type.BaseType.GENERAL;
+            return ptolemy.data.type.BaseType.UNKNOWN;
         }
         return (ptolemy.data.type.Type)object;
     }
@@ -114,7 +114,7 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
     /** Return the set of other fields and locals that must reference
      *  the same object as the given field, at a point before
      *  the given unit.   If no information is available about the local,
-     *  then return ptolemy.data.type.BaseType.GENERAL
+     *  then return ptolemy.data.type.BaseType.UNKNOWN;
      */
     public ptolemy.data.type.Type getTypeOfBefore(Local local, Unit unit) {
         Map map = (Map)getFlowBefore(unit);
@@ -122,7 +122,7 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
         Object object = map.get(local);
         //  System.out.println("local = " + local + ", object = " + object);
         if (object == null) {
-            return ptolemy.data.type.BaseType.GENERAL;
+            return ptolemy.data.type.BaseType.UNKNOWN;
         }
         return (ptolemy.data.type.Type)object;
     }
