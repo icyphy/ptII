@@ -1,6 +1,6 @@
 /* Base class for Colt Random Sources.
 
-Copyright (c) 1998-2004 The Regents of the University of California.
+Copyright (c) 2004 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -108,64 +108,6 @@ public abstract class ColtRandomSource extends RandomSource
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** This method creates the parameter object if it does not yet exist,
-     *  and sets it in the container, or simply gets it from the container
-     *  and adds it to the high level RNG actor.
-     */
-    public Parameter getRandomNumberGeneratorClass(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
-        randomNumberGeneratorClass =
-            (Parameter) container.getAttribute("randomNumberGenerator");
-        seed = (Parameter) container.getAttribute("seed");
-
-        if (randomNumberGeneratorClass == null) {
-            randomNumberGeneratorClass =
-                new Parameter(container, "randomNumberGenerator",
-                        new StringToken(_randomNumberGeneratorClassNames[_index]));
-
-            ChoiceStyle s = new ChoiceStyle(randomNumberGeneratorClass, "s");
-            for (int i = 0; i < _randomNumberGeneratorClassNames.length; i++) {
-                Parameter a =
-                    new Parameter(s, "s" + i,
-                            new StringToken(_randomNumberGeneratorClassNames[i]));
-            }
-        }
-
-        if (seed == null) {
-            seed =
-                new Parameter(container, "seed", new LongToken(_seed));
-            seed.setTypeEquals(BaseType.LONG);
-        }
-
-        _addAttribute(randomNumberGeneratorClass);
-        _addAttribute(seed);
-
-        randomNumberGeneratorClass.addChangeListener(this);
-        seed.addChangeListener(this);
-
-        if (_randomNumberGenerator == null) {
-            System.err.println("Unable to create randomNumberGenerator!");
-        }
-        return randomNumberGeneratorClass;
-    }
-
-    /** Send a random number to the output.
-     *  This number is only changed in the prefire() method, so it will
-     *  remain constant throughout an iteration.
-     *  @exception IllegalActionException If there is no director.
-     */
-    public void fire() throws IllegalActionException {
-        super.fire();
-    }
-
-    /** Calculate the next random number.
-     *  @exception IllegalActionException If the base class throws it.
-     *  @return True if it is ok to continue.
-     */
-    public boolean prefire() throws IllegalActionException {
-        return super.prefire();
-    }
-
     /** Override the changeFailed method in ChangeListener.
      *  No defined processing.
      */
@@ -220,19 +162,82 @@ public abstract class ColtRandomSource extends RandomSource
         }
     }
 
+    /** Send a random number to the output.
+     *  This number is only changed in the prefire() method, so it will
+     *  remain constant throughout an iteration.
+     *  @exception IllegalActionException If there is no director.
+     */
+    public void fire() throws IllegalActionException {
+        super.fire();
+    }
+
+    /** Calculate the next random number.
+     *  @exception IllegalActionException If the base class throws it.
+     *  @return True if it is ok to continue.
+     */
+    public boolean prefire() throws IllegalActionException {
+        return super.prefire();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** This method creates the parameter object if it does not yet exist,
+     *  and sets it in the container, or simply gets it from the container
+     *  and adds it to the high level RNG actor.
+     */
+    protected Parameter _getRandomNumberGeneratorClass(
+            CompositeEntity container)
+            throws IllegalActionException, NameDuplicationException {
+        randomNumberGeneratorClass =
+            (Parameter) container.getAttribute("randomNumberGenerator");
+        seed = (Parameter) container.getAttribute("seed");
+
+        if (randomNumberGeneratorClass == null) {
+            randomNumberGeneratorClass =
+                new Parameter(container, "randomNumberGenerator",
+                        new StringToken(
+                                _randomNumberGeneratorClassNames[_index]));
+
+            ChoiceStyle s = new ChoiceStyle(randomNumberGeneratorClass, "s");
+            for (int i = 0; i < _randomNumberGeneratorClassNames.length; i++) {
+                Parameter a =
+                    new Parameter(s, "s" + i,
+                            new StringToken(
+                                    _randomNumberGeneratorClassNames[i]));
+            }
+        }
+
+        if (seed == null) {
+            seed =
+                new Parameter(container, "seed", new LongToken(_seed));
+            seed.setTypeEquals(BaseType.LONG);
+        }
+
+        _addAttribute(randomNumberGeneratorClass);
+        _addAttribute(seed);
+
+        randomNumberGeneratorClass.addChangeListener(this);
+        seed.addChangeListener(this);
+
+        if (_randomNumberGenerator == null) {
+            System.err.println("Unable to create randomNumberGenerator!");
+        }
+        return randomNumberGeneratorClass;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** This is the high-level RNG.
+    /** The high-level RNG.
      */
     protected AbstractDistribution _rng;
 
-    /** This is the low-level RNG shared between all high level RNGs.
+    /** The low-level RNG shared between all high level RNGs.
      */
     protected static RandomElement _randomNumberGenerator;
 
-    /** randomNumberGeneratorClassNames.
-     *  This is the list of available RandomElement classes.
+    /** The list of available RandomElement classes.
      */
     protected String [] _randomNumberGeneratorClassNames =
     {
@@ -243,10 +248,11 @@ public abstract class ColtRandomSource extends RandomSource
         "Ranmar"
     };
 
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** This int is the index of the currently used _randomNumberGenerator in the
+    /** The index of the currently used _randomNumberGenerator in the
      *  _randomNumberGeneratorClassNames array.
      */
     private static int _index = 0;
