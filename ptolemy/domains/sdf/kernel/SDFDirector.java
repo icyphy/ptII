@@ -184,17 +184,34 @@ public class SDFDirector extends StaticSchedulingDirector {
             Enumeration allactors = s.schedule();
             while (allactors.hasMoreElements()) {
                 Actor actor = (Actor)allactors.nextElement();
+
+		// Notify of the prefire event. 
+		if(_debugging) {
+		    _debug(new FiringEvent(this, actor, FiringEvent.PREFIRE));
+		}
+
                 if(!actor.prefire()) {
                     throw new IllegalActionException(this,
                             (ComponentEntity) actor, "Actor " +
                             "is not ready to fire.");
                 }
 
-                if(_debugging)
+                if(_debugging) {		    
                     _debug("Firing " + ((Nameable)actor).getFullName());
+		    _debug(new FiringEvent(this, actor, FiringEvent.FIRE));
+		}
 
                 actor.fire();
+
+		if(_debugging) {
+		    _debug(new FiringEvent(this, actor, FiringEvent.POSTFIRE));
+		}
+
                 _postfirereturns = _postfirereturns && actor.postfire();
+
+		if(_debugging) {
+		    _debug(new FiringEvent(this, actor, FiringEvent.POSTPOSTFIRE));
+		}
             }
         }
     }
