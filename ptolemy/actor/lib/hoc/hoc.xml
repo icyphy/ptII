@@ -6,26 +6,25 @@
     <?moml
       <group>
       <doc>Higher-Order Computation Infrastructure.</doc>
-      <entity name="ApplyFunction" class="ptolemy.actor.lib.hoc.ApplyFunction">
-        <doc>The function is applied to its input data.</doc>
-      </entity>
+      <!-- entity name="ApplyFunction" class="ptolemy.actor.lib.hoc.ApplyFunction"-->
+        <!-- <doc>The function is applied to its input data.</doc> -->
+      <!-- /entity-->
 
-      <entity name="ApplyFunctionOverSequence" class="ptolemy.actor.lib.hoc.ApplyFunctionOverSequence">
-        <doc>The function is applied to its input data.</doc>
-      </entity>
-
-      <entity name="IterateComposite" class="ptolemy.actor.lib.hoc.IterateOverArray$IterateComposite">
-          <property name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
-              <property name="iterations" value="0"/>
-              <property name="_location" class="ptolemy.kernel.util.Location" value="{70, 35}"/>
-          </property>
-      </entity>
+      <!-- entity name="ApplyFunctionOverSequence" class="ptolemy.actor.lib.hoc.ApplyFunctionOverSequence"-->
+        <!-- <doc>The function is applied to its input data.</doc> -->
+      <!-- /entity-->
 
       <entity name="IterateOverArray" class="ptolemy.actor.lib.hoc.IterateOverArray">
         <doc>Iterate a contained actor over input arrays</doc>
         <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon"/>
         <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory"/>
         <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory"/>
+        <entity name="IterateComposite" class="ptolemy.actor.lib.hoc.IterateOverArray$IterateComposite">
+          <property name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
+              <property name="iterations" value="0"/>
+              <property name="_location" class="ptolemy.kernel.util.Location" value="{70, 35}"/>
+          </property>
+        </entity>
       </entity>
 
       <entity name="MobileFunction" class="ptolemy.actor.lib.hoc.MobileFunction">
