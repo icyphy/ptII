@@ -105,8 +105,8 @@ public class HTMLViewerTableau extends Tableau {
                 URL toRead = MoMLApplication.specToURL(urlSpec);
                 ((HTMLViewer)getFrame()).setPage(toRead);
             } catch (IOException ex) {
-                throw new IllegalActionException(this,
-                        "Cannot open URL: " + urlSpec + "\n" + ex.toString());
+                throw new IllegalActionException(this, ex,
+                        "Cannot open URL: " + urlSpec);
             }
         } else {
             super.attributeChanged(attribute);
