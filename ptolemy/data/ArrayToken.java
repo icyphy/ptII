@@ -32,11 +32,10 @@ package ptolemy.data;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.type.Type;
-import ptolemy.data.type.BaseType;
 import ptolemy.data.type.ArrayType;
-import ptolemy.data.type.TypeLattice;
 
 //////////////////////////////////////////////////////////////////////////
 //// ArrayToken
@@ -83,7 +82,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     public ArrayToken(String init) throws IllegalActionException {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
-        Token token = tree.evaluateParseTree();
+        ParseTreeEvaluator evaluator = new ParseTreeEvaluator();
+        Token token = evaluator.evaluateParseTree(tree);
 
         if (token instanceof ArrayToken) {
             Token[] value = ((ArrayToken)token).arrayValue();
@@ -98,7 +98,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     ////                         public methods                    ////
 
     /** Add the given token to each element of this array.
-     *  @return An array token.
+     *  @return A new array token.
      *  @exception IllegalActionException If the argument token is not
      *  of a type that can be added to an element of this token.
      */
