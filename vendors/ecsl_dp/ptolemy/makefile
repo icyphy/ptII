@@ -129,10 +129,10 @@ cg/cruiseControlECSL:
 	$(PTII)/bin/copernicus -codeGenerator shallow \
 		-outputDirectory $(PTII)/$(TARGETPATH) \
 		-targetPath $(TARGETPATH) \
-		a.xml
+		cruiseControlECSL.moml
 
 run_cg:
-	$(JAVA) -verbose \
+	$(JAVA) \
 	-classpath "$(PTII)/$(TARGETPATH)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
         "-Dptolemy.ptII.dir=c:/cxh/ptII" \
         "ptolemy.actor.gui.CompositeActorSimpleApplication" \
@@ -194,8 +194,11 @@ gcj:
 		--main=ptolemy.actor.gui.CompositeActorSimpleApplication \
 		-o cruiseControl_gcj cruiseControl.jar
 
+run_gcj:
+	(cd cg ; ../cruiseControl_gcj -class cruiseControlECSL.CGcruiseControlECSL )
+
 run:
-	$(JAVA) -verbose \
+	$(JAVA) \
 		 -classpath $(PTII) ptolemy.actor.gui.MoMLSimpleApplication \
 		cruiseControlECSL.moml
 # Ptolemy II dirs
@@ -247,10 +250,13 @@ gcj_dirs:
 # Find the names of missing files
 missing: missing1 run_missing2
 missing1:
-	grep "undefined reference" gcj2.out | grep ::class | awk '{print substr($$5, 2, length($$5)-2)}' | sed -e 's@::class\$$@.class@' -e 's@::@/@g' | sort | uniq 
+	grep "undefined reference" gcj2.out | grep ::class | awk '{print substr($$5, 2, length($$5)-2)}' | sed -e 's@::class\$$@.class@' -e 's@::@/@g' | sort | uniq  | grep -v XMLParser.class | grep -v Document.class
+
+
+
 
 run_missing2:
-	./missing2
+	./missing2 | grep -v XMLParser.class | grep -v Document.class
 
 update_jar:
 	cp c.jar cruiseControl.jar
