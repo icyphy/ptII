@@ -594,7 +594,7 @@ public class FixPoint implements Cloneable, Serializable {
      *  @return the BigDecimal representing 2^exponent.
      */
     private BigDecimal _getTwoRaisedTo(int number) {
-        if ( number <= 128 || number >= 0 ) {
+        if ( number <= _twoRaisedTo.length && number >= 0 ) {
             return _twoRaisedTo[number];
         } else {
             BigInteger two = _two.toBigInteger();
@@ -611,12 +611,16 @@ public class FixPoint implements Cloneable, Serializable {
     /** Static reference to the BigDecimal representation of one. */
     private static BigDecimal _one  = new BigDecimal("1");
 
-    /** Calculate the table containing 2^x, with 0 < x < 64. Purpose
-     *  is to speed up calculations involving calculating 2^x. The table is
-     *  calculated using BigDecimal, since this make the transformation from
-     *  string of bits to a double easier.
-     */
-    private static BigDecimal[] _twoRaisedTo = new BigDecimal[128];
+    /** The size of the pre-computed _twoRaisedTo powers of two array **/
+    private static final int TWORAISEDTOSIZE = 128;
+
+    /** Calculate the table containing 2^x, with 0 < x < TWORAISEDTOSIZE.
+     *   Purpose is to speed up calculations involving calculating
+     *   2^x. The table is calculated using BigDecimal, since this
+     *   make the transformation from string of bits to a double
+     *   easier.
+     **/
+    private static BigDecimal[] _twoRaisedTo = new BigDecimal[TWORAISEDTOSIZE];
 
     /** Static reference to the BigDecimal representation of two. */
     private static BigDecimal _two = new BigDecimal("2");
@@ -631,7 +635,7 @@ public class FixPoint implements Cloneable, Serializable {
     static {
 	BigDecimal two = _two;
 	BigDecimal powerOf2  = _one;
-	for (int i = 0; i <= 64; i++) {
+	for (int i = 0; i <= _twoRaisedTo.length; i++) {
 	    _twoRaisedTo[i] = powerOf2;
 	    powerOf2 = powerOf2.multiply(two);
 	}
