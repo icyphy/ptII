@@ -39,6 +39,8 @@ import ptolemy.actor.gui.*;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
 
+import java.net.URL;
+
 import ptolemy.domains.pn.kernel.*;
 import ptolemy.domains.pn.lib.*;
 import ptolemy.domains.pn.demo.QR.*;
@@ -81,9 +83,6 @@ public class QRcompileApplet extends PNApplet implements QueryListener {
             _query.addLine("N", "Number of Antenna's", "6");
 
             getContentPane().add( _query );
-
-            // The 2 argument requests a go and stop button.
-            getContentPane().add(_createRunControls(2));
 
 	    _eventplot = new SequencePlotter(_toplevel, "plot");
             _eventplot.place(getContentPane());
@@ -138,16 +137,18 @@ public class QRcompileApplet extends PNApplet implements QueryListener {
 
 	    _toplevel.connect(_s2m.output, _matrixViewer.input);
 
-            System.out.println(_toplevel.exportMoML());
-            _initCompleted = true;
+            // System.out.println(_toplevel.exportMoML());
 
+            _initCompleted = true;
+	    
+	    // The 2 argument requests a go and stop button.
+            getContentPane().add(_createRunControls(2));
+            
             StreamListener sa = new StreamListener();
 	    _ND_66.addDebugListener(sa);
 
             StreamListener sa2 = new StreamListener();
-	    _s2m.addDebugListener(sa2);
-            
-        
+	    _s2m.addDebugListener(sa2);        
 	
 	} catch (Exception ex) {
             report("Setup failed:", ex);
@@ -185,22 +186,29 @@ public class QRcompileApplet extends PNApplet implements QueryListener {
         try {
 
 	    if ( name == "K" ) {
-		_ND_6.parameter_K.
-			setToken(new IntToken((int)_query.intValue("K")));
-		_ND_14.parameter_K.
-			setToken(new IntToken((int)_query.intValue("K")));
-		_ND_66.parameter_K.
-			setToken(new IntToken((int)_query.intValue("K")));
-		_ND_36.parameter_K.
-			setToken(new IntToken((int)_query.intValue("K")));
-		_ND_86.parameter_K.
-			setToken(new IntToken((int)_query.intValue("K")));
+		int k = (int)_query.intValue("K");
+		if ( (k < 501) && (k>0) ) {
+		    _ND_6.parameter_K.
+			    setToken(new IntToken((int)_query.intValue("K")));
+		    _ND_14.parameter_K.
+			    setToken(new IntToken((int)_query.intValue("K")));
+		    _ND_66.parameter_K.
+			    setToken(new IntToken((int)_query.intValue("K")));
+		    _ND_36.parameter_K.
+			    setToken(new IntToken((int)_query.intValue("K")));
+		    _ND_86.parameter_K.
+			    setToken(new IntToken((int)_query.intValue("K")));
+		} else {
+		    throw new IllegalActionException(" Select a number between 1 < K < 500 ");
+		}
 	    }
 	    
 	    if ( name == "N" ) {
+		int n = (int)_query.intValue("N");
+		if ( (n<17) && ( n>1) ) {
 		_s2m.dimension.
 			setToken(new IntToken((int)_query.intValue("N")));
-		_ND_6.parameter_N.
+	        _ND_6.parameter_N.
 			setToken(new IntToken((int)_query.intValue("N")));
 		_ND_14.parameter_N.
 			setToken(new IntToken((int)_query.intValue("N")));
@@ -210,6 +218,10 @@ public class QRcompileApplet extends PNApplet implements QueryListener {
 			setToken(new IntToken((int)_query.intValue("N")));
 		_ND_86.parameter_N.
 			setToken(new IntToken((int)_query.intValue("N")));
+		} else {
+		    throw new IllegalActionException(" Select a number between 1 < N < 16 ");
+		}
+		_go();
 	    }
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex.toString());

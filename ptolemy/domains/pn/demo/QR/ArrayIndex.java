@@ -6,7 +6,6 @@ import java.util.*;
 public class ArrayIndex extends TreeMap {
 
     SourceMatrix  x_0;
-    SourceMatrix1 x_1;
     
     //    private Map _map = Collections.synchronizedMap(new HashMap());
     private Map _map = new HashMap();
@@ -67,18 +66,11 @@ public class ArrayIndex extends TreeMap {
 	if ( filename == "U_1000x16" ) {
             
 	    // System.out.println(" ---- CREATE U_1000x16 ----- ");
-	    for (int i=0;i<575;i++) {
+	    for (int i=0;i<500;i++) {
 		for (int j=0;j<16;j++) {
 		    String key = atKey(i+1,j+1);
 		    // System.out.println("\n Key: " + key );
 		    _map.put(key, new Double( x_0.sourcematrix_0[i][j] ));
-		}
-	    }
-	    for (int i=575;i<1000;i++) {
-		for (int j=0;j<16;j++) {
-		    String key = atKey(i+1,j+1);
-		    // System.out.println("\n Key: " + key );
-		    _map.put(key, new Double( x_1.sourcematrix_1[i-575][j] ));
 		}
 	    }
 	} else {
