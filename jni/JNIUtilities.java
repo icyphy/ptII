@@ -50,7 +50,11 @@ import java.util.Vector;
 A collection of utilities for generating Java Native Interface classes
 
 For information about how to create shared libraries under Windows using
-Cygwin, see <a href="http://cygwin.com/cygwin-ug-net/dll.html"><code>http://cygwin.com/cygwin-ug-net/dll.html</code></a>
+Cygwin, see
+<a href="http://cygwin.com/cygwin-ug-net/dll.html" target="_top"><code>http://cygwin.com/cygwin-ug-net/dll.html</code></a>
+
+<p>For information about using JNI with Cygwin, see
+ <a href="http://www.inonit.com/cygwin/jni/helloWorld/c.html" target="_top"><code>http://www.inonit.com/cygwin/jni/helloWorld/c.html</code></a>
 
 @author Vincent Arnould (vincent.arnould@thalesgroup.com), contributor Christopher Hylands
 @version $Id$
@@ -202,13 +206,13 @@ public class JNIUtilities {
             "jni" + nativeFuncName.substring(
                     1, nativeFuncName.length() - 1);
 
-        List argList = actor.argumentsList();
-        Iterator ite = argList.iterator();
-        while (ite.hasNext()) {
-            Argument arg = (Argument) ite.next();
-            if (!(arg == null) && arg.isReturn()) {
-                returnJType = arg.getJType();
-                returnName = arg.getName();
+        List argumentsList = actor.argumentsList();
+        Iterator arguments = argumentsList.iterator();
+        while (arguments.hasNext()) {
+            Argument argument = (Argument) arguments.next();
+            if (!(argument == null) && argument.isReturn()) {
+                returnJType = argument.getJType();
+                returnName = argument.getName();
                 break;
             }
         }
@@ -271,15 +275,15 @@ public class JNIUtilities {
             + _getArgsInOutWithJType(actor, ",")
             + ") {\n";
 
-        ite = _getArgsOut(actor).iterator();
-        while (ite.hasNext()) {
-            String name = ((Argument) ite.next()).getName();
+        arguments = _getArgsOut(actor).iterator();
+        while (arguments.hasNext()) {
+            String name = ((Argument) arguments.next()).getName();
             str = str + "_" + name + " = " + name + ";\n";
         }
 
-        ite = _getArgsInOut(actor).iterator();
-        while (ite.hasNext()) {
-            String name = ((Argument) ite.next()).getName();
+        arguments = _getArgsInOut(actor).iterator();
+        while (arguments.hasNext()) {
+            String name = ((Argument) arguments.next()).getName();
             str = str + "_" + name + " = " + name + ";\n";
         }
         str =
@@ -342,24 +346,24 @@ public class JNIUtilities {
         str = str + "///////////// public fields\n" + "\n";
 
         //out
-        ite = _getArgsOut(actor).iterator();
-        while (ite.hasNext()) {
-            Argument arg = (Argument) ite.next();
+        arguments = _getArgsOut(actor).iterator();
+        while (arguments.hasNext()) {
+            Argument arg = (Argument) arguments.next();
             str = str + "public " + arg.getJType() + " "
                 + "_" + arg.getName() + ";\n";
         }
         //inout
-        ite = _getArgsInOut(actor).iterator();
-        while (ite.hasNext()) {
-            Argument arg = (Argument) ite.next();
+        arguments = _getArgsInOut(actor).iterator();
+        while (arguments.hasNext()) {
+            Argument arg = (Argument) arguments.next();
             str = str + "public " + arg.getJType() + " "
                 + "_" + arg.getName() + ";\n";
         }
 
         //in
-        ite = _getArgsIn(actor).iterator();
-        while (ite.hasNext()) {
-            Argument arg = (Argument) ite.next();
+        arguments = _getArgsIn(actor).iterator();
+        while (arguments.hasNext()) {
+            Argument arg = (Argument) arguments.next();
             str = str + "public " + arg.getJType() + " "
                 + "_" + arg.getName() + ";\n";
         }
@@ -432,29 +436,30 @@ public class JNIUtilities {
         String interFuncName =
             "jni" + nativeFuncName.substring(1,
                     nativeFuncName.length() - 1);
-        List argList = actor.argumentsList();
-        Iterator ite = argList.iterator();
-        while (ite.hasNext()) {
-            Argument arg = (Argument) ite.next();
-            if (!(arg == null) && arg.isReturn()) {
-                returnType = arg.getCType();
-                returnName = arg.getName();
+        List argumentsList = actor.argumentsList();
+        Iterator arguments = argumentsList.iterator();
+        while (arguments.hasNext()) {
+            Argument argument = (Argument) arguments.next();
+            if (!(argument == null) && argument.isReturn()) {
+                returnType = argument.getCType();
+                returnName = argument.getName();
                 break;
             }
         }
 
         String returnJNIType = "";
-        ite = _getArgs(actor, false, false, true).iterator();
-        if (ite.hasNext()) {
-            Argument arg = (Argument) ite.next();
-            returnJNIType = arg.getJNIType();
+        arguments = _getArgs(actor, false, false, true).iterator();
+        if (arguments.hasNext()) {
+            Argument argument = (Argument) arguments.next();
+            returnJNIType = argument.getJNIType();
         }
 
         String returnJType2;
-        if (returnType.equals("void"))
+        if (returnType.equals("void")) {
             returnJType2 = "";
-        else
+        } else {
             returnJType2 = returnType + " ";
+	}
         str = "#include \"jni.h\" \n"
             // le fichier entete de la librairie existante
             +"#include <iostream>\n"
@@ -510,11 +515,11 @@ public class JNIUtilities {
             + "{\n"
             + "                // Declaration des sorties\n";
 
-        ite = _getArgsOut(actor).iterator();
-        while (ite.hasNext()) {
-            Argument arg = (Argument) ite.next();
-            str = str + arg.getJNIType() + " "
-                + arg.getName() + ";\n";
+        arguments = _getArgsOut(actor).iterator();
+        while (arguments.hasNext()) {
+            Argument argument = (Argument) arguments.next();
+            str = str + argument.getJNIType() + " "
+                + argument.getName() + ";\n";
         }
 
         str =
@@ -526,9 +531,9 @@ public class JNIUtilities {
             + "                // appel de la librairie existante\n\n";
 
         //For the array inout and in
-        ite = _getArgsInOut(actor).iterator();
-        while(ite.hasNext()) {
-            Argument arg = (Argument) ite.next();
+        arguments = _getArgsInOut(actor).iterator();
+        while(arguments.hasNext()) {
+            Argument arg = (Argument) arguments.next();
             String typ = arg.getJType();
             if(typ.endsWith("[]"))
                 {
@@ -543,12 +548,11 @@ public class JNIUtilities {
         }
 
 
-        ite = _getArgsIn(actor).iterator();
-        while(ite.hasNext()) {
-            Argument arg = (Argument) ite.next();
+        arguments = _getArgsIn(actor).iterator();
+        while(arguments.hasNext()) {
+            Argument arg = (Argument) arguments.next();
             String typ = arg.getJType();
-            if(typ.endsWith("[]"))
-                {
+            if(typ.endsWith("[]")) {
                     typ = typ.substring(0, typ.length()-2);
                     str = str + "j" + typ  + "Array *" + arg.getName() + "_1 =" +
                         "(j" + typ + "Array*)env->Get" + typ.substring(0, 1).toUpperCase()
@@ -563,7 +567,7 @@ public class JNIUtilities {
 
 
         //if they is a return
-        if (!returnJNIType.equals("void"))
+        if (!returnJNIType.equals("void")) {
             str =
                 str
                 + returnJNIType
@@ -572,6 +576,7 @@ public class JNIUtilities {
                 + " = ("
                 + returnJNIType
                 + ")";
+	}
 
         //native function call
 
@@ -588,9 +593,9 @@ public class JNIUtilities {
 
         //Release memory in native side
         //for in
-        ite = _getArgsIn(actor).iterator();
-        while(ite.hasNext()) {
-            Argument arg = (Argument) ite.next();
+        arguments = _getArgsIn(actor).iterator();
+        while(arguments.hasNext()) {
+            Argument arg = (Argument) arguments.next();
             String typ = arg.getJType();
             if(typ.endsWith("[]"))
                 {
@@ -601,9 +606,9 @@ public class JNIUtilities {
                 }
         }
         //for inout
-        ite = _getArgsInOut(actor).iterator();
-        while(ite.hasNext()) {
-            Argument arg = (Argument) ite.next();
+        arguments = _getArgsInOut(actor).iterator();
+        while(arguments.hasNext()) {
+            Argument arg = (Argument) arguments.next();
             String typ = arg.getJType();
             if(typ.endsWith("[]"))
                 {
@@ -656,14 +661,14 @@ public class JNIUtilities {
 
         str = str + "                // M‰nage\n";
 
-        /*ite = _getArgsOut(actor).iterator();
-          while (ite.hasNext()) {
-          Argument arg = (Argument) ite.next();
+        /*arguments = _getArgsOut(actor).iterator();
+          while (arguments.hasNext()) {
+          Argument arg = (Argument) arguments.next();
           str = str + "delete " + " " + arg.getName() + ";\n";
           }
-          ite = _getArgsInOut(actor).iterator();
-          while (ite.hasNext()) {
-          Argument arg = (Argument) ite.next();
+          arguments = _getArgsInOut(actor).iterator();
+          while (arguments.hasNext()) {
+          Argument arg = (Argument) arguments.next();
           str = str + "delete " + " " + arg.getName() + ";\n";
           }*/
 
