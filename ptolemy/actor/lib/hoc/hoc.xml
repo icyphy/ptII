@@ -6,6 +6,9 @@
     <?moml
       <group>
       <doc>Higher-Order Computation Infrastructure.</doc>
+      <entity name="ApplyFunction" class="ptolemy.actor.lib.hoc.ApplyFunction">
+        <doc>The function is applied to its input data.</doc>
+      </entity>
 
       <entity name="IterateComposite" class="ptolemy.actor.lib.hoc.IterateOverArray$IterateComposite">
           <property name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
