@@ -351,8 +351,8 @@ public abstract class Top extends JFrame {
      *  release any resources or remove any listeners.  In this class,
      *  if the data associated with this window has been modified, as
      *  indicated by isModified(), then ask the user whether to save
-     *  the data before closing.  @return False if the user cancels on
-     *  a save query.
+     *  the data before closing.
+     *  @return False if the user cancels on a save query.
      */
     protected boolean _close() {
         // NOTE: We use dispose() here rather than just hiding the
