@@ -87,7 +87,7 @@ public class Quantizer {
         // double resolution = Math.pow(2,-(precision.getFractionBitLength()+1));// 
 
         int number = precision.getFractionBitLength();
-        double resolution = Math.pow(2,-(number+2));       
+        double resolution = Math.pow(2,-(number+1));       
 
         BigDecimal multiplier;
         if ( x >= 0 ) {
@@ -102,10 +102,12 @@ public class Quantizer {
         fxvalue = kl.toBigInteger();
 
         FixPoint fxp = new FixPoint( precision, fxvalue );
-        // FIXME:
+
+        // Set the overflow flag, if overflow occurred
         if ( overflow ) {
-            // fxp.setError( FixPoint.OVERFLOW );
+            fxp.setError( FixPoint.OVERFLOW );
         }
+
         return fxp; 
     }
     

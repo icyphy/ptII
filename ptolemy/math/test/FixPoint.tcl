@@ -57,7 +57,7 @@ test FixPoint-1.1 {constructors} {
 [$c2 toBitString] [ $c2 toString ] 
 [$c3 toBitString] [ $c3 toString ] "
 } {{
-101.100100101100 5.5732421875 
+101.100100101101 5.573486328125 
 101.1001001011001010010101111010 5.573399998247623 
 -101.110001010010 -4.22998046875 
 -101.1100010100011110101110000101 -4.230000000447035 }}
@@ -71,7 +71,7 @@ test FixPoint-2.1 {add} {
     set c21 [java::call ptolemy.math.Quantizer round -4.23  $p0 ]
     set c22 [$c20 add $c21]
     $c22 toBitString		
-} {1.010101111110}
+} {1.010101111111}
 
 
 test FixPoint-2.2 {add} {
@@ -80,7 +80,7 @@ test FixPoint-2.2 {add} {
     set c25 [java::call ptolemy.math.Quantizer round -4.23  $p2 ]
     set c26 [$c24 add $c25]
     $c26 toBitString
-} {1.010101111110}
+} {1.010101111111}
 
 test FixPoint-2.3 {add} {
     set p3 [java::new ptolemy.math.Precision "(16/3)" ]
@@ -88,7 +88,7 @@ test FixPoint-2.3 {add} {
     set c25 [java::call ptolemy.math.Quantizer round -4.23  $p3]
     set c26 [$c24 add $c25]
     $c26 toBitString
-} {1.1001001011000}
+} {1.1001001011010}
 
 test FixPoint-2.4 {add} {
     set p4 [java::new ptolemy.math.Precision "(14/5)" ]
@@ -96,7 +96,7 @@ test FixPoint-2.4 {add} {
     set c25 [java::call ptolemy.math.Quantizer round -4.23  $p4]
     set c26 [$c24 add $c25]
     $c26 toBitString
-} {1.010101111100}
+} {1.010101111101}
 
 test FixPoint-2.5 {add} {
     set p5 [java::new ptolemy.math.Precision "(14/3)" ]
@@ -104,7 +104,7 @@ test FixPoint-2.5 {add} {
     set c25 [java::call ptolemy.math.Quantizer round -4.23  $p5]
     set c26 [$c24 add $c25]
     $c26 toBitString
-} {1.100100101100}
+} {1.100100101101}
 
 ####################################################################
 
@@ -114,7 +114,7 @@ test FixPoint-3.1 {subtract} {
     set c32 [java::call ptolemy.math.Quantizer round -4.23  $p6 ]
     set c33 [$c31 subtract $c32]
     $c33 toBitString
-} {1001.1100110110}
+} {1001.1100110111}
 
 test FixPoint-3.2 {subtract} {
     set c31 [java::call ptolemy.math.Quantizer round 5.5734 $p6 ]
@@ -131,14 +131,14 @@ test FixPoint-4.1 {multiply} {
     set c42 [java::call ptolemy.math.Quantizer round 4.23   $p6 ]
     set c43 [$c41 multiply $c42]
     $c43 toBitString
-} {10111.10010010011011011001}
+} {10111.10010011110100100100}
 
 test FixPoint-4.2 {multiply} {
     set c44 [java::call ptolemy.math.Quantizer round 7.5734 $p0 ]
     set c45 [java::call ptolemy.math.Quantizer round -7.23  $p0 ]
     set c46 [$c44 multiply $c45]
     $c46 toBitString
-} {-110111.001111101110000000011000}
+} {-110111.001111100110110001101010}
 
 test FixPoint-4.3 {multiply} {
     set c47 [java::call ptolemy.math.Quantizer round 15.5734 $p6 ]
@@ -162,7 +162,7 @@ test FixPoint-5.2 {divide} {
     set c55 [java::call ptolemy.math.Quantizer round -7.23  $p0 ]
     set c56 [$c54 divide $c55]
     $c56 toBitString
-} {-10.111100111110}
+} {-10.111100111101}
 
 test FixPoint-5.3 {divide} {
     set p7 [java::new ptolemy.math.Precision "(32/4)" ]	
@@ -203,7 +203,7 @@ test FixPoint-7.1 {absolute} {
 	    [[$c21 absolute] toBitString ]\
 	    [[$c61 absolute] toBitString ]
 
-} {101.100100101100 100.001110101110 111.1001001011001010010101111010}
+} {101.100100101101 100.001110101110 111.1001001011001010010101111010}
 
 ####################################################################
 
@@ -227,9 +227,9 @@ test FixPoint-8.1 {integer part scaling with saturate} {
 [$r2 toBitString][ $r2 getErrorDescription][ [$r2 getPrecision] toString ]
 [$r3 toBitString][ $r3 getErrorDescription][ [$r3 getPrecision] toString ]"
 } {{
-101.10010010110010 No overflow Occurred(4.14)
-101.10010010110010 No overflow Occurred(4.14)
-101.10010010110010 No overflow Occurred(3.14)
+101.10010010110011 No overflow Occurred(4.14)
+101.10010010110011 No overflow Occurred(4.14)
+101.10010010110011 No overflow Occurred(3.14)
 1.11111111111111 Overflow Occurred(2.14)
 0.11111111111111 Overflow Occurred(1.14)}}
 
@@ -246,9 +246,9 @@ test FixPoint-8.2 {integer part scaling with zero saturate} {
 [$r2 toBitString][ $r2 getErrorDescription][ [$r2 getPrecision] toString ]
 [$r3 toBitString][ $r3 getErrorDescription][ [$r3 getPrecision] toString ]"
 } {{
-101.10010010110010 No overflow Occurred(4.14)
-101.10010010110010 No overflow Occurred(4.14)
-101.10010010110010 No overflow Occurred(3.14)
+101.10010010110011 No overflow Occurred(4.14)
+101.10010010110011 No overflow Occurred(4.14)
+101.10010010110011 No overflow Occurred(3.14)
 0.00000000000000 Overflow Occurred(2.14)
 0.00000000000000 Overflow Occurred(1.14)}}
 
@@ -265,11 +265,11 @@ test FixPoint-8.3 {integer part scaling with truncate} {
 [$r2 toBitString][ $r2 getErrorDescription][ [$r2 getPrecision] toString ]
 [$r3 toBitString][ $r3 getErrorDescription][ [$r3 getPrecision] toString ]"
 } {{
-101.10010010110010 No overflow Occurred(4.14)
-101.10010010110010 No overflow Occurred(4.14)
-101.10010010110010 No overflow Occurred(3.14)
-1.10010010110010 Overflow Occurred(2.14)
-1.10010010110010 Overflow Occurred(1.14)}}
+101.10010010110011 No overflow Occurred(4.14)
+101.10010010110011 No overflow Occurred(4.14)
+101.10010010110011 No overflow Occurred(3.14)
+1.10010010110011 Overflow Occurred(2.14)
+1.10010010110011 Overflow Occurred(1.14)}}
 
 
 test FixPoint-8.4 {negative integer part scaling with saturate} {
@@ -292,9 +292,9 @@ test FixPoint-8.4 {negative integer part scaling with saturate} {
 [$r2 toBitString][ $r2 getErrorDescription][ [$r2 getPrecision] toString ]
 [$r3 toBitString][ $r3 getErrorDescription][ [$r3 getPrecision] toString ]"
 } {{
--110.01101101001110 No overflow Occurred(4.14)
--110.01101101001110 No overflow Occurred(4.14)
--110.01101101001110 No overflow Occurred(3.14)
+-110.01101101001101 No overflow Occurred(4.14)
+-110.01101101001101 No overflow Occurred(4.14)
+-110.01101101001101 No overflow Occurred(3.14)
 -10.00000000000000 Overflow Occurred(2.14)
 -1.00000000000000 Overflow Occurred(1.14)}}
 
@@ -311,9 +311,9 @@ test FixPoint-8.5 {negative integer part scaling with zero saturate} {
 [$r2 toBitString][ $r2 getErrorDescription][ [$r2 getPrecision] toString ]
 [$r3 toBitString][ $r3 getErrorDescription][ [$r3 getPrecision] toString ]"
 } {{
--110.01101101001110 No overflow Occurred(4.14)
--110.01101101001110 No overflow Occurred(4.14)
--110.01101101001110 No overflow Occurred(3.14)
+-110.01101101001101 No overflow Occurred(4.14)
+-110.01101101001101 No overflow Occurred(4.14)
+-110.01101101001101 No overflow Occurred(3.14)
 0.00000000000000 Overflow Occurred(2.14)
 0.00000000000000 Overflow Occurred(1.14)}}
 
@@ -330,11 +330,11 @@ test FixPoint-8.6 {negative integer part scaling with truncate} {
 [$r2 toBitString][ $r2 getErrorDescription][ [$r2 getPrecision] toString ]
 [$r3 toBitString][ $r3 getErrorDescription][ [$r3 getPrecision] toString ]"
 } {{
--110.01101101001110 No overflow Occurred(4.14)
--110.01101101001110 No overflow Occurred(4.14)
--110.01101101001110 No overflow Occurred(3.14)
-10.01101101001110 Overflow Occurred(2.14)
-0.01101101001110 Overflow Occurred(1.14)}}
+-110.01101101001101 No overflow Occurred(4.14)
+-110.01101101001101 No overflow Occurred(4.14)
+-110.01101101001101 No overflow Occurred(3.14)
+10.01101101001101 Overflow Occurred(2.14)
+0.01101101001101 Overflow Occurred(1.14)}}
 
 ####################################################################
 

@@ -357,6 +357,13 @@ public final class FixPoint implements Cloneable, Serializable {
 	return new FixPoint(newprecision, newvalue);
     }
 
+    /** Set the Error of the FixPoint
+        @param error The error condition of the FixPoint
+    */
+    public void setError(Error error) { 
+        _value.setError( error ); 
+    }
+    
     /** Return a new Fixpoint number with value equal to the subtraction
      *  of this Fixpoint number and the argument. The operation is
      *  lossless because the precision of the result is changed to
