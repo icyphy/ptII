@@ -197,8 +197,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             // This exception tends to get eaten by soot, so we print as well.
             System.err.println("Problem writing makefile or html files:" + ex);
             ex.printStackTrace();
-            throw new InternalErrorException("Problem writing the makefile "
-                    + "or htm files: " + ex);
+            throw new InternalErrorException(null, ex,
+                    "Problem writing the makefile or htm files");
         }
 
         // Set up the HashMap we will use when we read in files like
@@ -231,8 +231,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             _model.exportMoML(modelFileWriter);
             modelFileWriter.close();
         } catch (IOException ex) {
-            throw new InternalErrorException("Problem writing '"
-                    + modelFileName + "': " + ex);
+            throw new InternalErrorException(null, ex,
+                    "Problem writing '" + modelFileName + "'");
         }
 
         // The directory that contains the templates.
@@ -274,8 +274,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             // This exception tends to get eaten by soot, so we print as well.
             System.err.println("Problem writing makefile or html files:" + ex);
             ex.printStackTrace();
-            throw new InternalErrorException("Problem writing the makefile "
-                    + "or htm files: " + ex);
+            throw new InternalErrorException(null, ex,
+                    "Problem writing the makefile or htm files");
         }
     }
 
@@ -302,6 +302,37 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     }
 
 
+
+            
+    // If jarFile exists, optionally copy it and return true.
+    // If jarFile does not exist, return false.
+    private boolean _copyPotentialJarFile(String jarFile, String className,
+            HashSet jarFilesThatHaveBeenRequired) 
+            throws IOException  {
+
+        File potentialSourceJarFile =
+            new File(_ptIIDirectory, jarFile);
+
+        System.out.println("AppletWriter: className: " + className
+                + "\tpotentialSourceJarFile: "
+                + potentialSourceJarFile);
+
+        if (potentialSourceJarFile.exists()) {
+            jarFilesThatHaveBeenRequired.add(jarFile);
+            if (_codeBase.equals(".")) {
+                // If the codeBase is equal to the current directory,
+                // we copy the jar file.
+
+
+                // Ptolemy II development trees will have jar files
+                // if 'make install' was run.
+                _copyFile(_ptIIDirectory + File.separator + jarFile,
+                        _outputDirectory, jarFile);
+            }
+            return true;
+        }
+        return false;
+    }
 
     // find jar necessary jar files and optionally copy jar files into
     // _outputDirectory.  Note that we need look for jar files to find
@@ -369,28 +400,10 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 continue;
             }
 
-            File potentialSourceJarFile =
-                new File(_ptIIDirectory, (String)classMap.get(className));
+            if (!_copyPotentialJarFile((String)classMap.get(className),
+                        className, jarFilesThatHaveBeenRequired)) {
+                // The className could not be found in the classMap
 
-            System.out.println("AppletWriter: className: " + className
-                    + "\tpotentialSourceJarFile: "
-                    + potentialSourceJarFile);
-
-            if (potentialSourceJarFile.exists()) {
-                jarFilesThatHaveBeenRequired
-                    .add((String)classMap.get(className));
-		if (_codeBase.equals(".")) {
-		    // If the codeBase is equal to the current directory,
-		    // we copy the jar file.
-
-		    // Ptolemy II development trees will have jar files
-		    // if 'make install' was run.
-		    _copyFile(_ptIIDirectory + File.separator
-                            + (String)classMap.get(className),
-                            _outputDirectory,
-                            (String)classMap.get(className));
-		}
-            } else {
                 // Under Web Start, the resource that contains a class
                 // will have a mangled name, so we copy the jar file.
                 String classResource =
@@ -420,45 +433,64 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 String canonicalPtIIDirectory =
                     UtilityFunctions.findFile(_ptIIDirectory);
                 if (canonicalClassResource.equals(canonicalPtIIDirectory)) {
-		    String warning = "Looking up '" + className
-                        + "' returned the $PTII directory '"
-                        + _ptIIDirectory + "' instead of a jar file. "
-                        + " Perhaps you need to run 'make install'"
-                        + "to create the jar files?";
-		    if (_codeBase.equals(".")) {
-			// We only need print an error message if
-			// we are actually trying to copy the file
-			throw new IOException(warning 
-                                + "\nIf the jar files are not "
-                                + "present, then we cannot copy "
-                                + "them to the new location.");
-		    } else {
-			// Print it so that the user knows that running
-			// make install would be a good job
-			System.out.println("Warning: " + warning
-                                + "\nIf the jar files are not "
-                                + "present, then the archive "
-                                + "applet parameter will not "
-                                + "include all of the jar files.");
-			fixJarFiles = true;
-			continue;
-		    }
+                    // Failed to find the jar file.
+
+                    // Look for a jar file under $PTII in the directory
+                    // where the class is found.  If the class is foo.bar.biz,
+                    // the we look for $PTII/foo/bar/bar.jar
+
+                    String pathName = className.replace('.', '/');
+                    String directoryName = pathName.substring(0,  
+                            pathName.lastIndexOf("/"));
+                    String jarFileName = directoryName + "/"
+                        + directoryName.substring(
+                                directoryName.lastIndexOf("/"))
+                        + ".jar";
+
+                    if (_copyPotentialJarFile(jarFileName,
+                        className, jarFilesThatHaveBeenRequired)) {
+                        
+                    } else {   
+                        String warning = "Looking up '" + className
+                            + "' returned the $PTII directory '"
+                            + _ptIIDirectory + "' instead of a jar file. "
+                            + " Perhaps you need to run 'make install'"
+                            + "to create the jar files?";
+                        if (_codeBase.equals(".")) {
+                            // We only need print an error message if
+                            // we are actually trying to copy the file
+                            throw new IOException(warning 
+                                    + "\nIf the jar files are not "
+                                    + "present, then we cannot copy "
+                                    + "them to the new location.");
+                        } else {
+                            // Print it so that the user knows that running
+                            // make install would be a good job
+                            System.out.println("Warning: " + warning
+                                    + "\nIf the jar files are not "
+                                    + "present, then the archive "
+                                    + "applet parameter will not "
+                                    + "include all of the jar files.");
+                            fixJarFiles = true;
+                            continue;
+                        }
+                    }
                 }
 
-                System.out.println("AppletWriter: "
-                        + "\n\tclassResource:    " + classResource
-                        + "\n\t_outputDirectory: " + _outputDirectory
-                        + "\n\tclassName:        " + className
-                        + "\n\tclassMap.get():   "
-                        + (String)classMap.get(className));
-                jarFilesThatHaveBeenRequired
-                    .add((String)classMap.get(className));
-		if (_codeBase.equals(".")) {
-		    // If the codeBase is equal to the current directory,
-		    // we copy the jar file.
-		    _copyFile(classResource, _outputDirectory,
-                            (String)classMap.get(className));
-		} 
+//                 System.out.println("AppletWriter: "
+//                         + "\n\tclassResource:    " + classResource
+//                         + "\n\t_outputDirectory: " + _outputDirectory
+//                         + "\n\tclassName:        " + className
+//                         + "\n\tclassMap.get():   "
+//                         + (String)classMap.get(className));
+//                 jarFilesThatHaveBeenRequired
+//                     .add((String)classMap.get(className));
+// 		if (_codeBase.equals(".")) {
+// 		    // If the codeBase is equal to the current directory,
+// 		    // we copy the jar file.
+// 		    _copyFile(classResource, _outputDirectory,
+//                             (String)classMap.get(className));
+// 		} 
             }
         }
 
@@ -501,8 +533,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             throws IOException {
         File sourceFile = new File(sourceFileName);
         if ( !sourceFile.isFile()) {
-            throw new FileNotFoundException("Could not find '"
-                    + sourceFileName + "'."
+            throw new FileNotFoundException("'"
+                    + sourceFileName + "' is not a file or cannot be found."
                     + "\nPerhaps you need "
                     + "to run 'make install'?");
         }
