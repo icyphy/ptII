@@ -75,8 +75,8 @@ public interface ArrayStringFormat {
    */
   public String vectorEndString();
 
-  /////////////////////////////////////////////////////////////////////////
-  ////                         Public classes                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
 
   /** Implements ArrayStringFormat to produce strings in the format used
    *  to initialize arrays in Java. More specifically, the format
@@ -163,8 +163,8 @@ public interface ArrayStringFormat {
     }
   }
 
-  /////////////////////////////////////////////////////////////////////////
-  ////                         Public fields                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
   /** A static instance of JavaArrayStringFormat.
    */
