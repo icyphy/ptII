@@ -372,9 +372,10 @@ public class IndexedSubscriber extends Source implements RemoteEventListener {
                         while(!finished) {
                             System.out.println(getName() +
                                     " is trying to read entry: " +
-                                    ( _lastRead.getSerialNumber()+1));
+                                    ( _lastRead.getSerialNumber() + 1));
                             TokenEntry entrytemp = new TokenEntry(_entryName,
-                                    new Long(_lastRead.getSerialNumber()+1), null);
+                                    new Long(_lastRead.getSerialNumber() + 1),
+                                    null);
                             TokenEntry entry;
                             try{
                                 entry = (TokenEntry)_space.readIfExists(
