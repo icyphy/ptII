@@ -326,21 +326,21 @@ public class Peer extends TypedAtomicActor implements QueryHandler, DiscoveryLis
         }
 
         // now print out each discovered peer
-        Enumeration enum = response.getResponses();
 
-        String str = null;
+        String response = null;
         PeerAdvertisement newAdv = null;
 
-        while (enum.hasMoreElements()) {
+        Enumeration responses = response.getResponses();
+        while (responses.hasMoreElements()) {
 
             try {
-                str = (String)enum.nextElement();
+                response = (String)responses.nextElement();
 
                 // create an advertisement object from each element
                 newAdv = (PeerAdvertisement)
                     AdvertisementFactory.newAdvertisement(
                             XML_MIME_TYPE,
-                            new ByteArrayInputStream(str.getBytes()));
+                            new ByteArrayInputStream(response.getBytes()));
                 System.out.println(" Peer name = " + newAdv.getName());
             } catch (java.io.IOException e) {
                 // got a bad response. continue to the next response
