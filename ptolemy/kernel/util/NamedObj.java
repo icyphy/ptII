@@ -717,31 +717,6 @@ public class NamedObj implements Nameable, Debuggable,
             output.write(">\n");
         }
 
-        if (depth == 0 && getContainer() == null) {
-	    if (_attributes == null
-		|| _attributes.get("_createdBy") == null) {
-		// If there is no _createdBy attribute, then add one.
-		output.write(_getIndentPrefix(depth+1)
-			     + "<property name=\"_createdBy\" "
-			     + "class=\"ptolemy.kernel.util.VersionAttribute\" "
-			     + "value=\""
-			     + VersionAttribute.CURRENT_VERSION.getExpression()
-			     + "\">\n");
-		output.write(_getIndentPrefix(depth+1) + "</property>\n");
-	    } else if (_attributes != null
-		       && _attributes.get("_createdBy") != null) {
-		try {
-		    ((VersionAttribute)_attributes.get("_createdBy"))
-			.setExpression(VersionAttribute
-				       .CURRENT_VERSION.getExpression());
-		} catch (IllegalActionException ex) {
-		    throw new InternalErrorException(this, ex, "Failed to update"
-						     + "_createdBy");
-		}
-	    }
-  	}
-
-
         if (getMoMLInfo().deferTo == null) {
             _exportMoMLContents(output, depth + 1);
         } else {
