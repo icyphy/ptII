@@ -69,7 +69,33 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(PTCLASSJAR)
+	$(PTCLASSJAR) \
+	'ActorController$$1.class' \
+	'ActorController$$EntityLayout.class' \
+	'ActorController$$LookInsideAction.class' \
+	'ActorEditorGraphController$$1.class' \
+	'ActorEditorGraphController$$LinkCreator.class' \
+	'ActorEditorGraphController$$NewRelationAction.class' \
+	'ActorEditorGraphController$$RelationCreator.class' \
+	'ActorGraphFrame$$DebugMenuListener.class' \
+	'ActorGraphModel$$1.class' \
+	'ActorGraphModel$$2.class' \
+	'ActorGraphModel$$ExternalPortModel.class' \
+	'ActorGraphModel$$IconModel.class' \
+	'ActorGraphModel$$LinkModel$LinkChangeListener.class' \
+	'ActorGraphModel$$LinkModel.class' \
+	'ActorGraphModel$$PortModel.class' \
+	'ActorGraphModel$$VertexModel.class' \
+	'ActorGraphTableau$$Factory.class' \
+	'ExternalIOPortController$$1.class' \
+	'ExternalIOPortController$$NameWrapper.class' \
+	'ExternalIOPortController$$PortRenderer.class' \
+	'IOPortController$$1.class' \
+	'IOPortController$$EntityPortRenderer.class' \
+	'LinkController$$1.class' \
+	'LinkController$$LinkDropper.class' \
+	'LinkController$$LinkRenderer.class' \
+	'LinkController$$LinkTarget.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

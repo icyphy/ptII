@@ -70,7 +70,33 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(PTCLASSJAR)
+	$(PTCLASSJAR) \
+	'AbstractBasicGraphModel$$GraphChangeListener.class' \
+	'BasicGraphController$$1.class' \
+	'BasicGraphController$$NewPortAction.class' \
+	'BasicGraphController$$SchematicContextMenuFactory.class' \
+	'BasicGraphFrame$$1.class' \
+	'BasicGraphFrame$$CopyAction.class' \
+	'BasicGraphFrame$$CutAction.class' \
+	'BasicGraphFrame$$ExecuteSystemAction.class' \
+	'BasicGraphFrame$$ImportLibraryAction.class' \
+	'BasicGraphFrame$$LayoutAction.class' \
+	'BasicGraphFrame$$PasteAction.class' \
+	'BasicGraphFrame$$PtolemyLayout.class' \
+	'BasicGraphFrame$$PtolemyLayoutTarget.class' \
+	'BasicGraphFrame$$SaveInLibraryAction.class' \
+	'BasicGraphFrame$$ZoomFitAction.class' \
+	'BasicGraphFrame$$ZoomInAction.class' \
+	'BasicGraphFrame$$ZoomOutAction.class' \
+	'BasicGraphFrame$$ZoomResetAction.class' \
+	'EditorDropTarget$$1.class' \
+	'EditorDropTarget$$2.class' \
+	'EditorDropTarget$$3.class' \
+	'EditorDropTarget$$4.class' \
+	'EditorDropTarget$$DTListener.class' \
+	'IconController$$IconRenderer.class' \
+	'NamedObjController$$GetDocumentationAction.class' \
+	'ParameterizedNodeController$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
