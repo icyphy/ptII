@@ -73,7 +73,7 @@ public class Mailbox implements Receiver {
     /** Return the container.
      *  @return The container.
      */
-    public Nameable getContainer() {
+    public IOPort getContainer() {
         return _container;
     }
 

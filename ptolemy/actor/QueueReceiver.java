@@ -125,7 +125,7 @@ public class QueueReceiver implements Receiver {
 
     /** Return the container of this receiver, or null if there is none.
      */
-    public Nameable getContainer() {
+    public IOPort getContainer() {
         return _container;
     }
 

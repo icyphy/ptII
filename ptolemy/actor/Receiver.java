@@ -69,7 +69,7 @@ public interface Receiver {
     public Token get();
 
     /** Return the container. */
-    public Nameable getContainer();
+    public IOPort getContainer();
 
     /** Return true if the receiver has room for putting a token into 
      *  (via the put() method).
