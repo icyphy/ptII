@@ -46,7 +46,7 @@ types in more specialized ways.
 
 @author  Edward A. Lee
 @version $Id$
-@since Ptolemy II 1.0
+@since Ptolemy II 2.1
 @see TokenEffigy
 */
 public class TokenTableau extends Tableau {

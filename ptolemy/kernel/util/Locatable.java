@@ -37,7 +37,7 @@ An interface for objects storing a location.
 
 @author Edward A. Lee
 @version $Id$
-@since Ptolemy II 1.0
+@since Ptolemy II 2.1
 */
 public interface Locatable extends Nameable {
 

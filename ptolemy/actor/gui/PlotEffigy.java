@@ -46,7 +46,7 @@ An effigy for a plot file.
 
 @author Edward A. Lee
 @version $Id$
-@since Ptolemy II 1.0
+@since Ptolemy II 2.1
 */
 public class PlotEffigy extends Effigy {
 

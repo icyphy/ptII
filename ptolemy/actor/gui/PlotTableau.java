@@ -61,7 +61,7 @@ There can be any number of instances of this class in an effigy.
 
 @author  Edward A. Lee
 @version $Id$
-@since Ptolemy II 1.0
+@since Ptolemy II 2.1
 @see Effigy
 @see PlotTableauFrame
 @see MoMLApplication#specToURL(String)
