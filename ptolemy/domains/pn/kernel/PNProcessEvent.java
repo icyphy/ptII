@@ -99,6 +99,47 @@ public class PNProcessEvent {
         return _cause;
     }
 
+    public String toString() {
+        String result;
+        String st = null;
+        String ca = null;
+        if (_state == PROCESS_BLOCKED) {
+            st = "PROCESS_BLOCKED";
+            if (_cause == BLOCKED_ON_DELAY) {
+                ca = "BLOCKED_ON_DELAY";
+            }else if (_cause == BLOCKED_ON_MUTATION) {
+                ca = "BLOCKED_ON_MUTATION";
+            } else if (_cause == BLOCKED_ON_READ) {
+                ca = "BLOCKED_ON_READ";
+            } else if (_cause == BLOCKED_ON_WRITE) {
+                ca = "BLOCKED_ON_WRITE";
+            } else ca = "BLOCKING_CAUSE_UNKNOWN";
+            result = "State of "+((Entity)_actor).getFullName()+" is "+st+
+                " and the cause = "+ca;
+        } else if (_state == PROCESS_FINISHED) {
+            st = "PROCESS_FINISHED";
+            if (_cause == FINISHED_ABRUPTLY) {
+                ca = "FINISHED_ABRUPTLY";
+            } else if (_cause == FINISHED_PROPERLY) {
+                ca = "FINISHED_PROPERLY";
+            } else if (_cause == FINISHED_WITH_EXCEPTION) {
+                ca = "FINISHED_WITH_EXCEPTION with exception "+
+                    _excep.toString();
+            } else ca = "FINISHED_CAUSE_UNKNOWN";
+            result = "State of "+((Entity)_actor).getFullName()+" is "+st+
+                " and the cause = "+ca;
+        } else if (_state == PROCESS_PAUSED) {
+            st = "PROCESS_PAUSED";
+            result = "State of "+((Entity)_actor).getFullName()+" is "+st;
+        } else if (_state == PROCESS_RUNNING) {
+            st = "PROCESS_RUNNING";
+            result = "State of "+((Entity)_actor).getFullName()+" is "+st;
+        } else {
+            st = "UNKNOWN_PROCESS_STATE";
+            result = "State of "+((Entity)_actor).getFullName()+" is "+st;
+        }
+        return result;
+    }        
     
     //////////////////////////////////////////////////////////////
     ////                   public variables                  /////

@@ -54,10 +54,12 @@ PTCLASSZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = BasePNDirector.java \
+	DefaultPNListener.java \
 	PNDirector.java \
 	PNQueueReceiver.java \
 	PNProcessEvent.java \
         PNProcessListener.java \
+	PNProcessMulticaster.java \
 	ReceiverActionEvent.java \
 	ReceiverListener.java \
 	TimedPNDirector.java
