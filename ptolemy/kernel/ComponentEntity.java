@@ -234,10 +234,10 @@ public class ComponentEntity extends Entity {
     }
 
     /** Set the name of the ComponentEntity. If there is already 
-     *  a ComponentEntity of the container with the name, throw a 
-     *  NameDuplicationException. 
-     *  @exception NameDuplicationException If the name is used by
-     *      another ComponentEntity in the same container.
+     *  a ComponentEntity of the container with the same name, throw an
+     *  exception. 
+     *  @exception NameDuplicationException If there already is an entity
+     *   in the container with the same name.
      */
     public void setName(String name) throws NameDuplicationException {
         if (name == null) {

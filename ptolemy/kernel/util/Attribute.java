@@ -169,11 +169,11 @@ public class Attribute extends NamedObj {
     }
 
     /** Set the name of the attribute. If there is already an attribute
-     *  of the container with the name, then throw a 
+     *  of the container with the same name, then throw a 
      *  NameDuplicationException. 
      *  
-     *  @exception NameDuplicationException If there's already an 
-     *       attribute has this name in the container.
+     *  @exception NameDuplicationException If there is already an 
+     *       attribute with the same name in the container.
      */
     public void setName(String name) throws NameDuplicationException{
         if (name == null) {
