@@ -55,7 +55,9 @@ JSRCS = \
 	XZHigherDerivatives.java 
 
 EXTRA_SRCS =	$(JSRCS) \
-	Helicopter.htm
+	Helicopter.htm \
+	modes.gif \
+	toplevel.gif
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
