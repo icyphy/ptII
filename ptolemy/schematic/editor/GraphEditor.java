@@ -30,6 +30,7 @@
 
 package ptolemy.schematic.editor;
 
+import ptolemy.schematic.util.EditorIcon;
 import ptolemy.schematic.util.IconLibrary;
 import ptolemy.schematic.util.IconLibraryFactory;
 import ptolemy.actor.*;
@@ -38,7 +39,7 @@ import ptolemy.kernel.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.IntToken;
 import ptolemy.gui.*;
-import ptolemy.moml.*;
+import ptolemy.moml.MoMLParser;
 import diva.graph.*;
 import diva.graph.editor.*;
 import diva.graph.layout.*;
@@ -264,25 +265,26 @@ public class GraphEditor extends AbstractApplication {
         ComponentEntity e;
         Port p;
 	Parameter pa;
-	LocationAttribute l;
-	ptolemy.schematic.util.Icon i;
+        //	LocationAttribute l;
+	EditorIcon i;
         e = new ComponentEntity(lib, "E1");
 	p = e.newPort("P1");
-	l = new LocationAttribute(p, 20, 0);
+        //	l = new LocationAttribute(p, 20, 0);
 	p = e.newPort("P2");
 	pa = new Parameter(e, "Param1");
 	pa.setExpression("7.0");
-	l = new LocationAttribute(p, -20, 0);
-        i = new ptolemy.schematic.util.Icon(e);
+        //	l = new LocationAttribute(p, -20, 0);
+        i = new EditorIcon(e);
         e = new ComponentEntity(lib, "E2");
-        i = new ptolemy.schematic.util.Icon(e);
+        i = new EditorIcon(e);
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e.getMessage());
         }
 
 	System.out.println("library = " + lib.description());
-	//        JTabbedPane pane = createPaneFromComposite(lib);	
+//	System.out.println("library = " + getEntityLibrary().description());
+//        JTabbedPane pane = createPaneFromComposite(lib);	
 	//        JTabbedPane pane = createPaneFromComposite(getEntityLibrary());
         /*	DefaultMutableTreeNode top = 
 	    new DefaultMutableTreeNode("Entity Library");
@@ -554,7 +556,7 @@ public class GraphEditor extends AbstractApplication {
 				   
             _iconLibrary = IconLibraryFactory.parseIconLibrary(iconlibURL);
 
-                        MoMLParser parser = new MoMLParser();
+            MoMLParser parser = new MoMLParser();
             _entityLibrary =
                 parser.parse(entitylibURL, entitylibURL.openStream());
 

@@ -32,52 +32,66 @@ package ptolemy.schematic.util;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
+import ptolemy.moml.*;
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
 import collections.*;
 import ptolemy.schematic.xml.XMLElement;
-import diva.canvas.Figure;
+import diva.canvas.*;
 import diva.canvas.toolbox.*;
 import java.awt.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// Icon
+//// EditorIcon
 /**
 
 An icon is the graphical representation of a schematic entity.
-Icons are stored hierarchically in icon libraries.   Every icon has a 
+EditorIcons are stored hierarchically in icon libraries.   Every icon has a 
 name, along with a graphical representation.
 
 @author Steve Neuendorffer, John Reekie
 @version $Id$
 */
-public class Icon extends Attribute {
+public class EditorIcon extends Icon {
 
     /**
-     * Create a new icon with the name "Icon" in the default workspace. 
+     * Create a new icon with the name "EditorIcon" in the given container. 
      * By default, the icon contains no graphic
      * representations.
      */
-    public Icon () 
+    public EditorIcon (Entity container) 
         throws IllegalActionException, NameDuplicationException {
-        super();
-        setName("Icon");
+        this(container, "_icon");
     }
 
     /**
-     * Create a new icon with the name "Icon" in the given container. 
+     * Create a new icon with the name "EditorIcon" in the given container. 
      * By default, the icon contains no graphic
      * representations.
      */
-    public Icon (Entity container) 
+    public EditorIcon (Entity container, String name) 
         throws IllegalActionException, NameDuplicationException {
-        super(container, "Icon");
+        super(container, name);
     }
 
     /**
-     * Create a figure based on this icon.
+     * Create a figure based on this icon.  The figure will be a
+     * Composite Figure with the figure returned by createBackgroundFigure
+     * as its background.  
      */
     public Figure createFigure() {
+        Figure figure = new CompositeFigure(createBackgroundFigure());
+        Entity entity = (Entity) getContainer();
+        LabelFigure label = new LabelFigure(entity.getName());
+        label.setSize(10);
+        ((CompositeFigure)figure).add(label);
+        return figure;
+    }
+
+    /**
+     * Create the background figure based on this icon.
+     */
+    public Figure createBackgroundFigure() {
         Figure figure = new BasicRectangle(-10, -10, 20, 20, Color.green);
         return figure;
     }

@@ -57,7 +57,7 @@ it will have a default figure.
 @author Steve Neuendorffer, John Reekie
 @version $Id$
 */
-public class XMLIcon extends Icon implements Configurable {
+public class XMLIcon extends EditorIcon implements Configurable {
 
     /**
      * Create a new icon with the name "Icon" in the given container.
@@ -101,9 +101,10 @@ public class XMLIcon extends Icon implements Configurable {
     }
 
     /**
-     * Create a figure based on this icon.
+     * Create a background figure based on this icon.  The background figure
+     * will be painted with each graphic element that this icon contains.
      */
-    public Figure createFigure() {
+    public Figure createBackgroundFigure() {
         Enumeration graphics = graphicElements();
         PaintedFigure figure = new PaintedFigure();
         while(graphics.hasMoreElements()) {

@@ -72,13 +72,17 @@ public class EditorGraphImpl extends BasicGraphImpl {
      * Set the edge's head to the given node.
      */
     public void setEdgeHead(Edge e, Node head) {
+        if(head == null) {
+            System.out.println("head == null");
+        } else 
+            System.out.println("head == " + head);
+        
         // First set the head.
-	super.setEdgeHead(e, head);
+        super.setEdgeHead(e, head);
         System.out.println("Setting head");
-        try {
+        /*        try {
             BasicNode bh = (BasicNode)e.getHead();
             BasicNode bt = (BasicNode)e.getTail();
-            LinkAttribute link = (LinkAttribute)e.getSemanticObject();
             
             // If the edge is not connected to two vertecies, then throw away
             // the link.
@@ -158,7 +162,7 @@ public class EditorGraphImpl extends BasicGraphImpl {
         } catch (NameDuplicationException ex) {
             ex.printStackTrace();
             throw new GraphException(ex.getMessage());
-        }
+            }*/
     }
 
     /**
@@ -166,7 +170,7 @@ public class EditorGraphImpl extends BasicGraphImpl {
      */
     public void setEdgeTail(Edge e, Node tail) {
 	super.setEdgeTail(e, tail);
-        System.out.println("Setting tail");
+        /*        System.out.println("Setting tail");
         try {
             BasicNode bh = (BasicNode)e.getHead();
             BasicNode bt = (BasicNode)e.getTail();
@@ -250,7 +254,7 @@ public class EditorGraphImpl extends BasicGraphImpl {
         } catch (NameDuplicationException ex) {
             ex.printStackTrace();
             throw new GraphException(ex.getMessage());
-        }
+            }*/
     }
 
     public String createLinkName(NamedObj container) {

@@ -281,8 +281,9 @@ public class EditorGraphController extends GraphController {
         Figure nf = getNodeRenderer().render(n);
         nf.setInteractor(getNodeInteractor());
 	getGraphPane().getForegroundLayer().add(nf);
+        System.out.println("interactor = " + getNodeInteractor());
 	
-        if(n instanceof CompositeNode) {
+        /*        if(n instanceof CompositeNode) {
 	    Iterator nodes = ((CompositeNode) n).nodes();
 	    while(nodes.hasNext()) {
 		Node node = (Node) nodes.next();
@@ -292,19 +293,12 @@ public class EditorGraphController extends GraphController {
                 // Assume that CompositeNode -> CompositeFigure
 		((CompositeFigure)nf).add(nodeFigure);
 
-		NamedObj semanticObject = (NamedObj)node.getSemanticObject();
-		LocationAttribute location = (LocationAttribute)
-		    semanticObject.getAttribute(
-			LocationAttribute.LOCATION_ATTRIBUTE_NAME);
-		
-		int nodeX = location.getX();
-		int nodeY = location.getY();
-		CanvasUtilities.translateTo(nodeFigure, nodeX, nodeY);
+                CanvasUtilities.translateTo(nodeFigure, nodeX, nodeY);
 
-		nodeFigure.setUserObject(node);
+                nodeFigure.setUserObject(node);
 		node.setVisualObject(nodeFigure);
 	    }
-        }
+            }*/
 	
         CanvasUtilities.translateTo(nf, x, y);
  
@@ -339,22 +333,23 @@ public class EditorGraphController extends GraphController {
         _relationCreator = new RelationCreator();
         _relationCreator.setMouseFilter(_shiftFilter);
         pane.getBackgroundEventLayer().addInteractor(_relationCreator);
-
+        
         // Create a listener that creates new terminals
         _terminalCreator = new TerminalCreator();
         _terminalCreator.setMouseFilter(_controlFilter);
         pane.getBackgroundEventLayer().addInteractor(_terminalCreator);
-
+        
         // Create the interactor that drags new edges.
 	_edgeCreator = new EdgeCreator();
         _edgeCreator.setMouseFilter(_controlFilter);
         getNodeInteractor().addInteractor(_edgeCreator);
 
+        /*
         // Create the interactor that drags new edges.
 	_connectedVertexCreator = new ConnectedVertexCreator();
         _connectedVertexCreator.setMouseFilter(_shiftFilter);
         getNodeInteractor().addInteractor(_connectedVertexCreator);
-
+        */
         // MenuCreator 
         _menuCreator = new MenuCreator();
         _menuCreator.setMouseFilter(_menuFilter);
@@ -442,6 +437,7 @@ public class EditorGraphController extends GraphController {
      */
     protected class TerminalCreator extends AbstractInteractor {
         public void mousePressed(LayerEvent e) {
+            System.out.println("Terminal Creator");
 	    Graph graph = getGraph();
 	    CompositeEntity toplevel = 
 		(CompositeEntity)graph.getSemanticObject();
@@ -471,6 +467,7 @@ public class EditorGraphController extends GraphController {
      */
     protected class RelationCreator extends AbstractInteractor {
         public void mousePressed(LayerEvent e) {
+            System.out.println("Relation Creator");
 	    Graph graph = getGraph();
 	    CompositeEntity toplevel = 
 		(CompositeEntity)graph.getSemanticObject();
@@ -536,6 +533,8 @@ public class EditorGraphController extends GraphController {
             Figure source = e.getFigureSource();
 	    Node sourcenode = (Node) source.getUserObject();
 	    NamedObj sourceObject = (NamedObj) sourcenode.getSemanticObject();
+            System.out.println(sourceObject.description());
+            
 
             if((sourceObject instanceof Vertex)||
 	       (sourceObject instanceof Port)) {
@@ -566,6 +565,7 @@ public class EditorGraphController extends GraphController {
 	}
     }
 
+    
     /** An interactor that creates a new Vertex that is connected to a vertex
      *  in a relation
      */

@@ -42,6 +42,7 @@ import java.util.*;
 import javax.swing.SwingConstants;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
+import ptolemy.actor.*;
 import ptolemy.moml.*;
 import ptolemy.schematic.util.*;
 
@@ -86,18 +87,79 @@ public class EditorNodeRenderer implements NodeRenderer {
             //           Figure background = new BasicRectangle(-10, -10, 20, 20, Color.red);
             //icon.createFigure();
 	    Figure background = icon.createFigure(); 
-	    figure = new CompositeFigure(background);
-            LabelFigure label = new LabelFigure(entity.getName());
-            label.setSize(10);
-            ((CompositeFigure)figure).add(label);
-	    
+	    figure = new IconFigure(background);
+
+            LinkedList inputs = new LinkedList();
+            LinkedList outputs = new LinkedList();
+            LinkedList inouts = new LinkedList();
+            int inCount = 0;
+            int outCount = 0;
+            int inOutCount = 0;
+                                                              
+            Iterator nodes = ((CompositeNode) n).nodes();
+	    while(nodes.hasNext()) {
+		Node portNode = (Node) nodes.next();
+                Port port = (Port) portNode.getSemanticObject();
+                if(!(port instanceof IOPort)) {
+                    inOutCount++;
+                    inouts.addLast(portNode);
+                } else {
+                    IOPort ioport = (IOPort) port;
+                    if(ioport.isInput() && ioport.isOutput()) {
+                        inOutCount++;
+                        inouts.addLast(portNode);
+                    } else if(ioport.isInput()) {
+                        inCount++;
+                        inputs.addLast(portNode);
+                    } else if(ioport.isOutput()) {
+                        outCount++;
+                        outputs.addLast(portNode);
+                    }
+                }
+            }
+            System.out.println("incount = "+ inCount);
+            System.out.println("outcount = "+ outCount);
+            System.out.println("inoutcount = "+ inOutCount);
+            int nodeNumber = 0;
+        
+            nodes = inputs.iterator();            
+	    while(nodes.hasNext()) {
+                nodeNumber ++;
+		Node portNode = (Node) nodes.next();
+ 		Terminal nodeFigure = new StraightTerminal();                
+//render(node);
+                //		nodeFigure.setInteractor(getNodeInteractor());
+		((IconFigure)figure).addTerminal(nodeFigure, 
+                        SwingConstants.EAST, 100.0*nodeNumber/(inCount+1));
+                //                CanvasUtilities.translateTo(nodeFigure, nodeX, nodeY);
+                nodeFigure.setUserObject(portNode);
+		portNode.setVisualObject(nodeFigure);
+	    }
+    
+            nodeNumber = 0;
+            nodes = inouts.iterator();            
+	    while(nodes.hasNext()) {
+                nodeNumber ++;
+                Node portNode = (Node) nodes.next();
+ 		Terminal nodeFigure = new StraightTerminal();                
+		((IconFigure)figure).addTerminal(nodeFigure, 
+                        SwingConstants.SOUTH, 100.0*nodeNumber/(inOutCount+1));
+
+                nodeFigure.setUserObject(portNode);
+		portNode.setVisualObject(nodeFigure);
+	    }
+   
 	} else if(object instanceof Port) {
 	    figure = new BasicRectangle(-2, -2, 4, 4, Color.black);
 	} else if(object instanceof Vertex) {
 	    figure = new BasicRectangle(-4, -4, 8, 8, Color.black);
 	} else {
 	    figure = new BasicRectangle(-2, -2, 4, 4, Color.red);
-	}
+	}    
+
+        figure.setUserObject(n);
+        n.setVisualObject(figure);
+
 	return figure;
     }
 

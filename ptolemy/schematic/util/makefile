@@ -48,6 +48,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	EditorIcon.java \
 	EnumerationIterator.java \
 	GraphicElement.java \
 	IconLibrary.java \
