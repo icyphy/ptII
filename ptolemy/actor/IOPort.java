@@ -186,7 +186,7 @@ public class IOPort extends ComponentPort {
      */
     public Enumeration deepConnectedInPorts() {
 	try {
-	    workspace().read();
+	    workspace().getReadAccess();
 	    LinkedList result = new LinkedList();
 
 	    for (Enumeration allPorts = deepConnectedPorts();
@@ -212,7 +212,7 @@ public class IOPort extends ComponentPort {
      */
     public Enumeration deepConnectedOutPorts() {
 	try {
-	    workspace().read();
+	    workspace().getReadAccess();
 	    LinkedList result = new LinkedList();
 
 	    for (Enumeration allPorts = deepConnectedPorts();
