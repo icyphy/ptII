@@ -129,7 +129,7 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the ports, parameters and string attributes,
      *  if any.
-     *  @param ws The workspace for the new object.
+     *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
@@ -209,22 +209,22 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
 	    LinkedList result = new LinkedList();
 	    Iterator inPorts = inputPortList().iterator();
 	    while (inPorts.hasNext()) {
-	        TypedIOPort inport = (TypedIOPort)inPorts.next();
-		boolean isUndeclared = inport.getTypeTerm().isSettable();
+	        TypedIOPort inPort = (TypedIOPort)inPorts.next();
+		boolean isUndeclared = inPort.getTypeTerm().isSettable();
 		if (isUndeclared) {
-		    // inport has undeclared type
+		    // inPort has undeclared type
 		    Iterator outPorts = outputPortList().iterator();
 	    	    while (outPorts.hasNext()) {
-		    	TypedIOPort outport =
+		    	TypedIOPort outPort =
                             (TypedIOPort)outPorts.next();
 
-			isUndeclared = outport.getTypeTerm().isSettable();
-		    	if (isUndeclared && inport != outport) {
-			    // output also undeclared, not bi-directional port,
-		            Inequality ineq = new Inequality(
-                                    inport.getTypeTerm(),
-                                    outport.getTypeTerm());
-			    result.add(ineq);
+			isUndeclared = outPort.getTypeTerm().isSettable();
+		    	if (isUndeclared && inPort != outPort) {
+			    // output also undeclared, not bidirectional port,
+		            Inequality inequality = new Inequality(
+                                    inPort.getTypeTerm(),
+                                    outPort.getTypeTerm());
+			    result.add(inequality);
 			}
 		    }
 		}
@@ -239,15 +239,15 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
 
 	    Iterator attributes = attributeList().iterator();
 	    while (attributes.hasNext()) {
-		Attribute att = (Attribute)attributes.next();
-		if (att instanceof Typeable) {
-		    result.addAll(((Typeable)att).typeConstraintList());
+		Attribute attribute = (Attribute)attributes.next();
+		if (attribute instanceof Typeable) {
+		    result.addAll(((Typeable)attribute).typeConstraintList());
 		}
 	    }
 
 	    return result;
 
-	}finally {
+	} finally {
 	    _workspace.doneReading();
 	}
     }
