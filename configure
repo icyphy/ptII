@@ -1187,7 +1187,7 @@ cd $srcdir/config
 # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
 if $JAVAC javasoundTest.java ; then
     echo "$ac_t""ok" 1>&6
-    PTJAVASOUND=javasound	
+    PTJAVASOUND_DIR=javasound	
 else
    echo "configure: warning: '"$JAVAC" javasoundTest.java' failed.
 	Perhaps you are running under JDK1.2?
