@@ -613,9 +613,9 @@ public class Graph {
         return Collections.unmodifiableList(_incidentEdgeList(node));
     }
 
-    /** Return the collection of edges that make a node n2 a neighbor of a 
-     *  node n1. In other words, return the set of edges that are incident to 
-     *  both n1 and n2. Each element of the returned collection is an instance 
+    /** Return the collection of edges that make a node n2 a neighbor of a
+     *  node n1. In other words, return the set of edges that are incident to
+     *  both n1 and n2. Each element of the returned collection is an instance
      *  of {@link Edge}.
      *  @param n1 The node n1.
      *  @param n2 The node n2.
@@ -637,7 +637,7 @@ public class Graph {
         }
         return commonEdges;
     }
-   
+
     /** Return all of the neighbors of a given node in the form of a
      *  a collection. Each element of the collection is a Node.
      *  A neighbor of a node X is a node that is the sink
