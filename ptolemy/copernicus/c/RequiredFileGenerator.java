@@ -84,7 +84,7 @@ public class RequiredFileGenerator {
 
     /** Generate the .h files for all classes in the transitive closure of
      * the given class, and the .c files for required classes only. A class
-     * is considered "required" if it contains atleast one method that is
+     * is considered "required" if it contains at least one method that is
      * in the transitive closure of methods called in the main class.
      *  @param classPath The classPath.
      *  @param className The main class.
@@ -282,7 +282,7 @@ public class RequiredFileGenerator {
 
         }
 
-        // The set of required classes is all classes that declare atleast
+        // The set of required classes is all classes that declare at least
         // one required method or field. We've already taken care of the
         // fields. Here we take care of the methods.
         requiredMethodsIter = ((HashSet)_requiredMethods.clone()).iterator();
