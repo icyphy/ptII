@@ -115,6 +115,23 @@ test FloatMatrixMath-1.7.1 {diag float[]} {
     epsilonDiff $s {{{4862.2, 0.0, 0.0}, {0.0, 236.1, 0.0}, {0.0, 0.0, -36.25}}}
 } {}
 
+
+####################################################################
+test FloatMatrixMath-1.8 {divide float[][], float } {
+    set mr [java::call ptolemy.math.FloatMatrixMath \
+	    divide $m23 1.0]
+    set s [java::call ptolemy.math.FloatMatrixMath toString $mr]
+    epsilonDiff $s [java::call ptolemy.math.FloatMatrixMath toString $m23]
+} {}
+
+####################################################################
+test FloatMatrixMath-1.8.1 {divide float[][], float } {
+    set mr [java::call ptolemy.math.FloatMatrixMath \
+	    divide $m23 1.0]
+    set s [java::call ptolemy.math.FloatMatrixMath toString $mr]
+    epsilonDiff $s {{{3.7, -6.6, 3.0E-4}, {4862.2, 236.1, -36.25}}}
+} {}
+
 ####################################################################
 test FloatMatrixMath-2.1 {determinant float[][] not square} {
     catch {set r [java::call ptolemy.math.FloatMatrixMath determinant $m23]} errMsg
@@ -194,3 +211,9 @@ test FloatMatrixMath-7.9 {qr float[][]} {
     regsub -all {,} [list $s0 $s1] {} stmp
     epsilonDiff $stmp {{{{7.60921E-4 -0.27655035 -0.96098757} {0.99993247 -0.010937519 0.0039348574} {-0.011598904 -0.9609372 0.2765635}}} {{{4862.5283 236.38411 -36.304386} {0.0 24.515532 -4.3121905} {0.0 0.0 1.2122343}}}}
 } {} 
+
+####################################################################
+test FloatMatrixMath-8.0 {sum float[][]} {
+    set s [java::call ptolemy.math.FloatMatrixMath sum $m3]
+    epsilonDiff $s 4981.35058594
+} {}
