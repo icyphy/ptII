@@ -205,6 +205,16 @@ on the axes.
 It turns out that the code that labels the axes is fairly tricky
 to get right and have it look good.  
 
+ <br> One way to handle dates is to convert a date such as 2003/03/20
+to the integeter day of the year since January 1 and then use
+the XTicks facility to label the starts of the month:
+<pre>
+XTicks: Jan 0, Feb 31, Mar 59, Apr 90, May 120
+</pre>
+To handle time, once can convert to the number of minutes or seconds
+since midnight and adjust the ticks accordingly.
+
+
 <dt> Making the datapoints more interactive
 <dd> It would be nice if the user could mouse on the data points in
 the graph and various things would happen:
