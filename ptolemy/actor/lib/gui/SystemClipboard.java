@@ -30,59 +30,44 @@
 
 package ptolemy.actor.lib.gui;
 
-// Imports from ptolemy/vergil/basic/BasicGraphFrame.java (not pruned)
-import diva.gui.toolbox.FocusMouseListener;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.KeyStroke;
-import java.awt.BorderLayout;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-//import java.awt.event.MouseListener;
-
-// Imports from ptolemy/actor/lib/net/DatagramReader.java (not pruned)
-//import ptolemy.actor.AtomicActor;
-//import ptolemy.actor.IOPort;
-  import ptolemy.actor.TypedAtomicActor;
-  import ptolemy.actor.TypedIOPort;
-  import ptolemy.data.ArrayToken;
-//import ptolemy.data.BooleanToken;
-  import ptolemy.data.IntToken;
-  import ptolemy.data.StringToken;
-  import ptolemy.data.Token;
-//import ptolemy.data.expr.Parameter;
-  import ptolemy.data.type.ArrayType;
-  import ptolemy.data.type.BaseType;
-//import ptolemy.data.type.Type;
-  import ptolemy.kernel.CompositeEntity;
-//import ptolemy.kernel.util.Attribute;
-  import ptolemy.kernel.util.IllegalActionException;
-  import ptolemy.kernel.util.NameDuplicationException;
-//import ptolemy.kernel.util.StringAttribute;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.Toolkit;
+import java.io.IOException;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.StringToken;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// SystemClipboard
 /**
-This actor copies, to the system clipboard, the contents of any token received
-at its <i>input</i> port.  It pastes, from the system clipboard, to the 
-<i>output</i> port, whenever it receives a token at the <i>trigger</i>.
-If both inputs receive tokens during the same firing, the paste is done 
-before the copy.  This ordering insures that the contents of the clipboard 
-are not lost in the event of a simultaneous copy-paste operation.  This 
-actor is designed to work with KeystrokeSensor.java.
+This actor copies, to the system clipboard, the contents of any token
+received at its <i>input</i> port.  It pastes, from the system
+clipboard to the <i>output</i> port, whenever it receives a token at
+the <i>trigger</i>.  If both inputs receive tokens during the same
+firing, the paste is done before the copy.  This ordering insures that
+the contents of the clipboard are not lost in the event of a
+simultaneous copy-paste operation.
+
+<p> NOTE: This actor has been tested only with an 8-bit character set
+as the Java default character set.  Results are not known for systems
+configured for 16-bit Unicode characters.
 
 @author Winthrop Williams
 @version $Id$
-@since Ptolemy II 2.0
+@since Ptolemy II 2.0 
 */
-public class SystemClipboard extends TypedAtomicActor implements ClipboardOwner {
+
+public class SystemClipboard extends TypedAtomicActor
+        implements ClipboardOwner {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -96,7 +81,7 @@ public class SystemClipboard extends TypedAtomicActor implements ClipboardOwner 
         throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-	// Inputs
+        // Inputs
         input = new TypedIOPort(this, "input");
         input.setTypeEquals(BaseType.STRING);
         input.setInput(true);
@@ -126,73 +111,54 @@ public class SystemClipboard extends TypedAtomicActor implements ClipboardOwner 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Copy any <i>input</i> token to the clipboard and, if 
-     *  <i>trigger</i>-ed, paste the clipboard to the 
-     *  <i>output</i>.  Paste is done before copy.
+    /** Copy any <i>input</i> token to the clipboard and, if
+     *  <i>trigger</i>-ed, paste the clipboard to the
+     *  <i>output</i>.  Paste is done before copy when both
+     *  inputs are present.
      */
     public void fire() throws IllegalActionException {
         if (_debugging) _debug("fire has been called");
 
-	// Paste
-	if (trigger.getWidth() > 0 && trigger.hasToken(0)) {
-	    trigger.get(0);
-	    Clipboard clipboard = java.awt.Toolkit.getDefaultToolkit()
+        // Paste
+        if (trigger.getWidth() > 0 && trigger.hasToken(0)) {
+            trigger.get(0);
+            Clipboard clipboard = Toolkit.getDefaultToolkit()
                     .getSystemClipboard();
-	    Transferable transferable = clipboard.getContents(this);
-	    try{
-		output.broadcast(new StringToken( (String)transferable
+            Transferable transferable = clipboard.getContents(this);
+            try{
+                output.broadcast(new StringToken( (String)transferable
                         .getTransferData(DataFlavor.stringFlavor) ));
-	    // NullPointerException also possible //
-		// Ignore this for now, allowing exception to go uncaught.
-	    } catch (java.io.IOException ex) {
-		throw new IllegalActionException(this,
+            // NullPointerException also possible //
+                // Ignore this for now, allowing exception to go uncaught.
+            } catch (IOException ex) {
+                throw new IllegalActionException(this,
                         " Failed to paste (IO Exception): " + ex);
-	    } catch (java.awt.datatransfer.UnsupportedFlavorException ex) {
-		throw new IllegalActionException(this,
+            } catch (UnsupportedFlavorException ex) {
+                throw new IllegalActionException(this,
                         " Failed to paste: (Flavor Exception)" + ex);
-	    }
-	}
+            }
+        }
 
-	// Copy
-	if (input.getWidth()>0 && input.hasToken(0)) {
-	    Clipboard clipboard = java.awt.Toolkit.getDefaultToolkit()
+        // Copy
+        if (input.getWidth()>0 && input.hasToken(0)) {
+            Clipboard clipboard = Toolkit.getDefaultToolkit()
                     .getSystemClipboard();
-	    String myString = ((StringToken)(input.get(0))).stringValue();
-	    clipboard.setContents(new StringSelection(myString), this);
-	}
+            String myString = ((StringToken)(input.get(0))).stringValue();
+            clipboard.setContents(new StringSelection(myString), this);
+        }
 
-	if (_debugging) _debug("fire has completed");
+        if (_debugging) _debug("fire has completed");
     }
 
     /** Comply with the ClipboardOwner interface.  It requires a
-     *  method exist named <i>lostOwnership</i>.  
-     *  
-     *  Without this (and having the actor, or something, 
-     *  implement ClipboardOwner, I get the following error:
-     *  
-     *  setContents(java.awt.datatransfer.Transferable,
-     *              java.awt.datatransfer.ClipboardOwner) 
-     *           in java.awt.datatransfer.Clipboard
-     *           cannot be applied to
-     *             (java.awt.datatransfer.StringSelection,
-     *              ptolemy.actor.lib.net.Wormhole)
+     *  method exist named <i>lostOwnership</i>.  Specifically,
+     *  when setContents() or getContents() is called, the last
+     *  argument, known as the "requestor", must be an object which
+     *  offers this lostOwnership() method.
      */
     public void lostOwnership(Clipboard clipboard, Transferable contents) {
+        // In case of lost ownership, do nothing.
     }
-    /*
-      CLASSPATH="../../../..;c:\cygwin\home\winthrop\8Feb\ptII/lib/diva.jar" "/cygdrive/c/jdk1.4/bin/javac" -g -O Wormhole.java
-      Wormhole.java:137: cannot resolve symbol
-      symbol  : variable _myFrame
-location: class ptolemy.actor.lib.net.Wormhole
-                  Transferable transferable = clipboard.getContents(_myFrame);
-                                                                    ^
-      1 error
-      make: *** [Wormhole.class] Error 1
-      bash-2.04$ 
-
-  When I have '_myframe' in place of 'this' in getContents( ) call.
-  Seems "requestor" who calls this must implement the ClipboardOwner interface.
-    */
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables
