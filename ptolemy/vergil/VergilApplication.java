@@ -100,11 +100,29 @@ public class VergilApplication extends MoMLApplication {
 
     /** Parse the specified command-line arguments, creating models
      *  and frames to interact with them.
+     *  Look for configurations in "ptolemy/configs"
      *  @param args The command-line arguments.
      *  @exception Exception If command line arguments have problems.
      */
     public VergilApplication(String args[]) throws Exception {
-        super(args);
+        super("ptolemy/configs", args);
+
+        // Create register an error handler with the parser so that
+        // MoML errors are tolerated more than the default.
+        MoMLParser.setErrorHandler(new VergilErrorHandler());
+    }
+
+    /** Parse the specified command-line arguments, creating models
+     *  and frames to interact with them.
+     *  @param basePath The basePath to look for configurations
+     *  in, usually "ptolemy/configs", but other tools might
+     *  have other configurations in other directories
+     *  @param args The command-line arguments.
+     *  @exception Exception If command line arguments have problems.
+     */
+    public VergilApplication(String basePath, String args[]) throws Exception {
+        super(basePath, args);
+
         // Create register an error handler with the parser so that
         // MoML errors are tolerated more than the default.
         MoMLParser.setErrorHandler(new VergilErrorHandler());
@@ -232,7 +250,8 @@ public class VergilApplication extends MoMLApplication {
     ////                         protected methods                 ////
 
     /** Return a default Configuration.  The initial default configuration
-     *  is the MoML file ptolemy/configs/full/configuration.xml, but
+     *  is the MoML file full/configuration.xml under the _basePath
+     *  directory, which is usually ptolemy/configs.
      *  using different command line arguments can change the value
      *  @return A default configuration.
      *  @exception Exception If the configuration cannot be opened.
@@ -241,7 +260,7 @@ public class VergilApplication extends MoMLApplication {
 
         if (_configurationURL == null) {
             _configurationURL =
-                specToURL("ptolemy/configs/full/configuration.xml");
+                specToURL(_basePath + "/full/configuration.xml");
         }
         Configuration configuration = null;
         try {
@@ -305,7 +324,7 @@ public class VergilApplication extends MoMLApplication {
 
     /** Return a default Configuration to use when there are no command-line
      *  arguments, which in this case is given by the default configuration
-     *  augmented by the MoML file ptolemy/configs/vergilWelcomeWindow.xml.
+     *  augmented by the MoML file _basePath/vergilWelcomeWindow.xml.
      *  @return A configuration for when there no command-line arguments.
      *  @exception Exception If the configuration cannot be opened.
      */
@@ -316,8 +335,8 @@ public class VergilApplication extends MoMLApplication {
             _configurationSubdirectory = "full";
         }
         // FIXME: This code is Dog slow for some reason.
-        URL inURL = specToURL("ptolemy/configs/"
-                + _configurationSubdirectory
+        URL inURL = specToURL(_basePath
+                + "/" + _configurationSubdirectory
                 + "/welcomeWindow.xml");
         _parser.reset();
         _parser.setContext(configuration);
@@ -328,8 +347,10 @@ public class VergilApplication extends MoMLApplication {
         if (_configurationSubdirectory == null) {
             _configurationSubdirectory = "full";
         }
-        URL idURL = specToURL("ptolemy/configs/"
+
+        URL idURL = specToURL(_basePath + "/"
                 + _configurationSubdirectory + "/intro.htm");
+
 
         doc.identifier.setExpression(idURL.toExternalForm());
         return configuration;
@@ -416,7 +437,7 @@ public class VergilApplication extends MoMLApplication {
             try {
                 _configurationSubdirectory = arg.substring(1);
                 String potentialConfiguration =
-                    "ptolemy/configs/" + _configurationSubdirectory
+                    _basePath + "/" + _configurationSubdirectory
                     + "/configuration.xml";
                 // This will throw an Exception if we can't find the config.
                 _configurationURL = specToURL(potentialConfiguration);
