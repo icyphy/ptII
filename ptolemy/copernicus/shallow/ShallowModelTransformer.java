@@ -459,7 +459,28 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
                         Jimple.v().newVirtualInvokeExpr(entityLocal,
                                 PtolemyUtilities.getPortMethod,
                                 StringConstant.v(port.getName()))));
-                // and then cast to portLocal
+                if (port instanceof TypedIOPort) {
+                    TypedIOPort ioPort = (TypedIOPort)port;
+                    if (ioPort.isInput()) {
+                        body.getUnits().add(Jimple.v().newInvokeStmt(
+                                Jimple.v().newVirtualInvokeExpr(tempPortLocal,
+                                        PtolemyUtilities.setInputMethod,
+                                        IntConstant.v(1))));
+                    }
+                    if (ioPort.isOutput()) {
+                        body.getUnits().add(Jimple.v().newInvokeStmt(
+                                Jimple.v().newVirtualInvokeExpr(tempPortLocal,
+                                        PtolemyUtilities.setOutputMethod,
+                                        IntConstant.v(1))));
+                    }
+                    if (ioPort.isMultiport()) {
+                        body.getUnits().add(Jimple.v().newInvokeStmt(
+                                Jimple.v().newVirtualInvokeExpr(tempPortLocal,
+                                        PtolemyUtilities.setMultiportMethod,
+                                        IntConstant.v(1))));
+                    }
+                }
+               // and then cast to portLocal
                 body.getUnits().add(Jimple.v().newAssignStmt(portLocal,
                         Jimple.v().newCastExpr(tempPortLocal,
                                 PtolemyUtilities.componentPortType)));
