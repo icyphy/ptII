@@ -1,0 +1,45 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="superb" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+
+      <entity name="StringCompare" class="ptolemy.apps.superb.actor.lib.StringCompare">
+       	<doc>Output a comparison function of two strings</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+          <property name="attributeName" value="function"/>
+          <property name="displayWidth" value="10"/>
+        </property>
+      </entity>
+      
+      <entity name="StringFunction" class="ptolemy.apps.superb.actor.lib.StringFunction">
+        <doc>Trim a string, convert a string to uppercase, or convert a string to
+            lowercase depending on the user's selection.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+          <property name="attributeName" value="function"/>
+          <property name="displayWidth" value="10"/>
+        </property>
+      </entity>
+
+      <entity name="StringLength" class="ptolemy.apps.superb.actor.lib.StringLength">
+       <doc>Output the length of an input string</doc>
+      </entity>
+      
+      <entity name="StringMatches" class="ptolemy.apps.superb.actor.lib.StringMatches">
+       <doc>Determine if a string matches a regular expression</doc>
+      </entity>
+      
+      <entity name="StringReplace" class="ptolemy.apps.superb.actor.lib.StringReplace">
+       <doc>Replace the patterns that match a regular expression</doc>
+      </entity>
+      
+      <entity name="StringSubstring" class="ptolemy.apps.superb.actor.lib.StringSubstring">
+       <doc>Output a substring of an input string</doc>
+      </entity>
+
+      </group>
+    ?>
+  </configure>
+</entity>
