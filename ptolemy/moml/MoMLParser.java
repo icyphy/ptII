@@ -495,7 +495,7 @@ public class MoMLParser extends HandlerBase {
                 if (source != null) {
                     URL xmlFile = new URL(_base, source);
                     InputStream stream = xmlFile.openStream();
-                    ((Configurable)_current).configure(_base, stream);
+                    ((Configurable)_current).configure(xmlFile, stream);
                 }
                 _currentCharData = new StringBuffer();
 
