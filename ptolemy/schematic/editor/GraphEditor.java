@@ -150,6 +150,7 @@ public class GraphEditor extends MDIApplication {
 		
         // Experimental -- doesn't work... open a file
         // getAction("open").actionPerformed(null);
+        setCurrentDocument(null);
     }
 
     /** Given a document, create a new view which displays that
@@ -495,6 +496,27 @@ public class GraphEditor extends MDIApplication {
             showError("layout", e);
         }
         jgraph.repaint();
+    }
+
+    /** Set the given document to be the current document, and raise
+     * the internal window that corresponds to that component.  
+     * In this class, there are some things that we want to enable and 
+     * disable if there are no documents present.
+     */
+    public void setCurrentDocument (Document d) {
+        super.setCurrentDocument(d);
+        if(d == null) {
+            Action saveAction = getAction(DefaultActions.SAVE);
+            saveAction.setEnabled(false);
+            Action saveAsAction = getAction(DefaultActions.SAVE_AS);
+            saveAsAction.setEnabled(false);
+        } else {
+            Action saveAction = getAction(DefaultActions.SAVE);
+            saveAction.setEnabled(true);
+            Action saveAsAction = getAction(DefaultActions.SAVE_AS);
+            saveAsAction.setEnabled(true);
+        }
+            
     }
 
     IconLibrary _iconLibrary;
