@@ -123,10 +123,6 @@ public final class Manager extends NamedObj implements Runnable {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** Indicator that the execution is in the begin phase.
-     */
-    public final State BEGIN = new State("Begin");
-
     /** Indicator that the model may be corrupted.
      */
     public final State CORRUPTED = new State(
@@ -151,6 +147,10 @@ public final class Manager extends NamedObj implements Runnable {
     /** Indicator that the execution is paused.
      */
     public final State PAUSED = new State("Execution paused");
+
+    /** Indicator that the execution is in the initialize phase.
+     */
+    public final State PREINITIALIZING = new State("Prenitializing");
 
     /** Indicator that type resolution is being done.
      */
@@ -306,8 +306,8 @@ public final class Manager extends NamedObj implements Runnable {
         return _state;
     }
 
-    /** Initialize the model.  This calls the initialize() method of
-     *  the container, followed by the begin() method.
+    /** Initialize the model.  This calls the preinitialize() method of
+     *  the container, followed by the initialize() method.
      *  This method is read synchronized on the workspace.
      *  @exception KernelException If the model throws it.
      *  @exception IllegalActionException If the model is already running, or
@@ -325,7 +325,7 @@ public final class Manager extends NamedObj implements Runnable {
                 throw new IllegalActionException(this,
                 "No model to run!");
             }
-            _setState(INITIALIZING);
+            _setState(PREINITIALIZING);
             
             _pauseRequested = false;
             _finishRequested = false;
@@ -333,12 +333,12 @@ public final class Manager extends NamedObj implements Runnable {
             _iterationCount = 0;
             
             // Initialize the topology
-            _container.initialize();
+            _container.preinitialize();
             
             resolveTypes();
             _typesResolved = true;
-            _setState(BEGIN);
-            _container.begin();
+            _setState(INITIALIZING);
+            _container.initialize();
 
             // Since we have just initialized all actors, clear the
             // list of actors pending initialization.
@@ -389,7 +389,7 @@ public final class Manager extends NamedObj implements Runnable {
                 Iterator actors = _actorsToInitialize.iterator();
                 while (actors.hasNext()) {
                     Actor actor = (Actor)actors.next();
-                    actor.initialize();
+                    actor.preinitialize();
                 }
             }
             if (!_typesResolved) {
@@ -407,12 +407,12 @@ public final class Manager extends NamedObj implements Runnable {
             }
             _debug("Prefire container.");
             if (_container.prefire()) {
-                // Invoke begin on actors that have been added.
+                // Invoke initialize on actors that have been added.
                 if (_actorsToInitialize.size() > 0) {
                     Iterator actors = _actorsToInitialize.iterator();
                     while (actors.hasNext()) {
                         Actor actor = (Actor)actors.next();
-                        actor.begin();
+                        actor.initialize();
                     }
                     _actorsToInitialize.clear();
                 }
@@ -512,8 +512,8 @@ public final class Manager extends NamedObj implements Runnable {
 
     /** Queue an initialization request.
      *  The specified actor will be initialized at an appropriate time,
-     *  in the iterate() method, by calling its initialize()
-     *  and begin() methods.
+     *  in the iterate() method, by calling its preinitialize()
+     *  and initialize() methods.
      *  @param actor The actor to initialize.
      */
     public void requestInitialization(Actor actor) {

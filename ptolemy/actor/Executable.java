@@ -38,7 +38,7 @@ import ptolemy.kernel.util.*;
 This interface defines the <i>action methods</i>, which determine
 how an object can be invoked. It should be implemented by actors
 and directors. In an execution of an application,
-the initialize() and begin() methods should be
+the preinitialize() and initialize() methods should be
 invoked exactly once, followed by any number of iterations, followed
 by exactly one invocation of the wrapup() method. An <i>iteration</i>
 is defined to be one firing of the prefire() method, followed by
@@ -46,10 +46,10 @@ any number of firings of the fire() method, followed by one firing
 of the postfire() method.
 The prefire() method returns true to indicate that firing
 can occur.  The postfire() method returns false if no further firings
-should occur. The begin(), fire() and postfire() methods may produce
-output data.  The begin() method runs after the topology has
-stabilized (all higher-order function actors have executed)
-and type resolution has been done.  The initialize() method runs
+should occur. The initialize(), fire() and postfire() methods may produce
+output data.  The initialize() method runs after the topology has
+stabilized (all higher-order function actors have executed) and
+type resolution has been done.  The preinitialize() method runs
 before these have happened.
 
 @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer
@@ -59,18 +59,6 @@ public interface Executable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Begin execution of the actor.  This is invoked exactly once
-     *  after the initialization phase.  Since type resolution is done
-     *  in the initialization phase, along with topology changes that
-     *  may be requested by higher-order function actors, an actor
-     *  can produce output data and schedule events in the begin()
-     *  method.  In effect, it can do anything that can be done in the
-     *  fire() method.
-     *
-     *  @exception IllegalActionException If execution is not permitted.
-     */
-    public void begin() throws IllegalActionException;
 
     /** Fire the actor.  This may be invoked several times between
      *  invocations of prefire() and postfire(). Output data may
@@ -84,12 +72,14 @@ public interface Executable {
      */
     public void fire() throws IllegalActionException;
 
-    /** This method should be invoked exactly once per execution
-     *  of a model, before any of these other methods are invoked.
-     *  It may produce output data.  This method typically initializes
-     *  internal members of an actor and produces initial output data.
+    /** Begin execution of the actor.  This is invoked exactly once
+     *  after the preinitialization phase.  Since type resolution is done
+     *  in the preinitialization phase, along with topology changes that
+     *  may be requested by higher-order function actors, an actor
+     *  can produce output data and schedule events in the initialize()
+     *  method.
      *
-     *  @exception IllegalActionException If initializing is not permitted.
+     *  @exception IllegalActionException If execution is not permitted.
      */
     public void initialize() throws IllegalActionException;
 
@@ -117,6 +107,16 @@ public interface Executable {
      *  @exception IllegalActionException If prefiring is not permitted.
      */
     public boolean prefire() throws IllegalActionException;
+
+    /** This method should be invoked exactly once per execution
+     *  of a model, before any of these other methods are invoked.
+     *  For actors, this is invoked prior to type resolution and
+     *  may trigger changes in the topology, changes in the
+     *  type constraints.
+     *
+     *  @exception IllegalActionException If initializing is not permitted.
+     */
+    public void preinitialize() throws IllegalActionException;
 
     /** Request that execution of the current iteration stop.  If an
      *  iteration is always a finite computation (the usual case), i.e.

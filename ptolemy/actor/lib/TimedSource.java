@@ -108,7 +108,7 @@ public class TimedSource extends Source implements TimedActor {
                 if (time > currentTime) {
                     director.fireAt(this, time);
                 } else {
-                    director.fireAt(this, currentTime);
+                    director.fireAfterIteration(this);
                 }
             }
         } else {

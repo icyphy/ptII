@@ -240,14 +240,15 @@ public class Poisson extends TimedSource {
     }
 
     /** Schedule the first firing at time zero and initialize local variables.
-     *  @exception IllegalActionException If the parent class throws it,
-     *   or if the values parameter is not a row vector.
+     *  @exception IllegalActionException If the fireAt() method is not
+     *   supported by the director.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
         _tentativeCurrentOutputIndex = 0;
-        _nextFiringTime = 0;
-        getDirector().fireAt(this, 0.0);
+        double currentTime = getDirector().getCurrentTime();
+        _nextFiringTime = currentTime;
+        getDirector().fireAt(this, currentTime);
     }
 
     /** Update the state of the actor to the correspond to that tentatively

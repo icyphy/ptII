@@ -155,42 +155,6 @@ public class FIR extends SDFAtomicActor {
         }
     }
 
-    /** Set up the consumption and production constants.
-     *  @exception IllegalActionException If the parameters are out of range.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-
-        IntToken interptoken = (IntToken)(interpolation.getToken());
-        _interp = interptoken.intValue();
-
-        // FIXME: Support multirate.  Get values from parameters.
-        _dec = 1;
-        _decPhase = 0;
-
-        // FIXME: Does the SDF infrastructure support accessing past samples?
-        // FIXME: Handle mutations.
-        input.setTokenConsumptionRate(_dec);
-        output.setTokenProductionRate(_interp);
-        if (_decPhase >= _dec) {
-            throw new IllegalActionException(this,"decimationPhase too large");
-        }
-        // FIXME: Need error checking of parameter.
-        DoubleMatrixToken tapstoken = (DoubleMatrixToken)(taps.getToken());
-        _taps = new double[tapstoken.getColumnCount()];
-        for (int i = 0; i < _taps.length; i++) {
-            _taps[i] = tapstoken.getElementAt(0, i);
-        }
-        _phaseLength = (int)(_taps.length / _interp);
-        if ((_taps.length % _interp) != 0) _phaseLength++;
-
-        // Create new data array and initialize index into it.
-        int datalength = _taps.length/_interp;
-        if (_taps.length%_interp != 0) datalength++;
-        _data = new double[datalength];
-        _mostRecent = datalength;
-    }
-
     /** Consume the inputs and produce the outputs of the FIR filter.
      *  @exception IllegalActionException Not Thrown.
      */
@@ -224,6 +188,42 @@ public class FIR extends SDFAtomicActor {
             }
             phase -= _interp;
         }
+    }
+
+    /** Set up the consumption and production constants.
+     *  @exception IllegalActionException If the parameters are out of range.
+     */
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+
+        IntToken interptoken = (IntToken)(interpolation.getToken());
+        _interp = interptoken.intValue();
+
+        // FIXME: Support multirate.  Get values from parameters.
+        _dec = 1;
+        _decPhase = 0;
+
+        // FIXME: Does the SDF infrastructure support accessing past samples?
+        // FIXME: Handle mutations.
+        input.setTokenConsumptionRate(_dec);
+        output.setTokenProductionRate(_interp);
+        if (_decPhase >= _dec) {
+            throw new IllegalActionException(this,"decimationPhase too large");
+        }
+        // FIXME: Need error checking of parameter.
+        DoubleMatrixToken tapstoken = (DoubleMatrixToken)(taps.getToken());
+        _taps = new double[tapstoken.getColumnCount()];
+        for (int i = 0; i < _taps.length; i++) {
+            _taps[i] = tapstoken.getElementAt(0, i);
+        }
+        _phaseLength = (int)(_taps.length / _interp);
+        if ((_taps.length % _interp) != 0) _phaseLength++;
+
+        // Create new data array and initialize index into it.
+        int datalength = _taps.length/_interp;
+        if (_taps.length%_interp != 0) datalength++;
+        _data = new double[datalength];
+        _mostRecent = datalength;
     }
 
     ///////////////////////////////////////////////////////////////////

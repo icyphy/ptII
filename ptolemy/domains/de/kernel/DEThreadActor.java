@@ -68,7 +68,7 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
     ////                         public methods                    ////
 
 
-    /**
+    /** Start a thread to execute this actor.
      */
     public void initialize() {
         // start a thread.

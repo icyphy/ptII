@@ -66,7 +66,8 @@ is responsible for executing the contained actors, or null if there is none.
 Whatever it returns is called simply the <i>director</i> (vs. local
 director or executive director).
 <p>
-A director implements the action methods (initialize(), prefire(), fire(),
+A director implements the action methods (preinitialize(),
+initialize(), prefire(), fire(),
 postfire(), and wrapup()).  In this base class, default implementations
 are provided that may or may not be useful in specific domains.   In general,
 these methods will perform domain-dependent actions, and then call the
@@ -122,29 +123,6 @@ public class Director extends NamedObj implements Executable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Invoke the begin() method of each deeply contained actor.
-     *  This method should be invoked once per execution, after the
-     *  initialization phase, but before any iteration.  Since type
-     *  resolution has been completed, the begin() method of a contained
-     *  actor may produce output or schedule events.
-     *  This method is <i>not</i> synchronized on the workspace, so the
-     *  caller should be.
-     *
-     *  @exception IllegalActionException If the begin() method of
-     *   one of the associated actors throws it.
-     */
-    public void begin() throws IllegalActionException {
-        CompositeActor container = ((CompositeActor)getContainer());
-        if (container!= null) {
-            Enumeration allactors = container.deepGetEntities();
-            while (allactors.hasMoreElements()) {
-                Actor actor = (Actor)allactors.nextElement();
-                _debug("Invoking begin(): ", ((NamedObj)actor).getFullName());
-                actor.begin();
-            }
-        }
-    }
 
     /** Clone the director into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
@@ -270,36 +248,34 @@ public class Director extends NamedObj implements Executable {
         return _currentTime;
     }
 
-    /** Create receivers and then invoke the initialize()
-     *  methods of all its deeply contained actors.
-     *  Set the current time to be 0.0.
-     *  <p>
-     *  This method should be invoked once per execution, before any
-     *  iteration, and before the begin() method.
+    /** Invoke the initialize() method of each deeply contained actor.
+     *  This method should be invoked once per execution, after the
+     *  initialization phase, but before any iteration.  Since type
+     *  resolution has been completed, the initialize() method of a contained
+     *  actor may produce output or schedule events.
      *  This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
      *
      *  @exception IllegalActionException If the initialize() method of
-     *  one of the associated actors throws it.
+     *   one of the associated actors throws it.
      */
     public void initialize() throws IllegalActionException {
-        setCurrentTime(0.0);
         CompositeActor container = ((CompositeActor)getContainer());
         if (container!= null) {
             Enumeration allactors = container.deepGetEntities();
             while (allactors.hasMoreElements()) {
                 Actor actor = (Actor)allactors.nextElement();
-                _debug("Initializing actor: ", ((NamedObj)actor).getFullName());
+                _debug("Invoking initialize(): ",
+                        ((NamedObj)actor).getFullName());
                 actor.initialize();
             }
         }
-        _debug(getName() + " finished initializing.");
     }
 
     /** Perform domain-specific initialization on the specified actor, if any.
      *  In this base class, do nothing.
-     *  This is called by the initialize() method of the actor, and may be
-     *  called after the initialization phase of an execution.  In particular,
+     *  This is called by the initialize() method of the actor, during
+     *  initialization.  In particular,
      *  in the event of mutations during an execution that introduce new
      *  actors, this method will be called as part of initializing the
      *  actor.  Typical actions a director might perform include starting
@@ -437,6 +413,31 @@ public class Director extends NamedObj implements Executable {
         return true;
     }
 
+    /** Create receivers and then invoke the preinitialize()
+     *  methods of all its deeply contained actors.
+     *  Set the current time to be 0.0.
+     *  This method is invoked once per execution, before any
+     *  iteration, and before the initialize() method.
+     *  This method is <i>not</i> synchronized on the workspace, so the
+     *  caller should be.
+     *
+     *  @exception IllegalActionException If the preinitialize() method of
+     *  one of the associated actors throws it.
+     */
+    public void preinitialize() throws IllegalActionException {
+        setCurrentTime(0.0);
+        CompositeActor container = ((CompositeActor)getContainer());
+        if (container!= null) {
+            Enumeration allactors = container.deepGetEntities();
+            while (allactors.hasMoreElements()) {
+                Actor actor = (Actor)allactors.nextElement();
+                _debug("Initializing actor: ", ((NamedObj)actor).getFullName());
+                actor.preinitialize();
+            }
+        }
+        _debug(getName() + " finished initializing.");
+    }
+
     /** Queue a change request with the manager.
      *  The indicated change will be executed at the next opportunity,
      *  typically between top-level iterations of the model.
@@ -455,8 +456,8 @@ public class Director extends NamedObj implements Executable {
 
     /** Queue an initialization request with the manager.
      *  The specified actor will be initialized at an appropriate time,
-     *  between iterations, by calling its initialize() and begin() methods.
-     *  This method is called by CompositeActor when an actor an actor
+     *  between iterations, by calling its preinitialize() and initialize()
+     *  methods. This method is called by CompositeActor when an actor an actor
      *  sets its container to that composite actor.  Typically, that
      *  will occur when a model is first constructed, and during the
      *  execute() method of a ChangeRequest that is queued using

@@ -94,6 +94,9 @@ public class FSMController extends CompositeEntity implements TypedActor {
         }
     }
 
+    public void initialize() throws IllegalActionException {
+        // FIXME: What should this do?
+    }
 
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         // FIXME
@@ -255,73 +258,6 @@ public class FSMController extends CompositeEntity implements TypedActor {
         }
     }
 
-    public void initialize() throws IllegalActionException {
-        try {
-            _createReceivers();
-            setupScope();
-        } catch (NameDuplicationException ex) {
-            // FIXME!!
-            // ignore for now
-
-            throw new InvalidStateException(this, "DEAL WITH IT" + ex.getMessage());
-
-        }
-        // Set local variables to their initial value.
-        if (_localVariables != null) {
-            Enumeration localVars = _localVariables.getVariables();
-            Variable var = null;
-            while (localVars.hasMoreElements()) {
-                var = (Variable)localVars.nextElement();
-                var.reset();
-            }
-        }
-        // Evaluate initial transitions, determine initial state.
-        _setInputVars();
-        _takenTransition = null;
-        if (_initialTransitions != null) {
-            Enumeration trs = _initialTransitions.elements();
-            FSMTransition trans;
-            while (trs.hasMoreElements()) {
-                trans = (FSMTransition)trs.nextElement();
-                if (trans.isEnabled()) {
-                    if (_takenTransition != null) {
-                        // Nondeterminate initial transition!
-                        //System.out.println("Multiple initial transitions "
-                        //        + "enabled!");
-                    } else {
-                        _takenTransition = trans;
-                    }
-                }
-            }
-        }
-        if (_takenTransition != null) {
-            _outputTriggerActions(_takenTransition.getTriggerActions());
-            _updateLocalVariables(_takenTransition.getLocalVariableUpdates());
-            // _takenTransition.executeTransitionActions();
-            _currentState = _takenTransition.destinationState();
-        } else {
-            _currentState = _initialState;
-        }
-        if (_currentState == null) {
-            // FIXME!!
-            // Throw exception!
-            //System.out.println("Initialization error: no initial state!");
-        }
-        if (currentRefinement() != null) {
-            // FIXME!!
-            // Initialize the refinement.
-            // Delegate to the director or just call initialize() on
-            // the refinement?
-            // Now we are doing initialization in FSM system.
-            //currentRefinement().initialize();
-
-            //System.out.println("Initializing refinement "+
-            //((ComponentEntity)currentRefinement()).getFullName());
-
-        }
-    }
-
-
     /** Return an enumeration of the input ports.
      *  This method is read-synchronized on the workspace.
      *  @return An enumeration of IOPort objects.
@@ -431,6 +367,71 @@ public class FSMController extends CompositeEntity implements TypedActor {
         return true;
     }
 
+    public void preinitialize() throws IllegalActionException {
+        try {
+            _createReceivers();
+            setupScope();
+        } catch (NameDuplicationException ex) {
+            // FIXME!!
+            // ignore for now
+
+            throw new InvalidStateException(this, "DEAL WITH IT" + ex.getMessage());
+
+        }
+        // Set local variables to their initial value.
+        if (_localVariables != null) {
+            Enumeration localVars = _localVariables.getVariables();
+            Variable var = null;
+            while (localVars.hasMoreElements()) {
+                var = (Variable)localVars.nextElement();
+                var.reset();
+            }
+        }
+        // Evaluate initial transitions, determine initial state.
+        _setInputVars();
+        _takenTransition = null;
+        if (_initialTransitions != null) {
+            Enumeration trs = _initialTransitions.elements();
+            FSMTransition trans;
+            while (trs.hasMoreElements()) {
+                trans = (FSMTransition)trs.nextElement();
+                if (trans.isEnabled()) {
+                    if (_takenTransition != null) {
+                        // Nondeterminate initial transition!
+                        //System.out.println("Multiple initial transitions "
+                        //        + "enabled!");
+                    } else {
+                        _takenTransition = trans;
+                    }
+                }
+            }
+        }
+        if (_takenTransition != null) {
+            _outputTriggerActions(_takenTransition.getTriggerActions());
+            _updateLocalVariables(_takenTransition.getLocalVariableUpdates());
+            // _takenTransition.executeTransitionActions();
+            _currentState = _takenTransition.destinationState();
+        } else {
+            _currentState = _initialState;
+        }
+        if (_currentState == null) {
+            // FIXME!!
+            // Throw exception!
+            //System.out.println("Initialization error: no initial state!");
+        }
+        if (currentRefinement() != null) {
+            // FIXME!!
+            // Initialize the refinement.
+            // Delegate to the director or just call preinitialize() on
+            // the refinement?
+            // Now we are doing initialization in FSM system.
+            //currentRefinement().preinitialize();
+
+            //System.out.println("Initializing refinement "+
+            //((ComponentEntity)currentRefinement()).getFullName());
+
+        }
+    }
 
     /** Change state according to the enabled transition determined
      *  from last fire.
@@ -469,6 +470,8 @@ public class FSMController extends CompositeEntity implements TypedActor {
             //                // Do what's needed.
             //            }
             // FIXME!
+            // FIXME: Is this correct?  initialize() is supposed to be
+            // called only once, per documentation.
             actor.initialize();
         }
         return true;

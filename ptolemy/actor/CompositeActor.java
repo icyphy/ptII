@@ -149,31 +149,6 @@ public class CompositeActor extends CompositeEntity implements Actor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If this actor is opaque, invoke the begin() method of its local
-     *  director. Otherwise, throw an exception.
-     *  This method is read-synchronized on the workspace, so the
-     *  begin() method of the director need not be (assuming it is only
-     *  called from here).
-     *
-     *  @exception IllegalActionException If there is no director, or if
-     *   the director's begin() method throws it, or if the actor is not
-     *   opaque.
-     */
-    public void begin() throws IllegalActionException {
-        try {
-            workspace().getReadAccess();
-            if (!isOpaque()) {
-                throw new IllegalActionException(this,
-                        "Cannot fire a non-opaque actor.");
-            }
-            // Note that this is assured of firing the local director,
-            // not the executive director, because this is opaque.
-            getDirector().begin();
-        } finally {
-            workspace().doneReading();
-        }
-    }
-
     /** Clone the actor into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -302,35 +277,33 @@ public class CompositeActor extends CompositeEntity implements Actor {
         }
     }
 
-    /** If this actor is opaque, create receivers, and then
-     *  invoke the initialize() method of its local
+    /** If this actor is opaque, invoke the initialize() method of its local
      *  director. Otherwise, throw an exception.
-     *  Also, if this is not a top-level composite actor,
+     *  Before that, if this is not a top-level composite actor,
      *  perform domain-specific initialization by calling the
      *  initialize(Actor) method of the executive director.
-     *  This method is read-synchronized on the workspace, so the initialize()
-     *  method of the director need not be, assuming it is only called from
-     *  here.
+     *  This method is read-synchronized on the workspace, so the
+     *  initialize() method of the director need not be (assuming it is only
+     *  called from here).
      *
      *  @exception IllegalActionException If there is no director, or if
-     *   the director's initialize() method throws it, or if this actor
-     *   is not opaque.
+     *   the director's initialize() method throws it, or if the actor is not
+     *   opaque.
      */
     public void initialize() throws IllegalActionException {
         try {
             workspace().getReadAccess();
-            _createReceivers();
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
-                        "Cannot initialize a non-opaque actor.");
+                        "Cannot fire a non-opaque actor.");
             }
-            // Note that this is assured of firing the local director,
-            // not the executive director, because this is opaque.
-            getDirector().initialize();
             Director executive = getExecutiveDirector();
             if (executive != null) {
                 executive.initialize(this);
             }
+            // Note that this is assured of firing the local director,
+            // not the executive director, because this is opaque.
+            getDirector().initialize();
         } finally {
             workspace().doneReading();
         }
@@ -528,6 +501,33 @@ public class CompositeActor extends CompositeEntity implements Actor {
             }
 
             return getDirector().prefire();
+        } finally {
+            workspace().doneReading();
+        }
+    }
+
+    /** If this actor is opaque, create receivers, and then
+     *  invoke the preinitialize() method of its local
+     *  director. Otherwise, throw an exception.
+     *  This method is read-synchronized on the workspace, so the
+     *  preinitialize() method of the director need not be, assuming
+     *  it is only called from here.
+     *
+     *  @exception IllegalActionException If there is no director, or if
+     *   the director's preinitialize() method throws it, or if this actor
+     *   is not opaque.
+     */
+    public void preinitialize() throws IllegalActionException {
+        try {
+            workspace().getReadAccess();
+            _createReceivers();
+            if (!isOpaque()) {
+                throw new IllegalActionException(this,
+                        "Cannot preinitialize a non-opaque actor.");
+            }
+            // Note that this is assured of firing the local director,
+            // not the executive director, because this is opaque.
+            getDirector().preinitialize();
         } finally {
             workspace().doneReading();
         }

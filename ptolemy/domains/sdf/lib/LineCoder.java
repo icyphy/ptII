@@ -132,12 +132,26 @@ public class LineCoder extends SDFAtomicActor {
         }
     }
 
+    /** Consume the inputs and produce the corresponding symbol.
+     *  @exception IllegalActionException Not Thrown.
+     */
+    public void fire() throws IllegalActionException {
+        int tableaddress = 0;
+        for (int i = 0; i < _wordlength; i++) {
+            boolean data = ((BooleanToken)(input.get(0))).booleanValue();
+            if (data) {
+                tableaddress |= 1 << i;
+            }
+        }
+        output.broadcast(new DoubleToken(_table[tableaddress]));
+    }
+
     /** Set up the consumption constant.
      *  @exception IllegalActionException If the length of the table is not
      *   a power of two.
      */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
 
         // FIXME: Handle mutations.
         _wordlength = ((IntToken)(wordlength.getToken())).intValue();
@@ -153,20 +167,6 @@ public class LineCoder extends SDFAtomicActor {
         for (int i = 0; i < _table.length; i++) {
             _table[i] = tabletoken.getElementAt(0, i);
         }
-    }
-
-    /** Consume the inputs and produce the corresponding symbol.
-     *  @exception IllegalActionException Not Thrown.
-     */
-    public void fire() throws IllegalActionException {
-        int tableaddress = 0;
-        for (int i = 0; i < _wordlength; i++) {
-            boolean data = ((BooleanToken)(input.get(0))).booleanValue();
-            if (data) {
-                tableaddress |= 1 << i;
-            }
-        }
-        output.broadcast(new DoubleToken(_table[tableaddress]));
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -306,15 +306,17 @@ public class Clock extends TimedSource {
 
     /** Schedule the first firing and initialize local variables.
      *  @exception IllegalActionException If the parent class throws it,
-     *   or if the values parameter is not a row vector.
+     *   or if the values parameter is not a row vector, or if the fireAt()
+     *   method is not supported by the director.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _cycleStartTime = 0.0;
+        double currentTime = getDirector().getCurrentTime();
+        _cycleStartTime = currentTime;
 
         double[][] offsts =
             ((DoubleMatrixToken)offsets.getToken()).doubleMatrix();
-        getDirector().fireAt(this, offsts[0][0]);
+        getDirector().fireAt(this, offsts[0][0] + currentTime);
 
         _currentValue = _getValue(0).zero();
         _phase = 0;

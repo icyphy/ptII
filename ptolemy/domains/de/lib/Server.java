@@ -123,14 +123,6 @@ public class Server extends DETransformer {
         }
     }
 
-    /** Indicate that the server is free.
-     *  @exception IllegalActionException If the base class throws it.
-     */
-    public void begin() throws IllegalActionException {
-        super.begin();
-        _nextTimeFree = Double.NEGATIVE_INFINITY;
-    }
-
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the parameter.
      *  @param ws The workspace for the new object.
@@ -163,6 +155,14 @@ public class Server extends DETransformer {
         } else {
             _currentInput = null;
         }
+    }
+
+    /** Indicate that the server is free.
+     *  @exception IllegalActionException If the base class throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _nextTimeFree = Double.NEGATIVE_INFINITY;
     }
 
     /** If the server is not busy, return true.  Otherwise return false.

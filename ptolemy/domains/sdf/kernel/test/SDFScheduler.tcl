@@ -47,7 +47,7 @@ if {[string compare test [info procs test]] == 1} then {
 # Check for necessary classes and adjust the auto_path accordingly.
 #
 proc _getSchedule {toplevel scheduler} {
-    $toplevel initialize
+    $toplevel preinitialize
     _testEnums schedule $scheduler
 }
 ######################################################################

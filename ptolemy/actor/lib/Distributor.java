@@ -149,7 +149,7 @@ public class Distributor extends Transformer implements SequenceActor {
         }
     }
 
-    /** Initialize the actor by setting the current output channel to zero.
+    /** Begin execution by setting the current output channel to zero.
      *  @exception IllegalActionException If there is no director.
      */
     public void initialize() throws IllegalActionException {

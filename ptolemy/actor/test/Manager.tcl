@@ -78,7 +78,7 @@ test Manager-8.1 {Test type checking} {
     $p1 link $r1
     $p2 link $r1
 
-    $director initialize
+    $director preinitialize
     $manager resolveTypes
     set rt1 [[$p1 getType] getName]
     set rt2 [[$p2 getType] getName]
@@ -91,7 +91,7 @@ test Manager-8.1 {Test type checking} {
 test Manager-8.2 {Test run-time type checking} {
     #use setup above
     set token [java::new {ptolemy.data.IntToken int} 3]
-    $director initialize
+    $director preinitialize
     $p1 broadcast $token
     set rtoken [$p2 get 0]
     list [[$rtoken getClass] getName] \
@@ -104,7 +104,7 @@ test Manager-8.2 {Test run-time type checking} {
 test Manager-8.3 {Test run-time type checking} {
     #use setup above
     set token [java::new ptolemy.data.DoubleToken]
-    $director initialize
+    $director preinitialize
     catch {$p1 broadcast $token} msg
     list $msg
 } {{java.lang.IllegalArgumentException: Run-time type checking failed. token: ptolemy.data.DoubleToken, port: .E0.E1.P1, port type: ptolemy.data.IntToken}}
@@ -187,7 +187,7 @@ test Manager-8.6 {Test type resolution} {
     $p23 link $r24
     $p4 link $r24
 
-    $director initialize
+    $director preinitialize
     $manager resolveTypes
     set rt1 [[$p1 getType] getName]
     set rt21 [[$p21 getType] getName]

@@ -144,15 +144,6 @@ public class Expression extends TypedAtomicActor {
         }
     }
 
-    /** Initialize the iteration count to 1.
-     *  @exception IllegalActionException If the parent class throws it.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        _iterationCount = 1;
-        _iteration.setToken(new IntToken(_iterationCount));
-    }
-
     /** Evaluate the expression and broadcast its result to the output.
      *  @exception IllegalActionException If the evaluation of the expression
      *   triggers it, or the evaluation yields a null result, or the evaluation
@@ -182,6 +173,15 @@ public class Expression extends TypedAtomicActor {
                     expression.getExpression());
         }
         output.broadcast(result);
+    }
+
+    /** Initialize the iteration count to 1.
+     *  @exception IllegalActionException If the parent class throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _iterationCount = 1;
+        _iteration.setToken(new IntToken(_iterationCount));
     }
 
     /** Increment the iteration count.

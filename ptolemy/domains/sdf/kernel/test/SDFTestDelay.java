@@ -178,21 +178,6 @@ public class SDFTestDelay extends SDFAtomicActor {
         }
     }
 
-    /* Initialization is the first step in executing a model.   This happens
-     * prior to any actual execution.   This actor doesn't need to do any
-     * initialization, other than what has already occurred in the constructor
-     */
-    /** This method should be invoked exactly once per execution
-     *  of an application, before any of these other methods are invoked.
-     *  It may produce output data.  This method typically initializes
-     *  internal members of an actor and produces initial output data.
-     *
-     *  @exception IllegalActionException If initializing is not permitted.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-    }
-
     /* Postfire is the last step in an iteration.   This actor returns
      * true, since it places no limit on how execution may proceed.   In
      * practice this method can be used to define a stopping condition,

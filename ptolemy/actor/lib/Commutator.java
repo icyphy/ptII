@@ -92,7 +92,6 @@ public class Commutator extends Transformer implements SequenceActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
     /** Clone the actor into the specified workspace. This calls the base
      *  class method and sets the public variables to point to the new ports.
      *  @param ws The workspace for the new object.
@@ -151,7 +150,7 @@ public class Commutator extends Transformer implements SequenceActor {
         }
     }
 
-    /** Initialize the actor by setting the current input channel to zero.
+    /** Begin execution by setting the current input channel to zero.
      *  @exception IllegalActionException If there is no director.
      */
     public void initialize() throws IllegalActionException {

@@ -179,17 +179,6 @@ public class SDFDirector extends StaticSchedulingDirector {
         }
     }
 
-    /** Initialize the actors associated with this director and
-     *  initialize the number of iterations to zero.  The order in which
-     *  the actors are initialized is arbitrary.
-     *  @exception IllegalActionException If the initialize() method of
-     *  one of the associated actors throws it.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        _iteration = 0;
-    }
-
     /** Return a new receiver consistent with the SDF domain.
      *  @return A new SDFReceiver.
      */
@@ -209,6 +198,17 @@ public class SDFDirector extends StaticSchedulingDirector {
     public boolean prefire() throws IllegalActionException {
         _postfirereturns = true;
         return true;
+    }
+
+    /** Initialize the actors associated with this director and
+     *  initialize the number of iterations to zero.  The order in which
+     *  the actors are initialized is arbitrary.
+     *  @exception IllegalActionException If the preinitialize() method of
+     *  one of the associated actors throws it.
+     */
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+        _iteration = 0;
     }
 
     /** Return false if the system has finished executing, either by

@@ -33,6 +33,7 @@ package ptolemy.actor.lib;
 import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.StringToken;
+import ptolemy.data.Token;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 
@@ -68,8 +69,7 @@ is infinite.
 public class Recorder extends Sink {
 
     /** Construct an actor with an input multiport that can accept any
-     *  StringToken.  Since almost all tokens can be converted to StringToken,
-     *  the input type implies minimal constraints on the use of this actor.
+     *  Token.
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the entity cannot be contained
@@ -80,7 +80,7 @@ public class Recorder extends Sink {
     public Recorder(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        input.setTypeEquals(StringToken.class);
+        input.setTypeEquals(Token.class);
 
         capacity = new Parameter(this, "capacity", new IntToken(-1));
         capacity.setTypeEquals(IntToken.class);
@@ -105,7 +105,7 @@ public class Recorder extends Sink {
      */
     public Object clone(Workspace ws) {
         Recorder newobj = (Recorder)super.clone(ws);
-        newobj.input.setTypeEquals(StringToken.class);
+        newobj.input.setTypeEquals(Token.class);
         newobj.capacity = (Parameter)newobj.getAttribute("capacity");
         return newobj;
     }
@@ -124,7 +124,7 @@ public class Recorder extends Sink {
      *  If nothing has been recorded (there have been no firings),
      *  then return an empty list.
      *  @param channel The input channel for which the history is desired.
-     *  @return A list of StringToken objects.
+     *  @return A list of Token objects.
      */
     public List getHistory(int channel) {
         ArrayList result = new ArrayList();
@@ -132,7 +132,7 @@ public class Recorder extends Sink {
             result.ensureCapacity(_records.size());
             Iterator firings = _records.iterator();
             while (firings.hasNext()) {
-                StringToken[] record = (StringToken[])firings.next();
+                Token[] record = (Token[])firings.next();
                 if (channel < record.length) {
                     if (record[channel] != null) {
                         result.add(record[channel]);
@@ -145,14 +145,15 @@ public class Recorder extends Sink {
         return result;
     }
 
-    /** Get the latest input for the specified channel (as a string).
+    /** Get the latest input for the specified channel.
      *  If there has been no record yet for the specified channel,
-     *  then return the string "_", representing "bottom".
+     *  then return the string token "_", representing "bottom".
      *  @param channel The input channel for the record is desired.
-     *  @return A string token representation of the latest input.
+     *  @return The latest input token.
      */
-    public StringToken getLatest(int channel) {
-        if (_latest == null || channel >= _latest.length) {
+    public Token getLatest(int channel) {
+        if (_latest == null || channel >= _latest.length ||
+                 _latest[channel] == null) {
             return(_bottom);
         }
         return (_latest[channel]);
@@ -164,7 +165,7 @@ public class Recorder extends Sink {
      *  If nothing has been recorded (there have been no firings),
      *  then return an empty enumeration.
      *  @param channel The input channel for the record is desired.
-     *  @return An enumeration of StringToken objects.
+     *  @return An enumeration of Token objects.
      *  @deprecated This method is deprecated. Use getHistory().
      */
     public Enumeration getRecord(int channel) {
@@ -202,10 +203,10 @@ public class Recorder extends Sink {
      */
     public boolean postfire() throws IllegalActionException {
         int width = input.getWidth();
-        StringToken[] record = new StringToken[width];
+        Token[] record = new Token[width];
         for (int i = 0; i < width; i++) {
             if (input.hasToken(i)) {
-                StringToken token = (StringToken)input.get(i);
+                Token token = input.get(i);
                 record[i] = token;
                 _count++;
             }
@@ -233,11 +234,11 @@ public class Recorder extends Sink {
     private List _records;
 
     // The most recent set of inputs.
-    StringToken[] _latest;
+    Token[] _latest;
 
     // A linked list of Double objects, which are times.
     private List _timeRecord;
 
     // A token to indicate absence.
-    private static StringToken _bottom = new StringToken("_");
+    private static Token _bottom = new StringToken("_");
 }

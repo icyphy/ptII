@@ -47,5 +47,64 @@ if {[info procs enumToObjects] == "" } then {
 ######################################################################
 ####
 #
-test Delay-2.1 {} {
-} {}
+test Delay-2.1 {test constructor and clone} {
+    set e0 [sdfModel 5]
+    set delaybase [java::new ptolemy.domains.sdf.lib.Delay $e0 delay]
+    # FIXME: If I use a clone instead of the original, the original is
+    # tested for type satisfaction!
+    set delay [java::cast ptolemy.domains.sdf.lib.Delay [$delaybase clone]]
+    $delaybase setContainer [java::null]
+    $delay setContainer $e0
+    set initialOutputs [getParameter $delay initialOutputs]
+    # Success here is just not throwing an exception.
+    list {}
+} {{}}
+
+test Delay-2.1 {test with the default parameter values} {
+    set ramp [java::new ptolemy.actor.lib.Ramp $e0 ramp]
+    set init [getParameter $ramp init]
+    set step [getParameter $ramp step]
+    set gain [getParameter $delay gain]
+    # Use clone of delay to make sure that is ok.
+    set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
+    $e0 connect \
+       [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
+       [java::field [java::cast ptolemy.actor.lib.Transformer $delay] input]
+    set relation [$e0 connect \
+       [java::field \
+       [java::cast ptolemy.actor.lib.Transformer $delay] output] \
+       [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]]
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+} {0 0 1 2 3}
+
+test Delay-2.2 {test with more than one output token} {
+    $initialOutputs setExpression {[5, 5]}
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+} {5 5 0 1 2}
+
+test Delay-2.3 {test with type change} {
+    $initialOutputs setExpression {[7.0, 4.0]}
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+} {7.0 4.0 0 1 2}
+
+test Delay-2.4 {test with type change to error condition} {
+    $initialOutputs setExpression {[true, false]}
+    catch {[$e0 getManager] execute} msg
+    list $msg
+} {{ptolemy.actor.TypeConflictException: Type conflicts occurred in .top on the following Typeables:
+  .top.delay.output: ptolemy.data.MatrixUpperBound
+}}
+
+test Delay-3.0 {test in feedback loop} {
+    $ramp setContainer [java::null]
+    set input \
+            [java::field [java::cast ptolemy.actor.lib.Transformer $delay] \
+            input]
+    $input unlinkAll
+    $input link $relation
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+} {true false true false true}

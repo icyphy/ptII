@@ -95,20 +95,6 @@ public class AtomicActor extends ComponentEntity implements Actor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Do nothing. Derived classes override this method to perform
-     *  actions that should occur once at the beginning of an execution,
-     *  but after the initialization phase. Since type resolution is done
-     *  in the initialization phase, along with topology changes that
-     *  may be requested by higher-order function actors, an actor
-     *  can produce output data and schedule events in the begin()
-     *  method.  In effect, it can do anything that can be done in the
-     *  fire() method.
-     *
-     *  @exception IllegalActionException If a derived class throws it.
-     */
-    public void begin() throws IllegalActionException {
-    }
-
     /** Clone this actor into the specified workspace. The new actor is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -176,18 +162,20 @@ public class AtomicActor extends ComponentEntity implements Actor {
 	}
     }
 
-    /** Create receivers and perform domain-specific initialization,
-     *  if any.  Derived classes can override this method to
-     *  perform additional initialization functions, but they should be
-     *  to call this base class methods or create the receivers themselves.
-     *  This method gets executed exactly once prior to
-     *  any other action methods.  It cannot produce output data
-     *  since type resolution is typically not yet done.
+    /** Perform domain-specific initialization by calling the
+     *  initialize(Actor) method of the director. The director may
+     *  reject the actor by throwing an exception if the actor is
+     *  incompatible with the domain.  Process-oriented directors
+     *  Derived classes override this method to perform
+     *  actions that should occur once at the beginning of an execution,
+     *  but after type resolution.
+     *  Derived classes should be sure to call super.initialize(), however,
+     *  so that domain-specific initialization is done.
+     *  Derived classes can produce output data and schedule events.
      *
-     *  @exception IllegalActionException Not thrown in this base class.
+     *  @exception IllegalActionException If a derived class throws it.
      */
     public void initialize() throws IllegalActionException {
-        _createReceivers();
         getDirector().initialize(this);
     }
 
@@ -311,6 +299,21 @@ public class AtomicActor extends ComponentEntity implements Actor {
      */
     public boolean prefire() throws IllegalActionException {
         return true;
+    }
+
+    /** Create receivers.  Derived classes can override this method to
+     *  perform additional initialization functions, but they should
+     *  call this base class methods or create the receivers themselves.
+     *  This method gets executed exactly once prior to
+     *  any other action methods.  It cannot produce output data
+     *  since type resolution is typically not yet done. It also gets
+     *  invoked prior to any static scheduling that might occur in the
+     *  domain, so it can change scheduling information.
+     *
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void preinitialize() throws IllegalActionException {
+        _createReceivers();
     }
 
     /** Override the base class to ensure that the proposed container

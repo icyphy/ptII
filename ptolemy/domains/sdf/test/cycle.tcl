@@ -63,14 +63,19 @@ test cycle-1.0 {Cycle Scheduling tests} {
     set a3 [java::new ptolemy.domains.sdf.lib.Delay $toplevel Delay]
 
     set r1 [$toplevel connect [java::field $a1 output] [java::field $a2 input] R1]
-    set r2 [$toplevel connect [java::field $a2 output] [java::field $a3 input] R2]
-    set r3 [$toplevel connect [java::field $a3 output] [java::field $a1 input] R3]
+    set r2 [$toplevel connect [java::field $a2 output] \
+            [java::field [java::cast ptolemy.actor.lib.Transformer $a3] input] \
+            R2]
+    set r3 [$toplevel connect \
+            [java::field [java::cast ptolemy.actor.lib.Transformer $a3] \
+            output] [java::field $a1 input] R3]
 
     $scheduler setValid false
     
 #    set l1 [java::new ptolemy.kernel.util.StreamListener]
 #    $scheduler addDebugListener $l1
 
+    $toplevel preinitialize
     $toplevel initialize
     set sched1 [_testEnums schedule $scheduler]
     list $sched1

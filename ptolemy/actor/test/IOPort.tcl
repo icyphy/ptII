@@ -223,10 +223,10 @@ test IOPort-5.4 {Test getWidth after unlinking} {
     $p1 link $r1
     $p2 link $r1
     
-    # Call initialize on the director so that the receivers get created
+    # Call preinitialize on the director so that the receivers get created
     # added Neil Smyth. Need to call this as receivers are no longer 
     # created on the fly.
-    $director initialize
+    $director preinitialize
 
     $p1 getRemoteReceivers
     $p2 unlink $r1
@@ -303,10 +303,10 @@ test IOPort-8.2 {Check getRemoteReceivers on a port after unlinking} {
     $p1 link $r1
     $p2 link $r1
     
-    # Call initialize on the director so that the receivers get created
+    # Call preinitialize on the director so that the receivers get created
     # added Neil Smyth. Need to call this as receivers are no longer 
     # created on the fly.
-    $director initialize
+    $director preinitialize
 
     $p1 getRemoteReceivers
     $p2 unlink $r1
@@ -336,10 +336,10 @@ test IOPort-9.1 {Check connectivity via send} {
     $p1 link $r1
     $p2 link $r1
     
-    # Call initialize on the director so that the receivers get created
+    # Call preinitialize on the director so that the receivers get created
     # added Neil Smyth. Need to call this as receivers are no longer 
     # created on the fly.
-    $director initialize
+    $director preinitialize
 
     # token to send
     set token [java::new ptolemy.data.StringToken foo]
@@ -404,10 +404,10 @@ test IOPort-9.3 {Check unlink and get from unlinked port} {
     # unlink one end
     $p1 unlink $r1
     
-    # Call initialize on the director so that the receivers get created
+    # Call preinitialize on the director so that the receivers get created
     # added Neil Smyth. Need to call this as receivers are no longer 
     # created on the fly.
-    $director initialize
+    $director preinitialize
 
     # token to send
     set token [java::new ptolemy.data.StringToken foo]
@@ -430,10 +430,10 @@ test IOPort-9.4 {Check loopback send} {
     # token to send
     set token [java::new ptolemy.data.StringToken foo]
 
-    # Call initialize on the director so that the receivers get created
+    # Call preinitialize on the director so that the receivers get created
     # added Neil Smyth. Need to call this as receivers are no longer 
     # created on the fly.
-    $director initialize
+    $director preinitialize
 
     $p1 send 0 $token
     set received [$p2 get 0]
@@ -477,10 +477,10 @@ test IOPort-10.3 {Check description use test-9.1 topology} {
     set p2 [java::new ptolemy.actor.IOPort $e2 P2 true false]
     set r1 [$e0 connect $p1 $p2 R1]
 
-    # Call initialize on the director so that the receivers get created
+    # Call preinitialize on the director so that the receivers get created
     # added Neil Smyth. Need to call this as receivers are no longer 
     # created on the fly.
-    $director initialize
+    $director preinitialize
 
     list "[$p1 description $detail]\n[$p2 description $detail]"
 } {{ptolemy.actor.IOPort {..E1.P1} receivers {
@@ -515,10 +515,10 @@ test IOPort-10.4 {Check description use 1 sender 2 destinaton topology} {
     $p2 link $r1
     $p3 link $r1
 
-    # Call initialize on the director so that the receivers get created
+    # Call preinitialize on the director so that the receivers get created
     # added Neil Smyth. Need to call this as receivers are no longer 
     # created on the fly.
-    $director initialize
+    $director preinitialize
 
     list "[$p1 description $detail]\n[$p2 description $detail]\n[$p3 description $detail]"
 } {{ptolemy.actor.IOPort {..E1.P1} receivers {
@@ -563,10 +563,10 @@ test IOPort-10.5 {Check description use multi-output port} {
     $p1 link $r2
     $p3 link $r2
 
-    # Call initialize on the director so that the receivers get created
+    # Call preinitialize on the director so that the receivers get created
     # added Neil Smyth. Need to call this as receivers are no longer 
     # created on the fly.
-    $director initialize
+    $director preinitialize
 
     list "[$p1 description $detail]\n[$p2 description $detail]\n[$p3 description $detail]"
 } {{ptolemy.actor.IOPort {..E1.P1} receivers {
@@ -658,10 +658,10 @@ test IOPort-10.6 {Check description use the example in design doc} {
     set r8 [java::new ptolemy.actor.IORelation $e0 R8]
     $p3 link $r8
 
-    # Call initialize on the director so that the receivers get created
+    # Call preinitialize on the director so that the receivers get created
     # added Neil Smyth. Need to call this as receivers are no longer 
     # created on the fly.
-    $director initialize
+    $director preinitialize
 
     list "[$p1 description $detail]\n[$p10 description $detail]"
 } {{ptolemy.actor.IOPort {..E1.E2.P1} receivers {
@@ -1045,10 +1045,10 @@ test IOPort-13.1 {test getReceivers()} {
     set r3 [java::cast ptolemy.actor.IORelation [$e2 connect $p2 $p4]]
     $r3 setWidth 4
 
-    # Call initialize on the director so that the receivers get created
+    # Call preinitialize on the director so that the receivers get created
     # added Neil Smyth. Need to call this as receivers are no longer 
     # created on the fly.
-    $e0 initialize
+    $e0 preinitialize
     
     set receivers [java::field ptolemy.actor.IOPort RECEIVERS]
     set remotereceivers [java::field ptolemy.actor.IOPort REMOTERECEIVERS]

@@ -113,13 +113,12 @@ public class DTDirector extends SDFDirector {
         return new QueueReceiver();
     }
 
-
     /** Prepare for firing and return true if firing can proceed.
      *  If there is no container, return false immediately.  Otherwise,
      *  the first step is to perform any pending mutations, and to initialize
      *  any actors that are added by those mutations.  This sequence is
      *  repeated until no more mutations are performed.  This way, the
-     *  initialize() method in actors can perform mutations, and the
+     *  preinitialize() method in actors can perform mutations, and the
      *  mutations will be fully executed before proceeding. Then,
      *  if this is the local director of its container, invoke the prefire()
      *  methods of all its deeply contained actors, and return the logical AND

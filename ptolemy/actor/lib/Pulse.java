@@ -89,7 +89,7 @@ public class Pulse extends SequenceSource {
         indexes.setTypeEquals(IntMatrixToken.class);
         // Call this so that we don't have to copy its code here...
         attributeChanged(indexes);
-        values = new Parameter(this, "values", defaultValueToken);
+        values = new Parameter(this, "values", _defaultValueToken);
         // Call this so that we don't have to copy its code here...
         attributeChanged(values);
         _zero = new IntToken(0);
@@ -319,8 +319,8 @@ public class Pulse extends SequenceSource {
     };
 
     // Default value of the values parameter.
-    private IntMatrixToken defaultValueToken =
-    new IntMatrixToken(defaultValues);
+    private IntMatrixToken _defaultValueToken =
+            new IntMatrixToken(defaultValues);
 
     // Dummy variable which reflects the type of the elements of the
     // values parameter, so that the output type can be related to it.

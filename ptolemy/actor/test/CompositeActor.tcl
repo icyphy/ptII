@@ -148,6 +148,7 @@ test CompositeActor-5.1 {Test newPort} {
 #
 test CompositeActor-6.1 {Invoke all the action methods} {
      # NOTE: Uses the setup above
+     $e5 preinitialize
      $e5 initialize
      $e5 prefire
      $e5 fire
@@ -271,6 +272,7 @@ test CompositeActor-10.1 {Test wormhole data transfers} {
     # Call initialize on the director so that the receivers get created
     # added Neil Smyth. Need to call this as receivers are no longer 
     # created on the fly.
+    $director preinitialize
     $director initialize
 
     set token [java::new ptolemy.data.StringToken foo]

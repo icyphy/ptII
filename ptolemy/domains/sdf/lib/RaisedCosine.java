@@ -177,8 +177,8 @@ public class RaisedCosine extends FIR {
     /** Set up the taps and consumption and production constants.
      *  @exception IllegalActionException If the parameters are out of range.
      */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
 
         // FIXME: Doesn't handle mutations.
         double ebw = ((DoubleToken)(excessBW.getToken())).doubleValue();
@@ -204,6 +204,6 @@ public class RaisedCosine extends FIR {
         tps[0] = SignalProcessing.sampleWave(len, -center, 1.0, rcSg);
 
         taps.setToken(new DoubleMatrixToken(tps));
-        super.initialize();
+        super.preinitialize();
     }
 }

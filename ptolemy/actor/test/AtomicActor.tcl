@@ -113,6 +113,7 @@ test AtomicActor-5.1 {Test newPort} {
 #
 test AtomicActor-6.1 {Invoke all the action methods} {
      # NOTE: Uses the setup above
+     $e3 preinitialize
      $e3 initialize
      $e3 prefire
      $e3 fire
