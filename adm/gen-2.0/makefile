@@ -474,9 +474,8 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/jhdl \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/toolbox \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/icon \
-	$(REMOTE1PTIIDIST)/ptolemy/vergil/ptolemy \
-	$(REMOTE1PTIIDIST)/ptolemy/vergil/ptolemy/fsm \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/tree \
+	$(REMOTE1PTIIDIST)/ptolemy/vergil/fsm/modal \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/conversions \
