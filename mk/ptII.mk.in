@@ -241,6 +241,9 @@ PTJACL_JAR =	@PTJACL_JAR@
 # jtclsh script to run Jacl for the test suite.
 # We could use bin/ptjacl here, but instead we start it from within
 # make and avoid problems
+# configure sets @JTCLSH@ to include JTCLSHFLAGS
+# JTCLSHFLAGS gets set to -Dptolemy.ptII.isRunningNightlyBuild=true
+# when we are running the nightly build.
 JTCLSH =	CLASSPATH="$(CLASSPATH)$(AUXCLASSPATH)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)" @JTCLSH@
 
 # Set to jai and used in 
