@@ -308,6 +308,7 @@ public class FilePortParameter extends PortParameter {
 
     /** Clone the attribute into the specified workspace.  The resulting
      *  object has no base directory name nor any reference to any open stream.
+     *  @param workspace The workspace for the cloned object.
      *  @return A new attribute.
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
@@ -358,8 +359,9 @@ public class FilePortParameter extends PortParameter {
      *  by URIAttribute.getModelURI() is returned, which is the URI
      *  of the first container above this attribute in the hierarchy that
      *  has a URIAttribute, or null if there none.
-     *  @see URIAttribute#getModelURI(NamedObj)
      *  @return A directory name, or null if there is none.
+     *  @see URIAttribute#getModelURI(NamedObj)
+     *  @see #setBaseDirectory(URI)
      */
     public URI getBaseDirectory() {
         if (_baseDirectory != null) {
@@ -442,6 +444,7 @@ public class FilePortParameter extends PortParameter {
      *  containing the file returned by URIAttribute.getModelURI().
      *  @param directory The base directory.
      *  @see URIAttribute#getModelURI(NamedObj)
+     *  @see #getBaseDirectory()
      */
     public void setBaseDirectory(URI directory) {
         _baseDirectory = directory;
@@ -452,6 +455,7 @@ public class FilePortParameter extends PortParameter {
      *  <pre>
      *     ((StringToken)this.getToken()).stringValue()
      *  </pre>
+     *  @return The string value of this parameter.
      *  @exception IllegalActionException If the expression cannot
      *   be parsed or cannot be evaluated, or if the result of evaluation
      *   violates type constraints, or if the result of evaluation is null
