@@ -1062,8 +1062,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             new ptolemy.data.Token[numChildren];
         for (int i = 0; i < numChildren; i++) {
             ASTPtRootNode child = (ASTPtRootNode)node.jjtGetChild(i);
-            _evaluateChild(node, i);
-            tokens[i] = _evaluatedChildToken;
+            tokens[i] = _evaluateChild(node, i);
         }
         return tokens;
     }
@@ -1103,10 +1102,11 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  This is usually called while visiting the given node.
      *  @exception IllegalActionException If an evaluation error occurs.
      */
-    protected void _evaluateChild(ASTPtRootNode node, int i)
+    protected ptolemy.data.Token _evaluateChild(ASTPtRootNode node, int i)
             throws IllegalActionException {
         ASTPtRootNode child = (ASTPtRootNode)node.jjtGetChild(i);
         child.visit(this);
+        return _evaluatedChildToken;
     }
 
     /** Evaluate the Matrix index operation represented by the given node.
@@ -1228,7 +1228,9 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
     ////                       private variables                   ////
 
     // Temporary storage for the result of evaluating a child node.
-    private ptolemy.data.Token _evaluatedChildToken;
+    // This is protected so that derived classes can access it.
+    protected ptolemy.data.Token _evaluatedChildToken;
+    
     private ParserScope _scope;
     private ParseTreeTypeInference _typeInference;
 }
