@@ -359,7 +359,7 @@ public class HDFFSMDirector extends FSMDirector {
             throw new IllegalActionException(this,
              "Can't postfire because current refinement is null.");
         }
-        
+
         // Postfire the current refinement.
         // FIXME
         //boolean postfireReturn = currentRefinement.postfire();
@@ -419,7 +419,7 @@ public class HDFFSMDirector extends FSMDirector {
                 // state of the (enabled) transition.
                 // FIXME:
                 State newState = lastChosenTr.destinationState();
-                
+
                 _setCurrentState(newState);
                 if (_debug_info) System.out.println(getName() +
                    " : postfire(): making state transition to: " +
@@ -449,7 +449,7 @@ public class HDFFSMDirector extends FSMDirector {
                 // to the receivers of the current state.
                 _currentLocalReceiverMap =
                     (Map)_localReceiverMaps.get(ctrl.currentState());
- 
+
                 // Get the new current refinement actor.
                 TypedCompositeActor actor =
                     // FIXME
@@ -602,7 +602,7 @@ public class HDFFSMDirector extends FSMDirector {
     }
 
     public void setCurrentHDFFSMReset(boolean resetCurrentHDFFSM) {
-        _resetCurrentHDFFSM = resetCurrentHDFFSM;    
+        _resetCurrentHDFFSM = resetCurrentHDFFSM;
     }
 
     /** Return true if data are transferred from the input port of
@@ -1088,7 +1088,7 @@ public class HDFFSMDirector extends FSMDirector {
     // A flag indicating whether the current director
     // has made a tranisiton with "reset" set to be true.
     private boolean _resetCurrentHDFFSM = false;
-    
+
     // The firing count for the HDF actor (the container
     // of this director) in the current schedule.
     private int _firingsPerScheduleIteration = 1;

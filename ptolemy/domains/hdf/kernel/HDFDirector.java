@@ -307,16 +307,16 @@ public class HDFDirector extends SDFDirector {
     /*
     public void initialize() throws IllegalActionException {
         super.initialize();
-       
+
         if (_preinitializeFlag) {
             _preinitializeFlag = false;
-            
+
         } else {
             SDFScheduler scheduler = (SDFScheduler)getScheduler();
-            getSchedule(); 
+            getSchedule();
         }
     }*/
-    
+
 
     /** Get the HDF schedule since schedule may change in the postfire.
      *  If this director is at the top level, then update the number of

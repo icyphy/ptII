@@ -341,7 +341,7 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
         super._setInputsFromRefinement();
     }
     */
-    
+
     /** Set the input variables for all ports of this actor.
      *
      *  @param firings The number of times this actor has been fired in
