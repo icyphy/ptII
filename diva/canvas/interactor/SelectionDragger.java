@@ -146,6 +146,19 @@ public class SelectionDragger extends DragInteractor {
     }
 
     /**
+     * Add the selection model of the given selection interactor to the
+     * set of selection models selected by this dragger.  When
+     * drag-selecting, only figures that have a selection interactor
+     * with a selection model in this list are added to the selection
+     * model.
+     */
+    public void addSelectionInteractor (SelectionInteractor interactor) {
+        if ( !(_selectionModels.contains(interactor.getSelectionModel()))) {
+            _selectionModels.add(interactor.getSelectionModel());
+        }
+    }
+
+    /**
      * Clear the selection in all the relevant selection interactors.
      */
     public void clearSelection () {
