@@ -75,7 +75,9 @@ JSRCS = \
 	PlotLiveApplet.java \
 	PlotPoint.java \
 	Pxgraph.java \
-	Message.java
+	Message.java \
+	LogicAnalyzer.java \
+	LogicAnalyzerFrame.java
 
 # Files that are not compiled, such as .tcl and .itcl files.
 EXTRA_SRCS = $(JSRCS) pxgraph pxgraph.bat ptplot2mif.tcl index.html
