@@ -298,9 +298,7 @@ public class ProcessDirector extends Director {
     }
     
     /** Resumes execution of the model. If the model is not paused do nothing.
-     *  Only the actors currently in the topology are resumed. The actors 
-     *  that were removed from the model while the execution was paused are
-     *  not resumed.
+     *  All the actors that were paused using setResumePaused are resumed. 
      */
     public synchronized void setResumeRequested() {
         if (!_pauseRequested) {
