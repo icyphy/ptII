@@ -219,6 +219,8 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
      */
     protected boolean _close() {
         boolean result = super._close();
+        // FIXME: Shouldn't the following only be done if the
+        // above returns true.
         CompositeEntity model = getModel();
         if (model instanceof CompositeActor) {
             Manager manager = ((CompositeActor)model).getManager();
