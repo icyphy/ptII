@@ -289,10 +289,9 @@ public class ProcessDirector extends Director {
      *  <p>
      *  @exception IllegalActionException If cannot access all the receivers.
      */
-    //  Note: Should be fixed after Director/Manager define pause, et. al.
+    //  Note: Should be fixed after Director/Manager define pause, etc.
     //  Should a pausedEvent be sent when the model is fully paused?
-    public void pause()
-            throws IllegalActionException {
+    public void pause() throws IllegalActionException {
         Workspace workspace = workspace();
 	workspace.getReadAccess();
 	try {
@@ -418,7 +417,7 @@ public class ProcessDirector extends Director {
     }
 
     /** End the execution of the model under the control of this
-     *  director. A flag is set in all the receivers which causes
+     *  director. A flag is set in all the receivers that causes
      *  each process to terminate at the earliest communication point.
      *  <P>
      *  Prior to setting receiver flags, this method wakes up the
