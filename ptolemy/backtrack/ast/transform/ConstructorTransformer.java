@@ -144,13 +144,15 @@ public class ConstructorTransformer extends AbstractTransformer
         AST ast = node.getAST();
         CompilationUnit root = (CompilationUnit)node.getRoot();
         Type type = Type.getType(node);
-        MethodInvocation staticSetCheckpoint = ast.newMethodInvocation();
-        staticSetCheckpoint.setExpression(
-                createName(ast, getClassName(type.getName(), state, root)));
-        staticSetCheckpoint.setName(ast.newSimpleName(SET_CHECKPOINT_NAME));
-        staticSetCheckpoint.arguments().add(ASTNode.copySubtree(ast, node));
-        staticSetCheckpoint.arguments().add(ast.newSimpleName(CHECKPOINT_NAME));
-        replaceNode(node, staticSetCheckpoint);
+        String setCheckpointName = SET_CHECKPOINT_NAME + "$" +
+				Integer.toHexString(
+				        state.getCurrentClass().getName().hashCode());
+        MethodInvocation extraSetCheckpoint = ast.newMethodInvocation();
+        extraSetCheckpoint.setExpression(
+                (ClassInstanceCreation)ASTNode.copySubtree(ast, node));
+        extraSetCheckpoint.setName(ast.newSimpleName(setCheckpointName));
+        extraSetCheckpoint.arguments().add(ast.newSimpleName(CHECKPOINT_NAME));
+        replaceNode(node, extraSetCheckpoint);
     }
     
     private Hashtable _unhandledNodes = new Hashtable();

@@ -28,10 +28,18 @@ COPYRIGHTENDKEY
 
 package ptolemy.backtrack.ast;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
@@ -40,6 +48,8 @@ import ptolemy.backtrack.ast.transform.PackageRule;
 import ptolemy.backtrack.ast.transform.TransformRule;
 import ptolemy.backtrack.util.PathFinder;
 import ptolemy.backtrack.util.SourceOutputStream;
+import ptolemy.backtrack.xmlparser.ConfigParser;
+import ptolemy.backtrack.xmlparser.XmlOutput;
 
 //////////////////////////////////////////////////////////////////////////
 //// Transform
@@ -85,7 +95,27 @@ public class Transformer {
                 }
                 
                 String pathOrFile = args[i];
-                File[] files = PathFinder.getJavaFiles(pathOrFile, true);
+                File[] files;
+                if (pathOrFile.startsWith("@")) {
+                    // A file list.
+                    // Each line in the file contains a single file name.
+                    String listName = pathOrFile.substring(1);
+                    BufferedReader reader = 
+                        new BufferedReader(
+                                new InputStreamReader(
+                                        new FileInputStream(listName)));
+                    List strings = new LinkedList();
+                    String line = reader.readLine();
+                    while (line != null) {
+                        strings.add(line);
+                        line = reader.readLine();
+                    }
+                    files = new File[strings.size()];
+                    Iterator stringsIter = strings.iterator();
+                    for (int j = 0; stringsIter.hasNext(); j++)
+                        files[j] = new File((String)stringsIter.next());
+                } else
+                    files = PathFinder.getJavaFiles(pathOrFile, true);
                 for (int j = 0; j < files.length; j++) {
                     String fileName = files[j].getPath();
                     System.err.print("Transforming \"" + fileName + "\"...");
@@ -112,6 +142,7 @@ public class Transformer {
                 }
                 i++;
             }
+            _outputConfig();
             if (outputResult)
                 standardWriter.close();
         }
@@ -198,7 +229,7 @@ public class Transformer {
             String outputFileName = file.getName();
             SourceOutputStream outputStream = 
                 SourceOutputStream.getStream(_rootPath, packageName, 
-                        outputFileName);
+                        outputFileName, _overwrite);
             writer = new OutputStreamWriter(outputStream);
             needClose = true;
         }
@@ -207,6 +238,30 @@ public class Transformer {
         
         if (needClose)
             writer.close();
+        
+        // Record the class name.
+        if (_configName != null) {
+            File file = new File(fileName);
+            String simpleName = file.getName();
+            if (simpleName.toUpperCase().endsWith(".JAVA")) {
+                String baseName = 
+                    simpleName.substring(0, simpleName.length() - 5);
+                CompilationUnit root = 
+                    (CompilationUnit)transform._ast.getRoot();
+                String className;
+                if (root.getPackage() != null)
+                    className =
+                        root.getPackage().getName().toString() + "." +
+                        baseName;
+                else
+                    className = baseName;
+                
+                if (_prefix != null && _prefix.length() > 0)
+                    className = className.substring(_prefix.length() + 1);
+                
+                _classes.add(className);
+            }
+        }
     }
 
     /** The refactoring rules to be sequentially applied to the source code.
@@ -234,6 +289,24 @@ public class Transformer {
     protected void _beforeTraverse() {
         for (int i = 0; i < RULES.length; i++)
             RULES[i].beforeTraverse(_visitor, _ast);
+    }
+    
+    protected static void _outputConfig() throws Exception {
+        if (_configName != null) {
+            SourceOutputStream stream = 
+                SourceOutputStream.getStream(_configName, _overwrite);
+            Set classSet = new HashSet();
+            classSet.addAll(_classes);
+
+            ConfigParser parser = new ConfigParser();
+            parser.parseConfigFile(ConfigParser.DEFAULT_SYSTEM_ID, classSet);
+            if (_prefix != null && _prefix.length() > 0)
+                parser.addPackagePrefix(_prefix, classSet);
+            
+            OutputStreamWriter writer = new OutputStreamWriter(stream);
+            XmlOutput.outputXmlTree(parser.getTree(), writer);
+            writer.close();
+        }
     }
     
     /** Output the Java source from the current AST with {@link ASTFormatter}.
@@ -271,7 +344,8 @@ public class Transformer {
      *  @return The new position.
      */
     protected static int _parseArguments(String[] args, int position) {
-        if (args[position].equals("-prefix")) {
+        String arg = args[position];
+        if (arg.equals("-prefix") || arg.equals("-p")) {
             position++;
             _prefix = args[position];
             for (int i = 0; i < RULES.length; i++)
@@ -280,11 +354,21 @@ public class Transformer {
                     break;
                 }
             position++;
-        } else if (args[position].equals("-output")) {
+        } else if (arg.equals("-output") || arg.equals("-o")) {
             position++;
             _rootPath = args[position];
             if (_rootPath.length() == 0)
                 _rootPath = ".";
+            position++;
+        } else if (arg.equals("-overwrite") || arg.equals("-w")) {
+            position++;
+            _overwrite = true;
+        } else if (arg.equals("-nooverwrite") || arg.equals("-nw")) {
+            position++;
+            _overwrite = false;
+        } else if (arg.equals("-config") || arg.equals("-c")) {
+            position++;
+            _configName = args[position];
             position++;
         }
         return position;
@@ -360,4 +444,16 @@ public class Transformer {
     /** The root directory of the Java source output.
      */
     private static String _rootPath;
+    
+    /** Whether to overwrite existing file(s).
+     */
+    private static boolean _overwrite = false;
+    
+    /** The name of the output XML configuration.
+     */
+    private static String _configName;
+    
+    /** Class names of all the source parsed.
+     */
+    private static List _classes = new LinkedList();
 }

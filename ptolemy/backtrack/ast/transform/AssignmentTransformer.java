@@ -647,6 +647,53 @@ public class AssignmentTransformer extends AbstractTransformer
         return record;
     }
     
+    /** Create an extra set checkpoint method for a non-anonymous class. The
+     *  method returns the current object.
+     * 
+     *  @param ast The {@link AST} object.
+     *  @param root The root of the AST.
+     *  @param state The current state of the type analyzer.
+     *  @return The declaration of the method that sets the checkpoint object.
+     */
+    private MethodDeclaration _createExtraSetCheckpointMethod(AST ast, 
+            CompilationUnit root, TypeAnalyzerState state) {
+        MethodDeclaration setCheckpoint = ast.newMethodDeclaration();
+        String setCheckpointName = SET_CHECKPOINT_NAME + "$" +
+        		Integer.toHexString(
+        		        state.getCurrentClass().getName().hashCode());
+        setCheckpoint.setName(ast.newSimpleName(setCheckpointName));
+        String typeName = 
+            getClassName(state.getCurrentClass(), state, root);
+        setCheckpoint.setReturnType(createType(ast, typeName));
+        
+        // Add a checkpoint parameter.
+        SingleVariableDeclaration checkpoint = 
+            ast.newSingleVariableDeclaration();
+        checkpoint.setName(ast.newSimpleName("checkpoint"));
+        checkpoint.setType(
+                createType(ast, 
+                        getClassName(Checkpoint.class, state, root)));
+        setCheckpoint.parameters().add(checkpoint);
+        
+        // The body.
+        Block body = ast.newBlock();
+        setCheckpoint.setBody(body);
+        
+        // The first statement: set the checkpoint.
+        MethodInvocation invocation = ast.newMethodInvocation();
+        invocation.setName(ast.newSimpleName(SET_CHECKPOINT_NAME));
+        invocation.arguments().add(ast.newSimpleName("checkpoint"));
+        body.statements().add(ast.newExpressionStatement(invocation));
+        
+        // The second statement: return the object.
+        ReturnStatement returnStatement = ast.newReturnStatement();
+        returnStatement.setExpression(ast.newThisExpression());
+        body.statements().add(returnStatement);
+        
+        setCheckpoint.setModifiers(Modifier.PUBLIC);
+        return setCheckpoint;
+    }
+    
     /** Create the record of a field. The record is stored in an extra private
      *  field of the current class.
      * 
@@ -1198,57 +1245,6 @@ public class AssignmentTransformer extends AbstractTransformer
         return method;
     }
     
-    /** Create a static set checkpoint method for a non-anonymous class.
-     * 
-     *  @param ast The {@link AST} object.
-     *  @param root The root of the AST.
-     *  @param state The current state of the type analyzer.
-     *  @return The declaration of the method that sets the checkpoint object.
-     */
-    private MethodDeclaration _createStateSetCheckpointMethod(AST ast, 
-            CompilationUnit root, TypeAnalyzerState state) {
-        MethodDeclaration setCheckpoint = ast.newMethodDeclaration();
-        setCheckpoint.setName(ast.newSimpleName(SET_CHECKPOINT_NAME));
-        String typeName = 
-            getClassName(state.getCurrentClass(), state, root);
-        setCheckpoint.setReturnType(createType(ast, typeName));
-        
-        // Add a parameter of the current object.
-        SingleVariableDeclaration object = 
-            ast.newSingleVariableDeclaration();
-        object.setName(ast.newSimpleName("object"));
-        object.setType(createType(ast, typeName));
-        setCheckpoint.parameters().add(object);
-        
-        // Add a checkpoint parameter.
-        SingleVariableDeclaration checkpoint = 
-            ast.newSingleVariableDeclaration();
-        checkpoint.setName(ast.newSimpleName("checkpoint"));
-        checkpoint.setType(
-                createType(ast, 
-                        getClassName(Checkpoint.class, state, root)));
-        setCheckpoint.parameters().add(checkpoint);
-        
-        // The body.
-        Block body = ast.newBlock();
-        setCheckpoint.setBody(body);
-        
-        // The first statement: set the checkpoint.
-        MethodInvocation invocation = ast.newMethodInvocation();
-        invocation.setExpression(ast.newSimpleName("object"));
-        invocation.setName(ast.newSimpleName(SET_CHECKPOINT_NAME));
-        invocation.arguments().add(ast.newSimpleName("checkpoint"));
-        body.statements().add(ast.newExpressionStatement(invocation));
-        
-        // The second statement: return the object.
-        ReturnStatement returnStatement = ast.newReturnStatement();
-        returnStatement.setExpression(ast.newSimpleName("object"));
-        body.statements().add(returnStatement);
-        
-        setCheckpoint.setModifiers(Modifier.PUBLIC | Modifier.STATIC);
-        return setCheckpoint;
-    }
-    
     /** Get the list of indices of an accessed field. If the field is not of an
      *  array type but it is accessed at least once, the returned list contains
      *  only integer 0, which means no index is ever used. If the field is an
@@ -1275,6 +1271,11 @@ public class AssignmentTransformer extends AbstractTransformer
      */
     private String _getAssignMethodName(String fieldName) {
         return ASSIGN_PREFIX + fieldName;
+    }
+    
+    private String _getExtraSetCheckpointName(String className) {
+        return SET_CHECKPOINT_NAME + "$" +
+        	Integer.toHexString(className.hashCode());
     }
     
     /** Get the name of the proxy class to be created in each anonymous class.
@@ -1415,7 +1416,7 @@ public class AssignmentTransformer extends AbstractTransformer
             newMethods.add(setCheckpoint);
         
         if (!(node instanceof AnonymousClassDeclaration))
-            newMethods.add(_createStateSetCheckpointMethod(ast, root, state));
+            newMethods.add(_createExtraSetCheckpointMethod(ast, root, state));
         
         // Add an interface.
         if (node instanceof AnonymousClassDeclaration) 

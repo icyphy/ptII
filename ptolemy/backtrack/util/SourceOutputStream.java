@@ -45,19 +45,36 @@ import java.io.IOException;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class SourceOutputStream extends FileOutputStream {
-
+    
+    public static SourceOutputStream getStream(String fileName, 
+            boolean overwrite)
+    		throws IOException {
+        File file = new File(fileName);
+        if (file.getParent() != null) {
+            File path = new File(file.getParent());
+            if (!path.exists())
+                path.mkdirs();
+        }
+        if (!overwrite && new File(fileName).exists())
+            throw new IOException("File \"" + fileName + "\" already exists.");
+        else
+            return new SourceOutputStream(fileName);
+    }
+    
     public static SourceOutputStream getStream(String root, String packageName, 
-            String fileName) throws FileNotFoundException, IOException {
+            String fileName, boolean overwrite)
+    		throws FileNotFoundException, IOException {
         if (packageName != null && packageName.length() > 0)
             root = root +
                     File.separator +
                     packageName.replace('.', File.separatorChar);
+        
         File rootFile = new File(root);
         if (!rootFile.exists())
             rootFile.mkdirs();
         
         String fullName = root + File.separator + fileName;
-        if (new File(fullName).exists())
+        if (!overwrite && new File(fullName).exists())
             throw new IOException("File \"" + fullName + "\" already exists.");
         else
             return new SourceOutputStream(root + File.separator + fileName);

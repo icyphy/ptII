@@ -75,7 +75,7 @@ public class ConfigParser {
 
         ConfigParser parser = new ConfigParser();
         parser.parseConfigFile(DEFAULT_SYSTEM_ID, classSet);
-        parser.addPackagePrefix("ptolemy.backtracking", classSet);
+        parser.addPackagePrefix("ptolemy.backtrack", classSet);
         
         OutputStreamWriter writer = new OutputStreamWriter(System.out);
         XmlOutput.outputXmlTree(parser.getTree(), writer);

@@ -672,9 +672,15 @@ public class TypeAnalyzer extends ASTVisitor {
             boolean handle = true;
 
             // Do not type check some simple names.
-            if (parent instanceof BodyDeclaration ||
-                    parent instanceof QualifiedName)
+            if (parent instanceof QualifiedName)
                 handle = false;
+            else if (parent instanceof TypeDeclaration) {
+                TypeDeclaration type = (TypeDeclaration)parent;
+                if (type.getSuperclass() != node &&
+                        !type.superInterfaces().contains(node))
+                    handle = false;
+            } else if (parent instanceof BodyDeclaration)
+                    handle = false;
             else if (parent instanceof BreakStatement &&
                     ((BreakStatement)parent).getLabel() == node)
                 handle = false;
