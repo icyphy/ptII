@@ -23,6 +23,7 @@ Dataflow
 Dresden
 Esterel
 FIXME
+FSM
 Fujimoto
 FSM
 GUI
@@ -140,6 +141,7 @@ email
 faf0e6
 frameborder
 frameset
+fsm
 gif
 h1
 h2
@@ -181,6 +183,7 @@ makefile,v
 makefiles
 marginheight
 marginwidth
+marys
 mkdir
 mkgroup
 mkpasswd
@@ -214,6 +217,7 @@ servlets
 setenv
 sourceware
 src
+standalone
 starcharts
 stylesheet
 subtractor
