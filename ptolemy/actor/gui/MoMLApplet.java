@@ -205,7 +205,13 @@ public class MoMLApplet extends PtolemyApplet {
         }
 
         MoMLParser parser = new MoMLParser();
+
 	if (filterGraphicalClasses) {
+            // FIXME: if we call _createModel twice, then we will add
+            // this filter twice.  We reset the filter list here,
+            // though we will lose any other filters
+            parser.setMoMLFilters(null);
+
 	    // Filter out graphical classes so that we do not require diva.jar
 	    parser.addMoMLFilter(new FilterOutGraphicalClasses());
 	}
