@@ -586,7 +586,7 @@ with their output actions.</text></svg></configure>
         </property>
     </entity>
     <entity name="NonStrictTest4" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0056944444444, 0.0213888888889, 0.0470833333333, 0.0827777777778, 0.1284722222222, 0.1841666666667, 0.2498611111111, 0.3255555555556, 0.41125, 0.5069444444444, 0.6126388888889, 0.7283333333333, 0.8540277777778, 0.9897222222222, 1.1354166666667, 1.2354416686111, 1.3354416686111, 1.4354416686111, 1.5354416686111, 1.6354416686111}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.005, 0.02, 0.045, 0.08, 0.125, 0.18, 0.245, 0.32, 0.405, 0.5, 0.605, 0.72, 0.845, 0.98, 1.125, 1.22502500125, 1.32502500125, 1.42502500125, 1.52502500125, 1.62502500125}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
