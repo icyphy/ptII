@@ -58,18 +58,18 @@ import java.io.*;
 import java.util.*;
 
 public class Main extends KernelMain {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
 
-    /** Read in a MoML mode and generate JHDL classes for that model. 
+    /** Read in a MoML mode and generate JHDL classes for that model.
      *  @params args The first element of the array is the MoML class
      *  name or file name, subsequent optional arguments are Soot
      *  command line options, see the superclass documentation for details.
      *  @exception IllegalActionException if the model cannot be parsed.
      */
     public Main(String [] args) throws IllegalActionException {
-	// args[0] contains the MoML class name. 
+	// args[0] contains the MoML class name.
 	super(args[0]);
 
 	// Parse the model, initialize it and create instance classes
@@ -82,9 +82,9 @@ public class Main extends KernelMain {
         // and it is applied before body transformers.
         // "jhdl" is Michael Wirthlin's hardware design language.
         // "wjtp.jhdl" is the name of the phase.
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.jhdl", 
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.jhdl",
                 JHDLTransformer.v(_toplevel)));
-        
+
         // Add transformers to do other passes.
         // "jtp" mean "java tranformation package.
         // These transformers are required to be a body transformer,
@@ -101,10 +101,10 @@ public class Main extends KernelMain {
                   CopyPropagator.v()));
         Scene.v().getPack("jtp").add(new Transform("jtp.dae",
                 DeadAssignmentEliminator.v()));
-           
+
 	_callSootMain(args);
     }
-    
+
     /** Read in a MoML model, generate .class files for use with JHDL */
     public static void main(String[] args) throws IllegalActionException {
 	// We do most of the work in the constructor so that we

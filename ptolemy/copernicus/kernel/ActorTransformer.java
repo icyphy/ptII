@@ -65,11 +65,11 @@ public class ActorTransformer extends SceneTransformer {
     /** Return an instance of this transformer that will operate on
      *  the given model.  The model is assumed to already have been
      *  properly initialized so that resolved types and other static
-     *  properties of the model can be inspected. 
+     *  properties of the model can be inspected.
      */
-    public static ActorTransformer v(CompositeActor model) { 
+    public static ActorTransformer v(CompositeActor model) {
         // FIXME: This should use a map to return a singleton instance
-	// for each model 
+	// for each model
         return new ActorTransformer(model);
     }
 
@@ -77,21 +77,21 @@ public class ActorTransformer extends SceneTransformer {
      *  @return An empty string.
      */
     public String getDefaultOptions() {
-        return ""; 
+        return "";
     }
 
     /** Return the list of declared options for this transformer.
      *  This is a list of space separated option names.
      *  @return The value of the superclass options, plus the option "deep".
      */
-    public String getDeclaredOptions() { 
-        return super.getDeclaredOptions() + " deep targetPackage"; 
+    public String getDeclaredOptions() {
+        return super.getDeclaredOptions() + " deep targetPackage";
     }
-    
+
     /** Transform the Scene according to the information specified
      *  in the model for this transform.
      *  @param phaseName The phase this transform is operating under.
-     *  @param options The options to apply. 
+     *  @param options The options to apply.
      */
     protected void internalTransform(String phaseName, Map options) {
 	System.out.println("ActorTransformer.internalTransform("
@@ -108,12 +108,12 @@ public class ActorTransformer extends SceneTransformer {
             Scene.v().loadClassAndSupport("ptolemy.kernel.util.NamedObj");
         SootMethod getAttributeMethod = namedObjClass.getMethod(
                 "ptolemy.kernel.util.Attribute getAttribute(java.lang.String)");
- 
+
         SootClass attributeClass =
             Scene.v().loadClassAndSupport("ptolemy.kernel.util.Attribute");
         Type attributeType = RefType.v(attributeClass);
-   
-        SootClass settableClass = 
+
+        SootClass settableClass =
             Scene.v().loadClassAndSupport("ptolemy.kernel.util.Settable");
         Type settableType = RefType.v(settableClass);
         SootMethod setExpressionMethod =
@@ -122,7 +122,7 @@ public class ActorTransformer extends SceneTransformer {
         SootClass actorClass =
             Scene.v().loadClassAndSupport("ptolemy.actor.TypedAtomicActor");
         Type actorType = RefType.v(actorClass);
-        SootClass compositeActorClass = 
+        SootClass compositeActorClass =
             Scene.v().loadClassAndSupport("ptolemy.actor.TypedCompositeActor");
 
         // Create an instance class for every actor.
@@ -132,17 +132,17 @@ public class ActorTransformer extends SceneTransformer {
             String className = entity.getClass().getName();
             SootClass entityClass = Scene.v().loadClassAndSupport(className);
             entityClass.setLibraryClass();
-            
+
             String newClassName = getInstanceClassName(entity,options);
 
-            SootClass newClass = 
+            SootClass newClass =
                 SootUtilities.copyClass(entityClass, newClassName);
             newClass.setApplicationClass();
 
             /*
             // create a class for the entity instance.
-            EntitySootClass entityInstanceClass = 
-                new EntitySootClass(entityClass, newClassName, 
+            EntitySootClass entityInstanceClass =
+                new EntitySootClass(entityClass, newClassName,
                         Modifier.PUBLIC);
             Scene.v().addClass(entityInstanceClass);
             entityInstanceClass.setApplicationClass();
@@ -155,13 +155,13 @@ public class ActorTransformer extends SceneTransformer {
             initMethod.setActiveBody(body);
             Chain units = body.getUnits();
             Local thisLocal = body.getThisLocal();
-            
-            // insert code to initialize the settable 
+
+            // insert code to initialize the settable
             // parameters of this instance
-            // FIXME don't assume that the parameter has already been 
+            // FIXME don't assume that the parameter has already been
             // created.
             initializeParameters(body, entity, entity, thisLocal);
-            
+
             // return void
             units.add(Jimple.v().newReturnVoidStmt());
             */
@@ -169,7 +169,7 @@ public class ActorTransformer extends SceneTransformer {
 
         // Take the classes we just created and fold them with their
         // superclasses until we get to TypedAtomicActor or TypedCompositeActor
-        for(Iterator classes = 
+        for(Iterator classes =
                 Scene.v().getApplicationClasses().snapshotIterator();
             classes.hasNext();) {
             SootClass theClass = (SootClass)classes.next();
@@ -186,7 +186,7 @@ public class ActorTransformer extends SceneTransformer {
 
     public static String getInstanceClassName(Entity entity, Map options) {
         return Options.getString(options, "targetPackage")
-            + "." + entity.getName();        
+            + "." + entity.getName();
     }
 
     ///////////////////////////////////////////////////////////////////

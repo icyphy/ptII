@@ -70,13 +70,13 @@ public class Main extends KernelMain {
 }
 </pre>
 
-We do the bulk of the work in the constructor so that we can easily 
+We do the bulk of the work in the constructor so that we can easily
 test these classes.
 
 @author Stephen Neuendorffer, Christopher Hylands
 @version $Id$
 */
-public class KernelMain {    
+public class KernelMain {
 
     /** Set up code generation arguments.
      *  @param momlClassName The name of the top level model or the
@@ -88,7 +88,7 @@ public class KernelMain {
     }
 
     /** Sample main() method that parses a MoML class, initializes
-     *  the model and creates actor instances.  In this class, 
+     *  the model and creates actor instances.  In this class,
      *  this method does not do much, it is only a sample.
      *
      *  @param args The first element of the array is the MoML class
@@ -131,10 +131,10 @@ public class KernelMain {
      *  @param args Soot command line arguments to be passed
      *  to soot.Main.main().  this method changes the first element of the
      *  args array to "java.lang.Object"and then call soot.Main.main(args).
-     */	
+     */
     protected void _callSootMain(String [] args) {
         // This is rather ugly.  The moml Class is not a Java class, so
-        // soot won't recognize it.  However, if we give soot nothing, then 
+        // soot won't recognize it.  However, if we give soot nothing, then
         // it won't run.  Note that later we will call setLibraryClass() on
         // this class so that we don't actually generate code for it.
         args[0] = "java.lang.Object";
@@ -149,7 +149,7 @@ public class KernelMain {
      *  <li> The momlClassName argument is assumed to be a dot
      *  separated top level model name such as
      *  <code>ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom</code>
-     *  and inserted into a MoML fragment:  
+     *  and inserted into a MoML fragment:
      *  <p><code>
      *  &lt;entity name="ToplevelModel" class=" + momlClassName + "/&gt;
      *  </code>
@@ -169,15 +169,15 @@ public class KernelMain {
 	    // First, try it as a top level model
 	    String source = "<entity name=\"ToplevelModel\""
 	        + "class=\"" + _momlClassName + "\"/>\n";
-	     _toplevel = (CompositeActor)parser.parse(source);        
+	     _toplevel = (CompositeActor)parser.parse(source);
 
         } catch (Exception exception) {
 	    try {
 		// Then try it as an xml file
 		_toplevel = (CompositeActor)parser.parseFile(_momlClassName);
 	    } catch (Exception exception2) {
-		throw new 
-		    IllegalActionException("Failed to parse '" 
+		throw new
+		    IllegalActionException("Failed to parse '"
 					   + _momlClassName
 					   + "': " + exception);
 	    }
@@ -191,7 +191,7 @@ public class KernelMain {
             parser._searchForClass(_momlClassName,
 				   _toplevel.getMoMLInfo().source);
 	} catch (XmlException xml) {
-		throw new 
+		throw new
 		    IllegalActionException("Failed to find class '"
 					   + _momlClassName + "' in '"
 					   + _toplevel.getMoMLInfo().source
@@ -200,7 +200,7 @@ public class KernelMain {
 
         if(modelClass != null) {
             _toplevel = modelClass;
-        }                          
+        }
 
         // Initialize the model to ensure type resolution and scheduling
         // are done.
@@ -220,14 +220,14 @@ public class KernelMain {
 	// only application class in Main. The first transformation
 	// will ignore all application classes (i.e. set them to
 	// library classes)
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.hack", 
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.hack",
                 new _IgnoreAllApplicationClasses(), ""));
 
         // Create instance classes for actors.
 	// This transformer takes no input as far as soot is concerned
 	// (i.e. no application classes) and creates application
-	// classes from the model. 
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.at", 
+	// classes from the model.
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.at",
                 ActorTransformer.v(_toplevel)));
 
     }
@@ -236,8 +236,8 @@ public class KernelMain {
     ////                         protected variables               ////
 
     /** The name of the MoML class, either as a top level model or
-     *  as an xml file that we are generating code for.	
-     */	
+     *  as an xml file that we are generating code for.
+     */
     protected String _momlClassName;
 
     /** The CompositeActor we are generating code for.
@@ -252,7 +252,7 @@ public class KernelMain {
         /** Transform the Scene according to the information specified
          *  in the model for this transform.
          *  @param phaseName The phase this transform is operating under.
-         *  @param options The options to apply. 
+         *  @param options The options to apply.
          */
         protected void internalTransform(String phaseName, Map options) {
             for(Iterator classes =
