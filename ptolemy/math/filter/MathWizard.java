@@ -25,11 +25,11 @@ ENHANCEMENTS, OR MODIFICATIONS.
 @(#)MathWizard.java	1.5\t08/31/98 
 */
 
-package ptolemy.math;
+package ptolemy.math.filter;
 
 import java.util.*;
 import java.lang.reflect.*;
-
+import ptolemy.math.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// MathWizard 

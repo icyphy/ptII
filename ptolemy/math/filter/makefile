@@ -33,7 +33,7 @@
 # by Sun.  These classes came from tcljava, see license.terms for more info.
 
 # Root of the Java directory
-ROOT =		../..
+ROOT =		../../..
 
 
 # Get configuration info
@@ -42,7 +42,7 @@ include $(CONFIG)
 
 DIRS = 		test #doc demo
 
-CLASSPATH = ../..
+CLASSPATH = ../../..
 
 # Used to build zip files
 TYPACKAGE = 	ptolemy.math
@@ -54,13 +54,8 @@ TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
 JARFILE = 	$(TYPACKAGE).jar
 
 JSRCS = \
-	ArrayMath.java \
-	Complex.java \
 	ConjugateComplex.java \
-	ExtendedMath.java \
-	Fraction.java \
 	MathWizard.java \
-	SignalProcessing.java \
 	Factor.java \
 	RealFactor.java \
 	RealZFactor.java \
@@ -69,7 +64,8 @@ JSRCS = \
 	AnalogFilter.java \
 	DigitalFilter.java \
 	RealDigitalFilter.java \
-	RealAnalogFilter.java 
+	RealAnalogFilter.java \
+        Filtertest.java 
 
 EXTRA_SRCS =	$(JSRCS)
 

@@ -1,4 +1,6 @@
-package ptolemy.math;
+package ptolemy.math.filter;
+
+import ptolemy.math.Complex;
 
 public class Filtertest {
 

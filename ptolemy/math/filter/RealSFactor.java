@@ -26,9 +26,11 @@
                                         
 */
 
-package ptolemy.math;
+package ptolemy.math.filter;
 
 import java.util.Vector;
+import ptolemy.math.Complex;
+
 //////////////////////////////////////////////////////////////////////////
 //// RealSFactor
 /** 

@@ -26,10 +26,11 @@
 
 */
 
-package ptolemy.math;
+package ptolemy.math.filter;
 
 import java.util.Vector;
 import java.util.NoSuchElementException;
+import ptolemy.math.Complex;
  
 //////////////////////////////////////////////////////////////////////////
 //// RealFactor

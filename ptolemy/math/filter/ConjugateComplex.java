@@ -24,30 +24,67 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 */
 
-package ptolemy.math;
+package ptolemy.math.filter;
+
+import ptolemy.math.Complex;
+
+//////////////////////////////////////////////////////////////////////////
+//// ConjugateComplex 
+/**
+  A complex conjugate data type.  This class contain two complex number,
+  which form a complex conjugate pair.  This class ensures the pair is always
+  conjugate of each other.  
+  <p>
+  @author: William Wu (wbwu@eecs.berkeley.edu)
+  @version: $id$
+  @date: 11/21/98
+*/ 
 
 public class ConjugateComplex {
 
+    /**
+     * Constructor.  Constructor takes a Complex data, saves it,
+     * then creates and saves its conjugate.
+     */
     public ConjugateComplex(Complex indata){
         value = indata;
         conj = value.conjugate();
     } 
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /**
+     * Changed value of the complex conjugate pair.  Given a new complex
+     * value, saves it, then creates and saves its complex conjugate value.
+     * <p>
+     * @param indata new complex value.
+     */ 
     public void setValue(Complex indata){
         value = indata;
         conj = value.conjugate();
     } 
 
+    /**
+     * Get one of the complex value from the pair.
+     * @return one complex value in the conjugate pair.
+     */
     public Complex getValue(){
         return value;
     }
     
+    /**
+     * Get the other one of the complex value from the pair.
+     * @return one complex value in the conjugate pair.
+     */
     public Complex getConjValue(){
         return conj;
     }
-    
+   
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+ 
     private Complex value;
-
     private Complex conj;
 
 }
