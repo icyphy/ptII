@@ -33,6 +33,7 @@ doc/design/html
 doc/uml
 doc/uml/*
 java.hprof.txt
+jni/test
 jsdatabase
 junk
 mail
