@@ -92,7 +92,7 @@ public class TimedSource extends Source implements TimedActor {
      *  than zero and greater than the current time, then ask the director
      *  to fire this actor at that time.  If the new value is less than
      *  the current time, then request refiring at the current time.
-     *  @exception IllegalActionException If there is no director.
+     *  @exception IllegalActionException If the superclass throws it.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -100,11 +100,10 @@ public class TimedSource extends Source implements TimedActor {
             double time = ((DoubleToken)stopTime.getToken()).doubleValue();
             if (time > 0.0) {
                 Director director = getDirector();
-                if (director == null) {
-                    throw new IllegalActionException(this, "No director!");
-                }
-                double currentTime = director.getCurrentTime();
-                director.fireAt(this, time);
+                if (director != null) {
+                    double currentTime = director.getCurrentTime();
+                    director.fireAt(this, time);
+                } // else ignore.
             }
         } else {
             super.attributeChanged(attribute);
@@ -125,6 +124,23 @@ public class TimedSource extends Source implements TimedActor {
         newobj.stopTime = (Parameter)newobj.getAttribute("stopTime");
         return newobj;
     }
+
+    /** Initialize the actor. Schedule a refiring of this actor at the 
+     *  stoptime given by the stopTime parameter.
+     *  @exception IllegalActionException If there is no director.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        double time = ((DoubleToken)stopTime.getToken()).doubleValue();
+        if (time > 0.0) {
+            Director director = getDirector();
+            if (director == null) {
+                throw new IllegalActionException(this, "No director!");
+            }
+            double currentTime = director.getCurrentTime();
+            director.fireAt(this, time);
+        }
+    }        
 
     /** Return false if the current time is greater than or equal to
      *  the <i>stopTime</i> parameter value.
