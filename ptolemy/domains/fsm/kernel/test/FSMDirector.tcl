@@ -97,9 +97,9 @@ test FSMDirector-3.1 {test getNextIterationTime} {
     set time [java::new ptolemy.actor.util.Time $dir]
     $dir1 setCurrentTime [$time {add double} 3.0]
     $fsmDir setCurrentTime [$time {add double} 2.0]
-    set re0 [[$fsmDir getNextIterationTime] getTimeValue]
+    set re0 [$fsmDir getNextIterationTime]
     $e2 setDirector [java::null]
-    set re1 [[$fsmDir getNextIterationTime] getTimeValue]
+    set re1 [$fsmDir getNextIterationTime]
     list $re0 $re1
 } {3.0 2.0}
 
