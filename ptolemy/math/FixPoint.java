@@ -261,18 +261,13 @@ public final class FixPoint implements Cloneable, Serializable {
 	// Determine the new Fixvalue
 	Fixvalue argZ =  argX.multiply( argY );
 
-	// FIXME: Shouldn't we calculated simply the sommation of 
-	// of the lenght of both fixvalue instead of really determining
-	// the final used number of bits.
+        // Determine the precision of the result
 	int intLa = (argX.getIntegerBits(cp)).fixvalue.bitLength();
 	int intLb = (argY.getIntegerBits(cp)).fixvalue.bitLength();
-
-	Precision np = new Precision(argX.fixvalue.bitLength() + 
-				     argY.fixvalue.bitLength(), 
-				     intLa+intLb);
+	Precision np = new Precision( 2*cp.getFractionBitLength() + intLa+intLb, intLa+intLb);
 
 	// return the FixPoint with the correct precision and result
-	return new FixPoint(np, argZ);
+        return new FixPoint(np, argZ);
     }
 
 
