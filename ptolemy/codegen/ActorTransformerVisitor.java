@@ -294,7 +294,9 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
            boolean accessedObjIsScalar = _typeID.isScalarTokenKind(accessedObjKind);     
            boolean accessedObjIsBoolean = 
             (accessedObjKind == PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_TOKEN);
-        
+           boolean accessedObjIsString =
+            (accessedObjKind == PtolemyTypeIdentifier.TYPE_KIND_STRING_TOKEN);
+                   
            if (methodName.equals("booleanValue")) {
               return new CastNode(BoolTypeNode.instance, accessedObj);
            } else if (methodName.equals("intValue")) {
@@ -361,13 +363,36 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                  return new BoolLitNode("false");
               } else if (accessedObjIsScalar) {
                  return new IntLitNode("0");    
-              }                  
+              } else if (accessedObjIsMatrix) {
+                 return new MethodCallNode(
+                  new TypeFieldAccessNode(
+                   new NameNode(AbsentTreeNode.instance, "zero"),
+                   new TypeNameNode(
+                    new NameNode(AbsentTreeNode.instance, "CodeGenUtility"))),
+                  TNLManip.cons(accessedObj));                                                                     
+              } else if (accessedObjIsString) {
+                 return new StringLitNode("");
+              } 
            } else if (methodName.equals("one")) {
               if (accessedObjIsBoolean) {
                  return new BoolLitNode("true");
               } else if (accessedObjIsScalar) {
                  return new IntLitNode("1");    
-              }                                                                
+              } else if (accessedObjIsMatrix) {
+                 return new MethodCallNode(
+                  new TypeFieldAccessNode(
+                   new NameNode(AbsentTreeNode.instance, "one"),
+                   new TypeNameNode(
+                    new NameNode(AbsentTreeNode.instance, "CodeGenUtility"))),
+                  TNLManip.cons(accessedObj));                                                                     
+              }                                                               
+           } else if (methodName.equals("one")) {
+              return new MethodCallNode(
+               new TypeFieldAccessNode(
+                new NameNode(AbsentTreeNode.instance, "one"),
+                 new TypeNameNode(
+                  new NameNode(AbsentTreeNode.instance, "CodeGenUtility"))),
+               TNLManip.cons(accessedObj));                                                                                                                                                  
            } else if (methodName.equals("isEqualTo")) {
               ExprNode retval = new EQNode(accessedObj, firstArg);              
               // mark this node as being created by the actor transformer
