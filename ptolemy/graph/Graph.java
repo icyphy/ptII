@@ -1198,7 +1198,7 @@ public class Graph implements Cloneable {
      *  @return True if if the given object is a valid edge weight for this 
      *  graph.
      */
-    boolean validEdgeWeight(Object object) {
+    public boolean validEdgeWeight(Object object) {
         return true;
     }
 
@@ -1214,7 +1214,7 @@ public class Graph implements Cloneable {
      *  @return True if if the given object is a valid node weight for this 
      *  graph.
      */
-    boolean validNodeWeight(Object object) {
+    public boolean validNodeWeight(Object object) {
         return true;
     }
 
@@ -1421,7 +1421,7 @@ public class Graph implements Cloneable {
      *  @param node The new node.
      *  @exception RuntimeException if the weight of the given node is
      *  not valid, as determined by {@link #validNodeWeight(Object)}.
-     *  @see #_registerEdge(Node).
+     *  @see #_registerEdge(Edge).
      */
     protected void _registerNode(Node node) {
         Object weight = node.hasWeight() ? node.weight() : null;
