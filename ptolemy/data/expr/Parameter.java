@@ -1,6 +1,6 @@
 /* A Parameter is an Attribute that contains a token.
 
- Copyright (c) 1998 The Regents of the University of California.
+ Copyright (c)  The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -285,10 +285,10 @@ public class Parameter extends Attribute implements ParameterListener {
                 NamedObj containerContainer =
                     ((NamedObj)container.getContainer());
                 Enumeration level1 = container.getAttributes();
-                Parameter p;
+                Attribute p;
                 while (level1.hasMoreElements() ) {
                     // Now copy the namedlist, omitting the current Parameter.
-                    if ( (p = (Parameter)level1.nextElement()) != this ) {
+                    if ( (p = (Attribute)level1.nextElement()) != this ) {
                         try {
                             if ((p instanceof Parameter) && (p != this) ){
                                 _scope.append(p);
@@ -302,7 +302,7 @@ public class Parameter extends Attribute implements ParameterListener {
                 if (containerContainer != null) {
                     Enumeration level2 = containerContainer.getAttributes();
                     while (level2.hasMoreElements() ) {
-                        p = (Parameter)level2.nextElement();
+                        p = (Attribute)level2.nextElement();
                         try {
                             if (p instanceof Parameter) {
                                 _scope.append(p);
@@ -363,25 +363,24 @@ public class Parameter extends Attribute implements ParameterListener {
      *    about the removed Parameter.
      */
     public void parameterRemoved(ParameterEvent event) {
-         setExpression(_currentExpression);
-         evaluate();
-         return;
+        _rebuildDependencies();
+        return;
     }
 
     /** Unregister a ParameterListener of this Parameter.
      *  @param oldListener The ParameterListener that is will no 
      *  longer be notified when the value of this Parameter changes.
      */
-     public void removeParameterListener(ParameterListener oldListener) {
-         if (_listeners == null) {
-             return;
-         }
-         // Search through LinkedList and remove this listener.
-         // When we move to JDK1.2 this should be updated to use an arrayList
-         LinkedList newList = new LinkedList();
-         Enumeration oldList = _listeners.elements();
-         while(oldList.hasMoreElements()) {
-             ParameterListener nextList = 
+    public void removeParameterListener(ParameterListener oldListener) {
+        if (_listeners == null) {
+            return;
+        }
+        // Search through LinkedList and remove this listener.
+        // When we move to JDK1.2 this should be updated to use an arrayList
+        LinkedList newList = new LinkedList();
+        Enumeration oldList = _listeners.elements();
+        while(oldList.hasMoreElements()) {
+            ParameterListener nextList = 
                      (ParameterListener)oldList.nextElement();
              if (oldListener != nextList) {
                  newList.insertFirst(nextList);
@@ -393,7 +392,7 @@ public class Parameter extends Attribute implements ParameterListener {
          return;
      }
 
-     /** Reset the current value of this parameter to the first seen
+    /** Reset the current value of this parameter to the first seen
      *  token or expression. If the Parameter was initially given a
      *  Token, set the current Token to that Token. Otherwise evaluate
      *  the original expression given to the Parameter.
@@ -566,7 +565,31 @@ public class Parameter extends Attribute implements ParameterListener {
         } finally {
             workspace().doneReading();
         }
-  }
+    }
+
+    /*  Notify any ParameterListeners that have registered an
+     *  interest/dependency in this parameter.
+     */
+    protected void _notifyListeners(ParameterEvent event) {
+        if (_listeners == null) {
+            // No listeners to notify.
+            return;
+        }
+        Enumeration list = _listeners.elements();
+        while (list.hasMoreElements()) {
+            ((ParameterListener)list.nextElement()).parameterChanged(event);
+        }
+    }
+
+    /** Rebuild the dependencies of this parameter on other parameters
+     *  by recreating and evaluating the parse tree, and check if the 
+     *  current expression is still valid.
+     */  
+    protected void _rebuildDependencies() {
+        setExpression(_currentExpression);
+        evaluate();
+        return;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -633,21 +656,13 @@ public class Parameter extends Attribute implements ParameterListener {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
-   /*  Notify any ParameterListeners that have registered an
-    *  interest/dependency in this parameter.
-    */
-    private void _notifyListeners(ParameterEvent event) {
-        if (_listeners == null) {
-            // No listeners to notify.
-            return;
-        }
-        Enumeration list = _listeners.elements();
-        while (list.hasMoreElements()) {
-            ((ParameterListener)list.nextElement()).parameterChanged(event);
-        }
-    }
-
+    // The parameters this parameter may reference in an expression.
+    // It is cached.
+    protected NamedList _scope;
+    protected long _scopeVersion = -1;
 
 
     ///////////////////////////////////////////////////////////////////
@@ -690,11 +705,10 @@ public class Parameter extends Attribute implements ParameterListener {
     // the parse tree for that expression.
     private ASTPtRootNode _parseTree;
 
-    // The parameters this parameter may reference in an expression.
-    // It is cached.
-    private NamedList _scope;
-    private long _scopeVersion = -1;
-
     // The token contained by this parameter.
     private ptolemy.data.Token _token;
 }
+
+
+
+
