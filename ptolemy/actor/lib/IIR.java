@@ -204,15 +204,19 @@ public class IIR extends Transformer {
             throws CloneNotSupportedException {
         IIR newObject = (IIR)super.clone(workspace);
         try {
-            newObject.numerator.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-            newObject.denominator.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+            newObject.numerator
+                .setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+            newObject.denominator
+                .setTypeEquals(new ArrayType(BaseType.UNKNOWN));
 
             ArrayType numeratorType = (ArrayType)newObject.numerator.getType();
             InequalityTerm elementTerm = numeratorType.getElementTypeTerm();
             newObject.output.setTypeAtLeast(elementTerm);
 
-            ArrayType denominatorType = (ArrayType)newObject.denominator.getType();
-            InequalityTerm elementTerm2 = denominatorType.getElementTypeTerm();
+            ArrayType denominatorType =
+                (ArrayType)newObject.denominator.getType();
+            InequalityTerm elementTerm2 =
+                denominatorType.getElementTypeTerm();
             newObject.output.setTypeAtLeast(elementTerm2);
 
             newObject.input.setTypeAtLeast(newObject.output);
@@ -269,33 +273,7 @@ public class IIR extends Transformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // Filter parameters
-    private Token[] _numerator = new Token[0];
-    private Token[] _denominator = new Token[0];
-
-    // Filter state vector
-    private Token[] _stateVector;
-
-    // State vector pointer
-    private int _currentTap;
-
-    // Shadow state.
-    private Token _latestWindow;
-
-    private void _initStateVector() throws  IllegalActionException {
-        if(_numerator.length > 0) {
-            int stateSize = (int)java.lang.Math.max(_numerator.length,
-                    _denominator.length);
-            _stateVector = new Token[stateSize];
-            Token zero = _numerator[0].zero();
-
-            for (int j = 0; j < _stateVector.length; j++) {
-                _stateVector[j] = zero;
-            }
-        }
-    }
+    ////                         private methods                   ////
 
     private Token _computeOutput(Token xCurrent) throws
             IllegalActionException {
@@ -313,5 +291,34 @@ public class IIR extends Transformer {
         }
         return yCurrent;
     }
+
+    private void _initStateVector() throws  IllegalActionException {
+        if(_numerator.length > 0) {
+            int stateSize = (int)java.lang.Math.max(_numerator.length,
+                    _denominator.length);
+            _stateVector = new Token[stateSize];
+            Token zero = _numerator[0].zero();
+
+            for (int j = 0; j < _stateVector.length; j++) {
+                _stateVector[j] = zero;
+            }
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // Filter parameters
+    private Token[] _numerator = new Token[0];
+    private Token[] _denominator = new Token[0];
+
+    // Filter state vector
+    private Token[] _stateVector;
+
+    // State vector pointer
+    private int _currentTap;
+
+    // Shadow state.
+    private Token _latestWindow;
 }
 

@@ -180,6 +180,27 @@ public class Reader extends Source {
         return newObject;
     }
 
+    /** Output the data read in the prefire.
+     *  @exception IllegalActionException If there's no director.
+     */
+    public void fire() throws IllegalActionException {
+        super.fire();
+        for (int i = 0; i < _dataSize; i++) {
+            output.send(i, new DoubleToken(_data[i]));
+        }
+    }
+
+    /** Open the file at the URL, and set the width of the output.
+     *  @exception IllegalActionException Not thrown in this base class
+     */
+    public void initialize() throws IllegalActionException {
+        System.out.println("actor.lib.Reader is obsolete, "
+                + "use actor.lib.DoubleReader instead");
+        _dataSize = output.getWidth();
+        _data = new double[_dataSize];
+        attributeChanged(sourceURL);
+    }
+
     /** Read one row from the input and prepare for output them.
      *  @exception IllegalActionException If an IO error occurs.
      */
@@ -205,27 +226,6 @@ public class Reader extends Source {
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex.getMessage());
         }
-    }
-
-    /** Output the data read in the prefire.
-     *  @exception IllegalActionException If there's no director.
-     */
-    public void fire() throws IllegalActionException {
-        super.fire();
-        for (int i = 0; i < _dataSize; i++) {
-            output.send(i, new DoubleToken(_data[i]));
-        }
-    }
-
-    /** Open the file at the URL, and set the width of the output.
-     *  @exception IllegalActionException Not thrown in this base class
-     */
-    public void initialize() throws IllegalActionException {
-        System.out.println("actor.lib.Reader is obsolete, "
-                + "use actor.lib.DoubleReader instead");
-        _dataSize = output.getWidth();
-        _data = new double[_dataSize];
-        attributeChanged(sourceURL);
     }
 
     /** Set the reader.  If there was a previous reader, close it.
