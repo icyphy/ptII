@@ -42,6 +42,7 @@ import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -83,11 +84,7 @@ public class ArrayElement extends Transformer {
         input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         ArrayType inputArrayType = (ArrayType)input.getType();
         InequalityTerm elementTerm = inputArrayType.getElementTypeTerm();
-        // FIXME: Oddly, we no longer need to set the output type.
-        // If we do, then the clone tests in ptolemy/configs/test
-        // report that this has the same constraint twice and clone
-        // has it only once?
-        //output.setTypeAtLeast(elementTerm);
+        output.setTypeAtLeast(elementTerm);
 
         // Set parameters.
         index = new PortParameter(this, "index");
@@ -109,10 +106,14 @@ public class ArrayElement extends Transformer {
     ////                         public methods                    ////
 
     /** Override the base class to set type constraints.
-     *  @return A new instance of ArrayAverage.
+     *  @param workspace The workspace for the new object.
+     *  @return A new instance of ArrayElement.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
      */
-    public Object clone() throws CloneNotSupportedException {
-        ArrayAverage newObject = (ArrayAverage)super.clone();
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        ArrayElement newObject = (ArrayElement)super.clone(workspace);
         newObject.input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         ArrayType inputArrayType = (ArrayType)newObject.input.getType();
         InequalityTerm elementTerm = inputArrayType.getElementTypeTerm();
