@@ -167,6 +167,10 @@ sdf.lib.vq.HTVQEncode, sdf.lib.vq.VQDecode:
 
 Below are the changes that are not handled automatically
 <menu>
+<li> ct.kernel.CTRealTimeDirector has been removed, the fix
+is to use ct.kernel.CTDirector instead and to 
+set the synchronizeToRealTime parameter to true.
+
 <li> DDE: RcvrComparator renamed to ReceiverComparator
 
 <li> actor.lib.Reader is now actor.lib.DoubleReader
