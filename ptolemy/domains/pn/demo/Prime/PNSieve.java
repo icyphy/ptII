@@ -23,6 +23,9 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
+@ProposedRating Red (mudit@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.pn.demo.Prime;
@@ -44,7 +47,7 @@ import java.util.Enumeration;
 public class PNSieve extends AtomicActor {
 
     /** Constructor  Adds port
-     * @exception NameDuplicationException is thrown if more than one port
+     * @exception NameDuplicationException If more than one port
      *  with the same name is added to the star
      */
     public PNSieve(CompositeActor container, String name)
@@ -103,6 +106,8 @@ public class PNSieve extends AtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
 
     /** Create and return a new mutation object that adds a new sieve.
      */

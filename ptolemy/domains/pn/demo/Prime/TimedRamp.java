@@ -23,6 +23,9 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
+@ProposedRating Red (mudit@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.pn.demo.Prime;
@@ -43,7 +46,7 @@ public class TimedRamp extends AtomicActor {
 
     /** Constructor Adds ports to the star
      * @param initValue is the initial token that the star puts in the stream
-     * @exception NameDuplicationException indicates that an attempt to add
+     * @exception NameDuplicationException If an attempt to add
      *  two ports with the same name has been made
      */
     public TimedRamp(CompositeActor container, String name)
