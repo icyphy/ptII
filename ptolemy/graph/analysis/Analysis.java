@@ -46,8 +46,8 @@ analyses have no specific knowledge of weights.  In such cases, it is the
 responsibility of the client (or derived analysis class) to invalidate the
 cached result (see {@link #reset()}) when changes to graph weights or other
 non-topology information render the cached result obsolete.  For this reason,
-caution is generally required when using analyses whose results depend on more
-than just the graph topology.
+some caution is generally required when using analyses whose results depend on
+more than just the graph topology.
 
 <p> [1] G. Ramalingam. <em>Bounded Incremental Computation</em>. PhD thesis, 
 University of Wisconsin at Madison, August 1993.
