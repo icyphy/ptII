@@ -55,7 +55,7 @@ test InnerLocal-1.1 {Generate all required files for InnerLocal.java} {
     file rename -force \
             InnerLocal_1_Inner.c \
             InnerLocal_1_Inner.h InnerLocal_1_Inner.o InnerLocal_1_Inner_i.h \
-            "InnerLocal\$1\$Inner.class" 
+            "InnerLocal\$1\$Inner.class" \
 	testOutput/$className
     list $output
 } {{0 1 2 3}}
