@@ -173,7 +173,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                             "is not ready to fire.");
                 }
                 actor.fire();
-                _postfirereturns &= actor.postfire();
+                _postfirereturns = _postfirereturns && actor.postfire();
             }
         }
     }
