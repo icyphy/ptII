@@ -10,10 +10,10 @@
 <jnlp codebase="@PTII_LOCALURL@"
       href="@PTII_LOCALURL@/vergilHybridSystems.jnlp"> 
   <information>
-	  <title>Ptolemy II @PTVERSION@ Hybrid Systems </title>
+	  <title>HyVision @PTVERSION@ </title>
 	  <vendor>Ptolemy Project, UC Berkeley</vendor>
-	  <description>Hybrid Systems Runtime Release of the Simulation Environment</description>
-	  <description kind="tooltip">Hybrid Systems Version</description>
+	  <description>Hybrid Systems Modeling Environment</description>
+	  <description kind="tooltip">Hybrid Systems Modelling</description>
 	  <icon href="doc/img/PtolemyIISmall.gif"/>
 	  <homepage href="@PTII_LOCALURL@"/>
 	  <offline-allowed/>
