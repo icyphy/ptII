@@ -79,14 +79,28 @@ testCalExpr {PtolemyPlatform-2.0} {Applying a function.} {
     lambda (x) : x * x end (5)
 } {25}
 
+testCalExpr {PtolemyPlatform-2.1} {Method closures.} {
+    let m = [7, 19] . get :
+        m(1)
+    end
+} {19}
+
+testCalExpr {PtolemyPlatform-2.2} {Class/constructor closures.} {
+    let c = "abc".getClass() :
+        c() . length()
+    end
+} {0}
+
+
+
 
 ####### comprehensions, collection stuff
 
-# FIXME: Equality test on ObjectTokens currently broken.
 testCalExpr {PtolemyPlatform-3.0} {Simple comprehension.} {
     [a : for a in Integers(0, 10), a mod 2 = 0]
     .equals( [0, 2, 4, 6, 8, 10] )  
 } {true}
+  # FIXME: Equality test on ObjectTokens currently broken.
 
 testCalExpr {PtolemyPlatform-3.1} {Map domain.} {
     map {a + 1 -> a * a : for a in Integers(0, 10), a mod 2 = 0}
@@ -126,10 +140,12 @@ testCalExpr {PtolemyPlatform-5.0} {Calling Java method.} {
 
 testCalExpr {PtolemyPlatform-5.1} {Calling Java method.} {
     let a = ["abc", "def"], b = a . add ("xyz") : 
-       // NOTE: observe wrapping problem in result string
+       // NOTE: wrapping problem in a
        a . size() 
     end
 } {3}
+
+
 
 
 
