@@ -82,7 +82,7 @@ public class ASTPtBitwiseNode extends ASTPtRootNode {
                     }
                     boolean arg1 = ((BooleanToken)result).booleanValue();
                     boolean arg2 =
-				 ((BooleanToken)childTokens[i]).booleanValue();
+                        ((BooleanToken)childTokens[i]).booleanValue();
                     if (op.equals("&")) {
                         result = new BooleanToken(arg1 & arg2);
                     } else if (op.equals("|")) {

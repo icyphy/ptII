@@ -63,7 +63,7 @@ public class ASTPtLogicalNode extends ASTPtRootNode {
         try {
             for ( i = 0; i<num; i++ ) {
                 values[i] =
-		   ((ptolemy.data.BooleanToken)childTokens[i]).booleanValue();
+                    ((ptolemy.data.BooleanToken)childTokens[i]).booleanValue();
             }
         } catch (Exception ex) {
             throw new IllegalArgumentException("Could not convert " +

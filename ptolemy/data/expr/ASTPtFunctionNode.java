@@ -126,7 +126,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                 argTypes[i] = argValues[i].getClass();
             } else if (child instanceof BooleanToken) {
                 argValues[i] =
-			 new Boolean(((BooleanToken)child).booleanValue());
+                    new Boolean(((BooleanToken)child).booleanValue());
                 argTypes[i] = Boolean.TYPE;
             } else if (child instanceof ComplexToken) {
                 argValues[i] = ((ComplexToken)child).complexValue();
@@ -152,11 +152,11 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                 // FIXME: a lot of exceptions get caught here, perhaps
                 // want to specify each of them separately?
                 //System.out.println("Method " + _funcName + " not found in " +
-                  //  nextClass.getName());
+                //  nextClass.getName());
             }
             if (foundMethod) {
                 //System.out.println("Method " + _funcName + " found in " +
-                  //    nextClass.getName());
+                //    nextClass.getName());
                 if (result instanceof ptolemy.data.Token) {
                     return (ptolemy.data.Token)result;
                 } else if (result instanceof Double) {

@@ -97,9 +97,9 @@ public class ASTPtRootNode implements Node {
                 _ptToken = _resolveNode();
             } catch (Exception ex) {
                 throw new IllegalArgumentException("Could not resolve node: " +
-                      getClass().getName() + ", " + ex.getMessage() + ", " +
-                      "exception thrown was of type: " +
-                      ex.getClass().getName() + ".");
+                        getClass().getName() + ", " + ex.getMessage() + ", " +
+                        "exception thrown was of type: " +
+                        ex.getClass().getName() + ".");
             }
             return _ptToken;
         }
