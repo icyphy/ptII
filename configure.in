@@ -1696,6 +1696,15 @@ else
 	AC_MSG_RESULT([$PTJAVA_DIR/include/$PTJNI_ARCHITECTURE])
     fi
 
+    AC_MSG_CHECKING([for if the -mno-cygwin flag is available])
+    case "`uname -s`" in
+        CYGWIN_ME-*) PTJNI_NO_CYGWIN=-mno-cygwin;;
+	CYGWIN_NT-*) PTJNI_NO_CYGWIN=-mno-cygwin;;
+	CYGWIN_98-*) PTJNI_NO_CYGWIN=-mno-cygwin;;
+	*) PTJNI_NO_CYGWIN=;;
+    esac
+    AC_MSG_RESULT(['$PTJNI_NO_CYGWIN'])
+
     AC_MSG_CHECKING([for the proper shared library cc flag])
     case "`uname -s`" in
         CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_CFLAG=;;
@@ -2671,6 +2680,9 @@ AC_SUBST(PTJNI_ARCHITECTURE)
 # Set to jni and used in 
 # $PTII/makefile if gcc or cc was found
 AC_SUBST(PTJNI_DIR)
+
+# Flag to use with TinyOS under Cygwin (-mno-cygwin)
+AC_SUBST(PTJNI_NO_CYGWIN)
 
 # JNI shared library C compiler flag, under Solaris this would be -fPIC.
 AC_SUBST(PTJNI_SHAREDLIBRARY_CFLAG)

@@ -155,7 +155,7 @@ JAVAC = 	$(PTJAVA_DIR)/bin/javac
 # Flags to pass to javac.  Usually something like '-g -depend'
 JDEBUG =	-g
 JOPTIMIZE =	-O
-JFLAGS = 	$(JDEBUG) $(JOPTIMIZE)
+JFLAGS = 	$(JDEBUG) $(JOPTIMIZE) -Xlint:all
 
 # The 'javadoc' program
 JAVADOC = 	$(PTJAVA_DIR)/bin/javadoc
@@ -356,6 +356,9 @@ PTJNI_ARCHITECTURE =	@PTJNI_ARCHITECTURE@
 # Set to jni and used in 
 # $PTII/makefile if gcc or cc was found
 PTJNI_DIR =	@PTJNI_DIR@
+
+# Flag to use with TinyOS under Cygwin (-mno-cygwin)
+PTJNI_NO_CYGWIN =	@PTJNI_NO_CYGWIN@
 
 # JNI shared library C compiler flag, under Solaris this would be -fPIC.
 PTJNI_SHAREDLIBRARY_CFLAG =	@PTJNI_SHAREDLIBRARY_CFLAG@
