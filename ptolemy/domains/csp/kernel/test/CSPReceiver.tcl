@@ -151,6 +151,62 @@ test CSPReceiver-3.3 {get(), put(), Two tokens and then deadlock!} {
     list [expr {$output1 == $input1}] [expr {$output2 == $input2}] [expr {$output3 == [java::null]}]
 } {1 1 1}
 
+######################################################################
+####
+#
+test CSPReceiver-3.4 {hasToken()} {
+    set wspc [java::new ptolemy.kernel.util.Workspace]
+    set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
+    set manager [java::new ptolemy.actor.Manager $wspc "manager"]
+    set dir [java::new ptolemy.domains.csp.kernel.CSPDirector $wspc "director"]
+    $topLevel setDirector $dir
+    $topLevel setManager $manager
+    set actorA [java::new ptolemy.domains.csp.kernel.test.CSPPut $topLevel "actorA" 2] 
+    set actorB [java::new ptolemy.domains.csp.kernel.test.CSPHasToken $topLevel "actorB" 0] 
+
+    set input1 [java::new ptolemy.data.Token]
+    set input2 [java::new ptolemy.data.Token]
+    $actorA setToken $input1 0
+    $actorA setToken $input2 1
+    
+    set portA [$actorA getPort "output"]
+    set portB [$actorB getPort "input"]
+
+    set rel [$topLevel connect $portB $portA "rel"]
+
+    $manager run
+
+    set hasToken [$actorB hasToken] 
+    list $hasToken
+} {1}
+
+######################################################################
+####
+#
+test CSPReceiver-3.5 {hasRoom()} {
+    set wspc [java::new ptolemy.kernel.util.Workspace]
+    set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
+    set manager [java::new ptolemy.actor.Manager $wspc "manager"]
+    set dir [java::new ptolemy.domains.csp.kernel.CSPDirector $wspc "director"]
+    $topLevel setDirector $dir
+    $topLevel setManager $manager
+    set actorA [java::new ptolemy.domains.csp.kernel.test.CSPHasRoom $topLevel "actorA" 0] 
+    set actorB [java::new ptolemy.domains.csp.kernel.test.CSPGet $topLevel "actorB" 2] 
+
+    set portA [$actorA getPort "output"]
+    set portB [$actorB getPort "input"]
+
+    set rel [$topLevel connect $portB $portA "rel"]
+
+    $manager run
+
+    set hasRoom [$actorA hasRoom] 
+    list $hasRoom
+} {1}
+
+
+
+
 
 
 
