@@ -19,6 +19,9 @@
 <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
 </entity>
 
+<entity name="PreemptableTask" class="ptolemy.domains.de.lib.PreemptableTask">
+</entity>
+
 <entity name="Queue" class="ptolemy.domains.de.lib.Queue">
 </entity>
 

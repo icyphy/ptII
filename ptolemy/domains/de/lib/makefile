@@ -53,6 +53,7 @@ JSRCS = \
 	EventFilter.java \
 	Inhibit.java \
 	Merge.java \
+	PreemptableTask.java \
 	Queue.java \
 	Sampler.java \
 	SamplerWithDefault.java \
