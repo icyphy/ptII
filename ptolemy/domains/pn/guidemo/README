@@ -1,0 +1,4 @@
+This is a directory for PN demos that use
+a GUI. It is in a separate directory so that the
+core PN does not depend on any GUI code. Also,
+it needs to be compiled with JDK1.2 only.
