@@ -73,65 +73,110 @@ public class HTMLAbout {
 
     /** Return a string containing HTML that describes the about: 
      *  features.
+     *
+     *  <p>If the configuration contains an _applicationName attribute
+     *  then that attributed is used as the name of the application
+     *  in the generated text.  If _applicationName is not present,
+     *  then the default name is "Ptolemy II".
+     *
+     *  @param configuration The configuration to look for the
+     *  _applicationName attribute in
      */   
-    public static String about() {
+    public static String about(Configuration configuration) {
         String version = VersionAttribute.CURRENT_VERSION.getExpression();
 
-        return "<html><head><title>About Ptolemy II</title></head>"
-            + "<body><h1>About Ptolemy II</h1>\n"
-            + "The HTML Viewer in Ptolemy II handles the <code>about:</code>\n"
-            + "tag specially.\n"
-            + "<br>The following urls are handled:\n"
-            + "<ul>\n"
-            + "<li><a href=\"about:configuration\">"
-            + "<code>about:configuration</code></a> "
-            + "Expand the configuration (good way to test for "
-            + "missing classes).\n"
-            + "<li><a href=\"about:copyright\"><code>about:copyright</code></a> "
-            + " Display information about the copyrights.\n"
-            + "<li>Full\n"
-            + " <ul>\n"
-            + "  <li><a href=\"about:demos\"><code>about:demos</code></a>"
-            + "   Open up all the .xml in"
-            + "   <code>ptolemy/configs/doc/completeDemos.htm</code>.\n"
-            + "   (May fail in Ptiny, DSP or Hyvisual configurations).\n"
-            + "  <li><a href=\"about:demos#ptolemy/configs/doc/demos.htm\">"
-            + "   <code>about:demos#ptolemy/configs/doc/demos.htm</code></a>\n"
-            + "   Open up the .xml files in\n"
-            + "   <code>ptolemy/configs/doc/demos.htm</code>.\n"
-            + "  <li><a href=\"about:demos#ptolemy/configs/doc/whatsNew"
-            + version + ".htm\">"
-            + "   <code>about:demos#ptolemy/configs/doc/whatsNew"
-            + version + ".htm</code></a>\n"
-            + "   Open up the .xml files in\n"
-            + "   <code>ptolemy/configs/doc/whatsNew"
-            + version + ".htm</code>.\n"
-            + "  <li><a href=\"about:demos#ptolemy/configs/doc/whatsNew3.0.2.htm\">"
-            + "   <code>about:demos#ptolemy/configs/doc/whatsNew3.0.2.htm</code></a>\n"
-            + "   Open up the .xml files in\n"
-            + "   <code>ptolemy/configs/doc/whatsNew3.0.2.htm</code>.\n"
-            + " </ul>\n"
-            // Don't include DSP here, it uses the Ptiny demos anyway.
-            + "<li>Hyvisual\n"
-            + " <ul>\n"
-            + "  <li><a href=\"about:demos#ptolemy/configs/hyvisual/intro.htm\">"
-            + "   <code>about:demos#ptolemy/configs/hyvisual/intro.htm</code></a>"
-            + "   \nOpen up the .xml files in\n"
-            + "   <code>ptolemy/configs/hyvisual/intro.htm</code>.\n"
-            + " </ul>\n"
+        String applicationName = "Ptolemy II";
+        try {
+            StringAttribute applicationNameAttribute =
+                (StringAttribute) configuration.getAttribute(
+                        "_applicationName",
+                        StringAttribute.class);
+            if (applicationNameAttribute != null) {
+                applicationName = applicationNameAttribute.getExpression();
+            }
+        } catch (Exception ex) {
+            // Ignore and use the default applicationName
+        }
+        StringBuffer htmlBuffer = new StringBuffer();
+        htmlBuffer.append(
+                "<html><head><title>About " + applicationName
+                + "</title></head>"
+                + "<body><h1>About " + applicationName + "</h1>\n"
+                + "The HTML Viewer in " + applicationName
+                + " handles the <code>about:</code>\n"
+                + "tag specially.\n"
+                + "<br>The following urls are handled:\n"
+                + "<ul>\n"
+                + "<li><a href=\"about:configuration\">"
+                + "<code>about:configuration</code></a> "
+                + "Expand the configuration (good way to test for "
+                + "missing classes).\n"
+                + "<li><a href=\"about:copyright\">"
+                + "<code>about:copyright</code></a> "
+                + " Display information about the copyrights.\n");
 
-            + "<li>Ptiny\n"
-            + " <ul>\n"
-            + "  <li><a href=\"about:demos#ptolemy/configs/doc/completeDemosPtiny.htm\">"
-            + "   <code>about:demos#ptolemy/configs/doc/completeDemosPtiny.htm</code></a>"
-            + "   \nOpen up the .xml files in\n"
-            + "   <code>ptolemy/configs/doc/completeDemosPtiny.htm</code>.\n"
+        // set needCloser to true if we found a configuration and need
+        // to close the html tag.
+        boolean needCloser = false;
+        if (_configurationExists("full")) {
+            needCloser = true;
+            htmlBuffer.append(
+                    "<li>Full\n"
+                    + " <ul>\n"
+                    + "  <li><a href=\"about:demos\"><code>about:demos</code></a>"
+                    + "   Open up all the .xml in"
+                    + "   <code>ptolemy/configs/doc/completeDemos.htm</code>.\n"
+                    + "   (May fail in Ptiny, DSP or Hyvisual configurations).\n"
+                    + "  <li><a href=\"about:demos#ptolemy/configs/doc/demos.htm\">"
+                    + "   <code>about:demos#ptolemy/configs/doc/demos.htm</code></a>\n"
+                    + "   Open up the .xml files in\n"
+                    + "   <code>ptolemy/configs/doc/demos.htm</code>.\n"
+                    + "  <li><a href=\"about:demos#ptolemy/configs/doc/whatsNew"
+                    + version + ".htm\">"
+                    + "   <code>about:demos#ptolemy/configs/doc/whatsNew"
+                    + version + ".htm</code></a>\n"
+                    + "   Open up the .xml files in\n"
+                    + "   <code>ptolemy/configs/doc/whatsNew"
+                    + version + ".htm</code>.\n"
+                    + "  <li><a href=\"about:demos#ptolemy/configs/doc/"
+                    + "whatsNew3.0.2.htm\">"
+                    + "   <code>about:demos#ptolemy/configs/doc/"
+                    + "whatsNew3.0.2.htm</code></a>\n"
+                    + "   Open up the .xml files in\n"
+                    + "   <code>ptolemy/configs/doc/whatsNew3.0.2.htm</code>.\n"
+                    + " </ul>\n");
+        }
 
-            + "  <li><a href=\"about:demos#ptolemy/configs/doc/demosPtiny.htm\">"
-            + "   <code>about:demos#ptolemy/configs/doc/demosPtiny.htm</code></a>"
-            + "   \nOpen up the .xml files in\n"
-            + "   <code>ptolemy/configs/doc/demosPtiny.htm</code>.\n"
-            + " </ul>\n"
+        // Don't include DSP here, it uses the Ptiny demos anyway.
+
+        if (_configurationExists("hyvisual")) {
+            needCloser = true;
+            htmlBuffer.append(
+                    "<li>Hyvisual\n"
+                    + " <ul>\n"
+                    + "  <li><a href=\"about:demos#ptolemy/configs/hyvisual/intro.htm\">"
+                    + "   <code>about:demos#ptolemy/configs/hyvisual/intro.htm</code></a>"
+                    + "   \nOpen up the .xml files in\n"
+                    + "   <code>ptolemy/configs/hyvisual/intro.htm</code>.\n"
+                    + " </ul>\n");
+        }           
+
+        if (_configurationExists("ptiny")) {
+            needCloser = true;
+            htmlBuffer.append(
+                    "<li>Ptiny\n"
+                    + " <ul>\n"
+                    + "  <li><a href=\"about:demos#ptolemy/configs/doc/completeDemosPtiny.htm\">"
+                    + "   <code>about:demos#ptolemy/configs/doc/completeDemosPtiny.htm</code></a>"
+                    + "   \nOpen up the .xml files in\n"
+                    + "   <code>ptolemy/configs/doc/completeDemosPtiny.htm</code>.\n"
+                    
+                    + "  <li><a href=\"about:demos#ptolemy/configs/doc/demosPtiny.htm\">"
+                    + "   <code>about:demos#ptolemy/configs/doc/demosPtiny.htm</code></a>"
+                    + "   \nOpen up the .xml files in\n"
+                    + "   <code>ptolemy/configs/doc/demosPtiny.htm</code>.\n"
+                    + " </ul>\n");
+        } 
 
 //             + "<li><a href=\"about:runAllDemos\"><code>about:runAllDemos</code></a>"
 //             + "Run all the demonstrations.\n"
@@ -139,7 +184,13 @@ public class HTMLAbout {
 //             + "<code>about:runAllDemosdemos#ptolemy/configs/doc/demosPtiny.htm</code></a>"
 //             + "\nRun all the .xml files in\n"
 //             + "<code>ptolemy/configs/doc/completeDemosPtiny.htm</code>.\n"
-            + "</ul>\n</body>\n</html>\n";
+
+        if (needCloser) {
+            htmlBuffer.append("</ul>\n");
+        }
+
+        htmlBuffer.append("</body>\n</html>\n");
+        return htmlBuffer.toString();
     }
 
     /** Call Configuration.openModel() on all the local .xml files that
@@ -182,7 +233,7 @@ public class HTMLAbout {
      */
     public static URL hyperlinkUpdate(HyperlinkEvent event,
             Configuration configuration) throws Throwable {
-        
+
         URL newURL = null;
         if (event.getDescription().equals("about:copyright")) {
             // Note that if we have a link that is
@@ -217,7 +268,7 @@ public class HTMLAbout {
                     configuration);
         } else {
             // Display a message about the about: facility 
-            newURL = _temporaryHTMLFile("about", ".htm", about());
+            newURL = _temporaryHTMLFile("about", ".htm", about(configuration));
         }
         return newURL;
     }
@@ -313,6 +364,27 @@ public class HTMLAbout {
             modelStartIndex = demos.indexOf("href=\"", modelEndIndex);
         } 
         return modelList;
+    }
+
+    // Return true if a configuration can be found
+    // @param configurationName The name of the configuration, for
+    // example "full"
+    // @returns True if ptolemy/configs/<i>configuration</i>/configuration.xml
+    // can be found
+    private static boolean _configurationExists(String configurationName) {
+        boolean configurationExists  = false;
+        try {
+            URL url = Thread.currentThread()
+                .getContextClassLoader().getResource(
+                        "ptolemy/configs/" + configurationName 
+                        + "/configuration.xml");
+            if (url != null) {
+                configurationExists = true;
+            }
+        } catch (Exception ex) {
+            // Ignored, the configuration does not exist.
+        }
+        return configurationExists;
     }
 
     // Save a string in a temporary html file and return a URL to it.
