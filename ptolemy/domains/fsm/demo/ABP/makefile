@@ -50,18 +50,14 @@ PTPACKAGE = 	ABP
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	ABP.java \
 	DEMessageSource.java \
-	DETimer.java \
-	LossyDelayChannel.java
+	DETimer.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	ABP.htm \
 	ABP.xml \
 	ABPVergil.htm \
-	ChannelTest.xml \
 	ConnectComponent.xml \
-	LossyDelayChannel.xml \
 	Receiver.xml \
 	SendComponent.xml \
 	SenderController.xml

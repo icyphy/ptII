@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Receiver" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Sender" class="ptolemy.actor.TypedCompositeActor">
     <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -28,7 +28,7 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[528, 350]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[74, 89]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[140, 152]">
     </property>
     <entity name="MessageSource" class="ptolemy.domains.fsm.demo.ABP.DEMessageSource">
         <property name="maxDelay" class="ptolemy.data.expr.Parameter" value="0.5">
@@ -64,14 +64,24 @@
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="291.0, 121.0">
         </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_location" class="ptolemy.moml.Location" value="87.0, 220.0">
+            </property>
         </port>
         <port name="control" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_location" class="ptolemy.moml.Location" value="510.0, 135.0">
+            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="_location" class="ptolemy.moml.Location" value="510.0, 315.0">
+            </property>
         </port>
         <entity name="uniform" class="ptolemy.actor.lib.Uniform">
             <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
@@ -79,6 +89,8 @@
             <property name="lowerBound" class="ptolemy.data.expr.Parameter" value="minimumDelay">
             </property>
             <property name="upperBound" class="ptolemy.data.expr.Parameter" value="maximumDelay">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="340.0, 277.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -88,20 +100,9 @@
                 <property name="multiport"/>
             </port>
         </entity>
-        <entity name="variableDelay" class="ptolemy.domains.de.lib.VariableDelay">
-            <property name="defaultDelay" class="ptolemy.data.expr.Parameter" value="1.0">
-            </property>
-            <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
-                <property name="input"/>
-            </port>
-            <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
-                <property name="output"/>
-            </port>
-            <port name="delay" class="ptolemy.domains.de.kernel.DEIOPort">
-                <property name="input"/>
-            </port>
-        </entity>
         <entity name="loser" class="ptolemy.actor.lib.Switch">
+            <property name="_location" class="ptolemy.moml.Location" value="449.0, 237.0">
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -120,6 +121,8 @@
             </property>
             <property name="values" class="ptolemy.data.expr.Parameter" value="{0, 1}">
             </property>
+            <property name="_location" class="ptolemy.moml.Location" value="343.0, 152.0">
+            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -128,28 +131,47 @@
                 <property name="multiport"/>
             </port>
         </entity>
-        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="_R0" class="ptolemy.actor.TypedIORelation">
-        </relation>
+        <entity name="Server" class="ptolemy.domains.de.lib.Server">
+            <property name="serviceTime" class="ptolemy.data.expr.Parameter" value="2.2502873">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="185.0, 229.0">
+            </property>
+            <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
+                <property name="input"/>
+            </port>
+            <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
+                <property name="output"/>
+            </port>
+            <port name="newServiceTime" class="ptolemy.domains.de.kernel.DEIOPort">
+                <property name="input"/>
+            </port>
+        </entity>
         <relation name="_R1" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex" class="ptolemy.moml.Vertex" value="286.0, 234.0">
+            </vertex>
         </relation>
         <relation name="_R2" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <link port="input" relation="relation3"/>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="130.0, 318.0">
+            </vertex>
+        </relation>
+        <link port="input" relation="relation"/>
         <link port="output" relation="_R1"/>
-        <link port="uniform.output" relation="_R0"/>
-        <link port="uniform.trigger" relation="relation3"/>
-        <link port="variableDelay.input" relation="relation3"/>
-        <link port="variableDelay.output" relation="relation5"/>
-        <link port="variableDelay.delay" relation="_R0"/>
+        <link port="uniform.output" relation="relation3"/>
+        <link port="uniform.trigger" relation="relation5"/>
         <link port="loser.input" relation="relation5"/>
         <link port="loser.output" relation="_R1"/>
         <link port="loser.control" relation="_R2"/>
         <link port="loss.output" relation="_R2"/>
         <link port="loss.trigger" relation="relation5"/>
+        <link port="Server.input" relation="relation"/>
+        <link port="Server.output" relation="relation5"/>
+        <link port="Server.newServiceTime" relation="relation3"/>
     </entity>
     <entity name="BackwardChannel" class="ptolemy.actor.TypedCompositeActor">
         <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="0.2">
@@ -160,14 +182,24 @@
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="348.0, 279.0">
         </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_location" class="ptolemy.moml.Location" value="90.0, 225.0">
+            </property>
         </port>
         <port name="control" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_location" class="ptolemy.moml.Location" value="518.0, 137.0">
+            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="_location" class="ptolemy.moml.Location" value="523.0, 313.0">
+            </property>
         </port>
         <entity name="uniform" class="ptolemy.actor.lib.Uniform">
             <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
@@ -175,6 +207,8 @@
             <property name="lowerBound" class="ptolemy.data.expr.Parameter" value="minimumDelay">
             </property>
             <property name="upperBound" class="ptolemy.data.expr.Parameter" value="maximumDelay">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="347.0, 280.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -184,20 +218,9 @@
                 <property name="multiport"/>
             </port>
         </entity>
-        <entity name="variableDelay" class="ptolemy.domains.de.lib.VariableDelay">
-            <property name="defaultDelay" class="ptolemy.data.expr.Parameter" value="1.0">
-            </property>
-            <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
-                <property name="input"/>
-            </port>
-            <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
-                <property name="output"/>
-            </port>
-            <port name="delay" class="ptolemy.domains.de.kernel.DEIOPort">
-                <property name="input"/>
-            </port>
-        </entity>
         <entity name="loser" class="ptolemy.actor.lib.Switch">
+            <property name="_location" class="ptolemy.moml.Location" value="454.0, 242.0">
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -216,6 +239,8 @@
             </property>
             <property name="values" class="ptolemy.data.expr.Parameter" value="{0, 1}">
             </property>
+            <property name="_location" class="ptolemy.moml.Location" value="356.0, 155.0">
+            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -224,28 +249,51 @@
                 <property name="multiport"/>
             </port>
         </entity>
-        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="_R0" class="ptolemy.actor.TypedIORelation">
-        </relation>
+        <entity name="Server" class="ptolemy.domains.de.lib.Server">
+            <property name="serviceTime" class="ptolemy.data.expr.Parameter" value="1.3032414">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="206.0, 234.0">
+            </property>
+            <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
+                <property name="input"/>
+            </port>
+            <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
+                <property name="output"/>
+            </port>
+            <port name="newServiceTime" class="ptolemy.domains.de.kernel.DEIOPort">
+                <property name="input"/>
+            </port>
+        </entity>
         <relation name="_R1" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex" class="ptolemy.moml.Vertex" value="299.0, 239.0">
+            </vertex>
         </relation>
         <relation name="_R2" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <link port="input" relation="relation3"/>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="156.0, 326.0">
+            </vertex>
+        </relation>
+        <link port="input" relation="relation"/>
         <link port="output" relation="_R1"/>
-        <link port="uniform.output" relation="_R0"/>
-        <link port="uniform.trigger" relation="relation3"/>
-        <link port="variableDelay.input" relation="relation3"/>
-        <link port="variableDelay.output" relation="relation5"/>
-        <link port="variableDelay.delay" relation="_R0"/>
+        <link port="uniform.output" relation="relation3"/>
+        <link port="uniform.trigger" relation="relation2"/>
+        <link port="uniform.trigger" relation="relation2"/>
+        <link port="uniform.trigger" relation="relation5"/>
         <link port="loser.input" relation="relation5"/>
         <link port="loser.output" relation="_R1"/>
         <link port="loser.control" relation="_R2"/>
         <link port="loss.output" relation="_R2"/>
         <link port="loss.trigger" relation="relation5"/>
+        <link port="Server.input" relation="relation"/>
+        <link port="Server.output" relation="relation5"/>
+        <link port="Server.newServiceTime" relation="relation3"/>
     </entity>
     <entity name="Plot" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
@@ -271,67 +319,103 @@
 <noGrid/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
-                                                        </configure>    </entity>
+                </configure>    </entity>
     <entity name="Sender" class="ptolemy.actor.TypedCompositeActor">
         <property name="SenderDirector" class="ptolemy.domains.fsm.kernel.FSMDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="Controller">
             </property>
+            <property name="_location" class="ptolemy.moml.Location" value="181.0, 53.0">
+            </property>
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="171.0, 186.0">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
         </property>
         <port name="request" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="type" class="ptolemy.actor.TypeAttribute" value="general">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="119.0, 124.0">
             </property>
         </port>
         <port name="msgIn" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
+            <property name="_location" class="ptolemy.moml.Location" value="117.5, 256.0">
+            </property>
         </port>
         <port name="next" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="type" class="ptolemy.actor.TypeAttribute" value="general">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="499.0, 74.0">
             </property>
         </port>
         <port name="error" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="type" class="ptolemy.actor.TypeAttribute" value="general">
             </property>
+            <property name="_location" class="ptolemy.moml.Location" value="500.25, 135.0">
+            </property>
         </port>
         <port name="expired" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="type" class="ptolemy.actor.TypeAttribute" value="general">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="121.0, 300.0">
             </property>
         </port>
         <port name="ack" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
+            <property name="_location" class="ptolemy.moml.Location" value="110.99999999999999, 207.0">
+            </property>
         </port>
         <port name="pktOut" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="506.0, 196.0">
             </property>
         </port>
         <port name="monitor" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
+            <property name="_location" class="ptolemy.moml.Location" value="507.0, 282.0">
+            </property>
         </port>
         <port name="setTimer" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="type" class="ptolemy.actor.TypeAttribute" value="double">
             </property>
+            <property name="_location" class="ptolemy.moml.Location" value="510.0, 323.0">
+            </property>
         </port>
         <entity name="Controller" class="ptolemy.domains.fsm.demo.ABP.SenderController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="Connecting">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 454]">
+            </property>
+            <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[106, 116]">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="363.0, 74.0">
             </property>
         </entity>
         <entity name="Connect" class="ptolemy.domains.fsm.demo.ABP.ConnectComponent">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="Init">
             </property>
-            <property name="count" class="ptolemy.data.expr.Parameter" value="3">
+            <property name="count" class="ptolemy.data.expr.Parameter" value="4">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 265]">
+            </property>
+            <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 168]">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="262.0, 136.0">
             </property>
         </entity>
         <entity name="Send" class="ptolemy.domains.fsm.demo.ABP.SendComponent">
@@ -339,22 +423,38 @@
             </property>
             <property name="trying" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="msg" class="ptolemy.data.expr.Parameter" value="13">
+            <property name="msg" class="ptolemy.data.expr.Parameter" value="17">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+            </property>
+            <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 116]">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="291.0, 268.0">
             </property>
         </entity>
         <relation name="request" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="setTimer" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex" class="ptolemy.moml.Vertex" value="387.0, 328.0">
+            </vertex>
         </relation>
         <relation name="ack" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex" class="ptolemy.moml.Vertex" value="204.0, 212.0">
+            </vertex>
         </relation>
         <relation name="pktOut" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex" class="ptolemy.moml.Vertex" value="346.0, 202.0">
+            </vertex>
         </relation>
         <relation name="expired" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex" class="ptolemy.moml.Vertex" value="184.0, 285.0">
+            </vertex>
         </relation>
-	<relation name="connected" class="ptolemy.actor.TypedIORelation">
-	</relation>
+        <relation name="connected" class="ptolemy.actor.TypedIORelation">
+        </relation>
         <relation name="next" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex" class="ptolemy.moml.Vertex" value="435.0, 79.0">
+            </vertex>
         </relation>
         <relation name="msgIn" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -370,8 +470,8 @@
         <link port="pktOut" relation="pktOut"/>
         <link port="monitor" relation="monitor"/>
         <link port="setTimer" relation="setTimer"/>
+        <link port="Controller.connected" relation="connected"/>
         <link port="Controller.next" relation="next"/>
-	<link port="Controller.connected" relation="connected"/>
         <link port="Controller.error" relation="error"/>
         <link port="Connect.request" relation="request"/>
         <link port="Connect.connected" relation="connected"/>

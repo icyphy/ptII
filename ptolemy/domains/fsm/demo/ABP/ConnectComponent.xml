@@ -142,19 +142,7 @@
         </property>
     </relation>
     <relation name="conTr5" class="ptolemy.domains.fsm.kernel.Transition">
-        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!ack_isPresent &amp;&amp; expired_isPresent &amp;&amp; count != 0">
-        </property>
-        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-	<property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="pktOut = -1; setTimer = 5.0">
-	</property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="count = count - 1">
-        </property>
-    </relation>
-    <relation name="conTr6" class="ptolemy.domains.fsm.kernel.Transition">
-        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="ack_isPresent &amp;&amp; ack != -1 &amp;&amp; expired_isPresent &amp;&amp; count != 0">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(!ack_isPresent || ack != -1) &amp;&amp; expired_isPresent &amp;&amp; count != 0">
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -168,12 +156,10 @@
     <link port="Init.outgoingPort" relation="conTr1"/>
     <link port="Wait.incomingPort" relation="conTr1"/>
     <link port="Wait.incomingPort" relation="conTr5"/>
-    <link port="Wait.incomingPort" relation="conTr6"/>
     <link port="Wait.outgoingPort" relation="conTr2"/>
     <link port="Wait.outgoingPort" relation="conTr3"/>
     <link port="Wait.outgoingPort" relation="conTr4"/>
     <link port="Wait.outgoingPort" relation="conTr5"/>
-    <link port="Wait.outgoingPort" relation="conTr6"/>
     <link port="Success.incomingPort" relation="conTr2"/>
     <link port="Fail.incomingPort" relation="conTr3"/>
     <link port="Fail.incomingPort" relation="conTr4"/>
