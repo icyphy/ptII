@@ -41,7 +41,7 @@ import soot.SootClass;
 
 //////////////////////////////////////////////////////////////////////////
 //// JavaToC
-/**An application that converts a Java class (from a class file) into  C
+/** An application that converts a Java class (from a class file) into  C
    source files (a .h file and a .c file) that implement the class.
    The C conversion capability is highly experimental and rudimentary
    at this point, with only a limited set of Java language features
