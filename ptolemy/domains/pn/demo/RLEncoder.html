@@ -31,8 +31,8 @@ a binary matrix with every pixel represented as a bit (1 for black and 0 for
 white, as in the pbm format). The matrix once converted into a stream is then
 treated as a stream of bits. The runlength encoder counts the number of times
 the same bit appears in the stream. It uses 1 byte to indicate the value of 
-the bit and the number of times the bit occured continuously (upto a count of 
-128). If the bit occured more than 128 times, then a new byte is used to 
+the bit and the number of times the bit occurred continuously (upto a count of 
+128). If the bit occurred more than 128 times, then a new byte is used to 
 indicate the value and the count for the rest of the stream. The decoder does 
 the exact opposite and generates a stream of bits corresponding to the input
 byte stream. <p>
