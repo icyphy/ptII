@@ -65,7 +65,6 @@ JSRCS = \
 	CTMultiSolverDirector.java \
 	CTReceiver.java \
 	CTScheduler.java \
-	CTSingleSolverDirector.java \
 	CTStatefulActor.java \
 	CTStepSizeControlActor.java \
 	CTTransparentDirector.java \

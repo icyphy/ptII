@@ -30,9 +30,10 @@
 
 package ptolemy.domains.ct.kernel;
 
-import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.Director;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// CTCompositeActor
@@ -43,9 +44,12 @@ this composite actor is an instance of CTTransparentDirector, then the
 CTStepSizeControlActor calls will be delegated to its local director.
 Otherwise, it returns default values.
 <P>
-Note: This class is still under development.
+
 @author  Jie Liu
 @version $Id$
+@see ptolemy.actor.TypedCompositeActor
+@see CTStepSizeControlActor
+@see CTTransparentDirector
 */
 public class CTCompositeActor extends TypedCompositeActor
     implements CTStepSizeControlActor {
@@ -96,7 +100,6 @@ public class CTCompositeActor extends TypedCompositeActor
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

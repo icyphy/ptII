@@ -1,4 +1,4 @@
-/* A non rollback embedded director, for CT inside CT/FSM.
+/* An embedded director for CT inside CT/FSM.
 
  Copyright (c) 1999-2000 The Regents of the University of California.
  All rights reserved.
@@ -23,30 +23,37 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (liuj@eecs.berkeley.edu)
+@ProposedRating Yellow (liuj@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.ct.kernel;
 
-import ptolemy.domains.ct.kernel.util.*;
+import ptolemy.domains.ct.kernel.util.TotallyOrderedSet;
 import ptolemy.kernel.util.*;
-import ptolemy.kernel.*;
-import ptolemy.actor.*;
-import ptolemy.actor.sched.*;
-import ptolemy.data.expr.*;
-import ptolemy.data.*;
-import java.util.*;
-//import collections.LinkedList;
+import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.Director;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTEmbeddedDirector
 /**
-Don't need to run ahead of time and don't need to rollback.
-Note: This class is under significant redesign, please do not use it
-if possible.
-@author  liuj
+An embedded director for CT inside CT/FSM. Conceptually, this director
+interacts with a continuous outter domain. As a consequence, this 
+director exposes its step size control information. If the container
+of this director is a CTCompositeActor, then this information is
+further exposed to the outter domain.
+<P>
+Unlike the CTMixedSignalDirector, this director does not run ahead
+of the global time and rollback, simply because the step size control
+information is accessible from a outter domain which has a continuous
+time and understands the meaning of step size.
+ 
+@author  Jie Liu
 @version $Id$
+@see CTMultiSolverDirector
+@see CTTransparentDirector
 */
 public class CTEmbeddedDirector  extends CTMultiSolverDirector
     implements CTTransparentDirector{
@@ -88,29 +95,32 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return true since this director can be inside director.
+    /** Return true since this director can be an inside director.
      *  @return True always.
      */
     public boolean canBeInsideDirector() {
         return true;
     }
 
-    /** Return flase since this director can not be top level director.
+    /** Return flase since this director cannot be a top level director.
      *  @return False always.
      */
     public boolean canBeTopLevelDirector() {
         return false;
     }
 
-    /** fire
+    /** Execute the subsystem for one iteration. An iteration includes
+     *  an event phase, a state resolving phase, and a output phase.
+     *  If the process of resolving state is failed, then subsystem
+     *  may produce a meaningless output. It is the outter domain's
+     *  responsibility to check if this subsystem is satisfied in
+     *  this iteration.
+     *  @exception IllegalActionException If one of the actors throw
+     *  it during one iteration. 
      */
     public void fire() throws IllegalActionException {
         _eventPhaseExecution();
         _prefireSystem();
-        /*if(_first) {
-          produceOutput();
-          return;
-          }*/
         ODESolver solver = getCurrentODESolver();
         if(!solver.resolveStates()) {
             _stateAcceptable = false;
@@ -122,7 +132,7 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
         produceOutput();
     }
 
-    /** Register the break point to this director and the executive
+    /** Register the break point to this director and to the executive
      *  director.
      *  @param actor The actor that requested the fire
      *  @param time The fire time
@@ -133,18 +143,11 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
             throws IllegalActionException{
         super.fireAt(actor, time);
         CompositeActor ca = (CompositeActor) getContainer();
-        if (ca == null) {
-            throw new IllegalActionException(this, "Has no container.");
-        }
         Director exeDir = ca.getExecutiveDirector();
-        if (exeDir == null) {
-            throw new IllegalActionException(this,
-                    "Can not be a top-level director.");
-        }
         exeDir.fireAt(ca, time);
     }
 
-    /** Return true if this is an embedded director and the current fire
+    /** Return true if the current fire
      *  is successful. The success is determined by asking all the
      *  step size control actors in the output schedule. If this is a
      *  top level director, then return true always.
@@ -189,7 +192,9 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
         return true;
     }
 
-    /** Return the suggested next step size.
+    /** Return the predicted next step size, which is the minimum
+     *  of the prediction from all actors.
+     *  @return The predicted step size for this subsystem.
      */
     public double predictedStepSize() {
         try {
@@ -203,7 +208,11 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
         }
     }
 
-    /** prefire,
+    /** Return true always. Recompute the schedules if there
+     *  was a mutation. Synchronize time with the outter domain, 
+     *  and adjust the contents of the breakpoint table w.r.t.
+     *  the current time.
+     *  @return True always.
      */
     public boolean prefire() throws IllegalActionException {
         if(_debugging) _debug(this.getFullName() + "prefire.");
@@ -278,11 +287,25 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // Step size of the outter domain.
     private double _outsideStepSize;
 
+    // Indicates whether actors in the output schedule are satisfied.
     private boolean _outputAcceptable;
 
+    // Indicates whether actors in the dynamic actor schedule and the
+    // state transition schedule are satisfied.
     private boolean _stateAcceptable;
 
+    // The current time of the outter domain.
     private double _outsideTime;
 }
+
+
+
+
+
+
+
+
+

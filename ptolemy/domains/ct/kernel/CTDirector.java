@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (liuj@eecs.berkeley.edu)
+@ProposedRating Green (liuj@eecs.berkeley.edu)
 @AcceptedRating Yellow (johnr@eecs.berkeley.edu)
 */
 
@@ -45,10 +45,10 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// CTDirector
 /**
-This is the abstract base class for directors for continuous time simulation.
+This is the abstract base class for directors in the CT domain.
 <P>
-A CTDirector has a CTScheduler which provides the schedule for firing
-the actors in different phase of the execution.
+A CTDirector has a CTScheduler which provides the schedules for firing
+the actors in different phases of the execution.
 <P>
 CTDirectors may have more than one ODE solvers. In each iteration, one
 of the ODE solvers is taking charge of solving the ODEs. This solver
@@ -64,18 +64,18 @@ by directors or its ODE solvers.
 This base class maintains a list of parameters that may be used by
 ODE solvers and actors. These parameters are: <Br>
 <LI> <code>startTime</code>: The start time of the
-simulation. The parameter is affective only if the director
+simulation. The parameter is effective only if the director
 is at the top level. Default value is 0.0.</LI><BR>
 <LI> <code>stopTime</code>: The stop time of the simulation.
- The parameter is affective only if the director
+ The parameter is effective only if the director
 is at the top level. Default value is 1.0.</LI><BR>
 <LI> <code>initStepSize</code>: The suggested integration step size 
 from the user. This will be the step size for fixed step
 size ODE solvers. However, it is just a guide for variable step size
 ODE solvers. Default value is 0.1</LI><Br>
 <LI> <code>minStepSize</code>: The minimum step
-size the user wants to use in the simulation. Default value is 1e-5.
-</LI><Br>
+size that the user wants to use in the simulation. Default value is 1e-5.
+</LI>
 <LI> <code>maxStepSize</code>: The maximum step
 size the user wants to use in the simulation. Usually used to control
 the simulation speed. Default value is 1.0.
@@ -85,7 +85,7 @@ Used only in implicit ODE solvers. This is the maximum number of
 iterations for finding the fixed point at one time point.
 Default value is 20. </LI><Br>
 <LI> <code>errorTolerance</code>: This is the local truncation
-error, used for controlling the integration accuracy
+error tolerance, used for controlling the integration accuracy
 in variable step size ODE solvers. If the local truncation error
 at some step size control actors are greater than this tolerance, then the
 integration step is considered failed, and should be restarted with
@@ -96,15 +96,16 @@ If in two successive iterations the differences of the state variables
 is less than this resolution, then the fixed point is considered reached.
 Default value is 1e-6.<LI><Br>
 <LI> <code>timeResolution</code>: The minimum resolution
-of time, such that if two time values differ less than this value,
+of time. If two time values differ less than this value,
 they are considered equivalent. Default value is 1e-10. </LI><Br>
 <P>
-This director also maintains a breakpoint table to record all breakpoints.
+This director also maintains a breakpoint table to record all 
+predictable breakpoints in the future.
 The breakpoints are sorted in their chronological order in the table.
 Breakpoints at the "same" time (controlled by time resolution) are
 considered to be one. A breakpoint can be inserted into the table by
-calling the fireAt() method. How to deal with these breakpoint are
-director dependent.
+calling the fireAt() method. How to deal with these breakpoints 
+could be director dependent.
 @author Jie Liu
 @version $Id$
 @see ptolemy.actor.Director
@@ -239,7 +240,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     public int NSTEP = 0;
 
     /** The number of function evaluations, which is the same as the
-     *  total number of rounds.
+     *  total number of rounds when solving the ODEs.
      */
     public int NFUNC = 0;
 
@@ -296,22 +297,16 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  Derived class may override this to show whether it can
      *  serve as an inside director. This value is hard coded,
      *  in the sense that it cannot be set at run-time.
-     *  @return False always.
      */
-    public boolean canBeInsideDirector() {
-        return false;
-    }
+    public abstract boolean canBeInsideDirector();
 
     /** Return true if the director can be a top-level director.
      *  In this base class, it always return false.
      *  Derived class may override this to show whether it can
      *  serve as a top-level director. This value is hard coded,
      *  in the sense that it can not be set at run-time.
-     *  @return False always.
      */
-    public boolean canBeTopLevelDirector() {
-        return false;
-    }
+    public abstract boolean canBeTopLevelDirector();
 
     /** Clone the director into the specified workspace. This calls the
      *  base class and then copies the parameter of this director.  The new
@@ -531,11 +526,11 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  Check whether the director fits this level of hirarchy, 
      *  by checking canBeInsideDirector() and canBeTopLevelDirector().
      *  Invalidate the schedule. Clear statistic variables.
-     *  Reset the break point table.
+     *  Clear the break point table.
      *  Set the current time to the start time.
      *  And preinitialize all the directed actors.
-     *  This method does not call super.preinitialize(), since
-     *  there's no way to set start time properly.
+     *  Time is <B>not</B> guaranteed to be correct in this stage.
+     *  Time is synchronzied in the initialize() method.
      *  @exception IllegalActionException If the director has no
      *  container, the director does not fit this level of hierarchy,
      *  or there is no scheduler.
@@ -744,7 +739,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     }
 
     /** Returns false always, indicating that this director does not need to
-     *  modify the topology during the execution.
+     *  modify the topology during one iteration.
      *
      *  @return False.
      */

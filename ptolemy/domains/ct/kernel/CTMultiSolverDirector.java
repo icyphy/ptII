@@ -44,7 +44,7 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// CTMultiSolverDirector
 /**
-A CTDirector that uses multiple ODE solvers. The reason of switching
+A CTDirector that uses multiple ODE solvers. The reason for switching
 solvers is that when abrupt changes in the signal occurs (also called
 breakpoints), the initial state and its derivative have to be recalculated.
 At these points, a special ODE solver, called the "breakpointODESolver"
@@ -60,7 +60,7 @@ an opaque composite actor, use CTMixedSignalDirector (if the outter
 domain is discrete) or CTEmbeddedDirector (if the outter domain is
 a CT domain or a HS domain.)
 <P>
-This director has two additional parameters than the CTDirector base
+This director has two more parameters than the CTDirector base
 class.<BR>
 <UL>
 <LI><I>ODESolver</I>: This is the name of the normal ODE solver 
@@ -158,14 +158,34 @@ public class CTMultiSolverDirector extends CTDirector {
         }
     }
 
-    /** FIXME: Clone
+    /** Return false always, since this director cannot be an inside director.
+     *  @return false.
      */
+    public boolean canBeInsideDirector() {
+        return false;
+    }
 
     /** Return true since this director can be top-level director.
-     *  @return true always.
+     *  @return true.
      */
     public boolean canBeTopLevelDirector() {
         return true;
+    }
+
+    /** Clone the director into the specified workspace. This calls the
+     *  super class and then copies the parameter of this director.  The new
+     *  actor will have the same parameter values as the old.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     */
+    public Object clone(Workspace ws) {
+        CTMultiSolverDirector newobj = 
+            (CTMultiSolverDirector)(super.clone(ws));
+        newobj.ODESolver =
+            (Parameter)newobj.getAttribute("ODESolver");
+        newobj.breakpointODESolver =
+            (Parameter)newobj.getAttribute("breakpointODESolver");
+        return newobj;
     }
 
     /**  Fire the system for one iteration. One iteration is defined as
@@ -176,6 +196,8 @@ public class CTMultiSolverDirector extends CTDirector {
      *   An iteration begins with processing events, which includes
      *   that all waveform generators consume current input events 
      *   and all event generators produce current output events.
+     *   Then the new values of the state variables are resolved.
+     *   If the state is resolved successfully, the outputs are produced.
      *   <P>
      *   The step size of one iteration is determined by the suggested
      *   next step size and the breakpoints. If the first breakpoint in
@@ -186,17 +208,19 @@ public class CTMultiSolverDirector extends CTDirector {
      *   <PP
      *   The new state is resolved by the resolveStates() method of the 
      *   current ODE solver. After that, the step size control actors
-     *   in the state update path are checked for the success
+     *   in the dynamic actor schedule and the state transition schedule
+     *   are checked for the success
      *   of the current integration. If any one of the step size control
      *   actors do not think it is succeeded, then the integration step
      *   will be restarted with a refined step size, which is the minimum
      *   of the refinedStepSize() from all step size control actors in
-     *   the state update path. If all the actors in the state update 
-     *   path think the current step is succeeded, then the actors
+     *   the dynamic actor schedule and the state transition schedule.
+     *   If all the actors in the dynamic actor and the state transition 
+     *   schedules think the current step is succeeded, then the actors
      *   in the output path will be fired according to the output
      *   schedule. Then the step size control actors in the output
      *   path will be asked for success. The above procedure is
-     *   followed to refine the step size and restart the iteration.
+     *   followed again to refine the step size and restart the iteration.
      *   The iteration is complete until all actors think the integration
      *   is successful.
      *   <P>
@@ -207,10 +231,10 @@ public class CTMultiSolverDirector extends CTDirector {
      *  @exception IllegalActionException If thrown by the ODE solver.
      */
     public void fire() throws IllegalActionException {
-        //event phase:
+        // event phase;
         _eventPhaseExecution();
+        // continuous phase;
         _setIterationBeginTime(getCurrentTime());
-        //Refine step size
         setCurrentStepSize(getSuggestedNextStepSize());
         _processBreakpoints();
         if(_debugging) _debug("execute the system from "+
@@ -260,7 +284,6 @@ public class CTMultiSolverDirector extends CTDirector {
             _debug(getFullName(), " set suggested next step size to "
                     + getSuggestedNextStepSize());
         }
-
         if(_debugging)
             _debug(getFullName(), " set the current time as a break point: " +
                     getCurrentTime());
@@ -271,7 +294,6 @@ public class CTMultiSolverDirector extends CTDirector {
         fireAt(null, getStopTime());
         
         if(_debugging) _debug(getFullName() + " End of Initialization.");
-
     }
 
     /** Return false if the simulation stop time is reached.
@@ -298,8 +320,7 @@ public class CTMultiSolverDirector extends CTDirector {
 
    /** Return true always, indicating that the system is always ready
      *  for one iteration. The schedule
-     *  is recomputed if there is any mutation. The parameters are
-     *  updated, since this is the safe place to change parameters.
+     *  is recomputed if there is any mutation.
      *
      *  @return True Always
      *  @exception IllegalActionException Not thrown in this base class.
@@ -385,7 +406,7 @@ public class CTMultiSolverDirector extends CTDirector {
     }
 
     /** Show the statistics of the simulation if requested. The statistics
-     *  includes the number of step simulated, the number of function
+     *  includes the number of steps simulated, the number of function
      *  evaluations (firing all actors in the state transition schedule),
      *  and the number of failed steps (due to error control).
      *
@@ -408,7 +429,8 @@ public class CTMultiSolverDirector extends CTDirector {
     ////                         protected methods                      ////
 
     /** Process discrete events in the system. All the event generators
-     *  will produce events, and event interpreters will consume events.
+     *  will produce current events, and event interpreters will
+     *  consume current events.
      */
     protected void _eventPhaseExecution() throws IllegalActionException {
         CTScheduler sched = (CTScheduler)getScheduler();
@@ -425,8 +447,8 @@ public class CTMultiSolverDirector extends CTDirector {
         }
     }
 
-        /** Fire one iteration. Return directly if any actors return false
-     *  in their prefire() method. The the time is advanced by the
+    /** Fire one iteration. Return immediately if any actor returns false
+     *  in their prefire() method. The time is advanced by the
      *  current step size.
      */
     protected void _fireOneIteration() throws IllegalActionException {
@@ -479,8 +501,8 @@ public class CTMultiSolverDirector extends CTDirector {
         updateStates(); // call postfire on all actors
     }
 
-
-    /** Initialize parameters to their default values. */
+    /** Initialize parameters to their default values.
+     */
     protected void _initParameters() {
         super._initParameters();
         try {
@@ -504,11 +526,8 @@ public class CTMultiSolverDirector extends CTDirector {
         }
     }
 
-    /** Return true if the newly resolved state is acceptable.
-     *  It does it by asking all the step control actors in the
-     *  state transition and dynamic schedule.
-     *  If one of them returns false, then the method returns
-     *  false.
+    /** Return true if all step size control actors in the output
+     *  schedule are satified with the current step.
      *  @exception IllegalActionException If the scheduler throws it.
      */
     protected boolean _isOutputAcceptable() throws IllegalActionException {
@@ -525,11 +544,9 @@ public class CTMultiSolverDirector extends CTDirector {
         return successful;
     }
 
-    /** Return true if the newly resolved state is acceptable.
-     *  It does it by asking all the step control actors in the
-     *  state transition and dynamic schedule.
-     *  If one of them returns false, then the method returns
-     *  false.
+    /** Return true if all step size control actors in the dynmic actor
+     *  schedule and the state transition schedule are satisfied with
+     *  the current step.
      *  @exception IllegalActionException If the scheduler throws it.
      */
     protected boolean _isStateAcceptable() throws IllegalActionException {
@@ -548,7 +565,7 @@ public class CTMultiSolverDirector extends CTDirector {
 
     /** Return true if the prefire() methods of all the actors in the system
      *  return true.
-     *  @return True if the prefire() methods of all actors returns true.
+     *  @return The logical AND of the prefire() of all actors.
      */
     protected boolean _prefireSystem() throws IllegalActionException {
         boolean ready = true;
@@ -563,7 +580,7 @@ public class CTMultiSolverDirector extends CTDirector {
         return ready;
     }
 
-    /** clear obsolete breakpoints, switch to breakpointODESolver if this
+    /** Clear obsolete breakpoints, switch to breakpointODESolver if this
      *  is the first fire after a breakpoint, and adjust step sizes
      *  accordingly.
      *  @exception IllegalActionException If breakpoint solver is not
@@ -625,9 +642,10 @@ public class CTMultiSolverDirector extends CTDirector {
         }
     }
 
-        /** Return the refined the step size with respected to the new state.
+    /** Return the refined step size with respected to resolving the
+     *  new state.
      *  It asks all the step size control actors in the state transition
-     *  and dynamic schedule for the refined step size, and take the
+     *  and dynamic actor schedule for the refined step size, and takes the
      *  minimum of them.
      *  @return the refined step size.
      *  @exception IllegalActionException If the scheduler throws it.
@@ -675,10 +693,9 @@ public class CTMultiSolverDirector extends CTDirector {
     // The default solver.
     private ODESolver _defaultSolver = null;
 
-
     // The classname of the default ODE solver
     private String _bpsolverclassname;
+
     // The default solver.
     private ODESolver _breakpointsolver = null;
-
 }

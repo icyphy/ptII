@@ -23,10 +23,10 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (liuj@eecs.berkeley.edu)
+@ProposedRating Yellow (liuj@eecs.berkeley.edu)
 @AcceptedRating Red (liuj@eecs.berkeley.edu)
-
 */
+
 package ptolemy.domains.ct.kernel;
 
 //////////////////////////////////////////////////////////////////////////
@@ -37,8 +37,6 @@ outside CTDirector. The methods are about step size control. After the internal
 CT subsystem finishes one integration step, its step size control information
 should be accessible from the outside CT director.
 <P>
-Note: This class is under significant redesign, please do not use it if
-possible.
 @author  Jie Liu
 @version $Id$
 
@@ -50,15 +48,17 @@ public interface CTTransparentDirector {
     ////                         public methods                    ////
 
     /** Return true if the current integration step is successful.
-     *  @return True if the current step is successful
+     *  @return True if the current step is successful.
      */
     public boolean isThisStepSuccessful();
 
     /** Return the predicted next step size if this step is successful.
+     *  @return The predicted step size.
      */
     public double predictedStepSize();
 
     /** Return the refined step size if this step is not successful.
+     *  @return The refined step size.
      */
     public double refinedStepSize();
 

@@ -23,27 +23,29 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Yellow (liuj@eecs.berkeley.edu)
+@ProposedRating Green (liuj@eecs.berkeley.edu)
 @AcceptedRating Yellow (johnr@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.ct.kernel;
 
-import ptolemy.domains.ct.kernel.util.*;
+import ptolemy.domains.ct.kernel.util.TotallyOrderedSet;
 import ptolemy.kernel.util.*;
-import ptolemy.kernel.*;
-import ptolemy.actor.*;
-import ptolemy.actor.sched.*;
-import ptolemy.data.expr.*;
+import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.*;
+import ptolemy.data.DoubleToken;
 import java.util.Iterator;
 
 
 //////////////////////////////////////////////////////////////////////////
 //// CTMixedSignalDirector
 /**
-This a CTDirector that supports the interaction of the continuous time
+This a CTDirector that supports the interaction of the continuous-time
 simulation with event-based domains. This director can both serve as
 a top-level director and an embedded director that is contained by
 a composite actor in an event-based domain. If it is a top-level
@@ -60,9 +62,9 @@ The run ahead of time is achieved by the following mechanism.<Br>
 <LI> At the initialize stage of the execution, the director will request
 a fire at the global current time.
 <LI> At each prefire stage the execution, the fire end time is computed
-based on the current time of the executive director t1, the next iteration
-time of the executive director t2, the value of the parameter
-<code>runAheadLength</code> t3. The fire end time is t1+min(t2, t3)
+based on the current time of the executive director, t1, the next iteration
+time of the executive director, t2, the value of the parameter
+<code>runAheadLength</code>, t3. The fire end time is t1+min(t2, t3)
 <LI> At the prefire stage, the local current time is compared with the
 current time of the executive director. If the local time is later than
 the executive director time, then the directed system will rollback to a
@@ -175,11 +177,11 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *  If this is a top-level director, the fire end time if the
      *  current time at the beginning of the fire() method plus the
      *  the step size of one successful step.
-     *  Otherwise, it executes until the one of the following conditions
+     *  Otherwise, it executes until one of the following conditions
      *  is satisfied. 1) The fire end time computed in the prefire()
      *  method is reached. 2) An event is generated.
      *  It saves the state of the system at the current time of the executive
-     *  director as the "known good" state. And run further ahead of time.
+     *  director as the "known good" state, and runs ahead of that time.
      *  The "known good" state is used for roll back.
      *  @exception IllegalActionException If thrown by the ODE solver,
      *       or the prefire(), fire(), or postfire() methods of an actor.
@@ -189,14 +191,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             super.fire();
             return;
         }
-        /*if (_first) {
-          _first = false;
-          produceOutput();
-          //return;
-          }*/
         CompositeActor ca = (CompositeActor) getContainer();
-        Director exe = ca.getExecutiveDirector(); // it may be null.
-        double timeAcc = getTimeResolution();
+        Director exe = ca.getExecutiveDirector(); // it must not be null.
         if (_isEventPhase()) {
             if(_debugging) _debug(getFullName(),
                     "In event phase execution.");
@@ -208,65 +204,58 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                     "--END of fire");
             exe.fireAt(ca, exe.getCurrentTime());
             return;
-        }
-        // Not event phase.
-        while(true) {
-            // Just after a breakpoint iteration. This is the known
-            // good state.
-            if(isBPIteration()) {
-                _markStates();
-            }
-            _setIterationBeginTime(getCurrentTime());
-            fireAt(null, getIterationEndTime());
-            //Refine step size
-            setCurrentStepSize(getSuggestedNextStepSize());
-            _processBreakpoints();
-            if(_debugging) _debug(getName(),
-                    "Resolved stepsize: " + getCurrentStepSize() +
-                    " One iteration from " + getCurrentTime() +
-                    " to " + (getCurrentStepSize()+getCurrentTime()));
-            _fireOneIteration();
-            if (_isStoppedByEvent()) {
-                if(_debugging) {
-                    _debug(getFullName() + " fire stopped by event.",
-                            "at " + getCurrentTime(),
-                            "request refire at " + getCurrentTime(),
-                            "set Event phase to TRUE");
+        } else {
+            while(true) {
+                if(isBPIteration()) {
+                    // Just after a breakpoint iteration. This is the known
+                    // good state.
+                    _markStates();
                 }
-                exe.fireAt(ca, getCurrentTime());
-                _setEventPhase(true);
-                return;
-            } else if (Math.abs(getCurrentTime()- getIterationEndTime())
-                    < getTimeResolution()) {
-                if(_debugging) {
-                    _debug(getFullName() + " fire stopped regularly.",
-                            "at " + getCurrentTime(),
-                            "request refire at " + getIterationEndTime(),
-                            "set Event phase to FALSE");
+                _setIterationBeginTime(getCurrentTime());
+                // guarantee to stop at the iteration end time.
+                fireAt(null, getIterationEndTime());
+                //Refine step size
+                setCurrentStepSize(getSuggestedNextStepSize());
+                _processBreakpoints();
+                if(_debugging) _debug(getName(),
+                        "Resolved stepsize: " + getCurrentStepSize() +
+                        " One iteration from " + getCurrentTime() +
+                        " to " + (getCurrentStepSize()+getCurrentTime()));
+                _fireOneIteration();
+                if (_isStoppedByEvent()) {
+                    if(_debugging) {
+                        _debug(getFullName() + " fire stopped by event.",
+                                "at " + getCurrentTime(),
+                                "request refire at " + getCurrentTime(),
+                                "set Event phase to TRUE");
+                    }
+                    exe.fireAt(ca, getCurrentTime());
+                    _setEventPhase(true);
+                    return;
+                } else if (Math.abs(getCurrentTime()- getIterationEndTime())
+                        < getTimeResolution()) {
+                    if(_debugging) {
+                        _debug(getFullName() + " fire stopped regularly.",
+                                "at " + getCurrentTime(),
+                                "request refire at " + getIterationEndTime(),
+                                "set Event phase to FALSE");
+                    }
+                    exe.fireAt(ca, getIterationEndTime());
+                    _setEventPhase(false);
+                    return;
+                } else {
+                    // should never happen.
+                    throw new InternalErrorException(
+                            "Time is screwed up in " + getFullName());
                 }
-                exe.fireAt(ca, getIterationEndTime());
-                _setEventPhase(false);
-                return;
             }
         }
     }
 
-    /** Initialize the director parameters (including time) and initialize
-     *  all the actors in the container. This
-     *  is called exactly once at the start of the entire execution.
-     *  It checks if it has a container and an CTScheduler.
-     *  It invoke the initialize() method for all the Actors in the
-     *  system. The ODE solver are instantiated, and the current solver
-     *  is set to be the breakpoint solver. The breakpoint table is cleared,
-     *  and the start time is set to be the first breakpoint.
-     *  Invalidate the schedule.
-     *  If this is the top-level director,
-     *  It sets the current time to the start time of the and the current step
-     *  size to the initial step size.
-     *  Otherwise the start time is the current time of the outside
-     *  domain. And it will request a refire at the current time from
-     *  the executive director.
-     *
+    /** In addition to initialize the execution as in CTMultiSolverDirector,
+     *  register a fire-at-current-time to the executive director,
+     *  if this director is not at the top-level. 
+     *  @see CTMultiSolverDirector#initialize()
      *  @exception IllegalActionException If this director has no container or
      *       no scheduler, or thrown by a contained actor.
      */
@@ -280,11 +269,9 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         }
     }
 
-    /** If this is a top-level director, returns true if the current time
-     *  is less than the stop time, otherwise, return true always.
-     *  If this is a top-level director, and the current time is greater
-     *  than the stop time, an InvalidStateException is thrown.
-     *  @return True if this is not a top-level director, or the simulation
+    /** If this is a top-level director, behave exactly as a 
+     *  CTMultiSolverDirector, otherwise return true always. 
+     *  @return True if this is not a top-level director or the simulation
      *     is not finished.
      *  @exception IllegalActionException Not thrown in this base class.
      */
@@ -305,7 +292,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *  to synchronize time with the executive director. In particular,
      *  it will compare its local time, say t, with the current time
      *  of the executive director, say t0.
-     *  If t == t0, does nothing. <BR>
+     *  If t == t0, do nothing. <BR>
      *  If t > t0, then rollback to the "known good" time, which should be
      *  less than the outside time. And catch up
      *  to the outside time. <BR>
@@ -370,7 +357,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                 throw new IllegalActionException(this, exe,
                         " time collapse.");
             }
-            // Check for roll back.
+            // Check for rollback.
             if (_outsideTime < getCurrentTime()) {
                 if(_debugging) _debug(getName() + " rollback from: " +
                         getCurrentTime() + " to: " +_knownGoodTime +
@@ -379,18 +366,15 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                     NROLL ++;
                 }
                 _rollback();
+                // set a catch-up destination time.
                 fireAt(null, _outsideTime);
                 _catchUp();
             }
-            //runlength = Math.min(runlength, _runAheadLength);
-
             if(runlength < _runAheadLength) {
                 _setIterationEndTime(nextIterTime);
             } else {
                 _setIterationEndTime(_outsideTime + _runAheadLength );
             }
-            // fireAt(null, _outsideTime);
-            // fireAt(null, getIterationEndTime());
             // Now it's guaranteed that the current time is the outside time.
             if(_debugging) _debug(getName(), "Iteration end time = " +
                     getIterationEndTime(), "End of Prefire");
@@ -423,9 +407,11 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
     ////                         protected methods                      ////
 
     /** Catch up the simulation from a known good state to the outside
-     *  current time. There's should be no breakpoints of any kind
+     *  current time. There should be no breakpoints of any kind
      *  in this process. If the current time is greater than or equal
      *  to the outside time, then do nothing.
+     *  @exception IllegalActionException If thrown from the execution
+     *  method from any actor.
      */
     protected void _catchUp() throws IllegalActionException {
         if (getCurrentTime() >= getOutsideTime()) {
@@ -462,18 +448,19 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         }
     }
 
-    /** Return true if the current phase of fire is event phase.
+    /** Return true if the current phase of fire is an event phase.
+     *  @return True if the current phase is an event phase.
      */
     protected boolean _isEventPhase() {
         return _inEventPhase ;
     }
 
-    /** Return true if the current fire phase need to stop due to
-     *  the occurrence of events (expected or unexpected).
+    /** Return true if the current fire phase is stopped due to
+     *  the occurrence of events (predictable or unpredictable).
+     *  @return True if the current fire phase is stopped by an event.
      */
     protected boolean _isStoppedByEvent() {
-
-        // expected events
+        // predictable breakpoints
         double bp;
         TotallyOrderedSet breakPoints = getBreakPoints();
         double tnow = getCurrentTime();
@@ -485,14 +472,14 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                     breakPoints.removeFirst();
                 } else if(Math.abs(bp-tnow) < getTimeResolution() &&
                         bp < getIterationEndTime()){
-                    // break point now!
+                    // break point now! stoped by event
                     return true;
                 } else {
                     break;
                 }
             }
         }
-        // detected events
+        // unpredictable breakpoints. Detecte current events.
         CTScheduler sched = (CTScheduler)getScheduler();
         Iterator evgens = sched.eventGeneratorList().iterator();
         while(evgens.hasNext()) {
@@ -505,8 +492,9 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
     }
 
     /**Return true if this is a top-level director. A syntax sugar.
+     * @return True if this director is at the top-level.
      */
-    protected boolean _isTopLevel() {
+    protected final boolean _isTopLevel() {
         long version = workspace().getVersion();
         if (version == _mutationVersion) {
             return _isTop;
@@ -562,16 +550,13 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
     }
 
     /** True argument sets the phase to be event phase.
+     *  @param eventPhase True to set the current phase to an event phase.
      */
-    protected void _setEventPhase(boolean eph) {
-        _inEventPhase = eph;
+    protected void _setEventPhase(boolean eventPhase) {
+        _inEventPhase = eventPhase;
     }
 
     /** Set the stop time for this iteration.
-     *  For a director that is not at the top-level, set the fire end time
-     *  to be the current time  will result
-     *  in that the local director
-     *  release the control to the executive director.
      *  @param The fire end time.
      */
     protected void _setIterationEndTime(double time ) {
