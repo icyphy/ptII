@@ -68,6 +68,28 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
+	'FSMGraphController$$1.class' \
+	'FSMGraphController$$LinkCreator.class' \
+	'FSMGraphController$$NewStateAction.class' \
+	'FSMGraphFrame$$DebugMenuListener.class' \
+	'FSMGraphModel$$1.class' \
+	'FSMGraphModel$$2.class' \
+	'FSMGraphModel$$3.class' \
+	'FSMGraphModel$$4.class' \
+	'FSMGraphModel$$5.class' \
+	'FSMGraphModel$$6.class' \
+	'FSMGraphModel$$7.class' \
+	'FSMGraphModel$$8.class' \
+	'FSMGraphModel$$ArcModel.class' \
+	'FSMGraphModel$$PortModel.class' \
+	'FSMGraphModel$$StateModel.class' \
+	'FSMGraphTableau$$Factory.class' \
+	'StateController$$LookInsideAction.class' \
+	'StateController$$StateRenderer.class' \
+	'TransitionController$$1.class' \
+	'TransitionController$$LinkDropper.class' \
+	'TransitionController$$LinkRenderer.class' \
+	'TransitionController$$LinkTarget.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

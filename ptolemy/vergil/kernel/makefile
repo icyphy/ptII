@@ -68,6 +68,12 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
+	'AnimationRenderer$$1.class' \
+	'AnimationRenderer$$2.class' \
+	'AttributeController$$Access.class' \
+	'PortDialogFactory$$1.class' \
+	'RelationController$$RelationRenderer.class' \
+	'RenameDialogFactory$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
