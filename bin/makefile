@@ -75,6 +75,7 @@ EXTRA_SRCS = \
 	policy.all \
 	ptinvoke.in \
 	ptjacl.in \
+	sandbox.policy \
 	startjini \
 	mkjnlp \
 	$(BAT_FILES)
