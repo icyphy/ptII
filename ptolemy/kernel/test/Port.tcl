@@ -55,8 +55,8 @@ test Port-2.1 {Construct Ports} {
     set p1 [java::new ptolemy.kernel.Port]
     set p2 [java::new ptolemy.kernel.Port $e1 "My Port"]
     list [$p1 getName] [$p2 getName] \
-	    [$p1 numLinks] [$p2 numLinks]
-} {{} {My Port} 0 0}
+	    [$p1 numLinks] [$p2 numLinks] [$p1 isOpaque]
+} {{} {My Port} 0 0 1}
 
 ######################################################################
 ####
