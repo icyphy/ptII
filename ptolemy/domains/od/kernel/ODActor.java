@@ -417,6 +417,7 @@ public class ODActor extends AtomicActor {
      */
     public boolean postfire() {
         // System.out.println(getName()+" is calling postfire()");
+        noticeOfTermination();
         return false;
     }
     
@@ -580,7 +581,7 @@ public class ODActor extends AtomicActor {
      FIXME: Write tests for this.
      */
     public void wrapup() throws IllegalActionException {
-	noticeOfTermination();
+        // noticeOfTermination();
         super.wrapup();
     }
     
