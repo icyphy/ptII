@@ -32,7 +32,7 @@
 
 ME =		thales/vergil/navigable
 
-DIRS =
+DIRS =		img
 
 # Root of Ptolemy II directory
 ROOT =		../../..
