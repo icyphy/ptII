@@ -175,6 +175,7 @@ public class SearchPath extends Vector {
             "ptolemy/actor/util",
             "ptolemy/kernel",
             "ptolemy/kernel/util",
+            "ptolemy/codegen/data",
             "ptolemy/data",
             "ptolemy/data/type",
             "ptolemy/graph",
