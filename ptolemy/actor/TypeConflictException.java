@@ -106,7 +106,7 @@ public class TypeConflictException extends KernelException {
     // their types. Each Typeable takes one line, and each line starts
     // with 2 white spaces to make the String more readable.
     private String _getTypeablesAndTypes() {
-	String result = "";;
+	String result = "";
 	Enumeration e = getTypeables();
 	while(e.hasMoreElements()) {
 	    Typeable typeable = (Typeable)e.nextElement();

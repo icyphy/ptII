@@ -147,28 +147,10 @@ public class TypeApplet extends ptolemy.domains.sdf.demo.SDFApplet {
      */
     protected void _go() {
 	try {
-	    // FIXME: None of this should be necessary.  These
-            // parameters should be connected to a listener attached to
-            // the query object.
-	    _ramp1.init.setContainer(null);
-	    Parameter init1 = new Parameter(_ramp1, "init");
-	    _ramp1.init = init1;
-	    init1.setExpression(_query.stringValue("ramp1init"));
-
-	    _ramp1.step.setContainer(null);
-	    Parameter step1 = new Parameter(_ramp1, "step");
-	    _ramp1.step = step1;
-	    step1.setExpression(_query.stringValue("ramp1step"));
-
-	    _ramp2.init.setContainer(null);
-	    Parameter init2 = new Parameter(_ramp2, "init");
-	    _ramp2.init = init2;
-	    init2.setExpression(_query.stringValue("ramp2init"));
-
-	    _ramp2.step.setContainer(null);
-	    Parameter step2 = new Parameter(_ramp2, "step");
-	    _ramp2.step = step2;
-	    step2.setExpression(_query.stringValue("ramp2step"));
+	    _ramp1.init.setExpression(_query.stringValue("ramp1init"));
+	    _ramp1.step.setExpression(_query.stringValue("ramp1step"));
+	    _ramp2.init.setExpression(_query.stringValue("ramp2init"));
+	    _ramp2.step.setExpression(_query.stringValue("ramp2step"));
 
 	    _expr.expression.setToken(
 			new StringToken(_query.stringValue("expr")));
@@ -242,11 +224,11 @@ public class TypeApplet extends ptolemy.domains.sdf.demo.SDFApplet {
 
         // Create the ramps
         _ramp1 = new Ramp(_toplevel, "ramp1");
-	_ramp1.init.setToken(new DoubleToken(0.0));
-	_ramp1.step.setToken(new DoubleToken(1.0));
+	// _ramp1.init.setToken(new DoubleToken(0.0));
+	// _ramp1.step.setToken(new DoubleToken(1.0));
 	_ramp2 = new Ramp(_toplevel, "ramp2");
-	_ramp2.init.setToken(new DoubleToken(0.0));
-	_ramp2.step.setToken(new DoubleToken(1.0));
+	// _ramp2.init.setToken(new DoubleToken(0.0));
+	// _ramp2.step.setToken(new DoubleToken(1.0));
 
         // Create and configure expr
         _expr = new Expression(_toplevel, "expr");

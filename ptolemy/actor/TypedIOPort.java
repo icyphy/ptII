@@ -320,7 +320,7 @@ public class TypedIOPort extends IOPort implements Typeable {
 	_constraints.insertLast(ineq);
     }
 
-    /** Sets the type of this port. The type is represented
+    /** Set the type of this port. The type is represented
      *  by an instance of Class associated with a non-abstract token type,
      *  or null. If the type is null, the determination of the type is
      *  left to type resolution.

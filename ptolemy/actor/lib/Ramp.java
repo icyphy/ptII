@@ -59,7 +59,8 @@ public class Ramp extends SequenceSource {
 
     /** Construct an actor with the given container and name.
      *  In addition to invoking the base class constructors, contruct
-     *  the <i>init</i> and <i>step</i> parameters.
+     *  the <i>init</i> and <i>step</i> parameters. Initialize <i>init</i>
+     *  to IntToken with value 0, and <i>step</i> to IntToken with value 1.
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the actor cannot be contained
@@ -70,8 +71,12 @@ public class Ramp extends SequenceSource {
     public Ramp(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        init = new Parameter(this, "init");
-        step = new Parameter(this, "step");
+        init = new Parameter(this, "init", new IntToken(0));
+        step = new Parameter(this, "step", new IntToken(1));
+
+	// set the type constraints.
+	output.setTypeAtLeast(init);
+	output.setTypeAtLeast(step);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -105,10 +110,9 @@ public class Ramp extends SequenceSource {
         return newobj;
     }
 
-    /** Initialize the state of the actor to equal the value of the
-     *  <i>init</i> parameter, if it has been set.  The state is
-     *  incremented by the value of the <i>step</i> parameter on each
-     *  iteration.
+    /** Set the state to equal the value of the <i>init</i> parameter.
+     *  The state is incremented by the value of the <i>step</i>
+     *  parameter on each iteration.
      */
     public void initialize() {
         _stateToken = init.getToken();
@@ -141,42 +145,6 @@ public class Ramp extends SequenceSource {
             throw new InternalErrorException(ex.getMessage());
         }
         return super.postfire();
-    }
-
-    /** Return the type constraints that the output type must be
-     *  greater than or equal to the type of the parameters.
-     *  If the parameters have not been set, then they are set
-     *  to IntToken with value 0 for <i>init</i> and 1 for <i>step</i>.
-     *  A side effect of this method is that the state of the actor
-     *  is reset to the value of <i>init</i>.
-     *  @return An enumeration of type constraints.
-     */
-    // FIXME: Simplify this when the interface to the type system improves.
-    public Enumeration typeConstraints() {
-        try {
-            if(init.getToken() == null) {
-                init.setToken(new IntToken(0));
-            }
-            if(step.getToken() == null) {
-                step.setToken(new IntToken(1));
-            }
-        } catch (IllegalActionException ex) {
-            // Should not occur since there are no type constraints.
-            throw new InternalErrorException(ex.getMessage());
-        }
-	_stateToken = init.getToken();
-
-	LinkedList result = new LinkedList();
-	Class initType = init.getToken().getClass();
-	Class stepType = step.getToken().getClass();
-        Inequality ineq = new Inequality(new TypeConstant(initType),
-                output.getTypeTerm());
-	result.insertLast(ineq);
-        ineq = new Inequality(new TypeConstant(stepType),
-                output.getTypeTerm());
-	result.insertLast(ineq);
-
-	return result.elements();
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -36,8 +36,8 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.Token;
 import ptolemy.data.Typeable;
 import ptolemy.data.TypeLattice;
-import ptolemy.graph.CPO;
-import ptolemy.graph.InequalityTerm;
+import ptolemy.data.TypeConstant;
+import ptolemy.graph.*;
 import collections.LinkedList;
 import java.util.Enumeration;
 
@@ -132,17 +132,24 @@ The type of the variable can be specified in a number of ways, all of
 which require the type to be consistent with the specified constraints
 (or an exception will be thrown):
 <ul>
-<li> It can be set directly by a call to setType(). If this call occurs
+<li> It can be set directly by a call to setTypeEquals(). If this call occurs
 after the variable has a value, then the specified type must be compatible
-with the value.  Otherwise, an exception will be thrown.
-<li> The type can be set by setting the value of the variable to
-a non-null token using setToken(). This results in a change of type only
-if the new token cannot be converted losslessly to an instance of the
-previous type.
-<li>
-The type may be set when an expression is evaluated. This results in a
-change of type only if the result of the expression evaluation cannot
-be converted losslessly to an instance of the previous type.
+with the value.  Otherwise, an exception will be thrown. Type resolution
+will not change the type set through setTypeEquals() unless the argument
+of that call is null. If this method is not called, or called with a null
+argument, type resolution will resolve the variable type according to
+all the type constraints.
+Note that when calling setTypeEquals() with a non-null argument while
+the variable already constains a non-null token, the argument must
+be a type no less than then the type of the contained token. To set type
+of the variable lower than the type of the currently contained token,
+setToken() must be called with a null argument before setTypeEquals().
+<li> Setting the value of the variable to a non-null token constrains the
+variable type to be no less than the type of the token. This constraint
+will be used in type resolution, together with other constraints.
+<li> The type is also constrained when an expression is evaluated.
+The variable type must be no less than the type of the token the
+expression is evaluated to.
 <li>
 If the variable does not yet have a value, then the type of a variable may
 be determined by type resolution. In this case, a set of type constraints is 
@@ -173,7 +180,7 @@ in the variable (but not evaluated), and the type is reset to null.
 The type will be determined when the expression is evaluated or when
 type resolution is done.
 
-@author Neil Smyth, Xiaojun Liu, Edward A. Lee
+@author Neil Smyth, Xiaojun Liu, Edward A. Lee, Yuhong Xiong
 @version $Id$
 
 @see ptolemy.data.Token
@@ -316,8 +323,7 @@ public class Variable extends Attribute implements Typeable {
      *  expression or initial token, so that reset() on the clone behaves
      *  as reset() on the original. The list of variables added to the scope
      *  is not cloned; i.e., the clone has an empty scope.
-     *  Also, absolute type constraints are preserved, but type constraints
-     *  relative to other typeable objects are removed.
+     *  Also, the clone will not have any type constraints.
      *  @param The workspace in which to place the cloned variable.
      *  @exception CloneNotSupportedException Thrown only in derived classes.
      *  @see java.lang.Object#clone()
@@ -341,14 +347,9 @@ public class Variable extends Attribute implements Typeable {
         // _varType is preserved.
         newvar._parser = null;
         newvar._parseTree = null;
-        // _token, _typeEquals, _typeAtMost are all preserved in clone.
-        newvar._typeAtLeast = null;
-        newvar._typeSameAs = null;
 
 	newvar._constraints = new LinkedList();
-
-        // FIXME: When _typeTerm is added...
-        // newvar._typeTerm = null;
+        newvar._typeTerm = null;
         return newvar;
     }
 
@@ -596,8 +597,10 @@ public class Variable extends Attribute implements Typeable {
      *  @return An InequalityTerm.
      */
     public InequalityTerm getTypeTerm() {
-        // FIXME: implement
-        return null;
+        if (_typeTerm == null) {
+	    _typeTerm = new TypeTerm(this);
+	}
+        return _typeTerm;
     }
 
     /** Remove the items in the enumeration from the scope of this variable.
@@ -771,37 +774,27 @@ public class Variable extends Attribute implements Typeable {
 
     /** Constrain the type of this variable to be equal to or 
      *  greater than the type of the specified object.
-     *  This is an relative type constraint (not absolute),
-     *  so it is not checked each time
-     *  the value of the variable is set by either setToken() or evaluate().
-     *  Instead, it must be externally checked by a type checker, which
-     *  accesses the type constraint via the typeConstraints() method.
-     *  To remove this type constraint, call this method with a null
-     *  argument.
      */
     public void setTypeAtLeast(Typeable lesser) {
-        _typeAtLeast = lesser;
+        Inequality ineq = new Inequality(lesser.getTypeTerm(),
+					 this.getTypeTerm());
+	_constraints.insertLast(ineq);
     }
 
     /** Set a type constraint that the type of this object be at most
-     *  the specified value. This is an absolute type constraint (not
-     *  relative to another Typeable object), so it is checked every time
-     *  the value of the variable is set by either setToken() or evaluate().
-     *  To remove the type constraint, call this method will a null argument.
+     *  the specified value.
      *  @exception IllegalActionException If the type of this object
      *   already violates this constraint. Also
      *   thrown if the argument is not an instantiable type
      *   in the type lattice.
      */
     public void setTypeAtMost(Class type) throws IllegalActionException {
-        if (type == null) {
-            _typeAtMost = null;
-        }
         if (!TypeLattice.isInstantiableType(type)) {
             throw new IllegalActionException(this, "setTypeAtMost(): "
                     + "the argument " + type
                     + " is not an instantiable type in the type lattice.");
         }
+
         if (_token != null) {
             int typeInfo = TypeLattice.compare(_token.getClass(), type);
             if ((typeInfo == CPO.HIGHER) || (typeInfo == CPO.INCOMPARABLE)) {
@@ -811,7 +804,10 @@ public class Variable extends Attribute implements Typeable {
                         + type.toString());
             }
         }
-        _typeAtMost = type;
+
+        Inequality ineq = new Inequality(this.getTypeTerm(),
+					 new TypeConstant(type));
+	_constraints.insertLast(ineq);
     }
 
     /** Set a type constraint that the type of this object equal
@@ -827,7 +823,7 @@ public class Variable extends Attribute implements Typeable {
      */
     public void setTypeEquals(Class type) throws IllegalActionException {
         if (type == null) {
-            _typeEquals = null;
+            _declaredType = null;
             return;
         }
         if (!TypeLattice.isInstantiableType(type)) {
@@ -844,24 +840,24 @@ public class Variable extends Attribute implements Typeable {
                         + type.toString());
             }
         }
-        _typeEquals = type;
+        _declaredType = type;
         _varType = type;
         _convertMethod = null;
         _castToken = null;
     }
 
+
     /** Constrain the type of this variable to be the same as the
      *  type of the specified object.
-     *  This is an relative type constraint (not absolute),
-     *  so it is not checked each time
-     *  the value of the variable is set by either setToken() or evaluate().
-     *  Instead, it must be externally checked by a type checker, which
-     *  accesses the type constraint via the typeConstraints() method.
-     *  To remove this type constraint, call this method with a null
-     *  argument.
+     *  @param equal A Typeable object.
      */
     public void setTypeSameAs(Typeable equal) {
-        _typeSameAs = equal;
+        Inequality ineq = new Inequality(this.getTypeTerm(),
+					 equal.getTypeTerm());
+	_constraints.insertLast(ineq);
+	ineq = new Inequality(equal.getTypeTerm(),
+			      this.getTypeTerm());
+	_constraints.insertLast(ineq);
     }
 
     /** Return a string representation of the current variable value.
@@ -872,12 +868,26 @@ public class Variable extends Attribute implements Typeable {
     }
 
     /** Return the type constraints of this variable.
+     *  The constraints include the ones explicitly set to this Variable,
+     *  plus the constraint that the type of this Variable must be no less
+     *  than the type of the contained token or expression, if the contained
+     *  token or expression is not null.
      *  The constraints are an enumeration of inequalities.
      *  @return an enumeration of Inequality.
      *  @see ptolemy.graph.Inequality
      */
     public Enumeration typeConstraints() {
-        return _constraints.elements();
+	if (getContainedToken() == null) {
+            return _constraints.elements();
+	} else {
+	    LinkedList result = new LinkedList();
+	    result.appendElements(_constraints.elements());
+
+	    TypeConstant tokenType = new TypeConstant(getContainedToken().getClass());
+	    Inequality ineq = new Inequality(tokenType, this.getTypeTerm());
+	    result.insertLast(ineq);
+	    return result.elements();
+	}
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1093,22 +1103,12 @@ public class Variable extends Attribute implements Typeable {
         }
         // Type has not been set before, or the new type cannot be converted
         // to the old.  If an equality constraint has been set, trouble!
-        if (_typeEquals != null) {
+        if (_declaredType != null) {
             // Incompatible type!
             throw new IllegalActionException(this, "Cannot store a token of "
             + "type "
             + tokenType.getName() + ", which is incompatible with type " 
             + _varType.getName());
-        }
-        // Check "at most" constraint.
-        if (_typeAtMost != null) {
-            int typeInfo = TypeLattice.compare(_typeAtMost, tokenType);
-            if (!(typeInfo == CPO.HIGHER) && !(typeInfo == CPO.SAME)) {
-                // Incompatible type!
-                throw new IllegalActionException(this, "Cannot store a token "
-                + "of type " + tokenType.getName() + " because it is not "
-                + "less than " + _typeAtMost.getName());
-            }
         }
 
         _varType = tokenType;
@@ -1222,9 +1222,89 @@ public class Variable extends Attribute implements Typeable {
     private ptolemy.data.Token _token;
 
     // Type constraints.
-    private Class _typeEquals, _typeAtMost;
-    private Typeable _typeAtLeast, _typeSameAs;
-
     private LinkedList _constraints = new LinkedList();
+
+    // The type set by setTypeEquals(). If _declaredType is not null,
+    // the type of this Variable is fixed to that type.
+    private Class _declaredType = null;
+
+    // Reference to the inner class that implements InequalityTerm.
+    TypeTerm _typeTerm = null;
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    private class TypeTerm implements InequalityTerm {
+
+	// pass the variable reference in the constructor so it can be
+	// returned by getAssociatedObject().
+	private TypeTerm(Variable var) {
+	    _variable = var;
+	}
+
+	///////////////////////////////////////////////////////////////
+	////                       public methods                  ////
+
+	/** Return this Variable.
+	 *  @return A Variable.
+	 */
+	public Object getAssociatedObject() {
+	    return _variable;
+	}
+
+	/** Return the type of this TypedIOPort.
+	 */
+	public Object getValue() {
+	    return getType();
+        }
+
+        /** Return this TypeTerm in an array if this term represent
+	 *  a type variable. This term represents a type variable
+	 *  if the type of this Variable is not set through setTypeEquals().
+         *  If the type of this Variable is set, return an array of size zero.
+	 *  @return An array of InequalityTerm.
+         */
+        public InequalityTerm[] getVariables() {
+	    if (_declaredType == null) {
+	    	InequalityTerm[] result = new InequalityTerm[1];
+	    	result[0] = this;
+	    	return result;
+	    }
+	    return (new InequalityTerm[0]);
+        }
+
+        /** Test if the type of this Variable is set thought
+	 *  setTypeEquals().
+         *  @return True if the type of this Variable is set;
+	 *   false otherwise.
+         */
+        public boolean isSettable() {
+	    if (_declaredType == null) {
+		return true;
+	    }
+	    return false;
+        }
+
+        /** Set the type of this port if it is not set throught
+	 *  setTypeEquals().
+         *  @exception IllegalActionException If the type is already set
+	 *   through setTypeEquals().
+         */
+        public void setValue(Object e) throws IllegalActionException {
+	    if (_declaredType == null) {
+		_varType = (Class)e;
+		return;
+	    }
+
+	    throw new IllegalActionException("TypeTerm.setValue: Cannot set "
+                + "the value of a type constant.");
+        }
+
+        ///////////////////////////////////////////////////////////////
+        ////                       private variable                ////
+
+        private Variable _variable = null;
+    }
 }
 

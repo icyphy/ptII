@@ -35,12 +35,6 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 
-// FIXME: when the interface to the type system simplifies, these
-// will no longer be needed.
-import ptolemy.graph.Inequality;
-import java.util.Enumeration;
-import collections.LinkedList;
-
 //////////////////////////////////////////////////////////////////////////
 //// Const
 /**
@@ -55,8 +49,8 @@ which by default is an IntToken with value 1.
 public class Const extends Source {
 
     /** Construct a constant source with the given container and name.
-     *  Create the <i>value</i> parameter, set its type to Token,
-     *  and set its default value to an IntToken with value 1.
+     *  Create the <i>value</i> parameter, initialize its value to
+     *  the default value of an IntToken with value 1.
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the entity cannot be contained
@@ -67,11 +61,10 @@ public class Const extends Source {
     public Const(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        // Have to initialize this with a Token so that it has the most
-        // general possible type.
-    	value = new Parameter(this, "value", _initToken);
-        // Reset the token to the default value.
-        value.setToken(new IntToken(1));
+    	value = new Parameter(this, "value", new IntToken(1));
+
+	// set the type constraint.
+	output.setTypeAtLeast(value);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -108,24 +101,7 @@ public class Const extends Source {
         output.broadcast(value.getToken());
     }
 
-    /** Return the type constraint that the output type must be
-     *  greater than or equal to the type of the token in the value parameter.
-     *  @return An enumeration of inequality type constraints.
-     */
-    public Enumeration typeConstraints() {
-        // FIXME: When there is better infrastructure in the type system,
-        // replace this with a simpler form.
-	LinkedList result = new LinkedList();
-	Class paramType = value.getToken().getClass();
-        Inequality ineq = new Inequality(new TypeConstant(paramType),
-                output.getTypeTerm());
-	result.insertLast(ineq);
-	return result.elements();
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    private static Token _initToken = new Token();
 }
 
