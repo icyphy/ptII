@@ -46,17 +46,13 @@ import ptolemy.math.Utilities;
 //////////////////////////////////////////////////////////////////////////
 //// Clock
 /**
-   This actor produces a periodic signal, a generalized square wave
-   that sequences through <i>N</i> output values with arbitrary duty cycles
-   and period.  It has various uses.  Its simplest use in the DE domain
-   is to generate a sequence of events at regularly spaced
-   intervals.  In CT, it can be used to generate a square wave.
-   In both domains, however, it can also generate more intricate
-   waveforms that cycle through a set of values. It can also generate
-   finite pulses by specifying a finite <i>numberOfCycles</i>.
-   Once the specified number of cycles has been completed, then this actor
-   will output zeros with the same type as the values in the <i>values</i>
-   parameter.
+   This actor produces a periodic signal, a sequence of events at 
+   regularly spaced intervals. It can generate finite pulses by specifying 
+   a finite <i>numberOfCycles</i>. The numberOfCycles has a default value
+   as -1, indicating infinite length of executions. If numberOfCycles is 
+   a positive number, once the specified number of cycles has been completed, 
+   then this actor will output zeros with the same type as the values in the 
+   <i>values</i> parameter.
    <p>
    At the beginning of each time interval of length given by <i>period</i>,
    this actor initiates a sequence of output events with values given by
@@ -76,37 +72,18 @@ import ptolemy.math.Utilities;
    <p>
    The actor uses the fireAt() method of the director to request
    firing at the beginning of each period plus each of the offsets.
-   It may in addition fire at any time in response to a trigger
-   input.  On such firings, it simply repeats the most recent output
-   (or a new output value, if the time is suitable.) Thus, the trigger,
-   in effect, asks the actor what its current output value is. If a
-   trigger happens at the same time as a fireAt() event, the output
-   will be a new value, and it is up to the director to determine
-   whether this actor will be fired once or twice.
-   Some directors, such as those in CT, may also fire the actor at
-   other times, without requiring a trigger input.  This is because
-   that CT may compute the behavior of a system at any time.
-   Again, the actor simply repeats the previous output.
-   Thus, the output can be viewed as samples of the clock waveform,
-   where the time of each sample is the time of the firing that
-   produced it.  If the actor fires before the first offset has
-   been reached, then a zero token of the same type as those in
-   the <i>values</i> array is produced.
    <p>
-   The clock waveform is a square wave (in the sense that transitions
-   between levels are discrete and the signal is piecewise constant),
-   with <i>N</i> levels, where <i>N</i> is the length of the <i>values</i>
-   parameter.  Changes between levels occur at times
-   <i>nP</i> + <i>o<sub>i </sub></i> where <i>n</i> is any nonnegative integer,
-   <i>P</i> is the period, and <i>o<sub>i </sub></i> is an entry
-   in the <i>offsets</i> array.
+   The type of the output can be any token type. This type is inferred 
+   from the element type of the <i>values</i> parameter.
    <p>
-   The type of the output can be any token type. This type is inferred from the
-   element type of the <i>values</i> parameter.
-   <p>
-   This actor is a timed source; the untimed version is Pulse.
+   This actor is a timed source; the untimed version is Pulse. 
+   <p> 
+   There is another kind of clock called ContinuousClock, which produces
+   a square wave instead of a sequence of events. The ContinuousClock
+   is a special actor for continuous-time domain. 
 
-   @author Edward A. Lee
+   @see ptolemy.domains.ct.lib.ContinuousClock
+   @author Edward A. Lee, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.3
    @Pt.ProposedRating Yellow (eal)
@@ -329,26 +306,24 @@ public class Clock extends TimedSource {
                 if (_debugging) {
                     _debug("next firing is at " + _tentativeNextFiringTime);
                 }
-
-                // If we are beyond the number of cycles requested, then
-                // change the output value to zero.
-                int cycleLimit  = ((IntToken)numberOfCycles.getToken()).intValue();
-                double stopTime = Utilities.round(
-                    _tentativeStartTime + cycleLimit * periodValue, 
-                    getDirector().getTimeResolution());
-                if (cycleLimit > 0 && currentTime >= stopTime) {
-                    _tentativeCurrentValue = _tentativeCurrentValue.zero();
-                }
-        
-                // Used to use any negative number here to indicate
-                // that no future firing should be scheduled.
-                // Now, we leave it up to the director, unless the value
-                // explicitly indicates no firing with Double.NEGATIVE_INFINITY.
-                output.send(0, _tentativeCurrentValue);
-                if (_debugging)_debug("Output: " + _tentativeCurrentValue + ".");
-
             }
         }
+        // If we are beyond the number of cycles requested, then
+        // change the output value to zero.
+        int cycleLimit  = ((IntToken)numberOfCycles.getToken()).intValue();
+        double stopTime = Utilities.round(
+            _tentativeStartTime + cycleLimit * periodValue, 
+            getDirector().getTimeResolution());
+        if (cycleLimit > 0 && currentTime >= stopTime) {
+            _tentativeCurrentValue = _tentativeCurrentValue.zero();
+        }
+
+        // Used to use any negative number here to indicate
+        // that no future firing should be scheduled.
+        // Now, we leave it up to the director, unless the value
+        // explicitly indicates no firing with Double.NEGATIVE_INFINITY.
+        output.send(0, _tentativeCurrentValue);
+        if (_debugging)_debug("Output: " + _tentativeCurrentValue + ".");
     }
 
     /** Schedule the first firing and initialize local variables.
