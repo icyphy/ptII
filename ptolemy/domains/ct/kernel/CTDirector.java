@@ -635,6 +635,12 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         return new CTReceiver();
     }
 
+    /** Clear the set of actors that have been prefired.
+     */
+    public void prefireClear() {
+        _prefiredActors.clear();
+    }
+
     /** Prepare for an execution.
      *  If this director does not have a container and a scheduler,
      *  or the director does not fit this level of hierarchy,
@@ -686,12 +692,6 @@ public abstract class CTDirector extends StaticSchedulingDirector {
                     new FuzzyDoubleComparator(_timeResolution));
         }
         super.preinitialize();
-    }
-
-    /** Clear the set of actors that have been prefired.
-     */
-    public void prefireClear() {
-        _prefiredActors.clear();
     }
 
     /** Fire all the actors in the output schedule.  If they have not

@@ -167,24 +167,6 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         return true;
     }
 
-    /** Return the end time of this director's current iteration.
-     *  @return The fire end time.
-     */
-    public final double getIterationEndTime() {
-        return _iterationEndTime;
-    }
-
-    /** Return the time of the outside domain. If this is the top level
-     *  director return the current time.
-     *  @return The outside current time.
-     */
-    public double getOutsideTime() {
-        if (_isTopLevel()) {
-            return getCurrentTime();
-        }
-        return _outsideTime;
-    }
-
     /** Execute the directed (sub)system to the iteration end time.
      *  If the current phase is an event phase, (in the sense that
      *  discrete events will be produced or consumed),
@@ -285,6 +267,24 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                 return;
             }
         }
+    }
+
+    /** Return the end time of this director's current iteration.
+     *  @return The fire end time.
+     */
+    public final double getIterationEndTime() {
+        return _iterationEndTime;
+    }
+
+    /** Return the time of the outside domain. If this is the top level
+     *  director return the current time.
+     *  @return The outside current time.
+     */
+    public double getOutsideTime() {
+        if (_isTopLevel()) {
+            return getCurrentTime();
+        }
+        return _outsideTime;
     }
 
     /** First initialize the execution as in CTMultiSolverDirector.
