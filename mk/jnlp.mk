@@ -70,7 +70,7 @@ SIGNED_LIB_JARS =	$(NATIVE_SIGNED_LIB_JARS) \
 # work, the jars you want to load eagerly need to be at the front of the
 # list.  In general, large jars such as diva.jar and ptsupport.jar
 # should be loaded eagerly.
-NUMBER_OF_JARS_TO_LOAD_EAGERLY = 8
+NUMBER_OF_JARS_TO_LOAD_EAGERLY = 10
 
 # Jar files that will appear in all Ptolemy II JNLP files.
 CORE_JNLP_JARS = \
@@ -205,9 +205,9 @@ JNLPS =	vergilDSP.jnlp vergilPtiny.jnlp  vergilPtinySandbox.jnlp vergil.jnlp
 jnlp_all: $(KEYSTORE) $(SIGNED_LIB_JARS) $(JNLPS) jnlp_sign
 jnlps: $(SIGNED_LIB_JARS) $(JNLPS)
 jnlp_clean: 
-	rm -f $(JNLPS)
+	rm -f $(JNLPS) $(SIGNED_DIR)
 jnlp_distclean: jnlp_clean
-	rm -f  $(ALL_JNLP_JARS)
+	rm -f  $(ALL_JNLP_JARS) 
 
 # Makefile variables used to set up keys for jar signing.
 # To use Web Start, we have to sign the jars.
@@ -247,6 +247,7 @@ vergilDSP.jnlp: vergilDSP.jnlp.in $(KEYSTORE)
 	-chmod a+x "$(MKJNLP)"
 	"$(MKJNLP)" $@ \
 		$(NUMBER_OF_JARS_TO_LOAD_EAGERLY) \
+		$(SIGNED_DIR) \
 		$(DSP_MAIN_JAR) \
 		$(DSP_JNLP_JARS)
 	@echo "# Updating JNLP-INF/APPLICATION.JNLP with $@"
@@ -256,10 +257,12 @@ vergilDSP.jnlp: vergilDSP.jnlp.in $(KEYSTORE)
 	@echo "# $(DSP_MAIN_JAR) contains the main class"
 	"$(JAR)" -uf $(DSP_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
 	rm -rf JNLP-INF
+	mkdir -p $(SIGNED_DIR)/`dirname $(DSP_MAIN_JAR)`; \
+	cp -p $(DSP_MAIN_JAR) `dirname$(SIGNED_DIR)/$(DSP_MAIN_JAR)`; \
 	"$(PTJAVA_DIR)/bin/jarsigner" \
 		-keystore $(KEYSTORE) \
 		$(STOREPASSWORD) \
-		$(DSP_MAIN_JAR) $(KEYALIAS)
+		$(SIGNED_DIR)/$(DSP_MAIN_JAR) $(KEYALIAS)
 
 # Web Start: Ptiny version of Vergil - No sources or build env.
 vergilPtiny.jnlp: vergilPtiny.jnlp.in $(KEYSTORE)
@@ -270,6 +273,7 @@ vergilPtiny.jnlp: vergilPtiny.jnlp.in $(KEYSTORE)
 	-chmod a+x "$(MKJNLP)"
 	"$(MKJNLP)" $@ \
 		$(NUMBER_OF_JARS_TO_LOAD_EAGERLY) \
+		$(SIGNED_DIR) \
 		$(PTINY_MAIN_JAR) \
 		$(PTINY_JNLP_JARS)
 	@echo "# Updating JNLP-INF/APPLICATION.JNLP with $@"
@@ -279,10 +283,12 @@ vergilPtiny.jnlp: vergilPtiny.jnlp.in $(KEYSTORE)
 	@echo "# $(PTINY_MAIN_JAR) contains the main class"
 	"$(JAR)" -uf $(PTINY_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
 	rm -rf JNLP-INF
+	mkdir -p $(SIGNED_DIR)/`dirname $(PTINY_MAIN_JAR)`; \
+	cp -p $(PTINY_MAIN_JAR) `dirname $(SIGNED_DIR)/$(PTINY_MAIN_JAR)`; \
 	"$(PTJAVA_DIR)/bin/jarsigner" \
 		-keystore $(KEYSTORE) \
 		$(STOREPASSWORD) \
-		$(PTINY_MAIN_JAR) $(KEYALIAS)
+		$(SIGNED_DIR)/$(PTINY_MAIN_JAR) $(KEYALIAS)
 
 
 # Web Start: Ptiny version of Vergil - No sources or build env., in a sandbox
@@ -294,6 +300,7 @@ vergilPtinySandbox.jnlp: vergilPtinySandbox.jnlp.in $(KEYSTORE)
 	-chmod a+x "$(MKJNLP)"
 	"$(MKJNLP)" $@ \
 		$(NUMBER_OF_JARS_TO_LOAD_EAGERLY) \
+		$(SIGNED_DIR) \
 		$(PTINY_SANDBOX_MAIN_JAR) \
 		$(PTINY_SANDBOX_JNLP_JARS)
 	@echo "# Updating JNLP-INF/APPLICATION.JNLP with $@"
@@ -303,10 +310,12 @@ vergilPtinySandbox.jnlp: vergilPtinySandbox.jnlp.in $(KEYSTORE)
 	@echo "# $(PTINY_SANDBOX_MAIN_JAR) contains the main class"
 	"$(JAR)" -uf $(PTINY_SANDBOX_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
 	rm -rf JNLP-INF
+	mkdir -p $(SIGNED_DIR)/`dirname $(PTINY_SANDBOX_MAIN_JAR)`; \
+	cp -p $(PTINY_SANDBOX_MAIN_JAR) `dirname $(SIGNED_DIR)/$(PTINY_SANDBOX_MAIN_JAR)`; \
 	"$(PTJAVA_DIR)/bin/jarsigner" \
 		-keystore $(KEYSTORE) \
 		$(STOREPASSWORD) \
-		$(PTINY_SANDBOX_MAIN_JAR) $(KEYALIAS)
+		$(SIGNED_DIR)/$(PTINY_SANDBOX_MAIN_JAR) $(KEYALIAS)
 
 
 # Web Start: Full Runtime version of Vergil - No sources or build env.
@@ -318,6 +327,7 @@ vergil.jnlp: vergil.jnlp.in $(KEYSTORE)
 	-chmod a+x "$(MKJNLP)"
 	"$(MKJNLP)" $@ \
 		$(NUMBER_OF_JARS_TO_LOAD_EAGERLY) \
+		$(SIGNED_DIR) \
 		$(FULL_MAIN_JAR) \
 		$(FULL_JNLP_JARS)
 	@echo "# Updating JNLP-INF/APPLICATION.JNLP with $@"
@@ -327,23 +337,29 @@ vergil.jnlp: vergil.jnlp.in $(KEYSTORE)
 	@echo "# $(FULL_MAIN_JAR) contains the main class"
 	"$(JAR)" -uf $(FULL_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
 	rm -rf JNLP-INF
+	mkdir -p $(SIGNED_DIR)/`dirname $(FULL_MAIN_JAR)`; \
+	cp -p $(FULL_MAIN_JAR) `dirname $(SIGNED_DIR)/$(FULL_MAIN_JAR)`; \
 	"$(PTJAVA_DIR)/bin/jarsigner" \
 		-keystore $(KEYSTORE) \
 		$(STOREPASSWORD) \
-		$(FULL_MAIN_JAR) $(KEYALIAS)
+		$(SIGNED_DIR)/$(FULL_MAIN_JAR) $(KEYALIAS)
 
 
+# We first copy the jars, then sign them so as to avoid
+# problems with cvs and applets.
 jnlp_sign: $(JNLPS) $(KEYSTORE)
 	set $(ALL_NON_APPLICATION_JNLP_JARS); \
 	for x do \
-		echo "# Signing '$$x', placing results in $(SIGNED_DIR)/."; \
-		if [ ! -f $(SIGNED_DIR)/$$x ]; then
-			mkdir -p `dirname $xx`
-			cp $(SIGNED_DIR)/$$x ]; then
+		if [ ! -f $(SIGNED_DIR)/$$x ]; then \
+			echo "#  Copying $$x to $(SIGNED_DIR)/"; \
+			mkdir -p $(SIGNED_DIR)/`dirname $$x`; \
+			cp -p $$x `dirname $(SIGNED_DIR)/$$x`; \
+		fi; \
+		echo "# Signing $(SIGNED_DIR)/$$x"; \
 		"$(PTJAVA_DIR)/bin/jarsigner" \
 			-keystore $(KEYSTORE) \
 			$(STOREPASSWORD) \
-			$$x $(KEYALIAS); \
+			$(SIGNED_DIR)/$$x $(KEYALIAS); \
 	done;
 
 sign_jar: 
