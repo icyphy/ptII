@@ -59,6 +59,21 @@ or <code>$PTII/doc/webStartHelp</code>
 */
 public class JNLPUtilities {
 
+    /** Return true if we are running under WebStart */
+    public static boolean isRunningUnderWebStart() {
+        try {
+            // NOTE: getProperty() will probably fail in applets, which
+            // is why this is in a try block.
+            String javaWebStart = System.getProperty("javawebstart.version");
+            if (javaWebStart != null) {
+                return true;
+            }
+        } catch (SecurityException security) {
+            // Ignored
+        }
+        return false;
+    }
+
     /** Given a jar url of the format jar:<url>!/{entry}, return
      *  the resource, if any of the {entry}.
      *  If the string does not contain <code>!/</code>, then return null.
