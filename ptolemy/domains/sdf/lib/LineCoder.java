@@ -149,6 +149,7 @@ public class LineCoder extends SDFTransformer {
      *  @exception IllegalActionException If a runtime type error occurs.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         int tableAddress = 0;
         Token tokens[] = input.get(0, _wordLength);
         for (int i = 0; i < _wordLength; i++) {

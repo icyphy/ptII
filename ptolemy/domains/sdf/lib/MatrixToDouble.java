@@ -136,6 +136,7 @@ public class MatrixToDouble extends SDFConverter {
      *   of the input matrix does not match the declared parameter values.
      */
     public final void fire() throws IllegalActionException  {
+        super.fire();
         DoubleMatrixToken matrix = (DoubleMatrixToken)input.get(0);
         int inputRows = matrix.getRowCount();
         int inputColumns = matrix.getColumnCount();

@@ -146,6 +146,7 @@ public class DotProduct extends TypedAtomicActor {
      *  have no elements..
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         ArrayToken token1 = (ArrayToken) input1.get(0);
         ArrayToken token2 = (ArrayToken) input2.get(0);
 
@@ -183,8 +184,13 @@ public class DotProduct extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public boolean prefire() throws IllegalActionException {
-        if (!input1.hasToken(0)) return false;
-        if (!input2.hasToken(0)) return false;
-        return super.prefire();
+        if (!input1.hasToken(0) || !input2.hasToken(0)) {
+            if (_debugging) {
+                _debug("Called prefire(), which returns false.");
+            }
+            return false;
+        } else {
+            return super.prefire();
+        }
     }
 }

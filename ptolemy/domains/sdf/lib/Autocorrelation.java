@@ -247,6 +247,7 @@ public class Autocorrelation extends SDFTransformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         boolean biasedValue = ((BooleanToken)biased.getToken()).booleanValue();
         Token[] inputValues = input.get(0, _numberOfInputs);
         int notSymmetric  = _symmetricOutput ? 0 : 1;
@@ -277,8 +278,14 @@ public class Autocorrelation extends SDFTransformer {
      *  @return True if it is ok to continue.
      */
     public boolean prefire() throws IllegalActionException {
-        if (!input.hasToken(0, _numberOfInputs)) return false;
-        return super.prefire();
+        if (!input.hasToken(0, _numberOfInputs)) {
+            if (_debugging) {
+                _debug("Called prefire(), which returns false.");
+            }
+            return false;
+        } else {
+            return super.prefire();
+        }
     }
 
     /** Return the type constraint that the type of the elements of the

@@ -139,6 +139,7 @@ public class SampleDelay extends SDFTransformer {
      *   of the ports throw it.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         Token message = input.get(0);
         output.send(0, message);
     }

@@ -150,6 +150,7 @@ public class UpSample extends SDFTransformer {
      *  @exception IllegalActionException If a runtime type conflict occurs.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
 	Token token = input.get(0);
         int factorValue = ((IntToken)factor.getToken()).intValue();
         int phaseValue = ((IntToken)phase.getToken()).intValue();

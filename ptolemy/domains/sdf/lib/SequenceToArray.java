@@ -131,6 +131,7 @@ public class SequenceToArray extends SDFTransformer {
      *  @exception IllegalActionException If not enough tokens are available.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         int length = ((IntToken)arrayLength.getToken()).intValue();
 	Token[] valueArray = input.get(0, length);
 
@@ -148,8 +149,14 @@ public class SequenceToArray extends SDFTransformer {
      */
     public boolean prefire() throws IllegalActionException {
         int length = ((IntToken)arrayLength.getToken()).intValue();
-        if (!input.hasToken(0, length)) return false;
-        return super.prefire();
+        if (!input.hasToken(0, length)) {
+            if (_debugging) {
+                _debug("Called prefire(), which returns false.");
+            }
+            return false;
+        } else {
+            return super.prefire();
+        }
     }
 
     /** Return the type constraint that the type of the elements of the

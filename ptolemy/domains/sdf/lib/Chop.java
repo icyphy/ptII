@@ -255,6 +255,7 @@ public class Chop extends SDFTransformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         int inputIndex = _inputIndex;
         int pastBufferIndex = 0;
         Token[] inBuffer = input.get(0, _numberToRead);

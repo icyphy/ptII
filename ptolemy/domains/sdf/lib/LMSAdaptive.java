@@ -238,7 +238,13 @@ public class LMSAdaptive extends FIR {
      *  @exception IllegalActionException If the superclass throws it.
      */
     public boolean prefire() throws IllegalActionException {
-        if (error.hasToken(0)) return super.prefire();
-        else return false;
+        if (error.hasToken(0)) {
+            return super.prefire();
+        } else {
+            if (_debugging) {
+                _debug("Called prefire(), which returns false.");
+            }
+            return false;
+        }
     }
 }

@@ -84,13 +84,13 @@ public class BitsToInt extends SDFConverter {
      *  @exception IllegalActionException If there is no director.
      */
     public final void fire() throws IllegalActionException  {
-        int i, j;
-        int integer = 0;
+        super.fire();
         Token[] bits = new BooleanToken[32];
 
         bits = input.get(0, 32);
 
-        for (i = 0; i < 32; i++) {
+        int integer = 0;
+        for (int i = 0; i < 32; i++) {
             integer = integer << 1;
             if (((BooleanToken)bits[i]).booleanValue())
                 integer += 1;
@@ -100,16 +100,3 @@ public class BitsToInt extends SDFConverter {
         output.send(0, value);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -248,6 +248,7 @@ public class FIR extends SDFTransformer {
      *   or if there is no director, or if runtime type conflicts occur.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
 
         // Phase keeps track of which phase of the filter coefficients
         // are used. Starting phase depends on the _decimationPhaseValue value.
@@ -301,8 +302,14 @@ public class FIR extends SDFTransformer {
         // this is the first fire(), then reinitialize.
         if (_reinitializeNeeded) _reinitialize();
 
-        if (input.hasToken(0, _decimationValue)) return super.prefire();
-        else return false;
+        if (input.hasToken(0, _decimationValue)) {
+            return super.prefire();
+        } else {
+            if (_debugging) {
+                _debug("Called prefire(), which returns false.");
+            }
+            return false;
+        }
     }
 
     /** Perform domain-specific initialization by calling the

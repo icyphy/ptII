@@ -160,6 +160,7 @@ public class ArrayToSequence extends SDFTransformer {
      *  @exception IllegalActionException If a runtime type conflict occurs.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
 	ArrayToken token = (ArrayToken)input.get(0);
 	int rate = ((IntToken)arrayLength.getToken()).intValue();
 	boolean enforce = ((BooleanToken)enforceArrayLength.getToken())

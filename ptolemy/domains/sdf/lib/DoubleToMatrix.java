@@ -127,6 +127,7 @@ public class DoubleToMatrix extends SDFConverter {
      *  @exception IllegalActionException If there is no director.
      */
     public final void fire() throws IllegalActionException  {
+        super.fire();
         double[][] result = new double[_rows][_columns];
         for (int i = 0; i < _rows; i++) {
             Token[] row = input.get(0, _columns);

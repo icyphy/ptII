@@ -125,6 +125,7 @@ public class DelayLine extends SDFTransformer {
      *  @exception IllegalActionException If not enough tokens are available.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         // Shift down.
         System.arraycopy(
                 _delayLine, 0,
@@ -153,8 +154,14 @@ public class DelayLine extends SDFTransformer {
      *  @see ptolemy.actor.IOPort#hasToken(int, int)
      */
     public boolean prefire() throws IllegalActionException {
-        if (!input.hasToken(0)) return false;
-        return super.prefire();
+        if (!input.hasToken(0)) {
+            if (_debugging) {
+                _debug("Called prefire(), which returns false.");
+            }
+            return false;
+        } else {
+            return super.prefire();
+        }
     }
 
     /** Return the type constraint that the type of the elements of the

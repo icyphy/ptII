@@ -139,11 +139,13 @@ public class Repeat extends SDFTransformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
 	int repetitions = ((IntToken)numberOfTimes.getToken()).intValue();
 	int count = ((IntToken)blockSize.getToken()).intValue();
 	Token[] inputBlock = input.get(0, count);
-	for (int i = 0; i < repetitions; i += 1)
+	for (int i = 0; i < repetitions; i += 1) {
             output.send(0, inputBlock, count);
+        }
     }
 
     /** Return true if the input port has enough tokens for this actor to
@@ -157,14 +159,10 @@ public class Repeat extends SDFTransformer {
      */
     public boolean prefire() throws IllegalActionException {
         int length = ((IntToken)blockSize.getToken()).intValue();
-	return input.hasToken(0, length);
+	boolean result = input.hasToken(0, length);
+        if (_debugging) {
+            _debug("Called prefire(), which returns " + result + ".");
+        }
+        return result;
     }
 }
-
-
-
-
-
-
-
-

@@ -82,10 +82,13 @@ public class SDFTransformer extends TypedAtomicActor implements SequenceActor {
         // Derived classes may convert the input port to a multiport.
         for (int i=0; i<input.getWidth(); i++) {
             if (!input.hasToken(i, required)) {
+                if (_debugging) {
+                    _debug("Called prefire(), which returns false");
+                }
                 return false;
             }
         }
-        return true;
+        return super.prefire();
     }
 
     ///////////////////////////////////////////////////////////////////

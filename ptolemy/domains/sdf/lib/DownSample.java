@@ -140,6 +140,7 @@ public class DownSample extends SDFTransformer {
      *   if the <i>phase</i> value is out of range.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         int factorValue = ((IntToken)factor.getToken()).intValue();
 	Token[] valueArray = input.get(0, factorValue);
 
@@ -160,7 +161,13 @@ public class DownSample extends SDFTransformer {
      */
     public boolean prefire() throws IllegalActionException {
         int factorValue = ((IntToken)factor.getToken()).intValue();
-        if (!input.hasToken(0, factorValue)) return false;
-        else return super.prefire();
+        if (!input.hasToken(0, factorValue)) {
+            if (_debugging) {
+                _debug("Called prefire(), which returns false.");
+            }
+            return false;
+        } else {
+            return super.prefire();
+        }
     }
 }

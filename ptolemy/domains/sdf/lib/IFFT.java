@@ -135,14 +135,14 @@ public class IFFT extends SDFTransformer {
      *  @exception IllegalActionException If a runtime type error occurs.
      */
     public void fire() throws IllegalActionException {
-        int i;
+        super.fire();
 	Token[] inTokenArray = input.get(0, _consumptionRate);
-        for (i = 0; i < _consumptionRate; i++) {
+        for (int i = 0; i < _consumptionRate; i++) {
             _inComplexArray[i] = ((ComplexToken)inTokenArray[i]).complexValue();
         }
         Complex[] outComplexArray =
-            SignalProcessing.IFFTComplexOut(_inComplexArray, _orderValue);
-        for (i = 0; i < _productionRate; i++) {
+                SignalProcessing.IFFTComplexOut(_inComplexArray, _orderValue);
+        for (int i = 0; i < _productionRate; i++) {
             _outTokenArray[i] = new ComplexToken(outComplexArray[i]);
         }
 	output.send(0, _outTokenArray, _productionRate);
