@@ -69,10 +69,10 @@ public class LogicalOr extends Transformer {
      */
     public LogicalOr(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
-                super(container, name);
-                input.setMultiport(true);
-                input.setTypeEquals(BaseType.BOOLEAN);
-                output.setTypeEquals(BaseType.BOOLEAN);
+        super(container, name);
+        input.setMultiport(true);
+        input.setTypeEquals(BaseType.BOOLEAN);
+        output.setTypeEquals(BaseType.BOOLEAN);
     }
 
 
