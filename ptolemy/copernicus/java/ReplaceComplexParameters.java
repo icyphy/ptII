@@ -155,9 +155,10 @@ public class ReplaceComplexParameters extends SceneTransformer
 //                 copyAttributesOtherThanVariable(port);
 //             }
 //         }
-
+                      
         if(object instanceof Attribute) {
             Attribute attribute = (Attribute)object;
+    
             // Ignore attributes that are ignorable.
             if (ModelTransformer._isIgnorableAttribute(attribute)) {
                 return;
@@ -177,9 +178,10 @@ public class ReplaceComplexParameters extends SceneTransformer
                             !attribute.getClass().equals(Parameter.class))) {
                 String className = attribute.getClass().getName();
                 
-                // System.out.println("ComplexAttribute = " + attribute +
-                // " Class = " + className);
-                
+                if(_debug) {
+                    System.out.println("ComplexAttribute = " + attribute
+                            + " Class = " + className);
+                }
                 SootClass attributeClass =
                     Scene.v().loadClassAndSupport(className);
                 attributeClass.setLibraryClass();
@@ -229,6 +231,8 @@ public class ReplaceComplexParameters extends SceneTransformer
                 }
                 
                 // Add a container field to the generated class.
+                // FIXME: this doesn't work for UnitSystems, e.g.,
+                // since their container isn't associated with a class.
                 FieldsForEntitiesTransformer._createContainerField(
                         newClass);
                 
