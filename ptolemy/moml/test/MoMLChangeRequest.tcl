@@ -191,20 +191,12 @@ test MoMLChangeRequest-1.5b {Test deleting an entity} {
     <entity name="rec" class="ptolemy.actor.lib.Recorder">
         <property name="capacity" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
     </entity>
     <relation name="r" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <link port="rec.input" relation="r"/>
 </entity>
@@ -237,10 +229,6 @@ test MoMLChangeRequest-1.6a {Test deleting a relation} {
     </property>
     <entity name="rec" class="ptolemy.actor.lib.Recorder">
         <property name="capacity" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -276,10 +264,6 @@ test MoMLChangeRequest-1.6b {Test deleting a port, using a new parser and contex
     <entity name="rec" class="ptolemy.actor.lib.Recorder">
         <property name="capacity" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </entity>
 </entity>
 }
@@ -309,10 +293,6 @@ test MoMLChangeRequest-1.7 {Test deleting a property using a lower context} {
         </property>
     </property>
     <entity name="rec" class="ptolemy.actor.lib.Recorder">
-        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </entity>
 </entity>
 }
@@ -366,7 +346,7 @@ test MoMLChangeRequest-2.2 {Test propagation} {
     # output now includes URIAttribute.  Not sure why?
     $toplevel description
 } {ptolemy.kernel.CompositeEntity {.top} attributes {
-    {ptolemy.kernel.util.TransientSingletonConfigurableAttribute {.top._iconDescription} attributes {
+    {ptolemy.kernel.util.SingletonConfigurableAttribute {.top._iconDescription} attributes {
     }}
     {ptolemy.kernel.attributes.URIAttribute {.top._uri} attributes {
     }}
@@ -375,24 +355,24 @@ test MoMLChangeRequest-2.2 {Test propagation} {
 } ports {
 } entities {
     {ptolemy.kernel.CompositeEntity {.top.gen} attributes {
-        {ptolemy.kernel.util.TransientSingletonConfigurableAttribute {.top.gen._iconDescription} attributes {
+        {ptolemy.kernel.util.SingletonConfigurableAttribute {.top.gen._iconDescription} attributes {
         }}
     } ports {
     } entities {
         {ptolemy.kernel.ComponentEntity {.top.gen.new} attributes {
-            {ptolemy.kernel.util.TransientSingletonConfigurableAttribute {.top.gen.new._iconDescription} attributes {
+            {ptolemy.kernel.util.SingletonConfigurableAttribute {.top.gen.new._iconDescription} attributes {
             }}
         } ports {
         }}
     } relations {
     }}
     {ptolemy.kernel.CompositeEntity {.top.der} attributes {
-        {ptolemy.kernel.util.TransientSingletonConfigurableAttribute {.top.der._iconDescription} attributes {
+        {ptolemy.kernel.util.SingletonConfigurableAttribute {.top.der._iconDescription} attributes {
         }}
     } ports {
     } entities {
         {ptolemy.kernel.ComponentEntity {.top.der.new} attributes {
-            {ptolemy.kernel.util.TransientSingletonConfigurableAttribute {.top.der.new._iconDescription} attributes {
+            {ptolemy.kernel.util.SingletonConfigurableAttribute {.top.der.new._iconDescription} attributes {
             }}
         } ports {
         }}
@@ -451,7 +431,7 @@ test MoMLChangeRequest-3.2 {Test propagation} {
     # output now includes URIAttribute.  Not sure why?
     $toplevel description
 } {ptolemy.kernel.CompositeEntity {.top} attributes {
-    {ptolemy.kernel.util.TransientSingletonConfigurableAttribute {.top._iconDescription} attributes {
+    {ptolemy.kernel.util.SingletonConfigurableAttribute {.top._iconDescription} attributes {
     }}
     {ptolemy.kernel.attributes.URIAttribute {.top._uri} attributes {
     }}
@@ -460,36 +440,36 @@ test MoMLChangeRequest-3.2 {Test propagation} {
 } ports {
 } entities {
     {ptolemy.kernel.CompositeEntity {.top.gen} attributes {
-        {ptolemy.kernel.util.TransientSingletonConfigurableAttribute {.top.gen._iconDescription} attributes {
+        {ptolemy.kernel.util.SingletonConfigurableAttribute {.top.gen._iconDescription} attributes {
         }}
     } ports {
     } entities {
         {ptolemy.kernel.ComponentEntity {.top.gen.new} attributes {
-            {ptolemy.kernel.util.TransientSingletonConfigurableAttribute {.top.gen.new._iconDescription} attributes {
+            {ptolemy.kernel.util.SingletonConfigurableAttribute {.top.gen.new._iconDescription} attributes {
             }}
         } ports {
         }}
     } relations {
     }}
     {ptolemy.kernel.CompositeEntity {.top.intClass} attributes {
-        {ptolemy.kernel.util.TransientSingletonConfigurableAttribute {.top.intClass._iconDescription} attributes {
+        {ptolemy.kernel.util.SingletonConfigurableAttribute {.top.intClass._iconDescription} attributes {
         }}
     } ports {
     } entities {
         {ptolemy.kernel.ComponentEntity {.top.intClass.new} attributes {
-            {ptolemy.kernel.util.TransientSingletonConfigurableAttribute {.top.intClass.new._iconDescription} attributes {
+            {ptolemy.kernel.util.SingletonConfigurableAttribute {.top.intClass.new._iconDescription} attributes {
             }}
         } ports {
         }}
     } relations {
     }}
     {ptolemy.kernel.CompositeEntity {.top.der} attributes {
-        {ptolemy.kernel.util.TransientSingletonConfigurableAttribute {.top.der._iconDescription} attributes {
+        {ptolemy.kernel.util.SingletonConfigurableAttribute {.top.der._iconDescription} attributes {
         }}
     } ports {
     } entities {
         {ptolemy.kernel.ComponentEntity {.top.der.new} attributes {
-            {ptolemy.kernel.util.TransientSingletonConfigurableAttribute {.top.der.new._iconDescription} attributes {
+            {ptolemy.kernel.util.SingletonConfigurableAttribute {.top.der.new._iconDescription} attributes {
             }}
         } ports {
         }}
