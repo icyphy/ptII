@@ -536,7 +536,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *
      *  @return False.
      */
-    protected boolean _writeAccessPreference() {
+    protected boolean _writeAccessRequired() {
         return false;
     }
 

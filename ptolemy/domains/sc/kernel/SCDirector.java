@@ -433,7 +433,7 @@ public class SCDirector extends Director {
      *
      *  @return True if this director need write access, false otherwise.
      */ 
-    protected boolean _writeAccessPreference() { 
+    protected boolean _writeAccessRequired() { 
         // should ask the refinements
         return false;
     }

@@ -693,7 +693,7 @@ public class DEDirector extends Director {
      *  domain, we don't need write access inside an iteration.
      *  @return false.
      */
-    protected boolean _writeAccessPreference() {
+    protected boolean _writeAccessRequired() {
         // Return false to let the workspace be write-protected.
         // Return true to debug the PtolemyThread.
         return false;
