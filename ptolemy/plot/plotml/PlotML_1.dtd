@@ -29,12 +29,12 @@
                   offset CDATA #IMPLIED>
   <!ELEMENT dataset (m | move | p | point)*>
     <!ATTLIST dataset connected (yes | no) #IMPLIED
-                      marks (none | dots | points | various) #IMPLIED
+                      marks (none | dots | points | various | pixels) #IMPLIED
                       name CDATA #IMPLIED
                       stems (yes | no) #IMPLIED>
   <!ELEMENT default EMPTY>
     <!ATTLIST default connected (yes | no) "yes"
-                      marks (none | dots | points | various) "none"
+                      marks (none | dots | points | various | pixels) "none"
                       stems (yes | no) "no">
   <!ELEMENT noColor EMPTY>
   <!ELEMENT noGrid EMPTY>

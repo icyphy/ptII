@@ -290,7 +290,7 @@ public class PlotFrame extends JFrame {
         double[] originalYRange = plot.getYRange();
         wideQuery.addLine("yrange", "Y Range",
                 "" + originalYRange[0] + ", " + originalYRange[1]);
-        String[] marks = {"none", "points", "dots", "various"};
+        String[] marks = {"none", "points", "dots", "various", "pixels"};
         String originalMarks = "none";
         if (plot instanceof Plot) {
             originalMarks = ((Plot)plot).getMarksStyle();
@@ -484,7 +484,7 @@ public class PlotFrame extends JFrame {
                 cplot.setImpulses(originalStems);
                 _restoreConnected(originalConnected);
             }
-            // FIXME: log axis format temporarily disable, see above.
+            // FIXME: log axis format temporarily disabled, see above.
             // plot.read("XTicks: " + originalXTicksSpec);
             // if(originalXTicksSpec.equals("")) {
             //    narrowQuery.setEnabled("xlog", true);
