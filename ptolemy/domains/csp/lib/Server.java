@@ -147,8 +147,6 @@ public class Server extends CSPActor {
                 System.out.println(getName() + " serviced customer: " +
                       t.toString());
             }
-            System.out.println("Server(" + getName() + "):finished normally.");
-            return;
         } catch (NoTokenException ex) {
             throw new IllegalActionException(getName() + ": invalid get.");
         } 
