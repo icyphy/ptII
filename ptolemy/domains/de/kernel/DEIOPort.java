@@ -225,7 +225,7 @@ public class DEIOPort extends TypedIOPort {
         return _delayToSet;
     }
 
-    /** Sent a token to the receivers connected on the specified channel
+    /** Send a token to the receivers connected on the specified channel
      *  with the time stamp equaling to the current time of the director.
      *  If you want to send a token with a specified delay, use
      *  send(token, delay) instead. If the channel index is out of range,
