@@ -38,7 +38,7 @@ import java.net.URL;
 import java.util.List;
 
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.gui.MessageHandler;
+import ptolemy.util.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.Attribute;

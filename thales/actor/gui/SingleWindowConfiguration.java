@@ -37,7 +37,7 @@ import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyTableauFactory;
-import ptolemy.gui.MessageHandler;
+import ptolemy.util.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Prototype;
 import ptolemy.kernel.attributes.URIAttribute;
