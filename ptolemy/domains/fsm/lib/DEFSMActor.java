@@ -117,15 +117,15 @@ public class DEFSMActor extends FSMController implements TypedActor {
 	    workspace().getReadAccess();
 
 	    List result = new LinkedList();
-	    Enumeration inPorts = inputPorts();
-	    while (inPorts.hasMoreElements()) {
-	        TypedIOPort inport = (TypedIOPort)inPorts.nextElement();
+	    Iterator inPorts = inputPortList().iterator();
+	    while (inPorts.hasNext()) {
+	        TypedIOPort inport = (TypedIOPort)inPorts.next();
 		boolean isUndeclared = inport.getTypeTerm().isSettable();
 		if (isUndeclared) {
-		    Enumeration outPorts = outputPorts();
-	    	    while (outPorts.hasMoreElements()) {
+		    Iterator outPorts = outputPortList().iterator();
+	    	    while (outPorts.hasNext()) {
 		    	TypedIOPort outport =
-                            (TypedIOPort)outPorts.nextElement();
+                            (TypedIOPort)outPorts.next();
 
 			isUndeclared = outport.getTypeTerm().isSettable();
 		    	if (isUndeclared && inport != outport) {
