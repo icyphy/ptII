@@ -33,7 +33,7 @@ ME =		ptolemy/configs
 
 # If you add a configuration, be sure to add the jar file
 # in PTCLASSALLJARS below
-DIRS =		doc dsp full hyvisual jxta ptiny test
+DIRS =		doc dsp full hyvisual jni jxta ptiny test
 
 # Root of the Java directory
 ROOT =		../..
@@ -92,6 +92,7 @@ PTCLASSALLJARS = \
 		dsp/dsp.jar \
 		full/full.jar \
 		hyvisual/hyvisual.jar \
+		jni/jni.jar \
 		jxta/jxta.jar \
 		ptiny/ptiny.jar
 
