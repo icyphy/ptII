@@ -612,7 +612,7 @@ public class FixPoint implements Cloneable, Serializable {
     }
 
     /** An instance of this class is used preserve backwards interface
-     *  compatibility. It conatisn a description that now states that
+     *  compatibility. It contains a description that now states that
      *  there is no tracking of applied overflow or rounding.
      */
     public static class Error {
