@@ -175,13 +175,6 @@ public class DDFDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Set the flag indicating whether type resolution is disabled. 
-     *  @param flag The flag to be set.
-     */
-    public void flagTypeResolution(boolean flag) {
-        _disableTypeResolution = flag;
-    }
-    
     /** Prior to each basic iteration, scan all active actors to put all
      *  enabled and not deferrable actors in a list and find the minimax
      *  actor. Fire all actors in the list. If no actor has been fired,
@@ -353,7 +346,7 @@ public class DDFDirector extends Director {
      *  override the base class method to skip invalidating resolved types.
      */
     public void invalidateResolvedTypes() {
-        if(!_disableTypeResolution) { 
+        if(!_isTypeResolutionDisabled) { 
             super.invalidateResolvedTypes();
         }
     }
@@ -454,6 +447,13 @@ public class DDFDirector extends Director {
         return true;
     }
 
+    /** Set the flag indicating whether type resolution is disabled or not.
+     *  @param flag The flag to be set.
+     */
+    public void setTypeResolutionFlag(boolean flag) {
+        _isTypeResolutionDisabled = flag;
+    }
+    
     /** Override the base class method to transfer enough tokens to
      *  complete an internal iteration.  If there are not enough tokens,
      *  then throw an exception. It then updates enabling status for all
@@ -882,7 +882,7 @@ public class DDFDirector extends Director {
     ////                         private variables                 ////
     
     // A flag indicating whether type resolution is disabled.
-    private boolean _disableTypeResolution = false;
+    private boolean _isTypeResolutionDisabled = false;
 
     // A flag indicating whether at least one actor has been fired so far.
     private boolean _firedOne = false;

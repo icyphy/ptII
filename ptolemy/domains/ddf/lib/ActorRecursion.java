@@ -131,8 +131,8 @@ public class ActorRecursion extends TypedCompositeActor {
         try {
             // Disable redoing type resolution because type compatibility
             // has been guaranteed during initialization.
-            ((DDFDirector)getExecutiveDirector()).flagTypeResolution(true);
-            ((DDFDirector)getDirector()).flagTypeResolution(true);
+            ((DDFDirector)getExecutiveDirector()).setTypeResolutionFlag(true);
+            ((DDFDirector)getDirector()).setTypeResolutionFlag(true);
             
             _cloneRecursionActor();
             getDirector().preinitialize();
@@ -149,7 +149,7 @@ public class ActorRecursion extends TypedCompositeActor {
                 throw new InternalErrorException(this, ex, null);
             }
         } finally {
-            ((DDFDirector)getExecutiveDirector()).flagTypeResolution(false);
+            ((DDFDirector)getExecutiveDirector()).setTypeResolutionFlag(false);
         }
     }
 
