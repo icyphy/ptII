@@ -126,7 +126,7 @@ public class RunCompositeActor extends LifeCycleManager {
         // that is exported does not depend on the presence of the
         // derived class Java definition. Thus, we force the class name
         // here to be RunCompositeActor.
-        setClassName("ptolemy.actor.RunCompositeActor");
+        setClassName("ptolemy.actor.lib.hoc.RunCompositeActor");
     }
 
     /** Construct a RunCompositeActor in the specified workspace with
@@ -148,7 +148,7 @@ public class RunCompositeActor extends LifeCycleManager {
         // that is exported does not depend on the presence of the
         // derived class Java definition. Thus, we force the class name
         // here to be RunCompositeActor.
-        setClassName("ptolemy.actor.RunCompositeActor");
+        setClassName("ptolemy.actor.lib.hoc.RunCompositeActor");
     }
 
     /** Construct a RunCompositeActor with a name and a container.
@@ -178,7 +178,7 @@ public class RunCompositeActor extends LifeCycleManager {
         // that is exported does not depend on the presence of the
         // derived class Java definition. Thus, we force the class name
         // here to be RunCompositeActor.
-        setClassName("ptolemy.actor.RunCompositeActor");
+        setClassName("ptolemy.actor.lib.hoc.RunCompositeActor");
     }
 
     ///////////////////////////////////////////////////////////////////
