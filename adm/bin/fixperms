@@ -1,0 +1,7 @@
+#!/bin/sh
+
+cd /users/ptII
+find . -user ptuser -ls -exec chown ptII.ptII {} \; 
+find . -group ptdesign -ls -exec chown ptII.ptII {} \; 
+find . -name SCCS -ls -exec chown ptII.ptolemy {} \;
+find . -name SCCS -ls -exec chmod g+ws {} \;

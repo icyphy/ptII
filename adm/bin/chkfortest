@@ -1,0 +1,17 @@
+#!/bin/sh
+# This shell scripts runs find on a directory tree and reports
+# directories that have .java files in them, but no test subdirectories
+
+TOPDIR=/export/carson/carson3/ptII/adm/dists/ptII1.0devel
+DIRS=`find $TOPDIR -xdev -name "*.java" -print | 
+	awk -F/ '{for(i=1;i<NF-1;i++)
+			 printf("%s/", $i)
+		  printf("%s\n",$(NF-1))}' |
+	sort | sort -u | egrep -v '/test$' | egrep -v '/demo$'`
+for DIR in $DIRS
+do
+	if [ ! -d "$DIR/test" ]; then
+		SHORTDIR=`echo $DIR | sed s=$TOPDIR=ptII= `
+		echo "`basename $0`: '$SHORTDIR' contains .java files, but there is no test/ subdirectory"
+	fi
+done

@@ -1,0 +1,14 @@
+#!/bin/sh
+
+srcdirs=`/users/ptII/adm/bin/ptIIdirs`
+for d in $srcdirs
+do
+    if [ ! -d $d ]; then
+	echo "Warning: $d doesnt exist.  Skipping..."
+	continue
+    fi
+    echo 
+    echo "------------------------------- $d "
+    (chdir $d; /users/ptII/adm/copyright/fixcopyright *.tcl *.java makefile *.html)
+    #(chdir $d; /users/cxh/ptII/util/testsuite/rmtrailingspace *.java makefile *.html)
+done
