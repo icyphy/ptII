@@ -28,7 +28,7 @@
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.domains.de.demo;
+package ptolemy.domains.de.demo.SigmaDelta;
 
 import java.applet.Applet;
 import java.awt.*;

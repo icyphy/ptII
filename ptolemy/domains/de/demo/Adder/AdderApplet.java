@@ -29,7 +29,7 @@
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.domains.de.demo;
+package ptolemy.domains.de.demo.Adder;
 
 import java.applet.Applet;
 import java.awt.*;

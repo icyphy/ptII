@@ -24,11 +24,11 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.domains.de.demo;
+package ptolemy.domains.de.demo.Hierarchy;
 
 import java.applet.Applet;
 import java.awt.*;
@@ -44,14 +44,14 @@ import ptolemy.data.expr.Parameter;
 import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
-//// QueueApplet
+//// Hierarchy
 /**
-An applet that uses Ptolemy II DE domain.
+An applet that demonstrate a hierarchy of DE inside DE.
 
-@author Lukito Muliadi
+@author Lukito
 @version $Id$
 */
-public class QueueApplet extends Applet {
+public class HierarchyApplet extends Applet {
 
     public static final boolean DEBUG = true;
 
@@ -74,33 +74,21 @@ public class QueueApplet extends Applet {
 
         // Initialization
 
-        _stopTimeBox = new TextField("30.0", 10);
+        _stopTimeBox = new TextField("10.0", 10);
         _currentTimeLabel = new Label("Current time = 0.0      ");
         _goButton = new Button("Go");
-        _pauseButton = new Button(" Pause ");
-        _finishButton = new Button("Finish");
-        _terminateButton = new Button("Terminate");
 
-        // The applet has four panels, shown in a 2x2 grid
+        // The applet has two panels, stacked vertically
         setLayout(new BorderLayout());
-        Panel appletPanel = new Panel();
-        appletPanel.setLayout(new GridLayout(2, 2));
-        add(appletPanel, "Center");
+	Plot plotPanel = new Plot();
+	add(plotPanel, "Center");
 
-        // _la is the drawing panel for DELogicAnalyzer actor.
-        Plot panel1 = new Plot();
-        Plot panel2 = new Plot();
-        Plot panel3 = new Plot();
-        Plot panel4 = new Plot();
-        appletPanel.add(panel1);
-        appletPanel.add(panel2);
-        appletPanel.add(panel3);
-        appletPanel.add(panel4);
 
         // Adding a control panel in the main panel.
         Panel controlPanel = new Panel();
         add(controlPanel, "South");
         // Done adding a control panel.
+
 
         // Adding simulation parameter panel in the control panel.
         Panel simulationParam = new Panel();
@@ -121,82 +109,92 @@ public class QueueApplet extends Applet {
 
         // Adding go button in the control panel.
         controlPanel.add(_goButton);
-        controlPanel.add(_pauseButton);
-        controlPanel.add(_finishButton);
-        controlPanel.add(_terminateButton);
-
         _goButton.addActionListener(new GoButtonListener());
-        _pauseButton.addActionListener(new PauseButtonListener());
-        _finishButton.addActionListener(new FinishButtonListener());
-        _terminateButton.addActionListener(new TerminateButtonListener());
         // Done adding go button
 
 
         // Creating the topology.
         try {
             TypedCompositeActor sys = new TypedCompositeActor();
-            sys.setName("DE Demo");
-
-            // Set up the top level composite actor, director and manager
-            _localDirector = new DEDirector("DE Director");
-            sys.setDirector(_localDirector);
+            sys.setName("DE");
             _manager = new Manager("Manager");
             _manager.addExecutionListener(new MyExecutionListener());
             sys.setManager(_manager);
+            _localDirector = new DEDirector("TopLocalDirector");
+            sys.setDirector(_localDirector);
 
-            // ---------------------------------
-            // Create the actors.
-            // ---------------------------------
-            DEClock clock = new DEClock(sys, "Clock", 1.0, 1.0);
-            DERamp ramp = new DERamp(sys, "Ramp", 0, 1.0);
+            // Set up block A
 
-            DEFIFOQueue fifo1 = new DEFIFOQueue(sys, "FIFO1", 1, true, 10);
-            DEPlot plot1 = new DEPlot(sys, "Queue 1 Size", panel1);
+            TypedCompositeActor blockA = new TypedCompositeActor(sys,
+                    "BlockA");
+            blockA.setDirector(new DEDirector("Director A"));
 
-            DEServerAlt server1 = new DEServerAlt(sys, "Server1", 1.0);
-            DEPassGate passgate = new DEPassGate(sys, "PassGate");
-            DEDelay delta = new DEDelay(sys, "DEDelay", 0.0);
+            DEClock clock = new DEClock(blockA, "Clock", 1.0, 1.0);
+            DERamp ramp1 = new DERamp(blockA, "Ramp1", 0, 2);
+            DEPoisson poisson = new DEPoisson(blockA, "Poisson");
+            poisson.outputvalue.setToken(new DoubleToken(1.0));
+            poisson.meantime.setToken(new DoubleToken(0.5));
 
-            DEFIFOQueue fifo2 = new DEFIFOQueue(sys, "FIFO2", 1, true, 1000);
-            DEPlot plot2 = new DEPlot(sys, "Queue 2 Size", panel2);
+            DEIOPort A1 = new DEIOPort(blockA, "A1", false, true);
+            //A1.setDeclaredType(DoubleToken.class);
+            A1.setMultiport(true);
+            DEIOPort A2 = new DEIOPort(blockA, "A2", false, true);
+            //A2.setDeclaredType(DoubleToken.class);
 
-            DETestLevel testlevel = new DETestLevel(sys, "TestLevel", true, 4);
-            DENot not = new DENot(sys, "Not");
+            Relation r1 = blockA.connect(clock.output, ramp1.input);
+            Relation r2 = blockA.connect(ramp1.output, A1);
+            ((IORelation)r2).setWidth(2);
+            Relation r3 = blockA.connect(poisson.output, A2);
 
-            DEServerAlt server2 = new DEServerAlt(sys, "Server2", 3.0);
+            // Set up block B
 
-            DEPlot plot3 = new DEPlot(sys, "Blocking signal", panel3);
-            DEPlot plot4 = new DEPlot(sys, "Dispositions of inputs", panel4);
+            TypedCompositeActor blockB = new TypedCompositeActor(sys, "BlockB");
+            blockB.setDirector(new DEDirector("Director B"));
 
-            // -----------------------
-            // Creating connections
-            // -----------------------
+            DERamp ramp2 = new DERamp(blockB, "Ramp2", -2, 2);
+            DESampler sampler2 = new DESampler(blockB, "Sampler2");
 
-            Relation r1 = sys.connect(clock.output, ramp.input);
-            Relation r2 = sys.connect(ramp.output, fifo1.inData);
-            Relation r3 = sys.connect(fifo1.queueSize, plot1.input);
+            DEIOPort B1 = new DEIOPort(blockB, "B1", true, false);
+            //B1.setDeclaredType(DoubleToken.class);
+            DEIOPort B2 = new DEIOPort(blockB, "B2", true, false);
+            //B2.setDeclaredType(DoubleToken.class);
+            DEIOPort B3 = new DEIOPort(blockB, "B3", false, true);
+            //B3.setDeclaredType(DoubleToken.class);
 
-            Relation r4 = sys.connect(passgate.output, fifo1.demand);
-            fifo2.inData.link(r4);
+            Relation r6 = blockB.connect(B1, ramp2.input);
+            Relation r7 = blockB.connect(ramp2.output, sampler2.input);
+            Relation r8 = blockB.connect(B2, sampler2.clock);
+            Relation r11 = blockB.connect(sampler2.output, B3);
 
-            Relation r5 = sys.connect(fifo1.outData, server1.input);
-            Relation r6 = sys.connect(fifo1.overflow, plot4.input);
+            // Set up block C
 
-            Relation r7 = sys.connect(server1.output, passgate.input);
-            Relation r8 = sys.connect(delta.output, passgate.gate);
+            TypedCompositeActor blockC = new TypedCompositeActor(sys, "BlockC");
+            blockC.setDirector(new DEDirector("Director C"));
 
-            Relation r9 = sys.connect(not.output, delta.input);
+            DEPlot plot = new DEPlot(blockC, "Plot", plotPanel);
 
-            Relation r14 = sys.connect(testlevel.output, not.input);
-            plot3.input.link(r14);
+            DEIOPort C1 = new DEIOPort(blockC, "C1", true, false);
+            //C1.setDeclaredType(DoubleToken.class);
+            DEIOPort C2 = new DEIOPort(blockC, "C2", true, false);
+            //C2.setDeclaredType(DoubleToken.class);
+            DEIOPort C3 = new DEIOPort(blockC, "C3", true, false);
+            //C3.setDeclaredType(DoubleToken.class);
 
-            Relation r10 = sys.connect(server2.output, plot4.input);
-            fifo2.demand.link(r10);
+            Relation r13 = blockC.connect(C1, plot.input);
+            Relation r14 = blockC.connect(C2, plot.input);
+            Relation r15 = blockC.connect(C3, plot.input);
 
-            Relation r12 = sys.connect(fifo2.queueSize, testlevel.input);
-            plot2.input.link(r12);
+            // Set up block interconnections.
 
-            Relation r13 = sys.connect(fifo2.outData, server2.input);
+            DESampler sampler1 = new DESampler(sys, "Sampler1");
+
+            Relation r4 = sys.connect(A1, sampler1.input);
+            Relation r5 = sys.connect(A2, sampler1.clock);
+            B1.link(r5);
+            B2.link(r5);
+            Relation r9 = sys.connect(A1, C1);
+            Relation r10 = sys.connect(sampler1.output, C2);
+            Relation r12 = sys.connect(B3, C3);
 
         } catch (Exception ex) {
             System.err.println("Setup failed: " + ex.getMessage());
@@ -217,13 +215,8 @@ public class QueueApplet extends Applet {
     private TextField _stopTimeBox;
     private double _stopTime = 100.0;
     private Button _goButton;
-    private Button _pauseButton;
-    private Button _finishButton;
-    private Button _terminateButton;
-
-
     private Label _currentTimeLabel;
-    private boolean _isSimulationPaused = false;
+
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private methods                        ////
@@ -251,7 +244,6 @@ public class QueueApplet extends Applet {
             super.executionFinished(manager);
             _isSimulationRunning = false;
         }
-
     }
 
     private class GoButtonListener implements ActionListener {
@@ -263,10 +255,6 @@ public class QueueApplet extends Applet {
             }
 
             try {
-
-                // The simulation is started non-paused (of course :-) )
-                _isSimulationPaused = false;
-                _pauseButton.setLabel(" Pause ");
 
                 // Set the stop time.
                 String timespec = _stopTimeBox.getText();
@@ -292,36 +280,6 @@ public class QueueApplet extends Applet {
                 e.printStackTrace();
             }
 
-        }
-    }
-
-    private class PauseButtonListener implements ActionListener {
-        public void actionPerformed(ActionEvent evt) {
-
-            if (_isSimulationPaused) {
-                _isSimulationPaused = false;
-                _manager.resume();
-                _pauseButton.setLabel(" Pause ");
-
-            } else {
-                _isSimulationPaused = true;
-                _manager.pause();
-                _pauseButton.setLabel("Resume");
-
-            }
-
-        }
-    }
-
-    private class FinishButtonListener implements ActionListener {
-        public void actionPerformed(ActionEvent evt) {
-            _manager.finish();
-        }
-    }
-
-    private class TerminateButtonListener implements ActionListener {
-        public void actionPerformed(ActionEvent evt) {
-            _manager.terminate();
         }
     }
 

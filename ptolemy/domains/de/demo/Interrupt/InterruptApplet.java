@@ -24,11 +24,11 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Red (eal@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.domains.de.demo;
+package ptolemy.domains.de.demo.Interrupt;
 
 import java.applet.Applet;
 import java.awt.*;
@@ -44,14 +44,14 @@ import ptolemy.data.expr.Parameter;
 import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
-//// Hierarchy
+//// InterruptApplet
 /**
-An applet that demonstrate a hierarchy of DE inside DE.
+An applet that uses Ptolemy II DE domain.
 
-@author Lukito
+@author Lukito Muliadi
 @version $Id$
 */
-public class HierarchyApplet extends Applet {
+public class InterruptApplet extends Applet {
 
     public static final boolean DEBUG = true;
 
@@ -74,27 +74,38 @@ public class HierarchyApplet extends Applet {
 
         // Initialization
 
-        _stopTimeBox = new TextField("10.0", 10);
+        _stopTimeBox = new TextField("30.0", 10);
+        _mstBox = new TextField("0.9", 10);
+        _istBox = new TextField("0.1", 10);
+        _lambdaBox = new TextField("2.0", 10);
         _currentTimeLabel = new Label("Current time = 0.0      ");
         _goButton = new Button("Go");
+        _pauseButton = new Button(" Pause ");
+        _finishButton = new Button("Finish");
+        _terminateButton = new Button("Terminate");
 
         // The applet has two panels, stacked vertically
         setLayout(new BorderLayout());
-	Plot plotPanel = new Plot();
-	add(plotPanel, "Center");
-
+        Plot appletPanel = new Plot();
+        add(appletPanel, "Center");
 
         // Adding a control panel in the main panel.
         Panel controlPanel = new Panel();
         add(controlPanel, "South");
         // Done adding a control panel.
 
-
         // Adding simulation parameter panel in the control panel.
         Panel simulationParam = new Panel();
-        simulationParam.setLayout(new GridLayout(2, 1));
+        simulationParam.setLayout(new GridLayout(3, 2));
         controlPanel.add(simulationParam);
         // Done adding simulation parameter panel.
+
+        // Adding MST (minimum service time) in the simulation panel
+        Panel mstPanel = new Panel();
+        simulationParam.add(mstPanel);
+        mstPanel.add(new Label("MST:"));
+        mstPanel.add(_mstBox);
+        // done adding MST
 
         // Adding Stop time in the simulation panel.
         Panel subSimul = new Panel();
@@ -103,98 +114,82 @@ public class HierarchyApplet extends Applet {
         subSimul.add(_stopTimeBox);
         // Done adding stop time.
 
+        // Adding IST (interrupt service time) in the simulation panel
+        Panel istPanel = new Panel();
+        simulationParam.add(istPanel);
+        istPanel.add(new Label("IST:"));
+        istPanel.add(_istBox);
+        // done adding IST
+
         // Adding current time in the sub panel.
         simulationParam.add(_currentTimeLabel);
         // Done adding average wait time.
 
+        // Adding lambda (interrupt service time) in the simulation panel
+        Panel lambdaPanel = new Panel();
+        simulationParam.add(lambdaPanel);
+        lambdaPanel.add(new Label("lambda:"));
+        lambdaPanel.add(_lambdaBox);
+        // done adding lambda
+
         // Adding go button in the control panel.
         controlPanel.add(_goButton);
+        controlPanel.add(_pauseButton);
+        controlPanel.add(_finishButton);
+        controlPanel.add(_terminateButton);
+
         _goButton.addActionListener(new GoButtonListener());
+        _pauseButton.addActionListener(new PauseButtonListener());
+        _finishButton.addActionListener(new FinishButtonListener());
+        _terminateButton.addActionListener(new TerminateButtonListener());
         // Done adding go button
 
 
         // Creating the topology.
         try {
             TypedCompositeActor sys = new TypedCompositeActor();
-            sys.setName("DE");
+            sys.setName("DEDemo");
+
+            // Set up the top level composite actor, director and manager
+            _localDirector = new DEDirector("DE Director");
+            sys.setDirector(_localDirector);
             _manager = new Manager("Manager");
             _manager.addExecutionListener(new MyExecutionListener());
             sys.setManager(_manager);
-            _localDirector = new DEDirector("TopLocalDirector");
-            sys.setDirector(_localDirector);
 
-            // Set up block A
+            // ---------------------------------
+            // Create the actors.
+            // ---------------------------------
 
-            TypedCompositeActor blockA = new TypedCompositeActor(sys,
-                    "BlockA");
-            blockA.setDirector(new DEDirector("Director A"));
+            DEClock clock = new DEClock(sys, "Clock", 1.0, 1.0);
+            DERamp ramp = new DERamp(sys, "Ramp", 0.0, 1.0);
 
-            DEClock clock = new DEClock(blockA, "Clock", 1.0, 1.0);
-            DERamp ramp1 = new DERamp(blockA, "Ramp1", 0, 2);
-            DEPoisson poisson = new DEPoisson(blockA, "Poisson");
-            poisson.outputvalue.setToken(new DoubleToken(1.0));
-            poisson.meantime.setToken(new DoubleToken(0.5));
+            // create a processor with min service time = 1.0
+            // interrupt service time = 0.1
+            // mean interarrival time = 3.0
+            DEProcessor processor = new DEProcessor(sys,
+                    "processor",
+                    0.8, 0.1, 3.0);
+            DEPlot plot = new DEPlot(sys, "Processor Input v.s. Output",
+                    appletPanel);
 
-            DEIOPort A1 = new DEIOPort(blockA, "A1", false, true);
-            //A1.setDeclaredType(DoubleToken.class);
-            A1.setMultiport(true);
-            DEIOPort A2 = new DEIOPort(blockA, "A2", false, true);
-            //A2.setDeclaredType(DoubleToken.class);
+            DESampler sampler = new DESampler(sys, "Sampler");
 
-            Relation r1 = blockA.connect(clock.output, ramp1.input);
-            Relation r2 = blockA.connect(ramp1.output, A1);
-            ((IORelation)r2).setWidth(2);
-            Relation r3 = blockA.connect(poisson.output, A2);
+            // -----------------------
+            // Creating connections
+            // -----------------------
 
-            // Set up block B
+            Relation r1 = sys.connect(clock.output, ramp.input);
+            Relation r2 = sys.connect(ramp.output, processor.input);
+            Relation r3 = sys.connect(processor.output, sampler.input);
+            Relation r4 = sys.connect(sampler.output, plot.input);
 
-            TypedCompositeActor blockB = new TypedCompositeActor(sys, "BlockB");
-            blockB.setDirector(new DEDirector("Director B"));
+            sampler.clock.link(r1);
 
-            DERamp ramp2 = new DERamp(blockB, "Ramp2", -2, 2);
-            DESampler sampler2 = new DESampler(blockB, "Sampler2");
-
-            DEIOPort B1 = new DEIOPort(blockB, "B1", true, false);
-            //B1.setDeclaredType(DoubleToken.class);
-            DEIOPort B2 = new DEIOPort(blockB, "B2", true, false);
-            //B2.setDeclaredType(DoubleToken.class);
-            DEIOPort B3 = new DEIOPort(blockB, "B3", false, true);
-            //B3.setDeclaredType(DoubleToken.class);
-
-            Relation r6 = blockB.connect(B1, ramp2.input);
-            Relation r7 = blockB.connect(ramp2.output, sampler2.input);
-            Relation r8 = blockB.connect(B2, sampler2.clock);
-            Relation r11 = blockB.connect(sampler2.output, B3);
-
-            // Set up block C
-
-            TypedCompositeActor blockC = new TypedCompositeActor(sys, "BlockC");
-            blockC.setDirector(new DEDirector("Director C"));
-
-            DEPlot plot = new DEPlot(blockC, "Plot", plotPanel);
-
-            DEIOPort C1 = new DEIOPort(blockC, "C1", true, false);
-            //C1.setDeclaredType(DoubleToken.class);
-            DEIOPort C2 = new DEIOPort(blockC, "C2", true, false);
-            //C2.setDeclaredType(DoubleToken.class);
-            DEIOPort C3 = new DEIOPort(blockC, "C3", true, false);
-            //C3.setDeclaredType(DoubleToken.class);
-
-            Relation r13 = blockC.connect(C1, plot.input);
-            Relation r14 = blockC.connect(C2, plot.input);
-            Relation r15 = blockC.connect(C3, plot.input);
-
-            // Set up block interconnections.
-
-            DESampler sampler1 = new DESampler(sys, "Sampler1");
-
-            Relation r4 = sys.connect(A1, sampler1.input);
-            Relation r5 = sys.connect(A2, sampler1.clock);
-            B1.link(r5);
-            B2.link(r5);
-            Relation r9 = sys.connect(A1, C1);
-            Relation r10 = sys.connect(sampler1.output, C2);
-            Relation r12 = sys.connect(B3, C3);
+            // setting up parameters.
+            _minimumServiceTime = (Parameter)processor.getAttribute("MST");
+            _interruptServiceTime = (Parameter)processor.getAttribute("IST");
+            _lambda = (Parameter)processor.getAttribute("lambda");
 
         } catch (Exception ex) {
             System.err.println("Setup failed: " + ex.getMessage());
@@ -213,10 +208,23 @@ public class HierarchyApplet extends Applet {
     private Manager _manager;
 
     private TextField _stopTimeBox;
+    private TextField _mstBox;
+    private TextField _istBox;
+    private TextField _lambdaBox;
     private double _stopTime = 100.0;
     private Button _goButton;
-    private Label _currentTimeLabel;
+    private Button _pauseButton;
+    private Button _finishButton;
+    private Button _terminateButton;
 
+
+    private Label _currentTimeLabel;
+    private boolean _isSimulationPaused = false;
+
+    // Parameters of DEProcessor that we want to change.
+    private Parameter _minimumServiceTime;
+    private Parameter _interruptServiceTime;
+    private Parameter _lambda;
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private methods                        ////
@@ -244,6 +252,7 @@ public class HierarchyApplet extends Applet {
             super.executionFinished(manager);
             _isSimulationRunning = false;
         }
+
     }
 
     private class GoButtonListener implements ActionListener {
@@ -256,6 +265,10 @@ public class HierarchyApplet extends Applet {
 
             try {
 
+                // The simulation is started non-paused (of course :-) )
+                _isSimulationPaused = false;
+                _pauseButton.setLabel(" Pause ");
+
                 // Set the stop time.
                 String timespec = _stopTimeBox.getText();
                 try {
@@ -264,6 +277,41 @@ public class HierarchyApplet extends Applet {
                 } catch (NumberFormatException ex) {
                     System.err.println("Invalid stop time: " + ex.getMessage());
                     return;
+                }
+
+                // Set the minimum service time.
+                try {
+                    String s = _mstBox.getText();
+                    Double d = Double.valueOf(s);
+                    _minimumServiceTime.setToken(
+                            new DoubleToken(d.doubleValue()));
+
+                } catch (NumberFormatException ex) {
+                    System.err.println("Invalid minimum service time: " +
+                                       ex.getMessage());
+                }
+
+                // Set the interrupt service time.
+                try {
+                    String s = _istBox.getText();
+                    Double d = Double.valueOf(s);
+                    _interruptServiceTime.setToken(
+                            new DoubleToken(d.doubleValue()));
+
+                } catch (NumberFormatException ex) {
+                    System.err.println("Invalid interrupt service time: " +
+                                       ex.getMessage());
+                }
+
+                // Set lambda.
+                try {
+                    String s = _lambdaBox.getText();
+                    Double d = Double.valueOf(s);
+                    _lambda.setToken(new DoubleToken(d.doubleValue()));
+
+                } catch (NumberFormatException ex) {
+                    System.err.println("Invalid lambda: " +
+                                       ex.getMessage());
                 }
 
                 _localDirector.setStopTime(_stopTime);
@@ -283,6 +331,35 @@ public class HierarchyApplet extends Applet {
         }
     }
 
+    private class PauseButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent evt) {
+
+            if (_isSimulationPaused) {
+                _isSimulationPaused = false;
+                _manager.resume();
+                _pauseButton.setLabel(" Pause ");
+
+            } else {
+                _isSimulationPaused = true;
+                _manager.pause();
+                _pauseButton.setLabel("Resume");
+
+            }
+
+        }
+    }
+
+    private class FinishButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent evt) {
+            _manager.finish();
+        }
+    }
+
+    private class TerminateButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent evt) {
+            _manager.terminate();
+        }
+    }
 }
 
 

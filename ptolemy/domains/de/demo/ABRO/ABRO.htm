@@ -2,8 +2,8 @@
 <html>
 <head>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<title>Discrete Event Threaded Actor Demonstration</title>
 <link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<title>Discrete Event Threaded Actor Demonstration</title>
 </head>
 <body>
 <H1>Discrete Event Threaded Actor Demonstration</H1>
@@ -22,8 +22,6 @@ applet is displayed on a XGA screen-->
 <PARAM NAME=CODE VALUE=ptolemy.domains.de.demo.ABRO.ABROApplet.class>
 <PARAM NAME=CODEBASE VALUE=../../../../..>
 <PARAM NAME=ARCHIVE VALUE="
-	ptolemy/domains/de/demo/ABRO/ABRO.jar,
-	lib/diva.jar,
 	ptolemy/ptsupport.jar,
 	ptolemy/domains/de/de.jar"
 <PARAM NAME=NAME VALUE="ABROApplet">
@@ -82,30 +80,28 @@ emphasize on ways to avoid this (e.g. Esterel like style).
 
 <P>This applet is implemented by
 <TT><A HREF="ABROApplet.java">ABROApplet.java</A></TT>.
-<P>The simulation consists of three <A HREF="../lib/DEPoisson.java">Poisson</A>
+<P>The simulation consists of three <A HREF="../../lib/DEPoisson.java">Poisson</A>
 Actors, and a
-<A HREF="../lib/DEABRO.java">ABRO</A>
+<A HREF="../../lib/DEABRO.java">ABRO</A>
 Actor (which is derived from
 <A HREF="../kernel/DEThreadActor.java">DEThreadActor</A>
-actor) connected to a <A HREF="../lib/DEPlot.java">Plot</A> Actor.
+actor) connected to a <A HREF="../../lib/DEPlot.java">Plot</A> Actor.
 <BR>
 <MAP Name="ActorsMap">
 <AREA Shape="rect" Coords="0,0,96,64"
-	Href="../lib/DEPoisson.java">
+	Href="../../lib/DEPoisson.java">
 <AREA Shape="rect" Coords="0,144,96,208"
-	Href="../lib/DEPoisson.java">
+	Href="../../lib/DEPoisson.java">
 <AREA Shape="rect" Coords="0,288,96,352"
-	Href="../lib/DEPoisson.java">
+	Href="../../lib/DEPoisson.java">
 <AREA Shape="rect" Coords="240,144,336,208"
-	Href="../lib/DEABRO.java">
+	Href="../../lib/DEABRO.java">
 <AREA Shape="rect" Coords="480,144,576,208"
-	Href="../lib/DEPlot.java">
+	Href="../../lib/DEPlot.java">
 </MAP>
 <CENTER>
-<IMG SRC="img/ABRODiagram.gif"
+<IMG SRC="../img/ABRODiagram.gif"
 Alt="Imagemap" Usemap="#ActorsMap" Ismap>
 </CENTER>
-<I>Add text describing the applet</I>
-<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
 </body>
 </html>

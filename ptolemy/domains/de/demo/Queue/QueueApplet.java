@@ -28,7 +28,7 @@
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.domains.de.demo;
+package ptolemy.domains.de.demo.Queue;
 
 import java.applet.Applet;
 import java.awt.*;
@@ -44,14 +44,14 @@ import ptolemy.data.expr.Parameter;
 import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
-//// InterruptApplet
+//// QueueApplet
 /**
 An applet that uses Ptolemy II DE domain.
 
 @author Lukito Muliadi
 @version $Id$
 */
-public class InterruptApplet extends Applet {
+public class QueueApplet extends Applet {
 
     public static final boolean DEBUG = true;
 
@@ -75,19 +75,27 @@ public class InterruptApplet extends Applet {
         // Initialization
 
         _stopTimeBox = new TextField("30.0", 10);
-        _mstBox = new TextField("0.9", 10);
-        _istBox = new TextField("0.1", 10);
-        _lambdaBox = new TextField("2.0", 10);
         _currentTimeLabel = new Label("Current time = 0.0      ");
         _goButton = new Button("Go");
         _pauseButton = new Button(" Pause ");
         _finishButton = new Button("Finish");
         _terminateButton = new Button("Terminate");
 
-        // The applet has two panels, stacked vertically
+        // The applet has four panels, shown in a 2x2 grid
         setLayout(new BorderLayout());
-        Plot appletPanel = new Plot();
+        Panel appletPanel = new Panel();
+        appletPanel.setLayout(new GridLayout(2, 2));
         add(appletPanel, "Center");
+
+        // _la is the drawing panel for DELogicAnalyzer actor.
+        Plot panel1 = new Plot();
+        Plot panel2 = new Plot();
+        Plot panel3 = new Plot();
+        Plot panel4 = new Plot();
+        appletPanel.add(panel1);
+        appletPanel.add(panel2);
+        appletPanel.add(panel3);
+        appletPanel.add(panel4);
 
         // Adding a control panel in the main panel.
         Panel controlPanel = new Panel();
@@ -96,16 +104,9 @@ public class InterruptApplet extends Applet {
 
         // Adding simulation parameter panel in the control panel.
         Panel simulationParam = new Panel();
-        simulationParam.setLayout(new GridLayout(3, 2));
+        simulationParam.setLayout(new GridLayout(2, 1));
         controlPanel.add(simulationParam);
         // Done adding simulation parameter panel.
-
-        // Adding MST (minimum service time) in the simulation panel
-        Panel mstPanel = new Panel();
-        simulationParam.add(mstPanel);
-        mstPanel.add(new Label("MST:"));
-        mstPanel.add(_mstBox);
-        // done adding MST
 
         // Adding Stop time in the simulation panel.
         Panel subSimul = new Panel();
@@ -114,23 +115,9 @@ public class InterruptApplet extends Applet {
         subSimul.add(_stopTimeBox);
         // Done adding stop time.
 
-        // Adding IST (interrupt service time) in the simulation panel
-        Panel istPanel = new Panel();
-        simulationParam.add(istPanel);
-        istPanel.add(new Label("IST:"));
-        istPanel.add(_istBox);
-        // done adding IST
-
         // Adding current time in the sub panel.
         simulationParam.add(_currentTimeLabel);
         // Done adding average wait time.
-
-        // Adding lambda (interrupt service time) in the simulation panel
-        Panel lambdaPanel = new Panel();
-        simulationParam.add(lambdaPanel);
-        lambdaPanel.add(new Label("lambda:"));
-        lambdaPanel.add(_lambdaBox);
-        // done adding lambda
 
         // Adding go button in the control panel.
         controlPanel.add(_goButton);
@@ -148,7 +135,7 @@ public class InterruptApplet extends Applet {
         // Creating the topology.
         try {
             TypedCompositeActor sys = new TypedCompositeActor();
-            sys.setName("DEDemo");
+            sys.setName("DE Demo");
 
             // Set up the top level composite actor, director and manager
             _localDirector = new DEDirector("DE Director");
@@ -160,36 +147,56 @@ public class InterruptApplet extends Applet {
             // ---------------------------------
             // Create the actors.
             // ---------------------------------
-
             DEClock clock = new DEClock(sys, "Clock", 1.0, 1.0);
-            DERamp ramp = new DERamp(sys, "Ramp", 0.0, 1.0);
+            DERamp ramp = new DERamp(sys, "Ramp", 0, 1.0);
 
-            // create a processor with min service time = 1.0
-            // interrupt service time = 0.1
-            // mean interarrival time = 3.0
-            DEProcessor processor = new DEProcessor(sys,
-                    "processor",
-                    0.8, 0.1, 3.0);
-            DEPlot plot = new DEPlot(sys, "Processor Input v.s. Output",
-                    appletPanel);
+            DEFIFOQueue fifo1 = new DEFIFOQueue(sys, "FIFO1", 1, true, 10);
+            DEPlot plot1 = new DEPlot(sys, "Queue 1 Size", panel1);
 
-            DESampler sampler = new DESampler(sys, "Sampler");
+            DEServerAlt server1 = new DEServerAlt(sys, "Server1", 1.0);
+            DEPassGate passgate = new DEPassGate(sys, "PassGate");
+            DEDelay delta = new DEDelay(sys, "DEDelay", 0.0);
+
+            DEFIFOQueue fifo2 = new DEFIFOQueue(sys, "FIFO2", 1, true, 1000);
+            DEPlot plot2 = new DEPlot(sys, "Queue 2 Size", panel2);
+
+            DETestLevel testlevel = new DETestLevel(sys, "TestLevel", true, 4);
+            DENot not = new DENot(sys, "Not");
+
+            DEServerAlt server2 = new DEServerAlt(sys, "Server2", 3.0);
+
+            DEPlot plot3 = new DEPlot(sys, "Blocking signal", panel3);
+            DEPlot plot4 = new DEPlot(sys, "Dispositions of inputs", panel4);
 
             // -----------------------
             // Creating connections
             // -----------------------
 
             Relation r1 = sys.connect(clock.output, ramp.input);
-            Relation r2 = sys.connect(ramp.output, processor.input);
-            Relation r3 = sys.connect(processor.output, sampler.input);
-            Relation r4 = sys.connect(sampler.output, plot.input);
+            Relation r2 = sys.connect(ramp.output, fifo1.inData);
+            Relation r3 = sys.connect(fifo1.queueSize, plot1.input);
 
-            sampler.clock.link(r1);
+            Relation r4 = sys.connect(passgate.output, fifo1.demand);
+            fifo2.inData.link(r4);
 
-            // setting up parameters.
-            _minimumServiceTime = (Parameter)processor.getAttribute("MST");
-            _interruptServiceTime = (Parameter)processor.getAttribute("IST");
-            _lambda = (Parameter)processor.getAttribute("lambda");
+            Relation r5 = sys.connect(fifo1.outData, server1.input);
+            Relation r6 = sys.connect(fifo1.overflow, plot4.input);
+
+            Relation r7 = sys.connect(server1.output, passgate.input);
+            Relation r8 = sys.connect(delta.output, passgate.gate);
+
+            Relation r9 = sys.connect(not.output, delta.input);
+
+            Relation r14 = sys.connect(testlevel.output, not.input);
+            plot3.input.link(r14);
+
+            Relation r10 = sys.connect(server2.output, plot4.input);
+            fifo2.demand.link(r10);
+
+            Relation r12 = sys.connect(fifo2.queueSize, testlevel.input);
+            plot2.input.link(r12);
+
+            Relation r13 = sys.connect(fifo2.outData, server2.input);
 
         } catch (Exception ex) {
             System.err.println("Setup failed: " + ex.getMessage());
@@ -208,9 +215,6 @@ public class InterruptApplet extends Applet {
     private Manager _manager;
 
     private TextField _stopTimeBox;
-    private TextField _mstBox;
-    private TextField _istBox;
-    private TextField _lambdaBox;
     private double _stopTime = 100.0;
     private Button _goButton;
     private Button _pauseButton;
@@ -220,11 +224,6 @@ public class InterruptApplet extends Applet {
 
     private Label _currentTimeLabel;
     private boolean _isSimulationPaused = false;
-
-    // Parameters of DEProcessor that we want to change.
-    private Parameter _minimumServiceTime;
-    private Parameter _interruptServiceTime;
-    private Parameter _lambda;
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private methods                        ////
@@ -279,41 +278,6 @@ public class InterruptApplet extends Applet {
                     return;
                 }
 
-                // Set the minimum service time.
-                try {
-                    String s = _mstBox.getText();
-                    Double d = Double.valueOf(s);
-                    _minimumServiceTime.setToken(
-                            new DoubleToken(d.doubleValue()));
-
-                } catch (NumberFormatException ex) {
-                    System.err.println("Invalid minimum service time: " +
-                                       ex.getMessage());
-                }
-
-                // Set the interrupt service time.
-                try {
-                    String s = _istBox.getText();
-                    Double d = Double.valueOf(s);
-                    _interruptServiceTime.setToken(
-                            new DoubleToken(d.doubleValue()));
-
-                } catch (NumberFormatException ex) {
-                    System.err.println("Invalid interrupt service time: " +
-                                       ex.getMessage());
-                }
-
-                // Set lambda.
-                try {
-                    String s = _lambdaBox.getText();
-                    Double d = Double.valueOf(s);
-                    _lambda.setToken(new DoubleToken(d.doubleValue()));
-
-                } catch (NumberFormatException ex) {
-                    System.err.println("Invalid lambda: " +
-                                       ex.getMessage());
-                }
-
                 _localDirector.setStopTime(_stopTime);
 
                 // Start the CurrentTimeThread.
@@ -360,6 +324,7 @@ public class InterruptApplet extends Applet {
             _manager.terminate();
         }
     }
+
 }
 
 

@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II Discrete Event domain demos
+# Makefile for Ptolemy II Discrete Event domain demo
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks,
 #
@@ -29,13 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/de/demo
+ME =		ptolemy/domains/de/demo/interrupt
 
 # Root of the Java directory
-ROOT =		../../../..
-
-DIRS =		ABRO Adder Hierarchy Histogram \
-	Interrupt Queue SigmaDelta inspection
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -43,14 +40,14 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-JSRCS =
+JSRCS = \
+	InterruptApplet.java
 
-# Files that are not compiled, such as .tcl and .itcl files.
-EXTRA_SRCS =	index.htm
+EXTRA_SRCS =	Interrupt.htm $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	img
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
@@ -58,12 +55,18 @@ OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all:
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
+all: jclass
+	@echo "To run all the demos, run 'make demo'"
 
 install: all
+
+demo:
+	CLASSPATH=$(CLASSPATH) appletviewer Interrupt.htm
 
 depend:
 	@echo "no dependencies in this directory"
 
 # Get the rest of the rules
-include $(ROOT)/mk/ptno-compile.mk
+include $(ROOT)/mk/ptcommon.mk

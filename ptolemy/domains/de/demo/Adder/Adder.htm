@@ -1,0 +1,111 @@
+<!-- $Id$-->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>Discrete Event Simulation Demo</TITLE>
+</HEAD>
+<BODY>
+<H1>Logic Circuit</H1>
+
+This applet uses the Ptolemy II Discrete Event (DE) domain
+to simulate a simple arbitrary-bit adder circuit.
+The plot represents the logic levels at various points in the 
+circuit.
+
+<P>
+ <!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+<center>
+<!-- The HTML below is for the Java Plugin.  The first 
+     section is for IE, the second is for Netscape
+ -->
+<OBJECT classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93"
+ width=600 height=400
+ name="AdderApplet"
+ codebase="http://java.sun.com/products/plugin/1.2/jinstall-12-win32.cab#Version=1,2,0,0">
+<PARAM NAME=CODE VALUE=ptolemy.domains.de.demo.Adder.AdderApplet.class>
+<PARAM NAME=CODEBASE VALUE=../../../../..>
+<PARAM NAME=ARCHIVE VALUE="
+	lib/diva.jar,
+	ptolemy/ptsupport.jar,
+	ptolemy/domains/de/de.jar"
+<PARAM NAME=NAME VALUE="AdderApplet">
+<PARAM NAME="type" VALUE="application/x-java-applet;version=1.2">
+<PARAM NAME="background" VALUE="#faf0e6">
+<COMMENT>
+<EMBED type="application/x-java-applet;version=1.2"
+ code=ptolemy.domains.de.demo.Adder.AdderApplet
+ codebase=../../../../..
+ archive="
+	ptolemy/ptsupport.jar,
+	ptolemy/domains/de/de.jar"
+
+ java_CODE=ptolemy.domains.de.demo.Adder.AdderApplet.class
+ java_CODEBASE=../../../../..
+ java_ARCHIVE="
+	ptolemy/ptsupport.jar,
+	ptolemy/domains/de/de.jar"
+ name="AdderApplet"
+ width=600 height=400
+ background="#faf0e6"
+ pluginspage="http://java.sun.com/products/plugin/1.2/plugin-install.html">
+<NOEMBED></COMMENT>
+<I>If you were able to run applets, you would have a demo here.</I>
+</NOEMBED></EMBED>
+</OBJECT>
+</center>
+
+<P>
+You can interact with the applet by choosing the stop time of the simulation
+and choosing the two binary numbers to be added. If the two numbers are not
+of the same length, then the shorter one will be padded on the right
+with zeros. Note that this might not be the right thing to do in real-life
+application. However, for the purpose of this demo, it should be fine.
+<P>This applet is implemented by
+
+<TT><A HREF="HistogramApplet.java">AdderApplet.java</A></TT>.
+<P>The simulation consists of a <A HREF="../../lib/DEClock.java">Clock</A>
+Actor, a
+<A HREF="../../lib/DEXORGate.java">XORGate</A> Actor,
+<A HREF="../../lib/DEANDGate.java">ANDGate</A> Actor,
+<A HREF="../../lib/DEORGate.java">ORGate</A> Actor,
+<A HREF="../../lib/DEFullAdder.java">FullAdder</A> Composite Actor,
+<A HREF="../../lib/DEWaveForm.java">WaveForm</A> Actor and a
+<A HREF="../../lib/DERegister.java">Register</A>
+Actor connected to a <A HREF="../../lib/DELogicAnalyzer.java">LogicAnalyzer</A> Actor.
+<BR>
+<MAP Name="ActorsMap">
+<AREA Shape="rect" Coords="1,5,73,48"
+	Href="../../lib/DEWaveForm.java">
+<AREA Shape="rect" Coords="1,124,73,168"
+	Href="../../lib/DEwaveForm.java">
+
+<AREA Shape="rect" Coords="222,13,270,70"
+	Href="../../lib/DEXORGate.java">
+<AREA Shape="rect" Coords="318,24,365,82"
+	Href="../../lib/DEXORGate.java">
+
+<AREA Shape="rect" Coords="228,95,264,154"
+	Href="../../lib/DEANDGate.java">
+<AREA Shape="rect" Coords="228,166,264,225"
+	Href="../../lib/DEANDGate.java">
+<AREA Shape="rect" Coords="228,238,264,297"
+	Href="../../lib/DEANDGate.java">
+
+<AREA Shape="rect" Coords="311,114,348,172"
+	Href="../../lib/DEORGate.java">
+<AREA Shape="rect" Coords="371,131,407,190"
+	Href="../../lib/DEORGate.java">
+
+<AREA Shape="rect" Coords="540,39,611,82"
+	Href="../../lib/DERegister.java">
+<AREA Shape="rect" Coords="540,136,611,180"
+	Href="../../lib/DERegister.java">
+</MAP>
+<CENTER>
+<IMG SRC="../img/AdderCircuit.gif"
+Alt="Imagemap" Usemap="#ActorsMap" Ismap>
+</CENTER>
+</BODY>
+</HTML>
