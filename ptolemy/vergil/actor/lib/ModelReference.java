@@ -32,6 +32,7 @@
 package ptolemy.vergil.actor.lib;
 
 import java.net.URL;
+import java.util.Iterator;
 
 import javax.swing.JFrame;
 
@@ -39,6 +40,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.Executable;
 import ptolemy.actor.ExecutionListener;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.gui.Configuration;
@@ -48,7 +50,10 @@ import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFrame;
 import ptolemy.actor.gui.style.ChoiceStyle;
 import ptolemy.data.LongToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.FileAttribute;
@@ -58,41 +63,138 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
 
 //////////////////////////////////////////////////////////////////////////
 //// ModelReference
 /**
-An atomic actor that can execute and/or open a model specified by
-a file or URL.
+This is an atomic actor that can execute and/or open a model specified by
+a file or URL. This can be used to define an actor whose firing behavior
+is given by a complete execution of another model.
 <p>
-FIXME: More details.
-
-If execution in a separate thread is selected, then the execution can be
-stopped by the postfire() method (FIXME... describe better). A subsequent
-invocation of the fire() method will wait for completion of the first
-execution...  FIXME
+An instance of this actor can have ports added to it.  If it has
+input ports, then on each firing, before executing the referenced
+model, this actor will read an input token from the input port, if
+there is one, and use it to set the value of a top-level parameter
+in the referenced model that has the same name as the port, if there
+is one.  If the top-level parameter of the referenced model is an
+instance of Variable (or its derived class Parameter), then the token
+read at the input is moved into it using its setToken() method.
+Otherwise, if it is an instance of Settable, then a string representation
+of the token is copied using the setExpression() method.
+Input ports should not be multiports, and if they are, then
+all but the first channel will be ignored.
+<p>
+If this actor has output ports and the referenced model is executed,
+then upon completion of that execution, this actor looks for top-level
+parameters in the referenced model whose names match those of the output
+ports. If there are such parameters, then the final value of those
+parameters is sent to the output ports. If such a parameter is an
+instance of Variable (or its derived class Parameter), then its
+contained token is sent to the output. Otherwise, if it is an
+instance of Settable, then a string token is produced on the output
+with its value equal to that returned by getExpression() of the
+Settable.  If the model is executed in the calling thread, then
+the outputs will be produced before the fire() method returns.
+If the model is executed in a new thread, then the outputs will
+be produced whenever that thread completes execution of the model.
+Output ports should not be multiports. If they are, then all but
+the first channel will be ignored.
+Normally, when you create output ports for this actor, you will have
+to manually set the type.  There is no type inference from the
+parameter of the referenced model.
+<p>
+A suite of parameters is provided to control what happens when this
+actor executes:
+<ul>
+<li> <i>executionOnFiring</i>: 
+The value of this string attribute determines what execution
+happens when the fire() method is invoked.  The recognized
+values are:
+<ul>
+<li> "run in calling thread" (the default)
+<li> "run in a new thread"
+<li> "do nothing".
+</ul>
+If execution in a separate thread is selected, then the execution can
+optionally be stopped by the postfire() method (see below). If the model
+is still executing the next time fire() is called on this actor, then
+the fire() method will wait for completion of the first execution.
 If an exception occurs during a run in another thread, then it will
-be reported at the next invocation of fire() or postfire().
+be reported at the next invocation of fire(), postfire(), or wrapup().
 
-FIXME: Note that using full screen is dangerous.
+<li> <i>lingerTime</i>:
+The amount of time (in milliseconds) to linger in the fire()
+method of this actor.  This is a long that defaults to 0L.
+If the model is run, then the linger occurs after the run
+is complete (if the run occurs in the calling thread) or
+after the run starts (if the run occurs in a separate thread).
+This can be used, for example, to run a model for a specified
+amount of time, then ask it to finish() and continue.
 
-FIXME: Note that can use to execute infinite running models by executing
-in a new thread and specifying a linger time.
+<li> <i>modelFileOrURL</i>:
+The file name or URL of the model that this actor will execute.
 
+<li> <i>openOnFiring</i>:
+The value of this string attribute determines what open
+happens when the fire() method is invoked.  The recognized
+values are:
+<ul>
+<li> "do not open" (the default)
+<li> "open in Vergil"
+<li> "open in Vergil (full screen)"
+<li> "open run control panel"
+</ul>
+Note that it is dangerous to use the full-screen mode because it
+becomes difficult to stop execution of the model that contains this
+actor.  In full-screen mode, the referenced model will consume
+the entire screen.  Stopping that execution will only serve to
+stop the current iteration, and very likely, another iteration will
+begin immediately and again occupy the entire screen.
+
+<li> <i>postfireAction</i>:
+The value of this string attribute determines what happens
+in the postfire() method.  The recognized values are:
+<ul>
+<li> "do nothing" (the default)
+<li> "close Vergil graph"
+<li> "stop executing"
+<li> "stop executing and close Vergil graph"
+</ul>
+The "stop executing" choices will only have an effect if
+if <i>executionOnFiring</i> is set to "run in a new thread".
+This can be used, for example, to run a model for a specified
+amount of time, and then stop it.
+</ul>
+<p>
+There are currently a number of serious limitations:
+<ul>
+FIXME: Modifying and saving the referenced model, if done through the
+Vergil window opened by this actor, results in overwriting the referenced
+model with a copy of the model containing this actor!
+<li>
+FIXME: Modifying the referenced model in another window and saving
+it does not result in this actor re-reading the model.
+<li>
 FIXME: Pausing the referring model doesn't pause the referenced model.
-
+<li>
 FIXME: Closing the master model doesn't close open referenced models.
-
-FIXME: Close option fails.
-
+<li>
+FIXME: The close in vergil option seems to fail.
+<li>
 FIXME: Need options for error handling.
+</ul>
 <P>
 
 @author Edward A. Lee
 @version $Id$
+@see Variable
+@see Parameter
+@see Settable
 */
 public class ModelReference
     extends TypedAtomicActor
@@ -254,14 +356,13 @@ public class ModelReference
                 if (_model instanceof CompositeActor) {
                     _manager = new Manager(_model.workspace(), "Manager");
                     ((CompositeActor)_model).setManager(_manager);
-                    // FIXME
-                    System.out.println("Created new manager: " + _manager);
+                    if (_debugging) {
+                        _debug("** Created new manager.");
+                    }
                 }
             }
         } else if (attribute == executionOnFiring) {
             String executionOnFiringValue = executionOnFiring.getExpression();
-            // FIXME:
-            System.out.println("****: " + getFullName() + " " + executionOnFiringValue);
             if (executionOnFiringValue.equals("run in calling thread")) {
                 _executionOnFiringValue = _RUN_IN_CALLING_THREAD;
             } else if (executionOnFiringValue.equals("run in a new thread")) {
@@ -299,7 +400,17 @@ public class ModelReference
         }
     }
 
-    // FIXME: clone method needed.  Make variables transient.
+    /** Override the base class to ensure that private variables are reset to null.
+     *  @return A new instance of ModelReference.
+     */
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        ModelReference newActor = (ModelReference) super.clone(workspace);
+        newActor._manager = null;
+        newActor._model = null;
+        newActor._tableau = null;
+        return newActor;
+    }
 
     /** React to the fact that execution has failed by unregistering
      *  as an execution listener and by allowing subsequent executions.
@@ -343,24 +454,29 @@ public class ModelReference
      *  and postfire() are repeated until either the model indicates it
      *  is not ready to execute (prefire() returns false), or it requests
      *  a stop (postfire() returns false or stop() is called).
-     *  Before running the complete execution, this method calls the
-     *  director's transferInputs() method to read any available inputs.
-     *  After running the complete execution, it calls transferOutputs().
+     *  Before running the complete execution, this method examines input
+     *  ports, and if they are connected, have data, and if the referenced
+     *  model has a top-level parameter with the same name, then one token
+     *  is read from the input port and used to set the value of the
+     *  parameter in the referenced model.
+     *  After running the complete execution, if there are any output ports,
+     *  then this method looks for top-level parameters in the referenced
+     *  model with the same name as the output ports, and if there are any,
+     *  reads their values and produces them on the output.
      *  If no model has been specified, then this method does nothing.
      *  @exception IllegalActionException If there is no director, or if
      *   the director's action methods throw it.
      */
     public void fire() throws IllegalActionException {
-        if (_debugging) {
-            _debug("---- Firing ModelReference.");
-        }
+        super.fire();
         if (_throwable != null) {
             Throwable throwable = _throwable;
             _throwable = null;
             throw new IllegalActionException(
                 this,
                 throwable,
-                "Run in a new thread threw an exception.");
+                "Run in a new thread threw an exception "
+                + "on the previous firing.");
         }
 
         if (_model instanceof CompositeActor) {
@@ -369,9 +485,6 @@ public class ModelReference
             // Will need the effigy for the model this actor is in.
             NamedObj toplevel = toplevel();
             Effigy myEffigy = Configuration.findEffigy(toplevel);
-            // FIXME
-            System.out.println(
-                "Found effigy for controlling model: " + myEffigy);
 
             // If there is no such effigy, then skip trying to open a tableau.
             // The model may have no graphical elements.
@@ -383,6 +496,9 @@ public class ModelReference
                         || _openOnFiringValue == _OPEN_IN_VERGIL_FULL_SCREEN) {
                         Configuration configuration =
                             (Configuration) myEffigy.toplevel();
+                        if (_debugging) {
+                            _debug("** Using the configuration to open a tableau.");
+                        }
                         _tableau = configuration.openModel(_model, myEffigy);
                         
                         // Do not allow editing on this tableau.  In particular,
@@ -394,10 +510,12 @@ public class ModelReference
                         // infinite loop when attempting to open either model.
                         // FIXME: This doesn't work!!!! Can still save model!!!!
                         _tableau.setEditable(false);
-                        
-                        // FIXME
-                        System.out.println(
-                            "Tableau for referenced model: " + _tableau);
+                        // FIXME: Should instead prevent delegating the write.
+                        // One way would be to create an effigy that overrides
+                        // topEffigy() to return itself. However, there is a
+                        // cast in PtolemyEffigy that will fail if we do that...
+                        ((Effigy)_tableau.getContainer()).setModifiable(false);
+
                         _tableau.show();
                     } else {
                         // Need an effigy for the model, or else graphical elements
@@ -408,10 +526,13 @@ public class ModelReference
                                 myEffigy,
                                 myEffigy.uniqueName(_model.getName()));
                         newEffigy.setModel(_model);
-                        // FIXME
-                        System.out.println(
-                            "Created new effigy for referenced model: "
-                                + newEffigy);
+                        // Since there is no tableau, this is probably not
+                        // necessary, but as a safety precaution, we prevent
+                        // writing of the model.
+                        newEffigy.setModifiable(false);
+                        if (_debugging) {
+                            _debug("** Created new effigy for referenced model.");
+                        }
                     }
                 } catch (NameDuplicationException ex) {
                     // This should not be thrown.
@@ -448,6 +569,9 @@ public class ModelReference
                     synchronized (this) {
                         while (_executing) {
                             try {
+                                if (_debugging) {
+                                    _debug("** Waiting for previous execution to finish.");
+                                }
                                 // Use workspace version of wait to release
                                 // read permission on the workspace.
                                 workspace().wait(this);
@@ -457,10 +581,11 @@ public class ModelReference
                                 return;
                             }
                         }
+                        if (_debugging) {
+                            _debug("** Previous execution has finished.");
+                        }
                     }
                 }
-                // FIXME
-                System.out.println("Frame: " + frame);
                 if (_openOnFiringValue == _OPEN_IN_VERGIL && frame != null) {
                     frame.toFront();
                 } else if (_openOnFiringValue == _OPEN_IN_VERGIL_FULL_SCREEN) {
@@ -471,24 +596,74 @@ public class ModelReference
                         frame.toFront();
                     }
                 }
+                
+                // Iterate over input ports and read any available values into
+                // the referenced model parameters.
+                if (_debugging) {
+                    _debug("** Reading inputs (if any).");
+                }
+                _readInputs();
 
                 if (_executionOnFiringValue == _RUN_IN_CALLING_THREAD) {
-                    // FIXME
-                    System.out.println("Executing in calling thread.");
+                    if (_debugging) {
+                        _debug("** Executing referenced model in the calling thread.");
+                    }
                     _manager.execute();
+                    if (_debugging) {
+                        _debug("** Writing outputs (if any).");
+                    }
+                    _writeOutputs();
                 } else if (_executionOnFiringValue == _RUN_IN_A_NEW_THREAD) {
                     // Listen for exceptions. The listener is
                     // removed in the listener methods, executionError()
                     // and executionFinished().
-                    // FIXME
-                    System.out.println("Executing in a new thread.");
+                    if (_debugging) {
+                        _debug("** Creating a new thread to execute the model.");
+                    }
                     _manager.addExecutionListener(this);
-                    _manager.startRun();
+                    
+                    // Create a thread.  Can't directly use _manager.startRun()
+                    // because we need to write outputs upon completion.
+                    if (_manager.getState() != Manager.IDLE) {
+                        throw new IllegalActionException(this,
+                                "Cannot start an execution. "
+                                + "Referenced model is "
+                                + _manager.getState().getDescription());
+                    }
+                    // NOTE: There is a possible race condition. We would like to
+                    // set this within the calling thread to avoid race conditions
+                    // where finish() might be called before the spawned thread
+                    // actually starts up. But the variable is not accessible.
+                    // _manager._finishRequested = false;
+                    Thread thread = new Thread() {
+                        public void run() {
+                            try {
+                                if (_debugging) {
+                                    _debug("** Executing model in a new thread.");
+                                }
+                                _manager.execute();
+                                if (_debugging) {
+                                    _debug("** Writing outputs (if any).");
+                                }
+                                _writeOutputs();
+                            } catch (Throwable throwable) {
+                                // If running tried to load in some native code using JNI
+                                // then we may get an Error here
+                                _manager.notifyListenersOfThrowable(throwable);
+                           }
+                        }
+                    };
+                    // Priority set to the minimum to get responsive UI during execution.
+                    thread.setPriority(Thread.MIN_PRIORITY);
+                    thread.start();   
                 }
                 long lingerTimeValue =
                     ((LongToken) lingerTime.getToken()).longValue();
                 if (lingerTimeValue > 0L) {
                     try {
+                        if (_debugging) {
+                            _debug("** Lingering for " + lingerTimeValue + " milliseconds.");
+                        }
                         Thread.sleep(lingerTimeValue);
                     } catch (InterruptedException ex) {
                         // Ignore.
@@ -523,23 +698,28 @@ public class ModelReference
         if (_tableau != null) {
             _tableau.getFrame();
         }
-        // FIXME
-        System.out.println("In postfire, tableau is: " + _tableau);
-        if ((_postfireActionValue | _STOP_EXECUTING) != 0) {
-            // FIXME:
-            System.out.println("Calling finish.");
+        if ((_postfireActionValue | _STOP_EXECUTING) != 0
+                && _manager != null) {
+            if (_debugging) {
+                _debug("** Calling finish() on the Manager to request termination.");
+            }
             _manager.finish();
             // Wait for the finish.
+            if (_debugging) {
+                _debug("** Waiting for completion of execution.");
+            }
             _manager.waitForCompletion();
         }
         _manager = null;
         if ((_postfireActionValue | _CLOSE_VERGIL_GRAPH) != 0
             && _tableau != null) {
+            if (_debugging) {
+                _debug("** Closing Vergil graph.");
+            }
             if (frame instanceof ExtendedGraphFrame) {
                 ((ExtendedGraphFrame) frame).cancelFullScreen();
             }
             if (frame instanceof TableauFrame) {
-                // FIXME: Do this only if explicitly requested.
                  ((TableauFrame) frame).close();
             } else if (frame != null) {
                 frame.hide();
@@ -592,13 +772,75 @@ public class ModelReference
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                        private methods                    ////
+
+    /** Iterate over input ports and read any available values into
+     *  the referenced model parameters.
+     *  @exception IllegalActionException If reading the ports or
+     *   setting the parameters causes it.
+     */
+    private void _readInputs() throws IllegalActionException {
+        Iterator ports = inputPortList().iterator();
+        while (ports.hasNext()) {
+            IOPort port = (IOPort) ports.next();
+            if (port.getWidth() > 0 && port.hasToken(0)) {
+                Token token = port.get(0);
+                Attribute attribute = _model.getAttribute(port.getName());
+                // Use the token directly rather than a string if possible.
+                if (attribute instanceof Variable) {
+                    if (_debugging) {
+                        _debug("** Transferring input to parameter: " + port.getName());
+                    }
+                    ((Variable) attribute).setToken(token);
+                } else if (attribute instanceof Settable) {
+                    if (_debugging) {
+                        _debug("** Transferring input as string to parameter: " + port.getName());
+                    }
+                    ((Settable) attribute).setExpression(token.toString());
+                }
+            }
+        }
+    }
+    
+    /** Iterate over output ports and read any available values from
+     *  the referenced model parameters and produce them on the outputs.
+     *  @exception IllegalActionException If reading the parameters or
+     *   writing to the ports causes it.
+     */
+    private void _writeOutputs() throws IllegalActionException {
+        Iterator ports = outputPortList().iterator();
+        while (ports.hasNext()) {
+            IOPort port = (IOPort) ports.next();
+            // Only write if the port has a connected channel.
+            if (port.getWidth() > 0) {
+                Attribute attribute = _model.getAttribute(port.getName());
+                // Use the token directly rather than a string if possible.
+                if (attribute instanceof Variable) {
+                    if (_debugging) {
+                        _debug("** Transferring parameter to output: " + port.getName());
+                    }
+                    port.send(0, ((Variable) attribute).getToken());
+                } else if (attribute instanceof Settable) {
+                    if (_debugging) {
+                        _debug("** Transferring parameter as string to output: " + port.getName());
+                    }
+                    port.send(
+                            0,
+                            new StringToken(
+                            ((Settable) attribute).getExpression()));
+                }
+            }
+        }
+    }
+    
+    ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
 
     /** The value of the executionOnFiring parameter. */
-    private int _executionOnFiringValue = _RUN_IN_CALLING_THREAD;
+    private transient int _executionOnFiringValue = _RUN_IN_CALLING_THREAD;
 
     // Flag indicating that the previous execution is in progress.
-    private boolean _executing = false;
+    private transient boolean _executing = false;
 
     // Possible values for executionOnFiring.
     private static int _DO_NOTHING = 0;
@@ -606,7 +848,7 @@ public class ModelReference
     private static int _RUN_IN_A_NEW_THREAD = 2;
 
     /** Indicator of what the last call to iterate() returned. */
-    private int _lastIterateResult = NOT_READY;
+    private transient int _lastIterateResult = NOT_READY;
 
     /** The manager currently managing execution. */
     private Manager _manager = null;
@@ -615,7 +857,7 @@ public class ModelReference
     private NamedObj _model;
 
     /** The value of the executionOnFiring parameter. */
-    private int _openOnFiringValue = _DO_NOT_OPEN;
+    private transient int _openOnFiringValue = _DO_NOT_OPEN;
 
     // Possible values for executionOnFiring.
     private static int _DO_NOT_OPEN = 0;
@@ -624,7 +866,7 @@ public class ModelReference
     private static int _OPEN_RUN_CONTROL_PANEL = 3;
 
     /** The value of the postfireAction parameter. */
-    private int _postfireActionValue = _DO_NOTHING;
+    private transient int _postfireActionValue = _DO_NOTHING;
 
     // Possible values for postfireAction (plus _DO_NOTHING,
     // which is defined above).
@@ -636,5 +878,5 @@ public class ModelReference
     private Tableau _tableau;
 
     // Error from a previous run.
-    private Throwable _throwable = null;
+    private transient Throwable _throwable = null;
 }
