@@ -37,7 +37,7 @@ DIRS =		demo xsl test
 # Root of the Java directory
 ROOT =		../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(SAXON_JAR)
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
@@ -84,9 +84,6 @@ MISC_FILES =  xsl test data
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo
-
-# AUXCLASSPATH
-AUXCLASSPATH = $(CLASSPATHSEPARATOR)../../lib/saxon7.jar
 
 # Command to run the Saxon transformer.
 # Use AUXCLASSPATH in XSL_TRANSFORM so that the code coverage will work
