@@ -148,7 +148,7 @@ public class Test extends NonStrictTest {
         super.fire();
         int width = input.getWidth();
 
-        // If we are in training mode, read the inputs and at to the
+        // If we are in training mode, read the inputs and add to the
         // training data.
         boolean training = ((BooleanToken)trainingMode.getToken())
             .booleanValue();
