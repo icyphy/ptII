@@ -99,35 +99,46 @@ test CTSingleSolverDirector-2.1 {Get default values} {
 
 test CTSingleSolverDirector-2.2 {set Parameters} {
     #Note: Use above set up.
-    set param [$dir getAttribute ODESolver]
-    set token [java::new ptolemy.data.StringToken ptolemy.domains.ct.kernel.solver.BackwardEulerSolver]
+    set param [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute ODESolver]]
+    set token [java::new ptolemy.data.StringToken \
+	    ptolemy.domains.ct.kernel.solver.BackwardEulerSolver]
     _testSetToken $param $token
     $param parameterChanged [java::null]
-    set param [$dir getAttribute InitialStepSize]
+    set param [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute InitialStepSize]]
     $param setExpression 0.5
     $param parameterChanged [java::null]
-    set param [$dir getAttribute LocalTrancationErrorTolerance]
+    set param [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute LocalTrancationErrorTolerance]]
     $param setExpression 0.4
     $param parameterChanged [java::null]
-    set param [$dir getAttribute MaximumIterationsPerStep]
+    set param [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute MaximumIterationsPerStep]]
     $param setExpression 10
     $param parameterChanged [java::null]
-    set param [$dir getAttribute MaximumStepSize]
+    set param [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute MaximumStepSize]]
     $param setExpression 0.3
     $param parameterChanged [java::null]    
-    set param [$dir getAttribute MinimumStepSize]
+    set param [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute MinimumStepSize]]
     $param setExpression 0.2
     $param parameterChanged [java::null]
-    set param [$dir getAttribute StartTime]
+    set param [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute StartTime]]
     $param setExpression 10.0
     $param parameterChanged [java::null]
-    set param [$dir getAttribute StopTime]
+    set param [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute StopTime]]
     $param setExpression 100.0
     $param parameterChanged [java::null]
-    set param [$dir getAttribute TimeResolution]
+    set param [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute TimeResolution]]
     $param setExpression 1e-11
     $param parameterChanged [java::null]
-    set param [$dir getAttribute ConvergeValueResolution]
+    set param [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute ConvergeValueResolution]]
     $param setExpression 0.1
     $param parameterChanged [java::null]
     $dir prefire
