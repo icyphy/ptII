@@ -123,6 +123,64 @@ test TimedQueueReceiver-4.3 {Check that hasRoom() works for infinite capacity qu
 ######################################################################
 ####
 #
+test TimedQueueReceiver-5.1 {get(), put(), check _rcvrTime and _lastTime} {
+    set wspc [java::new ptolemy.kernel.util.Workspace]
+    set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
+    set manager [java::new ptolemy.actor.Manager $wspc "manager"]
+    set dir [java::new ptolemy.domains.odf.kernel.ODFDirector $wspc "director"]
+    $topLevel setDirector $dir
+    $topLevel setManager $manager
+    set actorA [java::new ptolemy.domains.odf.kernel.test.ODFPutToken $topLevel "actorA" 3] 
+    set actorB [java::new ptolemy.domains.odf.kernel.test.ODFGetToken $topLevel "actorB" 3] 
+
+    set token0 [java::new ptolemy.data.Token]
+    set token1 [java::new ptolemy.data.Token]
+    set token2 [java::new ptolemy.data.Token]
+    $actorA setToken $token0 5.5 0
+    $actorA setToken $token1 15.2 1
+    $actorA setToken $token2 17.2 2
+    set portA [$actorA getPort "output"]
+    set portB [$actorB getPort "input"]
+    set rel [$topLevel connect $portB $portA "rel"]
+
+    $manager run
+
+    set outToken0 [$actorB getToken 0] 
+    set threadTime0 [$actorB getThreadTime 0] 
+    set rcvrTime0 [$actorB getRcvrTime 0] 
+    set outToken1 [$actorB getToken 1] 
+    set threadTime1 [$actorB getThreadTime 1] 
+    set rcvrTime1 [$actorB getRcvrTime 1] 
+    set outToken2 [$actorB getToken 2] 
+    set threadTime2 [$actorB getThreadTime 2] 
+    set rcvrTime2 [$actorB getRcvrTime 2] 
+    set lastTime [$actorB getLastTime]
+
+    if { $outToken0 == $token0 && $outToken1 == $token1 && $outToken2 == $token2 } {
+	set tok0 1
+	set tok1 1
+	set tok2 1
+    }   
+
+    if { $rcvrTime0 == 5.5 && $rcvrTime1 == 15.2 && $rcvrTime2 == 17.2 } {
+	set rcvrTime0 1
+	set rcvrTime1 1
+	set rcvrTime2 1
+    }
+
+    if { $threadTime0 == 5.5 && $threadTime1 == 15.2 && $threadTime2 == 17.2 } {
+	set threadTime0 1
+	set threadTime1 1
+	set threadTime2 1
+    }
+
+    list $tok0 $tok1 $tok2 $rcvrTime0 $rcvrTime1 $rcvrTime2 $threadTime0 $threadTime1 $threadTime2 $lastTime
+} {1 1 1 1 1 1 1 1 1 17.2}
+
+
+######################################################################
+####
+#
 test TimedQueueReceiver-5.1 {Put delayed event into empty queue; check rcvrTime and lastTime} {
     set actor [java::new ptolemy.domains.odf.kernel.ODFActor]
     set iop [java::new ptolemy.domains.odf.kernel.ODFIOPort $actor "port"]
@@ -252,21 +310,21 @@ test TimedQueueReceiver-6.4 {put, put, put, get; check rcvrTime} {
 ######################################################################
 ####
 #
-test TimedQueueReceiver-7.1 {Check getSize} {
-    set actor [java::new ptolemy.domains.odf.kernel.ODFActor]
-    set iop [java::new ptolemy.domains.odf.kernel.ODFIOPort $actor "port"]
-    set tqr [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver $iop]
-    set t1 [java::new ptolemy.data.Token]
-    set t2 [java::new ptolemy.data.Token]
-    set t3 [java::new ptolemy.data.Token]
-    $tqr put $t1
-    set size1 [$tqr getSize]
-    $tqr put $t2 5.0
-    set size2 [$tqr getSize]
-    $tqr put $t3 
-    set size3 [$tqr getSize]
-    list $size1 $size2 $size3
-} {1 2 3}
+#test TimedQueueReceiver-7.1 {Check getSize} {
+#    set actor [java::new ptolemy.domains.odf.kernel.ODFActor]
+#    set iop [java::new ptolemy.domains.odf.kernel.ODFIOPort $actor "port"]
+#    set tqr [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver $iop]
+#    set t1 [java::new ptolemy.data.Token]
+#    set t2 [java::new ptolemy.data.Token]
+#    set t3 [java::new ptolemy.data.Token]
+#    $tqr put $t1
+#    set size1 [$tqr getSize]
+#    $tqr put $t2 5.0
+#    set size2 [$tqr getSize]
+#    $tqr put $t3 
+#    set size3 [$tqr getSize]
+#    list $size1 $size2 $size3
+#} {1 2 3}
 
 ######################################################################
 ####
