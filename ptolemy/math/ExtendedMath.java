@@ -43,7 +43,7 @@ import java.lang.reflect.*;
  * ExtendedMath is a library of additional mathematical operations
  * beyond those provided by the Java Math class.
  *
- * @author Albert Chen, William Wu, Edward A. Lee
+ * @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
  * @version $Id$
  */
 
@@ -85,6 +85,22 @@ public final class ExtendedMath {
         return (Math.exp(x) + Math.exp(-x))/2;
     }
 
+    /** Return the base-10 logarithm of the argument.
+     *  @param x A double.
+     *  @return A double.
+     */
+    public static double log10(double x) {
+        return Math.log(x) * _ONEOVERLN10;
+    }
+
+    /** Return the base-2 logarithm of the argument.
+     *  @param x A double.
+     *  @return A double.
+     */
+    public static double log2(double x) {
+        return Math.log(x) * _ONEOVERLN2;
+    }
+
     /** Return the hyperbolic sine of the argument.
      *  FIXME: What is the assumed range of the argument?
      */
@@ -99,4 +115,7 @@ public final class ExtendedMath {
         if (x<0) return -1;
         else return 1;
     }
+
+    private final static double _ONEOVERLN2  = 1.0 / Math.log(2.0);
+    private final static double _ONEOVERLN10 = 1.0 / Math.log(10.0);
 }
