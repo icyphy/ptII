@@ -75,7 +75,7 @@ test ArrayFIFOQueue-2.1 {Construct an empty queue and check defaults} {
             [$queue getHistoryCapacity] \
             [$queue historySize] \
             [$queue size]
-} {10 {{}} 0 {{}} 0 0 0}
+} {-1 {{}} 0 {{}} 0 0 0}
 
 ######################################################################
 ####

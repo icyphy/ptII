@@ -109,9 +109,8 @@ public final class SDFIOPort extends TypedIOPort {
      *  @param tokens An array to fill with Tokens from the port.
      *  @exception NoTokenException If there are not enough tokens.
      *  @exception IllegalActionException If there is no director, and hence
-     *   no receivers have been created, if the port is not an input port, or
-     *   if the channel index is out of range.
-     *  @exception IllegalActionException if the array is null.
+     *   no receivers have been created, if the port is not an input port, 
+     *   if the channel index is out of range, or if the array is null.
      */
     public void getArray(int channelindex, Token tokens[])
             throws NoTokenException, IllegalActionException {
@@ -165,9 +164,8 @@ public final class SDFIOPort extends TypedIOPort {
      *  @param channelindex The index of the channel, from 0 to width-1
      *  @param tokens The tokens to send
      *  @exception NoRoomException If there is no room in the receiver.
-     *  @exception IllegalActionException If the port is not an output or if
-     *   the index is out of range.
-     *  @exception IllegalActionException If the array is null
+     *  @exception IllegalActionException If the port is not an output, if
+     *   the index is out of range, or if the array is null.
      */
     public void sendArray(int channelindex, Token tokens[])
             throws IllegalActionException, NoRoomException {
