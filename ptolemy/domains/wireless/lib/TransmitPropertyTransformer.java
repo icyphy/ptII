@@ -37,7 +37,7 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.wireless.kernel.PropertyTransformer;
@@ -66,14 +66,14 @@ import ptolemy.kernel.util.Workspace;
    transmission from the registed output port.
    <p>
    When transformProperties() is called, this actor sets the value
-   of three parameters and then performs a complete execution of the
-   contained model. The three parameters are <i>senderLocation</i>
+   of three variables and then performs a complete execution of the
+   contained model. The three variables are <i>senderLocation</i>
    (an array of doubles), <i>receiverLocation</i> (also an array of
    doubles), and <i>property</i> (a record token containing the
    transmit properties to be modified). After execution of the contained
    model, the (possibly modified) value of the record <i>property</i>
    is taken to be the modified properties. Thus, a contained model would
-   normally read the parameter <i>property</i>, change it, and use
+   normally read the variable <i>property</i>, change it, and use
    a SetVariable actor to set the new value of <i>property</i>.
    <p>
    This actor expects its output port to be connected directly
@@ -109,16 +109,16 @@ public class TransmitPropertyTransformer extends LifeCycleManager
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeSameAs(input);
-        // Create and configure the parameters.
-        senderLocation = new Parameter(this, "senderLocation");
+        // Create and configure the variables.
+        senderLocation = new Variable(this, "senderLocation");
         senderLocation.setTypeEquals(new ArrayType(BaseType.DOUBLE));
         senderLocation.setExpression("{0.0, 0.0}");
 
-        receiverLocation = new Parameter(this, "receiverLocation");
+        receiverLocation = new Variable(this, "receiverLocation");
         receiverLocation.setTypeEquals(new ArrayType(BaseType.DOUBLE));
         receiverLocation.setExpression("{0.0, 0.0}");
 
-        property = new Parameter(this, "property");
+        property = new Variable(this, "property");
         // FIXME: property type should be at least an empty record.
         property.setExpression("{power = 0.0, range = 0.0}");
 
@@ -149,17 +149,17 @@ public class TransmitPropertyTransformer extends LifeCycleManager
     /** The location of the sender. This is a double array with default
      *  value {0.0, 0.0}.
      */
-    public Parameter senderLocation;
+    public Variable senderLocation;
 
     /** The location of the receiver. This is a double array with default
      *  value {0.0, 0.0}.
      */
-    public Parameter receiverLocation;
+    public Variable receiverLocation;
 
     /** The properties to be transformed. This is a
      *  record token with value {power = 0.0, range = 0.0}.
      */
-    public Parameter property;
+    public Variable property;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -270,8 +270,8 @@ public class TransmitPropertyTransformer extends LifeCycleManager
     }
 
     /** Set the <i>senderLocation</i>, <i>receiverLocation</i>, and
-     *  <i>property</i> parameter and execute the contained model.
-     *  Return the final value of the <i>property</i> parameter.
+     *  <i>property</i> variables and execute the contained model.
+     *  Return the final value of the <i>property</i> variable.
      *  @param properties The initial value of the properties.
      *  @param sender The sending port.
      *  @param destination The receiving port.
