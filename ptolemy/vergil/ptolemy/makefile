@@ -81,7 +81,7 @@ OPTIONAL_FILES = \
 	'GraphFrame$$DeletionListener.class' \
 	'GraphFrame$$GetDocumentationAction.class' \
 	'GraphFrame$$ImportLibraryAction.class' \
-	'GraphFrame$$SaveInLibraryAction.class \
+	'GraphFrame$$SaveInLibraryAction.class' \
 	'Ptolemy.properties' \
 	'GraphFrame$$CopyAction.class' \
 	'GraphFrame$$CutAction.class' \
