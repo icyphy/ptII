@@ -90,7 +90,7 @@ public class ServiceInformation extends TypedAtomicActor {
         super(container, name);
 
         output = new SDFIOPort(this, "output", false, true);
-        output.setTypeEquals(new ArrayType(BaseType.STRING));
+        output.setTypeEquals(BaseType.STRING);
 
         service = new StringAttribute(this, "service");
         service.setExpression("Providers");
