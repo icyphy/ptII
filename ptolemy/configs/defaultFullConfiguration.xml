@@ -14,7 +14,7 @@
       <property name="Run Window" class="ptolemy.actor.gui.RunTableau$Factory"/>
       <property name="Tree View" class="ptolemy.vergil.tree.TreeTableau$Factory"/>
       <property name="XML view" class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
-      <property name="Code Generator" class="ptolemy.copernicus.gui.GeneratorTableau$Factory"/>
+      <!--property name="Code Generator" class="ptolemy.copernicus.gui.GeneratorTableau$Factory"/-->
       <property name="JVM Properties" class="ptolemy.actor.gui.JVMTableau$Factory"/>
       <property name="Tcl Shell" class="ptolemy.actor.gui.ptjacl.TclShellTableau$Factory"/>
 
@@ -82,7 +82,7 @@
             <input source="ptolemy/configs/automataLibrary.xml"/>
 	    <!-- Javacomm serial actors depend on javacomm being present  -->
             <input source="ptolemy/actor/lib/comm/comm.xml"/>
-            <input source="ptolemy/copernicus/copernicus.xml"/>
+            <!-- input source="ptolemy/copernicus/copernicus.xml"/ -->
             <input source="ptolemy/domains/domains.xml"/>
             <input source="ptolemy/actor/lib/esoteric.xml"/>
  	    <!-- GR depends on the 3D graphics package of Java being present-->
