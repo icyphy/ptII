@@ -47,7 +47,7 @@ public class ClockSystem {
      */	
     public ClockSystem()
             throws IllegalActionException, NameDuplicationException {
-        topLevel = new CompositeActor();
+        topLevel = new TypedCompositeActor();
         topLevel.setName("Top");
 
         // Set up the directors
@@ -93,7 +93,7 @@ public class ClockSystem {
     ////                         private variables                      ////
 
     // The top-level system.
-    private CompositeActor topLevel;
+    private TypedCompositeActor topLevel;
     private DECQDirector localDirector;
     private Manager executiveDirector;
 }

@@ -38,7 +38,7 @@
 
 
 # Create the top level Composite Actor
-set sys [java::new ptolemy.actor.CompositeActor]
+set sys [java::new ptolemy.actor.TypedCompositeActor]
 $sys setName DEDemo
 
 # Create directors and associate them with the top level composite actor.
@@ -56,7 +56,7 @@ set clock [java::new ptolemy.domains.de.lib.DEClock $sys Clock 1.0 1.0]
 set ramp [java::new ptolemy.domains.de.lib.Ramp $sys Ramp 0 1.0]
 
 # num demands pending = 1, consolidate demands = 1, capacity = 10
-set fifo1 [java::new ptolemy.domains.de.lib.FIFOQueue $sys FIFO1 1 true 10]
+set fifo1 [java::new ptolemy.domains.de.lib.DEFIFOQueue $sys FIFO1 1 true 10]
 
 set plot1 [java::new ptolemy.domains.de.lib.DEPlot $sys "Queue 1 Size"]
 
@@ -68,7 +68,7 @@ set passgate [java::new ptolemy.domains.de.lib.DEPassGate $sys PassGate]
 set delta [java::new ptolemy.domains.de.lib.DEDelay $sys DEDelay 0.0]
 
 # num demands pending = 1, consolidate demands = 1, capacity = 1000
-set fifo2 [java::new ptolemy.domains.de.lib.FIFOQueue $sys FIFO2 1 true 1000]
+set fifo2 [java::new ptolemy.domains.de.lib.DEFIFOQueue $sys FIFO2 1 true 1000]
 
 set plot2 [java::new ptolemy.domains.de.lib.DEPlot $sys "Queue 2 Size"]
 

@@ -132,8 +132,7 @@ public class HistogramApplet extends Applet implements Runnable {
         sb.add(_meanIntervalLabel, "South");
         _meanIntervalScrollbar = new Scrollbar(Scrollbar.HORIZONTAL, 1, 1, 1,10);
         sb.add(_meanIntervalScrollbar, "North");
-        _sbListener = new IntervalSbListener();
-        _meanIntervalScrollbar.addAdjustmentListener(_sbListener);
+        _meanIntervalScrollbar.addAdjustmentListener(new IntervalSbListener());
         // Done adding scroll bar and label in the applet panel.
 
         // Add a sub panel in the control panel
@@ -157,7 +156,7 @@ public class HistogramApplet extends Applet implements Runnable {
         // Done adding go button
         
         try {
-            CompositeActor topLevel = new CompositeActor();
+            TypedCompositeActor topLevel = new TypedCompositeActor();
             topLevel.setName("Top");
         
             // Set up the directors
@@ -195,7 +194,8 @@ public class HistogramApplet extends Applet implements Runnable {
     /** Run the simulation.
      */
     public void run() {
-        
+
+        System.out.println("HistogramApplet.run()");
         String timespec = _stopTimeBox.getText();
         try {
             Double spec = Double.valueOf(timespec);
@@ -207,20 +207,26 @@ public class HistogramApplet extends Applet implements Runnable {
         
         try {
                 Checkbox selected = _cbg.getSelectedCheckbox();
+
+                System.out.println("Selected = " + selected);
                 
                 if (selected == _clockCheckbox) {
+                    System.out.println("Inside clock selection");
                     _meanInterval = (Parameter)_clock.getAttribute("interval");
                     // Use DEClock for the bus arrival
                     if (_bus != _clock) {
+                        System.out.println("Updating it to clock");
                         _poisson.output.unlink(r1);
                         _clock.output.link(r1);
                         _bus = _clock;
                         _meanInterval = (Parameter)_clock.getAttribute("interval");
                     }
                 } else {
+                    System.out.println("Inside poisson selection");
                     _meanInterval = (Parameter)_poisson.getAttribute("lambda");
                     // Use DEPoisson for the bus arrival
                     if (_bus != _poisson) {
+                        System.out.println("Updating it to poisson");
                         _clock.output.unlink(r1);
                         _poisson.output.link(r1);
                         _bus = _poisson;
@@ -243,30 +249,7 @@ public class HistogramApplet extends Applet implements Runnable {
 
 
                 // Start the simulation.
-                // This won't start a thread.
-                // FIXME: A BIG & UGLY HACK
-                int beforeCount = Thread.activeCount(); // HACK
-                Thread[] before = new Thread[beforeCount]; // HACK
-                Thread.enumerate(before);  // HACK
-                _executiveDirector.go(); //NON-HACK
-                int afterCount = Thread.activeCount();  // HACK
-                Thread[] after = new Thread[afterCount]; // HACK
-                Thread.enumerate(after); // HACK
-                for (int i = 0; i < afterCount; i++) { // HACK
-                    Thread suspect = after[i]; //HACK
-                    // find suspect in the before list.
-                    boolean found = false; //HACK
-                    for (int j = 0; j < beforeCount; j++) { //HACK
-                        if (suspect == before[i]) { //HACK
-                            found = true; //HACK
-                            break; //HACK
-                        } //HACK
-                    } //HACK
-                    if (!found) { //HACK
-                        suspect.join(); //HACK
-                        break; //HACK
-                    } //HACK
-                } //HACK
+                _executiveDirector.blockingGo();
                 
                 double average = _stat.getAverage();
                 _averageWaitTimeLabel.setText("Mean wait time = "+average);
@@ -289,43 +272,43 @@ public class HistogramApplet extends Applet implements Runnable {
 
 
     // The actors involved in the topology.
-    DEStatistics _stat;
-    CheckboxGroup _cbg;
-    Checkbox _clockCheckbox;
-    Checkbox _poissonCheckbox;
-    DEClock _clock;
-    DEPoisson _poisson;
-    DEActor _bus;
-    Relation r1;
+    /*private*/ DEStatistics _stat;
+    /*private*/ CheckboxGroup _cbg;
+    /*private*/ Checkbox _clockCheckbox;
+    /*private*/ Checkbox _poissonCheckbox;
+    /*private*/ DEClock _clock;
+    /*private*/ DEPoisson _poisson;
+    /*private*/ DEActor _bus;
+    /*private*/ Relation r1;
 
 
     // FIXME: Under jdk 1.2, the following can (and should) be private
-    DECQDirector _localDirector;
-    Manager _executiveDirector;
+    /*private*/ DECQDirector _localDirector;
+    /*private*/ Manager _executiveDirector;
 
-    TextField _stopTimeBox;
-    double _stopTime = 100.0;
-    Button _goButton;
+    /*private*/ TextField _stopTimeBox;
+    /*private*/ double _stopTime = 100.0;
+    /*private*/ Button _goButton;
     
-    TextField _intervalTextField;
-    double _interval = 10.0;
+    /*private*/ TextField _intervalTextField;
+    /*private*/ double _interval = 10.0;
     
-    Label _averageWaitTimeLabel;
-    Label _currentTimeLabel;
+    /*private*/ Label _averageWaitTimeLabel;
+    /*private*/ Label _currentTimeLabel;
 
     // Some parameters that we want to change during simulation.
-    Parameter _meanInterval;
-    Scrollbar _meanIntervalScrollbar;
-    IntervalSbListener _sbListener;
-    Label _meanIntervalLabel;
-
+    /*private*/ Parameter _meanInterval;
+    /*private*/ Scrollbar _meanIntervalScrollbar;
+    /*private*/ Label _meanIntervalLabel;
+ 
     // END FIXME
 
     //////////////////////////////////////////////////////////////////////////
     ////                       inner classes                              ////
 
     // Show simulation progress.
-    private class CurrentTimeThread extends Thread {
+    // FIXME: due to an applet bug, I changed these inner class to public.
+    public class CurrentTimeThread extends Thread {
         public void run() {
             while (simulationThread.isAlive()) {
                 // get the current time from director.
@@ -338,8 +321,7 @@ public class HistogramApplet extends Applet implements Runnable {
         }
     }
 
-    
-    private class GoButtonListener implements ActionListener {
+    public class GoButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent evt) {
             try {
                 if (simulationThread == null) {
@@ -357,12 +339,14 @@ public class HistogramApplet extends Applet implements Runnable {
                 
         }
     }
-
-    private class IntervalSbListener implements AdjustmentListener {
+    
+   
+    public class IntervalSbListener implements AdjustmentListener {
         public void adjustmentValueChanged(AdjustmentEvent e) {
             int value = e.getValue();
             _meanIntervalLabel.setText("Mean interarrival time = " + value);
             if (_meanInterval != null) {
+                System.out.println("Setting mean interarrival time");
                 _meanInterval.setToken(new DoubleToken((double)value));
             }
         }

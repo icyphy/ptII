@@ -62,8 +62,8 @@ public class AdderApplet extends Applet implements Runnable {
 
         // Initialization
 
-        _ATextField = new TextField("1 0 0 1 1 0 1 1 0 1 1 0 0 1 1 1 0 1 1 0", 40);
-        _BTextField = new TextField("0 0 1 0 1 1 1 1 0 1 1 0 1 0 1 0 0 1 1 1", 40);
+        _ATextField = new TextField("1 0 0 1 1 0 1 1 0 1 1 0 0 1 1 1 0 1 1 0 1 1 1 1 0 0 1 1 1 0 0 0 1 1 1 1 1 0 1 0 1 0 1 1 0 0 1 1 1 0 0 1 0 0 0 0", 50);
+        _BTextField = new TextField("0 0 1 0 1 1 1 1 0 1 1 0 1 0 1 0 0 1 1 1 0 1 0 1 0 1 1 0 0 1 1 1 0 0 1 1 1 0 0 0 1 1 1 1 1 0 1 0 1 0 1 1 1 1 1 1", 50);
         _stopTimeBox = new TextField("30.0", 10);
         _currentTimeLabel = new Label("Current time = 0.0      ");
         _goButton = new Button("Go");
@@ -133,7 +133,7 @@ public class AdderApplet extends Applet implements Runnable {
 
         // Creating the topology.
         try {
-            CompositeActor topLevel = new CompositeActor();
+            TypedCompositeActor topLevel = new TypedCompositeActor();
             topLevel.setName("Top");
         
             // Set up the top level composite actor, director and manager

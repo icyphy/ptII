@@ -35,13 +35,16 @@
 # Root of the Java directory
 ROOT =		../../../..
 
-ME =		ptolemy/domains/ct/demo
+ME =		ptolemy/domains/de/demo
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 CLASSPATH = ../../../..
+
+JAVA_HOME_ENV = /usr/tools/pure/jdk1.1.6
+QUANTIFY_JAVA_HOME_ENV = /usr/tools/pure/quantify-4.2-solaris2
 
 TYPACKAGE_DIR = ptolemy/domains/de/demo
 
@@ -50,6 +53,7 @@ JSRCS = \
 	ClockApplet.java \
 	ClockSystem.java \
 	HistogramApplet.java \
+	QueueApp.java \
 	QueueApplet.java
 
 # Non-graphical Java demos written in Tcl
@@ -135,8 +139,7 @@ CLOCK_CLASSFILES = \
 	ptolemy/actor/TypeConflictException.class \
 	ptolemy/actor/util/CQComparator.class \
 	'ptolemy/actor/util/CalendarQueue$$CQEntry.class' \
-	'ptolemy/actor/util/CalendarQueue$$EntryComparator.class' \
-	'ptolemy/actor/util/CalendarQueue$$SortedLinkedList.class' \
+	'ptolemy/actor/util/CalendarQueue$$CQLinkedList.class' \
 	ptolemy/actor/util/CalendarQueue.class \
 	ptolemy/actor/util/FIFOQueue.class \
 	ptolemy/data/DoubleToken.class \
@@ -169,6 +172,8 @@ CLOCK_CLASSFILES = \
 	ptolemy/graph/DirectedGraph.class \
 	ptolemy/graph/DirectedAcyclicGraph.class \
 	ptolemy/graph/Graph.class \
+	ptolemy/graph/InequalitySolver.class \
+	ptolemy/graph/InequalitySolver$$Info.class \
 	ptolemy/kernel/ComponentEntity.class \
 	ptolemy/kernel/ComponentPort.class \
 	ptolemy/kernel/ComponentRelation.class \
@@ -213,6 +218,20 @@ clockapplet.jar: $(JSRCS) $(JCLASS)
 		$(CLOCK_CLASSFILES))
 depend:
 	@echo "no dependencies in this directory"
+
+# Profiling stuff
+
+#java.prof: QueueApp.class
+#	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(COLLECTIONS)$(CLASSPATHSEPARATOR)$(PROFILEVIEWER)" java -prof ptolemy.domains.de.demo.QueueApp
+
+#viewprof: java.prof
+#	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(COLLECTIONS)$(CLASSPATHSEPARATOR)$(PROFILEVIEWER)" java ProfileViewer java.prof
+
+quantify1:
+	JAVA_HOME=$(JAVA_HOME_ENV) QUANTIFY_JAVA_HOME=$(QUANTIFY_JAVA_HOME_ENV) CLASSPATH="$(CLASSPATH)" $(JAVA_HOME_ENV)/bin/qjava sun.applet.AppletViewer Adder.html
+
+quantify2:	
+	JAVA_HOME=$(JAVA_HOME_ENV) QUANTIFY_JAVA_HOME=$(QUANTIFY_JAVA_HOME_ENV) CLASSPATH="$(CLASSPATH)" $(JAVA_HOME_ENV)/bin/qjava ptolemy.domains.de.demo.QueueApp
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

@@ -31,18 +31,18 @@
 #######################################################################
 
 #######################################################################
-#  DEClock->DERamp->DEPlot
+#  DEClock->Ramp->DEPlot
 #
 
 # Create the top level Composite Actor
-set sys [java::new ptolemy.actor.CompositeActor]
+set sys [java::new ptolemy.actor.TypedCompositeActor]
 $sys setName DESystem
 
 # Create directors and associate them with the top level composite actor.
 set dir [java::new ptolemy.domains.de.kernel.DECQDirector DELocalDirector]
 $sys setDirector $dir
-set exec [java::new ptolemy.actor.Director]
-$sys setExecutiveDirector $exec
+set exec [java::new ptolemy.actor.Manager]
+$sys setManager $exec
 
 # Set the stop time
 $dir setStopTime 10.0
@@ -71,3 +71,8 @@ set r2 [$sys connect $rampOut $plotIn R2]
 
 # Run it
 $exec go
+
+[$clockOut getResolvedType] getName
+[$rampIn getResolvedType] getName
+[$rampOut getResolvedType] getName
+[$plotIn getResolvedType] getName

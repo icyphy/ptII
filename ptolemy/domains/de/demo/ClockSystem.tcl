@@ -34,14 +34,14 @@
 #
 
 # Create the top level Composite Actor
-set sys [java::new ptolemy.actor.CompositeActor]
+set sys [java::new ptolemy.actor.TypedCompositeActor]
 $sys setName DESystem
 
 # Create directors and associate them with the top level composite actor.
 set dir [java::new ptolemy.domains.de.kernel.DECQDirector DELocalDirector]
 $sys setDirector $dir
-set exec [java::new ptolemy.actor.Director]
-$sys setExecutiveDirector $exec
+set exec [java::new ptolemy.actor.Manager]
+$sys setManager $exec
 
 # Build the system
 set clock [java::new ptolemy.domains.de.lib.DEClock $sys Clock 1.0 1.0]

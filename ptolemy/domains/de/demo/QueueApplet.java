@@ -122,7 +122,7 @@ public class QueueApplet extends Applet implements Runnable {
 
         // Creating the topology.
         try {
-            CompositeActor sys = new CompositeActor();
+            TypedCompositeActor sys = new TypedCompositeActor();
             sys.setName("DE Demo");
         
             // Set up the top level composite actor, director and manager
@@ -135,16 +135,16 @@ public class QueueApplet extends Applet implements Runnable {
             // Create the actors.
             // ---------------------------------
             DEClock clock = new DEClock(sys, "Clock", 1.0, 1.0);
-            DERamp ramp = new DERamp(sys, "Ramp", 0, 1.0);
+            Ramp ramp = new Ramp(sys, "Ramp", 0, 1.0);
             
-            FIFOQueue fifo1 = new FIFOQueue(sys, "FIFO1", 1, true, 10);
+            DEFIFOQueue fifo1 = new DEFIFOQueue(sys, "FIFO1", 1, true, 10);
             DEPlot plot1 = new DEPlot(sys, "Queue 1 Size", panel1);
             
             DEServer server1 = new DEServer(sys, "Server1", 1.0);
             DEPassGate passgate = new DEPassGate(sys, "PassGate");
             DEDelay delta = new DEDelay(sys, "DEDelay", 0.0);
             
-            FIFOQueue fifo2 = new FIFOQueue(sys, "FIFO2", 1, true, 1000);
+            DEFIFOQueue fifo2 = new DEFIFOQueue(sys, "FIFO2", 1, true, 1000);
             DEPlot plot2 = new DEPlot(sys, "Queue 2 Size", panel2);
             
             TestLevel testlevel = new TestLevel(sys, "TestLevel", true, 4);

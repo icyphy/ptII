@@ -78,7 +78,7 @@ public class ClockApplet extends Applet {
         appletPanel.add(_plot);
 
         try {
-            topLevel = new CompositeActor();
+            topLevel = new TypedCompositeActor();
             topLevel.setName("Top");
         
             // Set up the directors
@@ -107,7 +107,7 @@ public class ClockApplet extends Applet {
     ////                         private variables                      ////
 
     private Plot _plot;
-    private CompositeActor topLevel;
+    private TypedCompositeActor topLevel;
     // FIXME: Under jdk 1.2, the following can (and should) be private
     public DECQDirector _localDirector;
     public Manager _executiveDirector;

@@ -45,17 +45,14 @@
 #                             ------------------
 
 # Create the top level Composite Actor
-set sys [java::new ptolemy.actor.CompositeActor]
+set sys [java::new ptolemy.actor.TypedCompositeActor]
 $sys setName DESystem
 
 # Create directors and associate them with the top level composite actor.
 set dir [java::new ptolemy.domains.de.kernel.DECQDirector DELocalDirector]
 $sys setDirector $dir
-set exec [java::new ptolemy.actor.Director]
-$sys setExecutiveDirector $exec
-
-# Set the stop time
-$dir setStopTime 20.0
+set exec [java::new ptolemy.actor.Manager]
+$sys setManager $exec
 
 # Build the system
 set poisson [java::new ptolemy.domains.de.lib.DEPoisson $sys Poisson 1.0 0.5]
@@ -112,6 +109,9 @@ $ramp2In link $r4
 $sampler2ClockIn link $r4
 set r5 [$sys connect $ramp2Out $sampler2DataIn R5]
 set r6 [$sys connect $sampler2Out $plotIn R6]
+
+# Set the stop time
+$dir setStopTime 20.0
 
 # Run it
 $exec go
