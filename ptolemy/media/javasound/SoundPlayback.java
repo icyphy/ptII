@@ -75,7 +75,7 @@ import javax.sound.sampled.*;
    called to deliver the audio data to the audio output device
    (speaker or file). The audio samples delivered to putSamples()
    should be in the proper range, or clipping will occur.
-   putSamples() expects the samples to be in the range (-1,1).
+   putSamples() expects the samples to be in the range (-1, 1).
    putSamplesInt() expects the samples to be in the range
    (-2^(bits_per_sample/2), 2^(bits_per_sample/2)), where
    bits_per_sample is the number of bits per sample.
@@ -233,7 +233,7 @@ public class SoundPlayback {
      *  to the sound file specified in the constructor. Note that
      *  underflow cannot occur for this case.
      *  <p>
-     *  The samples should be in the range (-1,1). Samples that are
+     *  The samples should be in the range (-1, 1). Samples that are
      *  outside ths range will be hard-clipped so that they fall
      *  within this range.
      *  @param putSamplesArray A two dimensional array containing
@@ -587,8 +587,8 @@ public class SoundPlayback {
     /* Convert a double array of audio samples into a byte array of
      * audio samples in linear signed pcm big endian format. The
      * samples contained in <i>doubleArray</i> should be in the
-     * range (-1,1). Samples outside this range will be hard clipped
-     * to the range (-1,1).
+     * range (-1, 1). Samples outside this range will be hard clipped
+     * to the range (-1, 1).
      * @param doubleArray Two dimensional array holding audio samples.
      * For each channel, m, doubleArray[m] is a single dimensional
      * array containing samples for channel m.
