@@ -760,7 +760,7 @@ fi
 
 
 #--------------------------------------------------------------------
-#	Figure out whether to use javac -depend or javac -Xdepend
+#	Figure out whether to use javac -Xdepend or javac -depend
 #--------------------------------------------------------------------
 echo $ac_n "checking the Java compiler with a simple compile""... $ac_c" 1>&6
 echo "configure:767: checking the Java compiler with a simple compile" >&5
@@ -777,22 +777,22 @@ echo "configure:777: checking the value of the java.version Property " >&5
     JVERSION=`CLASSPATH=$PTII/config $JAVA confTest`	
     echo "$ac_t""$JVERSION" 1>&6
 
-    JDEPENDFLAG="-depend"
+    JDEPENDFLAG="-Xdepend"
     echo $ac_n "checking javac $JDEPENDFLAG""... $ac_c" 1>&6
 echo "configure:783: checking javac $JDEPENDFLAG" >&5
     if $JAVAC -d $startdir $JDEPENDFLAG confTest.java ; then
 	echo "$ac_t""yes" 1>&6
     else
 	echo "$ac_t""no" 1>&6
-	JDEPENDFLAG="-Xdepend"
+	JDEPENDFLAG="-depend"
 	echo $ac_n "checking javac $JDEPENDFLAG""... $ac_c" 1>&6
 echo "configure:790: checking javac $JDEPENDFLAG" >&5
 	if $JAVAC -d $startdir $JDEPENDFLAG confTest.java ; then
 	    echo "$ac_t""yes" 1>&6
 	else
 	    echo "$ac_t""no" 1>&6
-	    echo "configure: warning: '$JAVAC -d $startdir -depend confTest.java' and
-'$JAVAC -d $startdir -Xdepend confTest.java' both failed, so we don't
+	    echo "configure: warning: '$JAVAC -d $startdir -Xdepend confTest.java' and
+'$JAVAC -d $startdir -depend confTest.java' both failed, so we don't
 know how to build with dependencies taken into account.  This could
 cause problems later if you modify .java files that other .java
 files depend on" 1>&2
@@ -802,7 +802,7 @@ files depend on" 1>&2
 else
     JDEPENDFLAG="-depend"
    echo "configure: warning: '$JAVAC confTest.java' failed,
-so we can't figure out whether to use -depend or -Xdepend.
+so we can't figure out whether to use -Xdepend or -depend.
 Defaulting to $JDEPENDFLAG" 1>&2;
 fi
 cd $startdir
@@ -920,6 +920,8 @@ echo "configure:908: checking for javacc" >&5
 You need not download JavaCC unless you plan on modifying certain files 
 in ptolemy/data/expr. 
 JavaCC can be downloaded from http://www.sun.com/suntest'" 1>&2
+	JJTREE=touch
+	JAVACC=touch
     fi
 fi
 
@@ -941,7 +943,7 @@ if test ! -d "$PTII/util/testsuite"; then
 find Jacl" 1>&6
 else
     echo $ac_n "checking for ptjacl.jar""... $ac_c" 1>&6
-echo "configure:945: checking for ptjacl.jar" >&5
+echo "configure:947: checking for ptjacl.jar" >&5
     # Check whether --with-ptjacl_jar or --without-ptjacl_jar was given.
 if test "${with_ptjacl_jar+set}" = set; then
   withval="$with_ptjacl_jar"
@@ -954,7 +956,7 @@ fi
     if test -f "$PTJACL_JAR"; then
 	echo "$ac_t""$PTJACL_JAR" 1>&6
 	echo $ac_n "checking for how to run jacl""... $ac_c" 1>&6
-echo "configure:958: checking for how to run jacl" >&5
+echo "configure:960: checking for how to run jacl" >&5
 	# This command starts up Jacl
 	if echo "set java::jdkVersion; exit" | CLASSPATH=$PTJACL_JAR $JAVA $PTJACL_JFLAG tcl.lang.Shell; then
 		echo "$ac_t""CLASSPATH=$PTJACL_JAR $JAVA $PTJACL_JFLAG tcl.lang.Shell" 1>&6
