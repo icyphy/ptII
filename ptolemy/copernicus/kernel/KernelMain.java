@@ -199,7 +199,8 @@ public class KernelMain {
 	    if ( javaSpecificationVersionAttribute.compareTo(new VersionAttribute("1.4")) >= 0) {
 		System.err.println("Warning, Soot 1.2.3 may not work with Java specification '"
                         + javaSpecificationVersion
-                        + "'. You may need to patch soot.");
+                        + "'. You may need to patch soot and compile"
+                        + "Ptolemy II with javac -target 1.1 ...");
 	    }
 	}
 
