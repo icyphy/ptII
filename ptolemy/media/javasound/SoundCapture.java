@@ -71,7 +71,7 @@ import javax.sound.sampled.*;
    audio is captured from the mic or line-ine, it is important to
    invoke <i>getSamples()</i> often enough to prevent overflow of
    the internal audio buffer. The size of the internal buffer is
-   set in the contructor.
+   set in the constructor.
    Finally, after no more audio data is desired, <i>stopCapture()</i>
    should be called to free up audio system resources.
    <p>
@@ -80,7 +80,7 @@ import javax.sound.sampled.*;
    audio from a file specified as a URL on the same machine as the
    one the applet was loaded from. Applet code is not allowed to
    read or write native files. The .java.policy file must be
-   modified to grant applets more privliiges.
+   modified to grant applets more privileges.
    <p>
    Note: Requires Java 2 v1.3.0 RC1 or later.
 
@@ -143,9 +143,9 @@ public class SoundCapture {
      *  object that captures audio from a sound file.
      *  @param isURL True means that a URL to a file is given. False means
      *   that the file name specifies the location of the file on
-     *   the local filesystem.
+     *   the local file system.
      *  @param fileName The name of the file. This can be either a URL
-     *   file name or a local file sytem file name. Valid sound file
+     *   file name or a local file system file name. Valid sound file
      *   formats are WAVE (.wav), AIFF (.aif, .aiff), AU (.au). The file
      *   format is automatically determined from the file extension.
      *  @param getSamplesSize The number of samples per channel
@@ -325,7 +325,7 @@ public class SoundCapture {
         try {
             _targetLine = (TargetDataLine) AudioSystem.getLine(targetInfo);
 	    // Note: 2nd parameter is the buffer size (in bytes).
-	    // Larger vaules increase latency but may be required if
+	    // Larger values increase latency but may be required if
 	    // garbage collection, etc. is an issue.
             _targetLine.open(format, _bufferSize*_frameSizeInBytes);
         } catch (LineUnavailableException ex) {
@@ -364,7 +364,7 @@ public class SoundCapture {
     }
 
 
-    /* Perform necessary initialization to caputre from a sound
+    /* Perform necessary initialization to capture from a sound
      * file. The sound file can be specified as a URL or as a
      * filename on the local filesystem.
      */
@@ -373,7 +373,7 @@ public class SoundCapture {
 	    if (_isURL == true) {
 		// Load audio from a URL.
 
-		// Create a URL corresponing to the sound file location.
+		// Create a URL corresponding to the sound file location.
 		URL soundURL =
 		    new URL(_fileName);
 
