@@ -44,6 +44,8 @@ if {[info procs enumToObjects] == "" } then {
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
+# FIXME: Add constructor tests.
+
 ######################################################################
 ####
 #
@@ -230,3 +232,59 @@ test SDFReceiver-4.1 {Check getArray} {
 
     list $result1 $result2 $result3 [jdkPrintArray $receivedTokenArray]
 } {0 1 0 {{"foo"} {"bar"}}}
+
+######################################################################
+####
+#
+test SDFReceiver-5.1 {Check hasRoom} {
+    set receiver [java::new ptolemy.domains.sdf.kernel.SDFReceiver]
+
+    # Should return true, since there should be room.
+    set result1 [$receiver hasRoom]
+
+    # Should return true, since there should be room.
+    set result2 [$receiver hasRoom 1]
+
+    # Should return true, since there should be room.
+    set result3 [$receiver hasRoom 2]
+
+    list $result1 $result2 $result3
+} {1 1 1}
+
+######################################################################
+####
+#
+test SDFReceiver-5.1 {Check setCapacity} {
+    set receiver [java::new ptolemy.domains.sdf.kernel.SDFReceiver]
+    # Check that hasToken returns false when the receiver is empty
+    # and returns true after a token has been put in the
+    # receiver.
+
+    # Should return true, since there should be room.
+    set result1 [$receiver hasRoom]
+
+    # Should return true, since there should be room.
+    set result2 [$receiver hasRoom 1]
+
+    # Should return true, since there should be room.
+    set result3 [$receiver hasRoom 2]
+
+    $receiver setCapacity 1
+
+    # token to put
+    set token [java::new ptolemy.data.StringToken foo]
+
+    # Now put a token.
+    $receiver {put ptolemy.data.Token} $token
+
+    # Should return false, since there should not be room.
+    set result4 [$receiver hasRoom]
+
+    # Should return false, since there should not be room.
+    set result5 [$receiver hasRoom 1]
+
+    # Should return false, since there should not be room.
+    set result6 [$receiver hasRoom 2]
+
+    list $result1 $result2 $result3 $result4 $result5 $result6
+} {1 1 1 0 0 0}

@@ -217,13 +217,20 @@ public class SDFReceiver extends AbstractReceiver {
         return !_queue.isFull();
     }
 
-    /** Return true if put() will succeed in accepting a token.
+    /** Return true if put() will succeed in accepting the specified
+     *  number of tokesn.
+     *  @param tokens The number of tokens.
      *  @return A boolean indicating whether a token can be put in this
      *   receiver.
      *  @exception IllegalActionException If the number of tokens is less
      *  than one.
      */
     public boolean hasRoom(int tokens) throws IllegalActionException {
+	if (_queue.getCapacity() == INFINITE_CAPACITY) {
+	    // queue has infinite capacity, so it can accept any
+	    // finite number of tokens.
+	    return true;
+	}
 	if(tokens < 1) 
 	    throw new IllegalActionException("The number of " + 
 					     "tokens must be greater than 0");
