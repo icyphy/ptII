@@ -236,7 +236,6 @@ public class Token {
     /** Return the String "present" to indicate that an event is present.
      *  This method should be overridden in the derived classes to
      *  return the data in the token as a String.
-     *  @exception IllegalActionException Not thrown in this base class,
      *  @return The String "present".
      */
     public String stringValue() {
