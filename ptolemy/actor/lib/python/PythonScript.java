@@ -39,6 +39,7 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.StringUtilities;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
@@ -152,7 +153,6 @@ public class PythonScript extends TypedAtomicActor {
     public PythonScript(CompositeEntity container, String name)
         throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        System.out.println("DEBUG: PythonScript(): " + container + " " + name);
         script = new StringAttribute(this, "script");
         // Set the visibility to expert, as casual users should
         // not see the script.  This is particularly true if one
@@ -616,6 +616,19 @@ public class PythonScript extends TypedAtomicActor {
             _interpreter.exec(
                 "sys.path.append('" + ptIIDir + "/vendors/jython/Lib')");
         } catch (Exception ex) {
+        }
+
+        String className = "ptolemy.kernel.util.NamedObj";
+        String classResource =
+                    ptolemy.copernicus.kernel.GeneratorAttribute.lookupClassAsResource(className);
+        if (classResource != null) {
+            System.out.println("PythonScript: className: " + classResource);
+            File classFile = new File(classResource);
+            if (classFile.isDirectory()) {
+                PySystemState.add_extdir(classResource);
+            } else {
+                PySystemState.add_classdir(classResource);                
+            }
         }
     }
 
