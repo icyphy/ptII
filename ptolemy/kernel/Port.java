@@ -60,27 +60,22 @@ public class Port extends GenericPort {
 
     /** Connect this Port to a Relation.
      * @param relation The Relation to which this Port will be connected.
-     * @return Return true if the connection is successful. Return false
-     * if the connection is unsuccessful because this Port already is
-     * already connected to a non-null Relation.
      * @exception pt.exceptions.NullReferenceException Signals an attempt
      * to pass null object references as arguments.
      * @exception pt.exceptions.NameDuplicationException Attempt to store
      * two instances of the same class with identical names in the same
      * container.
      */	
-    public boolean connectToRelation(Relation relation) 
+    public void connectToRelation(Relation relation) 
 	throws NullReferenceException, NameDuplicationException {
-	if( _relation != null ) {
-	     return false;
-	}
+
 	_relation = relation;
 	if( _relation == null ) {
 	     throw new NullReferenceException( 
 	     "Null Relation passed to Port.connectToRelation()" );
-	}
-	_relation.connectPort( this );
-        return true;
+	} else if( !(_relation.isPortConnected(this.getName())) ) {
+	     _relation.connectPort( this );
+	} 
     }
 
     /** Disconnect this Port from its Relation.
@@ -135,6 +130,18 @@ public class Port extends GenericPort {
 	     }
 	}
         return false;
+    }
+
+    /** Return true if this port is connected to a relation of a given
+     *  name; return false otherwise.
+     */
+    public boolean isConnectedToRelation(String name) {
+         if( _relation == null ) {
+              return false;
+         } else if( _relation.getName() == name ) {
+              return true;
+         }
+         return false;
     }
 
     /** Return false since this is a Port.

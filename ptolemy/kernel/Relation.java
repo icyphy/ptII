@@ -30,6 +30,7 @@ package pt.kernel;
 
 import java.util.Hashtable;
 import java.util.Enumeration;
+import pt.exceptions.NullReferenceException; 
 import pt.exceptions.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -66,7 +67,8 @@ public abstract class Relation extends GraphElement {
      * two instances of the same class with identical names in the same 
      * container.
      */	
-    public void connectPort(Port port) throws NameDuplicationException {
+    public void connectPort(Port port) throws NameDuplicationException,
+	NullReferenceException {
 	if( links_ == null ) {
 	     links_ = new Hashtable();
 	}
@@ -76,8 +78,9 @@ public abstract class Relation extends GraphElement {
 	     duplicatePort = (Port)links_.put
 		( duplicatePort.getName(), duplicatePort );
 	     throw new NameDuplicationException( duplicatePort.getName() );
+	} else if( !(port.isConnectedToRelation(this.getName())) ) {
+	     port.connectToRelation( this );
 	}
-        return;
     }
 
     /** Disconnect a Port from this Relation.
@@ -136,7 +139,7 @@ public abstract class Relation extends GraphElement {
 	return links_.containsKey( portName );
     }
 
-    /** Return the number of Ports connected to the net.
+    /** Return the number of Ports connected to the relation.
      */	
     public int numberOfConnections() {
 	if( links_ == null ) {
@@ -156,13 +159,6 @@ public abstract class Relation extends GraphElement {
     /** Initialize this Relation.
      */
     public void systemInit() {}
-
-    /** Generate a Relation object from a String.
-     *  FIXME: How should this method be implemented??
-    public static Relation valueOf(String string) {
-        return new Relation(string);
-    }
-     */
 
     //////////////////////////////////////////////////////////////////////////
     ////                         protected methods                        ////
