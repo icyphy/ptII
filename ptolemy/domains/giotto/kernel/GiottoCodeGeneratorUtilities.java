@@ -96,6 +96,21 @@ public class GiottoCodeGeneratorUtilities {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Throw an exception if the given string is a valid giotto
+     *  reserved word, which prevents it from being used as an identifier.
+     *  @param string A string to be used in Giotto program.
+     *  @exception IllegalActionException If the string can not be used.
+     */
+    public static void checkGiottoID(String string)
+            throws IllegalActionException {
+        if (string.equals("output")) {
+            throw new IllegalActionException("The identifier " + string +
+                    " cannot be used in a Giotto program.  " +
+                    "Please change your model and attempt to " +
+                    "generate code again.");
+        }
+    }
+
     /** Generate Giotto code for the given Giotto model.
      *  @param model The given Giotto model.
      *  @return The Giotto code.
@@ -178,6 +193,22 @@ public class GiottoCodeGeneratorUtilities {
         }
     }
 
+    /** Return true if the given actor has at least one connected
+     *  input port, which requires it to have an input driver.
+     */
+    public static boolean needsInputDriver(Actor actor) {
+        boolean retVal = false;
+        Iterator inPorts = actor.inputPortList().iterator();
+        while (inPorts.hasNext() && !retVal) {
+            TypedIOPort port = (TypedIOPort)inPorts.next();
+            if (port.getWidth()>0) {
+                retVal = true;
+            }
+        }
+        return retVal;
+    }
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -207,7 +238,7 @@ public class GiottoCodeGeneratorUtilities {
                 String portTypeID = _getTypeString(port);
                 String actuatorDriverName = port.getName()
                     + "_device_driver";
-                _checkGiottoID(portID);
+                checkGiottoID(portID);
                 code.append("  " + portTypeID + " " + portID
                         + " uses " + actuatorDriverName + ";\n");
             }
@@ -216,27 +247,12 @@ public class GiottoCodeGeneratorUtilities {
         return code.toString();
     }
 
-    /** Throw an exception if the given string is a valid giotto
-     *  reserved word, which prevents it from being used as an identifier.
-     *  @param string A string to be used in Giotto program.
-     *  @exception IllegalActionException If the string can not be used.
-     */
-    protected static void _checkGiottoID(String string)
-            throws IllegalActionException {
-        if (string.equals("output")) {
-            throw new IllegalActionException("The identifier " + string +
-                    " cannot be used in a Giotto program.  " +
-                    "Please change your model and attempt to " +
-                    "generate code again.");
-        }
-    }
-
     /** Generate code for the driver.
      *  @return The driver code.
      */
     protected static String _driverCode(TypedCompositeActor model, Actor actor)
             throws IllegalActionException {
-        if (!_needsInputDriver(actor)) {
+        if (!needsInputDriver(actor)) {
             return "";
         }
 
@@ -496,7 +512,7 @@ public class GiottoCodeGeneratorUtilities {
                         getToken()).intValue();
             }
             String driverName = "";
-            if (_needsInputDriver(actor)) {
+            if (needsInputDriver(actor)) {
                 driverName = actorName + "_driver";
             }
             code.append("        taskfreq " + actorFreq + " do "
@@ -507,21 +523,6 @@ public class GiottoCodeGeneratorUtilities {
 
         return code.toString();
 
-    }
-
-    /** Return true if the given actor has at least one connected
-     *  input port, which requires it to have an input driver.
-     */
-    protected static boolean _needsInputDriver(Actor actor) {
-        boolean retVal = false;
-        Iterator inPorts = actor.inputPortList().iterator();
-        while (inPorts.hasNext() && !retVal) {
-            TypedIOPort port = (TypedIOPort)inPorts.next();
-            if (port.getWidth()>0) {
-                retVal = true;
-            }
-        }
-        return retVal;
     }
 
     /** Generate code for the output ports.
@@ -550,7 +551,7 @@ public class GiottoCodeGeneratorUtilities {
                             port.getName(model));
                     String portTypeID = _getTypeString(port);
                     String portInitialValue = "CGinit_" + portID;
-                    _checkGiottoID(portID);
+                    checkGiottoID(portID);
                     code.append("  " + portTypeID + " " + portID
                             + " := " + portInitialValue + ";\n");
                 }
@@ -587,7 +588,7 @@ public class GiottoCodeGeneratorUtilities {
                 String portTypeID = _getTypeString(port);
                 String actuatorDriverName = port.getName()
                     + "_device_driver";
-                _checkGiottoID(portID);
+                checkGiottoID(portID);
                 code.append("  " + portTypeID + " " + portID
                         + " uses " + actuatorDriverName        + ";\n");
             }
