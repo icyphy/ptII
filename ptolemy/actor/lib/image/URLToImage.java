@@ -101,7 +101,7 @@ public class URLToImage extends Transformer {
             output.send(0, new ObjectToken(image));
         } catch (MalformedURLException ex) {
             throw new IllegalActionException("'" + urlToken.stringValue()
-                                             + "' is malformed: " + ex);
+                    + "' is malformed: " + ex);
         }
 
     }

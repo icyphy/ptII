@@ -65,17 +65,17 @@ public class Transform {
         // Create an image buffer in which to paint on.
         BufferedImage outputImage =
             new BufferedImage(newWidth, newHeight,
-                              BufferedImage.TYPE_INT_RGB);
+                    BufferedImage.TYPE_INT_RGB);
 
         // Set the rotation
         AffineTransform rotateAffineTransform = new AffineTransform();
 
         // Convert rotate to radians.
         rotateAffineTransform.rotate(rotate        * (Math.PI/180.0F),
-                                     width/2, height/2);
+                width/2, height/2);
 
         rotateAffineTransform.translate(width/2-height/2,
-                                        width/2-height/2);
+                width/2-height/2);
 
         // Paint image.
         Graphics2D graphics2d = outputImage.createGraphics();
@@ -93,7 +93,7 @@ public class Transform {
      *  @return The scaled Image.
      */
     public static Image scale(Image originalImage,
-                                      int maximumDimension) {
+            int maximumDimension) {
         // Determine the scale.
         double scale =
             (double)maximumDimension
@@ -112,7 +112,7 @@ public class Transform {
         // Create an image buffer in which to paint on.
         BufferedImage outputImage =
             new BufferedImage(scaledWidth, scaledHeight,
-                              BufferedImage.TYPE_INT_RGB);
+                    BufferedImage.TYPE_INT_RGB);
 
         // Set the scale.
         AffineTransform scaleAffineTransform = new AffineTransform();
@@ -120,7 +120,7 @@ public class Transform {
         // If the image is smaller than the desired image size,
         // don't bother scaling.
         //if (scale < 1.0d) {
-            scaleAffineTransform.scale(scale, scale);
+        scaleAffineTransform.scale(scale, scale);
         //}
 
         // Paint image.

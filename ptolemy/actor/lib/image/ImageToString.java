@@ -83,9 +83,9 @@ public class ImageToString extends Transformer {
                 ObjectToken objectToken = (ObjectToken) input.get(i);
                 Image image = (Image) objectToken.getValue();
                 String description = new String("Image: "
-                                                + image.getWidth(null)
-                                                + " x "
-                                                + image.getHeight(null));
+                        + image.getWidth(null)
+                        + " x "
+                        + image.getHeight(null));
                 Token out = new StringToken(description);
                 output.broadcast(out);
             }
