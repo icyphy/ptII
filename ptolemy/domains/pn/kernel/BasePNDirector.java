@@ -206,6 +206,22 @@ public class BasePNDirector extends ProcessDirector {
      */
     public void initialize() throws IllegalActionException {
 	super.initialize();
+	//FIXME: Get all receivers and call initialize() on them.
+	Enumeration allActors = 
+	        ((CompositeActor)getContainer()).deepGetEntities();
+	while (allActors.hasMoreElements()) {
+	    Actor actor = (Actor)allActors.nextElement();
+	    Enumeration ports = actor.inputPorts();
+	    while (ports.hasMoreElements()) {
+		IOPort port = (IOPort)ports.nextElement();
+		Receiver[][] receivers = port.getReceivers();
+		for (int i = 0; i < receivers.length; i++) {
+		    for (int j = 0; j < receivers[i].length; j++) {
+			((PNQueueReceiver)receivers[i][j]).initialize();
+		    }
+		}
+	    }
+	}
 	_readBlockCount = 0;
 	_mutationBlockCount = 0;
 	_writeBlockCount = 0;
