@@ -216,7 +216,7 @@ public class MoMLParser extends HandlerBase {
      *  will filter all MoML for any instances of this class.
      *  @param filter  The MoMLFilter to add to the list of MoMLFilters.
      *  @see #getMoMLFilters()
-     *  @see #setMoMLFilter(List filterList)
+     *  @see #setMoMLFilters(List filterList)
      */
     public void addMoMLFilter(MoMLFilter filter) {
 	if (_filterList == null) {
@@ -546,7 +546,7 @@ public class MoMLParser extends HandlerBase {
      *  will filter all MoML for any instances of this class.
      *  @return The MoMLFilters currently filtering.
      *  @see #addMoMLFilter(MoMLFilter filter)
-     *  @see #setMoMLFilter(List filterList)
+     *  @see #setMoMLFilters(List filterList)
      */
     public List getMoMLFilters() {
         return _filterList;
