@@ -75,32 +75,31 @@ this menu.
 public class BasicContextMenu extends JPopupMenu {
     public BasicContextMenu(NamedObj target) {
 	super(target.getFullName());
-	
+	_target = target;
+
 	Action action;
 	action = new AbstractAction ("Edit Parameters") {
 	    public void actionPerformed(ActionEvent e) {
 		// Create a dialog and attach the dialog values 
 		// to the parameters of the object                    
-	    NamedObj object = (NamedObj) getValue("target");
-	    JFrame frame = new JFrame("Parameters for " + object.getName());
-	    JPanel pane = (JPanel) frame.getContentPane();
-	    Query query;
-	    try {
-		// FIXME What if this implements the WidgetConfigurable
-		// interface?
-		query = new ParameterEditor(object);
-	    } catch (IllegalActionException ex) {
-		ex.printStackTrace();
-		throw new RuntimeException(ex.getMessage());
-	    }
-	    
-	    pane.add(query);
-	    frame.setVisible(true);
-	    frame.pack();
+		JFrame frame = 
+		new JFrame("Parameters for " + getTarget().getName());
+		JPanel pane = (JPanel) frame.getContentPane();
+		Query query;
+		try {
+		    // FIXME What if this implements the WidgetConfigurable
+		    // interface?
+		    query = new ParameterEditor(getTarget());
+		} catch (IllegalActionException ex) {
+		    ex.printStackTrace();
+		    throw new RuntimeException(ex.getMessage());
+		}
+		
+		pane.add(query);
+		frame.setVisible(true);
+		frame.pack();
 	    }
 	};
-	
-	action.putValue("target", target);
 	add(action, "Edit Parameters");
     }
 
@@ -136,4 +135,10 @@ public class BasicContextMenu extends JPopupMenu {
         action.putValue("menuItem", item);
         return item;
     }
+
+    public NamedObj getTarget() {
+	return _target;
+    }
+
+    final NamedObj _target;
 }

@@ -31,7 +31,7 @@
 package ptolemy.vergil;
 
 import ptolemy.actor.*;
-import ptolemy.actor.gui.ParameterEditor;
+import ptolemy.actor.gui.*;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.data.expr.Parameter;
@@ -54,6 +54,7 @@ import diva.resource.RelativeBundle;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.GridLayout;
 import java.awt.event.*;
 import java.io.File;
 import java.io.PrintWriter;
@@ -429,15 +430,53 @@ public class Vergil extends MDIApplication {
                         director.iterations.setExpression("25");
                     }
 
+		    // If anything it placeable put it someplace reasonable.
+		    int count = 0;
+		    if(_executionFrame != null) {
+			_executionFrame.getContentPane().removeAll();
+		    }
+		    for(Iterator i = toplevel.deepEntityList().iterator(); 
+			i.hasNext();) {
+			    Object o = i.next();
+			    if(o instanceof Placeable) {
+				if(_executionFrame == null) {
+				    _executionFrame = new JFrame();
+				    _executionFrame.setVisible(true);
+				} 				    
+				count++;
+				((Placeable) o).place(
+				     _executionFrame.getContentPane());
+			    }
+			}
+		    if(_executionFrame != null) {
+			GridLayout layout = new GridLayout(1, count);
+			_executionFrame.getContentPane().setLayout(layout);
+			_executionFrame.setVisible(true);
+		    }
+		    
+		    // Fire up the manager.
                     Manager manager = toplevel.getManager();
                     if(manager == null) {
                         manager = 
                             new Manager(toplevel.workspace(), "Manager");
                         toplevel.setManager(manager);
                         // manager.addDebugListener(new StreamListener());
+			manager.addExecutionListener(new VergilExecutionListener());
                     }
                     manager.startRun();
                     
+		    final JFrame packframe = _executionFrame;
+		    Action packer = new AbstractAction() {
+			public void actionPerformed(ActionEvent event) {
+			    packframe.getContentPane().doLayout();
+			    packframe.repaint();
+			    packframe.pack();
+			}
+		    };
+		    javax.swing.Timer timer = 
+		    new javax.swing.Timer(200, packer);
+		    timer.setRepeats(false);
+		    timer.start();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     throw new GraphException(ex.getMessage());
@@ -585,6 +624,30 @@ public class Vergil extends MDIApplication {
             
     }
 
+    public class VergilExecutionListener implements ExecutionListener {
+	public VergilExecutionListener() {
+	}
+	
+	public void executionError(Manager manager, Exception exception) {
+	    showError(manager.getName(), exception);
+	}
+
+	public void executionFinished(Manager manager) {
+	    
+	}
+
+	public void managerStateChanged(Manager manager) {
+	    DesktopFrame frame = (DesktopFrame) getApplicationFrame();
+	    JStatusBar statusBar = frame.getStatusBar();
+	    statusBar.setMessage(manager.getState().getDescription());
+	}	
+    }
+
+    /** The frame in which any placeable objects create their output.
+     *  This will be null until a model with something placeable is 
+     *  executed.
+     */
+    private JFrame _executionFrame = null;
 
     /** The director selection combobox
      */

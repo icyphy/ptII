@@ -232,7 +232,8 @@ public class ViewerGraphController extends CompositeGraphController {
 			// Create a dialog and attach the dialog values 
 			// to the parameters of the schematic's director
 			CompositeActor object = 
-			(CompositeActor) getValue("target");
+			(CompositeActor) getTarget();
+			
 			Director director = object.getDirector();
 			JFrame frame =
 			new JFrame("Parameters for " + director.getName());
