@@ -9,6 +9,8 @@
         </property>
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
         </property>
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="11">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -16,7 +18,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 30.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={168, 187, 898, 640}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={11, 24, 898, 640}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[683, 531]">
     </property>
@@ -61,7 +63,7 @@ as recursion and mutually recursive functions.
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 235.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="345.0, 240.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -78,39 +80,6 @@ as recursion and mutually recursive functions.
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="function(a0:general) double">
             </property>
         </port>
-    </entity>
-    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={89, 360, 582, 425}}">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[574, 377]">
-        </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="515.0, 180.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-            </property>
-        </port>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>SequencePlotter</title>
-<xRange min="0.0" max="10.0"/>
-<yRange min="1.0" max="4.8828125E7"/>
-</plot>?>
-        </configure>
     </entity>
     <entity name="Ramp" class="ptolemy.caltrop.actors.CalInterpreter">
         <property name="calCode" class="ptolemy.kernel.util.StringAttribute" value="actor Ramp (init, step) &#10;	==&gt; Out:&#10;&#10;  n := init;&#10;&#10;  action ==&gt; [old n]&#10;  do&#10;    n := n + step;&#10;  end&#10;end">
@@ -171,7 +140,7 @@ as recursion and mutually recursive functions.
             <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 130.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 100.0">
         </property>
         <port name="X" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -186,8 +155,40 @@ as recursion and mutually recursive functions.
             </property>
         </port>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{5.0, 25.0, 125.0, 625.0, 3125.0, 15625.0, 78125.0, 390625.0, 1.953125E6, 9.765625E6, 4.8828125E7}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="525.0, 130.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 2.0, 6.0, 24.0, 120.0, 720.0, 5040.0, 40320.0, 362880.0, 3.6288E6, 3.99168E7}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="495.0, 235.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="180.0, 130.0">
         </vertex>
@@ -196,13 +197,15 @@ as recursion and mutually recursive functions.
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Apply.output" relation="relation"/>
     <link port="Apply.n" relation="relation5"/>
     <link port="Apply.f" relation="relation3"/>
-    <link port="SequencePlotter.input" relation="relation"/>
-    <link port="SequencePlotter.input" relation="relation2"/>
     <link port="Ramp.Out" relation="relation5"/>
     <link port="Fac.Out" relation="relation3"/>
     <link port="ApplyF.X" relation="relation5"/>
     <link port="ApplyF.Out" relation="relation2"/>
+    <link port="Test.input" relation="relation2"/>
+    <link port="Test2.input" relation="relation"/>
 </entity>

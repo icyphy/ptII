@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FunctionDefinition" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.0-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={50, 88, 868, 554}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={50, 88, 868, 545}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[653, 436]">
     </property>
@@ -12,6 +12,8 @@
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
         </property>
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
         </property>
@@ -44,11 +46,16 @@ and factorial functions, respectively.</text></svg></configure>
         </property>
     </property>
     <entity name="Factorial" class="ptolemy.caltrop.actors.CalInterpreter">
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-          <property name="attributeName" value="calCode"/>
-        </property>
         <property name="calCode" class="ptolemy.kernel.util.StringAttribute" value="actor Factorial () int X ==&gt; int Out :&#10;&#10;  function fac (T n) --&gt; T : &#10;    if n &lt;= 1 then 1 else n * fac(n - 1) end end&#10;&#10;  action [k] ==&gt; [fac(k)] end&#10;end">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+            </property>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="calCode">
+            </property>
+            <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 245.0">
@@ -60,49 +67,20 @@ and factorial functions, respectively.</text></svg></configure>
             <property name="output"/>
         </port>
     </entity>
-    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="power, factorial">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={197, 37, 731, 686}}">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[723, 631]">
-        </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="520.0, 175.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>SequencePlotter</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="9.0"/>
-<yRange min="1.0" max="3628800.0"/>
-<default marks="dots"/>
-</plot>?>
-        </configure>
-    </entity>
     <entity name="Power" class="ptolemy.caltrop.actors.CalInterpreter">
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-          <property name="attributeName" value="calCode"/>
-        </property>
         <property name="calCode" class="ptolemy.kernel.util.StringAttribute" value="actor Power () double X, int Y ==&gt; double Out :&#10;&#10;  function pow (a, b)  : &#10;      if b &lt; 1 then 1 else&#10;	a * pow(a, b - 1)&#10;      end&#10;  end&#10;&#10;  action [x], [y] ==&gt; [pow(x, y)] end&#10;end">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 120.0">
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="calCode">
+            </property>
+            <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 115.0">
         </property>
         <port name="X" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -115,11 +93,16 @@ and factorial functions, respectively.</text></svg></configure>
         </port>
     </entity>
     <entity name="Const" class="ptolemy.caltrop.actors.CalInterpreter">
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-          <property name="attributeName" value="calCode"/>
-        </property>
         <property name="calCode" class="ptolemy.kernel.util.StringAttribute" value="actor Const (v) ==&gt; Out:&#10;&#10;  action ==&gt; [v] end&#10;end">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+            </property>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="calCode">
+            </property>
+            <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
         <property name="v" class="ptolemy.data.expr.Parameter" value="4">
@@ -133,11 +116,16 @@ and factorial functions, respectively.</text></svg></configure>
         </port>
     </entity>
     <entity name="Ramp" class="ptolemy.caltrop.actors.CalInterpreter">
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-          <property name="attributeName" value="calCode"/>
-        </property>
         <property name="calCode" class="ptolemy.kernel.util.StringAttribute" value="actor Ramp (init, step) &#10;	==&gt; Out:&#10;&#10;  n := init;&#10;&#10;  action ==&gt; [oldN]&#10;  var &#10;    T oldN = n &#10;  do&#10;    n := n + step;&#10;  end&#10;end">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+            </property>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="calCode">
+            </property>
+            <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
         <property name="init" class="ptolemy.data.expr.Parameter" value="1">
@@ -150,6 +138,40 @@ and factorial functions, respectively.</text></svg></configure>
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
+        </port>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{4.0, 16.0, 64.0, 256.0, 1024.0, 4096.0, 16384.0, 65536.0, 262144.0, 1.048576E6}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="550.0, 100.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="565.0, 215.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
         </port>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -166,11 +188,11 @@ and factorial functions, respectively.</text></svg></configure>
     </relation>
     <link port="Factorial.X" relation="relation4"/>
     <link port="Factorial.Out" relation="relation3"/>
-    <link port="SequencePlotter.input" relation="relation"/>
-    <link port="SequencePlotter.input" relation="relation3"/>
     <link port="Power.X" relation="relation2"/>
     <link port="Power.Y" relation="relation4"/>
     <link port="Power.Out" relation="relation"/>
     <link port="Const.Out" relation="relation2"/>
     <link port="Ramp.Out" relation="relation4"/>
+    <link port="Test.input" relation="relation"/>
+    <link port="Test2.input" relation="relation3"/>
 </entity>
