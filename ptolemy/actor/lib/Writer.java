@@ -130,7 +130,7 @@ public class Writer extends Sink {
             }
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                    "wrapup(" + _wrapup + ") failed");
+                    "wrapup(" + _writer + ") failed");
         }
     }
 
