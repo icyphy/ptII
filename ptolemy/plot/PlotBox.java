@@ -4,8 +4,6 @@
 
 @Contributors:  William Wu
 
-@Version: $Id$
-
 @Copyright (c) 1997- The Regents of the University of California.
 All rights reserved.
 
@@ -48,7 +46,7 @@ import java.lang.*;
  * downwards to draw a box.  To zoom out, drag the mouse upward.
  * Zooming out stops automatically at the point where the data fills
  * the drawing rectangle.
- *
+ * <p>
  * The box can be configured either through a file with commands or
  * through direct invocation of the public methods of the class.
  * If a file is used, the file can be given as a URL through the
@@ -205,6 +203,14 @@ public class PlotBox extends Panel {
         }
         _yticks.addElement(new Double(position));
         _yticklabels.addElement(label);
+    }
+
+    /**
+     * Draw the axes using the current range, label, and title information.
+     * If the argument is true, clear the display before redrawing.
+     */
+    public synchronized void drawPlot(boolean clearfirst) {
+        drawPlot(_graphics, clearfirst);
     }
 
     /**
@@ -1093,7 +1099,7 @@ public class PlotBox extends Panel {
                     if (a < b) setYRange(a, b);
                     else setYRange(b, a);
                 }
-                drawPlot(_graphics, true);
+                drawPlot(true);
                 handled = true;
             }
         } else if ((_zoomout == true) && (_drawn == true)){
@@ -1118,10 +1124,10 @@ public class PlotBox extends Panel {
             if (newy2 < _yBottom) newy2 = _yBottom;
             setXRange(newx2, newx1);
             setYRange(newy2, newy1);
-            drawPlot(_graphics, true);
+            drawPlot(true);
             handled = true;
         } else if (_drawn == false){
-            drawPlot(_graphics, true);
+            drawPlot(true);
             handled = true;
         }
         _drawn = false;
