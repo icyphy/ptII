@@ -267,7 +267,6 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
      */
     public void sanityCheckAndUpdateParameters(String modelPathOrURL)
 	throws IllegalActionException, NameDuplicationException {
-
 	// If necessary, initialize.
 	if (!_initialized) {
 	    initialize();
