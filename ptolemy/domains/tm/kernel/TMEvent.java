@@ -175,10 +175,11 @@ public class TMEvent implements Comparable {
      *  dispatching order.
      *  @param event The event to compare against.
      */
-    public final boolean isEquallyPriorTo(TMEvent event) {
-        return (_priority == event._priority) &&
-            (!_hasStarted) && (!event._hasStarted);
-    }
+    // Commented out because it is not used anywhere
+    //public final boolean isEquallyPriorTo(TMEvent event) {
+    //    return (_priority == event._priority) &&
+    //        (!_hasStarted) && (!event._hasStarted);
+    //}
 
     /** Return the priority.
      *  @return The priority.
