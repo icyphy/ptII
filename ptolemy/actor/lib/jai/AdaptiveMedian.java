@@ -43,17 +43,17 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// AdaptiveMedian
 
 /**
-   This actor performs adaptive median filtering on an image.  The 
+   This actor performs adaptive median filtering on an image.  The
    algorithm is as follows.  For each pixel in the image, a square region
-   of interest is formed with the pixel at the center.  If said region 
+   of interest is formed with the pixel at the center.  If said region
    can not be formed (because it is at or near the edge).
 
    If the median of this region of interest is strictly less than the
    maximum value in the region of interest and strictly greater than
    the minimum value in the region of interest, then we keep the pixel
-   if it too is strictly less than the maximum value in the region of 
-   interest and strictly greater than the minimum value in the region 
-   of interest.  If it is not, then use the median of the region of 
+   if it too is strictly less than the maximum value in the region of
+   interest and strictly greater than the minimum value in the region
+   of interest.  If it is not, then use the median of the region of
    interest instead of the pixel.
 
    If the pixel is not strictly less than the maximum value and strictly
@@ -101,13 +101,13 @@ public class AdaptiveMedian extends Transformer {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the largest window size is
      *  not an odd integer.
-     */    
+     */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == maxWindowSize) {
             _maxWindowSize = ((IntToken)maxWindowSize.getToken()).intValue();
             if (_maxWindowSize%2 == 0) {
-                throw new IllegalActionException(this, 
+                throw new IllegalActionException(this,
                         "Window Size must be odd!!");
             }
         } else {
@@ -118,7 +118,7 @@ public class AdaptiveMedian extends Transformer {
     /** Fire this actor.
      *  Perform the adaptive median filtering.
      *  @exception IllegalActionException If a contained method throws it.
-     */    
+     */
     public void fire() throws IllegalActionException {
         super.fire();
         DoubleMatrixToken doubleMatrixToken = (DoubleMatrixToken) input.get(0);
@@ -135,7 +135,7 @@ public class AdaptiveMedian extends Transformer {
                     //check if we can create a region of interest or not.
                     //If we can't (i.e. we are at or near the edge of an image)
                     //then just keep the data.
-                    if ((i - dist < 0) || (j - dist < 0) 
+                    if ((i - dist < 0) || (j - dist < 0)
                             || (i + dist >= width) || (j + dist >= height)) {
                         outputData[i][j] = data[i][j];
                         windowSize = 3;
@@ -187,19 +187,19 @@ public class AdaptiveMedian extends Transformer {
                             outputData[i][j] = data[i][j];
                             windowSize = 3;
                             break;
-                        }                        
+                        }
                     }
                 }
             }
         }
-        output.send(0, new DoubleMatrixToken(outputData));         
+        output.send(0, new DoubleMatrixToken(outputData));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /** Find the largest value in a region of interest.
-     */    
+     */
     private double _getMax(double[][] input, int size) {
         double temp = input[0][0];
         for (int i = 0; i < size; i++) {
@@ -213,7 +213,7 @@ public class AdaptiveMedian extends Transformer {
     }
 
     /** Find the median value in a region of interest.
-     */    
+     */
     private double _getMedian(double[][] input, int size) {
         double[] temp = new double[size*size];
         for (int i = 0; i < size; i++) {
@@ -234,7 +234,7 @@ public class AdaptiveMedian extends Transformer {
     }
 
     /** Find the minimum value in a region of interest.
-     */        
+     */
     private double _getMin(double[][] input, int size) {
         double temp = input[0][0];
         for (int i = 0; i < size; i++) {
@@ -249,7 +249,7 @@ public class AdaptiveMedian extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // The largest window size.
     private int _maxWindowSize;
 }

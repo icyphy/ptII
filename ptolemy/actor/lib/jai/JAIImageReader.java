@@ -90,7 +90,7 @@ public class JAIImageReader extends Source {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** An attempt is made to acquire the file name.  If it null,
      *  throw an exception.
      *  @param attribute The attribute that changed.
@@ -109,7 +109,7 @@ public class JAIImageReader extends Source {
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Output a JAIImageToken containing the image.
      *  @exception IllegalActionException If a contained method throws it,
      *  or if the attempt to load the file has failed.

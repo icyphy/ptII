@@ -40,7 +40,7 @@ public class SaltAndPepper extends Transformer {
 
     public void fire() throws IllegalActionException {
         super.fire();
-        
+
         DoubleMatrixToken doubleMatrixToken = (DoubleMatrixToken) input.get(0);
         double data[][] = doubleMatrixToken.doubleMatrix();
         int width = doubleMatrixToken.getRowCount();
@@ -57,8 +57,8 @@ public class SaltAndPepper extends Transformer {
                 }
             }
         }
-        output.send(0, new DoubleMatrixToken(data)); 
+        output.send(0, new DoubleMatrixToken(data));
     }
-    
+
     private double _probability;
 }

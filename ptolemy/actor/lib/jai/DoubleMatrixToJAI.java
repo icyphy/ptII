@@ -63,8 +63,8 @@ import javax.media.jai.TiledImage;
 /**
 Converts a DoubleMatrix to a JAIImageToken.  This JAIImageToken is a
 single-banded grayscale image.  To assemble multiple band's into one
-image, use the BandCombine operator on each image and add them 
-together.  
+image, use the BandCombine operator on each image and add them
+together.
 
 <p> If the data was previously normalized, then the data can be rescaled
 to whichever non-floating data type is chosen.
@@ -96,19 +96,19 @@ public class DoubleMatrixToJAI extends Transformer {
         scale = new Parameter(this, "scale");
         scale.setTypeEquals(BaseType.BOOLEAN);
         scale.setToken(BooleanToken.TRUE);
-        
+
         input.setTypeEquals(BaseType.DOUBLE_MATRIX);
         output.setTypeEquals(BaseType.OBJECT);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    
+
     /** The type to cast the data to.  This is a string valued
      *  attribute that defaults to "byte".
      */
     public StringAttribute dataFormat;
-    
+
     /** This parameter indicates whether to scale the data or not.
      *  This should only be checked if the data was normalized in
      *  the first place.  The default value is true.
@@ -124,7 +124,7 @@ public class DoubleMatrixToJAI extends Transformer {
      *  @exception IllegalActionException If the base class throws it,
      *  or if the data type is not recognized.
      */
-    
+
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == dataFormat) {
@@ -203,13 +203,13 @@ public class DoubleMatrixToJAI extends Transformer {
                         newdata[i*height + j] = data[i][j];
                         newdata[i*height + j] = newdata[i*height + j] - 0.5D;
                         newdata[i*height + j] = newdata[i*height + j]*2;
-                        newdata[i*height + j] = newdata[i*height + j]*_maxValue; 
+                        newdata[i*height + j] = newdata[i*height + j]*_maxValue;
                     }
                 }
             } else {
                 for (int i = 0; i < width; i++) {
                     for (int j = 0; j < height; j++) {
-                        newdata[i*height + j] = 
+                        newdata[i*height + j] =
                             data[i][j]*(_maxValue - _minValue) + _minValue;
                     }
                 }
@@ -291,15 +291,15 @@ public class DoubleMatrixToJAI extends Transformer {
 
     /** An indicator for the data type to format to. */
     private int _dataFormat;
-    
+
     /** Double representation of the highest value possible for the
      *  internal data type.
      */
     private double _maxValue;
-    
+
     /** Double representation of the lowest value possible for the
      *  internal data type.
-     */    
+     */
     private double _minValue;
 
     /** Flag determining whether or not to scale the data */

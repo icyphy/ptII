@@ -130,7 +130,7 @@ public class JAIBMPWriter extends Sink {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If a contained method throws it.
      */
-    public void attributeChanged(Attribute attribute) 
+    public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == fileName) {
             _file = fileName.asFile();
@@ -138,10 +138,10 @@ public class JAIBMPWriter extends Sink {
                 _fileRoot = _file.toString();
             }
         } else if (attribute == confirmOverwrite) {
-            _confirmOverwriteValue = 
+            _confirmOverwriteValue =
                 ((BooleanToken)confirmOverwrite.getToken()).booleanValue();
         } else if (attribute == storeTopDown) {
-            _storeTopDownValue = 
+            _storeTopDownValue =
                 ((BooleanToken)storeTopDown.getToken()).booleanValue();
         } else {
             super.attributeChanged(attribute);

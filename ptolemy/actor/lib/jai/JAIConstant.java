@@ -76,7 +76,7 @@ public class JAIConstant extends Source {
         output.setTypeEquals(BaseType.OBJECT);
         width = new Parameter(this, "width", new IntToken(0));
         height = new Parameter(this, "height", new IntToken(0));
-        bandValues = new Parameter(this, "bandValues", 
+        bandValues = new Parameter(this, "bandValues",
                 new ArrayToken(_defaultValues));
         dataFormat = new StringAttribute(this, "dataFormat");
         dataFormat.setExpression("byte");
@@ -93,7 +93,7 @@ public class JAIConstant extends Source {
     /** The type to cast the data to.  This is a string valued
      *  attribute that defaults to "byte".
      */
-    public StringAttribute dataFormat;   
+    public StringAttribute dataFormat;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -104,7 +104,7 @@ public class JAIConstant extends Source {
             values = ((ArrayToken)bandValues.getToken()).arrayValue();
             //_bandValues = new Double[values.length];
             //for (int i = 0; i < values.length; i++) {
-            //    _bandValues[i] = 
+            //    _bandValues[i] =
             //        new Double(((DoubleToken)values[i]).doubleValue());
             //}
         } else if (attribute == height) {
@@ -131,7 +131,7 @@ public class JAIConstant extends Source {
             super.attributeChanged(attribute);
         }
     }
-    
+
     public void fire() throws IllegalActionException {
         super.fire();
         ParameterBlock parameters = new ParameterBlock();
@@ -141,46 +141,46 @@ public class JAIConstant extends Source {
         if (_dataFormat == _BYTE) {
             Byte[] byteValues = new Byte[values.length];
             for (int i = 0; i < values.length; i++) {
-                byteValues[i] = 
+                byteValues[i] =
                     new Byte((byte)(((ScalarToken)values[i]).intValue()));
             }
             parameters.add(byteValues);
         } else if (_dataFormat == _DOUBLE) {
             Double[] doubleValues = new Double[values.length];
             for (int i = 0; i < values.length; i++) {
-                doubleValues[i] = 
+                doubleValues[i] =
                     new Double(((ScalarToken)values[i]).doubleValue());
             }
             parameters.add(doubleValues);
         } else if (_dataFormat == _FLOAT) {
             Float[] floatValues = new Float[values.length];
             for (int i = 0; i < values.length; i++) {
-                floatValues[i] = 
+                floatValues[i] =
                     new Float((float)(((ScalarToken)values[i]).doubleValue()));
             }
             parameters.add(floatValues);
         } else if (_dataFormat == _INT) {
             Integer[] intValues = new Integer[values.length];
             for (int i = 0; i < values.length; i++) {
-                intValues[i] = 
+                intValues[i] =
                     new Integer(((ScalarToken)values[i]).intValue());
             }
             parameters.add(intValues);
         } else if (_dataFormat == _SHORT) {
             Short[] shortValues = new Short[values.length];
             for (int i = 0; i < values.length; i++) {
-                shortValues[i] = 
+                shortValues[i] =
                     new Short((short)(((ScalarToken)values[i]).intValue()));
             }
             parameters.add(shortValues);
         }
         RenderedOp newImage = JAI.create("constant", parameters);
-        output.send(0, new JAIImageToken(newImage));        
+        output.send(0, new JAIImageToken(newImage));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     private IntToken _zero = new IntToken(0);
     private IntToken _defaultValues[] = {_zero};
     private Double _bandValues[];

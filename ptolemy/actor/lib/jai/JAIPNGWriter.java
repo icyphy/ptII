@@ -105,12 +105,12 @@ public class JAIPNGWriter extends Sink {
         setGamma.setToken(BooleanToken.FALSE);
 
         gamma = new Parameter(this, "gamma", new DoubleToken(0.455F));
-    
+
         setBackground = new Parameter(this, "setBackground");
         setBackground.setTypeEquals(BaseType.BOOLEAN);
         setBackground.setToken(BooleanToken.FALSE);
 
-        background = new Parameter(this, "background", 
+        background = new Parameter(this, "background",
                 new ArrayToken(_initialArray));
     }
 
@@ -124,14 +124,14 @@ public class JAIPNGWriter extends Sink {
     public FileParameter fileName;
 
     /** If the Adam7 Interlacing option is false, pixels are stored
-     *  left to right and from top to bottom. If it is true (the 
-     *  default), seven distinct passes are made over the image, each 
+     *  left to right and from top to bottom. If it is true (the
+     *  default), seven distinct passes are made over the image, each
      *  transmitting a subset of the pixels.
      */
     public Parameter adam7Interlacing;
 
     /** If the setBackground parameter is false, then this parameter
-     *  is ignored.  If it is true, this parameter sets the 
+     *  is ignored.  If it is true, this parameter sets the
      *  background color of the image.  Note that this will only show
      *  up in images with transparency.  If the image is a grayscale
      *  image, only the first value of the array is used.  The value
@@ -142,7 +142,7 @@ public class JAIPNGWriter extends Sink {
      *  0 to (2^bitdepth - 1).
      */
     public Parameter background;
-    
+
     public Parameter bitDepth;
 
     /** If <i>false</i>, then overwrite the specified file if it exists
@@ -166,16 +166,16 @@ public class JAIPNGWriter extends Sink {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If a contained method throws it.
      */
-    public void attributeChanged(Attribute attribute) 
+    public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == fileName) {
             _file = fileName.asFile();
             _fileRoot = _file.toString();
         } else if (attribute == confirmOverwrite) {
-            _confirmOverwriteValue = 
+            _confirmOverwriteValue =
                 ((BooleanToken)confirmOverwrite.getToken()).booleanValue();
         } else if (attribute == adam7Interlacing) {
-            _adam7Interlacing = 
+            _adam7Interlacing =
                 ((BooleanToken)adam7Interlacing.getToken()).booleanValue();
         } else if (attribute == setGamma) {
             _setGamma = ((BooleanToken)setGamma.getToken()).booleanValue();
@@ -184,7 +184,7 @@ public class JAIPNGWriter extends Sink {
         } else if (attribute == bitDepth) {
             _bitDepth = ((IntToken)bitDepth.getToken()).intValue();
         } else if (attribute == setBackground) {
-            _setBackground = 
+            _setBackground =
                 ((BooleanToken)setBackground.getToken()).booleanValue();
         } else if (attribute == background) {
             Token data[] = ((ArrayToken)background.getToken()).arrayValue();
@@ -196,7 +196,7 @@ public class JAIPNGWriter extends Sink {
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Read an input JAIImageToken and write it to the file.
      *  If the file does not exist then create it.  If the file
      *  already exists, then query the user for overwrite.
@@ -233,8 +233,8 @@ public class JAIPNGWriter extends Sink {
             _stream = new FileOutputStream(_fileRoot);
         } catch (FileNotFoundException error) {
             throw new IllegalActionException("Could not create stream");
-        }    
-        PNGEncodeParam parameters = 
+        }
+        PNGEncodeParam parameters =
             PNGEncodeParam.getDefaultEncodeParam(image);
         if(parameters instanceof PNGEncodeParam.Gray) {
             PNGEncodeParam.Gray parametersGray = new PNGEncodeParam.Gray();
@@ -298,7 +298,7 @@ public class JAIPNGWriter extends Sink {
     ////                         private variables                 ////
 
     private int _bitDepth;
-    
+
     /** The value of the confirmOverwrite parameter. */
     private boolean _confirmOverwriteValue;
 

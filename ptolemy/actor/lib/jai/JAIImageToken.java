@@ -88,7 +88,7 @@ public class JAIImageToken extends ImageToken {
         }
     }
 
-    /** Convert a javax.media.jai.RenderedOp to a BufferedImage, a 
+    /** Convert a javax.media.jai.RenderedOp to a BufferedImage, a
      *  subclass of awt.Image, and return it.
      *
      * @return A bufferedImage that is a rendering of the internal image.
@@ -216,7 +216,7 @@ public class JAIImageToken extends ImageToken {
 
     // A buffered image that contains a rendering of the image.
     private BufferedImage _bufferedImage;
-    
+
     // The internal RenderedOp.
     private RenderedOp _renderedOp;
 }

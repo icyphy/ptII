@@ -62,7 +62,7 @@ import javax.media.jai.RenderedOp;
    BandCombine actors to seperate the bands.
 
    The normalize parameter allows non floating point data types to be
-   normalized when the token is converted.  The normalization that 
+   normalized when the token is converted.  The normalization that
    occurs is a mapping between the lowest and highest value's of the
    data type into the double values of 0 and 1.
 
@@ -172,7 +172,7 @@ public class JAIToDoubleMatrix extends Transformer {
             if (_type == DataBuffer.TYPE_DOUBLE ||
                     _type == DataBuffer.TYPE_FLOAT) {
                 for (int i = 0; i < width; i++) {
-                    for (int j = 0; j < height; j++) {   
+                    for (int j = 0; j < height; j++) {
                         data[i][j] = dataBuffer.getElemDouble(i*height + j);
                         data[i][j] = data[i][j]/_maxValue;
                         data[i][j] = data[i][j]/2;
@@ -182,8 +182,8 @@ public class JAIToDoubleMatrix extends Transformer {
             } else {
                 for (int i = 0; i < width; i++) {
                     for (int j = 0; j < height; j++) {
-                        data[i][j] = 
-                            (dataBuffer.getElemDouble(i*height + j) - 
+                        data[i][j] =
+                            (dataBuffer.getElemDouble(i*height + j) -
                                     _minValue)/
                             (_maxValue - _minValue);
                     }
@@ -207,7 +207,7 @@ public class JAIToDoubleMatrix extends Transformer {
      *  internal data type.
      */
     private double _maxValue;
-    
+
     /** Double representation of the lowest value possible for the
      *  internal data type.
      */
@@ -215,7 +215,7 @@ public class JAIToDoubleMatrix extends Transformer {
 
     /** Flag determining whether or not to normalize. */
     private boolean _normalize;
-    
+
     /** Type determinator for the internal data. */
     private int _type;
 }
