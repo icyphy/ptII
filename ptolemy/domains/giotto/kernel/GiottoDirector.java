@@ -1073,7 +1073,16 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
 	if (container != null) {
 	    /* change Enumeration into Schedule */
-	    Schedule giottoSchedule = getScheduler().getSchedule();
+
+	    _periodValue = ((DoubleToken)period.getToken()).doubleValue();
+   	    _minTimeStep = ((GiottoScheduler) getScheduler()).getMinTimeStep(_periodValue);
+	    System.out.println(_periodValue + " + " + _minTimeStep);
+
+	    if (_schedule.size() == 0) {
+	        _schedule = getScheduler().getSchedule();
+	    }
+
+	    //System.out.println("In Fire() method: The size of _schedule is " + _schedule.size());
 
 	    if (_debugging)
 		_debug("Giotto director firing!");
@@ -1081,7 +1090,12 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	    _realStartTime = System.currentTimeMillis();
 
 	    /* have to see how to _fire(Schedule) */
-	    _postFireReturns = _fire(giottoSchedule);
+	    if (_schedule.size() == 0) {
+	        //System.out.println("_schedule is null, which is crazy!!!");
+	    } else {
+		Schedule oneTimeSchdule = (Schedule) _schedule.remove(0);
+		_postFireReturns = _fire(oneTimeSchdule);
+	    }
 	} else
 	    throw new IllegalActionException(this, "Has no container!");
     }
@@ -1187,7 +1201,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
     /** The static default Giotto period is 100ms.
      */
-    protected static double _DEFAULT_GIOTTO_PERIOD = 100;
+    protected static double _DEFAULT_GIOTTO_PERIOD = 0.1;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -1233,143 +1247,140 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
 	boolean postfire = true;
 
-	double periodValue = ((DoubleToken)period.getToken()).doubleValue();
-
 	// schedule has to make iterator to call hasNext() or next()
 	Iterator scheduleIterator = schedule.iterator();
 
-	if (schedule != null)
+	//System.out.println("The oneTimeSchedule size is " + schedule.size());
+	if (schedule != null) {
 	    while (scheduleIterator.hasNext()) {
-		Schedule sameFrequencySchedule = (Schedule) scheduleIterator.next();
 
-		Iterator sameFreqIterator = sameFrequencySchedule.iterator();
+		Actor actor = ((Firing) scheduleIterator.next()).getActor();
 
-		while (sameFreqIterator.hasNext()) {
+		double currentTime = getCurrentTime();
 
-		    Actor actor = ((Firing) sameFreqIterator.next()).getActor();
+		int actorFrequency =
+		    GiottoScheduler.getFrequency(actor);
 
-		    double currentTime = getCurrentTime();
+		_nextIterationTime =
+		    currentTime + (_periodValue / actorFrequency);
 
-		    int actorFrequency =
-			GiottoScheduler.getFrequency(actor);
 
-		    _nextIterationTime =
-			currentTime + (periodValue / actorFrequency);
+		if (_debugging)
+		    _debug("Prefiring " +
+			   ((NamedObj)actor).getFullName());
 
+		if (actor.prefire()) {
 		    if (_debugging)
-			_debug("Prefiring " +
+			_debug("Firing " +
 			       ((NamedObj)actor).getFullName());
 
-		    if (actor.prefire()) {
-			if (_debugging)
-			    _debug("Firing " +
-				   ((NamedObj)actor).getFullName());
-
-			actor.fire();
-		    }
-
-		    if (_debugging)
-			_debug("Postfiring " +
-			       ((NamedObj)actor).getFullName());
-
-		    if (!actor.postfire())
-			postfire = false;
+		    actor.fire();
 		}
 
-		// Assumption: schedule has even number of elements.
+		/*
+		if (_debugging)
+		    _debug("Postfiring " +
+			   ((NamedObj)actor).getFullName());
 
-		Schedule higherFrequencySchedule = (Schedule) scheduleIterator.next();
+		if (!actor.postfire())
+		    postfire = false;
+		*/
 
-		if (higherFrequencySchedule.size() != 0) {
-		    //   Enumeration higherFrequency = Collections.enumeration(higherFrequencyList);
-
-		    // Recursive call.
-		    postfire = _fire(higherFrequencySchedule) && postfire;
-		} else {
-		    // Update time for every invocation of the most frequent
-		    // tasks which are stored at the bottom of the tree.
-		    double currentTime;
-
-		    currentTime = getCurrentTime();
-
-		    // What is the highest frequency?
-		    // We look it up in the first actor.
-		    // Assumption: sameFrequencyList is non-empty.
-		    Actor actor = ((Firing) sameFrequencySchedule.get(0)).getActor();
-
-		    int maxFrequency =
-			GiottoScheduler.getFrequency(actor);
+	    }
 
 
-		    setCurrentTime(currentTime + (periodValue / maxFrequency));
+	    // update output ports of the next firing actors...
+	    //System.out.println("Before update, the size of _schedule is " + _schedule.size());
+	    if (_schedule.size() == 0) {
+	        _schedule = getScheduler().getSchedule();
+	    }
 
-		    if (_synchronizeToRealTime) {
-			long elapsedTime = System.currentTimeMillis()
-			    - _realStartTime;
+	    //System.out.println(_schedule.size());
 
-			double elapsedTimeInSeconds =
-			    ((double) elapsedTime) / 1000.0;
+	    Schedule nextTimeSchedule = (Schedule) _schedule.get(0);
+	    Iterator nextTimeIterator = nextTimeSchedule.iterator();
 
-			if (currentTime > elapsedTimeInSeconds) {
-			    long timeToWait = (long) ((currentTime -
-						       elapsedTimeInSeconds) * 1000.0);
+	    while (nextTimeIterator.hasNext()) {
+		Actor actor = ((Firing) nextTimeIterator.next()).getActor();
 
-			    if (timeToWait > 0) {
-				if (_debugging) {
-				    _debug("Waiting for real time to pass: " +
-					   timeToWait);
-				}
+	        if (_debugging)
+		    _debug("Postfiring " +
+			   ((NamedObj)actor).getFullName());
 
-				// FIXME: Do I need to synchronize on anything?
-				Scheduler scheduler = getScheduler();
+		if (!actor.postfire())
+		    postfire = false;
 
-				synchronized(scheduler) {
-				    try {
-					scheduler.wait(timeToWait);
-				    } catch (InterruptedException ex) {
-					// Continue executing.
-				    }
-				}
-			    }
-			}
-		    }
-		}
+		if (_debugging)
+		    _debug("Updating " + ((NamedObj)actor).getFullName());
 
+		List outputPortList = actor.outputPortList();
 
-		sameFreqIterator = sameFrequencySchedule.iterator();
+		Enumeration outputPorts =
+		    Collections.enumeration(outputPortList);
 
-		while (sameFreqIterator.hasNext()) {
-		    Actor actor = ((Firing) sameFreqIterator.next()).getActor();
+		while (outputPorts.hasMoreElements()) {
+		    IOPort port = (IOPort) outputPorts.nextElement();
 
-		    if (_debugging)
-			_debug("Updating " + ((NamedObj)actor).getFullName());
+		    Receiver[][] channelArray = port.getRemoteReceivers();
 
-		    List outputPortList = actor.outputPortList();
+		    for (int i = 0; i < channelArray.length; i++) {
+			Receiver[] receiverArray = channelArray[i];
 
-		    Enumeration outputPorts =
-			Collections.enumeration(outputPortList);
+			for (int j = 0; j < receiverArray.length; j++) {
+			    GiottoReceiver receiver =
+				(GiottoReceiver) receiverArray[j];
 
-		    while (outputPorts.hasMoreElements()) {
-			IOPort port = (IOPort) outputPorts.nextElement();
-
-			Receiver[][] channelArray = port.getRemoteReceivers();
-
-			for (int i = 0; i < channelArray.length; i++) {
-			    Receiver[] receiverArray = channelArray[i];
-
-			    for (int j = 0; j < receiverArray.length; j++) {
-				GiottoReceiver receiver =
-				    (GiottoReceiver) receiverArray[j];
-
-				receiver.update();
-			    }
+			    receiver.update();
 			}
 		    }
 		}
 	    }
+	}
+
+	// Update time for every minimize time step
+	double currentTime;
+
+	currentTime = getCurrentTime();
+
+
+	setCurrentTime(currentTime + _minTimeStep);
+
+	if (_synchronizeToRealTime) {
+	    long elapsedTime = System.currentTimeMillis()
+		- _realStartTime;
+
+	    double elapsedTimeInSeconds =
+		((double) elapsedTime) / 1000.0;
+
+	    if (currentTime > elapsedTimeInSeconds) {
+		long timeToWait = (long) ((currentTime -
+					   elapsedTimeInSeconds) * 1000.0);
+
+		if (timeToWait > 0) {
+		    if (_debugging) {
+			_debug("Waiting for real time to pass: " +
+			       timeToWait);
+		    }
+
+		    // FIXME: Do I need to synchronize on anything?
+		    Scheduler scheduler = getScheduler();
+
+		    synchronized(scheduler) {
+			try {
+			    scheduler.wait(timeToWait);
+			} catch (InterruptedException ex) {
+			    // Continue executing.
+			}
+		    }
+		}
+	    }
+	}
+
 
 	return postfire;
     }
+
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -1393,6 +1404,13 @@ public class GiottoDirector extends StaticSchedulingDirector {
     // List of all receivers this director has created.
     private LinkedList _receivers = new LinkedList();
 
+    // schedule of the to be excuted tasks
+    private Schedule _schedule = new Schedule();
 
+    // minimized step size for input/output ports to be uptated
+    private double _minTimeStep = 0.0;
+
+    // period of director
+    private double _periodValue = 0.0;
 
 }

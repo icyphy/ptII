@@ -70,28 +70,23 @@ A schedule is represented by a tree. Consider the following CompositeActor:
 There are three actors A, B, and C, where C runs twice as often as A and B.
 The tree representing the schedule for this CompositeActor looks as follows:
 <pre>
-+-------+               +-------+
-| | | ----------------->| | |nil|
-+-|-----+               +-|-----+
-  |                       |
-  V                       V
-+-------+  +-------+    +-------+  +-------+  +-------+  +-------+
-| | | ---->| | |nil|    | | | ---->|nil| ---->| | | ---->|nil|nil|
-+-|-----+  +-|-----+    +-|-----+  +-------+  +-|-----+  +-------+
-  |          |            |                     |
-  V          V            V                     V
-+---+      +---+        +-------+             +-------+
-| A |      | B |        | | |nil|             | | |nil|
-+---+      +---+        +-|-----+             +-|-----+
-                          |                     |
-                          V                     V
-                        +---+                 +---+
-                        | C |                 | C |
-                        +---+                 +---+
-</pre>
-Note that repeated parts of the tree are shared, no deep cloning!
++-------+                         +-------+
+| | | --------------------------->| | |nil|
++-|-----+                         +-|-----+
+  |                                 |
+  V                                 V
++-------+  +-------+  +-------+   +-------+
+| | | ---->| | | ---->| | |nil|   | | |nil|
++-|-----+  +-|-----+  +-|-----+   +-|-----+
+  |          |          |           |
+  V          V          V           V
++---+      +---+      +---+       +---+
+| A |      | B |      | c |       | c |
++---+      +---+      +---+       +---+
 
-@author Christoph Meyer Kirsch
+</pre>
+
+@author Haiyang Zheng
 @version $Id$
 */
 public class GiottoScheduler extends Scheduler {
@@ -141,6 +136,13 @@ public class GiottoScheduler extends Scheduler {
         }
     }
 
+    // temporarily I put the method here.
+    // it may be put into protected method aera...
+    public double getMinTimeStep(double period) {
+        return period/_lcm;
+    }
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
@@ -171,117 +173,145 @@ public class GiottoScheduler extends Scheduler {
 	    (CompositeActor) (director.getContainer());
 
         List actorList = compositeActor.deepEntityList();
+	int actorCount = actorList.size();
 
-	/* Sort all actors according to their frequency.
-	   Small frequency value means earlier in the list.
-	   Sort keeps order of actors with same frequency value. */
-	Collections.sort(actorList, new GiottoActorComparator());
+	//System.out.println("There are totally " + actorCount + " actors!");
+
+	int[] frequencyArray = new int[actorCount];
+	int[] intervalArray = new int[actorCount];
+
+	int i = 0;
+	ListIterator actorListIterator = actorList.listIterator();
+
+	while (actorListIterator.hasNext()) {
+	    Actor actor = (Actor) actorListIterator.next();
+	    frequencyArray[i] = getFrequency(actor);
+	    i++;
+	}
+
+	_lcm = lcm(frequencyArray);
+	_gcd = gcd(frequencyArray);
+	//System.out.println("LCM is " + _lcm + " GCD is " + _gcd);
+
+	for (i = 0; i < actorCount; i++) {
+	  intervalArray[i] = _lcm / frequencyArray[i];
+     	//  System.out.println("The " + i + " actor has frequency " + frequencyArray[i] + " ----> " + intervalArray[i]);
+	}
 
 	// Compute schedule
+	// based on the frequencyArray and the actorList
 
-	if (actorList.isEmpty())
-	    return null;
-	else {
-	    // Get first actor's frequency.
-	    // Assumption: It's the lowest frequency in actorList.
 
-	    Actor actor = (Actor) actorList.get(0);
+	Schedule schedule = new Schedule();
+	_count =0;
 
-	    int frequency = getFrequency(actor);
+	for (  _giottoSchedulerTime = 0; _giottoSchedulerTime < _lcm; ) {
+	    Schedule fireAtSameTimeSchedule = new Schedule();
+	    actorListIterator = actorList.listIterator();
+	    for (i = 0; i < actorCount; i++ ) {
+		Actor actor = (Actor) actorListIterator.next();
 
-            // Compute schedule represented by a tree.
-	    Schedule schedule = _treeSchedule(actorList.listIterator(),
-					      DEFAULT_GIOTTO_FREQUENCY,
-					      frequency);
+		if ( ((_giottoSchedulerTime % intervalArray[i]) == 0)
+		     &&
+		     (_count < frequencyArray[i])
+		   )
+		{
+		    Firing firing = new Firing();
+		    firing.setActor(actor);
+		    fireAtSameTimeSchedule.add(firing);
+		    //System.out.println("the size of fireAtSameTimeSchedule is " + fireAtSameTimeSchedule.size());
+		}
+	    }
 
-            /* instead of return a Enumeration, we return a Schedule
-
-	    // Return a shallow enumeration over the top list.
-	    return Collections.enumeration(scheduleList);
-            */
-
-            return schedule;
+	    _giottoSchedulerTime += _gcd;
+	    _count++;
+	    // there may be several null schedule in schedule...
+	    // and the time step is period / _lcm
+	    schedule.add(fireAtSameTimeSchedule);
 	}
+	//System.out.println("the size of schedule is " + schedule.size());
+        return schedule;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Return a schedule for a CompositeActor represented by a tree,
-     *  see comment at top of file.
-     *
-     *  @param iterator over all actors of CompositeActor.
-     *  @param lastFrequency of the previous call to this method.
-     *  @param frequency of the first actor in iterator.
-     *  @return a shallow Enumeration of the scheduling tree.
-     *  @exception NotSchedulableException If the CompositeActor is not
-     *   schedulable.
-     */
+    // not guarranteed to be correct. we have to check the algorithm...
+    // and if they are correct, they should go the ptolemy.math package...
+    private int gcd(int[] array) {
+   		int count = array.length;
+		int HighestNumber = array[0];
+		int HoldX = 1;
+		int X, i, c = 1;
+
+		for( i = 1; i < count; ++i ) {
+			if( array[i] == array[0] )
+				++c;
+			if( array[i] > HighestNumber )
+				HighestNumber = array[i] / 2;
+		}
+
+		if( c == count )
+			return array[0];
+
+		X = 2;
+		i = 0;
+
+		while( true ) {
+
+			// Check for Remainder
+			if( (array[i] % X) != 0 ) {
+				X++;
+				i = 0;
+			}
+
+			// No remainder, passed
+			else
+				++i;
+
+			if( i >= count ) {
+				HoldX = X;
+				i = 0;
+				X++;
+			}
+			if( X >= HighestNumber + 1 )
+				break;
+		}
+
+		return HoldX;
+   }
 
 
-    private Schedule _treeSchedule(ListIterator iterator,
-			       int lastFrequency, int frequency)
-	throws NotSchedulableException {
-	// This schedule contains all firings made of actor with frequency 'frequency'.
-	Schedule sameFrequencySchedule = new Schedule();
+    private int lcm(int[] array) {
 
-	// This schedule is actually a tree.
-	// It contains all 'sameFrequencyList' lists with strictly
-	// higher frequencies than 'frequency'.
+	    int count = array.length;
+	    int X = array[0];
+	    int i = 0;
 
-	Schedule higherFrequencySchedule = new Schedule();
+	    while( true ) {
 
-	while (iterator.hasNext()) {
-	    Actor actor = (Actor) (iterator.next());
+		    if( (X % array[i]) == 0 ) {
+			    if( i >= count-1 )
+				    break;
+			    i++;
+		    }
 
-	    int actorFrequency = getFrequency(actor);
-
-	    if (actorFrequency == frequency) {
-                Firing firing = new Firing();
-                firing.setActor(actor);
-                sameFrequencySchedule.add(firing);
-            }
-	    else if (actorFrequency > frequency) {
-		// We reached the first actor with a strictly higher frequency
-		// than all actors before. Prepare for recursive call.
-
-		// Makes sure that current actor will be read again.
-		Actor dummy = (Actor) (iterator.previous());
-
-		// Recursive call where 'lastFrequency' becomes current
-                // 'frequency'
-		// and 'frequency' becomes the frequency of the current actor.
-		higherFrequencySchedule =
-                    _treeSchedule(iterator, frequency, actorFrequency);
-
-		// Redundant break because recursive call
-		// completely iterates iterator.
-
-		break;
-	    } else
-		throw new NotSchedulableException(
-						  "Sorting frequencies failed!");
-	}
-
-	// This is actually a tree.
-	// It will be the result of this method.
-	Schedule scheduleSchedule = new Schedule();
-
-	// Assumption: frequency >= lastFrequency
-	if ((frequency%lastFrequency) == 0) {
-	    int currentFrequency = frequency / lastFrequency;
-
-	    // Length of scheduleList will be even!
-
-	    for (int i = 1; i <= currentFrequency; i++) {
-		scheduleSchedule.add(sameFrequencySchedule);
-                scheduleSchedule.add(higherFrequencySchedule);
+		    else {
+			    X = X + 1;
+			    i = 0;
+		    }
 	    }
-	} else
-	    throw new NotSchedulableException("Frequencies not harmonic!");
 
-	return scheduleSchedule;
+	    return X;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private int _lcm = 1;
+    private int _gcd = 1;
+    private int _count = 0;
+    private int _giottoSchedulerTime = 0;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
