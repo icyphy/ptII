@@ -83,6 +83,7 @@ OPTIONAL_FILES = \
 	'CrossRefList$$CrossRef.class' \
 	'CrossRefList$$CrossRefEnumeration.class' \
 	'NamedList$$NamedListEnumeration.class' \
+	'Workspace$$ReadDepth.class' \
 	$(JARFILE)	
 
 JCLASS = $(JSRCS:%.java=%.class)
