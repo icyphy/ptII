@@ -105,7 +105,9 @@ OPTIONAL_FILES = \
 	doc \
 	$(OPTIONAL_JSRCS) \
 	UParser.java \
+	'Solver$$1.class' \
 	'Solver$$Index.class' \
+	'UParser$$1.class' \
 	'UParser$$JJCalls.class' \
 	'UParser$$LookaheadSuccess.class' \
 	'UnitLibrary$$UnitNameExprPair.class'
