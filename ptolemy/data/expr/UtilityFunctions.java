@@ -1288,6 +1288,11 @@ public class UtilityFunctions {
     /** Return the sum of the elements in the specified array.
      *  This method is polymorphic in that it can sum any array
      *  whose elements support addition.
+     *  There is special support for strings, which are added
+     *  not via their add method (which concatenates two strings),
+     *  but are accumulated in a StringBuffer, which is much more 
+     *  efficient.
+     *  
      *  @param array An array.
      *  @return The sum of the elements of the array.
      *  @exception IllegalActionException If the length of the
@@ -1299,6 +1304,19 @@ public class UtilityFunctions {
         if (array == null || array.length() < 1) {
             throw new IllegalActionException("sum() function cannot be applied to an empty array");
         }
+
+	if (array.getElement(0) instanceof StringToken) {
+	    int length = 0;
+	    for (int i = 0; i < array.length(); i++) 
+		length = length + 
+		    ((StringToken)(array.getElement(i))).stringValue().length();
+	    StringBuffer buffer = new StringBuffer(length);	    
+	    for (int i = 0; i < array.length(); i++) 
+		buffer.append(((StringToken)
+			       (array.getElement(i))).stringValue());
+	    return new StringToken(buffer.toString());
+	}  
+
         Token result = array.getElement(0);
         for (int i = 1; i < array.length(); i++) {
             result = result.add(array.getElement(i));
