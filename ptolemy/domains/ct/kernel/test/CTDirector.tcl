@@ -102,53 +102,61 @@ test CTMultiSolverDirector-2.1 {Get default values} {
 
 ######################################################################
 ####  Test set parameters.
-#     This is a known fail, since setExpression() does not trigger
-#     parameter re-evaluation.
-test CTMultiSolverDirector-2.2 {set Parameters} {
+#    
+test CTMultiSolverDirector-2.2 {set Parameters by expression} {
     #Note: Use above set up.
     set param [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute ODESolver]]
     set token [java::new ptolemy.data.StringToken \
 	    ptolemy.domains.ct.kernel.solver.BackwardEulerSolver]
     $param setToken $token
+    $param getToken
 
     set param [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute initStepSize]]
     $param setExpression 0.5
+    $param getToken
 
     set param [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute errorTolerance]]
     $param setExpression 0.4
+    $param getToken
 
     set param [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute maxIterations]]
     $param setExpression 10
+    $param getToken
 
     set param [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute maxStepSize]]
     $param setExpression 0.3
+    $param getToken
 
     set param [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute minStepSize]]
     $param setExpression 0.2
+    $param getToken
 
     set param [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute startTime]]
     $param setExpression 10.0
+    $param getToken
 
     set param [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute stopTime]]
     $param setExpression 100.0
+    $param getToken
 
     set param [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute timeResolution]]
     $param setExpression 1e-11
+    $param getToken
 
     set param [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute valueResolution]]
     $param setExpression 0.1
+    $param getToken
 
-    $dir prefire
     list [[$dir getCurrentODESolver] getFullName] \
 	    [$dir getCurrentStepSize] \
 	    [$dir getCurrentTime] \
@@ -164,7 +172,7 @@ test CTMultiSolverDirector-2.2 {set Parameters} {
 	    [$dir getSuggestedNextStepSize] \
 	    [$dir getTimeResolution] \
 	    [$dir getValueResolution]
-} {.System.DIR.CT_Backward_Euler_Solver 0.1 0.0 0.0 0.5 0.4 10 0.3 0.2 0.1 10.0 100.0 0.1 1e-11 0.1} {KNOWN}
+} {.System.DIR.CT_Backward_Euler_Solver 0.1 0.0 0.0 0.5 0.4 10 0.3 0.2 0.1 10.0 100.0 0.1 1e-11 0.1}
 
 ######################################################################
 ####  Test set parameters, same as above, but uses setToken

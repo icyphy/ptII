@@ -52,7 +52,7 @@ embedded in another event-based domain, it will run ahead of the global
 time and prepare to roll back if necessary.
 <P>
 This class has an additional parameter than the CTMultiSolverDirector,
-which is the maximum run ahead of time length (<code>RunAheadLength</code>).
+which is the maximum run ahead of time length (<code>runAheadLength</code>).
 The default value is 1.0.
 <P>
 The run ahead of time is achieved by the following mechanism.<Br>
@@ -62,7 +62,7 @@ a fire at the global current time.
 <LI> At each prefire stage the execution, the fire end time is computed
 based on the current time of the executive director t1, the next iteration
 time of the executive director t2, the value of the parameter
-<code>RunAheadLength</code> t3. The fire end time is t1+min(t2, t3)
+<code>runAheadLength</code> t3. The fire end time is t1+min(t2, t3)
 <LI> At the prefire stage, the local current time is compared with the
 current time of the executive director. If the local time is later than
 the executive director time, then the directed system will rollback to a
@@ -117,7 +117,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
 
     /** parameter of default runaheadlength.
      */
-    public Parameter RunAheadLength;
+    public Parameter runAheadLength;
 
 
     ///////////////////////////////////////////////////////////////////
@@ -131,7 +131,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      */
     public void attributeChanged(Parameter param)
             throws IllegalActionException {
-        if(param == RunAheadLength) {
+        if(param == runAheadLength) {
             if(_debugging) _debug("run ahead time updating.");
             _runAheadLength = ((DoubleToken)param.getToken()).doubleValue();
         } else {
@@ -312,7 +312,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *  If this director is not a top-level director, the time is
      *  resolved from the current time of the outside domains, say t1,
      *  the next iteration time of the outside domain, say t2,
-     *  the RunAheadLength parameter of this director, say t3.
+     *  the runAheadLength parameter of this director, say t3.
      *  The iteration end time is set
      *  to be <code>t1 + min(t2, t3)</code>. The iteration end time may be
      *  further refined by the fire() method due to event detection.
@@ -438,15 +438,15 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
     /** Initialize parameters in addition to the parameters inherited
      *  from CTMultiSolverDirector. In this class the additional
      *  parameter is the maximum run ahead time length
-     *  (<code>RunAheadLength</code>). The default value is 1.0.
+     *  (<code>runAheadLength</code>). The default value is 1.0.
      */
     protected void _initParameters() {
         super._initParameters();
         try {
             _runAheadLength = 1.0;
-            RunAheadLength = new Parameter(this,
-                    "RunAheadLength", new DoubleToken(_runAheadLength));
-            RunAheadLength.setTypeEquals(BaseType.DOUBLE);
+            runAheadLength = new Parameter(this,
+                    "runAheadLength", new DoubleToken(_runAheadLength));
+            runAheadLength.setTypeEquals(BaseType.DOUBLE);
         } catch (IllegalActionException e) {
             //Should never happens. The parameters are always compatible.
             throw new InternalErrorException("Parameter creation error.");

@@ -35,7 +35,7 @@ import ptolemy.data.expr.*;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.actor.*;
-import java.util.Enumeration;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// CTBaseIntegrator
@@ -118,7 +118,7 @@ public class CTBaseIntegrator extends CTActor
         output.setOutput(true);
         output.setTypeEquals(BaseType.DOUBLE);
         _initState = 0.0;
-        InitialState = new Parameter(this, "InitialState",
+        initialState = new Parameter(this, "initialState",
                 new DoubleToken(_initState));
     }
 
@@ -145,7 +145,7 @@ public class CTBaseIntegrator extends CTActor
         output = new TypedIOPort(this, "output");
         output.setOutput(true);
         output.setTypeEquals(BaseType.DOUBLE);
-        InitialState = new Parameter(this, "InitialState",
+        initialState = new Parameter(this, "initialState",
                 new DoubleToken(_initState));
     }
 
@@ -173,40 +173,50 @@ public class CTBaseIntegrator extends CTActor
         output = new TypedIOPort(this, "output");
         output.setOutput(true);
         output.setTypeEquals(BaseType.DOUBLE);
-        InitialState = new Parameter(this, "InitialState",
+        initialState = new Parameter(this, "initialState",
                 new DoubleToken(_initState));
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** Input port. Finals means they are not changeable once created.
+     */
+    public final TypedIOPort input;
+
+    /** Input port. Finals means they are not changeable once created.
+     */
+    public final TypedIOPort output;
+
+    /** Initial State
+     */
+    public Parameter initialState;
+
+
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Fire() method in the execution sequence. It in turn calls
-     *  the integratorFire() of the current ODE solver.
+    /** This method delegates to the integratorFire() of the 
+     *  current ODE solver. The existance of director and ODE solver
+     *  is not checked, since they are checked in the preinitalize()
+     *  method.
      *
-     *  @exception IllegalActionException If there's no director or the
-     *       director has no ODE solver, or thrown by integratorFire()
+     *  @exception IllegalActionException If thrown by integratorFire()
      *       of the solver.
      */
     public void fire() throws  IllegalActionException {
         CTDirector dir = (CTDirector)getDirector();
-        if(dir == null) {
-            throw new IllegalActionException( this,
-                    " has no director.");
-        }
         ODESolver solver = (ODESolver)dir.getCurrentODESolver();
-        if(solver == null) {
-            throw new IllegalActionException( dir,
-                    " has no ODE solver.");
-        }
         if(_debugging) _debug(getName() + "using solver:", solver.getName());
         solver.integratorFire(this);
     }
 
-    /** Return the _auxVariables in a double array. This method get the
-     *  _auxVariables stored in the integrator. Return null if the
-     *  _auxVariables has never been created.
+    /** Return the auxVariables in a double array. This method get the
+     *  auxVariables stored in the integrator. auxVariables are created
+     *  in the prefire() method. Return null if the
+     *  auxVariables have never been created.
      *
-     *  @return The _auxVariables in a double array.
+     *  @return The auxVariables in a double array.
      */
     public double[] getAuxVariables() {
         return _auxVariables;
@@ -237,7 +247,7 @@ public class CTBaseIntegrator extends CTActor
         return 1;
     }
 
-    /** Returns the initial state.
+    /** Return the initial state.
      *
      *  @return the initial state.
      */
@@ -245,7 +255,7 @@ public class CTBaseIntegrator extends CTActor
         return _initState;
     }
 
-    /** Returns the tentative state.
+    /** Return the tentative state.
      *
      *  @return the tentative state.
      */
@@ -261,17 +271,29 @@ public class CTBaseIntegrator extends CTActor
         return _state;
     }
 
-    /** Update initial state parameter. Set the initial state to
-     *  the tentative state.
+    /** Preinitialize the integrator. Check for director and ODE 
+     *  solver.
+     *  Update initial state parameter. Set the initial state to
+     *  the tentative state and the state. Set tentative 
+     *  derivative to 0.0.
      *
      *  @exception IllegalActionException If there's no director or
      *       the director has no ODE solver, or thrown by the
      *       integratorInitialize() of the solver.
-     *  FIXME: This should be preinitialize.
      */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        _initState = ((DoubleToken)InitialState.getToken()).doubleValue();
+    public void preinitialize() throws IllegalActionException {
+        CTDirector dir = (CTDirector)getDirector();
+        if(dir == null) {
+            throw new IllegalActionException( this,
+                    " no director available");
+        }
+        ODESolver solver = (ODESolver)dir.getCurrentODESolver();
+        if(solver == null) {
+            throw new IllegalActionException( this,
+                    " no ODE solver available");
+        }
+        super.preinitialize();
+        _initState = ((DoubleToken)initialState.getToken()).doubleValue();
         _tentativeState = _initState;
         _tentativeDerivative = 0.0;
         _state = _tentativeState;
@@ -288,10 +310,10 @@ public class CTBaseIntegrator extends CTActor
         output.broadcast(new DoubleToken(_tentativeState));
     }
 
-    /** Return true if last integration step is successful.
+    /** Return true if the last integration step is successful.
      *  This method delegates to the integratorIsSuccessful() method of
      *  the current ODE solver.
-     *  @return True if last integration step is successful.
+     *  @return True if the last integration step is successful.
      */
     public boolean isThisStepSuccessful() {
         ODESolver solver = ((CTDirector)getDirector()).getCurrentODESolver();
@@ -299,13 +321,10 @@ public class CTBaseIntegrator extends CTActor
         return _successful;
     }
 
-    /** Postfire method in the execution sequence. It updates the
-     *  the states and push the current state and its derivative
+    /** Updates the states and push the current state and its derivative
      *  into history.
      *  @return True always.
-     *  @exception IllegalActionException If there's no director or
-     *       the director has no ODE solver, or thrown by the
-     *       integratorInitialize() of the solver.
+     *  @exception Never thrown
      */
     public boolean postfire() throws IllegalActionException {
         _state = _tentativeState;
@@ -327,23 +346,15 @@ public class CTBaseIntegrator extends CTActor
      *  This method checks
      *  if there enough auxVariables in the integrator given the
      *  current ODE solver. If not, create more auxVariables.
+     *  The existance of director and ODE solver is not checked,
+     *  since they are checked in preinitialize()
      *  @return True always.
      *  @exception IllegalActionException If there's no director or
-     *       the director has no ODE solver, or thrown by the
-     *       integratorInitialize() of the solver.
+     *       the director has no ODE solver.
      */
     public boolean prefire() throws IllegalActionException {
         CTDirector dir = (CTDirector)getDirector();
-        if(dir == null) {
-            throw new IllegalActionException( this,
-                    " no director available");
-        }
         ODESolver solver = (ODESolver)dir.getCurrentODESolver();
-        if(solver == null) {
-            throw new IllegalActionException( this,
-                    " no ODE solver available");
-        }
-
         int n = solver.getIntegratorAuxVariableCount();
         if((_auxVariables == null) || (_auxVariables.length < n)) {
             _auxVariables = new double[n];
@@ -351,8 +362,10 @@ public class CTBaseIntegrator extends CTActor
         return true;
     }
 
-    /** Return the predicted next step size. This method delegate to
-     *  the integratorRefinedStepSize() method of the current ODESolver.
+    /** Return the prediction of the refined next step size. 
+     *  If this integrator considers the last step to be successful,
+     *  then return the current step size, else return half the
+     *  current step size.
      *  @return The predicteded next step size.
      */
     public double refinedStepSize() {
@@ -430,16 +443,6 @@ public class CTBaseIntegrator extends CTActor
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        public variables                   ////
-    /** Input port. Finals means they are not changeable once created.
-     */
-    public final TypedIOPort input;
-
-    /** Input port. Finals means they are not changeable once created.
-     */
-    public final TypedIOPort output;
-
-    ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
     /** Push the state and derivative into the history storage.
      *  If the history capacity is full, then the oldest history
@@ -465,7 +468,7 @@ public class CTBaseIntegrator extends CTActor
     ////                         private variables                 ////
 
     // Parameter initial state.
-    public Parameter InitialState;
+
     private double _initState;
 
     private boolean _successful = false;

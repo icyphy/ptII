@@ -88,7 +88,7 @@ test CTRampSystem-4.1 {Ramp with ForwardEulerSolver} {
     $solver setToken $token
 
     set initstate [java::cast ptolemy.data.expr.Parameter \
-	    [$integral getAttribute InitialState]]
+	    [$integral getAttribute initialState]]
     set token [java::new ptolemy.data.DoubleToken 0.0]
     $initstate setToken $token
 
@@ -126,7 +126,7 @@ test CTRampSystem-4.2 {Ramp with BackwardEulerSolver} {
     $solver setToken $token
 
     set initstate [java::cast ptolemy.data.expr.Parameter \
-	    [$integral getAttribute InitialState]]
+	    [$integral getAttribute initialState]]
     set token [java::new ptolemy.data.DoubleToken 0.0]
     $initstate setToken $token
 
@@ -170,7 +170,7 @@ test CTRampSystem-4.3 {Ramp with ExplicitRK23Solver and DerivativeResolver} {
     $bpsolver setToken $token
 
     set initstate [java::cast ptolemy.data.expr.Parameter \
-	    [$integral getAttribute InitialState]]
+	    [$integral getAttribute initialState]]
     set token [java::new ptolemy.data.DoubleToken 0.0]
     $initstate setToken $token
 

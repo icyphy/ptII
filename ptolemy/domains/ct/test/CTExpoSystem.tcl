@@ -110,7 +110,7 @@ test CTExpoSystem-4.1 {Expo with ForwardEulerSolver} {
     $stoptime setToken $token
 
     set initstate [java::cast ptolemy.data.expr.Parameter \
-	    [$integral getAttribute InitialState]]
+	    [$integral getAttribute initialState]]
     set token [java::new ptolemy.data.DoubleToken 0.0]
     $initstate setToken $token
 
@@ -168,7 +168,7 @@ test CTExpoSystem-4.3 {Expo System with MultiSolver DR RK23} {
     $stoptime setToken $token
 
     set initstate [java::cast ptolemy.data.expr.Parameter \
-	    [$integral getAttribute InitialState]]
+	    [$integral getAttribute initialState]]
     set token [java::new ptolemy.data.DoubleToken 0.0]
     $initstate setToken $token
 

@@ -502,11 +502,11 @@ public class HelicopterApplet extends CTApplet {
             _dir.ODESolver.setToken(token2);
 
 
-            Px.InitialState.setToken(new DoubleToken(0.0));
+            Px.initialState.setToken(new DoubleToken(0.0));
 
-            Pz.InitialState.setToken(new DoubleToken(-1.5));
+            Pz.initialState.setToken(new DoubleToken(-1.5));
 
-            Tm.InitialState.setToken(new DoubleToken(48.02));
+            Tm.initialState.setToken(new DoubleToken(48.02));
 
             MINUS.factor.setToken(new DoubleToken(-1.0));
 
