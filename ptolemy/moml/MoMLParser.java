@@ -210,6 +210,16 @@ public class MoMLParser extends HandlerBase {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Add an error handler to handle parsing errors.
+     *  Whenever a parse error occurs in an element, the parser collects
+     *  the entire element text and when it gets to the endElement the
+     *  error handler that was added with this method is called.
+     *  @param handler The ErrorHandler to call.
+     */
+    public void addErrorHandler(ErrorHandler handler) {
+        _handler = handler;
+    }
+
     /** Handle an attribute assignment that is part of an XML element.
      *  This method is called prior to the corresponding startElement()
      *  call, so it simply accumulates attributes in a hashtable for
@@ -2041,6 +2051,9 @@ public class MoMLParser extends HandlerBase {
 
     // The latest element seen by startElement.
     private String _currentElement;
+
+    // ErrorHandler that handles parse errors.
+    private ErrorHandler _handler = null;
 
     // List of top-level entities imported via import element.
     private List _imports;
