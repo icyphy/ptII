@@ -76,6 +76,7 @@ foreach i $configs {
     $inputFileNamesToSkip add "/apps/apps.xml"
     $inputFileNamesToSkip add "/apps/superb/superb.xml"
     $inputFileNamesToSkip add "/attributes/decorative.xml"
+    $inputFileNamesToSkip add "/chic/chic.xml"
     $inputFileNamesToSkip add "/configs/ellipse.xml"
     $inputFileNamesToSkip add "/io/comm/comm.xml"
     $inputFileNamesToSkip add "/image.xml"
