@@ -128,6 +128,7 @@ public class StringUtilities {
      *  > becomes &amp;gt;
      *  newline becomes &amp;#10;
      *  </pre>
+     *  @see #unescapeForXML(String)
      *
      *  @param string The string to escape.
      *  @return A new string with special characters replaced.
@@ -192,7 +193,9 @@ public class StringUtilities {
             property = System.getProperty(propertyName);
         } catch (SecurityException security) {
             if (!propertyName.equals("ptolemy.ptII.dir")) {
-                throw new RuntimeException("Could not find '"
+                // Constants.java depends on this when running with 
+                // -sandbox.
+                throw new SecurityException("Could not find '"
                         + propertyName + "' System property", security);
             }
         }
@@ -669,6 +672,29 @@ public class StringUtilities {
             (String [])commandList.toArray(new String[commandList.size()]);
     }
 
+    /** Given a string, replace all the instances of XML entities
+     *  with their corresponding XML special characters.  This is necessary to
+     *  allow arbitrary strings to be encoded within XML.  This method
+     *  <pre>
+     *  &amp;amp; becomes &amp
+     *  &amp;quot; becomes "
+     *  &amp;lt; becomes <
+     *  &amp;gt; becomes >
+     *  &amp;#10; becomes newline
+     *  </pre>
+     *  @see #escapeForXML(String)
+     *
+     *  @param string The string to escape.
+     *  @return A new string with special characters replaced.
+     */
+    public static String unescapeForXML(String string) {
+        string = substitute(string, "&amp;", "&");
+        string = substitute(string, "&quot;", "\"");
+        string = substitute(string, "&lt;", "<");
+        string = substitute(string, "&gt;", ">");
+        string = substitute(string, "&#10;", "\n");
+        return string;
+    }
 
     /** Return a string that contains a description of how to use this
      *  class.
