@@ -113,7 +113,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
         String filename = sourceFile.toString();
 
-        ApplicationUtility.status("pass1() : filename = " + filename);
+        System.out.println("pass1() : filename = " + filename);
 
         // make a list of the compile unit node and compile unit nodes that
         // contain superclasses
@@ -155,7 +155,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
         _rewriteSources(unitList, renamedClassNameList);
 
-        ApplicationUtility.status("ActorCodeGenerator.pass1(): returning " +
+        System.out.println("ActorCodeGenerator.pass1(): returning " +
 				 _outputPackageName + "." +
 	    StringManip.partAfterLast((String) renamedClassNameList.getLast(),
 				      '.'));
@@ -180,7 +180,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
         String filename = sourceFile.toString();
 
-        ApplicationUtility.status("pass2() : sourceName = " + sourceName +
+        System.out.println("pass2() : sourceName = " + sourceName +
                 ", filename = " + filename);
 
         LinkedList[] listArray =
@@ -235,7 +235,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
         String filename = sourceFile.toString();
 
-        ApplicationUtility.status("pass3() : sourceName = " + sourceName +
+        System.out.println("pass3() : sourceName = " + sourceName +
                 ", filename = " + filename + ".java");
 
         // save the old type personality
@@ -329,7 +329,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
             //    System.err.println("Warning: failed to invalidate source filename: "                        + filename);
             //}
 	    String className = (String) classNameItr.next();
-            ApplicationUtility.status("ActorCodeGenerator._invalidate" +
+            System.out.println("ActorCodeGenerator._invalidate" +
 				      "CompileUnit: invalidating source " +
 				      "filename: " + className + " pass: " +
 				      passNumber);
