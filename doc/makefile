@@ -107,7 +107,6 @@ ALLJSRCS =		ptolemy.plot \
 			ptolemy.domains.fsm.kernel \
 			ptolemy.domains.pn.gui \
 			ptolemy.domains.pn.kernel \
-			ptolemy.domains.sdf.gui \
 			ptolemy.domains.sdf.kernel \
 			ptolemy.domains.sdf.lib \
 			ptolemy.domains.sdf.lib.vq \
@@ -169,7 +168,6 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/domains/fsm/kernel/*.java \
 			../ptolemy/domains/pn/gui/*.java \
 			../ptolemy/domains/pn/kernel/*.java \
-			../ptolemy/domains/sdf/gui/*.java \
 			../ptolemy/domains/sdf/kernel/*.java \
 			../ptolemy/domains/sdf/lib/*.java \
 			../ptolemy/domains/sdf/lib/vq/*.java \
