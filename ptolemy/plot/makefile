@@ -162,10 +162,12 @@ KRUFT = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
+# make jars will build $(OTHER_JARS)
+OTHER_JARS = $(PXGRAPHAPPLETJAR) $(PLOTMLAPPLETJAR) $(PLOTAPPLICATIONJAR)
+
 all: sources jclass
 
-install: all jars \
-		$(PXGRAPHAPPLETJAR) $(PLOTMLAPPLETJAR) $(PLOTAPPLICATIONJAR)
+install: all jars
 	(cd ../../bin; $(MAKE) install)
 
 
