@@ -211,7 +211,7 @@ public class FSMGraphFrame extends GraphFrame {
                         } catch (NumberFormatException ex) {
                             MessageHandler.error(
                                     "Invalid time, which is required "
-                                    + "to be an integer: " + ex.toString());
+                                    + "to be an integer: ", ex);
                         }
                     }
                 } else if (actionCommand.equals("Stop Animating")
