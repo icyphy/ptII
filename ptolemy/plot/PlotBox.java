@@ -1672,7 +1672,7 @@ public class PlotBox extends JPanel implements Printable {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    public static final String PTPLOT_RELEASE = "5.4-alpha";
+    public static final String PTPLOT_RELEASE = "5.4-beta";
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -2333,8 +2333,8 @@ public class PlotBox extends JPanel implements Printable {
     protected void _help() {
         String message =
             "Ptolemy plot package\n" +
-            "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
-            "and Christopher Hylands, cxh@eecs.berkeley.edu\n" +
+            "By: Edward A. Lee\n" +
+            "and Christopher Hylands\n" +
             "Version " + PTPLOT_RELEASE +
             ", Build: $Id$\n\n" +
             "Key bindings:\n" +
@@ -3548,7 +3548,7 @@ public class PlotBox extends JPanel implements Printable {
     // seems to be no other way to ensure that the generated data exactly
     // matches the DTD.
     //    private static final String _DTD =
-    //    "<!-- PlotML DTD, created by Edward A. Lee, eal@eecs.berkeley.edu.\n"
+    //    "<!-- PlotML DTD, created by Edward A. Lee.\n"
     //    + "   See http://ptolemy.eecs.berkeley.edu/java/ptplot -->\n"
     //    + "<!ELEMENT plot (barGraph | bin | dataset | default | noColor | \n"
     //    + "        noGrid | title | wrap | xLabel | xLog | xRange | xTicks | yLabel | \n"
