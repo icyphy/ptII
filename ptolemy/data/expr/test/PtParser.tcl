@@ -575,13 +575,13 @@ test PtParser-10.1 {Test that functions can access registered classes.
 test PtParser-10.2 {Test for reasonable error messages on type problems} {
     set e [java::new {ptolemy.kernel.Entity String} E]
     set v1 [java::new ptolemy.data.expr.Variable $e v1]
-    $v1 setExpression "cos(1)"
+    $v1 setExpression "cos(\"foo\")"
     catch {$v1 getToken} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Error evaluating expression "cos(1)"
+} {{ptolemy.kernel.util.IllegalActionException: Error evaluating expression "cos("foo")"
   in .E.v1
 Because:
-No matching function cos( 1 ).}}
+No matching function cos( "foo" ).}}
 
 ######################################################################
 ####

@@ -538,14 +538,14 @@ public class CachedMethod {
                 // Check the number of arguments.
                 if (arguments.length != actualArgCount) continue;
 
-                //      System.out.println("checking method " + methods[i]);
+                //  System.out.println("checking method " + methods[i]);
                 // Check the compatability of arguments.
                 boolean match = true;
                 for (int j = 0; j < arguments.length && match; j++) {
                     ArgumentConversion conversion =
                         _getConversion(arguments[j], argTypes[j]);
-                    //   System.out.println("formalType is " + arguments[i] + " " + arguments[i].getName());
-                    // System.out.println("actualType is " + argTypes[i] + " " + argTypes[i].getClass().getName());
+                    //    System.out.println("formalType is " + arguments[j] + " " + arguments[j].getName());
+                    //   System.out.println("actualType is " + argTypes[j] + " " + argTypes[j].getClass().getName());
                     match = match && (conversion != IMPOSSIBLE);
                     conversions[j] = conversion;
                 }
@@ -581,6 +581,11 @@ public class CachedMethod {
                        ASTPtFunctionNode.convertTokenTypeToJavaType(actual))) {
                 return NATIVE;
             }
+        } catch (IllegalActionException ex) {
+            // Ignore..
+            //          ex.printStackTrace();
+        }
+        try {
             // We have to do this because Java is stupid and doesn't
             // give us a way to tell if primitive arguments are
             // acceptable
@@ -594,7 +599,7 @@ public class CachedMethod {
             }
         } catch (IllegalActionException ex) {
             // Ignore..
-            ex.printStackTrace();
+            //          ex.printStackTrace();
         }
         return IMPOSSIBLE;
     }
