@@ -80,8 +80,7 @@ test ODActor-2.1 {Check setPriorities} {
     $portA2 createReceivers
     
     $actorA setPriorities
-    
-    
+
     list [$portA1 getPriority] [$portA2 getPriority]
 } {15 5}
 
