@@ -81,7 +81,7 @@ public class CurrentTime extends TimedSource {
         // are different is in DT... getCurrentTime() on the director
         // returns the "start of iteration" time, whereas getCurrentTime()
         // on the channel returns the time of the current sample.
-        double currentTimeValue = Double.MAX_VALUE;
+        double currentTimeValue = Double.POSITIVE_INFINITY;
         if (trigger.getWidth() > 0) {
             // Trigger port is connected.
             // If there is a token in a channel of the trigger port,
