@@ -1,6 +1,6 @@
 # Tests Copernicus C Code generation for the InnerLocal example.
 #
-# @Author: Ankush Varma
+# @Author: Ankush Varma, Christopher Hylands
 #
 # @Version: $Id$
 #
@@ -50,11 +50,12 @@ test InnerLocal-1.1 {Generate all required files for InnerLocal.java} {
 
     set className InnerLocal
     set currentDirectory [pwd]
-    generateC $className
+    set output [generateC $className]
     cd $currentDirectory
     file rename -force \
             InnerLocal_1_Inner.c 
             InnerLocal_1_Inner.h  InnerLocal_1_Inner.o  InnerLocal_1_Inner_i.h
             "InnerLocal\$1\$Inner.class" 
 	testOutput/$className
-} {0 1 2 3}
+    list $output
+} {{0 1 2 3}}
