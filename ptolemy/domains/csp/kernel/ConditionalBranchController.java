@@ -1,5 +1,5 @@
 /* A controller that manages the conditional branches for performing
-   conditional communication winthin CSP domain.
+   conditional communication within CSP domain.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
