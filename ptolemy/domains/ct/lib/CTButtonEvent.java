@@ -49,7 +49,7 @@ back to false.
 @version $Id$
 
 */
-public class CTButtonEvent extends TypedAtomicActor {
+public class CTButtonEvent extends CTActor {
     /** Construct the actor. One output of type boolean
      *  The default output value is false.
      * @param container The TypedCompositeActor this star belongs to
@@ -65,7 +65,7 @@ public class CTButtonEvent extends TypedAtomicActor {
         output.setOutput(true);
         output.setTypeEquals(BooleanToken.class);
         _buttonClicked = false;
-        _paramButtonClicked = new Parameter(this, "ButtonClicked",
+        paramButtonClicked = new Parameter(this, "ButtonClicked",
                 new BooleanToken(_buttonClicked));
     }
 
@@ -91,22 +91,27 @@ public class CTButtonEvent extends TypedAtomicActor {
      */
     public void updateParameters() throws IllegalActionException{
         boolean b = 
-                ((BooleanToken)_paramButtonClicked.getToken()).booleanValue();
+                ((BooleanToken)paramButtonClicked.getToken()).booleanValue();
         if (!_buttonClicked && b) {
             _buttonClicked = true;
         }
     }
 
     ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
+    ////                         protected members                      ////
  
+    /** The single output port with type boolean.
+     */
     public TypedIOPort output;
  
+    /** The parameter for the button click; the type is boolean; the default
+     *  value is false.
+     */
+    public Parameter paramButtonClicked;
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // Private variables should not have doc comments, they should
     // have regular C++ comments.
-    private Parameter _paramButtonClicked;
-    private boolean _buttonClicked;
+    boolean _buttonClicked;
 }

@@ -60,33 +60,26 @@ $addin link $r3
 
 set starttime [$dir getAttribute StartTime]
 $starttime setExpression 0.0
-$starttime parameterChanged [java::null]
 
 set initstep [$dir getAttribute InitialStepSize]
 $initstep setExpression 0.01
-$initstep parameterChanged [java::null]
 
 set stoptime [$dir getAttribute StopTime]
 $stoptime setExpression 1.0
-$stoptime parameterChanged [java::null]
 
 #set solver [$dir getAttribute ODESolver]
 #set token [java::new ptolemy.data.StringToken ptolemy.domains.ct.kernel.solver.BackwardEulerSolver]
 #$solver setToken $token
-#$solver parameterChanged [java::null]
 
 set solver [$dir getAttribute ODESolver]
 set token [java::new ptolemy.data.StringToken ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver]
 $solver setToken $token
-$solver parameterChanged [java::null]
 
 #set initstate [$integral getAttribute InitialState]
 #$initstate setExpression 1.0
-#$initstate parameterChanged [java::null]
 
 set constval [$const getAttribute Value]
 $constval setExpression 1.0
-$constval parameterChanged [java::null]
 
 $man startRun
 

@@ -148,19 +148,19 @@ public class CruiseLinearizer extends CTActor{
         for(int i = 0; i< 5; i++) {
             sP = sP + _alphaP[i] + " ";
         }
-        _paramAlphaP = new Parameter(this, "AlphaP", new StringToken(sP));
+        paramAlphaP = new Parameter(this, "AlphaP", new StringToken(sP));
 
         String sV = new String();
         for(int i = 0; i< 4; i++) {
             sV = sV + _alphaV[i] + " ";
         }
-        _paramAlphaV = new Parameter(this, "AlphaV", new StringToken(sV));
+        paramAlphaV = new Parameter(this, "AlphaV", new StringToken(sV));
         
         _cVx = 5.0;
-        _paramCVx = new Parameter(this, "CVx", new DoubleToken(_cVx));
+        paramCVx = new Parameter(this, "CVx", new DoubleToken(_cVx));
 
         _cPz = -2.0;
-        _paramCPz = new Parameter(this, "CPz", new DoubleToken(_cPz));
+        paramCPz = new Parameter(this, "CPz", new DoubleToken(_cPz));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -208,7 +208,7 @@ public class CruiseLinearizer extends CTActor{
      *  @exception IllegalActionException Never thrown.*
      */
     public void updateParameters() throws IllegalActionException {
-        String taps = ((StringToken)_paramAlphaP.getToken()).stringValue();
+        String taps = ((StringToken)paramAlphaP.getToken()).stringValue();
         StringTokenizer stokens = new StringTokenizer(taps);
         int index = 0;
         if(stokens.countTokens() < 5) {
@@ -220,7 +220,7 @@ public class CruiseLinearizer extends CTActor{
             _alphaP[index++] = (new Double(valueToken)).doubleValue();
         }
 
-        taps = ((StringToken)_paramAlphaV.getToken()).stringValue();
+        taps = ((StringToken)paramAlphaV.getToken()).stringValue();
         stokens = new StringTokenizer(taps);
         index = 0;
         if(stokens.countTokens() < 4) {
@@ -232,8 +232,8 @@ public class CruiseLinearizer extends CTActor{
             _alphaV[index++] = (new Double(valueToken)).doubleValue();
         }        
 
-        _cVx = ((DoubleToken)_paramCVx.getToken()).doubleValue();
-        _cPz = ((DoubleToken)_paramCPz.getToken()).doubleValue();     
+        _cVx = ((DoubleToken)paramCVx.getToken()).doubleValue();
+        _cPz = ((DoubleToken)paramCPz.getToken()).doubleValue();     
     }
 
     /** Input port Px
@@ -292,19 +292,37 @@ public class CruiseLinearizer extends CTActor{
      */
     public TypedIOPort outputR;
 
+    /** Parameter for alphaP, string,
+     *  default "500.0, 650.0, 395.0,  121.0, 17.8"
+     */
+    public Parameter paramAlphaP;
+
+    /** Parameter for alphaV, string,
+     *  default "100.0, 110.0, 57.0, 12.80"
+     */
+    public Parameter paramAlphaV;
+
+    /** Parameter for CVx, the set point of Px, double,
+     *  default 5.0.
+     */
+    public Parameter paramCVx;
+
+    /** Parameter for CPz, the set point of Pz, double,
+     *  default -2.0.
+     */
+    public Parameter paramCPz;
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private Parameter _paramAlphaP;
+
     private double[] _alphaP = {500.0, 650.0, 395.0,  121.0, 17.8};
 
-    private Parameter _paramAlphaV;
     private double[] _alphaV = {100.0, 110.0, 57.0, 12.80};
   
-    private Parameter _paramCVx;
     private double _cVx;
 
-    private Parameter _paramCPz;
     private double _cPz;
 
 }

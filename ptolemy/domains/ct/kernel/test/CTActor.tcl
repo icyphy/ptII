@@ -79,30 +79,32 @@ test CTActor-1.3 {Construct a CTActor with a container and a name} {
     list [$a1 getFullName]
 } {.COMP.A1}
 ######################################################################
-####  Test CTParameters
+####  Test Parameters
 #  
 test CTActor-2.1 {Create a CTParameter} {
     # Note: Use the above setup
     set zero [java::new {ptolemy.data.DoubleToken double} 0.0]
-    set par [java::new ptolemy.domains.ct.kernel.CTParameter \
+    set one [java::new {ptolemy.data.DoubleToken double} 1.0]
+
+    set par [java::new ptolemy.data.expr.Parameter \
 	    $a1 PARAM $zero]
     # list [[$par getToken] doubleValue]
     #_testDoubleValue $par
     [java::cast ptolemy.data.DoubleToken [$par getToken]] doubleValue
 } {0.0}
 
-test CTActor-2.2 {Change a CTParameter} {
-    # Note: Use the above setup
-    set one [java::new {ptolemy.data.DoubleToken double} 1.0]
-    $par setToken $one
-    list [$a1 isParamChanged]
-} {1}
-
-test CTActor-2.3 {update a CTParameter} {
-    # Note: Use the above setup
-    $a1 prefire
-    list [$a1 isParamChanged]
-} {0}
+#test CTActor-2.2 {Change a CTParameter} {
+#    # Note: Use the above setup
+#    set one [java::new {ptolemy.data.DoubleToken double} 1.0]
+#    $par setToken $one
+#    list [$a1 isParamChanged]
+#} {1}
+#
+#test CTActor-2.3 {update a CTParameter} {
+#    # Note: Use the above setup
+#    $a1 prefire
+#    list [$a1 isParamChanged]
+#} {0}
 ######################################################################
 ####
 #

@@ -86,7 +86,7 @@ public class ForwardEulerSolver extends FixedStepSolver{
      *       throw it.
      */
     public boolean resolveStates() throws IllegalActionException {
-        _debug("FE: resolveState().");
+        _debug(getFullName() + ": resolveState().");
         CTDirector dir = (CTDirector)getContainer();
         if (dir == null) {
             throw new IllegalActionException( this,
@@ -104,13 +104,13 @@ public class ForwardEulerSolver extends FixedStepSolver{
         Enumeration actors = sch.stateTransitionSchedule();
         while(actors.hasMoreElements()) {
             Actor next = (Actor)actors.nextElement();
-            _debug("Firing..."+((Nameable)next).getName());
+            _debug(getFullName() + " is firing..."+((Nameable)next).getName());
             next.fire();
         }
         actors = sch.dynamicActorSchedule();
         while(actors.hasMoreElements()) {
             Actor next = (Actor)actors.nextElement();
-            _debug("Firing..."+((Nameable)next).getName());
+            _debug(getFullName() + " is firing..."+((Nameable)next).getName());
             next.fire();
         }
         dir.setCurrentTime(dir.getCurrentTime()+dir.getCurrentStepSize());

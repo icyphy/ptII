@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Red (liuj@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -95,7 +95,7 @@ public class BackwardEulerSolver extends FixedStepSolver
      *  class. May be needed by the derived class.
      */
     public boolean resolveStates() throws IllegalActionException {
-        _debug("BE: resolveState().");
+        _debug(getFullName() + ": resolveState().");
         CTDirector dir = (CTDirector)getContainer();
         if (dir == null) {
             throw new IllegalActionException( this,
@@ -111,7 +111,7 @@ public class BackwardEulerSolver extends FixedStepSolver
         Enumeration actors = sch.dynamicActorSchedule();
         while(actors.hasMoreElements()) {
             CTDynamicActor next = (CTDynamicActor)actors.nextElement();
-            _debug("Guessing..."+((Nameable)next).getName());
+            _debug(getFullName() + " Guessing..."+((Nameable)next).getName());
             next.emitTentativeOutputs();
         }
         _setConverge(false);
@@ -124,13 +124,15 @@ public class BackwardEulerSolver extends FixedStepSolver
             actors = sch.stateTransitionSchedule();
             while(actors.hasMoreElements()) {
                 Actor next = (Actor)actors.nextElement();
-                _debug("Firing..."+((Nameable)next).getName());
+                _debug(getFullName() + " Firing..."+
+                        ((Nameable)next).getName());
                 next.fire();
             }
             actors = sch.dynamicActorSchedule();
             while(actors.hasMoreElements()) {
                 Actor next = (Actor)actors.nextElement();
-                _debug("Refiring..."+((Nameable)next).getName());
+                _debug(getFullName() + " Refiring..."+
+                        ((Nameable)next).getName());
                 next.fire();
             }
             if(iterations++ > dir.getMaxIterations()) {

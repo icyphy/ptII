@@ -42,16 +42,14 @@ import java.util.*;
 
 
 //////////////////////////////////////////////////////////////////////////
-//// CTPlot
+//// CTXYPlot
 /**
 A XY-plotter for continuous signals.
-
+FIXME: To be removed. Use domain polymorphic actor.
 @author Jie Liu, Lukito Muliadi, Edward A. Lee
 @version $Id$
 */
-public class  CTXYPlot extends TypedAtomicActor {
-
-    private static  boolean DEBUG = false;
+public class  CTXYPlot extends CTActor {
 
     /** Construct a plot actor with a new plot window. The default 
      *  X-range and Y-range are both 
@@ -157,14 +155,13 @@ public class  CTXYPlot extends TypedAtomicActor {
         _xMax = ((DoubleToken)_paramXMax.getToken()).doubleValue();
         
         String legs = ((StringToken)_paramLegends.getToken()).stringValue();
-        //System.out.println(legs);
+        _debug(getFullName() + "legends: " + legs);
         if(!legs.equals("")) {
             StringTokenizer stokens = new StringTokenizer(legs);
             int index = 0;
             _legends = new String[stokens.countTokens()];
             while(stokens.hasMoreTokens()) {
                  _legends[index++]= stokens.nextToken();
-                 //System.out.println(_legends[index-1]);
             }
         }
         _firstPoint = true;

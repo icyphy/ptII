@@ -1,4 +1,4 @@
-/* A CT actor that outputs a ramp.
+/* A CT actor that outputs a sine wave.
 
  Copyright (c) 1997-1999 The Regents of the University of California.
  All rights reserved.
@@ -38,13 +38,15 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// CTSin
 /**
-A sin wave source: output = A*Sin(w*t + phi) 
+A timed sin wave source: output = A*Sin(w*t + phi) 
+Note: Seems not replacable by the domain polymrphic Sin.
 @author Jie Liu
-@version %W%  %G%
+@version $Id$
 */
-public class CTSin extends TypedAtomicActor {
-    /** Construct the CTRamp actor, default slop 1, defalt initial value 0
-     * @param container CTSubSystem this star belongs to
+public class CTSin extends CTActor {
+    /** Construct the CTSin actor; the default magnitude is 1;
+     *  the defalt angle frequency is 2*pi and the default phase is 0.
+     * @param container TypedCompositeActor this actor belongs to
      * @param name The name
      * @exception NameDuplicationException Other star already had this name
      * @exception IllegalActionException internal problem
@@ -57,13 +59,13 @@ public class CTSin extends TypedAtomicActor {
         output.setOutput(true);
         output.setTypeEquals(DoubleToken.class);
         _magnitude = 1.0;
-        _paramMagnitude =  new Parameter(this, "Magnitude",
+        paramMagnitude =  new Parameter(this, "Magnitude",
                 new DoubleToken(_magnitude));
         _angleFrequency = 2*Math.PI;
-        _paramAngleFrequency = new Parameter(this, "AngleFrequency",
+        paramAngleFrequency = new Parameter(this, "AngleFrequency",
                 new DoubleToken(_angleFrequency));
         _phase = 0.0;
-        _paramPhase =  new Parameter(this, "Phase",
+        paramPhase =  new Parameter(this, "Phase",
                 new DoubleToken(_phase));
     }
 
@@ -91,15 +93,31 @@ public class CTSin extends TypedAtomicActor {
      *  @exception IllegalActionException Never thrown.
      */
     public void updateParameters() throws IllegalActionException {
-        _magnitude = ((DoubleToken)_paramMagnitude.getToken()).doubleValue();
+        _magnitude = ((DoubleToken)paramMagnitude.getToken()).doubleValue();
         _angleFrequency = ((DoubleToken)
-                _paramAngleFrequency.getToken()).doubleValue();
-        _phase = ((DoubleToken)_paramPhase.getToken()).doubleValue();
+                paramAngleFrequency.getToken()).doubleValue();
+        _phase = ((DoubleToken)paramPhase.getToken()).doubleValue();
     }
 
-    /** The single output port
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** The single output port with type double
      */
     public TypedIOPort output;
+
+    /** Parameter for the manitude; type is double; default value is 1.0.
+     */
+    public Parameter paramMagnitude;
+
+    /** Parameter for the angle frequency; the type is double, the default
+     *  value is 2*pi.
+     */
+    public Parameter paramAngleFrequency;
+    
+    /** Parameter for the phase; the type is double; the default value is 0.0.
+     */
+    public Parameter paramPhase;
     
 
     ///////////////////////////////////////////////////////////////////
@@ -108,9 +126,6 @@ public class CTSin extends TypedAtomicActor {
     // Private variables should not have doc comments, they should
     // have regular C++ comments.
     private double _magnitude;
-    private Parameter _paramMagnitude;
     private double _angleFrequency;
-    private Parameter _paramAngleFrequency;
     private double _phase;
-    private Parameter _paramPhase;
 }

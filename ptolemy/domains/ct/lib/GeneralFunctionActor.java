@@ -45,7 +45,7 @@ import collections.LinkedList;
 An actor implementing general function. Upon each fire, the actor updates
 its internal variables using input tokens. Then the output variables are
 evaluated, the resulting tokens are put to the output ports.
-
+FIXME: Remove. Consider use actor.lib.Expression.
 @author Xiaojun Liu
 @version $Id$
 */
@@ -107,7 +107,7 @@ public class GeneralFunctionActor extends TypedAtomicActor {
             Enumeration outVars = _outputVarList.getVariables();
             while (outVars.hasMoreElements()) {
                 Variable var = (Variable)outVars.nextElement();
-                var.addToScope(_inputVarList);
+                var.addToScope(_inputVarList.getVariables());
             }
         } catch (KernelException ex) {
             throw new InvalidStateException(this, "Error in "

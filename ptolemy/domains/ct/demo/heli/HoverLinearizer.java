@@ -148,13 +148,13 @@ public class HoverLinearizer extends CTActor{
         for(int i = 0; i< 5; i++) {
             s = s + _alphaP[i] + " ";
         }
-        _paramAlphaP = new Parameter(this, "AlphaP", new StringToken(s));
+        paramAlphaP = new Parameter(this, "AlphaP", new StringToken(s));
         
         _cPx = 0.0;
-        _paramCPx = new Parameter(this, "CPx", new DoubleToken(_cPx));
+        paramCPx = new Parameter(this, "CPx", new DoubleToken(_cPx));
 
         _cPz = -2.0;
-        _paramCPz = new Parameter(this, "CPz", new DoubleToken(_cPz));
+        paramCPz = new Parameter(this, "CPz", new DoubleToken(_cPz));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -196,13 +196,12 @@ public class HoverLinearizer extends CTActor{
         outputVz.broadcast(new DoubleToken(Vz));
     }
         
-
     /** Update the parameter if they have been changed.
      *  The new parameter will be used only after this method is called.
      *  @exception IllegalActionException Never thrown.*
      */
     public void updateParameters() throws IllegalActionException {
-        String taps = ((StringToken)_paramAlphaP.getToken()).stringValue();
+        String taps = ((StringToken)paramAlphaP.getToken()).stringValue();
         StringTokenizer stokens = new StringTokenizer(taps);
         int index = 0;
         int tokencount = stokens.countTokens();
@@ -210,76 +209,88 @@ public class HoverLinearizer extends CTActor{
             String valueToken = stokens.nextToken();
           _alphaP[index++] = (new Double(valueToken)).doubleValue();
         }
-        _cPx = ((DoubleToken)_paramCPx.getToken()).doubleValue();
-        _cPz = ((DoubleToken)_paramCPz.getToken()).doubleValue();     
+        _cPx = ((DoubleToken)paramCPx.getToken()).doubleValue();
+        _cPz = ((DoubleToken)paramCPz.getToken()).doubleValue();     
     }
 
-    /** Input port Px
+    /** Input port Px, single port with type double.
      */
     public TypedIOPort inputPx;
     
-    /** Input port DPx
+    /** Input port DPx, single port with type double.
      */
     public TypedIOPort inputDPx;
 
-    /** Input port DDPx
+    /** Input port DDPx, single port with type double.
      */
     public TypedIOPort inputDDPx;
 
-    /** Input port D3Px
+    /** Input port D3Px, single port with type double.
      */
     public TypedIOPort inputD3Px;
 
-    /** Input port D4Px
+    /** Input port D4Px, single port with type double.
      */
     public TypedIOPort inputD4Px;
 
-    /** Input port Pz
+    /** Input port Pz, single port with type double.
      */
     public TypedIOPort inputPz;
     
-    /** Input port DPz
+    /** Input port DPz, single port with type double.
      */
     public TypedIOPort inputDPz;
 
-    /** Input port DDPz
+    /** Input port DDPz, single port with type double.
      */
     public TypedIOPort inputDDPz;
 
-    /** Input port D3Pz
+    /** Input port D3Pz, single port with type double.
      */
     public TypedIOPort inputD3Pz;
 
-    /** Input port D4Pz
+    /** Input port D4Pz, single port with type double.
      */
     public TypedIOPort inputD4Pz;
 
-    /** Output port Vx
+    /** Output port Vx, single port with type double.
      */
     public TypedIOPort outputVx;
 
-    /** output port Vz
+    /** output port Vz, single port with type double.
      */
     public TypedIOPort outputVz;
 
-    /** Output port V
+    /** Output port V, single port with type double.
      */
     public TypedIOPort outputV;
 
-    /** output port R
+    /** output port R, single port with type double.
      */
     public TypedIOPort outputR;
 
+    /** Parameter for alphaP, string,
+     *  default "500.0, 650.0, 395.0,  121.0, 17.8"
+     */
+    public Parameter paramAlphaP;
+
+    /** Parameter for CPx, the set point of Px, double,
+     *  default 0.0.
+     */
+    public Parameter paramCPx;
+
+    /** Parameter for CPz, the set point of Pz, double,
+     *  default -2.0.
+     */
+    public Parameter paramCPz;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private Parameter _paramAlphaP;
     private double[] _alphaP = {500.0, 650.0, 395.0,  121.0, 17.8};
 
-    private Parameter _paramCPx;
     private double _cPx;
 
-    private Parameter _paramCPz;
     private double _cPz;
 
 }

@@ -80,53 +80,41 @@ $plotin link $r1
 
 set starttime [$dir getAttribute StartTime]
 $starttime setExpression 0.0
-$starttime parameterChanged [java::null]
 
 set initstep [$dir getAttribute InitialStepSize]
 $initstep setExpression 0.000001
-$initstep parameterChanged [java::null]
 
 set minstep [$dir getAttribute MinimumStepSize]
 $minstep setExpression 1e-6
-$minstep parameterChanged [java::null]
 
 set stoptime [$dir getAttribute StopTime]
 $stoptime setExpression 10.0
-$stoptime parameterChanged [java::null]
 
 set solver1 [$dir getAttribute BreakpointODESolver]
 set token [java::new ptolemy.data.StringToken ptolemy.domains.ct.kernel.solver.BackwardEulerSolver]
 $solver1 setToken $token
-$solver1 parameterChanged [java::null]
 
 set solver2 [$dir getAttribute ODESolver]
 set token [java::new ptolemy.data.StringToken ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver]
 $solver2 setToken $token
-$solver2 parameterChanged [java::null]
 
 #set initstate [$integral getAttribute InitialState]
 #$initstate setExpression 0.0
-#$initstate parameterChanged [java::null]
 
 set freq [$sqwv getAttribute Frequency]
 $freq setExpression 0.25
-$freq parameterChanged [java::null]
 
 set g1 [$gain1 getAttribute Gain]
 $g1 setExpression 500.0
-$g1 parameterChanged [java::null]
 
 set g2 [$gain2 getAttribute Gain]
 $g2 setExpression -25.0
-$g2 parameterChanged [java::null]
 
 set g3 [$gain3 getAttribute Gain]
 $g3 setExpression -2500.0
-$g3 parameterChanged [java::null]
 
 #set constval [$const getAttribute Value]
 #$constval setExpression 1.0
-#$constval parameterChanged [java::null]
 
 $man startRun
 

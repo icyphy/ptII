@@ -93,12 +93,7 @@ public class Thermostat extends CTApplet {
             CTMultiSolverDirector topdir = new CTMultiSolverDirector(
                     _workspace, "CTTopLevelDirector");
             _toplevel.setDirector(topdir);
-
-            //topdir.setVERBOSE(true);
-            //topdir.setDEBUG(true);
-
-
- 
+            //topdir.addDebugListener(new StreamListener());
             // a CT ramp
             CTRamp ramp = new CTRamp(_toplevel, "Ramp");
             Parameter p = (Parameter)ramp.getAttribute("InitialValue");
@@ -119,7 +114,7 @@ public class Thermostat extends CTApplet {
             myplot.plot.setSize(500, 300);
             myplot.timed.setToken(new BooleanToken(true));
 
-            // a simple hybrid system
+            //System.out.println("Building a simple hybrid system.");
             CTCompositeActor hs = new CTCompositeActor(_toplevel, "HS");
             // the ports
             TypedIOPort hsin = (TypedIOPort)hs.newPort("input");
@@ -136,7 +131,7 @@ public class Thermostat extends CTApplet {
             //hstr.setTypeEquals(DoubleToken.class);
  
 
-            // the FSM controller
+            //System.out.println("Building the FSM controller.");
             HSController ctrl = new HSController(hs, "Controller");
             SCState ctrlInc = new SCState(ctrl, "Increasing");
             SCState ctrlDec = new SCState(ctrl, "Decreasing");
@@ -153,11 +148,12 @@ public class Thermostat extends CTApplet {
             HSInit hsinit2 = new HSInit(ctrlTr2, "Integrator", "state");
 
             // the hybrid system director
-            HSDirector hsdir = new HSDirector("HSDirector");
+            HSDirector hsdir = new HSDirector(_workspace, "HSDirector");
             hs.setDirector(hsdir);
             hsdir.setController(ctrl);
+            //hsdir.addDebugListener(new StreamListener());
 
-            // the first ct subsystem
+            //System.out.println("Building the heating subsystem.");
             CTCompositeActor ctInc = new CTCompositeActor(hs, "Increasing");
             CTZeroOrderHold ctIncH = new CTZeroOrderHold(ctInc, "Hold");
             CTIntegrator ctIncI = new CTIntegrator(ctInc, "Integrator");
@@ -200,10 +196,11 @@ public class Thermostat extends CTApplet {
             ctIncD.input.link(ctIncR1);
             ctIncGFi.link(ctIncR1);
             ctIncSt.link(ctIncR1);
-            CTEmbeddedNRDirector ctIncDir = new CTEmbeddedNRDirector("CTIncDir");
+            CTEmbeddedNRDirector ctIncDir = new CTEmbeddedNRDirector(
+                    _workspace, "CTIncDir");
             ctInc.setDirector(ctIncDir);
 
-            // the second ct subsystem
+            //System.out.println("Building the cooling subsystem.");
             CTCompositeActor ctDec = new CTCompositeActor(hs, "Decreasing");
             CTZeroOrderHold ctDecH = new CTZeroOrderHold(ctDec, "Hold");
             CTIntegrator ctDecI = new CTIntegrator(ctDec, "Integrator");
@@ -248,7 +245,8 @@ public class Thermostat extends CTApplet {
             ctDecD.input.link(ctDecR1);
             ctDecGFi.link(ctDecR1);
             ctDecSt.link(ctDecR1);
-            CTEmbeddedNRDirector ctDecDir = new CTEmbeddedNRDirector("CTDecDir");
+            CTEmbeddedNRDirector ctDecDir = new CTEmbeddedNRDirector(
+                    _workspace, "CTDecDir");
             ctDec.setDirector(ctDecDir);
 
             ctrlInc.setRefinement(ctInc);
@@ -280,6 +278,7 @@ public class Thermostat extends CTApplet {
             //_toplevel.connect(hstr, myplot.input);
 
 
+            //System.out.println("Set parameters.");
             // try to run the system
             topdir.setStopTime(5.0);
            

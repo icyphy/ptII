@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<H1>Thermosate System</H1>
+<H1>Thermostat System</H1>
 
 <center><APPLET name="Thermostat"
    archive="ptolemy/domains/ct/demo/thermo/Thermostat.jar,
@@ -23,10 +23,11 @@ here.</I>
 <BR></APPLET></CENTER>
 
 <H2>Introduction</H2>
-This applet shows a simple thermostat system. The temperatur of the room
+This applet shows a simple thermostat system. The temperature of the room
 is expected to be controlled between 0 and 0.2
 <p>
-The system has two states, heating and cooling. In the heating state,
+The system has two states, heating and cooling, as shown in the figure below.
+In the heating state,
 the temperature of the room is increased linearly, in terms of a differential
 equation:
 <pre>
@@ -43,6 +44,7 @@ then switch the controller to the heating state.
 We use this demo to illustrate the accuracy of detecting events, and the 
 ability of simulating hybrid system in Ptolemy II.
 
+<CENTER><img src="Thermo.gif"></CENTER>
 <H2>Simulation</H2>
 To run the simulation, click <B>Go</B> in the above applet.
 <P>

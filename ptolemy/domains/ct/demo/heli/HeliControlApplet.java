@@ -55,8 +55,6 @@ An applet that models a 2-D helicopter control system.
 */
 public class HeliControlApplet extends CTApplet {
 
-    public  boolean DEBUG = false;
-
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
@@ -130,7 +128,7 @@ public class HeliControlApplet extends CTApplet {
         Panel dummy2 = new Panel();
         simulationParam.add(dummy2);
         
-        //System.out.println("Construct ptII");
+        // _debug("Construct the topology");
         // Creating the topology.
         try {
             // Set up the top level composite actor, director and manager
@@ -473,7 +471,7 @@ public class HeliControlApplet extends CTApplet {
             pzPlot.input.link(rmPz);
             thPlot.input.link(rTh);
 
-            //System.out.println("Parameters");
+            //_debug("Set parameters");
             // CT Director parameters
             Parameter initstep = 
                 (Parameter)_dir.getAttribute("InitialStepSize");
@@ -508,8 +506,7 @@ public class HeliControlApplet extends CTApplet {
             Pzi.setToken(new DoubleToken(-1.5));
 
             Parameter Tmi = (Parameter)Tm.getAttribute("InitialState");
-            Tmi.setToken(new DoubleToken(48.02));
-            
+            Tmi.setToken(new DoubleToken(48.02));            
             
             Parameter m1 = (Parameter)MINUS.getAttribute("Gain");
             m1.setToken(new DoubleToken(-1.0));
@@ -526,6 +523,7 @@ public class HeliControlApplet extends CTApplet {
 
             Parameter ymax = (Parameter)ctPlot.getAttribute("Y_Max");
             ymax.setToken(new DoubleToken(12.0));
+
             /* CTPlot pxPlot = new CTPlot(sys, "VxPlot", pxPanel);
             String[] pxLegends = {"Vx"};
             pxPlot.setLegend(pxLegends);
@@ -582,14 +580,14 @@ public class HeliControlApplet extends CTApplet {
             //_paramAlphaA = (Parameter)hover.getAttribute("AlphaA");
             _paramStopT = (Parameter)_dir.getAttribute("StopTime");
             _paramButton = (Parameter)button.getAttribute("ButtonClicked");
-            //System.out.println(sys.description());
-            //System.out.println(_dir.getScheduler().description());
-            //System.out.println(subdir.getScheduler().description());
-            //System.out.println(_dir.getScheduler().description());
-            //System.out.println(((CTDirector)sub.getDirector()).getScheduler().description());
+            // System.out.println(sys.description());
+            // System.out.println(_dir.getScheduler().description());
+            // System.out.println(subdir.getScheduler().description());
+            // System.out.println(_dir.getScheduler().description());
+            // System.out.println(((CTDirector)sub.getDirector()).getScheduler().description());
 
         } catch (Exception ex) {
-            System.err.println("Setup failed: " + ex.getMessage());
+            report("Setup failed: ", ex);
             ex.printStackTrace();
         }
     }
@@ -602,9 +600,6 @@ public class HeliControlApplet extends CTApplet {
         CTCompositeActor sub = new CTCompositeActor(container, "dummy");
         CTEmbeddedNRDirector subdir = 
                 new CTEmbeddedNRDirector(_workspace, "CTInnerDirector");
-
-        //subdir.setVERBOSE(true);
-        //subdir.setDEBUG(true);
 
         sub.setDirector(subdir);
         TypedIOPort subinPx = new TypedIOPort(sub, "inputPx");
@@ -901,16 +896,17 @@ public class HeliControlApplet extends CTApplet {
         public void actionPerformed(ActionEvent evt) {
             try {
                 _paramButton.setToken(new BooleanToken(true));
-            } catch (IllegalActionException ex) {
-                throw new InternalErrorException(ex.getMessage());
+            }catch (IllegalActionException ex) {
+                report ("Button click failed:", ex);
             }
+
         }
     }
 
     public class GoButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent evt) {
             if (_isSimulationRunning) {
-                System.out.println("Simulation still running.. hold on..");
+                // System.out.println("Simulation still running.. hold on..");
                 return;
             }
 
@@ -923,11 +919,10 @@ public class HeliControlApplet extends CTApplet {
                     Double tmp = Double.valueOf( _stopTimeBox.getText());
                     _paramStopT.setToken(new DoubleToken(tmp.doubleValue()));
 
-                    //System.out.println("Set stop time of simulation.");
+                    // System.out.println("Set stop time of simulation.");
 
                 } catch (NumberFormatException ex) {
-                    System.err.println("Invalid stop time: " 
-                            +ex.getMessage());
+                    report("Invalid stop time: ", ex);
                     return;
                 }
 
@@ -938,7 +933,7 @@ public class HeliControlApplet extends CTApplet {
                 _thismanager.startRun();
 
             } catch (Exception e) {
-                System.out.println("Error: " + e.getMessage());
+                report("Error: ",  e);
                 e.printStackTrace();
             }
 

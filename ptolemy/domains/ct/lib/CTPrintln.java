@@ -41,6 +41,7 @@ import java.util.Enumeration;
 /**
 Print the time and data of the input tokens at stdout. Single input sink.
 (Input type: double) This actor has no parameters.
+FIXME: Consider replacing by the domain polymorphic actor TimedFileWriter
 @author Jie Liu
 @version $Id$
 */

@@ -41,6 +41,7 @@ import java.util.Enumeration;
 //// CTSink
 /**
 Consume the input token and do nothing.
+FIXME: Write it as a domain polymorphic actor.
 @author  Jie Liu
 @version $Id$
 */
@@ -58,16 +59,12 @@ public class CTSink extends TypedAtomicActor {
         input.setInput(true);
         input.setOutput(false);
         input.setMultiport(true);
-        input.setTypeEquals(DoubleToken.class);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**Print out the input token and the current time each in a line.
-     * The format of printout is :
-     * CTTime:......
-     * CTData:......
+    /**Consume all the inout tokens.
      *  @exception IllegalActionException If there's no director or
      *        no input token when needed.
      */
@@ -82,6 +79,9 @@ public class CTSink extends TypedAtomicActor {
            ((DoubleToken)input.get(i)).doubleValue();
        }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variable                   ////
 
     /** The single input port.
      */

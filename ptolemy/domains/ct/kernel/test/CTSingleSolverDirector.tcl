@@ -103,44 +103,44 @@ test CTSingleSolverDirector-2.2 {set Parameters} {
 	    [$dir getAttribute ODESolver]]
     set token [java::new ptolemy.data.StringToken \
 	    ptolemy.domains.ct.kernel.solver.BackwardEulerSolver]
-    _testSetToken $param $token
-    $param parameterChanged [java::null]
+    $param setToken $token
+
     set param [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute InitialStepSize]]
     $param setExpression 0.5
-    $param parameterChanged [java::null]
+
     set param [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute LocalTrancationErrorTolerance]]
     $param setExpression 0.4
-    $param parameterChanged [java::null]
+
     set param [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute MaximumIterationsPerStep]]
     $param setExpression 10
-    $param parameterChanged [java::null]
+
     set param [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute MaximumStepSize]]
     $param setExpression 0.3
-    $param parameterChanged [java::null]    
+  
     set param [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute MinimumStepSize]]
     $param setExpression 0.2
-    $param parameterChanged [java::null]
+
     set param [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute StartTime]]
     $param setExpression 10.0
-    $param parameterChanged [java::null]
+
     set param [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute StopTime]]
     $param setExpression 100.0
-    $param parameterChanged [java::null]
+
     set param [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute TimeResolution]]
     $param setExpression 1e-11
-    $param parameterChanged [java::null]
+
     set param [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute ConvergeValueResolution]]
     $param setExpression 0.1
-    $param parameterChanged [java::null]
+
     $dir prefire
     list [[$dir getCurrentODESolver] getFullName] \
 	    [$dir getCurrentStepSize] \
@@ -220,3 +220,10 @@ test CTSingleSolverDirector-3.1 {access empty breakpoint table} {
     set nextone [$bptable first]
     list [expr {$nextone == [java::null]}]
 } {1}
+
+
+
+
+
+
+

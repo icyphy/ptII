@@ -108,16 +108,16 @@ public class HelicopterActor extends CTActor{
         outputDDTh.setTypeEquals(DoubleToken.class);
 
         _Iy = (double)0.271256;
-        _paramIy = new Parameter(this, "Iy", new DoubleToken(_Iy));
+        paramIy = new Parameter(this, "Iy", new DoubleToken(_Iy));
 
         _hm = (double)0.2943;
-        _paramHm = new Parameter(this, "hm", new DoubleToken(_hm));
+        paramHm = new Parameter(this, "hm", new DoubleToken(_hm));
 
         _Mm = (double)25.23;
-        _paramMm = new Parameter(this, "Mm", new DoubleToken(_Mm));
+        paramMm = new Parameter(this, "Mm", new DoubleToken(_Mm));
 
         _mass = (double)4.9;
-        _paramMass = new Parameter(this, "Mass", new DoubleToken(_mass));
+        paramMass = new Parameter(this, "Mass", new DoubleToken(_mass));
           
     }
 
@@ -149,10 +149,10 @@ public class HelicopterActor extends CTActor{
      *  @exception IllegalActionException Never thrown.*
      */
     public void updateParameters() throws IllegalActionException {
-        _Iy = ((DoubleToken)_paramIy.getToken()).doubleValue();
-        _hm = ((DoubleToken)_paramHm.getToken()).doubleValue();
-        _Mm = ((DoubleToken)_paramMm.getToken()).doubleValue();
-        _mass = ((DoubleToken)_paramMass.getToken()).doubleValue();
+        _Iy = ((DoubleToken)paramIy.getToken()).doubleValue();
+        _hm = ((DoubleToken)paramHm.getToken()).doubleValue();
+        _Mm = ((DoubleToken)paramMm.getToken()).doubleValue();
+        _mass = ((DoubleToken)paramMass.getToken()).doubleValue();
     }
 
 
@@ -188,20 +188,31 @@ public class HelicopterActor extends CTActor{
      */
     public TypedIOPort outputDDTh;
 
+    /** Parameter for Iy, doble, default 0.271256.
+     */
+    public Parameter paramIy;
+
+    /** Parameter for hm, double, default 0.2943.
+     */
+    public Parameter paramHm;
+
+    /** Parameter for Mm, double, default 25.23.
+     */
+    public Parameter paramMm;
+
+    /** Parameter for the mass, double, default 4.9.
+     */
+    public Parameter paramMass;
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // Variables
-    private Parameter _paramIy;
     private double _Iy;
 
-    private Parameter _paramHm;
     private double _hm;
 
-    private Parameter _paramMm;
     private double _Mm;
 
-    private Parameter _paramMass;
     private double _mass;
-
-    
 }

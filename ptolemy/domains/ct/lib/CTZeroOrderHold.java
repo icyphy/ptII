@@ -39,13 +39,10 @@ import java.util.Enumeration;
 //// CTZeroOrderHold
 /**
 An actor that convert event into continuous signal. This class act
-as the zero order hold. It consume the token at the postfire()
-phase, since that is the point there the state of the system is
-determined. This value will be hold and emitted every time it is
+as the zero order hold. It consume the token when the consumeCurrentEvent()
+is called. This value will be hold and emitted every time it is
 fired.
-FIXME: Consider bypass itself, if it is not connected to any opaque
-compositeActor. Do it by override getReceivers(), which return the
-receivers of the port its output are connected.
+
 @author Jie Liu
 @version $Id$
 */

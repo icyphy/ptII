@@ -109,8 +109,9 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
      *  @exception IllegalActionException If the new solver that is specified
      *   is not valid.
      */
-    public void attributeChanged(Parameter param)
+    public void attributeChanged(Attribute attr)
             throws IllegalActionException {
+        Parameter param = (Parameter)attr;
         if(param == _paramDefaultODESolver) {
             _debug("default solver updating.");
             _defaultsolverclass = ((StringToken)param.getToken()).stringValue();

@@ -130,7 +130,6 @@ set fir [java::new {ptolemy.domains.de.lib.DEFIRfilter \
 	$sys FIR [list 0.7 0.3]]
 set firdelay [$fir getAttribute Delay]
 $firdelay setExpression 0.02
-$firdelay parameterChanged [java::null]
 
 set quan [java::new ptolemy.domains.de.lib.DETestLevel $sys Quantizer]
 set accu [java::new ptolemy.domains.de.lib.DEStatistics $sys Accumulator]
@@ -177,71 +176,56 @@ $dedir setStopTime 15.0
 #
 set initstep [$ctdir getAttribute InitialStepSize]
 $initstep setExpression 0.000001
-$initstep parameterChanged [java::null]
 
 set minstep [$ctdir getAttribute MinimumStepSize]
 $minstep setExpression 1e-6
-$minstep parameterChanged [java::null]
 
 set solver1 [$ctdir getAttribute BreakpointODESolver]
 set token [java::new ptolemy.data.StringToken ptolemy.domains.ct.kernel.solver.BackwardEulerSolver]
 $solver1 setToken $token
-$solver1 parameterChanged [java::null]
 
 set solver2 [$ctdir getAttribute ODESolver]
 set token [java::new ptolemy.data.StringToken ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver]
 $solver2 setToken $token
-$solver2 parameterChanged [java::null]
 
 ############################################################
 ### CT Actor Parameters
 #
 set freq [$sine getAttribute AngleFrequency]
 $freq setExpression 0.5
-$freq parameterChanged [java::null]
 
 set g0 [$gain0 getAttribute Gain]
 $g0 setExpression 50.0
-$g0 parameterChanged [java::null]
 
 set g1 [$gain1 getAttribute Gain]
 $g1 setExpression -2.50
-$g1 parameterChanged [java::null]
 
 set g2 [$gain2 getAttribute Gain]
 $g2 setExpression -250.0
-$g2 parameterChanged [java::null]
 
 set g3 [$gain3 getAttribute Gain]
 $g3 setExpression -20.0
-$g3 parameterChanged [java::null]
 
 #set con [$const getAttribute Value]
 #$con setExpression -0.5
-#$con parameterChanged [java::null]
 
 set ts [$sampler getAttribute SamplePeriod]
 $ts setExpression 0.02
-$ts parameterChanged [java::null]
 
 #plot parameters
 set ctxmin [$plot getAttribute X_Min]
 $ctxmin setExpression 0.0
-$ctxmin parameterChanged [java::null]
 
 set ctxmax [$plot getAttribute X_Max]
 $ctxmax setExpression 15.0
-$ctxmax parameterChanged [java::null]
 
 
 #legends: 
 set ctlegs [$plot getAttribute Legends]
 $ctlegs setExpression {"Position Output Feedback"}
-$ctlegs  parameterChanged [java::null]
 
 set delegs [$deplot getAttribute Legends]
 $delegs setExpression {"Feedback DigitalOutput"}
-$delegs parameterChanged [java::null]
 
 
 $man startRun

@@ -81,7 +81,7 @@ public class ExplicitRK23Solver extends VariableStepSolver{
      *  class. May be needed by the derived class.
      */
     public boolean resolveStates() throws IllegalActionException {
-        _debug("RK23: resolveState().");
+        _debug(getFullName() + ": resolveState().");
         CTDirector dir = (CTDirector)getContainer();
         if (dir == null) {
             throw new IllegalActionException( this,
@@ -102,14 +102,14 @@ public class ExplicitRK23Solver extends VariableStepSolver{
             actors = sch.dynamicActorSchedule();
             while(actors.hasMoreElements()) {
                 CTDynamicActor next = (CTDynamicActor)actors.nextElement();
-                _debug("Build history"
-                            +((Nameable)next).getName());
+                _debug(getFullName() + ": Build integrator history"
+                        +((Nameable)next).getName());
                 next.emitTentativeOutputs();
             }
             actors = sch.stateTransitionSchedule();
             while(actors.hasMoreElements()) {
                 Actor next = (Actor)actors.nextElement();
-                _debug("Build history..."
+                _debug(getFullName() + ": Build integrator history..."
                             +((Nameable)next).getName());
                 next.fire();
             }
@@ -121,7 +121,8 @@ public class ExplicitRK23Solver extends VariableStepSolver{
             actors = sch.dynamicActorSchedule();
             while(actors.hasMoreElements()) {
                 Actor next = (Actor)actors.nextElement();
-                _debug("Firing..."+((Nameable)next).getName());
+                _debug(getFullName() + " firing..."+
+                        ((Nameable)next).getName());
                 next.fire();
             }
             dir.setCurrentTime(dir.getCurrentTime()+
@@ -129,7 +130,7 @@ public class ExplicitRK23Solver extends VariableStepSolver{
             actors = sch.stateTransitionSchedule();
             while(actors.hasMoreElements()) {
                 Actor next = (Actor)actors.nextElement();
-                _debug("Firing..."+((Nameable)next).getName());
+                _debug(getFullName() + " firing..."+((Nameable)next).getName());
                 next.fire();
             }
             incrRound();
@@ -215,14 +216,14 @@ public class ExplicitRK23Solver extends VariableStepSolver{
             //k[3] is Local Truncation Error
             integrator.setAuxVariables(3, lte);
             _debug("Integrator: "+ integrator.getName() +
-                " local truncation error = " + lte);
+                    " local truncation error = " + lte);
             if(lte<errtol) {
                 _debug("Integrator: " + integrator.getName() +
-                    " report a success.");
+                        " report a success.");
                 return true;
             } else {
                 _debug("Integrator: " + integrator.getName() +
-                    " reports a failiar.");
+                        " reports a failiar.");
                 return false;
             }
         } catch (IllegalActionException e) {
@@ -247,7 +248,7 @@ public class ExplicitRK23Solver extends VariableStepSolver{
             newh = h* Math.max(0.5, 0.8*Math.pow((errtol/lte), 1.0/_order));
         }
         _debug("integrator: " + integrator.getName() +
-            " suggests next step size = " + newh);
+                " suggests next step size = " + newh);
         return newh;
     }
 

@@ -41,9 +41,8 @@ import ptolemy.data.*;
 /** 
 Description of the class
 @author  youname
-@version %W%	%G%
-@see classname
-@see full-classname
+@version $Id$
+FIXME: Need more accuracy on t+h-h
 */
 public class ImpulseBESolver extends BackwardEulerSolver {
     /** Construct a solver in the default workspace with an empty
@@ -99,7 +98,7 @@ public class ImpulseBESolver extends BackwardEulerSolver {
             ).dynamicActorSchedule();
         while(actors.hasMoreElements()) {
             Actor next = (Actor)actors.nextElement();
-            _debug("update..."+((Nameable)next).getName());
+            _debug(getFullName() + "update..."+((Nameable)next).getName());
             next.postfire();
         }
         dir.setCurrentStepSize(-dir.getCurrentStepSize());

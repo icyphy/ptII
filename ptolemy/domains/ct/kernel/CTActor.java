@@ -94,4 +94,51 @@ public class CTActor extends TypedAtomicActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public members                    ////
+    
+    /** Set a flag so that at the prefire stage of the next iteration, the 
+     *  changed attribute can be updated. Notice that the Parameter token
+     *  is already changed. What we need to update here is the local copy
+     *  of the token. The IllegalActionException may be thrown by the 
+     *  super class.
+     *  @param att The attribute changed. 
+     *  @exception IllgalActionException If thrown by the super class.
+     */
+    public void attributeChanged(Attribute att) throws IllegalActionException{
+        super.attributeChanged(att);
+        _attChanged = true;
+    }
+
+    /** Update the paramters if they have been changed in the last
+     *  iteration. 
+     *  @return True always.
+     *  @exception IllegalActionException Not thrown in this base class.
+     *       May be needed by the derived classes.
+     */
+    public boolean prefire() throws IllegalActionException  {
+        if(_attChanged) {
+            updateParameters();
+            _attChanged = false;
+        }
+        return  super.prefire();
+    }
+
+    /** Update parameters. The local copy of the parameter should be
+     *  updated to reflect the changes of the Parameter token.
+     *  Do nothing in this base class. Derived class should override
+     *  this method to update their parameters if there is any.
+     *  @exception IllegalActionException Not thrown in this base class.
+     *     May be needed by derived classes for indicating wrong parameter
+     *     types or values.
+     */ 
+    public void updateParameters() throws IllegalActionException {}
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    
+    // flag for parameter changes.
+    private boolean _attChanged = false;
+
 }

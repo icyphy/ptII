@@ -33,7 +33,7 @@
 #######################################################################
 #
 #  A ramp system simulation uses a Backward Euler director and ODE
-#  solver.
+#  solver. FIXME: Seems there's a bug...
 
 set sys [java::new ptolemy.actor.TypedCompositeActor]
 $sys setName System
@@ -54,29 +54,23 @@ set r2 [$sys connect $intglout $printin R2]
 
 set starttime [$dir getAttribute StartTime]
 $starttime setExpression 0.0
-$starttime parameterChanged [java::null]
 
 set stoptime [$dir getAttribute StopTime]
 $stoptime setExpression 1.0
-$stoptime parameterChanged [java::null]
 
 set initstep [$dir getAttribute InitialStepSize]
 $initstep setExpression 0.1
-$initstep parameterChanged [java::null]
 
 set solver1 [$dir getAttribute BreakpointODESolver]
 set token [java::new ptolemy.data.StringToken ptolemy.domains.ct.kernel.solver.BackwardEulerSolver]
 $solver1 setToken $token
-$solver1 parameterChanged [java::null]
 
 set solver2 [$dir getAttribute DefaultODESolver]
 set token [java::new ptolemy.data.StringToken ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver]
 $solver2 setToken $token
-$solver2 parameterChanged [java::null]
 
 set constval [$const getAttribute Value]
 $constval setExpression 1.0
-$constval parameterChanged [java::null]
 set sch [$dir getScheduler]
 
 $man run

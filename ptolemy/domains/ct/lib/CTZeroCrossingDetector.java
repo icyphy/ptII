@@ -47,10 +47,8 @@ zero
 @author Jie Liu
 @version $Id$
 */
-public class CTZeroCrossingDetector extends TypedAtomicActor
+public class CTZeroCrossingDetector extends CTActor
         implements  CTStepSizeControlActor, CTEventGenerator {
-
-    public static boolean DEBUG = false;
 
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -106,9 +104,7 @@ public class CTZeroCrossingDetector extends TypedAtomicActor
         */
         updateParameters();
         _first = true;
-        if(DEBUG) {
-            System.out.println("ZeroCrossingDetector initialize");
-        }
+        _debug(getFullName() + "initialize");
     }
 
     /** Fire: if the current time is the event time, request the end
@@ -116,8 +112,7 @@ public class CTZeroCrossingDetector extends TypedAtomicActor
      */
     public void fire() throws IllegalActionException {
         _thisTrg = ((DoubleToken) trigger.get(0)).doubleValue();
-        //System.out.println(this.getFullName() + "consumming trigger Token" +
-        //        _thisTrg);
+        _debug(getFullName() + "consumming trigger Token" +  _thisTrg);
         _inputToken = input.get(0);
     }
 
@@ -139,16 +134,16 @@ public class CTZeroCrossingDetector extends TypedAtomicActor
             _first = false;
             return true;
         }
-        //System.out.println(this.getFullName() + "This Trigger " + _thisTrg);
-        //System.out.println(this.getFullName() + "last Trigger " + _lastTrg);
+        _debug(this.getFullName() + "This Trigger " + _thisTrg);
+        _debug(this.getFullName() + "last Trigger " + _lastTrg);
 
         if (Math.abs(_thisTrg) < _errorTolerance) {
             if (_enabled) {
                 //double tnow = dir.getCurrentTime(); 
                 //dir.setFireEndTime(tnow);
                 _eventNow = true;
-                //System.out.println("Event Detected:" + 
-                //            getDirector().getCurrentTime());
+                _debug(getFullName() + " detected event at " 
+                        + getDirector().getCurrentTime());
                 _enabled = false;
             }
             _eventMissed = false;
@@ -163,8 +158,8 @@ public class CTZeroCrossingDetector extends TypedAtomicActor
                     _eventMissed = true;
                     _refineStep = (-_lastTrg*dir.getCurrentStepSize())/
                         (_thisTrg-_lastTrg);
-                    //System.out.println("Event Missed: refined step at" + 
-                    //       _refineStep);
+                    _debug(getFullName() + " Event Missed: refined step at" + 
+                            _refineStep);
                     return false;
                 }
             }
@@ -199,12 +194,11 @@ public class CTZeroCrossingDetector extends TypedAtomicActor
     /** Emit the event. There's no current event after emitting it.
      */
     public void emitCurrentEvents() throws IllegalActionException{
-        //System.out.println(this.getFullName() + 
-        //        " In emit event.");
+        _debug(this.getFullName() + " checking for currrent event...");
     
         if(_eventNow) {
-            //System.out.println(this.getFullName() + 
-            //    " Emitting event.....................");
+            _debug(this.getFullName() + " Emitting event: " + 
+                    _inputToken.stringValue());
             output.broadcast(_inputToken);
             _eventNow = false;
         }
@@ -218,7 +212,7 @@ public class CTZeroCrossingDetector extends TypedAtomicActor
                     ).doubleValue();
         if(p <= 0) {
             throw new IllegalActionException(this,
-                    " Sample period must be greater than 0.");
+                    "Error tolerance must be greater than 0.");
         }
         _errorTolerance = p;
     }

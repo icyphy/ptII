@@ -113,11 +113,11 @@ public class CTSingleSolverDirector extends CTDirector {
      *  @exception IllegalActionException If the default solver that is
      *   specified is not valid.
      */
-    public void attributeChanged(Parameter param)
+    public void attributeChanged(Attribute param)
             throws IllegalActionException {
         if(param == _paramODESolver) {
-            _debug("solver updating.");
-            _solverclass = ((StringToken)param.getToken()).stringValue();
+            _debug(getFullName() + "solver updating...");
+            _solverclass = ((StringToken)((Parameter)param).getToken()).stringValue();
             _defaultSolver = _instantiateODESolver(_solverclass);
             setCurrentODESolver(_defaultSolver);
         } else {
@@ -180,7 +180,7 @@ public class CTSingleSolverDirector extends CTDirector {
      *       thrown by a contained actor.
      */
     public void initialize() throws IllegalActionException {
-        _debug("Director initialize.");
+        _debug(getFullName() + "initializing.");
         CompositeActor ca = (CompositeActor) getContainer();
         if (ca == null) {
             throw new IllegalActionException(this, "Has no container.");
@@ -442,8 +442,8 @@ public class CTSingleSolverDirector extends CTDirector {
         }
         _debug("updating parameters");
         // Instantiate ODE solver
-        _debug("instantiating ODE solver"+_solverclass);
         if(_defaultSolver == null) {
+            _debug("instantiating ODE solver "+_solverclass);
             _defaultSolver = _instantiateODESolver(_solverclass);
         }
         // set time
@@ -459,7 +459,7 @@ public class CTSingleSolverDirector extends CTDirector {
             bps.clear();
         }
         _first = true;
-        _debug("Director.super initialize.");
+        _debug(getFullName() + ".super initialize.");
         super.initialize();
     }
 
@@ -549,7 +549,7 @@ public class CTSingleSolverDirector extends CTDirector {
      *  @exception IllegalActionException If the scheduler throws it.
      */
     protected double _refinedStepWRTState() throws IllegalActionException {
-        _debug("refine step wrt state.");
+        _debug(getFullName() + "refine step wrt state.");
         double refinedstep = getCurrentStepSize();
         CTScheduler sched = (CTScheduler)getScheduler();
         Enumeration sscs = sched.stateTransitionSSCActors();

@@ -43,10 +43,8 @@ which has the value of the input signal.
 @author Jie Liu
 @version $Id$
 */
-public class CTPeriodicalSampler extends TypedAtomicActor
+public class CTPeriodicalSampler extends CTActor
         implements CTEventGenerator {
-
-    public static final boolean DEBUG = false;
 
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -78,7 +76,7 @@ public class CTPeriodicalSampler extends TypedAtomicActor
         output.setTypeEquals(DoubleToken.class);
 
         _samplePeriod = (double)1.0;
-        _paramSamplePeriod = new Parameter(this,
+        paramSamplePeriod = new Parameter(this,
             "SamplePeriod", new DoubleToken(_samplePeriod));
     }
 
@@ -106,10 +104,8 @@ public class CTPeriodicalSampler extends TypedAtomicActor
         if(hasjump) {
             dir.fireAt(this, _nextSamplingTime);
         }
-        if(DEBUG) {
-            System.out.println("Sampler: next sampling time= "
+        _debug(getFullName() + ": next sampling time= "
                 + _nextSamplingTime);
-        }
         return true;
     }
     /** Fire: if the current time is the event time, request the end
@@ -144,17 +140,15 @@ public class CTPeriodicalSampler extends TypedAtomicActor
         CTDirector dir = (CTDirector) getDirector();
         _nextSamplingTime = dir.getCurrentTime() + _samplePeriod;
         dir.fireAt(this, _nextSamplingTime);
-        if(DEBUG) {
-             System.out.println("Sampler: next sampling time= "
+        _debug(getFullName() + ": next sampling time= "
                 + _nextSamplingTime);
-        }
     }
 
     /** Update the parameter if it has been changed.
      *  The new parameter will be used only after this method is called.
      */
     public void updateParameters() throws IllegalActionException{
-        double p = ((DoubleToken)_paramSamplePeriod.getToken()).doubleValue();
+        double p = ((DoubleToken)paramSamplePeriod.getToken()).doubleValue();
         if(p <= 0) {
             throw new IllegalActionException(this,
                     " Sample period must be greater than 0.");
@@ -189,8 +183,20 @@ public class CTPeriodicalSampler extends TypedAtomicActor
 
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
+    
+    /** The single input port with type double.
+     */
     public TypedIOPort input;
+
+    /** The single output port with type double.
+     */
     public TypedIOPort output;
+
+    /** The parameter for the sampling period; the type is double; the 
+     *  default value is 1.0.
+     */
+    public Parameter paramSamplePeriod;
+
 
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
@@ -201,7 +207,6 @@ public class CTPeriodicalSampler extends TypedAtomicActor
     ////                         private variables                      ////
 
     // Parameter, the sample period.
-    private Parameter _paramSamplePeriod;
     private double _samplePeriod;
     private double _eventTime;
     private boolean _hasCurrentEvent = false;

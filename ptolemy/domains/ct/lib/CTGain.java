@@ -45,7 +45,7 @@ should have the same function in all domains. Single input single output.
 @author Jie Liu
 @version $Id$
 */
-public class CTGain extends TypedAtomicActor {
+public class CTGain extends CTActor {
     /** Construct the gain, default gain is 1.0. Single input, single
      *  output.
      * @param container The TypedCompositeActor this star belongs to
@@ -67,7 +67,7 @@ public class CTGain extends TypedAtomicActor {
         output.setMultiport(false);
         output.setTypeEquals(DoubleToken.class);
         _gain = (double)1.0;
-        _paramGain = new Parameter(this, "Gain", new DoubleToken(_gain));
+        paramGain = new Parameter(this, "Gain", new DoubleToken(_gain));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -89,22 +89,29 @@ public class CTGain extends TypedAtomicActor {
      *  @exception IllegalActionException Never thrown.*
      */
     public void updateParameters() throws IllegalActionException {
-        _gain = ((DoubleToken)_paramGain.getToken()).doubleValue();
+        _gain = ((DoubleToken)paramGain.getToken()).doubleValue();
     }
 
-    /** The single input port.
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The single input port with type double.
      */
     public TypedIOPort input;
 
-    /** The single output port.
+    /** The single output port with type double.
      */
     public TypedIOPort output;
+
+    /** The parameter for the gain; the type is double; the default value
+     *  is 1.0.
+     */
+    public Parameter paramGain;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // Private variables should not have doc comments, they should
     // have regular C++ comments.
-    private Parameter _paramGain;
     private double _gain;
 }

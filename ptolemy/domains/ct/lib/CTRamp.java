@@ -38,11 +38,12 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// CTRamp
 /**
-A ramp source
+A ramp source.
+FIXME: Consider use domain polymorphic timed ramp.
 @author Jie Liu
 @version $Id$
 */
-public class CTRamp extends TypedAtomicActor {
+public class CTRamp extends CTActor {
     /** Construct the CTRamp actor, default slop 1, defalt initial value 0
      * @param container CTSubSystem this star belongs to
      * @param name The name
@@ -57,10 +58,10 @@ public class CTRamp extends TypedAtomicActor {
         output.setOutput(true);
         output.setTypeEquals(DoubleToken.class);
         _initValue = (double)0.0;
-        _paramInitValue = new Parameter(this, "InitialValue",
+        paramInitValue = new Parameter(this, "InitialValue",
                 new DoubleToken(_initValue));
         _slope = 1.0;
-        _paramSlope = new Parameter(this, "Slope",
+        paramSlope = new Parameter(this, "Slope",
                 new DoubleToken(_slope));
     }
 
@@ -89,13 +90,28 @@ public class CTRamp extends TypedAtomicActor {
      *  @exception IllegalActionException Never thrown.
      */
     public void updateParameters() throws IllegalActionException {
-        _initValue = ((DoubleToken)_paramInitValue.getToken()).doubleValue();
-        _slope = ((DoubleToken)_paramSlope.getToken()).doubleValue();
+        _initValue = ((DoubleToken)paramInitValue.getToken()).doubleValue();
+        _slope = ((DoubleToken)paramSlope.getToken()).doubleValue();
     }
 
-    /** The single output port
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The single output port with type double
      */
     public TypedIOPort output;
+
+    /** The parameter for the initial value; the type is double; the default
+     *  value is 0.0.
+     */
+    public Parameter paramInitValue;
+
+
+    /** The parameter for the slope of the ramp; the type is double; the 
+     *  default value is 1.0.
+     */
+    public Parameter paramSlope;
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -103,7 +119,5 @@ public class CTRamp extends TypedAtomicActor {
     // Private variables should not have doc comments, they should
     // have regular C++ comments.
     private double _initValue;
-    private Parameter _paramInitValue;
     private double _slope;
-    private Parameter _paramSlope;
 }

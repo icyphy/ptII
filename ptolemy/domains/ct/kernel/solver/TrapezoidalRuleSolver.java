@@ -40,7 +40,7 @@ import ptolemy.data.*;
 /** 
 Description of the class
 @author  youname
-@version %W%	%G%
+@version $Id$
 @see classname
 @see full-classname
 */
@@ -94,7 +94,8 @@ public class TrapezoidalRuleSolver extends VariableStepSolver{
      *  class. May be needed by the derived class.
      */
     public boolean resolveStates() throws IllegalActionException {
-        _debug("BE: resolveState().");
+        _debug(getFullName() + ": in resolveState().");
+
         CTDirector dir = (CTDirector)getContainer();
         if (dir == null) {
             throw new IllegalActionException( this,
@@ -125,13 +126,15 @@ public class TrapezoidalRuleSolver extends VariableStepSolver{
             actors = sch.stateTransitionSchedule();
             while(actors.hasMoreElements()) {
                 Actor next = (Actor)actors.nextElement();
-                _debug("Firing..."+((Nameable)next).getName());
+                _debug(getFullName() + "Firing..."+((Nameable)next).getName());
+
                 next.fire();
             }
             actors = sch.dynamicActorSchedule();
             while(actors.hasMoreElements()) {
                 Actor next = (Actor)actors.nextElement();
-                _debug("Refiring..."+((Nameable)next).getName());
+                _debug(getFullName() + " refiring..."+
+                        ((Nameable)next).getName());
                 next.fire();
             }
             if(iterations++ > dir.getMaxIterations()) {
@@ -142,7 +145,7 @@ public class TrapezoidalRuleSolver extends VariableStepSolver{
                 actors = sch.dynamicActorSchedule();
                 while(actors.hasMoreElements()) {
                     Actor next = (Actor)actors.nextElement();
-                    _debug("Guessing..."+
+                    _debug(getFullName()+" asking..."+ 
                             ((Nameable)next).getName());
                     next.fire();
                 }
@@ -206,11 +209,11 @@ public class TrapezoidalRuleSolver extends VariableStepSolver{
                 " local truncation error = " + lte);
             if(lte<errtol) {
                 _debug("Integrator: " + integrator.getName() +
-                    " report a success.");
+                        " report a success.");
                 return true;
             } else {
                 _debug("Integrator: " + integrator.getName() +
-                    " reports a failiar.");
+                        " reports a failiar.");
                 return false;
             }
         } catch (IllegalActionException e) {
@@ -235,7 +238,7 @@ public class TrapezoidalRuleSolver extends VariableStepSolver{
             newh = h* Math.max(0.5, Math.pow((3.0*errtol/lte), 1.0/3.0));
         }
         _debug("integrator: " + integrator.getName() +
-            " suggests next step size = " + newh);
+                " suggests next step size = " + newh);
         return newh;
     }
 

@@ -40,6 +40,7 @@ import java.util.Enumeration;
 /**
 Output the multiplication of all the inputs. Multi-input single output.
 (IO type: double). This actor has no parameter.
+FIXME: Use the domain polymorphi one, or expression.
 @author Jie Liu
 @version  $Id$
 */

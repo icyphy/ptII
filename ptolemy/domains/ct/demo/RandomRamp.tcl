@@ -78,8 +78,10 @@ $sampout link $rc3
 $subout link $rc3
 
 # construct the DE system
-set poisson [java::new ptolemy.domains.de.lib.DEPoisson $sys Poisson 1.0 1.0]
-set ramp [java::new ptolemy.domains.de.lib.Ramp $sys Ramp 0.0 1.0]
+set poisson [java::new ptolemy.domains.de.lib.DEPoisson $sys Poisson]
+set lambda [$poisson getAttribute lambda]
+$lambda setExpression 1.0
+set ramp [java::new ptolemy.domains.de.lib.DERamp $sys Ramp]
 set deplot [java::new ptolemy.domains.de.lib.DEPlot $sys DEPLOT]
 
 # Identify the ports
@@ -106,19 +108,16 @@ $plotIn link $r4
 # DE parameters
 $dedir setStopTime 20.0
 
-# CT parameters
+# CT paramters
 set solver1 [$ctdir getAttribute BreakpointODESolver]
 set token [java::new ptolemy.data.StringToken ptolemy.domains.ct.kernel.solver.BackwardEulerSolver]
 $solver1 setToken $token
-$solver1 parameterChanged [java::null]
 
 set solver2 [$ctdir getAttribute ODESolver]
 set token [java::new ptolemy.data.StringToken ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver]
 $solver2 setToken $token
-$solver2 parameterChanged [java::null]
 
 set initstep [$ctdir getAttribute InitialStepSize]
 $initstep setExpression 0.1
-$initstep parameterChanged [java::null]
 
 $man run

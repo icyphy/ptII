@@ -49,8 +49,6 @@ $subout setOutput 1
 #$subout setDeclaredType $ptype
 set ctdir [java::new ptolemy.domains.ct.kernel.CTMixedSignalDirector CTEmbDIR]
 $ctsub setDirector $ctdir
-$ctdir setVERBOSE 1
-$ctdir setDEBUG 1
 # construct the sub system
 set const [java::new ptolemy.domains.ct.lib.CTConst $ctsub Const]
 set integral [java::new ptolemy.domains.ct.lib.CTIntegrator $ctsub Integrator]
@@ -86,19 +84,15 @@ $dedir setStopTime 20.0
 set solver1 [$ctdir getAttribute BreakpointODESolver]
 set token [java::new ptolemy.data.StringToken ptolemy.domains.ct.kernel.solver.BackwardEulerSolver]
 $solver1 setToken $token
-$solver1 parameterChanged [java::null]
 
 set solver2 [$ctdir getAttribute ODESolver]
 set token [java::new ptolemy.data.StringToken ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver]
 $solver2 setToken $token
-$solver2 parameterChanged [java::null]
 
 set initstep [$ctdir getAttribute InitialStepSize]
 $initstep setExpression 0.1
-$initstep parameterChanged [java::null]
 
 set constval [$const getAttribute Value]
 $constval setExpression 1.0
-$constval parameterChanged [java::null]
 
 $man run

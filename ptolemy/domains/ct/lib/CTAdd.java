@@ -40,6 +40,7 @@ import ptolemy.data.*;
 An multi-input one output double precision adder (IO type: double)
 In the fire() phase, it adds all the input token and emit the sum as
 the output.
+FIXME: Use the domain polymorphic one.
 @author Jie Liu
 @version $Id$
 */
@@ -78,12 +79,15 @@ public class CTAdd extends TypedAtomicActor {
         }
         output.broadcast(new DoubleToken(sum));
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public members                    ////
 
-    /** The multi-input port.
+    /** The multi-input port with type double.
      */
     public TypedIOPort input;
 
-    /** The singal output port.
+    /** The singal output port with type double.
      */
     public TypedIOPort output;
 }

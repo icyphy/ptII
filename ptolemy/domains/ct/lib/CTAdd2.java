@@ -40,6 +40,7 @@ import ptolemy.data.*;
 An multi-input one output double precision adder (IO type: double)
 In the fire() phase, it adds all the input token and emit the sum as
 the output.
+FIXME: Remove this class...
 @author Jie Liu
 @version $Id$
 */

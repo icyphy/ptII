@@ -44,7 +44,7 @@ Minitor integration steps so that the threshold is not crossed in one step.
 @author  Jie Liu
 @version $Id$
 */
-public class CTThresholdMonitor extends TypedAtomicActor 
+public class CTThresholdMonitor extends CTActor 
         implements CTStepSizeControlActor {
     /** Constructor
      */	
@@ -58,11 +58,11 @@ public class CTThresholdMonitor extends TypedAtomicActor
         input.setTypeEquals(DoubleToken.class);
         
         _thWidth = (double)1e-2;
-        _paramThWidth = new Parameter(this, "ThresholdWidth", 
+        paramThWidth = new Parameter(this, "ThresholdWidth", 
                 new DoubleToken(_thWidth));
 
         _thCenter = (double)0.0;
-        _paramThCenter = new Parameter(this, "ThresholdCenter", 
+        paramThCenter = new Parameter(this, "ThresholdCenter", 
                 new DoubleToken(_thCenter));
 
         _lowerBound = -5e-3;
@@ -83,7 +83,7 @@ public class CTThresholdMonitor extends TypedAtomicActor
     /** consume this input.
      */
     public void fire() throws IllegalActionException {
-        //System.out.println("Monitor" + getFullName() + " fired.");
+        _debug("Monitor" + getFullName() + " fired.");
         _thisInput = ((DoubleToken) input.get(0)).doubleValue();
         //_success = true;
     }
@@ -103,6 +103,8 @@ public class CTThresholdMonitor extends TypedAtomicActor
         if (!_first) {
             if (((_lastInput >= _upperBound) && (_thisInput <= _lowerBound)) ||
                 ((_lastInput <= _lowerBound) && (_thisInput >= _upperBound))) {
+                _debug(getFullName() + "one step crosses the threshold" +
+                        "cutting the step size in half.");
                 _success = false;
                 return false;
             }
@@ -136,9 +138,9 @@ public class CTThresholdMonitor extends TypedAtomicActor
      *  @exception IllegalActionException Never thrown.*
      */
     public void updateParameters() throws IllegalActionException {
-        _thCenter = ((DoubleToken)_paramThCenter.getToken()).doubleValue();
+        _thCenter = ((DoubleToken)paramThCenter.getToken()).doubleValue();
         _thWidth = Math.abs(
-            ((DoubleToken)_paramThWidth.getToken()).doubleValue());
+            ((DoubleToken)paramThWidth.getToken()).doubleValue());
 
         _lowerBound = _thCenter - _thWidth/(double)2.0;
         _upperBound = _thCenter + _thWidth/(double)2.0;
@@ -146,7 +148,17 @@ public class CTThresholdMonitor extends TypedAtomicActor
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public variables                       ////
+    /** The input port, single port with type double.
+     */
     public TypedIOPort input;
+
+    /** The parameter for the width of the threshold.
+     */
+    public Parameter paramThWidth;
+    
+    /** The parameter for the center of the threshold.
+     */ 
+    public  Parameter paramThCenter;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -154,10 +166,8 @@ public class CTThresholdMonitor extends TypedAtomicActor
     // Private variables should not have doc comments, they should
     // have regular C++ comments.
 
-    private Parameter _paramThWidth;
     private double _thWidth;
 
-    private Parameter _paramThCenter;
     private double _thCenter;
 
     private boolean _first;
@@ -168,5 +178,4 @@ public class CTThresholdMonitor extends TypedAtomicActor
 
     private double _lastInput;
     private double _thisInput;
-
 }

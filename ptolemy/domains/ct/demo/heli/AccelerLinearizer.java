@@ -148,19 +148,19 @@ public class AccelerLinearizer extends CTActor{
         for(int i = 0; i< 5; i++) {
             sP = sP + _alphaP[i] + " ";
         }
-        _paramAlphaP = new Parameter(this, "AlphaP", new StringToken(sP));
+        paramAlphaP = new Parameter(this, "AlphaP", new StringToken(sP));
         
         String sA = new String();
         for(int i = 0; i< 3; i++) {
             sA = sA + _alphaA[i] + " ";
         }
-        _paramAlphaA = new Parameter(this, "AlphaA", new StringToken(sA));
+        paramAlphaA = new Parameter(this, "AlphaA", new StringToken(sA));
         
         _cAx = 9.8/20.0;
-        _paramCAx = new Parameter(this, "CAx", new DoubleToken(_cAx));
+        paramCAx = new Parameter(this, "CAx", new DoubleToken(_cAx));
 
         _cPz = -2.0;
-        _paramCPz = new Parameter(this, "CPz", new DoubleToken(_cPz));
+        paramCPz = new Parameter(this, "CPz", new DoubleToken(_cPz));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -208,7 +208,7 @@ public class AccelerLinearizer extends CTActor{
      *  @exception IllegalActionException Never thrown.*
      */
     public void updateParameters() throws IllegalActionException {
-        String taps = ((StringToken)_paramAlphaP.getToken()).stringValue();
+        String taps = ((StringToken)paramAlphaP.getToken()).stringValue();
         StringTokenizer stokens = new StringTokenizer(taps);
         int index = 0;
         if(stokens.countTokens() < 5) {
@@ -220,7 +220,7 @@ public class AccelerLinearizer extends CTActor{
             _alphaP[index++] = (new Double(valueToken)).doubleValue();
         }
 
-        taps = ((StringToken)_paramAlphaA.getToken()).stringValue();
+        taps = ((StringToken)paramAlphaA.getToken()).stringValue();
         stokens = new StringTokenizer(taps);
         index = 0;
         if(stokens.countTokens() < 3) {
@@ -232,8 +232,8 @@ public class AccelerLinearizer extends CTActor{
             _alphaA[index++] = (new Double(valueToken)).doubleValue();
         }        
 
-        _cAx = ((DoubleToken)_paramCAx.getToken()).doubleValue();
-        _cPz = ((DoubleToken)_paramCPz.getToken()).doubleValue();     
+        _cAx = ((DoubleToken)paramCAx.getToken()).doubleValue();
+        _cPz = ((DoubleToken)paramCPz.getToken()).doubleValue();     
     }
 
     /** Input port Px
@@ -292,20 +292,36 @@ public class AccelerLinearizer extends CTActor{
      */
     public TypedIOPort outputR;
 
+    /** Parameter for alphaP, string,
+     *  default "500.0, 650.0, 395.0,  121.0, 17.8"
+     */
+    public Parameter paramAlphaP;
+
+    /** Parameter for alphaA, string,
+     *  default "20.0000, 18.0000, 7.8000"
+     */
+    public Parameter paramAlphaA;
+
+    /** Parameter for CAx, the set point of Ax, double,
+     *  default g/20.0.
+     */
+    public Parameter paramCAx;
+
+    /** Parameter for CPz, the set point of Pz, double,
+     *  default -2.0.
+     */
+    public Parameter paramCPz;
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private Parameter _paramAlphaP;
     private double[] _alphaP = {500.0, 650.0, 395.0,  121.0, 17.8};
 
-    private Parameter _paramAlphaA;
     private double[] _alphaA = {20.0000, 18.0000, 7.8000};
   
-    private Parameter _paramCAx;
     private double _cAx;
 
-    private Parameter _paramCPz;
     private double _cPz;
 
 }

@@ -50,7 +50,7 @@ For each output port, there is one parameter, the nodeId.
 @author Jie Liu, William Wu
 @version $Id$
 */
-public class CTSaberSubsys extends TypedAtomicActor 
+public class CTSaberSubsys extends CTActor 
     implements IPCInterface, CTDynamicActor{
     
     /** Construct the actor. Default implementation has no 
@@ -65,10 +65,10 @@ public class CTSaberSubsys extends TypedAtomicActor
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         _netlist = new String("saber");
-        _paramNetlist = new Parameter(this, "Netlist",
+        paramNetlist = new Parameter(this, "Netlist",
                 new StringToken(_netlist));
         _innerStep = new String("10u");
-        _paramInnerStep = new Parameter(this, "InnerStepSize",
+        paramInnerStep = new Parameter(this, "InnerStepSize",
                 new StringToken(_innerStep));
     }
 
@@ -91,9 +91,9 @@ public class CTSaberSubsys extends TypedAtomicActor
      */
     public void initialize() throws IllegalActionException {
         
-        //System.out.println("In initialize");
-        // update parameters.
+        _debug(getFullName() + "In initialize");
         super.initialize();
+        _debug(getFullName() + "update parameters");
         updateParameters();
         // initialize port table.
         _numout = 0;
@@ -116,7 +116,7 @@ public class CTSaberSubsys extends TypedAtomicActor
         _outtoken = new DoubleToken[_numout];
         // start saber
         try{
-            System.out.println("Start saber with "+getToolName());
+            _debug(getFullName() + "starts saber with "+getToolName());
             _tool = Runtime.getRuntime().exec(getToolName());
             _instream = _tool.getInputStream();    
             _errorstream = _tool.getErrorStream();    
@@ -126,10 +126,10 @@ public class CTSaberSubsys extends TypedAtomicActor
         }
         // read in the netlist
         if ((_instream != null) && (_outstream != null)){
-            System.out.println("tool start ok");
+            _debug(getFullName() + ": tool start ok");
             _ps = new PrintWriter(_outstream, true);
             if (_ps != null){
-                System.out.println("read netlist "+_netlist);
+                _debug(getFullName() + "read netlist "+_netlist);
             }
             _reader = new BufferedReader(
                 new InputStreamReader(_instream), 1000);
@@ -142,7 +142,7 @@ public class CTSaberSubsys extends TypedAtomicActor
             while (true){
                 try {
                     String line = _reader.readLine();
-                    //System.out.println(line);
+                    _debug(line);
                     if (line.startsWith(new String(">"))){
                         break;
                     }
@@ -152,7 +152,7 @@ public class CTSaberSubsys extends TypedAtomicActor
                 }
             } 
             // perform DC analysis 
-            //System.out.println("perform dc analysis");
+            _debug(getFullName() + "perform dc analysis");
             _ps.println("dc (dcep " + _startpt);
             _ps.println("di "+_startpt);
 	    _ps.println();
@@ -161,7 +161,7 @@ public class CTSaberSubsys extends TypedAtomicActor
                 try {
                     //if(_reader.ready()) {
                         String line = _reader.readLine();
-                        //System.out.println(line);
+                        _debug(line);
                         if (line == null) continue;
                         if (line.startsWith(new String("bye"))){
                             break;
@@ -180,7 +180,7 @@ public class CTSaberSubsys extends TypedAtomicActor
             while (true) {
                 try {
                     String line = _reader.readLine();
-                    //System.out.println(line);
+                    _debug(line);
                     if (line == null) continue;
                     if (line.startsWith(new String("bye"))){
                         break;
@@ -188,13 +188,13 @@ public class CTSaberSubsys extends TypedAtomicActor
                     int locsep = line.indexOf(' ');
                     if (locsep < 0) continue;
                     String nname = line.substring(0,locsep);
-                    //System.out.println("Get dc var "+ nname);
+                    _debug(getFullName() + "gets dc var "+ nname);
                     if(_porttable.containsKey(nname)) {
                         TypedIOPort po = (TypedIOPort)_porttable.get(nname);
                         if(po.isOutput()) {
                             double pd = _parseNumber(line, locsep,
                                     line.length());
-                                //System.out.println("Get var value: "+pd);
+                            _debug(getFullName() + " gets var value: "+pd);
                             _outtoken[outindex]=new DoubleToken(pd);
                                 //po.broadcast(_outtoken[outindex]);
                             _outpvalue.put(po, _outtoken[outindex]);
@@ -219,21 +219,22 @@ public class CTSaberSubsys extends TypedAtomicActor
             TypedIOPort p = (TypedIOPort)outps.nextElement();
             DoubleToken d = (DoubleToken)_outpvalue.get(p);
             p.broadcast(d);
-            //System.out.println("Output token" + d.stringValue());
+            _debug(getFullName() + " port " + p.getName() + 
+                    " output token" + d.stringValue());
         }
     }
         
     /** fire
      */
     public void fire() throws IllegalActionException {
-        //System.out.println("In fire");
+        _debug(getFullName() + "In fire");
         
         //  ps.println("run transient analysis with input, and init file");
         // ps.println("tr (dfile data,pfile plot,tend 2m,tstep 10u")); 
         CTDirector dir = (CTDirector)getDirector();
         double now = dir.getCurrentTime();
         double endTime = now + dir.getCurrentStepSize();
-        //System.out.println("endTime: "+endTime);
+        _debug(getFullName() + "endTime: "+endTime);
         Enumeration inports = inputPorts();
         while (inports.hasMoreElements()) {
             IOPort p = (IOPort) inports.nextElement();
@@ -257,7 +258,7 @@ public class CTSaberSubsys extends TypedAtomicActor
         while (true){
             try {
                 String line = _reader.readLine();
-                // System.out.println(line);
+                _debug(line);
                 if (line == null) continue;
                 if (line.startsWith(new String("bye"))){
                     break;
@@ -310,7 +311,7 @@ public class CTSaberSubsys extends TypedAtomicActor
         while (true){
             try {
                 String line = _reader.readLine();
-                //System.out.println(line);
+                _debug(line);
                 if (secondsep){
                     if (line.startsWith(new String(">"))){
                         secondsep = false;
@@ -335,8 +336,8 @@ public class CTSaberSubsys extends TypedAtomicActor
                                 tmp2 = line.indexOf(' ', tmp);
                             }
                             _outvar[i] = _parseNumber(line, tmp, tmp2);
-                                //System.out.println("Read from Saber "+i+" "+
-                                //        _outvar[i]);
+                            _debug(getFullName() + "Read from Saber "+i+" "+
+                                    _outvar[i]);
                         }
                     }
                 }
@@ -376,22 +377,32 @@ public class CTSaberSubsys extends TypedAtomicActor
             _outtoken[outi] = new DoubleToken(_outvar[outi]);
             p.broadcast( _outtoken[outi] );
             _outpvalue.put(p, _outtoken[outi]); 
-            //System.out.println("Fire output: " + _outvar[outi] 
-            //        + "as token"+ (_outtoken[outi]).doubleValue());
+            _debug(getFullName() + "fires output: " + _outvar[outi] 
+                    + "as token"+ (_outtoken[outi]).doubleValue());
             outi ++;
         }
         
     }
-  
-    
- 
+   
     /** Update parameters.
      */
      public void updateParameters() throws IllegalActionException {
-         _netlist = ((StringToken)_paramNetlist.getToken()).stringValue();
-         _innerStep = ((StringToken)_paramInnerStep.getToken()).stringValue();
+         _netlist = ((StringToken)paramNetlist.getToken()).stringValue();
+         _innerStep = ((StringToken)paramInnerStep.getToken()).stringValue();
     }
 
+    ////////////////////////////////////////////////////////////////////////
+    ////                         public variables                       ////
+
+    /** Parameter for the file name of the next list; the type is String;
+     *  the default value is the empty string.
+     */
+    public Parameter paramNetlist;
+
+    /** The parameter for the internal step size of the Saber sub system;
+     *  the type is string, and the default value is "10u" for 10 microsecond.
+     */
+    public Parameter paramInnerStep;
 
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
@@ -405,12 +416,13 @@ public class CTSaberSubsys extends TypedAtomicActor
      */	
     protected void _addPort(Port p) 
         throws IllegalActionException, NameDuplicationException {
-            //System.out.println("Port added");
-            super._addPort(p);
+            super._addPort(p); 
+            _debug(getFullName() + "Port" + p.getName() + " added");
             String portname = p.getName();
             String paramname = portname + "ToolVar";
             new Parameter(this, paramname, 
                     new StringToken("saber_variable_here"));
+            _debug(getFullName() + " parameter " + paramname + " added.");
     } 
 
     /** Override Entity removePort. Remove the corresponding parameter too.
@@ -426,7 +438,7 @@ public class CTSaberSubsys extends TypedAtomicActor
             Parameter pp = (Parameter)getAttribute(paramname);
             _removeAttribute(pp);
             super._removePort(p);
-            //System.out.println("Port removed");
+            _debug(getFullName() + ": port" + portname + "  removed");
     }
 
     /** parse input from saber.
@@ -499,9 +511,7 @@ public class CTSaberSubsys extends TypedAtomicActor
 
     //parameters
     private String _netlist;
-    private Parameter _paramNetlist;
     private String _innerStep;
-    private Parameter _paramInnerStep;
 
     //protential output
     private int _numout;

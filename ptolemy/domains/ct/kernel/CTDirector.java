@@ -106,7 +106,7 @@ director dependent.
 */
 public abstract class CTDirector extends StaticSchedulingDirector {
 
-    public static  boolean STAT = true;
+    public static boolean STAT = true;
     public static int NSTEP = 0;
     public static int NFUNC = 0;
     public static int NFAIL = 0;
@@ -179,8 +179,11 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  a parameter of the director, then the coresponding private copy of the
      *  parameter value will be updated.
      *  @param param The changed parameter.
+     *  @exception IllegalActionException If the parameter set is not valid.
+     *     Not thrown in this class. May be needed by derived classes.
      */
-    public void attributeChanged(Attribute attr) {
+    public void attributeChanged(Attribute attr) 
+            throws IllegalActionException {
         _debug(attr.getName() + " updating.");
         if(attr == _paramStopTime) {
             Parameter param = (Parameter)attr;

@@ -41,13 +41,11 @@ import java.util.*;
 //// CTPlot
 /**
 A plotter for discrete-event signals.
-
+FIXME: Consider replacing by the domain polymorephic PlotActor.
 @author Jie Liu, Lukito Muliadi, Edward A. Lee
 @version $Id$
 */
-public class  CTPlot extends TypedAtomicActor {
-
-    private static final boolean DEBUG = false;
+public class  CTPlot extends CTActor {
 
     /** Construct a plot actor with a new plot window. The default Y-range is
      *  [-1, 1]. The default X-range is the start time to the stop time.
@@ -88,12 +86,12 @@ public class  CTPlot extends TypedAtomicActor {
         _yMax = (double)1.0;
         _xMin = (double)-1.0;
         _xMax = (double)1.0;
-        _paramLegends = new Parameter(this, "Legends", 
+        paramLegends = new Parameter(this, "Legends", 
                 new StringToken(legends));
-        _paramYMin = new Parameter(this, "Y_Min", new DoubleToken(_yMin));
-        _paramYMax = new Parameter(this, "Y_Max", new DoubleToken(_yMax));
-        _paramXMin = new Parameter(this, "X_Min", new DoubleToken(_xMin));
-        _paramXMax = new Parameter(this, "X_Max", new DoubleToken(_xMax));
+        paramYMin = new Parameter(this, "Y_Min", new DoubleToken(_yMin));
+        paramYMax = new Parameter(this, "Y_Max", new DoubleToken(_yMax));
+        paramXMin = new Parameter(this, "X_Min", new DoubleToken(_xMin));
+        paramXMax = new Parameter(this, "X_Max", new DoubleToken(_xMax));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -117,20 +115,19 @@ public class  CTPlot extends TypedAtomicActor {
         _plot.setTitle(getName());
 
         // parameters
-        _yMin = ((DoubleToken)_paramYMin.getToken()).doubleValue();
-        _yMax = ((DoubleToken)_paramYMax.getToken()).doubleValue();
-        _xMin = ((DoubleToken)_paramXMin.getToken()).doubleValue();
-        _xMax = ((DoubleToken)_paramXMax.getToken()).doubleValue();
+        _yMin = ((DoubleToken)paramYMin.getToken()).doubleValue();
+        _yMax = ((DoubleToken)paramYMax.getToken()).doubleValue();
+        _xMin = ((DoubleToken)paramXMin.getToken()).doubleValue();
+        _xMax = ((DoubleToken)paramXMax.getToken()).doubleValue();
         
-        String legs = ((StringToken)_paramLegends.getToken()).stringValue();
-        //System.out.println(legs);
+        String legs = ((StringToken)paramLegends.getToken()).stringValue();
+        _debug(getFullName() + " legends " + legs);
         if(!legs.equals("")) {
             StringTokenizer stokens = new StringTokenizer(legs);
             int index = 0;
             _legends = new String[stokens.countTokens()];
             while(stokens.hasMoreTokens()) {
                  _legends[index++]= stokens.nextToken();
-                 //System.out.println(_legends[index-1]);
             }
         }
         int width = input.getWidth();
@@ -221,12 +218,10 @@ public class  CTPlot extends TypedAtomicActor {
             }
         
             // add the point
-            if (DEBUG) {
-                System.out.print(this.getFullName() + ":");
-                System.out.println("Dataset = " + i +
-                        ", CurrentTime = " + curTime +
-                        ", CurrentValue = " + curValue + ".");
-            }
+            _debug(this.getFullName() + ":");
+            _debug("Dataset = " + i +
+                    ", CurrentTime = " + curTime +
+                    ", CurrentValue = " + curValue + ".");
             if(_firstPoint[i]) {
                 _plot.addPoint(i, curTime, curValue, false);
                 _firstPoint[i] = false;
@@ -268,7 +263,34 @@ public class  CTPlot extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public members                    ////
 
+    /** The multi-input port with type double.
+     */
     public TypedIOPort input;
+
+    /** The parameter for the legends; the type is String; the default 
+     *  value is an empty string.
+     */
+    public Parameter paramLegends;
+
+    /** The parameter for the minimum value of the Y-axis; the type is
+     *  double; the default value is -1.0.
+     */
+    public Parameter paramYMin;
+
+    /** The parameter for the maximum value of the Y-axis; the type is
+     *  double; the default value is 1.0.
+     */
+    public Parameter paramYMax;
+
+    /** The parameter for the minimum value of the X-axis; the type is
+     *  double; the default value is -1.0.
+     */
+    public Parameter paramXMin;
+
+    /** The parameter for the maximum value of the X-axis; the type is
+     *  double; the default value is 1.0.
+     */
+    public Parameter paramXMax;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -276,17 +298,12 @@ public class  CTPlot extends TypedAtomicActor {
     private Plot _plot;
 
     private String[] _legends;
-    private Parameter _paramLegends;
 
     private double _yMin;
-    private Parameter _paramYMin;
     private double _yMax;
-    private Parameter _paramYMax;
 
     private double _xMin;
-    private Parameter _paramXMin;
     private double _xMax;
-    private Parameter _paramXMax;
 
     private boolean _rangeInitialized = false;
 

@@ -46,10 +46,7 @@ director when the jump occurs. Single output source (Output type:double).
 @author Jie Liu
 @version: $Id$
 */
-public class CTSquareWave extends TypedAtomicActor {
-
-    public static final boolean VERBOSE = true;
-    public static final boolean DEBUG = true;
+public class CTSquareWave extends CTActor {
 
     /** Construct the CTSquareWave actor
      * @param container container of this actor
@@ -65,17 +62,17 @@ public class CTSquareWave extends TypedAtomicActor {
         output.setOutput(true);
         output.setTypeEquals(DoubleToken.class);
         _maxValue = (double)1.0;
-        _paramMaxValue = new Parameter(this, "MaximumValue",
+        paramMaxValue = new Parameter(this, "MaximumValue",
                 new DoubleToken(_maxValue));
         _minValue = (double)-1.0;
-        _paramMinValue = new Parameter(this, "MinimumValue",
+        paramMinValue = new Parameter(this, "MinimumValue",
                 new DoubleToken(_minValue));
         _frequency = (double)1.0;
         _halfperiod = (double)1.0/((double)2.0*_frequency);
-        _paramFrequency = new Parameter(this, "Frequency",
+        paramFrequency = new Parameter(this, "Frequency",
                 new DoubleToken(_frequency));
         _startFromMin = true;
-        _paramStartFromMin = new Parameter(this, "StartFromMinimum",
+        paramStartFromMin = new Parameter(this, "StartFromMinimum",
                 new BooleanToken(true));
     }
 
@@ -97,7 +94,7 @@ public class CTSquareWave extends TypedAtomicActor {
             throw new IllegalActionException( this, " Has no director.");
         }
         _lastfliptime = dir.getStartTime();
-        _isMin = ((BooleanToken)_paramStartFromMin.getToken()).booleanValue();
+        _isMin = ((BooleanToken)paramStartFromMin.getToken()).booleanValue();
     }
 
     /** Always returns true. If the currentTime is greate than lastFlipTime
@@ -143,10 +140,9 @@ public class CTSquareWave extends TypedAtomicActor {
         if(dir == null) {
             throw new IllegalActionException( this, " Has no director.");
         }
-        //System.out.println("half period="+_halfperiod);
         double now = dir.getCurrentTime();
         double nextfliptime = _lastfliptime + _halfperiod;
-        //System.out.println("next flip time="+nextfliptime);
+        _debug(getFullName() + "next flip time="+nextfliptime);
         if ((nextfliptime > now) &&
         (nextfliptime <(now+dir.getSuggestedNextStepSize()))) {
             dir.fireAt(this, nextfliptime);
@@ -160,30 +156,48 @@ public class CTSquareWave extends TypedAtomicActor {
      *  @exception IllegalActionException If the frequency id negative.
      */
     public synchronized void updateParams() throws IllegalActionException{
-        if(VERBOSE) {
-            System.out.println("SquareWave updating parameters..");
-        }
-        _maxValue = ((DoubleToken)_paramMaxValue.getToken()).doubleValue();
-        _minValue = ((DoubleToken)_paramMinValue.getToken()).doubleValue();
-
-        double f  = ((DoubleToken)_paramFrequency.getToken()).doubleValue();
+        _debug(getFullName() + " updates parameters..");
+        _maxValue = ((DoubleToken)paramMaxValue.getToken()).doubleValue();
+        _minValue = ((DoubleToken)paramMinValue.getToken()).doubleValue();
+        
+        double f  = ((DoubleToken)paramFrequency.getToken()).doubleValue();
         if(f < 0) {
             throw new IllegalActionException (this,
                     "Frequency: "+ f + " is illegal.");
         }
         _frequency = f;
         _halfperiod = (double)1.0/((double)2.0*_frequency);
-        if(DEBUG) {
-            System.out.println("_maxVaue=" + _maxValue);
-            System.out.println("_minVaue=" + _minValue);
-            System.out.println("_Frequency=" + _frequency);
-            System.out.println("_halfperiod=" + _halfperiod);
-        }
+        _debug("_maxVaue=" + _maxValue);
+        _debug("_minVaue=" + _minValue);
+        _debug("_Frequency=" + _frequency);
+        _debug("_halfperiod=" + _halfperiod);
     }
 
-    /** Single output port.
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                 ////
+
+
+    /** Single output port with type double.
      */
     public TypedIOPort output;
+
+    /** Parameter for max value; the type is double; the default value is 1.0
+     */
+    public Parameter paramMaxValue;
+
+    /** Parameter for min value; the type is double; the default value is -1.0
+     */
+    public Parameter paramMinValue;
+
+    /** Parameter for the frequency of the squarewave; the type is double;
+     *  the default value is 1.0.
+     */
+    public Parameter paramFrequency;
+
+    /** Parameter for whether the square wave start from the min value phase;
+     *  the type is boolean; the default value is true.
+     */
+    public Parameter paramStartFromMin;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -191,13 +205,9 @@ public class CTSquareWave extends TypedAtomicActor {
     // Private variables should not have doc comments, they should
     // have regular C++ comments.
     private double _maxValue;
-    private Parameter _paramMaxValue;
     private double _minValue;
-    private Parameter _paramMinValue;
     private double _frequency;
-    private Parameter _paramFrequency;
     private boolean _startFromMin;
-    private Parameter _paramStartFromMin;
 
     private double _halfperiod;
     private double _lastfliptime;

@@ -47,7 +47,7 @@ value is 0.
 @author Jie Liu
 @version $Id$
 */
-public class CTConst extends TypedAtomicActor {
+public class CTConst extends CTActor {
     /** Construct the CTConst star. This actor is not a dynamic actor.
      *  The default output value is 0.
      * @param container The CTSubSystem this star belongs to
@@ -63,7 +63,7 @@ public class CTConst extends TypedAtomicActor {
         output.setOutput(true);
         output.setTypeEquals(DoubleToken.class);
         _value = (double)0.0;
-        _paramValue = new Parameter(this, "Value", new DoubleToken(_value));
+        paramValue = new Parameter(this, "Value", new DoubleToken(_value));
     }
 
 
@@ -83,18 +83,25 @@ public class CTConst extends TypedAtomicActor {
      *  @exception IllegalActionException Never thrown.
      */
     public void updateParameters() throws IllegalActionException{
-        _value = ((DoubleToken)_paramValue.getToken()).doubleValue();
+        _value = ((DoubleToken)paramValue.getToken()).doubleValue();
     }
 
-    /** The single output port.
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                 ////
+
+    /** The single output port with type double.
      */
     public TypedIOPort output;
+
+    /** The parameter for the value; the type is double; the default
+     *  value is 0.0.
+     */
+    public Parameter paramValue;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // Private variables should not have doc comments, they should
     // have regular C++ comments.
-    private Parameter _paramValue;
     private double _value;
 }
