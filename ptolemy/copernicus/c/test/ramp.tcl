@@ -59,7 +59,6 @@ if {[info procs jdkClassPathSeparator] == "" } then {
 # adapt the description above, the test header below, and the value of the
 # modelName variable below.
 
-set VERBOSE 1
 test ramp-1.1 {Generate .c, .i.h, and .h files for ramp.xml} {
     # The model name. If adapting this test file for another model, just
     # change the value of this variable.
