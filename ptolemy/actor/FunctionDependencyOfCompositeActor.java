@@ -185,7 +185,7 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
                     IOPort ioPort =
                         receivers[i][j].getContainer();
                     // The receivers may belong to either the inputs of
-                    // contained actors, or the outputs of the containter.
+                    // contained actors, or the outputs of the container.
                     if (embeddedActors.contains(ioPort.getContainer()) ||
                             _container.equals(ioPort.getContainer())) {
                         _directedGraph.addEdge(inputPort,

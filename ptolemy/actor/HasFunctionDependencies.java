@@ -1,5 +1,5 @@
 /* An interface provides access to the FunctionDependency object
-   associated with an entitiy.
+   associated with an entity.
 
    Copyright (c) 2003-2004 The Regents of the University of California.
    All rights reserved.

@@ -158,7 +158,7 @@ public abstract class FunctionDependency {
         validate();
         Set dependentInputs = new HashSet();
         if (_abstractPortsGraph == null) {
-            // force to construct an abstractPotrsGraph
+            // force to construct an abstractPortsGraph
             getAbstractPortsGraph();
         }
         Object[] backReachableInputs =
