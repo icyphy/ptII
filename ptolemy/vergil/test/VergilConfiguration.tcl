@@ -90,6 +90,7 @@ proc expandConfiguration {configuration} {
     $inputFileNamesToSkip add "/quicktime.xml"
     $inputFileNamesToSkip add "/rectangle.xml"
     $inputFileNamesToSkip add "/matlab.xml"
+    $inputFileNamesToSkip add "utilityIDAttribute.xml"
     $inputFileNamesToSkip add "/x10/x10.xml"
 
     # Tell the parser to skip inputting the above files
