@@ -47,7 +47,12 @@ import javax.swing.tree.*;
 /**
 A tree model for ptolemy models.  This class makes it easy to view ptolemy
 models in a JTree.  Entities in the model become nodes in the tree, 
-and composite entities are internal nodes.
+and composite entities are internal nodes.  To use this class to visualize
+the hierarchy of an entity in a JTree do something like:
+<pre>
+JTree tree = new JTree(new PtolemyTreeModel(entity));
+tree.setTreeCellRenderer(new PtolemyTreeCellRenderer());
+</pre>
 
 @see #PtolemyTreeCellRenderer
 @author Steve Neuendorffer
@@ -72,6 +77,7 @@ public class PtolemyTreeModel implements TreeModel {
     /**
      * Get the child at the given index of the given parent.  The parent is
      * assumed to be contained within this model.
+     * @return An Entity.
      */
     public Object getChild(Object parent, int index) {
 	if(index > getChildCount(parent)) return null;
@@ -103,6 +109,7 @@ public class PtolemyTreeModel implements TreeModel {
 
     /**
      * Get the root of this tree model.
+     * @return An Entity.
      */
     public Object getRoot() {
 	return _root;
