@@ -277,7 +277,7 @@ public class Branch {
      *  thrown, then reset this receiver and return. 
      *  FIXME: Can we optimize this?
      */
-    public void transferTokens() {
+    public void transferToken() {
         try {
             System.out.println("BEGINNING TRANSFER TOKENS");
             // _iterationIsOverCache = false;

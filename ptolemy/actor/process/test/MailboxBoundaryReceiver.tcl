@@ -139,9 +139,9 @@ test MailboxBoundaryReceiver.Tcl-2.2 {Unlimited get(Branch) and put(Token,Branch
         set val 0
     }
     
-    $brch1 transferTokens
-    $brch2 transferTokens
-    $brch3 transferTokens
+    $brch1 transferToken
+    $brch2 transferToken
+    $brch3 transferToken
     
     if { [$pRcvr1 hasToken] != 0 } {
         set val 0
