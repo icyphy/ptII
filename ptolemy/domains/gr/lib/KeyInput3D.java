@@ -88,10 +88,10 @@ public class KeyInput3D extends GRActor {
 
     public void initialize() throws IllegalActionException {
         super.initialize();
-        userInputNode = new BranchGroup();
+        _userInputNode = new BranchGroup();
         _react = new React();
         _react.setSchedulingBounds(new BoundingSphere());
-        userInputNode.addChild(_react);
+        _userInputNode.addChild(_react);
         _hasData = false;
     }
 
@@ -100,7 +100,7 @@ public class KeyInput3D extends GRActor {
 
 
     protected Node _getNodeObject() {
-        return (Node) userInputNode;
+        return (Node) _userInputNode;
     }
 
     protected void _makeSceneGraphConnection() throws IllegalActionException {
@@ -142,7 +142,7 @@ public class KeyInput3D extends GRActor {
         }
     }
 
-    protected BranchGroup userInputNode;
+    protected BranchGroup _userInputNode;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
