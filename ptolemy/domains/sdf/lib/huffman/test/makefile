@@ -58,9 +58,12 @@ JSIMPLE_TESTS = \
 # $(JGRAPHICAL_TESTS) to EXTRA_SRCS
 JGRAPHICAL_TESTS = \
 	BinaryTree.tcl\
-	CodeBook.tcl\
 	HuffLeaf.tcl\
-	HuffTree.tcl
+	HuffTree.tcl\
+	CodeBook.tcl
+
+## Test files is not in alphabetical order because I want the codebook.tcl
+## to be the last test cases.
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
