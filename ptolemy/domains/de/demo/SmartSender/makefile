@@ -47,10 +47,10 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = SmartSender.java
 
 OTHER_FILES_TO_BE_JARED = \
-	$(JSRCS) \
 	SmartSender.xml
 
 EXTRA_SRCS = \
+	$(JSRCS) \
 	$(OTHER_FILES_TO_BE_JARED) \
 	SmartSender.htm
 
@@ -60,7 +60,8 @@ MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	'SmartSender$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
