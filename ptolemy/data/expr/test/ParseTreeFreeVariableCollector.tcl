@@ -307,4 +307,8 @@ test ParseTreeFreeVariableCollector-17.2 {Test nested function definitions.} {
     list [theTest "function (y) function(x) x + y + p3"] [theTest "p1(6)"] [theTest "p2(4)"]
 } {p3 p1 p2}
 
+test ParseTreeFreeVariableCollector-17.3 {Test immediate function application.} {
+    list [theTest "function(x:double) x*foo"] [theTest "(function(x:double) x*foo) (1.0)"]  [theTest "function(x:double) x*1.0"] [theTest "(function(x:double) x*1.0) (1.0)"]
+} {foo foo {} {}}
+
 
