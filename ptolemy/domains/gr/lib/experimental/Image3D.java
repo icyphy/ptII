@@ -156,6 +156,7 @@ public class Image3D extends GRPickActor {
       _containedNode = new Shape3D(plane, appear);
       top.addChild(_containedNode);
         //_containedNode = new Shape3D(cube);
+      }
     }
     BranchGroup top = new BranchGroup();
     
