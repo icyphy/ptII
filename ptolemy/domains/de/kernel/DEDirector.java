@@ -185,7 +185,7 @@ public class DEDirector extends Director {
                     "StopTime",
                     new DoubleToken(Double.MAX_VALUE));
         } catch (IllegalActionException e) {
-            // shouldn't happen, because we know the Parameter class is an
+            // Shouldn't happen, because we know the Parameter class is an
             // acceptable type for this director.
             e.printStackTrace();
             throw new InternalErrorException("IllegalActionException: " +
@@ -196,7 +196,7 @@ public class DEDirector extends Director {
             throw new InternalErrorException("NameDuplicationException: " +
                     e.getMessage());
         }
-        // create event queue.
+        // Create event queue.
         _eventQueue = new DECQEventQueue();
     }
 
@@ -235,7 +235,7 @@ public class DEDirector extends Director {
                     "StopTime",
                     new DoubleToken(Double.MAX_VALUE));
         } catch (IllegalActionException e) {
-            // shouldn't happen, because we know the Parameter class is an
+            // Shouldn't happen, because we know the Parameter class is an
             // acceptable type for this director.
             e.printStackTrace();
             throw new InternalErrorException("IllegalActionException: " +
@@ -333,7 +333,7 @@ public class DEDirector extends Director {
                         // If one actor is dead, then stop the simulation.
                         _shouldPostfireReturnFalse = true;
                     }
-                    // check _filledReceivers to see if there are any
+                    // Check _filledReceivers to see if there are any
                     // receivers left that are not emptied.
                     refire = false;
                     Enumeration enum = _filledReceivers.elements();
@@ -358,7 +358,7 @@ public class DEDirector extends Director {
             try {
                 nextKey = _eventQueue.getNextTag();
             } catch (IllegalAccessException e) {
-                // the queue is empty.
+                // The queue is empty.
                 // So, just get on with the current iteration.
                 break;
             }
@@ -614,20 +614,22 @@ public class DEDirector extends Director {
 
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
-                    "transferInputs: port argument is not an opaque input port.");
+                    "transferInputs: port argument is not an " +
+                    "opaque input port.");
         }
         Receiver[][] insiderecs = port.deepGetReceivers();
-        for (int i=0; i < port.getWidth(); i++) {
+        for (int i = 0; i < port.getWidth(); i++) {
             if (port.hasToken(i)) {
                 try {
                     Token t = port.get(i);
                     if (insiderecs != null && insiderecs[i] != null) {
-                        for (int j=0; j < insiderecs[i].length; j++) {
+                        for (int j = 0; j < insiderecs[i].length; j++) {
                             DEReceiver deRec =
                                 (DEReceiver)insiderecs[i][j];
 
                             Actor container = (Actor)getContainer();
-                            double outsideCurrTime = container.getExecutiveDirector().getCurrentTime();
+                            double outsideCurrTime =
+                                container.getExecutiveDirector().getCurrentTime();
 
                             deRec.put(t, outsideCurrTime - _currentTime);
                         }
@@ -881,7 +883,8 @@ public class DEDirector extends Director {
                                 _filledReceivers.insertFirst(rec);
                             }
                             // Transfer the event to the receiver.
-                            rec._triggerEvent(currentEvent.getTransferredToken());
+                            rec._triggerEvent(
+                                    currentEvent.getTransferredToken());
                         }
                     } else {
                                 // Put it back in the queue.
@@ -1014,7 +1017,7 @@ public class DEDirector extends Director {
         if (DEBUG) {
             System.out.println("### Result of topological sort: ###");
         }
-	for(int i=sort.length-1; i >= 0; i--) {
+	for(int i = sort.length-1; i >= 0; i--) {
             IOPort p = (IOPort)sort[i];
             if (DEBUG) {
                 System.out.println(p.description(FULLNAME) + ":" + i);
@@ -1032,8 +1035,8 @@ public class DEDirector extends Director {
 		// dangling input port..
 		continue;
 	    }
-	    for (int j=r.length-1; j >= 0; j--) {
-                for (int k=r[j].length-1; k >= 0; k--) {
+	    for (int j = r.length-1; j >= 0; j--) {
+                for (int k = r[j].length-1; k >= 0; k--) {
                     DEReceiver der = (DEReceiver)r[j][k];
                     der._setDepth(i);
                 }
@@ -1060,7 +1063,7 @@ public class DEDirector extends Director {
         }
         double nextRefire = sortkey.timeStamp();
 
-        // enqueue a refire for the container of this director.
+        // Enqueue a refire for the container of this director.
         ((CompositeActor)getContainer()).getExecutiveDirector().fireAt((Actor)getContainer(), nextRefire);
 
     }
@@ -1079,7 +1082,7 @@ public class DEDirector extends Director {
     // Directed Graph whose nodes represent input ports and whose
     // edges represent delay free paths.  This is used for prioritizing
     // simultaneous events.
-    private DirectedAcyclicGraph _dag=null;
+    private DirectedAcyclicGraph _dag = null;
 
     // Access with insertFirst(), take().
     private LinkedList _filledReceivers = new LinkedList();
