@@ -772,12 +772,12 @@ public class FSMController extends CompositeEntity implements TypedActor {
 
 
     protected synchronized String _uniqueStateName() {
-        return super._uniqueEntityName();
+        return super.uniqueName("_State");
     }
 
 
     protected synchronized String _uniqueTransitionName() {
-        return super._uniqueRelationName();
+        return super.uniqueName("_Trans");
     }
 
 
