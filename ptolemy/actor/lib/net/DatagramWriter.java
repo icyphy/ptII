@@ -55,7 +55,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
 //////////////////////////////////////////////////////////////////////////
-//// DatagramSender
+//// DatagramWriter
 /**
 This actor sends its input as a Datagram over the network using the
 UDP protocol.  Before being sent, the data is optionally encoded as a
@@ -82,7 +82,7 @@ until the model is run.<p>
 */
 
 
-/** Construct a DatagramSender actor with given name in the given
+/** Construct a DatagramWriter actor with given name in the given
  *  container.  Set up ports, parameters and default values.  Two of
  *  the parameters are used in a funny way.  They give default values for
  *  the  <i>remoteAddress</i> and <i>remoteSocketNumber</i> ports in case
@@ -94,9 +94,9 @@ until the model is run.<p>
  *  @exception IllegalActionException If the actor cannot be contained by
  *   this container
  */
-public class DatagramSender extends TypedAtomicActor {
+public class DatagramWriter extends TypedAtomicActor {
 
-    public DatagramSender(CompositeEntity container, String name)
+    public DatagramWriter(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 

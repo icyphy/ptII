@@ -48,8 +48,10 @@ PTDIST =        $(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = DatagramSender.java \
-        DatagramReceiver.java
+JSRCS = DatagramReceiver.java \
+        DatagramSender.java \
+        DatagramReader.java \
+        DatagramWriter.java
 
 
 EXTRA_SRCS =    $(JSRCS)

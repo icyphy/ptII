@@ -60,7 +60,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
 //////////////////////////////////////////////////////////////////////////
-//// DatagramReceiver
+//// DatagramReader
 /**
 This actor receives datagram packets via a separate thread it creates.
 Datagrams are open-loop internet communications.  Each contains data
@@ -169,9 +169,17 @@ otherwise. <p>
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class DatagramReceiver extends TypedAtomicActor {
+public class DatagramReader extends TypedAtomicActor {
 
-    public DatagramReceiver(CompositeEntity container, String name)
+    /** Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
+    public DatagramReader(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
@@ -856,6 +864,16 @@ public class DatagramReceiver extends TypedAtomicActor {
 
     }
 
+    /**
+     */
+    public void setContainer(CompositeEntity container) 
+            throws IllegalActionException, NameDuplicationException {
+	if (container != getContainer()) {
+            wrapup();
+	}
+	super.setContainer(container);
+    }
+
     /** Stop fire.  Stop the fire() method, but only if it is blocked.
      *  The actor returns from fire() with its state the same as
      *  before fire() was called.  Thus, when the (director? manager?)
@@ -1186,7 +1204,7 @@ public class DatagramReceiver extends TypedAtomicActor {
                 if (fireAtWillBeCalled) {
                     try {
                         getDirector().fireAtCurrentTime(
-                                DatagramReceiver.this);
+                                DatagramReader.this);
                     } catch (IllegalActionException ex) {
 
                         System.out.println(this
