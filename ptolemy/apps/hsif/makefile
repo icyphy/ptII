@@ -30,8 +30,6 @@
 # 						COPYRIGHTENDKEY
 
 
-# dealing with Global Variables
-
 ME =		ptolemy/apps/hsif
 
 DIRS =
@@ -39,45 +37,81 @@ DIRS =
 # Root of the Java directory
 ROOT =		../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH =	.$(CLASSPATHSEPARATOR)./saxon7.jar
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-g_pre_shsif :
-	java -classpath ".$(CLASSPATHSEPARATOR)./saxon7.jar" net.sf.saxon.Transform data/shsif.xml data/hsif_globalVariable_preprocessor.xsl >data/shsif_mid_g.xml
+# make clean will remove these derived files
+KRUFT = \
+	data/shsif_mid_g.xml \
+	data/thsif_mid_g.xml \
+	data/shsif_mid_sg.xml \
+	data/thsif_mid_sg.xml \
+	data/thsif_mid_l.xml \
+	data/shsif_mid_l.xml \
+	data/thsif_mid_sl.xml \
+	data/shsif_mid_sl.xml
 
-g_pre_thsif :
-	java -classpath ".$(CLASSPATHSEPARATOR)./saxon7.jar" net.sf.saxon.Transform data/thsif.xml data/hsif_globalVariable_preprocessor.xsl >data/thsif_mid_g.xml
 
-# dealing with the redundant nodes after g_pre_shif
-sg_pre_shsif : g_pre_shsif
-	java -classpath ".$(CLASSPATHSEPARATOR)./saxon7.jar" net.sf.saxon.Transform data/shsif_mid_g.xml data/hsif_slim_preprocessor.xsl >data/shsif_mid_sg.xml
-
-sg_pre_thsif : g_pre_thsif
-	java -classpath ".$(CLASSPATHSEPARATOR)./saxon7.jar" net.sf.saxon.Transform data/thsif_mid_g.xml data/hsif_slim_preprocessor.xsl >data/thsif_mid_sg.xml
-
-# dealing with Local Variables
-l_pre_shsif : sg_pre_shsif
-	java -classpath ".$(CLASSPATHSEPARATOR)./saxon7.jar" net.sf.saxon.Transform data/shsif_mid_sg.xml data/hsif_localVariable_preprocessor.xsl >data/shsif_mid_l.xml
-
-l_pre_thsif : sg_pre_thsif
-	java -classpath ".$(CLASSPATHSEPARATOR)./saxon7.jar" net.sf.saxon.Transform data/thsif_mid_sg.xml data/hsif_localVariable_preprocessor.xsl >data/thsif_mid_l.xml
-
-# dealing with the redundant nodes after l_pre_shif
-sl_pre_shsif : l_pre_shsif
-	java -classpath ".$(CLASSPATHSEPARATOR)./saxon7.jar" net.sf.saxon.Transform data/shsif_mid_l.xml data/hsif_slim_preprocessor.xsl >data/shsif_mid_sl.xml
-
-sl_pre_thsif : l_pre_thsif
-	java -classpath ".$(CLASSPATHSEPARATOR)./saxon7.jar" net.sf.saxon.Transform data/thsif_mid_l.xml data/hsif_slim_preprocessor.xsl >data/thsif_mid_sl.xml
-
-# generating MoML files
-shsif : sl_pre_shsif
-	java -classpath ".$(CLASSPATHSEPARATOR)./saxon7.jar" net.sf.saxon.Transform data/shsif_mid_sl.xml data/hsif.xsl >shsif.xml
-
-thsif : sl_pre_thsif
-	java -classpath ".$(CLASSPATHSEPARATOR)./saxon7.jar" net.sf.saxon.Transform data/thsif_mid_sl.xml data/hsif.xsl >thsif.xml
-
+# Command to run the Saxon transformer.
+SAXON_TRANSFORM = CLASSPATH="$(CLASSPATH)" "$(JAVA)" \
+			net.sf.saxon.Transform 
 # make all
-all:	shsif thsif
+all:	shsif.xml thsif.xml
+install: all
 
+# In the rules below, note that the .xsl style sheet is at the end
+# of the list of dependencies.
+
+# Generating MoML files
+#shsif : sl_pre_shsif shsif.xml
+shsif.xml: data/shsif_mid_sl.xml data/hsif.xsl
+	$(SAXON_TRANSFORM) $^ > $@
+
+#thsif : sl_pre_thsif thsif.xml
+thsif.xml: data/thsif_mid_sl.xml data/hsif.xsl
+	$(SAXON_TRANSFORM) $^ > $@
+
+
+# Dealing with the redundant nodes after l_pre_shif
+#sl_pre_shsif : l_pre_shsif data/shsif_mid_sl.xml
+data/shsif_mid_sl.xml: data/shsif_mid_l.xml data/hsif_slim_preprocessor.xsl
+	$(SAXON_TRANSFORM) $^ > $@
+
+#sl_pre_thsif : l_pre_thsif data/thsif_mid_sl.xml
+data/thsif_mid_sl.xml: data/thsif_mid_l.xml data/hsif_slim_preprocessor.xsl
+	$(SAXON_TRANSFORM) $^ > $@
+
+
+# Dealing with Local Variables
+#l_pre_shsif : sg_pre_shsif data/shsif_mid_l.xml
+data/shsif_mid_l.xml: data/shsif_mid_sg.xml data/hsif_localVariable_preprocessor.xsl
+	$(SAXON_TRANSFORM) $^ > $@
+
+#l_pre_thsif : sg_pre_thsif data/thsif_mid_l.xml
+data/thsif_mid_l.xml: data/thsif_mid_sg.xml data/hsif_localVariable_preprocessor.xsl
+	$(SAXON_TRANSFORM) $^ > $@
+
+# Dealing with the redundant nodes after g_pre_shif
+#sg_pre_shsif : g_pre_shsif data/shsif_mid_sg.xml
+data/shsif_mid_sg.xml: data/shsif_mid_g.xml data/hsif_slim_preprocessor.xsl
+	$(SAXON_TRANSFORM) $^ > $@
+
+#sg_pre_thsif : g_pre_thsif data/thsif_mid_sg.xml
+data/thsif_mid_sg.xml: data/thsif_mid_g.xml data/hsif_slim_preprocessor.xsl
+	$(SAXON_TRANSFORM) $^ > $@
+
+
+# Dealing with Global Variables
+#g_pre_shsif: data/shsif_mid_g.xml
+data/shsif_mid_g.xml: data/shsif.xml data/hsif_globalVariable_preprocessor.xsl
+	$(SAXON_TRANSFORM) $^ > $@
+
+#g_pre_thsif: data/thsif_mid_g.xml
+data/thsif_mid_g.xml: data/thsif.xml data/hsif_globalVariable_preprocessor.xsl
+	$(SAXON_TRANSFORM) $^ > $@
+
+
+# Get the rest of the rules
+include $(ROOT)/mk/ptcommon.mk
