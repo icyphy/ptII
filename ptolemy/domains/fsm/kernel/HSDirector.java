@@ -30,6 +30,7 @@ package ptolemy.domains.fsm.kernel;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -56,7 +57,7 @@ import ptolemy.kernel.util.Workspace;
 //// HSDirector
 /**
    An HSDirector governs the execution of the discrete dynamics of a hybrid
-   system model.
+   system model. 
    <p>
    <a href="
    http://ptolemy.eecs.berkeley.edu/publications/papers/99/hybridsimu/">
@@ -144,26 +145,8 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      *  outputs from refinements.
      */
     public void fire() throws IllegalActionException {
-        // FIXME: this basically copies the fire method of FSMDirector.
-        // Introducing an abstract modal model director?
         if (_debugging) {
             _debug(getName(), " fire.");
-        }
-
-        // If this is the first time to fire in an iteration,
-        // reconstruct the list of enabled refinenents from the current state.
-        // FIXME: prefire does this too.... why do this again here?
-        if (_firstFire) {
-            Actor[] actors = _currentState.getRefinement();
-            _enabledRefinements = new LinkedList();
-            if (actors != null) {
-                for (int i = 0; i < actors.length; ++i) {
-                    if (actors[i].prefire()) {
-                        _enabledRefinements.add(actors[i]);
-                    }
-                }
-            }
-            _firstFire = false;
         }
 
         _ctrl._readInputs();
@@ -524,19 +507,73 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 }
             }
 
+            // Check if there is any event detected for preemptive transitions.
+            Transition preemptiveTrWithEvent =
+                _checkEvent(_currentState.preemptiveTransitionList());
+            if (preemptiveTrWithEvent != null) {
+                if (_debugging) {
+                    _debug("Detected event for transition:  " +
+                            preemptiveTrWithEvent.getGuardExpression());
+                }
+            }
+
+            // Check if there is any events detected for
+            // nonpreemptive transitions.
+            Transition nonPreemptiveTrWithEvent =
+                _checkEvent(_currentState.nonpreemptiveTransitionList());
+            if (nonPreemptiveTrWithEvent != null) {
+                if (_debugging) {
+                    _debug("Detected event for transition:  " +
+                            nonPreemptiveTrWithEvent.getGuardExpression());
+                }
+            }
+
             double errorTolerance = dir.getErrorTolerance();
             // If there is no transition enabled, the last step size is 
             // accurate for transitions. The states will be committed at 
             // the postfire method.
-            if (enabledTransition == null) {
+            if (enabledTransition == null 
+                    && preemptiveTrWithEvent == null
+                    && nonPreemptiveTrWithEvent == null) {
                 _transitionHasEvent = false;
             } else {
-                // There is one transition enabled.
-                // We check the maximum difference of all relations that change
-                // their status with the current step size for
-                // step size refinement.
-                RelationList relationList = enabledTransition.getRelationList();
-                _distanceToBoundary = relationList.maximumDifference();
+                // We check the maximum difference of the relations that change
+                // their status for step size refinement.
+                
+                _distanceToBoundary = Double.MIN_VALUE;
+                
+                if (enabledTransition != null) {
+                    RelationList relationList = 
+                        enabledTransition.getRelationList();
+                    _distanceToBoundary = 
+                        relationList.maximumDifference();
+                    _lastDistanceToBoundary = 
+                        relationList.getPreviousMaximumDistance();
+                }
+                
+                if (preemptiveTrWithEvent != null) {
+                    RelationList relationList = 
+                        preemptiveTrWithEvent.getRelationList();
+                    double distanceToBoundary = 
+                        relationList.maximumDifference();
+                    if (distanceToBoundary > _distanceToBoundary) {
+                        _distanceToBoundary = distanceToBoundary;
+                        _lastDistanceToBoundary = 
+                            relationList.getPreviousMaximumDistance();
+                    }
+                }
+
+                if (nonPreemptiveTrWithEvent != null) {
+                    RelationList relationList = 
+                        nonPreemptiveTrWithEvent.getRelationList();
+                    double distanceToBoundary = 
+                        relationList.maximumDifference();
+                    if (distanceToBoundary > _distanceToBoundary) {
+                        _distanceToBoundary = distanceToBoundary;
+                        _lastDistanceToBoundary = 
+                            relationList.getPreviousMaximumDistance();
+                    }
+                }
 
                 if (_debugging && _verbose) {
                     _debug("The guard " + enabledTransition.getGuardExpression() 
@@ -547,12 +584,6 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 _outputAccurate = _distanceToBoundary < errorTolerance;
 
                 if (!_outputAccurate) {
-                    // Retrive the previous distance of the relation which has 
-                    // the biggest difference with the current step size.
-                    // This previous distance will be used to refine the 
-                    // step size.
-                    _lastDistanceToBoundary = 
-                        relationList.getPreviousMaximumDistance();
                     // NOTE: we do not set _hasEvent to true here because it is
                     // not the exact time the event happens. We need to refine 
                     // the step size.
@@ -698,23 +729,40 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 // state has some outgoing transition enabled.
                 dir.fireAt(container, getModelTime());
             }
-            // clear the cached enabled transition
-            _enabledTransition = null;
-        } else {
-            // Otherwise, there is no enabled transition, the current step size
-            // is acceptable. Commit the current states of all the transitions.
-            Iterator iterator = 
-                _currentState.nonpreemptiveTransitionList().listIterator();
-            while (iterator.hasNext()) {
-                Transition transition = (Transition)iterator.next();
-                transition.getRelationList().commitRelationValues();
+            // If this iteration is the end of a complete iteration of the 
+            // enclosing CT director, or the enclosing director is not a CT
+            // director, reset the _enabledTransition to null.
+            if ((getExecutionPhase() == 
+                    CTExecutionPhase.UPDATING_CONTINUOUS_STATES_PHASE) 
+                    || getEnclosingCTGeneralDirector() == null)  {
+                // Only clear the cached enabled transition at the 
+                // updating continuous states phase. This guarantees that
+                // only one transition is taken in an iteration of discrete
+                // phase of execution. To be more specific, for each (t, n), 
+                // there is at most one event.
+                _enabledTransition = null;
             }
-            iterator = _currentState.preemptiveTransitionList().listIterator();
-            while (iterator.hasNext()) {
-                Transition transition = (Transition)iterator.next();
-                transition.getRelationList().commitRelationValues();
+        } else {
+            if ((getExecutionPhase() == 
+                    CTExecutionPhase.GENERATING_EVENTS_PHASE) 
+                    || (getExecutionPhase() == 
+                        CTExecutionPhase.POSTFIRING_EVENT_GENERATORS_PHASE)) {
+                // Only commit the current states of the relationlists 
+                // of all the transitions during these execution phases.
+                Iterator iterator = 
+                    _currentState.nonpreemptiveTransitionList().listIterator();
+                while (iterator.hasNext()) {
+                    Transition transition = (Transition)iterator.next();
+                    transition.getRelationList().commitRelationValues();
+                }
+                iterator = _currentState.preemptiveTransitionList().listIterator();
+                while (iterator.hasNext()) {
+                    Transition transition = (Transition)iterator.next();
+                    transition.getRelationList().commitRelationValues();
+                }
             }
         }
+        // execute the commit actions 
         return super.postfire();
     }
 
@@ -751,7 +799,6 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             _debug(getName(), " find FSMActor " + _ctrl.getName()
                     + " and the current state is " + _currentState.getName());
         }
-    
         Actor[] actors = _currentState.getRefinement();
         _enabledRefinements = new LinkedList();
         if (actors != null) {
@@ -832,10 +879,31 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         private methods                 ////
+
+    // This method detects any events happened during one step size.
+    private Transition _checkEvent(List transitionList) {
+        Transition result = null;
+        Iterator transitionRelations = transitionList.iterator();
+        while (transitionRelations.hasNext() 
+                && !_stopRequested 
+                && result == null) {
+            Transition transition = (Transition) transitionRelations.next();
+            if (transition.getRelationList().hasEvent()) {
+                result = transition;
+            }
+        }
+        return result;
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // Cached reference to mode controller.
     private FSMActor _ctrl = null;
+
+    // Cached reference to current state.
+    private State _currentState = null;
 
     // Lcoal variable to indicate the distance to boundary.
     private double _distanceToBoundary = 0.0;
@@ -846,13 +914,10 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
     // Lcoal variable to indicate the last step size.
     private double _lastStepSize = 0.0;
 
+    // Lcoal variable to indicate whether the output is accurate.
+    private boolean _outputAccurate = true;
+
     // Boolean variable to indicate whether there is an enabled transtion to
     // produce an event at the current firing.
     private boolean _transitionHasEvent = false;
-    
-    // Cached reference to current state.
-    private State _currentState = null;
-
-    // Lcoal variable to indicate whether the output is accurate.
-    private boolean _outputAccurate = true;
 }
