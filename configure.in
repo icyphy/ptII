@@ -92,7 +92,7 @@ so we search for the java compiler.])
 	else
 			    AC_MSG_ERROR([
 Java directory $DEFAULT_JDK doesn't exist.
-Try --with-java=DIR, or set the JAVA_HOME environment variable.])
+Try --with-java=DIR, or set the PTJAVA_DIR environment variable.])
 	fi	
     fi	
 fi
@@ -115,7 +115,7 @@ Be sure that you don't have a mismatch in JDK versions.])
 else
     AC_MSG_ERROR([
   Cannot find $PTJAVA_DIR/bin/java.
-  Try --with-java=DIR, or set the JAVA_HOME environment variable.]) 
+  Try --with-java=DIR, or set the PTJAVA_DIR environment variable.]) 
 fi
 
 
@@ -137,7 +137,7 @@ Be sure that you don't have a mismatch in JDK versions.])
 else
     AC_MSG_ERROR([
   Cannot find $PTJAVA_DIR/bin/javac.
-  Try --with-java=DIR, or set the JAVA_HOME environment variable.])
+  Try --with-java=DIR, or set the PTJAVA_DIR environment variable.])
 fi
 
 
