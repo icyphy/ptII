@@ -213,24 +213,79 @@ public class SROptimizedScheduler extends Scheduler {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                 ////
 
+    /** Return a list corresponding to the nodes in the head of an SCC.
+     *  @return A List representing the head of an SCC.
+     */
+    private Object[] _headOf(DirectedGraph dependencyGraph) {
+
+        Object[] nodes = dependencyGraph.getNodes();
+        Object bestNode = nodes[0];
+        int smallestSuccessorSet = 0;
+        
+        for (int i = 0; i < nodes.length; i++) {
+            Object node = nodes[i];
+            int numberOfSuccessors = dependencyGraph.successorSet(node).length;
+            if (numberOfSuccessors < smallestSuccessorSet) {
+                smallestSuccessorSet = numberOfSuccessors;
+                bestNode = node;
+            }
+        }
+
+        return dependencyGraph.successorSet(bestNode);
+    }
+
     /** Return a list corresponding to the schedule of the dependency graph.
      *  @return A List representing the scheduling sequence.
      */
     private List _scheduleDependencyGraph(DirectedGraph dependencyGraph) {
 
-        List schedule = new LinkedList();
-        return schedule;
+        List scheduleList = new LinkedList();
+
+        DirectedGraph[] sccs = dependencyGraph.sccDecomposition();
+        // The graph package returns the sccs in topological order.
+
+        for (int i = 0; i < sccs.length; i++) {
+
+            DirectedGraph scc = sccs[i];
+
+            if (scc.getNodeCount() == 1) {
+                Object[] nodes = scc.getNodes();
+                scheduleList.add(nodes[0]);
+            } else {
+                Object[] head = _headOf(scc);
+                Object[] allNodes = scc.getNodes();
+                int sizeOfGraph = scc.getNodeCount();
+                int sizeOfHead = head.length;
+                int sizeOfTail = sizeOfGraph - sizeOfHead;
+                Object[] tail = new Object[sizeOfTail];
+                int counter = 0;
+                for (int j = 0; j < sizeOfGraph; j++) {
+                    Object node = allNodes[j];
+                    boolean inHead = false;
+                    for (int k = 0; k < sizeOfHead; k++) {
+                        Object headNode = head[k];
+                        if (headNode == node) inHead = true;
+                    }
+                    if (!inHead) {
+                        tail[counter] = node;
+                        counter++;
+                    }
+                }
+                DirectedGraph headGraph = scc.subgraph(head);
+                DirectedGraph tailGraph = scc.subgraph(tail);
+                List headScheduleList = _scheduleDependencyGraph(headGraph);
+                List tailScheduleList = _scheduleDependencyGraph(tailGraph);
+                for (int j = 0; j < sizeOfHead; j++) {
+                    scheduleList.addAll(tailScheduleList);
+                    scheduleList.addAll(headScheduleList);
+                }
+                scheduleList.addAll(tailScheduleList);
+            }
+        }
+
+        return scheduleList;
 
     }
 
 }
-
-
-
-
-
-
-
-
-
 
