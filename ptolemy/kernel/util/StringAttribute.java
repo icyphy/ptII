@@ -23,8 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel.util;
@@ -43,13 +43,24 @@ Use setExpression() to define the value, as in for example
 <pre>
     attribute.setExpression("xxx");
 </pre>
-By default, an instance of this class is fully visible in a user interface.
-This is indicated to the user interface by returning FULL to the
-getVisibility() method.
-<p>
-The default value of the string contained by this attribute is the empty
+<p>The default value of the string contained by this attribute is the empty
 string.
 
+<p>By default, an instance of this class is fully visible in
+a user interface.  The visibility is indicated to the user
+interface when the user interface calls the getVisibility() method
+of this class and the value Settable.FULL is returned to the userInterface.
+
+<p>Note that the string value within StringAttribute cannot reference
+other StringAttributes or Parameters, so if an actor has a public
+StringAttribute, then one cannot make the value of that attribute
+dependent on a value higher in the hierarchy.  Usually, actors have
+public ptolemy.data.expr.Parameters instead of public StringAttributes
+so that the value can reference other parameters.  The primary reason
+to use StringAttribute is if you want a string that will not be parsed
+and you do not want to type a leading a trailing double quote.
+
+@see Settable#Full
 @author Edward A. Lee
 @version $Id$
 */
@@ -161,14 +172,14 @@ public class StringAttribute extends Attribute implements Settable {
     }
 
     /** Set the value of the string attribute and notify the container
-     *  of the value of this attribute by calling attributeChanged(),
-     *  and notify any listeners that have
-     *  been registered using addValueListener().
+     *  of the value of this attribute by calling attributeChanged().
+     *  Notify any value listeners of this attribute.
      *  @param expression The value of the string attribute.
      *  @exception IllegalActionException If the change is not acceptable
      *   to the container.
      */
-    public void setExpression(String expression) throws IllegalActionException {
+    public void setExpression(String expression)
+            throws IllegalActionException {
         _value = expression;
         // Notify the container and any value listeners immediately,
         // rather than deferring to validate().
