@@ -100,9 +100,11 @@ VERGIL_DOCS = \
 
 # Include these jars in PTAUXALLJAR
 PTAUXALLJARS = \
-		design/usingVergil/usingVergil.jar \
 		coding/codingConfig.jar \
 		img/img.jar
+
+# After Ptolemy II 2.0, usingVergil is no longer a part of docConfig.jar
+#		design/usingVergil/usingVergil.jar 
 
 # All the doc/ files that are referred to by files in ptolemy/config
 PTAUXALLJAR =	docConfig.jar
