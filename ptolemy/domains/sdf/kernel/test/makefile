@@ -47,7 +47,6 @@ TCL_SRCS = \
 
 JSRCS = \
 	SDFTestConsumer.java \
-	SDFTestDirector.java \
 	SDFTestDelay.java \
 	SDFTestJoin.java \
 	SDFTestRamp.java \

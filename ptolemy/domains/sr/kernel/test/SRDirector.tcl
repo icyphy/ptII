@@ -137,9 +137,3 @@ test SRDirector-5.1 {Test action methods} {
 	[$director getNextIterationTime] \
 	[$director getCurrentTime]
 } {0.0 {0.0 5.0 10.0 3.0 4.0 5.0 6.0 7.0 8.0} 0.0 0.0}
-
-test SRDirector-6.1 {_writeAccessRequired} {
-    # Uses 5.1 above
-    # Always returns false
-    $director needWriteAccess
-} {0}

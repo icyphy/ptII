@@ -358,16 +358,6 @@ test SDFDirector-7.1 {Multirate and Hierarchy execution tests} {
 ######################################################################
 ####
 #
-test SDFDirector-8.1 {_writeAccessRequired} {
-    set w [java::new ptolemy.kernel.util.Workspace W]
-    set manager [java::new ptolemy.actor.Manager $w Manager]
-    set d1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDirector]
-    $d1 writeAccessRequired
-} {0}
-
-######################################################################
-####
-#
 test SDFDirector-9.0 {parameter changes} {
     set w [java::new ptolemy.kernel.util.Workspace W]
     set manager [java::new ptolemy.actor.Manager $w Manager]
