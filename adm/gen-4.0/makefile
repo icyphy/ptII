@@ -71,6 +71,7 @@ PTII_FTP = /vol/ptolemy/pt0/ptweb/ptolemyII/ptII1.0
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII3.1alpha PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/vol/maury/maury2/cxh/ptII PTIIADM=/vol/maury/maury2/cxh/ptII/adm TAR=/usr/local/bin/tar
+#make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar clean
 
 USER =		ptII
 PTIIHOME =	/users/ptII
