@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (davisj@eecs.berkeley.edu)
-@AcceptedRating Yellow (yuhong@eecs.berkeley.edu)
+@AcceptedRating Green (kienhuis@eecs.berkeley.edu)
 
 */
 
