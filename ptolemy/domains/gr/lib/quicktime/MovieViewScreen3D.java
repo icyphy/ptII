@@ -33,11 +33,16 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import javax.media.j3d.*;
+import java.awt.*;
+import javax.vecmath.Point3f;
+import java.awt.image.BufferedImage;
+import javax.swing.JFrame;
 
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.gr.lib.ViewScreen2D;
+import ptolemy.domains.gr.lib.ViewScreen;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.kernel.util.IllegalActionException;
@@ -63,6 +68,9 @@ import quicktime.std.movies.Track;
 import quicktime.std.movies.media.VideoMedia;
 import quicktime.util.QTHandle;
 import quicktime.util.RawEncodedImage;
+
+import com.sun.j3d.utils.universe.SimpleUniverse;
+
 //////////////////////////////////////////////////////////////////////////
 //// MovieViewScreen2D
 /** 
@@ -73,7 +81,7 @@ saves it as a movie using Apple's Quicktime for Java.
 @version $Id$
 @since Ptolemy II 3.1
 */
-public class MovieViewScreen2D extends ViewScreen2D
+public class MovieViewScreen3D extends ViewScreen
     implements StdQTConstants, Errors {
 
     /** Construct a ViewScreen2D in the given container with the given name.
@@ -88,7 +96,7 @@ public class MovieViewScreen2D extends ViewScreen2D
      *  @exception NameDuplicationException If the container not a
      *   CompositeActor and the name collides with an entity in the container.
      */
-    public MovieViewScreen2D(CompositeEntity container, String name)
+    public MovieViewScreen3D(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
@@ -125,6 +133,7 @@ public class MovieViewScreen2D extends ViewScreen2D
      */
     public void fire() throws IllegalActionException {
         super.fire();
+  
         _frameNumber ++;
         try {
             // Paint the frame.
@@ -145,20 +154,20 @@ public class MovieViewScreen2D extends ViewScreen2D
             _videoMedia.addSample(_imageHandle, 
                     0, // dataOffset,
                     info.getDataSize(),
-                    600/_frameRateValue, // frameDuration, in 1/600ths of a second.
+                    600 / _frameRateValue, // frameDuration, in 1/600ths of a second.
                     desc,
                     1, // one sample
                     (isKeyFrame ? 0 : mediaSampleNotSync)); // no flags
         } catch (Exception ex) {
+            ex.printStackTrace(); 
         }
     }
 
-    /** Initialize the execution.  Create the MovieViewScreen2D frame if 
+    /** Initialize the execution.  Create the MovieViewScreen3D frame if 
      *  it hasn't been set using the place() method.
      *  @exception IllegalActionException If the base class throws it.
      */
     public void initialize() throws IllegalActionException {
-
         super.initialize();
         _frameNumber = 0;
         _frameWidth = _getHorizontalPixels();
@@ -230,7 +239,7 @@ public class MovieViewScreen2D extends ViewScreen2D
             _imageDrawer.setGWorld(_gw);
             _imageDrawer.setDisplayBounds(_videoSize);
         } catch (Exception ex) {
-            // FIXME
+            ex.printStackTrace();
         }
     }
 
@@ -260,6 +269,27 @@ public class MovieViewScreen2D extends ViewScreen2D
         QTSession.close();
     }
 
+    /** Create the view screen component.  If place() was called with
+     * a container, then use the container.  Otherwise, create a new
+     * frame and use that.
+     */
+    protected void _createViewScreen() {
+        super._createViewScreen();
+        
+        GraphicsConfiguration config =
+            SimpleUniverse.getPreferredConfiguration();
+
+        _offScreenCanvas = new Canvas3D(config, true);
+        _offScreenCanvas.getScreen3D().setSize(_canvas.getScreen3D().getSize());
+        _offScreenCanvas.getScreen3D().setPhysicalScreenWidth(
+                _canvas.getScreen3D().getPhysicalScreenWidth());
+        _offScreenCanvas.getScreen3D().setPhysicalScreenHeight(
+                _canvas.getScreen3D().getPhysicalScreenHeight());
+
+        // attach the offscreen canvas to the view
+        _canvas.getView().addCanvas3D(_offScreenCanvas);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
     
@@ -270,8 +300,22 @@ public class MovieViewScreen2D extends ViewScreen2D
             ret[0] = new Rectangle(_frameWidth, _frameHeight);
         }
         public Rectangle[] paint(Graphics g) {
-            getCanvas().paint(g);
-
+	    Point location = _canvas.getLocationOnScreen();
+            _offScreenCanvas.setOffScreenLocation(location);
+            BufferedImage image =
+                new BufferedImage(_frameWidth, _frameHeight,
+                        BufferedImage.TYPE_INT_ARGB);
+            
+            ImageComponent2D buffer =
+                new ImageComponent2D(ImageComponent.FORMAT_RGBA, image);
+        
+            _offScreenCanvas.setOffScreenBuffer(buffer);
+            _offScreenCanvas.renderOffScreenBuffer();
+            _offScreenCanvas.waitForOffScreenRendering();
+            image = _offScreenCanvas.getOffScreenBuffer().getImage();
+          
+            g.drawImage(image, 0, 0, null);
+         
             ret[0] = new Rectangle(_frameWidth, _frameHeight);
             return ret;
    	}
@@ -280,6 +324,7 @@ public class MovieViewScreen2D extends ViewScreen2D
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
+    private Canvas3D _offScreenCanvas;
     private Movie _movie;
     private QTImageDrawer _imageDrawer;
     private QTHandle _imageHandle;

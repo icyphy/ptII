@@ -51,7 +51,8 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
-	MovieViewScreen2D.java
+	MovieViewScreen2D.java \
+	MovieViewScreen3D.java
 
 OTHER_FILES_TO_BE_JARED = \
 	quicktime.xml

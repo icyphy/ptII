@@ -9,6 +9,8 @@
 
 <entity name="MovieViewScreen2D" class="ptolemy.domains.gr.lib.quicktime.MovieViewScreen2D">
 </entity>
+<entity name="MovieViewScreen3D" class="ptolemy.domains.gr.lib.quicktime.MovieViewScreen3D">
+</entity>
       </group>
     ?>
   </configure>
