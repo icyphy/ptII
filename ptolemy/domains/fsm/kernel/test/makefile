@@ -48,6 +48,7 @@ TCL_SRCS = \
 JSRCS = \
         CombineInternalTransitions.java \
         Compose.java \
+	DeadlockStates.java \
         GetInfo.java \
 	ZeroOneSource.java
 
