@@ -110,7 +110,12 @@ AC_ARG_WITH(java, [  --with-java=DIR         use Java binaries from DIR,
                            PTJAVA_DIR environment variable],
     PTJAVA_DIR=$withval)
 
-if test ! -d "$PTJAVA_DIR"; then
+if test -d "$PTJAVA_DIR"; then
+	AC_MSG_RESULT([
+    PTJAVA_DIR environment variable was set to
+    '$PTJAVA_DIR', and there is a directory
+    at that location, so we will try it.])
+else
     if test -z "$PTJAVA_DIR"; then
 	AC_MSG_WARN([PTJAVA_DIR environment variable was not set,
 so we search for the java compiler.])
@@ -181,7 +186,8 @@ if test -f "$PTJAVA_DIR/bin/java" -o -f "$PTJAVA_DIR/bin/java.exe"; then
 else
     AC_MSG_ERROR([
   Cannot find '$PTJAVA_DIR/bin/java'.
-  Try --with-java=DIR, or set the PTJAVA_DIR environment variable.])
+  Try --with-java=DIR, or set the PTJAVA_DIR environment variable.
+])
 fi
 
 
