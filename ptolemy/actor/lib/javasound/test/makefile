@@ -76,7 +76,12 @@ OPTIONAL_FILES =
 # Don't include all or install rules here, we want the user
 # to run 'make tests' to run the tests.
 
-tests:: $(EXTRA_SRCS) test_auto
+tests:: $(EXTRA_SRCS)
+	@echo "Run 'make test_audio' to run the audio tests"
+	@echo "Note that there are problems with the audio tests under"
+	@echo "Windows XP"
+
+test_audio: test_auto
 
 # PtolemyII-wide test definitions.
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
