@@ -48,6 +48,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	AntennaGainTest.xml \
+	AntennaModel.xml \
 	ReceiveAntennaPattern.xml \
 	TransmitAntennaPattern.xml
 
