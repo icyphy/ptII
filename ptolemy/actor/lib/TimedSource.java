@@ -61,7 +61,7 @@ work.
 @version $Id$
 */
 
-public class TimedSource extends Source implements SequenceActor {
+public class TimedSource extends Source implements TimedActor {
 
     /** Construct an actor with the given container and name.
      *  The <i>stopTime</i> parameter is also constructed.

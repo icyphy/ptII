@@ -58,6 +58,7 @@ JSRCS = \
 	Clock.java \
 	Const.java \
 	Cosine.java \
+	CurrentTime.java \
 	Expression.java \
 	FileWrite.java \
 	Gaussian.java \
