@@ -481,14 +481,13 @@ public class GeneratorTableau extends Tableau {
 	    // NOTE: This property is set by the vergil startup script.
 	    home = System.getProperty("ptolemy.ptII.dir");
         } catch (SecurityException security) {
-	    InternalErrorException internalError =
-		new InternalErrorException("Could not find 'ptolemy.ptII.dir'"
+            throw new InternalErrorException("Could not find "
+                                           + "'ptolemy.ptII.dir'"
 					   + " property.  Vergil should be "
 					   + "invoked with -Dptolemy.ptII.dir"
-					   + "=\"$PTII\": "
-					   + security);
-	    internalError.fillInStackTrace();
-	    throw internalError;
+					   + "=\"$PTII\":\n"
+					   + KernelException
+                                             .stackTraceToString(security));
         }
 
         // What directory does the makefile that we want to run
@@ -506,14 +505,11 @@ public class GeneratorTableau extends Tableau {
 	    + copernicusSubdirectory;
 	File makefileDirectoryFile = new File(makefileDirectory);
 	if (!makefileDirectoryFile.isDirectory()) {
-	    IllegalArgumentException illegalArgument =
-		new IllegalArgumentException("'" + makefileDirectory
+            throw new IllegalArgumentException("'" + makefileDirectory
 					   + "' is not a directory. "
 					   + "This directory should contain "
 					   + "the makefile used for code "
 					   + " generation.");
-	    illegalArgument.fillInStackTrace();
-	    throw illegalArgument;
 	}
 
 	// Create a temporary file in c:/temp or /tmp.
@@ -530,12 +526,9 @@ public class GeneratorTableau extends Tableau {
 	    model.exportMoML(fileWriter);
 	    fileWriter.close();
 	} catch (IOException io) {
-	    InternalErrorException internalError =
-		new InternalErrorException("Warning: failed to write model to"
-					   + " '"
+	    throw new InternalErrorException("Warning: failed to write model "
+                                           + "to '"
 					   + temporaryMoMLFile + "': " + io);
-	    internalError.fillInStackTrace();
-	    throw internalError;
 	}
 	if (temporaryMoMLFile == null) {
 	    return "# Could not write temporary moml file";
@@ -545,12 +538,10 @@ public class GeneratorTableau extends Tableau {
   	try {
   	    temporaryMoMLURL = temporaryMoMLFile.toURL();
   	} catch (MalformedURLException malformedURL) {
-  	    InternalErrorException internalError =
-  		new InternalErrorException("Failed to convert '"
+            throw new InternalErrorException("Failed to convert '"
   					   + temporaryMoMLFile + "' to a URL: "
-  					   + malformedURL);
-  	    internalError.fillInStackTrace();
-  	    throw internalError;
+					   + KernelException
+                                             .stackTraceToString(malformedURL));
   	}
 
 //  	String temporaryMoMLCanonicalPath = null;
