@@ -224,11 +224,9 @@ public class FSMDirector extends Director {
                 if (actor == _controller) {
                     continue;
                 } else {
-                    actor.createReceivers();
                     actor.initialize();
                 }
             }
-            _controller.createReceivers();
             _controller.initialize();
         }
 

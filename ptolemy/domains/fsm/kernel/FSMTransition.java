@@ -269,14 +269,7 @@ public class FSMTransition extends ComponentRelation {
         if (_te == null) {
             _createVarLists();
         }
-        try {
-            _te.setExpression(te);
-        } catch (IllegalActionException ex) {
-            // FIXME: Is this the right thing to do?  This exception will
-            // be thrown if _te has variables whose expressions depend on it,
-            // and the given expression for _te cannot be evaluated.
-            throw new InternalErrorException(ex.getMessage());
-        }
+        _te.setExpression(te);
         _teSet = true;
     }
 
@@ -286,15 +279,7 @@ public class FSMTransition extends ComponentRelation {
         if (_tc == null) {
             _createVarLists();
         }
-        try {
-            _tc.setExpression(tc);
-        } catch (IllegalActionException ex) {
-            // FIXME: Is this the right thing to do?  This exception will
-            // be thrown if _te has variables whose expressions depend on it,
-            // and the given expression for _te cannot be evaluated.
-            throw new InternalErrorException(ex.getMessage());
-        }
-
+        _tc.setExpression(tc);
         _tcSet = true;
     }
 

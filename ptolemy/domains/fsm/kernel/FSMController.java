@@ -139,19 +139,6 @@ public class FSMController extends CompositeEntity implements TypedActor {
         return newobj;
     }
 
-
-    /** Create receivers for each input port.
-     *  @exception IllegalActionException If any port throws it.
-     */
-    public void createReceivers() throws IllegalActionException {
-        Enumeration inports = inputPorts();
-        while (inports.hasMoreElements()) {
-            IOPort inport = (IOPort)inports.nextElement();
-            inport.createReceivers();
-        }
-    }
-
-
     public FSMTransition createTransition(FSMState source, FSMState dest) {
         return source.createTransitionTo(dest);
     }
@@ -270,6 +257,7 @@ public class FSMController extends CompositeEntity implements TypedActor {
 
     public void initialize() throws IllegalActionException {
         try {
+            _createReceivers();
             setupScope();
         } catch (NameDuplicationException ex) {
             // FIXME!!
@@ -325,7 +313,6 @@ public class FSMController extends CompositeEntity implements TypedActor {
             // Delegate to the director or just call initialize() on
             // the refinement?
             // Now we are doing initialization in FSM system.
-            //currentRefinement().createReceivers();
             //currentRefinement().initialize();
 
             //System.out.println("Initializing refinement "+
@@ -572,7 +559,7 @@ public class FSMController extends CompositeEntity implements TypedActor {
     /** FIXME: This should do something like calling stopfire on the contained 
      *  actors.
      */
-    public void stopfire() {
+    public void stopFire() {
     }
 
 
@@ -823,6 +810,19 @@ public class FSMController extends CompositeEntity implements TypedActor {
     public static final BooleanToken PRESENT = new BooleanToken(true);
     public static final BooleanToken ABSENT = new BooleanToken(false);
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Create receivers for each input port.
+     *  @exception IllegalActionException If any port throws it.
+     */
+    private void _createReceivers() throws IllegalActionException {
+        Enumeration inports = inputPorts();
+        while (inports.hasMoreElements()) {
+            IOPort inport = (IOPort)inports.nextElement();
+            inport.createReceivers();
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
