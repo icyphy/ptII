@@ -284,32 +284,32 @@ public class Entity extends NamedObj {
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////
-            ////                         protected methods                        ////
+    ///////////////////////////////////////////////////////////////////////
+    ////                      protected methods                        ////
 
-            /** Add a port to this entity. This method should not be used
-             *  directly.  Call the setContainer() method of the port instead.
-             *  This method does not set
-             *  the container of the port to point to this entity.
-             *  It assumes that the port is in the same workspace as this
-             *  entity, but does not check.  The caller should check.
-             *  Derived classes should override this method if they require
-             *  a subclass of Port to throw an exception if the argument is
-             *  not of an acceptable class.
-             *  This method is synchronized on the workspace and increments
-             *  its version number.
-             *  @param port The port to add to this entity.
-             *  @exception IllegalActionException If the port has no name.
-             *  @exception NameDuplicationException If the port name collides with a 
-             *   name already in the entity.
-             */	
-            protected void _addPort(Port port)
-                    throws IllegalActionException, NameDuplicationException {
-                synchronized(workspace()) {
-                    _portList.append(port);
-                    workspace().incrVersion();
-                }
-            }
+    /** Add a port to this entity. This method should not be used
+     *  directly.  Call the setContainer() method of the port instead.
+     *  This method does not set
+     *  the container of the port to point to this entity.
+     *  It assumes that the port is in the same workspace as this
+     *  entity, but does not check.  The caller should check.
+     *  Derived classes should override this method if they require
+     *  a subclass of Port to throw an exception if the argument is
+     *  not of an acceptable class.
+     *  This method is synchronized on the workspace and increments
+     *  its version number.
+     *  @param port The port to add to this entity.
+     *  @exception IllegalActionException If the port has no name.
+     *  @exception NameDuplicationException If the port name collides with a 
+     *   name already in the entity.
+     */	
+    protected void _addPort(Port port)
+            throws IllegalActionException, NameDuplicationException {
+        synchronized(workspace()) {
+            _portList.append(port);
+            workspace().incrVersion();
+        }
+    }
 
     /** Clear references that are not valid in a cloned object.  The clone()
      *  method makes a field-by-field copy, which results
