@@ -472,7 +472,7 @@ set body {
 <model name="top" class="ptolemy.kernel.CompositeEntity">
     <import base="../../.." source="ptolemy/moml/test/testClass.xml"/>
     <entity name="b" class=".a"/>
-    <import source="testClass2.xml"/>
+    <import base="../../.." source="ptolemy/moml/test/testClass2.xml"/>
     <entity name="c" class=".a"/>
 </model>
 }
@@ -495,6 +495,30 @@ test MoMLParser-1.12.1 {test instantiation of a class} {
     </property>
 </entity>
 }}
+
+#----------------------------------------------------------------------
+set body {
+<model name="top" class="ptolemy.kernel.CompositeEntity">
+    <import base="../../.." source="ptolemy/moml/test/testClass.xml"/>
+    <entity name="b" class=".a"/>
+    <import source="testClass2.xml"/>
+    <entity name="c" class=".a"/>
+</model>
+}
+
+set moml "$header $body"
+
+test MoMLParser-1.12.2 {test import with a relative source } {
+    # The bug here is that <import source="testClass2.xml"/>
+    # should work
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [java::cast ptolemy.kernel.CompositeEntity \
+            [$parser parse $moml]]
+    set b [$toplevel getEntity b]
+    set c [$toplevel getEntity c]
+    list [$b exportMoML] [$c exportMoML]
+} {} {KNOW_ERROR}
+
 
 #----------------------------------------------------------------------
 set body {
