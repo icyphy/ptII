@@ -81,6 +81,14 @@ public class ZeroOrderHold extends Transformer
                 new StringToken("DISCRETE"));
         Parameter outputType = new Parameter(output, "signalType",
                 new StringToken("CONTINUOUS"));
+        
+        _attachText("_iconDescription", "<svg>\n" +
+            "<rect x=\"-30\" y=\"-20\" "
+            + "width=\"60\" height=\"40\" "
+            + "style=\"fill:white\"/>\n"
+            + "<polyline points=\"-25,10 -15,10 -15,-10 5,-10\"/>\n"
+            + "<polyline points=\"5,-10 5,0 15,0 15,10 25,10\"/>\n"
+            + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
