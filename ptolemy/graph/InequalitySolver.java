@@ -153,7 +153,7 @@ public class InequalitySolver {
     /** Solve the set of inequalities for the greatest solution.
      *  If the set of inequalities is definite (when solving for the greatest
      *  solution, <i>definite</i> means that the lesser terms of all the
-     *  inequalities are either constants or single variables.),
+     *  inequalities are either constants or single variables),
      *  this method can always determine satisfiability. In this case, if
      *  the set of inequalities is satisfiable, this method returns
      *  <code>true</code>, and the variables are set to the greatest solution.
@@ -182,7 +182,7 @@ public class InequalitySolver {
     /** Solve the set of inequalities for the least solution.
      *  If the set of inequalities is definite (when solving for the least
      *  solution, <i>definite</i> means that the greater terms of all the
-     *  inequalities are either constants or single variables.),
+     *  inequalities are either constants or single variables),
      *  this method can always determine satisfiability. In this case, if
      *  the set of inequalities is satisfiable, this method returns
      *  <code>true</code>, and the variables are set to the least solution.
