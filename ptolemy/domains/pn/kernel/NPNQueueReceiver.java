@@ -1,7 +1,7 @@
-/* An experimental receiver to be used in place of PNQueueReceiver. 
+/* An experimental receiver to be used in place of PNQueueReceiver.
    The latter is a receiver with a FIFO queue and performing blocking reads
-   and blocking writes.  The purpose of this experimental receiver is 
-   to attempt to compose a DE within PN.  This new PN receiver will 
+   and blocking writes.  The purpose of this experimental receiver is
+   to attempt to compose a DE within PN.  This new PN receiver will
    do ... to achieve this.
 
  Copyright (c) 1997-2001 The Regents of the University of California.
@@ -77,7 +77,7 @@ process has been received.
 @see PNQueueReceiver
 @see ptolemy.actor.QueueReceiver
 */
-public class NPNQueueReceiver extends PNQueueReceiver 
+public class NPNQueueReceiver extends PNQueueReceiver
         implements ProcessReceiver {
 
     ///////////////////////////////////////////////////////////////////
@@ -109,7 +109,7 @@ public class NPNQueueReceiver extends PNQueueReceiver
     }
 
     /** Put a token on the queue contained in this receiver.
-     *  Unlike PNQueueReceiver, wake up actor in case composite with 
+     *  Unlike PNQueueReceiver, wake up actor in case composite with
      *  possibly stalled director inside.
      *  If the queue is full, then suspend the calling process (blocking
      *  write) and inform the director of the same. Resume the process on
