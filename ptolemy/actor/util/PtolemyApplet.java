@@ -1,6 +1,6 @@
 /* A base class for Ptolemy applets.
 
- Copyright (c) 1998 The Regents of the University of California.
+ Copyright (c) 1999 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -42,16 +42,16 @@ no means required in order to create an applet that uses Ptolemy II.
 */
 public class PtolemyApplet extends Applet {
 
-    ////////////////////////////////////////////////////////////////////////
-////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-/** Return generic applet information.
- *  @return A string giving minimal information about Ptolemy II.
- */
-public String getAppletInfo() {
-    return "Ptolemy II applet.\n"
-        + "Ptolemy II comes from UC Berkeley, Department of EECS.";
-}
+    /** Return generic applet information.
+     *  @return A string giving minimal information about Ptolemy II.
+     */
+    public String getAppletInfo() {
+        return "Ptolemy II applet.\n"
+            + "Ptolemy II comes from UC Berkeley, Department of EECS.";
+    }
 
     /** Describe the applet parameters.
      *  @return An array describing the applet parameters.
