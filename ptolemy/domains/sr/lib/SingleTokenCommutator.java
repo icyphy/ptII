@@ -1,4 +1,4 @@
-/* A distributor that processes a single token per iteration.
+/* A commutator  that processes a single token per iteration.
 
  Copyright (c) 1997-2002 The Regents of the University of California.
  All rights reserved.
@@ -48,8 +48,13 @@ and writes one token to an output channel.  If there is no token on
 the input, then it will not produce a token on the output.  In the
 next iteration of this actor, it will read the next channel.
 
+<<<<<<< SingleTokenCommutator.java
+@author Paul Whitaker, Mudit Goel, Edward A. Lee, Christopher Hylands,Jim Armstrong
+@version $Id$
+=======
 @author Paul Whitaker, Mudit Goel, Edward A. Lee, Christopher Hylands
 @version $Id$
+>>>>>>> 1.4
 @since Ptolemy II 2.0
 */
 public class  SingleTokenCommutator   extends Transformer
