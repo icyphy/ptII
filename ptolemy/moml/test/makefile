@@ -52,7 +52,8 @@ JSIMPLE_TESTS = \
 	EntityLibrary.tcl \
 	Location.tcl \
 	MoMLChangeRequest.tcl \
-	MoMLParser.tcl
+	MoMLParser.tcl \
+	MoMLWriter.tcl 	
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
