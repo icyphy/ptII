@@ -149,7 +149,7 @@ public class IIR extends Transformer {
             }
 	} else if (attribute == denominator) {
             ArrayToken denominatorValue =
-(ArrayToken)denominator.getToken();
+                (ArrayToken)denominator.getToken();
             _denominator = new Token[denominatorValue.length()];
             for (int i = 0; i < denominatorValue.length(); i++) {
                 _denominator[i] = denominatorValue.getElement(i);
@@ -158,7 +158,7 @@ public class IIR extends Transformer {
 	    // Note: a<sub>0</sub> must always be 1.
             // Issue a warning if it isn't.
             if
-(!_denominator[0].isEqualTo(_denominator[0].one()).booleanValue()) {
+                (!_denominator[0].isEqualTo(_denominator[0].one()).booleanValue()) {
                 try {
                     MessageHandler.warning(
                             "First denominator value is required to be 1. "
@@ -242,7 +242,7 @@ public class IIR extends Transformer {
                 _resultArray[i] = _computeOutput(inArray[i]);
 		// Update the state vector pointer.
 		if (--_currentTap < 0) _currentTap = _stateVector.length -
-1;
+                                           1;
 	    }
             output.send(0, _resultArray, count);
             return COMPLETED;
@@ -281,15 +281,15 @@ public class IIR extends Transformer {
     private void _initStateVector() throws  IllegalActionException {
         if(_numerator == null || _denominator == null) {
             throw new IllegalActionException(
-             "Cannot initialize the IIR filter. Invalid specification "
-             + "of the numerator or the denominator polynomial.");
+                    "Cannot initialize the IIR filter. Invalid specification "
+                    + "of the numerator or the denominator polynomial.");
         }
         // Get the first token from the Matrix
 	// Uses this token to extract its type.
 	Token tmpToken = numerator.getToken();
 	Token tmpDenomToken = denominator.getToken();
 	if (TypeLattice.compare(tmpToken, tmpDenomToken) ==
-            ptolemy.graph.CPO.LOWER) {
+                ptolemy.graph.CPO.LOWER) {
             tmpToken = tmpDenomToken;
 	}
 	// Set the type to the input and output port.
@@ -297,7 +297,7 @@ public class IIR extends Transformer {
 	output.setTypeEquals(((ArrayToken)tmpToken).getElementType());
 
 	int stateSize = (int)java.lang.Math.max(_numerator.length,
-                  _denominator.length);
+                _denominator.length);
 	_stateVector = new Token[stateSize];
 
         for (int j = 0; j < _stateVector.length; j++) {
@@ -306,18 +306,18 @@ public class IIR extends Transformer {
     }
 
     private Token _computeOutput(Token xCurrent) throws
-IllegalActionException {
+            IllegalActionException {
 	for (int j = 1; j < _denominator.length; j++) {
 	    xCurrent = xCurrent.subtract(_denominator[j].multiply(
-                       _stateVector[(_currentTap + j) %
-_stateVector.length]));
+                    _stateVector[(_currentTap + j) %
+                            _stateVector.length]));
 	}
 	_stateVector[_currentTap] = xCurrent;
 	Token yCurrent = _numerator[0].zero();
 	for (int k = 0; k < _numerator.length; k++) {
 	    yCurrent = yCurrent.add(_numerator[k].multiply(
-                        _stateVector[(_currentTap +k) %
-_stateVector.length]));
+                    _stateVector[(_currentTap +k) %
+                            _stateVector.length]));
 	}
         return yCurrent;
     }
