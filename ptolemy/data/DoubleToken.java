@@ -37,7 +37,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
 
-import java.text.DecimalFormat;
 
 //////////////////////////////////////////////////////////////////////////
 //// DoubleToken
@@ -48,7 +47,6 @@ Note that a double cannot be losslessly converted to a long, and vice
 versa, as both have 64 bit representations in Java.
 
 @see ptolemy.data.Token
-@see java.text.NumberFormat
 @author Neil Smyth, Yuhong Xiong, Christopher Hylands, Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 0.2
@@ -199,9 +197,9 @@ public class DoubleToken extends ScalarToken {
 
         double mag = Math.abs(_value);
         if (mag == 0.0 || (mag < 1000000 && mag > .001)) {
-            return regularFormat.format(_value) + unitString;
+            return TokenUtilities.regularFormat.format(_value) + unitString;
         } else {
-            return exponentialFormat.format(_value) + unitString;
+            return TokenUtilities.exponentialFormat.format(_value) + unitString;
         }
     }
 
@@ -211,33 +209,6 @@ public class DoubleToken extends ScalarToken {
     public Token zero() {
         return new DoubleToken(0);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public fields                     ////
-
-    // Note that these fields are public, since they are sometimes
-    // useful to have in other places, like the code generator.
- 
-    /** The format that is used to print numbers that are not very
-     *  large, or very small.  The number of fractional digits here is
-     *  determined by the place at which common numbers, such as one
-     *  half, will get rounded to display nicely.
-     */
-    public static final DecimalFormat regularFormat =
-    new DecimalFormat("####0.0############");
-   
-    // Note: This used to be new DecimalFormat("0.0############E0##"),
-    // but compiling with gcj resulted in the following error:
-    // 'Exception in thread "main" class
-    // java.lang.ExceptionInInitializerError:
-    // java.lang.IllegalArgumentException: digit mark following zero
-    // in exponent - index: 17'
-    
-    /** The format that is used to print numbers that are very
-     *  large, or very small. 
-     */
-    public static final DecimalFormat exponentialFormat =
-    new DecimalFormat("0.0############E0");
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

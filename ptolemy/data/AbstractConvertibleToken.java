@@ -304,13 +304,13 @@ public abstract class AbstractConvertibleToken extends Token
                 // better error message that has the types of the
                 // arguments that were passed in.
                 throw new IllegalActionException(null, ex,
-                        notSupportedMessage("closeness", this, rightArgument));
+                        notSupportedMessage("isCloseTo", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
             return rightArgument.isCloseTo(this, epsilon);
         } else {
             throw new IllegalActionException(
-                    notSupportedIncomparableMessage("closeness",
+                    notSupportedIncomparableMessage("isCloseTo",
                             this, rightArgument));
         }
     }
@@ -347,13 +347,13 @@ public abstract class AbstractConvertibleToken extends Token
                 // better error message that has the types of the
                 // arguments that were passed in.
                 throw new IllegalActionException(null, ex,
-                        notSupportedMessage("equality", this, rightArgument));
+                        notSupportedMessage("isEqualTo", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
             return rightArgument.isEqualTo(this);
         } else {
             throw new IllegalActionException(
-                    notSupportedIncomparableMessage("equality",
+                    notSupportedIncomparableMessage("isEqualTo",
                             this, rightArgument));
         }
     }

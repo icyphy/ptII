@@ -207,7 +207,7 @@ public class Token implements Serializable {
     public BooleanToken isCloseTo(Token rightArgument, double epsilon)
             throws IllegalActionException {
         throw new IllegalActionException(
-                notSupportedMessage("closeness", this, rightArgument));
+                notSupportedMessage("isCloseTo", this, rightArgument));
     }
 
     /** Test for equality of the values of this Token and the argument
@@ -221,7 +221,7 @@ public class Token implements Serializable {
     public BooleanToken isEqualTo(Token rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(
-                notSupportedMessage("equality", this, rightArgument));
+                notSupportedMessage("isEqualTo", this, rightArgument));
     }
 
     /** Return a new token whose value is the value of this token

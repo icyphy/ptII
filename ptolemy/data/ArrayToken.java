@@ -117,6 +117,10 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      */
     public Token[] arrayValue() {
         Token[] result = new Token[_value.length];
+// (Token[])
+//             java.lang.reflect.Array.newInstance(
+//                     getElementType().getTokenClass(), 
+//                     _value.length);
         System.arraycopy(_value, 0, result, 0, _value.length);
         return result;
     }

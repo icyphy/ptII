@@ -121,7 +121,17 @@ test Token-2.6 {Test isEqualTo} {
     set p2 [java::new ptolemy.data.Token]
     catch {$p1 {isEqualTo ptolemy.data.Token} $p2} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: equality operation not supported between ptolemy.data.Token 'present' and ptolemy.data.Token 'present'}}
+} {{ptolemy.kernel.util.IllegalActionException: isEqualTo operation not supported between ptolemy.data.Token 'present' and ptolemy.data.Token 'present'}}
+
+######################################################################
+####
+# 
+test Token-2.6.1 {Test isCloseTo} {
+    set p1 [java::new ptolemy.data.Token]
+    set p2 [java::new ptolemy.data.Token]
+    catch {$p1 {isCloseTo ptolemy.data.Token} $p2} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: isCloseTo operation not supported between ptolemy.data.Token 'present' and ptolemy.data.Token 'present'}}
 
 ######################################################################
 ####

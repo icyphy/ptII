@@ -313,20 +313,17 @@ public abstract class MatrixToken extends Token {
             try {
                 return _doIsCloseTo(convertedArgument, epsilon);
             } catch (IllegalActionException ex) {
-                // Catch any errors and rethrow them with a message
-                // that includes the "closeness" instead of equality.
-                // For example, if we see if a String and Double are close
-                // then if we don't catch and rethrow the exception, the
-                // message will say something about "equality"
-                // instead of "closeness".
+                // If the type-specific operation fails, then create a better
+                // error message that has the types of the arguments that were
+                // passed in.
                 throw new IllegalActionException(null, null, ex,
-                        notSupportedMessage("closeness", this, rightArgument));
+                        notSupportedMessage("isCloseTo", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
             return rightArgument.isCloseTo(this, epsilon);
         } else {
             throw new IllegalActionException(
-                    notSupportedIncomparableMessage("closeness",
+                    notSupportedIncomparableMessage("isCloseTo",
                             this, rightArgument));
         }
     }
@@ -361,13 +358,13 @@ public abstract class MatrixToken extends Token {
                 // error message that has the types of the arguments that were
                 // passed in.
                 throw new IllegalActionException(null, ex,
-                        notSupportedMessage("equality", this, rightArgument));
+                        notSupportedMessage("isEqualTo", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
             return rightArgument.isEqualTo(this);
         } else {
             throw new IllegalActionException(
-                    notSupportedIncomparableMessage("equality",
+                    notSupportedIncomparableMessage("isEqualTo",
                             this, rightArgument));
         }
     }

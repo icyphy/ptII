@@ -182,7 +182,7 @@ public abstract class AbstractNotConvertibleToken extends Token
             throws IllegalActionException {
         if(!getClass().equals(rightArgument.getClass())) {
             throw new IllegalActionException(
-                    notSupportedIncomparableMessage("closeness",
+                    notSupportedIncomparableMessage("isCloseTo",
                             this, rightArgument));
         }
 
@@ -205,7 +205,7 @@ public abstract class AbstractNotConvertibleToken extends Token
             throws IllegalActionException {
         if(!getClass().equals(rightArgument.getClass())) {
             throw new IllegalActionException(
-                    notSupportedIncomparableMessage("closeness",
+                    notSupportedIncomparableMessage("isEqualTo",
                             this, rightArgument));
         }
 
