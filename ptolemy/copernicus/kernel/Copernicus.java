@@ -72,7 +72,8 @@ java -classpath $PTII ptolemy.copernicus.kernel.Copernicus foo.xml
 will read in the $PTII/ptolemy/copernicus/java/compileCommandTemplate.in,
 substitute in the appropriate variables and then generate code for foo.xml
 
-<p>The default code generator is the deep code generator.
+<p>The default code generator is the deep java code generator in
+$PTII/ptolemy/copernicus/java.
 
 <p>The argument that names the xml file containing the model to generate
 code for should be a relative pathname.  The xml file argument is 
