@@ -1006,6 +1006,17 @@ testInt identity $types 2_2 3
 
 ######################################################################
 ####
+#  *ArrayMath Test out: xxx l2norm(xxx[])
+
+set types [list \
+	[list Complex ptolemy.math.Complex complex {3.46410161514}] \
+	[list Double double double {2.44948974278}] \
+	[list Float float float {2.44948983192}]]
+
+testArrayMathArray l2norm $types 4_4
+
+######################################################################
+####
 #  FIXED (FIXME): *ArrayMath Test out: xxx[] limit(xxx[], int int)
 
 # FIXED (FIXME): Missing: Complex[] limit(Complex[], Complex, Complex), Added to 
