@@ -14,7 +14,7 @@
 	  <vendor>Ptolemy Project, UC Berkeley</vendor>
 	  <description>Hybrid Systems Modeling Environment</description>
 	  <description kind="tooltip">Hybrid Systems Modelling</description>
-	  <icon href="doc/img/PtolemyIISmall.gif"/>
+	  <icon href="ptolemy/configs/hyvisual/hyvisualPlanet.gif"/>
 	  <homepage href="@PTII_LOCALURL@"/>
 	  <offline-allowed/>
   </information>
