@@ -87,9 +87,12 @@ public class ModelPane extends JPanel implements CloseListener {
     }
 
     /** Construct a panel for interacting with the specified Ptolemy II model.
-     *  The layout argument should be one of HORIZONTAL or VERTICAL; it
-     *  determines whether the controls are put to the left of, or above
-     *  the placeable displays.  The show argument should be a bitwise
+     *  The layout argument should be one of HORIZONTAL, VERTICAL, or
+     *  CONTROLS_ONLY; it determines whether the controls are put to
+     *  the left of, or above the placeable displays. If CONTROLS_ONLY
+     *  is given, then no displays are created for placeable objects.
+     *  <p>
+     *  The show argument is a bitwise
      *  or of any of BUTTONS, TOP_PARAMETERS, or DIRECTOR_PARAMETERS.
      *  Or it can be 0, in which case, no controls are shown.
      *  If BUTTONS is included, then a panel of buttons, go, pause,
@@ -183,7 +186,7 @@ public class ModelPane extends JPanel implements CloseListener {
         _show = show;
 
         // Do this last so that the display pane for placeable objects
-        // goes on the right.
+        // goes on the right or below.
         setModel(model);
     }
 
@@ -318,20 +321,23 @@ public class ModelPane extends JPanel implements CloseListener {
                 }
             }
 
-	    // place the placeable objects in the model
-	    _displays = new JPanel();
-	    _displays.setBackground(null);
+            if (_layout != CONTROLS_ONLY) {
+                // place the placeable objects in the model
+                _displays = new JPanel();
+                _displays.setBackground(null);
 
-	    add(_displays);
-	    _displays.setLayout(new BoxLayout(_displays, BoxLayout.Y_AXIS));
-	    _displays.setBackground(null);
+                add(_displays);
+                _displays.setLayout(new BoxLayout(_displays, BoxLayout.Y_AXIS));
+                _displays.setBackground(null);
 
-	    // Put placeable objects in a reasonable place.
-            Iterator atomicEntities = model.allAtomicEntityList().iterator(); 
-            while (atomicEntities.hasNext()) {
-                Object object = atomicEntities.next();
-		if(object instanceof Placeable) {
-		    ((Placeable) object).place(_displays);
+                // Put placeable objects in a reasonable place.
+                Iterator atomicEntities = model
+                         .allAtomicEntityList().iterator(); 
+                while (atomicEntities.hasNext()) {
+                    Object object = atomicEntities.next();
+                    if(object instanceof Placeable) {
+                        ((Placeable) object).place(_displays);
+                    }
                 }
             }
         }
@@ -401,8 +407,11 @@ public class ModelPane extends JPanel implements CloseListener {
     /** Indicator to use a horizontal layout. */
     public static int HORIZONTAL = 0;
 
-    /** Indicator to use a verticla layout. */
+    /** Indicator to use a vertical layout. */
     public static int VERTICAL = 1;
+
+    /** Indicator to create only buttons. */
+    public static int CONTROLS_ONLY = 2;
 
     /** Indicator to include control buttons. */
     public static int BUTTONS = 1;
