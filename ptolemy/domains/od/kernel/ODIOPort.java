@@ -86,7 +86,7 @@ public class ODIOPort extends IOPort {
      */
     public void broadcast(Token token) 
             throws IllegalActionException, NoRoomException {
-        broadcast( token, 0.0 );
+        broadcast( token, ((ODActor)getContainer()).getCurrentTime() );
     }
             
     /** Broadcast a token to all connected receivers. The time stamp 
@@ -139,7 +139,7 @@ public class ODIOPort extends IOPort {
      */
     public void send(int channel, Token token)
             throws InvalidStateException, IllegalActionException  {
-        send( channel, token, 0.0);
+        send( channel, token, ((ODActor)getContainer()).getCurrentTime() );
     }
             
     /** Send a token to the receiver specified by the output port
