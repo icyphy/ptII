@@ -98,6 +98,7 @@ public class ClassFactoryAttribute extends StringAttribute
      */
     public ClassFactoryAttribute() {
 	super();
+	System.out.println("ClassFactorAttribute()  after super();");
         setVisibility(Settable.NONE);
     }
 
@@ -119,6 +120,8 @@ public class ClassFactoryAttribute extends StringAttribute
     public ClassFactoryAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+	System.out.println("ClassFactorAttribute(" + container + "," 
+			   + name + ") after super();");
         setVisibility(Settable.NONE);
     }
 
@@ -131,13 +134,19 @@ public class ClassFactoryAttribute extends StringAttribute
         // various exceptions to IllegalActionException...
         // ... use getExpression to get the class name to instantiate...
         String className = getExpression();
+	System.out.println("ClassFactorAttribute.instantiate(): '" 
+			   + className + "'");
         try {
             Class newClass = Class.forName(className);
-            // Invoke the constructor.
-            Object[] arguments = new Object[2];
-            arguments[0] = getContainer();
-            arguments[1] = getName();
-            return _createInstance(newClass, constructorArgs);
+	    Object instance =  _createInstance(newClass, constructorArgs);
+
+	    // The way to make this change backward compatible in the
+	    // code would be to modify ClassFactoryAttribute so that
+	    // when it is called upon to create an instance, it also
+	    // populates it with any attributes it contains (same
+	    // name, same value, that is).
+
+	    return instance;
         } catch (NoClassDefFoundError noClassDefFound) {
             throw new IllegalActionException(this, noClassDefFound,
                     "Could not find class '" + className +"'");
@@ -151,6 +160,20 @@ public class ClassFactoryAttribute extends StringAttribute
             throw new IllegalActionException(this, ex,
                     "className was '" + className + "'");
         }
+    }
+
+    public Object instantiateWithDefaultContainerAndName()
+            throws IllegalActionException {
+	// Invoke the constructor.
+	Object[] constructorArguments = new Object[2];
+	NamedObj container = (NamedObj)getContainer();
+	constructorArguments[0] = container;
+	constructorArguments[1] = container.uniqueName(getName());
+	System.out.println("ClassFactorAttribute.instantiateWithDefault"
+			   + "ContainerAndName():\n\t"
+			   + constructorArguments[0] + "\n\t" 
+			   + constructorArguments[1]);
+	return instantiate(constructorArguments);
     }
 
     /** Remove any previous attribute in the container that has
@@ -214,6 +237,13 @@ public class ClassFactoryAttribute extends StringAttribute
         }
     }
 
+    // FIXME: This can go away
+    public void setExpression(String expression)
+	throws IllegalActionException {
+	System.out.println("ClassFactorAttribute.setExpression("
+			   + expression + ")");
+	super.setExpression(expression);
+    }
 
     // FIXME: this is from MoMLParser, we should make it static.
     //
