@@ -23,6 +23,9 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
+@ProposedRating Red (eal@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.demo;
@@ -280,7 +283,8 @@ public class InterruptApplet extends Applet {
                 try {
                     String s = _mstBox.getText();
                     Double d = Double.valueOf(s);
-                    _minimumServiceTime.setToken(new DoubleToken(d.doubleValue()));
+                    _minimumServiceTime.setToken(
+                            new DoubleToken(d.doubleValue()));
 
                 } catch (NumberFormatException ex) {
                     System.err.println("Invalid minimum service time: " +
@@ -291,7 +295,8 @@ public class InterruptApplet extends Applet {
                 try {
                     String s = _istBox.getText();
                     Double d = Double.valueOf(s);
-                    _interruptServiceTime.setToken(new DoubleToken(d.doubleValue()));
+                    _interruptServiceTime.setToken(
+                            new DoubleToken(d.doubleValue()));
 
                 } catch (NumberFormatException ex) {
                     System.err.println("Invalid interrupt service time: " +
