@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (neuendor@eecs.berkeley.edu)
-@AcceptedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu) execute catches Exceptions and rethrows them as runtime exceptions. why?
 */
 
 package ptolemy.actor;
@@ -255,8 +255,8 @@ public class Manager extends NamedObj implements Runnable {
             }
 
             completedSuccessfully = true;
-	} catch (Exception e) {
-	    throw new InternalErrorException(this, e, "Manager");
+   //	} catch (Exception e) {
+   //       throw new InternalErrorException(this, e, "Manager");
         } finally {
 	    try {
 		wrapup();
