@@ -251,7 +251,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
      */
     public static Type mergeReturnType(Type type1, Type type2) {
         if(type1 instanceof RecordType &&
-           type2 instanceof RecordType) {
+                type2 instanceof RecordType) {
             RecordType recordType1 = (RecordType)type1;
             RecordType recordType2 = (RecordType)type2;
             

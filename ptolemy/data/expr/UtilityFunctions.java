@@ -278,41 +278,41 @@ public class UtilityFunctions {
         return new RecordToken(names, values);
     }
 
-	/** Iterate the specified function to produce an array of the specified
-	 *  length.  The first element of the output array is the <i>initial</i>
-	 *  argument, the second is the result of applying the function to
-	 *  <i>initial</i>, the third is the result of applying the function to
-	 *  that result, etc.  The <i>length</i> argument is required to be
+    /** Iterate the specified function to produce an array of the specified
+     *  length.  The first element of the output array is the <i>initial</i>
+     *  argument, the second is the result of applying the function to
+     *  <i>initial</i>, the third is the result of applying the function to
+     *  that result, etc.  The <i>length</i> argument is required to be
      *  greater than 1.
-	 *  @param function A single-argument function to iterate.
-	 *  @param length The length of the resulting array.
-	 *  @param initial The first element of the result.
-	 *  @return A new array that is the result of applying the function
-	 *   repeatedly.
-	 *  @exception IllegalActionException If the specified function does not
-	 * 	 take exactly one argument, or if an error occurs applying the function.
-	 */
+     *  @param function A single-argument function to iterate.
+     *  @param length The length of the resulting array.
+     *  @param initial The first element of the result.
+     *  @return A new array that is the result of applying the function
+     *   repeatedly.
+     *  @exception IllegalActionException If the specified function does not
+     * 	 take exactly one argument, or if an error occurs applying the function.
+     */
     public static ArrayToken iterate(
             FunctionToken function, int length, Token initial)
             throws IllegalActionException {
         int arity = function.getNumberOfArguments();
         if (arity != 1) {
             throw new IllegalActionException(
-            "iterate() can only be used on functions that take one argument.");
+                    "iterate() can only be used on functions that take one argument.");
         } else if (length < 2) {
             throw new IllegalActionException(
-            "iterate() requires the length argument to be greater than 1.");
+                    "iterate() requires the length argument to be greater than 1.");
         } else {
-		    Token[] result = new Token[length];
+            Token[] result = new Token[length];
             Token iterate = initial;
-	        result[0] = initial;
-	        for (int i = 1; i < length; i++ ) {
+            result[0] = initial;
+            for (int i = 1; i < length; i++ ) {
                 LinkedList arglist = new LinkedList();
                 arglist.add(iterate);
                 iterate = function.apply(arglist);
                 result[i] = iterate;
             }
-			return new ArrayToken(result);
+            return new ArrayToken(result);
         }
     }
 
@@ -331,23 +331,23 @@ public class UtilityFunctions {
             throws IllegalActionException {
         if (functionType instanceof FunctionType) {
             FunctionType castFunctionType = (FunctionType)functionType;
-        if (castFunctionType.getArgCount() != 1) {
+            if (castFunctionType.getArgCount() != 1) {
                 throw new IllegalActionException(
-                "iterate() can only be used on functions that take one argument.");
+                        "iterate() can only be used on functions that take one argument.");
             } else {
                 Type argType = castFunctionType.getArgType(0);
                 int comparison = TypeLattice.compare(initialType, argType);
                 if (comparison != CPO.LOWER && comparison != CPO.SAME) {
                     throw new IllegalActionException(
-                    "iterate(): specified initial value is not compatible with"
-                    + " function argument type.");
+                            "iterate(): specified initial value is not compatible with"
+                            + " function argument type.");
                 }
                 Type resultType = castFunctionType.getReturnType();
                 int comparison2 = TypeLattice.compare(resultType, argType);
                 if (comparison2 != CPO.LOWER && comparison2 != CPO.SAME) {
                     throw new IllegalActionException(
-                    "iterate(): invalid function: function return type is not"
-                    + " compatible with function argument type.");
+                            "iterate(): invalid function: function return type is not"
+                            + " compatible with function argument type.");
                 }
                 return new ArrayType(
                         TypeLattice.leastUpperBound(resultType, initialType));
@@ -491,25 +491,25 @@ public class UtilityFunctions {
             System.load(libraryPath);
         }
     }
-	/** Apply the specified function to the specified array and return
-	 *  an array with the results. The function must take at least one
-	 *  argument. If the function takes more than one argument, then
-	 *  the specified array should be an array of arrays, where each
-	 *  subarray is a set of arguments.  Since arrays in the expression
-	 *  language can only contain elements of the same type, this method
-	 *  will only work for functions whose arguments are all of the same
-	 *  type.
-	 *  @param function A function with at least one argument.
-	 *  @param array The array to which to apply the function.
-	 *  @return A new array that is the result of applying the function
-	 *   to the specified array.
-	 *  @exception IllegalActionException If the specified function does not
-	 * 	 take at least one argument, or if an error occurs applying the
-	 *   function, or if the number of arguments does not match the subarray
-	 *   lengths.
-	 */
+    /** Apply the specified function to the specified array and return
+     *  an array with the results. The function must take at least one
+     *  argument. If the function takes more than one argument, then
+     *  the specified array should be an array of arrays, where each
+     *  subarray is a set of arguments.  Since arrays in the expression
+     *  language can only contain elements of the same type, this method
+     *  will only work for functions whose arguments are all of the same
+     *  type.
+     *  @param function A function with at least one argument.
+     *  @param array The array to which to apply the function.
+     *  @return A new array that is the result of applying the function
+     *   to the specified array.
+     *  @exception IllegalActionException If the specified function does not
+     * 	 take at least one argument, or if an error occurs applying the
+     *   function, or if the number of arguments does not match the subarray
+     *   lengths.
+     */
     public static ArrayToken map(FunctionToken function, ArrayToken array)
-	        throws IllegalActionException {
+            throws IllegalActionException {
         int arity = function.getNumberOfArguments();
         Token[] result = new Token[array.length()];
         if (arity == 1) {
@@ -519,18 +519,18 @@ public class UtilityFunctions {
                 arglist.add(args);
                 result[i] =function.apply(arglist);
             }
-         } else if (arity > 1){
+        } else if (arity > 1){
             for (int i = 0; i < array.length(); i++) {
                 Token args = (Token)array.getElement(i);
                 if(! (args instanceof ArrayToken)) {
-					throw new IllegalActionException(
-                    "Invalid arguments to map(): mismatched arity.");
+                    throw new IllegalActionException(
+                            "Invalid arguments to map(): mismatched arity.");
                 }
                 LinkedList arglist = new LinkedList();
                 ArrayToken castArgs = (ArrayToken) args;
                 if (castArgs.length()!= arity) {
                     throw new IllegalActionException(
-                        "Invalid arguments to map(): mismatched arity.");
+                            "Invalid arguments to map(): mismatched arity.");
                 } else{
                     for (int j = 0; j< arity; j++) {
                         arglist.add(castArgs.getElement(j));
@@ -540,8 +540,8 @@ public class UtilityFunctions {
             }
         } else {
             throw new IllegalActionException(
-            "map() can only be used on functions that take at least one argument.");
-         }
+                    "map() can only be used on functions that take at least one argument.");
+        }
         return new ArrayToken(result);
     }
 
@@ -566,8 +566,8 @@ public class UtilityFunctions {
                         ((ArrayType)arrayTokenType).getElementType(), argType);
                 if (comparison != CPO.LOWER && comparison != CPO.SAME) {
                     throw new IllegalActionException(
-                    "map(): specified array token is not compatible with"
-                    + " function argument type.");
+                            "map(): specified array token is not compatible with"
+                            + " function argument type.");
                 }
             } else if(castFunctionType.getArgCount() > 1) {
                 Type firstArgType = castFunctionType.getArgType(0);
@@ -578,7 +578,7 @@ public class UtilityFunctions {
                         i = castFunctionType.getArgCount();
                         flag = false;
                         throw new IllegalActionException("map() can only work "
-                            + "for functions whose arguments are all of the same type.");
+                                + "for functions whose arguments are all of the same type.");
                     }
                 }
                 if (flag) {
@@ -586,15 +586,15 @@ public class UtilityFunctions {
                     Type elementType = ((ArrayType)arrayTokenType).getElementType();
                     if (! (elementType instanceof ArrayType)) {
                         throw new IllegalActionException(
-                             "map(): specified array token is not compatible with"
-                             + " function arity.");
+                                "map(): specified array token is not compatible with"
+                                + " function arity.");
                     } else {
                         int comparison = TypeLattice.compare(
                                 ((ArrayType)elementType).getElementType(), argType);
                         if (comparison != CPO.LOWER && comparison != CPO.SAME) {
                             throw new IllegalActionException(
-                            "map(): specified array token is not compatible with"
-                            + " function argument type.");
+                                    "map(): specified array token is not compatible with"
+                                    + " function argument type.");
                         }
                     }
                 }
@@ -1023,10 +1023,10 @@ public class UtilityFunctions {
      *  @return The value.
      */
     /* FIXME: Removed pending implementing assignments.
-    public static ptolemy.data.Token set(String name, ptolemy.data.Token value) {
-    	Constants.add(name, value);
-    	return value;
-    }
+       public static ptolemy.data.Token set(String name, ptolemy.data.Token value) {
+       Constants.add(name, value);
+       return value;
+       }
     */
 
     /** Return the sum of the elements in the specified array.

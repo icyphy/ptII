@@ -282,9 +282,9 @@ public abstract class MatrixToken extends Token {
      *  corresponding function.
      *  @return The type of the value returned from the corresponding function.
      */
-     public static Type arrayToMatrixReturnType(
-             Type type1, Type type2, Type type3)
-             throws IllegalActionException {
+    public static Type arrayToMatrixReturnType(
+            Type type1, Type type2, Type type3)
+            throws IllegalActionException {
         if(type1 instanceof ArrayType) {
             Type elementType = ((ArrayType)type1).getElementType();
             return UnsizedMatrixType.getMatrixTypeForElementType(elementType);
@@ -1151,7 +1151,7 @@ public abstract class MatrixToken extends Token {
      *  @param type The type of the argument to the corresponding function.
      *  @return The type of the value returned from the corresponding function.
      */
-     public static Type toArrayReturnType(Type type) {
+    public static Type toArrayReturnType(Type type) {
         if(type instanceof UnsizedMatrixType) {
             Type elementType = ((UnsizedMatrixType)type).getElementType();
             return new ArrayType(elementType);
@@ -1255,36 +1255,36 @@ public abstract class MatrixToken extends Token {
                 notSupportedMessage("divide", this, rightArgument));
     }
 
-	/** Test whether the value of this token is close to the first argument,
-	 *  where "close" means that the distance between their elements is less than
-	 *  or equal to the second argument. This base class delegates to the
-	 *  token class corresponding to the matrix elements, using its
-	 *  isCloseTo() method. If the two matrices do have the same dimension,
-	 *  then this method returns false.
-	 *  @param token The matrix token to compare to this token.
-	 * 	@param distance The specified distance.
-	 *  @return True if every element of the specified matrix is within
-	 *   the specified distance of the corresponding element of this matrix.
-	 * 	@exception IllegalActionException If a derived class throws it.
-	 */
+    /** Test whether the value of this token is close to the first argument,
+     *  where "close" means that the distance between their elements is less than
+     *  or equal to the second argument. This base class delegates to the
+     *  token class corresponding to the matrix elements, using its
+     *  isCloseTo() method. If the two matrices do have the same dimension,
+     *  then this method returns false.
+     *  @param token The matrix token to compare to this token.
+     * 	@param distance The specified distance.
+     *  @return True if every element of the specified matrix is within
+     *   the specified distance of the corresponding element of this matrix.
+     * 	@exception IllegalActionException If a derived class throws it.
+     */
     protected BooleanToken _isCloseTo(
             MatrixToken token, double distance)
             throws IllegalActionException {
-		int rows = getRowCount();
-		int columns = getColumnCount();
-		if (token.getRowCount() != rows || token.getColumnCount() != columns) {
-			return BooleanToken.FALSE;
-		}
-		for (int i = 0; i < rows; i++) {
-			for (int j = 0; j < columns; j++) {
-				Token element = getElementAsToken(i, j);
-				Token other = token.getElementAsToken(i, j);
-				if (!element.isCloseTo(other, distance).booleanValue()) {
-					return BooleanToken.FALSE;
-				}
-			}
-		}
-		return BooleanToken.TRUE;
+        int rows = getRowCount();
+        int columns = getColumnCount();
+        if (token.getRowCount() != rows || token.getColumnCount() != columns) {
+            return BooleanToken.FALSE;
+        }
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                Token element = getElementAsToken(i, j);
+                Token other = token.getElementAsToken(i, j);
+                if (!element.isCloseTo(other, distance).booleanValue()) {
+                    return BooleanToken.FALSE;
+                }
+            }
+        }
+        return BooleanToken.TRUE;
     }
 
     /** Test for equality of the values of this Token and the argument

@@ -128,7 +128,7 @@ public class FunctionToken extends Token {
      *  same expression, under renaming of any bound variables.
      *  @param rightArgument The token to compare to this token.
      * 	@return A token containing true if the value element of the first
-	 *   argument is equal to the value of this token.
+     *   argument is equal to the value of this token.
      */
     public BooleanToken isEqualTo(Token rightArgument) {
         FunctionToken convertedArgument = (FunctionToken)rightArgument;

@@ -584,7 +584,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         if (node.getForm() == 1) {
             //int numChildren = node.jjtGetNumChildren();
             result = MatrixToken.create(tokens, node.getRowCount(),
-                             node.getColumnCount());
+                    node.getColumnCount());
         } else if (node.getForm() == 2) {
             try {
                 int columnCount = MatrixToken.determineSequenceLength(
@@ -595,9 +595,9 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                 // of columns.
                 for (int i = 1; i < node.getRowCount(); ++i) {
                     if (columnCount != MatrixToken.determineSequenceLength(
-                               (ScalarToken)tokens[3*i],
-                               (ScalarToken)tokens[3*i+1],
-                               (ScalarToken)tokens[3*i+2])) {
+                            (ScalarToken)tokens[3*i],
+                            (ScalarToken)tokens[3*i+1],
+                            (ScalarToken)tokens[3*i+2])) {
                         throw new IllegalActionException("Matrix "
                                 + "should have the same number of columns "
                                 + "for all rows.");
@@ -616,7 +616,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                             matrixTokens, columnCount * i, columnCount);
                 }
                 result = MatrixToken.create(matrixTokens,
-                                 node.getRowCount(), columnCount);
+                        node.getRowCount(), columnCount);
             } catch (IllegalActionException ex) {
                 // FIXME: better detail message that includes the thing
                 // we were parsing.
@@ -638,7 +638,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  @exception IllegalActionException If an evaluation error occurs.
      */
     public void visitMethodCallNode(ASTPtMethodCallNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         // Method calls are generally not cached...  They are repeated
         // every time the tree is evaluated.
 
@@ -769,7 +769,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  @exception IllegalActionException If an evaluation error occurs.
      */
     public void visitRecordConstructNode(ASTPtRecordConstructNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
             return;
@@ -791,7 +791,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
     }
 
     public void visitRelationalNode(ASTPtRelationalNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
             return;
@@ -845,7 +845,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  @exception IllegalActionException If an evaluation error occurs.
      */
     public void visitShiftNode(ASTPtShiftNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
             return;
@@ -1194,13 +1194,13 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  If the trace is null, do nothing.
      */
     protected void _trace(String string) {
-         if(_trace != null) {
-             for(int i = 0; i < _depth; i++) {
-                 _trace.append("  ");
-             }
-             _trace.append(string);
-             _trace.append("\n");
-         }
+        if(_trace != null) {
+            for(int i = 0; i < _depth; i++) {
+                _trace.append("  ");
+            }
+            _trace.append(string);
+            _trace.append("\n");
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -384,13 +384,13 @@ public class FixToken extends ScalarToken {
      */
     protected BooleanToken _isCloseTo(
             ScalarToken rightArgument, double epsilon) {
-		double right = ((FixToken)rightArgument).convertToDouble();
-		double left = convertToDouble();
-		if (right > left + epsilon || right < left - epsilon) {
-			return BooleanToken.FALSE;
-		} else {
-			return BooleanToken.TRUE;
-		}
+        double right = ((FixToken)rightArgument).convertToDouble();
+        double left = convertToDouble();
+        if (right > left + epsilon || right < left - epsilon) {
+            return BooleanToken.FALSE;
+        } else {
+            return BooleanToken.TRUE;
+        }
     }
 
     /** Test for ordering of the values of this Token and the argument

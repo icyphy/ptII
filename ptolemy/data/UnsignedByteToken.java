@@ -399,23 +399,23 @@ public class UnsignedByteToken extends ScalarToken {
         return new UnsignedByteToken(quotient);
     }
 
-	/** Test whether the value of this token is close to the first argument,
-	 *  where "close" means that the distance between them is less than
-	 *  or equal to the second argument.  It is assumed that the argument is
-	 * 	an UnsignedByteToken.
-	 *  @param token The token to compare to this token.
-	 *  @return A true-valued token if the first argument is close to this token.
-	 */
+    /** Test whether the value of this token is close to the first argument,
+     *  where "close" means that the distance between them is less than
+     *  or equal to the second argument.  It is assumed that the argument is
+     * 	an UnsignedByteToken.
+     *  @param token The token to compare to this token.
+     *  @return A true-valued token if the first argument is close to this token.
+     */
     protected BooleanToken _isCloseTo(
             ScalarToken rightArgument, double epsilon) {
-		long right = ((UnsignedByteToken)rightArgument).longValue();
-		long left = longValue();
-		long distance = Math.round(Math.floor(epsilon));
-		if (right > left + distance || right < left - distance) {
-			return BooleanToken.FALSE;
-		} else {
-			return BooleanToken.TRUE;
-		}
+        long right = ((UnsignedByteToken)rightArgument).longValue();
+        long left = longValue();
+        long distance = Math.round(Math.floor(epsilon));
+        if (right > left + distance || right < left - distance) {
+            return BooleanToken.FALSE;
+        } else {
+            return BooleanToken.TRUE;
+        }
     }
 
     /** Test for ordering of the values of this Token and the argument

@@ -184,11 +184,11 @@ public abstract class AbstractNotConvertibleToken extends Token {
         }
     }
 
-	/** Test that the value of this token is close to the first argument,
-	 *  where "close" means that the distance between them is less than
-	 *  or equal to the second argument.  This method only makes sense
-	 *  for tokens where the distance between them is reasonably
-	 *  represented as a double. This base class ensures that the arguments are
+    /** Test that the value of this token is close to the first argument,
+     *  where "close" means that the distance between them is less than
+     *  or equal to the second argument.  This method only makes sense
+     *  for tokens where the distance between them is reasonably
+     *  represented as a double. This base class ensures that the arguments are
      *  implemented in the same class, and then defers to the
      *  _isCloseTo() method.  Subclasses should override that method to
      *  perform type-specific operation.
@@ -480,10 +480,10 @@ public abstract class AbstractNotConvertibleToken extends Token {
     protected abstract Token _divide(Token rightArgument)
             throws IllegalActionException;
 
-	/** Test that the value of this Token is close to the first argument,
-	 *  where "close" means that the distance between them is less than
-	 *  or equal to the second argument.
-	 *  It is guaranteed by the caller that the type
+    /** Test that the value of this Token is close to the first argument,
+     *  where "close" means that the distance between them is less than
+     *  or equal to the second argument.
+     *  It is guaranteed by the caller that the type
      *  of the argument is the same as the type of this class.  This
      *  method should be overridden in derived classes to provide type
      *  specific actions for divide.
@@ -496,16 +496,16 @@ public abstract class AbstractNotConvertibleToken extends Token {
             Token rightArgument, double epsilon)
             throws IllegalActionException;
 
-	/** Test for equality of the values of this token and the argument.
-	 *  This base class delegates to the equals() method.
-	 *  @param token The token to compare to this token.
-	 *  @return A token containing true if the value element of the first
-	 *   argument is equal to the value of this token.
-	 * 	@exception IllegalActionException Not thrown in this base class.
-	 */
-	protected BooleanToken _isEqualTo(Token token) throws IllegalActionException {
-		return BooleanToken.getInstance(equals(token));
-	}
+    /** Test for equality of the values of this token and the argument.
+     *  This base class delegates to the equals() method.
+     *  @param token The token to compare to this token.
+     *  @return A token containing true if the value element of the first
+     *   argument is equal to the value of this token.
+     * 	@exception IllegalActionException Not thrown in this base class.
+     */
+    protected BooleanToken _isEqualTo(Token token) throws IllegalActionException {
+        return BooleanToken.getInstance(equals(token));
+    }
 
     /** Return a new token whose value is the value of this token
      *  modulo the value of the argument token.  It is guaranteed by

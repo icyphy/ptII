@@ -311,15 +311,15 @@ public class DoubleToken extends ScalarToken {
         return new DoubleToken(quotient);
     }
 
-	/** Test that the value of this token is close to the first argument,
-	 *  where "close" means that the distance between their values is less than
-	 *  or equal to the second argument. It is assumed that the type of
-	 *  the first argument is DoubleToken.
-	 *  @param rightArgument The token to compare to this token.
+    /** Test that the value of this token is close to the first argument,
+     *  where "close" means that the distance between their values is less than
+     *  or equal to the second argument. It is assumed that the type of
+     *  the first argument is DoubleToken.
+     *  @param rightArgument The token to compare to this token.
      *  @param epsilon The distance.
-	 *  @return A token containing true if the value of this token is close
-	 *   to that of the argument.
-	 */
+     *  @return A token containing true if the value of this token is close
+     *   to that of the argument.
+     */
     protected BooleanToken _isCloseTo(
             ScalarToken rightArgument, double epsilon) {
         // NOTE: This code is duplicated in ptolemy.math.DoubleMatrixMath.within(); if
@@ -330,9 +330,9 @@ public class DoubleToken extends ScalarToken {
         double right = ((DoubleToken)rightArgument).doubleValue();
         double left = doubleValue();
         if (right > left + epsilon || right < left - epsilon) {
-        	return BooleanToken.FALSE;
+            return BooleanToken.FALSE;
         } else {
-        	return BooleanToken.TRUE;
+            return BooleanToken.TRUE;
         }
     }
 

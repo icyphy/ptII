@@ -398,13 +398,13 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         return new ArrayToken(result);
     }
 
-	/** Test whether the value of this token is close to the first argument,
-	 *  where "close" means that the distance between them is less than
-	 *  or equal to the second argument.  This method only makes sense
-	 *  for tokens where the distance between them is reasonably
-	 *  represented as a double. It is assumed that the argument is
-	 * 	an ArrayToken, and the isCloseTo() method of the array elements
-	 * 	is used.
+    /** Test whether the value of this token is close to the first argument,
+     *  where "close" means that the distance between them is less than
+     *  or equal to the second argument.  This method only makes sense
+     *  for tokens where the distance between them is reasonably
+     *  represented as a double. It is assumed that the argument is
+     * 	an ArrayToken, and the isCloseTo() method of the array elements
+     * 	is used.
      *  @param token The token to compare to this token.
      *  @exception IllegalActionException If the elements do not support
      *   this comparison.
@@ -413,9 +413,9 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     protected BooleanToken _isCloseTo(Token token, double epsilon)
             throws IllegalActionException {
         ArrayToken rightArray = (ArrayToken)token;
-		if (length() != rightArray.length()) {
-			return BooleanToken.FALSE;
-		}
+        if (length() != rightArray.length()) {
+            return BooleanToken.FALSE;
+        }
 
         for (int i = 0; i < _value.length; i++) {
             // Here is where isCloseTo() differs from isEqualTo().

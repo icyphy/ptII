@@ -339,12 +339,12 @@ public class BooleanToken extends AbstractConvertibleToken
         }
     }
 
-	/** Return a true-valued token if the first argument is close to this
-	 *  token, where in this class, "close" means "identical to."
-	 *  It is assumed that the type of the argument is BooleanToken.
-	 *  @param token The token to compare to this token.
-	 *  @return A token containing the result.
-	 */
+    /** Return a true-valued token if the first argument is close to this
+     *  token, where in this class, "close" means "identical to."
+     *  It is assumed that the type of the argument is BooleanToken.
+     *  @param token The token to compare to this token.
+     *  @return A token containing the result.
+     */
     protected BooleanToken _isCloseTo(Token token, double epsilon) {
         return _isEqualTo(token);
     }

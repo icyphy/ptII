@@ -259,15 +259,15 @@ public abstract class AbstractConvertibleToken extends Token
         }
     }
 
-	/** Test that the value of this token is close to the first argument,
-	 *  where "close" means that the distance between them is less than
-	 *  or equal to the second argument.  This method only makes sense
-	 *  for tokens where the distance between them is reasonably
-	 *  represented as a double. If the argument token is not of
-	 *  the same type as this token, then either this token or the
-	 *  argument will be converted, if possible, to the type of the other.
-	 *  <p>
-	 *  Subclasses should not
+    /** Test that the value of this token is close to the first argument,
+     *  where "close" means that the distance between them is less than
+     *  or equal to the second argument.  This method only makes sense
+     *  for tokens where the distance between them is reasonably
+     *  represented as a double. If the argument token is not of
+     *  the same type as this token, then either this token or the
+     *  argument will be converted, if possible, to the type of the other.
+     *  <p>
+     *  Subclasses should not
      *  generally override this method, but override the protected
      *  _isCloseTo() method to ensure that type conversion is performed
      *  consistently.

@@ -85,7 +85,7 @@ public abstract class ModelScope implements ParserScope {
             // It would be nice if ScopeExtender and NamedObj were common in 
             // some way to avoid this cast.
             nameSet.addAll(getAllScopedVariableNames(exclude,
-                                   (NamedObj)extender));
+                    (NamedObj)extender));
         }
         return nameSet;
     }

@@ -313,27 +313,27 @@ public class LongToken extends ScalarToken {
         return new LongToken(quotient);
     }
 
-	/** Test whether the value of this token is close to the first argument,
-	 *  where "close" means that the distance between their values is less than
-	 *  or equal to the second argument. It is assumed that the type of
-	 *  the first argument is LongToken.
-	 *  @param rightArgument The token to compare to this token.
-	 *  @return A token containing true if the value of the first
-	 *   argument is close to the value of this token.
-	 */
-	protected BooleanToken _isCloseTo(
-			ScalarToken rightArgument, double epsilon) {
+    /** Test whether the value of this token is close to the first argument,
+     *  where "close" means that the distance between their values is less than
+     *  or equal to the second argument. It is assumed that the type of
+     *  the first argument is LongToken.
+     *  @param rightArgument The token to compare to this token.
+     *  @return A token containing true if the value of the first
+     *   argument is close to the value of this token.
+     */
+    protected BooleanToken _isCloseTo(
+            ScalarToken rightArgument, double epsilon) {
         // NOTE: This code is duplicated in ptolemy.math.LongMatrixMath.within(); if
         // this implementation changes, also change the corresponding implementation there.
-		long right = ((LongToken)rightArgument).longValue();
-		long left = longValue();
-		long distance = Math.round(Math.floor(epsilon));
-		if (right > left + distance || right < left - distance) {
-			return BooleanToken.FALSE;
-		} else {
-			return BooleanToken.TRUE;
-		}
-	}
+        long right = ((LongToken)rightArgument).longValue();
+        long left = longValue();
+        long distance = Math.round(Math.floor(epsilon));
+        if (right > left + distance || right < left - distance) {
+            return BooleanToken.FALSE;
+        } else {
+            return BooleanToken.TRUE;
+        }
+    }
 	
     /** Test for ordering of the values of this Token and the argument
      *  Token.  It is assumed that the type of the argument is LongToken.

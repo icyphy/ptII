@@ -81,8 +81,8 @@ public class MatlabUtilities {
      *  @return The results of the evaluation
      */
     public static ptolemy.data.Token evaluate
-        (String expression, Set variableNames, ParserScope scope)
-        throws IllegalActionException {
+    (String expression, Set variableNames, ParserScope scope)
+            throws IllegalActionException {
 
 	try {
 	    if (_engineClass == null) {
@@ -112,8 +112,8 @@ public class MatlabUtilities {
 	    try {
 	    
 		synchronized (
-			      //matlabEngine.getSemaphore();
-			      _engine ) {
+                        //matlabEngine.getSemaphore();
+                        _engine ) {
                     // matlabEngine is not very good since it is
                     // "local".
 
@@ -165,9 +165,9 @@ public class MatlabUtilities {
 			    //    (engine, "previousPath_");
 			    previousPath = (ptolemy.data.Token)
 			    	_engineGet.invoke(matlabEngine,
-                                    new Object[] {
-                                        _engine, "previousPath_"
-                                    });
+                                        new Object[] {
+                                            _engine, "previousPath_"
+                                        });
 
 			}
 		    }
@@ -225,16 +225,16 @@ public class MatlabUtilities {
                                 {_engine, "previousPath_", previousPath});
 			// matlabEngine.evalString(engine, "path(previousPath_)");
 			_engineEvalString.invoke(matlabEngine,
-                            new Object[] {_engine, "path(previousPath_)" });
+                                new Object[] {_engine, "path(previousPath_)" });
 		    }
 		}
 	    }
 	    finally {
 		//matlabEngine.close(engine);
 		_engineClose.invoke(matlabEngine,
-				    new Object[] {
-					_engine
-				    });
+                        new Object[] {
+                            _engine
+                        });
 
 	    }
 	    return result;

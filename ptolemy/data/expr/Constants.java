@@ -93,15 +93,15 @@ public class Constants {
         Iterator keys = _table.keySet().iterator();
         int i = 0;
         while (keys.hasNext()) {
-        	String key = (String)keys.next();
-        	names[i] = key;
-        	values[i] = (ptolemy.data.Token)_table.get(key);
-        	i++;
+            String key = (String)keys.next();
+            names[i] = key;
+            values[i] = (ptolemy.data.Token)_table.get(key);
+            i++;
         }
         try {
-        	return new RecordToken(names, values);
+            return new RecordToken(names, values);
         } catch (IllegalActionException ex) {
-        	throw new InternalErrorException("Cannot construct a record!");
+            throw new InternalErrorException("Cannot construct a record!");
         }
     }
 
