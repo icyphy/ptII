@@ -94,9 +94,7 @@ public class Average extends Transformer {
 	    throws CloneNotSupportedException {
         Average newobj = (Average)super.clone(ws);
         newobj.output.setTypeSameAs(newobj.input);
-        System.out.println(newobj.output.getName());
         newobj.reset = (TypedIOPort)newobj.getPort("reset");
-        System.out.println(newobj.reset.getName());
         newobj.reset.setInput(true);
         newobj.reset.setTypeEquals(BaseType.BOOLEAN);
         return newobj;
