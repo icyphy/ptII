@@ -273,6 +273,14 @@ public class InterfaceAutomaton extends FSMActor {
         }
     }
 
+    /** Return true if this automaton is empty; false otherwise.
+     *  @return true if this automaton is empty; false otherwise.
+     */
+    public boolean isEmpty() {
+        List states = entityList();
+        return states.size() == 0;
+    }
+
     /** Return the names of the output ports as a Set.
      *  @return A Set containing all the output port names.
      */
