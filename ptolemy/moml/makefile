@@ -53,13 +53,13 @@ JSRCS =	Documentation.java \
 	ImportAttribute.java \
 	LibraryAttribute.java \
 	Location.java \
-	Vertex.java \
 	MoMLAttribute.java \
 	MoMLChangeRequest.java \
 	MoMLParser.java \
 	MoMLWriter.java \
 	ParserAttribute.java \
-	URLAttribute.java
+	URLAttribute.java \
+	Vertex.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	moml.dtd
