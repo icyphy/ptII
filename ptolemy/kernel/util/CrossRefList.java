@@ -437,7 +437,12 @@ public final class CrossRefList implements Serializable  {
             ++_size;
         }
 
-        private synchronized Object _nearContainer() {
+        // NOTE: It is essential that this method not be
+        // synchronized, since it is called by _farContainer(),
+        // which is.  Having it synchronized can lead to
+        // deadlock.  Fortunately, it is an atomic action,
+        // so it need not be synchronized.
+        private Object _nearContainer() {
             return _container;
         }
 
@@ -446,12 +451,22 @@ public final class CrossRefList implements Serializable  {
             else return null;
         }
 
-        private synchronized CrossRefList _nearList() {
+        // NOTE: This need not be synchronized as it is an atomic action.
+        private CrossRefList _nearList() {
             return CrossRefList.this;
         }
 
         private synchronized void _dissociate() {
             _unlink(); // Remove this.
+            // NOTE: Deadlock risk here!  If _far is waiting
+            // on a lock to this CrossRef, then we will get
+            // deadlock. However, this will only happen if
+            // we have two threads simultaneously modifying a
+            // model. At the moment (4/29/04), we have no
+            // mechanism for doing that without first
+            // acquiring write permission the workspace().
+            // Two threads cannot simultaneously hold that
+            // write access.
             if (_far != null) _far._unlink(); // Remove far
         }
 
@@ -469,7 +484,6 @@ public final class CrossRefList implements Serializable  {
             _size--; // Modify list.
         }
     }
-
 
     /** Enumerate the objects pointed to by the list.
      *  @see CrossRefList
