@@ -10,6 +10,10 @@
         <property name="_location" class="ptolemy.moml.Location" value="527.0, 27.0">
         </property>
     </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[641, 450]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+    </property>
     <entity name="ViewScreen2" class="ptolemy.domains.gr.lib.ViewScreen">
         <property name="horizontal resolution" class="ptolemy.data.expr.Parameter" value="400">
         </property>
