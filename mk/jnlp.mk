@@ -105,11 +105,14 @@ DSP_JNLP_JARS =	\
 # HybridSystems - HybridSystenms
 #
 # Jar files that will appear in a HybridSystems only JNLP Ptolemy II Runtime.
+# This list is used to create the ptII/signed directory, so each
+# jar file should be named once in one of the *ONLY_JNLP_JARS
 HYBRID_SYSTEMS_ONLY_JNLP_JARS = \
 	ptolemy/domains/ct/ct.jar \
 	ptolemy/domains/fsm/fsm.jar \
 	ptolemy/domains/sdf/lib/lib.jar \
-	ptolemy/domains/sdf/kernel/kernel.jar
+	ptolemy/domains/sdf/kernel/kernel.jar \
+	doc/codeDocHybridSystems.jar 
 
 HYBRID_SYSTEMS_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/HybridSystemsApplication.jar
@@ -124,7 +127,7 @@ HYBRID_SYSTEMS_MAIN_JAR = \
 
 HYBRID_SYSTEMS_JNLP_JARS =	\
 	$(HYBRID_SYSTEMS_MAIN_JAR) \
-	$(HYBRID_SYSTEMS_ONLY_JAR) \
+	$(HYBRID_SYSTEMS_ONLY_JARS) \
 	doc/docConfig.jar \
 	lib/diva.jar \
 	ptolemy/domains/ct/demo/demo.jar \
@@ -133,8 +136,7 @@ HYBRID_SYSTEMS_JNLP_JARS =	\
 	ptolemy/ptsupport.jar \
 	ptolemy/vergil/vergil.jar \
 	ptolemy/actor/lib/javasound/javasound.jar \
-	ptolemy/media/javasound/javasound.jar \
-	doc/codeDocHybridSystems.jar 
+	ptolemy/media/javasound/javasound.jar
 
 #######
 # Ptiny
