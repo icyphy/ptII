@@ -163,18 +163,21 @@ public class Query extends JPanel {
         // of the first value.
         entryBox.addActionListener(new QueryActionListener(name));
         // Add a listener for loss of focus.  When the entry gains
-        // and then loses focus, listeners are notified of an update.
+        // and then loses focus, listeners are notified of an update,
+        // but only if the value has changed since the last loss of focus.
         entryBox.addFocusListener(new QueryFocusListener(name));
     }
 
     /** Add a listener.  The changed() method of the listener will be
      *  called when any of the entries is changed.  Note that "line"
-     *  entries only trigger this call when Return is pressed, or
+     *  entries only trigger this call when Return or Enter is pressed, or
      *  when the entry gains and then loses the keyboard focus.
      *  Notice that the currently selected line loses focus when the
      *  panel is destroyed, so notification of any changes that
      *  have been made will be done at that time.  That notification
      *  will occur in the UI thread, and may be later than expected.
+     *  Notification due to loss of focus only occurs if the value
+     *  of the entry has changed since the last notification.
      *  If the listener has already been added, then do nothing.
      *  @param listener The listener to add.
      */
@@ -321,6 +324,15 @@ public class Query extends JPanel {
      */
     public Dimension getMaximumSize() {
         return getPreferredSize();
+    }
+
+    /** Get the preferred width to be used for entry boxes created
+     *  in using addLine().  The preferred width is set using
+     *  setTextWidth.
+     *  @return The preferred width.
+     */
+    public int getTextWidth() {
+        return _width;
     }
 
     /** Get the current value in the entry with the given name
@@ -660,7 +672,7 @@ public class Query extends JPanel {
     ////                         public variables                  ////
 
     /** The default width of entries created with addLine(). */
-    public static final int DEFAULT_ENTRY_WIDTH = 12;
+    public static final int DEFAULT_ENTRY_WIDTH = 20;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -704,7 +716,10 @@ public class Query extends JPanel {
     ///////////////////////////////////////////////////////////////////
     ////                         friendly methods                  ////
 
-    // Notify all registered listeners that something changed.
+    /** Notify all registered listeners that something changed for the 
+     *  specified entry.
+     *  @param name The entry that may have changed.
+     */
     void _notifyListeners(String name) {
         if(_listeners != null) {
             Enumeration listeners = _listeners.elements();
@@ -745,6 +760,8 @@ public class Query extends JPanel {
     }
 
     /** Listener for line entries, for when they lose the focus.
+     *  Listeners are notified only if the value has changed since the
+     *  last notification.
      */
     class QueryFocusListener implements FocusListener {
         public QueryFocusListener(String name) {
@@ -754,6 +771,18 @@ public class Query extends JPanel {
             // Nothing to do.
         }
         public void focusLost(FocusEvent e) {
+            // NOTE: I tried doing this notification only if the value
+            // had changed since the last notification, but this doesn't
+            // work.  In particular, Java's lame AWT has no reliable way
+            // to take action on window closing, so this focus lost
+            // notification is the only reliable way we have of reacting
+            // to a closing window.  It is important the notification occur
+            // unconditionally in this circumstance, because the previous
+            // notification might have been an erroneous one, in which case
+            // this one will still be erroneous, and we can't just ignore
+            // it.  The right solution here is to fix the AWT so that
+            // the ComponentListener methods are invoked.  But that seems
+            // like alot to ask...
             _notifyListeners(_name);
         }
         private String _name;

@@ -31,6 +31,7 @@ package ptolemy.gui;
 
 import java.awt.Component;
 import java.awt.Frame;
+import java.awt.Toolkit;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import java.beans.PropertyChangeListener;
@@ -103,11 +104,18 @@ public class ComponentDialog extends JDialog {
 
         getContentPane().add(_optionPane);
 
-        setLocationRelativeTo(owner);
-        // FIXME: Perhaps this should center on the screen otherwise.
-
         pack();
         setResizable(false);
+        if (owner != null) {
+            setLocationRelativeTo(owner);
+        } else {
+            // Center on screen.  According to the Java docs,
+            // passing null to setLocationRelationTo() _may_ result
+            // in centering on the screen, but it is not required to.
+            Toolkit tk = Toolkit.getDefaultToolkit();
+            setLocation((tk.getScreenSize().width - getSize().width)/2,
+                  (tk.getScreenSize().height - getSize().height)/2);
+        }
 
         // The following code is based on Sun's CustomDialog example...
         _optionPane.addPropertyChangeListener(new PropertyChangeListener() {
@@ -137,9 +145,19 @@ public class ComponentDialog extends JDialog {
                         _buttonPressed = (String)value;
                     }
                     setVisible(false);
+                    // Java's lame AWT yeilds random results if we do this.
+                    // And anyway, it doesn't work.  Components still don't
+                    // have their ComponentListener methods called to indicate
+                    // that they have become invisible.
+                    // dispose();
                 }
             }
         });
+        // Java's lame AWT yeilds random results if we do this.
+        // And anyway, it doesn't work.  Components still don't
+        // have their ComponentListener methods called to indicate
+        // that they have become invisible.
+        // setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setVisible(true);
     }
 
