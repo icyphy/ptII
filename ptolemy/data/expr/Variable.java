@@ -1197,18 +1197,11 @@ public class Variable extends Attribute implements Typeable, Settable {
             _setTokenAndNotify(result);
         } catch (IllegalActionException ex) {
             _needsEvaluation = true;
-            throw new IllegalActionException(this, ex.getMessage());
-            /* NOTE: The error message used to be the following, which
-             * was terribly redundant and intimidating.
-                    "Error evaluating expression \""
+            throw new IllegalActionException(this, ex,
+                    "Error evaluating expression: \""
                     + _currentExpression
-                    + "\":\n"
-                    // Unfortunately, printing the complete stack trace
-                    // breaks the regression tests.  Including the stack
-                    // trace isn't a good idea anyway: too intimidating
-                    // to the user.
-                    + ex);
-             */
+                    + "\nIn variable: "
+                    + getFullName());
         } finally {
 	    _dependencyLoop = false;
 	    workspace().doneReading();

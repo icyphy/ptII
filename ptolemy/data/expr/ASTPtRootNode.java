@@ -97,6 +97,10 @@ public class ASTPtRootNode implements Node {
             for (int i = 0; i < numChildren; i++) {
                 ASTPtRootNode child = (ASTPtRootNode)jjtGetChild(i);
                 _childTokens[i] = child.evaluateParseTree();
+                if (_childTokens[i] == null) {
+                    throw new IllegalActionException(
+                            "Null value found in node: " + toString());
+                }
             }
         }
         _ptToken = _resolveNode();
