@@ -142,7 +142,7 @@ public class IndexedPublisher extends Sink {
 	    throw new IllegalActionException(this, "Cannot write into " +
                     "JavaSpace. " + te.getMessage());
 	}
-        System.out.println("Finish intialization.");
+        System.out.println("Finish initialization.");
     }
 
 

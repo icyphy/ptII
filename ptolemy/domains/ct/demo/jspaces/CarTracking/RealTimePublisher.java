@@ -142,7 +142,7 @@ public class RealTimePublisher extends Sink
             throw new IllegalActionException(this, "Unusable Entry " +
                     ue.getMessage());
         }
-        //System.out.println("Finish intialization.");
+        //System.out.println("Finish initialization.");
     }
 
     /** Read exactly one input token and write to the space.

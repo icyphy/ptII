@@ -199,7 +199,7 @@ public class CarInformationPublisher extends TypedAtomicActor
             throw new IllegalActionException(this, "Unusable Entry " +
                     ue.getMessage());
         }
-        //System.out.println("Finish intialization.");
+        //System.out.println("Finish initialization.");
     }
 
     /** Set the next sampling time.
