@@ -158,7 +158,7 @@ public class ConvolutionalCoder extends Transformer {
     /** If the attribute being changed is <i>initial</i>, then verify
      *  that it is a non-negative integer; if it is <i>uncodeBlockSize</i>,
      *  then verify that it is a positive integer; if it is
-     *  <i>polynomailArray</i>, then verify that each of its elements is
+     *  <i>polynomialArray</i>, then verify that each of its elements is
      *  a positive integer and find the maximum value among them, which
      *  is used to compute the highest order among all polynomials.
      *  @exception IllegalActionException If <i>initial</i> is negative

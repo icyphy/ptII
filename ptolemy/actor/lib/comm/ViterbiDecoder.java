@@ -171,7 +171,7 @@ public class ViterbiDecoder extends Transformer {
 
     /** If the attribute being changed is <i>uncodeBlockSize</i> or
      *  <i>delay</i> then verify it is a positive integer; if it is
-     *  <i>polynomailArray</i>, then verify that each of its elements
+     *  <i>polynomialArray</i>, then verify that each of its elements
      *  is a positive integer.
      *  @exception IllegalActionException If <i>uncodeBlockSize</i>,
      *  or <i>delay</i> is non-positive, or any element of
