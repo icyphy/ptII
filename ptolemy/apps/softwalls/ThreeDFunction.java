@@ -109,7 +109,9 @@ public class ThreeDFunction {
 	    //Close the file.
 	    in.close();
 
-            //Calculate the error tolerances
+            /** Calculate the error tolerances, using a value within
+             * 0.0001 of the step size.
+             */
             _createTolerances(0.0001);
 
             double x = 0.9;
@@ -292,16 +294,17 @@ public class ThreeDFunction {
             yPoints[1] = yPoints[0] + _yStepSize;
         }
 
-        /** Calculate the theta point or points.
+        /** Calculate the theta point or points.  angleWrap is used to
+         * keep theta in the correct range.
          */
         if (thetaRem == 0.0) {
             thetaPoints = new double[1];
-            thetaPoints[0] = theta;
+            thetaPoints[0] = _angleWrap(theta);
         }
         else {
             thetaPoints = new double[2];
-            thetaPoints[0] = theta - thetaRem;
-            thetaPoints[1] = thetaPoints[0] + _thetaStepSize;
+            thetaPoints[0] = _angleWrap(theta - thetaRem);
+            thetaPoints[1] = _angleWrap(thetaPoints[0] + _thetaStepSize);
         }
 
         /** Calculate the neighboring points.
@@ -359,16 +362,19 @@ public class ThreeDFunction {
             /** xLB is the lowerbound on x, allowing for some
              * numerical error. 
              */
-            xLB = _xLowerBound - _xTolerance;
-            yLB = _yLowerBound - _yTolerance;
-            tLB = _thetaLowerBound - _thetaTolerance;
+            xLB = _xLowerBound - _xTolerance / 2.0;
+            yLB = _yLowerBound - _yTolerance / 2.0;
+            tLB = _thetaLowerBound - _thetaTolerance / 2.0;
 
             /** xUB is the upperbound on x, allowing for some
              * numerical error.
              */
-            xUB = _xUpperBound + _xTolerance;
-            yUB = _yUpperBound + _yTolerance;
-            tUB = _thetaUpperBound + _thetaTolerance;
+            xUB = _xUpperBound + _xTolerance / 2.0;
+            yUB = _yUpperBound + _yTolerance / 2.0;
+            tUB = _thetaUpperBound + _thetaTolerance / 2.0;
+            if (t > tUB) {
+                System.out.println(t + " " + tUB);
+            }
 
             /* xOK is true if x is in the allowable range. */
             xOK = ((x >= xLB) && (x <= xUB));
@@ -408,5 +414,19 @@ public class ThreeDFunction {
         _xTolerance = _xStepSize * relativeTolerance;
         _yTolerance = _yStepSize * relativeTolerance;
         _thetaTolerance = _thetaStepSize * relativeTolerance;
+    }
+
+    /** Takes in an angular value and returns a value in the range
+     * specified by the upper and lower bounds.
+     */
+    private double _angleWrap(double angle) {
+        double span = _thetaUpperBound - _thetaLowerBound;
+        while (angle < _thetaLowerBound) {
+            angle = angle + span;
+        }
+        while (angle > _thetaUpperBound) {
+            angle = angle - span;
+        }
+        return angle;
     }
 }
