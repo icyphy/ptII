@@ -110,7 +110,7 @@ public class Documentation extends Attribute {
                    + _value
                    + "</doc>\n");
         } else {
-            // Name is the default name.  Omit.
+            // Name is not the default name.
             output.write(_getIndentPrefix(depth)
                    + "<doc name=\""
                    + name
