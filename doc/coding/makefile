@@ -51,8 +51,10 @@ EXTRA_SRCS = \
 	main.htm \
 	packages.htm \
 	performance.htm \
+	releasemgt.htm \
 	reviews.htm \
 	style.htm \
+	tcljava.htm \
 	testing.htm \
 	toc.htm
 
