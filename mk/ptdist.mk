@@ -95,7 +95,7 @@ PTDIST_EX =	$(PTTMPDIR)/$(PTDIST_EX_BASE)
 GNUTAR =	gtar
 
 # Minimal path for testing.  The path should not include GNU make.
-TESTPATH = 	/opt/jdk1.1.6/bin:/bin:/usr/ccs/bin:.
+TESTPATH = 	/opt/jdk1.2latest/bin:/bin:/usr/ccs/bin:.
 
 # InstallShield Java executable
 # See http://www.installshield.com/java
@@ -144,7 +144,7 @@ $(PTDIST_EX): $(ROOT)/mk/ptdist.mk
 	fi
 
 # Tar file distribution
-$(PTDIST).tar.gz:  $(PTDIST_EX)
+$(PTDIST).tar.gz:  $(PTDIST_EX) $(PTTMPDIR)
 	if [ "$(ME)x" = "x" ]; then \
 		echo "ME is not set in the makefile, so we"; \
 		echo "won't create a tar exclude file"; \
@@ -156,7 +156,7 @@ $(PTDIST).tar.gz:  $(PTDIST_EX)
 	fi
 
 # Zip distribution
-$(PTDIST).zip:
+$(PTDIST).zip: $(PTTMPDIR)
 	@if [ "$(ME)x" = "x" ]; then \
 		echo "ME is not set in the makefile, so we"; \
 		echo "won't create a tar exclude file"; \
@@ -184,8 +184,8 @@ diststest:
 	gzcat < $(PTDIST).tar.gz > $(PTTMPDIR)/$(PTDIST).tar
 	cd $(PTTMPDIR);	/bin/tar -xvf $(PTDIST).tar
 	(cd $(PTTMPDIR)/$(PTDIST); \
-		PATH=$(TESTPATH) configure; \
-		PATH=$(TESTPATH) make clean install; \
+		PATH=$(TESTPATH) PTII=`pwd` configure; \
+		PATH=$(TESTPATH) PTII=`pwd` make clean install; \
 	)
 # Create a distribution and install it.
 # This rule is particular to our local installation
