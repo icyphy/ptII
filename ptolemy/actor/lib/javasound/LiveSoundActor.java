@@ -275,7 +275,7 @@ public class LiveSoundActor extends TypedAtomicActor
      *  bits per sample, channels or buffer size.
      */
     protected synchronized void _initializeAudio()
-            throws IllegalActionException/*, IOException*/ {
+            throws IllegalActionException, IOException {
 
         // Initialize audio.
         _transferSize = ((IntToken)transferSize.getToken()).intValue();
