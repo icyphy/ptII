@@ -55,14 +55,14 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// ArrayMem
 /**
-Alter or Extract the ith element from an internal array. 
+Alter or Extract the ith element from an internal array.
 Read:  read the ith element from the internal array and send it to the output
 port
 Read parallel: read the entire array and send it to the parallel output
-port  
+port
 Write: write the data input to the ith element of an internal array.
 Initialize: write the initializing data input to the internal array.
-It is required that the value of the input index be less than or equal to the 
+It is required that the value of the input index be less than or equal to the
 length parameter.
 @see LookupTable
 @see RecordDisassembler
@@ -71,7 +71,7 @@ length parameter.
 */
 
 public class ArrayMem extends TypedAtomicActor {
-    
+
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -87,7 +87,7 @@ public class ArrayMem extends TypedAtomicActor {
         // Set type constraints.
         index = new TypedIOPort(this, "index", true, false);
         index.setTypeEquals(BaseType.INT);
-      
+
         dataInPar = new TypedIOPort(this, "dataInPar", true, false);
         dataInPar.setTypeEquals(new ArrayType(BaseType.INT));
         ArrayType dataInParType = (ArrayType)dataInPar.getType();
@@ -95,34 +95,34 @@ public class ArrayMem extends TypedAtomicActor {
 
         dataOutPar = new TypedIOPort(this, "dataOutPar", false, true);
         dataOutPar.setTypeEquals(dataInParType);
-     
+
 
         dataInSer  = new TypedIOPort(this, "dataInSer", true, false);
         dataInSer.setTypeEquals(BaseType.INT);
-       
+
 
         dataOutSer = new TypedIOPort(this, "dataOutSer", false, true);
         dataOutSer.setTypeEquals(BaseType.INT);
 
         serPar = new TypedIOPort(this, "serPar", true, false);
         serPar.setTypeEquals(BaseType.BOOLEAN);
-      
+
         read = new TypedIOPort(this, "read", true, false);
         read.setTypeEquals(BaseType.BOOLEAN);
-      
+
         write  = new TypedIOPort(this, "write", true, false);
         write.setTypeEquals(BaseType.BOOLEAN);
-      
+
 
 
 
         // Set parameters.
         length = new Parameter(this, "length");
         length.setExpression("1");
-        
-        
 
-        
+
+
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -138,7 +138,7 @@ public class ArrayMem extends TypedAtomicActor {
     /** The write input*/
     public TypedIOPort write;
     /**The ser/par control for reading and writing**/
-    public TypedIOPort serPar; 
+    public TypedIOPort serPar;
     /** The serieal data input*/
     public  TypedIOPort dataInSer;
     /** The serial data output*/
@@ -152,7 +152,7 @@ public class ArrayMem extends TypedAtomicActor {
     ////                         parameters                        ////
 
     /** The length of the input array.  This is an integer that
-     * defaults to 1; 
+     * defaults to 1;
      */
     public Parameter length;
 
@@ -161,11 +161,11 @@ public class ArrayMem extends TypedAtomicActor {
     /** Get the value of the lenght parameter
      *  Initialize the memory array
      */
-        
+
     public void initialize() throws IllegalActionException{
         _aLength =((IntToken)length.getToken()).intValue();
         _mem = new Token[_aLength];
-    }  
+    }
     /** If read has a token, copy the ith elment of the memory to dataOutSer.
      *  If write has a token, copy the dataInSer input to the ith element of memory.
      *  If init has a token, copy the dataInPar input to the internal array*
@@ -177,10 +177,10 @@ public class ArrayMem extends TypedAtomicActor {
         /**Read the Serial/Parallel Control*/
         if(serPar.hasToken(0)){
             _serPar = ((BooleanToken)serPar.get(0)).booleanValue();
-        }          
-    
-     
-        /** Read the Index*/          
+        }
+
+
+        /** Read the Index*/
         if (index.hasToken(0)) {
             _index = ((IntToken)index.get(0)).intValue();
             if ((_index < 0) || (_index >= _aLength)) {
@@ -188,11 +188,11 @@ public class ArrayMem extends TypedAtomicActor {
                         "index " + _index + " is out of range for the memory "
                         + "array, which has length " + _aLength);
             }
-        } 
+        }
         /** Write to the array*/
         if(write.hasToken(0)){
             _write = (BooleanToken)write.get(0);
-       
+
             if (_write.isEqualTo(yes).booleanValue()){
                 if(_serPar){
                     _mem[_index]=(Token)dataInSer.get(0);
@@ -204,9 +204,9 @@ public class ArrayMem extends TypedAtomicActor {
                     }
                 }
                 }
-            }   
+            }
             /** Read from the array*/
-            if(read.hasToken(0)){ 
+            if(read.hasToken(0)){
                 _read  = (BooleanToken)read.get(0);
                 if(_read.isEqualTo(yes).booleanValue()){
                     if(_serPar){
@@ -219,14 +219,14 @@ public class ArrayMem extends TypedAtomicActor {
                 }
             }
         }
-    }    
+    }
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // The most recently read index token.
     private int _index = 0;
     private BooleanToken  _read;
-    private BooleanToken  _write; 
+    private BooleanToken  _write;
     private boolean  _serPar;
 
     //The linear array in which the data is stored. The length of the
