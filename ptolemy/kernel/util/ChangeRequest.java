@@ -194,8 +194,10 @@ public abstract class ChangeRequest {
         return _errorReported;
     }
 
-    /** Return true if the change represented by this request is
-     *  persistent.  That is, return true if the change affects the
+    /** Return false if the change represented by this request has been
+     *  asserted to be non-persistent by calling setPersistent(false),
+     *  and return true otherwise.  That is, return false if the change
+     *  has been asserted to not affect the
      *  MoML representation of the model. This might be used, for
      *  example, by a user interface, to determine whether to mark
      *  the model "modified," and hence, whether to prompt the user
@@ -204,7 +206,7 @@ public abstract class ChangeRequest {
      *  This method returns <i>true</i> unless setPersistent()
      *  has been called with an argument <i>false</i>.  It is up
      *  to the creator of the change request to call that method
-     *  to indicate that the change is not persistent. There is
+     *  to ensure that the change is not persistent. There is
      *  no automatic detection of whether the change is persistent.
      *
      *  @see #setPersistent(boolean)
@@ -267,18 +269,22 @@ public abstract class ChangeRequest {
         }
     }
 
-    /** Specify whether the change represented by this request is
+    /** Assert whether the change represented by this request is
      *  persistent.  Call this method with argument <i>false</i> to
-     *  specify that the change does not affect the MoML representation
-     *  of the model. This might be used, for example, by a user
+     *  assert that the change does not affect the MoML representation
+     *  of the model. This might, for example, guide a user
      *  interface, to determine whether to mark the model "modified,"
      *  and hence, whether to prompt the user to save the model if a
      *  window is closed.
      *  <p>
      *  It is up to the creator of the change request to call this
-     *  method to indicate that the change is not persistent. There is
+     *  method to assure that the change is not persistent. Calling
+     *  this method with a <i>false</i> argument does not make the
+     *  change non-persistent. It merely asserts that it is. There is
      *  no automatic detection of whether the change is persistent.
-     *  By default, it is assumed to be persistent.
+     *  By default, the change is assumed to be persistent, so unless
+     *  this is called with argument <i>false</i>, a UI will likely
+     *  mark the model modified upon execution of the change request.
      *
      *  @see #isPersistent()
      *  @param persistent False to indicate that the change represented
