@@ -361,6 +361,22 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         return true;
     }
 
+    /** Throw an exception, since FSMActor has no use for this
+     *  method.
+     *  
+     *  @param count The number of iterations to perform.
+     *  @return True if the actor was successfully iterated the
+     *   specified number of times. Otherwise, return false.
+     *  @exception IllegalActionException If one of the Executable
+     *   methods throws it.
+     */
+    public boolean iterate(int count) throws IllegalActionException {
+	throw new IllegalActionException (this,
+                    "iterate() should not be invoked on an " +
+		    "FSMActor.");
+    }
+
+
     /** Create a new TypedIOPort with the specified name.
      *  The container of the port is set to this actor.
      *  This method is write-synchronized on the workspace.
