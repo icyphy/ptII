@@ -32,7 +32,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.actor.Director;
 import ptolemy.actor.Actor;
 import java.util.Enumeration;
-import collections.LinkedList;
+import collections.HashedMap;
 
 //////////////////////////////////////////////////////////////////////////
 //// DomainLibrary
@@ -43,19 +43,20 @@ and extended by clients such as user interfaces and configuration
 tools. The information is persistently stored in an XML
 file.
 
-<p>The original grammer was this, which needs to be
-adapted to XML:
-
+The specification for the domain library is expressed in XML and looks 
+something like the following:
 <pre>
-configuration: domain_definitions<BR>
-domain_definitions: domain_definition
-                  | domain_definitions domain_definition<BR>
-domain_definition: domain_classname
-                 | domain_classname actor_packages<BR>
-domain_classname: <B>Domain</B> <I>classname</I><BR>
-actor_packages: actor_package
-              | actor_packages actor_package<BR>
-actor_package: <B>ActorPackage</B> <I>package</I>
+<domainlibrary name="Dataflow" version="1.0">
+<domain name="Static Dataflow">
+<actorpackage name="SDF default" package="ptolemy.domains.sdf.lib"/>
+<director name="Multirate" class="ptolemy.domains.sdf.kernel.SDFDirector"/>
+<director name="Discrete Timed" class="ptolemy.domains.sdf.kernel.DTDirector"/>
+</domain>
+<domain name="Continuous Time">
+<actorpackage name="CT default" package="ptolemy.domains.ct.lib"/>
+<director name="Runge-Kutta" class="ptolemy.domains.ct.kernel.CTRKDirector"/>
+</domain>
+</domainlibrary>
 </pre>
 
 The domains are created after reading each domain_classname, then all the
@@ -73,41 +74,39 @@ the domain polymorphic actor packages are searched.
 @author Jie Liu, Lukito Muliadi, John Reekie
 @version $Id$
 */
-public class DomainLibrary {
-    /** Null constructor. The configuration file is loaded from some
-     *  default place.
+public class DomainLibrary extends XMLElement{
+
+    /** 
+     * Create a new DomainLibrary object
      */	
     public DomainLibrary() {
+        super("domainlibrary");
+        _domains = (HashedMap) new HashedMap();
+        setName("");
+        setVersion("");
     }
 
-    /** Construct the DomainLibrary with a input stream. The configuration
-     *  information is read from the stream.
-     *  @param inputstream The stream from which the configuration is read.
+    /** 
+     * Construct a DomainLibrary object with the specified attributes.
+     *
+     * @param attributes a HashedMap from attribute name to attribute value.
      */
-    public DomainLibrary(InputStream inputstream) {
+    public DomainLibrary(HashedMap attributes) {
+        super("domainlibrary",attributes);
+        _domains = (HashedMap) new HashedMap();
+        if(!hasAttribute("name")) setName("");
+        if(!hasAttribute("version")) setVersion("");
     }
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Add an actor package for the specified domain. If the domain is null
-     *  the actor package is considered a domain polymorphic actor
-     *  package. The domain is added to the domain list if it's
-     *  not already there.
-     * @param domain The domain this package of actors belongs to.
-     * @param actorpackage The full package name.
-     */	
-    public void addActorPackage(Domain domain, String actorpackage) {
-        // if ! (domain exists) addDomain(domain)
-        // domain.addActorPackage(actorpackage);
-    }
-
-    /** Add a domain to the domain list. The list can be saved by calling
-     *  saveConfiguration() method. If the domain is already on the domain
-     *  list, do nothing.
+    /** Add a domain to the domain list. 
      * @param domain The added domain.
      */	
     public void addDomain(Domain domain) {
+        String name=domain.getName();
+        _domains.putAt(name,domain);
     }
 
     /** Return a new actor with the specified name that is compatible with
@@ -126,22 +125,18 @@ public class DomainLibrary {
         return null;
     }
 
-    /** Return the actor packages array for the specified domain in there
-     *  creation orders. This is also the order of searching actors.
-     *  If the domain is null, then the actor package of the domain
-     *  polymorphic actors will be returned. If the domain is not on the
-     *  domain list, returns null.
-     * @param domain The domain requested.
-     * @return The actor packages in a array.
-     */	
-    public String[] getActorPackages(Domain domain) {
-        //if (domain == null) return PolyDomain.getActorPackages()
-        //if (domain exist) return domain.getActorPackages()
-        //if (!domain exist) return null;
-        return null;
+    /** Return an enumeration of the known domains. Each entry
+     * in the returned enumeration is the name of a domain contained
+     * in this domainlibrary.
+     *
+     *  @return An Enumaration of String
+     */
+    public Enumeration domains() {
+        return _domains.keys();
     }
 
-    /** Get the single instance of this class.
+    /** 
+     * Get the single instance of this class. 
      */	
     public static DomainLibrary getInstance() {
         if (_instance == null) {
@@ -150,42 +145,25 @@ public class DomainLibrary {
         return _instance;
     }
 
-   /** Return a new domain object with the specified name. The name of 
-     *  a domain is the full class name of the Java class. This domain
-     *  class is searched in the CLASSPATH of the system. If no matched
-     *  class is found, then a ClassNotFoundException will be thrown.
-     *  @param domainname The full class name of the domain.
+   /** Return a new domain object with the specified name. 
+     *  @param domainname The identifier of a domain.
      *  @return The domain that has the name.
      */	
-    public Domain createDomain(String domainname) {
-        return null;
+    public Domain getDomain(String domainname) {
+        return (Domain)_domains.at(domainname);
     }
 
-    /** Return an enumeration of the known domains. Each entry
-     * in the returned enumeration is the domain name.
-     *
-     *  @return The available domains.
+    /**
+     * Return the name of this library.
      */
-    public Enumeration domains() {
-        return null;
+    public String getName() {
+        return getAttribute("name");
     }
 
-    /** Return the (static) version of Ptolemy II.
-     */	
-    public static String getVersion() {
-        return "0.1";
-    }
-
-    /** Load the configuration from the default place.
-     */	
-    public void loadConfiguration() {
-    }
-
-    /** Load the configuration from an InputStream. The domains are
-     *  created for each domain configuration.
-     * @param inputstream The input stream to read the configuration.
-     */	
-    public void loadConfiguration(InputStream inputstream) {
+    /** Return the version of this library.
+     */
+    public String getVersion() {
+        return getAttribute("version");
     }
 
     /** Remove the specified actor path from the list in the specified
@@ -200,34 +178,45 @@ public class DomainLibrary {
         throws IllegalActionException {
     }
 
-    /** Remove the specified domain from the domain list. If the domain is
-     *  not on the domain list, then an IllegalActionException will be
-     *  thrown.
-     * @param domain The domain asked to remove.
-     * @exception IllegalActionException If the domain is not on the domain
-     *       list.
+    /** 
+     * Remove the specified domain from the domain list. 
+     *
+     * @exception IllegalActionException If no domain with the given name
+     * exists
      */	
-    public void removeDomain(Domain domain) throws IllegalActionException{
+    public void removeDomain(String domainname) throws IllegalActionException {
+        _domains.removeAt(domainname);
     }
 
-    /** Save the current configuration, including domains and actor packages
-     *  to the default place.
-     */	
-    public void saveConfiguration(){
-    }
-
-    /** Save the current configuration to the specified output stream.
-     *  If the output stream is null, then save to the default place,
-     *  @param outputstream The specified output stream.
+    /**
+     * Set the global instance of this object.   This should be set once,
+     * and once only!!!!  
      */
-    public void saveConfiguration(OutputStream outputstream) {
+    public void setInstance(DomainLibrary d) {
+        if(_instance==null) _instance = d;
+        else throw new RuntimeException("Instance of DomainLibrary class has" +
+                " already been set.");
     }
+
+    /** 
+     * Set the short name of this domainlibrary
+     */
+    public void setName(String s) {
+        setAttribute("name", s);
+    }
+
+    /** Set the string that represents the version of this domainlibrary.
+     */
+    public void setVersion(String s) {
+        setAttribute("version",s);
+    }
+
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 
     // A list of known domains.
-    private LinkedList _domains;    
+    private HashedMap _domains;    
 
     // The single instance
     private static DomainLibrary _instance = null;
