@@ -92,12 +92,37 @@ if ![info exists TESTS] {
     set TESTS {}
 }
 
+
+# Set this to true to see the known failures
+if ![info exists showKnownFailures] {
+    set showKnownFailures false
+}
+
+# To set this to true, set the ptolemy.ptII.isRunningNightlyBuild
+# property with
+# make JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true 
+set isRunningNightlyBuild \
+   [java::call System getProperty ptolemy.ptII.isRunningNightlyBuild]
+
+if {"$isRunningNightlyBuild" == "true"} {
+    # If we are running the nightly build, then always show the known failures
+    set showKnownFailures true
+}
+
 proc print_verbose {test_name test_description contents_of_test code answer {testtype "NORMAL"}} {
-    global FAILED KNOWN_FAILED errorInfo
+    global FAILED KNOWN_FAILED VERBOSE errorInfo
+    global isRunningNightlyBuild showKnownFailures
     puts "\n"
-    puts "==== $test_name $test_description"
-    puts "==== Contents of test case:"
-    puts "$contents_of_test"
+    if {$VERBOSE \
+	    ||"$showKnownFailures" == "true" \
+	    || ("$showKnownFailures" != "true" \
+		    && "$testtype" == "NORMAL")} {
+	puts "==== $test_name $test_description"
+	puts "==== Contents of test case:"
+	puts "$contents_of_test"
+    } else {
+	puts "==== $test_name $test_description"
+    }
     if {$code != 0} {
 	if {$testtype == "NORMAL"} {
 	    incr FAILED
@@ -119,7 +144,13 @@ proc print_verbose {test_name test_description contents_of_test code answer {tes
 	    incr KNOWN_FAILED
 	    if {$code == 1} {
 		puts ".... Test generated KNOWN error:"
-		jdkStackTrace
+		if {"$showKnownFailures" == "true"} {
+		    jdkStackTrace
+		} else { 
+		    puts "To see the results, start up ptjacl, do \
+		         'set showKnownFailures true'"
+		    puts "       and then resource the .tcl file"
+		}
 	    } elseif {$code == 2} {
 		puts ".... Test generated KNOWN return exception;  result was:"
 		puts $answer
@@ -173,6 +204,11 @@ proc test {test_name test_description contents_of_test passing_results {testtype
     # see if it is set inside functions that use dialog boxes.
     global TY_TESTING
     global TESTS PASSED FAILED KNOWN_FAILED NEWLY_PASSED
+
+    # To set this to true, set the ptolemy.ptII.isRunningNightlyBuild
+    # property with
+    # make JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true 
+    global isRunningNightlyBuild
 
     # Set this so modal dialogs become -- ta-dah! -- non-modal
     set TY_TESTING 1
@@ -228,11 +264,19 @@ proc test {test_name test_description contents_of_test passing_results {testtype
 		incr FAILED
 	    }
 	} else {
-	    print_verbose $test_name $test_description $contents_of_test \
+	    if {"$isRunningNightlyBuild" == "true"} {
+		print_verbose $test_name $test_description $contents_of_test \
 		    $code $answer $testtype
-	    puts "---- KNOWN Failure, Result should have been:"
-	    puts "$passing_results"
-	    puts "---- $test_name Failed, but this is a KNOWN failure"
+		puts "---- KNOWN Failure, Result should have been:"
+		puts "$passing_results"
+		puts "---- $test_name Failed, but this is a KNOWN failure"
+            } else {		
+		puts "---- $test_name Failed, but this is a KNOWN failure"
+		puts "To see the results, start up ptjacl, do "
+		puts "    set isRunningNightlyBuild true"
+		puts "and then resource the .tcl file"
+	    }
+
 	    incr KNOWN_FAILED
 	}
     }
@@ -569,10 +613,10 @@ proc diffText {texta textb} {
 set isRunningNightlyBuild \
    [java::call System getProperty ptolemy.ptII.isRunningNightlyBuild]
 
-if {"$isRunningNightlyBuild" == "true"} {
+#if {"$isRunningNightlyBuild" == "true"} {
    set timeOutSeconds 1200
    puts "testDefs.tcl: nightly build, so setting time out to\
 	$timeOutSeconds seconds"
    java::new util.testsuite.WatchDog [expr {$timeOutSeconds * 1000}]
-}
+#}
 
