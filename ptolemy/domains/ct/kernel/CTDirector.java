@@ -260,7 +260,10 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     public void attributeChanged(Attribute attr)
             throws IllegalActionException {
         if(_debugging) _debug(attr.getName() + " updating.");
-        if(attr == stopTime) {
+        if(attr == startTime) {
+            Parameter param = (Parameter)attr;
+            _startTime = ((DoubleToken)param.getToken()).doubleValue();
+        } else if(attr == stopTime) {
             Parameter param = (Parameter)attr;
             setStopTime(((DoubleToken)param.getToken()).doubleValue());
         } else if(attr == initStepSize) {
@@ -418,7 +421,13 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     public final double getNextIterationTime() {
         return getIterationBeginTime() + getCurrentStepSize();
     }
-
+    
+    /** Return the start time parameter value.
+     *  @return the start time.
+     */
+    public final double getStartTime() {
+        return _startTime;
+    }
     /** Return the stop time.
      *  @return the stop time.
      */
@@ -633,7 +642,8 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      */
     protected void _initParameters() {
         try {
-            _stopTime = java.lang.Double.MAX_VALUE;
+            _stopTime = 1.0;
+            _startTime = 0.0;
             _initStepSize = 0.1;
             _minStepSize = 1e-5;
             _maxStepSize = 1.0;
@@ -754,6 +764,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     private ODESolver _currentSolver = null;
 
     // local copies of parameters.
+    private double _startTime;
     private double _stopTime;
     private double _initStepSize;
     private double _minStepSize;
