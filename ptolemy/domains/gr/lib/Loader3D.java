@@ -97,9 +97,9 @@ public class Loader3D extends GRShadedShape {
         obj = s;
     }
 
-    private boolean spin = false;
-    private boolean noTriangulate = false;
-    private boolean noStripify = false;
+
+
+ 
     private double creaseAngle = 60.0;
     private Scene obj;
 }

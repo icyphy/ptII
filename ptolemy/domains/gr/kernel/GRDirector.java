@@ -51,7 +51,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
+
 import ptolemy.kernel.util.Workspace;
 
 import java.util.Iterator;
@@ -401,7 +401,7 @@ public class GRDirector extends StaticSchedulingDirector {
         // force the schedule to be computed.
         if (_debugging) _debug("Computing schedule");
         try {
-            Schedule sched = scheduler.getSchedule();
+            scheduler.getSchedule();
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
                     "Failed to compute schedule:");
@@ -447,7 +447,7 @@ public class GRDirector extends StaticSchedulingDirector {
                     + "GR system with no scheduler");
         }
 
-        Schedule schedule = currentScheduler.getSchedule();
+        currentScheduler.getSchedule();
         _debugViewActorTable();
     }
 
@@ -466,8 +466,7 @@ public class GRDirector extends StaticSchedulingDirector {
         Iterator actors = entityList.iterator();
         while (actors.hasNext()) {
             ComponentEntity actor = (ComponentEntity) actors.next();
-            String actorName = actor.getName();
-
+         
             if (!actor.isAtomic()) {
                 _debug(" **COMPOSITE** ");
             }
@@ -476,98 +475,15 @@ public class GRDirector extends StaticSchedulingDirector {
     }
 
 
-    /** For debugging purposes.  Display the list of attributes
-     *  inside a given named object
-     *  @param object The named object that has a list of attributes
-     */
-    private void _debugViewAttributesList(NamedObj object) {
-        List list = object.attributeList();
-        Iterator listIterator = list.iterator();
 
-        _debug("attribute List:");
-        while (listIterator.hasNext()) {
-            Attribute attribute = (Attribute) listIterator.next();
-            _debug(attribute.toString());
-        }
-    }
 
-    /** For debugging purposes. This is mainly used for figuring out
-     *  the list of output ports in a TypedCompositeActor container.
-     *  Note: This method seems to work only for opaque
-     *        TypedCompositeActor containers.
-     *  Note: Output ports of actors inside the TypedCompositeActor
-     *  container will not be listed.
-     */
-    private void _debugViewContainerOutputPorts()
-            throws IllegalActionException {
 
-        List list = ((TypedCompositeActor)getContainer()).outputPortList();
-        Iterator listIterator = list.iterator();
 
-        _debug("\nTypedCompositeActor container output port list:");
-        while (listIterator.hasNext()) {
-            IOPort port = (IOPort) listIterator.next();
-            _debug(" ->" + port);
-            _debugViewPortInsideReceivers(port);
-            //_debugViewPortRemoteReceivers(port);
-        }
-        _debug("\n");
-    }
 
-    /** For debugging purposes.  Display the list of contained entities
-     *  inside the composite object
-     *  @param object The composite entity with a list of contained entities.
-     */
-    private void _debugViewEntityList(CompositeEntity object) {
 
-        List list = object.entityList();
-        Iterator listIterator = list.iterator();
 
-        _debug("\nentity List:");
-        while (listIterator.hasNext()) {
-            Entity entity = (Entity) listIterator.next();
-            _debug(entity.toString());
-        }
-        _debug("\n");
-    }
 
-    /** For debugging purposes.  This function only makes sense
-     *  if the port argument is an opaque / cross-hierarchy
-     *  output port.
-     *  Note: The only output ports with receivers are
-     *        opaque / cross-hierarchy output ports.
-     *  IMPORTANT: There are no receivers inside transparent
-     *             TypedCompositeActors ports
-     */
-    private void _debugViewPortInsideReceivers(IOPort port)
-            throws IllegalActionException {
-        Receiver[][] portReceivers = port.getInsideReceivers();
-        for (int i = 0; i < port.getWidth(); i++) {
-            for (int j = 0; j < portReceivers[i].length; j++) {
-                _debug("  ->" + portReceivers[i][j]);
-                _debug("  = >"
-                        + portReceivers[i][j].getContainer());
-                // FIXME: remove comments when debugging
-                // ((GRReceiver)portReceivers[i][j]).displayReceiverInfo();
-            }
-        }
-    }
 
-    /** For debugging purposes. This is mainly used for figuring out
-     *  which outside receivers are connected to an output port of an
-     *  TypedCompositeActor. The TypedCompositeActor can be transparent
-     *  or opaque.
-     */
-    private void _debugViewPortRemoteReceivers(IOPort port) {
-        Receiver[][] remoteReceivers = port.getRemoteReceivers();
-        for (int i = 0; i < port.getWidth(); i++) {
-            for (int j = 0; j < remoteReceivers[i].length; j++) {
-                _debug("  -->" + remoteReceivers[i][j]);
-                _debug("  == >"
-                        + remoteReceivers[i][j].getContainer());
-            }
-        }
-    }
 
     /** Most of the constructor initialization is relegated to this method.
      *  Initialization process includes :
@@ -580,7 +496,7 @@ public class GRDirector extends StaticSchedulingDirector {
         try {
             // If Java3D is not present, then this class is usually
             // the class that is reported as missing.
-            Class java3dClass = Class.forName("javax.vecmath.Tuple3f");
+            Class.forName("javax.vecmath.Tuple3f");
         } catch (Exception ex) {
             throw new InternalErrorException(this, ex,
                     "The GR domain requires that Java 3D be installed.\n" +

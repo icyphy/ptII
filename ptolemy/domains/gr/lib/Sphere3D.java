@@ -147,7 +147,6 @@ public class Sphere3D extends GRShadedShape {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private boolean _dirty;
     private Transform3D scaleTransform;
     private TransformGroup _scaler;
     private Sphere _containedNode;

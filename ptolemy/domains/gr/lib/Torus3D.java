@@ -127,7 +127,7 @@ public class Torus3D extends GRShadedShape {
 
         int[] stripCount = new int[numberOfQuads];
 
-        int i, j, k, l, m;
+        int i, j, k, m;
         for (i = 0; i < numberOfQuads; i++) {
             stripCount[i] = 4;
         }

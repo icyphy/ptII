@@ -58,7 +58,7 @@ import ptolemy.util.StringUtilities;
 import java.awt.Frame;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
+
 import java.util.List;
 import java.util.Map;
 
@@ -401,10 +401,6 @@ public class GiottoCodeGenerator extends Attribute {
             + actorName
             + "_driver (";
 
-        //get the "deep source" ports(the driver's inputs) for
-        //each input port of this actor.
-        int currentDepth = model.depthInHierarchy();
-
         Map driverIOMap = new LinkedHashMap();
         for (Iterator inPorts = actor.inputPortList().iterator();
              inPorts.hasNext();) {
@@ -507,7 +503,6 @@ public class GiottoCodeGenerator extends Attribute {
                 IOPort outPort = (IOPort)portConnected.next();
                 String sanitizedPortName = StringUtilities.sanitizeName(
                         outPort.getName(model));
-                NamedObj portContainer = (NamedObj) outPort.getContainer();
                 if (outPort.isOutput()) {
                     if (driverParas.length()==0) {
                         driverParas +=  sanitizedPortName;
@@ -551,9 +546,7 @@ public class GiottoCodeGenerator extends Attribute {
         String codeString = "";
 
         int actorFreq = 0;
-        int actFreq = 0;
-        int exitFreq = 0;
-
+    
         String outputName, actorName, modeName;
 
         modeName = StringUtilities.sanitizeName(model.getName());
@@ -641,10 +634,7 @@ public class GiottoCodeGenerator extends Attribute {
 
 
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
 
-    private LinkedList _commActors;
     private static String _endLine = "\n";
 
     ///////////////////////////////////////////////////////////////////
@@ -667,7 +657,7 @@ public class GiottoCodeGenerator extends Attribute {
                 Configuration configuration
                     = ((TableauFrame)parent).getConfiguration();
 
-                NamedObj container = (NamedObj)object.getContainer();
+                // NamedObj container = (NamedObj)object.getContainer();
 
                 TypedCompositeActor model = (TypedCompositeActor)
                     GiottoCodeGenerator.this.getContainer();

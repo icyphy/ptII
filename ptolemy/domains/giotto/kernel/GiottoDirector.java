@@ -358,7 +358,6 @@ public class GiottoDirector extends StaticSchedulingDirector {
             scheduleIterator = unitSchedule.iterator();
             while (scheduleIterator.hasNext()) {
                 Actor actor = ((Firing) scheduleIterator.next()).getActor();
-                int actorFrequency = GiottoScheduler.getFrequency(actor);
                 if (_debugging) {
                     _debug("Iterating " + ((NamedObj)actor).getFullName());
                 }

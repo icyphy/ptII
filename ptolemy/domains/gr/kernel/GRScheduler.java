@@ -139,7 +139,6 @@ public class GRScheduler extends Scheduler {
         if (director == null) {
             return null;
         }
-        int referenceDepth = director.depthInHierarchy();
 
         // If there is no container, there are no actors
         CompositeActor container = (CompositeActor)(director.getContainer());
@@ -149,7 +148,6 @@ public class GRScheduler extends Scheduler {
 
         CompositeActor castContainer = (CompositeActor) container;
 
-        int count = 0;
 
         // First, include all actors as nodes in the graph.
         // get all the contained actors.
