@@ -1191,8 +1191,8 @@ public class Graph implements Cloneable {
      *  an edge weight in this type of graph.
      *  If the given object is null this method returns true if it is valid
      *  to have an unweighted edge in this type of graph.
-     *  This base class method returns true unconditionally, even if the
-     *  given object is null. In derived classes, the method should be 
+     *  This base class method returns true unconditionally.
+     *  In derived classes, the method should be 
      *  overridden to take into account any restrictions on edge weights.
      *  @param object The given object.
      *  @return True if if the given object is a valid edge weight for this 
@@ -1207,8 +1207,8 @@ public class Graph implements Cloneable {
      *  a node weight in this type of graph.
      *  If the given object is null this method returns true if it is valid
      *  to have an unweighted node in this type of graph.
-     *  This base class method returns true unconditionally, even if the
-     *  given object is null. In derived classes, the method should be 
+     *  This base class method returns true unconditionally.
+     *  In derived classes, the method should be 
      *  overridden to take into account any restrictions on node weights.
      *  @param object The given object.
      *  @return True if if the given object is a valid node weight for this 
