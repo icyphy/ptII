@@ -561,7 +561,7 @@ public class CTScheduler extends Scheduler{
      *  @param The specified actor. If the actor is null, returns null.
      *  @return The enumerations of predecessors,  unordered.
      */
-     public Enumeration _predecessors(Actor actor) {
+     protected Enumeration _predecessors(Actor actor) {
          if(actor == null) {
              return null;
          }
@@ -720,7 +720,7 @@ public class CTScheduler extends Scheduler{
      *  @param The specified actor. If the actor is null, returns null.
      *  @return The enumerations of predecessors.
      */
-     public Enumeration _successors(Actor actor) {
+     protected Enumeration _successors(Actor actor) {
          if(actor == null) {
              return null;
          }
