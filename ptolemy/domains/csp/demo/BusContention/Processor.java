@@ -227,7 +227,8 @@ public class Processor extends CSPActor {
     public void setGraphicFrame(BusContentionGraphic bcg)
             throws IllegalActionException {
         if( bcg == null ) {
-            throw new IllegalActionException( this, "BusContentionGraphic is null");
+            throw new IllegalActionException( this,
+                    "BusContentionGraphic is null");
         }
         _topGraphic = bcg;
     }
