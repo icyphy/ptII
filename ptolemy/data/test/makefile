@@ -48,6 +48,7 @@ JSRCS =
 JSIMPLE_TESTS = \
 	BooleanToken.tcl \
 	IntToken.tcl \
+	LongToken.tcl \
 	ObjectToken.tcl \
 	StringToken.tcl
 
