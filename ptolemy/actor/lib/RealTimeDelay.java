@@ -92,7 +92,7 @@ public class RealTimeDelay extends Transformer {
      */
     public void fire() throws IllegalActionException {
         _transferTokens();
-        
+
     }
 
     /** Output the inputs with a real time delay, specified by

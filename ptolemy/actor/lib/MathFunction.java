@@ -103,14 +103,14 @@ public class MathFunction extends TypedAtomicActor {
         // Ports
         // secondOperand port is not allocated in the constructor
         // instead it will allocated dynamically during run-time
-        
+
         firstOperand = new TypedIOPort(this, "firstOperand");
         firstOperand.setInput(true);
         output = new TypedIOPort(this, "output");
         output.setOutput(true);
         firstOperand.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
-        
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -204,7 +204,7 @@ public class MathFunction extends TypedAtomicActor {
                     input2 =
                         ((DoubleToken) secondOperand.get(0)).doubleValue();
                 }
-            } 
+            }
             output.send(0, new DoubleToken(_doFunction(input1, input2)));
         }
     }
@@ -227,7 +227,7 @@ public class MathFunction extends TypedAtomicActor {
      */
     public int iterate(int count) throws IllegalActionException {
 	// Check whether we need to reallocate the output token array.
-	
+
 	    Token[] inArray1;
 	    Token[] inArray2;
 

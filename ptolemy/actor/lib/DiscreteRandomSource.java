@@ -88,7 +88,7 @@ public class DiscreteRandomSource extends RandomSource {
     ////                     ports and parameters                  ////
 
     /** The probability mass function.
-     *  This parameter contains a DoubleMatrixToken, with default value 
+     *  This parameter contains a DoubleMatrixToken, with default value
      *  [0.5, 0.5].
      */
     public Parameter pmf;
@@ -135,7 +135,7 @@ public class DiscreteRandomSource extends RandomSource {
      *  which will cause type resolution to be redone at the next
      *  opportunity. It is assumed that type changes in the parameter
      *  are implemented by the container's change request mechanism,
-     *  so they are implemented when it is safe to redo type 
+     *  so they are implemented when it is safe to redo type
      *  resolution.
      *  @param attribute The attribute whose type has changed.
      *  @exception IllegalActionException If the base class throws it

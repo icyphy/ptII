@@ -133,14 +133,14 @@ public class Ramp extends SequenceSource {
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the <code>init</code> and <code>step</code>
      *  public members to the parameters of the new actor.
-     *  @param ws The workspace for the new object.
+     *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws)
+    public Object clone(Workspace workspace)
 	    throws CloneNotSupportedException {
-        Ramp newObject = (Ramp)super.clone(ws);
+        Ramp newObject = (Ramp)super.clone(workspace);
 	// set the type constraints.
 	newObject.output.setTypeAtLeast(newObject.init);
 	newObject.output.setTypeAtLeast(newObject.step);
@@ -169,7 +169,7 @@ public class Ramp extends SequenceSource {
         _stateToken = init.getToken();
 	_step = step.getToken();
     }
-    
+
     /** Invoke a specified number of iterations of this actor. Each
      *  iteration updates the state of the actor by adding the
      *  value of the <i>setp</i> parameter to the state and sending
@@ -216,7 +216,7 @@ public class Ramp extends SequenceSource {
 
     /** Update the state of the actor by adding the value of the
      *  <i>step</i> parameter to the state.  Also, increment the
-     *  iteration count, and if the result is equal to 
+     *  iteration count, and if the result is equal to
      *  <i>firingCountLimit</i>, then
      *  return false.
      *  @return False if the number of iterations matches the number requested.

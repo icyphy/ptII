@@ -224,7 +224,7 @@ public class Poisson extends TimedSource {
             _boundaryCrossed = true;
         }
 
-       
+
     }
 
     /** Schedule the first firing at time zero and initialize local variables.

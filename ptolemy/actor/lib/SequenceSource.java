@@ -54,7 +54,7 @@ to the scheduler that it should stop invocations of this actor.
 The default value of <i>firingCountLimit</i>
 is zero, which results in postfire always returning
 true.  Derived classes must call super.postfire() for this mechanism to
-work. 
+work.
 
 @author Edward A. Lee
 @version $Id$
@@ -136,7 +136,7 @@ public class SequenceSource extends Source implements SequenceActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // This is the value in parameter 
+    // This is the value in parameter
     // firingCountLimit.
     // It may be convient for derived classes to read this
     // variable in the iterate() method.

@@ -84,7 +84,7 @@ public class IIR extends Transformer {
 	numerator =
 	    new Parameter(this, "numerator", new DoubleMatrixToken(numeratorTaps));
 	attributeChanged(numerator);
-	denominator = 
+	denominator =
 	    new Parameter(this, "denominator", new DoubleMatrixToken(denominatorTaps));
 	attributeChanged(denominator);
         input.setTypeEquals(BaseType.DOUBLE);
@@ -95,19 +95,19 @@ public class IIR extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** This parameter represents the numerator coefficients as a row 
-     *  vector of a token of type DoubleMatrixToken. The format is 
-     *  {{b<sub>0</sub>, b<sub>1</sub>, ..., b<sub>M</sub>}}. The default 
+    /** This parameter represents the numerator coefficients as a row
+     *  vector of a token of type DoubleMatrixToken. The format is
+     *  {{b<sub>0</sub>, b<sub>1</sub>, ..., b<sub>M</sub>}}. The default
      *  value of this parameter is {{1.0}}.
      */
     public Parameter numerator;
 
-    /** This  parameter represents the denominator coefficients as a row 
-     *  vector of a token of type DoubleMatrixToken. The format is 
-     *  {{a<sub>0</sub>, a<sub>1</sub>, ..., a<sub>N</sub>}}. Note that 
-     *  the value of a<sub>0</sub> is constrained to be 1. This 
-     *  implementation will silently ignore whatever value the user 
-     *  enters for as the first element of <i>denominator</i>, and will 
+    /** This  parameter represents the denominator coefficients as a row
+     *  vector of a token of type DoubleMatrixToken. The format is
+     *  {{a<sub>0</sub>, a<sub>1</sub>, ..., a<sub>N</sub>}}. Note that
+     *  the value of a<sub>0</sub> is constrained to be 1. This
+     *  implementation will silently ignore whatever value the user
+     *  enters for as the first element of <i>denominator</i>, and will
      *  use 1.0 instead.  The default value of this parameter is {{1.0}}.
      */
     public Parameter denominator;
@@ -124,7 +124,7 @@ public class IIR extends Transformer {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-	//System.out.println("attributeChanged(): invoked on " + 
+	//System.out.println("attributeChanged(): invoked on " +
 	//   attribute.getName());
         if (attribute == numerator) {
 	    _numerator =  (((DoubleMatrixToken)numerator.getToken()).doubleMatrix())[0];
@@ -138,7 +138,7 @@ public class IIR extends Transformer {
         }
 	// Initialize filter state.
 	if ((_numerator != null) && (_denominator != null)) {
-	    int stateSize = 
+	    int stateSize =
 		(int)java.lang.Math.max(_numerator.length, _denominator.length);
 	    _stateVector = new double[stateSize];
 	}
@@ -148,7 +148,7 @@ public class IIR extends Transformer {
      *  @exception IllegalActionException Not thrown
      */
     public void fire() throws IllegalActionException {
-	// NOTE: iterate() should never return STOP_ITERATING, so 
+	// NOTE: iterate() should never return STOP_ITERATING, so
 	// this should be safe.
  	iterate(1);
     }
@@ -160,19 +160,19 @@ public class IIR extends Transformer {
     public void initialize() throws IllegalActionException {
 	super.initialize();
 	// Initialize filter state.
-	int stateSize = 
+	int stateSize =
 	    (int)java.lang.Math.max(_numerator.length, _denominator.length);
 	_stateVector = new double[stateSize];
 	_curTap = 0;
     }
 
     /** Invoke a specified number of iterations of this actor. Each
-     *  iteration causes the filter to consume an input token and 
+     *  iteration causes the filter to consume an input token and
      *  compute a single output token. An invocation
      *  of this method therefore applies the filter to <i>count</i>
      *  successive input tokens.
      *  <p>
-     *  This method should be called instead of the usual prefire(), 
+     *  This method should be called instead of the usual prefire(),
      *  fire(), postfire() methods when this actor is used in a
      *  domain that supports vectorized actors.  This leads to more
      *  efficient execution.
@@ -205,19 +205,19 @@ public class IIR extends Transformer {
 		//System.out.println("_curTap = " + _curTap);
 		//System.out.println(" _denominator.length = " +  _denominator.length);
 		for (int j = 1; j < _denominator.length; j++) {
-		    wn += 
-			_denominator[j]*_stateVector[(_curTap + j) % 
+		    wn +=
+			_denominator[j]*_stateVector[(_curTap + j) %
 						     _stateVector.length];
-		    // System.out.println("j = " + j + ", _stateVector val = " + 
+		    // System.out.println("j = " + j + ", _stateVector val = " +
 		    //_stateVector[(_curTap + j+1) %  _stateVector.length] +
-		    //" index = " + (_curTap + j+1) %  _stateVector.length); 
+		    //" index = " + (_curTap + j+1) %  _stateVector.length);
 		}
 		_stateVector[_curTap] = wn;
 		yCur = 0;
 		//System.out.println("_numerator.length = " +  _numerator.length);
 		for (int k = 0; k < _numerator.length; k++) {
-		    yCur += 
-			_numerator[k]*_stateVector[(_curTap +k) % 
+		    yCur +=
+			_numerator[k]*_stateVector[(_curTap +k) %
 						   _stateVector.length];
 		    // System.out.println("k = " + k + ",  _stateVector val = " +
 		    //_stateVector[(_curTap +k) %   _stateVector.length] +

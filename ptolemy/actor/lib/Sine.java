@@ -129,7 +129,7 @@ public class Sine extends Transformer {
      *  tokens. An invocation of this method will cause this actor
      *  to consume and produce <i>count</i> tokens.
      *  <p>
-     *  This method should be called instead of the usual prefire(), 
+     *  This method should be called instead of the usual prefire(),
      *  fire(), postfire() methods when this actor is used in a
      *  domain that supports vectorized actors.
      *  @param count The number of iterations to perform.
