@@ -256,8 +256,28 @@ public class JNIUtilities {
         String nativeFunction = _getNativeFunction(actor);
         String nativeLibrary = _getNativeLibrary(actor);
 
+        // Rename the actor.
 	String newName = nativeLibrary + "I"
 			  + nativeFunction;
+
+        // About the renaming, Edward wrote:
+        //
+        // Why rename an actor <library name>I<function name>?  I
+        // guess you probably would really like to use "."  instead of
+        // "I", but unfortunately, Ptolemy doesn't allow this.
+        // Perhaps "-" would be easier to read?  Or "_"?  Or " "?
+
+
+        // Vincent responded with:
+        // 
+        // The "_" is used by JNI to construct the name of the native
+        // interface function :
+        // "Java_packageName_subPackagesNames_ClassName_nativeFunctionName"
+        // where the Class is the one containing the native function
+        // call : so no way to use "_".  The " " and "-" are also not
+        // usable because JNI doesn't support native function name
+        // with such characters.
+
 
 	if (!actor.getName().startsWith(newName)) {
 	    // If the name of the actor does not already start with
