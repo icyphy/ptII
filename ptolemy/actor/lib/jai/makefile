@@ -57,10 +57,10 @@ JSRCS = JAIBMPWriter.java \
 	JAIIDFT.java \
 	JAIImageReader.java \
 	JAIImageToken.java \
-	JAIInterpolation.java \
 	JAIInvert.java \
 	JAIJPEGWriter.java \
 	JAIPNMWriter.java \
+	JAIScale.java \
 	JAITIFFWriter.java
 
 OTHER_FILES_TO_BE_JARED = \
