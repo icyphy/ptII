@@ -134,7 +134,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
         if (VERBOSE) {
             System.out.println("Director.super initialize.");
         }
-        super.initialize();
+        _initialize();
     }
 
     /** Perform mutation and process pause/stop request.
@@ -179,12 +179,28 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
             // ca should have beed checked in isTopLevel()
             Director exe = ca.getExecutiveDirector();
             _outsideTime = exe.getCurrentTime();
+            if(DEBUG) {
+                System.out.println("Outside Time =" + _outsideTime);
+            }
             if (_outsideTime < getCurrentTime()) {
+                if(DEBUG) {
+                    System.out.println(getName() + " rollback from: " +
+                        getCurrentTime() + " to: " +_outsideTime);
+                }    
+                if(STAT) {
+                    NROLL ++;
+                }
                 rollback();
             }
-            double runlength = Math.min(
+            //FIXME: change max to min when getNextIterationTime is in DE.
+            double runlength = Math.max(
                 exe.getNextIterationTime(), _runAheadLength);
             setFireEndTime(_outsideTime + runlength);
+            fireAfterDelay(null,_outsideTime - getCurrentTime());
+            fireAfterDelay(null,getFireEndTime()-getCurrentTime());
+            if(DEBUG) {
+                System.out.println("Fire end time="+getFireEndTime());
+            }
         }
         return true;
     }
@@ -236,44 +252,61 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
             if (_first) {
                 _first = false;
                 produceOutput();
-                updateStates(); // call postfire on all actors 
-                return;
+                //return;
             }
-            
+            updateStates(); // call postfire on all actors 
             if(!_isTopLevel()) {
                 if(knownGood) {
                     saveStates();
                     knownGood = false;
                 }
             }
-                
+
+            
+
             //Refine step size and set ODE Solvers.
             setCurrentODESolver(_getDefaultSolver());
             setCurrentStepSize(getSuggestedNextStepSize());
+            double tnow = getCurrentTime();
             double bp;
             TotallyOrderedSet breakPoints = getBreakPoints();
             //choose ODE solver
             // If now is a break point, remove the break point from table;
             if((breakPoints != null) && !breakPoints.isEmpty()) {
                 bp = ((Double)breakPoints.first()).doubleValue();
+                if(DEBUG) {
+                    System.out.println("Next break point " + bp);
+                }
                 if(Math.abs(bp-_outsideTime) < timeAcc) {
                     knownGood = true;
                     // The result of this iteration should be saved.
                 }
-                if(Math.abs(bp-getCurrentTime()) < timeAcc) {
+                if(Math.abs(bp-tnow) < timeAcc) {
                     // break point now!
                     breakPoints.removeFirst();  
                     setCurrentODESolver(_getBreakpointSolver());
                     setCurrentStepSize(getMinStepSize());
-                }
-                //adjust step size;
-                if(!breakPoints.isEmpty()) {
-                    bp = ((Double)breakPoints.first()).doubleValue();
-                    double iterEndTime = getCurrentTime()+getCurrentStepSize();
-                    if (iterEndTime > bp) {
-                        setCurrentStepSize(bp-getCurrentTime()-timeAcc/2.0);
+                    if(DEBUG) {
+                        System.out.println("Change to BP solver with stepsize"
+                        + getCurrentStepSize());
                     }
                 }
+                //adjust step size;
+                while(!breakPoints.isEmpty()) {
+                    bp = ((Double)breakPoints.first()).doubleValue();
+                    if(Math.abs(bp-tnow) < timeAcc) {
+                        breakPoints.removeFirst();  
+                    } else {
+                        double iterEndTime = tnow+getCurrentStepSize();
+                        if (iterEndTime > bp) {
+                            setCurrentStepSize(bp-tnow-timeAcc/2.0);
+                        }
+                        break;
+                    }
+                }
+            }
+            if(DEBUG) {
+                System.out.println("Resolved stepsize: "+getCurrentStepSize());
             }
             
             // prefire all the actors.
@@ -291,12 +324,11 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
                     if(hasMissedEvent()) {
                         setCurrentTime(getCurrentTime()-getCurrentStepSize());
                         setCurrentStepSize(getRefineStepSize());
-                    } else {
+                    } else { 
                         break;
                     }
                 }
                 produceOutput();
-                updateStates(); // call postfire on all actors 
             }
             // one iteration finished.
             // exit condition.
@@ -304,15 +336,47 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
                 endOfFire = true;
             } else {
                 Director exe = ca.getExecutiveDirector();
+                if(DEBUG) {
+                    System.out.println("Checking FireEndTime"+getFireEndTime());
+                }
                 // If this is the stop time, request a refire.
                 if(Math.abs(getCurrentTime()-getFireEndTime()) < timeAcc) {
                     exe = ca.getExecutiveDirector();
                     exe.fireAfterDelay(ca, getCurrentTime()-_outsideTime);
+                    if(DEBUG) {
+                        System.out.println("Ask for refire at " +
+                            getCurrentTime());
+                    }
                     endOfFire = true;
                 }
             }
         }
     }
+
+    /** Test if the current time is the stop time. 
+     *  If so, return false ( for stop further simulaiton).
+     *  @return false If the simulation time expires.
+     *  @exception IllegalActionException If there is no ODE solver, or
+     *        thrown by the solver.
+     */
+    public boolean postfire() throws IllegalActionException {
+        if(_isTopLevel()) {
+            if(Math.abs(getCurrentTime()-getStopTime()) < getTimeAccuracy()) { 
+                updateStates(); // call postfire on all actors 
+                return false;
+            }
+            if(getStopTime() < getCurrentTime()) {
+                throw new InvalidStateException(this,
+                " stop time is less than the current time.");
+            }
+            if((getCurrentTime()+getSuggestedNextStepSize())>getStopTime()) {
+                fireAfterDelay(null, getStopTime()-getCurrentTime());
+            }
+        }
+        
+        return true;
+    }
+
 
     /** Set the stop time for this iteration.
      *  For internal director, this will result in that the local director
@@ -330,6 +394,9 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
     /** detect event. fire all the actors along the event detector path.
      */
     public void detectEvent() throws IllegalActionException{
+        if(VERBOSE) {
+            System.out.println( "Detecting event...");
+        }
         CTScheduler scheduler = (CTScheduler) getScheduler();
         Enumeration integrators = scheduler.dynamicActorSchedule();
         while(integrators.hasMoreElements()) {
@@ -356,6 +423,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
      *  the last step.
      */
     public boolean hasMissedEvent() {
+        
         boolean result = false;
         _refineStepSize = getCurrentStepSize();
         CTScheduler scheduler = (CTScheduler) getScheduler();

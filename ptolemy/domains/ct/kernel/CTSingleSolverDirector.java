@@ -203,9 +203,9 @@ public class CTSingleSolverDirector extends CTDirector {
         if (_first) {
             _first = false;
             produceOutput();
-            updateStates(); // call postfire on all actors 
             return;
         }
+        updateStates(); // call postfire on all actors 
         //Refine step size
         setCurrentStepSize(getSuggestedNextStepSize());
         double bp;
@@ -240,7 +240,6 @@ public class CTSingleSolverDirector extends CTDirector {
             ODESolver solver = getCurrentODESolver();  
             solver.iterate();
             produceOutput();
-            updateStates(); // call postfire on all actors 
         }
     }
 
@@ -255,7 +254,8 @@ public class CTSingleSolverDirector extends CTDirector {
         if((getCurrentTime()+getSuggestedNextStepSize())>getStopTime()) {
             fireAfterDelay(null, getStopTime()-getCurrentTime());
         }
-        if(Math.abs(getCurrentTime() - getStopTime()) < getTimeAccuracy()) {    
+        if(Math.abs(getCurrentTime() - getStopTime()) < getTimeAccuracy()) {
+            updateStates(); // call postfire on all actors 
             return false;
         }
         return true;

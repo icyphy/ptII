@@ -54,15 +54,6 @@ public interface CTEventGenerateActor {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Return true if the event generator has a event at the current time.
-     */
-    public boolean hasEventNow();
-
-    /** If the event generator has a event now, then emit the event.
-     *  Otherwise do nothing.
-     */
-    public void emitCurrentEvent();
-
     /** Return true if there is defintly an event missed in the
      *  last step.
      */

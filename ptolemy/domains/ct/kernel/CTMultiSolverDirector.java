@@ -133,45 +133,7 @@ public class CTMultiSolverDirector extends CTDirector {
             throw new IllegalActionException( this,
             "does not have a scheduler.");
         }
-        if(STAT) {
-            NSTEP=0;
-            NFUNC=0;
-            NFAIL=0;
-        }
-        if(VERBOSE) {
-            System.out.println("updating parameters");
-        }
-        updateParameters();
-        // Instanciate ODE solvers
-        if(VERBOSE) {
-            System.out.println("instantiating Defalut ODE solver "+
-            _defaultsolverclass);
-        }
-        if(_defaultSolver == null) {
-            _defaultSolver = _instantiateODESolver(_defaultsolverclass);
-        }
-        if(VERBOSE) {
-            System.out.println("instantiating Breakpoint ODE solver "+
-            _breakpointsolverclass);
-        }
-        if(_breakpointSolver == null) {
-            _breakpointSolver = _instantiateODESolver(_breakpointsolverclass);
-        }
-        //setCurrentODESolver(_breakpointsolver);
-        // set time
-        setCurrentTime(getStartTime());
-        setSuggestedNextStepSize(getInitialStepSize());
-        TotallyOrderedSet bps = getBreakPoints();
-        if(bps != null) {
-            bps.clear();
-        }
-        fireAfterDelay(null, 0.0);
-        sch.setValid(false);
-        _first = true;
-        if (VERBOSE) {
-            System.out.println("Director.super initialize.");
-        }
-        super.initialize();
+        _initialize();
     }
 
 
@@ -222,10 +184,10 @@ public class CTMultiSolverDirector extends CTDirector {
         if (_first) {
             _first = false;
             produceOutput();
-            updateStates(); // call postfire on all actors 
             return;
         }
-
+        updateStates(); // call postfire on all actors       
+        
         //Refine step size ans set ODE Solvers.
         setCurrentODESolver(_defaultSolver);
         setCurrentStepSize(getSuggestedNextStepSize());
@@ -250,7 +212,6 @@ public class CTMultiSolverDirector extends CTDirector {
                 }
             }
         }
-        
         // prefire all the actors.
         boolean ready = true;
         CompositeActor ca = (CompositeActor) getContainer();
@@ -259,11 +220,11 @@ public class CTMultiSolverDirector extends CTDirector {
             Actor a = (Actor) actors.nextElement();
             ready = ready && a.prefire();
         }
+        
         if(ready) {
             ODESolver solver = getCurrentODESolver();  
             solver.iterate();
             produceOutput();
-            updateStates(); // call postfire on all actors 
         }
     }
 
@@ -278,7 +239,8 @@ public class CTMultiSolverDirector extends CTDirector {
         if((getCurrentTime()+getSuggestedNextStepSize())>getStopTime()) {
             fireAfterDelay(null, getStopTime()-getCurrentTime());
         }
-        if(Math.abs(getCurrentTime() - getStopTime()) < getTimeAccuracy()) {    
+        if(Math.abs(getCurrentTime() - getStopTime()) < getTimeAccuracy()) { 
+            updateStates(); // call postfire on all actors 
             return false;
         }
         if(getStopTime() < getCurrentTime()) {
@@ -339,6 +301,9 @@ public class CTMultiSolverDirector extends CTDirector {
         Enumeration allactors = container.deepGetEntities();
         while(allactors.hasMoreElements()) {
             Actor nextactor = (Actor)allactors.nextElement();
+            if(DEBUG) {
+                System.out.println("Postfire:"+((NamedObj)nextactor).getName());
+            }
             nextactor.postfire();
         }
     }
@@ -387,6 +352,53 @@ public class CTMultiSolverDirector extends CTDirector {
             throw new InvalidStateException(this,"Parameter name duplication.");
         }
         
+    }
+
+    /** _initialize the simulation. 
+     *  This is the real intialize method. The initalize method do some
+     *  checking and call this method. Derivede class may call this method
+     *  directly.
+     */
+    protected void _initialize() throws IllegalActionException{
+        if(STAT) {
+            NSTEP=0;
+            NFUNC=0;
+            NFAIL=0;
+        }
+        if(VERBOSE) {
+            System.out.println("updating parameters");
+        }
+        updateParameters();
+        // Instanciate ODE solvers
+        if(VERBOSE) {
+            System.out.println("instantiating Defalut ODE solver "+
+            _defaultsolverclass);
+        }
+        if(_defaultSolver == null) {
+            _defaultSolver = _instantiateODESolver(_defaultsolverclass);
+        }
+        if(VERBOSE) {
+            System.out.println("instantiating Breakpoint ODE solver "+
+            _breakpointsolverclass);
+        }
+        if(_breakpointSolver == null) {
+            _breakpointSolver = _instantiateODESolver(_breakpointsolverclass);
+        }
+        setCurrentODESolver(_breakpointSolver);
+        // set time
+        setCurrentTime(getStartTime());
+        setSuggestedNextStepSize(getInitialStepSize());
+        TotallyOrderedSet bps = getBreakPoints();
+        if(bps != null) {
+            bps.clear();
+        }
+        fireAfterDelay(null, 0.0);
+        setScheduleValid(false);
+        _first = true;
+        if (VERBOSE) {
+            System.out.println("Director.super initialize.");
+        }
+        super.initialize();
     }
 
     /** Return the default solver.
