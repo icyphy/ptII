@@ -111,7 +111,8 @@ public class DEANDGate extends DEActor {
             outToken = new DoubleToken(0.0);
         }
 
-        output.broadcast(outToken, ((DoubleToken)_delay.getToken()).doubleValue());
+        output.broadcast(outToken,
+                ((DoubleToken)_delay.getToken()).doubleValue());
 
     }
 
