@@ -57,8 +57,7 @@ JSRCS =
 DERIVED_FILES = \
 	completeDemosPtiny.htm \
 	demosPtiny.htm \
-	docsPtiny.htm \
-	whatsNewHyVisual5.0.htm
+	docsPtiny.htm
 
 OTHER_FILES_TO_BE_JARED = \
 	$(DERIVED_FILES) \
@@ -101,9 +100,6 @@ demosPtiny.htm: demos.htm
 	awk -f $(ROOT)/doc/javahtml.awk $< | sed 's/completeDemos.htm/completeDemosPtiny.htm/' > $@  
 docsPtiny.htm: docs.htm
 	awk -f $(ROOT)/doc/javahtml.awk $< | sed 's/intro.htm/introPtiny.htm/' > $@  
-
-whatsNewHyVisual5.0.htm: whatsNew5.0.htm
-	awk -f $(ROOT)/doc/hyVisualHtml.awk $< | sed 's/intro.htm/introPtiny.htm/' > $@  
 
 update: $(DERIVED_FILES)
 	cvs commit -m "Master files changed" $(DERIVED_FILES)
