@@ -192,7 +192,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             <property name="GR" class="ptolemy.domains.gr.kernel.GRDirector"/>
             <input source="ptolemy/domains/gr/lib/grentities.xml"/>
 	    <!-- matlab depends on Matlab being present -->
-            <input source="ptolemy/matlab/actors.xml"/>
+            <input source="ptolemy/matlab/matlab.xml"/>
           </group>
         ?>
       </configure>
