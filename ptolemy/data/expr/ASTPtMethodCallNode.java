@@ -97,10 +97,8 @@ public class ASTPtMethodCallNode extends ASTPtRootNode {
      */
     protected ptolemy.data.Token _resolveNode()
             throws IllegalActionException {
+
         int num = jjtGetNumChildren();
-        // if only one child, then must be an enclosing parenthesis
-        // i.e. actually no method call.
-        if (num == 1) return _childTokens[0];
 
         // The first child is the token on which to invoke the method.
         // Note that all the arguments to the method call must be
