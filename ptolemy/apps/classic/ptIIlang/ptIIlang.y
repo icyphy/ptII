@@ -2164,12 +2164,12 @@ void genDef ()
 		    //insertComments(dst, dst2);	
 		    fprintf (fp, "    public %s %s() {\n    %s\n",
 		      str1, str2, dst);
-		    if (strncmp(codeType[i], "void", 4) != 0) { 
-			    fprintf (fp, "        // Dummy return value.\n");
-			    char returnValue[SMALLBUFSIZE];
-			    strcpy(returnValue, "0");
-			    fprintf (fp, "        return %s;\n", returnValue);
-                    }
+		    //if (strncmp(codeType[i], "void", 4) != 0) { 
+		    //	    fprintf (fp, "        // Dummy return value.\n");
+		    //	    char returnValue[SMALLBUFSIZE];
+		    //	    strcpy(returnValue, "0");
+		    //	    fprintf (fp, "        return %s;\n", returnValue);
+                    //}
 		    fprintf (fp, "     }\n");
 		    free(dst);
 		}
