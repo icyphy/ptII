@@ -62,6 +62,7 @@ SIGNED_LIB_JARS =	$(NATIVE_SIGNED_LIB_JARS) \
 			lib/diva.jar \
 			lib/jasminclasses.jar \
 			lib/matlab.jar \
+			lib/ptjacl.jar \
 			lib/sootclasses.jar
 
 # Web Start can load jars either eagerly or lazily.
@@ -163,7 +164,9 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/tm/demo/demo.jar \
 	ptolemy/domains/tm/doc/doc.jar \
 	ptolemy/matlab/demo/demo.jar \
-	lib/matlab.jar
+	lib/matlab.jar \
+	lib/ptjacl.jar \
+        ptolemy/actor/gui/ptjacl/ptjacl.jar
 
 FULL_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/FullApplication.jar
@@ -195,9 +198,22 @@ ALL_JNLP_JARS = \
 	$(PTINY_SANDBOX_MAIN_JAR) \
 	$(FULL_MAIN_JAR)
 
+# Makefile variables used to set up keys for jar signing.
+# To use Web Start, we have to sign the jars.
+KEYDNAME = "CN=Claudius Ptolemaus, OU=Your Project, O=Your University, L=Your Town, S=Your State, C=US "
+KEYSTORE = ptKeystore
+KEYALIAS = claudius
+# The password should not be stored in a makefile, for production
+# purposes, run something like:
+#
+# make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD= jnlp_all
+#
+STOREPASSWORD = -storepass this.is.not.secure,it.is.for.testing.only
+KEYPASSWORD = -keypass this.is.not.secure,it.is.for.testing.only
+KEYTOOL = $(PTJAVA_DIR)/bin/keytool
+
 # Script to update a *.jnlp file with the proper jar files
 MKJNLP =		$(PTII)/bin/mkjnlp
-
 
 # JNLP files that do the actual installation
 JNLPS =	vergilDSP.jnlp vergilPtiny.jnlp  vergilPtinySandbox.jnlp vergil.jnlp 
@@ -214,19 +230,6 @@ $(SIGNED_DIR):
 		mkdir -p $(SIGNED_DIR); \
 	fi
 
-# Makefile variables used to set up keys for jar signing.
-# To use Web Start, we have to sign the jars.
-KEYDNAME = "CN=Claudius Ptolemaus, OU=Your Project, O=Your University, L=Your Town, S=Your State, C=US "
-KEYSTORE = ptKeystore
-KEYALIAS = claudius
-# The password should not be stored in a makefile, for production
-# purposes, run something like:
-#
-# make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD= jnlp_all
-#
-STOREPASSWORD = -storepass this.is.not.secure,it.is.for.testing.only
-KEYPASSWORD = -keypass this.is.not.secure,it.is.for.testing.only
-KEYTOOL = $(PTJAVA_DIR)/bin/keytool
 $(KEYSTORE): 
 	"$(KEYTOOL)" -genkey \
 		-dname $(KEYDNAME) \
