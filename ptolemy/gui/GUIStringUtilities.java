@@ -182,8 +182,6 @@ public class GUIStringUtilities {
 		    token += singleToken + streamTokenizer.sval;
 		} else {
 		    token = singleToken + streamTokenizer.sval;
-                    System.out.println("GUIStringUtilities: token" +
-                            token);
 		    commandList.add(token);
 		}
 		singleToken = "";
