@@ -1,4 +1,4 @@
-/* A schedule that contains a reference to an actor.
+/* A schedule element that contains a reference to an actor.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -41,21 +41,19 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// Firing
 /**
-A schedule that contains a reference to an actor. This class is used
-together with Schedule to represent a static schedule, which is 
-used by domains that perform static scheduling.  This class contains
-a reference to an actor, and should be used to represent an actor term
+This class is a schedule element that contains a reference to an actor. 
+This class is used together with Schedule to construct a static schedule.
+This class contains a reference to an actor, and is used to represent an
+actor term
 of a schedule loop. The setActor() method is used to create the reference
 to an actor. The getActor() method will return a reference to this actor.
-Note that the list methods should not be used here. An exception will
-occur if add() is invoked.
 
 @author Brian K. Vogel
 @version $Id$
 @see ptolemy.actor.sched.Schedule
+@see ptolemy.actor.sched.ScheduleElement
 */
-// FIXME: Is this class needed? Could allow Schedule to contain
-// elements of type Executable.
+
 public class Firing extends ScheduleElement {
     /** Construct a firing with a default iteration count equal to one.
      *  

@@ -1,4 +1,4 @@
-/* A schedule element.
+/* An abstract base class for a schedule element.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -36,49 +36,21 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// ScheduleElement
 /**
-This class is a schedule. This class is 
-used together with Firing to represent a static schedule, which is 
-used by domains that perform static scheduling. The schedule representation 
-consists of an iteration count value and a sequence of schedule elements. In this
-implementation, the sequence of schedule elements is represented by
-a list.
+This is an abstract base class for a schedule element. Instances of the
+Schedule and Firing subclasses are used to construct a static schedule.
+A schedule can be thought of as a structure that consists of an iteration
+count and a list of schedule elements. A schedule element can contain
+an actor, or it can contain another schedule. For a valid schedule,
+all of the lowest-level schedule elements must contain an actor. It is
+up to the scheduler to enforce this, however. The Schedule class is a 
+schedule element that contains a schedule. The Firing class is a schedule 
+element that contains an actor. Therefore,
+the top-level schedule element must be an instance of Schedule, and all
+of the lowest-level elements must each be an instance of Firing.
 <p>
-<h1>Terminology</h1>
-A schedule loop has the form (n,S<sub>1</sub>,S<sub>2</sub>...,S<sub>m</sub>)
-where n is a positive integer called the iteration count, and S<sub>i</sub> 
-is either another schedule loop or an actor. The schedule can be expressed as a sequence gS<sub>1</sub>S<sub>2</sub>...S<sub>m</sub> where 
-S<sub>i</sub> is either an actor or a schedule loop.
-<p>
-<h1>Usage</h1>
-The iteration count is set by the setIterationCount() method. If this
-method is not invoked, a default value of one will be used.
-The list methods should be used to add schedule elements. Only elements
-of type Schedule may be added to the list. Otherwise an exception will
-occur.
-<p>
-In this base class, the isFiring() method returns false, indicating that
-this base class does not contain an actor. The subclass Firing contains
-a reference to an actor, and should be used to represent an actor term
-of a schedule loop.
-<p>
-As an example, suppose that we have an SDF graph containing actors
-A, B, C, and D, with the schedule A(3BC)(2D).
-The schedule can written as S = S<sub>1</sub>S<sub>2</sub>S<sub>3</sub>,
-where S<sub>1</sub> = A, S<sub>2</sub> = (3BC), and S<sub>1</sub> = 2D.
-To represent this schedule, S will be an instance of Schedule with
-list elements S<sub>1</sub>, S<sub>2</sub>, S<sub>3</sub>, and
-with an iteration count of 1. S<sub>1</sub> will be an instance of
-Firing with a reference to actor A and an iteration count of 1.
-S<sub>2</sub> will be an instance of Schedule with list elements
-S<sub>2,1</sub>, S<sub>2,2</sub>, and an iteration count of 3.
-S<sub>2,1</sub>, S<sub>2,2</sub> will each be an instance of Firing
-with an iteration count of 1 and a reference to actors B and C,
-respectively. S<sub>3</sub> will be an instance of Firing with
-a reference to actor D and an iteration count of 2.
-
-<h1>References</h1>
-S. S. Bhattacharyya, P K. Murthy, and E. A. Lee,
-Software Syntheses from Dataflow Graphs, Kluwer Academic Publishers, 1996.
+This base class implements the getIterationCount() and setIterationCount()
+methods, which return and set the iteration count for this schedule element.
+A default value of 1 is used for the iteration count.
 
 @author Brian K. Vogel
 @version $Id$
@@ -88,20 +60,21 @@ Software Syntheses from Dataflow Graphs, Kluwer Academic Publishers, 1996.
 
 public abstract class ScheduleElement {
 
-    /** Is this needed
+    /** Construct a schedule element with an iteration count of 1.
      */
-    //public ScheduleElement() {
-    //super();
-    //}
+    public ScheduleElement() {
+	super();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the actor invocation sequence of the schedule in the 
-     *  form of a sequence of actors.
-     *  Thus, next() will return an actor.
+   /** Return the actor invocation sequence of the schedule in the 
+     *  form of a sequence of actors. For a valid schedule, all of the
+     *  bottem nodes should be an instance of Firing. If not, then
+     *  the returned iterator will contain null elements.
      *  
-     * @return The iterator.
+     * @return An iterator over a sequence of actors.
      */
     public abstract Iterator actorIterator();
 
