@@ -121,29 +121,6 @@ public class InvalidStateException extends KernelRuntimeException {
      */
     public InvalidStateException(Enumeration objects,
 				  Throwable cause, String detail) {
-        super(cause,
-                KernelException._generateMessage(
-                        _objectsToString(objects), cause, detail));
-    }
-
-    /** Constructs an exception with a detail message that includes the
-     *  names of a list of nameable objects plus the argument string.
-     *  @param objects The List of Nameable objects
-     *  @param detail The message.
-     */
-    public InvalidStateException(List objects, String detail) {
-        this(Collections.enumeration(objects), null, detail);
-    }
-
-    /** Construct an exception with a detail message that includes the
-     *  names of an enumeration of nameable object, the detail message
-     *  of the cause plus the argument string.  If one or more of the
-     *  parameters are null, then the detail message is adjusted
-     *  accordingly.
-     *
-     *  @param objects The enumeration of Nameable objects
-     */
-    private static String _objectsToString(Enumeration objects) {
         String prefix = "";
         String name;
         while(objects.hasMoreElements()) {
@@ -161,6 +138,16 @@ public class InvalidStateException extends KernelRuntimeException {
             // last element of the list.
             prefix = prefix.substring(0, prefix.length()-2);
         }
-        return prefix;
-    }    
+        _setMessage(KernelException._generateMessage(prefix, cause, detail));
+        _setCause(cause);
+    }
+
+    /** Constructs an exception with a detail message that includes the
+     *  names of a list of nameable objects plus the argument string.
+     *  @param objects The List of Nameable objects
+     *  @param detail The message.
+     */
+    public InvalidStateException(List objects, String detail) {
+        this(Collections.enumeration(objects), null, detail);
+    }
 }

@@ -119,9 +119,9 @@ public class KernelRuntimeException extends RuntimeException {
      */
     public KernelRuntimeException(Nameable object1, Nameable object2,
             Throwable cause, String detail) {
-        super(KernelException._generateMessage(object1, object2,
+        _setMessage(KernelException._generateMessage(object1, object2,
                 cause, detail));
-        _cause = cause;
+        _setCause(cause);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -142,9 +142,9 @@ public class KernelRuntimeException extends RuntimeException {
      *
      *  @return The error message.
      */
-    //    public String getMessage() {
-    //        return _message;
-    //}
+     public String getMessage() {
+            return _message;
+    }
 
     /** Print the following to stderr:
      *  this exception, its stack trace and if the cause
