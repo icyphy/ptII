@@ -109,8 +109,6 @@ public class Clock extends TimedSource {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        // Must define this before offsets because the default value
-        // of offsets refers to it.
         period = new Parameter(this, "period", new DoubleToken(2.0));
 
         double defaultOffsets[][] = {{0.0, 1.0}};
@@ -187,7 +185,7 @@ public class Clock extends TimedSource {
 
     /** Notify the director that a type change has occurred that may
      *  affect the type of the output.
-     *  This will cause type resolution to be redone at the next opportunity.
+     *  This will cause type resolution to be redone when it is next needed.
      *  It is assumed that type changes in the parameters are implemented
      *  by the director's change request mechanism, so they are implemented
      *  when it is safe to redo type resolution.
@@ -241,7 +239,7 @@ public class Clock extends TimedSource {
 
     /** Output the current value of the clock.
      *  @exception IllegalActionException If the values and offsets parameters
-     *   do not have the same dimension, or if the a value in the offsets
+     *   do not have the same dimension, or if the value in the offsets
      *   parameter is encountered that is greater than the period, or
      *   if there is no director.
      */
@@ -272,7 +270,11 @@ public class Clock extends TimedSource {
         }
         double[][] offsts =
             ((DoubleMatrixToken)offsets.getToken()).doubleMatrix();
-
+        MatrixToken val = (MatrixToken)(values.getToken());
+        if (offsts[0].length != val.getRowCount()) {
+            throw new IllegalActionException(this,
+            "Values and offsets vectors do not have the same length.");
+        }
         // Adjust the phase if time has moved beyond the current phase.
         while (currentTime >=
                 _tentativeCycleStartTime + offsts[0][_tentativePhase]) {
@@ -328,7 +330,7 @@ public class Clock extends TimedSource {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         private methods                   ////
 
     /* Get the specified value, checking the form of the values parameter.
      */
