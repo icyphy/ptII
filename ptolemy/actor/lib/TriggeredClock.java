@@ -1,4 +1,5 @@
-/* A clock source that only generates an output when triggered.
+/* A clock source that only generates an output when triggered.The number of
+times the specified cycle repeats is controlled  by numberOfCycles parameter
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -119,6 +120,9 @@ public class TriggeredClock extends TimedSource {
 
         period = new Parameter(this, "period", new DoubleToken(2.0));
         period.setTypeEquals(BaseType.DOUBLE);
+         
+        numberOfCycles = new Parameter(this,"numberOfCycles");
+        numberOfCycles.setExpression("1");
 
         offsets = new Parameter(this, "offsets");
         offsets.setExpression("{0.0, 1.0}");
@@ -133,8 +137,7 @@ public class TriggeredClock extends TimedSource {
 	ArrayToken defaultValueToken = new ArrayToken(defaultValues);
 	values = new Parameter(this, "values", defaultValueToken);
 	values.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-
-	// set type constraint
+        
 	ArrayType valuesArrayType = (ArrayType)values.getType();
 	InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
 	output.setTypeAtLeast(elementTerm);
@@ -165,6 +168,8 @@ public class TriggeredClock extends TimedSource {
      *  {1, 0}
      */
     public Parameter values;
+    
+    public Parameter numberOfCycles;
     
 
     ///////////////////////////////////////////////////////////////////
@@ -209,29 +214,11 @@ public class TriggeredClock extends TimedSource {
         }
     }
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the parameter public members to refer
-     *  to the parameters of the new actor.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
-        Clock newObject = (Clock)super.clone(workspace);
-        ArrayType valuesArrayType = (ArrayType)newObject.values.getType();
-        InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
-        newObject.output.setTypeAtLeast(elementTerm);
-
-        return newObject;
-    }
-      
+       
      
       public boolean  prefire() throws IllegalActionException {
              return  super.prefire();
-	                                                                             
-                                      }
+	                                                                                                  }
     /** Output the current value of the clock.
      *  @exception IllegalActionException If the <i>values</i> and
      *   <i>offsets</i> parameters do not have the same length, or if
@@ -321,6 +308,7 @@ public class TriggeredClock extends TimedSource {
      */
     public void initialize() throws IllegalActionException {
           _trigger = false;
+          _cycCount = 0;
             super.initialize(); 
                           	     }
    
@@ -339,10 +327,13 @@ public class TriggeredClock extends TimedSource {
         // that no future firing should be scheduled.
         // Now, we leave it up to the director, unless the value
         // explicitly indicates no firing with Double.NEGATIVE_INFINITY.
-        if (_tentativeNextFiringTime != Double.NEGATIVE_INFINITY) {
+            _cycCount++;
+            int noc  = ((IntToken)numberOfCycles.getToken()).intValue(); 
+	    if (_cycCount <= noc){
+               if (_tentativeNextFiringTime != Double.NEGATIVE_INFINITY) {
             getDirector().fireAt(this, _tentativeNextFiringTime);
-        }
-
+                 }
+	      }
         return super.postfire();
     }
 
@@ -365,6 +356,9 @@ public class TriggeredClock extends TimedSource {
 
     // The following are all transient because they need not be cloned.
     // Either the clone method or the initialize() method sets them.
+    // The counter which counts the number of clock cycles.
+    private transient int  _cycCount;
+
     private boolean _oldTrigger;
     // The current value of the clock output.
     private transient Token _currentValue;
