@@ -40,6 +40,21 @@ ptbyacc: $(OBJ)
 	$(CC) -o $@ $(OBJ)
 	@echo "done"
 
+# This command will overwrite the following files in
+# $PTII/ptolemy/lang/java
+# 	JavaParser.java
+# 	JavaParserval.java
+#	*.tbl
+update_lang_java:
+	(cd $(PTII)/ptolemy/lang/java; \
+		$(PTII)/vendors/misc/byacc/ptbyacc -j \
+		-p ptolemy.lang.java -f JavaParser jparser.y)
+	@echo "After running this rule, you might want to update"
+	@echo "the .bin files in $(PTII)/ptolemy/lang/java"
+	@echo "by running"
+	@echo "(cd $(PTII)/ptolemy/lang/java; make update_tables)"
+	@echo "(cd $(PTII)/ptolemy/lang/java; cvs commit -m \"Modified byacc\")"
+
 clean:
 	/bin/rm -rf $(OBJS)
 
