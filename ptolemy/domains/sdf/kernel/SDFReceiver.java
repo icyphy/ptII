@@ -242,9 +242,9 @@ public class SDFReceiver extends AbstractReceiver {
      *   declared explicitly by the caller.
      */
     public boolean hasToken(int tokens) throws IllegalArgumentException {
-	if(tokens < 1)
+	if(tokens < 0)
 	    throw new IllegalArgumentException("The number of " +
-                    "tokens must be greater than 0");
+                    "tokens must be at least 0");
         return _queue.size() >= tokens;
     }
 
