@@ -36,6 +36,7 @@ import soot.toolkits.scalar.*;
 import soot.util.*;
 import soot.toolkits.graph.*;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -58,9 +59,15 @@ public class WatchDogTimer extends SceneTransformer {
     }
 
     public void cancel() {
-            System.out.println("WatchDogTimer.cancel(): canceling");
-            _timer.cancel();
-	    _timer = null;
+            System.out.println("WatchDogTimer.cancel(): canceling "
+                    + (new Date()));
+            if ( _timer == null) {
+                System.out.println("WatchDogTimer.cancel(): " 
+                        + "Warning: cancel called twice?");
+            } else {
+                _timer.cancel();
+                _timer = null;
+            }
     }
 
     public String getDefaultOptions() {
