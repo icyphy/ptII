@@ -83,13 +83,6 @@ public class ProcessThread extends PtolemyThread {
 	return _actor;
     }
     
-    /** This returns the director that started this thread.
-     *  @return The director that started this thread.
-     */
-    public ProcessDirector getDirector() {
-	return _director;
-    }
-
     /** This initializes the actor, and iterates it through the execution 
      *  cycle till it terminates.
      */
@@ -97,7 +90,7 @@ public class ProcessThread extends PtolemyThread {
 	try {
 	    while (_iterate());		   
 	    // System.out.println(((Entity)_actor).getName()+" finished iterations");	    
-	} catch (TerminateProcessException e) {
+	} catch (TerminateProcessException t) {
         } catch (IllegalActionException e) {
             ((CompositeActor)_director.getContainer()).getManager().fireExecutionError(e);
         } catch (NameDuplicationException e) {
@@ -106,7 +99,7 @@ public class ProcessThread extends PtolemyThread {
             try {
                 _actor.wrapup();
             } catch (IllegalActionException e) {
-                // FIXME:
+                ((CompositeActor)_director.getContainer()).getManager().fireExecutionError(e);
             }
             _director.decreaseActiveCount();
         }
