@@ -20,7 +20,7 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="100.0, 34.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 34.5">
         </property>
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
@@ -32,7 +32,7 @@
         </property>
         <property name="entryName" class="ptolemy.data.expr.Parameter" value="&quot;A&quot;">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="120.0, 120.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 120.0">
         </property>
         <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
             <property name="output"/>
@@ -43,7 +43,7 @@
         </property>
         <property name="entryName" class="ptolemy.data.expr.Parameter" value="&quot;B&quot;">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="120.0, 280.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 280.0">
         </property>
         <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
             <property name="output"/>
@@ -54,7 +54,7 @@
         </property>
         <property name="awayThreshold" class="ptolemy.data.expr.Parameter" value="10.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="315.0, 194.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 194.5">
         </property>
         <port name="leaderPosition" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -74,7 +74,7 @@
         </property>
         <property name="entryName" class="ptolemy.data.expr.Parameter" value="&quot;TooClose&quot;">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="468.0, 109.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="468.0, 109.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -85,7 +85,7 @@
         </property>
         <property name="entryName" class="ptolemy.data.expr.Parameter" value="&quot;TooFar&quot;">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="461.0, 279.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="461.0, 279.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -98,7 +98,7 @@
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="526.5, 193.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="526.5, 193.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

@@ -61,7 +61,7 @@
         </property>
         <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="86.0, 43.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="86.0, 43.0">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -80,7 +80,7 @@ uses the GR domain to render the results</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="349.5, 56.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="349.5, 56.0">
         </property>
     </property>
     <entity name="viewer" class="ptolemy.actor.TypedCompositeActor">
@@ -91,7 +91,7 @@ uses the GR domain to render the results</text></svg></configure>
             </property>
             <property name="iteration time lower bound" class="ptolemy.data.expr.Parameter" value="150">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="686.0, 449.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="686.0, 449.0">
             </property>
         </property>
         <property name="angle" class="ptolemy.data.expr.Parameter" value="PI/20">
@@ -108,16 +108,16 @@ uses the GR domain to render the results</text></svg></configure>
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[30, 10]">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="475.5, 186.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="475.5, 186.5">
         </property>
         <port name="displacement for red bob" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="location1" class="ptolemy.moml.Location" value="85.0, 431.0">
+            <property name="location1" class="ptolemy.kernel.util.Location" value="85.0, 431.0">
             </property>
         </port>
         <port name="displacement for blue bob" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="location1" class="ptolemy.moml.Location" value="107.0, 47.0">
+            <property name="location1" class="ptolemy.kernel.util.Location" value="107.0, 47.0">
             </property>
         </port>
         <entity name="blue spring-mass" class="ptolemy.actor.TypedCompositeActor">
@@ -135,21 +135,21 @@ uses the GR domain to render the results</text></svg></configure>
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[40, -2]">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="314.0, 34.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="314.0, 34.5">
             </property>
             <port name="spring twist" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="location1" class="ptolemy.moml.Location" value="53.0, 491.0">
+                <property name="location1" class="ptolemy.kernel.util.Location" value="53.0, 491.0">
                 </property>
             </port>
             <port name="bob translation" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="location1" class="ptolemy.moml.Location" value="63.0, 543.0">
+                <property name="location1" class="ptolemy.kernel.util.Location" value="63.0, 543.0">
                 </property>
             </port>
             <port name="scene graph out connector" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="location1" class="ptolemy.moml.Location" value="663.0, 53.0">
+                <property name="location1" class="ptolemy.kernel.util.Location" value="663.0, 53.0">
                 </property>
             </port>
             <entity name="Torus3D1" class="ptolemy.domains.gr.lib.Torus3D">
@@ -167,7 +167,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="49.0, 30.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="49.0, 30.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -188,7 +188,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="49.0, 86.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="49.0, 86.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -203,7 +203,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="351.0, 113.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="351.0, 113.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -231,7 +231,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="253.0, 37.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="253.0, 37.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -253,7 +253,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="243.0, 100.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="243.0, 100.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -275,7 +275,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="143.0, 93.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="143.0, 93.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -303,7 +303,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="51.0, 150.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="51.0, 150.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -318,7 +318,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="245.0, 157.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 157.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -340,7 +340,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="354.0, 170.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="354.0, 170.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -374,7 +374,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="52.0, 216.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="52.0, 216.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -389,7 +389,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="144.0, 223.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="144.0, 223.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -411,7 +411,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="245.0, 230.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 230.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -433,7 +433,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="354.0, 243.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="354.0, 243.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -467,7 +467,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="56.0, 283.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="56.0, 283.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -482,7 +482,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="248.0, 290.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="248.0, 290.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -504,7 +504,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="357.0, 303.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="357.0, 303.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -538,7 +538,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="57.0, 354.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="57.0, 354.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -559,7 +559,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="58.0, 417.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="58.0, 417.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -574,7 +574,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="144.0, 361.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="144.0, 361.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -596,7 +596,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="243.0, 368.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="243.0, 368.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -618,7 +618,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="358.0, 382.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="358.0, 382.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -646,7 +646,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="245.0, 424.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 424.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -668,7 +668,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="364.0, 438.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="364.0, 438.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -692,7 +692,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="145.0, 454.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 454.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -710,7 +710,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="245.0, 528.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 528.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -725,7 +725,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="359.0, 527.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="359.0, 527.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -755,7 +755,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="zScale" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="494.0, 56.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="494.0, 56.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -913,7 +913,7 @@ uses the GR domain to render the results</text></svg></configure>
             </property>
             <property name="zScale" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="592.0, 66.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="592.0, 66.0">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -927,7 +927,7 @@ uses the GR domain to render the results</text></svg></configure>
             </port>
         </entity>
         <entity name="MultiplyDivide18" class="ptolemy.actor.lib.MultiplyDivide">
-            <property name="_location" class="ptolemy.moml.Location" value="316.0, 247.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="316.0, 247.0">
             </property>
             <port name="multiply" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -958,7 +958,7 @@ uses the GR domain to render the results</text></svg></configure>
                     </property>
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="223.0, 238.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="223.0, 238.0">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
@@ -986,7 +986,7 @@ uses the GR domain to render the results</text></svg></configure>
             </property>
             <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="488.0, 135.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="488.0, 135.0">
             </property>
             <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -1001,7 +1001,7 @@ uses the GR domain to render the results</text></svg></configure>
             </property>
             <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="684.0, 149.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="684.0, 149.0">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -1029,7 +1029,7 @@ uses the GR domain to render the results</text></svg></configure>
             </property>
             <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="502.0, 58.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="502.0, 58.0">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -1055,7 +1055,7 @@ uses the GR domain to render the results</text></svg></configure>
             </property>
             <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="484.0, 218.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="484.0, 218.0">
             </property>
             <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -1070,7 +1070,7 @@ uses the GR domain to render the results</text></svg></configure>
             </property>
             <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="677.0, 232.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="677.0, 232.0">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -1104,7 +1104,7 @@ uses the GR domain to render the results</text></svg></configure>
             </property>
             <property name="iterationSynchronized" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="688.0, 66.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="688.0, 66.0">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -1114,7 +1114,7 @@ uses the GR domain to render the results</text></svg></configure>
         <entity name="Const17" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="-2*hullradius">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="178.0, 332.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="178.0, 332.0">
             </property>
             <doc>Create a constant sequence</doc>
             <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -1136,7 +1136,7 @@ uses the GR domain to render the results</text></svg></configure>
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="487.0, 289.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="487.0, 289.0">
             </property>
             <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -1151,7 +1151,7 @@ uses the GR domain to render the results</text></svg></configure>
             </property>
             <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="589.0, 304.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="589.0, 304.0">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -1185,21 +1185,21 @@ uses the GR domain to render the results</text></svg></configure>
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[40, -2]">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="442.0, 463.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="442.0, 463.5">
             </property>
             <port name="port" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="location1" class="ptolemy.moml.Location" value="53.0, 491.0">
+                <property name="location1" class="ptolemy.kernel.util.Location" value="53.0, 491.0">
                 </property>
             </port>
             <port name="port3" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="location1" class="ptolemy.moml.Location" value="56.0, 541.0">
+                <property name="location1" class="ptolemy.kernel.util.Location" value="56.0, 541.0">
                 </property>
             </port>
             <port name="scene graph out connector" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="location1" class="ptolemy.moml.Location" value="671.0, 54.0">
+                <property name="location1" class="ptolemy.kernel.util.Location" value="671.0, 54.0">
                 </property>
             </port>
             <entity name="Torus3D1" class="ptolemy.domains.gr.lib.Torus3D">
@@ -1217,7 +1217,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="49.0, 30.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="49.0, 30.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -1238,7 +1238,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="49.0, 86.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="49.0, 86.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -1253,7 +1253,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="351.0, 113.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="351.0, 113.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1281,7 +1281,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="253.0, 37.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="253.0, 37.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1303,7 +1303,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="243.0, 100.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="243.0, 100.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1325,7 +1325,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="143.0, 93.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="143.0, 93.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1353,7 +1353,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="51.0, 150.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="51.0, 150.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -1368,7 +1368,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="245.0, 157.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 157.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1390,7 +1390,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="354.0, 170.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="354.0, 170.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1424,7 +1424,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="52.0, 216.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="52.0, 216.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -1439,7 +1439,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="144.0, 223.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="144.0, 223.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1461,7 +1461,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="245.0, 230.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 230.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1483,7 +1483,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="354.0, 243.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="354.0, 243.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1517,7 +1517,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="56.0, 283.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="56.0, 283.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -1532,7 +1532,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="248.0, 290.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="248.0, 290.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1554,7 +1554,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="357.0, 303.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="357.0, 303.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1588,7 +1588,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="57.0, 354.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="57.0, 354.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -1609,7 +1609,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="58.0, 417.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="58.0, 417.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -1624,7 +1624,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="144.0, 361.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="144.0, 361.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1646,7 +1646,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="243.0, 368.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="243.0, 368.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1668,7 +1668,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="358.0, 382.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="358.0, 382.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1696,7 +1696,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="245.0, 424.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 424.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1718,7 +1718,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="364.0, 438.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="364.0, 438.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1742,7 +1742,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="149.0, 476.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="149.0, 476.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1760,7 +1760,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="245.0, 528.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 528.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -1775,7 +1775,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="359.0, 527.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="359.0, 527.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1805,7 +1805,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="zScale" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="494.0, 56.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="494.0, 56.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1961,7 +1961,7 @@ uses the GR domain to render the results</text></svg></configure>
             </property>
             <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="529.0, 378.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="529.0, 378.0">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -1991,7 +1991,7 @@ uses the GR domain to render the results</text></svg></configure>
                     </property>
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="215.0, 463.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 463.0">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
@@ -2007,7 +2007,7 @@ uses the GR domain to render the results</text></svg></configure>
             </port>
         </entity>
         <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
-            <property name="_location" class="ptolemy.moml.Location" value="341.0, 471.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="341.0, 471.0">
             </property>
             <port name="multiply" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -2026,7 +2026,7 @@ uses the GR domain to render the results</text></svg></configure>
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="93.0, 240.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="93.0, 240.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -2040,7 +2040,7 @@ uses the GR domain to render the results</text></svg></configure>
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="82.0, 460.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="82.0, 460.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -2053,7 +2053,7 @@ uses the GR domain to render the results</text></svg></configure>
             <property name="value" class="ptolemy.data.expr.Parameter" value="3.0">
             </property>
             <doc>Create a constant sequence</doc>
-            <property name="_location" class="ptolemy.moml.Location" value="44.0, 106.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="44.0, 106.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -2064,7 +2064,7 @@ uses the GR domain to render the results</text></svg></configure>
             </port>
         </entity>
         <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-            <property name="_location" class="ptolemy.moml.Location" value="174.0, 114.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="174.0, 114.0">
             </property>
             <port name="plus" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -2087,7 +2087,7 @@ uses the GR domain to render the results</text></svg></configure>
             </property>
             <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="415.0, 50.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 50.0">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -2115,7 +2115,7 @@ uses the GR domain to render the results</text></svg></configure>
             </property>
             <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="527.0, 465.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="527.0, 465.0">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -2244,10 +2244,10 @@ uses the GR domain to render the results</text></svg></configure>
         <property name="Hybrid System (HS) Director" class="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="Controller">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="104.0, 42.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="104.0, 42.0">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="88.0, 185.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="88.0, 185.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 350]">
         </property>
@@ -2263,12 +2263,12 @@ uses the GR domain to render the results</text></svg></configure>
         </property>
         <port name="P1" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="494.99998474121094, 108.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="494.99998474121094, 108.0">
             </property>
         </port>
         <port name="P2" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="495.99998474121094, 73.00001525878906">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="495.99998474121094, 73.00001525878906">
             </property>
         </port>
         <entity name="Controller" class="ptolemy.domains.fsm.kernel.FSMActor">
@@ -2276,7 +2276,7 @@ uses the GR domain to render the results</text></svg></configure>
             </property>
             <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="468.99998474121094, 157.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="468.99998474121094, 157.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[760, 287]">
             </property>
@@ -2292,38 +2292,38 @@ uses the GR domain to render the results</text></svg></configure>
             </property>
             <port name="V1" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="33.0, 30.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="33.0, 30.0">
                 </property>
             </port>
             <port name="V2" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="33.0, 74.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="33.0, 74.0">
                 </property>
             </port>
             <port name="P1" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="32.0, 117.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="32.0, 117.0">
                 </property>
             </port>
             <port name="Force" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="36.0, 161.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="36.0, 161.0">
                 </property>
             </port>
             <port name="Stickiness" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="47.0, 205.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="47.0, 205.0">
                 </property>
             </port>
             <port name="touched" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="41.0, 252.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="41.0, 252.0">
                 </property>
             </port>
             <entity name="init" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="location1" class="ptolemy.moml.Location" value="106.0, 254.0">
+                <property name="location1" class="ptolemy.kernel.util.Location" value="106.0, 254.0">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
@@ -2333,7 +2333,7 @@ uses the GR domain to render the results</text></svg></configure>
             <entity name="Separate" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Separate">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="283.0, 105.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="283.0, 105.0">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
@@ -2343,7 +2343,7 @@ uses the GR domain to render the results</text></svg></configure>
             <entity name="Together" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Together">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="619.0, 105.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="619.0, 105.0">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
@@ -2441,10 +2441,10 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="70.0, 46.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 46.5">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="254.0, 67.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="254.0, 67.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 385]">
             </property>
@@ -2460,33 +2460,33 @@ uses the GR domain to render the results</text></svg></configure>
             </property>
             <port name="touched" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="495.0, 307.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="495.0, 307.5">
                 </property>
             </port>
             <port name="P1" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="255.0, 146.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 146.5">
                 </property>
             </port>
             <port name="P2" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="248.0, 268.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="248.0, 268.5">
                 </property>
             </port>
             <port name="V1" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="463.0, 18.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="463.0, 18.5">
                 </property>
             </port>
             <port name="V2" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="473.0, 147.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="473.0, 147.5">
                 </property>
             </port>
             <entity name="V1" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="v1">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="357.0, 64.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="357.0, 64.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -2502,7 +2502,7 @@ uses the GR domain to render the results</text></svg></configure>
             <entity name="P1" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="p1">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="502.0, 73.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="502.0, 73.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -2518,7 +2518,7 @@ uses the GR domain to render the results</text></svg></configure>
             <entity name="E1" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="1.0*1.0 - 1.0*P1">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="231.0, 73.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="231.0, 73.5">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -2530,7 +2530,7 @@ uses the GR domain to render the results</text></svg></configure>
             <entity name="V2" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="v2">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="359.0, 185.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="359.0, 185.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -2546,7 +2546,7 @@ uses the GR domain to render the results</text></svg></configure>
             <entity name="P2" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="p2">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="511.0, 202.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="511.0, 202.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -2562,7 +2562,7 @@ uses the GR domain to render the results</text></svg></configure>
             <entity name="E2" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="2.0*2.0 - 2.0*P2">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="224.0, 196.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="224.0, 196.5">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -2572,7 +2572,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </port>
             </entity>
             <entity name="E3" class="ptolemy.actor.lib.AddSubtract">
-                <property name="_location" class="ptolemy.moml.Location" value="240.0, 318.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 318.0">
                 </property>
                 <port name="plus" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -2591,7 +2591,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="382.0, 319.72726509787816">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="382.0, 319.72726509787816">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -2687,10 +2687,10 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="74.0, 39.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="74.0, 39.5">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="255.0, 248.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 248.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 370]">
             </property>
@@ -2704,33 +2704,33 @@ uses the GR domain to render the results</text></svg></configure>
             </property>
             <port name="STI" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="469.99998474121094, 130.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="469.99998474121094, 130.5">
                 </property>
             </port>
             <port name="F" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="419.99998474121094, 214.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="419.99998474121094, 214.5">
                 </property>
             </port>
             <port name="P1" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="366.99998474121094, 273.50000762939453">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="366.99998474121094, 273.50000762939453">
                 </property>
             </port>
             <port name="P2" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="366.99998474121094, 319.50001525878906">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="366.99998474121094, 319.50001525878906">
                 </property>
             </port>
             <port name="V1" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="187.99998474121094, 225.50001525878906">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="187.99998474121094, 225.50001525878906">
                 </property>
             </port>
             <entity name="V1" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0236287">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="94.0, 167.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="94.0, 167.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -2746,7 +2746,7 @@ uses the GR domain to render the results</text></svg></configure>
             <entity name="P1" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="p">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="205.0, 166.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 166.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -2762,7 +2762,7 @@ uses the GR domain to render the results</text></svg></configure>
             <entity name="STI" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="stickiness">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="346.0, 62.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="346.0, 62.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -2780,7 +2780,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </property>
                 <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="499.0, 62.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="499.0, 62.5">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -2792,7 +2792,7 @@ uses the GR domain to render the results</text></svg></configure>
             <entity name="E1" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(1.0*1.0 + 2.0*2.0 - (1.0+2.0)*P1)/2.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="336.0, 144.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="336.0, 144.5">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -2804,7 +2804,7 @@ uses the GR domain to render the results</text></svg></configure>
             <entity name="E2" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="1.0*1.0 - 2.0*2.0 - (1.0-2.0)*P1">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="338.0, 213.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="338.0, 213.5">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -2895,7 +2895,7 @@ uses the GR domain to render the results</text></svg></configure>
     <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="269.0, 157.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="269.0, 157.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -2913,7 +2913,7 @@ uses the GR domain to render the results</text></svg></configure>
     <entity name="PeriodicSampler2" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="271.0, 225.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="271.0, 225.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

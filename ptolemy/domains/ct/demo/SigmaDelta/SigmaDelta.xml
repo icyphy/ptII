@@ -19,7 +19,7 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="80.33332824707031, 37.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="80.33332824707031, 37.0">
         </property>
     </property>
     <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.02">
@@ -31,7 +31,7 @@
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
     <property name="13:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="25.0, 70.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 70.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -82,10 +82,10 @@ are feeded back. The accumulation of the quantized values is the digital output.
             </property>
             <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="71.0, 27.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="71.0, 27.0">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="86.66666793823242, 225.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="86.66666793823242, 225.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[684, 454]">
         </property>
@@ -93,18 +93,18 @@ are feeded back. The accumulation of the quantized values is the digital output.
         </property>
         <port name="Pin" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="15.0, 155.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="15.0, 155.0">
             </property>
         </port>
         <port name="Pout" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="659.0, 118.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="659.0, 118.0">
             </property>
         </port>
         <entity name="Current Time" class="ptolemy.actor.lib.CurrentTime">
             <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="55.0, 330.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 330.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -117,7 +117,7 @@ are feeded back. The accumulation of the quantized values is the digital output.
         <entity name="Sin" class="ptolemy.actor.lib.TrigFunction">
             <property name="function" class="ptolemy.kernel.util.StringAttribute" value="sin">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="70.0, 245.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 245.0">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
@@ -135,7 +135,7 @@ are feeded back. The accumulation of the quantized values is the digital output.
         <entity name="ZeroOrderHold" class="ptolemy.domains.ct.lib.ZeroOrderHold">
             <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="80.0, 155.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 155.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -149,7 +149,7 @@ are feeded back. The accumulation of the quantized values is the digital output.
             </port>
         </entity>
         <entity name="Add1" class="ptolemy.actor.lib.AddSubtract">
-            <property name="_location" class="ptolemy.moml.Location" value="285.0, 120.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 120.0">
             </property>
             <port name="plus" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -166,7 +166,7 @@ are feeded back. The accumulation of the quantized values is the digital output.
         <entity name="Integrator1" class="ptolemy.domains.ct.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="370.0, 120.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 120.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -182,7 +182,7 @@ are feeded back. The accumulation of the quantized values is the digital output.
         <entity name="Integrator2" class="ptolemy.domains.ct.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="495.0, 120.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="495.0, 120.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -200,7 +200,7 @@ are feeded back. The accumulation of the quantized values is the digital output.
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="197.0, 208.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="197.0, 208.0">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
@@ -220,7 +220,7 @@ are feeded back. The accumulation of the quantized values is the digital output.
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="205.0, 40.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 40.0">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
@@ -240,7 +240,7 @@ are feeded back. The accumulation of the quantized values is the digital output.
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="600.0, 35.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="600.0, 35.0">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
@@ -260,7 +260,7 @@ are feeded back. The accumulation of the quantized values is the digital output.
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="160.0, 330.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 330.0">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
@@ -280,7 +280,7 @@ are feeded back. The accumulation of the quantized values is the digital output.
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="178.0, 110.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="178.0, 110.0">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
@@ -302,7 +302,7 @@ are feeded back. The accumulation of the quantized values is the digital output.
             </property>
             <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="637.0, 201.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="637.0, 201.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -321,7 +321,7 @@ are feeded back. The accumulation of the quantized values is the digital output.
         <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
             <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="samplePeriod">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="605.0, 120.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="605.0, 120.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -405,7 +405,7 @@ are feeded back. The accumulation of the quantized values is the digital output.
     <entity name="delay" class="ptolemy.domains.de.lib.TimedDelay">
         <property name="delay" class="ptolemy.data.expr.Parameter" value="0.02">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="171.0, 225.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="171.0, 225.0">
         </property>
         <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
             <property name="input"/>
@@ -423,7 +423,7 @@ are feeded back. The accumulation of the quantized values is the digital output.
         </property>
         <property name="taps" class="ptolemy.data.expr.Parameter" value="{0.7, 0.3}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="260.0, 225.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 225.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -447,7 +447,7 @@ are feeded back. The accumulation of the quantized values is the digital output.
     <entity name="Quantizer" class="ptolemy.actor.lib.Quantizer">
         <property name="levels" class="ptolemy.data.expr.Parameter" value="{-1.0, 1.0}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="355.0, 225.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 225.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -457,7 +457,7 @@ are feeded back. The accumulation of the quantized values is the digital output.
         </port>
     </entity>
     <entity name="Accumulator" class="ptolemy.actor.lib.Average">
-        <property name="_location" class="ptolemy.moml.Location" value="360.0, 325.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 325.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -470,7 +470,7 @@ are feeded back. The accumulation of the quantized values is the digital output.
         </port>
     </entity>
     <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
-        <property name="_location" class="ptolemy.moml.Location" value="470.0, 370.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="470.0, 370.0">
         </property>
         <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
             <property name="input"/>
@@ -493,7 +493,7 @@ are feeded back. The accumulation of the quantized values is the digital output.
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="75.0, 380.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 380.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -510,7 +510,7 @@ are feeded back. The accumulation of the quantized values is the digital output.
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="565.0, 275.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="565.0, 275.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -536,7 +536,7 @@ are feeded back. The accumulation of the quantized values is the digital output.
         </property>
         <property name="taps" class="ptolemy.data.expr.Parameter" value="{0.1, 0.1, 0.1, 0.1, 0.1, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="175.0, 315.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 315.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>

@@ -15,7 +15,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="125.0, 40.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 40.0">
         </property>
     </property>
     <entity name="DoubleReader" class="ptolemy.actor.lib.DoubleReader">
@@ -24,7 +24,7 @@
         <property name="refresh" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <doc>Read in doubles from either stdin or a URL</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="120.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 165.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -40,7 +40,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="331.5, 159.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="331.5, 159.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

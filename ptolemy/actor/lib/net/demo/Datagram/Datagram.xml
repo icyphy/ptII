@@ -23,7 +23,7 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="610.0, 185.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="610.0, 185.0">
         </property>
     </property>
     <property name="partnersIPAddress" class="ptolemy.data.expr.Parameter" value="&quot;localhost&quot;">
@@ -48,7 +48,7 @@ and Ptolemy models with each other!</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="35.0, 25.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 25.0">
         </property>
     </property>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
@@ -60,7 +60,7 @@ and Ptolemy models with each other!</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="460.0, 450.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 450.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -81,7 +81,7 @@ and Ptolemy models with each other!</text></svg></configure>
     <entity name="EventButton1" class="ptolemy.domains.de.lib.EventButton">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Send my clipboard contents to partner.">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="80.0, 300.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 300.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -94,7 +94,7 @@ and Ptolemy models with each other!</text></svg></configure>
     <entity name="EventButton2" class="ptolemy.domains.de.lib.EventButton">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Copy partner's sent contents to my clipboard.">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="80.0, 550.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 550.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -105,7 +105,7 @@ and Ptolemy models with each other!</text></svg></configure>
         </port>
     </entity>
     <entity name="ArrayLength4" class="ptolemy.actor.lib.ArrayLength">
-        <property name="_location" class="ptolemy.moml.Location" value="220.0, 480.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="220.0, 480.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -115,7 +115,7 @@ and Ptolemy models with each other!</text></svg></configure>
         </port>
     </entity>
     <entity name="IntArrayToString" class="ptolemy.actor.lib.conversions.IntArrayToString">
-        <property name="_location" class="ptolemy.moml.Location" value="315.0, 565.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 565.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -125,7 +125,7 @@ and Ptolemy models with each other!</text></svg></configure>
         </port>
     </entity>
     <entity name="StringToIntArray" class="ptolemy.actor.lib.conversions.StringToIntArray">
-        <property name="_location" class="ptolemy.moml.Location" value="260.0, 300.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 300.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -161,7 +161,7 @@ and Ptolemy models with each other!</text></svg></configure>
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="110.0, 450.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 450.0">
         </property>
         <port name="returnAddress" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -196,7 +196,7 @@ and Ptolemy models with each other!</text></svg></configure>
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="425.0, 290.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="425.0, 290.0">
         </property>
         <port name="remoteAddress" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -220,7 +220,7 @@ and Ptolemy models with each other!</text></svg></configure>
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="715.0, 520.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="715.0, 520.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -228,7 +228,7 @@ and Ptolemy models with each other!</text></svg></configure>
         </port>
     </entity>
     <entity name="ArrayLength" class="ptolemy.actor.lib.ArrayLength">
-        <property name="_location" class="ptolemy.moml.Location" value="350.0, 345.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 345.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -246,7 +246,7 @@ and Ptolemy models with each other!</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="500.0, 345.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 345.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -260,7 +260,7 @@ and Ptolemy models with each other!</text></svg></configure>
         </port>
     </entity>
     <entity name="ArrayLength2" class="ptolemy.actor.lib.ArrayLength">
-        <property name="_location" class="ptolemy.moml.Location" value="330.0, 510.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 510.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -278,7 +278,7 @@ and Ptolemy models with each other!</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="510.0, 510.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="510.0, 510.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -292,7 +292,7 @@ and Ptolemy models with each other!</text></svg></configure>
         </port>
     </entity>
     <entity name="Queue" class="ptolemy.domains.de.lib.Queue">
-        <property name="_location" class="ptolemy.moml.Location" value="205.0, 540.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 540.0">
         </property>
         <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
             <property name="input"/>
@@ -305,7 +305,7 @@ and Ptolemy models with each other!</text></svg></configure>
         </port>
     </entity>
     <entity name="Merge2" class="ptolemy.domains.de.lib.Merge">
-        <property name="_location" class="ptolemy.moml.Location" value="715.0, 450.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="715.0, 450.0">
         </property>
         <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
             <property name="input"/>
@@ -320,7 +320,7 @@ and Ptolemy models with each other!</text></svg></configure>
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="140.0, 235.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 235.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -329,7 +329,7 @@ and Ptolemy models with each other!</text></svg></configure>
     <entity name="EventButton3" class="ptolemy.domains.de.lib.EventButton">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Update partner's IP address.">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="80.0, 185.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 185.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -340,7 +340,7 @@ and Ptolemy models with each other!</text></svg></configure>
         </port>
     </entity>
     <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
-        <property name="_location" class="ptolemy.moml.Location" value="215.0, 185.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 185.0">
         </property>
         <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
             <property name="input"/>
@@ -360,7 +360,7 @@ and Ptolemy models with each other!</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="310.0, 185.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 185.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -372,7 +372,7 @@ and Ptolemy models with each other!</text></svg></configure>
     </entity>
     <entity name="Datagram2" class="ptolemy.actor.lib.net.demo.Datagram.Datagram">
         <doc>Gives access to the system clipboard</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="460.0, 565.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 565.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -386,7 +386,7 @@ and Ptolemy models with each other!</text></svg></configure>
     </entity>
     <entity name="Datagram1" class="ptolemy.actor.lib.net.demo.Datagram.Datagram">
         <doc>Gives access to the system clipboard</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="175.0, 300.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 300.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

@@ -23,7 +23,7 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="80.0, 45.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 45.0">
         </property>
     </property>
     <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
@@ -33,7 +33,7 @@
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="105.0, 135.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 135.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -46,7 +46,7 @@
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="245.0, 85.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 85.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -63,7 +63,7 @@
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="465.0, 130.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="465.0, 130.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -83,7 +83,7 @@
         </configure>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.moml.Location" value="380.0, 130.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 130.0">
         </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -99,7 +99,7 @@
     </entity>
     <entity name="WallClockTime" class="ptolemy.actor.lib.WallClockTime">
         <doc>Output the current real time in seconds</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="255.0, 195.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 195.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>

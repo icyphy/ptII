@@ -15,14 +15,14 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="68.0, 37.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 37.0">
         </property>
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="128.0, 142.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="128.0, 142.0">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -77,11 +77,11 @@ radians per second, centered at zero frequency, in decibels (dB).</text></svg></
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="-5.0, -5.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, -5.0">
             </property>
         </property>
         <property name="Copy1:3:0:annotation1" class="ptolemy.kernel.util.Attribute">
-            <property name="_location" class="ptolemy.moml.Location" value="265.0, 91.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="265.0, 91.0">
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure>
@@ -102,7 +102,7 @@ radians per second, centered at zero frequency, in decibels (dB).</text>
             <property name="_hideName" class="ptolemy.data.expr.Parameter">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="307.0, 141.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="307.0, 141.0">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
@@ -110,7 +110,7 @@ radians per second, centered at zero frequency, in decibels (dB).</text>
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="445.0, 160.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="445.0, 160.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

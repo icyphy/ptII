@@ -79,18 +79,18 @@ test AbstractCase-1.1 {call _exportMoMLContents} {
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="69.0, 36.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="69.0, 36.0">
         </property>
     </property>
     <entity name="Case" class="ptolemy.actor.lib.hoc.Case">
-        <property name="_location" class="ptolemy.moml.Location" value="207.0, 146.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="207.0, 146.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
         </property>
         <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.moml.Location" value="163.0, 141.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="163.0, 141.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
             </property>
@@ -103,7 +103,7 @@ test AbstractCase-1.1 {call _exportMoMLContents} {
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="69.0, 35.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="69.0, 35.0">
                 </property>
             </property>
             <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -114,7 +114,7 @@ test AbstractCase-1.1 {call _exportMoMLContents} {
                 <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
                 </property>
                 <doc>Create a sequence of tokens with increasing value</doc>
-                <property name="_location" class="ptolemy.moml.Location" value="151.0, 162.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="151.0, 162.0">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -131,7 +131,7 @@ test AbstractCase-1.1 {call _exportMoMLContents} {
                 <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
                 </property>
                 <doc>Write out tokens to a file or stdout</doc>
-                <property name="_location" class="ptolemy.moml.Location" value="290.0, 157.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 157.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -144,7 +144,7 @@ test AbstractCase-1.1 {call _exportMoMLContents} {
             <link port="FileWriter.input" relation="relation"/>
         </entity>
         <entity name="Copy1:typed composite actor" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.moml.Location" value="347.0, 144.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="347.0, 144.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
             </property>
@@ -157,7 +157,7 @@ test AbstractCase-1.1 {call _exportMoMLContents} {
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="69.0, 35.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="69.0, 35.0">
                 </property>
             </property>
             <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -168,7 +168,7 @@ test AbstractCase-1.1 {call _exportMoMLContents} {
                 <property name="step" class="ptolemy.actor.parameters.PortParameter" value="-1">
                 </property>
                 <doc>Create a sequence of tokens with increasing value</doc>
-                <property name="_location" class="ptolemy.moml.Location" value="151.0, 161.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="151.0, 161.0">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -185,7 +185,7 @@ test AbstractCase-1.1 {call _exportMoMLContents} {
                 <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
                 </property>
                 <doc>Write out tokens to a file or stdout</doc>
-                <property name="_location" class="ptolemy.moml.Location" value="290.0, 157.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 157.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>

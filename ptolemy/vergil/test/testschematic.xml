@@ -5,7 +5,7 @@
     <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
     </property>
     <property name="testattribute" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="389.0, 291.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="389.0, 291.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -22,7 +22,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="70.0, 43.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 43.0">
         </property>
     </property>
     <doc>ramp-recorder...  a good first start</doc>
@@ -37,7 +37,7 @@
         </property>
         <property name="step" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="156.0, 173.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="156.0, 173.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -58,7 +58,7 @@
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="414.0, 169.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="414.0, 169.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

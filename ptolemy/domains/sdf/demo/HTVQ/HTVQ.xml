@@ -11,7 +11,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="59.33332824707031, 28.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="59.33332824707031, 28.0">
         </property>
     </property>
     <property name="blockWidth" class="ptolemy.data.expr.Parameter" value="4">
@@ -23,7 +23,7 @@
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 154]">
     </property>
     <property name="0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="125.0, 10.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 10.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -36,7 +36,7 @@
         </property>
     </property>
     <property name="1:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="100.0, 65.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 65.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -49,7 +49,7 @@
         </property>
     </property>
     <property name="0:1:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="390.0, 230.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 230.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -62,7 +62,7 @@
         </property>
     </property>
     <property name="1:0:1:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="125.0, 230.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 230.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -86,7 +86,7 @@ integer matrices</text>
         </property>
         <property name="endFrame" class="ptolemy.data.expr.Parameter" value="29">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="40.0, 95.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 95.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -97,7 +97,7 @@ integer matrices</text>
         </port>
     </entity>
     <entity name="PSNR" class="ptolemy.domains.sdf.lib.vq.PSNR">
-        <property name="_location" class="ptolemy.moml.Location" value="485.0, 130.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 130.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -118,7 +118,7 @@ integer matrices</text>
         </property>
         <property name="partitionRows" class="ptolemy.data.expr.Parameter" value="blockHeight">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="140.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 200.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -148,7 +148,7 @@ integer matrices</text>
         </property>
         <property name="blockHeight" class="ptolemy.data.expr.Parameter" value="blockHeight">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="225.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 200.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -178,7 +178,7 @@ integer matrices</text>
         </property>
         <property name="blockHeight" class="ptolemy.data.expr.Parameter" value="blockHeight">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="305.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 200.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -208,7 +208,7 @@ integer matrices</text>
         </property>
         <property name="partitionRows" class="ptolemy.data.expr.Parameter" value="blockHeight">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="385.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="385.0, 200.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -230,7 +230,7 @@ integer matrices</text>
         </port>
     </entity>
     <entity name="Compressed" class="ptolemy.domains.sdf.lib.vq.ImageDisplay">
-        <property name="_location" class="ptolemy.moml.Location" value="555.1666564941406, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="555.1666564941406, 200.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -238,7 +238,7 @@ integer matrices</text>
         </port>
     </entity>
     <entity name="Original" class="ptolemy.domains.sdf.lib.vq.ImageDisplay">
-        <property name="_location" class="ptolemy.moml.Location" value="551.5, 63.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="551.5, 63.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -252,7 +252,7 @@ integer matrices</text>
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="560.0, 130.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="560.0, 130.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

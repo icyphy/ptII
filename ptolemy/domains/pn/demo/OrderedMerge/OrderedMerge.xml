@@ -11,7 +11,7 @@
     <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
         <property name="Initial_queue_capacity" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="70.0, 35.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 35.0">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -35,7 +35,7 @@ monotonically increasing output sequence.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="215.0, 10.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 10.0">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -55,7 +55,7 @@ monotonically increasing output sequence.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="75.0, 150.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 150.0">
         </property>
     </property>
     <property name="1:annotation2" class="ptolemy.kernel.util.Attribute">
@@ -75,7 +75,7 @@ monotonically increasing output sequence.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="290.0, 215.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 215.0">
         </property>
     </property>
     <property name="2:annotation2" class="ptolemy.kernel.util.Attribute">
@@ -95,7 +95,7 @@ monotonically increasing output sequence.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="500.0, 285.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 285.0">
         </property>
     </property>
     <property name="annotation3" class="ptolemy.kernel.util.Attribute">
@@ -118,11 +118,11 @@ computation, and produces outputs.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="-5.0, 285.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 285.0">
         </property>
     </property>
     <entity name="OrderedMerge" class="ptolemy.actor.lib.OrderedMerge">
-        <property name="_location" class="ptolemy.moml.Location" value="270.0, 195.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 195.0">
         </property>
         <port name="inputA" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -135,7 +135,7 @@ computation, and produces outputs.</text></svg></configure>
         </port>
     </entity>
     <entity name="OrderedMerge2" class="ptolemy.actor.lib.OrderedMerge">
-        <property name="_location" class="ptolemy.moml.Location" value="470.0, 265.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="470.0, 265.0">
         </property>
         <port name="inputA" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -150,7 +150,7 @@ computation, and produces outputs.</text></svg></configure>
     <entity name="SampleDelay5" class="ptolemy.domains.sdf.lib.SampleDelay">
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{5}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="155.0, 130.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 130.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -182,7 +182,7 @@ computation, and produces outputs.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="360.0, 300.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 300.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -202,7 +202,7 @@ computation, and produces outputs.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="135.0, 230.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="135.0, 230.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -222,7 +222,7 @@ computation, and produces outputs.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="65.0, 130.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 130.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -238,7 +238,7 @@ computation, and produces outputs.</text></svg></configure>
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="365.0, 395.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 395.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -248,7 +248,7 @@ computation, and produces outputs.</text></svg></configure>
     <entity name="SampleDelay3" class="ptolemy.domains.sdf.lib.SampleDelay">
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{3}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="365.0, 195.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 195.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -272,7 +272,7 @@ computation, and produces outputs.</text></svg></configure>
     <entity name="SampleDelay2" class="ptolemy.domains.sdf.lib.SampleDelay">
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{2}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="580.0, 265.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="580.0, 265.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>

@@ -9,7 +9,7 @@
     <property name="Copy1:DDF" class="ptolemy.domains.ddf.kernel.DDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="100">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="72.0, 35.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="72.0, 35.0">
         </property>
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -20,7 +20,7 @@
         <property name="step" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="228.0, 150.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="228.0, 150.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -37,7 +37,7 @@
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="369.0, 146.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="369.0, 146.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

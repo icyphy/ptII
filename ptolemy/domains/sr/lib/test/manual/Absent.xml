@@ -15,7 +15,7 @@
         </property>
         <property name="Scheduler" class="ptolemy.domains.sr.kernel.SRRandomizedScheduler">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="98.0, 51.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="98.0, 51.0">
         </property>
     </property>
     <entity name="NonStrictLogicFunction" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
@@ -37,7 +37,7 @@
         </property>
         <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="302.0, 257.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="302.0, 257.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -51,7 +51,7 @@
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="99.0, 159.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="99.0, 159.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -65,7 +65,7 @@
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="94.0, 356.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="94.0, 356.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -84,7 +84,7 @@
         </property>
         <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="449.0, 270.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="449.0, 270.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -112,7 +112,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="100.0, 255.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 255.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>

@@ -67,7 +67,7 @@
         </property>
         <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="75.0, 50.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 50.0">
         </property>
     </property>
     <entity name="observer" class="ptolemy.domains.ct.demo.jspaces.CarTracking.CarInformationSubscriber">
@@ -75,7 +75,7 @@
         </property>
         <property name="entryName" class="ptolemy.data.expr.Parameter" value="&quot;LeadingCar&quot;">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="35.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 200.0">
         </property>
         <port name="correct" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -95,7 +95,7 @@
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="Controller">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="125.45454545454544, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="125.45454545454544, 200.0">
         </property>
         <port name="correctness" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -366,7 +366,7 @@
         <link port="erroRefinement.erroForceOutput" relation="_R5"/>
     </entity>
     <entity name="add1" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.moml.Location" value="212.7272727272727, 93.33333333333331">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="212.7272727272727, 93.33333333333331">
         </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -391,7 +391,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="280.0, 159.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 159.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -411,7 +411,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="390.0, 14.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 14.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -423,7 +423,7 @@
     <entity name="velocity" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialVelocity">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="262.5, 18.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="262.5, 18.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -439,7 +439,7 @@
     <entity name="position" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialPosition">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="503.0, 73.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="503.0, 73.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -455,7 +455,7 @@
     <entity name="ssamp" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="SamplingPeriod">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="474.54545454545445, 173.33333333333334">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="474.54545454545445, 173.33333333333334">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -475,7 +475,7 @@
         </property>
         <property name="entryName" class="ptolemy.data.expr.Parameter" value="&quot;B&quot;">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="581.5, 174.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="581.5, 174.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -488,7 +488,7 @@
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="480.0, 285.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="480.0, 285.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

@@ -17,7 +17,7 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="100.0, 55.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 55.0">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -37,7 +37,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="30.0, 95.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 95.0">
         </property>
     </property>
     <property name="1:annotation" class="ptolemy.kernel.util.Attribute">
@@ -57,7 +57,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="25.0, 195.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 195.0">
         </property>
     </property>
     <property name="2:annotation" class="ptolemy.kernel.util.Attribute">
@@ -77,7 +77,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="390.0, 95.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 95.0">
         </property>
     </property>
     <property name="2:2:annotation" class="ptolemy.kernel.util.Attribute">
@@ -97,7 +97,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="230.0, 95.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 95.0">
         </property>
     </property>
     <property name="annotation4" class="ptolemy.kernel.util.Attribute">
@@ -118,7 +118,7 @@ Iterations 8</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="150.0, 30.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 30.0">
         </property>
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -129,7 +129,7 @@ Iterations 8</text></svg></configure>
         <property name="step" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="90.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 165.0">
         </property>
         <property name="frequency" class="ptolemy.data.expr.Parameter" value="2">
         </property>
@@ -148,7 +148,7 @@ Iterations 8</text></svg></configure>
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="295.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 165.0">
         </property>
         <property name="frequency" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -176,7 +176,7 @@ Iterations 8</text></svg></configure>
 create refinements for the states. Each refinement needs a director.
 For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="250.0, 40.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 40.0">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
                 </property>
@@ -191,13 +191,13 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             </property>
             <port name="in" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="95.0, 260.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 260.0">
                 </property>
             </port>
             <port name="out" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="590.0, 270.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="590.0, 270.0">
                 </property>
             </port>
             <entity name="mode1" class="ptolemy.domains.fsm.kernel.State">
@@ -207,7 +207,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="247.1067588888087, 344.2092040994492">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="247.1067588888087, 344.2092040994492">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
@@ -221,7 +221,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="422.10675888880877, 349.2092040994492">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="422.10675888880877, 349.2092040994492">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
@@ -235,7 +235,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="210.0, 155.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 155.0">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
@@ -355,7 +355,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="110.0, 125.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 125.0">
                 </property>
             </property>
             <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -375,19 +375,19 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="75.0, 315.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 315.0">
                 </property>
             </property>
             <port name="in" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="100.0, 205.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 205.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </port>
             <port name="out" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="510.0, 215.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="510.0, 215.0">
                 </property>
                 <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -395,7 +395,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
             </port>
             <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-                <property name="_location" class="ptolemy.moml.Location" value="270.0, 215.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 215.0">
                 </property>
                 <port name="plus" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -417,7 +417,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="step" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
                 <doc>Create a sequence of tokens with increasing value</doc>
-                <property name="_location" class="ptolemy.moml.Location" value="120.0, 280.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 280.0">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -434,7 +434,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="465.0, 285.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="465.0, 285.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -481,7 +481,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="90.0, 105.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 105.0">
                 </property>
             </property>
             <property name="1:annotation" class="ptolemy.kernel.util.Attribute">
@@ -501,19 +501,19 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="60.0, 320.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 320.0">
                 </property>
             </property>
             <port name="in" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="95.0, 185.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 185.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </port>
             <port name="out" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="505.0, 230.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="505.0, 230.0">
                 </property>
                 <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -521,7 +521,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
             </port>
             <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-                <property name="_location" class="ptolemy.moml.Location" value="270.0, 230.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 230.0">
                 </property>
                 <port name="plus" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -542,7 +542,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="470.0, 305.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="470.0, 305.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -569,7 +569,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="step" class="ptolemy.data.expr.Parameter" value="2">
                 </property>
                 <doc>Create a sequence of tokens with increasing value</doc>
-                <property name="_location" class="ptolemy.moml.Location" value="100.0, 285.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 285.0">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -615,7 +615,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="455.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 165.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

@@ -15,7 +15,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="69.0, 31.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="69.0, 31.0">
         </property>
     </property>
     <property name="log2numInputs" class="ptolemy.data.expr.Parameter" value="8">
@@ -42,7 +42,7 @@ by three different techniques.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="135.0, 10.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="135.0, 10.0">
         </property>
     </property>
     <entity name="MaximumEntropySpectrum" class="ptolemy.domains.sdf.lib.MaximumEntropySpectrum">
@@ -84,11 +84,11 @@ radians per second, centered at zero frequency, in decibels (dB).</text></svg></
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="-5.0, -5.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, -5.0">
             </property>
         </property>
         <property name="Copy1:3:0:annotation1" class="ptolemy.kernel.util.Attribute">
-            <property name="_location" class="ptolemy.moml.Location" value="265.0, 91.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="265.0, 91.0">
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure>
@@ -109,7 +109,7 @@ radians per second, centered at zero frequency, in decibels (dB).</text>
             <property name="_hideName" class="ptolemy.data.expr.Parameter">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="370.0, 275.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 275.0">
         </property>
     </entity>
     <entity name="Spectrum" class="ptolemy.domains.sdf.lib.Spectrum">
@@ -120,7 +120,7 @@ radians per second, centered at zero frequency, in decibels (dB).</text>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
         </property>
         <property name="3:0:annotation1" class="ptolemy.kernel.util.Attribute">
-            <property name="_location" class="ptolemy.moml.Location" value="391.0, 72.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="391.0, 72.0">
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure>
@@ -142,7 +142,7 @@ the output is a periodogram spectral estimate.</text>
         <property name="order" class="ptolemy.data.expr.Parameter" value="log2numInputs">
         </property>
         <doc>This composite actor calculates the spectrum of the input.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="370.0, 135.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 135.0">
         </property>
     </entity>
     <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
@@ -153,7 +153,7 @@ the output is a periodogram spectral estimate.</text>
         <property name="standardDeviation" class="ptolemy.data.expr.Parameter" value="noisePower">
         </property>
         <doc>Create a sequence of gaussian random variables</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="117.0, 322.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="117.0, 322.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -196,11 +196,11 @@ the output is a periodogram spectral estimate.</text>
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="25.0, 20.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 20.0">
             </property>
         </property>
         <doc>This composite actor generates a sine wave.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="122.0, 136.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="122.0, 136.0">
         </property>
     </entity>
     <entity name="Sinewave2" class="ptolemy.actor.lib.Sinewave">
@@ -236,11 +236,11 @@ the output is a periodogram spectral estimate.</text>
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="25.0, 20.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 20.0">
             </property>
         </property>
         <doc>This composite actor generates a sine wave.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="122.0, 196.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="122.0, 196.0">
         </property>
     </entity>
     <entity name="Sinewave3" class="ptolemy.actor.lib.Sinewave">
@@ -276,15 +276,15 @@ the output is a periodogram spectral estimate.</text>
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="25.0, 20.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 20.0">
             </property>
         </property>
         <doc>This composite actor generates a sine wave.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="121.0, 256.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="121.0, 256.0">
         </property>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.moml.Location" value="237.0, 153.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="237.0, 153.0">
         </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -309,7 +309,7 @@ the output is a periodogram spectral estimate.</text>
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="550.0, 205.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="550.0, 205.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -332,7 +332,7 @@ the output is a periodogram spectral estimate.</text>
         </property>
         <property name="denominator" class="ptolemy.data.expr.Parameter" value="{1.0, 0.99}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="221.0, 314.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="221.0, 314.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -379,11 +379,11 @@ radians per second, centered at zero frequency.</text></svg></configure>
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="5.0, 5.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="5.0, 5.0">
             </property>
         </property>
         <doc>This composite actor calculates the spectrum of the input.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="370.0, 205.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 205.0">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">

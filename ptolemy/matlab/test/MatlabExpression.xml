@@ -13,7 +13,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="78.0, 147.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="78.0, 147.0">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -37,13 +37,13 @@ from a library and testing against matlab...</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="170.0, 65.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 65.0">
         </property>
     </property>
     <entity name="DoubleMatrixMatlabExpression" class="ptolemy.matlab.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="output=input.*input;">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="335.0, 310.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 310.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -59,7 +59,7 @@ from a library and testing against matlab...</text></svg></configure>
     <entity name="ComplexMatrixMatlabExpression" class="ptolemy.matlab.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="output=input*iteration">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="335.0, 450.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 450.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -79,7 +79,7 @@ from a library and testing against matlab...</text></svg></configure>
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="170.0, 275.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 275.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -92,7 +92,7 @@ from a library and testing against matlab...</text></svg></configure>
     <entity name="DoubleMatrixExpression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="input*2.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="335.0, 240.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 240.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -108,7 +108,7 @@ from a library and testing against matlab...</text></svg></configure>
     <entity name="ComplexMatrixExpression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="input * iteration">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="335.0, 380.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 380.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -130,7 +130,7 @@ from a library and testing against matlab...</text></svg></configure>
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="170.0, 455.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 455.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -145,7 +145,7 @@ from a library and testing against matlab...</text></svg></configure>
     <entity name="MatlabStructWriteRead" class="ptolemy.matlab.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="output=input;">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="225.0, 585.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 585.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -159,7 +159,7 @@ from a library and testing against matlab...</text></svg></configure>
     <entity name="CompareRecords" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="reference.isEqualTo(test)">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="330.0, 520.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 520.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -182,7 +182,7 @@ from a library and testing against matlab...</text></svg></configure>
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="525.0, 510.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="525.0, 510.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -198,7 +198,7 @@ from a library and testing against matlab...</text></svg></configure>
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="50.0, 380.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 380.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -211,7 +211,7 @@ from a library and testing against matlab...</text></svg></configure>
     <entity name="CheckPackageDirectories" class="ptolemy.matlab.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="output=path;">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="225.0, 645.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 645.0">
         </property>
         <property name="packageDirectories" class="ptolemy.data.expr.Parameter" value="&quot;../ml,ptolemy/matlab/test&quot;">
         </property>
@@ -231,7 +231,7 @@ from a library and testing against matlab...</text></svg></configure>
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="536.0, 406.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="536.0, 406.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -247,7 +247,7 @@ from a library and testing against matlab...</text></svg></configure>
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="170.0, 380.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 380.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -260,7 +260,7 @@ from a library and testing against matlab...</text></svg></configure>
     <entity name="MarkIteration" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;Iteration &quot;+iteration.toString()+&quot;:&quot;">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="500.0, 240.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 240.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>

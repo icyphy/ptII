@@ -19,7 +19,7 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="60.0, 29.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 29.0">
         </property>
     </property>
     <property name="forwardLossRate" class="ptolemy.data.expr.Parameter" value="0.3">
@@ -35,7 +35,7 @@
     <entity name="MessageSource" class="ptolemy.domains.fsm.demo.ABP.DEMessageSource">
         <property name="maxDelay" class="ptolemy.data.expr.Parameter" value="0.5">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="90.0, 110.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 110.0">
         </property>
         <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
             <property name="output"/>
@@ -48,7 +48,7 @@
         </port>
     </entity>
     <entity name="Timer" class="ptolemy.domains.fsm.demo.ABP.DETimer">
-        <property name="_location" class="ptolemy.moml.Location" value="70.0, 265.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 265.0">
         </property>
         <port name="expired" class="ptolemy.domains.de.kernel.DEIOPort">
             <property name="output"/>
@@ -64,7 +64,7 @@
         </property>
         <property name="lossProbability" class="ptolemy.data.expr.Parameter" value="forwardLossRate">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="285.0, 150.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 150.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
         </property>
@@ -72,17 +72,17 @@
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="87.0, 220.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="87.0, 220.0">
             </property>
         </port>
         <port name="control" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="510.0, 135.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="510.0, 135.0">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="510.0, 315.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="510.0, 315.0">
             </property>
         </port>
         <entity name="uniform" class="ptolemy.actor.lib.Uniform">
@@ -92,7 +92,7 @@
             </property>
             <property name="upperBound" class="ptolemy.data.expr.Parameter" value="maximumDelay">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="340.0, 277.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 277.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -103,7 +103,7 @@
             </port>
         </entity>
         <entity name="loser" class="ptolemy.actor.lib.Switch">
-            <property name="_location" class="ptolemy.moml.Location" value="449.0, 237.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="449.0, 237.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -123,7 +123,7 @@
             </property>
             <property name="values" class="ptolemy.data.expr.Parameter" value="{0, 1}">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="343.0, 152.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="343.0, 152.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -136,7 +136,7 @@
         <entity name="Server" class="ptolemy.domains.de.lib.Server">
             <property name="serviceTime" class="ptolemy.data.expr.Parameter" value="1.9026971045642">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="185.0, 229.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 229.0">
             </property>
             <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
                 <property name="input"/>
@@ -182,7 +182,7 @@
         </property>
         <property name="lossProbability" class="ptolemy.data.expr.Parameter" value="backwardLossRate">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="430.0, 300.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="430.0, 300.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
         </property>
@@ -190,17 +190,17 @@
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="90.0, 225.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 225.0">
             </property>
         </port>
         <port name="control" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="518.0, 137.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="518.0, 137.0">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="523.0, 313.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="523.0, 313.0">
             </property>
         </port>
         <entity name="uniform" class="ptolemy.actor.lib.Uniform">
@@ -210,7 +210,7 @@
             </property>
             <property name="upperBound" class="ptolemy.data.expr.Parameter" value="maximumDelay">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="347.0, 280.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="347.0, 280.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -221,7 +221,7 @@
             </port>
         </entity>
         <entity name="loser" class="ptolemy.actor.lib.Switch">
-            <property name="_location" class="ptolemy.moml.Location" value="454.0, 242.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="454.0, 242.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -241,7 +241,7 @@
             </property>
             <property name="values" class="ptolemy.data.expr.Parameter" value="{0, 1}">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="356.0, 155.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="356.0, 155.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -254,7 +254,7 @@
         <entity name="Server" class="ptolemy.domains.de.lib.Server">
             <property name="serviceTime" class="ptolemy.data.expr.Parameter" value="0.9516100831876">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="206.0, 234.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="206.0, 234.0">
             </property>
             <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
                 <property name="input"/>
@@ -304,7 +304,7 @@
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="470.0, 60.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="470.0, 60.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -328,10 +328,10 @@
         <property name="SenderDirector" class="ptolemy.domains.fsm.kernel.FSMDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="Controller">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="140.0, 50.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 50.0">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="171.0, 186.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="171.0, 186.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
         </property>
@@ -341,63 +341,63 @@
             <property name="input"/>
             <property name="type" class="ptolemy.actor.TypeAttribute" value="general">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="100.0, 125.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 125.0">
             </property>
         </port>
         <port name="msgIn" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="105.0, 250.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 250.0">
             </property>
         </port>
         <port name="next" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="type" class="ptolemy.actor.TypeAttribute" value="general">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="505.0, 115.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="505.0, 115.0">
             </property>
         </port>
         <port name="error" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="type" class="ptolemy.actor.TypeAttribute" value="general">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="505.0, 155.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="505.0, 155.0">
             </property>
         </port>
         <port name="expired" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="type" class="ptolemy.actor.TypeAttribute" value="general">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="105.0, 305.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 305.0">
             </property>
         </port>
         <port name="ack" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="105.0, 200.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 200.0">
             </property>
         </port>
         <port name="pktOut" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="505.0, 200.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="505.0, 200.0">
             </property>
         </port>
         <port name="monitor" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="505.0, 280.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="505.0, 280.0">
             </property>
         </port>
         <port name="setTimer" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="type" class="ptolemy.actor.TypeAttribute" value="double">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="505.0, 325.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="505.0, 325.0">
             </property>
         </port>
         <entity name="Controller" class="ptolemy.domains.fsm.demo.ABP.SenderController">
@@ -411,7 +411,7 @@
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[106, 116]">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="380.0, 115.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 115.0">
             </property>
         </entity>
         <entity name="Connect" class="ptolemy.domains.fsm.demo.ABP.ConnectComponent">
@@ -427,7 +427,7 @@
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 168]">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="260.0, 135.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 135.0">
             </property>
         </entity>
         <entity name="Send" class="ptolemy.domains.fsm.demo.ABP.SendComponent">
@@ -445,7 +445,7 @@
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 116]">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="295.0, 260.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 260.0">
             </property>
         </entity>
         <relation name="request" class="ptolemy.actor.TypedIORelation">
@@ -511,7 +511,7 @@
         </property>
         <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="375.0, 150.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="375.0, 150.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
         </property>

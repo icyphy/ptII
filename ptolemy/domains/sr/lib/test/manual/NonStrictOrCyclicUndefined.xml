@@ -15,7 +15,7 @@
         </property>
         <property name="Scheduler" class="ptolemy.domains.sr.kernel.SRRandomizedScheduler">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="56.0, 48.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="56.0, 48.0">
         </property>
     </property>
     <entity name="LogicalOr" class="ptolemy.actor.lib.logic.LogicFunction">
@@ -35,7 +35,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="235.0, 220.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 220.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -49,7 +49,7 @@
         <property name="value" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="47.0, 221.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="47.0, 221.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -60,7 +60,7 @@
         </port>
     </entity>
     <entity name="LogicalNot" class="ptolemy.actor.lib.logic.LogicalNot">
-        <property name="_location" class="ptolemy.moml.Location" value="365.0, 226.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 226.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -78,7 +78,7 @@
         </property>
         <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="527.0, 293.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="527.0, 293.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

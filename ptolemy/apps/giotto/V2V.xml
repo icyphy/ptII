@@ -53,7 +53,7 @@
         </property>
         <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="70.0, 35.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 35.0">
         </property>
     </property>
     <property name="initialDistance" class="ptolemy.data.expr.Parameter" value="100.0">
@@ -77,11 +77,11 @@ of following the LeadingPlatoon.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="15.0, 245.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="15.0, 245.0">
         </property>
     </property>
     <entity name="MeasureDistance" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="200.0, 135.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 135.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -93,25 +93,25 @@ of following the LeadingPlatoon.</text></svg></configure>
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="500.0, 180.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 180.0">
             </property>
         </port>
         <port name="velFollower" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="60.0, 245.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 245.0">
             </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
             </property>
         </port>
         <port name="velLeader" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="60.0, 130.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 130.0">
             </property>
         </port>
         <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialDistance">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="325.0, 150.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="325.0, 150.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -125,7 +125,7 @@ of following the LeadingPlatoon.</text></svg></configure>
             </port>
         </entity>
         <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-            <property name="_location" class="ptolemy.moml.Location" value="225.0, 150.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 150.0">
             </property>
             <port name="plus" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -159,7 +159,7 @@ of following the LeadingPlatoon.</text></svg></configure>
         <link port="AddSubtract.output" relation="relation5"/>
     </entity>
     <entity name="FollowingPlatoon" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="350.0, 145.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 145.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -177,7 +177,7 @@ of following the LeadingPlatoon.</text></svg></configure>
       </svg>
     </configure>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="30.0, 245.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 245.0">
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
@@ -194,7 +194,7 @@ of following the LeadingPlatoon.</text></svg></configure>
       </svg>
     </configure>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="30.0, 265.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 265.0">
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
@@ -211,7 +211,7 @@ of following the LeadingPlatoon.</text></svg></configure>
       </svg>
     </configure>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="30.0, 285.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 285.0">
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
@@ -228,7 +228,7 @@ of following the LeadingPlatoon.</text></svg></configure>
       </svg>
     </configure>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="30.0, 305.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 305.0">
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
@@ -245,7 +245,7 @@ of following the LeadingPlatoon.</text></svg></configure>
       </svg>
     </configure>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="30.0, 325.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 325.0">
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
@@ -262,7 +262,7 @@ of following the LeadingPlatoon.</text></svg></configure>
       </svg>
     </configure>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="30.0, 345.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 345.0">
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
@@ -279,7 +279,7 @@ of following the LeadingPlatoon.</text></svg></configure>
       </svg>
     </configure>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="150.0, 245.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 245.0">
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
@@ -296,7 +296,7 @@ of following the LeadingPlatoon.</text></svg></configure>
       </svg>
     </configure>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="150.0, 265.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 265.0">
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
@@ -313,7 +313,7 @@ of following the LeadingPlatoon.</text></svg></configure>
       </svg>
     </configure>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="150.0, 285.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 285.0">
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
@@ -330,7 +330,7 @@ of following the LeadingPlatoon.</text></svg></configure>
       </svg>
     </configure>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="150.0, 305.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 305.0">
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
@@ -347,7 +347,7 @@ of following the LeadingPlatoon.</text></svg></configure>
       </svg>
     </configure>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="150.0, 325.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 325.0">
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
@@ -364,7 +364,7 @@ of following the LeadingPlatoon.</text></svg></configure>
       </svg>
     </configure>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="150.0, 345.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 345.0">
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
@@ -381,7 +381,7 @@ of following the LeadingPlatoon.</text></svg></configure>
       </svg>
     </configure>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="260.0, 245.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 245.0">
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
@@ -398,7 +398,7 @@ of following the LeadingPlatoon.</text></svg></configure>
       </svg>
     </configure>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="260.0, 265.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 265.0">
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
@@ -415,7 +415,7 @@ of following the LeadingPlatoon.</text></svg></configure>
       </svg>
     </configure>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="260.0, 285.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 285.0">
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
@@ -432,7 +432,7 @@ of following the LeadingPlatoon.</text></svg></configure>
       </svg>
     </configure>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="260.0, 305.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 305.0">
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
@@ -449,7 +449,7 @@ of following the LeadingPlatoon.</text></svg></configure>
       </svg>
     </configure>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="260.0, 325.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 325.0">
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
@@ -466,7 +466,7 @@ of following the LeadingPlatoon.</text></svg></configure>
       </svg>
     </configure>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="260.0, 345.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 345.0">
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
@@ -483,7 +483,7 @@ of following the LeadingPlatoon.</text></svg></configure>
       </svg>
     </configure>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="370.0, 245.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 245.0">
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
@@ -500,7 +500,7 @@ of following the LeadingPlatoon.</text></svg></configure>
       </svg>
     </configure>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="370.0, 265.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 265.0">
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
@@ -517,7 +517,7 @@ of following the LeadingPlatoon.</text></svg></configure>
       </svg>
     </configure>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="370.0, 285.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 285.0">
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
@@ -534,34 +534,34 @@ of following the LeadingPlatoon.</text></svg></configure>
       </svg>
     </configure>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="370.0, 305.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 305.0">
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
         </property>
         <port name="dist" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="39.0, 40.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="39.0, 40.0">
             </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
             </property>
         </port>
         <port name="velLeader" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="40.0, 185.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 185.0">
             </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
             </property>
         </port>
         <port name="velFollower" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="514.0, 135.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="514.0, 135.0">
             </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
             </property>
         </port>
         <entity name="Velocity" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.moml.Location" value="364.0, 110.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="364.0, 110.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
             </property>
@@ -575,20 +575,20 @@ of following the LeadingPlatoon.</text></svg></configure>
                 <property name="input"/>
                 <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="100.0, 175.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 175.0">
                 </property>
             </port>
             <port name="vel" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="520.0, 175.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="520.0, 175.0">
                 </property>
             </port>
             <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="vInit">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="295.0, 175.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 175.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -606,7 +606,7 @@ of following the LeadingPlatoon.</text></svg></configure>
                 </property>
                 <property name="top" class="ptolemy.data.expr.Parameter" value="vMax">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="420.0, 175.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 175.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -635,7 +635,7 @@ of following the LeadingPlatoon.</text></svg></configure>
             </property>
             <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="209.0, 110.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="209.0, 110.0">
             </property>
             <port name="vel" class="ptolemy.vergil.fsm.modal.ModalPort">
                 <property name="input"/>
@@ -673,23 +673,23 @@ of following the LeadingPlatoon.</text></svg></configure>
                 </property>
                 <port name="vel" class="ptolemy.vergil.fsm.modal.RefinementPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="30.0, 305.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 305.0">
                     </property>
                 </port>
                 <port name="dist" class="ptolemy.vergil.fsm.modal.RefinementPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="30.0, 145.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 145.0">
                     </property>
                 </port>
                 <port name="otherVel" class="ptolemy.vergil.fsm.modal.RefinementPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="35.0, 230.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 230.0">
                     </property>
                 </port>
                 <port name="acc" class="ptolemy.vergil.fsm.modal.RefinementPort">
                     <property name="input"/>
                     <property name="output"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="565.0, 180.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="565.0, 180.0">
                     </property>
                 </port>
                 <entity name="previous" class="ptolemy.domains.fsm.kernel.State">
@@ -699,7 +699,7 @@ of following the LeadingPlatoon.</text></svg></configure>
                     </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="395.0, 185.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 185.0">
                     </property>
                     <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                     </port>
@@ -713,7 +713,7 @@ of following the LeadingPlatoon.</text></svg></configure>
                     </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="235.0, 185.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 185.0">
                     </property>
                     <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                     </port>
@@ -809,27 +809,27 @@ of following the LeadingPlatoon.</text></svg></configure>
                     </property>
                     <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="415.0, 50.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 50.0">
                     </property>
                 </property>
                 <port name="vel" class="ptolemy.vergil.fsm.modal.RefinementPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="35.0, 140.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 140.0">
                     </property>
                 </port>
                 <port name="dist" class="ptolemy.vergil.fsm.modal.RefinementPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="35.0, 280.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 280.0">
                     </property>
                 </port>
                 <port name="otherVel" class="ptolemy.vergil.fsm.modal.RefinementPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="35.0, 80.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 80.0">
                     </property>
                 </port>
                 <port name="acc" class="ptolemy.vergil.fsm.modal.RefinementPort">
                     <property name="output"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="550.0, 240.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="550.0, 240.0">
                     </property>
                 </port>
                 <entity name="Scale" class="ptolemy.actor.lib.Scale">
@@ -843,7 +843,7 @@ of following the LeadingPlatoon.</text></svg></configure>
                         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                         </property>
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="200.0, 80.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 80.0">
                     </property>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -853,7 +853,7 @@ of following the LeadingPlatoon.</text></svg></configure>
                     </port>
                 </entity>
                 <entity name="1:AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-                    <property name="_location" class="ptolemy.moml.Location" value="330.0, 290.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 290.0">
                     </property>
                     <port name="plus" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -878,7 +878,7 @@ of following the LeadingPlatoon.</text></svg></configure>
                         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                         </property>
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="200.0, 200.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 200.0">
                     </property>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -898,7 +898,7 @@ of following the LeadingPlatoon.</text></svg></configure>
                         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                         </property>
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="200.0, 140.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 140.0">
                     </property>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -917,7 +917,7 @@ of following the LeadingPlatoon.</text></svg></configure>
                         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                         </property>
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="185.0, 350.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 350.0">
                     </property>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
@@ -930,7 +930,7 @@ of following the LeadingPlatoon.</text></svg></configure>
                 <entity name="1:Integrator" class="ptolemy.domains.ct.lib.Integrator">
                     <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="430.0, 290.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="430.0, 290.0">
                     </property>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -954,7 +954,7 @@ of following the LeadingPlatoon.</text></svg></configure>
                         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                         </property>
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="200.0, 280.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 280.0">
                     </property>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -1055,33 +1055,33 @@ of following the LeadingPlatoon.</text></svg></configure>
                     </property>
                     <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="465.0, 50.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="465.0, 50.0">
                     </property>
                 </property>
                 <port name="vel" class="ptolemy.vergil.fsm.modal.RefinementPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="40.0, 145.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 145.0">
                     </property>
                 </port>
                 <port name="dist" class="ptolemy.vergil.fsm.modal.RefinementPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="40.0, 280.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 280.0">
                     </property>
                 </port>
                 <port name="otherVel" class="ptolemy.vergil.fsm.modal.RefinementPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="40.0, 80.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 80.0">
                     </property>
                 </port>
                 <port name="acc" class="ptolemy.vergil.fsm.modal.RefinementPort">
                     <property name="output"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="540.0, 240.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="540.0, 240.0">
                     </property>
                 </port>
                 <entity name="1:1:Integrator" class="ptolemy.domains.ct.lib.Integrator">
                     <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="430.0, 290.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="430.0, 290.0">
                     </property>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -1105,7 +1105,7 @@ of following the LeadingPlatoon.</text></svg></configure>
                         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                         </property>
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="200.0, 200.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 200.0">
                     </property>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -1124,7 +1124,7 @@ of following the LeadingPlatoon.</text></svg></configure>
                         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                         </property>
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="185.0, 350.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 350.0">
                     </property>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
@@ -1145,7 +1145,7 @@ of following the LeadingPlatoon.</text></svg></configure>
                         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                         </property>
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="200.0, 145.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 145.0">
                     </property>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -1165,7 +1165,7 @@ of following the LeadingPlatoon.</text></svg></configure>
                         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                         </property>
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="200.0, 80.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 80.0">
                     </property>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -1185,7 +1185,7 @@ of following the LeadingPlatoon.</text></svg></configure>
                         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                         </property>
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="200.0, 280.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 280.0">
                     </property>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -1195,7 +1195,7 @@ of following the LeadingPlatoon.</text></svg></configure>
                     </port>
                 </entity>
                 <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-                    <property name="_location" class="ptolemy.moml.Location" value="325.0, 290.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="325.0, 290.0">
                     </property>
                     <port name="plus" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -1307,7 +1307,7 @@ of following the LeadingPlatoon.</text></svg></configure>
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="480.0, 190.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="480.0, 190.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1326,7 +1326,7 @@ of following the LeadingPlatoon.</text></svg></configure>
         </configure>
     </entity>
     <entity name="LeadingPlatoon" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="65.0, 190.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 190.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -1346,7 +1346,7 @@ of following the LeadingPlatoon.</text></svg></configure>
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="515.0, 175.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="515.0, 175.0">
             </property>
         </port>
         <entity name="Limiter" class="ptolemy.actor.lib.Limiter">
@@ -1354,7 +1354,7 @@ of following the LeadingPlatoon.</text></svg></configure>
             </property>
             <property name="top" class="ptolemy.data.expr.Parameter" value="vMax">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="420.0, 175.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 175.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -1366,7 +1366,7 @@ of following the LeadingPlatoon.</text></svg></configure>
         <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialVelocity">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="335.0, 175.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 175.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -1384,7 +1384,7 @@ of following the LeadingPlatoon.</text></svg></configure>
             </property>
             <property name="top" class="ptolemy.data.expr.Parameter" value="aMax">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="245.0, 175.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 175.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -1405,7 +1405,7 @@ of following the LeadingPlatoon.</text></svg></configure>
             <property name="frequencyInHz" class="ptolemy.data.expr.Parameter" value="0.1">
             </property>
             <doc>This composite actor generates a timed sine wave.</doc>
-            <property name="_location" class="ptolemy.moml.Location" value="130.0, 175.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 175.0">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">

@@ -15,7 +15,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="85.0, 40.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 40.0">
         </property>
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -28,7 +28,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="100.0, 120.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 120.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -39,7 +39,7 @@
         </port>
     </entity>
     <entity name="FIR" class="ptolemy.copernicus.jhdl.demo.FIR2.FIR">
-        <property name="_location" class="ptolemy.moml.Location" value="190.0, 120.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="190.0, 120.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -62,7 +62,7 @@
     </entity>
     <entity name="Writer" class="ptolemy.copernicus.jhdl.demo.FIR2.Writer">
         <doc>Write out tokens to stdout</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="320.0, 120.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="320.0, 120.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

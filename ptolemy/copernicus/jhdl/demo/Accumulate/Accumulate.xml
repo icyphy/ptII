@@ -14,11 +14,11 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="110.0, 69.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 69.5">
         </property>
     </property>
     <entity name="Accumulate" class="ptolemy.copernicus.jhdl.demo.Accumulate.Accum">
-        <property name="_location" class="ptolemy.moml.Location" value="225.0, 135.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 135.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -43,7 +43,7 @@
         <property name="value" class="ptolemy.data.expr.Parameter" value="3">
         </property>
         <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="100.0, 125.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 125.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -57,7 +57,7 @@
         <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
         </property>
         <doc>Write out tokens to a file or stdout</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="320.0, 135.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="320.0, 135.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

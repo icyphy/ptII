@@ -15,7 +15,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="70.0, 39.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 39.5">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -37,7 +37,7 @@ needed before it executes.)</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="230.0, 100.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 100.0">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -56,7 +56,7 @@ of three integers.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="0.0, 140.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 140.0">
         </property>
     </property>
     <property name="annotation3" class="ptolemy.kernel.util.Attribute">
@@ -75,7 +75,7 @@ the 8-bit truncation of one of the integers.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="170.0, 25.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 25.0">
         </property>
     </property>
     <property name="annotation4" class="ptolemy.kernel.util.Attribute">
@@ -94,7 +94,7 @@ These integers are assembeled into an integer array.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="0.0, 300.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 300.0">
         </property>
     </property>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
@@ -104,7 +104,7 @@ These integers are assembeled into an integer array.</text></svg></configure>
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="386.5, 278.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="386.5, 278.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -119,7 +119,7 @@ These integers are assembeled into an integer array.</text></svg></configure>
         <property name="step" class="ptolemy.data.expr.Parameter" value="{1, 5, 10}">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="60.0, 123.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 123.5">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -156,7 +156,7 @@ These integers are assembeled into an integer array.</text></svg></configure>
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="267.5, 277.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="267.5, 277.5">
         </property>
         <port name="returnAddress" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -191,7 +191,7 @@ These integers are assembeled into an integer array.</text></svg></configure>
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="202.5, 112.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="202.5, 112.5">
         </property>
         <port name="remoteAddress" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

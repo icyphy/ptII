@@ -16,7 +16,7 @@
         </property>
         <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.giotto&quot;">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="80.0, 46.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 46.0">
         </property>
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[583, 350]">
@@ -40,7 +40,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="250.0, 20.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 20.0">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -60,7 +60,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="325.0, 225.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="325.0, 225.0">
         </property>
     </property>
     <property name="2:annotation" class="ptolemy.kernel.util.Attribute">
@@ -80,7 +80,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="420.0, 70.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 70.0">
         </property>
     </property>
     <property name="3:annotation" class="ptolemy.kernel.util.Attribute">
@@ -100,13 +100,13 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="460.0, 235.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 235.0">
         </property>
     </property>
     <entity name="Source" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="40.0, 170.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 170.0">
         </property>
         <property name="frequency" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -119,7 +119,7 @@
         </port>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.moml.Location" value="305.0, 84.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 84.0">
         </property>
         <property name="frequency" class="ptolemy.data.expr.Parameter" value="3">
         </property>
@@ -136,7 +136,7 @@
         </port>
     </entity>
     <entity name="AddSubtract7" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.moml.Location" value="295.0, 245.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 245.0">
         </property>
         <property name="frequency" class="ptolemy.data.expr.Parameter" value="2">
         </property>
@@ -157,7 +157,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="455.0, 140.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 140.0">
         </property>
         <property name="frequency" class="ptolemy.data.expr.Parameter" value="3">
         </property>
@@ -171,7 +171,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="460.0, 310.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 310.0">
         </property>
         <property name="frequency" class="ptolemy.data.expr.Parameter" value="2">
         </property>

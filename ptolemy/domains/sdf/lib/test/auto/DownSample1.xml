@@ -11,7 +11,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="109.0, 75.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="109.0, 75.0">
         </property>
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
@@ -26,7 +26,7 @@
         <property name="step" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="206.0, 247.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="206.0, 247.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -41,7 +41,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="440.0, 248.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="440.0, 248.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -53,7 +53,7 @@
         </property>
         <property name="phase" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="320.0, 246.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="320.0, 246.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>

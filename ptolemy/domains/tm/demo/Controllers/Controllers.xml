@@ -53,7 +53,7 @@
         </property>
         <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="60.0, 38.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 38.0">
         </property>
     </property>
     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="true">
@@ -67,7 +67,7 @@
     <property name="executionTime2" class="ptolemy.data.expr.Parameter" value="0.02">
     </property>
     <property name="0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="30.0, 355.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 355.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -87,7 +87,7 @@ preemptive ones can.
     <entity name="Sampler1" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="425.0, 135.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="425.0, 135.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -107,7 +107,7 @@ preemptive ones can.
         </property>
         <property name="denominator" class="ptolemy.data.expr.Parameter" value="{1.0, 1.0, 0.0}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="282.0, 135.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="282.0, 135.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
@@ -115,12 +115,12 @@ preemptive ones can.
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location">
+            <property name="_location" class="ptolemy.kernel.util.Location">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location">
+            <property name="_location" class="ptolemy.kernel.util.Location">
             </property>
         </port>
         <entity name="InputAdder" class="ptolemy.actor.lib.AddSubtract">
@@ -272,7 +272,7 @@ preemptive ones can.
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="415.0, 75.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 75.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -293,7 +293,7 @@ preemptive ones can.
     <entity name="ZeroOrderHold" class="ptolemy.domains.ct.lib.ZeroOrderHold">
         <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="660.0, 113.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="660.0, 113.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -310,7 +310,7 @@ preemptive ones can.
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="55.0, 115.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 115.0">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -327,7 +327,7 @@ preemptive ones can.
         </port>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.moml.Location" value="189.0, 135.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="189.0, 135.0">
         </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -342,7 +342,7 @@ preemptive ones can.
         </port>
     </entity>
     <entity name="AddSubtract2" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.moml.Location" value="190.0, 235.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="190.0, 235.0">
         </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -359,7 +359,7 @@ preemptive ones can.
     <entity name="ZeroOrderHold2" class="ptolemy.domains.ct.lib.ZeroOrderHold">
         <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="675.0, 280.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="675.0, 280.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -376,7 +376,7 @@ preemptive ones can.
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="60.0, 215.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 215.0">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -397,7 +397,7 @@ preemptive ones can.
         </property>
         <property name="denominator" class="ptolemy.data.expr.Parameter" value="{1.0, 1.0, 0.0}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="290.0, 235.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 235.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
@@ -405,12 +405,12 @@ preemptive ones can.
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location">
+            <property name="_location" class="ptolemy.kernel.util.Location">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location">
+            <property name="_location" class="ptolemy.kernel.util.Location">
             </property>
         </port>
         <entity name="InputAdder" class="ptolemy.actor.lib.AddSubtract">
@@ -556,7 +556,7 @@ preemptive ones can.
         <link port="Feedforward1.output" relation="_R4"/>
     </entity>
     <entity name="TM controllers" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="550.0, 183.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="550.0, 183.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
@@ -579,7 +579,7 @@ preemptive ones can.
                 <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="259.0, 86.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="259.0, 86.0">
             </property>
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="preemptive">
@@ -596,22 +596,22 @@ preemptive ones can.
         </property>
         <port name="input1" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="165.0, 154.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 154.0">
             </property>
         </port>
         <port name="input2" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="165.0, 235.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 235.0">
             </property>
         </port>
         <port name="output1" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="362.5, 154.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="362.5, 154.0">
             </property>
         </port>
         <port name="output2" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="360.0, 235.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 235.0">
             </property>
         </port>
         <entity name="Controller1" class="ptolemy.actor.lib.Scale">
@@ -619,7 +619,7 @@ preemptive ones can.
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="259.0, 154.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="259.0, 154.0">
             </property>
             <property name="priority" class="ptolemy.data.expr.Parameter" value="priority1">
             </property>
@@ -643,7 +643,7 @@ preemptive ones can.
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="260.0, 235.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 235.0">
             </property>
             <property name="priority" class="ptolemy.data.expr.Parameter" value="priority2">
             </property>
@@ -686,7 +686,7 @@ preemptive ones can.
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="415.0, 295.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 295.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -707,7 +707,7 @@ preemptive ones can.
     <entity name="Sampler2" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.07">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="424.0, 235.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="424.0, 235.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

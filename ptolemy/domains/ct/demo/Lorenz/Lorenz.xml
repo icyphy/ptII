@@ -49,11 +49,11 @@
         </property>
         <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="97.0, 35.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="97.0, 35.0">
         </property>
     </property>
     <property name="0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="180.0, 15.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 15.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -87,7 +87,7 @@ model is known as a Lorenz attractor.</text>
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="355.0, 185.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 185.0">
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
@@ -104,7 +104,7 @@ model is known as a Lorenz attractor.</text>
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="355.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 200.0">
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
@@ -121,7 +121,7 @@ model is known as a Lorenz attractor.</text>
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="355.0, 215.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 215.0">
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
@@ -138,13 +138,13 @@ model is known as a Lorenz attractor.</text>
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="355.0, 230.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 230.0">
         </property>
     </property>
     <entity name="Integrator 1" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="228.0, 213.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="228.0, 213.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -160,7 +160,7 @@ model is known as a Lorenz attractor.</text>
     <entity name="Integrator 2" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="254.0, 278.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="254.0, 278.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -176,7 +176,7 @@ model is known as a Lorenz attractor.</text>
     <entity name="Integrator 3" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="229.0, 343.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="229.0, 343.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -196,7 +196,7 @@ model is known as a Lorenz attractor.</text>
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="92.0, 105.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="92.0, 105.5">
         </property>
         <port name="inputX" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -228,7 +228,7 @@ model is known as a Lorenz attractor.</text>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="113.0, 213.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="113.0, 213.5">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -249,7 +249,7 @@ model is known as a Lorenz attractor.</text>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="140.5, 278.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="140.5, 278.5">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -273,7 +273,7 @@ model is known as a Lorenz attractor.</text>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="120.0, 343.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 343.5">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>

@@ -11,7 +11,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="67.71429443359375, 39.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="67.71429443359375, 39.0">
         </property>
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 350]">
@@ -19,7 +19,7 @@
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 152]">
     </property>
     <property name="9:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="200.0, -5.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, -5.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -44,7 +44,7 @@ using double precision.</text>
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="45.0, 225.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 225.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -63,7 +63,7 @@ using double precision.</text>
         </property>
         <property name="taps" class="ptolemy.data.expr.Parameter" value="{-0.040609, -0.001628, 0.17853, 0.37665, 0.37665, 0.17853, -0.001628, -0.040609}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="240.0, 225.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 225.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -93,7 +93,7 @@ using double precision.</text>
         </property>
         <property name="taps" class="ptolemy.data.expr.Parameter" value="{quantize(-.040609, 8, 2), quantize(-.001628, 8, 2), quantize(.17853, 8, 2), quantize(.37665, 8, 2), quantize(.37665, 8, 2), quantize(.17853, 8, 2), quantize(-.001628, 8, 2), quantize(-.040609, 8, 2)}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="240.0, 285.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 285.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -123,7 +123,7 @@ using double precision.</text>
         </property>
         <property name="taps" class="ptolemy.data.expr.Parameter" value="{fix(-.040609, 6, 2), fix(-.001628, 6, 2), fix(.17853, 6, 2), fix(.37665, 6, 2), fix(.37665, 6, 2), fix(.17853, 6, 2), fix(-.001628, 6, 2), fix(-.040609, 6, 2)}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="235.0, 135.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 135.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -145,7 +145,7 @@ using double precision.</text>
         </port>
     </entity>
     <entity name="FixToDouble" class="ptolemy.actor.lib.conversions.FixToDouble">
-        <property name="_location" class="ptolemy.moml.Location" value="325.0, 145.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="325.0, 145.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -165,7 +165,7 @@ using double precision.</text>
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="0.0122718">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="540.0, 225.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="540.0, 225.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -190,7 +190,7 @@ using double precision.</text>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
         </property>
         <property name="3:0:annotation1" class="ptolemy.kernel.util.Attribute">
-            <property name="_location" class="ptolemy.moml.Location" value="391.0, 72.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="391.0, 72.0">
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure>
@@ -211,7 +211,7 @@ centered at zero frequency.</text>
         <property name="order" class="ptolemy.data.expr.Parameter" value="8">
         </property>
         <doc>This composite actor calculates the spectrum of the input.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="415.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 165.0">
         </property>
     </entity>
     <entity name="Spectrum2" class="ptolemy.domains.sdf.lib.Spectrum">
@@ -220,7 +220,7 @@ centered at zero frequency.</text>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
         </property>
         <property name="3:0:annotation1" class="ptolemy.kernel.util.Attribute">
-            <property name="_location" class="ptolemy.moml.Location" value="391.0, 72.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="391.0, 72.0">
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure>
@@ -241,7 +241,7 @@ centered at zero frequency.</text>
         <property name="order" class="ptolemy.data.expr.Parameter" value="8">
         </property>
         <doc>This composite actor calculates the spectrum of the input.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="415.0, 225.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 225.0">
         </property>
     </entity>
     <entity name="Spectrum3" class="ptolemy.domains.sdf.lib.Spectrum">
@@ -250,7 +250,7 @@ centered at zero frequency.</text>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
         </property>
         <property name="3:0:annotation1" class="ptolemy.kernel.util.Attribute">
-            <property name="_location" class="ptolemy.moml.Location" value="391.0, 72.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="391.0, 72.0">
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure>
@@ -271,7 +271,7 @@ centered at zero frequency.</text>
         <property name="order" class="ptolemy.data.expr.Parameter" value="8">
         </property>
         <doc>This composite actor calculates the spectrum of the input.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="415.0, 285.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 285.0">
         </property>
     </entity>
     <entity name="DoubleToFix" class="ptolemy.actor.lib.conversions.DoubleToFix">
@@ -285,7 +285,7 @@ centered at zero frequency.</text>
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="145.0, 135.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 135.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

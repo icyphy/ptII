@@ -53,7 +53,7 @@
         </property>
         <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="85.0, 45.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 45.0">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -73,11 +73,11 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="-75.0, 115.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="-75.0, 115.0">
         </property>
     </property>
     <entity name="1:giotto" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="150.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 200.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -92,7 +92,7 @@
             </property>
             <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="80.0, 40.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 40.0">
             </property>
         </property>
         <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -112,7 +112,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="140.0, 45.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 45.0">
             </property>
         </property>
         <property name="1:annotation" class="ptolemy.kernel.util.Attribute">
@@ -132,7 +132,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="310.0, 45.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 45.0">
             </property>
         </property>
         <property name="2:annotation" class="ptolemy.kernel.util.Attribute">
@@ -152,7 +152,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="150.0, 180.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 180.0">
             </property>
         </property>
         <property name="3:annotation" class="ptolemy.kernel.util.Attribute">
@@ -172,17 +172,17 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="235.0, 340.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 340.0">
             </property>
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="30.0, 260.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 260.0">
             </property>
         </port>
         <port name="out" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="415.0, 260.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 260.0">
             </property>
         </port>
         <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -193,7 +193,7 @@
             <property name="step" class="ptolemy.data.expr.Parameter" value="1">
             </property>
             <doc>Create a sequence of tokens with increasing value</doc>
-            <property name="_location" class="ptolemy.moml.Location" value="195.0, 115.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 115.0">
             </property>
             <property name="frequency" class="ptolemy.data.expr.Parameter" value="2">
             </property>
@@ -208,7 +208,7 @@
         <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
             <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="200.0, 260.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 260.0">
             </property>
             <property name="frequency" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -225,7 +225,7 @@
             </property>
             <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="210.0, 355.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 355.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -237,7 +237,7 @@
             </property>
             <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="355.0, 115.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 115.0">
             </property>
             <property name="frequency" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -266,7 +266,7 @@
     <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="5.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="5.0, 200.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -291,7 +291,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="-115.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="-115.0, 200.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -302,7 +302,7 @@
         </port>
     </entity>
     <entity name="IsPresent" class="ptolemy.actor.lib.logic.IsPresent">
-        <property name="_location" class="ptolemy.moml.Location" value="310.0, 285.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 285.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -318,7 +318,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="325.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="325.0, 200.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -330,7 +330,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="490.0, 285.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="490.0, 285.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

@@ -65,7 +65,7 @@ RemoveGraphicalClasses.</text></svg></configure>
         </property>
         <property name=\"_editorFactory\" class=\"ptolemy.vergil.toolbox.AnnotationEditorFactory\">
         </property>
-        <property name=\"_location\" class=\"ptolemy.moml.Location\" value=\"190.0, 5.0\">
+        <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"190.0, 5.0\">
         </property>
         <property name=\"_hideName\" class=\"ptolemy.data.expr.Parameter\">
         </property>
@@ -115,7 +115,7 @@ RemoveGraphicalClasses.</text></svg></configure>
         </property>
         <property name="_hideName" class="ptolemy.data.expr.Parameter">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="190.0, 5.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="190.0, 5.0">
         </property>
     </property>
 </entity>
@@ -158,7 +158,7 @@ RemoveGraphicalClasses.</text></svg></configure>
         </property>
         <property name="_hideName" class="ptolemy.data.expr.Parameter">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="190.0, 5.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="190.0, 5.0">
         </property>
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -168,14 +168,14 @@ RemoveGraphicalClasses.</text></svg></configure>
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="100.0, 45.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 45.0">
         </property>
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="PI/2">
         </property>
         <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="100.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 165.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -202,7 +202,7 @@ RemoveGraphicalClasses.</text></svg></configure>
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="235.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 165.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -216,7 +216,7 @@ RemoveGraphicalClasses.</text></svg></configure>
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="355.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 165.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

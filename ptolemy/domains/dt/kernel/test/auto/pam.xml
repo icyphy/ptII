@@ -5,7 +5,7 @@
     <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
     </property>
     <property name="annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="352.0, 77.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="352.0, 77.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -22,7 +22,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="76.0, 30.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="76.0, 30.0">
         </property>
     </property>
     <property name="excess_bandwidth" class="ptolemy.data.expr.Parameter" value="0.5">
@@ -38,7 +38,7 @@
         </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="199.0, 41.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="199.0, 41.0">
         </property>
     </property>
     <entity name="DiscreteRandomSource1" class="ptolemy.actor.lib.DiscreteRandomSource">
@@ -48,7 +48,7 @@
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{-3, -1, 1, 3}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="93.0, 113.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="93.0, 113.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -75,7 +75,7 @@
         </property>
         <property name="symbolInterval" class="ptolemy.data.expr.Parameter" value="16">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="173.0, 134.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="173.0, 134.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -97,7 +97,7 @@
         </port>
     </entity>
     <entity name="AddSubtract4" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.moml.Location" value="296.0, 169.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="296.0, 169.0">
         </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -119,7 +119,7 @@
         <property name="standardDeviation" class="ptolemy.data.expr.Parameter" value="noise_standard_deviation">
         </property>
         <doc>Create a sequence of gaussian random variables</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="169.0, 209.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="169.0, 209.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -146,7 +146,7 @@
         </property>
         <property name="symbolInterval" class="ptolemy.data.expr.Parameter" value="16">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="399.0, 181.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="399.0, 181.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -168,7 +168,7 @@
         </port>
     </entity>
     <entity name="Discard1" class="ptolemy.actor.lib.Discard">
-        <property name="_location" class="ptolemy.moml.Location" value="515.0, 187.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="515.0, 187.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

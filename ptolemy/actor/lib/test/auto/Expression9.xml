@@ -15,7 +15,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="85.0, 30.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 30.0">
         </property>
     </property>
     <property name="N" class="ptolemy.data.expr.Parameter" value="1">
@@ -32,7 +32,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="195.0, 55.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 55.0">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -52,7 +52,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="25.0, 175.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 175.0">
         </property>
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -65,7 +65,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="95.0, 120.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 120.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -80,7 +80,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="280.0, 120.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 120.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

@@ -15,7 +15,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="70.0, 40.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 40.0">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -35,11 +35,11 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="40.0, 315.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 315.0">
         </property>
     </property>
     <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="180.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 200.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -52,19 +52,19 @@
             </property>
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="85.0, 40.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 40.0">
             </property>
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="45.0, 125.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 125.0">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </port>
         <port name="out" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="370.0, 125.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 125.0">
             </property>
             <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -76,7 +76,7 @@
             </property>
             <doc>The sdf delay actor, which behaves as an initial token on
 an arc.</doc>
-            <property name="_location" class="ptolemy.moml.Location" value="290.0, 125.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 125.0">
             </property>
             <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
                 <property name="input"/>
@@ -108,7 +108,7 @@ an arc.</doc>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="150.0, 125.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 125.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -131,7 +131,7 @@ an arc.</doc>
         <link port="Scale.output" relation="relation3"/>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.moml.Location" value="175.0, 110.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 110.0">
         </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -155,7 +155,7 @@ an arc.</doc>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="60.0, 100.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 100.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -170,7 +170,7 @@ an arc.</doc>
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="320.0, 115.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="320.0, 115.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -181,7 +181,7 @@ an arc.</doc>
         </port>
     </entity>
     <entity name="AddSubtract2" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.moml.Location" value="160.0, 270.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 270.0">
         </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -200,7 +200,7 @@ an arc.</doc>
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="360.0, 225.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 225.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -215,7 +215,7 @@ an arc.</doc>
         </property>
         <doc>The sdf delay actor, which behaves as an initial token on
 an arc.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="320.0, 285.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="320.0, 285.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>

@@ -23,7 +23,7 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="100.0, 65.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 65.0">
         </property>
     </property>
     <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
@@ -31,7 +31,7 @@
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="79.5, 208.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="79.5, 208.5">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -41,7 +41,7 @@
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="215.0, 284.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 284.5">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -58,7 +58,7 @@
         </port>
     </entity>
     <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
-        <property name="_location" class="ptolemy.moml.Location" value="335.0, 230.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 230.0">
         </property>
         <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
             <property name="input"/>
@@ -73,7 +73,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="441.5, 234.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="441.5, 234.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

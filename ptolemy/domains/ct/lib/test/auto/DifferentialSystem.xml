@@ -49,7 +49,7 @@
         </property>
         <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="96.0, 43.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="96.0, 43.0">
         </property>
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
@@ -61,7 +61,7 @@
         </property>
         <property name="initialStates" class="ptolemy.data.expr.Parameter" value="[0.0, 1.0]">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="257.0, 188.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="257.0, 188.0">
         </property>
         <property name="x1_dot" class="ptolemy.data.expr.Parameter" value="&quot;sin(x2+x1)+u&quot;">
         </property>
@@ -188,7 +188,7 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
         </property>
         <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="88.0, 138.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="88.0, 138.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -203,7 +203,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-6">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="385.0, 266.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="385.0, 266.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

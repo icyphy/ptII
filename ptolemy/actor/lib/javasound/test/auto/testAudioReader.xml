@@ -15,7 +15,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="233.0, 44.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="233.0, 44.0">
         </property>
     </property>
     <entity name="AudioReader" class="ptolemy.actor.lib.javasound.AudioReader">
@@ -23,7 +23,7 @@
         </property>
         <property name="refresh" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="144.0, 184.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="144.0, 184.5">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -43,7 +43,7 @@
         </property>
         <property name="usePastInputs" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="260.0, 183.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 183.5">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -69,7 +69,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="406.5, 184.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="406.5, 184.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

@@ -23,7 +23,7 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="75.0, 65.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 65.0">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -48,7 +48,7 @@ Poisson process.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="135.0, 15.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="135.0, 15.0">
         </property>
     </property>
     <property name="sampleRate" class="ptolemy.data.expr.Parameter" value="24000.0">
@@ -77,7 +77,7 @@ to see how it works.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="240.0, 280.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 280.0">
         </property>
     </property>
     <entity name="modal model" class="ptolemy.vergil.fsm.modal.ModalModel">
@@ -87,7 +87,7 @@ to see how it works.</text></svg></configure>
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="252.5, 222.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="252.5, 222.5">
         </property>
         <port name="event" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="input"/>
@@ -135,7 +135,7 @@ An alternative design would have put the Ramp outside the modal model.</text></s
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="45.0, 5.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 5.0">
                 </property>
             </property>
             <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -156,7 +156,7 @@ see the mode refinements.</text></svg></configure>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="365.0, 290.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 290.0">
                 </property>
             </property>
             <property name="1:annotation2" class="ptolemy.kernel.util.Attribute">
@@ -181,29 +181,29 @@ to view the mode switching.</text></svg></configure>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="5.0, 260.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="5.0, 260.0">
                 </property>
             </property>
             <port name="event" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="32.40625, 125.74218877156575">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="32.40625, 125.74218877156575">
                 </property>
             </port>
             <port name="clock" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="32.40625, 232.40885416666669">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="32.40625, 232.40885416666669">
                 </property>
             </port>
             <port name="output" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="523.921875, 139.617182413737">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="523.921875, 139.617182413737">
                 </property>
             </port>
             <port name="phase" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="525.0, 230.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="525.0, 230.0">
                 </property>
             </port>
             <entity name="clean" class="ptolemy.domains.fsm.kernel.State">
@@ -213,7 +213,7 @@ to view the mode switching.</text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="221.0, 189.17875737712632">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="221.0, 189.17875737712632">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
@@ -227,7 +227,7 @@ to view the mode switching.</text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="341.0, 189.17875737712632">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="341.0, 189.17875737712632">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
@@ -287,7 +287,7 @@ to view the mode switching.</text></svg></configure>
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="80.0, 40.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 40.0">
                 </property>
             </property>
             <property name="initialPhase" class="ptolemy.data.expr.Parameter" value="4069.849506920323">
@@ -311,26 +311,26 @@ of an increasing sequence.</text></svg></configure>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="160.0, 30.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 30.0">
                 </property>
             </property>
             <port name="event" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="50.0, 135.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 135.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
             </port>
             <port name="clock" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="50.0, 220.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 220.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </port>
             <port name="output" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="475.0, 220.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="475.0, 220.0">
                 </property>
                 <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -339,7 +339,7 @@ of an increasing sequence.</text></svg></configure>
             </port>
             <port name="phase" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="280.0, 290.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 290.0">
                 </property>
                 <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -354,7 +354,7 @@ of an increasing sequence.</text></svg></configure>
                 <property name="step" class="ptolemy.data.expr.Parameter" value="frequency*2*PI/sampleRate">
                 </property>
                 <doc>Create a sequence of tokens with increasing value</doc>
-                <property name="_location" class="ptolemy.moml.Location" value="165.0, 220.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 220.0">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -387,7 +387,7 @@ of an increasing sequence.</text></svg></configure>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="285.0, 220.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 220.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -424,7 +424,7 @@ of an increasing sequence.</text></svg></configure>
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="80.0, 40.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 40.0">
                 </property>
             </property>
             <property name="initialPhase" class="ptolemy.data.expr.Parameter" value="4130.555548963136">
@@ -447,26 +447,26 @@ and then adds noise to it.</text></svg></configure>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="140.0, 15.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 15.0">
                 </property>
             </property>
             <port name="event" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="37.40625, 145.74218877156574">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="37.40625, 145.74218877156574">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
             </port>
             <port name="clock" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="37.40625, 252.40885416666669">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="37.40625, 252.40885416666669">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </port>
             <port name="output" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="496.921875, 179.617182413737">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="496.921875, 179.617182413737">
                 </property>
                 <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -475,7 +475,7 @@ and then adds noise to it.</text></svg></configure>
             </port>
             <port name="phase" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="275.0, 295.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 295.0">
                 </property>
                 <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -483,7 +483,7 @@ and then adds noise to it.</text></svg></configure>
                 </property>
             </port>
             <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-                <property name="_location" class="ptolemy.moml.Location" value="390.0, 230.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 230.0">
                 </property>
                 <port name="plus" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -520,7 +520,7 @@ and then adds noise to it.</text></svg></configure>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="285.0, 220.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 220.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -537,7 +537,7 @@ and then adds noise to it.</text></svg></configure>
                 <property name="step" class="ptolemy.data.expr.Parameter" value="frequency*2*PI/sampleRate">
                 </property>
                 <doc>Create a sequence of tokens with increasing value</doc>
-                <property name="_location" class="ptolemy.moml.Location" value="185.0, 220.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 220.0">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -555,7 +555,7 @@ and then adds noise to it.</text></svg></configure>
                 <property name="standardDeviation" class="ptolemy.data.expr.Parameter" value="noiseStandardDeviation">
                 </property>
                 <doc>Create a sequence of gaussian random variables</doc>
-                <property name="_location" class="ptolemy.moml.Location" value="285.0, 145.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 145.0">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -621,7 +621,7 @@ and then adds noise to it.</text></svg></configure>
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="117.5, 192.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="117.5, 192.5">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -641,7 +641,7 @@ and then adds noise to it.</text></svg></configure>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
         </property>
         <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="117.5, 267.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="117.5, 267.5">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -658,7 +658,7 @@ and then adds noise to it.</text></svg></configure>
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="387.5, 222.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="387.5, 222.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

@@ -15,7 +15,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="100.0, 105.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 105.0">
         </property>
     </property>
     <property name="blockHeight" class="ptolemy.data.expr.Parameter" value="2">
@@ -32,7 +32,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="315.0, 90.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 90.0">
         </property>
     </property>
     <property name="blockWidth" class="ptolemy.data.expr.Parameter" value="4">
@@ -49,7 +49,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="315.0, 65.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 65.0">
         </property>
     </property>
     <entity name="1:1:DatagramReader" class="ptolemy.actor.lib.net.DatagramReader">
@@ -79,7 +79,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="50.0, 190.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 190.0">
         </property>
         <port name="returnAddress" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -96,7 +96,7 @@
         </port>
     </entity>
     <entity name="1:1:Compressed" class="ptolemy.domains.sdf.lib.vq.ImageDisplay">
-        <property name="_location" class="ptolemy.moml.Location" value="515.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="515.0, 200.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -112,7 +112,7 @@
         </property>
         <property name="partitionRows" class="ptolemy.data.expr.Parameter" value="blockHeight">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="370.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 200.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -142,7 +142,7 @@
         </property>
         <property name="blockHeight" class="ptolemy.data.expr.Parameter" value="blockHeight">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="270.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 200.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -168,7 +168,7 @@
         </property>
         <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="165.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 200.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>

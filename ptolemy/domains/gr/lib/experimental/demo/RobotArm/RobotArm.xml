@@ -11,7 +11,7 @@
         </property>
         <property name="iteration time lower bound" class="ptolemy.data.expr.Parameter" value="33">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="87.0, 48.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="87.0, 48.0">
         </property>
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
@@ -36,7 +36,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="170.0, 261.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 261.0">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -54,7 +54,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="140.0, 35.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 35.0">
         </property>
     </property>
     <entity name="ViewScreen2" class="ptolemy.domains.gr.lib.ViewScreen">
@@ -82,7 +82,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
         </property>
         <property name="scale" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="471.99998474121094, 169.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="471.99998474121094, 169.0">
         </property>
         <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -90,7 +90,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
         </port>
     </entity>
     <entity name="Keyboard Input" class="ptolemy.domains.gr.lib.KeyInput3D">
-        <property name="_location" class="ptolemy.moml.Location" value="90.0, 170.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 170.0">
         </property>
         <port name="keycode" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -112,10 +112,10 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
             </property>
             <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="92.71429443359375, 28.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="92.71429443359375, 28.0">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="232.0, 170.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="232.0, 170.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
@@ -123,36 +123,36 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
         </property>
         <port name="out0" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location0" class="ptolemy.moml.Location" value="505.7142791748047, 75.00000190734863">
+            <property name="_location0" class="ptolemy.kernel.util.Location" value="505.7142791748047, 75.00000190734863">
             </property>
         </port>
         <port name="out1" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location0" class="ptolemy.moml.Location" value="505.7142791748047, 135.00000381469727">
+            <property name="_location0" class="ptolemy.kernel.util.Location" value="505.7142791748047, 135.00000381469727">
             </property>
         </port>
         <port name="out2" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location0" class="ptolemy.moml.Location" value="505.7142791748047, 195.0">
+            <property name="_location0" class="ptolemy.kernel.util.Location" value="505.7142791748047, 195.0">
             </property>
         </port>
         <port name="out3" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location0" class="ptolemy.moml.Location" value="505.7142791748047, 255.00000762939453">
+            <property name="_location0" class="ptolemy.kernel.util.Location" value="505.7142791748047, 255.00000762939453">
             </property>
         </port>
         <port name="out4" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location0" class="ptolemy.moml.Location" value="505.7142791748047, 315.00001525878906">
+            <property name="_location0" class="ptolemy.kernel.util.Location" value="505.7142791748047, 315.00001525878906">
             </property>
         </port>
         <port name="port4" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location0" class="ptolemy.moml.Location" value="61.28571701049805, 188.0">
+            <property name="_location0" class="ptolemy.kernel.util.Location" value="61.28571701049805, 188.0">
             </property>
         </port>
         <entity name="get_motor_number" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.moml.Location" value="216.0, 287.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="216.0, 287.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
             </property>
@@ -173,12 +173,12 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="89.0, 44.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="89.0, 44.0">
                 </property>
             </property>
             <port name="motor_number_out" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="location1" class="ptolemy.moml.Location" value="479.0, 174.0">
+                <property name="location1" class="ptolemy.kernel.util.Location" value="479.0, 174.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
@@ -189,7 +189,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
             </port>
             <port name="keycode_in" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="location1" class="ptolemy.moml.Location" value="76.0, 175.0">
+                <property name="location1" class="ptolemy.kernel.util.Location" value="76.0, 175.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -203,7 +203,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="278.0, 176.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="278.0, 176.0">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
                 </property>
@@ -211,18 +211,18 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <port name="in" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="53.0, 205.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="53.0, 205.0">
                     </property>
                 </port>
                 <port name="out" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="503.0, 203.5">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="503.0, 203.5">
                     </property>
                 </port>
                 <entity name="switchState" class="ptolemy.domains.fsm.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="251.0, 212.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="251.0, 212.0">
                     </property>
                     <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                     </port>
@@ -440,7 +440,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
             <link port="FSM_motor_number.out" relation="relation5"/>
         </entity>
         <entity name="get_direction" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.moml.Location" value="192.0, 189.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="192.0, 189.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
             </property>
@@ -461,12 +461,12 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="98.0, 50.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="98.0, 50.0">
                 </property>
             </property>
             <port name="motor_number_out" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="location1" class="ptolemy.moml.Location" value="479.0, 174.0">
+                <property name="location1" class="ptolemy.kernel.util.Location" value="479.0, 174.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
@@ -477,7 +477,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
             </port>
             <port name="keycode_in" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="location1" class="ptolemy.moml.Location" value="78.0, 174.0">
+                <property name="location1" class="ptolemy.kernel.util.Location" value="78.0, 174.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -491,7 +491,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="278.0, 176.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="278.0, 176.0">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
                 </property>
@@ -499,18 +499,18 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <port name="in" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="53.0, 205.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="53.0, 205.0">
                     </property>
                 </port>
                 <port name="out" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="503.0, 203.5">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="503.0, 203.5">
                     </property>
                 </port>
                 <entity name="switchState" class="ptolemy.domains.fsm.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="251.0, 212.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="251.0, 212.0">
                     </property>
                     <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                     </port>
@@ -732,7 +732,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="299.0, 190.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="299.0, 190.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -742,7 +742,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
             </port>
         </entity>
         <entity name="Switch1" class="ptolemy.actor.lib.Switch">
-            <property name="_location" class="ptolemy.moml.Location" value="417.0, 235.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="417.0, 235.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -796,7 +796,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
         <link port="Switch1.control" relation="relation4"/>
     </class>
     <class name="robot arm" extends="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="364.0000009536743, 168.75">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="364.0000009536743, 168.75">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
@@ -804,7 +804,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
         </property>
         <port name="out" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="location1" class="ptolemy.moml.Location" value="532.0, 103.0">
+            <property name="location1" class="ptolemy.kernel.util.Location" value="532.0, 103.0">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -813,7 +813,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
         </port>
         <port name="baseAngle" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="location1" class="ptolemy.moml.Location" value="39.0, 131.0">
+            <property name="location1" class="ptolemy.kernel.util.Location" value="39.0, 131.0">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -822,7 +822,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
         </port>
         <port name="lowerAngle" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="location1" class="ptolemy.moml.Location" value="43.0, 207.0">
+            <property name="location1" class="ptolemy.kernel.util.Location" value="43.0, 207.0">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -831,7 +831,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
         </port>
         <port name="upperAngle" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="location1" class="ptolemy.moml.Location" value="43.0, 275.0">
+            <property name="location1" class="ptolemy.kernel.util.Location" value="43.0, 275.0">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -840,7 +840,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
         </port>
         <port name="wristAngle" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="location1" class="ptolemy.moml.Location" value="41.0, 361.0">
+            <property name="location1" class="ptolemy.kernel.util.Location" value="41.0, 361.0">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -858,7 +858,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
             </property>
             <property name="zScale" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="417.0, 43.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="417.0, 43.0">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -872,11 +872,11 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
             </port>
         </entity>
         <class name="lower limb" extends="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.moml.Location" value="100.0, 166.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 166.0">
             </property>
             <port name="port10" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="location1" class="ptolemy.moml.Location" value="555.0, 154.0">
+                <property name="location1" class="ptolemy.kernel.util.Location" value="555.0, 154.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
@@ -896,7 +896,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="slices" class="ptolemy.data.expr.Parameter" value="32">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="72.0, 30.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="72.0, 30.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -916,7 +916,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="slices" class="ptolemy.data.expr.Parameter" value="32">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="72.0, 84.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="72.0, 84.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -934,7 +934,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="145.0, 89.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 89.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -965,7 +965,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="3.625">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="60.0, 141.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 141.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -983,7 +983,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="-3.625">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="234.0, 94.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="234.0, 94.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1017,7 +1017,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="-1.8125">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="156.0, 147.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="156.0, 147.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1047,7 +1047,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="slices" class="ptolemy.data.expr.Parameter" value="32">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="73.0, 191.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="73.0, 191.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -1064,7 +1064,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="slices" class="ptolemy.data.expr.Parameter" value="32">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="70.0, 245.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 245.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -1081,7 +1081,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="3.625">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="62.0, 296.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="62.0, 296.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -1096,7 +1096,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="145.0, 253.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 253.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1118,7 +1118,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="-3.625">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="231.0, 266.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="231.0, 266.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1146,7 +1146,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="-1.8125">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="146.0, 309.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="146.0, 309.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1174,7 +1174,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="244.0, 192.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="244.0, 192.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1204,7 +1204,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.1">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="66.0, 345.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="66.0, 345.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -1221,7 +1221,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.1">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="68.0, 395.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 395.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -1238,7 +1238,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.1">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="67.0, 446.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="67.0, 446.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -1255,7 +1255,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.1">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="67.0, 499.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="67.0, 499.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -1270,7 +1270,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="-1.25">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="149.0, 358.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="149.0, 358.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1298,7 +1298,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="-1.8">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="152.0, 408.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="152.0, 408.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1326,7 +1326,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="-1.8">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="153.0, 459.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="153.0, 459.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1354,7 +1354,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="-2.5">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="151.0, 512.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="151.0, 512.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1382,7 +1382,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="353.0, 31.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="353.0, 31.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1404,7 +1404,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="494.0, 61.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="494.0, 61.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1527,7 +1527,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
             </property>
             <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="195.0, 180.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 180.0">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -1555,7 +1555,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
             </property>
             <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.8, 0.0]">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="326.0, 166.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="326.0, 166.0">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -1569,11 +1569,11 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
             </port>
         </entity>
         <class name="upper limb" extends="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.moml.Location" value="97.0, 239.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="97.0, 239.0">
             </property>
             <port name="port0" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="location1" class="ptolemy.moml.Location" value="591.0, 102.0">
+                <property name="location1" class="ptolemy.kernel.util.Location" value="591.0, 102.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
@@ -1593,7 +1593,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="1.7">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="50.0, 32.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 32.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -1610,7 +1610,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="zScale" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="489.0, 97.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="489.0, 97.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1634,7 +1634,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="1.7">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="62.0, 91.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="62.0, 91.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -1649,7 +1649,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="181.0, 106.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="181.0, 106.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1679,7 +1679,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="54.0, 178.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="54.0, 178.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -1696,7 +1696,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="56.0, 208.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="56.0, 208.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -1711,7 +1711,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="-0.75">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="193.0, 192.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="193.0, 192.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1739,7 +1739,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.75">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="194.0, 231.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="194.0, 231.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1767,7 +1767,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="-0.75">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="194.0, 247.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="194.0, 247.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1797,7 +1797,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="55.0, 236.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 236.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -1814,7 +1814,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="54.0, 263.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="54.0, 263.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -1831,7 +1831,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="57.0, 339.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="57.0, 339.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -1846,7 +1846,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.75">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="197.0, 275.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="197.0, 275.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1874,7 +1874,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="-0.75">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="190.0, 353.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="190.0, 353.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1902,7 +1902,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.75">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="185.0, 396.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 396.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1932,7 +1932,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="56.0, 383.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="56.0, 383.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -1949,7 +1949,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="55.0, 428.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 428.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -1964,7 +1964,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.75">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="186.0, 441.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="186.0, 441.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1992,7 +1992,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="-0.75">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="184.0, 487.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="184.0, 487.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -2022,7 +2022,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="58.0, 474.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="58.0, 474.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -2039,7 +2039,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="1.25">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="368.0, 283.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="368.0, 283.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -2056,7 +2056,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="1.25">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="402.0, 449.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="402.0, 449.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -2071,7 +2071,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="499.0, 192.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="499.0, 192.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -2099,7 +2099,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="535.0, 431.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="535.0, 431.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -2127,7 +2127,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="height" class="ptolemy.data.expr.Parameter" value="0.01">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="379.0, 348.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="379.0, 348.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -2142,7 +2142,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.65">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="536.0, 314.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="536.0, 314.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -2170,7 +2170,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="458.0, 356.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="458.0, 356.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -2301,7 +2301,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
             </property>
             <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="199.0, 252.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="199.0, 252.0">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -2329,7 +2329,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
             </property>
             <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 4.5, 0.0]">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="328.0, 250.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="328.0, 250.0">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -2351,7 +2351,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
             </property>
             <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="352.0, 103.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="352.0, 103.0">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -2373,7 +2373,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
             </property>
             <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="197.0, 319.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="197.0, 319.0">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -2401,7 +2401,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
             </property>
             <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[-4.0, 4.5, 0.0]">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="320.0, 326.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="320.0, 326.0">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -2415,7 +2415,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
             </port>
         </entity>
         <class name="wrist" extends="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.moml.Location" value="97.0, 308.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="97.0, 308.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
             </property>
@@ -2423,7 +2423,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
             </property>
             <port name="port0" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="location1" class="ptolemy.moml.Location" value="540.0, 123.0">
+                <property name="location1" class="ptolemy.kernel.util.Location" value="540.0, 123.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
@@ -2443,7 +2443,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="slices" class="ptolemy.data.expr.Parameter" value="32">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="88.0, 82.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="88.0, 82.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -2458,7 +2458,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="71.0, 146.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="71.0, 146.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -2473,7 +2473,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="154.0, 155.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="154.0, 155.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -2495,7 +2495,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="235.0, 161.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 161.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -2517,7 +2517,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.101">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="322.0, 176.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="322.0, 176.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -2545,7 +2545,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="206.0, 90.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="206.0, 90.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -2569,7 +2569,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="slices" class="ptolemy.data.expr.Parameter" value="32">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="72.0, 224.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="72.0, 224.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -2584,7 +2584,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="143.0, 233.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="143.0, 233.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -2608,7 +2608,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="zScale" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="236.0, 233.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="236.0, 233.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -2630,7 +2630,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="68.0, 294.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 294.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -2645,7 +2645,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="144.0, 303.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="144.0, 303.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -2667,7 +2667,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="234.0, 297.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="234.0, 297.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -2689,7 +2689,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.101">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="320.0, 312.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="320.0, 312.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -2717,7 +2717,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="425.0, 274.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="425.0, 274.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -2747,7 +2747,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="76.0, 358.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="76.0, 358.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -2764,7 +2764,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="79.0, 416.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="79.0, 416.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -2779,7 +2779,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="-1.6">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="320.0, 373.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="320.0, 373.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -2807,7 +2807,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="-1.35">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="320.0, 431.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="320.0, 431.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -2835,7 +2835,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="543.0, 424.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="543.0, 424.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -2863,7 +2863,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="416.0, 98.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="416.0, 98.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -2885,7 +2885,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="455.0, 411.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 411.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -2909,7 +2909,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="zScale" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="528.0, 337.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="528.0, 337.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -2931,7 +2931,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="83.0, 472.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="83.0, 472.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -2946,7 +2946,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="168.0, 480.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="168.0, 480.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -2968,7 +2968,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="265.0, 487.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="265.0, 487.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -2990,7 +2990,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="351.0, 486.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="351.0, 486.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -3117,7 +3117,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
             <link port="Translate3D22.sceneGraphOut" relation="relation24"/>
         </class>
         <class name="gripper" extends="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.moml.Location" value="94.0, 387.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="94.0, 387.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
             </property>
@@ -3125,7 +3125,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
             </property>
             <port name="port1" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="location1" class="ptolemy.moml.Location" value="555.0, 216.0">
+                <property name="location1" class="ptolemy.kernel.util.Location" value="555.0, 216.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
@@ -3143,7 +3143,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="53.0, 139.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="53.0, 139.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -3158,7 +3158,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="54.0, 424.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="54.0, 424.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -3173,7 +3173,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="-0.125">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="298.0, 434.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="298.0, 434.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -3201,7 +3201,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="213.0, 145.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="213.0, 145.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -3223,7 +3223,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="131.0, 429.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="131.0, 429.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -3245,7 +3245,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="213.0, 431.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="213.0, 431.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -3269,7 +3269,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="49.0, 29.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="49.0, 29.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -3284,7 +3284,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.085">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="133.0, 42.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="133.0, 42.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -3312,7 +3312,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.3, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="219.0, 45.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="219.0, 45.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -3336,7 +3336,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="50.0, 84.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 84.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -3351,7 +3351,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="-0.3">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="131.0, 98.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="131.0, 98.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -3381,7 +3381,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="50.0, 309.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 309.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -3398,7 +3398,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="51.0, 360.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="51.0, 360.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -3413,7 +3413,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.085">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="131.0, 306.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="131.0, 306.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -3441,7 +3441,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="-0.3">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="129.0, 372.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="129.0, 372.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -3469,7 +3469,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.3, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="210.0, 319.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 319.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -3491,7 +3491,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="50.0, 193.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 193.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -3506,7 +3506,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.15">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="135.0, 196.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="135.0, 196.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -3534,7 +3534,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[-0.7, 0.15, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="213.0, 202.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="213.0, 202.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -3556,7 +3556,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="52.0, 242.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="52.0, 242.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -3571,7 +3571,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="-0.30">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="134.0, 250.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="134.0, 250.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -3599,7 +3599,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="62.0, 484.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="62.0, 484.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -3614,7 +3614,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.15">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="142.0, 486.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="142.0, 486.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -3642,7 +3642,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[-0.7, 0.15, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="233.0, 493.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="233.0, 493.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -3664,7 +3664,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="65.0, 547.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 547.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -3679,7 +3679,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="-0.3">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="150.0, 547.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 547.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -3707,7 +3707,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="327.0, 294.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="327.0, 294.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -3735,7 +3735,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="414.0, 301.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="414.0, 301.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -3757,7 +3757,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="361.0, 217.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="361.0, 217.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -3898,7 +3898,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
             </property>
             <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="193.0, 400.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="193.0, 400.0">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -3918,7 +3918,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
             </port>
         </entity>
         <class name="stand" extends="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.moml.Location" value="95.0, 36.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 36.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
             </property>
@@ -3926,7 +3926,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
             </property>
             <port name="port7" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="location1" class="ptolemy.moml.Location" value="482.0, 113.0">
+                <property name="location1" class="ptolemy.kernel.util.Location" value="482.0, 113.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
@@ -3942,7 +3942,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.75">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="75.0, 101.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 101.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -3957,7 +3957,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.75">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="68.0, 185.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 185.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -3972,7 +3972,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="-3.3">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="184.0, 199.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="184.0, 199.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -4002,7 +4002,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="3.5">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="55.0, 250.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 250.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -4017,7 +4017,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="-2.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="181.0, 264.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="181.0, 264.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -4045,7 +4045,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="2.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="293.0, 115.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="293.0, 115.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -4075,7 +4075,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.75">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="58.0, 352.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="58.0, 352.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -4090,7 +4090,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="-2.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="180.0, 366.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 366.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -4143,7 +4143,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
             <link port="Translate3D1.sceneGraphOut" relation="relation7"/>
         </class>
         <class name="shoulder base" extends="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.moml.Location" value="106.0, 97.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="106.0, 97.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
             </property>
@@ -4151,7 +4151,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
             </property>
             <port name="port0" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="location1" class="ptolemy.moml.Location" value="536.0, 259.0">
+                <property name="location1" class="ptolemy.kernel.util.Location" value="536.0, 259.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
@@ -4167,7 +4167,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.125">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="72.0, 66.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="72.0, 66.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -4182,7 +4182,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="157.0, 80.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="157.0, 80.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -4210,7 +4210,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="149.0, 189.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="149.0, 189.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -4234,7 +4234,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="zScale" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="64.0, 182.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="64.0, 182.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -4256,7 +4256,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="239.0, 203.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="239.0, 203.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -4284,7 +4284,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="318.0, 210.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="318.0, 210.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -4308,7 +4308,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="zScale" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="462.0, 261.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="462.0, 261.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -4332,7 +4332,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="01.25">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="66.0, 275.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="66.0, 275.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -4349,7 +4349,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="1.25">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="67.0, 349.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="67.0, 349.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -4366,7 +4366,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="1.25">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="64.0, 422.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="64.0, 422.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -4381,7 +4381,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="-2.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="284.0, 289.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="284.0, 289.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -4409,7 +4409,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="192.0, 363.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="192.0, 363.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -4437,7 +4437,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="189.0, 435.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="189.0, 435.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -4467,7 +4467,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="zWidth" class="ptolemy.data.expr.Parameter" value="1.5">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="283.0, 129.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="283.0, 129.0">
                 </property>
                 <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -4482,7 +4482,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="-0.5">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="384.0, 142.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="384.0, 142.0">
                 </property>
                 <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>

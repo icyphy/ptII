@@ -15,7 +15,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="80.0, 46.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 46.0">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -40,7 +40,7 @@ View -&gt; JVM Properties and hit the
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="250.0, -5.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, -5.0">
         </property>
     </property>
     <property name="interval" class="ptolemy.data.expr.Parameter" value="100">
@@ -57,13 +57,13 @@ View -&gt; JVM Properties and hit the
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="60.0, 100.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 100.0">
         </property>
     </property>
     <entity name="Total Expression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="input + totalMemory()">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="225.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 165.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -84,7 +84,7 @@ View -&gt; JVM Properties and hit the
         <property name="step" class="ptolemy.data.expr.Parameter" value="0L">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="85.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 165.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -97,7 +97,7 @@ View -&gt; JVM Properties and hit the
     <entity name="Free Expression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="input+freeMemory()">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="225.0, 275.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 275.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -107,7 +107,7 @@ View -&gt; JVM Properties and hit the
         </port>
     </entity>
     <entity name="LongToDouble" class="ptolemy.actor.lib.conversions.LongToDouble">
-        <property name="_location" class="ptolemy.moml.Location" value="330.0, 275.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 275.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -124,7 +124,7 @@ View -&gt; JVM Properties and hit the
         <property name="step" class="ptolemy.data.expr.Parameter" value="0L">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="85.0, 275.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 275.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -137,7 +137,7 @@ View -&gt; JVM Properties and hit the
     <entity name="Sleep" class="ptolemy.actor.lib.Sleep">
         <property name="sleepTime" class="ptolemy.data.expr.Parameter" value="interval">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="450.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 165.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -151,7 +151,7 @@ View -&gt; JVM Properties and hit the
     <entity name="Sleep2" class="ptolemy.actor.lib.Sleep">
         <property name="sleepTime" class="ptolemy.data.expr.Parameter" value="interval">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="450.0, 275.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 275.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -177,7 +177,7 @@ View -&gt; JVM Properties and hit the
         </property>
         <property name="persistence" class="ptolemy.data.expr.Parameter" value="900">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="550.0, 214.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="550.0, 214.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -198,7 +198,7 @@ View -&gt; JVM Properties and hit the
         </configure>
     </entity>
     <entity name="1:LongToDouble" class="ptolemy.actor.lib.conversions.LongToDouble">
-        <property name="_location" class="ptolemy.moml.Location" value="330.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 165.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

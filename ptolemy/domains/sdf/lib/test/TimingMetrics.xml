@@ -15,7 +15,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="78.0, 37.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="78.0, 37.0">
         </property>
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -26,7 +26,7 @@
         <property name="step" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="175.0, 137.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 137.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -43,7 +43,7 @@
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="315.0, 153.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 153.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -72,7 +72,7 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
         </property>
         <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="61.0, 144.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="61.0, 144.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -84,7 +84,7 @@
     </entity>
     <entity name="WallClockTime" class="ptolemy.actor.lib.WallClockTime">
         <doc>Output the current real time in seconds</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="178.0, 230.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="178.0, 230.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -97,7 +97,7 @@
     <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{0.0}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="286.0, 302.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="286.0, 302.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -119,7 +119,7 @@
         </port>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.moml.Location" value="372.0, 237.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="372.0, 237.0">
         </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -142,7 +142,7 @@
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="511.0, 202.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="511.0, 202.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -169,7 +169,7 @@
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="513.0, 307.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="513.0, 307.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

@@ -15,7 +15,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="85.0, 40.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 40.0">
         </property>
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -28,7 +28,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="100.0, 120.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 120.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -47,7 +47,7 @@
         </property>
         <property name="taps" class="ptolemy.data.expr.Parameter" value="{fix(0.023428499999999998,16,2), fix(0.05305302,16,2), fix(0.1391898,16,2), fix(0.2918208,16,2), fix(0.49240788,16,2), fix(0.69678324,16,2), fix(0.84993288,16,2), fix(0.9067675799999999,16,2), fix(0.84993288,16,2), fix(0.69678324,16,2), fix(0.49240788,16,2), fix(0.2918208,16,2), fix(0.1391898,16,2), fix(0.05305302,16,2), fix(0.023428499999999998,16,2)}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="190.0, 120.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="190.0, 120.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -72,7 +72,7 @@
         <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
         </property>
         <doc>Write out tokens to a file or stdout</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="320.0, 120.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="320.0, 120.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

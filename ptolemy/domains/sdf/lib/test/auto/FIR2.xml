@@ -15,7 +15,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="75.0, 37.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 37.0">
         </property>
     </property>
     <entity name="Pulse6" class="ptolemy.actor.lib.Pulse">
@@ -27,7 +27,7 @@
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="64.0, 172.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="64.0, 172.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -47,7 +47,7 @@
         <property name="taps" class="ptolemy.data.expr.Parameter" value="{2,0}">
         </property>
         <doc name="tooltip">FIR filter</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="255.0, 172.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 172.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -73,7 +73,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="387.0, 172.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="387.0, 172.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

@@ -15,7 +15,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="70.0, 39.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 39.5">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -36,7 +36,7 @@ to fire before the DatagramReader fires.
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="255.0, 120.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 120.0">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -55,7 +55,7 @@ of four integers.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="10.0, 140.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="10.0, 140.0">
         </property>
     </property>
     <property name="annotation3" class="ptolemy.kernel.util.Attribute">
@@ -76,7 +76,7 @@ test string used to represent the array.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="280.0, 20.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 20.0">
         </property>
     </property>
     <property name="annotation4" class="ptolemy.kernel.util.Attribute">
@@ -96,7 +96,7 @@ data type and structure (record, array) if any.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="5.0, 290.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="5.0, 290.0">
         </property>
     </property>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
@@ -106,7 +106,7 @@ data type and structure (record, array) if any.</text></svg></configure>
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="386.5, 278.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="386.5, 278.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -121,7 +121,7 @@ data type and structure (record, array) if any.</text></svg></configure>
         <property name="step" class="ptolemy.data.expr.Parameter" value="{ 1, 5, 10, 25}">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="60.0, 123.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 123.5">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -158,7 +158,7 @@ data type and structure (record, array) if any.</text></svg></configure>
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="265.0, 275.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="265.0, 275.0">
         </property>
         <port name="returnAddress" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -191,7 +191,7 @@ data type and structure (record, array) if any.</text></svg></configure>
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="225.0, 110.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 110.0">
         </property>
         <port name="remoteAddress" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

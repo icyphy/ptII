@@ -11,7 +11,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="90.0, 39.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 39.5">
         </property>
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
@@ -28,7 +28,7 @@
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="60.0, 175.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 175.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -48,7 +48,7 @@
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="55.0, 295.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 295.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -65,7 +65,7 @@
         </property>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="550.0, 295.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="550.0, 295.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -79,7 +79,7 @@
         </property>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="470.0, 175.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="470.0, 175.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -87,7 +87,7 @@
         </port>
     </entity>
     <entity name="ComplexToPolar11" class="ptolemy.actor.lib.conversions.ComplexToPolar">
-        <property name="_location" class="ptolemy.moml.Location" value="285.0, 185.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 185.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -100,7 +100,7 @@
         </port>
     </entity>
     <entity name="PolarToComplex14" class="ptolemy.actor.lib.conversions.PolarToComplex">
-        <property name="_location" class="ptolemy.moml.Location" value="170.0, 185.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 185.0">
         </property>
         <port name="magnitude" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -113,7 +113,7 @@
         </port>
     </entity>
     <entity name="PhaseUnwrap" class="ptolemy.actor.lib.PhaseUnwrap">
-        <property name="_location" class="ptolemy.moml.Location" value="370.0, 250.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 250.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -123,7 +123,7 @@
         </port>
     </entity>
     <entity name="Equals" class="ptolemy.actor.lib.logic.Equals">
-        <property name="_location" class="ptolemy.moml.Location" value="460.0, 295.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 295.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

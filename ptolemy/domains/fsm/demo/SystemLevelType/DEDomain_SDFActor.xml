@@ -22,12 +22,12 @@
     </property>
     <port name="p" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.moml.Location" value="305.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 165.0">
         </property>
     </port>
     <port name="pR" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.moml.Location" value="305.0, 220.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 220.0">
         </property>
     </port>
 </entity>

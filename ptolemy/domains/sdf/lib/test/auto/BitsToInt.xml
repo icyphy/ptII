@@ -15,14 +15,14 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="92.0, 32.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="92.0, 32.0">
         </property>
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="-12345">
         </property>
         <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="89.0, 137.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="89.0, 137.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -33,7 +33,7 @@
         </port>
     </entity>
     <entity name="IntToBits" class="ptolemy.domains.sdf.lib.IntToBits">
-        <property name="_location" class="ptolemy.moml.Location" value="209.0, 230.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="209.0, 230.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -55,7 +55,7 @@
         </port>
     </entity>
     <entity name="BitsToInt" class="ptolemy.domains.sdf.lib.BitsToInt">
-        <property name="_location" class="ptolemy.moml.Location" value="384.0, 229.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="384.0, 229.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -81,7 +81,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="526.0, 99.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="526.0, 99.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

@@ -31,11 +31,11 @@
         </property>
         <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="75.0, 45.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 45.0">
         </property>
     </property>
     <property name="13:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="10.0, 70.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="10.0, 70.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -84,7 +84,7 @@ the modal behavior.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="350.0, 255.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 255.0">
         </property>
     </property>
     <entity name="Plot Positions vs Time" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -94,7 +94,7 @@ the modal behavior.</text></svg></configure>
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="205.0, 285.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 285.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -120,7 +120,7 @@ the modal behavior.</text></svg></configure>
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="75.0, 265.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 265.0">
         </property>
         <port name="V1" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="output"/>
@@ -189,7 +189,7 @@ mode of operation.</text></svg></configure>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="200.0, 330.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 330.0">
                 </property>
             </property>
             <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -213,49 +213,49 @@ model (double click on that transition to see its actions).</text></svg></config
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="75.0, 10.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 10.0">
                 </property>
             </property>
             <port name="V1" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="35.0, 36.666666666666664">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 36.666666666666664">
                 </property>
             </port>
             <port name="V2" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="35.0, 91.66666666666667">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 91.66666666666667">
                 </property>
             </port>
             <port name="P1" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="35.0, 211.66666666666666">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 211.66666666666666">
                 </property>
             </port>
             <port name="P2" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="35.0, 151.66666666666666">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 151.66666666666666">
                 </property>
             </port>
             <port name="touched" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="35.0, 280.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 280.0">
                 </property>
             </port>
             <port name="Stickiness" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="35.0, 395.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 395.0">
                 </property>
             </port>
             <port name="Force" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="35.0, 335.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 335.0">
                 </property>
             </port>
             <entity name="init" class="ptolemy.domains.fsm.kernel.State">
@@ -265,7 +265,7 @@ model (double click on that transition to see its actions).</text></svg></config
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="110.0, 200.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 200.0">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
@@ -279,7 +279,7 @@ model (double click on that transition to see its actions).</text></svg></config
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="275.0, 235.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 235.0">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
@@ -293,7 +293,7 @@ model (double click on that transition to see its actions).</text></svg></config
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="515.0, 235.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="515.0, 235.0">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
@@ -411,7 +411,7 @@ model (double click on that transition to see its actions).</text></svg></config
                 </property>
                 <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="65.0, 34.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 34.5">
                 </property>
             </property>
             <property name="p1" class="ptolemy.data.expr.Parameter" value="1.8499908823263">
@@ -442,7 +442,7 @@ of the point masses and emits the "touched" event.</text></svg></configure>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="125.0, 0.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 0.0">
                 </property>
             </property>
             <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -464,32 +464,32 @@ of the two masses.</text></svg></configure>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="340.0, 320.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 320.0">
                 </property>
             </property>
             <port name="V1" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="290.0, 115.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 115.0">
                 </property>
             </port>
             <port name="V2" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="330.0, 225.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 225.0">
                 </property>
             </port>
             <port name="P1" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="45.0, 180.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 180.0">
                 </property>
             </port>
             <port name="P2" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="55.0, 315.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 315.0">
                 </property>
             </port>
             <port name="touched" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="285.0, 375.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 375.0">
                 </property>
             </port>
             <entity name="ZeroCrossingDetector" class="ptolemy.domains.ct.lib.ZeroCrossingDetector">
@@ -497,7 +497,7 @@ of the two masses.</text></svg></configure>
                 </property>
                 <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="205.0, 365.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 365.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -518,7 +518,7 @@ of the two masses.</text></svg></configure>
             <entity name="Expression" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="1.0*1.0 - 1.0*P1">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="90.0, 140.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 140.0">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -534,7 +534,7 @@ of the two masses.</text></svg></configure>
                 </port>
             </entity>
             <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-                <property name="_location" class="ptolemy.moml.Location" value="90.0, 365.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 365.0">
                 </property>
                 <port name="plus" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -551,7 +551,7 @@ of the two masses.</text></svg></configure>
             <entity name="V2 integrator" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="v2">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="215.0, 245.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 245.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -567,7 +567,7 @@ of the two masses.</text></svg></configure>
             <entity name="P1 integrator" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="p1">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="350.0, 140.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 140.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -583,7 +583,7 @@ of the two masses.</text></svg></configure>
             <entity name="V1 integrator" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="v1">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="195.0, 140.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 140.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -599,7 +599,7 @@ of the two masses.</text></svg></configure>
             <entity name="Expression2" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="2.0*2.0 - 2.0*P2">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="105.0, 245.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 245.0">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -617,7 +617,7 @@ of the two masses.</text></svg></configure>
             <entity name="P2 integrator" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="p2">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="380.0, 245.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 245.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -734,7 +734,7 @@ of the two masses.</text></svg></configure>
                 </property>
                 <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="70.0, 39.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 39.5">
                 </property>
             </property>
             <property name="1:annotation2" class="ptolemy.kernel.util.Attribute">
@@ -756,7 +756,7 @@ of the two masses.</text></svg></configure>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="335.0, 365.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 365.0">
                 </property>
             </property>
             <property name="2:annotation" class="ptolemy.kernel.util.Attribute">
@@ -779,38 +779,38 @@ stickiness.</text></svg></configure>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="125.0, 0.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 0.0">
                 </property>
             </property>
             <port name="V1" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="140.0, 215.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 215.0">
                 </property>
             </port>
             <port name="P1" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="260.0, 160.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 160.0">
                 </property>
             </port>
             <port name="P2" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="260.0, 265.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 265.0">
                 </property>
             </port>
             <port name="Stickiness" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="182.0, 391.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="182.0, 391.0">
                 </property>
             </port>
             <port name="Force" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="485.0, 315.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 315.0">
                 </property>
             </port>
             <entity name="Stickiness integrator" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="stickiness">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="65.0, 415.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 415.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -826,7 +826,7 @@ stickiness.</text></svg></configure>
             <entity name="Expression" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(1.0*1.0 + 2.0*2.0 - (1.0+2.0)*P1)/2.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="370.0, 220.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 220.0">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -844,7 +844,7 @@ stickiness.</text></svg></configure>
             <entity name="V1 integrator" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0236287">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="65.0, 160.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 160.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -860,7 +860,7 @@ stickiness.</text></svg></configure>
             <entity name="Expression2" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="1.0*1.0 - 2.0*2.0 - (1.0-2.0)*P1">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="350.0, 315.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 315.0">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -878,7 +878,7 @@ stickiness.</text></svg></configure>
             <entity name="P1 integrator" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="p">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="155.0, 160.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 160.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -896,7 +896,7 @@ stickiness.</text></svg></configure>
                 </property>
                 <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="255.0, 415.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 415.0">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">

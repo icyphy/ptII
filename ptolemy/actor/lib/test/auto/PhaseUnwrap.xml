@@ -15,7 +15,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="73.0, 36.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="73.0, 36.0">
         </property>
     </property>
     <entity name="Interpolator" class="ptolemy.actor.lib.Interpolator">
@@ -29,7 +29,7 @@
         </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="56.0, 186.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="56.0, 186.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -42,7 +42,7 @@
     <entity name="Remainder" class="ptolemy.actor.lib.Remainder">
         <property name="divisor" class="ptolemy.data.expr.Parameter" value="PI*2.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="183.0, 130.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="183.0, 130.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -52,7 +52,7 @@
         </port>
     </entity>
     <entity name="PhaseUnwrap" class="ptolemy.actor.lib.PhaseUnwrap">
-        <property name="_location" class="ptolemy.moml.Location" value="317.0, 89.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="317.0, 89.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -62,7 +62,7 @@
         </port>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.moml.Location" value="432.0, 161.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="432.0, 161.0">
         </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -81,7 +81,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="528.0, 167.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="528.0, 167.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

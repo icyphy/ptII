@@ -9,13 +9,13 @@
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[113, 26]">
     </property>
     <property name="PTN" class="ptolemy.domains.petrinet.kernel.PetriNetDirector">
-        <property name="_location" class="ptolemy.moml.Location" value="78.0, 405.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="78.0, 405.0">
         </property>
     </property>
     <entity name="Place" class="ptolemy.domains.petrinet.kernel.Place">
         <property name="initialMarking" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="119.0, 107.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="119.0, 107.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -27,7 +27,7 @@
         </port>
     </entity>
     <entity name="PetriNetActor" class="ptolemy.domains.petrinet.kernel.PetriNetActor">
-        <property name="_location" class="ptolemy.moml.Location" value="243.0, 72.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="243.0, 72.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
@@ -36,31 +36,31 @@
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_location" class="ptolemy.moml.Location">
+            <property name="_location" class="ptolemy.kernel.util.Location">
             </property>
         </port>
     </entity>
     <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="321.0, 185.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="321.0, 185.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
         </property>
         <property name="PTN" class="ptolemy.domains.petrinet.kernel.PetriNetDirector">
-            <property name="_location" class="ptolemy.moml.Location" value="86.0, 384.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="86.0, 384.0">
             </property>
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_location" class="ptolemy.moml.Location" value="88.0, 90.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="88.0, 90.0">
             </property>
         </port>
         <entity name="Place" class="ptolemy.domains.petrinet.kernel.Place">
             <property name="initialMarking" class="ptolemy.data.expr.Parameter" value="2">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="139.0, 175.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="139.0, 175.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -72,12 +72,12 @@
             </port>
         </entity>
         <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.moml.Location" value="360.0, 167.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 167.0">
             </property>
             <port name="" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-                <property name="_location" class="ptolemy.moml.Location">
+                <property name="_location" class="ptolemy.kernel.util.Location">
                 </property>
             </port>
         </entity>

@@ -11,11 +11,11 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="65.0, 32.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 32.0">
         </property>
     </property>
     <property name="13:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="45.0, 225.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 225.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -29,7 +29,7 @@
         </property>
     </property>
     <property name="13:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="175.0, 10.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 10.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -54,7 +54,7 @@ American Mathematical Monthly, 96(5), May, 1989.</text>
         </property>
         <property name="step" class="ptolemy.data.expr.Parameter" value="PI/100.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="60.0, 190.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 190.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -65,7 +65,7 @@ American Mathematical Monthly, 96(5), May, 1989.</text>
         </port>
     </entity>
     <entity name="Polar to Cartesian" class="ptolemy.actor.lib.conversions.PolarToCartesian">
-        <property name="_location" class="ptolemy.moml.Location" value="315.0, 180.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 180.0">
         </property>
         <port name="magnitude" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -87,7 +87,7 @@ American Mathematical Monthly, 96(5), May, 1989.</text>
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="465.0, 180.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="465.0, 180.0">
         </property>
         <port name="inputX" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -117,7 +117,7 @@ American Mathematical Monthly, 96(5), May, 1989.</text>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="266.5, 104.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="266.5, 104.5">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>

@@ -15,11 +15,11 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="85.0, 25.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 25.0">
         </property>
     </property>
     <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="185.0, 140.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 140.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
@@ -27,7 +27,7 @@
         </property>
         <port name="out" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="492.0, 175.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="492.0, 175.0">
             </property>
             <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -35,7 +35,7 @@
             </property>
         </port>
         <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.moml.Location" value="235.0, 175.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 175.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
             </property>
@@ -48,12 +48,12 @@
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="110.0, 54.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 54.5">
                 </property>
             </property>
             <port name="out" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="492.0, 175.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="492.0, 175.0">
                 </property>
                 <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -91,7 +91,7 @@
                     </property>
                 </property>
                 <doc>This composite actor generates a sine wave.</doc>
-                <property name="_location" class="ptolemy.moml.Location" value="265.0, 190.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="265.0, 190.0">
                 </property>
             </entity>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">

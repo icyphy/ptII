@@ -19,7 +19,7 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="79.0, 46.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="79.0, 46.0">
         </property>
     </property>
     <entity name="Ramp7" class="ptolemy.actor.lib.Ramp">
@@ -30,7 +30,7 @@
         <property name="step" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="100.0, 164.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 164.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -43,7 +43,7 @@
     <entity name="VariableDelay17" class="ptolemy.domains.de.lib.VariableDelay">
         <property name="defaultDelay" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="340.0, 177.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 177.0">
         </property>
         <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
             <property name="input"/>
@@ -60,14 +60,14 @@
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="103.0, 248.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="103.0, 248.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
     </entity>
     <entity name="Merge1" class="ptolemy.domains.de.lib.Merge">
-        <property name="_location" class="ptolemy.moml.Location" value="201.0, 180.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="201.0, 180.0">
         </property>
         <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
             <property name="input"/>
@@ -78,7 +78,7 @@
         </port>
     </entity>
     <entity name="TimeGap0" class="ptolemy.domains.de.lib.TimeGap">
-        <property name="_location" class="ptolemy.moml.Location" value="433.0, 122.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="433.0, 122.0">
         </property>
         <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
             <property name="input"/>
@@ -92,7 +92,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="550.0, 119.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="550.0, 119.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

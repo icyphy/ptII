@@ -49,7 +49,7 @@
         </property>
         <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="80.0, 55.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 55.0">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -72,7 +72,7 @@ The voltage and current are sampled every 0.2 seconds.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="155.0, 25.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 25.0">
         </property>
     </property>
     <property name="ElectronicUnitBase" class="ptolemy.data.unit.UnitSystem">
@@ -147,7 +147,7 @@ The voltage and current are sampled every 0.2 seconds.</text></svg></configure>
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="60.0, 120.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 120.0">
         </property>
     </property>
     <property name="annotation17" class="ptolemy.kernel.util.Attribute">
@@ -168,7 +168,7 @@ as a unit-handling integrator.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="40.0, 415.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 415.0">
         </property>
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 639]">
@@ -196,7 +196,7 @@ in expressions. E.g., one volt is written
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="5.0, 145.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="5.0, 145.0">
         </property>
     </property>
     <property name="1:annotation2" class="ptolemy.kernel.util.Attribute">
@@ -218,7 +218,7 @@ amperes.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="355.0, 465.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 465.0">
         </property>
     </property>
     <property name="2:1:annotation2" class="ptolemy.kernel.util.Attribute">
@@ -238,7 +238,7 @@ amperes.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="280.0, 345.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 345.0">
         </property>
     </property>
     <property name="3:1:annotation2" class="ptolemy.kernel.util.Attribute">
@@ -259,7 +259,7 @@ amperes.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="350.0, 545.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 545.0">
         </property>
     </property>
     <property name="4:1:annotation2" class="ptolemy.kernel.util.Attribute">
@@ -279,7 +279,7 @@ amperes.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="45.0, 560.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 560.0">
         </property>
     </property>
     <property name="5:4:1:annotation2" class="ptolemy.kernel.util.Attribute">
@@ -299,7 +299,7 @@ amperes.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="85.0, 360.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 360.0">
         </property>
     </property>
     <property name="6:5:4:1:annotation2" class="ptolemy.kernel.util.Attribute">
@@ -319,7 +319,7 @@ amperes.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="620.0, 495.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="620.0, 495.0">
         </property>
     </property>
     <property name="annotation3" class="ptolemy.kernel.util.Attribute">
@@ -347,7 +347,7 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="350.0, 120.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 120.0">
         </property>
     </property>
     <entity name="Scale2" class="ptolemy.actor.lib.Scale">
@@ -361,7 +361,7 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="260.0, 395.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 395.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -380,7 +380,7 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="275.0, 505.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 505.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -397,7 +397,7 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Voltage">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="635.0, 375.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="635.0, 375.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -415,7 +415,7 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="530.0, 535.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 535.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -433,7 +433,7 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="610.0, 495.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="610.0, 495.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -449,7 +449,7 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Current">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="635.0, 435.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="635.0, 435.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -457,7 +457,7 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
         </port>
     </entity>
     <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.moml.Location" value="380.0, 445.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 445.0">
         </property>
         <port name="multiply" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -482,7 +482,7 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="85.0, 395.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 395.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -494,7 +494,7 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
     <entity name="PeriodicSampler2" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.5">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="505.0, 435.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="505.0, 435.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -512,7 +512,7 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
     <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.5">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="505.0, 375.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="505.0, 375.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -534,7 +534,7 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Current in units of Amps">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="720.0, 495.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="720.0, 495.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -544,7 +544,7 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
     <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="5.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="175.0, 395.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 395.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

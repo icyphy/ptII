@@ -15,14 +15,14 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="70.0, 34.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 34.0">
         </property>
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="{-1.0, 1.0, -1.0, 1.0}">
         </property>
         <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="83.0, 137.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="83.0, 137.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -33,7 +33,7 @@
         </port>
     </entity>
     <entity name="LevinsonDurbin" class="ptolemy.actor.lib.LevinsonDurbin">
-        <property name="_location" class="ptolemy.moml.Location" value="224.0, 144.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="224.0, 144.0">
         </property>
         <port name="autocorrelation" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -53,7 +53,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="386.0, 133.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="386.0, 133.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

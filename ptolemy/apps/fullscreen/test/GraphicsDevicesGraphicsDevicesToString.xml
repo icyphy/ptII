@@ -13,7 +13,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="80.0, 80.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 80.0">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -35,11 +35,11 @@ Most machines have only one GraphisDevice.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="362.0, 95.3828125">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="362.0, 95.3828125">
         </property>
     </property>
     <entity name="GraphicsDevices" class="ptolemy.apps.fullscreen.GraphicsDevices">
-        <property name="_location" class="ptolemy.moml.Location" value="116.265625, 197.1328125">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="116.265625, 197.1328125">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -50,7 +50,7 @@ Most machines have only one GraphisDevice.</text></svg></configure>
         </port>
     </entity>
     <entity name="GraphicsDevicesToString" class="ptolemy.apps.fullscreen.GraphicsDevicesToString">
-        <property name="_location" class="ptolemy.moml.Location" value="319.4375, 197.1328125">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="319.4375, 197.1328125">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -66,7 +66,7 @@ Most machines have only one GraphisDevice.</text></svg></configure>
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="501.5, 197.203125">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="501.5, 197.203125">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

@@ -11,7 +11,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="110.24285714285713, 63.29998474121095">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="110.24285714285713, 63.29998474121095">
         </property>
     </property>
     <entity name="ramp" class="ptolemy.actor.lib.Pulse">
@@ -23,7 +23,7 @@
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="134.75714285714284, 324.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="134.75714285714284, 324.5">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -42,7 +42,7 @@
         </property>
         <property name="taps" class="ptolemy.data.expr.Parameter" value="{-0.040609, -0.001628, 0.17853, 0.37665, 0.37665, 0.17853, -0.001628, -0.040609}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="359.4143009730748, 322.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="359.4143009730748, 322.5">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -64,20 +64,20 @@
         </port>
     </entity>
     <entity name="transform" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="498.3285714285714, 324.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="498.3285714285714, 324.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="127.75714285714284, 197.7">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="127.75714285714284, 197.7">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="685.2428571428571, 329.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="685.2428571428571, 329.5">
             </property>
         </port>
         <entity name="Multiply" class="ptolemy.actor.lib.MultiplyDivide">
-            <property name="_location" class="ptolemy.moml.Location" value="220.67142857142858, 329.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="220.67142857142858, 329.5">
             </property>
             <port name="multiply" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -100,7 +100,7 @@
             </property>
             <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="84.75714285714284, 324.3">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="84.75714285714284, 324.3">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -113,7 +113,7 @@
         <entity name="FFT" class="ptolemy.domains.sdf.lib.FFT">
             <property name="order" class="ptolemy.data.expr.Parameter" value="8">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="313.5857142857143, 329.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="313.5857142857143, 329.5">
             </property>
             <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
                 <property name="input"/>
@@ -135,7 +135,7 @@
             </port>
         </entity>
         <entity name="ComplexToCartesian" class="ptolemy.actor.lib.conversions.ComplexToCartesian">
-            <property name="_location" class="ptolemy.moml.Location" value="406.5, 329.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="406.5, 329.5">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -148,7 +148,7 @@
             </port>
         </entity>
         <entity name="RecToPolar" class="ptolemy.actor.lib.conversions.CartesianToPolar">
-            <property name="_location" class="ptolemy.moml.Location" value="499.4142857142857, 329.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="499.4142857142857, 329.5">
             </property>
             <port name="x" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -168,7 +168,7 @@
             </property>
             <property name="min" class="ptolemy.data.expr.Parameter" value="-100.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="592.3285714285714, 329.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="592.3285714285714, 329.5">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -211,7 +211,7 @@
         <link port="DB.output" relation="_R7"/>
     </entity>
     <entity name="Discard1" class="ptolemy.actor.lib.Discard">
-        <property name="_location" class="ptolemy.moml.Location" value="628.0, 324.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="628.0, 324.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

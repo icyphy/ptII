@@ -27,7 +27,7 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="90.0, 55.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 55.0">
         </property>
     </property>
     <entity name="Source" class="ptolemy.domains.sdf.lib.vq.ImageSequence">
@@ -41,7 +41,7 @@
         </property>
         <property name="endFrame" class="ptolemy.data.expr.Parameter" value="29">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="120.0, 250.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 250.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -52,7 +52,7 @@
         </port>
     </entity>
     <entity name="PSNR" class="ptolemy.domains.sdf.lib.vq.PSNR">
-        <property name="_location" class="ptolemy.moml.Location" value="684.8333435058594, 290.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="684.8333435058594, 290.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -73,7 +73,7 @@
         </property>
         <property name="partitionRows" class="ptolemy.data.expr.Parameter" value="blockHeight">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="295.0, 360.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 360.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -103,7 +103,7 @@
         </property>
         <property name="blockHeight" class="ptolemy.data.expr.Parameter" value="blockHeight">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="400.0, 360.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="400.0, 360.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -133,7 +133,7 @@
         </property>
         <property name="blockHeight" class="ptolemy.data.expr.Parameter" value="blockHeight">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="495.0, 360.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="495.0, 360.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -163,7 +163,7 @@
         </property>
         <property name="partitionRows" class="ptolemy.data.expr.Parameter" value="blockHeight">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="575.0, 360.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="575.0, 360.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -185,7 +185,7 @@
         </port>
     </entity>
     <entity name="Compressed" class="ptolemy.domains.sdf.lib.vq.ImageDisplay">
-        <property name="_location" class="ptolemy.moml.Location" value="755.0, 360.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="755.0, 360.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -193,7 +193,7 @@
         </port>
     </entity>
     <entity name="Original" class="ptolemy.domains.sdf.lib.vq.ImageDisplay">
-        <property name="_location" class="ptolemy.moml.Location" value="754.8333435058594, 220.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="754.8333435058594, 220.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -207,7 +207,7 @@
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="759.8333435058594, 290.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="759.8333435058594, 290.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -224,7 +224,7 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
         </property>
         <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="40.0, 255.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 255.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>

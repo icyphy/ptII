@@ -10,7 +10,7 @@
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[51, 100]">
     </property>
     <property name="3:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="190.0, 45.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="190.0, 45.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -33,16 +33,16 @@ radians per second, centered at zero frequency.</text>
     </property>
     <port name="input" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.moml.Location" value="75.0, 195.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 195.0">
         </property>
     </port>
     <port name="output" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.moml.Location" value="615.0, 255.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="615.0, 255.0">
         </property>
     </port>
     <entity name="Multiply" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.moml.Location" value="175.0, 255.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 255.0">
         </property>
         <port name="multiply" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -65,7 +65,7 @@ radians per second, centered at zero frequency.</text>
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="50.0, 280.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 280.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -78,7 +78,7 @@ radians per second, centered at zero frequency.</text>
     <entity name="FFT" class="ptolemy.domains.sdf.lib.FFT">
         <property name="order" class="ptolemy.data.expr.Parameter" value="order">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="255.0, 255.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 255.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -104,7 +104,7 @@ radians per second, centered at zero frequency.</text>
         </property>
         <property name="min" class="ptolemy.data.expr.Parameter" value="-100.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="545.0, 255.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="545.0, 255.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -114,7 +114,7 @@ radians per second, centered at zero frequency.</text>
         </port>
     </entity>
     <entity name="AbsoluteValue0" class="ptolemy.actor.lib.AbsoluteValue">
-        <property name="_location" class="ptolemy.moml.Location" value="345.0, 255.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="345.0, 255.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -128,7 +128,7 @@ radians per second, centered at zero frequency.</text>
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="445.0, 255.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="445.0, 255.0">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">

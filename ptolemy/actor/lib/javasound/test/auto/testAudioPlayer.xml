@@ -15,7 +15,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="233.0, 44.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="233.0, 44.0">
         </property>
     </property>
     <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave">
@@ -49,11 +49,11 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="172.0, 45.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="172.0, 45.0">
             </property>
         </property>
         <doc>This composite actor generates a sine wave.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="155.0, 184.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 184.5">
         </property>
     </entity>
     <entity name="AudioPlayer" class="ptolemy.actor.lib.javasound.AudioPlayer">
@@ -87,7 +87,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="271.5, 183.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="271.5, 183.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

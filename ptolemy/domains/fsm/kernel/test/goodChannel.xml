@@ -19,23 +19,23 @@
     </property>
     <port name="send" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.moml.Location" value="112.0, 150.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="112.0, 150.0">
         </property>
     </port>
     <port name="ack" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.moml.Location" value="112.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="112.0, 200.0">
         </property>
     </port>
     <port name="nack" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.moml.Location" value="115.0, 245.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 245.0">
         </property>
     </port>
     <entity name="0" class="ptolemy.domains.fsm.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="154.9277566539924, 196.96197718631186">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="154.9277566539924, 196.96197718631186">
         </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
@@ -45,7 +45,7 @@
     <entity name="1" class="ptolemy.domains.fsm.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="322.9277566539922, 194.96197718631186">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="322.9277566539922, 194.96197718631186">
         </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>

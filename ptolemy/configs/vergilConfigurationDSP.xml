@@ -16,7 +16,7 @@
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
           <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
           </property>
-          <property name="_location" class="ptolemy.moml.Location" value="68.0, 32.0">
+          <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
           </property>
         </property>
       </entity>
@@ -100,7 +100,6 @@
   </configure>
 </entity>
 <!-- END sources -->
-
 <!-- BEGIN sinks -->
 <entity name="sinks" class="ptolemy.moml.EntityLibrary">
   <configure>
@@ -145,6 +144,7 @@
             <input source="ptolemy/actor/lib/conversions/conversions.xml"/>
             <input source="ptolemy/actor/lib/array.xml"/>
             <input source="ptolemy/actor/lib/signalprocessing.xml"/>
+
           </group>
         ?>
       </configure>

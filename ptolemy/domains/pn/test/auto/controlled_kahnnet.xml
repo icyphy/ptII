@@ -11,7 +11,7 @@
     <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
         <property name="Initial_queue_capacity" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="75.0, 65.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 65.0">
         </property>
     </property>
     <property name="limit" class="ptolemy.data.expr.Parameter" value="12">
@@ -28,14 +28,14 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="405.0, 390.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 390.0">
         </property>
     </property>
     <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{1}">
         </property>
         <doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="575.0, 290.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="575.0, 290.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -60,7 +60,7 @@
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{0}">
         </property>
         <doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="580.0, 40.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="580.0, 40.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -82,7 +82,7 @@
         </port>
     </entity>
     <entity name="SingleTokenDistributor" class="ptolemy.domains.sr.lib.SingleTokenDistributor">
-        <property name="_location" class="ptolemy.moml.Location" value="440.0, 175.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="440.0, 175.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -93,7 +93,7 @@
         </port>
     </entity>
     <entity name="SingleTokenCommutator" class="ptolemy.domains.sr.lib.SingleTokenCommutator">
-        <property name="_location" class="ptolemy.moml.Location" value="150.0, 150.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 150.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -108,7 +108,7 @@
         </property>
         <property name="trueValue" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="440.0, 320.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="440.0, 320.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -118,7 +118,7 @@
         </port>
     </entity>
     <entity name="1:Switch" class="ptolemy.actor.lib.Switch">
-        <property name="_location" class="ptolemy.moml.Location" value="345.0, 190.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="345.0, 190.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -136,7 +136,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="210.0, 315.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 315.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

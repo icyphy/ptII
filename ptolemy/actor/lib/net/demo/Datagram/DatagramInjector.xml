@@ -15,7 +15,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="170.0, 150.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 150.0">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -37,7 +37,7 @@ into the communication flow within the other model.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="65.0, 40.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 40.0">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -59,7 +59,7 @@ Observe the difference in behavior.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="130.0, 315.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 315.0">
         </property>
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -70,7 +70,7 @@ Observe the difference in behavior.</text></svg></configure>
         <property name="step" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="160.0, 250.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 250.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -87,7 +87,7 @@ Observe the difference in behavior.</text></svg></configure>
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="356.5, 163.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="356.5, 163.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -111,7 +111,7 @@ Observe the difference in behavior.</text></svg></configure>
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="365.0, 240.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 240.0">
         </property>
         <port name="remoteAddress" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

@@ -13,7 +13,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="105.0, 45.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 45.0">
         </property>
     </property>
     <entity name="MatlabExpression" class="ptolemy.matlab.Expression">
@@ -25,7 +25,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="170.0, 130.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 130.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -39,7 +39,7 @@
     <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{0}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="170.0, 215.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 215.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -71,7 +71,7 @@
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="345.0, 160.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="345.0, 160.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -97,7 +97,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="330.0, 235.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 235.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>

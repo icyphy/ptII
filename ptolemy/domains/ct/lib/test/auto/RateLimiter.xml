@@ -53,7 +53,7 @@
         </property>
         <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="117.0, 40.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="117.0, 40.0">
         </property>
     </property>
     <entity name="RateLimiter" class="ptolemy.domains.ct.lib.CTRateLimiter">
@@ -61,7 +61,7 @@
         </property>
         <property name="fallingSlewRate" class="ptolemy.data.expr.Parameter" value="-1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="360.0, 149.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 149.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -73,7 +73,7 @@
     <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="101.0, 148.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="101.0, 148.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -91,7 +91,7 @@
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="357.0, 310.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="357.0, 310.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -105,7 +105,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="546.0, 302.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="546.0, 302.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

@@ -15,7 +15,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="90.0, 65.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 65.0">
         </property>
     </property>
     <entity name="URLDirectoryReader" class="ptolemy.actor.lib.URLDirectoryReader">
@@ -34,7 +34,7 @@
             </property>
         </property>
         <doc>Read a directory and output each file or subdirectory</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="85.0, 220.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 220.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -46,7 +46,7 @@
         </port>
     </entity>
     <entity name="Discard" class="ptolemy.actor.lib.Discard">
-        <property name="_location" class="ptolemy.moml.Location" value="225.0, 220.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 220.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

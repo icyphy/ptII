@@ -15,11 +15,11 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="70.0, 40.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 40.0">
         </property>
     </property>
     <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_location" class="ptolemy.moml.Location" value="305.0, 145.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 145.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -27,7 +27,7 @@
         </port>
     </entity>
     <entity name="VideoCamera" class="ptolemy.actor.lib.jmf.VideoCamera">
-        <property name="_location" class="ptolemy.moml.Location" value="160.0, 145.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 145.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>

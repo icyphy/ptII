@@ -8,7 +8,7 @@
         <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
         <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="40.0, 215.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 215.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>

@@ -15,11 +15,11 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="130.0, 44.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 44.0">
         </property>
     </property>
     <entity name="HDF1" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="341.0, 123.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="341.0, 123.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
         </property>
@@ -28,19 +28,19 @@
         <property name="HDFFSMDirector" class="ptolemy.domains.hdf.kernel.HDFFSMDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="Controller">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="312.0, 66.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="312.0, 66.0">
             </property>
         </property>
         <port name="input1" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="53.0, 171.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="53.0, 171.0">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </port>
         <port name="output1" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="475.5, 193.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="475.5, 193.0">
             </property>
             <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -57,7 +57,7 @@
             <entity name="state library" class="ptolemy.kernel.CompositeEntity"><entity name="state" class="ptolemy.domains.fsm.kernel.State"></entity></entity>
           </configure>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="295.0, 328.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 328.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
             </property>
@@ -65,13 +65,13 @@
             </property>
             <port name="input1" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="101.0, 196.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="101.0, 196.0">
                 </property>
             </port>
             <entity name="State1" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="State1">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="202.0, 198.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="202.0, 198.0">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
@@ -81,7 +81,7 @@
             <entity name="State2" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="State2">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="389.0, 200.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="389.0, 200.0">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
@@ -130,7 +130,7 @@
             <link port="State2.outgoingPort" relation="relation3"/>
         </entity>
         <entity name="State1" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.moml.Location" value="304.0, 154.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="304.0, 154.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
             </property>
@@ -143,12 +143,12 @@
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="327.0, 61.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="327.0, 61.0">
                 </property>
             </property>
             <port name="input1" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="83.0, 173.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="83.0, 173.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -159,7 +159,7 @@
             </port>
             <port name="output1" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="428.5, 178.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="428.5, 178.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
@@ -172,7 +172,7 @@
                 <property name="value" class="ptolemy.data.expr.Parameter" value="-1.0">
                 </property>
                 <doc>Create a constant sequence</doc>
-                <property name="_location" class="ptolemy.moml.Location" value="249.0, 172.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="249.0, 172.0">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -192,7 +192,7 @@
             <link port="Const1.trigger" relation="relation"/>
         </entity>
         <entity name="State2" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.moml.Location" value="292.0, 232.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="292.0, 232.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
             </property>
@@ -205,12 +205,12 @@
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="285.0, 66.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 66.0">
                 </property>
             </property>
             <port name="input1" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="90.0, 177.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 177.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -221,7 +221,7 @@
             </port>
             <port name="output1" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="416.5, 169.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="416.5, 169.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
@@ -234,7 +234,7 @@
                 <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
                 <doc>Create a constant sequence</doc>
-                <property name="_location" class="ptolemy.moml.Location" value="254.0, 171.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="254.0, 171.0">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -278,7 +278,7 @@
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="121.0, 168.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="121.0, 168.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -293,7 +293,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="468.0, 130.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="468.0, 130.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

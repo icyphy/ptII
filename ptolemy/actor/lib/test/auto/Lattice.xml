@@ -15,13 +15,13 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="71.0, 33.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="71.0, 33.0">
         </property>
     </property>
     <entity name="Lattice" class="ptolemy.actor.lib.Lattice">
         <property name="reflectionCoefficients" class="ptolemy.data.expr.Parameter" value="{0.804534, -0.820577, 0.521934, -0.205}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="295.0, 154.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 154.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -39,7 +39,7 @@
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="146.0, 158.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="146.0, 158.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -54,7 +54,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="443.0, 156.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="443.0, 156.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

@@ -13,7 +13,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="130.0, 52.1328125">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 52.1328125">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -34,13 +34,13 @@ in full screen mode.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="435.0, 55.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="435.0, 55.0">
         </property>
     </property>
     <entity name="ImageReader" class="ptolemy.actor.lib.image.ImageReader">
         <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;../../../../doc/img/PtolemyII.jpg&quot;">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="93.078125, 122.203125">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="93.078125, 122.203125">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -55,7 +55,7 @@ in full screen mode.</text></svg></configure>
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="497.9453125, 302.1328125">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="497.9453125, 302.1328125">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -71,7 +71,7 @@ in full screen mode.</text></svg></configure>
     <entity name="1:ImageReader" class="ptolemy.actor.lib.image.ImageReader">
         <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;../../../../doc/img/ptIIbanner3.gif&quot;">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="253.078125, 62.1875">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="253.078125, 62.1875">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -84,7 +84,7 @@ in full screen mode.</text></svg></configure>
     <entity name="ImageRotate" class="ptolemy.actor.lib.image.ImageRotate">
         <property name="rotationInDegrees" class="ptolemy.data.expr.Parameter" value="90">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="150.0859375, 222.203125">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="150.0859375, 222.203125">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -94,7 +94,7 @@ in full screen mode.</text></svg></configure>
         </port>
     </entity>
     <entity name="Distributor" class="ptolemy.actor.lib.Distributor">
-        <property name="_location" class="ptolemy.moml.Location" value="245.0, 222.203125">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 222.203125">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -107,7 +107,7 @@ in full screen mode.</text></svg></configure>
         </port>
     </entity>
     <entity name="Distributor12" class="ptolemy.actor.lib.Distributor">
-        <property name="_location" class="ptolemy.moml.Location" value="170.0234375, 122.1875">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="170.0234375, 122.1875">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -127,7 +127,7 @@ in full screen mode.</text></svg></configure>
         <property name="upperBound" class="ptolemy.data.expr.Parameter" value="2000.0">
         </property>
         <doc>Create a sequence of uniformly distributed random numbers</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="150.0, 302.1328125">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 302.1328125">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -150,7 +150,7 @@ in full screen mode.</text></svg></configure>
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="250.0, 302.203125">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 302.203125">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -160,7 +160,7 @@ in full screen mode.</text></svg></configure>
         </port>
     </entity>
     <entity name="GraphicsDevices" class="ptolemy.apps.fullscreen.GraphicsDevices">
-        <property name="_location" class="ptolemy.moml.Location" value="161.265625, 377.1328125">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="161.265625, 377.1328125">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -173,7 +173,7 @@ in full screen mode.</text></svg></configure>
     <entity name="ArrayElement" class="ptolemy.actor.lib.ArrayElement">
         <property name="index" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="256.625, 377.203125">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="256.625, 377.203125">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

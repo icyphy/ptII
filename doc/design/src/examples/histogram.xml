@@ -23,7 +23,7 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="80.0, 45.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 45.0">
         </property>
     </property>
     <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
@@ -33,7 +33,7 @@
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="55.0, 130.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 130.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -46,7 +46,7 @@
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="140.0, 130.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 130.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -57,7 +57,7 @@
         </port>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.moml.Location" value="355.0, 140.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 140.0">
         </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -80,7 +80,7 @@
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="460.0, 140.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 140.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -103,7 +103,7 @@
     <entity name="Previous" class="ptolemy.domains.de.lib.Previous">
         <property name="initialValue" class="ptolemy.data.expr.Parameter">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="265.0, 185.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="265.0, 185.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

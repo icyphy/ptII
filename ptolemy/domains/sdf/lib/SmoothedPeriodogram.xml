@@ -40,21 +40,21 @@ radians per second, centered at zero frequency.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="5.0, 5.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="5.0, 5.0">
         </property>
     </property>
     <port name="input" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.moml.Location" value="35.0, 235.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 235.0">
         </property>
     </port>
     <port name="output" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.moml.Location" value="510.0, 335.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="510.0, 335.0">
         </property>
     </port>
     <entity name="Multiply" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.moml.Location" value="155.0, 245.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 245.0">
         </property>
         <port name="multiply" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -77,7 +77,7 @@ radians per second, centered at zero frequency.</text></svg></configure>
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="55.0, 315.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 315.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -90,7 +90,7 @@ radians per second, centered at zero frequency.</text></svg></configure>
     <entity name="FFT" class="ptolemy.domains.sdf.lib.FFT">
         <property name="order" class="ptolemy.data.expr.Parameter" value="order">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="185.0, 335.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 335.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -116,7 +116,7 @@ radians per second, centered at zero frequency.</text></svg></configure>
         </property>
         <property name="min" class="ptolemy.data.expr.Parameter" value="-100.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="415.0, 335.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 335.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -126,7 +126,7 @@ radians per second, centered at zero frequency.</text></svg></configure>
         </port>
     </entity>
     <entity name="AbsoluteValue0" class="ptolemy.actor.lib.AbsoluteValue">
-        <property name="_location" class="ptolemy.moml.Location" value="300.0, 335.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 335.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -145,7 +145,7 @@ radians per second, centered at zero frequency.</text></svg></configure>
         <property name="symmetricOutput" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <doc>Autocorrelation estimator</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="245.0, 245.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 245.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -176,7 +176,7 @@ radians per second, centered at zero frequency.</text></svg></configure>
         </property>
         <property name="usePastInputs" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="470.0, 245.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="470.0, 245.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -202,7 +202,7 @@ radians per second, centered at zero frequency.</text></svg></configure>
         </property>
         <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="355.0, 245.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 245.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>

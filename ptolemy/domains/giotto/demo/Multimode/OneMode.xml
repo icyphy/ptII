@@ -15,7 +15,7 @@
         </property>
         <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.giotto&quot;">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="74.0, 34.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="74.0, 34.0">
         </property>
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[400, 350]">
@@ -26,12 +26,12 @@
     </property>
     <port name="output1" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.moml.Location" value="315.0, 40.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 40.0">
         </property>
     </port>
     <port name="output2" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.moml.Location" value="315.0, 105.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 105.0">
         </property>
     </port>
     <entity name="ramp1" class="ptolemy.actor.lib.Ramp">
@@ -43,7 +43,7 @@
         </property>
         <property name="frequency" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="195.0, 40.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 40.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -62,7 +62,7 @@
         </property>
         <property name="frequency" class="ptolemy.data.expr.Parameter" value="ramp2Frequency">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="195.0, 105.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 105.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>

@@ -19,43 +19,43 @@
     </property>
     <port name="f" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.moml.Location" value="176.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="176.0, 200.0">
         </property>
     </port>
     <port name="g" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.moml.Location" value="471.375, 113.125">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="471.375, 113.125">
         </property>
     </port>
     <port name="t" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.moml.Location" value="476.625, 151.875">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="476.625, 151.875">
         </property>
     </port>
     <port name="fR" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.moml.Location" value="177.0, 255.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="177.0, 255.0">
         </property>
     </port>
     <port name="hT" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.moml.Location" value="476.375, 213.125">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="476.375, 213.125">
         </property>
     </port>
     <port name="hTT" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.moml.Location" value="480.375, 258.125">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="480.375, 258.125">
         </property>
     </port>
     <port name="hTF" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.moml.Location" value="480.375, 303.125">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="480.375, 303.125">
         </property>
     </port>
     <entity name="0" class="ptolemy.domains.fsm.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="221.83312604474193, 274.4646691752409">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="221.83312604474193, 274.4646691752409">
         </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
@@ -65,7 +65,7 @@
     <entity name="1" class="ptolemy.domains.fsm.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="337.83312604474236, 276.4646691752409">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="337.83312604474236, 276.4646691752409">
         </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
@@ -75,7 +75,7 @@
     <entity name="2" class="ptolemy.domains.fsm.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="433.83312604474236, 275.4646691752409">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="433.83312604474236, 275.4646691752409">
         </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
@@ -85,7 +85,7 @@
     <entity name="3" class="ptolemy.domains.fsm.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="333.83312604474236, 154.9646691752409">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="333.83312604474236, 154.9646691752409">
         </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>

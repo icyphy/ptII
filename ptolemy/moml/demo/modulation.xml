@@ -20,7 +20,7 @@ by a higher frequency one (the carrier).</doc>
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="62.0, 23.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="62.0, 23.0">
         </property>
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
@@ -58,11 +58,11 @@ by a higher frequency one (the carrier).</doc>
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="25.0, 20.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 20.0">
             </property>
         </property>
         <doc>This composite actor generates a sine wave.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="118.0, 204.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="118.0, 204.0">
         </property>
     </entity>
     <entity name="signal" class="ptolemy.actor.lib.Sinewave">
@@ -96,15 +96,15 @@ by a higher frequency one (the carrier).</doc>
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="25.0, 20.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 20.0">
             </property>
         </property>
         <doc>This composite actor generates a sine wave.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="46.0, 89.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="46.0, 89.0">
         </property>
     </entity>
     <entity name="mult" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.moml.Location" value="250.0, 150.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 150.0">
         </property>
         <port name="multiply" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -129,7 +129,7 @@ by a higher frequency one (the carrier).</doc>
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="382.99998474121094, 89.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="382.99998474121094, 89.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

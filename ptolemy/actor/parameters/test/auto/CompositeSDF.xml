@@ -67,7 +67,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="145.0, 25.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 25.0">
             </property>
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -143,7 +143,7 @@
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <doc>Sinusoidal waveform output.</doc>
-            <property name="_location" class="ptolemy.moml.Location" value="350.0, 230.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 230.0">
             </property>
         </port>
         <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -153,7 +153,7 @@
             </property>
             <property name="step" class="ptolemy.actor.parameters.PortParameter" value="frequency*2*PI/samplingFrequency">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="145.0, 230.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 230.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -189,7 +189,7 @@
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="255.0, 230.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 230.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>

@@ -23,7 +23,7 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="355.0, 295.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 295.0">
         </property>
     </property>
     <entity name="TriggeredClock" class="ptolemy.actor.lib.TriggeredClock">
@@ -35,7 +35,7 @@
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{0,1,2}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="225.0, 40.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 40.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -59,7 +59,7 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{false,true,false,true,false,true,false}">
         </property>
         <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="35.0, 155.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 155.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -81,7 +81,7 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{true, false}">
         </property>
         <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="65.0, 350.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 350.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -103,7 +103,7 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{true, false}">
         </property>
         <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="35.0, 25.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 25.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -118,7 +118,7 @@
     <entity name="ArrayMemory" class="ptolemy.domains.hde.lib.ArrayMemory">
         <property name="length" class="ptolemy.data.expr.Parameter" value="3">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="325.0, 140.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="325.0, 140.0">
         </property>
         <port name="index" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -154,7 +154,7 @@
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="45.0, 100.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 100.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -170,7 +170,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="155.0, 80.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 80.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -190,7 +190,7 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{false,false,false,true,true,true,true}">
         </property>
         <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="35.0, 230.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 230.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -207,7 +207,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="450.0, 55.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 55.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

@@ -23,7 +23,7 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="110.0, 70.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 70.0">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -43,7 +43,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="55.0, 95.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 95.0">
         </property>
     </property>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
@@ -56,7 +56,7 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
         </property>
         <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="135.0, 185.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="135.0, 185.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -71,7 +71,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="250.0, 180.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 180.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

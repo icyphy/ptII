@@ -19,7 +19,7 @@
         </property>
         <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;noModes.giotto&quot;">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="75.0, 34.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 34.5">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -39,7 +39,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="314.0, 256.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="314.0, 256.0">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -59,7 +59,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="73.0, 201.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="73.0, 201.5">
         </property>
     </property>
     <property name="annotation3" class="ptolemy.kernel.util.Attribute">
@@ -79,25 +79,25 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="507.5, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="507.5, 200.0">
         </property>
     </property>
     <port name="GPS" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.moml.Location" value="72.0, 170.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="72.0, 170.0">
         </property>
         <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
         </property>
     </port>
     <port name="motor" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.moml.Location" value="503.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="503.0, 165.0">
         </property>
         <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
         </property>
     </port>
     <entity name="A" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="310.0, 120.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 120.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
         </property>
@@ -107,7 +107,7 @@
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="56.0, 160.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="56.0, 160.0">
             </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
             </property>
@@ -116,14 +116,14 @@
             <property name="output"/>
             <property name="initialOutput" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="417.0, 220.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="417.0, 220.0">
             </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
             </property>
         </port>
         <port name="in2" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="56.0, 280.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="56.0, 280.0">
             </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
             </property>
@@ -137,7 +137,7 @@
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="275.0, 220.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 220.0">
             </property>
             <property name="frequency" class="ptolemy.data.expr.Parameter" value="2">
             </property>
@@ -179,7 +179,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="305.0, 210.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 210.0">
         </property>
         <property name="frequency" class="ptolemy.data.expr.Parameter" value="1">
         </property>

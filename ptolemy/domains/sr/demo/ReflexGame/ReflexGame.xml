@@ -23,11 +23,11 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="104.0, 42.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="104.0, 42.0">
         </property>
     </property>
     <property name="Copy1:Copy1:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="380.0, 145.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 145.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -42,7 +42,7 @@ random event and the display of 'Now!'.
         </property>
     </property>
     <property name="Copy1:Copy1:Copy1:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="60.0, 285.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 285.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -58,7 +58,7 @@ of the Java button listener.
         </property>
     </property>
     <property name="Copy1:Copy1:Copy1:Copy1:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="60.0, 375.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 375.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -79,7 +79,7 @@ this lag is not extremely significant.
         </property>
     </property>
     <entity name="SR Composite Actor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="310.0, 230.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 230.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
@@ -90,34 +90,34 @@ this lag is not extremely significant.
             </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="83.0, 72.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="83.0, 72.0">
             </property>
             <property name="Scheduler" class="ptolemy.domains.sr.kernel.SRRandomizedScheduler">
             </property>
         </property>
         <port name="startTrigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="62.0, 141.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="62.0, 141.0">
             </property>
         </port>
         <port name="stopTrigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="61.5, 231.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="61.5, 231.0">
             </property>
         </port>
         <port name="startOut" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="362.0, 134.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="362.0, 134.0">
             </property>
         </port>
         <port name="stopOut" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="361.5, 187.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="361.5, 187.0">
             </property>
         </port>
         <port name="responseTime" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="360.0, 235.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 235.0">
             </property>
         </port>
         <entity name="FSM Composite Actor" class="ptolemy.domains.fsm.kernel.FSMActor">
@@ -130,7 +130,7 @@ this lag is not extremely significant.
             <entity name="state library" class="ptolemy.kernel.CompositeEntity"><entity name="state" class="ptolemy.domains.fsm.kernel.State"></entity></entity>
           </configure>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="212.0, 187.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="212.0, 187.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
             </property>
@@ -140,33 +140,33 @@ this lag is not extremely significant.
             </property>
             <port name="startTime" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="78.5, 96.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="78.5, 96.0">
                 </property>
             </port>
             <port name="stopTime" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="78.0, 152.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="78.0, 152.0">
                 </property>
             </port>
             <port name="startOut" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="458.0, 102.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="458.0, 102.0">
                 </property>
             </port>
             <port name="stopOut" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="456.5, 156.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="456.5, 156.0">
                 </property>
             </port>
             <port name="responseTime" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="473.0, 208.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="473.0, 208.0">
                 </property>
             </port>
             <entity name="ready" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="181.0, 191.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="181.0, 191.0">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
@@ -176,7 +176,7 @@ this lag is not extremely significant.
             <entity name="startReceived" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="278.0, 265.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="278.0, 265.0">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
@@ -186,7 +186,7 @@ this lag is not extremely significant.
             <entity name="stopReceived" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="391.0, 296.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="391.0, 296.0">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
@@ -260,7 +260,7 @@ this lag is not extremely significant.
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="60.0, 110.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 110.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -270,7 +270,7 @@ this lag is not extremely significant.
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Click here when you see 'Now!'">
         </property>
         <doc>Generate outputs in response to button clicks</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="60.0, 240.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 240.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -281,7 +281,7 @@ this lag is not extremely significant.
         </port>
     </entity>
     <entity name="Display 'Ready' and 'Now!'" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="435.0, 120.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="435.0, 120.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
@@ -289,19 +289,19 @@ this lag is not extremely significant.
         </property>
         <port name="readyInput" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="115.0, 155.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 155.0">
             </property>
         </port>
         <port name="nowInput" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="110.0, 235.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 235.0">
             </property>
         </port>
         <entity name="Now!" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Now!&quot;">
             </property>
             <doc>Create a constant sequence</doc>
-            <property name="_location" class="ptolemy.moml.Location" value="250.0, 225.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 225.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -318,7 +318,7 @@ this lag is not extremely significant.
             </property>
             <property name="title" class="ptolemy.kernel.util.StringAttribute">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="410.0, 195.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="410.0, 195.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -329,7 +329,7 @@ this lag is not extremely significant.
             <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Ready...&quot;">
             </property>
             <doc>Create a constant sequence</doc>
-            <property name="_location" class="ptolemy.moml.Location" value="250.0, 145.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 145.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -357,7 +357,7 @@ this lag is not extremely significant.
         <link port="Ready.trigger" relation="relation3"/>
     </entity>
     <entity name="Display Outputs" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="430.0, 230.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="430.0, 230.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
@@ -365,24 +365,24 @@ this lag is not extremely significant.
         </property>
         <port name="startTime" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="70.0, 135.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 135.0">
             </property>
         </port>
         <port name="stopTime" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="70.0, 245.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 245.0">
             </property>
         </port>
         <port name="responseTime" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="70.0, 365.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 365.0">
             </property>
         </port>
         <entity name="Const2" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="&quot; Stop time: &quot;">
             </property>
             <doc>Create a constant sequence</doc>
-            <property name="_location" class="ptolemy.moml.Location" value="275.0, 180.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 180.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -393,7 +393,7 @@ this lag is not extremely significant.
             </port>
         </entity>
         <entity name="AddSubtract2" class="ptolemy.actor.lib.AddSubtract">
-            <property name="_location" class="ptolemy.moml.Location" value="410.0, 255.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="410.0, 255.0">
             </property>
             <port name="plus" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -408,7 +408,7 @@ this lag is not extremely significant.
             </port>
         </entity>
         <entity name="AddSubtract3" class="ptolemy.actor.lib.AddSubtract">
-            <property name="_location" class="ptolemy.moml.Location" value="415.0, 375.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 375.0">
             </property>
             <port name="plus" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -426,7 +426,7 @@ this lag is not extremely significant.
             <property name="value" class="ptolemy.data.expr.Parameter" value="&quot; Response time: &quot;">
             </property>
             <doc>Create a constant sequence</doc>
-            <property name="_location" class="ptolemy.moml.Location" value="280.0, 310.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 310.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -440,7 +440,7 @@ this lag is not extremely significant.
             <property name="value" class="ptolemy.data.expr.Parameter" value="&quot; Start time: &quot;">
             </property>
             <doc>Create a constant sequence</doc>
-            <property name="_location" class="ptolemy.moml.Location" value="275.0, 75.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 75.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -457,7 +457,7 @@ this lag is not extremely significant.
             </property>
             <property name="title" class="ptolemy.kernel.util.StringAttribute">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="539.0, 255.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="539.0, 255.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -465,7 +465,7 @@ this lag is not extremely significant.
             </port>
         </entity>
         <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-            <property name="_location" class="ptolemy.moml.Location" value="410.0, 145.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="410.0, 145.0">
             </property>
             <port name="plus" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -482,7 +482,7 @@ this lag is not extremely significant.
         <entity name="TimedDelay" class="ptolemy.domains.de.lib.TimedDelay">
             <property name="delay" class="ptolemy.data.expr.Parameter" value="0.1">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="170.0, 245.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 245.0">
             </property>
             <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
                 <property name="input"/>
@@ -494,7 +494,7 @@ this lag is not extremely significant.
         <entity name="TimedDelay2" class="ptolemy.domains.de.lib.TimedDelay">
             <property name="delay" class="ptolemy.data.expr.Parameter" value="0.2">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="190.0, 365.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="190.0, 365.0">
             </property>
             <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
                 <property name="input"/>
@@ -558,7 +558,7 @@ this lag is not extremely significant.
         <link port="TimedDelay2.output" relation="Copy2:Copy1:relation22"/>
     </entity>
     <entity name="RandomTime" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="170.0, 170.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 170.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
@@ -566,18 +566,18 @@ this lag is not extremely significant.
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="405.0, 80.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 80.0">
             </property>
         </port>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="55.0, 80.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 80.0">
             </property>
         </port>
         <entity name="Timer" class="ptolemy.domains.de.lib.Timer">
             <property name="value" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="230.0, 80.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 80.0">
             </property>
             <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
                 <property name="input"/>
@@ -594,7 +594,7 @@ this lag is not extremely significant.
             <property name="upperBound" class="ptolemy.data.expr.Parameter" value="7.0">
             </property>
             <doc>Create a sequence of uniformly distributed random numbers</doc>
-            <property name="_location" class="ptolemy.moml.Location" value="130.0, 80.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 80.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -606,7 +606,7 @@ this lag is not extremely significant.
         </entity>
         <entity name="WallClockTime" class="ptolemy.actor.lib.WallClockTime">
             <doc>Output the current real time in seconds</doc>
-            <property name="_location" class="ptolemy.moml.Location" value="325.0, 80.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="325.0, 80.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>

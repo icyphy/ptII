@@ -15,7 +15,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="125.0, 145.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 145.0">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -36,7 +36,7 @@ Real time consumed prints to your standard output.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="40.0, 20.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 20.0">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -60,7 +60,7 @@ firing them in that order.
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="105.0, 240.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 240.0">
         </property>
     </property>
     <entity name="HistogramPlotter" class="ptolemy.actor.lib.gui.HistogramPlotter">
@@ -72,7 +72,7 @@ firing them in that order.
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="505.0, 220.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="505.0, 220.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -91,7 +91,7 @@ firing them in that order.
         </configure>
     </entity>
     <entity name="ArrayLength" class="ptolemy.actor.lib.ArrayLength">
-        <property name="_location" class="ptolemy.moml.Location" value="410.0, 220.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="410.0, 220.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -117,7 +117,7 @@ firing them in that order.
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="185.0, 220.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 220.0">
         </property>
         <port name="remoteAddress" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -161,7 +161,7 @@ firing them in that order.
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="295.0, 220.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 220.0">
         </property>
         <port name="returnAddress" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -187,7 +187,7 @@ firing them in that order.
         <property name="step" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="70.0, 220.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 220.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>

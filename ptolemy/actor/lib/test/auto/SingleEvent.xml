@@ -19,7 +19,7 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="79.0, 36.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="79.0, 36.0">
         </property>
     </property>
     <entity name="SingleEvent1" class="ptolemy.domains.de.lib.SingleEvent">
@@ -27,7 +27,7 @@
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="127.0, 156.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="127.0, 156.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -42,7 +42,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="323.0, 155.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="323.0, 155.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -52,7 +52,7 @@
     <entity name="CurrentTime3" class="ptolemy.actor.lib.CurrentTime">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="226.0, 156.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="226.0, 156.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>

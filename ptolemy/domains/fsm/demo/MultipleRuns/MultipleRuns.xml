@@ -45,7 +45,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="60.0, 40.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 40.0">
             </property>
         </property>
         <property name="numberOfRuns" class="ptolemy.data.expr.Parameter" value="10">
@@ -57,7 +57,7 @@
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="310.0, 205.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 205.0">
             </property>
             <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -71,7 +71,7 @@
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="475.0, 175.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="475.0, 175.0">
             </property>
             <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -85,7 +85,7 @@
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="100.0, 130.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 130.0">
             </property>
             <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -165,7 +165,7 @@
             </property>
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="blockSize">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="85.0, 35.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 35.0">
             </property>
         </property>
         <property name="freq1" class="ptolemy.data.expr.Parameter" value="1/400.0">
@@ -205,11 +205,11 @@
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="172.0, 45.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="172.0, 45.0">
                 </property>
             </property>
             <doc>This composite actor generates a sine wave.</doc>
-            <property name="_location" class="ptolemy.moml.Location" value="168.5, 119.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="168.5, 119.5">
             </property>
         </entity>
         <entity name="Sinewave2" class="ptolemy.actor.lib.Sinewave">
@@ -243,11 +243,11 @@
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="172.0, 45.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="172.0, 45.0">
                 </property>
             </property>
             <doc>This composite actor generates a sine wave.</doc>
-            <property name="_location" class="ptolemy.moml.Location" value="168.5, 204.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="168.5, 204.5">
             </property>
         </entity>
         <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
@@ -257,7 +257,7 @@
             </property>
             <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="9">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="285.0, 145.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 145.0">
             </property>
             <port name="inputX" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>

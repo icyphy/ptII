@@ -5,7 +5,7 @@
     <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
     </property>
     <property name="annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="364.0, 44.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="364.0, 44.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -24,7 +24,7 @@ The signal is multiplied by a sine wave.
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="71.0, 36.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="71.0, 36.0">
         </property>
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 350]">
@@ -32,7 +32,7 @@ The signal is multiplied by a sine wave.
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 152]">
     </property>
     <entity name="Multiplier" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.moml.Location" value="303.0, 155.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="303.0, 155.0">
         </property>
         <port name="multiply" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -53,7 +53,7 @@ The signal is multiplied by a sine wave.
         </property>
         <property name="dataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="107.0, 108.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="107.0, 108.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -74,7 +74,7 @@ The signal is multiplied by a sine wave.
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="419.99998474121094, 171.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="419.99998474121094, 171.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -123,11 +123,11 @@ The signal is multiplied by a sine wave.
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="25.0, 20.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 20.0">
             </property>
         </property>
         <doc>This composite actor generates a sine wave.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="122.0, 179.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="122.0, 179.0">
         </property>
     </entity>
     <relation name="_R2" class="ptolemy.actor.TypedIORelation">

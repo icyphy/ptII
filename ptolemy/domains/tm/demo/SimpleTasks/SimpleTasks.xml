@@ -25,11 +25,11 @@
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="86.0, 32.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="86.0, 32.0">
         </property>
     </property>
     <property name="0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="30.0, 295.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 295.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -58,7 +58,7 @@ preemptive parameter to true or false.
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
         </property>
         <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="80.0, 140.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 140.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -78,7 +78,7 @@ preemptive parameter to true or false.
         <property name="values" class="ptolemy.data.expr.Parameter" value="{-1}">
         </property>
         <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="80.0, 205.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 205.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -92,7 +92,7 @@ preemptive parameter to true or false.
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="225.0, 70.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 70.0">
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="2">
         </property>
@@ -116,7 +116,7 @@ preemptive parameter to true or false.
         <property name="value" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="220.0, 255.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="220.0, 255.0">
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="10">
         </property>
@@ -143,7 +143,7 @@ preemptive parameter to true or false.
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="450.0, 160.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 160.0">
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="1">
         </property>

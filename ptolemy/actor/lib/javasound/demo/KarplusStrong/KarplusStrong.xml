@@ -11,7 +11,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="32">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="68.0, 34.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 34.0">
         </property>
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
@@ -37,14 +37,14 @@ musical instrument sound.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="155.0, 10.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 10.0">
         </property>
     </property>
     <entity name="Delay" class="ptolemy.domains.sdf.lib.SampleDelay">
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="gaussian(0.0, 0.6, 1, 35).toArray()">
         </property>
         <doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="80.0, 120.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 120.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -70,7 +70,7 @@ musical instrument sound.</text></svg></configure>
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="395.0, 120.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 120.0">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
@@ -95,7 +95,7 @@ musical instrument sound.</text></svg></configure>
         <property name="taps" class="ptolemy.data.expr.Parameter" value="{0.5, 0.5}">
         </property>
         <doc name="tooltip">FIR filter</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="185.0, 120.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 120.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -122,7 +122,7 @@ musical instrument sound.</text></svg></configure>
         <property name="denominator" class="ptolemy.data.expr.Parameter" value="{1.0, 0.07317}">
         </property>
         <doc>IIR filter</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="290.0, 120.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 120.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -162,7 +162,7 @@ musical instrument sound.</text></svg></configure>
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="86.5, 233.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="86.5, 233.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

@@ -14,7 +14,7 @@
     </property>
     <port name="out" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location0" class="ptolemy.moml.Location">
+        <property name="_location0" class="ptolemy.kernel.util.Location">
         </property>
         <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -23,7 +23,7 @@
     </port>
     <port name="baseAngle" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location0" class="ptolemy.moml.Location">
+        <property name="_location0" class="ptolemy.kernel.util.Location">
         </property>
         <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -32,7 +32,7 @@
     </port>
     <port name="lowerAngle" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location0" class="ptolemy.moml.Location">
+        <property name="_location0" class="ptolemy.kernel.util.Location">
         </property>
         <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -41,7 +41,7 @@
     </port>
     <port name="upperAngle" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location0" class="ptolemy.moml.Location">
+        <property name="_location0" class="ptolemy.kernel.util.Location">
         </property>
         <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -50,7 +50,7 @@
     </port>
     <port name="wristAngle" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location0" class="ptolemy.moml.Location">
+        <property name="_location0" class="ptolemy.kernel.util.Location">
         </property>
         <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -99,7 +99,7 @@
         </property>
         <port name="port10" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location0" class="ptolemy.moml.Location">
+            <property name="_location0" class="ptolemy.kernel.util.Location">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -887,7 +887,7 @@
         </property>
         <port name="port0" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location0" class="ptolemy.moml.Location">
+            <property name="_location0" class="ptolemy.kernel.util.Location">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -1875,7 +1875,7 @@
         </property>
         <port name="port0" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location0" class="ptolemy.moml.Location">
+            <property name="_location0" class="ptolemy.kernel.util.Location">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -2695,7 +2695,7 @@
         </property>
         <port name="port1" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location0" class="ptolemy.moml.Location">
+            <property name="_location0" class="ptolemy.kernel.util.Location">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -3628,7 +3628,7 @@
         </property>
         <port name="port7" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location0" class="ptolemy.moml.Location">
+            <property name="_location0" class="ptolemy.kernel.util.Location">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -3889,7 +3889,7 @@
         </property>
         <port name="port0" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location0" class="ptolemy.moml.Location">
+            <property name="_location0" class="ptolemy.kernel.util.Location">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>

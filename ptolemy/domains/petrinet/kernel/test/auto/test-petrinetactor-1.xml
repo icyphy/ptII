@@ -9,13 +9,13 @@
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[29, 93]">
     </property>
     <property name="PTN" class="ptolemy.domains.petrinet.kernel.PetriNetDirector">
-        <property name="_location" class="ptolemy.moml.Location" value="70.0, 403.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 403.0">
         </property>
     </property>
     <entity name="Place" class="ptolemy.domains.petrinet.kernel.Place">
         <property name="initialMarking" class="ptolemy.data.expr.Parameter" value="5">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="98.0, 199.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="98.0, 199.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -27,7 +27,7 @@
         </port>
     </entity>
     <entity name="PetriNetActor" class="ptolemy.domains.petrinet.kernel.PetriNetActor">
-        <property name="_location" class="ptolemy.moml.Location" value="266.0, 282.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="266.0, 282.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
@@ -36,19 +36,19 @@
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_location" class="ptolemy.moml.Location" value="77.0, 157.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="77.0, 157.0">
             </property>
         </port>
         <port name="out" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="multiport"/>
-            <property name="_location" class="ptolemy.moml.Location" value="409.0, 165.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="409.0, 165.0">
             </property>
         </port>
         <entity name="Place" class="ptolemy.domains.petrinet.kernel.Place">
             <property name="initialMarking" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="209.0, 66.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="209.0, 66.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -60,7 +60,7 @@
             </port>
         </entity>
         <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.moml.Location" value="251.0, 231.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="251.0, 231.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
             </property>
@@ -69,19 +69,19 @@
             <port name="in" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-                <property name="_location" class="ptolemy.moml.Location">
+                <property name="_location" class="ptolemy.kernel.util.Location">
                 </property>
             </port>
             <port name="out" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="multiport"/>
-                <property name="_location" class="ptolemy.moml.Location">
+                <property name="_location" class="ptolemy.kernel.util.Location">
                 </property>
             </port>
             <entity name="Place" class="ptolemy.domains.petrinet.kernel.Place">
                 <property name="initialMarking" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="135.0, 121.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="135.0, 121.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -113,7 +113,7 @@
     <entity name="Place2" class="ptolemy.domains.petrinet.kernel.Place">
         <property name="initialMarking" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="440.0, 141.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="440.0, 141.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -125,7 +125,7 @@
         </port>
     </entity>
     <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="287.0, 66.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="287.0, 66.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
@@ -134,20 +134,20 @@
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_location" class="ptolemy.moml.Location">
+            <property name="_location" class="ptolemy.kernel.util.Location">
             </property>
         </port>
         <port name="out" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="multiport"/>
-            <property name="_location" class="ptolemy.moml.Location">
+            <property name="_location" class="ptolemy.kernel.util.Location">
             </property>
         </port>
     </entity>
     <entity name="Place6" class="ptolemy.domains.petrinet.kernel.Place">
         <property name="initialMarking" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="92.0, 56.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="92.0, 56.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

@@ -11,7 +11,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="480.0, 315.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="480.0, 315.0">
         </property>
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
@@ -28,7 +28,7 @@
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="120.0, 225.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 225.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -45,7 +45,7 @@
         </property>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="480.0, 135.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="480.0, 135.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -53,7 +53,7 @@
         </port>
     </entity>
     <entity name="FixToDouble0" class="ptolemy.actor.lib.conversions.FixToDouble">
-        <property name="_location" class="ptolemy.moml.Location" value="354.0, 152.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="354.0, 152.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -73,7 +73,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="219.0, 138.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="219.0, 138.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

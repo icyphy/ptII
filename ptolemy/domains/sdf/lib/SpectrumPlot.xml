@@ -36,16 +36,16 @@ centered at zero frequency.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="0.0, 5.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 5.0">
         </property>
     </property>
     <port name="input" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.moml.Location" value="35.0, 210.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 210.0">
         </property>
     </port>
     <entity name="Multiply" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.moml.Location" value="170.0, 220.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 220.0">
         </property>
         <port name="multiply" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -68,7 +68,7 @@ centered at zero frequency.</text></svg></configure>
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="55.0, 275.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 275.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -81,7 +81,7 @@ centered at zero frequency.</text></svg></configure>
     <entity name="FFT" class="ptolemy.domains.sdf.lib.FFT">
         <property name="order" class="ptolemy.data.expr.Parameter" value="order">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="260.0, 220.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 220.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -107,7 +107,7 @@ centered at zero frequency.</text></svg></configure>
         </property>
         <property name="min" class="ptolemy.data.expr.Parameter" value="-100.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="460.0, 220.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 220.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -117,7 +117,7 @@ centered at zero frequency.</text></svg></configure>
         </port>
     </entity>
     <entity name="AbsoluteValue0" class="ptolemy.actor.lib.AbsoluteValue">
-        <property name="_location" class="ptolemy.moml.Location" value="355.0, 220.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 220.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -137,7 +137,7 @@ centered at zero frequency.</text></svg></configure>
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="sampleRate/(2^order)">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="540.0, 220.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="540.0, 220.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

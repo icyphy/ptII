@@ -15,7 +15,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="75.0, 31.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 31.0">
         </property>
     </property>
     <entity name="Pulse" class="ptolemy.actor.lib.Pulse">
@@ -27,7 +27,7 @@
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="72.0, 129.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="72.0, 129.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -47,7 +47,7 @@
         <property name="symmetricOutput" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <doc>Autocorrelation estimator</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="216.0, 111.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="216.0, 111.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -79,7 +79,7 @@
         <property name="symmetricOutput" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <doc>Autocorrelation estimator</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="206.0, 201.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="206.0, 201.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -106,7 +106,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="326.0, 113.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="326.0, 113.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -118,7 +118,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="331.0, 202.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="331.0, 202.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

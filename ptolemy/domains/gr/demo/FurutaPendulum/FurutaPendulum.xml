@@ -53,7 +53,7 @@
         </property>
         <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="581.0, 68.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="581.0, 68.0">
         </property>
     </property>
     <property name="h" class="ptolemy.data.expr.Parameter" value="0.01/2">
@@ -83,7 +83,7 @@ The objective is to swing the pendulum up and then balance it.
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="251.5, 407.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="251.5, 407.0">
         </property>
     </property>
     <property name="_generator" class="ptolemy.copernicus.gui.GeneratorTableauAttribute">
@@ -141,7 +141,7 @@ The objective is to swing the pendulum up and then balance it.
         </property>
         <property name="initialStates" class="ptolemy.data.expr.Parameter" value="[-3.0, 0.01, 0.0, 0.0]">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="346.0, 77.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="346.0, 77.0">
         </property>
         <property name="alfa" class="ptolemy.data.expr.Parameter" value="0.00260569">
         </property>
@@ -175,27 +175,27 @@ The objective is to swing the pendulum up and then balance it.
         </property>
         <port name="u" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="16.461538461538453, 234.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="16.461538461538453, 234.0">
             </property>
         </port>
         <port name="Theta" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="521.6153846153843, 153.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="521.6153846153843, 153.0">
             </property>
         </port>
         <port name="dTheta" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="521.6153846153843, 225.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="521.6153846153843, 225.0">
             </property>
         </port>
         <port name="Phi" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="521.5384615384614, 297.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="521.5384615384614, 297.0">
             </property>
         </port>
         <port name="dPhi" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="521.7259615384613, 369.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="521.7259615384613, 369.0">
             </property>
         </port>
         <entity name="x1" class="ptolemy.domains.ct.lib.Integrator">
@@ -557,7 +557,7 @@ The objective is to swing the pendulum up and then balance it.
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="332.0, 146.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="332.0, 146.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -578,7 +578,7 @@ The objective is to swing the pendulum up and then balance it.
     <entity name="ZOH1" class="ptolemy.domains.ct.lib.ZeroOrderHold">
         <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="205.0, 77.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 77.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -592,7 +592,7 @@ The objective is to swing the pendulum up and then balance it.
         </port>
     </entity>
     <entity name="controller" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="226.0, 267.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="226.0, 267.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
         </property>
@@ -605,7 +605,7 @@ The objective is to swing the pendulum up and then balance it.
             </property>
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="72.23333288828536, 33.0333334695726">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="72.23333288828536, 33.0333334695726">
             </property>
         </property>
         <property name="w0" class="ptolemy.data.expr.Parameter" value="w0">
@@ -616,7 +616,7 @@ The objective is to swing the pendulum up and then balance it.
         </property>
         <port name="Th" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="55.0, 105.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 105.0">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -627,7 +627,7 @@ The objective is to swing the pendulum up and then balance it.
         </port>
         <port name="dTh" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="53.5, 159.62618815107703">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="53.5, 159.62618815107703">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -638,7 +638,7 @@ The objective is to swing the pendulum up and then balance it.
         </port>
         <port name="Phi" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="55.0, 210.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 210.0">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -649,7 +649,7 @@ The objective is to swing the pendulum up and then balance it.
         </port>
         <port name="dPhi" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="52.116666666666674, 267.16655273437505">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="52.116666666666674, 267.16655273437505">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -660,7 +660,7 @@ The objective is to swing the pendulum up and then balance it.
         </port>
         <port name="u" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="540.0, 145.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="540.0, 145.0">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -671,7 +671,7 @@ The objective is to swing the pendulum up and then balance it.
         </port>
         <port name="E" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="540.0, 190.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="540.0, 190.0">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -682,7 +682,7 @@ The objective is to swing the pendulum up and then balance it.
         </port>
         <port name="mode" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="540.0, 235.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="540.0, 235.0">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -693,7 +693,7 @@ The objective is to swing the pendulum up and then balance it.
         </port>
         <port name="ThConv" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="540.0, 105.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="540.0, 105.0">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -704,7 +704,7 @@ The objective is to swing the pendulum up and then balance it.
         </port>
         <port name="debug" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="540.0, 285.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="540.0, 285.0">
             </property>
             <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -712,7 +712,7 @@ The objective is to swing the pendulum up and then balance it.
             </property>
         </port>
         <entity name="angleConversion" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.moml.Location" value="240.0, 105.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 105.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
             </property>
@@ -725,12 +725,12 @@ The objective is to swing the pendulum up and then balance it.
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="63.0, 28.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="63.0, 28.0">
                 </property>
             </property>
             <port name="y" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="570.0, 260.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="570.0, 260.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
@@ -741,7 +741,7 @@ The objective is to swing the pendulum up and then balance it.
             </port>
             <port name="u" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="20.0, 180.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 180.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -753,7 +753,7 @@ The objective is to swing the pendulum up and then balance it.
             <entity name="Expression12" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="abs(x) + pi">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="205.0, 95.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 95.0">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -785,7 +785,7 @@ The objective is to swing the pendulum up and then balance it.
                         </property>
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="312.0, 105.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="312.0, 105.0">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
@@ -820,7 +820,7 @@ The objective is to swing the pendulum up and then balance it.
                         </property>
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="205.0, 290.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 290.0">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
@@ -836,7 +836,7 @@ The objective is to swing the pendulum up and then balance it.
                 </port>
             </entity>
             <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-                <property name="_location" class="ptolemy.moml.Location" value="415.0, 155.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 155.0">
                 </property>
                 <port name="plus" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -854,7 +854,7 @@ The objective is to swing the pendulum up and then balance it.
                 <property name="value" class="ptolemy.data.expr.Parameter" value="pi">
                 </property>
                 <doc>Create a constant sequence</doc>
-                <property name="_location" class="ptolemy.moml.Location" value="315.0, 165.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 165.0">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -874,7 +874,7 @@ The objective is to swing the pendulum up and then balance it.
                 <property name="value" class="ptolemy.data.expr.Parameter" value="2*pi">
                 </property>
                 <doc>Create a constant sequence</doc>
-                <property name="_location" class="ptolemy.moml.Location" value="220.0, 165.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="220.0, 165.0">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -891,7 +891,7 @@ The objective is to swing the pendulum up and then balance it.
                 </port>
             </entity>
             <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
-                <property name="_location" class="ptolemy.moml.Location" value="517.0, 236.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="517.0, 236.0">
                 </property>
                 <port name="multiply" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -942,7 +942,7 @@ The objective is to swing the pendulum up and then balance it.
             <link port="MultiplyDivide.output" relation="relation24"/>
         </entity>
         <entity name="controller" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.moml.Location" value="380.0, 200.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 200.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
             </property>
@@ -951,7 +951,7 @@ The objective is to swing the pendulum up and then balance it.
             <property name="FSM" class="ptolemy.domains.fsm.kernel.FSMDirector">
                 <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="controllerFSM">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="70.0, 27.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 27.0">
                 </property>
             </property>
             <property name="w0" class="ptolemy.data.expr.Parameter" value="w0">
@@ -962,46 +962,46 @@ The objective is to swing the pendulum up and then balance it.
             </property>
             <port name="u" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="515.0, 265.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="515.0, 265.0">
                 </property>
             </port>
             <port name="E" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="520.0, 375.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="520.0, 375.0">
                 </property>
             </port>
             <port name="mode" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="515.0, 50.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="515.0, 50.0">
                 </property>
             </port>
             <port name="Th" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="30.0, 95.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 95.0">
                 </property>
             </port>
             <port name="dTh" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="30.0, 190.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 190.0">
                 </property>
             </port>
             <port name="Phi" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="30.0, 265.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 265.0">
                 </property>
             </port>
             <port name="dPhi" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="30.0, 365.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 365.0">
                 </property>
             </port>
             <port name="debug" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="520.0, 320.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="520.0, 320.0">
                 </property>
             </port>
             <entity name="stabilizeController" class="ptolemy.actor.TypedCompositeActor">
-                <property name="_location" class="ptolemy.moml.Location" value="363.0, 190.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="363.0, 190.0">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
                 </property>
@@ -1014,7 +1014,7 @@ The objective is to swing the pendulum up and then balance it.
                     </property>
                     <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="70.0, 24.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 24.0">
                     </property>
                 </property>
                 <property name="l1" class="ptolemy.data.expr.Parameter" value="-1.70871686211144">
@@ -1027,7 +1027,7 @@ The objective is to swing the pendulum up and then balance it.
                 </property>
                 <port name="Th" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="55.0, 100.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 100.0">
                     </property>
                     <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
@@ -1038,7 +1038,7 @@ The objective is to swing the pendulum up and then balance it.
                 </port>
                 <port name="dTh" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="55.0, 185.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 185.0">
                     </property>
                     <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
@@ -1049,7 +1049,7 @@ The objective is to swing the pendulum up and then balance it.
                 </port>
                 <port name="Phi" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="55.0, 285.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 285.0">
                     </property>
                     <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
@@ -1060,7 +1060,7 @@ The objective is to swing the pendulum up and then balance it.
                 </port>
                 <port name="dPhi" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="60.0, 380.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 380.0">
                     </property>
                     <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
@@ -1071,7 +1071,7 @@ The objective is to swing the pendulum up and then balance it.
                 </port>
                 <port name="u" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="540.0, 300.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="540.0, 300.0">
                     </property>
                     <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
@@ -1081,7 +1081,7 @@ The objective is to swing the pendulum up and then balance it.
                     </property>
                 </port>
                 <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
-                    <property name="_location" class="ptolemy.moml.Location" value="305.0, 110.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 110.0">
                     </property>
                     <port name="multiply" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -1096,7 +1096,7 @@ The objective is to swing the pendulum up and then balance it.
                     </port>
                 </entity>
                 <entity name="MultiplyDivide2" class="ptolemy.actor.lib.MultiplyDivide">
-                    <property name="_location" class="ptolemy.moml.Location" value="305.0, 195.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 195.0">
                     </property>
                     <port name="multiply" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -1111,7 +1111,7 @@ The objective is to swing the pendulum up and then balance it.
                     </port>
                 </entity>
                 <entity name="MultiplyDivide3" class="ptolemy.actor.lib.MultiplyDivide">
-                    <property name="_location" class="ptolemy.moml.Location" value="316.0, 255.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="316.0, 255.0">
                     </property>
                     <port name="multiply" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -1126,7 +1126,7 @@ The objective is to swing the pendulum up and then balance it.
                     </port>
                 </entity>
                 <entity name="MultiplyDivide4" class="ptolemy.actor.lib.MultiplyDivide">
-                    <property name="_location" class="ptolemy.moml.Location" value="320.0, 390.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="320.0, 390.0">
                     </property>
                     <port name="multiply" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -1144,7 +1144,7 @@ The objective is to swing the pendulum up and then balance it.
                     <property name="value" class="ptolemy.data.expr.Parameter" value="l1">
                     </property>
                     <doc>Create a constant sequence</doc>
-                    <property name="_location" class="ptolemy.moml.Location" value="183.0, 50.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="183.0, 50.0">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -1164,7 +1164,7 @@ The objective is to swing the pendulum up and then balance it.
                     <property name="value" class="ptolemy.data.expr.Parameter" value="l2">
                     </property>
                     <doc>Create a constant sequence</doc>
-                    <property name="_location" class="ptolemy.moml.Location" value="191.0, 145.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="191.0, 145.0">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -1184,7 +1184,7 @@ The objective is to swing the pendulum up and then balance it.
                     <property name="value" class="ptolemy.data.expr.Parameter" value="l3">
                     </property>
                     <doc>Create a constant sequence</doc>
-                    <property name="_location" class="ptolemy.moml.Location" value="196.0, 226.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="196.0, 226.0">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -1204,7 +1204,7 @@ The objective is to swing the pendulum up and then balance it.
                     <property name="value" class="ptolemy.data.expr.Parameter" value="l4">
                     </property>
                     <doc>Create a constant sequence</doc>
-                    <property name="_location" class="ptolemy.moml.Location" value="200.0, 350.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 350.0">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -1221,7 +1221,7 @@ The objective is to swing the pendulum up and then balance it.
                     </port>
                 </entity>
                 <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-                    <property name="_location" class="ptolemy.moml.Location" value="465.0, 225.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="465.0, 225.0">
                     </property>
                     <port name="plus" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -1240,7 +1240,7 @@ The objective is to swing the pendulum up and then balance it.
                     </property>
                     <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="470.0, 300.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="470.0, 300.0">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
@@ -1256,7 +1256,7 @@ The objective is to swing the pendulum up and then balance it.
                     </port>
                 </entity>
                 <entity name="AddSubtract14" class="ptolemy.actor.lib.AddSubtract">
-                    <property name="_location" class="ptolemy.moml.Location" value="205.0, 295.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 295.0">
                     </property>
                     <port name="plus" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -1274,7 +1274,7 @@ The objective is to swing the pendulum up and then balance it.
                     <property name="value" class="ptolemy.data.expr.Parameter" value="-2.4921921">
                     </property>
                     <doc>Create a constant sequence</doc>
-                    <property name="_location" class="ptolemy.moml.Location" value="85.0, 330.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 330.0">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -1367,7 +1367,7 @@ The objective is to swing the pendulum up and then balance it.
             <entity name="state library" class="ptolemy.kernel.CompositeEntity"><entity name="state" class="ptolemy.domains.fsm.kernel.State"/></entity>
           </configure>
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="340.0, 50.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 50.0">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
                 </property>
@@ -1381,33 +1381,33 @@ The objective is to swing the pendulum up and then balance it.
                 </property>
                 <port name="Th" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="47.0, 152.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="47.0, 152.0">
                     </property>
                 </port>
                 <port name="dTh" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="48.0, 245.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="48.0, 245.0">
                     </property>
                 </port>
                 <port name="mode" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="535.0, 83.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="535.0, 83.0">
                     </property>
                 </port>
                 <port name="Phi" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="47.0, 333.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="47.0, 333.0">
                     </property>
                 </port>
                 <port name="dPhi" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="49.0, 64.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="49.0, 64.0">
                     </property>
                 </port>
                 <entity name="swing-up" class="ptolemy.domains.fsm.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="swingUpController">
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="364.0, 149.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="364.0, 149.0">
                     </property>
                     <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                     </port>
@@ -1417,7 +1417,7 @@ The objective is to swing the pendulum up and then balance it.
                 <entity name="stabilize" class="ptolemy.domains.fsm.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="stabilizeController">
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="356.0, 265.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="356.0, 265.0">
                     </property>
                     <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                     </port>
@@ -1427,7 +1427,7 @@ The objective is to swing the pendulum up and then balance it.
                 <entity name="init" class="ptolemy.domains.fsm.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="265.0, 61.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="265.0, 61.0">
                     </property>
                     <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                     </port>
@@ -1437,7 +1437,7 @@ The objective is to swing the pendulum up and then balance it.
                 <entity name="catch" class="ptolemy.domains.fsm.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="catchController">
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="214.0, 307.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="214.0, 307.0">
                     </property>
                     <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                     </port>
@@ -1526,7 +1526,7 @@ The objective is to swing the pendulum up and then balance it.
                 <link port="catch.outgoingPort" relation="relation"/>
             </entity>
             <entity name="swingUpController" class="ptolemy.actor.TypedCompositeActor">
-                <property name="_location" class="ptolemy.moml.Location" value="365.0, 365.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 365.0">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
                 </property>
@@ -1539,7 +1539,7 @@ The objective is to swing the pendulum up and then balance it.
                     </property>
                     <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="80.0, 34.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 34.0">
                     </property>
                 </property>
                 <property name="n" class="ptolemy.data.expr.Parameter" value="n">
@@ -1550,7 +1550,7 @@ The objective is to swing the pendulum up and then balance it.
                 </property>
                 <port name="Th" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="25.0, 120.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 120.0">
                     </property>
                     <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
@@ -1561,7 +1561,7 @@ The objective is to swing the pendulum up and then balance it.
                 </port>
                 <port name="dTh" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="22.0, 209.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="22.0, 209.0">
                     </property>
                     <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
@@ -1572,7 +1572,7 @@ The objective is to swing the pendulum up and then balance it.
                 </port>
                 <port name="u" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="527.0, 259.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="527.0, 259.0">
                     </property>
                     <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
@@ -1583,7 +1583,7 @@ The objective is to swing the pendulum up and then balance it.
                 </port>
                 <port name="E" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="405.0, 80.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 80.0">
                     </property>
                     <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
@@ -1595,7 +1595,7 @@ The objective is to swing the pendulum up and then balance it.
                 <entity name="energyCalculation" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="0.5*dTh*dTh/(w0*w0) + cos(Th) - 1">
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="180.0, 130.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 130.0">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -1614,7 +1614,7 @@ The objective is to swing the pendulum up and then balance it.
                     </port>
                 </entity>
                 <entity name="Abs" class="ptolemy.actor.lib.AbsoluteValue">
-                    <property name="_location" class="ptolemy.moml.Location" value="410.0, 130.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="410.0, 130.0">
                     </property>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -1640,7 +1640,7 @@ The objective is to swing the pendulum up and then balance it.
                             </property>
                         </property>
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="340.0, 45.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 45.0">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
@@ -1656,7 +1656,7 @@ The objective is to swing the pendulum up and then balance it.
                     </port>
                 </entity>
                 <entity name="Minimum" class="ptolemy.actor.lib.Minimum">
-                    <property name="_location" class="ptolemy.moml.Location" value="405.0, 240.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 240.0">
                     </property>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -1675,7 +1675,7 @@ The objective is to swing the pendulum up and then balance it.
                     <property name="value" class="ptolemy.data.expr.Parameter" value="n">
                     </property>
                     <doc>Create a constant sequence</doc>
-                    <property name="_location" class="ptolemy.moml.Location" value="300.0, 240.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 240.0">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -1694,7 +1694,7 @@ The objective is to swing the pendulum up and then balance it.
                 <entity name="Expression" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="dTh*cos(Th)">
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="135.0, 265.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="135.0, 265.0">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -1729,7 +1729,7 @@ The objective is to swing the pendulum up and then balance it.
                             </property>
                         </property>
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="235.0, 265.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 265.0">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
@@ -1745,7 +1745,7 @@ The objective is to swing the pendulum up and then balance it.
                     </port>
                 </entity>
                 <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
-                    <property name="_location" class="ptolemy.moml.Location" value="280.0, 365.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 365.0">
                     </property>
                     <port name="multiply" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -1760,7 +1760,7 @@ The objective is to swing the pendulum up and then balance it.
                     </port>
                 </entity>
                 <entity name="MultiplyDivide12" class="ptolemy.actor.lib.MultiplyDivide">
-                    <property name="_location" class="ptolemy.moml.Location" value="540.0, 64.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="540.0, 64.0">
                     </property>
                     <port name="multiply" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -1779,7 +1779,7 @@ The objective is to swing the pendulum up and then balance it.
                     </property>
                     <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="523.0, 165.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="523.0, 165.0">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
@@ -1799,7 +1799,7 @@ The objective is to swing the pendulum up and then balance it.
                     </property>
                     <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="335.0, 160.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 160.0">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
@@ -1884,7 +1884,7 @@ The objective is to swing the pendulum up and then balance it.
                 <link port="k.output" relation="relation11"/>
             </entity>
             <entity name="catchController" class="ptolemy.actor.TypedCompositeActor">
-                <property name="_location" class="ptolemy.moml.Location" value="357.0, 275.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="357.0, 275.0">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
                 </property>
@@ -1897,7 +1897,7 @@ The objective is to swing the pendulum up and then balance it.
                     </property>
                     <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="70.0, 24.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 24.0">
                     </property>
                 </property>
                 <property name="l1" class="ptolemy.data.expr.Parameter" value="-1.04945717118225">
@@ -1910,7 +1910,7 @@ The objective is to swing the pendulum up and then balance it.
                 </property>
                 <port name="Th" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="59.0, 118.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="59.0, 118.0">
                     </property>
                     <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
@@ -1921,7 +1921,7 @@ The objective is to swing the pendulum up and then balance it.
                 </port>
                 <port name="dTh" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="56.0, 199.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="56.0, 199.0">
                     </property>
                     <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
@@ -1932,7 +1932,7 @@ The objective is to swing the pendulum up and then balance it.
                 </port>
                 <port name="Phi" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="49.0, 287.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="49.0, 287.0">
                     </property>
                     <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
@@ -1943,7 +1943,7 @@ The objective is to swing the pendulum up and then balance it.
                 </port>
                 <port name="dPhi" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="46.0, 400.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="46.0, 400.0">
                     </property>
                     <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
@@ -1954,7 +1954,7 @@ The objective is to swing the pendulum up and then balance it.
                 </port>
                 <port name="u" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="563.0, 329.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="563.0, 329.0">
                     </property>
                     <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
@@ -1965,7 +1965,7 @@ The objective is to swing the pendulum up and then balance it.
                 </port>
                 <port name="debug" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="498.0, 456.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="498.0, 456.0">
                     </property>
                     <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
@@ -1973,7 +1973,7 @@ The objective is to swing the pendulum up and then balance it.
                     </property>
                 </port>
                 <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
-                    <property name="_location" class="ptolemy.moml.Location" value="311.0, 103.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="311.0, 103.0">
                     </property>
                     <port name="multiply" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -1988,7 +1988,7 @@ The objective is to swing the pendulum up and then balance it.
                     </port>
                 </entity>
                 <entity name="MultiplyDivide2" class="ptolemy.actor.lib.MultiplyDivide">
-                    <property name="_location" class="ptolemy.moml.Location" value="311.0, 190.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="311.0, 190.0">
                     </property>
                     <port name="multiply" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -2003,7 +2003,7 @@ The objective is to swing the pendulum up and then balance it.
                     </port>
                 </entity>
                 <entity name="MultiplyDivide3" class="ptolemy.actor.lib.MultiplyDivide">
-                    <property name="_location" class="ptolemy.moml.Location" value="311.0, 263.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="311.0, 263.0">
                     </property>
                     <port name="multiply" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -2018,7 +2018,7 @@ The objective is to swing the pendulum up and then balance it.
                     </port>
                 </entity>
                 <entity name="MultiplyDivide4" class="ptolemy.actor.lib.MultiplyDivide">
-                    <property name="_location" class="ptolemy.moml.Location" value="313.0, 407.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="313.0, 407.0">
                     </property>
                     <port name="multiply" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -2036,7 +2036,7 @@ The objective is to swing the pendulum up and then balance it.
                     <property name="value" class="ptolemy.data.expr.Parameter" value="l1">
                     </property>
                     <doc>Create a constant sequence</doc>
-                    <property name="_location" class="ptolemy.moml.Location" value="115.0, 81.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 81.0">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -2056,7 +2056,7 @@ The objective is to swing the pendulum up and then balance it.
                     <property name="value" class="ptolemy.data.expr.Parameter" value="l2">
                     </property>
                     <doc>Create a constant sequence</doc>
-                    <property name="_location" class="ptolemy.moml.Location" value="121.0, 164.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="121.0, 164.0">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -2076,7 +2076,7 @@ The objective is to swing the pendulum up and then balance it.
                     <property name="value" class="ptolemy.data.expr.Parameter" value="l3">
                     </property>
                     <doc>Create a constant sequence</doc>
-                    <property name="_location" class="ptolemy.moml.Location" value="120.0, 239.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 239.0">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -2096,7 +2096,7 @@ The objective is to swing the pendulum up and then balance it.
                     <property name="value" class="ptolemy.data.expr.Parameter" value="l4">
                     </property>
                     <doc>Create a constant sequence</doc>
-                    <property name="_location" class="ptolemy.moml.Location" value="174.0, 360.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="174.0, 360.0">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -2113,7 +2113,7 @@ The objective is to swing the pendulum up and then balance it.
                     </port>
                 </entity>
                 <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-                    <property name="_location" class="ptolemy.moml.Location" value="477.0, 230.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="477.0, 230.0">
                     </property>
                     <port name="plus" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -2132,7 +2132,7 @@ The objective is to swing the pendulum up and then balance it.
                     </property>
                     <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="486.0, 328.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="486.0, 328.0">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
@@ -2148,7 +2148,7 @@ The objective is to swing the pendulum up and then balance it.
                     </port>
                 </entity>
                 <entity name="AddSubtract14" class="ptolemy.actor.lib.AddSubtract">
-                    <property name="_location" class="ptolemy.moml.Location" value="200.0, 295.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 295.0">
                     </property>
                     <port name="plus" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -2166,7 +2166,7 @@ The objective is to swing the pendulum up and then balance it.
                     <property name="value" class="ptolemy.data.expr.Parameter" value="-7.0124562">
                     </property>
                     <doc>Create a constant sequence</doc>
-                    <property name="_location" class="ptolemy.moml.Location" value="61.0, 338.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="61.0, 338.0">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -2348,7 +2348,7 @@ The objective is to swing the pendulum up and then balance it.
     <entity name="ZOH2" class="ptolemy.domains.ct.lib.ZeroOrderHold">
         <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="-2.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="415.0, 271.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 271.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -2364,7 +2364,7 @@ The objective is to swing the pendulum up and then balance it.
     <entity name="Sampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="h">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="114.0, 268.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="114.0, 268.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -2382,7 +2382,7 @@ The objective is to swing the pendulum up and then balance it.
     <entity name="ZOH3" class="ptolemy.domains.ct.lib.ZeroOrderHold">
         <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="370.0, 329.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 329.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -2402,7 +2402,7 @@ The objective is to swing the pendulum up and then balance it.
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="592.0, 299.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="592.0, 299.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -2423,7 +2423,7 @@ The objective is to swing the pendulum up and then balance it.
     <entity name="PeriodicSampler2" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="h">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="553.0, 227.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="553.0, 227.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -2441,7 +2441,7 @@ The objective is to swing the pendulum up and then balance it.
     <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="h">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="548.0, 154.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="548.0, 154.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -2457,7 +2457,7 @@ The objective is to swing the pendulum up and then balance it.
         </port>
     </entity>
     <entity name="3D Viewer" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="673.0, 190.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="673.0, 190.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
@@ -2470,17 +2470,17 @@ The objective is to swing the pendulum up and then balance it.
             </property>
             <property name="iteration time lower bound" class="ptolemy.data.expr.Parameter" value="33">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="268.0, 31.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="268.0, 31.0">
             </property>
         </property>
         <port name="theta" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="location1" class="ptolemy.moml.Location" value="26.0, 133.0">
+            <property name="location1" class="ptolemy.kernel.util.Location" value="26.0, 133.0">
             </property>
         </port>
         <port name="phi" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="location1" class="ptolemy.moml.Location" value="20.0, 352.0">
+            <property name="location1" class="ptolemy.kernel.util.Location" value="20.0, 352.0">
             </property>
         </port>
         <entity name="Pendulum" class="ptolemy.domains.gr.lib.Cylinder3D">
@@ -2492,7 +2492,7 @@ The objective is to swing the pendulum up and then balance it.
             </property>
             <property name="height" class="ptolemy.data.expr.Parameter" value="0.6">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="79.0, 89.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="79.0, 89.0">
             </property>
             <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -2507,7 +2507,7 @@ The objective is to swing the pendulum up and then balance it.
             </property>
             <property name="height" class="ptolemy.data.expr.Parameter" value="0.8">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="90.0, 173.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 173.0">
             </property>
             <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -2522,7 +2522,7 @@ The objective is to swing the pendulum up and then balance it.
             </property>
             <property name="height" class="ptolemy.data.expr.Parameter" value="0.7">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="83.0, 326.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="83.0, 326.0">
             </property>
             <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -2543,7 +2543,7 @@ The objective is to swing the pendulum up and then balance it.
             </property>
             <property name="iterationSynchronized" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="562.0, 207.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="562.0, 207.0">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -2559,7 +2559,7 @@ The objective is to swing the pendulum up and then balance it.
             </property>
             <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="387.0, 335.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="387.0, 335.0">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -2581,7 +2581,7 @@ The objective is to swing the pendulum up and then balance it.
             </property>
             <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="386.0, 134.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="386.0, 134.0">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -2609,7 +2609,7 @@ The objective is to swing the pendulum up and then balance it.
             </property>
             <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="281.0, 111.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="281.0, 111.0">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -2637,7 +2637,7 @@ The objective is to swing the pendulum up and then balance it.
             </property>
             <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="277.0, 181.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="277.0, 181.0">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -2659,7 +2659,7 @@ The objective is to swing the pendulum up and then balance it.
             </property>
             <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.3, 0.0]">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="187.0, 97.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="187.0, 97.0">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -2679,7 +2679,7 @@ The objective is to swing the pendulum up and then balance it.
             </property>
             <property name="radius" class="ptolemy.data.expr.Parameter" value="0.05">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="87.0, 246.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="87.0, 246.0">
             </property>
             <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -2694,7 +2694,7 @@ The objective is to swing the pendulum up and then balance it.
             </property>
             <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="268.0, 260.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="268.0, 260.0">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -2724,7 +2724,7 @@ The objective is to swing the pendulum up and then balance it.
             </property>
             <property name="zScale" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="486.0, 206.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="486.0, 206.0">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -2746,7 +2746,7 @@ The objective is to swing the pendulum up and then balance it.
             </property>
             <property name="thickness" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="87.0, 399.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="87.0, 399.0">
             </property>
             <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -2761,7 +2761,7 @@ The objective is to swing the pendulum up and then balance it.
             </property>
             <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.4">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="332.0, 413.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="332.0, 413.0">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>

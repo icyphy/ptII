@@ -15,7 +15,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="70.0, 40.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 40.0">
         </property>
     </property>
     <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave">
@@ -49,15 +49,15 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="172.0, 45.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="172.0, 45.0">
             </property>
         </property>
         <doc>This composite actor generates a sine wave.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="60.0, 145.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 145.0">
         </property>
     </entity>
     <entity name="Channel" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="175.0, 145.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 145.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
@@ -75,23 +75,23 @@
       </svg>
     </configure>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="225.0, 115.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 115.0">
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="30.0, 165.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 165.0">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="290.0, 175.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 175.0">
             </property>
         </port>
         <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-            <property name="_location" class="ptolemy.moml.Location" value="165.0, 175.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 175.0">
             </property>
             <port name="plus" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -113,7 +113,7 @@
             <property name="standardDeviation" class="ptolemy.data.expr.Parameter" value="sqrt(noisePower)">
             </property>
             <doc>Create a sequence of gaussian random variables</doc>
-            <property name="_location" class="ptolemy.moml.Location" value="60.0, 225.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 225.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -142,7 +142,7 @@
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
         </property>
         <property name="3:0:annotation1" class="ptolemy.kernel.util.Attribute">
-            <property name="_location" class="ptolemy.moml.Location" value="391.0, 75.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="391.0, 75.5">
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure>
@@ -164,7 +164,7 @@ radians per second, centered at zero frequency.</text>
         <property name="order" class="ptolemy.data.expr.Parameter" value="8">
         </property>
         <doc>This composite actor calculates the spectrum of the input.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="295.0, 145.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 145.0">
         </property>
     </entity>
     <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
@@ -178,7 +178,7 @@ radians per second, centered at zero frequency.</text>
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="395.0, 145.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 145.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

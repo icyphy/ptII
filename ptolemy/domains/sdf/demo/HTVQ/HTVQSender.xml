@@ -15,11 +15,11 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="100.0, 135.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 135.0">
         </property>
     </property>
     <property name="2:1:1:0:1:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="205.0, 260.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 260.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -46,7 +46,7 @@ integer matrices</text>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="315.0, 65.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 65.0">
         </property>
     </property>
     <property name="blockHeight" class="ptolemy.data.expr.Parameter" value="2">
@@ -63,7 +63,7 @@ integer matrices</text>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="315.0, 90.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 90.0">
         </property>
     </property>
     <entity name="2:1:Source" class="ptolemy.domains.sdf.lib.vq.ImageSequence">
@@ -77,7 +77,7 @@ integer matrices</text>
         </property>
         <property name="endFrame" class="ptolemy.data.expr.Parameter" value="29">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="60.0, 235.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 235.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -96,7 +96,7 @@ integer matrices</text>
         </property>
         <property name="blockHeight" class="ptolemy.data.expr.Parameter" value="blockHeight">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="295.0, 235.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 235.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -126,7 +126,7 @@ integer matrices</text>
         </property>
         <property name="partitionRows" class="ptolemy.data.expr.Parameter" value="blockHeight">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="175.0, 235.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 235.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -150,7 +150,7 @@ integer matrices</text>
     <entity name="2:SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
         <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="176*144/blockWidth/blockHeight">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="385.0, 235.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="385.0, 235.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -188,7 +188,7 @@ integer matrices</text>
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="505.0, 225.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="505.0, 225.0">
         </property>
         <port name="remoteAddress" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

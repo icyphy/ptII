@@ -7,7 +7,7 @@
     <property name="Process Network Director" class="ptolemy.domains.pn.kernel.PNDirector">
         <property name="Initial_queue_capacity" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="75.0, 35.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 35.0">
         </property>
     </property>
     <property name="Antennas" class="ptolemy.data.expr.Parameter" value="6">
@@ -21,7 +21,7 @@
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[97, 100]">
     </property>
     <property name="annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="310.0, 5.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 5.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -41,7 +41,7 @@ of samples need to be processed.</text>
         </property>
     </property>
     <property name="annotation3" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="130.0, 300.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 300.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -56,7 +56,7 @@ with value zero.</text>
         </property>
     </property>
     <property name="annotation4" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="375.0, 335.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="375.0, 335.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -81,7 +81,7 @@ of antennas used.</text>
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="530.0, 190.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 190.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -106,7 +106,7 @@ of antennas used.</text>
         </property>
         <property name="K" class="ptolemy.data.expr.Parameter" value="Updates">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="45.0, 95.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 95.0">
         </property>
         <port name="WP_2" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -120,7 +120,7 @@ of antennas used.</text>
         </property>
         <property name="K" class="ptolemy.data.expr.Parameter" value="Updates">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="75.0, 210.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 210.0">
         </property>
         <port name="WP_4" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -134,7 +134,7 @@ of antennas used.</text>
         </property>
         <property name="K" class="ptolemy.data.expr.Parameter" value="Updates">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="210.0, 95.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 95.0">
         </property>
         <port name="RP_1" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -163,7 +163,7 @@ of antennas used.</text>
         </property>
         <property name="K" class="ptolemy.data.expr.Parameter" value="Updates">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="215.0, 210.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 210.0">
         </property>
         <port name="RP_5" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -204,7 +204,7 @@ of antennas used.</text>
         </property>
         <property name="K" class="ptolemy.data.expr.Parameter" value="Updates">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="345.0, 190.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="345.0, 190.0">
         </property>
         <port name="RP_11" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -219,7 +219,7 @@ of antennas used.</text>
     <entity name="StreamToMatrix" class="ptolemy.domains.pn.demo.QR.StreamToMatrix">
         <property name="dimension" class="ptolemy.data.expr.Parameter" value="Antennas">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="427.1428527832031, 280.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="427.1428527832031, 280.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -233,7 +233,7 @@ of antennas used.</text>
         </property>
         <property name="height" class="ptolemy.data.expr.Parameter" value="100">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="536.7142944335938, 280.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="536.7142944335938, 280.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

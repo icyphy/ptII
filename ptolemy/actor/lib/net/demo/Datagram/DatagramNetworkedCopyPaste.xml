@@ -23,7 +23,7 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="375.0, 275.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="375.0, 275.0">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -43,7 +43,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="200.0, 25.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 25.0">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -64,7 +64,7 @@ model on your computer.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="5.0, 325.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="5.0, 325.0">
         </property>
     </property>
     <property name="annotation3" class="ptolemy.kernel.util.Attribute">
@@ -87,7 +87,7 @@ Have fun!</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="370.0, 320.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 320.0">
         </property>
     </property>
     <property name="_generator" class="ptolemy.copernicus.kernel.GeneratorAttribute">
@@ -193,7 +193,7 @@ Have fun!</text></svg></configure>
         </property>
     </property>
     <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
-        <property name="_location" class="ptolemy.moml.Location" value="240.0, 115.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 115.0">
         </property>
         <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
             <property name="input"/>
@@ -217,7 +217,7 @@ Have fun!</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="295.0, 55.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 55.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -230,7 +230,7 @@ Have fun!</text></svg></configure>
     <entity name="TimedDelay" class="ptolemy.domains.de.lib.TimedDelay">
         <property name="delay" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="135.0, 180.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="135.0, 180.0">
         </property>
         <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
             <property name="input"/>
@@ -240,7 +240,7 @@ Have fun!</text></svg></configure>
         </port>
     </entity>
     <entity name="IntArrayToString" class="ptolemy.actor.lib.conversions.IntArrayToString">
-        <property name="_location" class="ptolemy.moml.Location" value="120.0, 105.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 105.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -250,7 +250,7 @@ Have fun!</text></svg></configure>
         </port>
     </entity>
     <entity name="StringToIntArray" class="ptolemy.actor.lib.conversions.StringToIntArray">
-        <property name="_location" class="ptolemy.moml.Location" value="525.2449035644531, 125.0010871887207">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="525.2449035644531, 125.0010871887207">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -266,7 +266,7 @@ Have fun!</text></svg></configure>
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="300.0, 345.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 345.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -278,7 +278,7 @@ Have fun!</text></svg></configure>
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="130.0, 40.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 40.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -286,7 +286,7 @@ Have fun!</text></svg></configure>
     </entity>
     <entity name="1:SystemClipboard" class="ptolemy.actor.lib.gui.SystemClipboard">
         <doc>Gives access to the system clipboard</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="435.0, 125.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="435.0, 125.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -300,7 +300,7 @@ Have fun!</text></svg></configure>
     </entity>
     <entity name="KeystrokeSensor" class="ptolemy.actor.lib.gui.KeystrokeSensor">
         <doc>Create a JFrame for sensing Copy and Paste keystrokes</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="315.0, 155.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 155.0">
         </property>
         <port name="controlC" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -336,7 +336,7 @@ Have fun!</text></svg></configure>
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="45.0, 95.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 95.0">
         </property>
         <port name="returnAddress" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -371,7 +371,7 @@ Have fun!</text></svg></configure>
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="500.0, 65.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 65.0">
         </property>
         <port name="remoteAddress" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

@@ -15,7 +15,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="85.0, 55.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 55.0">
         </property>
     </property>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
@@ -27,7 +27,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="265.0, 170.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="265.0, 170.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -43,7 +43,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="455.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 165.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -61,7 +61,7 @@
         <property name="step" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="120.0, 180.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 180.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -80,7 +80,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="270.0, 225.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 225.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -100,7 +100,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="265.0, 265.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="265.0, 265.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>

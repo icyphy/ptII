@@ -49,7 +49,7 @@
         </property>
         <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="154.0, 77.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="154.0, 77.0">
         </property>
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
@@ -66,14 +66,14 @@
             </property>
             <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="492.0, 315.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="492.0, 315.0">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="78.0, 219.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="78.0, 219.0">
         </property>
         <port name="port4" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="location1" class="ptolemy.moml.Location" value="491.99998474121094, 135.00000381469727">
+            <property name="location1" class="ptolemy.kernel.util.Location" value="491.99998474121094, 135.00000381469727">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -89,7 +89,7 @@
             </property>
             <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="[0, 0]">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="300.0, 225.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 225.0">
             </property>
             <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
                 <property name="input"/>
@@ -113,7 +113,7 @@
         <entity name="CurrentTime0" class="ptolemy.actor.lib.CurrentTime">
             <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="204.0, 225.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="204.0, 225.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -133,7 +133,7 @@
             <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
             </property>
             <doc>Create a generalized square wave</doc>
-            <property name="_location" class="ptolemy.moml.Location" value="108.0, 225.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="108.0, 225.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -161,7 +161,7 @@
     <entity name="CurrentTime4" class="ptolemy.actor.lib.CurrentTime">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="360.0, 315.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 315.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -172,7 +172,7 @@
         </port>
     </entity>
     <entity name="Discard0" class="ptolemy.actor.lib.Discard">
-        <property name="_location" class="ptolemy.moml.Location" value="441.0, 64.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="441.0, 64.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -180,7 +180,7 @@
         </port>
     </entity>
     <entity name="Discard1" class="ptolemy.actor.lib.Discard">
-        <property name="_location" class="ptolemy.moml.Location" value="484.0, 195.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="484.0, 195.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -190,7 +190,7 @@
     <entity name="ZeroOrderHold" class="ptolemy.domains.ct.lib.ZeroOrderHold">
         <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="192.0, 220.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="192.0, 220.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

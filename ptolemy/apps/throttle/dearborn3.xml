@@ -53,7 +53,7 @@
         </property>
         <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="90.0, 41.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 41.0">
         </property>
     </property>
     <property name="spring_constant" class="ptolemy.data.expr.Parameter" value="390.0*J">
@@ -77,7 +77,7 @@
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="732.0, 131.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="732.0, 131.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -96,7 +96,7 @@
     <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="1e-3">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="293.5, 278.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="293.5, 278.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -114,7 +114,7 @@
     <entity name="ZOH" class="ptolemy.domains.ct.lib.ZeroOrderHold">
         <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="490.0, 244.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="490.0, 244.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -134,7 +134,7 @@
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="611.0, 319.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="611.0, 319.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -151,7 +151,7 @@
         </configure>
     </entity>
     <entity name="Throttle Dynamics" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="607.5, 243.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="607.5, 243.5">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
         </property>
@@ -179,22 +179,22 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="86.0, 59.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="86.0, 59.0">
             </property>
         </property>
         <port name="u" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="26.0, 136.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="26.0, 136.0">
             </property>
         </port>
         <port name="omega" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="486.0, 140.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="486.0, 140.0">
             </property>
         </port>
         <port name="theta" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="517.3814378121627, 395.39670842544206">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="517.3814378121627, 395.39670842544206">
             </property>
         </port>
         <entity name="Scale" class="ptolemy.actor.lib.Scale">
@@ -202,7 +202,7 @@
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="465.0, 300.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="465.0, 300.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -216,7 +216,7 @@
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="126.0, 133.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="126.0, 133.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -226,7 +226,7 @@
             </port>
         </entity>
         <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-            <property name="_location" class="ptolemy.moml.Location" value="233.0, 141.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="233.0, 141.0">
             </property>
             <port name="plus" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -243,7 +243,7 @@
         <entity name="Expression" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="-(spring_constant/J)*(theta - theta_equilibrium)">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="128.0, 301.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="128.0, 301.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -255,7 +255,7 @@
         <entity name="Expression11" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="-((torque_constant^2)/(armature_resistance*J) + viscous_damping/J)*omega">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="473.0, 67.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="473.0, 67.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -267,7 +267,7 @@
         <entity name="theta" class="ptolemy.domains.ct.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="331.0, 260.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="331.0, 260.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -283,7 +283,7 @@
         <entity name="omega" class="ptolemy.domains.ct.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="325.0, 141.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="325.0, 141.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -313,7 +313,7 @@
                     </property>
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="457.0, 192.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="457.0, 192.0">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
@@ -376,7 +376,7 @@
     <entity name="ZOH2" class="ptolemy.domains.ct.lib.ZeroOrderHold">
         <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="483.0, 320.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="483.0, 320.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -390,7 +390,7 @@
         </port>
     </entity>
     <entity name="Desired Throttle Angle and Derivatives" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="159.5, 148.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="159.5, 148.5">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
@@ -398,23 +398,23 @@
         </property>
         <port name="Theta" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="300.25, 105.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="300.25, 105.0">
             </property>
         </port>
         <port name="Omega" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="350.0, 222.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 222.0">
             </property>
         </port>
         <port name="OmegaDot" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="300.0, 345.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 345.0">
             </property>
         </port>
         <entity name="Copy1:ZOH1" class="ptolemy.domains.ct.lib.ZeroOrderHold">
             <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="197.0, 133.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="197.0, 133.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -430,7 +430,7 @@
         <entity name="Copy1:ZOH3" class="ptolemy.domains.ct.lib.ZeroOrderHold">
             <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="195.0, 318.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 318.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -444,7 +444,7 @@
             </port>
         </entity>
         <entity name="Copy1:References" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.moml.Location" value="78.0, 226.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="78.0, 226.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
             </property>
@@ -461,12 +461,12 @@
                 </property>
                 <property name="period" class="ptolemy.data.expr.Parameter" value="samplingPeriod">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="71.0, 28.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="71.0, 28.0">
                 </property>
             </property>
             <port name="theta" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="447.9375, 92.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="447.9375, 92.0">
                 </property>
                 <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -475,7 +475,7 @@
             </port>
             <port name="omega" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="542.0, 184.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="542.0, 184.0">
                 </property>
                 <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -484,7 +484,7 @@
             </port>
             <port name="omega_dot" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="378.9375, 356.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="378.9375, 356.0">
                 </property>
                 <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -495,7 +495,7 @@
                 <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <doc>Create a constant sequence</doc>
-                <property name="_location" class="ptolemy.moml.Location" value="249.0, 191.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="249.0, 191.0">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -509,7 +509,7 @@
                 <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <doc>Create a constant sequence</doc>
-                <property name="_location" class="ptolemy.moml.Location" value="275.0, 311.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 311.0">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -550,18 +550,18 @@
                     </property>
                     <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="172.0, 45.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="172.0, 45.0">
                     </property>
                 </property>
                 <doc>This composite actor generates a sine wave.</doc>
-                <property name="_location" class="ptolemy.moml.Location" value="50.0, 98.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 98.0">
                 </property>
             </entity>
             <entity name="Const" class="ptolemy.actor.lib.Const">
                 <property name="value" class="ptolemy.data.expr.Parameter" value="0.5">
                 </property>
                 <doc>Create a constant sequence</doc>
-                <property name="_location" class="ptolemy.moml.Location" value="205.0, 44.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 44.0">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -572,7 +572,7 @@
                 </port>
             </entity>
             <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-                <property name="_location" class="ptolemy.moml.Location" value="322.0, 105.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="322.0, 105.0">
                 </property>
                 <port name="plus" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -624,7 +624,7 @@
         <entity name="Copy1:ZOH2" class="ptolemy.domains.ct.lib.ZeroOrderHold">
             <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="191.0, 225.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="191.0, 225.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -669,7 +669,7 @@
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="387.0, 286.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="387.0, 286.5">
         </property>
         <port name="theta" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="input"/>
@@ -707,7 +707,7 @@
 create refinements for the states. Each refinement needs a director.
 For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="920.0, 770.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="920.0, 770.0">
                 </property>
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
@@ -716,39 +716,39 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             </property>
             <port name="theta" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="33.5, 90.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="33.5, 90.0">
                 </property>
             </port>
             <port name="omega" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="38.0, 160.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="38.0, 160.0">
                 </property>
             </port>
             <port name="theta_desired" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="62.0, 229.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="62.0, 229.0">
                 </property>
             </port>
             <port name="omega_desired" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="67.0, 309.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="67.0, 309.0">
                 </property>
             </port>
             <port name="omega_dot_desired" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="74.0, 399.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="74.0, 399.0">
                 </property>
             </port>
             <port name="motor_control" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="535.0, 135.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="535.0, 135.5">
                 </property>
             </port>
             <port name="mode" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="512.0, 301.75">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="512.0, 301.75">
                 </property>
             </port>
             <entity name="slidingMode" class="ptolemy.domains.fsm.kernel.State">
@@ -758,7 +758,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="214.5, 235.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="214.5, 235.0">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
@@ -772,7 +772,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="425.0, 230.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="425.0, 230.0">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
@@ -786,7 +786,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="190.0, 70.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="190.0, 70.0">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
@@ -884,47 +884,47 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="127.0, 38.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="127.0, 38.0">
                 </property>
             </property>
             <port name="theta" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="38.5, 95.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="38.5, 95.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </port>
             <port name="omega" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="38.0, 190.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="38.0, 190.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </port>
             <port name="theta_desired" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="72.0, 399.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="72.0, 399.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </port>
             <port name="omega_desired" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="82.0, 489.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="82.0, 489.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </port>
             <port name="omega_dot_desired" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="84.0, 564.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="84.0, 564.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </port>
             <port name="motor_control" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="815.0, 134.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="815.0, 134.0">
                 </property>
                 <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -933,7 +933,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             </port>
             <port name="mode" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="721.9040767386134, 479.4004796163068">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="721.9040767386134, 479.4004796163068">
                 </property>
                 <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 </property>
@@ -941,7 +941,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
             </port>
             <entity name="1:AddSubtract2" class="ptolemy.actor.lib.AddSubtract">
-                <property name="_location" class="ptolemy.moml.Location" value="395.5, 149.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="395.5, 149.5">
                 </property>
                 <port name="plus" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -960,7 +960,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="383.0, 274.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="383.0, 274.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -986,7 +986,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                         </property>
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="478.0, 151.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="478.0, 151.0">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
@@ -1004,7 +1004,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             <entity name="1:Expression" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(theta - theta_equilibrium)*(armature_resistance*spring_constant)/torque_constant">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="315.0, 332.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 332.0">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -1014,7 +1014,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 </port>
             </entity>
             <entity name="1:AddSubtract9" class="ptolemy.actor.lib.AddSubtract">
-                <property name="_location" class="ptolemy.moml.Location" value="685.5, 219.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="685.5, 219.5">
                 </property>
                 <port name="plus" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1045,7 +1045,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                         </property>
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="282.0, 274.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="282.0, 274.5">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
@@ -1063,7 +1063,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             <entity name="1:Expression25" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(armature_resistance*J/torque_constant)*(omega_desired_dot - lambda*(omega - omega_desired))">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="374.5, 453.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="374.5, 453.5">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -1083,7 +1083,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="570.0, 154.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="570.0, 154.5">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1097,7 +1097,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="285.0, 79.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 79.5">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1111,7 +1111,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="340.0, 214.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 214.5">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1121,7 +1121,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 </port>
             </entity>
             <entity name="1:AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-                <property name="_location" class="ptolemy.moml.Location" value="162.0, 104.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="162.0, 104.5">
                 </property>
                 <port name="plus" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1257,47 +1257,47 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="127.0, 38.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="127.0, 38.0">
                 </property>
             </property>
             <port name="theta" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="53.5, 75.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="53.5, 75.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </port>
             <port name="omega" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="53.0, 125.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="53.0, 125.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
             </port>
             <port name="theta_desired" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="67.0, 179.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="67.0, 179.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </port>
             <port name="omega_desired" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="72.0, 234.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="72.0, 234.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
             </port>
             <port name="omega_dot_desired" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="94.0, 289.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="94.0, 289.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
             </port>
             <port name="motor_control" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="460.0, 174.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 174.0">
                 </property>
                 <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -1306,7 +1306,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             </port>
             <port name="mode" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="472.0, 300.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="472.0, 300.0">
                 </property>
                 <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 </property>
@@ -1314,7 +1314,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
             </port>
             <entity name="1:AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-                <property name="_location" class="ptolemy.moml.Location" value="252.0, 174.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="252.0, 174.5">
                 </property>
                 <port name="plus" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1333,7 +1333,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="355.0, 174.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 174.5">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1374,37 +1374,37 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             </property>
             <port name="theta" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="80.5, 75.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="80.5, 75.0">
                 </property>
             </port>
             <port name="omega" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="85.0, 135.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 135.0">
                 </property>
             </port>
             <port name="theta_desired" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="104.0, 194.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="104.0, 194.0">
                 </property>
             </port>
             <port name="omega_desired" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="109.0, 244.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="109.0, 244.0">
                 </property>
             </port>
             <port name="omega_dot_desired" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="121.0, 304.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="121.0, 304.0">
                 </property>
             </port>
             <port name="motor_control" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="485.0, 154.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 154.0">
                 </property>
             </port>
             <port name="mode" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="467.0, 220.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="467.0, 220.0">
                 </property>
             </port>
         </entity>

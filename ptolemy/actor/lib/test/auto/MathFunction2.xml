@@ -15,14 +15,14 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="97.0, 47.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="97.0, 47.0">
         </property>
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="12.0">
         </property>
         <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="118.0, 131.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="118.0, 131.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -36,7 +36,7 @@
         <property name="value" class="ptolemy.data.expr.Parameter" value="5.0">
         </property>
         <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="117.0, 219.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="117.0, 219.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -63,7 +63,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="275.0, 168.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 168.0">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
@@ -86,7 +86,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-3">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="395.0, 169.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 169.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

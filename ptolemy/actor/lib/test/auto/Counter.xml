@@ -23,11 +23,11 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="90.0, 47.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 47.0">
         </property>
     </property>
     <entity name="Counter" class="ptolemy.actor.lib.Counter">
-        <property name="_location" class="ptolemy.moml.Location" value="252.0, 218.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="252.0, 218.0">
         </property>
         <port name="increment" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -49,7 +49,7 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
         </property>
         <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="44.0, 129.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="44.0, 129.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -69,7 +69,7 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
         </property>
         <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="54.0, 228.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="54.0, 228.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -84,7 +84,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="390.0, 227.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 227.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

@@ -15,7 +15,7 @@
         </property>
         <property name="Scheduler" class="ptolemy.domains.sr.kernel.SRRandomizedScheduler">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="56.0, 48.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="56.0, 48.0">
         </property>
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -26,7 +26,7 @@
         <property name="step" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="72.0, 167.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="72.0, 167.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -44,7 +44,7 @@
         <property name="step" class="ptolemy.data.expr.Parameter" value="4.0">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="70.0, 269.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 269.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -55,7 +55,7 @@
         </port>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.moml.Location" value="189.0, 236.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="189.0, 236.0">
         </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -80,7 +80,7 @@
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="333.0, 234.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="333.0, 234.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -107,7 +107,7 @@
         <property name="step" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="172.0, 375.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="172.0, 375.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -128,7 +128,7 @@
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="330.0, 369.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 369.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

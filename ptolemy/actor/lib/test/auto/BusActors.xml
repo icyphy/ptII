@@ -15,7 +15,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="85.0, 45.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 45.0">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -37,7 +37,7 @@ should appear here</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="345.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="345.0, 165.0">
         </property>
     </property>
     <property name="nIterations" class="ptolemy.data.expr.Parameter" value="10">
@@ -54,7 +54,7 @@ should appear here</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="190.0, 45.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="190.0, 45.0">
         </property>
     </property>
     <property name="4:annotation" class="ptolemy.kernel.util.Attribute">
@@ -75,11 +75,11 @@ explicit BusDisassembler output port ordering</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="30.0, 400.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 400.0">
         </property>
     </property>
     <entity name="BusAssembler" class="ptolemy.actor.lib.BusAssembler">
-        <property name="_location" class="ptolemy.moml.Location" value="265.0, 115.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="265.0, 115.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -94,7 +94,7 @@ explicit BusDisassembler output port ordering</text></svg></configure>
         </port>
     </entity>
     <entity name="BusAssembler2" class="ptolemy.actor.lib.BusAssembler">
-        <property name="_location" class="ptolemy.moml.Location" value="230.0, 95.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 95.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -108,7 +108,7 @@ explicit BusDisassembler output port ordering</text></svg></configure>
         </port>
     </entity>
     <entity name="Distributor" class="ptolemy.actor.lib.Distributor">
-        <property name="_location" class="ptolemy.moml.Location" value="150.0, 145.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 145.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -128,7 +128,7 @@ explicit BusDisassembler output port ordering</text></svg></configure>
         <property name="step" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="60.0, 145.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 145.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -139,7 +139,7 @@ explicit BusDisassembler output port ordering</text></svg></configure>
         </port>
     </entity>
     <entity name="BusDisassembler" class="ptolemy.actor.lib.BusDisassembler">
-        <property name="_location" class="ptolemy.moml.Location" value="305.0, 170.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 170.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -160,7 +160,7 @@ explicit BusDisassembler output port ordering</text></svg></configure>
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="455.0, 270.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 270.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -168,7 +168,7 @@ explicit BusDisassembler output port ordering</text></svg></configure>
         </port>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.moml.Location" value="360.0, 270.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 270.0">
         </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -187,7 +187,7 @@ explicit BusDisassembler output port ordering</text></svg></configure>
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="455.0, 320.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 320.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -195,7 +195,7 @@ explicit BusDisassembler output port ordering</text></svg></configure>
         </port>
     </entity>
     <entity name="1:AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.moml.Location" value="360.0, 320.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 320.0">
         </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -210,7 +210,7 @@ explicit BusDisassembler output port ordering</text></svg></configure>
         </port>
     </entity>
     <entity name="2:Distributor" class="ptolemy.actor.lib.Distributor">
-        <property name="_location" class="ptolemy.moml.Location" value="150.0, 375.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 375.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -223,7 +223,7 @@ explicit BusDisassembler output port ordering</text></svg></configure>
         </port>
     </entity>
     <entity name="3:BusDisassembler" class="ptolemy.actor.lib.BusDisassembler">
-        <property name="_location" class="ptolemy.moml.Location" value="225.0, 355.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 355.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -244,7 +244,7 @@ explicit BusDisassembler output port ordering</text></svg></configure>
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="525.0, 365.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="525.0, 365.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -256,7 +256,7 @@ explicit BusDisassembler output port ordering</text></svg></configure>
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="400.0, 410.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="400.0, 410.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -268,7 +268,7 @@ explicit BusDisassembler output port ordering</text></svg></configure>
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="490.0, 440.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="490.0, 440.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

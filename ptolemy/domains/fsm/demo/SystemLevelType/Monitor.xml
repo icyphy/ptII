@@ -19,32 +19,32 @@
     </property>
     <port name="ARequest" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.moml.Location" value="35.0, 50.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 50.0">
         </property>
     </port>
     <port name="ARelease" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.moml.Location" value="35.0, 110.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 110.0">
         </property>
     </port>
     <port name="BRequest" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.moml.Location" value="35.0, 255.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 255.0">
         </property>
     </port>
     <port name="BRelease" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.moml.Location" value="35.0, 315.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 315.0">
         </property>
     </port>
     <port name="AGrant" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.moml.Location" value="525.0, 85.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="525.0, 85.0">
         </property>
     </port>
     <port name="BGrant" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.moml.Location" value="525.0, 285.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="525.0, 285.0">
         </property>
     </port>
     <entity name="init" class="ptolemy.domains.fsm.kernel.State">
@@ -52,7 +52,7 @@
         </property>
         <property name="_centerName" class="ptolemy.kernel.util.Attribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="280.0, 180.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 180.0">
         </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
@@ -64,7 +64,7 @@
         </property>
         <property name="_centerName" class="ptolemy.kernel.util.Attribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="280.0, 60.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 60.0">
         </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
@@ -76,7 +76,7 @@
         </property>
         <property name="_centerName" class="ptolemy.kernel.util.Attribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="405.0, 60.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 60.0">
         </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
@@ -88,7 +88,7 @@
         </property>
         <property name="_centerName" class="ptolemy.kernel.util.Attribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="405.0, 180.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 180.0">
         </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
@@ -100,7 +100,7 @@
         </property>
         <property name="_centerName" class="ptolemy.kernel.util.Attribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="280.0, 305.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 305.0">
         </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
@@ -112,7 +112,7 @@
         </property>
         <property name="_centerName" class="ptolemy.kernel.util.Attribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="155.0, 305.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 305.0">
         </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
@@ -124,7 +124,7 @@
         </property>
         <property name="_centerName" class="ptolemy.kernel.util.Attribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="155.0, 180.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 180.0">
         </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
@@ -136,7 +136,7 @@
         </property>
         <property name="_centerName" class="ptolemy.kernel.util.Attribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="525.0, 180.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="525.0, 180.0">
         </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
@@ -148,7 +148,7 @@
         </property>
         <property name="_centerName" class="ptolemy.kernel.util.Attribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="35.0, 180.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 180.0">
         </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>

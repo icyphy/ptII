@@ -23,11 +23,11 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="90.0, 40.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 40.0">
         </property>
     </property>
     <entity name="RepeatCompositeSDF" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="229.0, 243.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="229.0, 243.5">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
         </property>
@@ -40,7 +40,7 @@
             </property>
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="90.0, 34.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 34.5">
             </property>
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
@@ -51,7 +51,7 @@
             </property>
             <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="38.0, 94.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="38.0, 94.0">
             </property>
         </port>
         <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
@@ -62,7 +62,7 @@
             </property>
             <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="2">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="335.0, 104.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 104.0">
             </property>
         </port>
         <entity name="Repeat" class="ptolemy.domains.sdf.lib.Repeat">
@@ -70,7 +70,7 @@
             </property>
             <property name="blockSize" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="230.0, 103.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 103.5">
             </property>
             <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
                 <property name="input"/>
@@ -96,7 +96,7 @@
             </port>
         </entity>
         <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-            <property name="_location" class="ptolemy.moml.Location" value="142.0, 104.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="142.0, 104.5">
             </property>
             <port name="plus" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -114,7 +114,7 @@
             <property name="value" class="ptolemy.data.expr.Parameter" value="&quot; from SDF opaque composite actor&quot;">
             </property>
             <doc>Create a constant sequence</doc>
-            <property name="_location" class="ptolemy.moml.Location" value="170.0, 215.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 215.0">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -157,7 +157,7 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{&quot;Zero&quot;,&quot;One&quot;}">
         </property>
         <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="75.0, 174.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 174.5">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -172,7 +172,7 @@
         </property>
         <property name="blockSize" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="200.0, 173.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 173.5">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -196,7 +196,7 @@
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="201.5, 104.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="201.5, 104.5">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -207,7 +207,7 @@
         </port>
     </entity>
     <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
-        <property name="_location" class="ptolemy.moml.Location" value="410.0, 173.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="410.0, 173.5">
         </property>
         <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
             <property name="input"/>
@@ -222,7 +222,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="556.5, 174.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="556.5, 174.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

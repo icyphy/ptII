@@ -15,7 +15,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="75.0, 45.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 45.0">
         </property>
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -26,7 +26,7 @@
         <property name="step" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="50.0, 185.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 185.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -40,7 +40,7 @@
         <property name="filename" class="ptolemy.data.expr.Parameter" value="property(&quot;ptolemy.ptII.dir&quot;) + &quot;/ptolemy/actor/lib/test/auto/FileWriter1Output.txt&quot;">
         </property>
         <doc>Write out tokens to a file or stdout</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="226.5, 184.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="226.5, 184.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

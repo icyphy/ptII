@@ -52,13 +52,13 @@ set header {<?xml version="1.0" standalone="no"?>
 test Location-1.1 {} {
     set n0 [java::new ptolemy.kernel.util.NamedObj]
     $n0 setName N0
-    set l1 [java::new ptolemy.moml.Location $n0 L1]
+    set l1 [java::new ptolemy.kernel.util.Location $n0 L1]
     $n0 exportMoML
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="N0" class="ptolemy.kernel.util.NamedObj">
-    <property name="L1" class="ptolemy.moml.Location">
+    <property name="L1" class="ptolemy.kernel.util.Location">
     </property>
 </entity>
 }
@@ -70,7 +70,7 @@ test Location-1.2 {} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="N0" class="ptolemy.kernel.util.NamedObj">
-    <property name="L1" class="ptolemy.moml.Location" value="83.0, 92.0">
+    <property name="L1" class="ptolemy.kernel.util.Location" value="83.0, 92.0">
     </property>
 </entity>
 }
@@ -84,7 +84,7 @@ test Location-1.3 {} {
     set toplevel [$parser parse $moml_1]
     $parser parse {
 <entity name=".top">
-    <property name="location" class="ptolemy.moml.Location" value="83.0, 69.0">
+    <property name="location" class="ptolemy.kernel.util.Location" value="83.0, 69.0">
     </property>
 </entity>
 }
@@ -93,7 +93,7 @@ test Location-1.3 {} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.kernel.CompositeEntity">
-    <property name="location" class="ptolemy.moml.Location" value="83.0, 69.0">
+    <property name="location" class="ptolemy.kernel.util.Location" value="83.0, 69.0">
     </property>
 </entity>
 }

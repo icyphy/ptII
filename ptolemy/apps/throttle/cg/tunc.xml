@@ -93,7 +93,7 @@
         </property>
         <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="108.0, 173.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="108.0, 173.5">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -117,11 +117,11 @@ Last updated January 15, 2002</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="249.5, 67.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="249.5, 67.0">
         </property>
     </property>
     <entity name="throttle" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="190.0, 263.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="190.0, 263.5">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[766, 503]">
         </property>
@@ -171,26 +171,26 @@ system with forced spring pull-back.</text></svg></configure>
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="360.5, 42.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="360.5, 42.0">
             </property>
         </property>
         <port name="torque" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="47.0, 149.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="47.0, 149.0">
             </property>
         </port>
         <port name="back_emf" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="539.0, 99.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="539.0, 99.0">
             </property>
         </port>
         <port name="throttle_position" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="617.0, 174.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="617.0, 174.0">
             </property>
         </port>
         <entity name="sigma_T" class="ptolemy.actor.lib.AddSubtract">
-            <property name="_location" class="ptolemy.moml.Location" value="110.5, 159.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="110.5, 159.5">
             </property>
             <port name="plus" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -215,7 +215,7 @@ system with forced spring pull-back.</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="185.0, 158.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 158.5">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -227,7 +227,7 @@ system with forced spring pull-back.</text></svg></configure>
         <entity name="omega" class="ptolemy.domains.ct.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="255.5, 158.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="255.5, 158.5">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -243,7 +243,7 @@ system with forced spring pull-back.</text></svg></configure>
         <entity name="theta" class="ptolemy.domains.ct.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="325.0, 218.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="325.0, 218.5">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -279,7 +279,7 @@ system with forced spring pull-back.</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="425.0, 373.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="425.0, 373.0">
             </property>
             <port name="firstOperand" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -299,7 +299,7 @@ system with forced spring pull-back.</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="539.5, 369.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="539.5, 369.5">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -319,7 +319,7 @@ system with forced spring pull-back.</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="529.0, 434.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="529.0, 434.5">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -339,7 +339,7 @@ system with forced spring pull-back.</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="526.0, 304.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="526.0, 304.5">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -349,7 +349,7 @@ system with forced spring pull-back.</text></svg></configure>
             </port>
         </entity>
         <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-            <property name="_location" class="ptolemy.moml.Location" value="432.0, 303.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="432.0, 303.5">
             </property>
             <port name="plus" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -364,7 +364,7 @@ system with forced spring pull-back.</text></svg></configure>
             </port>
         </entity>
         <entity name="total gain" class="ptolemy.actor.lib.AddSubtract">
-            <property name="_location" class="ptolemy.moml.Location" value="667.5, 379.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="667.5, 379.5">
             </property>
             <port name="plus" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -383,7 +383,7 @@ system with forced spring pull-back.</text></svg></configure>
             </property>
             <property name="top" class="ptolemy.data.expr.Parameter" value="alpha_max">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="488.5, 174.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="488.5, 174.5">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -402,7 +402,7 @@ system with forced spring pull-back.</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="336.5, 314.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="336.5, 314.5">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -476,7 +476,7 @@ system with forced spring pull-back.</text></svg></configure>
         <link port="theta_eq.output" relation="relation4"/>
     </entity>
     <entity name="driver inputs" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="192.5, 319.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="192.5, 319.5">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -503,12 +503,12 @@ the pedal is not depressed and pi means full throttle.</text></svg></configure>
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="253.5, 87.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="253.5, 87.0">
             </property>
         </property>
         <port name="accelerator_position" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="388.0, 184.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="388.0, 184.0">
             </property>
         </port>
         <entity name="accelerator gain" class="ptolemy.actor.lib.Scale">
@@ -522,7 +522,7 @@ the pedal is not depressed and pi means full throttle.</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="235.0, 183.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 183.5">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -541,7 +541,7 @@ the pedal is not depressed and pi means full throttle.</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="111.0, 183.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="111.0, 183.5">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -567,7 +567,7 @@ the pedal is not depressed and pi means full throttle.</text></svg></configure>
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="330.0, 189.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 189.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -584,7 +584,7 @@ the pedal is not depressed and pi means full throttle.</text></svg></configure>
         </configure>
     </entity>
     <entity name="controller" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="415.0, 403.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 403.5">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -612,26 +612,26 @@ interpolated using zero-order-hold.</text></svg></configure>
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="274.5, 57.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="274.5, 57.0">
             </property>
         </property>
         <port name="throttle_positions" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="83.0, 134.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="83.0, 134.0">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </port>
         <port name="desired_throttle_position" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="103.0, 224.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="103.0, 224.0">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </port>
         <port name="current" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="526.5, 215.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="526.5, 215.0">
             </property>
             <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -640,11 +640,11 @@ interpolated using zero-order-hold.</text></svg></configure>
         </port>
         <port name="actual_motor_current" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="93.5, 304.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="93.5, 304.0">
             </property>
         </port>
         <entity name="sampled controller" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.moml.Location" value="358.5, 214.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="358.5, 214.5">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 635]">
             </property>
@@ -657,7 +657,7 @@ interpolated using zero-order-hold.</text></svg></configure>
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="98.0, 183.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="98.0, 183.5">
                 </property>
             </property>
             <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -681,26 +681,26 @@ the drivers for the pulse-width modulated (pwm) actuators.
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="282.5, 77.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="282.5, 77.0">
                 </property>
             </property>
             <port name="throttle_positions" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="143.0, 354.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="143.0, 354.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </port>
             <port name="desired_throttle_position" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="128.0, 304.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="128.0, 304.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </port>
             <port name="current" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="461.5, 195.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="461.5, 195.0">
                 </property>
                 <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -709,13 +709,13 @@ the drivers for the pulse-width modulated (pwm) actuators.
             </port>
             <port name="actual_motor_current" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="103.5, 259.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="103.5, 259.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </port>
             <entity name="pwm driver" class="ptolemy.actor.TypedCompositeActor">
-                <property name="_location" class="ptolemy.moml.Location" value="380.0, 234.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 234.5">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                 </property>
@@ -723,21 +723,21 @@ the drivers for the pulse-width modulated (pwm) actuators.
                 </property>
                 <port name="motor_current" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="114.0, 289.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="114.0, 289.0">
                     </property>
                     <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </port>
                 <port name="desired_current" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="123.5, 149.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="123.5, 149.0">
                     </property>
                     <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </port>
                 <port name="pwm_signal" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="494.5, 169.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="494.5, 169.0">
                     </property>
                     <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
@@ -745,7 +745,7 @@ the drivers for the pulse-width modulated (pwm) actuators.
                     </property>
                 </port>
                 <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-                    <property name="_location" class="ptolemy.moml.Location" value="187.0, 218.5">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="187.0, 218.5">
                     </property>
                     <port name="plus" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -782,7 +782,7 @@ the drivers for the pulse-width modulated (pwm) actuators.
                         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                         </property>
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="260.0, 244.5">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 244.5">
                     </property>
                     <port name="left" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -795,7 +795,7 @@ the drivers for the pulse-width modulated (pwm) actuators.
                     </port>
                 </entity>
                 <entity name="BooleanSelect" class="ptolemy.actor.lib.BooleanSelect">
-                    <property name="_location" class="ptolemy.moml.Location" value="398.0, 168.5">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="398.0, 168.5">
                     </property>
                     <port name="trueInput" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -820,7 +820,7 @@ the drivers for the pulse-width modulated (pwm) actuators.
                         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                         </property>
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="291.5, 113.5">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="291.5, 113.5">
                     </property>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
@@ -840,7 +840,7 @@ the drivers for the pulse-width modulated (pwm) actuators.
                         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                         </property>
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="292.5, 164.5">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="292.5, 164.5">
                     </property>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
@@ -860,7 +860,7 @@ the drivers for the pulse-width modulated (pwm) actuators.
                         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                         </property>
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="176.0, 284.5">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="176.0, 284.5">
                     </property>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
@@ -910,7 +910,7 @@ the drivers for the pulse-width modulated (pwm) actuators.
                 </property>
                 <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="479.0, 289.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="479.0, 289.5">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -936,7 +936,7 @@ the drivers for the pulse-width modulated (pwm) actuators.
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="172.0, 394.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="172.0, 394.5">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -947,7 +947,7 @@ the drivers for the pulse-width modulated (pwm) actuators.
                 </port>
             </entity>
             <entity name="real-time controller" class="ptolemy.actor.TypedCompositeActor">
-                <property name="_location" class="ptolemy.moml.Location" value="295.5, 305.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="295.5, 305.5">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[745, 460]">
                 </property>
@@ -962,36 +962,36 @@ the drivers for the pulse-width modulated (pwm) actuators.
                     </property>
                     <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.giotto&quot;">
                     </property>
-                    <property name="_location" class="ptolemy.moml.Location" value="78.0, 38.5">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="78.0, 38.5">
                     </property>
                 </property>
                 <port name="throttle_motor" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="682.0, 264.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="682.0, 264.0">
                     </property>
                 </port>
                 <port name="motor_current" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="73.0, 94.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="73.0, 94.0">
                     </property>
                 </port>
                 <port name="pedal_position" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="389.5, 309.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="389.5, 309.0">
                     </property>
                 </port>
                 <port name="throttle_position" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="79.0, 189.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="79.0, 189.0">
                     </property>
                 </port>
                 <port name="user_mode" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="295.0, 234.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 234.0">
                     </property>
                 </port>
                 <entity name="manager" class="ptolemy.actor.TypedCompositeActor">
-                    <property name="_location" class="ptolemy.moml.Location" value="345.0, 183.5">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="345.0, 183.5">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                     </property>
@@ -1018,12 +1018,12 @@ the drivers for the pulse-width modulated (pwm) actuators.
                         </property>
                         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                         </property>
-                        <property name="_location" class="ptolemy.moml.Location" value="271.5, 57.0">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="271.5, 57.0">
                         </property>
                     </property>
                     <port name="mode" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
-                        <property name="_location" class="ptolemy.moml.Location" value="360.0, 223.0">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 223.0">
                         </property>
                         <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
                         </property>
@@ -1032,20 +1032,20 @@ the drivers for the pulse-width modulated (pwm) actuators.
                     </port>
                     <port name="monitor_mode" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
-                        <property name="_location" class="ptolemy.moml.Location" value="195.0, 304.0">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 304.0">
                         </property>
                         <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                         </property>
                     </port>
                     <port name="user_mode" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
-                        <property name="_location" class="ptolemy.moml.Location" value="180.0, 139.0">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 139.0">
                         </property>
                         <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                         </property>
                     </port>
                     <entity name="BooleanSelect" class="ptolemy.actor.lib.BooleanSelect">
-                        <property name="_location" class="ptolemy.moml.Location" value="283.0, 218.5">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="283.0, 218.5">
                         </property>
                         <port name="trueInput" class="ptolemy.actor.TypedIOPort">
                             <property name="input"/>
@@ -1070,7 +1070,7 @@ the drivers for the pulse-width modulated (pwm) actuators.
                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                             </property>
                         </property>
-                        <property name="_location" class="ptolemy.moml.Location" value="150.5, 189.5">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="150.5, 189.5">
                         </property>
                         <port name="output" class="ptolemy.actor.TypedIOPort">
                             <property name="output"/>
@@ -1098,7 +1098,7 @@ the drivers for the pulse-width modulated (pwm) actuators.
                     <link port="limp_home.output" relation="relation8"/>
                 </entity>
                 <entity name="servo controller" class="ptolemy.actor.TypedCompositeActor">
-                    <property name="_location" class="ptolemy.moml.Location" value="475.0, 263.5">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="475.0, 263.5">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 635]">
                     </property>
@@ -1106,7 +1106,7 @@ the drivers for the pulse-width modulated (pwm) actuators.
                     </property>
                     <port name="throttle_motor" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
-                        <property name="_location" class="ptolemy.moml.Location" value="543.0, 249.0">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="543.0, 249.0">
                         </property>
                         <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
                         </property>
@@ -1115,27 +1115,27 @@ the drivers for the pulse-width modulated (pwm) actuators.
                     </port>
                     <port name="mode" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
-                        <property name="_location" class="ptolemy.moml.Location" value="120.0, 330.0">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 330.0">
                         </property>
                         <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                         </property>
                     </port>
                     <port name="throttle_position" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
-                        <property name="_location" class="ptolemy.moml.Location" value="145.0, 174.0">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 174.0">
                         </property>
                         <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                         </property>
                     </port>
                     <port name="pedal_position" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
-                        <property name="_location" class="ptolemy.moml.Location" value="135.5, 249.0">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="135.5, 249.0">
                         </property>
                         <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                         </property>
                     </port>
                     <entity name="pedal filter" class="ptolemy.actor.TypedCompositeActor">
-                        <property name="_location" class="ptolemy.moml.Location" value="201.0, 249.5">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="201.0, 249.5">
                         </property>
                         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                         </property>
@@ -1158,17 +1158,17 @@ the drivers for the pulse-width modulated (pwm) actuators.
                             </property>
                             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                             </property>
-                            <property name="_location" class="ptolemy.moml.Location" value="43.5, 77.0">
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="43.5, 77.0">
                             </property>
                         </property>
                         <port name="pedal_position" class="ptolemy.actor.TypedIOPort">
                             <property name="input"/>
-                            <property name="_location" class="ptolemy.moml.Location" value="-40.5, 139.0">
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="-40.5, 139.0">
                             </property>
                         </port>
                         <port name="filtered_pedal_position" class="ptolemy.actor.TypedIOPort">
                             <property name="output"/>
-                            <property name="_location" class="ptolemy.moml.Location" value="181.0, 139.0">
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="181.0, 139.0">
                             </property>
                         </port>
                         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -1183,7 +1183,7 @@ the drivers for the pulse-width modulated (pwm) actuators.
                         </property>
                         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
                         </property>
-                        <property name="_location" class="ptolemy.moml.Location" value="443.0, 248.5">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="443.0, 248.5">
                         </property>
                         <port name="throttle_positions" class="ptolemy.vergil.fsm.modal.ModalPort">
                             <property name="input"/>
@@ -1217,7 +1217,7 @@ the drivers for the pulse-width modulated (pwm) actuators.
 create refinements for the states. Each refinement needs a director.
 For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                 </property>
-                                <property name="_location" class="ptolemy.moml.Location" value="250.0, 40.0">
+                                <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 40.0">
                                 </property>
                                 <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
                                 </property>
@@ -1230,25 +1230,25 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                             </property>
                             <port name="throttle_positions" class="ptolemy.vergil.fsm.modal.RefinementPort">
                                 <property name="input"/>
-                                <property name="_location" class="ptolemy.moml.Location" value="83.0, 154.0">
+                                <property name="_location" class="ptolemy.kernel.util.Location" value="83.0, 154.0">
                                 </property>
                             </port>
                             <port name="desired_throttle_position" class="ptolemy.vergil.fsm.modal.RefinementPort">
                                 <property name="input"/>
-                                <property name="_location" class="ptolemy.moml.Location" value="99.0, 234.0">
+                                <property name="_location" class="ptolemy.kernel.util.Location" value="99.0, 234.0">
                                 </property>
                             </port>
                             <port name="current" class="ptolemy.vergil.fsm.modal.RefinementPort">
                                 <property name="input"/>
                                 <property name="output"/>
-                                <property name="_location" class="ptolemy.moml.Location" value="539.5, 212.66666666666666">
+                                <property name="_location" class="ptolemy.kernel.util.Location" value="539.5, 212.66666666666666">
                                 </property>
                                 <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                                 </property>
                             </port>
                             <port name="mode" class="ptolemy.vergil.fsm.modal.RefinementPort">
                                 <property name="input"/>
-                                <property name="_location" class="ptolemy.moml.Location" value="49.0, 325.0">
+                                <property name="_location" class="ptolemy.kernel.util.Location" value="49.0, 325.0">
                                 </property>
                             </port>
                             <entity name="driver" class="ptolemy.domains.fsm.kernel.State">
@@ -1258,7 +1258,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                 </property>
                                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                                 </property>
-                                <property name="_location" class="ptolemy.moml.Location" value="233.0, 178.0">
+                                <property name="_location" class="ptolemy.kernel.util.Location" value="233.0, 178.0">
                                 </property>
                                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                                 </port>
@@ -1272,7 +1272,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                 </property>
                                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                                 </property>
-                                <property name="_location" class="ptolemy.moml.Location" value="370.0, 293.0">
+                                <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 293.0">
                                 </property>
                                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                                 </port>
@@ -1328,26 +1328,26 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                 </property>
                                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                                 </property>
-                                <property name="_location" class="ptolemy.moml.Location" value="98.0, 48.5">
+                                <property name="_location" class="ptolemy.kernel.util.Location" value="98.0, 48.5">
                                 </property>
                             </property>
                             <port name="throttle_positions" class="ptolemy.vergil.fsm.modal.RefinementPort">
                                 <property name="input"/>
-                                <property name="_location" class="ptolemy.moml.Location" value="108.0, 114.0">
+                                <property name="_location" class="ptolemy.kernel.util.Location" value="108.0, 114.0">
                                 </property>
                                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                                 </property>
                             </port>
                             <port name="desired_throttle_position" class="ptolemy.vergil.fsm.modal.RefinementPort">
                                 <property name="input"/>
-                                <property name="_location" class="ptolemy.moml.Location" value="128.0, 254.0">
+                                <property name="_location" class="ptolemy.kernel.util.Location" value="128.0, 254.0">
                                 </property>
                                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                                 </property>
                             </port>
                             <port name="current" class="ptolemy.vergil.fsm.modal.RefinementPort">
                                 <property name="output"/>
-                                <property name="_location" class="ptolemy.moml.Location" value="416.5, 300.0">
+                                <property name="_location" class="ptolemy.kernel.util.Location" value="416.5, 300.0">
                                 </property>
                                 <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
                                 </property>
@@ -1356,13 +1356,13 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                             </port>
                             <port name="mode" class="ptolemy.vergil.fsm.modal.RefinementPort">
                                 <property name="input"/>
-                                <property name="_location" class="ptolemy.moml.Location" value="74.0, 325.0">
+                                <property name="_location" class="ptolemy.kernel.util.Location" value="74.0, 325.0">
                                 </property>
                                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                                 </property>
                             </port>
                             <entity name="sliding mode controller with estimator" class="ptolemy.actor.TypedCompositeActor">
-                                <property name="_location" class="ptolemy.moml.Location" value="317.5, 189.5">
+                                <property name="_location" class="ptolemy.kernel.util.Location" value="317.5, 189.5">
                                 </property>
                                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 635]">
                                 </property>
@@ -1370,21 +1370,21 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                 </property>
                                 <port name="throttle_position" class="ptolemy.actor.TypedIOPort">
                                     <property name="input"/>
-                                    <property name="_location" class="ptolemy.moml.Location" value="64.0, 74.0">
+                                    <property name="_location" class="ptolemy.kernel.util.Location" value="64.0, 74.0">
                                     </property>
                                     <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                                     </property>
                                 </port>
                                 <port name="desired_throttle_position" class="ptolemy.actor.TypedIOPort">
                                     <property name="input"/>
-                                    <property name="_location" class="ptolemy.moml.Location" value="93.0, 259.0">
+                                    <property name="_location" class="ptolemy.kernel.util.Location" value="93.0, 259.0">
                                     </property>
                                     <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                                     </property>
                                 </port>
                                 <port name="current" class="ptolemy.actor.TypedIOPort">
                                     <property name="output"/>
-                                    <property name="_location" class="ptolemy.moml.Location" value="636.5, 250.0">
+                                    <property name="_location" class="ptolemy.kernel.util.Location" value="636.5, 250.0">
                                     </property>
                                     <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
                                     </property>
@@ -1392,7 +1392,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                     </property>
                                 </port>
                                 <entity name="sliding mode controller" class="ptolemy.actor.TypedCompositeActor">
-                                    <property name="_location" class="ptolemy.moml.Location" value="580.5, 186.5">
+                                    <property name="_location" class="ptolemy.kernel.util.Location" value="580.5, 186.5">
                                     </property>
                                     <property name="Ks_J" class="ptolemy.data.expr.Parameter" value="390.0">
                                     </property>
@@ -1426,32 +1426,32 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                     </property>
                                     <port name="1:throttle_position" class="ptolemy.actor.TypedIOPort">
                                         <property name="input"/>
-                                        <property name="_location" class="ptolemy.moml.Location" value="59.0, 134.0">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="59.0, 134.0">
                                         </property>
                                     </port>
                                     <port name="1:throttle_velocity" class="ptolemy.actor.TypedIOPort">
                                         <property name="input"/>
-                                        <property name="_location" class="ptolemy.moml.Location" value="59.0, 309.0">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="59.0, 309.0">
                                         </property>
                                     </port>
                                     <port name="1:current" class="ptolemy.actor.TypedIOPort">
                                         <property name="output"/>
-                                        <property name="_location" class="ptolemy.moml.Location" value="761.5, 230.0">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="761.5, 230.0">
                                         </property>
                                     </port>
                                     <port name="1:desired_throttle_position" class="ptolemy.actor.TypedIOPort">
                                         <property name="input"/>
-                                        <property name="_location" class="ptolemy.moml.Location" value="83.0, 189.0">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="83.0, 189.0">
                                         </property>
                                     </port>
                                     <port name="desired_throttle_velocity" class="ptolemy.actor.TypedIOPort">
                                         <property name="input"/>
-                                        <property name="_location" class="ptolemy.moml.Location" value="78.0, 249.0">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="78.0, 249.0">
                                         </property>
                                     </port>
                                     <port name="desired_throttle_acceleration" class="ptolemy.actor.TypedIOPort">
                                         <property name="input"/>
-                                        <property name="_location" class="ptolemy.moml.Location" value="90.0, 459.0">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 459.0">
                                         </property>
                                     </port>
                                     <entity name="1:angle gain" class="ptolemy.actor.lib.Scale">
@@ -1465,7 +1465,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                                             </property>
                                         </property>
-                                        <property name="_location" class="ptolemy.moml.Location" value="580.0, 29.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="580.0, 29.5">
                                         </property>
                                         <port name="input" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -1475,7 +1475,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </port>
                                     </entity>
                                     <entity name="1:angle error" class="ptolemy.actor.lib.AddSubtract">
-                                        <property name="_location" class="ptolemy.moml.Location" value="145.5, 142.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="145.5, 142.5">
                                         </property>
                                         <port name="plus" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -1512,7 +1512,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                                             </property>
                                         </property>
-                                        <property name="_location" class="ptolemy.moml.Location" value="475.0, 154.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="475.0, 154.5">
                                         </property>
                                         <port name="firstOperand" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -1532,7 +1532,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                                             </property>
                                         </property>
-                                        <property name="_location" class="ptolemy.moml.Location" value="235.5, 144.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="235.5, 144.5">
                                         </property>
                                         <port name="input" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -1552,7 +1552,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                                             </property>
                                         </property>
-                                        <property name="_location" class="ptolemy.moml.Location" value="596.5, 384.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="596.5, 384.5">
                                         </property>
                                         <port name="input" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -1572,7 +1572,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                                             </property>
                                         </property>
-                                        <property name="_location" class="ptolemy.moml.Location" value="570.0, 154.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="570.0, 154.5">
                                         </property>
                                         <port name="input" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -1582,7 +1582,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </port>
                                     </entity>
                                     <entity name="1:velocity error" class="ptolemy.actor.lib.AddSubtract">
-                                        <property name="_location" class="ptolemy.moml.Location" value="308.0, 239.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="308.0, 239.5">
                                         </property>
                                         <port name="plus" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -1606,7 +1606,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                                             </property>
                                         </property>
-                                        <property name="_location" class="ptolemy.moml.Location" value="146.5, 84.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="146.5, 84.5">
                                         </property>
                                         <port name="output" class="ptolemy.actor.TypedIOPort">
                                             <property name="output"/>
@@ -1617,7 +1617,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </port>
                                     </entity>
                                     <entity name="1:s" class="ptolemy.actor.lib.AddSubtract">
-                                        <property name="_location" class="ptolemy.moml.Location" value="395.0, 152.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 152.5">
                                         </property>
                                         <port name="plus" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -1642,7 +1642,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                                             </property>
                                         </property>
-                                        <property name="_location" class="ptolemy.moml.Location" value="586.0, 239.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="586.0, 239.5">
                                         </property>
                                         <port name="input" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -1662,7 +1662,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                                             </property>
                                         </property>
-                                        <property name="_location" class="ptolemy.moml.Location" value="594.0, 464.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="594.0, 464.5">
                                         </property>
                                         <port name="input" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -1672,7 +1672,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </port>
                                     </entity>
                                     <entity name="1:current" class="ptolemy.actor.lib.AddSubtract">
-                                        <property name="_location" class="ptolemy.moml.Location" value="695.0, 228.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="695.0, 228.5">
                                         </property>
                                         <port name="plus" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -1697,7 +1697,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                                             </property>
                                         </property>
-                                        <property name="_location" class="ptolemy.moml.Location" value="581.0, 309.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="581.0, 309.5">
                                         </property>
                                         <port name="input" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -1729,7 +1729,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                                             </property>
                                         </property>
-                                        <property name="_location" class="ptolemy.moml.Location" value="313.0, 384.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="313.0, 384.5">
                                         </property>
                                         <port name="firstOperand" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -1739,7 +1739,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </port>
                                     </entity>
                                     <entity name="1:angle" class="ptolemy.actor.lib.AddSubtract">
-                                        <property name="_location" class="ptolemy.moml.Location" value="195.0, 29.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 29.5">
                                         </property>
                                         <port name="plus" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -1846,7 +1846,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                     <link port="1:angle.output" relation="1:1:relation6"/>
                                 </entity>
                                 <entity name="throttle_velocity" class="ptolemy.actor.TypedCompositeActor">
-                                    <property name="_location" class="ptolemy.moml.Location" value="140.0, 173.5">
+                                    <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 173.5">
                                     </property>
                                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
                                     </property>
@@ -1854,12 +1854,12 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                     </property>
                                     <port name="position" class="ptolemy.actor.TypedIOPort">
                                         <property name="input"/>
-                                        <property name="_location" class="ptolemy.moml.Location" value="40.5, 139.0">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="40.5, 139.0">
                                         </property>
                                     </port>
                                     <port name="velocity" class="ptolemy.actor.TypedIOPort">
                                         <property name="output"/>
-                                        <property name="_location" class="ptolemy.moml.Location" value="478.0, 234.0">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="478.0, 234.0">
                                         </property>
                                     </port>
                                     <entity name="IIR" class="ptolemy.actor.lib.IIR">
@@ -1867,7 +1867,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </property>
                                         <property name="denominator" class="ptolemy.data.expr.Parameter" value="{1.0}">
                                         </property>
-                                        <property name="_location" class="ptolemy.moml.Location" value="150.0, 273.0">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 273.0">
                                         </property>
                                         <port name="input" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -1877,7 +1877,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </port>
                                     </entity>
                                     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-                                        <property name="_location" class="ptolemy.moml.Location" value="247.0, 233.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="247.0, 233.5">
                                         </property>
                                         <port name="plus" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -1902,7 +1902,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                                             </property>
                                         </property>
-                                        <property name="_location" class="ptolemy.moml.Location" value="340.0, 233.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 233.5">
                                         </property>
                                         <port name="input" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -1932,7 +1932,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                     <link port="Scale.output" relation="relation4"/>
                                 </entity>
                                 <entity name="desired_throttle_velocity" class="ptolemy.actor.TypedCompositeActor">
-                                    <property name="_location" class="ptolemy.moml.Location" value="185.0, 334.5">
+                                    <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 334.5">
                                     </property>
                                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
                                     </property>
@@ -1940,12 +1940,12 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                     </property>
                                     <port name="position" class="ptolemy.actor.TypedIOPort">
                                         <property name="input"/>
-                                        <property name="_location" class="ptolemy.moml.Location" value="40.5, 139.0">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="40.5, 139.0">
                                         </property>
                                     </port>
                                     <port name="velocity" class="ptolemy.actor.TypedIOPort">
                                         <property name="output"/>
-                                        <property name="_location" class="ptolemy.moml.Location" value="478.0, 234.0">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="478.0, 234.0">
                                         </property>
                                     </port>
                                     <entity name="IIR" class="ptolemy.actor.lib.IIR">
@@ -1953,7 +1953,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </property>
                                         <property name="denominator" class="ptolemy.data.expr.Parameter" value="{1.0}">
                                         </property>
-                                        <property name="_location" class="ptolemy.moml.Location" value="150.0, 273.0">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 273.0">
                                         </property>
                                         <port name="input" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -1963,7 +1963,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </port>
                                     </entity>
                                     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-                                        <property name="_location" class="ptolemy.moml.Location" value="247.0, 233.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="247.0, 233.5">
                                         </property>
                                         <port name="plus" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -1988,7 +1988,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                                             </property>
                                         </property>
-                                        <property name="_location" class="ptolemy.moml.Location" value="340.0, 233.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 233.5">
                                         </property>
                                         <port name="input" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -2018,7 +2018,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                     <link port="Scale.output" relation="relation4"/>
                                 </entity>
                                 <entity name="desired_throttle_acceleration" class="ptolemy.actor.TypedCompositeActor">
-                                    <property name="_location" class="ptolemy.moml.Location" value="307.5, 414.5">
+                                    <property name="_location" class="ptolemy.kernel.util.Location" value="307.5, 414.5">
                                     </property>
                                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
                                     </property>
@@ -2026,12 +2026,12 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                     </property>
                                     <port name="position" class="ptolemy.actor.TypedIOPort">
                                         <property name="input"/>
-                                        <property name="_location" class="ptolemy.moml.Location" value="40.5, 139.0">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="40.5, 139.0">
                                         </property>
                                     </port>
                                     <port name="velocity" class="ptolemy.actor.TypedIOPort">
                                         <property name="output"/>
-                                        <property name="_location" class="ptolemy.moml.Location" value="478.0, 234.0">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="478.0, 234.0">
                                         </property>
                                     </port>
                                     <entity name="IIR" class="ptolemy.actor.lib.IIR">
@@ -2039,7 +2039,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </property>
                                         <property name="denominator" class="ptolemy.data.expr.Parameter" value="{1.0}">
                                         </property>
-                                        <property name="_location" class="ptolemy.moml.Location" value="150.0, 273.0">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 273.0">
                                         </property>
                                         <port name="input" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -2049,7 +2049,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </port>
                                     </entity>
                                     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-                                        <property name="_location" class="ptolemy.moml.Location" value="247.0, 233.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="247.0, 233.5">
                                         </property>
                                         <port name="plus" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -2074,7 +2074,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                                             </property>
                                         </property>
-                                        <property name="_location" class="ptolemy.moml.Location" value="340.0, 233.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 233.5">
                                         </property>
                                         <port name="input" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -2138,7 +2138,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                 <link port="desired_throttle_acceleration.velocity" relation="relation3"/>
                             </entity>
                             <entity name="throttle_position" class="ptolemy.actor.lib.VectorDisassembler">
-                                <property name="_location" class="ptolemy.moml.Location" value="156.5, 154.5">
+                                <property name="_location" class="ptolemy.kernel.util.Location" value="156.5, 154.5">
                                 </property>
                                 <port name="input" class="ptolemy.actor.TypedIOPort">
                                     <property name="input"/>
@@ -2149,7 +2149,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                 </port>
                             </entity>
                             <entity name="sdf discard" class="ptolemy.actor.TypedCompositeActor">
-                                <property name="_location" class="ptolemy.moml.Location" value="230.0, 323.5">
+                                <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 323.5">
                                 </property>
                                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
                                 </property>
@@ -2157,12 +2157,12 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                 </property>
                                 <port name="input" class="ptolemy.actor.TypedIOPort">
                                     <property name="input"/>
-                                    <property name="_location" class="ptolemy.moml.Location" value="73.0, 194.0">
+                                    <property name="_location" class="ptolemy.kernel.util.Location" value="73.0, 194.0">
                                     </property>
                                 </port>
                                 <port name="output" class="ptolemy.actor.TypedIOPort">
                                     <property name="output"/>
-                                    <property name="_location" class="ptolemy.moml.Location" value="410.0, 194.0">
+                                    <property name="_location" class="ptolemy.kernel.util.Location" value="410.0, 194.0">
                                     </property>
                                 </port>
                                 <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -2175,7 +2175,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                                         </property>
                                     </property>
-                                    <property name="_location" class="ptolemy.moml.Location" value="236.0, 193.5">
+                                    <property name="_location" class="ptolemy.kernel.util.Location" value="236.0, 193.5">
                                     </property>
                                     <port name="output" class="ptolemy.actor.TypedIOPort">
                                         <property name="output"/>
@@ -2195,7 +2195,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                 <link port="Const.trigger" relation="relation"/>
                             </entity>
                             <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-                                <property name="_location" class="ptolemy.moml.Location" value="352.0, 243.5">
+                                <property name="_location" class="ptolemy.kernel.util.Location" value="352.0, 243.5">
                                 </property>
                                 <port name="plus" class="ptolemy.actor.TypedIOPort">
                                     <property name="input"/>
@@ -2250,26 +2250,26 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                 </property>
                                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                                 </property>
-                                <property name="_location" class="ptolemy.moml.Location" value="98.0, 48.5">
+                                <property name="_location" class="ptolemy.kernel.util.Location" value="98.0, 48.5">
                                 </property>
                             </property>
                             <port name="throttle_positions" class="ptolemy.vergil.fsm.modal.RefinementPort">
                                 <property name="input"/>
-                                <property name="_location" class="ptolemy.moml.Location" value="98.0, 109.0">
+                                <property name="_location" class="ptolemy.kernel.util.Location" value="98.0, 109.0">
                                 </property>
                                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                                 </property>
                             </port>
                             <port name="desired_throttle_position" class="ptolemy.vergil.fsm.modal.RefinementPort">
                                 <property name="input"/>
-                                <property name="_location" class="ptolemy.moml.Location" value="118.0, 249.0">
+                                <property name="_location" class="ptolemy.kernel.util.Location" value="118.0, 249.0">
                                 </property>
                                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                                 </property>
                             </port>
                             <port name="current" class="ptolemy.vergil.fsm.modal.RefinementPort">
                                 <property name="output"/>
-                                <property name="_location" class="ptolemy.moml.Location" value="426.5, 300.0">
+                                <property name="_location" class="ptolemy.kernel.util.Location" value="426.5, 300.0">
                                 </property>
                                 <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
                                 </property>
@@ -2278,13 +2278,13 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                             </port>
                             <port name="mode" class="ptolemy.vergil.fsm.modal.RefinementPort">
                                 <property name="input"/>
-                                <property name="_location" class="ptolemy.moml.Location" value="69.0, 360.0">
+                                <property name="_location" class="ptolemy.kernel.util.Location" value="69.0, 360.0">
                                 </property>
                                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                                 </property>
                             </port>
                             <entity name="sdf discard" class="ptolemy.actor.TypedCompositeActor">
-                                <property name="_location" class="ptolemy.moml.Location" value="230.0, 323.5">
+                                <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 323.5">
                                 </property>
                                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
                                 </property>
@@ -2292,12 +2292,12 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                 </property>
                                 <port name="input" class="ptolemy.actor.TypedIOPort">
                                     <property name="input"/>
-                                    <property name="_location" class="ptolemy.moml.Location" value="73.0, 194.0">
+                                    <property name="_location" class="ptolemy.kernel.util.Location" value="73.0, 194.0">
                                     </property>
                                 </port>
                                 <port name="output" class="ptolemy.actor.TypedIOPort">
                                     <property name="output"/>
-                                    <property name="_location" class="ptolemy.moml.Location" value="410.0, 194.0">
+                                    <property name="_location" class="ptolemy.kernel.util.Location" value="410.0, 194.0">
                                     </property>
                                 </port>
                                 <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -2310,7 +2310,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                                         </property>
                                     </property>
-                                    <property name="_location" class="ptolemy.moml.Location" value="231.0, 193.5">
+                                    <property name="_location" class="ptolemy.kernel.util.Location" value="231.0, 193.5">
                                     </property>
                                     <port name="output" class="ptolemy.actor.TypedIOPort">
                                         <property name="output"/>
@@ -2330,7 +2330,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                 <link port="Const.trigger" relation="relation"/>
                             </entity>
                             <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-                                <property name="_location" class="ptolemy.moml.Location" value="347.0, 248.5">
+                                <property name="_location" class="ptolemy.kernel.util.Location" value="347.0, 248.5">
                                 </property>
                                 <port name="plus" class="ptolemy.actor.TypedIOPort">
                                     <property name="input"/>
@@ -2345,7 +2345,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                 </port>
                             </entity>
                             <entity name="sliding mode controller with estimator" class="ptolemy.actor.TypedCompositeActor">
-                                <property name="_location" class="ptolemy.moml.Location" value="317.0, 199.5">
+                                <property name="_location" class="ptolemy.kernel.util.Location" value="317.0, 199.5">
                                 </property>
                                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 635]">
                                 </property>
@@ -2353,21 +2353,21 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                 </property>
                                 <port name="throttle_position" class="ptolemy.actor.TypedIOPort">
                                     <property name="input"/>
-                                    <property name="_location" class="ptolemy.moml.Location" value="64.0, 74.0">
+                                    <property name="_location" class="ptolemy.kernel.util.Location" value="64.0, 74.0">
                                     </property>
                                     <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                                     </property>
                                 </port>
                                 <port name="desired_throttle_position" class="ptolemy.actor.TypedIOPort">
                                     <property name="input"/>
-                                    <property name="_location" class="ptolemy.moml.Location" value="93.0, 259.0">
+                                    <property name="_location" class="ptolemy.kernel.util.Location" value="93.0, 259.0">
                                     </property>
                                     <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                                     </property>
                                 </port>
                                 <port name="current" class="ptolemy.actor.TypedIOPort">
                                     <property name="output"/>
-                                    <property name="_location" class="ptolemy.moml.Location" value="636.5, 250.0">
+                                    <property name="_location" class="ptolemy.kernel.util.Location" value="636.5, 250.0">
                                     </property>
                                     <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
                                     </property>
@@ -2375,7 +2375,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                     </property>
                                 </port>
                                 <entity name="sliding mode controller" class="ptolemy.actor.TypedCompositeActor">
-                                    <property name="_location" class="ptolemy.moml.Location" value="580.5, 186.5">
+                                    <property name="_location" class="ptolemy.kernel.util.Location" value="580.5, 186.5">
                                     </property>
                                     <property name="Ks_J" class="ptolemy.data.expr.Parameter" value="390.0">
                                     </property>
@@ -2409,32 +2409,32 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                     </property>
                                     <port name="1:throttle_position" class="ptolemy.actor.TypedIOPort">
                                         <property name="input"/>
-                                        <property name="_location" class="ptolemy.moml.Location" value="59.0, 134.0">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="59.0, 134.0">
                                         </property>
                                     </port>
                                     <port name="1:throttle_velocity" class="ptolemy.actor.TypedIOPort">
                                         <property name="input"/>
-                                        <property name="_location" class="ptolemy.moml.Location" value="59.0, 309.0">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="59.0, 309.0">
                                         </property>
                                     </port>
                                     <port name="1:current" class="ptolemy.actor.TypedIOPort">
                                         <property name="output"/>
-                                        <property name="_location" class="ptolemy.moml.Location" value="761.5, 230.0">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="761.5, 230.0">
                                         </property>
                                     </port>
                                     <port name="1:desired_throttle_position" class="ptolemy.actor.TypedIOPort">
                                         <property name="input"/>
-                                        <property name="_location" class="ptolemy.moml.Location" value="83.0, 189.0">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="83.0, 189.0">
                                         </property>
                                     </port>
                                     <port name="desired_throttle_velocity" class="ptolemy.actor.TypedIOPort">
                                         <property name="input"/>
-                                        <property name="_location" class="ptolemy.moml.Location" value="78.0, 249.0">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="78.0, 249.0">
                                         </property>
                                     </port>
                                     <port name="desired_throttle_acceleration" class="ptolemy.actor.TypedIOPort">
                                         <property name="input"/>
-                                        <property name="_location" class="ptolemy.moml.Location" value="90.0, 459.0">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 459.0">
                                         </property>
                                     </port>
                                     <entity name="1:angle gain" class="ptolemy.actor.lib.Scale">
@@ -2448,7 +2448,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                                             </property>
                                         </property>
-                                        <property name="_location" class="ptolemy.moml.Location" value="580.0, 29.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="580.0, 29.5">
                                         </property>
                                         <port name="input" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -2458,7 +2458,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </port>
                                     </entity>
                                     <entity name="1:angle error" class="ptolemy.actor.lib.AddSubtract">
-                                        <property name="_location" class="ptolemy.moml.Location" value="145.5, 142.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="145.5, 142.5">
                                         </property>
                                         <port name="plus" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -2495,7 +2495,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                                             </property>
                                         </property>
-                                        <property name="_location" class="ptolemy.moml.Location" value="475.0, 154.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="475.0, 154.5">
                                         </property>
                                         <port name="firstOperand" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -2515,7 +2515,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                                             </property>
                                         </property>
-                                        <property name="_location" class="ptolemy.moml.Location" value="235.5, 144.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="235.5, 144.5">
                                         </property>
                                         <port name="input" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -2535,7 +2535,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                                             </property>
                                         </property>
-                                        <property name="_location" class="ptolemy.moml.Location" value="596.5, 384.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="596.5, 384.5">
                                         </property>
                                         <port name="input" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -2555,7 +2555,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                                             </property>
                                         </property>
-                                        <property name="_location" class="ptolemy.moml.Location" value="570.0, 154.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="570.0, 154.5">
                                         </property>
                                         <port name="input" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -2565,7 +2565,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </port>
                                     </entity>
                                     <entity name="1:velocity error" class="ptolemy.actor.lib.AddSubtract">
-                                        <property name="_location" class="ptolemy.moml.Location" value="308.0, 239.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="308.0, 239.5">
                                         </property>
                                         <port name="plus" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -2589,7 +2589,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                                             </property>
                                         </property>
-                                        <property name="_location" class="ptolemy.moml.Location" value="146.5, 84.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="146.5, 84.5">
                                         </property>
                                         <port name="output" class="ptolemy.actor.TypedIOPort">
                                             <property name="output"/>
@@ -2600,7 +2600,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </port>
                                     </entity>
                                     <entity name="1:s" class="ptolemy.actor.lib.AddSubtract">
-                                        <property name="_location" class="ptolemy.moml.Location" value="395.0, 152.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 152.5">
                                         </property>
                                         <port name="plus" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -2625,7 +2625,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                                             </property>
                                         </property>
-                                        <property name="_location" class="ptolemy.moml.Location" value="586.0, 239.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="586.0, 239.5">
                                         </property>
                                         <port name="input" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -2645,7 +2645,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                                             </property>
                                         </property>
-                                        <property name="_location" class="ptolemy.moml.Location" value="594.0, 464.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="594.0, 464.5">
                                         </property>
                                         <port name="input" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -2655,7 +2655,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </port>
                                     </entity>
                                     <entity name="1:current" class="ptolemy.actor.lib.AddSubtract">
-                                        <property name="_location" class="ptolemy.moml.Location" value="695.0, 228.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="695.0, 228.5">
                                         </property>
                                         <port name="plus" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -2680,7 +2680,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                                             </property>
                                         </property>
-                                        <property name="_location" class="ptolemy.moml.Location" value="581.0, 309.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="581.0, 309.5">
                                         </property>
                                         <port name="input" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -2712,7 +2712,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                                             </property>
                                         </property>
-                                        <property name="_location" class="ptolemy.moml.Location" value="313.0, 384.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="313.0, 384.5">
                                         </property>
                                         <port name="firstOperand" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -2722,7 +2722,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </port>
                                     </entity>
                                     <entity name="1:angle" class="ptolemy.actor.lib.AddSubtract">
-                                        <property name="_location" class="ptolemy.moml.Location" value="195.0, 29.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 29.5">
                                         </property>
                                         <port name="plus" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -2829,7 +2829,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                     <link port="1:angle.output" relation="1:1:relation6"/>
                                 </entity>
                                 <entity name="throttle_velocity" class="ptolemy.actor.TypedCompositeActor">
-                                    <property name="_location" class="ptolemy.moml.Location" value="140.0, 173.5">
+                                    <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 173.5">
                                     </property>
                                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
                                     </property>
@@ -2837,12 +2837,12 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                     </property>
                                     <port name="position" class="ptolemy.actor.TypedIOPort">
                                         <property name="input"/>
-                                        <property name="_location" class="ptolemy.moml.Location" value="40.5, 139.0">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="40.5, 139.0">
                                         </property>
                                     </port>
                                     <port name="velocity" class="ptolemy.actor.TypedIOPort">
                                         <property name="output"/>
-                                        <property name="_location" class="ptolemy.moml.Location" value="478.0, 234.0">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="478.0, 234.0">
                                         </property>
                                     </port>
                                     <entity name="IIR" class="ptolemy.actor.lib.IIR">
@@ -2850,7 +2850,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </property>
                                         <property name="denominator" class="ptolemy.data.expr.Parameter" value="{1.0}">
                                         </property>
-                                        <property name="_location" class="ptolemy.moml.Location" value="150.0, 273.0">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 273.0">
                                         </property>
                                         <port name="input" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -2860,7 +2860,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </port>
                                     </entity>
                                     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-                                        <property name="_location" class="ptolemy.moml.Location" value="247.0, 233.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="247.0, 233.5">
                                         </property>
                                         <port name="plus" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -2885,7 +2885,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                                             </property>
                                         </property>
-                                        <property name="_location" class="ptolemy.moml.Location" value="340.0, 233.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 233.5">
                                         </property>
                                         <port name="input" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -2915,7 +2915,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                     <link port="Scale.output" relation="relation4"/>
                                 </entity>
                                 <entity name="desired_throttle_velocity" class="ptolemy.actor.TypedCompositeActor">
-                                    <property name="_location" class="ptolemy.moml.Location" value="185.0, 334.5">
+                                    <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 334.5">
                                     </property>
                                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
                                     </property>
@@ -2923,12 +2923,12 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                     </property>
                                     <port name="position" class="ptolemy.actor.TypedIOPort">
                                         <property name="input"/>
-                                        <property name="_location" class="ptolemy.moml.Location" value="40.5, 139.0">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="40.5, 139.0">
                                         </property>
                                     </port>
                                     <port name="velocity" class="ptolemy.actor.TypedIOPort">
                                         <property name="output"/>
-                                        <property name="_location" class="ptolemy.moml.Location" value="478.0, 234.0">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="478.0, 234.0">
                                         </property>
                                     </port>
                                     <entity name="IIR" class="ptolemy.actor.lib.IIR">
@@ -2936,7 +2936,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </property>
                                         <property name="denominator" class="ptolemy.data.expr.Parameter" value="{1.0}">
                                         </property>
-                                        <property name="_location" class="ptolemy.moml.Location" value="150.0, 273.0">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 273.0">
                                         </property>
                                         <port name="input" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -2946,7 +2946,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </port>
                                     </entity>
                                     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-                                        <property name="_location" class="ptolemy.moml.Location" value="247.0, 233.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="247.0, 233.5">
                                         </property>
                                         <port name="plus" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -2971,7 +2971,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                                             </property>
                                         </property>
-                                        <property name="_location" class="ptolemy.moml.Location" value="340.0, 233.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 233.5">
                                         </property>
                                         <port name="input" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -3001,7 +3001,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                     <link port="Scale.output" relation="relation4"/>
                                 </entity>
                                 <entity name="desired_throttle_acceleration" class="ptolemy.actor.TypedCompositeActor">
-                                    <property name="_location" class="ptolemy.moml.Location" value="307.5, 414.5">
+                                    <property name="_location" class="ptolemy.kernel.util.Location" value="307.5, 414.5">
                                     </property>
                                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
                                     </property>
@@ -3009,12 +3009,12 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                     </property>
                                     <port name="position" class="ptolemy.actor.TypedIOPort">
                                         <property name="input"/>
-                                        <property name="_location" class="ptolemy.moml.Location" value="40.5, 139.0">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="40.5, 139.0">
                                         </property>
                                     </port>
                                     <port name="velocity" class="ptolemy.actor.TypedIOPort">
                                         <property name="output"/>
-                                        <property name="_location" class="ptolemy.moml.Location" value="478.0, 234.0">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="478.0, 234.0">
                                         </property>
                                     </port>
                                     <entity name="IIR" class="ptolemy.actor.lib.IIR">
@@ -3022,7 +3022,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </property>
                                         <property name="denominator" class="ptolemy.data.expr.Parameter" value="{1.0}">
                                         </property>
-                                        <property name="_location" class="ptolemy.moml.Location" value="150.0, 273.0">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 273.0">
                                         </property>
                                         <port name="input" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -3032,7 +3032,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </port>
                                     </entity>
                                     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-                                        <property name="_location" class="ptolemy.moml.Location" value="247.0, 233.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="247.0, 233.5">
                                         </property>
                                         <port name="plus" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -3057,7 +3057,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                                             </property>
                                         </property>
-                                        <property name="_location" class="ptolemy.moml.Location" value="340.0, 233.5">
+                                        <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 233.5">
                                         </property>
                                         <port name="input" class="ptolemy.actor.TypedIOPort">
                                             <property name="input"/>
@@ -3121,7 +3121,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                 <link port="desired_throttle_acceleration.velocity" relation="relation3"/>
                             </entity>
                             <entity name="throttle_position" class="ptolemy.actor.lib.VectorDisassembler">
-                                <property name="_location" class="ptolemy.moml.Location" value="156.5, 154.5">
+                                <property name="_location" class="ptolemy.kernel.util.Location" value="156.5, 154.5">
                                 </property>
                                 <port name="input" class="ptolemy.actor.TypedIOPort">
                                     <property name="input"/>
@@ -3207,7 +3207,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     <link port="modal controller.mode" relation="relation4"/>
                 </entity>
                 <entity name="monitor" class="ptolemy.actor.TypedCompositeActor">
-                    <property name="_location" class="ptolemy.moml.Location" value="470.0, 108.5">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="470.0, 108.5">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[667, 400]">
                     </property>
@@ -3217,7 +3217,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                     <port name="monitor_mode" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
-                        <property name="_location" class="ptolemy.moml.Location" value="460.0, 229.0">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 229.0">
                         </property>
                         <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
                         </property>
@@ -3226,28 +3226,28 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     </port>
                     <port name="throttle_motor" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
-                        <property name="_location" class="ptolemy.moml.Location" value="170.0, 79.0">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 79.0">
                         </property>
                         <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                         </property>
                     </port>
                     <port name="motor_current" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
-                        <property name="_location" class="ptolemy.moml.Location" value="109.0, 189.0">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="109.0, 189.0">
                         </property>
                         <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                         </property>
                     </port>
                     <port name="throttle_position" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
-                        <property name="_location" class="ptolemy.moml.Location" value="110.0, 264.0">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 264.0">
                         </property>
                         <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                         </property>
                     </port>
                     <port name="mode" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
-                        <property name="_location" class="ptolemy.moml.Location" value="85.0, 338.0">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 338.0">
                         </property>
                     </port>
                     <entity name="error_p" class="ptolemy.actor.lib.logic.LogicFunction">
@@ -3273,7 +3273,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                             </property>
                         </property>
-                        <property name="_location" class="ptolemy.moml.Location" value="360.0, 228.5">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 228.5">
                         </property>
                         <port name="input" class="ptolemy.actor.TypedIOPort">
                             <property name="input"/>
@@ -3284,7 +3284,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                         </port>
                     </entity>
                     <entity name="tps fault detection" class="ptolemy.actor.TypedCompositeActor">
-                        <property name="_location" class="ptolemy.moml.Location" value="262.0, 229.5">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="262.0, 229.5">
                         </property>
                         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                         </property>
@@ -3294,18 +3294,18 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                         </property>
                         <port name="tps" class="ptolemy.actor.TypedIOPort">
                             <property name="input"/>
-                            <property name="_location" class="ptolemy.moml.Location" value="26.0, 114.0">
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="26.0, 114.0">
                             </property>
                             <property name="tps_error_threshold" class="ptolemy.data.expr.Parameter" value="tps_error_threshold">
                             </property>
                         </port>
                         <port name="tps_error_p" class="ptolemy.actor.TypedIOPort">
                             <property name="output"/>
-                            <property name="_location" class="ptolemy.moml.Location" value="519.0, 179.0">
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="519.0, 179.0">
                             </property>
                         </port>
                         <entity name="tps1, tps2" class="ptolemy.actor.lib.VectorDisassembler">
-                            <property name="_location" class="ptolemy.moml.Location" value="109.5, 169.5">
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="109.5, 169.5">
                             </property>
                             <port name="input" class="ptolemy.actor.TypedIOPort">
                                 <property name="input"/>
@@ -3316,7 +3316,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                             </port>
                         </entity>
                         <entity name="sensor error" class="ptolemy.actor.lib.AddSubtract">
-                            <property name="_location" class="ptolemy.moml.Location" value="215.5, 177.5">
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="215.5, 177.5">
                             </property>
                             <port name="plus" class="ptolemy.actor.TypedIOPort">
                                 <property name="input"/>
@@ -3353,7 +3353,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                                 </property>
                             </property>
-                            <property name="_location" class="ptolemy.moml.Location" value="405.0, 199.5">
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 199.5">
                             </property>
                             <port name="left" class="ptolemy.actor.TypedIOPort">
                                 <property name="input"/>
@@ -3366,7 +3366,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                             </port>
                         </entity>
                         <entity name="AbsoluteValue" class="ptolemy.actor.lib.AbsoluteValue">
-                            <property name="_location" class="ptolemy.moml.Location" value="308.0, 173.5">
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="308.0, 173.5">
                             </property>
                             <port name="input" class="ptolemy.actor.TypedIOPort">
                                 <property name="input"/>
@@ -3385,7 +3385,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                                 </property>
                             </property>
-                            <property name="_location" class="ptolemy.moml.Location" value="181.0, 239.5">
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="181.0, 239.5">
                             </property>
                             <port name="output" class="ptolemy.actor.TypedIOPort">
                                 <property name="output"/>
@@ -3428,7 +3428,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                         <link port="tps_error_threshold.trigger" relation="relation"/>
                     </entity>
                     <entity name="actuator fault detection" class="ptolemy.actor.TypedCompositeActor">
-                        <property name="_location" class="ptolemy.moml.Location" value="281.5, 158.5">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="281.5, 158.5">
                         </property>
                         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                         </property>
@@ -3436,17 +3436,17 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                         </property>
                         <port name="desired_current" class="ptolemy.actor.TypedIOPort">
                             <property name="input"/>
-                            <property name="_location" class="ptolemy.moml.Location" value="82.5, 154.0">
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="82.5, 154.0">
                             </property>
                         </port>
                         <port name="actual_current" class="ptolemy.actor.TypedIOPort">
                             <property name="input"/>
-                            <property name="_location" class="ptolemy.moml.Location" value="79.0, 224.0">
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="79.0, 224.0">
                             </property>
                         </port>
                         <port name="actuator_error_p" class="ptolemy.actor.TypedIOPort">
                             <property name="output"/>
-                            <property name="_location" class="ptolemy.moml.Location" value="398.5, 234.0">
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="398.5, 234.0">
                             </property>
                         </port>
                         <entity name="placeholder" class="ptolemy.actor.lib.Const">
@@ -3459,7 +3459,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                                 </property>
                             </property>
-                            <property name="_location" class="ptolemy.moml.Location" value="283.0, 229.5">
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="283.0, 229.5">
                             </property>
                             <port name="output" class="ptolemy.actor.TypedIOPort">
                                 <property name="output"/>
@@ -3492,7 +3492,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                                 </property>
                             </property>
-                            <property name="_location" class="ptolemy.moml.Location" value="175.0, 179.5">
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 179.5">
                             </property>
                             <port name="left" class="ptolemy.actor.TypedIOPort">
                                 <property name="input"/>
@@ -3522,7 +3522,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                         <link port="Comparator.output" relation="relation5"/>
                     </entity>
                     <entity name="task fault detection" class="ptolemy.actor.TypedCompositeActor">
-                        <property name="_location" class="ptolemy.moml.Location" value="265.0, 298.5">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="265.0, 298.5">
                         </property>
                         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                         </property>
@@ -3530,17 +3530,17 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                         </property>
                         <port name="desired_current" class="ptolemy.actor.TypedIOPort">
                             <property name="input"/>
-                            <property name="_location" class="ptolemy.moml.Location" value="82.5, 154.0">
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="82.5, 154.0">
                             </property>
                         </port>
                         <port name="mode" class="ptolemy.actor.TypedIOPort">
                             <property name="input"/>
-                            <property name="_location" class="ptolemy.moml.Location" value="59.0, 230.0">
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="59.0, 230.0">
                             </property>
                         </port>
                         <port name="task_error_p" class="ptolemy.actor.TypedIOPort">
                             <property name="output"/>
-                            <property name="_location" class="ptolemy.moml.Location" value="396.5, 234.0">
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="396.5, 234.0">
                             </property>
                         </port>
                         <entity name="placeholder" class="ptolemy.actor.lib.Const">
@@ -3553,7 +3553,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                                 </property>
                             </property>
-                            <property name="_location" class="ptolemy.moml.Location" value="283.0, 229.5">
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="283.0, 229.5">
                             </property>
                             <port name="output" class="ptolemy.actor.TypedIOPort">
                                 <property name="output"/>
@@ -3586,7 +3586,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                                 </property>
                             </property>
-                            <property name="_location" class="ptolemy.moml.Location" value="175.0, 179.5">
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 179.5">
                             </property>
                             <port name="left" class="ptolemy.actor.TypedIOPort">
                                 <property name="input"/>
@@ -3725,7 +3725,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
         <entity name="sampled throttle_position" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
             <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="p">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="157.0, 164.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="157.0, 164.5">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -3743,7 +3743,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
         <entity name="sampled desired_throttle_position" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
             <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="p">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="181.0, 249.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="181.0, 249.5">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -3761,7 +3761,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
         <entity name="current" class="ptolemy.domains.ct.lib.ZeroOrderHold">
             <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="450.0, 213.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 213.5">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -3777,7 +3777,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
         <entity name="sampled actual_motor_current" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
             <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="p">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="171.5, 339.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="171.5, 339.5">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -3826,7 +3826,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
         <link port="sampled actual_motor_current.output" relation="relation8"/>
     </entity>
     <entity name="powertrain inputs" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="206.5, 379.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="206.5, 379.5">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -3852,12 +3852,12 @@ inputs is put here as a placeholder.</text></svg></configure>
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="294.0, 82.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="294.0, 82.0">
             </property>
         </property>
         <port name="powertrain_inputs" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="347.0, 189.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="347.0, 189.0">
             </property>
         </port>
         <entity name="placeholder" class="ptolemy.actor.lib.Const">
@@ -3870,7 +3870,7 @@ inputs is put here as a placeholder.</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="218.0, 189.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="218.0, 189.5">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -3886,7 +3886,7 @@ inputs is put here as a placeholder.</text></svg></configure>
         <link port="placeholder.output" relation="relation"/>
     </entity>
     <entity name="actuators" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="90.0, 258.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 258.5">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 635]">
         </property>
@@ -3910,7 +3910,7 @@ respectively pwm is on or off.</text></svg></configure>
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="208.5, 362.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="208.5, 362.0">
             </property>
         </property>
         <property name="J" class="ptolemy.data.expr.Parameter" value="5e-5">
@@ -3967,26 +3967,26 @@ respectively pwm is on or off.</text></svg></configure>
         </property>
         <port name="back_emf" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="36.0, 94.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="36.0, 94.0">
             </property>
         </port>
         <port name="pwm_signal" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="56.5, 299.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="56.5, 299.0">
             </property>
         </port>
         <port name="motor_torque" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="684.0, 244.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="684.0, 244.0">
             </property>
         </port>
         <port name="motor_current" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="681.0, 304.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="681.0, 304.0">
             </property>
         </port>
         <entity name="i_dot" class="ptolemy.actor.lib.BooleanSelect">
-            <property name="_location" class="ptolemy.moml.Location" value="310.0, 199.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 199.5">
             </property>
             <port name="trueInput" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -4024,7 +4024,7 @@ respectively pwm is on or off.</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="140.0, 274.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 274.5">
             </property>
             <port name="left" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -4037,7 +4037,7 @@ respectively pwm is on or off.</text></svg></configure>
             </port>
         </entity>
         <entity name="pwm on" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.moml.Location" value="140.0, 38.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 38.5">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[747, 626]">
             </property>
@@ -4045,31 +4045,31 @@ respectively pwm is on or off.</text></svg></configure>
             </property>
             <port name="back_emf" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="51.0, 44.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="51.0, 44.0">
                 </property>
             </port>
             <port name="vc" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="26.0, 176.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="26.0, 176.0">
                 </property>
             </port>
             <port name="vc_dot" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="605.5, 214.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="605.5, 214.0">
                 </property>
             </port>
             <port name="i_dot" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="601.0, 269.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="601.0, 269.0">
                 </property>
             </port>
             <port name="i" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="26.0, 240.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="26.0, 240.0">
                 </property>
             </port>
             <entity name="vc" class="ptolemy.actor.lib.AddSubtract">
-                <property name="_location" class="ptolemy.moml.Location" value="530.0, 162.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 162.5">
                 </property>
                 <port name="plus" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -4084,7 +4084,7 @@ respectively pwm is on or off.</text></svg></configure>
                 </port>
             </entity>
             <entity name="emf_1" class="ptolemy.actor.lib.MultiplyDivide">
-                <property name="_location" class="ptolemy.moml.Location" value="360.0, 54.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 54.5">
                 </property>
                 <port name="multiply" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -4099,7 +4099,7 @@ respectively pwm is on or off.</text></svg></configure>
                 </port>
             </entity>
             <entity name="emf_2" class="ptolemy.actor.lib.MultiplyDivide">
-                <property name="_location" class="ptolemy.moml.Location" value="360.0, 329.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 329.5">
                 </property>
                 <port name="multiply" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -4114,7 +4114,7 @@ respectively pwm is on or off.</text></svg></configure>
                 </port>
             </entity>
             <entity name="i" class="ptolemy.actor.lib.AddSubtract">
-                <property name="_location" class="ptolemy.moml.Location" value="525.0, 428.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="525.0, 428.0">
                 </property>
                 <port name="plus" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -4138,7 +4138,7 @@ respectively pwm is on or off.</text></svg></configure>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="54.5, 109.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="54.5, 109.5">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -4158,7 +4158,7 @@ respectively pwm is on or off.</text></svg></configure>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="234.5, 79.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="234.5, 79.5">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -4178,7 +4178,7 @@ respectively pwm is on or off.</text></svg></configure>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="235.5, 354.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="235.5, 354.5">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -4189,7 +4189,7 @@ respectively pwm is on or off.</text></svg></configure>
                 </port>
             </entity>
             <entity name="bat_1" class="ptolemy.actor.lib.MultiplyDivide">
-                <property name="_location" class="ptolemy.moml.Location" value="360.0, 119.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 119.5">
                 </property>
                 <port name="multiply" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -4204,7 +4204,7 @@ respectively pwm is on or off.</text></svg></configure>
                 </port>
             </entity>
             <entity name="bat_2" class="ptolemy.actor.lib.MultiplyDivide">
-                <property name="_location" class="ptolemy.moml.Location" value="360.0, 389.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 389.5">
                 </property>
                 <port name="multiply" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -4228,7 +4228,7 @@ respectively pwm is on or off.</text></svg></configure>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="234.5, 144.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="234.5, 144.5">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -4248,7 +4248,7 @@ respectively pwm is on or off.</text></svg></configure>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="240.5, 414.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="240.5, 414.5">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -4259,7 +4259,7 @@ respectively pwm is on or off.</text></svg></configure>
                 </port>
             </entity>
             <entity name="Ax_11" class="ptolemy.actor.lib.MultiplyDivide">
-                <property name="_location" class="ptolemy.moml.Location" value="360.0, 184.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 184.5">
                 </property>
                 <port name="multiply" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -4274,7 +4274,7 @@ respectively pwm is on or off.</text></svg></configure>
                 </port>
             </entity>
             <entity name="Ax_12" class="ptolemy.actor.lib.MultiplyDivide">
-                <property name="_location" class="ptolemy.moml.Location" value="360.0, 249.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 249.5">
                 </property>
                 <port name="multiply" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -4298,7 +4298,7 @@ respectively pwm is on or off.</text></svg></configure>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="239.0, 209.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="239.0, 209.5">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -4318,7 +4318,7 @@ respectively pwm is on or off.</text></svg></configure>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="245.0, 274.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 274.5">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -4329,7 +4329,7 @@ respectively pwm is on or off.</text></svg></configure>
                 </port>
             </entity>
             <entity name="Ax_22" class="ptolemy.actor.lib.MultiplyDivide">
-                <property name="_location" class="ptolemy.moml.Location" value="360.0, 509.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 509.5">
                 </property>
                 <port name="multiply" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -4353,7 +4353,7 @@ respectively pwm is on or off.</text></svg></configure>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="250.0, 534.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 534.5">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -4373,7 +4373,7 @@ respectively pwm is on or off.</text></svg></configure>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="249.0, 474.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="249.0, 474.5">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -4384,7 +4384,7 @@ respectively pwm is on or off.</text></svg></configure>
                 </port>
             </entity>
             <entity name="Ax_21" class="ptolemy.actor.lib.MultiplyDivide">
-                <property name="_location" class="ptolemy.moml.Location" value="360.0, 449.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 449.5">
                 </property>
                 <port name="multiply" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -4510,7 +4510,7 @@ respectively pwm is on or off.</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="575.0, 244.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="575.0, 244.5">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -4524,7 +4524,7 @@ respectively pwm is on or off.</text></svg></configure>
             </property>
             <property name="top" class="ptolemy.data.expr.Parameter" value="max_motor_amps">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="576.0, 303.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="576.0, 303.5">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -4543,7 +4543,7 @@ respectively pwm is on or off.</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="79.0, 344.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="79.0, 344.5">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -4554,7 +4554,7 @@ respectively pwm is on or off.</text></svg></configure>
             </port>
         </entity>
         <entity name="pwm_off" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.moml.Location" value="140.0, 139.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 139.5">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[747, 626]">
             </property>
@@ -4562,31 +4562,31 @@ respectively pwm is on or off.</text></svg></configure>
             </property>
             <port name="vc_dot" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="600.5, 209.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="600.5, 209.0">
                 </property>
             </port>
             <port name="i_dot" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="596.0, 264.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="596.0, 264.0">
                 </property>
             </port>
             <port name="i" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="46.0, 180.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="46.0, 180.0">
                 </property>
             </port>
             <port name="vc" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="46.0, 111.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="46.0, 111.0">
                 </property>
             </port>
             <port name="back_emf" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="61.0, 44.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="61.0, 44.0">
                 </property>
             </port>
             <entity name="vc" class="ptolemy.actor.lib.AddSubtract">
-                <property name="_location" class="ptolemy.moml.Location" value="515.0, 137.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="515.0, 137.5">
                 </property>
                 <port name="plus" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -4601,7 +4601,7 @@ respectively pwm is on or off.</text></svg></configure>
                 </port>
             </entity>
             <entity name="emf_1" class="ptolemy.actor.lib.MultiplyDivide">
-                <property name="_location" class="ptolemy.moml.Location" value="360.0, 54.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 54.5">
                 </property>
                 <port name="multiply" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -4616,7 +4616,7 @@ respectively pwm is on or off.</text></svg></configure>
                 </port>
             </entity>
             <entity name="emf_2" class="ptolemy.actor.lib.MultiplyDivide">
-                <property name="_location" class="ptolemy.moml.Location" value="365.0, 289.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 289.5">
                 </property>
                 <port name="multiply" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -4631,7 +4631,7 @@ respectively pwm is on or off.</text></svg></configure>
                 </port>
             </entity>
             <entity name="i" class="ptolemy.actor.lib.AddSubtract">
-                <property name="_location" class="ptolemy.moml.Location" value="515.0, 368.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="515.0, 368.0">
                 </property>
                 <port name="plus" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -4655,7 +4655,7 @@ respectively pwm is on or off.</text></svg></configure>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="234.5, 79.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="234.5, 79.5">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -4675,7 +4675,7 @@ respectively pwm is on or off.</text></svg></configure>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="241.0, 314.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="241.0, 314.5">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -4686,7 +4686,7 @@ respectively pwm is on or off.</text></svg></configure>
                 </port>
             </entity>
             <entity name="Ax_11" class="ptolemy.actor.lib.MultiplyDivide">
-                <property name="_location" class="ptolemy.moml.Location" value="360.0, 124.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 124.5">
                 </property>
                 <port name="multiply" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -4701,7 +4701,7 @@ respectively pwm is on or off.</text></svg></configure>
                 </port>
             </entity>
             <entity name="Ax_12" class="ptolemy.actor.lib.MultiplyDivide">
-                <property name="_location" class="ptolemy.moml.Location" value="365.0, 189.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 189.5">
                 </property>
                 <port name="multiply" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -4725,7 +4725,7 @@ respectively pwm is on or off.</text></svg></configure>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="244.5, 149.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="244.5, 149.5">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -4745,7 +4745,7 @@ respectively pwm is on or off.</text></svg></configure>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="245.5, 214.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="245.5, 214.5">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -4756,7 +4756,7 @@ respectively pwm is on or off.</text></svg></configure>
                 </port>
             </entity>
             <entity name="Ax_22" class="ptolemy.actor.lib.MultiplyDivide">
-                <property name="_location" class="ptolemy.moml.Location" value="365.0, 414.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 414.5">
                 </property>
                 <port name="multiply" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -4780,7 +4780,7 @@ respectively pwm is on or off.</text></svg></configure>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="255.5, 439.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="255.5, 439.5">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -4800,7 +4800,7 @@ respectively pwm is on or off.</text></svg></configure>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="254.5, 379.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="254.5, 379.5">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -4811,7 +4811,7 @@ respectively pwm is on or off.</text></svg></configure>
                 </port>
             </entity>
             <entity name="Ax_21" class="ptolemy.actor.lib.MultiplyDivide">
-                <property name="_location" class="ptolemy.moml.Location" value="365.0, 354.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 354.5">
                 </property>
                 <port name="multiply" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -4904,7 +4904,7 @@ respectively pwm is on or off.</text></svg></configure>
             <link port="Ax_21.output" relation="relation22"/>
         </entity>
         <entity name="v_dot" class="ptolemy.actor.lib.BooleanSelect">
-            <property name="_location" class="ptolemy.moml.Location" value="345.0, 129.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="345.0, 129.5">
             </property>
             <port name="trueInput" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -4922,7 +4922,7 @@ respectively pwm is on or off.</text></svg></configure>
         <entity name="v" class="ptolemy.domains.ct.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="420.0, 132.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 132.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -4938,7 +4938,7 @@ respectively pwm is on or off.</text></svg></configure>
         <entity name="i" class="ptolemy.domains.ct.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="420.0, 203.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 203.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -5023,7 +5023,7 @@ respectively pwm is on or off.</text></svg></configure>
         <link port="i.output" relation="relation7"/>
     </entity>
     <entity name="sensors" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="315.0, 262.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 262.5">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[659, 533]">
         </property>
@@ -5037,31 +5037,31 @@ respectively pwm is on or off.</text></svg></configure>
         </property>
         <port name="throttle_position" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="64.0, 119.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="64.0, 119.0">
             </property>
         </port>
         <port name="throttle_positions" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="586.0, 224.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="586.0, 224.0">
             </property>
         </port>
         <port name="accelerator_position" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="70.0, 424.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 424.0">
             </property>
         </port>
         <port name="desired_throttle_position" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="451.0, 424.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="451.0, 424.0">
             </property>
         </port>
         <port name="powertrain_inputs" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="64.0, 489.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="64.0, 489.0">
             </property>
         </port>
         <entity name="tps1" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.moml.Location" value="175.0, 64.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 64.5">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -5069,12 +5069,12 @@ respectively pwm is on or off.</text></svg></configure>
             </property>
             <port name="throttle_position" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="84.0, 154.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="84.0, 154.0">
                 </property>
             </port>
             <port name="tps_volts" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="447.0, 154.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="447.0, 154.0">
                 </property>
             </port>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -5090,7 +5090,7 @@ respectively pwm is on or off.</text></svg></configure>
             <property name="upperBound" class="ptolemy.data.expr.Parameter" value="PI">
             </property>
             <doc>Create a sequence of uniformly distributed random numbers</doc>
-            <property name="_location" class="ptolemy.moml.Location" value="179.5, 128.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="179.5, 128.5">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -5108,7 +5108,7 @@ respectively pwm is on or off.</text></svg></configure>
             <property name="upperBound" class="ptolemy.data.expr.Parameter" value="PI">
             </property>
             <doc>Create a sequence of uniformly distributed random numbers</doc>
-            <property name="_location" class="ptolemy.moml.Location" value="180.5, 298.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="180.5, 298.5">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -5129,7 +5129,7 @@ respectively pwm is on or off.</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="210.5, 424.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="210.5, 424.5">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -5139,7 +5139,7 @@ respectively pwm is on or off.</text></svg></configure>
             </port>
         </entity>
         <entity name="sensor_1_working_p" class="ptolemy.actor.lib.BooleanSelect">
-            <property name="_location" class="ptolemy.moml.Location" value="414.0, 104.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="414.0, 104.5">
             </property>
             <port name="trueInput" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -5155,7 +5155,7 @@ respectively pwm is on or off.</text></svg></configure>
             </port>
         </entity>
         <entity name="sensor_2_working_p" class="ptolemy.actor.lib.BooleanSelect">
-            <property name="_location" class="ptolemy.moml.Location" value="419.0, 269.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="419.0, 269.5">
             </property>
             <port name="trueInput" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -5180,7 +5180,7 @@ respectively pwm is on or off.</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="271.0, 189.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="271.0, 189.5">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -5200,7 +5200,7 @@ respectively pwm is on or off.</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="271.0, 349.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="271.0, 349.5">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -5211,7 +5211,7 @@ respectively pwm is on or off.</text></svg></configure>
             </port>
         </entity>
         <entity name="Discard" class="ptolemy.actor.lib.Discard">
-            <property name="_location" class="ptolemy.moml.Location" value="170.0, 490.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 490.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -5219,7 +5219,7 @@ respectively pwm is on or off.</text></svg></configure>
             </port>
         </entity>
         <entity name="tps2" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.moml.Location" value="180.0, 224.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 224.5">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -5227,12 +5227,12 @@ respectively pwm is on or off.</text></svg></configure>
             </property>
             <port name="throttle_position" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="69.0, 149.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="69.0, 149.0">
                 </property>
             </port>
             <port name="tps_volts" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="452.0, 149.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="452.0, 149.0">
                 </property>
             </port>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -5241,7 +5241,7 @@ respectively pwm is on or off.</text></svg></configure>
             <link port="tps_volts" relation="relation"/>
         </entity>
         <entity name="throttle_positions" class="ptolemy.actor.lib.VectorAssembler">
-            <property name="_location" class="ptolemy.moml.Location" value="530.0, 184.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 184.5">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>

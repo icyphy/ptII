@@ -15,7 +15,7 @@
         </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="60.0, 27.203125">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 27.203125">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -35,7 +35,7 @@ six displays</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="304.9609375, 34.078125">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="304.9609375, 34.078125">
         </property>
     </property>
     <entity name="URLDirectoryReader" class="ptolemy.actor.lib.URLDirectoryReader">
@@ -50,7 +50,7 @@ six displays</text></svg></configure>
             </property>
         </property>
         <doc>Read a directory and output each file or subdirectory</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="72.078125, 92.203125">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="72.078125, 92.203125">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -62,7 +62,7 @@ six displays</text></svg></configure>
         </port>
     </entity>
     <entity name="URLToImage" class="ptolemy.actor.lib.image.URLToImage>">
-        <property name="_location" class="ptolemy.moml.Location" value="276.5859375, 92.203125">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="276.5859375, 92.203125">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -72,7 +72,7 @@ six displays</text></svg></configure>
         </port>
     </entity>
     <entity name="1:URLToImage" class="ptolemy.actor.lib.image.URLToImage>">
-        <property name="_location" class="ptolemy.moml.Location" value="286.5859375, 152.1875">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="286.5859375, 152.1875">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -82,7 +82,7 @@ six displays</text></svg></configure>
         </port>
     </entity>
     <entity name="2:URLToImage" class="ptolemy.actor.lib.image.URLToImage>">
-        <property name="_location" class="ptolemy.moml.Location" value="286.5859375, 207.1875">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="286.5859375, 207.1875">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -92,7 +92,7 @@ six displays</text></svg></configure>
         </port>
     </entity>
     <entity name="3:URLToImage" class="ptolemy.actor.lib.image.URLToImage>">
-        <property name="_location" class="ptolemy.moml.Location" value="286.5859375, 272.1875">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="286.5859375, 272.1875">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -102,7 +102,7 @@ six displays</text></svg></configure>
         </port>
     </entity>
     <entity name="4:URLToImage" class="ptolemy.actor.lib.image.URLToImage>">
-        <property name="_location" class="ptolemy.moml.Location" value="291.5859375, 332.203125">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="291.5859375, 332.203125">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -112,7 +112,7 @@ six displays</text></svg></configure>
         </port>
     </entity>
     <entity name="5:URLToImage" class="ptolemy.actor.lib.image.URLToImage>">
-        <property name="_location" class="ptolemy.moml.Location" value="296.5859375, 397.203125">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="296.5859375, 397.203125">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -124,7 +124,7 @@ six displays</text></svg></configure>
     <entity name="FullScreenImageDisplay" class="ptolemy.apps.fullscreen.FullScreenImageDisplay">
         <property name="exitFullScreenModeInWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="562.9453125, 52.1328125">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="562.9453125, 52.1328125">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -145,7 +145,7 @@ six displays</text></svg></configure>
         <property name="upperBound" class="ptolemy.data.expr.Parameter" value="1000.0">
         </property>
         <doc>Create a sequence of uniformly distributed random numbers</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="350.0, 122.1328125">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 122.1328125">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -168,7 +168,7 @@ six displays</text></svg></configure>
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="415.0, 92.203125">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 92.203125">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -178,7 +178,7 @@ six displays</text></svg></configure>
         </port>
     </entity>
     <entity name="GraphicsDevices" class="ptolemy.apps.fullscreen.GraphicsDevices">
-        <property name="_location" class="ptolemy.moml.Location" value="486.265625, 347.1328125">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="486.265625, 347.1328125">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -191,7 +191,7 @@ six displays</text></svg></configure>
     <entity name="ArrayElement" class="ptolemy.actor.lib.ArrayElement">
         <property name="index" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="500.0, 210.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 210.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

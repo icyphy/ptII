@@ -13,7 +13,7 @@
         </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="73.0, 38.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="73.0, 38.0">
         </property>
     </property>
     <entity name="Ramp1" class="ptolemy.actor.lib.Ramp">
@@ -24,7 +24,7 @@
         <property name="step" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="84.0, 159.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="84.0, 159.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -35,7 +35,7 @@
         </port>
     </entity>
     <entity name="opaque_dt" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="214.0, 159.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="214.0, 159.0">
         </property>
         <property name="Inside DT Director" class="ptolemy.domains.dt.kernel.DTDirector">
             <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
@@ -46,12 +46,12 @@
             </property>
             <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="71.0, 38.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="71.0, 38.0">
             </property>
         </property>
         <port name="port0" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="location1" class="ptolemy.moml.Location" value="79.0, 164.0">
+            <property name="location1" class="ptolemy.kernel.util.Location" value="79.0, 164.0">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="2">
             </property>
@@ -62,7 +62,7 @@
         </port>
         <port name="port1" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="location1" class="ptolemy.moml.Location" value="472.0, 164.0">
+            <property name="location1" class="ptolemy.kernel.util.Location" value="472.0, 164.0">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -78,7 +78,7 @@
             </property>
             <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="[0, 0]">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="264.0, 158.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="264.0, 158.0">
             </property>
             <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
                 <property name="input"/>
@@ -111,7 +111,7 @@
     <entity name="CurrentTime4" class="ptolemy.actor.lib.CurrentTime">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="342.0, 160.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="342.0, 160.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -126,7 +126,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="477.0, 160.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="477.0, 160.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -136,7 +136,7 @@
     <entity name="CurrentTime5" class="ptolemy.actor.lib.CurrentTime">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="218.0, 236.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="218.0, 236.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -151,7 +151,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="389.0, 236.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="389.0, 236.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

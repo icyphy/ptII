@@ -8,32 +8,32 @@
     </property>
     <port name="1:1:desired_throttle_position" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.moml.Location" value="83.0, 189.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="83.0, 189.0">
         </property>
     </port>
     <port name="1:1:current" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.moml.Location" value="761.5, 230.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="761.5, 230.0">
         </property>
     </port>
     <port name="1:1:throttle_velocity" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.moml.Location" value="59.0, 309.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="59.0, 309.0">
         </property>
     </port>
     <port name="1:desired_throttle_acceleration" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.moml.Location" value="90.0, 459.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 459.0">
         </property>
     </port>
     <port name="1:desired_throttle_velocity" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.moml.Location" value="78.0, 249.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="78.0, 249.0">
         </property>
     </port>
     <port name="1:1:throttle_position" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.moml.Location" value="59.0, 134.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="59.0, 134.0">
         </property>
     </port>
     <entity name="1:1:theta_eq" class="ptolemy.actor.lib.Const">
@@ -46,7 +46,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="146.5, 84.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="146.5, 84.5">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -67,7 +67,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="581.0, 309.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="581.0, 309.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -77,7 +77,7 @@
         </port>
     </entity>
     <entity name="1:1:s" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.moml.Location" value="395.0, 152.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 152.5">
         </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -92,7 +92,7 @@
         </port>
     </entity>
     <entity name="1:1:velocity error" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.moml.Location" value="308.0, 239.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="308.0, 239.5">
         </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -107,7 +107,7 @@
         </port>
     </entity>
     <entity name="1:1:current" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.moml.Location" value="695.0, 228.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="695.0, 228.5">
         </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -132,7 +132,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="580.0, 29.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="580.0, 29.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -152,7 +152,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="570.0, 154.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="570.0, 154.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -162,7 +162,7 @@
         </port>
     </entity>
     <entity name="1:1:angle" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.moml.Location" value="195.0, 29.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 29.5">
         </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -187,7 +187,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="594.0, 464.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="594.0, 464.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -207,7 +207,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="586.0, 239.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="586.0, 239.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -227,7 +227,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="596.5, 384.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="596.5, 384.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -247,7 +247,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="235.5, 144.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="235.5, 144.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -279,7 +279,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="313.0, 384.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="313.0, 384.5">
         </property>
         <port name="firstOperand" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -311,7 +311,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="475.0, 154.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="475.0, 154.5">
         </property>
         <port name="firstOperand" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -321,7 +321,7 @@
         </port>
     </entity>
     <entity name="1:1:angle error" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.moml.Location" value="145.5, 142.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="145.5, 142.5">
         </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

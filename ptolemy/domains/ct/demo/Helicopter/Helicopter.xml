@@ -31,11 +31,11 @@
         </property>
         <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="80.0, 545.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 545.0">
         </property>
     </property>
     <property name="13:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="415.0, 475.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 475.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -56,17 +56,17 @@ Five controllers are applied sequentially to the modes.</text>
     </property>
     <port name="port" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.moml.Location" value="800.0, 335.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="800.0, 335.0">
         </property>
     </port>
     <entity name="Controllers" class="ptolemy.domains.ct.kernel.CTCompositeActor">
         <property name="HSDirector" class="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="HSController">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="478.0, 388.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="478.0, 388.0">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="715.0, 95.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="715.0, 95.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
         </property>
@@ -74,67 +74,67 @@ Five controllers are applied sequentially to the modes.</text>
         </property>
         <port name="inputPx" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="108.0, 135.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="108.0, 135.0">
             </property>
         </port>
         <port name="inputDPx" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="104.0, 280.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="104.0, 280.0">
             </property>
         </port>
         <port name="inputDDPx" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="108.0, 99.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="108.0, 99.0">
             </property>
         </port>
         <port name="inputD3Px" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="108.0, 315.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="108.0, 315.0">
             </property>
         </port>
         <port name="inputD4Px" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="108.0, 63.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="108.0, 63.0">
             </property>
         </port>
         <port name="inputPz" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="100.0, 210.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 210.0">
             </property>
         </port>
         <port name="inputDPz" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="103.0, 351.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="103.0, 351.0">
             </property>
         </port>
         <port name="inputDDPz" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="108.0, 171.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="108.0, 171.0">
             </property>
         </port>
         <port name="inputD3Pz" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="108.0, 243.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="108.0, 243.0">
             </property>
         </port>
         <port name="inputD4Pz" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="108.0, 387.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="108.0, 387.0">
             </property>
         </port>
         <port name="inputAction" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="407.0, 27.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="407.0, 27.0">
             </property>
         </port>
         <port name="outputVx" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="530.0, 285.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 285.0">
             </property>
         </port>
         <port name="outputVz" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="525.0, 315.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="525.0, 315.0">
             </property>
         </port>
         <entity name="HSController" class="ptolemy.domains.fsm.kernel.FSMActor">
@@ -142,7 +142,7 @@ Five controllers are applied sequentially to the modes.</text>
             </property>
             <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="542.0, 203.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="542.0, 203.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[799, 454]">
             </property>
@@ -150,28 +150,28 @@ Five controllers are applied sequentially to the modes.</text>
             </property>
             <port name="inputAction" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="59.5, 73.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="59.5, 73.0">
                 </property>
             </port>
             <port name="inputPz" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="47.5, 122.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="47.5, 122.0">
                 </property>
             </port>
             <port name="outputV" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="48.0, 164.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="48.0, 164.0">
                 </property>
             </port>
             <port name="outputR" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="51.0, 206.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="51.0, 206.0">
                 </property>
             </port>
             <entity name="HoverState" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="HoverCTSub">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="327.0, 84.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="327.0, 84.0">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
@@ -181,7 +181,7 @@ Five controllers are applied sequentially to the modes.</text>
             <entity name="AccelState" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="AccelCTSub">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="393.0, 147.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="393.0, 147.0">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
@@ -191,7 +191,7 @@ Five controllers are applied sequentially to the modes.</text>
             <entity name="Cruise1State" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Cruise1CTSub">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="477.0, 213.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="477.0, 213.0">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
@@ -201,7 +201,7 @@ Five controllers are applied sequentially to the modes.</text>
             <entity name="ClimbState" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="ClimbCTSub">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="601.0, 289.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="601.0, 289.0">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
@@ -211,7 +211,7 @@ Five controllers are applied sequentially to the modes.</text>
             <entity name="Cruise2State" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Cruise2CTSub">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="750.0, 344.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="750.0, 344.0">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
@@ -335,10 +335,10 @@ Five controllers are applied sequentially to the modes.</text>
                 </property>
                 <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="480.0, 369.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="480.0, 369.0">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="295.0, 195.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 195.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
             </property>
@@ -346,72 +346,72 @@ Five controllers are applied sequentially to the modes.</text>
             </property>
             <port name="inputPx" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="120.0, 351.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 351.0">
                 </property>
             </port>
             <port name="inputDPx" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="120.0, 387.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 387.0">
                 </property>
             </port>
             <port name="inputDDPx" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="120.0, 315.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 315.0">
                 </property>
             </port>
             <port name="inputD3Px" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="120.0, 279.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 279.0">
                 </property>
             </port>
             <port name="inputD4Px" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="120.0, 207.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 207.0">
                 </property>
             </port>
             <port name="inputPz" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="120.0, 171.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 171.0">
                 </property>
             </port>
             <port name="inputDPz" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="120.0, 243.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 243.0">
                 </property>
             </port>
             <port name="inputDDPz" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="120.0, 135.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 135.0">
                 </property>
             </port>
             <port name="inputD3Pz" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="120.0, 63.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 63.0">
                 </property>
             </port>
             <port name="inputD4Pz" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="120.0, 99.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 99.0">
                 </property>
             </port>
             <port name="outputVx" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="480.0, 81.25">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="480.0, 81.25">
                 </property>
             </port>
             <port name="outputVz" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="479.5, 153.25">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="479.5, 153.25">
                 </property>
             </port>
             <port name="outputV" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="480.0, 225.25">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="480.0, 225.25">
                 </property>
             </port>
             <port name="outputR" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="479.5, 297.25">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="479.5, 297.25">
                 </property>
             </port>
             <entity name="Hover" class="ptolemy.domains.ct.demo.Helicopter.HoverLinearizer">
@@ -421,7 +421,7 @@ Five controllers are applied sequentially to the modes.</text>
                 </property>
                 <property name="CPz" class="ptolemy.data.expr.Parameter" value="-2.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="360.0, 225.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 225.0">
                 </property>
                 <port name="inputPx" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -551,10 +551,10 @@ Five controllers are applied sequentially to the modes.</text>
                 </property>
                 <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="492.0, 375.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="492.0, 375.0">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="295.0, 76.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 76.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
             </property>
@@ -562,72 +562,72 @@ Five controllers are applied sequentially to the modes.</text>
             </property>
             <port name="inputPx" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="204.0, 315.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="204.0, 315.0">
                 </property>
             </port>
             <port name="inputDPx" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="200.0, 135.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 135.0">
                 </property>
             </port>
             <port name="inputDDPx" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="204.0, 243.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="204.0, 243.0">
                 </property>
             </port>
             <port name="inputD3Px" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="204.0, 351.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="204.0, 351.0">
                 </property>
             </port>
             <port name="inputD4Px" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="204.0, 279.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="204.0, 279.0">
                 </property>
             </port>
             <port name="inputPz" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="113.0, 50.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="113.0, 50.0">
                 </property>
             </port>
             <port name="inputDPz" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="202.0, 386.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="202.0, 386.0">
                 </property>
             </port>
             <port name="inputDDPz" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="204.0, 171.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="204.0, 171.0">
                 </property>
             </port>
             <port name="inputD3Pz" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="204.0, 99.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="204.0, 99.0">
                 </property>
             </port>
             <port name="inputD4Pz" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="204.0, 207.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="204.0, 207.0">
                 </property>
             </port>
             <port name="outputVx" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="492.0, 135.25">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="492.0, 135.25">
                 </property>
             </port>
             <port name="outputVz" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="491.5, 195.25">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="491.5, 195.25">
                 </property>
             </port>
             <port name="outputV" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="492.0, 255.25">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="492.0, 255.25">
                 </property>
             </port>
             <port name="outputR" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="491.5, 315.25">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="491.5, 315.25">
                 </property>
             </port>
             <entity name="Accel" class="ptolemy.domains.ct.demo.Helicopter.AccelerLinearizer">
@@ -639,7 +639,7 @@ Five controllers are applied sequentially to the modes.</text>
                 </property>
                 <property name="CPz" class="ptolemy.data.expr.Parameter" value="-2.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="404.0, 232.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="404.0, 232.0">
                 </property>
                 <port name="inputPx" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -689,7 +689,7 @@ Five controllers are applied sequentially to the modes.</text>
                 </property>
                 <property name="thresholdCenter" class="ptolemy.data.expr.Parameter" value="-2.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="420.0, 55.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 55.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -790,10 +790,10 @@ Five controllers are applied sequentially to the modes.</text>
                 </property>
                 <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="406.0, 46.28570556640625">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="406.0, 46.28570556640625">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="300.0, 135.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 135.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
             </property>
@@ -801,72 +801,72 @@ Five controllers are applied sequentially to the modes.</text>
             </property>
             <port name="inputPx" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="105.0, 350.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 350.0">
                 </property>
             </port>
             <port name="inputDPx" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="108.0, 63.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="108.0, 63.0">
                 </property>
             </port>
             <port name="inputDDPx" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="108.0, 315.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="108.0, 315.0">
                 </property>
             </port>
             <port name="inputD3Px" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="108.0, 243.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="108.0, 243.0">
                 </property>
             </port>
             <port name="inputD4Px" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="108.0, 171.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="108.0, 171.0">
                 </property>
             </port>
             <port name="inputPz" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="105.0, 390.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 390.0">
                 </property>
             </port>
             <port name="inputDPz" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="108.0, 99.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="108.0, 99.0">
                 </property>
             </port>
             <port name="inputDDPz" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="108.0, 135.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="108.0, 135.0">
                 </property>
             </port>
             <port name="inputD3Pz" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="108.0, 279.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="108.0, 279.0">
                 </property>
             </port>
             <port name="inputD4Pz" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="108.0, 207.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="108.0, 207.0">
                 </property>
             </port>
             <port name="outputVx" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="492.0, 173.53571428571428">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="492.0, 173.53571428571428">
                 </property>
             </port>
             <port name="outputVz" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="492.5, 217.25">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="492.5, 217.25">
                 </property>
             </port>
             <port name="outputV" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="489.0, 302.4642857142857">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="489.0, 302.4642857142857">
                 </property>
             </port>
             <port name="outputR" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="488.5, 263.17857142857144">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="488.5, 263.17857142857144">
                 </property>
             </port>
             <entity name="Cruise1" class="ptolemy.domains.ct.demo.Helicopter.CruiseLinearizer">
@@ -878,7 +878,7 @@ Five controllers are applied sequentially to the modes.</text>
                 </property>
                 <property name="CPz" class="ptolemy.data.expr.Parameter" value="-2.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="300.0, 225.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 225.0">
                 </property>
                 <port name="inputPx" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -928,7 +928,7 @@ Five controllers are applied sequentially to the modes.</text>
                 </property>
                 <property name="thresholdCenter" class="ptolemy.data.expr.Parameter" value="5.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="406.0, 385.7142868041992">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="406.0, 385.7142868041992">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -946,7 +946,7 @@ Five controllers are applied sequentially to the modes.</text>
                 </property>
                 <property name="thresholdCenter" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="440.0, 119.14285659790039">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="440.0, 119.14285659790039">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1050,10 +1050,10 @@ Five controllers are applied sequentially to the modes.</text>
                 </property>
                 <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="500.0, 379.28570556640625">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 379.28570556640625">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="296.0, 325.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="296.0, 325.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
             </property>
@@ -1061,72 +1061,72 @@ Five controllers are applied sequentially to the modes.</text>
             </property>
             <port name="inputPx" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="180.0, 385.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 385.0">
                 </property>
             </port>
             <port name="inputDPx" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="180.0, 207.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 207.0">
                 </property>
             </port>
             <port name="inputDDPx" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="180.0, 351.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 351.0">
                 </property>
             </port>
             <port name="inputD3Px" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="180.0, 135.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 135.0">
                 </property>
             </port>
             <port name="inputD4Px" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="180.0, 315.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 315.0">
                 </property>
             </port>
             <port name="inputPz" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="90.0, 60.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 60.0">
                 </property>
             </port>
             <port name="inputDPz" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="180.0, 99.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 99.0">
                 </property>
             </port>
             <port name="inputDDPz" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="180.0, 171.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 171.0">
                 </property>
             </port>
             <port name="inputD3Pz" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="180.0, 243.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 243.0">
                 </property>
             </port>
             <port name="inputD4Pz" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="180.0, 279.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 279.0">
                 </property>
             </port>
             <port name="outputVx" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="500.0, 173.53571428571428">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 173.53571428571428">
                 </property>
             </port>
             <port name="outputVz" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="499.5, 225.25">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="499.5, 225.25">
                 </property>
             </port>
             <port name="outputV" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="500.0, 276.4642857142857">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 276.4642857142857">
                 </property>
             </port>
             <port name="outputR" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="499.5, 328.17857142857144">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="499.5, 328.17857142857144">
                 </property>
             </port>
             <entity name="Climb" class="ptolemy.domains.ct.demo.Helicopter.ClimbLinearizer">
@@ -1136,7 +1136,7 @@ Five controllers are applied sequentially to the modes.</text>
                 </property>
                 <property name="CVz" class="ptolemy.data.expr.Parameter" value="-1.7">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="361.0, 243.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="361.0, 243.0">
                 </property>
                 <port name="inputPx" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1186,7 +1186,7 @@ Five controllers are applied sequentially to the modes.</text>
                 </property>
                 <property name="thresholdCenter" class="ptolemy.data.expr.Parameter" value="-10.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="490.0, 60.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="490.0, 60.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1204,7 +1204,7 @@ Five controllers are applied sequentially to the modes.</text>
                 </property>
                 <property name="thresholdCenter" class="ptolemy.data.expr.Parameter" value="5.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="500.0, 122.14285659790039">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 122.14285659790039">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1308,10 +1308,10 @@ Five controllers are applied sequentially to the modes.</text>
                 </property>
                 <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="480.0, 369.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="480.0, 369.0">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="302.0, 255.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="302.0, 255.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
             </property>
@@ -1319,72 +1319,72 @@ Five controllers are applied sequentially to the modes.</text>
             </property>
             <port name="inputPx" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="120.0, 279.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 279.0">
                 </property>
             </port>
             <port name="inputDPx" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="120.0, 63.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 63.0">
                 </property>
             </port>
             <port name="inputDDPx" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="120.0, 387.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 387.0">
                 </property>
             </port>
             <port name="inputD3Px" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="120.0, 351.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 351.0">
                 </property>
             </port>
             <port name="inputD4Px" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="120.0, 171.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 171.0">
                 </property>
             </port>
             <port name="inputPz" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="120.0, 135.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 135.0">
                 </property>
             </port>
             <port name="inputDPz" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="120.0, 243.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 243.0">
                 </property>
             </port>
             <port name="inputDDPz" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="120.0, 99.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 99.0">
                 </property>
             </port>
             <port name="inputD3Pz" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="120.0, 207.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 207.0">
                 </property>
             </port>
             <port name="inputD4Pz" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="120.0, 315.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 315.0">
                 </property>
             </port>
             <port name="outputVx" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="480.0, 81.25">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="480.0, 81.25">
                 </property>
             </port>
             <port name="outputVz" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="479.5, 153.25">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="479.5, 153.25">
                 </property>
             </port>
             <port name="outputV" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="480.0, 225.25">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="480.0, 225.25">
                 </property>
             </port>
             <port name="outputR" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="479.5, 297.25">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="479.5, 297.25">
                 </property>
             </port>
             <entity name="Cruise2" class="ptolemy.domains.ct.demo.Helicopter.CruiseLinearizer">
@@ -1396,7 +1396,7 @@ Five controllers are applied sequentially to the modes.</text>
                 </property>
                 <property name="CPz" class="ptolemy.data.expr.Parameter" value="-10.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="360.0, 225.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 225.0">
                 </property>
                 <port name="inputPx" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1653,7 +1653,7 @@ Five controllers are applied sequentially to the modes.</text>
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{false, true}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="435.0, 145.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="435.0, 145.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -1672,7 +1672,7 @@ Five controllers are applied sequentially to the modes.</text>
         </property>
         <property name="Mass" class="ptolemy.data.expr.Parameter" value="4.9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="327.288890923394, 324.1235284468707">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="327.288890923394, 324.1235284468707">
         </property>
         <port name="inputTm" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1702,7 +1702,7 @@ Five controllers are applied sequentially to the modes.</text>
         </property>
         <property name="Mass" class="ptolemy.data.expr.Parameter" value="4.9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="77.24444851345481, 296.68181696805084">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="77.24444851345481, 296.68181696805084">
         </property>
         <port name="inputTm" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1744,7 +1744,7 @@ Five controllers are applied sequentially to the modes.</text>
         </property>
         <property name="Mass" class="ptolemy.data.expr.Parameter" value="4.9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="365.0, 95.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 95.0">
         </property>
         <port name="inputTm" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1780,7 +1780,7 @@ Five controllers are applied sequentially to the modes.</text>
     <entity name="IntegratorPx" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="555.0, 255.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="555.0, 255.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1796,7 +1796,7 @@ Five controllers are applied sequentially to the modes.</text>
     <entity name="IntegratorDPx" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="430.0, 255.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="430.0, 255.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1812,7 +1812,7 @@ Five controllers are applied sequentially to the modes.</text>
     <entity name="IntegratorPz" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="-1.5">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="560.0, 330.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="560.0, 330.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1828,7 +1828,7 @@ Five controllers are applied sequentially to the modes.</text>
     <entity name="IntegratorDPz" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="435.0, 330.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="435.0, 330.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1844,7 +1844,7 @@ Five controllers are applied sequentially to the modes.</text>
     <entity name="IntegratorTh" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="295.0, 455.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 455.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1860,7 +1860,7 @@ Five controllers are applied sequentially to the modes.</text>
     <entity name="IntegratorDTh" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="435.0, 380.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="435.0, 380.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1876,7 +1876,7 @@ Five controllers are applied sequentially to the modes.</text>
     <entity name="IntegratorTm" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="48.02">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="332.1333272298176, 264.19999893188475">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="332.1333272298176, 264.19999893188475">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1892,7 +1892,7 @@ Five controllers are applied sequentially to the modes.</text>
     <entity name="IntegratorDTm" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="251.9777787950303, 266.19999893188475">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="251.9777787950303, 266.19999893188475">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1908,7 +1908,7 @@ Five controllers are applied sequentially to the modes.</text>
     <entity name="IntegratorDDTm" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="164.82222273084847, 266.19999893188475">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="164.82222273084847, 266.19999893188475">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1924,7 +1924,7 @@ Five controllers are applied sequentially to the modes.</text>
     <entity name="IntegratorA" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="158.1333272298176, 317.3200015258789">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="158.1333272298176, 317.3200015258789">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1942,7 +1942,7 @@ Five controllers are applied sequentially to the modes.</text>
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="665.0, 330.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="665.0, 330.0">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
@@ -1964,7 +1964,7 @@ Five controllers are applied sequentially to the modes.</text>
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="765.0, 265.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="765.0, 265.0">
         </property>
         <port name="inputX" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1991,7 +1991,7 @@ Five controllers are applied sequentially to the modes.</text>
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="570.0, 190.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="570.0, 190.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -2014,7 +2014,7 @@ Five controllers are applied sequentially to the modes.</text>
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="760.0, 370.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="760.0, 370.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -2037,7 +2037,7 @@ Five controllers are applied sequentially to the modes.</text>
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="310.0, 550.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 550.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

@@ -127,7 +127,7 @@
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="25.0, 20.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 20.0">
                 </property>
             </property>
             <doc>This composite actor generates a sine wave.</doc>

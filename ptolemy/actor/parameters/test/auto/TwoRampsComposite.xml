@@ -15,7 +15,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="80.0, 45.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 45.0">
         </property>
     </property>
     <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
@@ -26,7 +26,7 @@
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="100.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 165.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -40,7 +40,7 @@
         </port>
     </entity>
     <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="240.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 165.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -53,7 +53,7 @@
             </property>
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="70.0, 35.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 35.0">
             </property>
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
@@ -70,17 +70,17 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="185.0, 50.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 50.0">
             </property>
         </property>
         <port name="step" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="165.0, 50.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 50.0">
             </property>
         </port>
         <port name="port" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="310.0, 180.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 180.0">
             </property>
             <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -95,7 +95,7 @@
             <property name="step" class="ptolemy.actor.parameters.PortParameter" value="step">
             </property>
             <doc>Create a sequence of tokens with increasing value</doc>
-            <property name="_location" class="ptolemy.moml.Location" value="190.0, 150.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="190.0, 150.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -118,7 +118,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="385.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="385.0, 165.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

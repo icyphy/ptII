@@ -23,7 +23,7 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="110.0, 60.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 60.0">
         </property>
     </property>
     <entity name="1:TriggeredClock" class="ptolemy.actor.lib.TriggeredClock">
@@ -37,7 +37,7 @@
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{true,false,true}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="216.0, 206.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="216.0, 206.5">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -54,7 +54,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="483.5, 205.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="483.5, 205.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -68,7 +68,7 @@
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="115.49999999999999, 206.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="115.49999999999999, 206.5">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>

@@ -19,13 +19,13 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="95.0, 35.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 35.0">
         </property>
     </property>
     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="100.0">
     </property>
     <property name="0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="335.0, 5.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 5.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -49,7 +49,7 @@ average arrival rate of busses is the same.</text>
         </property>
     </property>
     <property name="0:0:0:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="25.0, 55.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 55.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -82,7 +82,7 @@ order.</text>
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{2}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="60.0, 265.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 265.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -99,7 +99,7 @@ order.</text>
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="60.0, 330.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 330.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -110,7 +110,7 @@ order.</text>
         </port>
     </entity>
     <entity name="Poisson Waiting Time" class="ptolemy.domains.de.lib.WaitingTime">
-        <property name="_location" class="ptolemy.moml.Location" value="240.0, 255.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 255.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -129,7 +129,7 @@ order.</text>
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="250.0, 170.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 170.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -158,7 +158,7 @@ order.</text>
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Poisson, Regular">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="480.0, 275.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="480.0, 275.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -189,7 +189,7 @@ order.</text>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{3.0}">
         </property>
         <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="60.0, 190.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 190.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -200,7 +200,7 @@ order.</text>
         </port>
     </entity>
     <entity name="Regular Waiting Time" class="ptolemy.domains.de.lib.WaitingTime">
-        <property name="_location" class="ptolemy.moml.Location" value="243.0, 318.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="243.0, 318.5">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -213,7 +213,7 @@ order.</text>
         </port>
     </entity>
     <entity name="Report Poisson Average" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="400.5, 348.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="400.5, 348.5">
         </property>
         <property name="caption" class="ptolemy.data.expr.Parameter" value="&quot;Average waiting time (Poisson busses): &quot;">
         </property>
@@ -243,26 +243,26 @@ actor, for example, adds strings by appending them.</text></svg></configure>
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="30.0, 45.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 45.0">
             </property>
         </property>
         <port name="data" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="65.0, 205.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 205.0">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="67.21065998077393, 341.9994239807129">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="67.21065998077393, 341.9994239807129">
             </property>
         </port>
         <port name="report" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="460.0, 265.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 265.0">
             </property>
         </port>
         <entity name="Average" class="ptolemy.actor.lib.Average">
-            <property name="_location" class="ptolemy.moml.Location" value="145.0, 230.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 230.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -277,7 +277,7 @@ actor, for example, adds strings by appending them.</text></svg></configure>
         <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
             <property name="initialValue" class="ptolemy.data.expr.Parameter">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="255.0, 255.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 255.0">
             </property>
             <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
                 <property name="input"/>
@@ -292,7 +292,7 @@ actor, for example, adds strings by appending them.</text></svg></configure>
             </port>
         </entity>
         <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-            <property name="_location" class="ptolemy.moml.Location" value="380.0, 265.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 265.0">
             </property>
             <port name="plus" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -310,7 +310,7 @@ actor, for example, adds strings by appending them.</text></svg></configure>
             <property name="value" class="ptolemy.data.expr.Parameter" value="caption">
             </property>
             <doc>Create a constant sequence</doc>
-            <property name="_location" class="ptolemy.moml.Location" value="255.0, 339.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 339.5">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -361,7 +361,7 @@ actor, for example, adds strings by appending them.</text></svg></configure>
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="560.0, 348.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="560.0, 348.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -373,14 +373,14 @@ actor, for example, adds strings by appending them.</text></svg></configure>
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="210.0, 420.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 420.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
     </entity>
     <entity name="Report Regular Average" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="400.0, 410.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="400.0, 410.0">
         </property>
         <property name="caption" class="ptolemy.data.expr.Parameter" value="&quot;Average waiting time (Regular busses): &quot;">
         </property>
@@ -410,26 +410,26 @@ actor, for example, adds strings by appending them.</text></svg></configure>
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="30.0, 45.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 45.0">
             </property>
         </property>
         <port name="data" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="65.0, 205.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 205.0">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="67.21065998077393, 341.9994239807129">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="67.21065998077393, 341.9994239807129">
             </property>
         </port>
         <port name="report" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="460.0, 265.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 265.0">
             </property>
         </port>
         <entity name="Average" class="ptolemy.actor.lib.Average">
-            <property name="_location" class="ptolemy.moml.Location" value="145.0, 230.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 230.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -444,7 +444,7 @@ actor, for example, adds strings by appending them.</text></svg></configure>
         <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
             <property name="initialValue" class="ptolemy.data.expr.Parameter">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="255.0, 255.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 255.0">
             </property>
             <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
                 <property name="input"/>
@@ -459,7 +459,7 @@ actor, for example, adds strings by appending them.</text></svg></configure>
             </port>
         </entity>
         <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-            <property name="_location" class="ptolemy.moml.Location" value="380.0, 265.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 265.0">
             </property>
             <port name="plus" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -477,7 +477,7 @@ actor, for example, adds strings by appending them.</text></svg></configure>
             <property name="value" class="ptolemy.data.expr.Parameter" value="caption">
             </property>
             <doc>Create a constant sequence</doc>
-            <property name="_location" class="ptolemy.moml.Location" value="255.0, 339.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 339.5">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">

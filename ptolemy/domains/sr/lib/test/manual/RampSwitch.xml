@@ -15,7 +15,7 @@
         </property>
         <property name="Scheduler" class="ptolemy.domains.sr.kernel.SRRandomizedScheduler">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="73.0, 38.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="73.0, 38.0">
         </property>
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -26,7 +26,7 @@
         <property name="step" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="73.0, 191.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="73.0, 191.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -37,7 +37,7 @@
         </port>
     </entity>
     <entity name="Switch" class="ptolemy.actor.lib.Switch">
-        <property name="_location" class="ptolemy.moml.Location" value="270.0, 231.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 231.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -59,7 +59,7 @@
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="124.0, 318.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="124.0, 318.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -80,7 +80,7 @@
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="432.0, 173.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="432.0, 173.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -110,7 +110,7 @@
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="428.0, 318.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="428.0, 318.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

@@ -15,7 +15,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="86.0, 197.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="86.0, 197.0">
         </property>
     </property>
     <entity name="SequencePlotter3" class="ptolemy.actor.lib.gui.SequencePlotter">
@@ -29,7 +29,7 @@
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="335.0, 264.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 264.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -45,7 +45,7 @@
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="76.0, 265.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="76.0, 265.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -59,7 +59,7 @@
         <property name="order" class="ptolemy.data.expr.Parameter" value="8">
         </property>
         <doc>Forward Fast Fourier Transform</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="199.0, 265.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="199.0, 265.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>

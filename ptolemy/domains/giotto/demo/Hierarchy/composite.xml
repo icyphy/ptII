@@ -13,7 +13,7 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="68.0, 35.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 35.0">
         </property>
     </property>
     <property name="internalFrequency" class="ptolemy.data.expr.Parameter" value="3">
@@ -24,18 +24,18 @@
     </property>
     <port name="input" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.moml.Location" value="109.0, 134.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="109.0, 134.0">
         </property>
     </port>
     <port name="output" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.moml.Location" value="351.0, 91.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="351.0, 91.0">
         </property>
     </port>
     <entity name="adder" class="ptolemy.actor.lib.AddSubtract">
         <property name="frequency" class="ptolemy.data.expr.Parameter" value="internalFrequency">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="227.0, 137.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="227.0, 137.0">
         </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
