@@ -1350,7 +1350,7 @@ public class XmlParser {
     {
         String name;
         int type;
-        String enum = null;
+        String enumeratedValues = null;
 
                                 // Read the attribute name.
         name = readNmtoken(true);
@@ -1362,12 +1362,12 @@ public class XmlParser {
                                 // Get the string of enumerated values
                                 // if necessary.
         if (type == ATTRIBUTE_ENUMERATED || type == ATTRIBUTE_NOTATION) {
-            enum = dataBufferToString();
+            enumeratedValues = dataBufferToString();
         }
 
                                 // Read the default value.
         requireWhitespace();
-        parseDefault(elementName, name, type, enum);
+        parseDefault(elementName, name, type, enumeratedValues);
     }
 
 
