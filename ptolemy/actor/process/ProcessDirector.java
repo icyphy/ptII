@@ -142,6 +142,24 @@ public class ProcessDirector extends Director {
         }
     }
 
+    /** Return the input branch controller of this director. If
+     *  this method is called prior to the invocation of 
+     *  initialize(), then this method will return null.
+     *  @return The input branch controller of this director.
+     */
+    public BranchController getInputController() {
+        return _inputBranchController;
+    }
+    
+    /** Return the output branch controller of this director. If
+     *  this method is called prior to the invocation of 
+     *  initialize(), then this method will return null.
+     *  @return The output branch controller of this director.
+     */
+    public BranchController getOutputController() {
+        return _outputBranchController;
+    }
+    
     /** Invoke the initialize() methods of all the deeply contained
      *  actors in the container (a composite actor) of this director.
      *  These are expected to call initialize(Actor), which will result
@@ -219,6 +237,14 @@ public class ProcessDirector extends Director {
         ProcessThread processThread = _getProcessThread(actor, this);
         _actorThreadList.addFirst(processThread);
         _newActorThreadList.addFirst(processThread);
+    }
+
+    /** Return a new receiver of a type compatible with this director.
+     *  In class, this returns an instance of MailboxBoundaryReceiver.
+     *  @return A new MailboxBoundaryReceiver.
+     */
+    public Receiver newReceiver() {
+        return new MailboxBoundaryReceiver();
     }
 
     /** Return false if the model has reached a deadlock and can

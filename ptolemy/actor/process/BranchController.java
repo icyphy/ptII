@@ -321,6 +321,13 @@ public class BranchController implements Runnable {
         }
     }
 
+    /** Return the list of branches controlled by this controller.
+     *  @return The list of branches controlled by this controller.
+     */
+    public LinkedList getBranchList() {
+        return _branches;
+    }
+    
     /** Return the CompositeActor that creates the branch 
      *  and owns this controller.
      *  @return The CompositeActor that owns this controller.
