@@ -1,4 +1,4 @@
-/* A simple phase PhaseUnwrapper.
+/* A simple phase unwrapper.
 
  Copyright (c) 1990-2001 The Regents of the University of California.
  All rights reserved.
