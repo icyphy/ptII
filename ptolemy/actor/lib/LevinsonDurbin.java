@@ -191,7 +191,7 @@ public class LevinsonDurbin extends TypedAtomicActor {
         // (length + 2)/2.
         int order = autocorLength/2;
 
-        Token[]  = new Token[order + 1];
+        Token[] power = new Token[order + 1];
         Token[] refl = new Token[order];
         Token[] lp = new Token[order];
         double[] a = new double[order + 1];
