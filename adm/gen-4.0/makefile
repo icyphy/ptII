@@ -176,13 +176,14 @@ $(PTIIDIST):
 	#@echo "Be sure that ptolemy/actor/lib/javasound/javasound.jar exists"
 	#(cd $(PTIIHOME)/ptolemy/actor/lib/javasound; make jars)
 	(cd $(PTIIHOME); \
-		$(TAR) -v -c -X $(GENDIR)/src.ex  -X $(GENDIR)/src1.ex \
+		$(TAR) -c -X $(GENDIR)/src.ex  -X $(GENDIR)/src1.ex \
 		$ -f - $(PTII_TOPDIR) )| \
 		(cd $@; $(TAR) -xpf -)
 	@echo "Removing codeDoc directories and other documentation"
 	@echo "  tar -X does not seem to work under Cygwin"
-	-find $(PTIIDIST) -name codeDoc -exec rm -rf {} \;
-	-find $(PTIIDIST) -name CVS -exec rm -rf {} \;
+	rm -rf $(PTIIDIST)/doc/codeDoc* $(PTIIDIST)/config/*.jar
+	-find $(PTIIDIST) -name "#*" -o -name alljtests.tcl -o -name alljsimpletests.tcl -o -name codeDoc -o -name CVS -o -name .cvsignore -o -name "*~" -o -name core -exec rm -rf {} \;
+	(cd $(PTIIDIST); rm -rf `cat $(GENDIR)/src.ex`)
 	@echo "Regenerate the documentation with gr and javasound"
 	(cd $(PTIIDIST)/doc; make JAVADOC=javadoc EXPERIMENTALPACKAGES= GRPACKAGES="ptolemy.domains.gr.kernel ptolemy.domains.gr.lib" COMMPACKAGES="ptolemy.actor.lib.comm")
 	#@echo "Do make realclean to clean up any trash"
@@ -216,7 +217,7 @@ $(PTII_FULL): $(PTIIDIST)
 	@echo "For some reason under Cygwin, we need to build the compressed"
 	@echo "  tar file or we get errors"
 	(cd $(PTIIDIST)/..; \
-		$(TAR) -cv -X $(GENDIR)/src.ex \
+		$(TAR) -c -X $(GENDIR)/src.ex \
 		 -f $@ \
 		ptII$(VERSION))
 	#(cd $(PTIIDIST)/..; \
@@ -257,7 +258,7 @@ $(PTII_SRC): $(PTII_FULL)
 	rm -rf src/ptII$(VERSION)
 	-mkdir src
 	(cd src; \
-		$(TAR) -xvf $(PTII_FULL); \
+		$(TAR) -xf $(PTII_FULL); \
 		cd ptII$(VERSION); \
 		echo "About to configure `pwd`"; \
 		PTII=`pwd` ./configure; make -k clean; \
@@ -269,7 +270,7 @@ $(PTII_SRC): $(PTII_FULL)
 		rm -rf doc/codeDoc*; \
 		cd ..; \
 		echo "#  Starting tar of $@"; \
-		$(TAR) -vc -X $(GENDIR)/src.ex -f $(PTII_SRC) ptII$(VERSION); \
+		$(TAR) -c -X $(GENDIR)/src.ex -f $(PTII_SRC) ptII$(VERSION); \
 		);
 
 ###############

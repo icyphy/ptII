@@ -26,12 +26,11 @@ adm
 alljsimpletests.tcl
 alljtests.tcl
 ant
-ptII4.0.1/bin/comm.policy
+bin/comm.policy
 bin/makebat
 bin/makebat.lnk
-bin/ptinvoke
-ptinvoke
 bin/startjini.gui
+bin/ptinvoke
 brass
 collections
 com/microstar/xml/driver
@@ -45,6 +44,7 @@ doc/design/src
 doc/design/html
 doc/uml
 doc/uml/*
+doc/img/*.psd
 java.hprof.txt
 jsdatabase
 jni/test/jni
@@ -89,6 +89,8 @@ ptolemy/data/expr/TVariable.java
 ptolemy/data/test/EventToken.tcl
 ptolemy/gui/JPanelTest.java
 ptolemy/copernicus/actor/test/codeGenerator.tmp
+ptolemy/copernicus/applet/test/ptII
+ptolemy/copernicus/applet/test/tmp
 ptolemy/copernicus/*/cg
 ptolemy/copernicus/c/test/HashSetTest
 ptolemy/copernicus/c/test/j2c_lib
