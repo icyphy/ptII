@@ -161,13 +161,13 @@ public class InspectionApplet extends DEApplet {
 
             // Connections
             ComponentRelation rel1 = 
-                   _toplevel.connect(_bus.output, _eventplot.input);
+                _toplevel.connect(_bus.output, _eventplot.input);
             ComponentRelation rel2 = 
-                   _toplevel.connect(_passenger1.output, _eventplot.input);
+                _toplevel.connect(_passenger1.output, _eventplot.input);
             _wait.waitee.link(rel1);
             _wait.waiter.link(rel2);
             ComponentRelation rel3 = 
-                   _toplevel.connect(_wait.output, _eventplot.input);
+                _toplevel.connect(_wait.output, _eventplot.input);
             _histplot.input.link(rel3);
             average.input.link(rel3);
             _toplevel.connect(average.output, show.input);
@@ -189,9 +189,9 @@ public class InspectionApplet extends DEApplet {
      */
     protected void _go() throws IllegalActionException {
         _bus.meantime.setToken
-                (new DoubleToken(_query.doubleValue("busmean")));
+            (new DoubleToken(_query.doubleValue("busmean")));
         _passenger1.meantime.setToken
-                (new DoubleToken(_query.doubleValue("passmean")));
+            (new DoubleToken(_query.doubleValue("passmean")));
         _eventplot.plot.setXRange(0.0, _getStopTime());
         super._go();
     }

@@ -144,7 +144,7 @@ public class CTSquareWave extends CTActor {
         double nextfliptime = _lastfliptime + _halfperiod;
         _debug(getFullName() + "next flip time="+nextfliptime);
         if ((nextfliptime > now) &&
-        (nextfliptime <(now+dir.getSuggestedNextStepSize()))) {
+                (nextfliptime <(now+dir.getSuggestedNextStepSize()))) {
             dir.fireAt(this, nextfliptime);
         }
         return true;

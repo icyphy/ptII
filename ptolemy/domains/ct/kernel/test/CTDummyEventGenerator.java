@@ -73,7 +73,7 @@ public class CTDummyEventGenerator extends CTActor implements CTEventGenerator{
     ////                         public methods                    ////
 
     /** Dummy method. Do nothing. */
-     public void emitCurrentEvents(){
+    public void emitCurrentEvents(){
     }
 
     /** Dummy method. Return false always. */

@@ -42,7 +42,7 @@ import ptolemy.data.*;
 @version $Id$
 */
 public class CTDummyStatefulActor extends CTActor
-        implements CTStatefulActor {
+    implements CTStatefulActor {
     /** Constructor
      */	
     public CTDummyStatefulActor(TypedCompositeActor container, String name)

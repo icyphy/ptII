@@ -43,7 +43,7 @@ Dummy actor for step size control. SISO.
 @version $Id$
 */
 public class CTDummySSControlActor extends CTActor 
-        implements CTStepSizeControlActor{
+    implements CTStepSizeControlActor{
     /** Constructor
      */	
     public CTDummySSControlActor(TypedCompositeActor container, String name)

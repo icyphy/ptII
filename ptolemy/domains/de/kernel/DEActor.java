@@ -58,8 +58,8 @@ public class DEActor extends TypedAtomicActor {
      *   actor with this name.
      */
     public DEActor(TypedCompositeActor container, String name)
-	 throws NameDuplicationException, IllegalActionException  {
-      super(container, name);
+            throws NameDuplicationException, IllegalActionException  {
+        super(container, name);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -135,32 +135,32 @@ public class DEActor extends TypedAtomicActor {
      *  @exception IllegalActionException Not thrown.
      */
     /*
-    public void wrapup() throws IllegalActionException {
-	super.wrapup();
-	Enumeration inputs = inputPorts();
-	while (inputs.hasMoreElements()) {
-	    IOPort p = (IOPort)inputs.nextElement();
-	    int width = p.getWidth();
-	    for (int i = 0; i<width; i++) {
-		while (p.hasToken(i)) {
-		    try {
-			p.get(i);
-		    } catch (NoSuchItemException e) {
-			e.printStackTrace();
-			throw new InternalErrorException(e.getMessage());
-		    }
-		}
-	    }
+      public void wrapup() throws IllegalActionException {
+      super.wrapup();
+      Enumeration inputs = inputPorts();
+      while (inputs.hasMoreElements()) {
+      IOPort p = (IOPort)inputs.nextElement();
+      int width = p.getWidth();
+      for (int i = 0; i<width; i++) {
+      while (p.hasToken(i)) {
+      try {
+      p.get(i);
+      } catch (NoSuchItemException e) {
+      e.printStackTrace();
+      throw new InternalErrorException(e.getMessage());
+      }
+      }
+      }
 
-	}
-    }
+      }
+      }
     */
 
-  ///////////////////////////////////////////////////////////////////
-  ////                         private variables                 ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
-  // Private variables should not have doc comments, they should
-  // have regular C++ comments.
+    // Private variables should not have doc comments, they should
+    // have regular C++ comments.
 
 }
 

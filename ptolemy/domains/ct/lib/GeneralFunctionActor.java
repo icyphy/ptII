@@ -126,7 +126,7 @@ public class GeneralFunctionActor extends TypedAtomicActor {
             IOPort inport = (IOPort)inports.nextElement();
             if (inport.hasToken(0)) {
                 Variable var = 
-                        (Variable)_inputVarList.getAttribute(inport.getName());
+                    (Variable)_inputVarList.getAttribute(inport.getName());
                 var.setToken(inport.get(0));
             }
         }
@@ -137,8 +137,8 @@ public class GeneralFunctionActor extends TypedAtomicActor {
             IOPort outport = (IOPort)getPort(var.getName());
             outport.broadcast(var.getToken());
 
-//System.out.println("GFToken on " + outport.getFullName() + " "
-//        + var.getToken().stringValue());
+            //System.out.println("GFToken on " + outport.getFullName() + " "
+            //        + var.getToken().stringValue());
 
         }
     }

@@ -91,7 +91,7 @@ public class CTButtonEvent extends CTActor {
      */
     public void updateParameters() throws IllegalActionException{
         boolean b = 
-                ((BooleanToken)paramButtonClicked.getToken()).booleanValue();
+            ((BooleanToken)paramButtonClicked.getToken()).booleanValue();
         if (!_buttonClicked && b) {
             _buttonClicked = true;
         }

@@ -134,11 +134,11 @@ public class CTSaberSubsys extends CTActor
                 _debug(getFullName() + "read netlist "+_netlist);
             }
             _reader = new BufferedReader(
-                new InputStreamReader(_instream), 1000);
+                    new InputStreamReader(_instream), 1000);
             boolean show = false;
             if(_reader == null) {
                 throw new IllegalActionException(this, 
-                    "instream reading error.");
+                        "instream reading error.");
             }
             _ps.println();
             while (true){
@@ -162,13 +162,13 @@ public class CTSaberSubsys extends CTActor
             while (true){
                 try {
                     //if(_reader.ready()) {
-                        String line = _reader.readLine();
-                        _debug(line);
-                        if (line == null) continue;
-                        if (line.startsWith(new String("bye"))){
-                            break;
-                        }
-                        //}
+                    String line = _reader.readLine();
+                    _debug(line);
+                    if (line == null) continue;
+                    if (line.startsWith(new String("bye"))){
+                        break;
+                    }
+                    //}
                 }catch (IOException e){
                     throw new IllegalActionException(this,
                             "IO error while in reading" + e.getMessage());
@@ -388,9 +388,9 @@ public class CTSaberSubsys extends CTActor
    
     /** Update parameters.
      */
-     public void updateParameters() throws IllegalActionException {
-         _netlist = ((StringToken)paramNetlist.getToken()).stringValue();
-         _innerStep = ((StringToken)paramInnerStep.getToken()).stringValue();
+    public void updateParameters() throws IllegalActionException {
+        _netlist = ((StringToken)paramNetlist.getToken()).stringValue();
+        _innerStep = ((StringToken)paramInnerStep.getToken()).stringValue();
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -412,25 +412,25 @@ public class CTSaberSubsys extends CTActor
     /** Override Entity addPort. Create parameters for each port.
      */	
     protected void _addPort(Port p) 
-        throws IllegalActionException, NameDuplicationException {
-            super._addPort(p); 
-            _debug(getFullName() + "Port" + p.getName() + " added");
-            String portname = p.getName();
-            String paramname = portname + "ToolVar";
-            new Parameter(this, paramname, 
-                    new StringToken("saber_variable_here"));
-            _debug(getFullName() + " parameter " + paramname + " added.");
+            throws IllegalActionException, NameDuplicationException {
+        super._addPort(p); 
+        _debug(getFullName() + "Port" + p.getName() + " added");
+        String portname = p.getName();
+        String paramname = portname + "ToolVar";
+        new Parameter(this, paramname, 
+                new StringToken("saber_variable_here"));
+        _debug(getFullName() + " parameter " + paramname + " added.");
     } 
 
     /** Override Entity removePort. Remove the corresponding parameter too.
      */	
     protected void _removePort(Port p) {            
-            String portname = p.getName();
-            String paramname = portname + "ToolVar";
-            Parameter pp = (Parameter)getAttribute(paramname);
-            _removeAttribute(pp);
-            super._removePort(p);
-            _debug(getFullName() + ": port" + portname + "  removed");
+        String portname = p.getName();
+        String paramname = portname + "ToolVar";
+        Parameter pp = (Parameter)getAttribute(paramname);
+        _removeAttribute(pp);
+        super._removePort(p);
+        _debug(getFullName() + ": port" + portname + "  removed");
     }
 
     /** parse input from saber.
@@ -466,15 +466,15 @@ public class CTSaberSubsys extends CTActor
                                     locn)).doubleValue();
                             number *= 0.001*0.001*0.001*0.001*0.001;
                         } else {
-                             locn = text.indexOf('a', begpt); 
-                             if ((locn > begpt) && (locn <= endpt)){
-                                 number = new Double(text.substring(begpt, 
-                                         locn)).doubleValue();
-                                 number *= 1e-18;
-                             } else {
-                                 number = new Double(text.substring(begpt, 
-                                         endpt)).doubleValue();
-                             }
+                            locn = text.indexOf('a', begpt); 
+                            if ((locn > begpt) && (locn <= endpt)){
+                                number = new Double(text.substring(begpt, 
+                                        locn)).doubleValue();
+                                number *= 1e-18;
+                            } else {
+                                number = new Double(text.substring(begpt, 
+                                        endpt)).doubleValue();
+                            }
                         }
                     }
                 }

@@ -148,7 +148,7 @@ public class TrapezoidalRuleSolver extends VariableStepSolver{
                     next.fire();
                 }
                 dir.setCurrentTime(dir.getCurrentTime()+
-                    dir.getCurrentStepSize());
+                        dir.getCurrentStepSize());
                 _setConverge(false);
                 iterations = 0;
             }
@@ -204,7 +204,7 @@ public class TrapezoidalRuleSolver extends VariableStepSolver{
             double lte = 0.5*Math.abs(integrator.getTentativeState() - k[0]);
             integrator.setAuxVariables(1, lte);
             _debug("Integrator: "+ integrator.getName() +
-                " local truncation error = " + lte);
+                    " local truncation error = " + lte);
             if(lte<errtol) {
                 _debug("Integrator: " + integrator.getName() +
                         " report a success.");
@@ -217,7 +217,7 @@ public class TrapezoidalRuleSolver extends VariableStepSolver{
         } catch (IllegalActionException e) {
             //should never happen.
             throw new InternalErrorException(integrator.getName() +
-            " can't read input." + e.getMessage());
+                    " can't read input." + e.getMessage());
         }
     }
 

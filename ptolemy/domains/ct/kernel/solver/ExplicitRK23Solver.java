@@ -108,7 +108,7 @@ public class ExplicitRK23Solver extends VariableStepSolver{
             while(actors.hasMoreElements()) {
                 Actor next = (Actor)actors.nextElement();
                 _debug(getFullName() + ": Build integrator history..."
-                            +((Nameable)next).getName());
+                        +((Nameable)next).getName());
                 next.fire();
             }
         } 
@@ -158,31 +158,31 @@ public class ExplicitRK23Solver extends VariableStepSolver{
         double h = dir.getCurrentStepSize();
         double[] k = integrator.getAuxVariables();
         switch (r) {
-            case 0:
-                //derivative at t;
-                double k0;
-                if(dir.isBPIteration()) {
-                    k0 = ((DoubleToken)integrator.input.get(0)).doubleValue();
-                } else {
-                    k0 = (integrator.getHistory(0))[1];
-                }
-                integrator.setAuxVariables(0, k0);
-                outvalue = xn + h * k0 *_B[0][0];
-                break;
-            case 1:
-                double k1= ((DoubleToken)integrator.input.get(0)).doubleValue();
-                integrator.setAuxVariables(1, k1);
-                outvalue = xn + h * (k[0]*_B[1][0] + k1 *_B[1][1]);
-                break;
-            case 2:
-                double k2= ((DoubleToken)integrator.input.get(0)).doubleValue();
-                integrator.setAuxVariables(2, k2);
-                outvalue = xn + h * (k[0]*_B[2][0] + k[1]*_B[2][1]
+        case 0:
+            //derivative at t;
+            double k0;
+            if(dir.isBPIteration()) {
+                k0 = ((DoubleToken)integrator.input.get(0)).doubleValue();
+            } else {
+                k0 = (integrator.getHistory(0))[1];
+            }
+            integrator.setAuxVariables(0, k0);
+            outvalue = xn + h * k0 *_B[0][0];
+            break;
+        case 1:
+            double k1= ((DoubleToken)integrator.input.get(0)).doubleValue();
+            integrator.setAuxVariables(1, k1);
+            outvalue = xn + h * (k[0]*_B[1][0] + k1 *_B[1][1]);
+            break;
+        case 2:
+            double k2= ((DoubleToken)integrator.input.get(0)).doubleValue();
+            integrator.setAuxVariables(2, k2);
+            outvalue = xn + h * (k[0]*_B[2][0] + k[1]*_B[2][1]
                     + k2*_B[2][2]);
-                integrator.setTentativeState(outvalue);
-                break;
-            default:
-                throw new InvalidStateException(this,
+            integrator.setTentativeState(outvalue);
+            break;
+        default:
+            throw new InvalidStateException(this,
                     "execution sequence out of range.");
         }
         integrator.output.broadcast(new DoubleToken(outvalue));
@@ -210,7 +210,7 @@ public class ExplicitRK23Solver extends VariableStepSolver{
             integrator.setTentativeDerivative(f);
             double[] k = integrator.getAuxVariables();
             double lte = h * Math.abs(k[0]*_E[0] + k[1]*_E[1]
-                                + k[2]*_E[2] + f* _E[3]);
+                    + k[2]*_E[2] + f* _E[3]);
             //k[3] is Local Truncation Error
             integrator.setAuxVariables(3, lte);
             _debug("Integrator: "+ integrator.getName() +
@@ -227,7 +227,7 @@ public class ExplicitRK23Solver extends VariableStepSolver{
         } catch (IllegalActionException e) {
             //should never happen.
             throw new InternalErrorException(integrator.getName() +
-            " can't read input." + e.getMessage());
+                    " can't read input." + e.getMessage());
         }
     }
 
@@ -259,9 +259,9 @@ public class ExplicitRK23Solver extends VariableStepSolver{
 
     private static final double[] _timeInc = {0.5, 0.25, 0.25};
     private static final double[][] _B = {{0.5},
-                                                {0, 0.75},
-                                                {2.0/9.0, 1.0/3.0, 4.0/9.0}};
+                                          {0, 0.75},
+                                          {2.0/9.0, 1.0/3.0, 4.0/9.0}};
     private static final double[] _E =
-            {-5.0/72.0, 1.0/12.0, 1.0/9.0, -1.0/8.0};
+    {-5.0/72.0, 1.0/12.0, 1.0/9.0, -1.0/8.0};
     private static final double _order = 3;
 }

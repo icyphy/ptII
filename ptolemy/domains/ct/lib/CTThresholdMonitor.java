@@ -50,7 +50,7 @@ value 1e-2 and 0, respectively.
 //FIXME: need to use the new parameter machanism.
 
 public class CTThresholdMonitor extends CTActor 
-        implements CTStepSizeControlActor{ 
+    implements CTStepSizeControlActor{ 
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -124,7 +124,7 @@ public class CTThresholdMonitor extends CTActor
     public boolean isThisStepSuccessful() {
         if (!_first) {
             if (((_lastInput >= _upperBound) && (_thisInput <= _lowerBound)) ||
-                ((_lastInput <= _lowerBound) && (_thisInput >= _upperBound))) {
+                    ((_lastInput <= _lowerBound) && (_thisInput >= _upperBound))) {
                 _debug(getFullName() + "one step crosses the threshold" +
                         "cutting the step size in half.");
                 _success = false;
@@ -173,7 +173,7 @@ public class CTThresholdMonitor extends CTActor
     public void updateParameters() throws IllegalActionException {
         _thCenter = ((DoubleToken)ThresholdCenter.getToken()).doubleValue();
         _thWidth = Math.abs(
-            ((DoubleToken)ThresholdWidth.getToken()).doubleValue());
+                ((DoubleToken)ThresholdWidth.getToken()).doubleValue());
 
         _lowerBound = _thCenter - _thWidth/(double)2.0;
         _upperBound = _thCenter + _thWidth/(double)2.0;

@@ -48,7 +48,7 @@ zero crossing is defined.
 @version $Id$
 */
 public class CTZeroCrossingDetector extends CTActor
-        implements  CTStepSizeControlActor, CTEventGenerator {
+    implements  CTStepSizeControlActor, CTEventGenerator {
 
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception

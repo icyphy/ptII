@@ -225,7 +225,7 @@ public class AdderApplet extends Applet implements Runnable {
         String timespec = _stopTimeBox.getText();
         try {
             Double spec = Double.valueOf(timespec);
-                _stopTime = spec.doubleValue();
+            _stopTime = spec.doubleValue();
         } catch (NumberFormatException ex) {
             System.err.println("Invalid stop time: " + ex.getMessage());
             return;

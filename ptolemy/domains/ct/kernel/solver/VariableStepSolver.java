@@ -82,36 +82,36 @@ public abstract class VariableStepSolver extends ODESolver{
     /** Return true always, since this is a fixed step size method.
      *  @return true always.
      
-    public final boolean errorTolerable(){
-        try {
-            CTDirector dir = (CTDirector)getContainer();
-            CTScheduler sch = (CTScheduler)dir.getScheduler();
+     public final boolean errorTolerable(){
+     try {
+     CTDirector dir = (CTDirector)getContainer();
+     CTScheduler sch = (CTScheduler)dir.getScheduler();
 
-            boolean tolerable = true;
-            Enumeration errCtrlActors = sch.errorControlActors();
-            while(errCtrlActors.hasMoreElements()) {
-                CTErrorControlActor eca =
-                    (CTErrorControlActor)errCtrlActors.nextElement();
-                tolerable = tolerable && eca.isSuccessful();
-            }
-            if(tolerable) {
-                _debug("A successful step at time: " +
-                dir.getCurrentTime() + " with step size: " +
-                dir.getCurrentStepSize());
-            } else {
-                if(dir.STAT) {
-                    dir.NFAIL ++;
-                }
-                _debug("Fail step at time: " +
-                dir.getCurrentTime() + " with step size: " +
-                dir.getCurrentStepSize());
-            }
-            return tolerable;
-        } catch (NullPointerException e) {
-            throw new InvalidStateException(this,
-                "has no scheduler avaliable");
-        }
-    }
+     boolean tolerable = true;
+     Enumeration errCtrlActors = sch.errorControlActors();
+     while(errCtrlActors.hasMoreElements()) {
+     CTErrorControlActor eca =
+     (CTErrorControlActor)errCtrlActors.nextElement();
+     tolerable = tolerable && eca.isSuccessful();
+     }
+     if(tolerable) {
+     _debug("A successful step at time: " +
+     dir.getCurrentTime() + " with step size: " +
+     dir.getCurrentStepSize());
+     } else {
+     if(dir.STAT) {
+     dir.NFAIL ++;
+     }
+     _debug("Fail step at time: " +
+     dir.getCurrentTime() + " with step size: " +
+     dir.getCurrentStepSize());
+     }
+     return tolerable;
+     } catch (NullPointerException e) {
+     throw new InvalidStateException(this,
+     "has no scheduler avaliable");
+     }
+     }
     */
     /** Resolve the next step size if the current
      *  step is a success. It ask all the error control actors for
@@ -123,47 +123,47 @@ public abstract class VariableStepSolver extends ODESolver{
      * @exception IllegalActionException Not thrown in this base
      *  class. May be needed by the derived class.
      
-    public void resolveNextStepSize() {
-        CTDirector dir = (CTDirector)getContainer();
-        if(dir == null) {
-            throw new InvalidStateException(this,
-                " has no director.");
-        }
-        CTScheduler sch = (CTScheduler)dir.getScheduler();
-        if(sch == null) {
-            throw new InvalidStateException(this, dir,
-                " has no scheduler.");
-        }
-        double newh = dir.getCurrentStepSize()*5.0;
-        Enumeration errCtrlActors = sch.errorControlActors();
-        while(errCtrlActors.hasMoreElements()) {
-            CTErrorControlActor eca =
-                (CTErrorControlActor)errCtrlActors.nextElement();
-            newh = Math.min(newh, eca.suggestedNextStepSize());
-        }
-        dir.setSuggestedNextStepSize(newh);
-        }*/
+     public void resolveNextStepSize() {
+     CTDirector dir = (CTDirector)getContainer();
+     if(dir == null) {
+     throw new InvalidStateException(this,
+     " has no director.");
+     }
+     CTScheduler sch = (CTScheduler)dir.getScheduler();
+     if(sch == null) {
+     throw new InvalidStateException(this, dir,
+     " has no scheduler.");
+     }
+     double newh = dir.getCurrentStepSize()*5.0;
+     Enumeration errCtrlActors = sch.errorControlActors();
+     while(errCtrlActors.hasMoreElements()) {
+     CTErrorControlActor eca =
+     (CTErrorControlActor)errCtrlActors.nextElement();
+     newh = Math.min(newh, eca.suggestedNextStepSize());
+     }
+     dir.setSuggestedNextStepSize(newh);
+     }*/
 
     /** Override the startOverLastStep() for the base class. Do nothing.
      
-    public void startOverLastStep() throws NumericalNonconvergeException{
+        public void startOverLastStep() throws NumericalNonconvergeException{
         CTDirector dir = (CTDirector)getContainer();
         if(dir == null) {
-            throw new InvalidStateException(this,
-                "has no director.");
+        throw new InvalidStateException(this,
+        "has no director.");
         }
         double currentstep = dir.getCurrentStepSize();
         dir.setCurrentTime(dir.getCurrentTime()-currentstep);
         if(currentstep < dir.getMinStepSize()) {
-            throw new NumericalNonconvergeException(this,
-                "minimum step size reached but still can't find the"
-                + " solution at time" + dir.getCurrentTime());
+        throw new NumericalNonconvergeException(this,
+        "minimum step size reached but still can't find the"
+        + " solution at time" + dir.getCurrentTime());
         }
         dir.setCurrentStepSize(currentstep/2.0);
         _debug("restart at time: " +
-            dir.getCurrentTime() + " with step size: " +
-            dir.getCurrentStepSize());
-    }
+        dir.getCurrentTime() + " with step size: " +
+        dir.getCurrentStepSize());
+        }
     */
 
     ///////////////////////////////////////////////////////////////////

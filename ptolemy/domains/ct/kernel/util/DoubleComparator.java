@@ -48,15 +48,15 @@ public class DoubleComparator implements Comparator{
      *  @param snd The second Double object.
      */
     public int compare(Object fst, Object snd) {
-       double fstvalue = ((Double)fst).doubleValue();
-       double sndvalue = ((Double)snd).doubleValue();
-       if(fstvalue < sndvalue) {
-           return -1;
-       } else if(fstvalue > sndvalue) {
-           return 1;
-       } else {
-           return 0;
-       }
-   }
+        double fstvalue = ((Double)fst).doubleValue();
+        double sndvalue = ((Double)snd).doubleValue();
+        if(fstvalue < sndvalue) {
+            return -1;
+        } else if(fstvalue > sndvalue) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 
 }

@@ -43,7 +43,7 @@ Dummy actor that implements CTEventInterpreter interface.
 
 */
 public class CTDummyEventInterpreter extends CTActor 
-        implements CTEventInterpreter{
+    implements CTEventInterpreter{
     /** Constructor
      */	
     public CTDummyEventInterpreter(TypedCompositeActor container, String name)

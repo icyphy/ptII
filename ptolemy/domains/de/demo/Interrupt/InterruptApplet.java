@@ -287,7 +287,7 @@ public class InterruptApplet extends Applet {
 
                 } catch (NumberFormatException ex) {
                     System.err.println("Invalid minimum service time: " +
-                                       ex.getMessage());
+                            ex.getMessage());
                 }
 
                 // Set the interrupt service time.
@@ -299,7 +299,7 @@ public class InterruptApplet extends Applet {
 
                 } catch (NumberFormatException ex) {
                     System.err.println("Invalid interrupt service time: " +
-                                       ex.getMessage());
+                            ex.getMessage());
                 }
 
                 // Set lambda.
@@ -310,7 +310,7 @@ public class InterruptApplet extends Applet {
 
                 } catch (NumberFormatException ex) {
                     System.err.println("Invalid lambda: " +
-                                       ex.getMessage());
+                            ex.getMessage());
                 }
 
                 _localDirector.setStopTime(_stopTime);

@@ -44,7 +44,7 @@ Description of the class
 @version $Id$
 */
 public class BackwardEulerSolver extends FixedStepSolver
-        implements ImplicitMethodSolver{
+    implements ImplicitMethodSolver{
 
     /** Construct a solver in the default workspace with an empty
      *  string as name. The solver is added to the list of objects in
@@ -134,7 +134,7 @@ public class BackwardEulerSolver extends FixedStepSolver
                 next.fire();
             }
             if(iterations++ > dir.getMaxIterations()) {
-               return false;
+                return false;
             }
         }
         return true;

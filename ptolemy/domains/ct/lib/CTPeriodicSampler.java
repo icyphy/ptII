@@ -44,7 +44,7 @@ parameter "SamplePeriod", which has default value 0.1.
 @version $Id$
 */
 public class CTPeriodicSampler extends CTActor
-        implements CTEventGenerator {
+    implements CTEventGenerator {
 
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -77,7 +77,7 @@ public class CTPeriodicSampler extends CTActor
 
         _samplePeriod = (double)0.1;
         SamplePeriod = new Parameter(this,
-            "SamplePeriod", new DoubleToken(_samplePeriod));
+                "SamplePeriod", new DoubleToken(_samplePeriod));
     }
 
 
@@ -131,7 +131,7 @@ public class CTPeriodicSampler extends CTActor
     public void fire() {
         CTDirector dir = (CTDirector)getDirector();
         double tnow = dir.getCurrentTime();
-         _hasCurrentEvent = false;
+        _hasCurrentEvent = false;
         if(Math.abs(tnow - _nextSamplingTime)<dir.getTimeResolution()) {
             _hasCurrentEvent = true;
         }

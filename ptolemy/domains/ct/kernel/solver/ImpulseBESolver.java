@@ -56,7 +56,7 @@ public class ImpulseBESolver extends BackwardEulerSolver {
         } catch (NameDuplicationException e) {
             // this should never happen.
             throw new InternalErrorException(
-                "internal error when set name to an ImpulseBESolver.");
+                    "internal error when set name to an ImpulseBESolver.");
         }
     }
 
@@ -76,7 +76,7 @@ public class ImpulseBESolver extends BackwardEulerSolver {
         } catch (NameDuplicationException e) {
             // this should never happen.
             throw new InternalErrorException(
-                "internal error when set name to an ImpulseBESolver.");
+                    "internal error when set name to an ImpulseBESolver.");
         }
     }
 
@@ -88,11 +88,11 @@ public class ImpulseBESolver extends BackwardEulerSolver {
     public boolean resolveStates() throws IllegalActionException {
         CTDirector dir = (CTDirector) getContainer();
         super.resolveStates();
-System.out.println(getName() + " current time " + dir.getCurrentTime());
+        System.out.println(getName() + " current time " + dir.getCurrentTime());
 
         
         Enumeration actors = ((CTScheduler)dir.getScheduler()
-            ).dynamicActorSchedule();
+                              ).dynamicActorSchedule();
         while(actors.hasMoreElements()) {
             Actor next = (Actor)actors.nextElement();
             _debug(getFullName() + "update..."+((Nameable)next).getName());
@@ -101,7 +101,7 @@ System.out.println(getName() + " current time " + dir.getCurrentTime());
         
         dir.setCurrentStepSize(-dir.getCurrentStepSize());
         super.resolveStates();
-System.out.println(getName() + " current time " + dir.getCurrentTime());
+        System.out.println(getName() + " current time " + dir.getCurrentTime());
 
         dir.setCurrentStepSize(-dir.getCurrentStepSize());
         return true;
