@@ -62,7 +62,6 @@ coords CDATA #REQUIRED>
 <!ELEMENT director (description, parameter*)>
 <!ATTLIST director
 name ID #REQUIRED
-icon CDATA "default"
 implementation CDATA #IMPLIED>
 
 <!ELEMENT entity (description, parameter*, port*)>

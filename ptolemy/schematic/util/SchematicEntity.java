@@ -340,21 +340,23 @@ public class SchematicEntity extends PTMLTemplateObject
 	// Blow away the old terminals
 	_terminals.removeAll();
 
-	Enumeration templateTerminals = getTerminalStyle().terminals();
-	while(templateTerminals.hasMoreElements()) {
-	    SchematicTerminal terminal = 
-		(SchematicTerminal)templateTerminals.nextElement();
-	    try {
+	if(getTerminalStyle() != null) {
+	    Enumeration templateTerminals = getTerminalStyle().terminals();
+	    while(templateTerminals.hasMoreElements()) {
+		SchematicTerminal terminal = 
+		    (SchematicTerminal)templateTerminals.nextElement();
+		try {
                     addTerminal(new SchematicTerminal(terminal.getName(), 
 						      terminal));
                     
-	    } catch (Exception ex) {
-		throw new InternalErrorException(ex.getMessage());
-		// This should never happen, because the terminals in the
-		// template must follow the same rules as the schematic 
-		// terminals.
+		} catch (Exception ex) {
+		    throw new InternalErrorException(ex.getMessage());
+		    // This should never happen, because the terminals in the
+		    // template must follow the same rules as the schematic 
+		    // terminals.
+		}
 	    }
-        }
+	}
     }
     
    /**

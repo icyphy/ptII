@@ -59,20 +59,24 @@ test SchematicEntity-2.1 {Constructor tests} {
     ptolemy.schematic.util.SchematicEntity {TestEntityTemplate} parameters {
     } template {
         null
+    } icon {
+        null
+    } implementation {
+        null
     } terminalstyle {
         null
     } terminalmap {
         null
-    } implementation {
-        null
     } ports {
     } terminals {
     }
+} icon {
+    null
+} implementation {
+    null
 } terminalstyle {
     null
 } terminalmap {
-    null
-} implementation {
     null
 } ports {
 } terminals {
