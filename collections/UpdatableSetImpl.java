@@ -28,7 +28,7 @@ import java.util.NoSuchElementException;
  *
 **/
 
-abstract class UpdatableSetImpl extends UpdatableImpl implements UpdatableSet {
+public abstract class UpdatableSetImpl extends UpdatableImpl implements UpdatableSet {
 
 
 /**

@@ -27,7 +27,7 @@ import java.util.NoSuchElementException;
  *
 **/
 
-abstract class UpdatableMapImpl extends UpdatableImpl implements UpdatableMap {
+public abstract class UpdatableMapImpl extends UpdatableImpl implements UpdatableMap {
 
 
 /**
