@@ -135,7 +135,6 @@ public class TriggeredClock extends Clock {
         _tentativeCurrentValue = _currentValue;
         _tentativePhase = _phase;
         _tentativeCycleCount = _cycleCount;
-        _tentativeStartTime = _startTime;
         _tentativeDone = _done;
 
         // Check the start input, to see whether everything needs to
