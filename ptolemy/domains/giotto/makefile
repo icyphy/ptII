@@ -30,7 +30,7 @@
 
 ME =		ptolemy/domains/giotto
 
-DIRS =		kernel #demo
+DIRS =		kernel demo
 
 # Root of Ptolemy II directory
 ROOT =		../../..
@@ -59,7 +59,6 @@ MISC_FILES =	kernel
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
 	doc
 
 all: jclass
