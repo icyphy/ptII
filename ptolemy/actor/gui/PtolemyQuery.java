@@ -43,6 +43,7 @@ import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
 import ptolemy.actor.gui.style.ParameterEditorStyle;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.attributes.FileAttribute;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.Documentation;
 import ptolemy.moml.ErrorHandler;
