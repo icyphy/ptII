@@ -96,16 +96,17 @@ initial state is specified by the <i>initialStateName</i> string attribute.
 <p>
 An FSMActor contains a set of variables for the input ports that can be
 referenced in the guard and trigger expressions of transitions. If an input
-port is a single port, two variables are created: one is input status
-variable with name "<i>portName</i>_S"; the other is input value variable
-with name "<i>portName</i>_V". The input status variable always contains a
+port is a single port, two variables are created: one is an input status
+variable with name "<i>portName</i>_isPresent";
+the other is input value variable
+with name "<i>portName</i>". The input status variable always contains a
 BooleanToken. When this actor is fired, the status variable is set to true
 if the port has a token, false otherwise. The input value variable always
 contains the latest token received from the port.
 If the given port is a multiport, a status variable and a value variable are
 created for each channel. The status variable is named
-"<i>portName</i>_<i>channelIndex</i>_S". The value variable is named
-"<i>portName</i>_<i>channelIndex</i>_V".
+"<i>portName</i>_<i>channelIndex</i>_isPresent". The value variable is named
+"<i>portName</i>_<i>channelIndex</i>".
 <p>
 An FSMActor can be used in a modal model to represent the mode control logic.
 A state can have a TypedActor refinement. A transition in an FSMActor can be
@@ -733,16 +734,16 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  by this actor and can be referenced in the guard and trigger
      *  expressions of transitions.
      *  If the given port is a single port, two variables are created:
-     *  one is input status variable with name "<i>portName</i>_S"; the
-     *  other is input value variable with name "<i>portName</i>_V". The
+     *  one is input status variable with name "<i>portName</i>_isPresent";
+     *  the other is input value variable with name "<i>portName</i>". The
      *  input status variable always contains a BooleanToken. When this
      *  actor is fired, the status variable is set to true if the port has
      *  a token, false otherwise. The input value variable always contains
      *  the latest token received from the port.
      *  If the given port is a multiport, a status variable and a value
      *  variable are created for each channel. The status variable is
-     *  named "<i>portName</i>_<i>channelIndex</i>_S". The value variable
-     *  is named "<i>portName</i>_<i>channelIndex</i>_V".
+     *  named "<i>portName</i>_<i>channelIndex</i>_isPresent".
+     *  The value variable is named "<i>portName</i>_<i>channelIndex</i>".
      *  If a variable to be created has the same name as an attribute
      *  already contained by this actor, the attribute will be removed
      *  from this actor by setting its container to null.
@@ -776,9 +777,9 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         for (int chIndex = 0; chIndex < width; ++chIndex) {
             String vName = null;
             if (addChIndex) {
-                vName = port.getName() + "_" + chIndex + "_S";
+                vName = port.getName() + "_" + chIndex + "_isPresent";
             } else {
-                vName = port.getName() + "_S";
+                vName = port.getName() + "_isPresent";
             }
             Attribute a = getAttribute(vName);
             try {
@@ -793,9 +794,9 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                         + ex.getMessage());
             }
             if (addChIndex) {
-                vName = port.getName() + "_" + chIndex + "_V";
+                vName = port.getName() + "_" + chIndex;
             } else {
-                vName = port.getName() + "_V";
+                vName = port.getName();
             }
             a = getAttribute(vName);
             try {
