@@ -64,6 +64,7 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	ctentities.xml \
+	dynamics.xml \
 	eventgenerators.xml \
 	integral.gif \
 	wavegenerators.xml
