@@ -29,9 +29,11 @@ COPYRIGHTENDKEY
 package ptolemy.domains.ct.kernel;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TimedDirector;
@@ -336,11 +338,23 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  an exception. Otherwise, insert the specified time into the
      *  breakpoint table. 
      *  <p>
-     *  FIXME: if we have a smarter event queue like the DE one,
-     *  not all actors need to be executed at each breakpoint (event).
      *  From this director's point of view, it is irrelevant
      *  which actor requests the breakpoint. All actors will be
      *  executed at every breakpoint. 
+     *  <p>
+     *  The way we use to find the fixed point is based on the SR 
+     *  semantics. To be specific, starting from <i>unknown</i>, the directors
+     *  resolve the value of each signal as either <i>absent</i> or 
+     *  <i>present</i>. This design is simple but firing all actors at each 
+     *  breakpoint may cause overhead. 
+     *  <p>
+     *  We could have used a smarter event queue like the one that the DE 
+     *  director uses, where not all actors are executed at each 
+     *  breakpoint (event). However, that will increase the complexity of this 
+     *  class. We assume that CT models do not have many DE actors inside. 
+     *  If the discrete part of the model is complicated with a lot of DE 
+     *  actors, we would suggest to use an opaque DE composite actor with a 
+     *  DE director in charge of the execution of those DE actors.      
      *  <p>
      *  If the actor is null, it indicates the time for the start or
      *  the stop of an execution. Otherwise, it is the actor that
@@ -369,11 +383,8 @@ public abstract class CTDirector extends StaticSchedulingDirector
         
         // Debug information
         if (_debugging) {
-            String name = getName();
-            if (actor != null) {
-                name = ((Nameable)actor).getName();
-            }
-            _debug("     ----> " + name + " requests refiring at " + time);
+            String name = ((Nameable)actor).getName();
+            _debug("----> " + name + " requests refiring at " + time);
         }
         
         // insert a new breakpoint into the breakpoints table.
@@ -414,15 +425,10 @@ public abstract class CTDirector extends StaticSchedulingDirector
         return _errorTolerance;
     }
 
-    /** Return the enclosing CT general director of this director. For 
-     *  this base class, null is always returned. Subclasses of this
-     *  class, {@link ptolemy.domains.ct.kernel.CTEmbeddedDirector},
-     *  may override this method.
-     *  @return Null as the enclosing CT general director of this director.
+    /** Return the enclosing CT general director of this director. 
+     *  @return The enclosing CT general director of this director.
      */
-    public CTGeneralDirector getEnclosingCTGeneralDirector() {
-        return null;
-    }
+    public abstract CTGeneralDirector getEnclosingCTGeneralDirector();
 
     /** Get the current execution phase of this director.
      *  @return The current execution phase of this director.
@@ -520,8 +526,8 @@ public abstract class CTDirector extends StaticSchedulingDirector
         return getModelNextIterationTime().getDoubleValue();
     }
 
-    /** Return the ODE solver.
-     *  @return The default ODE solver associated with this director.
+    /** Return the ODE solver for normal integration.
+     *  @return The ODE solver for normal integration.
      */
     public abstract ODESolver getODESolver();
 
@@ -592,7 +598,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
         return new CTReceiver();
     }
 
-    /** If this director is not at the top level and the breakpoints table 
+    /** If this director is not at the top level and the breakpoint table 
      *  is not empty, request a refiring at the first breakpoint. Otherwise, 
      *  if the stop() method has not been called and all the actors return 
      *  true at postfire, return true. 
@@ -619,15 +625,84 @@ public abstract class CTDirector extends StaticSchedulingDirector
         _prefiredActors.clear();
     }
 
+    /** Invoke prefire() on all DYNAMIC_ACTORS, such as integrators,
+     *  and emit their tentative outputs. 
+     *  Return true if all the prefire() methods return true and stop()
+     *  is not called. Otherwise, return false.  Note that prefire()
+     *  is called on all actors even if one returns false.
+     *  @return True if all dynamic actors return true from their prefire 
+     *  method and stop() is called.
+     *  @exception IllegalActionException If scheduler throws it, or dynamic
+     *  actors throw it in their prefire method, or they can not be prefired.
+     */
+    public boolean prefireDynamicActors() throws IllegalActionException {
+        
+        // FIXME: can we treat dynamic actors also as waveform generators?
+        // This is crucial to implemet delta function.
+        
+        CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
+        boolean result = true;
+        Iterator actors = schedule.get(
+                CTSchedule.DYNAMIC_ACTORS).actorIterator();
+                
+        _setExecutionPhase(CTExecutionPhase.PREFIRING_DYNAMIC_ACTORS_PHASE);
+        while (actors.hasNext() && !_stopRequested) {
+            Actor actor = (Actor)actors.next();
+            if (_debugging) {
+                _debug("Prefire dynamic actor: " + ((Nameable)actor).getName());
+            }
+            boolean ready = true;
+            if (actor instanceof AtomicActor) {
+                ready = ready && actor.prefire();
+            } else if (actor instanceof CTCompositeActor) {
+                ready = 
+                    ready && ((CTCompositeActor)actor).prefireDynamicActors();
+            }
+            if (!ready) {
+                _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
+                throw new IllegalActionException((Nameable)actor,
+                        "Actor is not ready to fire. In the CT domain, all "
+                        + "dynamic actors should be ready to fire at "
+                        + "all times.\n "
+                        + "Does the actor only operate on sequence of tokens?");
+            }
+            if (_debugging) {
+                _debug("Prefire of " + ((Nameable)actor).getName() 
+                        + " returns " + ready);
+            }
+            result = result && ready;
+        }
+    
+        // NOTE: Need for integrators to emit their current output so that
+        // the state transition actors can operate on the most up-to
+        // date inputs and generate derivatives for integrators.  
+        // Also, without this, on the first round of firing, the state 
+        // transition actors will complain that inputs are not ready.
+        Iterator integrators =
+            schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
+        while (integrators.hasNext() && !_stopRequested) {
+            CTDynamicActor dynamic = (CTDynamicActor)integrators.next();
+            if (_debugging) {
+                _debug("Emit tentative state " + ((Nameable)dynamic).getName());
+            }
+            dynamic.emitTentativeOutputs();
+        }
+    
+        _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
+        
+        return result && !_stopRequested;
+    }
+
     /** Preinitialize the model for an execution. This method is called only
      *  once for each execution. If this director does not have a container 
-     *  and a scheduler, or the director does not fit this level of hierarchy,
-     *  an IllegalActionException will be thrown. Invalidate the schedule. 
-     *  Clear statistical variables. Clear the breakpoint table. Preinitialize 
-     *  all actors. 
+     *  and a scheduler, or the director does not fit in this level of 
+     *  hierarchy, an IllegalActionException will be thrown. The schedule is
+     *  invalidated, statistical variables and the breakpoint table are cleared,
+     *  all actors are preinitialized.
      *  <p>
-     *  Note, however, time does not have a meaning yet. So actors must not
-     *  use a notion of time at the preinitialize stage.
+     *  Note, however, time does not have a meaning when actors are 
+     *  preinitialized. So actors must not use a notion of time at their 
+     *  preinitialize() methods.
      *
      *  @exception IllegalActionException If this director has no
      *  container, or this director does not fit this level of hierarchy,
@@ -853,7 +928,6 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
     /** Returns false always, indicating that this director does not need to
      *  modify the topology during one iteration.
-     *
      *  @return False.
      */
     protected final boolean _writeAccessRequired() {
@@ -898,7 +972,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
        _currentStepSize = _initStepSize;
        _suggestedNextStepSize = _initStepSize;
 
-        // A simulation always starts with a discrete phase execution
+        // A simulation always starts with a discrete phase execution.
        _discretePhase = true;
        _executionPhase = CTExecutionPhase.UNKNOWN_PHASE; 
 
