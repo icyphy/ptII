@@ -118,7 +118,7 @@ public class IntToken extends ScalarToken {
         compare = TypeLattice.compare(BaseType.UNSIGNED_BYTE, token);
         if (compare == CPO.SAME || compare == CPO.HIGHER) {
             UnsignedByteToken unsignedByteToken =
-              UnsignedByteToken.convert(token);
+                UnsignedByteToken.convert(token);
             IntToken result = new IntToken(unsignedByteToken.intValue());
             result._unitCategoryExponents =
                 unsignedByteToken._copyOfCategoryExponents();

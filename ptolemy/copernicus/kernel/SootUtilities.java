@@ -1267,7 +1267,7 @@ public class SootUtilities {
         StringBuffer buffer = new StringBuffer();
 
         buffer.append("<" + Scene.v().quotedNameOf(
-                              method.getDeclaringClass().getName()) + ": ");
+                method.getDeclaringClass().getName()) + ": ");
         String returnType = method.getReturnType().getName();
 
         buffer.append(returnType + " " + Scene.v().quotedNameOf(method.getName()) + "(");
@@ -1283,11 +1283,11 @@ public class SootUtilities {
         buffer.append(")");
         buffer.append(">");
 
-//         SootClass math = Scene.v().getSootClass("java.lang.Math");
-//         Iterator methods = math.getMethods().iterator();
-//         while (methods.hasNext()) {
-//             System.out.println("method = " + ((SootMethod)methods.next()).getSignature());
-//         }
+        //         SootClass math = Scene.v().getSootClass("java.lang.Math");
+        //         Iterator methods = math.getMethods().iterator();
+        //         while (methods.hasNext()) {
+        //             System.out.println("method = " + ((SootMethod)methods.next()).getSignature());
+        //         }
         System.out.println("looking for method " + buffer);
         return Scene.v().getMethod(buffer.toString());
     }

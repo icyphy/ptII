@@ -53,7 +53,7 @@ the parse tree.  (the operator "^")
 */
 public class ASTPtPowerNode extends ASTPtRootNode {
 
-   public ASTPtPowerNode(int id) {
+    public ASTPtPowerNode(int id) {
         super(id);
     }
 

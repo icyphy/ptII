@@ -78,7 +78,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         Type[] childTypes = _getChildTypes(node);
 
         _setType(node, new ArrayType((Type)
-                         TypeLattice.lattice().leastUpperBound(childTypes)));
+                TypeLattice.lattice().leastUpperBound(childTypes)));
     }
 
     public void visitBitwiseNode(ASTPtBitwiseNode node)
@@ -156,10 +156,10 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             if (baseType instanceof ArrayType) {
                 _setType(node, ((ArrayType)baseType).getElementType());
                 return;            } else {
-                _assert(true, node, "Cannot use array "
-                        + "indexing on '" + node.getFunctionName()
-                        + "' because it does not have an array type.");
-            }
+                    _assert(true, node, "Cannot use array "
+                            + "indexing on '" + node.getFunctionName()
+                            + "' because it does not have an array type.");
+                }
         } else if (argCount == 2) {
             if (baseType instanceof UnsizedMatrixType) {
                 _setType(node, ((UnsizedMatrixType) baseType).getElementType());
@@ -242,8 +242,8 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         Type conditionalType = ((ASTPtRootNode)node.jjtGetChild(0)).getType();
         if (conditionalType != BaseType.BOOLEAN) {
             throw new IllegalActionException(
-               "Functional-if must branch on a boolean, but instead type was "
-               + conditionalType);
+                    "Functional-if must branch on a boolean, but instead type was "
+                    + conditionalType);
         }
 
         Type trueType = ((ASTPtRootNode)node.jjtGetChild(1)).getType();
@@ -282,7 +282,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
 
         Type matrixType
             = UnsizedMatrixType.getMatrixTypeForElementType(elementType);
-       _setType(node, matrixType);
+        _setType(node, matrixType);
     }
 
     public void visitMethodCallNode(ASTPtMethodCallNode node)
@@ -308,7 +308,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         if (!cachedMethod.isMissing()) {
             Type type = cachedMethod.getReturnType();
             _setType(node, type);
-         } else {
+        } else {
             // If we reach this point it means the function was not found on
             // the search path.
             StringBuffer buffer = new StringBuffer();
@@ -437,7 +437,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
 
     /** Test if the given identifier is valid.
      */
-     protected boolean _isValidName(String name)
+    protected boolean _isValidName(String name)
             throws IllegalActionException {
         if (_scope != null) {
             try {

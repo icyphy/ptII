@@ -57,7 +57,7 @@ Matlab like expressions.
 */
 public class ASTPtMatrixConstructNode extends ASTPtRootNode {
 
-   public ASTPtMatrixConstructNode(int id) {
+    public ASTPtMatrixConstructNode(int id) {
         super(id);
     }
 

@@ -173,7 +173,7 @@ public class ParseTreeFreeVariableCollector extends AbstractParseTreeVisitor {
 
     /** Test if the given identifier is valid.
      */
-     protected boolean _isValidName(String name)
+    protected boolean _isValidName(String name)
             throws IllegalActionException {
         if (_scope != null) {
             try {

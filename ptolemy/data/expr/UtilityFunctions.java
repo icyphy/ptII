@@ -307,14 +307,14 @@ public class UtilityFunctions {
                 }
                 Error error =
                     new UnsatisfiedLinkError("Did not find '"+ library
-                                             + "' in path, searched "
-                                             + "user.home (" + userDir
-                                             + ") user.dir (" + userHome
-                                             + ") and the classpath for '"
-                                             + libraryPath + "', but that "
-                                             + "was not found either.\n"
-                                             + "classpath was: "
-                                             + classpath);
+                            + "' in path, searched "
+                            + "user.home (" + userDir
+                            + ") user.dir (" + userHome
+                            + ") and the classpath for '"
+                            + libraryPath + "', but that "
+                            + "was not found either.\n"
+                            + "classpath was: "
+                            + classpath);
                 error.initCause(ex);
                 throw error;
             }

@@ -125,7 +125,7 @@ public abstract class MatrixToken extends Token {
             // the LUB of the types might support it. E.g., [double]+complex,
             // where the LUB is [complex].
             Type lubType = (Type)TypeLattice.lattice()
-                    .leastUpperBound(getType(), rightArgument.getType());
+                .leastUpperBound(getType(), rightArgument.getType());
             // If the LUB is a new type, try it.
             if (!lubType.equals(getType())) {
                 Token lub = lubType.convert(this);
@@ -138,7 +138,7 @@ public abstract class MatrixToken extends Token {
             }
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("add",
-                    this, rightArgument));
+                            this, rightArgument));
         }
     }
 
@@ -193,7 +193,7 @@ public abstract class MatrixToken extends Token {
                 // arguments that were passed in.
                 throw new IllegalActionException(null, ex,
                         notSupportedMessage("addReverse",
-                        this, leftArgument));
+                                this, leftArgument));
             }
         } else if (typeInfo == CPO.SAME) {
             Token result = ((MatrixToken)leftArgument)._doAdd(this);
@@ -207,7 +207,7 @@ public abstract class MatrixToken extends Token {
             // the LUB of the types might support it. E.g., complex+[double],
             // where the LUB is [complex].
             Type lubType = (Type)TypeLattice.lattice()
-                    .leastUpperBound(getType(), leftArgument.getType());
+                .leastUpperBound(getType(), leftArgument.getType());
             // If the LUB is a new type, try it.
             if (!lubType.equals(getType())) {
                 Token lub = lubType.convert(this);
@@ -437,7 +437,7 @@ public abstract class MatrixToken extends Token {
             // the LUB of the types might support it. E.g., [double]/complex,
             // where the LUB is [complex].
             Type lubType = (Type)TypeLattice.lattice()
-                    .leastUpperBound(getType(), rightArgument.getType());
+                .leastUpperBound(getType(), rightArgument.getType());
             // If the LUB is a new type, try it.
             if (!lubType.equals(getType())) {
                 Token lub = lubType.convert(this);
@@ -629,11 +629,11 @@ public abstract class MatrixToken extends Token {
             throws IllegalActionException {
 
         /*
-        // If the rightArgument is a complex token, throw an error
-        // message as modulo can't be operated.
-        if (rightArgument instanceof ComplexToken)
-            throw new IllegalActionException(
-                    notSupportedMessage("modulo", this, rightArgument));
+          // If the rightArgument is a complex token, throw an error
+          // message as modulo can't be operated.
+          if (rightArgument instanceof ComplexToken)
+          throw new IllegalActionException(
+          notSupportedMessage("modulo", this, rightArgument));
         */
 
         // Get the corresponding element type for this matrix type,
@@ -641,11 +641,11 @@ public abstract class MatrixToken extends Token {
         Type elementType = getElementType();
 
         /*
-        // If this is a complex array, throw an error message as modulo
-        // can't be performed on it
-        if (elementType == BaseType.COMPLEX)
-            throw new IllegalActionException(
-                    notSupportedMessage("modulo", this, rightArgument));
+          // If this is a complex array, throw an error message as modulo
+          // can't be performed on it
+          if (elementType == BaseType.COMPLEX)
+          throw new IllegalActionException(
+          notSupportedMessage("modulo", this, rightArgument));
         */
 
         int typeInfo = TypeLattice.compare(elementType, rightArgument);
@@ -676,7 +676,7 @@ public abstract class MatrixToken extends Token {
             // the LUB of the types might support it. E.g., [double]/complex,
             // where the LUB is [complex].
             Type lubType = (Type)TypeLattice.lattice()
-                    .leastUpperBound(getType(), rightArgument.getType());
+                .leastUpperBound(getType(), rightArgument.getType());
             // If the LUB is a new type, try it.
             if (!lubType.equals(getType())) {
                 Token lub = lubType.convert(this);
@@ -690,7 +690,7 @@ public abstract class MatrixToken extends Token {
         }
         throw new IllegalActionException(
                 notSupportedMessage("modulo",
-                this, rightArgument));
+                        this, rightArgument));
     }
 
     /** Return a new token whose value is the value of the argument token
@@ -779,7 +779,7 @@ public abstract class MatrixToken extends Token {
             // the LUB of the types might support it. E.g., [double]*complex,
             // where the LUB is [complex].
             Type lubType = (Type)TypeLattice.lattice()
-                    .leastUpperBound(getType(), rightArgument.getType());
+                .leastUpperBound(getType(), rightArgument.getType());
             // If the LUB is a new type, try it.
             if (!lubType.equals(getType())) {
                 Token lub = lubType.convert(this);
@@ -792,7 +792,7 @@ public abstract class MatrixToken extends Token {
             }
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("multiply",
-                    this, rightArgument));
+                            this, rightArgument));
         }
     }
 
@@ -860,7 +860,7 @@ public abstract class MatrixToken extends Token {
             // the LUB of the types might support it. E.g., [double]*complex,
             // where the LUB is [complex].
             Type lubType = (Type)TypeLattice.lattice()
-                    .leastUpperBound(getType(), leftArgument.getType());
+                .leastUpperBound(getType(), leftArgument.getType());
             // If the LUB is a new type, try it.
             if (!lubType.equals(getType())) {
                 Token lub = lubType.convert(this);
@@ -873,7 +873,7 @@ public abstract class MatrixToken extends Token {
             }
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("multiplyReverse",
-                    leftArgument, this));
+                            leftArgument, this));
         }
     }
 
@@ -962,7 +962,7 @@ public abstract class MatrixToken extends Token {
             // the LUB of the types might support it. E.g., [double]-complex,
             // where the LUB is [complex].
             Type lubType = (Type)TypeLattice.lattice()
-                    .leastUpperBound(getType(), rightArgument.getType());
+                .leastUpperBound(getType(), rightArgument.getType());
             // If the LUB is a new type, try it.
             if (!lubType.equals(getType())) {
                 Token lub = lubType.convert(this);
@@ -975,7 +975,7 @@ public abstract class MatrixToken extends Token {
             }
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("subtract",
-                    this, rightArgument));
+                            this, rightArgument));
         }
     }
 
@@ -1030,7 +1030,7 @@ public abstract class MatrixToken extends Token {
                 // arguments that were passed in.
                 throw new IllegalActionException(null, ex,
                         notSupportedMessage("subtractReverse",
-                        this, leftArgument));
+                                this, leftArgument));
             }
         } else if (typeInfo == CPO.SAME) {
             Token result = ((MatrixToken)leftArgument)._doSubtract(this);
@@ -1044,7 +1044,7 @@ public abstract class MatrixToken extends Token {
             // the LUB of the types might support it. E.g., complex-[double],
             // where the LUB is [complex].
             Type lubType = (Type)TypeLattice.lattice()
-                    .leastUpperBound(getType(), leftArgument.getType());
+                .leastUpperBound(getType(), leftArgument.getType());
             // If the LUB is a new type, try it.
             if (!lubType.equals(getType())) {
                 Token lub = lubType.convert(this);
@@ -1057,7 +1057,7 @@ public abstract class MatrixToken extends Token {
             }
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("subtractReverse",
-                    this, leftArgument));
+                            this, leftArgument));
         }
     }
 

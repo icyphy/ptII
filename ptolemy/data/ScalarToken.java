@@ -142,7 +142,7 @@ public abstract class ScalarToken extends Token
             // the LUB of the types might support it. E.g., [double]+complex,
             // where the LUB is [complex].
             Type lubType = (Type)TypeLattice.lattice()
-                    .leastUpperBound(getType(), rightArgument.getType());
+                .leastUpperBound(getType(), rightArgument.getType());
             // If the LUB is a new type, try it.
             if (!lubType.equals(getType())) {
                 Token lub = lubType.convert(this);
@@ -155,7 +155,7 @@ public abstract class ScalarToken extends Token
             }
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("add",
-                    this, rightArgument));
+                            this, rightArgument));
         }
     }
 
@@ -216,7 +216,7 @@ public abstract class ScalarToken extends Token
             return _doBitwiseAnd(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
             ScalarToken convertedArgument = (ScalarToken)
-                    getType().convert(rightArgument);
+                getType().convert(rightArgument);
             try {
                 return _doBitwiseAnd(convertedArgument);
             } catch (IllegalActionException ex) {
@@ -272,7 +272,7 @@ public abstract class ScalarToken extends Token
             return _doBitwiseOr(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
             ScalarToken convertedArgument = (ScalarToken)
-                    getType().convert(rightArgument);
+                getType().convert(rightArgument);
             try {
                 return _doBitwiseOr(convertedArgument);
             } catch (IllegalActionException ex) {
@@ -315,7 +315,7 @@ public abstract class ScalarToken extends Token
             return _doBitwiseXor(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
             ScalarToken convertedArgument = (ScalarToken)
-                    getType().convert(rightArgument);
+                getType().convert(rightArgument);
             try {
                 return _doBitwiseXor(convertedArgument);
             } catch (IllegalActionException ex) {
@@ -402,7 +402,7 @@ public abstract class ScalarToken extends Token
         } else {
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("divide",
-                    this, rightArgument));
+                            this, rightArgument));
         }
     }
 
@@ -438,7 +438,7 @@ public abstract class ScalarToken extends Token
                 // arguments that were passed in.
                 throw new IllegalActionException(null, ex,
                         notSupportedMessage("divideReverse",
-                        this, leftArgument));
+                                this, leftArgument));
             }
         } else if (typeInfo == CPO.SAME) {
             return ((ScalarToken)leftArgument)._doDivide(this);
@@ -447,7 +447,7 @@ public abstract class ScalarToken extends Token
         } else {
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("divideReverse",
-                    this, leftArgument));
+                            this, leftArgument));
         }
     }
 
@@ -858,7 +858,7 @@ public abstract class ScalarToken extends Token
             // the LUB of the types might support it. E.g., [double]*complex,
             // where the LUB is [complex].
             Type lubType = (Type)TypeLattice.lattice()
-                    .leastUpperBound(getType(), rightArgument.getType());
+                .leastUpperBound(getType(), rightArgument.getType());
             // If the LUB is a new type, try it.
             if (!lubType.equals(getType())) {
                 Token lub = lubType.convert(this);
@@ -871,7 +871,7 @@ public abstract class ScalarToken extends Token
             }
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("multiply",
-                    this, rightArgument));
+                            this, rightArgument));
         }
     }
 
@@ -925,7 +925,7 @@ public abstract class ScalarToken extends Token
             // the LUB of the types might support it. E.g., [double]*complex,
             // where the LUB is [complex].
             Type lubType = (Type)TypeLattice.lattice()
-                    .leastUpperBound(getType(), leftArgument.getType());
+                .leastUpperBound(getType(), leftArgument.getType());
             // If the LUB is a new type, try it.
             if (!lubType.equals(getType())) {
                 Token lub = lubType.convert(this);
@@ -938,7 +938,7 @@ public abstract class ScalarToken extends Token
             }
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("multiplyReverse",
-                    leftArgument, this));
+                            leftArgument, this));
         }
     }
 
@@ -1021,7 +1021,7 @@ public abstract class ScalarToken extends Token
             // the LUB of the types might support it. E.g., [double]-complex,
             // where the LUB is [complex].
             Type lubType = (Type)TypeLattice.lattice()
-                    .leastUpperBound(getType(), rightArgument.getType());
+                .leastUpperBound(getType(), rightArgument.getType());
             // If the LUB is a new type, try it.
             if (!lubType.equals(getType())) {
                 Token lub = lubType.convert(this);
@@ -1034,7 +1034,7 @@ public abstract class ScalarToken extends Token
             }
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("subtract",
-                    this, rightArgument));
+                            this, rightArgument));
         }
     }
 
@@ -1078,7 +1078,7 @@ public abstract class ScalarToken extends Token
         } else {
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("subtractReverse",
-                    this, leftArgument));
+                            this, leftArgument));
         }
     }
 
@@ -1164,7 +1164,7 @@ public abstract class ScalarToken extends Token
      *  sense for this type.
      */
     protected abstract ScalarToken _bitwiseNot()
-        throws IllegalActionException;
+            throws IllegalActionException;
 
     /** Returns a token representing the bitwise OR of this token and
      *  the given token.

@@ -469,10 +469,10 @@ public class FixMatrixToken extends MatrixToken {
         FixMatrixToken convertedArgument = (FixMatrixToken)rightArgument;
         if (_columnCount != convertedArgument._rowCount) {
             throw new IllegalActionException(
-                   "Matrix dimensions are not compatible. Cannot multiply.");
+                    "Matrix dimensions are not compatible. Cannot multiply.");
         }
         FixPoint[][] result
-                = new FixPoint[_rowCount][convertedArgument._columnCount];
+            = new FixPoint[_rowCount][convertedArgument._columnCount];
 
         for (int i = 0; i < _rowCount; i++) {
             for (int j = 0; j < convertedArgument._columnCount; j++) {
@@ -480,7 +480,7 @@ public class FixMatrixToken extends MatrixToken {
                         convertedArgument._value[0][j]);
                 for (int k = 1; k < _columnCount; k++) {
                     sum = sum.add(_value[i][k].multiply(
-                        convertedArgument._value[k][j]));
+                            convertedArgument._value[k][j]));
                 }
                 result[i][j] = sum;
             }

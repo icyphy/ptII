@@ -96,16 +96,16 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
     }
     public void visitFunctionNode(ASTPtFunctionNode node)
             throws IllegalActionException  {
-                _printChild(node, 0);
+        _printChild(node, 0);
         _writer.print("(");
-                int n = node.jjtGetNumChildren();
-                for (int i = 1; i < n - 1; ++i) {
-                        _printChild(node, i);
-                        _writer.print(", ");
-                }
-                if (n > 1) {
-                        _printChild(node, n - 1);
-                }
+        int n = node.jjtGetNumChildren();
+        for (int i = 1; i < n - 1; ++i) {
+            _printChild(node, i);
+            _writer.print(", ");
+        }
+        if (n > 1) {
+            _printChild(node, n - 1);
+        }
         _writer.print(")");
     }
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)

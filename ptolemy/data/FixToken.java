@@ -85,7 +85,7 @@ public class FixToken extends ScalarToken {
             throws IllegalArgumentException {
         try {
             FixPointQuantization q = new FixPointQuantization(precision,
-                Overflow.SATURATE, Rounding.NEAREST);
+                    Overflow.SATURATE, Rounding.NEAREST);
             _value = new FixPoint(value, q);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(e.getMessage());
@@ -107,7 +107,7 @@ public class FixToken extends ScalarToken {
         try {
             Precision precision = new Precision(numberOfBits, integerBits);
             FixPointQuantization q = new FixPointQuantization(precision,
-                Overflow.SATURATE, Rounding.NEAREST);
+                    Overflow.SATURATE, Rounding.NEAREST);
             _value = new FixPoint(value, q);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(e.getMessage());

@@ -100,11 +100,11 @@ public class BaseUnit extends Parameter {
         Token token = super.getToken();
         if (token != _token) {
             Iterator attributes =
-                    attributeList(UnitCategory.class).iterator();
+                attributeList(UnitCategory.class).iterator();
             if (attributes.hasNext()) {
                 UnitCategory category = (UnitCategory)attributes.next();
                 int index =
-                        UnitSystem.getUnitCategoryIndex(category);
+                    UnitSystem.getUnitCategoryIndex(category);
                 if (index >= 0) {
                     ((ScalarToken)token).setUnitCategory(index);
                 }

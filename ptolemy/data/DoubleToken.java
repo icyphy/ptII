@@ -206,7 +206,7 @@ public class DoubleToken extends ScalarToken {
                 return TokenUtilities.regularFormat.format(_value) + unitString;
             } else {
                 return TokenUtilities.exponentialFormat.format(_value)
-                        + unitString;
+                    + unitString;
             }
         }
     }

@@ -53,7 +53,7 @@ the parse tree.
 */
 public class ASTPtProductNode extends ASTPtRootNode {
 
-   public ASTPtProductNode(int id) {
+    public ASTPtProductNode(int id) {
         super(id);
     }
 

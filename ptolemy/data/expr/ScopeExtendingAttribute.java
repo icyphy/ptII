@@ -52,7 +52,7 @@ visibility as parameters of the container of the attribute.
 */
 
 public class ScopeExtendingAttribute extends Attribute
-        implements ScopeExtender {
+    implements ScopeExtender {
 
 
     /** Construct an attribute with the given name contained by the specified
@@ -128,8 +128,8 @@ public class ScopeExtendingAttribute extends Attribute
             return;
         }
         for (Iterator variables = object.attributeList(
-                    Variable.class).iterator();
-            variables.hasNext();) {
+                Variable.class).iterator();
+             variables.hasNext();) {
             Variable variable = (Variable)variables.next();
             if (getAttribute(variable.getName()) != null) {
                 variable.invalidate();
@@ -140,7 +140,7 @@ public class ScopeExtendingAttribute extends Attribute
         Iterator scopeAttributes = object.attributeList(
                 ScopeExtendingAttribute.class).iterator();
         while (scopeAttributes.hasNext()) {
-           ScopeExtendingAttribute attribute =
+            ScopeExtendingAttribute attribute =
                 (ScopeExtendingAttribute)scopeAttributes.next();
             Iterator variables = attribute.attributeList(
                     Variable.class).iterator();

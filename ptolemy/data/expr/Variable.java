@@ -182,7 +182,7 @@ The derived class Parameter is fully visible by default.
 */
 
 public class Variable extends Attribute
-        implements Typeable, Settable, ValueListener {
+    implements Typeable, Settable, ValueListener {
 
     /** Construct a variable in the default workspace with an empty string
      *  as its name. The variable is added to the list of objects in the
@@ -1183,7 +1183,7 @@ public class Variable extends Attribute
                 if (listener instanceof Variable) {
                     if (((Variable)listener)._needsEvaluation) {
                         List additionalErrors
-                               = ((Variable)listener)._propagate();
+                            = ((Variable)listener)._propagate();
                         if (additionalErrors != null) {
                             if (result == null) {
                                 result = new LinkedList();
@@ -1348,8 +1348,8 @@ public class Variable extends Attribute
             return;
         }
         for (Iterator variables = object.attributeList(
-                    Variable.class).iterator();
-            variables.hasNext();) {
+                Variable.class).iterator();
+             variables.hasNext();) {
             Variable variable = (Variable)variables.next();
             if (variable.getName().equals(getName())) {
                 variable.invalidate();
@@ -1432,14 +1432,14 @@ public class Variable extends Attribute
             } else {
                 throw new IllegalActionException(this,
                         "Variable._setToken: Cannot store a token of type " +
-                            newToken.getType().toString() +
+                        newToken.getType().toString() +
                         ", which is incompatible with type " +
                         declaredType.toString());
             }
 
             // update _varType to the type of the new token.
             if (_declaredType instanceof StructuredType) {
-                    ((StructuredType)_varType).updateType(
+                ((StructuredType)_varType).updateType(
                         (StructuredType)newToken.getType());
             } else {
                 // _declaredType is a BaseType
@@ -1578,9 +1578,9 @@ public class Variable extends Attribute
          */
         public InequalityTerm[] getVariables() {
             if (isSettable()) {
-                    InequalityTerm[] result = new InequalityTerm[1];
-                    result[0] = this;
-                    return result;
+                InequalityTerm[] result = new InequalityTerm[1];
+                result[0] = this;
+                return result;
             }
             return (new InequalityTerm[0]);
         }
@@ -1638,12 +1638,12 @@ public class Variable extends Attribute
          */
         public void setValue(Object e) throws IllegalActionException {
             if ( !isSettable()) {
-                    throw new IllegalActionException("TypeTerm.setValue: The "
+                throw new IllegalActionException("TypeTerm.setValue: The "
                         + "type is not settable.");
             }
 
             if ( !_declaredType.isSubstitutionInstance((Type)e)) {
-                    throw new IllegalActionException("Variable$TypeTerm"
+                throw new IllegalActionException("Variable$TypeTerm"
                         + ".setValue: "
                         + "Cannot update the type of this variable to the "
                         + "new type."

@@ -231,7 +231,7 @@ public class ASTPtRootNode implements Node, Cloneable {
         _isConstant = flag;
     }
 
-     /** Set the value of this node.  This may be set during parsing,
+    /** Set the value of this node.  This may be set during parsing,
      *  if the node is a constant node, or during evaluation of the
      *  expression.
      */

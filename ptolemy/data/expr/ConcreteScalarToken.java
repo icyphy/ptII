@@ -104,7 +104,7 @@ public class ConcreteScalarToken extends ScalarToken {
     /** Throw an exception.
      */
     protected ScalarToken _bitwiseXor(ScalarToken rightArgument)
-        throws IllegalActionException {
+            throws IllegalActionException {
         throw new IllegalActionException(
                 notSupportedMessage("bitwiseXor", this, rightArgument));
     }
@@ -134,7 +134,7 @@ public class ConcreteScalarToken extends ScalarToken {
                 notSupportedMessage("isEqualTo", this, rightArgument));
     }
 
-     /** Throw an exception.
+    /** Throw an exception.
      */
     protected BooleanToken _isLessThan(ScalarToken rightArgument)
             throws IllegalActionException {

@@ -80,7 +80,7 @@ public class ASTPtUnaryNode extends ASTPtRootNode {
         return _isNot;
     }
 
-   /** Return true if this node represents the bitwise negation of its
+    /** Return true if this node represents the bitwise negation of its
      *  child.
      */
     public boolean isBitwiseNot() {

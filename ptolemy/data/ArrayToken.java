@@ -118,7 +118,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
                             this, token));
         }
         return new ArrayToken(result);
-   }
+    }
 
     /** Return an array of tokens populated with the contents of this
      *  array token.  The returned array is a copy so the caller is
@@ -131,10 +131,10 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         // than token.  Eventually, we would like to use this code
         // since it will simplify writing some actors, but for the
         // moment the code generator cannot deal with it.
-// (Token[])
-//             java.lang.reflect.Array.newInstance(
-//                     getElementType().getTokenClass(),
-//                     _value.length);
+        // (Token[])
+        //             java.lang.reflect.Array.newInstance(
+        //                     getElementType().getTokenClass(),
+        //                     _value.length);
         System.arraycopy(_value, 0, result, 0, _value.length);
         return result;
     }
@@ -520,7 +520,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     // Throw an exception if the argument is not an ArrayToken of the
     // same length.
     private void _checkArgumentLength(Token token)
-        throws IllegalActionException {
+            throws IllegalActionException {
 
         int length = ((ArrayToken)token).length();
         if (length() != length) {
@@ -541,13 +541,13 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         int length = value.length;
         // It would be nice to have this, but the Code generator cannot
         // deal with the least upper bound.
-     //    for (int i = 0; i < length; i++) {
-//             Type valueType = value[i].getType();
-//             if (!elementType.equals(valueType)) {
-//                 elementType = TypeLattice.leastUpperBound(
-//                         elementType, valueType);
-//             }
-//         }
+        //    for (int i = 0; i < length; i++) {
+        //             Type valueType = value[i].getType();
+        //             if (!elementType.equals(valueType)) {
+        //                 elementType = TypeLattice.leastUpperBound(
+        //                         elementType, valueType);
+        //             }
+        //         }
         _value = new Token[length];
         for (int i = 0; i < length; i++) {
             if (elementType.equals(value[i].getType())) {

@@ -528,7 +528,7 @@ public class IntMatrixToken extends MatrixToken {
                         convertedArgument._getInternalIntMatrix(), 0));
     }
 
-     /** Return a new token whose elements are the remainders of
+    /** Return a new token whose elements are the remainders of
      *  the elements of this token when divided by the argument.
      *  It is guaranteed by the caller that the type of the argument
      *  is the same as the type of each element of this class.

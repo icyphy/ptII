@@ -147,7 +147,7 @@ public class UnusedFieldRemover extends SceneTransformer {
                 SootMethod method = (SootMethod)methods.next();
                 JimpleBody body = (JimpleBody)method.retrieveActiveBody();
                 for (Iterator stmts = body.getUnits().iterator();
-                    stmts.hasNext();) {
+                     stmts.hasNext();) {
                     Stmt stmt = (Stmt)stmts.next();
                     for (Iterator boxes = stmt.getUseBoxes().iterator();
                          boxes.hasNext();) {
@@ -172,7 +172,7 @@ public class UnusedFieldRemover extends SceneTransformer {
                 SootMethod method = (SootMethod)methods.next();
                 JimpleBody body = (JimpleBody)method.retrieveActiveBody();
                 for (Iterator stmts = body.getUnits().snapshotIterator();
-                    stmts.hasNext();) {
+                     stmts.hasNext();) {
                     Stmt stmt = (Stmt)stmts.next();
                     for (Iterator boxes = stmt.getDefBoxes().iterator();
                          boxes.hasNext();) {

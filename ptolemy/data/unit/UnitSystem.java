@@ -131,7 +131,7 @@ public class UnitSystem extends ScopeExtendingAttribute {
             return "unknown";
         } else {
             UnitCategory category =
-                    (UnitCategory)_categoryVector.elementAt(categoryIndex);
+                (UnitCategory)_categoryVector.elementAt(categoryIndex);
             if (category != null) {
                 return ((BaseUnit)category.getContainer()).getName();
             } else {

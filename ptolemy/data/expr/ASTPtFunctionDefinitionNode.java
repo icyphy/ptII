@@ -77,7 +77,7 @@ public class ASTPtFunctionDefinitionNode extends ASTPtRootNode {
      */
     public Object clone() throws CloneNotSupportedException {
         ASTPtFunctionDefinitionNode newNode =
-                (ASTPtFunctionDefinitionNode)super.clone();
+            (ASTPtFunctionDefinitionNode)super.clone();
         newNode._argList = (ArrayList)_argList.clone();
         return newNode;
     }
