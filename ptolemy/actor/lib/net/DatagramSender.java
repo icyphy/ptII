@@ -81,21 +81,20 @@ until the model is run.<p>
 @since Ptolemy II 2.0
 */
 
-
-/** Construct a DatagramSender actor with given name in the given
- *  container.  Set up ports, parameters and default values.  Two of
- *  the parameters are used in a funny way.  They give default values for
- *  the  <i>remoteAddress</i> and <i>remoteSocketNumber</i> ports in case
- *  no tokens are available there.
- *  @param container The container.
- *  @param name The name for this actor.
- *  @exception NameDuplicationException If the container already has an
- *   actor with this name.
- *  @exception IllegalActionException If the actor cannot be contained by
- *   this container
- */
 public class DatagramSender extends TypedAtomicActor {
 
+    /** Construct a DatagramSender actor with given name in the given
+     *  container.  Set up ports, parameters and default values.  Two of
+     *  the parameters are used in a funny way.  They give default values for
+     *  the  <i>remoteAddress</i> and <i>remoteSocketNumber</i> ports in case
+     *  no tokens are available there.
+     *  @param container The container.
+     *  @param name The name for this actor.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     *  @exception IllegalActionException If the actor cannot be contained by
+     *   this container
+     */
     public DatagramSender(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
