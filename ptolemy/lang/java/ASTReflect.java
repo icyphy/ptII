@@ -51,47 +51,7 @@ public class ASTReflect {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return an AST that contains the class, methods, fields
-     *	and constructors.
-     */  
-    public static CompileUnitNode ASTCompileUnitNode(Class myClass) {
-	if (_debug) {
-	    System.out.println("// " + myClass.toString());
-	    System.out.println("package " +
-			       myClass.getPackage().getName() + ";");
-	
-	    System.out.println(Modifier.toString(myClass.getModifiers()) +
-			       " " + myClass.toString());
-	    String superClass = myClass.getSuperclass().getName();
-	    if (superClass.length() > 0 ) { 
-		System.out.println("extends " + superClass);
-	    }
-
-	    Class interfaces[] = myClass.getInterfaces();
-	    for(int i = 0; i < interfaces.length; i++) {
-		System.out.println("implements " + interfaces[i].toString());
-	    }
-	    System.out.println("{");
-	}
-
-	ClassDeclNode classDeclNode = ASTClassDeclNode(myClass);
-	NameNode packageName = 
-	    (NameNode) _makeNameNode(myClass.getPackage().getName());
-
-	// FIXME: we are not trying to generate a list of imports here
-	// we could look at the return values and args and import
-	// anything outside of the package.
-	CompileUnitNode compileUnitNode =
-			      new CompileUnitNode(packageName,
-						  /*imports*/ new LinkedList(),
-						  TNLManip.cons(classDeclNode));
-	if (_debug) {
-	    System.out.println("}");
-	}
-	return compileUnitNode;
-
-    }
-
+    /** Return an AST that contains a class declaration. */
     public static ClassDeclNode ASTClassDeclNode(Class myClass) {
 	int modifiers =
 	    Modifier.convertModifiers(myClass.getModifiers());
@@ -105,7 +65,7 @@ public class ASTReflect {
 
 	// Unfortunately, we can't use Arrays.asList() here since
 	// what getParameterTypes returns of type Class[], and
-	// what we want is a list of ParameterNodes.
+	// what we want is a list of InterfaceDeclNodes
 	List interfaceList = new LinkedList();
 	Class interfaceClasses[] = myClass.getInterfaces();
 	for(int i = 0; i < interfaceClasses.length; i++) {
@@ -163,6 +123,48 @@ public class ASTReflect {
     }
 
 
+    /** Return a CompileUnitNode AST that contains the class, methods, fields
+     *	constructors and inner classes.  This node includes information
+     *  about the package.
+     */  
+    public static CompileUnitNode ASTCompileUnitNode(Class myClass) {
+	if (_debug) {
+	    System.out.println("// " + myClass.toString());
+	    System.out.println("package " +
+			       myClass.getPackage().getName() + ";");
+	
+	    System.out.println(Modifier.toString(myClass.getModifiers()) +
+			       " " + myClass.toString());
+	    String superClass = myClass.getSuperclass().getName();
+	    if (superClass.length() > 0 ) { 
+		System.out.println("extends " + superClass);
+	    }
+
+	    Class interfaces[] = myClass.getInterfaces();
+	    for(int i = 0; i < interfaces.length; i++) {
+		System.out.println("implements " + interfaces[i].toString());
+	    }
+	    System.out.println("{");
+	}
+
+	ClassDeclNode classDeclNode = ASTClassDeclNode(myClass);
+	NameNode packageName = 
+	    (NameNode) _makeNameNode(myClass.getPackage().getName());
+
+	// FIXME: we are not trying to generate a list of imports here
+	// we could look at the return values and args and import
+	// anything outside of the package.
+	CompileUnitNode compileUnitNode =
+			      new CompileUnitNode(packageName,
+						  /*imports*/ new LinkedList(),
+						  TNLManip.cons(classDeclNode));
+	if (_debug) {
+	    System.out.println("}");
+	}
+	return compileUnitNode;
+
+    }
+
     /** Return a list that contains an AST for the constructors. */
     public static List constructorsASTList(Class myClass){
 	List constructorList = new LinkedList(); 
@@ -175,12 +177,12 @@ public class ASTReflect {
 	    constructor = constructors[i];
 	    if (_debug) {
 		System.out.println(_indent +
-				   constructor.toString() + "{}");
+				   constructor.getName() + "{}");
 	    }
 	    int modifiers =
 		    Modifier.convertModifiers(constructor.getModifiers());
 
-	    String fullConstructorName = constructor.toString();
+	    String fullConstructorName = constructor.getName();
 	    NameNode constructorName =
 		new NameNode(AbsentTreeNode.instance,
 			     fullConstructorName.substring(1 + 
@@ -306,7 +308,8 @@ public class ASTReflect {
     /** Print the AST for ptolemy.lang.java.Skeleton for testing purposes. */
     public static void main(String[] args) {
 	try {
-	    System.out.println(ASTCompileUnitNode(Class.forName("ptolemy.lang.java.test.ReflectTest")));
+	    System.out.println("ast: " +
+			       ASTCompileUnitNode(Class.forName("ptolemy.lang.java.test.ReflectTest")));
 	    //System.out.println(ASTCompileUnitNode(Class.forName("ptolemy.lang.java.Skeleton")));
 	} catch (Exception e) {
 	    System.err.println("Error: " + e);
@@ -327,51 +330,34 @@ public class ASTReflect {
 	    // Handle arrays.  
 	    Class componentClass =
 		myClass.getComponentType();
-	    fullClassName = componentClass.getName();
 	    TypeNode baseType = null;
 	    if (componentClass.isArray()) {
 		// Arrays of Arrays
 		baseType = _definedType(componentClass);
 	    } else {
-		NameNode className =
-		    new NameNode(AbsentTreeNode.instance,
-				 fullClassName.substring(1 + 
-							 fullClassName.lastIndexOf('.')));
-		baseType = new TypeNameNode(className);
+		if (componentClass.isPrimitive()) { 
+		    baseType = _primitiveTypeNode(componentClass);
+		} else {
+		    fullClassName = componentClass.getName();
+		    NameNode className =
+			new NameNode(AbsentTreeNode.instance,
+				     fullClassName.substring(1 + 
+							     fullClassName.lastIndexOf('.')));
+		    baseType = new TypeNameNode(className);
+		}
 	    }
 	    defType =
 		new ArrayTypeNode(baseType);
 	} else {
-	    if (!myClass.isPrimitive()) { 
+	    if (myClass.isPrimitive()) { 
+		return _primitiveTypeNode(myClass);
+	    } else {
 		fullClassName = myClass.getName();
 		defType =
 		    new TypeNameNode(new NameNode(AbsentTreeNode.instance,
 				 fullClassName.substring(1 + 
 							 fullClassName.lastIndexOf('.')
 							 )));
-	    } else {
-
-		// FIXME: I'll bet we could reorder these for better
-		// performance
-		if (myClass.equals(Boolean.TYPE)) {
-		    defType = BoolTypeNode.instance;
-		} else if (myClass.equals(Character.TYPE)) {
-		    defType = CharTypeNode.instance;
-		} else if (myClass.equals(Byte.TYPE)) {
-		    defType = ByteTypeNode.instance;
-		} else if (myClass.equals(Short.TYPE)) {
-		    defType = ShortTypeNode.instance;
-		} else if (myClass.equals(Integer.TYPE)) {
-		    defType = IntTypeNode.instance;
-		} else if (myClass.equals(Long.TYPE)) {
-		    defType = LongTypeNode.instance;
-		} else if (myClass.equals(Float.TYPE)) {
-		    defType = FloatTypeNode.instance;
-		} else if (myClass.equals(Double.TYPE)) {
-		    defType = DoubleTypeNode.instance;
-		} else if (myClass.equals(Void.TYPE)) {
-		    defType = VoidTypeNode.instance;
-		}
 	    }
 
 	}
@@ -430,6 +416,36 @@ public class ASTReflect {
 	    paramList.add(new ParameterNode(modifier, defType, name));
 	}
 	return paramList;
+    }
+
+    private static TypeNode _primitiveTypeNode(Class myClass) {
+	TypeNode defType = null;
+	// FIXME: I'll bet we could reorder these for better
+	// performance
+	if (!myClass.isPrimitive()) { 
+	    throw new RuntimeException("Error: " + myClass +
+				   " is not a primitive type like int");
+	}
+	if (myClass.equals(Boolean.TYPE)) {
+	    defType = BoolTypeNode.instance;
+	} else if (myClass.equals(Character.TYPE)) {
+	    defType = CharTypeNode.instance;
+	} else if (myClass.equals(Byte.TYPE)) {
+	    defType = ByteTypeNode.instance;
+	} else if (myClass.equals(Short.TYPE)) {
+	    defType = ShortTypeNode.instance;
+	} else if (myClass.equals(Integer.TYPE)) {
+	    defType = IntTypeNode.instance;
+	} else if (myClass.equals(Long.TYPE)) {
+	    defType = LongTypeNode.instance;
+	} else if (myClass.equals(Float.TYPE)) {
+	    defType = FloatTypeNode.instance;
+	} else if (myClass.equals(Double.TYPE)) {
+	    defType = DoubleTypeNode.instance;
+	} else if (myClass.equals(Void.TYPE)) {
+	    defType = VoidTypeNode.instance;
+	}
+	return defType;
     }
 
     ///////////////////////////////////////////////////////////////////
