@@ -76,37 +76,37 @@ public class ColtHyperGeometric extends ColtRandomSource {
 
         output.setTypeEquals(BaseType.INT);
 
-        coltN = new Parameter(this, "N", new IntToken(2));
-        coltN.setTypeEquals(BaseType.INT);
+        N = new Parameter(this, "N", new IntToken(2));
+        N.setTypeEquals(BaseType.INT);
 
-        colts = new Parameter(this, "s", new IntToken(1));
-        colts.setTypeEquals(BaseType.INT);
+        s = new Parameter(this, "s", new IntToken(1));
+        s.setTypeEquals(BaseType.INT);
 
-        coltn = new Parameter(this, "n", new IntToken(1));
-        coltn.setTypeEquals(BaseType.INT);
+        n = new Parameter(this, "n", new IntToken(1));
+        n.setTypeEquals(BaseType.INT);
 
         randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
 
-        _rng = new HyperGeometric(2, 1, 1, randomNumberGenerator);
+        _rng = new HyperGeometric(2, 1, 1, _randomNumberGenerator);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** coltN.
+    /** N.
      *  This parameter contains a IntToken, initially with value 1.0.
      */
-    public Parameter coltN;
+    public Parameter N;
 
     /** coltLmabda.
      *  This parameter contains a IntToken, initially with value 1.0.
      */
-    public Parameter colts;
+    public Parameter s;
 
     /** coltLmabda.
      *  This parameter contains a IntToken, initially with value 1.0.
      */
-    public Parameter coltn;
+    public Parameter n;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -127,11 +127,11 @@ public class ColtHyperGeometric extends ColtRandomSource {
      */
     public boolean prefire() throws IllegalActionException {
 
-        int N = ((IntToken) coltN.getToken()).intValue();
-        int s = ((IntToken) colts.getToken()).intValue();
-        int n = ((IntToken) coltn.getToken()).intValue();
+        int NValue = ((IntToken) N.getToken()).intValue();
+        int sValue = ((IntToken) s.getToken()).intValue();
+        int nValue = ((IntToken) n.getToken()).intValue();
 
-        _current = ((HyperGeometric) _rng).nextInt(N, s, n);
+        _current = ((HyperGeometric) _rng).nextInt(NValue, sValue, nValue);
 
         return super.prefire();
     }

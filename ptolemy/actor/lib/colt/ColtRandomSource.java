@@ -85,8 +85,8 @@ public abstract class ColtRandomSource extends RandomSource
         super(container, name);
 
         _index = 0;
-        _coltSeed = 1;
-        _randomNumberGenerator = new DRand((int)_coltSeed);
+        _seed = 1;
+        _randomNumberGenerator = new DRand((int)_seed);
 
         _removeAttribute(super.seed);
     }
@@ -100,9 +100,9 @@ public abstract class ColtRandomSource extends RandomSource
      */
     public Parameter randomNumberGeneratorClass = null;
 
-    /** The coltSeed for the RNG.
+    /** The seed for the RNG.
      */
-    public Parameter coltSeed = null;
+    public Parameter seed = null;
 
 
     ///////////////////////////////////////////////////////////////////
@@ -115,12 +115,12 @@ public abstract class ColtRandomSource extends RandomSource
     public Parameter getRandomNumberGeneratorClass(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         randomNumberGeneratorClass =
-            (Parameter) container.getAttribute("Random Number Generator");
-        coltSeed = (Parameter) container.getAttribute("coltSeed");
+            (Parameter) container.getAttribute("randomNumberGenerator");
+        seed = (Parameter) container.getAttribute("seed");
 
         if (randomNumberGeneratorClass == null) {
             randomNumberGeneratorClass =
-                new Parameter(container, "Random Number Generator",
+                new Parameter(container, "randomNumberGenerator",
                         new StringToken(_randomNumberGeneratorClassNames[_index]));
 
             ChoiceStyle s = new ChoiceStyle(randomNumberGeneratorClass, "s");
@@ -131,17 +131,17 @@ public abstract class ColtRandomSource extends RandomSource
             }
         }
 
-        if (coltSeed == null) {
-            coltSeed =
-                new Parameter(container, "coltSeed", new LongToken(_coltSeed));
-            coltSeed.setTypeEquals(BaseType.LONG);
+        if (seed == null) {
+            seed =
+                new Parameter(container, "seed", new LongToken(_seed));
+            seed.setTypeEquals(BaseType.LONG);
         }
 
         _addAttribute(randomNumberGeneratorClass);
-        _addAttribute(coltSeed);
+        _addAttribute(seed);
 
         randomNumberGeneratorClass.addChangeListener(this);
-        coltSeed.addChangeListener(this);
+        seed.addChangeListener(this);
 
         if (_randomNumberGenerator == null) {
             System.err.println("Unable to create randomNumberGenerator!");
@@ -181,9 +181,9 @@ public abstract class ColtRandomSource extends RandomSource
     {
         //System.err.println("Request desc: " + req.getDescription());
 
-        if (-1 != req.getDescription().indexOf("coltSeed")) {
+        if (-1 != req.getDescription().indexOf("seed")) {
             try {
-                _coltSeed = ((LongToken) (coltSeed.getToken())).longValue();
+                _seed = ((LongToken) (seed.getToken())).longValue();
             } catch (IllegalActionException ex) {
                 throw new InternalErrorException(this, ex,
                         "Failed to get Colt seed"); 
@@ -191,7 +191,7 @@ public abstract class ColtRandomSource extends RandomSource
             return;
         }
 
-        if (-1 == req.getDescription().indexOf("Random Number Generator")) {
+        if (-1 == req.getDescription().indexOf("randomNumberGenerator")) {
             return;
         }
 
@@ -199,23 +199,23 @@ public abstract class ColtRandomSource extends RandomSource
 
         if (-1 != reClass.indexOf(_randomNumberGeneratorClassNames[0])
                 && _index != 0) {
-            _randomNumberGenerator = new DRand((int)_coltSeed);
+            _randomNumberGenerator = new DRand((int)_seed);
             _index = 0;
         } else if (-1 != reClass.indexOf(_randomNumberGeneratorClassNames[1])
                 && _index != 1) {
-            _randomNumberGenerator = new MersenneTwister((int)_coltSeed);
+            _randomNumberGenerator = new MersenneTwister((int)_seed);
             _index = 1;
         } else if (-1 != reClass.indexOf(_randomNumberGeneratorClassNames[2])
                 && _index != 2) {
-            _randomNumberGenerator = new Ranecu(_coltSeed);
+            _randomNumberGenerator = new Ranecu(_seed);
             _index = 2;
         } else if (-1 != reClass.indexOf(_randomNumberGeneratorClassNames[3])
                 && _index != 3) {
-            _randomNumberGenerator = new Ranlux(_coltSeed);
+            _randomNumberGenerator = new Ranlux(_seed);
             _index = 3;
         } else if (-1 != reClass.indexOf(_randomNumberGeneratorClassNames[4])
                 && _index != 4) {
-            _randomNumberGenerator = new Ranmar(_coltSeed);
+            _randomNumberGenerator = new Ranmar(_seed);
             _index = 4;
         }
     }
@@ -223,13 +223,11 @@ public abstract class ColtRandomSource extends RandomSource
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** _rng.
-     *  This is the high-level RNG.
+    /** This is the high-level RNG.
      */
     protected AbstractDistribution _rng;
 
-    /** randomNumberGenerator.
-     *  This is the low-level RNG shared between all high level RNGs.
+    /** This is the low-level RNG shared between all high level RNGs.
      */
     protected static RandomElement _randomNumberGenerator;
 
@@ -253,8 +251,8 @@ public abstract class ColtRandomSource extends RandomSource
      */
     private static int _index = 0;
 
-    /** _coltSeed.
-     *  The actual _coltSeed value as int.
+    /** _seed.
+     *  The actual _seed value as int.
      */
-    private static long _coltSeed = 1;
+    private static long _seed = 1;
 }

@@ -76,21 +76,21 @@ public class ColtExponential extends ColtRandomSource {
 
         output.setTypeEquals(BaseType.DOUBLE);
 
-        coltLambda = new Parameter(this, "lambda", new DoubleToken(1.0));
-        coltLambda.setTypeEquals(BaseType.DOUBLE);
+        lambda = new Parameter(this, "lambda", new DoubleToken(1.0));
+        lambda.setTypeEquals(BaseType.DOUBLE);
 
         randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
 
-        _rng = new Exponential(1.0, randomNumberGenerator);
+        _rng = new Exponential(1.0, _randomNumberGenerator);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** coltLambda.
+    /** lambda.
      *  This parameter contains a DoubleToken, initially with value 1.0.
      */
-    public Parameter coltLambda;
+    public Parameter lambda;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -111,9 +111,9 @@ public class ColtExponential extends ColtRandomSource {
      */
     public boolean prefire() throws IllegalActionException {
 
-        double lambda = ((DoubleToken) coltLambda.getToken()).doubleValue();
+        double lambdaValue = ((DoubleToken) lambda.getToken()).doubleValue();
 
-        _current = ((Exponential) _rng).nextDouble(lambda);
+        _current = ((Exponential) _rng).nextDouble(lambdaValue);
 
         return super.prefire();
     }

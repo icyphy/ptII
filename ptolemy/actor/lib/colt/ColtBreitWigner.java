@@ -76,37 +76,37 @@ public class ColtBreitWigner extends ColtRandomSource {
 
         output.setTypeEquals(BaseType.DOUBLE);
 
-        coltMean = new Parameter(this, "mean", new DoubleToken(1.0));
-        coltMean.setTypeEquals(BaseType.DOUBLE);
+        mean = new Parameter(this, "mean", new DoubleToken(1.0));
+        mean.setTypeEquals(BaseType.DOUBLE);
 
-        coltGamma = new Parameter(this, "gamma", new DoubleToken(1.0));
-        coltGamma.setTypeEquals(BaseType.DOUBLE);
+        gamma = new Parameter(this, "gamma", new DoubleToken(1.0));
+        gamma.setTypeEquals(BaseType.DOUBLE);
 
-        coltCut = new Parameter(this, "cut", new DoubleToken(1.0));
-        coltCut.setTypeEquals(BaseType.DOUBLE);
+        cut = new Parameter(this, "cut", new DoubleToken(1.0));
+        cut.setTypeEquals(BaseType.DOUBLE);
 
         randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
 
-        _rng = new BreitWigner(1.0, 1.0, 1.0, randomNumberGenerator);
+        _rng = new BreitWigner(1.0, 1.0, 1.0, _randomNumberGenerator);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** coltMean.
+    /** mean.
      *  This parameter contains a DoubleToken, initially with value 1.0.
      */
-    public Parameter coltMean;
+    public Parameter mean;
 
-    /** coltGamma.
+    /** gamma.
      *  This parameter contains a DoubleToken, initially with value 1.0.
      */
-    public Parameter coltGamma;
+    public Parameter gamma;
 
-    /** coltCut.
+    /** cut.
      *  This parameter contains a DoubleToken, initially with value 1.0.
      */
-    public Parameter coltCut;
+    public Parameter cut;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -127,11 +127,12 @@ public class ColtBreitWigner extends ColtRandomSource {
      */
     public boolean prefire() throws IllegalActionException {
 
-        double mean = ((DoubleToken) coltMean.getToken()).doubleValue();
-        double gamma = ((DoubleToken) coltGamma.getToken()).doubleValue();
-        double cut = ((DoubleToken) coltCut.getToken()).doubleValue();
+        double meanValue = ((DoubleToken) mean.getToken()).doubleValue();
+        double gammaValue = ((DoubleToken) gamma.getToken()).doubleValue();
+        double cutValue = ((DoubleToken) cut.getToken()).doubleValue();
 
-        _current = ((BreitWigner) _rng).nextDouble(mean, gamma, cut);
+        _current =
+            ((BreitWigner) _rng).nextDouble(meanValue, gammaValue, cutValue);
 
         return super.prefire();
     }

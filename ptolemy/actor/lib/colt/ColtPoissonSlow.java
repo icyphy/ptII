@@ -76,21 +76,21 @@ public class ColtPoissonSlow extends ColtRandomSource {
 
         output.setTypeEquals(BaseType.INT);
 
-        coltMean = new Parameter(this, "mean", new DoubleToken(1.0));
-        coltMean.setTypeEquals(BaseType.DOUBLE);
+        mean = new Parameter(this, "mean", new DoubleToken(1.0));
+        mean.setTypeEquals(BaseType.DOUBLE);
 
         randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
 
-        _rng = new PoissonSlow(1.0, randomNumberGenerator);
+        _rng = new PoissonSlow(1.0, _randomNumberGenerator);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** coltMean.
+    /** mean.
      *  This parameter contains a DoubleToken, initially with value 1.0.
      */
-    public Parameter coltMean;
+    public Parameter mean;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -111,9 +111,9 @@ public class ColtPoissonSlow extends ColtRandomSource {
      */
     public boolean prefire() throws IllegalActionException {
 
-        double mean = ((DoubleToken) coltMean.getToken()).doubleValue();
+        double meanValue = ((DoubleToken) mean.getToken()).doubleValue();
 
-        ((PoissonSlow) _rng).setMean(mean);
+        ((PoissonSlow) _rng).setMean(meanValue);
         _current = ((PoissonSlow) _rng).nextInt();
 
         return super.prefire();

@@ -19,7 +19,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
     <entity name="ColtPoisson" class="ptolemy.actor.lib.colt.ColtPoisson">
-        <property name="Random Number Generator" class="ptolemy.kernel.util.StringAttribute" value="MersenneTwister (MT19937)">
+        <property name="randomNumberGenerator" class="ptolemy.kernel.util.StringAttribute" value="MersenneTwister (MT19937)">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{155, 110}">
         </property>

@@ -76,21 +76,21 @@ public class ColtExponentialPower extends ColtRandomSource {
 
         output.setTypeEquals(BaseType.DOUBLE);
 
-        coltTau = new Parameter(this, "tau", new DoubleToken(1.0));
-        coltTau.setTypeEquals(BaseType.DOUBLE);
+        tau = new Parameter(this, "tau", new DoubleToken(1.0));
+        tau.setTypeEquals(BaseType.DOUBLE);
 
         randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
 
-        _rng = new ExponentialPower(1.0, randomNumberGenerator);
+        _rng = new ExponentialPower(1.0, _randomNumberGenerator);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** coltTau.
+    /** tau.
      *  This parameter contains a DoubleToken, initially with value 1.0.
      */
-    public Parameter coltTau;
+    public Parameter tau;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -111,9 +111,9 @@ public class ColtExponentialPower extends ColtRandomSource {
      */
     public boolean prefire() throws IllegalActionException {
 
-        double tau = ((DoubleToken) coltTau.getToken()).doubleValue();
+        double tauValue = ((DoubleToken) tau.getToken()).doubleValue();
 
-        _current = ((ExponentialPower) _rng).nextDouble(tau);
+        _current = ((ExponentialPower) _rng).nextDouble(tauValue);
 
         return super.prefire();
     }

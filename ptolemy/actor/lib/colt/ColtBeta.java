@@ -76,28 +76,28 @@ public class ColtBeta extends ColtRandomSource {
 
         output.setTypeEquals(BaseType.DOUBLE);
 
-        coltAlpha = new Parameter(this, "alpha", new DoubleToken(2.0));
-        coltAlpha.setTypeEquals(BaseType.DOUBLE);
-        coltBeta = new Parameter(this, "beta", new DoubleToken(2.0));
-        coltBeta.setTypeEquals(BaseType.DOUBLE);
+        alpha = new Parameter(this, "alpha", new DoubleToken(2.0));
+        alpha.setTypeEquals(BaseType.DOUBLE);
+        beta = new Parameter(this, "beta", new DoubleToken(2.0));
+        beta.setTypeEquals(BaseType.DOUBLE);
 
         randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
 
-        _rng = new Beta(2.0, 2.0, randomNumberGenerator);
+        _rng = new Beta(2.0, 2.0, _randomNumberGenerator);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** coltAlpha.
+    /** alpha.
      *  This parameter contains a DoubleToken, initially with value 1.0.
      */
-    public Parameter coltAlpha;
+    public Parameter alpha;
 
-    /** coltBeta.
+    /** beta.
      *  This parameter contains a DoubleToken, initially with value 1.0.
      */
-    public Parameter coltBeta;
+    public Parameter beta;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -118,10 +118,10 @@ public class ColtBeta extends ColtRandomSource {
      */
     public boolean prefire() throws IllegalActionException {
 
-        double alpha = ((DoubleToken) coltAlpha.getToken()).doubleValue();
-        double beta = ((DoubleToken) coltBeta.getToken()).doubleValue();
+        double alphaValue = ((DoubleToken) alpha.getToken()).doubleValue();
+        double betaValue = ((DoubleToken) beta.getToken()).doubleValue();
 
-        _current = ((Beta) _rng).nextDouble(alpha, beta);
+        _current = ((Beta) _rng).nextDouble(alphaValue, betaValue);
 
         return super.prefire();
     }

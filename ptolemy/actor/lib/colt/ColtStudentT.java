@@ -76,21 +76,21 @@ public class ColtStudentT extends ColtRandomSource {
 
         output.setTypeEquals(BaseType.DOUBLE);
 
-        coltFreedom = new Parameter(this, "freedom", new DoubleToken(1.0));
-        coltFreedom.setTypeEquals(BaseType.DOUBLE);
+        freedom = new Parameter(this, "freedom", new DoubleToken(1.0));
+        freedom.setTypeEquals(BaseType.DOUBLE);
 
         randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
 
-        _rng = new StudentT(1.0, randomNumberGenerator);
+        _rng = new StudentT(1.0, _randomNumberGenerator);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** coltFreedom.
+    /** freedom.
      *  This parameter contains a DoubleToken, initially with value 1.0.
      */
-    public Parameter coltFreedom;
+    public Parameter freedom;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -111,9 +111,9 @@ public class ColtStudentT extends ColtRandomSource {
      */
     public boolean prefire() throws IllegalActionException {
 
-        double freedom = ((DoubleToken) coltFreedom.getToken()).doubleValue();
+        double freedomValue = ((DoubleToken) freedom.getToken()).doubleValue();
 
-        _current = ((StudentT) _rng).nextDouble(freedom);
+        _current = ((StudentT) _rng).nextDouble(freedomValue);
 
         return super.prefire();
     }

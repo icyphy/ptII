@@ -76,11 +76,11 @@ public class ColtNormal extends ColtRandomSource {
 
         output.setTypeEquals(BaseType.DOUBLE);
 
-        coltMean = new Parameter(this, "mean", new DoubleToken(1.0));
-        coltMean.setTypeEquals(BaseType.DOUBLE);
-        coltStandardDeviation =
+        mean = new Parameter(this, "mean", new DoubleToken(1.0));
+        mean.setTypeEquals(BaseType.DOUBLE);
+        standardDeviation =
             new Parameter(this, "standardDeviation", new DoubleToken(1.0));
-        coltStandardDeviation.setTypeEquals(BaseType.DOUBLE);
+        standardDeviation.setTypeEquals(BaseType.DOUBLE);
 
         randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
 
@@ -90,15 +90,15 @@ public class ColtNormal extends ColtRandomSource {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** coltMean.
+    /** mean.
      *  This parameter contains a DoubleToken, initially with value 1.0.
      */
-    public Parameter coltMean;
+    public Parameter mean;
 
-    /** coltStandardDeviation.
+    /** standardDeviation.
      *  This parameter contains a DoubleToken, initially with value 1.0.
      */
-    public Parameter coltStandardDeviation;
+    public Parameter standardDeviation;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -119,11 +119,11 @@ public class ColtNormal extends ColtRandomSource {
      */
     public boolean prefire() throws IllegalActionException {
 
-        double mean = ((DoubleToken) coltMean.getToken()).doubleValue();
-        double standardDeviation =
-            ((DoubleToken) coltStandardDeviation.getToken()).doubleValue();
+        double meanValue = ((DoubleToken) mean.getToken()).doubleValue();
+        double standardDeviationValue =
+            ((DoubleToken) standardDeviation.getToken()).doubleValue();
 
-        ((Normal) _rng).setState(mean, standardDeviation);
+        ((Normal) _rng).setState(meanValue, standardDeviationValue);
         _current = ((Normal) _rng).nextDouble();
 
         return super.prefire();

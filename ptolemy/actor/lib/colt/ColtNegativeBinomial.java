@@ -76,30 +76,30 @@ public class ColtNegativeBinomial extends ColtRandomSource {
 
         output.setTypeEquals(BaseType.INT);
 
-        coltN = new Parameter(this, "n", new IntToken(1));
-        coltN.setTypeEquals(BaseType.INT);
-        coltP = new Parameter(this, "p", new DoubleToken(0.5));
-        coltP.setTypeEquals(BaseType.DOUBLE);
+        n = new Parameter(this, "n", new IntToken(1));
+        n.setTypeEquals(BaseType.INT);
+        p = new Parameter(this, "p", new DoubleToken(0.5));
+        p.setTypeEquals(BaseType.DOUBLE);
 
         randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
 
-        _rng = new NegativeBinomial(1, 0.5, randomNumberGenerator);
+        _rng = new NegativeBinomial(1, 0.5, _randomNumberGenerator);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** coltN.
+    /** n.
      *  This parameter contains a DoubleToken, initially with value 1.0.
      *  This is the mean.
      */
-    public Parameter coltN;
+    public Parameter n;
 
     /** coltLmabda.
      *  This parameter contains a DoubleToken, initially with value 1.0.
      *  This is the variance.
      */
-    public Parameter coltP;
+    public Parameter p;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -120,10 +120,10 @@ public class ColtNegativeBinomial extends ColtRandomSource {
      */
     public boolean prefire() throws IllegalActionException {
 
-        int n = ((IntToken) coltN.getToken()).intValue();
-        double p = ((DoubleToken) coltP.getToken()).doubleValue();
+        int nValue = ((IntToken) n.getToken()).intValue();
+        double pValue = ((DoubleToken) p.getToken()).doubleValue();
 
-        _current = ((NegativeBinomial) _rng).nextInt(n, p);
+        _current = ((NegativeBinomial) _rng).nextInt(nValue, pValue);
 
         return super.prefire();
     }

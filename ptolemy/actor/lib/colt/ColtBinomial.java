@@ -76,31 +76,28 @@ public class ColtBinomial extends ColtRandomSource {
 
         output.setTypeEquals(BaseType.INT);
 
-        coltN = new Parameter(this, "n", new IntToken(1));
-        coltN.setTypeEquals(BaseType.INT);
-        coltP = new Parameter(this, "p", new DoubleToken(0.5));
-        coltP.setTypeEquals(BaseType.DOUBLE);
+        n = new Parameter(this, "n", new IntToken(1));
+        n.setTypeEquals(BaseType.INT);
+        p = new Parameter(this, "p", new DoubleToken(0.5));
+        p.setTypeEquals(BaseType.DOUBLE);
 
         randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
 
-        if (randomNumberGenerator == null)
-            System.err.println("randomNumberGenerator is null!");
-
-        _rng = new Binomial(1, 0.5, randomNumberGenerator);
+        _rng = new Binomial(1, 0.5, _randomNumberGenerator);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** coltN.
+    /** n.
      *  This parameter contains a IntToken, initially with value 1.0.
      */
-    public Parameter coltN;
+    public Parameter n;
 
-    /** coltP..
+    /** p..
      *  This parameter contains a DoubleToken, initially with value 1.0.
      */
-    public Parameter coltP;
+    public Parameter p;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -121,10 +118,10 @@ public class ColtBinomial extends ColtRandomSource {
      */
     public boolean prefire() throws IllegalActionException {
 
-        int n = ((IntToken) coltN.getToken()).intValue();
-        double p = ((DoubleToken) coltP.getToken()).doubleValue();
+        int nValue = ((IntToken) n.getToken()).intValue();
+        double pValue = ((DoubleToken) p.getToken()).doubleValue();
 
-        _current = ((Binomial) _rng).nextInt(n, p);
+        _current = ((Binomial) _rng).nextInt(nValue, pValue);
 
         return super.prefire();
     }

@@ -76,21 +76,21 @@ public class ColtLogarithmic extends ColtRandomSource {
 
         output.setTypeEquals(BaseType.DOUBLE);
 
-        coltP = new Parameter(this, "p", new DoubleToken(0.5));
-        coltP.setTypeEquals(BaseType.DOUBLE);
+        p = new Parameter(this, "p", new DoubleToken(0.5));
+        p.setTypeEquals(BaseType.DOUBLE);
 
         randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
 
-        _rng = new Logarithmic(0.5, randomNumberGenerator);
+        _rng = new Logarithmic(0.5, _randomNumberGenerator);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** coltP.
+    /** p.
      *  This parameter contains a DoubleToken, initially with value 0.5.
      */
-    public Parameter coltP;
+    public Parameter p;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -111,9 +111,9 @@ public class ColtLogarithmic extends ColtRandomSource {
      */
     public boolean prefire() throws IllegalActionException {
 
-        double p = ((DoubleToken) coltP.getToken()).doubleValue();
+        double pValue = ((DoubleToken) p.getToken()).doubleValue();
 
-        _current = ((Logarithmic) _rng).nextDouble(p);
+        _current = ((Logarithmic) _rng).nextDouble(pValue);
 
         return super.prefire();
     }

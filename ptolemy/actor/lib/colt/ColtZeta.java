@@ -76,10 +76,10 @@ public class ColtZeta extends ColtRandomSource {
 
         output.setTypeEquals(BaseType.INT);
 
-        coltRo = new Parameter(this, "ro", new DoubleToken(1.0));
-        coltRo.setTypeEquals(BaseType.DOUBLE);
-        coltPk = new Parameter(this, "pk", new DoubleToken(1.0));
-        coltPk.setTypeEquals(BaseType.DOUBLE);
+        ro = new Parameter(this, "ro", new DoubleToken(1.0));
+        ro.setTypeEquals(BaseType.DOUBLE);
+        pk = new Parameter(this, "pk", new DoubleToken(1.0));
+        pk.setTypeEquals(BaseType.DOUBLE);
 
         randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
 
@@ -89,15 +89,15 @@ public class ColtZeta extends ColtRandomSource {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** coltRo.
+    /** ro.
      *  This parameter contains a DoubleToken, initially with value 1.0.
      */
-    public Parameter coltRo;
+    public Parameter ro;
 
-    /** coltPk.
+    /** pk.
      *  This parameter contains a DoubleToken, initially with value 1.0.
      */
-    public Parameter coltPk;
+    public Parameter pk;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -118,10 +118,10 @@ public class ColtZeta extends ColtRandomSource {
      */
     public boolean prefire() throws IllegalActionException {
 
-        double ro = ((DoubleToken) coltRo.getToken()).doubleValue();
-        double pk = ((DoubleToken) coltPk.getToken()).doubleValue();
+        double roValue = ((DoubleToken) ro.getToken()).doubleValue();
+        double pkValue = ((DoubleToken) pk.getToken()).doubleValue();
 
-        ((Zeta) _rng).setState(ro, pk);
+        ((Zeta) _rng).setState(roValue, pkValue);
         _current = ((Zeta) _rng).nextInt();
 
         return super.prefire();

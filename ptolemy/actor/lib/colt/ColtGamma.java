@@ -76,30 +76,30 @@ public class ColtGamma extends ColtRandomSource {
 
         output.setTypeEquals(BaseType.DOUBLE);
 
-        coltAlpha = new Parameter(this, "mean", new DoubleToken(1.0));
-        coltAlpha.setTypeEquals(BaseType.DOUBLE);
-        coltLambda = new Parameter(this, "lambda", new DoubleToken(1.0));
-        coltLambda.setTypeEquals(BaseType.DOUBLE);
+        alpha = new Parameter(this, "mean", new DoubleToken(1.0));
+        alpha.setTypeEquals(BaseType.DOUBLE);
+        lambda = new Parameter(this, "lambda", new DoubleToken(1.0));
+        lambda.setTypeEquals(BaseType.DOUBLE);
 
         randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
 
-        _rng = new Gamma(1.0, 1.0, randomNumberGenerator);
+        _rng = new Gamma(1.0, 1.0, _randomNumberGenerator);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** coltAlpha.
+    /** alpha.
      *  This parameter contains a DoubleToken, initially with value 1.0.
      *  This is the mean.
      */
-    public Parameter coltAlpha;
+    public Parameter alpha;
 
-    /** coltLambda.
+    /** lambda.
      *  This parameter contains a DoubleToken, initially with value 1.0.
      *  This is the variance.
      */
-    public Parameter coltLambda;
+    public Parameter lambda;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -120,10 +120,12 @@ public class ColtGamma extends ColtRandomSource {
      */
     public boolean prefire() throws IllegalActionException {
 
-        double alpha = ((DoubleToken) coltAlpha.getToken()).doubleValue();
-        double lambda = ((DoubleToken) coltLambda.getToken()).doubleValue();
+        double alphaValue =
+            ((DoubleToken) alpha.getToken()).doubleValue();
+        double lambdaValue =
+            ((DoubleToken) lambda.getToken()).doubleValue();
 
-        _current = ((Gamma) _rng).nextDouble(alpha, lambda);
+        _current = ((Gamma) _rng).nextDouble(alphaValue, lambdaValue);
 
         return super.prefire();
     }
