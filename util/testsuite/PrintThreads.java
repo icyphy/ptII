@@ -129,7 +129,6 @@ public class PrintThreads {
         for (int i = 0; i < threads.length; i++ ) {
 	    Thread thread = threads[i];
 	    results += toThreadDescription(thread) + lineSeparator;
-	    results += thread.toString() + lineSeparator;
 	}
 	return results;
     }
