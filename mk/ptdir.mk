@@ -32,7 +32,7 @@
 
 all makefiles install fast clean sources depend distclean checkjunk sccsinfo \
 sccsclean itcldocs javadocs extraclean tests weblint idocs dists jsall \
-jsrestore jars demos demo:
+jsrestore jars demo:
 	@for x in $(DIRS); do \
 	    if [ -w $$x ] ; then \
 		( cd $$x ; \
