@@ -78,14 +78,14 @@ public class SchematicRelation extends PTMLObject {
      * Add a new link to this relation. 
      */
     public void addLink (SchematicLink link) {
-        _links.insertFirst(link);
+        _links.insertLast(link);
     }
 
     /**
      * Add a new terminal to this relation. 
      */
     public void addTerminal (Terminal term) {
-        _terminals.insertFirst(term);
+        _terminals.insertLast(term);
     }
 
     /**
@@ -146,6 +146,27 @@ public class SchematicRelation extends PTMLObject {
      */
     public void setWidth(int width) {
 	_width = width;
+    }
+
+    /**
+     * Return a string representing this relation.
+     */
+    public String toString() {
+        Enumeration enumterminals = terminals();
+        String str = getName() + "({";
+        while(enumterminals.hasMoreElements()) {
+            Terminal term = (Terminal) enumterminals.nextElement();
+            str += "\n..." + term.toString();
+        }
+        str += "}{";
+	Enumeration enumlinks = links();
+        while(enumlinks.hasMoreElements()) {
+	    SchematicLink link = 
+		(SchematicLink) enumlinks.nextElement();
+	    str += "\n..." + link.toString();
+	}
+	str += "})";
+	return str;
     }
 
     int _width;

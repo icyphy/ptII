@@ -53,7 +53,7 @@ test SchematicRelation-2.1 {Constructor tests} {
     set e0 [java::new ptolemy.schematic.util.SchematicRelation]
     set e1 [java::new ptolemy.schematic.util.SchematicRelation "TestSchematicRelation"]
     list [$e0 toString] [$e1 toString]
-} {{SchematicRelation((0.0, 0.0))} {TestSchematicRelation((0.0, 0.0))}}
+} {relation({}{}) TestSchematicRelation({}{})}
 
 test SchematicRelation-2.2 {setDescription, isDescription tests} {
     # NOTE: Uses the setup above
@@ -80,7 +80,8 @@ test SchematicRelation-3.1 {addTerminal} {
     $t2 setOutput 1    
     $e0 addTerminal $t1
     $e0 toString
-} {SchematicRelation(Terminal1((0.0, 0.0), Input))}
+} {relation({
+...Terminal1((0.0, 0.0), Input)}{})}
 
 test SchematicRelation-3.2 {containsTerminal} {
     list [$e0 containsTerminal $t1] [$e0 containsTerminal $t2]
@@ -94,30 +95,33 @@ test SchematicRelation-3.3 {terminals} {
 test SchematicRelation-3.4 {removeTerminal} {
     $e0 removeTerminal $t1
     $e0 toString
-} {SchematicRelation(Terminal2((0.0, 0.0), Output))}
+} {relation({
+...Terminal2((0.0, 0.0), Output)}{})}
 
 test SchematicRelation-3.5 {addLink} {
-    set t1 [java::new ptolemy.schematic.util.SchematicLink Link1]
-    $t1 setInput 1
-    set t2 [java::new ptolemy.schematic.util.SchematicLink Link2]
-    $t2 setOutput 1    
-    $e0 addLink $t1
+    set l1 [java::new ptolemy.schematic.util.SchematicLink Link1]
+    set l2 [java::new ptolemy.schematic.util.SchematicLink Link2]
+    $e0 addLink $l1
     $e0 toString
-} {SchematicRelation(Link1((0.0, 0.0), Input))}
+} {relation({
+...Terminal2((0.0, 0.0), Output)}{
+...Link1(to_terminal((0.0, 0.0)), from_terminal((0.0, 0.0)))})}
 
 test SchematicRelation-3.6 {containsLink} {
-    list [$e0 containsLink $t1] [$e0 containsLink $t2]
+    list [$e0 containsLink $l1] [$e0 containsLink $l2]
 } {1 0}
 
 test SchematicRelation-3.7 {Links} {
-    $e0 addLink $t2
+    $e0 addLink $l2
     _testEnums links $e0
 } {{Link1 Link2}}
 
 test SchematicRelation-3.8 {removeLink} {
-    $e0 removeLink $t1
+    $e0 removeLink $l1
     $e0 toString
-} {SchematicRelation(Link2((0.0, 0.0), Output))}
+} {relation({
+...Terminal2((0.0, 0.0), Output)}{
+...Link2(to_terminal((0.0, 0.0)), from_terminal((0.0, 0.0)))})}
 
 test SchematicRelation-3.9 {setWidth, getWidth tests} {
     # NOTE: Uses the setup above
@@ -127,15 +131,5 @@ test SchematicRelation-3.9 {setWidth, getWidth tests} {
     $e0 setWidth 2
     set r2 [$e0 getWidth]
     list $r0 $r1 $r2
-} {}
+} {1 4 2}
 
-
-
-######################################################################
-####
-#
-test SchematicRelation-4.1 {toString} {
-    $e1 setTo $t1
-    $e1 setFrom $t2
-    $e1 toString
-} {}
