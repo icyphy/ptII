@@ -174,6 +174,7 @@ depend:
 # we don't actually ship with ptII
 update_tables: JavaParser.class Skeleton.class yylhs.bin
 yylhs.bin: yylhs.tbl
+	rm -f *.bin
 	$(ROOT)/bin/ptinvoke ptolemy.lang.java.Skeleton $(ROOT)/$(ME)/Main.java
 	-rm -f Main.jskel
 
