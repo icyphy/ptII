@@ -32,9 +32,10 @@ language.
 
 package ptolemy.data.expr;
 
-import ptolemy.data.Token;
 import ptolemy.data.*;
 import ptolemy.math.*;
+import ptolemy.data.FixToken;   // For javadoc
+import ptolemy.math.Quantizer;  // For javadoc
 
 //////////////////////////////////////////////////////////////////////////
 //// FixPointFunctions
@@ -58,7 +59,6 @@ ptolemyII expression language. The added functionality is
 @version $Id$ 
 @see PtParser
 @see ptolemy.data.FixToken
-@see ptolemy.math.FixPoint
 @see ptolemy.math.Quantizer
 
 */

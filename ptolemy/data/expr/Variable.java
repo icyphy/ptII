@@ -35,6 +35,7 @@ package ptolemy.data.expr;
 import ptolemy.kernel.util.*;
 import ptolemy.data.Token;
 import ptolemy.data.type.*;
+import ptolemy.graph.Inequality; // For javadoc
 import ptolemy.graph.*;
 
 import java.util.Collections;
