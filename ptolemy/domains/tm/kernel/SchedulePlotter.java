@@ -163,20 +163,12 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                    ////
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private LinkedList _commActors;
-    private TypedCompositeActor _container;
-    private String _endLine = "\n";
-    private int _currentDepth;
-    private Iterator _inPorts, _outPorts;
 
     private HashMap _taskMap;
     private ArrayList _taskState;
-    private int _oldScheduleEvent = 0;
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
