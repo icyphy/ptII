@@ -48,7 +48,7 @@
 
 ME =		ptolemy/actor/corba
 
-DIRS = 		util
+DIRS = util CorbaIOUtil
 
 # Root of the Ptolemy II directory
 ROOT =		../../..
@@ -64,14 +64,16 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS =  \
+# PTCLASSALLJARS =  \
 	util/util.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	CorbaActorClient.java
+	CorbaActorClient.java \
+	PushConsumer.java \
+	PushSupplier.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	CorbaActor.idl \
