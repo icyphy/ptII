@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="BlindCommunication" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {8, 18, 880, 607}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {8, 18, 880, 616}, maximized = false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[665, 498]">
     </property>
@@ -91,7 +91,7 @@
         </property>
     </property>
     <entity name="AudioReader" class="ptolemy.actor.lib.javasound.AudioReader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="PSK_l2_b1000_s8000_c7800_n40_pnormal_r0.5_v20030505T112338F41.wav">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/psdf/demo/BlindCommunication/PSK_l2_b1000_s8000_c7800_n40_pnormal_r0.5_v20030505T112338F41.wav">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="54.06085968017578, 45.27685546875">
         </property>
@@ -221,7 +221,7 @@
         <entity name="PlotSpectrumWithCarrier" class="ptolemy.actor.lib.gui.SequencePlotter">
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={512, 16, 508, 348}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {512, 16, 508, 355}, maximized = false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
             </property>
@@ -240,8 +240,8 @@
 <title>Carrier PSK Spectrum</title>
 <xLabel>Frequency</xLabel>
 <yLabel>Decibels</yLabel>
-<xRange min="-4000.0" max="3996.09375"/>
-<yRange min="-44.61470431840426" max="8.74763865460223"/>
+<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
 </plot>?>
             </configure>
         </entity>
@@ -275,7 +275,7 @@
         <entity name="PlotSpectrumWithoutCarrier" class="ptolemy.actor.lib.gui.SequencePlotter">
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 16, 509, 347}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {2, 16, 509, 354}, maximized = false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[501, 299]">
             </property>
@@ -294,8 +294,8 @@
 <title>Baseband PSK Spectrum</title>
 <xLabel>Frequency</xLabel>
 <yLabel>Decibels</yLabel>
-<xRange min="-4000.0" max="3996.09375"/>
-<yRange min="-71.4663297426864" max="13.641554737626425"/>
+<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
 </plot>?>
             </configure>
         </entity>
@@ -724,8 +724,6 @@
             <link port="IdentifyBaudSamples.baud" relation="relation5"/>
         </entity>
         <entity name="BooleanSwitch" class="ptolemy.actor.lib.BooleanSwitch">
-            <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, -10.0">
             </property>
             <port name="control" class="ptolemy.actor.TypedIOPort">
@@ -1091,7 +1089,7 @@
         <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, 341, 508, 408}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {-4, 341, 508, 415}, maximized = false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 360]">
             </property>
@@ -1106,8 +1104,8 @@
 <title>Received constellation</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="-0.9591563352856228" max="0.9627391367687687"/>
-<yRange min="-0.02825396969202759" max="0.13673941620586008"/>
+<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
 <default connected="no" marks="dots"/>
 </plot>?>
             </configure>
