@@ -2456,17 +2456,14 @@ public class PlotBox extends JPanel implements Printable {
     /*
      *  Zoom in or out based on the box that has been drawn.
      *  The argument gives the lower right corner of the box.
+     *  This method is not synchronized because it is called within
+     *  the UI thread, and making it synchronized causes a deadlock.
      *  @param x The final x position.
      *  @param y The final y position.
      */
-    synchronized void _zoom(int x, int y) {
+     void _zoom(int x, int y) {
         // FIXME: This is friendly because Netscape 4.0.3 cannot access it if
         // it is private!
-
-        // We make this method synchronized so that we can draw the drag
-        // box properly.  If this method is not synchronized, then
-        // we could end up calling setXORMode, being interrupted
-        // and having setPaintMode() called in another method.
 
         // NOTE: Due to a bug in JDK 1.1.7B, the BUTTON1_MASK does
         // not work on mouse drags, thus we have to use this variable
@@ -2545,17 +2542,14 @@ public class PlotBox extends JPanel implements Printable {
      *  to be that specified by the startZoom() method.  The argument gives
      *  the lower right corner of the box.  If a previous box
      *  has been drawn, erase it first.
+     *  This method is not synchronized because it is called within
+     *  the UI thread, and making it synchronized causes a deadlock.
      *  @param x The x position.
      *  @param y The y position.
      */
-    synchronized void _zoomBox(int x, int y) {
+     void _zoomBox(int x, int y) {
         // FIXME: This is friendly because Netscape 4.0.3 cannot access it if
         // it is private!
-
-        // We make this method synchronized so that we can draw the drag
-        // box properly.  If this method is not synchronized, then
-        // we could end up calling setXORMode, being interrupted
-        // and having setPaintMode() called in another method.
 
         // NOTE: Due to a bug in JDK 1.1.7B, the BUTTON1_MASK does
         // not work on mouse drags, thus we have to use this variable
@@ -2636,10 +2630,12 @@ public class PlotBox extends JPanel implements Printable {
     /*
      *  Set the starting point for an interactive zoom box (the upper left
      *  corner).
+     *  This method is not synchronized because it is called within
+     *  the UI thread, and making it synchronized causes a deadlock.
      *  @param x The x position.
      *  @param y The y position.
      */
-    synchronized void _zoomStart(int x, int y) {
+     void _zoomStart(int x, int y) {
         // FIXME: This is friendly because Netscape 4.0.3 cannot access it if
         // it is private!
 
