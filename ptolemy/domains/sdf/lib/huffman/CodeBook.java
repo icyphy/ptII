@@ -244,7 +244,3 @@ public class CodeBook extends TypedAtomicActor {
     private int size;
 
 }
-
-
-
-

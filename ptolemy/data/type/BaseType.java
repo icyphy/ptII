@@ -342,4 +342,3 @@ public class BaseType implements Type {
 	public Token convert(Token t) throws IllegalActionException;
     }
 }
-

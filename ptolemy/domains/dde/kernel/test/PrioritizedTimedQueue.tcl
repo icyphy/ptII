@@ -181,18 +181,3 @@ test PrioritizedTimedQueue-7.2 {Attempt to put negative time stamps} {
     catch {$tqr put $t1 -1.5} msg
     list $msg
 } {{java.lang.IllegalArgumentException:  - Attempt to set current time in the past.}}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -52,8 +52,8 @@ test RealToComplex-1.1 {test 1} {
     $value1 setToken [java::new {ptolemy.data.DoubleToken double} 5.1]
     set value2 [getParameter $const2 value]
     $value2 setToken [java::new {ptolemy.data.DoubleToken double} 6.2]
-    
-   
+
+
     $e0 connect \
           [java::field [java::cast ptolemy.actor.lib.Source $const1] output] \
             [java::field $conver realInput]
@@ -68,7 +68,5 @@ test RealToComplex-1.1 {test 1} {
 
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-    
+
 } {{5.1 + 6.2i}}
-
-

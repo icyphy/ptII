@@ -110,4 +110,3 @@ public class EditorIcon extends Icon {
     }
 
 }
-

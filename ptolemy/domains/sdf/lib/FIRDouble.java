@@ -143,4 +143,3 @@ public class FIRDouble extends FIR {
     private double[] _data;
     private int _mostRecent;
 }
-

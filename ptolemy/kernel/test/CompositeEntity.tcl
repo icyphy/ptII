@@ -947,6 +947,3 @@ test CompositeEntity-18.0 {test exportMoML} {
     <link port="e2.p2" relation="r"/>
 </model>
 }
-
-
-

@@ -62,6 +62,3 @@ public class Hello extends Spotlet{
     public static Hello hello;
     public static ScrollTextBox textBox;
 }
-
-
-

@@ -211,4 +211,3 @@ test Interpolation-2.7 {period=8, order=3} {
 	[$interp interpolate 10] [$interp interpolate 11]]
     deltaCompare $result {3.0 1.5 1.0 4.0 7.0 6.5 5.0 4.0 3.0 1.5 1.0 4.0 7.0 6.5 5.0 4.0}
 } {1}
-

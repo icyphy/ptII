@@ -56,4 +56,3 @@ test TypeLattice-1.0 {compare} {
     set lat [java::new ptolemy.data.type.TypeLattice]
     list [$lat compare $tokInt $tokDou] [$lat compare $tokDou $tokInt]
 } {-1 1}
-

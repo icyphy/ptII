@@ -75,7 +75,7 @@ test HuffTree-3.1 {Test addLeft and addRight } {
     $t1 addRight $l2
     $t2 addLeft $t1
     $t2 addRight $l3
-    
+
     list [$t2 printPreOrder] 
 } {{tree:0.8(tree:0.30000000000000004(Leaf:0.1 data:A(null,null),Leaf:0.2 data:B(null,null)),Leaf:0.5 data:C(null,null))}}
 
@@ -91,10 +91,9 @@ test HuffTree-4.1 {Test getProb and getDepth} {
     set a4 [$t1 getDepth]
 
     list $a1 $a2 $a3 $a4
- 
+
 } {0.8 2 0.3 1}
 
 ######################################################################
 ####
 #
-

@@ -230,7 +230,3 @@ public class EntityController extends LocatableNodeController {
     private EntityPortController _portController;
     private MenuCreator _menuCreator;
 }
-
-
-
-

@@ -71,7 +71,7 @@ test CTExpoSystem-4.1 {Expo with ForwardEulerSolver} {
     set man [java::new ptolemy.actor.Manager]
     $sys setManager $man
     set dir [java::new ptolemy.domains.ct.kernel.CTMultiSolverDirector $sys DIR]
-    
+
     set const [java::new ptolemy.actor.lib.Const $sys Const]
     set add [java::new ptolemy.actor.lib.AddSubtract $sys Add]
     set integral [java::new ptolemy.domains.ct.lib.Integrator $sys Integr]
@@ -113,12 +113,12 @@ test CTExpoSystem-4.1 {Expo with ForwardEulerSolver} {
 	    [$integral getAttribute InitialState]]
     set token [java::new ptolemy.data.DoubleToken 0.0]
     $initstate setToken $token
-    
+
     set constval [java::cast ptolemy.data.expr.Parameter \
 	    [$const getAttribute value]]
     set token [java::new ptolemy.data.DoubleToken 1.0]
     $constval setToken $token
-    
+
     set testvalue [java::cast ptolemy.data.expr.Parameter \
 	    [$testV getAttribute "Value"]]
     $testvalue setToken [java::new ptolemy.data.DoubleToken 1.5937424601000005]
@@ -156,7 +156,7 @@ test CTExpoSystem-4.3 {Expo System with MultiSolver DR RK23} {
 	    [$dir getAttribute StartTime]]
     set token [java::new ptolemy.data.DoubleToken 0.0]
     $starttime setToken $token
-    
+
     set initstep [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute InitialStepSize]]
     set token [java::new ptolemy.data.DoubleToken 0.1]
@@ -171,7 +171,7 @@ test CTExpoSystem-4.3 {Expo System with MultiSolver DR RK23} {
 	    [$integral getAttribute InitialState]]
     set token [java::new ptolemy.data.DoubleToken 0.0]
     $initstate setToken $token
-    
+
     set constval [java::cast ptolemy.data.expr.Parameter \
 	    [$const getAttribute value]]
     set token [java::new ptolemy.data.DoubleToken 1.0]
@@ -206,7 +206,7 @@ test CTExpoSystem-4.6 {Expo System with Multi-Solver ImpulseBE RK23} {
 	    [$dir getAttribute BreakpointODESolver]]
     $bps setToken [java::new ptolemy.data.StringToken \
 	    "ptolemy.domains.ct.kernel.solver.ImpulseBESolver"]
-   
+
     set accu [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute ErrorTolerance]]
     $accu setToken [java::new ptolemy.data.DoubleToken 1e-5]
@@ -219,7 +219,7 @@ test CTExpoSystem-4.6 {Expo System with Multi-Solver ImpulseBE RK23} {
     $man run
     list [$testV isSuccessful]  
 } {1}
-    
+
 test CTExpoSystem-4.7 {Expo System with CTMixsignalSolver as toplevel} {
     #Note: Use above setup.
     set dir [java::new ptolemy.domains.ct.kernel.CTMixedSignalDirector $sys DIR]
@@ -239,7 +239,3 @@ test CTExpoSystem-4.7 {Expo System with CTMixsignalSolver as toplevel} {
     $man run
     list [$testV isSuccessful]
 } {1}
-
-
-
-    

@@ -167,5 +167,3 @@ public class GraphicElement extends Object {
     private String _type;
     private String _label;
 }
-
-

@@ -170,14 +170,14 @@ test Attribute-8.1 {setContainer} {
     $a description
 } {ptolemy.kernel.util.Attribute {.N.C.} attributes {
 }}
-    
+
 test Attribute-8.2 {setContainer, different workspace} {
     # Builds on 8.1 above
     catch {$b setContainer $c} errMsg
     list $errMsg
 } {{ptolemy.kernel.util.IllegalActionException: . and .N.C:
 Cannot set container because workspaces are different.}}
-    
+
 test Attribute-8.3 {setContainer, then setContainer again} {
     # Builds on 8.1 above
     # Note that this calls NamedObj _removeAttribute()
@@ -186,9 +186,3 @@ test Attribute-8.3 {setContainer, then setContainer again} {
     $a description
 } {ptolemy.kernel.util.Attribute {.N.D.} attributes {
 }}
-
-
-
-
-
-

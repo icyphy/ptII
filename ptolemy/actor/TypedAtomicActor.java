@@ -286,4 +286,3 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
     ////                         private variables                 ////
 
 }
-

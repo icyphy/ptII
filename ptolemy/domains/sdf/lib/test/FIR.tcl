@@ -53,7 +53,7 @@ test FIR-1.1 {Test FIR for double FIR} {
     $conver setContainer [java::null]
     $clone setName FIRclone
     $clone setContainer $e0
- 
+
     $e0 connect \
       [java::field [java::cast ptolemy.actor.lib.Source $pulse] output] \
       [java::field [java::cast ptolemy.domains.sdf.lib.FIR $clone] input]
@@ -100,7 +100,7 @@ test FIR-3.1 {Test FIR for FIX datatype} {
 	$e0 f2d ]
     set d2f [java::new ptolemy.actor.lib.conversions.DoubleToFix \
 	$e0 d2f ]
- 
+
     $e0 connect \
       [java::field [java::cast ptolemy.actor.lib.Source $pulse] output] \
       [java::field [java::cast ptolemy.actor.lib.Transformer $d2f] input]
@@ -125,4 +125,3 @@ test FIR-3.1 {Test FIR for FIX datatype} {
     enumToTokenValues [$rec getRecord 0]
 
 } {-0.062 0.0 0.188 0.375 0.375 0.188 0.0 -0.062 0.0 0.0}
-

@@ -199,6 +199,3 @@ public class HuffTree extends ptolemy.domains.sdf.lib.huffman.BinaryTree {
 
     private double _prob;
 }
-
-
-

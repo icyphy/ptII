@@ -107,6 +107,3 @@ public class Primes extends Spotlet {
     protected final int MAX = 40;	// Maximum number of primes allowed.
 
 }
-
-
-

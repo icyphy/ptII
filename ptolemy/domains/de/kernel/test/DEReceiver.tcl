@@ -56,4 +56,3 @@ test DETag-2.1 {Test the constructor} {
     set rec1 [java::new ptolemy.domains.de.kernel.DEReceiver]
     list
 } {}
-

@@ -129,4 +129,3 @@ public class PatternIcon extends EditorIcon {
 
     private EditorIcon _pattern;
 }
-

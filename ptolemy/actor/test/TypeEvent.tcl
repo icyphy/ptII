@@ -88,4 +88,3 @@ test TypeEvent-1.3 {re-add listener} {
 
     $listener getMessage
 } {.E1.P1/double/string}
-

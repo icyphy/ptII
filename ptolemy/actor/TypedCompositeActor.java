@@ -509,4 +509,3 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 	return result;
     }
 }
-

@@ -339,4 +339,3 @@ public class Pulse extends SequenceSource {
     private boolean _repeatFlag;
 
 }
-

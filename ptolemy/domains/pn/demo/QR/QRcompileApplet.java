@@ -241,6 +241,3 @@ public void init() {
     private Query             _query;
 
 }
-
-
-

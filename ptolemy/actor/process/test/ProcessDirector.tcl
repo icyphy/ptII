@@ -95,6 +95,5 @@ test ProcessDirector-5.1 {Test action methods} {
     set a2 [java::new ptolemy.actor.process.test.TestProcessActor $e0 A2]
     $manager run
     lsort [$a1 getRecord]
-    
-} {.E0.A1.fire .E0.A1.initialize .E0.A1.postfire .E0.A1.prefire .E0.A1.wrapup .E0.A2.fire .E0.A2.initialize .E0.A2.postfire .E0.A2.prefire .E0.A2.wrapup}
 
+} {.E0.A1.fire .E0.A1.initialize .E0.A1.postfire .E0.A1.prefire .E0.A1.wrapup .E0.A2.fire .E0.A2.initialize .E0.A2.postfire .E0.A2.prefire .E0.A2.wrapup}

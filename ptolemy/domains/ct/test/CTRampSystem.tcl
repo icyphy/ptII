@@ -81,7 +81,7 @@ test CTRampSystem-4.1 {Ramp with ForwardEulerSolver} {
     set r1 [$sys connect $constout $intglin R1]
     set r2 [$sys connect $intglout $printin R2]
     #$sinkin link $r2
-    
+
     set solver [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute ODESolver]]
     set token [java::new ptolemy.data.StringToken ptolemy.domains.ct.kernel.solver.ForwardEulerSolver]
@@ -96,22 +96,22 @@ test CTRampSystem-4.1 {Ramp with ForwardEulerSolver} {
 	    [$dir getAttribute StartTime]]
     set token [java::new ptolemy.data.DoubleToken 0.0]
     $starttime setToken $token
-    
+
     set stoptime [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute StopTime]]
     set token [java::new ptolemy.data.DoubleToken 1.0]
     $stoptime setToken $token
-    
+
     set initstep [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute InitialStepSize]]
     set token [java::new ptolemy.data.DoubleToken 0.1]
     $initstep setToken $token
-    
+
     set constval [java::cast ptolemy.data.expr.Parameter \
 	    [$const getAttribute value]]
     set token [java::new ptolemy.data.DoubleToken 1.0]
     $constval setToken $token
-    
+
     $man run
     list [$print isSuccessful]
 } {1}
@@ -134,22 +134,22 @@ test CTRampSystem-4.2 {Ramp with BackwardEulerSolver} {
 	    [$dir getAttribute StartTime]]
     set token [java::new ptolemy.data.DoubleToken 0.0]
     $starttime setToken $token
-    
+
     set stoptime [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute StopTime]]
     set token [java::new ptolemy.data.DoubleToken 1.0]
     $stoptime setToken $token
-    
+
     set initstep [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute InitialStepSize]]
     set token [java::new ptolemy.data.DoubleToken 0.1]
     $initstep setToken $token
-    
+
     set constval [java::cast ptolemy.data.expr.Parameter \
 	    [$const getAttribute value]]
     set token [java::new ptolemy.data.DoubleToken 1.0]
     $constval setToken $token
-    
+
     $man run
     list [$print isSuccessful]
 } {1}
@@ -178,7 +178,7 @@ test CTRampSystem-4.3 {Ramp with ExplicitRK23Solver and DerivativeResolver} {
 	    [$dir getAttribute StartTime]]
     set token [java::new ptolemy.data.DoubleToken 0.0]
     $starttime setToken $token
-    
+
     set stoptime [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute StopTime]]
     set token [java::new ptolemy.data.DoubleToken 1.0]
@@ -188,21 +188,20 @@ test CTRampSystem-4.3 {Ramp with ExplicitRK23Solver and DerivativeResolver} {
 	    [$dir getAttribute InitialStepSize]]
     set token [java::new ptolemy.data.DoubleToken 0.1]
     $initstep setToken $token
-    
+
     set constval [java::cast ptolemy.data.expr.Parameter \
 	    [$const getAttribute value]]
     set token [java::new ptolemy.data.DoubleToken 1.0]
     $constval setToken $token
-    
+
     #set debugger [java::cast ptolemy.data.expr.Parameter \
     #	    [$print getAttribute Print]]
     #   set token [java::new ptolemy.data.BooleanToken true]
     #  $debugger setToken $token
-    
+
     #set dl [java::new ptolemy.kernel.util.StreamListener]
     #$dir addDebugListener $dl
 
     $man run
     list [$print isSuccessful] 
 } {1}
-

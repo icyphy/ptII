@@ -102,4 +102,3 @@ public abstract class AbstractSet extends AbstractCollection implements Set {
 	return h;
     }
 }
-

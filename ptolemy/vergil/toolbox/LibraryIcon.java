@@ -182,4 +182,3 @@ public class LibraryIcon extends PatternIcon implements Configurable {
     private static CompositeEntity _iconLibrary;
     private String _iconName;
 }
-

@@ -60,7 +60,7 @@ test DoubleToFix-1.1 {Test DoubleToFix} {
 
     set precision [getParameter $clone precision]
     $precision setToken [java::new {ptolemy.data.StringToken String} (4.1) ]
-   
+
     $e0 connect \
       [java::field [java::cast ptolemy.actor.lib.Source $const] output] \
       [java::field [java::cast ptolemy.actor.lib.Transformer $clone] input]
@@ -85,7 +85,7 @@ test DoubleToFix-2.1 {Test the Round Mode} {
     # quantizer mode 0 is rounding.
     set quantize [getParameter $clone quantizer ]
     $quantize setToken [java::new {ptolemy.data.IntToken int} 0 ]
-   
+
     [$e0 getManager] execute
     set result [list [enumToTokenValues [$rec getRecord 0]]]
 
@@ -102,10 +102,8 @@ test DoubleToFix-3.1 {Test the Truncate Mode} {
     # quantizer mode 1 is truncate
     set quantize [getParameter $clone quantizer ]
     $quantize setToken [java::new {ptolemy.data.IntToken int} 1 ]
-   
+
     [$e0 getManager] execute 
     set result [list [enumToTokenValues [$rec getRecord 0]]]
 
 } {fix(0.5,3,2)}
-
-

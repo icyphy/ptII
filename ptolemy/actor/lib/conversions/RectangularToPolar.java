@@ -136,6 +136,3 @@ public class RectangularToPolar extends TypedAtomicActor {
         angleOutput.broadcast(angle);
     }
 }
-
-
-

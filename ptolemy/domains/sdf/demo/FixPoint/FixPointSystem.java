@@ -199,8 +199,3 @@ public class FixPointSystem extends SDFApplet implements QueryListener {
     // If this flag is not true, the _go() method will not execute the model.
     private boolean _initCompleted = false;
 }
-
-
-
-
-

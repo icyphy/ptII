@@ -66,4 +66,3 @@ public class MEMSEnvir_alpha extends MEMSEnvir {
   }
 
 }
-  

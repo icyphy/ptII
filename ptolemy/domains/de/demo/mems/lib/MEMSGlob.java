@@ -67,7 +67,7 @@ public class MEMSGlob extends DEActor {
     public void fire() throws IllegalActionException {
       Debug.log(0, "MEMSGlob flushes");
       plot.flush();
-      
+
       synchronized (this) {
 	try {
 	  wait(100);
@@ -97,4 +97,3 @@ public class MEMSGlob extends DEActor {
 
     private MEMSPlot plot;
 }
-

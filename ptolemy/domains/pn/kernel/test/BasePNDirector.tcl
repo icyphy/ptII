@@ -63,7 +63,7 @@ test BasePNDirector-2.1 {Constructor tests} {
     set d3 [java::new ptolemy.domains.pn.kernel.BasePNDirector $e0 D3]
     list [$d1 getFullName] [$d2 getFullName] [$d3 getFullName]
 } {.D1 . .E0.D3}
-    
+
 
 ######################################################################
 ####
@@ -191,4 +191,3 @@ State of .E72.t1 is PROCESS_BLOCKED and the cause = BLOCKED_ON_WRITE
 State of .E72.t1 is PROCESS_RUNNING
 State of .E72.t1 is PROCESS_FINISHED and the cause = FINISHED_PROPERLY
 }}
-

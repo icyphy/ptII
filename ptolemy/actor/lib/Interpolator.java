@@ -268,4 +268,3 @@ public class Interpolator extends SequenceSource {
     private int _iterationCount = 0;
     private Interpolation _interpolation;
 }
-

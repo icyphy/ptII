@@ -240,4 +240,3 @@ public class XMLIcon extends EditorIcon implements Configurable {
 
     private LinkedList _graphics;
 }
-

@@ -188,4 +188,3 @@ public abstract class MatrixToken extends Token {
 	return s;
     }
 }
-

@@ -211,7 +211,7 @@ test ComplexToken-4.2 {Test dividing Complex and int} {
     set res2 [$p divideReverse $i]
 
     set res3 [$i divide $p]
- 
+
     list [$res1 toString] [$res2 toString] [$res3 toString]
 } {{4.0 + 2.0i} {0.2 - 0.1i} {0.2 - 0.1i}}
 
@@ -342,12 +342,11 @@ test ComplexToken-8.0 {Test subtract between Complex} {
 test ComplexToken-8.1 {Test subtract operator between Complex and double} {
     # use the complex above
     set d [java::new {ptolemy.data.DoubleToken double} 12.0]
-    
+
     set res1 [$p1 subtract $d]
     set res2 [$p1 subtractReverse $d]
 
     set res3 [$d subtract $p1]
-   
+
     list [$res1 toString] [$res2 toString] [$res3 toString] 
 } {{-6.0 + 7.0i} {6.0 - 7.0i} {6.0 - 7.0i}}
-

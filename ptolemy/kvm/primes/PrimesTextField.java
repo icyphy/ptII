@@ -116,6 +116,3 @@ public class PrimesTextField extends Spotlet {
     protected final int MAX = 40;	// Maximum number of allowed primes.
 
 }
-
-
-

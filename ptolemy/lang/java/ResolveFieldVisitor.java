@@ -47,7 +47,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor {
     public ResolveFieldVisitor() {
         super(TM_CUSTOM);
     }
-    
+
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
         return _defaultVisit(node, args);
     }
@@ -157,23 +157,22 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor {
     }
 
     /* The default visit method comes from ReplacementJavaVisitor. */
-    
+
     protected static class FieldContext {
         public FieldContext() {}
-        
+
         public FieldContext(FieldContext ctx) {
             currentClass = ctx.currentClass;
             inStatic = ctx.inStatic;
         }
-    
+
         public TypeNameNode _currentClass;
-        
+
         /** A flag indicating that we are in static code. */
         public boolean inStatic;
     }
-    
-    
+
+
     /** The current package. */
     protected PackageDecl _currentPackage = null;
 }    
-

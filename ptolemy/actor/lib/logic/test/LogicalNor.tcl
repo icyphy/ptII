@@ -114,5 +114,3 @@ test LogicalNor-2.6 {Multiple values: True, True, True} {
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 } {false}
-
-

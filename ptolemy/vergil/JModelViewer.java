@@ -65,4 +65,3 @@ public class JModelViewer extends JGraph {
         controller.setGraph(graph);
     }
 }
-

@@ -170,7 +170,3 @@ public class CSPSieve extends CSPActor {
     // The prime this sieve is filtering out.
     private int _prime;
 }
-
-
-
-

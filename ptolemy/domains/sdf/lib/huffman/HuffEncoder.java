@@ -167,6 +167,3 @@ public class HuffEncoder extends TypedAtomicActor {
     private HuffTree huffmanTree;
 
 }
-
-
-

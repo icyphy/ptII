@@ -122,6 +122,3 @@ public class RealToComplex extends TypedAtomicActor {
 
     }
 }
-
-
-

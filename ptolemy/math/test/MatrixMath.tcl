@@ -61,7 +61,7 @@ set m23 [java::new {double[][]} 2 [list [list 3.7 -6.6 0.0003] \
  	                                [list 4862.2 236.1 -36.25]]]
 set m23_2 [java::new {double[][]} 2 [list [list -3.2 -6.6 6.3] \
                                           [list 0.1 9.0 -5.25]]]
- 	                                  
+
 set m1 [java::new {double[][]} 1 [list [list 25.0]]]
 
 
@@ -181,5 +181,3 @@ test MatrixMath-8.1 {transpose double[][]} {
    set mr [java::call ptolemy.math.MatrixMath transpose $m23]
    set s [java::call ptolemy.math.MatrixMath toString $mr]
 } {{{3.7, 4862.2}, {-6.6, 236.1}, {3.0E-4, -36.25}}}
-
-

@@ -58,7 +58,7 @@ set globalInactiveTime [java::field $globalEndTimeRcvr INACTIVE]
 ####
 #
 test TimeKeeper-2.1 {instantiate objects} {
-    
+
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
     set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $topLevel "director"]
@@ -160,7 +160,7 @@ test TimeKeeper-3.4 {getNextTime()} {
 ####
 #
 test TimeKeeper-4.1 {Call Methods On Uninitialized TimeKeeper} {
-    
+
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
     set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $topLevel "director"]
@@ -186,7 +186,7 @@ test TimeKeeper-4.1 {Call Methods On Uninitialized TimeKeeper} {
 ####
 #
 test TimeKeeper-5.1 {Ignore Tokens} {
-    
+
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
     set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $topLevel "director"]
@@ -227,7 +227,7 @@ test TimeKeeper-5.1 {Ignore Tokens} {
 ####
 # Continued from above.
 test TimeKeeper-5.2 {Ignore Tokens} {
-    
+
     set rcvr1 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 2]
     $rcvr1 put $tok 0.0
 
@@ -264,7 +264,7 @@ test TimeKeeper-5.2 {Ignore Tokens} {
 ####
 # Continued from above.
 test TimeKeeper-5.3 {Ignore Tokens} {
-    
+
     set rcvr1 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 2]
     $rcvr1 put $tok $globalIgnoreTime
 
@@ -297,9 +297,3 @@ test TimeKeeper-5.3 {Ignore Tokens} {
     list $val $newVal
 
 } {1 0}
-
-
-
-
-
-

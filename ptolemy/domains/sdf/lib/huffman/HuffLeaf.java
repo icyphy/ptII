@@ -93,6 +93,3 @@ public class HuffLeaf extends ptolemy.domains.sdf.lib.huffman.HuffTree {
     private double _prob;
     private String _data;
 }
-
-
-

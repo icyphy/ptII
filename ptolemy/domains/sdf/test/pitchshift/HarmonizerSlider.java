@@ -295,4 +295,3 @@ public class HarmonizerSlider extends JFrame {
         pitchSlider.startPitchShifting(sampRate);
     }
 }
-

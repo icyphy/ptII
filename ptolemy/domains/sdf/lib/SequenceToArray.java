@@ -156,4 +156,3 @@ public class SequenceToArray extends SDFAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 }
-

@@ -125,6 +125,3 @@ public class BitsToInt extends SDFAtomicActor {
         output.send(0, value);
     }
 }
-
-
-

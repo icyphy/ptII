@@ -92,4 +92,3 @@ test MoMLApplication-1.2 {check parameter handling} {
     }
     list $result
 } {{{0 1 2 3 4}}}
-

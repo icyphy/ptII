@@ -98,9 +98,3 @@ public class thermoProbeMsg extends ProbeMsg {
   ////                         private methods                   ////
   private double _temperature;
 }
-
-
-
-
-
-

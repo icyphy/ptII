@@ -105,7 +105,7 @@ public class MEMSDevice extends MEMSActor {
 
         /* fire due events */
         fireDueEvents();
-      
+
         /* check input and process any pending tokens */
         try {
             ObjectToken token = (ObjectToken) msgIO.get(0);
@@ -121,7 +121,7 @@ public class MEMSDevice extends MEMSActor {
         } catch (NoTokenException e) {
             // No MEMS message received ... do nothing
         }
-      
+
         /* check for sensor inputs */
         /*
           try {
@@ -250,7 +250,7 @@ public class MEMSDevice extends MEMSActor {
                     myid + " generated and broadcasted");
         }
     }
-    
+
     /*------------------ Message Handlers -----------------------------*/
     /*--- reminder: For every method shown below, there should be a  --*/
     /*--- corresponding entry entered in the processMessage() method --*/
@@ -334,7 +334,7 @@ public class MEMSDevice extends MEMSActor {
         if (_xferTimeRemaining != 0) {
             return;
         }
-      
+
         //FIXME: bandwidth for MEMSMsg instead of MEMSEnvirMsg...
         _xferTimeRemaining = message.getSize() + (int) delay;
 
@@ -364,4 +364,3 @@ public class MEMSDevice extends MEMSActor {
     private int _recvTimeRemaining;
     private int _xferTimeRemaining;
 }
-

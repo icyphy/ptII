@@ -195,8 +195,3 @@ test AtomicActor-9.2 {Test remove a AtomicActor} {
     $entity setContainer [java::null]
     list [$e0 deepContains $entity]
 } {0}
-
-
-
-
-

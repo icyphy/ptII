@@ -49,7 +49,7 @@ test IntToBits-1.1 {test 1} {
 
     set value [getParameter $const value]
     $value setToken [java::new ptolemy.data.IntToken 5]
-       
+
     $e0 connect \
             [java::field [java::cast ptolemy.actor.lib.Source $const] output] \
             [java::field $conver input]
@@ -59,7 +59,7 @@ test IntToBits-1.1 {test 1} {
 
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-    
+
 } {false false false false false false false false false false false false false false false false false false false false false false false false false false false false false true false true}
 
 
@@ -83,9 +83,8 @@ test IntToBits-1.2 {test 2} {
     $e0 connect \
             [java::field $conver output] \
 	    [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
-   
+
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 
 } {false false false false false false false false false false false false false false false false false false false false false false false false true true true false false false false true}
-

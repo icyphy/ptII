@@ -129,4 +129,3 @@ test CTActor-3.2 {overwriting tokens} {
     $p1o broadcast $one
     [java::cast ptolemy.data.DoubleToken [$p2i get 0]] doubleValue
 } {1.0}
-    

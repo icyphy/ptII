@@ -56,7 +56,7 @@ test RectangularToPolar-1.1 {test 1} {
     $value2 setToken [java::new {ptolemy.data.DoubleToken double} 4.0]
 
 # Since all of my ports are public, so I don't need to cast them.
-   
+
     $e0 connect \
             [java::field [java::cast ptolemy.actor.lib.Source $const1] output]             [java::field $conver xInput]
     $e0 connect \
@@ -88,14 +88,14 @@ test RectangularToPolar-1.2 {test 2: testing both PolarToRec and RecToPolar} {
                     $e0 conver1]
     set conver2 [java::new ptolemy.actor.lib.conversions.PolarToRectangular \
                     $e0 conver2]
-    
+
 
     set value1 [getParameter $const1 value]
     $value1 setToken [java::new {ptolemy.data.DoubleToken double} 3.0]
-    
+
     set value2 [getParameter $const2 value]
     $value2 setToken [java::new {ptolemy.data.DoubleToken double} 4.0]
-    
+
 
     $e0 connect \
             [java::field [java::cast ptolemy.actor.lib.Source $const1] output]             [java::field $conver1 xInput]
@@ -119,4 +119,3 @@ test RectangularToPolar-1.2 {test 2: testing both PolarToRec and RecToPolar} {
          [enumToTokenValues [$rec2 getRecord 0]]]
     ptclose $result {3.000 4.0}
 } {1}
-

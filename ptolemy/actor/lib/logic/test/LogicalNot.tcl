@@ -76,4 +76,3 @@ test LogicalNot-2.2 {Basic value: False} {
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 } {true}
-

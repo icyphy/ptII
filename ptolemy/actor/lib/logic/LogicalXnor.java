@@ -105,5 +105,3 @@ public class LogicalXnor extends ptolemy.actor.lib.Transformer {
 	    output.broadcast((BooleanToken)value);
     }
 }
-
-

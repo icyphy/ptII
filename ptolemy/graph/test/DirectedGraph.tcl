@@ -132,7 +132,7 @@ test DirectedGraph-4.2 { backwardReachableNodes for a set of nodes } {
     $p addEdge $n2 $n4
     $p addEdge $n3 $n4
     $p addEdge $n5 $n6
-    
+
     set nodeArray [java::new {java.lang.String[]} 2 [list $n4 $n6]]
     set reach [$p {backwardReachableNodes Object[]} $nodeArray]
     list [$reach get 0] [$reach get 1] [$reach get 2] [$reach get 3]
@@ -160,7 +160,7 @@ test DirectedGraph-5.1 { cycleNodes } {
     $p add $n3
     $p addEdge $n1 $n2
     $p addEdge $n1 $n3
-    
+
     set cycle [$p cycleNodes]
     list [$p isAcyclic] [$cycle getrange 0]
 } {1 {}}
@@ -179,7 +179,7 @@ test DirectedGraph-5.2 { cycleNodes } {
     $p addEdge $n1 $n2
     $p addEdge $n2 $n1
     $p addEdge $n2 $n3
-    
+
     set cycle [$p cycleNodes]
     list [$p isAcyclic] [$cycle getrange 0]
 } {0 {node1 node2}}
@@ -208,8 +208,7 @@ test DirectedGraph-5.3 { cycleNodes } {
     $p addEdge $n5 $n4
     $p addEdge $n4 $n3
     $p addEdge $n5 $n6
-    
+
     set cycle [$p cycleNodes]
     list [$p isAcyclic] [$cycle getrange 0]
 } {0 {node1 node2 node3 node4 node5}}
-

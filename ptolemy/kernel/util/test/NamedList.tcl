@@ -356,5 +356,3 @@ test NamedList-9.1 {Test copy constructor} {
     set result3 [_testEnums elements $dir]
     list $result1 $result2 $result3
 } {{{n3 n2 n1}} {{n3 n2 n1}} {{n3 n1}}}
-
-

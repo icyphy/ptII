@@ -57,4 +57,3 @@ proc plotApplicationTest { args } {
 test PlotApplication-1.1 {} {
     plotApplicationTest ""
 } {}
-

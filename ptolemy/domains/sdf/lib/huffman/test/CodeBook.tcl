@@ -64,11 +64,11 @@ test CodeBook-2.1 {This the huffman Encoder} {
     set codebook [java::new ptolemy.domains.sdf.lib.huffman.CodeBook $e0 codebook]
     $codebook addDebugListener [java::new ptolemy.kernel.util.StreamListener]
     set rec [java::new ptolemy.actor.lib.Sink $e0 rec]
-    
+
     set values [java::new {int[][]} {1 30} [list [list 1 2 1 8 4 5 6 7 8 2 2 4 6 2 8 1 8 1 3 5 6 8 1 2 8 8 5 2 6 2]]]
     set valuesParam [getParameter $pulse values]
     $valuesParam setToken [java::new ptolemy.data.IntMatrixToken $values]
-    
+
     set indexes [java::new {int[][]} {1 30} [list [list 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29]]]
     set indexesParam [getParameter $pulse indexes]
     $indexesParam setToken [java::new ptolemy.data.IntMatrixToken $indexes]
@@ -82,12 +82,11 @@ test CodeBook-2.1 {This the huffman Encoder} {
     ##$e0 connect \
     ##        [java::field $codebook output] \
     ##        [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
-    
+
 
     [$e0 getManager] execute
-    
+
 } {}
 ######################################################################
 ####
 #
-

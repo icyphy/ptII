@@ -185,4 +185,3 @@ public class PitchSlider extends JFrame {
         pitchSlider.startPitchShifting(sampRate);
     }
 }
-

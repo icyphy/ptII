@@ -180,4 +180,3 @@ test Interpolator-3.6 {period=8, order=3} {
     set result [enumToTokenValues [$rec getRecord 0]]
     deltaCompare $result {7.0 6.5 5.0 4.0 3.0 1.5 1.0 4.0 7.0 6.5 5.0 4.0 3.0 1.5 1.0 4.0}
 } {1}
-

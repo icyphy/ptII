@@ -64,4 +64,3 @@ if {[string compare sdfModel [info procs sdfModel]] != 0} \
         then {
     source [file join $PTII util testsuite models.tcl]
 } {}
-

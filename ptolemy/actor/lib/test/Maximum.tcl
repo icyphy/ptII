@@ -155,4 +155,3 @@ test Maximum-2.8 {check types} {
 	[[$maximumIn getType] toString] [[$maximumOut getType] toString] \
 	[[$recIn getType] toString]
 } {complex int complex complex general}
-

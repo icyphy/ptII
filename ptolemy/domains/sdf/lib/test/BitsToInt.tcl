@@ -50,11 +50,11 @@ test BitsToInt-1.1 {test 1: using the pulse actor as source} {
     set values [java::new {boolean[][]} {1 32} [list [list false false false false false false false false false false false false false false false false false false false false false false false false false false false false false true false true]]]
     set valuesParam [getParameter $pulse values]
     $valuesParam setToken [java::new ptolemy.data.BooleanMatrixToken $values]
-    
+
     set indexes [java::new {int[][]} {1 32} [list [list 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31]]]
     set indexesParam [getParameter $pulse indexes]
     $indexesParam setToken [java::new ptolemy.data.IntMatrixToken $indexes]
-       
+
     $e0 connect \
             [java::field [java::cast ptolemy.actor.lib.Source $pulse] output] \
             [java::field $conver input]
@@ -64,7 +64,7 @@ test BitsToInt-1.1 {test 1: using the pulse actor as source} {
 
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-    
+
 } {5}
 
 
@@ -83,7 +83,7 @@ test IntToBits-1.2 {test 2: using the IntTobits actor as source} {
 
     set value [getParameter $const value]
     $value setToken [java::new ptolemy.data.IntToken 5]
-    
+
     $e0 connect \
             [java::field [java::cast ptolemy.actor.lib.Source $const] output] \
 	    [java::field $conver1 input]
@@ -98,10 +98,3 @@ test IntToBits-1.2 {test 2: using the IntTobits actor as source} {
     enumToTokenValues [$rec getRecord 0]
 
 } {5}
-
-
-
-
-
-
-

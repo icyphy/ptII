@@ -450,4 +450,3 @@ public class TypeLattice {
     private static TheTypeLattice _lattice = new TheTypeLattice();
 
 }
-

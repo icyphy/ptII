@@ -124,7 +124,7 @@ public abstract class AbstractList extends AbstractCollection implements List {
      * @throws IndexOutOfBoundsException if the specified index is out of
      *            range (<tt>index &lt; 0 || index &gt;= size()</tt>).
      */
-    
+
     public Object set(int index, Object element) {
 	throw new UnsupportedOperationException();
     }
@@ -856,4 +856,3 @@ class SubList extends AbstractList {
             throw new ConcurrentModificationException();
     }
 }
-

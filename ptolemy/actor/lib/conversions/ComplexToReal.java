@@ -1,5 +1,5 @@
 /* An actor that converts a complex token into two real tokens.
- 
+
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -119,6 +119,3 @@ public class ComplexToReal extends TypedAtomicActor {
         imagOutput.send(0, imagPart);
     }
 }
-
-
-

@@ -317,6 +317,3 @@ public class FIR extends SDFAtomicActor {
     private Token _zero;
 
 }
-
-
-

@@ -185,4 +185,3 @@ test ArrayToSequence-2.8 {check types} {
 	[[$a2s2Out getType] toString] [[$a2sIn getType] toString] \
 	[[$a2sOut getType] toString] [[$recIn getType] toString]
 } {string string (string)array (string)array ((string)array)array ((string)array)array (string)array (string)array string general}
-

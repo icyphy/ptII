@@ -82,4 +82,3 @@ test InequalityTerm-1.3 {test unfixValue} {
     $ta unfixValue  
     list [$ta isSettable]
 } {1}
-

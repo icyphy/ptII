@@ -216,4 +216,3 @@ public class AbsoluteValue extends Transformer {
 	private TypedIOPort _port;
     }
 }
-

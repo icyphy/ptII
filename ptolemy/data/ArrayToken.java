@@ -248,4 +248,3 @@ public class ArrayToken extends Token {
     private Token[] _value;
     private Type _elementType;
 }
-

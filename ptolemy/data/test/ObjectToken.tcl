@@ -92,4 +92,3 @@ test ObjectToken-2.2 {Create an empty instance and query its value} {
 #     $n {append String} " bar"
 #     list [$p toString] [$q toString]
 # } {{foo bar} {foo bar}}
-

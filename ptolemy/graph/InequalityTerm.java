@@ -128,4 +128,3 @@ public interface InequalityTerm {
      */
     public void unfixValue();
 }
-

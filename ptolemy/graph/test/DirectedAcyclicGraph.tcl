@@ -271,4 +271,3 @@ test DirectedAcyclicGraph-3.4 { reachable nodes on cyclic graph } {
     catch {$p compare $n1 $n2} msg
     list $msg
 } {{ptolemy.kernel.util.InvalidStateException: DirectedAcyclicGraph._validate: Graph is cyclic.}}
-

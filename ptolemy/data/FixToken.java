@@ -493,4 +493,3 @@ public class FixToken extends ScalarToken {
     private FixPoint _value;
 
 }
-

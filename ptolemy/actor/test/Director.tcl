@@ -126,4 +126,3 @@ test Director-6.1 {Test wormhole activation} {
 .E0.A1.wrapup
 .E0.E1.A2.wrapup
 }
-

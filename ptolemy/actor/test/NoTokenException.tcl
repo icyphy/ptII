@@ -61,4 +61,3 @@ test NoRoomException-2.2 {Constructor that takes a Nameable and a String} {
 	     "Detail Message"]
     $ex getMessage
 } {.My NMamedObj: Detail Message}
-

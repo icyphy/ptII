@@ -156,4 +156,3 @@ public class DEFSMActor extends FSMController implements TypedActor {
 	return Collections.enumeration(typeConstraintList());
     }
 }
-

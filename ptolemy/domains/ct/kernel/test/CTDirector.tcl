@@ -127,7 +127,7 @@ test CTMultiSolverDirector-2.2 {set Parameters} {
     set param [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute MaximumStepSize]]
     $param setExpression 0.3
-  
+
     set param [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute MinimumStepSize]]
     $param setExpression 0.2
@@ -197,7 +197,7 @@ test CTMultiSolverDirector-2.2a {set Parameters} {
 	    [$dir getAttribute MaximumStepSize]]
     set token [java::new ptolemy.data.DoubleToken 0.3]
     $param setToken $token
-  
+
     set param [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute MinimumStepSize]]
     set token [java::new ptolemy.data.DoubleToken 0.2]
@@ -311,10 +311,3 @@ test CTMultiSolverDirector-3.1 {access empty breakpoint table} {
     set nextone [$bptable first]
     list [expr {$nextone == [java::null]}]
 } {1}
-
-
-
-
-
-
-

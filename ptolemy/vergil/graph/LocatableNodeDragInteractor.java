@@ -99,4 +99,3 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
 
     private LocatableNodeController _controller;
 }
-

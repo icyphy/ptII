@@ -183,4 +183,3 @@ test TypedIOPort-4.2 {test description} {
 
     $p1 description $detail
 } {ptolemy.actor.TypedIOPort {..E1.P1} type {declared double resolved double}}
-

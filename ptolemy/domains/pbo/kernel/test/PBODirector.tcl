@@ -118,7 +118,7 @@ test PBODirector-5.1 {Test action methods} {
     set listener [java::new ptolemy.kernel.util.StreamListener]
     $manager addDebugListener $listener
     $d3 addDebugListener $listener
-    
+
     set listener [java::new ptolemy.actor.DefaultExecutionListener]
     $manager addExecutionListener $listener
 
@@ -132,5 +132,3 @@ ptolemy.data.IntToken(3)
 ptolemy.data.IntToken(4)
 ptolemy.data.IntToken(5)
 }}
-
-

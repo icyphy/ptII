@@ -57,17 +57,17 @@ test DDEIOPort-2.1 {Check send()} {
     set man [java::new ptolemy.actor.Manager $wspc "manager"]
     $topLevel setManager $man
     $topLevel setDirector $dir
-    
+
     set act1 [java::new ptolemy.actor.TypedAtomicActor $topLevel "act1"] 
     set act2 [java::new ptolemy.actor.TypedAtomicActor $topLevel "act2"] 
 
     set outPort [java::new ptolemy.domains.dde.kernel.DDEIOPort $act1 "output" false true]
     set inPort [java::new ptolemy.domains.dde.kernel.DDEIOPort $act2 "input" true false]
     set rel [$topLevel connect $outPort $inPort "rel"]
-    
+
     set tok [java::new ptolemy.data.Token]
     set tokClass [$tok getClass]
-    
+
     $outPort setTypeEquals $tokClass
     $inPort setTypeEquals $tokClass
 
@@ -144,28 +144,3 @@ test DDEIOPort-3.1 {Broadcast tokens to two different actors.} {
     list $val 
 
 } {1}
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

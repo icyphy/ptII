@@ -531,5 +531,3 @@ test IORelation-10.2 {Test clone} {
     set r9 [java::cast ptolemy.actor.IORelation [$r2 clone $w]]
     $r9 description $configuration
 } {configuration {width 3 fixed}}
-
-

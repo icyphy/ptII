@@ -65,10 +65,10 @@ test DDEDirector-2.1 {Simple composite actor with ports contained in a composite
     set wormhole [java::new ptolemy.actor.TypedCompositeActor $toplevel "wormhole"]
     set topdir [java::new ptolemy.domains.dde.kernel.DDEDirector $toplevel "topdir"]
     set wormdir [java::new ptolemy.domains.dde.kernel.DDEDirector $wormhole "wormdir"]
-    
+
     # Assign Directors/Managers
     $toplevel setManager $mgr
-    
+
     # Instantiate Actors
     set actorRcvr [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "actorRcvr" 3]
     set actorThru [java::new ptolemy.domains.dde.kernel.test.FlowThrough $wormhole "actorThru"]
@@ -77,17 +77,17 @@ test DDEDirector-2.1 {Simple composite actor with ports contained in a composite
     # Add Ports to the Wormhole
     set wormin [java::new ptolemy.actor.TypedIOPort $wormhole "input" true false]
     set wormout [java::new ptolemy.actor.TypedIOPort $wormhole "output" false true]
-    
+
     # Get Ports for the Atomic Actors
     set ioprcvr [$actorRcvr getPort "input"]
     set iopsend [$actorSend getPort "output"]
     set iopflowin [$actorThru getPort "input"]
     set iopflowout [$actorThru getPort "output"]
-    
+
     # Connect Inside Wormhole Ports
     $wormhole connect $wormin $iopflowin
     $wormhole connect $wormout $iopflowout
-    
+
     # Connect Other Ports
     $toplevel connect $iopsend $wormin
     $toplevel connect $wormout $ioprcvr
@@ -119,10 +119,10 @@ test DDEDirector-3.1 {Portless composite actor contained in a composite actor} {
     set topleveldir [java::new ptolemy.domains.dde.kernel.DDEDirector $toplevel "topleveldir"]
     set wormholedir [java::new ptolemy.domains.dde.kernel.DDEDirector $wormhole "wormholedir"]
     set mgr [java::new ptolemy.actor.Manager $wspc "manager"]
-    
+
     # $toplevel setDirector $topleveldir
     $toplevel setManager $mgr
-    
+
     set actorRcvr [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $wormhole "actorRcvr" 3]
     set actorSend [java::new ptolemy.domains.dde.kernel.test.DDEPutToken $wormhole "actorSend" 3]
 
@@ -156,11 +156,11 @@ test DDEDirector-4.1 {Composite actor containing a closed feedback cycle} {
     set wormholedir [java::new ptolemy.domains.dde.kernel.DDEDirector $wormhole "wormholedir"]
     set mgr [java::new ptolemy.actor.Manager $wspc "manager"]
     $toplevel setManager $mgr
-    
+
     # Set the stop time of the top level director
     set topleveldirStopTime [java::cast ptolemy.data.expr.Parameter [$topleveldir getAttribute stopTime]]
     $topleveldirStopTime setToken [java::new ptolemy.data.DoubleToken 25.0]
-    
+
     # Instantiate the Clock actor and sets its output values
     set clock [java::new ptolemy.actor.lib.Clock $toplevel "clock"]
     set values [java::cast ptolemy.data.expr.Parameter [$clock getAttribute values]]
@@ -176,7 +176,7 @@ test DDEDirector-4.1 {Composite actor containing a closed feedback cycle} {
     # $clock setToken $tok1 5.0 0 
     # $clock setToken $tok1 15.0 1
     # $clock setToken $tok1 25.0 2
-    
+
     # Instantiate the other atomic actors
     set actorRcvr [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "actorRcvr" 3]
     set join [java::new ptolemy.domains.dde.kernel.test.FlowThrough $wormhole "join"]
@@ -202,7 +202,7 @@ test DDEDirector-4.1 {Composite actor containing a closed feedback cycle} {
     set sinkIn [$sink getPort "input"]
     set clockOut [java::cast ptolemy.actor.TypedIOPort [$clock getPort "output"]]
     $clockOut setMultiport true
-    
+
     # Add ports to the wormhole
     set wormin [java::new ptolemy.actor.TypedIOPort $wormhole "wormin" true false]
     set wormout [java::new ptolemy.actor.TypedIOPort $wormhole "wormout" false true]
@@ -214,7 +214,7 @@ test DDEDirector-4.1 {Composite actor containing a closed feedback cycle} {
     $wormhole connect $fBackIn $forkOut1
     $wormhole connect $forkOut2 $sinkIn 
     $wormhole connect $forkOut1 $wormout
-    
+
     # Connect ports outside of the wormhole
     $toplevel connect $clockOut $wormin
     $toplevel connect $wormout $rcvrIn
@@ -240,11 +240,11 @@ test DDEDirector-4.1 {Composite actor containing a non-closed feedback cycle} {
     set wormholedir [java::new ptolemy.domains.dde.kernel.DDEDirector $wormhole "wormholedir"]
     set mgr [java::new ptolemy.actor.Manager $wspc "manager"]
     $toplevel setManager $mgr
-    
+
     # Set the stop time of the top level director
     set topleveldirStopTime [java::cast ptolemy.data.expr.Parameter [$topleveldir getAttribute stopTime]]
     $topleveldirStopTime setToken [java::new ptolemy.data.DoubleToken 25.0]
-    
+
     # Instantiate the Clock actor and sets its output values
     set clock [java::new ptolemy.actor.lib.Clock $toplevel "clock"]
     set values [java::cast ptolemy.data.expr.Parameter [$clock getAttribute values]]
@@ -255,7 +255,7 @@ test DDEDirector-4.1 {Composite actor containing a non-closed feedback cycle} {
     $offsets setExpression {[5.0, 15.0]}
     set stopTime [java::cast ptolemy.data.expr.Parameter [$clock getAttribute stopTime]]
     $stopTime setToken [java::new ptolemy.data.DoubleToken 27.0]
-    
+
     # Instantiate the other atomic actors
     set actorRcvr [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "actorRcvr" 3]
     set join [java::new ptolemy.domains.dde.kernel.test.FlowThrough $wormhole "join"]
@@ -279,7 +279,7 @@ test DDEDirector-4.1 {Composite actor containing a non-closed feedback cycle} {
     set fBackOut [$fBack getPort "output"]
     # set clockOut [java::cast ptolemy.actor.TypedIOPort [$clock getPort "output"]]
     # $clockOut setMultiport true
-    
+
     # Add ports to the wormhole
     set worminA [java::new ptolemy.actor.TypedIOPort $wormhole "worminA" true false]
     set worminB [java::new ptolemy.actor.TypedIOPort $wormhole "worminB" true false]
@@ -308,4 +308,3 @@ test DDEDirector-4.1 {Composite actor containing a non-closed feedback cycle} {
     list $time0 $time1 $time2
 
 } {5.0 9.0 13.0}
-

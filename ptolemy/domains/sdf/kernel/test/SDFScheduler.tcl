@@ -1164,8 +1164,3 @@ test SDFScheduler-13.1 {connected graph, disconnected relation} {
 } {{} {ptolemy.actor.sched.NotSchedulableException: Actors remain that cannot be scheduled:
 .Toplevel.Consumer
 }}
-
-
-
-
-

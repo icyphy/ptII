@@ -118,4 +118,3 @@ test Graph-3.1 {Test description} {
   {node3 node4}
   {node4}
 }}}
-

@@ -104,5 +104,3 @@ public class LogicalXor extends ptolemy.actor.lib.Transformer {
 	    output.broadcast((BooleanToken)value);
     }
 }
-
-

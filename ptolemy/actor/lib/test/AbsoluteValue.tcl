@@ -141,4 +141,3 @@ test AbsoluteValue-2.6 {check types} {
     list [[$rampOut getType] toString] [[$absIn getType] toString] \
 	[[$absOut getType] toString] [[$recIn getType] toString]
 } {long long long general}
-

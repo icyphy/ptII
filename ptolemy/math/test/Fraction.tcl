@@ -258,4 +258,3 @@ test Fraction-3.9 {check overflow negate} {
     list [$c01 toString] [$c12 toString] [$c23 toString] [$c34 toString] \
 	    [$c45 toString] [$c56 toString]
 } {-1/1 -2147483647/1 5/3 0/1 -1/2147483647 5/1}
-

@@ -652,4 +652,3 @@ public class VergilApplication extends MDIApplication {
      */
     private CompositeEntity _entityLibrary;
 }
-

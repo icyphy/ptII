@@ -301,4 +301,3 @@ test ComplexArrayMath-14.2 {phase} {
     epsilonDiff [$da2 getrange 0] \
 	    {1.10714871779 -0.927295218002 -2.25561757274 2.28962632642}
 } {}
-

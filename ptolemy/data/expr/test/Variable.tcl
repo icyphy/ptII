@@ -60,7 +60,7 @@ test Variable-1.0 {Check constructors} {
     set param2 [java::new ptolemy.data.expr.Variable $ws]
     set param4 [java::new ptolemy.data.expr.Variable $e id1]
     set param3 [java::new ptolemy.data.expr.Variable $e id2 $tok]    
-    
+
     set name1 [$param1 getFullName]
     set name2 [$param2 getFullName]    
     set name3 [$param3 getFullName]
@@ -113,14 +113,14 @@ test Variable-2.4 {Check updating of Variables that refer to others} {
 
     set p3 [java::new ptolemy.data.expr.Variable $e P3]
     $p3 setExpression "P1 + P2"
- 
+
     set name1 [$p1 getFullName]
     set value1 [[$p1 getToken] stringValue]
     set name2 [$p2 getFullName]
     set value2 [[$p2 getToken] stringValue]
     set name3 [$p3 getFullName]
     set value3 [[$p3 getToken] stringValue]
-    
+
     $p1 setExpression  "((true) ? 5.5 : \"string\")"
     set name4 [$p1 getFullName]
     set value4 [[$p1 getToken] stringValue]
@@ -141,12 +141,12 @@ test Variable-2.5 {Check that dependency cycles are flagged as an error} {
 
     set p3 [java::new ptolemy.data.expr.Variable $e P3]
     $p3 setExpression "P1 + P2"
- 
+
     set value1 [[$p1 getToken] stringValue]
     set value2 [[$p2 getToken] stringValue]
     set value3 [[$p3 getToken] stringValue]
     $p1 setExpression  "P3"
-    
+
     catch {$p1 getToken} errormsg1
     catch {$p3 getToken} errormsg2
     list $value1 $value2 $value3 $errormsg1 $errormsg2
@@ -434,4 +434,3 @@ test Variable-12.0 {Test exportMoML} {
 <model name="A" class="ptolemy.kernel.util.NamedObj">
 </model>
 }
-

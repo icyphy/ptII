@@ -108,4 +108,3 @@ public class Minimum extends Transformer {
         }
     }
 }
-

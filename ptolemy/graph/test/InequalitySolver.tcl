@@ -269,4 +269,3 @@ test InequalitySolver-3.1 {solve constraints on TypeLattic} {
 	 [[$ps2d getType] toString] \
 	 [[$ps2o getType] toString]
 } {1 double double double double double double} 
-

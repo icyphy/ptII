@@ -40,7 +40,7 @@ for things like testing and such.
 
 Under the KVM on the Palm, applications extend Spotlet and then
 create things like TextBoxes for output.
- 
+
 @author Christopher Hylands
 @version $Id$
 */
@@ -82,6 +82,3 @@ public class SimpleSpotlet extends Spotlet{
 
     protected Graphics _graphics;
 }
-
-
-

@@ -81,7 +81,7 @@ public abstract class MEMSMsg {
   public int getID() {
     return _msgID;
   }
-  
+
   /** Returns true if this MEMSMsg is of a type thermoAlarmMsg.
    */
   public boolean isThermoAlarm() { return thermoAlarmMsg; }
@@ -115,7 +115,3 @@ public abstract class MEMSMsg {
   private int _msgID;
 
 }
-
-
-
-

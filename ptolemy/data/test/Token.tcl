@@ -200,4 +200,3 @@ test Token-5.0 {Test convert} {
     set p3 [$p1 convert $p2]
     $p3 toString
 } {present}
-

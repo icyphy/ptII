@@ -176,4 +176,3 @@ public abstract class StructuredType implements Type, Cloneable {
     protected abstract StructuredType _leastUpperBound(StructuredType t);
 
 }
-

@@ -254,6 +254,3 @@ public class Precision {
     private int _fraction = 0;
 
 }
-
-
-

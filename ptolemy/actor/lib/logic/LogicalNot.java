@@ -86,9 +86,3 @@ public class LogicalNot extends ptolemy.actor.lib.Transformer {
     }
 
 }
-
-
-
-
-
-

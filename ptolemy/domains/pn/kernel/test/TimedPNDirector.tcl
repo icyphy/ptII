@@ -116,4 +116,3 @@ test TimedPNDirector-5.2 {Test creation of a receiver} {
 
     list [$r1 getCapacity] [$r2 getCapacity]
 } {1 5}
-

@@ -160,4 +160,3 @@ public class ArrayToSequence extends SDFAtomicActor {
 	return output.typeConstraintList();
     }
 }
-

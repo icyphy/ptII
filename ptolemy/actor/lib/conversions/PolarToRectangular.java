@@ -133,7 +133,3 @@ public class PolarToRectangular extends TypedAtomicActor {
         yOutput.broadcast(y);
     }
 }
-
-
-
-

@@ -87,13 +87,10 @@ test ProcessThread-3.2 {Test action methods} {
     $a1 clear
     $manager run
     $a1 getRecord
-    
+
 } {.E0.A1.initialize
 .E0.A1.prefire
 .E0.A1.fire
 .E0.A1.postfire
 .E0.A1.wrapup
 }
-
-
-

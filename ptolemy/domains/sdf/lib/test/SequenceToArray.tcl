@@ -159,4 +159,3 @@ test SequenceToArray-2.8 {check types} {
 	[[$s2aOut getType] toString] [[$s2a2In getType] toString] \
 	[[$s2a2Out getType] toString] [[$recIn getType] toString]
 } {string string (string)array (string)array ((string)array)array general}
-

@@ -51,7 +51,7 @@ test ComplexToReal-1.1 {test 1} {
 
     set value [getParameter $const value]
     $value setToken [java::new ptolemy.data.ComplexToken [java::new ptolemy.math.Complex 3.0 4.0]]
-       
+
     $e0 connect \
             [java::field [java::cast ptolemy.actor.lib.Source $const] output] \
             [java::field $conver input]
@@ -82,11 +82,11 @@ test ComplexToReal-1.2 {test 2: testing both PolarToRec and RecToPolar} {
                     $e0 conver1]
     set conver2 [java::new ptolemy.actor.lib.conversions.RealToComplex \
                     $e0 conver2]
-    
+
 
     set value [getParameter $const value]
     $value setToken [java::new ptolemy.data.ComplexToken [java::new ptolemy.math.Complex 3.0 4.0]]
-    
+
     $e0 connect \
             [java::field [java::cast ptolemy.actor.lib.Source $const] output]              [java::field $conver1 input]
     $e0 connect \
@@ -96,9 +96,8 @@ test ComplexToReal-1.2 {test 2: testing both PolarToRec and RecToPolar} {
     $e0 connect \
             [java::field $conver2 output] \
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
-   
+
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 
 } {{3.0 + 4.0i}}
-

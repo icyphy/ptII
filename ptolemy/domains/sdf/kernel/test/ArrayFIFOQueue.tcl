@@ -453,15 +453,3 @@ test ArrayFIFOQueue-6.2 {Test clear history queue} {
     catch {[$queue get -1]} msg2
     list [_testEnums historyElements $newqueue] $msg1 $msg2
 } {{{n1 n2}} {java.util.NoSuchElementException: No object at offset 0 in the FIFOQueue contained by .QueueContainer} {java.util.NoSuchElementException: No object at offset -1 in the FIFOQueue contained by .QueueContainer}}
-
-
-
-
-
-
-
-
-
-
-
-

@@ -765,4 +765,3 @@ test MoMLParser-1.22 {test with an actor} {
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } $moml
-

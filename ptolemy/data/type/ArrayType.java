@@ -699,4 +699,3 @@ public class ArrayType extends StructuredType {
 	private boolean _valueFixed = false;
     }
 }
-

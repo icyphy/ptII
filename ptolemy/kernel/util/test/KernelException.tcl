@@ -113,4 +113,3 @@ test KernelException-7.5 {Create a KernelException with a unnamed NamedObj \
     set pe [java::new ptolemy.kernel.util.KernelException $n1 $n2 [java::null]]
     list [$pe getMessage]
 } {{. and .}}
-

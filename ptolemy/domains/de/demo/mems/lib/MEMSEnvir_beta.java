@@ -53,7 +53,7 @@ public class MEMSEnvir_beta extends MEMSEnvir {
           throws IllegalActionException, NameDuplicationException  {
       super(container,name,mems,x,y,z,temperature,plot);
   }
-    
+
     protected double getNewTemp() {
         double newTemp;
         if((curTime == 50)) {
@@ -65,4 +65,3 @@ public class MEMSEnvir_beta extends MEMSEnvir {
     }
 
 }
-  

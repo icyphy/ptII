@@ -278,5 +278,3 @@ public class MatrixViewer extends Sink implements Placeable {
     }
 
 }
-
-

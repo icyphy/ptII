@@ -68,7 +68,7 @@ test PtolemyThread-1.1 {Test the constructor} {
 
     set threads [list $pthread1 $pthread2 $pthread3 \
 	    $pthread4 $pthread5 $pthread6 $pthread7]
-    
+
     set results {}
     foreach thread $threads {
 	lappend results [list [$thread getReadDepth] \
@@ -76,6 +76,3 @@ test PtolemyThread-1.1 {Test the constructor} {
     }
     list $results [$threadGroup activeCount]
 } {{{0 Thread-0} {0 Thread-2} {0 pthread2} {0 pthread4} {0 Thread-3} {0 pthread6} {0 pthread7}} 3}
-
-
-

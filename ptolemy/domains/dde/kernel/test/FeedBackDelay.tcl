@@ -69,7 +69,7 @@ test FeedBackDelay-2.1 {Cycle null tokens with actor/lib/clock} {
     $toplevel setManager $mgr
     set dirStopTime [java::cast ptolemy.data.expr.Parameter [$dir getAttribute stopTime]]
     $dirStopTime setToken [java::new ptolemy.data.DoubleToken 26.0]
-    
+
     set clock [java::new ptolemy.actor.lib.Clock $toplevel "clock"]
 
     set values [java::cast ptolemy.data.expr.Parameter [$clock getAttribute values]]
@@ -80,7 +80,7 @@ test FeedBackDelay-2.1 {Cycle null tokens with actor/lib/clock} {
     $offsets setExpression {[5.0, 15.0]}
     set stopTime [java::cast ptolemy.data.expr.Parameter [$clock getAttribute stopTime]]
     $stopTime setToken [java::new ptolemy.data.DoubleToken 27.0]
-    
+
     set clockOut [java::cast ptolemy.actor.TypedIOPort [$clock getPort "output"]]
     $clockOut setMultiport true
 
@@ -129,7 +129,7 @@ test FeedBackDelay-3.1 {Cycle real tokens with actor/lib/clock} {
     $toplevel setManager $mgr
     set dirStopTime [java::cast ptolemy.data.expr.Parameter [$dir getAttribute stopTime]]
     $dirStopTime setToken [java::new ptolemy.data.DoubleToken 20.0]
-    
+
     set clock [java::new ptolemy.actor.lib.Clock $toplevel "clock"]
 
     set values [java::cast ptolemy.data.expr.Parameter [$clock getAttribute values]]
@@ -140,7 +140,7 @@ test FeedBackDelay-3.1 {Cycle real tokens with actor/lib/clock} {
     $offsets setExpression {[5.0, 15.0]}
     set stopTime [java::cast ptolemy.data.expr.Parameter [$clock getAttribute stopTime]]
     $stopTime setToken [java::new ptolemy.data.DoubleToken 27.0]
-    
+
     set clockOut [java::cast ptolemy.actor.TypedIOPort [$clock getPort "output"]]
     $clockOut setMultiport true
 
@@ -194,7 +194,7 @@ test FeedBackDelay-4.1 {Dual cycle with 0 delay in lower cycle with actor/lib/cl
     $toplevel setManager $mgr
     set dirStopTime [java::cast ptolemy.data.expr.Parameter [$dir getAttribute stopTime]]
     $dirStopTime setToken [java::new ptolemy.data.DoubleToken 26.0]
-    
+
     set clock [java::new ptolemy.actor.lib.Clock $toplevel "clock"]
 
     set values [java::cast ptolemy.data.expr.Parameter [$clock getAttribute values]]
@@ -205,7 +205,7 @@ test FeedBackDelay-4.1 {Dual cycle with 0 delay in lower cycle with actor/lib/cl
     $offsets setExpression {[5.0, 15.0]}
     set stopTime [java::cast ptolemy.data.expr.Parameter [$clock getAttribute stopTime]]
     $stopTime setToken [java::new ptolemy.data.DoubleToken 27.0]
-    
+
     set clockOut [java::cast ptolemy.actor.TypedIOPort [$clock getPort "output"]]
     set rcvr1 [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "rcvr1" 3]
     set join1 [java::new ptolemy.domains.dde.kernel.test.FlowThrough $toplevel "join1"]
@@ -239,7 +239,7 @@ test FeedBackDelay-4.1 {Dual cycle with 0 delay in lower cycle with actor/lib/cl
 
     set clockRelation [$toplevel connect $clockOut $join1In]
     $join2In link $clockRelation 
-    
+
     $toplevel connect $join1Out $fork1In
     $toplevel connect $fork1Out1 $rcvr1In 
     $toplevel connect $fBack1Out $join1In
@@ -276,7 +276,7 @@ test FeedBackDelay-4.2 {Dual cycle with very small delay in lower cycle with act
     $toplevel setManager $mgr
     set dirStopTime [java::cast ptolemy.data.expr.Parameter [$dir getAttribute stopTime]]
     $dirStopTime setToken [java::new ptolemy.data.DoubleToken 27.0]
-    
+
     set clock [java::new ptolemy.actor.lib.Clock $toplevel "clock"]
 
     set values [java::cast ptolemy.data.expr.Parameter [$clock getAttribute values]]
@@ -287,7 +287,7 @@ test FeedBackDelay-4.2 {Dual cycle with very small delay in lower cycle with act
     $offsets setExpression {[5.0, 15.0]}
     set stopTime [java::cast ptolemy.data.expr.Parameter [$clock getAttribute stopTime]]
     $stopTime setToken [java::new ptolemy.data.DoubleToken 27.0]
-    
+
     set rcvr1 [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "rcvr1" 3]
     set join1 [java::new ptolemy.domains.dde.kernel.test.FlowThrough $toplevel "join1"]
     set fork1 [java::new ptolemy.domains.dde.kernel.test.TwoPut $toplevel "fork1"]
@@ -322,7 +322,7 @@ test FeedBackDelay-4.2 {Dual cycle with very small delay in lower cycle with act
 
     set clockRelation [$toplevel connect $clockOut $join1In]
     $join2In link $clockRelation
-    
+
     $toplevel connect $join1Out $fork1In
     $toplevel connect $fork1Out1 $rcvr1In 
 
@@ -347,9 +347,3 @@ test FeedBackDelay-4.2 {Dual cycle with very small delay in lower cycle with act
     list $time1_0 $time1_1 $time1_2 $time2_0 $time2_1 $time2_2 
 
 } {5.0 15.0 25.0 5.0 15.0 25.0} 
-
-
-
-
-
-

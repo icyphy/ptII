@@ -175,4 +175,3 @@ test ComponentEntity-9.1 {remove a port} {
     } insidelinks {
     }}
 }}}
-

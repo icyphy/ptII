@@ -133,7 +133,3 @@ public class IntToBits extends SDFAtomicActor {
         output.sendArray(0, bits);
     }
 }
-
-
-
-

@@ -87,6 +87,3 @@ public class ExampleSystemSpotlet extends Spotlet {
 
     protected Graphics _graphics;
 }
-
-
-

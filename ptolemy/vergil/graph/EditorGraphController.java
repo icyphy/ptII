@@ -323,4 +323,3 @@ public class EditorGraphController extends ViewerGraphController {
             InputEvent.BUTTON1_MASK,
             InputEvent.SHIFT_MASK);
 }
-

@@ -748,4 +748,3 @@ public class TypedIOPort extends IOPort implements Typeable {
 	private boolean _valueFixed = false;
     }
 }
-

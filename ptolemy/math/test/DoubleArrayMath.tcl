@@ -394,5 +394,3 @@ test DoubleArrayMath-13.2 {within with unequally sized arrays} {
     catch {set br [java::call ptolemy.math.DoubleArrayMath {within double[] double[] double} $b1 $a1 0.002]} errMsg
     list $errMsg
 } {{java.lang.IllegalArgumentException: ptolemy.math.DoubleArrayMath.within() : input arrays must have the same length, but the first array has length 3 and the second array has length 5.}}
-
-

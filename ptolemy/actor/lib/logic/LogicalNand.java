@@ -106,4 +106,3 @@ public class LogicalNand extends ptolemy.actor.lib.Transformer {
 	}
     }
 }
-

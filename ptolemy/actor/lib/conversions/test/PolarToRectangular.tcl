@@ -54,7 +54,7 @@ test PolarToRectangular-1.1 {test 1} {
     $value1 setToken [java::new {ptolemy.data.DoubleToken double} 3.0]
     set value2 [getParameter $const2 value]
     $value2 setToken [java::new {ptolemy.data.DoubleToken double} 4.0]
-   
+
     $e0 connect \
             [java::field [java::cast ptolemy.actor.lib.Source $const1] output]             [java::field $conver magnitudeInput]
 
@@ -74,5 +74,3 @@ test PolarToRectangular-1.1 {test 1} {
          [enumToTokenValues [$rec2 getRecord 0]]]
     ptclose $result {-1.961 -2.270}
 } {1}
-
-

@@ -237,4 +237,3 @@ test Relation-16.0 {Test exportMoML} {
 } {<relation name="my relation" class="ptolemy.kernel.Relation">
 </relation>
 }
-

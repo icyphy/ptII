@@ -57,7 +57,7 @@ test db11 {Test dB} {
 
     set value [getParameter $const value]
     $value setToken [java::new {ptolemy.data.DoubleToken double} 3.0]
-   
+
     $e0 connect \
       [java::field [java::cast ptolemy.actor.lib.Source $const] output] \
       [java::field [java::cast ptolemy.actor.lib.Transformer $clone] input]
@@ -75,7 +75,7 @@ test dB-2.1 {Test negative limit of dB} {
 
     set value [getParameter $const value]
     $value setToken [java::new {ptolemy.data.DoubleToken double} -1.0]
-  
+
     [$e0 getManager] execute
     set result [list [enumToTokenValues [$rec getRecord 0]]]
 
@@ -85,10 +85,8 @@ test dB-2.2 {Test small number limit of dB} {
 
     set value [getParameter $const value]
     $value setToken [java::new {ptolemy.data.DoubleToken double} 0.000001]
-  
+
     [$e0 getManager] execute 
     set result [list [enumToTokenValues [$rec getRecord 0]]]
 
 } {-100.0}
-
-

@@ -94,5 +94,3 @@ test TypedIORelation-3.0 {Test _checkPort} {
     list [$r0 getFullName] $msg
 } {. {ptolemy.kernel.util.IllegalActionException: . and .:
 TypedIORelation can only link to a TypedIOPort.}}
-
-

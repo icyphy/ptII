@@ -58,7 +58,7 @@ abstract class ProbeMsg {
 
     /** Constucts a Probe object and initializes its _value to 0
      */
-  
+
     public ProbeMsg() {
 
         /* OLD */ /*_value = 0.0; */
@@ -101,9 +101,3 @@ abstract class ProbeMsg {
     protected boolean thermoProbe = false;
     protected boolean messageProbe = false;
 }
-
-
-
-
-
-

@@ -58,7 +58,7 @@ set globalIgnoreTime -1
 ####
 #
 test RcvrComparator-2.1 {compareTo() on times, same priorities} {
-    
+
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
     set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $topLevel "director"]
@@ -146,4 +146,3 @@ test RcvrComparator-2.2 {compareTo() on times and priorities} {
     list $testA $testB $testC $testD $testE $testF $testG $testH $testI
 
 } {1 1 1 -1 -1 -1 0 0 0}
-

@@ -101,4 +101,3 @@ public interface Type
      */
     public String toString();
 }
-

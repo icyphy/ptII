@@ -346,4 +346,3 @@ public class Interpolation {
     private int _period = 2;
     private int _order = 0;
 }
-

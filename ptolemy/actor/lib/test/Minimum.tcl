@@ -155,4 +155,3 @@ test Minimum-2.8 {check types} {
 	[[$minimumIn getType] toString] [[$minimumOut getType] toString] \
 	[[$recIn getType] toString]
 } {complex int complex complex general}
-

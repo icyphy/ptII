@@ -53,7 +53,7 @@ test FIRDouble-1.1 {Test FIRDouble} {
     $conver setContainer [java::null]
     $clone setName FIRDoubleclone
     $clone setContainer $e0
- 
+
     $e0 connect \
       [java::field [java::cast ptolemy.actor.lib.Source $pulse] output] \
       [java::field [java::cast ptolemy.domains.sdf.lib.FIR $clone] input]
@@ -73,4 +73,3 @@ test FIRDouble-1.1 {Test FIRDouble} {
     enumToTokenValues [$rec getRecord 0]
 
 } {-0.041 -0.002 0.179 0.377 0.377 0.179 -0.002 -0.041 0.0 0.0}
-

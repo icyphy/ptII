@@ -87,6 +87,3 @@ public class TestNamedObjSpotlet extends Spotlet {
 
     protected Graphics _graphics;
 }
-
-
-

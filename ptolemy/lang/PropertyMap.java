@@ -74,5 +74,3 @@ public class PropertyMap extends HashMap {
     return super.containsKey(property);
   }
 }
-
-
