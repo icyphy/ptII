@@ -478,7 +478,7 @@ public class SDFScheduler extends Scheduler {
                             pendingActors.insertLast(connectedActor);
                         }
                         else if(!presentFiring.equals(desiredFiring))
-                            throw new NotSchedulableException(("No solution " +
+                            throw new NotSchedulableException("No solution " +
                                     "exists for the balance equations.\n" +
                                     "Graph is not" +
                                     "consistent under the SDF domain");
