@@ -374,8 +374,9 @@ jnlp_verify:
 	done;
 
 # Update a location with the files necessary to download
-DIST_DIR = /vol/ptolemy/pt0/ptweb/ptolemyII/ptII2.0/jnlp
-DIST_URL = http://ptolemy.eecs.berkeley.edu:/ptolemyII/ptII2.0/jnlp
+DIST_BASE = ptolemyII/ptII2.0/jnlp
+DIST_DIR = /vol/ptolemy/pt0/ptweb/$(DIST_BASE)
+DIST_URL = http://ptolemy.eecs.berkeley.edu:/$(DIST_BASE)
 OTHER_FILES_TO_BE_DISTED = doc/img/PtolemyIISmall.gif
 # make jnlp_dist STOREPASSWORD="-storepass xxx"
 jnlp_dist:
