@@ -46,7 +46,9 @@ do
 	results=`grep protected $file | grep -v 'protected methods' |
 		egrep -v '[ 	]*\*' |
 		grep -v 'protected variables' | 
-		grep -v 'protected class' | grep -v ' _'`
+		grep -v 'protected class' | 
+		grep -v 'write-protected' |
+		grep -v ' _'`
 	if [ "x$results" != "x" ]; then
 		echo "$results" | awk '{
 		    # If this is a constructor, then do not complain  
@@ -66,6 +68,7 @@ do
 		egrep -v '[ 	]*\*' |
 		grep -v 'private methods' |
 		grep -v 'private class' |
+		grep -v 'private static final class' |
 		grep -v 'private variables' | grep -v ' _'`
 	if [ "x$results" != "x" ]; then
 		echo "$results" | awk '{
@@ -83,7 +86,7 @@ do
 	fi
 
 	# Look for lines longer than 80 chars
-	awk 'length($0) > 80 {if ($0 !~ /[Hh][Rr][Ee][Ff]/) {print FILENAME": Line more than 80 chars:"; print $0}}' $file
+	awk 'length($0) > 80 {if ($0 !~ /[Hh][Rr][Ee][Ff]/ && $1 !~ /@version/ ) {print FILENAME": Line more than 80 chars:"; print $0}}' $file
 
 	# Look for public statements after private etc.
         awk '$1 == "public" {sawpublic=1
@@ -154,7 +157,7 @@ do
 
 	# Check that all commas have spaces
 	# A line that contains ", is ok
-	results=`egrep '[^"],[^ ]' $file`
+	results=`egrep '[^"],[^v ]' $file`
 	if [ "x$results" != "x" ]; then
 	    echo "$file: comma without out trailing space:"
 	    echo "$results"
