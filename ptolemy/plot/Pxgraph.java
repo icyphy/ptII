@@ -404,7 +404,7 @@ public class Pxgraph extends Frame {
 
         show();
         _plotApplet.init();
-        _plotApplet.start();
+        //        _plotApplet.start();
     }
 
 
