@@ -197,7 +197,7 @@ public class TotallyOrderedSet {
             if (com <= 0) {
                 return;
             } else {
-                take();
+                removeFirst();
             }
         }
     }

@@ -274,3 +274,25 @@ test TotallyOrderedSet-13.2 { contains from an empty set } {
     list [expr {$f == [java::null]}]
 } {0}
 
+######################################################################
+#### remove all less than from an empty set
+#
+test TotallyOrderedSet-13.3 { remove all less than from an empty set } {
+    $toset removeAllLessThan $p15
+    list [$toset size]
+} {0}
+
+
+######################################################################
+#### remove all elements from a non-empty set with removeAllLessThan
+#
+test TotallyOrderedSet-13.4 { remove all less than from a non-empty set } {
+    $toset insert $p1
+    $toset insert $p2
+    $toset insert $p3
+    set before [$toset size]
+    $toset removeAllLessThan $p15
+    set after [$toset size]
+    list $before $after
+} {3 0}
+
