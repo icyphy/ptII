@@ -39,7 +39,7 @@ import java.util.Enumeration;
 Totally ordered set, implemented using LinkedList. No repeated elements (
 elements that the comparator returns 0).
 @author  Jie Liu
-@version $Id$
+@version $Id$
 */
 public class TotallyOrderedSet {
     /** Construct the set with the given comparator. comparator is a blank

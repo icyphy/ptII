@@ -45,7 +45,7 @@ The FE method approximate the x(t+h) as:
     x(t+h) =  x(t) + h * f(x(t), u(t), t)
 No error control is performed.
 @author  Jie Liu
-@version $Id$
+@version $Id$
 */
 public class ForwardEulerSolver extends FixedStepSolver{
 

@@ -49,7 +49,7 @@ for a refined step size. The integration step will be restarted with
 this refined step size. If all the step-size-control actors are satisfied,
 they will be asked for the (predicted) next step size.
 @author  Jie Liu
-@version $ID$
+@version $Id$
 */
 public interface CTStepSizeControlActor extends Actor{
     

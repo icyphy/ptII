@@ -36,7 +36,7 @@ import collections.*;
 /**
 Compare two Double objects.
 @author Jie Liu
-@version $Id$
+@version $Id$
 */
 public class DoubleComparator implements Comparator{
     /** Return 1 if the value of fst is greater than the value of snd;

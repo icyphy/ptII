@@ -41,7 +41,7 @@ import java.util.Enumeration;
 /**
 Base class for variable step size (with local error control) ODE solvers.
 @author  Jie Liu
-@version $Id$
+@version $Id$
 */
 public abstract class VariableStepSolver extends ODESolver{
 

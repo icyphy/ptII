@@ -38,7 +38,7 @@ This exception is used to indicate a numerical calculation failiar,
 typically in the process of finding the fixed point solution of an
 algebriac equation. This is a RuntimeException.
 @author  Jie Liu
-@version $Id$
+@version $Id$
 */
 public class NumericalNonconvergeException extends InvalidStateException{
     /** Constructs an Exception with only a detail message.

@@ -39,7 +39,7 @@ files still builds ok, and it runs fine...  So it is in its
 seperate java file.
 
 @author  wbwu@eecs.berkeley.edu
-@version $Id$
+@version $Id$
 @see InteractPlot
 */
 public class SelectObjectListener implements MouseListener {

@@ -43,7 +43,7 @@ import java.awt.event.*;
  could be different view for different type of filter.
  <p>
 @author  William Wu (wbwu@eecs.berkeley.edu)
-@version %W%    %G%
+@version $Id$
 */
 
 public class ViewController extends Frame implements ActionListener {

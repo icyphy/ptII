@@ -40,7 +40,7 @@ import ptolemy.data.*;
 /** 
 Description of the class
 @author  youname
-@version $Id$
+@version $Id$
 */
 public class TrapezoidalRuleSolver extends VariableStepSolver{
     
