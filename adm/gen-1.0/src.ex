@@ -41,6 +41,7 @@ ptolemy/PtolemyII.ptml
 ptolemy/actor/corba
 ptolemy/actor/gui/test/CompositeActorApplication.tcl
 ptolemy/actor/lib/Broadcast.java
+ptolemy/apps
 ptolemy/automata
 ptolemy/filter/*
 ptolemy/filter
