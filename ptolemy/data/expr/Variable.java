@@ -326,6 +326,9 @@ public class Variable extends AbstractSettableAttribute
         // SmoothedPeriodogram actors, which are composite actors
         // in the library), because these are cloned when copied.
         newObject._variablesDependentOn = null;
+        
+        // The clone has new value listeners.
+        newObject._valueListeners = null;
 
         // set _declaredType and _varType
         if (_declaredType instanceof StructuredType &&

@@ -113,6 +113,23 @@ public class ConfigurableAttribute
         }
     }
 
+    /** Clone the attribute.  This creates a new attribute with the same value.
+     *  @param workspace The workspace in which to place the cloned variable.
+     *  @exception CloneNotSupportedException Not thrown in this base class.
+     *  @see java.lang.Object#clone()
+     *  @return The cloned attribute.
+     */
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        ConfigurableAttribute newObject = 
+            (ConfigurableAttribute)super.clone(workspace);
+        
+        // The clone has new value listeners.
+        newObject._valueListeners = null;
+
+        return newObject;
+    }
+
     /** Configure the object with data from the specified input source
      *  (a URL) and/or textual data.  The input source, if any, is assumed
      *  to contain textual data as well.  Note that the URL is not read
