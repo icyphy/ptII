@@ -29,6 +29,8 @@
 */
 
 package ptolemy.domains.ct.kernel;
+
+import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.expr.Parameter;
@@ -134,15 +136,13 @@ public class CTBaseIntegrator extends TypedAtomicActor
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Input port. Finals means they are not changeable once created.
-     *  It is a single port with type DOUBLE.
+    /** Input port. 
      */
-    public final TypedIOPort input;
+    public TypedIOPort input;
 
-    /** Output port. Finals means they are not changeable once created.
-     *  It is a single port with type DOUBLE.
+    /** Output port. 
      */
-    public final TypedIOPort output;
+    public TypedIOPort output;
 
     /** The initial state of type DouleToken. The default value is 0.0
      */
@@ -156,6 +156,21 @@ public class CTBaseIntegrator extends TypedAtomicActor
      */
     public void clearHistory() {
         _history.clear();
+    }
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the ports.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class has
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
+        CTBaseIntegrator newobj = (CTBaseIntegrator)super.clone(ws);
+        newobj.input = (TypedIOPort)newobj.getPort("input");
+        newobj.output = (TypedIOPort)newobj.getPort("output");
+        return newobj;
     }
 
     /** Emit the tentative output, which is the tentative state of the
