@@ -185,9 +185,9 @@ public class ArrayToken extends Token {
     /** Return a String representing the value of this token.
      */
     public String stringValue() {
-	String s = "[";
+	String s = "array[";
 	for (int i=0; i<length(); i++) {
-	    s += _value[i].toString();
+	    s += _value[i].stringValue();
 	    if (i < (length()-1)) {
 		s += ", ";
 	    }

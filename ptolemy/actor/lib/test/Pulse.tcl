@@ -107,7 +107,7 @@ test Pulse-2.4 {test with two-dimensional output values} {
     $valuesParam setToken [java::new ptolemy.data.IntMatrixToken $values]
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {{[ptolemy.data.IntToken(1), ptolemy.data.IntToken(2)]} {[ptolemy.data.IntToken(0), ptolemy.data.IntToken(0)]} {[ptolemy.data.IntToken(3), ptolemy.data.IntToken(4)]} {[ptolemy.data.IntToken(5), ptolemy.data.IntToken(6)]} {[ptolemy.data.IntToken(0), ptolemy.data.IntToken(0)]}}
+} {{array[1, 2]} {array[0, 0]} {array[3, 4]} {array[5, 6]} {array[0, 0]}}
 
 test Pulse-2.5 {test string output} {
     set val0 [java::new ptolemy.data.StringToken AB]

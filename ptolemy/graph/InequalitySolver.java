@@ -300,7 +300,7 @@ public class InequalitySolver {
 	for (Enumeration e = _Clist.keys(); e.hasMoreElements() ;) {
 	    InequalityTerm variable = (InequalityTerm)e.nextElement();
 	    try {
-	        variable.setValue(init);
+	        variable.initialize(init);
 	    } catch (IllegalActionException ex) {
 		throw new InvalidStateException("InequalitySolver.solve: " +
 			"Cannot initialize variable. "

@@ -59,7 +59,8 @@ JSRCS = \
 	FIR.java \
 	IntToBits.java\
 	LineCoder.java \
-	RaisedCosine.java
+	RaisedCosine.java \
+	SequenceToArray.java
 
 EXTRA_SRCS =	$(JSRCS)
 

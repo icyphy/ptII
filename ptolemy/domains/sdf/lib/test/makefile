@@ -50,9 +50,10 @@ JSRCS = \
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-	Delay.tcl\
 	BitsToInt.tcl\
-	IntToBits.tcl	
+	Delay.tcl\
+	IntToBits.tcl \
+	SequenceToArray.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
