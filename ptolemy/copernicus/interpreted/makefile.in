@@ -46,6 +46,9 @@ all: jclass
 
 install: all $(PTCLASSJAR)
 
+longTest: demo
+smokeTest: demo
+
 demo:
 	"$(JAVA)" -Xfuture -classpath "$(CLASSPATH)" ptolemy.actor.gui.MoMLSimpleStatisticalApplication @outDir@@modelName@.xml
 

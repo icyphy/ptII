@@ -71,3 +71,10 @@ test QuickSmoke-1.2 {Compile and run the SDF OrthogonalCom test} {
 		 OrthogonalCom.xml] "Deep" 1000 0 0 smokeTest]
     list {}
 } {{}}
+
+test QuickSmoke-1.3 {Compile and run the ComplexDivide test} {
+    set result [sootCodeGeneration \
+  	    [file join $relativePathToPTII ptolemy actor lib test auto \
+		 ComplexDivide.xml] "Deep" 1000 0 0 smokeTest]
+    list {}
+} {{}}

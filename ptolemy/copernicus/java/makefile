@@ -174,9 +174,8 @@ compileDemo: $(JCLASS)
 #	@echo "Here is that javap output"
 #	javap -verbose -l -s -classpath $(ROOT) $(TARGETCLASS)
 
-runJava: runDemo
 runDemo:
-	(cd cg/$(MODEL); $(MAKE) runDemo)
+	(cd cg/$(MODEL); $(MAKE) longTest)
 
 treeShakeDemo:
 	cd $(ROOT)/$(TARGETPATH); $(MAKE) treeShake

@@ -60,9 +60,11 @@ all: jclass
 
 install: all $(PTCLASSJAR)
 
-# Testsuite uses runDemo
-# Note that the tests use runDemo in ptII/util/testsuite/codegen.tcl 
-runDemo: demo
+# Testsuite uses longTest by default.
+# Note that the tests use longTest in ptII/util/testsuite/codegen.tcl 
+longTest: demo
+smokeTest: demo
+
 demo:
 	"$(JAVA)" -Xfuture -classpath "@ptIIUserDirectory@$(CLASSPATHSEPARATOR)$(CLASSPATH)" "-Dptolemy.ptII.dir=@ptII@" ptolemy.actor.gui.CompositeActorApplication -class $(TARGETPACKAGE).CG$(MODEL)
 

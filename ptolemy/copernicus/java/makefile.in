@@ -121,15 +121,14 @@ TREESHAKE_PREFIX = $(TARGETPATH)/treeshake
 TREESHAKE=$(ROOT)/util/testsuite/treeshake
 
 # The rule run by the long nightly build test: $PTII/util/testsuite/codegen.tcl
-demo: compareAll
+longTest: compareAll
 
 # The rule run by the regular nightly build quick smoke test: 
 # copernicus/java/test
 smokeTest: treeShake runTreeShake
 
 # Run the final generated code.
-# Note that the tests use runDemo in ptII/util/testsuite/codegen.tcl 
-runDemo:
+runJava:
 	@echo "Run the deep model"
 	"$(JAVA)" $(MEMORYJFLAGS) \
 	-Xfuture -classpath "$(TARGETPATH)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
