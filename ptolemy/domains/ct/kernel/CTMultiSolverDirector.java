@@ -252,11 +252,13 @@ public class CTMultiSolverDirector extends CTDirector {
         _postfireReturns = true;
 
         // If the _refireActors list is not empty, then
-        // prefire, fire, and post fire these actors immediately.
+        // prefire, fire, and postfire these actors immediately.
         // This may happen when there are discrete event composite
         // actors that produce initial tokens. So, cloning the list,
         // which is necessary to avoid ConcurrentModificationException,
         // is not very wasteful.
+        // When an actor prefires, fires and postfires, it may request
+        // refiring at the current time, where the _refireActors is modified.
         // Clear the list after that.
         if (_refireActors != null && !_refireActors.isEmpty()) {
             Iterator iterator = ((List)_refireActors.clone()).iterator();
@@ -287,16 +289,11 @@ public class CTMultiSolverDirector extends CTDirector {
             }
             _refireActors.clear();
         }
-        // continuous phase;
+        // set the start time of the current iteration
         _setIterationBeginTime(getCurrentTime());
-        setCurrentStepSize(getSuggestedNextStepSize());
-        _processBreakpoints();
-        if (_debugging) _debug("execute the system from "+
-                getCurrentTime() + " step size " + getCurrentStepSize()
-                + " using solver " + getCurrentODESolver().getName());
-        _fireOneIteration();
-
-        // Process discrete events.
+        // continuous phase execution
+        _continuousPhaseExecution();
+        // discrete phase execution to process discrete events.
         _discretePhaseExecution();
     }
 
@@ -458,6 +455,20 @@ public class CTMultiSolverDirector extends CTDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Continuous phase execution. Solve the states and generate outputs
+     *  by firing the continuous actors with the current step size.
+     *  @exception IllegalActionException If one of the continuous actors
+     *  throws it.
+     */
+    protected void _continuousPhaseExecution() throws IllegalActionException {
+        setCurrentStepSize(getSuggestedNextStepSize());
+        _processBreakpoints();
+        if (_debugging) _debug("execute the system from "+
+                getCurrentTime() + " step size " + getCurrentStepSize()
+                + " using solver " + getCurrentODESolver().getName());
+        _fireOneIteration();
+    }
+    
     /** Process discrete events in the system. All the event generators
      *  will produce current events, and then all discrete actors are
      *  executed.
@@ -838,7 +849,8 @@ public class CTMultiSolverDirector extends CTDirector {
                 double iterationEndTime =
                     getCurrentTime() + getCurrentStepSize();
                 if (iterationEndTime > point) {
-                    setCurrentStepSize(point-getCurrentTime());
+                    double difference = point-getCurrentTime();
+                    setCurrentStepSize(difference);
                 }
             }
         }

@@ -45,6 +45,7 @@ import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.math.Utilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTMixedSignalDirector
@@ -649,6 +650,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                     " Iteration end time" + time + " is less than" +
                     " the current time." + getCurrentTime());
         }
+        time = Utilities.round(time, getTimeResolution());
         _iterationEndTime = time;
     }
 

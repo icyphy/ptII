@@ -46,6 +46,7 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.math.Utilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// Director
@@ -789,6 +790,7 @@ public class Director extends Attribute implements Executable {
      *  @param newTime The new current simulation time.
      */
     public void setCurrentTime(double newTime) throws IllegalActionException {
+        newTime = Utilities.round(newTime, getTimeResolution());
         double currentTime = getCurrentTime();
         if (newTime < currentTime) {
             throw new IllegalActionException(this, "Attempt to move current "

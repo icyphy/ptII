@@ -52,6 +52,7 @@ import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.math.Utilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTDirector
@@ -393,9 +394,10 @@ public abstract class CTDirector extends StaticSchedulingDirector {
                     " the current time." + currentTime );
         }
 
-        if (Math.abs(time - currentTime) < resolution &&
-                actor != null && !(actor instanceof CTStepSizeControlActor)
-                && ((CTScheduler)getScheduler()).isDiscrete(actor)) {
+        if (Math.abs(time - currentTime) < resolution 
+            && actor != null 
+            && !(actor instanceof CTStepSizeControlActor)
+            && ((CTScheduler)getScheduler()).isDiscrete(actor)) {
             // Requesting firing at the current time.
             if (_debugging) _debug(((Nameable)actor).getName(),
                     "requests refire at current time: " + currentTime);
@@ -557,7 +559,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
 
     /** Initialization after type resolution.
      *  In addition to calling the initialize() method of its super class,
-     *  this method record the current system time as the "real" starting
+     *  this method records the current system time as the "real" starting
      *  time of the execution. This starting time is used when the
      *  execution is synchronized to real time.
      *
@@ -719,7 +721,12 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  @param stepsize The step size to be set.
      */
     public void setCurrentStepSize(double stepsize) {
-        _currentStepSize = stepsize;
+        double newStepsize = Utilities.round(stepsize, getTimeResolution());
+        if (_debugging) {
+            _debug("----- Setting current step size to (adjusted) " 
+                + newStepsize);
+        }
+        _currentStepSize = newStepsize;
     }
 
     /** Set a new value to the current time of the model, where the new
@@ -732,6 +739,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  @param newTime The new current simulation time.
      */
     public void setCurrentTime(double newTime) {
+        newTime = Utilities.round(newTime, getTimeResolution());
         if (_debugging) {
             _debug("----- Setting current time to " + newTime);
         }
@@ -806,6 +814,20 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Return true if the difference of the two given times is less
+     *  than the time resolution of the director. In this case, these
+     *  two times are regarded to be same.
+     *   
+     *  @param firstTime The first time.
+     *  @param secondTime The second time.
+     *  @return True If the difference of these two times is less than
+     *  the time resolution.
+     */
+    protected boolean _areTimesCloseEnough(double firstTime, 
+        double secondTime) {
+        return (Math.abs(firstTime - secondTime) <= getTimeResolution());            
+    }
+    
     /** Create and initialize all parameters to their default values.
      */
     protected void _initParameters() {

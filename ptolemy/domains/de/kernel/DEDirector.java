@@ -62,6 +62,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.math.Utilities;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -651,7 +652,8 @@ public class DEDirector extends Director {
 
     /** Invoke the initialize() method of the super class. 
      *  The real start time of the model is recorded when this method
-     *  is called. 
+     *  is called. If any events are generated during the initialization,
+     *  and the container is an embedded model, request a refiring.
      *
      *  This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
@@ -663,6 +665,14 @@ public class DEDirector extends Director {
         super.initialize();
         _exceedStopTime = false;
         _realStartTime = System.currentTimeMillis();
+        if (_isEmbedded() && !_eventQueue.isEmpty()) {
+            // if the event queue is not empty and the container is an
+            // embedded model, ask the upper level director in the 
+            // hierarchy to refire the container. 
+            // This design allows the upper level director to keep a
+            // relatively short event queue. 
+            _requestFiring();
+        }
     }
 
     /** Indicate that the topological depth of the ports in the model may
@@ -1272,6 +1282,9 @@ public class DEDirector extends Director {
             (_disabledActors != null && _disabledActors.contains(actor))) 
             return;
         
+        // Adjust time according time resolution
+        time = Utilities.round(time, getTimeResolution());
+        
         // Adjust the microdept
         int microstep = 0;
         if (time == getCurrentTime()) {
@@ -1350,6 +1363,9 @@ public class DEDirector extends Director {
      */
     protected void _enqueueEvent(DEReceiver receiver, Token token,
             double time) throws IllegalActionException {
+
+        // Adjust time according time resolution
+        time = Utilities.round(time, getTimeResolution());
 
         Actor actor = (Actor) receiver.getContainer().getContainer();
         if (_eventQueue == null || 
