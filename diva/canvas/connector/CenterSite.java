@@ -53,7 +53,7 @@ public class CenterSite extends AbstractSite {
     /** Create a new site on the given figure. The site will have
      * the ID zero.
      *
-     * @ FIXME deprecated Use the constructor that takes an ID.
+     * FIXME: This should be deprecated? Use the constructor that takes an ID.
      */
     public CenterSite (Figure figure) {
         this(figure,0);
