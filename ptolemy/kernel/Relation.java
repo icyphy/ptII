@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
 */
 
 package pt.kernel;
@@ -36,9 +36,15 @@ import collections.LinkedList;
 //// Relation
 /**
 A Relation links ports, and therefore the entities that contain them.
-It can be used to represent arcs in non-hierarchical graphs.
-Ports may link themselves to Relations, but the other direction is
-not supported.
+To link a port to a relation, use the link() method
+in the Port class.  To remove a link, use the unlink() method in the
+Port class.
+<p>
+Derived classes may wish to disallow links under certain circumstances,
+for example if the proposed port is not an instance of an appropriate
+subclass of Port, or if the relation cannot support any more links.
+Such derived classes should override the protected method _checkPort()
+to throw an exception.
 
 @author Neil Smyth, Edward A. Lee
 @version $Id$
@@ -48,8 +54,7 @@ not supported.
 public class Relation extends NamedObj {
 
     /** Construct a relation in the default workspace with an empty string
-     *  as its name.
-     *  Increment the version number of the workspace.
+     *  as its name. Increment the version number of the workspace.
      */
     public Relation() {
 	super();
@@ -60,8 +65,7 @@ public class Relation extends NamedObj {
     }
 
     /** Construct a relation in the default workspace with the given name.
-     *  If the name argument
-     *  is null, then the name is set to the empty string.
+     *  If the name argument is null, then the name is set to the empty string.
      *  Increment the version number of the workspace.
      *  @param name Name of this object.
      */
@@ -76,10 +80,9 @@ public class Relation extends NamedObj {
 
     /** Construct a relation in the given workspace with the given name.
      *  If the workspace argument is null, use the default workspace.
-     *  If the name argument
-     *  is null, then the name is set to the empty string.
+     *  If the name argument is null, then the name is set to the empty string.
      *  Increment the version of the workspace.
-     *  @param workspace Object for synchronization and version tracking
+     *  @param workspace Workspace for synchronization and version tracking
      *  @param name Name of this object.
      */
     public Relation(Workspace workspace, String name) {
@@ -93,29 +96,44 @@ public class Relation extends NamedObj {
     /////////////////////////////////////////////////////////////////////////
     ////                         public methods                          ////
 
-    /** Enumerate the linked entities.  If any of the linked ports have no
-     *  container, then those ports are ignored.  Thus, the enumeration may
-     *  have fewer entries in it than what is reported by numLinks().
-     *  Note that a particular entity may be listed more than once if it is
-     *  linked more than once.
+    /** Clone the object and register the clone in the workspace.
+     *  The result is a relation with no links and no container that
+     *  is registered with the workspace.
+     *  @exception CloneNotSupportedException Thrown only in derived classes.
+     */
+     public Object clone() throws CloneNotSupportedException {
+         // NOTE: It is not actually necessary to override the base class
+         // method, but we do it anyway so that the exact behavior of this
+         // method is documented with the class.
+         return super.clone();
+     }
+
+    /** Return a description of the object.  The level of detail depends
+     *  on the argument, which is an or-ing of the static final constants
+     *  defined in the Nameable interface.
      *  This method is synchronized on the workspace.
-     *  @return An Enumeration of Entity objects.
-     */	
-    public Enumeration linkedEntities() {
+     *  @param verbosity The level of detail.
+     *  @return A description of the object.
+     */
+    public String description(int verbosity){
         synchronized(workspace()) {
-            Enumeration ports = _portList.getLinks();
-            LinkedList storedEntities = new LinkedList();
-
-            while( ports.hasMoreElements() ) {
-                Port port = (Port)ports.nextElement();
-                Entity parent = (Entity) port.getContainer();
-                // Ignore ports with no container.
-                if (parent != null) {
-                    storedEntities.insertLast( parent );
+            String result = super.description(verbosity);
+            if ((verbosity & LINKS) != 0) {
+                if (result.length() > 0) {
+                    result += " ";
                 }
+                // To avoid infinite loop, turn off the LINKS flag
+                // when querying the Ports.
+                verbosity &= ~LINKS;
+                result += "links {";
+                Enumeration enum = linkedPorts();
+                while (enum.hasMoreElements()) {
+                    Port port = (Port)enum.nextElement();
+                    result = result + "\n" + port.description(verbosity);
+                }
+                result += "\n}";
             }
-
-            return storedEntities.elements();
+            return result;
         }
     }
 
@@ -131,10 +149,10 @@ public class Relation extends NamedObj {
 
     /** Enumerate the linked ports except the specified port.
      *  This method is synchronized on the workspace.
-     *  @param except Do not return this Port in the Enumeration 
+     *  @param except Port to exclude from the enumeration.
      *  @return An Enumeration of Port objects.
      */	
-    public Enumeration linkedPortsExcept(Port except) {
+    public Enumeration linkedPorts(Port except) {
         // This works by constructing a linked list and then enumerating it.
         synchronized(workspace()) {
             LinkedList storedPorts = new LinkedList();
@@ -158,19 +176,6 @@ public class Relation extends NamedObj {
         }
     }
 
-    /** Unlink the specified port. If the port
-     *  is not linked to this relation, do nothing.
-     *  This method is synchronized on the workspace and increments
-     *  its version number.
-     *  @param port
-     */
-    public void unlink(Port port) {
-        synchronized(workspace()) {
-            _portList.unlink(port);
-            workspace().incrVersion();
-        }
-    } 
-
     /** Unlink all ports.
      *  This method is synchronized on the workspace and increments
      *  its version number.
@@ -185,26 +190,42 @@ public class Relation extends NamedObj {
     //////////////////////////////////////////////////////////////////////////
     ////                         protected methods                        ////
 
-    /** Return a reference to the local port list.
-     *  NOTE : This method has been made protected for the purpose
-     *  of connecting Ports to Relations (see Port.link(Relation)), and so
-     *  that it can be overridden in derived classes. If in a derived class
-     *  no more links
-     *  are supported for some reason, or the specified port is
-     *  incompatible with this relation, throw an exception.  This base
-     *  class does not throw this exception, but derived classes might
-     *  in order to restrict the number or type of links that a relation has.
+    /** Throw an exception if the specified port cannot be linked to this
+     *  relation.  In this base class, the exception is not thrown, but
+     *  in derived classes, it might be, for example if the relation cannot
+     *  support any more links, or the port is not an instance of an
+     *  appropriate subclass of Port.
      *  @param port The port to link to.
-     *  @exception IllegalActionException Relation cannot support any
-     *   more links, or cannot support a link to the given port.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
-    protected CrossRefList _getPortList (Port port) 
-            throws IllegalActionException {
+    protected void _checkPort (Port port) throws IllegalActionException {
+    }
+
+    /** Clear references that are not valid in a cloned object.  The clone()
+     *  method makes a field-by-field copy, which results
+     *  in invalid references to objects. 
+     *  In this class, this method reinitializes the private member
+     *  _portList.
+     */
+    protected void _clear() {
+        super._clear();
+        // Ignore exception because "this" cannot be null.
+        try {
+            _portList = new CrossRefList(this);
+        } catch (IllegalActionException ex) {}
+    }
+
+    /** Return a reference to the local port list.
+     *  NOTE : This method has been made protected only for the purpose
+     *  of connecting Ports to Relations (see Port.link(Relation)).
+     *  @see Port
+     */
+    protected CrossRefList _getPortList () {
         return _portList;
     }
 
     //////////////////////////////////////////////////////////////////////////
-    ////                         prive variables                          ////
+    ////                         private variables                        ////
 
     /** The CrossRefList of Ports which are connected to this Relation.
      */

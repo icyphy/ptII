@@ -23,6 +23,8 @@
  
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
+@ProposedRating Green (eal@eecs.berkeley.edu)
 */
 
 package pt.kernel;
@@ -33,12 +35,28 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// ComponentRelation
 /** 
-Relation supporting hierarchy.  Specifically, methods are added for
-defining a container and for performing deep traversals of a graph.
-Most importantly, however, instances of this class refuse to link
+This class defines a relation supporting hierarchy (clustered graphs).
+Specifically, a method is added for defining a container and for
+performing deep traversals of
+a graph. Most importantly, however, instances of this class refuse to link
 to ports that are not instances of ComponenPort.  Thus, this class
 ensures that ComponentPort instances are only connected to other
 ComponentPort instances.
+<p>
+Derived classes may wish to further constrain linked ports to a subclass
+of ComponentPort, or to disallow links under other circumstances,
+for example if the relation cannot support any more links.
+Such derived classes should override the protected method _checkPort()
+to throw an exception.
+<p>
+To link a ComponentPort to a ComponentRelation, use the link() or
+liberalLink() method in the ComponentPort class.  To remove a link,
+use the unlink() method.
+<p>
+The container for instances of this class can only be instances of
+ComponentEntity.  Derived classes may wish to further constrain the
+container to subclasses of ComponentEntity.  To do this, they should
+override the setContainer() method.
 
 @author Edward A. Lee
 @version $Id$
@@ -46,15 +64,14 @@ ComponentPort instances.
 public class ComponentRelation extends Relation {
 
     /** Construct a relation in the default workspace with an empty string
-     *  as its name.
-     *  Increment the version number of the workspace.
+     *  as its name. Increment the version number of the workspace.
      */
     public ComponentRelation() {
         super();
     }
 
     /** Construct a relation in the specified workspace with an empty
-     *  string as a name (you can then change the name with setName()).
+     *  string as a name. You can then change the name with setName().
      *  If the workspace argument is null, then use the default workspace.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the relation.
@@ -71,28 +88,26 @@ public class ComponentRelation extends Relation {
      *  Increment the version of the workspace.
      *  @param container The parent entity.
      *  @param name The name of the relation.
-     *  @exception NameDuplicationException Name coincides with
+     *  @exception IllegalActionException If the container is incompatible
+     *   with this relation.
+     *  @exception NameDuplicationException If the name coincides with
      *   a relation already in the container.
      */	
     public ComponentRelation(CompositeEntity container, String name) 
-            throws NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container.workspace(), name);
-        try {
-            container._addRelation(this);
-        } catch (IllegalActionException ex) {
-            // Ignore -- always has a name.
-        }
-        // "super" call above puts this on the workspace list.
+        container._addRelation(this);
+        // "super" call above puts this on the workspace list.  Remove it.
         workspace().remove(this);
-        _setContainer(container);
+        _container = container;
+        workspace().incrVersion();
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
     /** Deeply enumerate the ports linked to this relation. Look through
-     *  all transparent ports and return only non transparent ports (those
-     *  with no inside links).
+     *  all transparent ports and return only opaque ports.
      *  This method is synchronized on the workspace.
      *  @return An enumeration of ComponentPorts.
      */	
@@ -103,19 +118,25 @@ public class ComponentRelation extends Relation {
                 return _deeplinkedports.elements();
             }
             Enumeration nearports = linkedPorts();
-            LinkedList result = new LinkedList();
+            _deeplinkedports = new LinkedList();
             
             while( nearports.hasMoreElements() ) {
                 ComponentPort port = (ComponentPort)nearports.nextElement();
                 if (port._outside(this.getContainer())) {
-                    // Transparent port above me.
-                    result.appendElements(port.deepConnectedPorts());
+                    // Port is above me in the hierarchy.
+                    if (port.isOpaque()) {
+                        // Port is opaque.  Append it to list.
+                        _deeplinkedports.insertLast(port);
+                    } else {
+                        // Port is transparent.  See through it.
+                        _deeplinkedports.appendElements(
+                            port.deepConnectedPorts());
+                    }
                 } else {
-                    // Port below me, may be transparent.
-                    result.appendElements(port.deepInsidePorts());
+                    // Port below me in the hierarchy.
+                    _deeplinkedports.appendElements(port.deepInsidePorts());
                 }
             }
-            _deeplinkedports = result;
             _deeplinkedportsversion = workspace().getVersion();
             return _deeplinkedports.elements();
         }
@@ -142,13 +163,14 @@ public class ComponentRelation extends Relation {
      *  unlink the ports from the relation, remove it from
      *  its container, and add it to the list of objects in the workspace.
      *  If the relation is already contained by the container, do nothing.
-     *  This method is synchronized on the
+     *  Derived classes may further constrain the class of the container
+     *  to a subclass of CompositeEntity. This method is synchronized on the
      *  workspace and increments its version number.
      *  @param container The proposed container.
      *  @exception IllegalActionException
-     *   This entity and container are not in the same workspace..
-     *  @exception NameDuplicationException Name collides with a name already
-     *   on the contents list of the container.
+     *   If this entity and the container are not in the same workspace.
+     *  @exception NameDuplicationException If the name collides with a name 
+     *   already on the contents list of the container.
      */	
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
@@ -166,7 +188,7 @@ public class ComponentRelation extends Relation {
                     workspace().remove(this);
                 }
             }
-            _setContainer(container);
+            _container = container;
             if (container == null) {
                 // Ignore exceptions, which mean the object is already
                 // on the workspace list.
@@ -181,48 +203,22 @@ public class ComponentRelation extends Relation {
             if (container == null) {
                 unlinkAll();
             }
+            workspace().incrVersion();
         }
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         protected methods                        ////
 
-    /** Return a reference to the local port list.  Throw an exception if
-     *  the specified port is not a ComponentPort.
-     *  NOTE : This method has been made protected for the sole purpose
-     *  of connecting Ports to Relations (see Port.link(Relation)). It
-     *  should NOT be accessed by any other method.
+    /** Throw an exception if the specified port cannot be linked to this
+     *  relation (is not of class ComponentPort).
      *  @param port The port to link to.
-     *  @exception IllegalActionException Incompatible port
+     *  @exception IllegalActionException If the port is not a ComponentPort.
      */
-    protected CrossRefList _getPortList (Port port) 
-            throws IllegalActionException {
+    protected void _checkPort (Port port) throws IllegalActionException {
         if (!(port instanceof ComponentPort)) {
             throw new IllegalActionException(this, port,
                     "ComponentRelation can only link to a ComponentPort.");
-        }
-        return super._getPortList(port);
-    }
-
-    /** Set the container without any effort to maintain consistency
-     *  (i.e. nothing is done to ensure that the container includes the
-     *  relation in its list of relations, nor that the relation is removed from
-     *  the relation list of the previous container).
-     *  If the previous container is null and the
-     *  new one non-null, remove the relation from the list of objects in the
-     *  workspace.  If the new container is null, then add the relation to
-     *  the list of objects in the workspace.
-     *  This method is synchronized on the
-     *  workspace, and increments its version number.
-     *  It assumes the workspace of the container is the same as that
-     *  of this relation, but this is not checked.  The caller should check.
-     *  Use the public version to to ensure consistency.
-     *  @param container
-     */	
-    protected void _setContainer(CompositeEntity container) {
-        synchronized(workspace()) {
-            _container = container;
-            workspace().incrVersion();
         }
     }
 
@@ -236,6 +232,6 @@ public class ComponentRelation extends Relation {
     // construct it.
     // 'transient' means that the variable will not be serialized.
     private transient LinkedList _deeplinkedports;
-    private long _deeplinkedportsversion = -1;
+    private transient long _deeplinkedportsversion = -1;
 }
 

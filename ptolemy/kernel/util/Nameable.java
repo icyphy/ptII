@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
 
 */
 
@@ -33,12 +33,12 @@ package pt.kernel;
 //////////////////////////////////////////////////////////////////////////
 //// Nameable
 /** 
-Interface for objects with a name and a container. A simple name is an 
-arbitrary string. In addition, the interface supports a "full name" which 
-in implementation should identify both the container and the individual 
-object.
+This is an interface for objects with a name and a container. A simple
+name is an arbitrary string. In addition, the interface supports a
+"full name" which in implementation should identify both the container
+and the individual object.
 
-@author Edward A. Lee
+@author Christopher Hylands, Edward A. Lee
 @version $Id$
 */
 
@@ -47,76 +47,78 @@ public interface Nameable {
     /////////////////////////////////////////////////////////////////////////
     ////                         public methods                          ////
 
-    /** Return a description of the object.
-     *  @param verbosity The level of verbosity.
+    /** Return a description of the object.  The level of detail is given
+     *  by or-ing the static final ints defined in this class. The general
+     *  form of the description is
+     *  "classname fullname keyword field keyword field ...".
+     *  The classname and fullname are optional.  They are given if
+     *  the argument anded with CLASS and NAME is non-zero, respectively.
+     *  The fields are usually lists of descriptions, although different
+     *  forms can be used for different keywords.  The keywords are
+     *  extensible, but the following are in use: links, ports, entities,
+     *  relations, and insidelinks, at least.
+     *  @param verbosity The level of detail.
+     *  @return A description of the object.
      */
     public String description(int verbosity);
 
     /** Return the container. */
     public Nameable getContainer();
 
-    /** In an implementation, the full name should reflect the container
-     *  object, if there is one, for example by concatenating the
+    /** Return the full name, which reflects the container object, if there
+     *  is one. For example the implementation in NamedObj concatenates the
      *  full name of the container objects with the name of the this object,
-     *  separated by periods ".".
+     *  separated by periods.
      *  @return The full name of the object.
      */
-    public String getFullName() throws InvalidStateException;
+    public String getFullName();
 
-    /** @return The name of the object. */	
+    /** Return the name of the object.
+     *  @return The name of the object.
+     */	
     public String getName();
 
-    /** Set or change the name.
-     *  @param name The new name.  
+    /** Set or change the name. By convention, if the argument is null,
+     *  the name should be set to an empty string rather than to null.
+     *  @param name The new name.
      */
-    public void setName(String name) throws IllegalActionException;
+    public void setName(String name);
 
     /////////////////////////////////////////////////////////////////////////
     ////                         public variable                         ////
 
-    /** The description() method returns only the full name of this object. */ 
-    public static final int QUIET = 0;
-
-    /** 
-     * The description() method returns the the full name of this object and 
-     * any objects this object refers to.
+    /** Indicate that the description() method should include the class name.
      */ 
-    public static final int CONTENTS = 1;
+    public static final int CLASS = 1;
 
-    /**
-     * The description() method returns the connections between
-     * the objects contained by this object
+    /** Indicate that the description() method should include the full name.
+     *  The full name is surrounded by braces "{name}" in case it has spaces.
      */ 
-    public static final int CONNECTIONS = 2;
+    public static final int NAME = 2;
 
-    /**
-     * The description() method returns the type and names of this
-     * object and all the objects it refers to along with the connections
-     * between those objects.
+    /** Indicate that the description() method should include the links
+     *  (if any) that the object has.  This has the form "links {...}"
+     *  where the list is a list of descriptions of the linked objects.
      */ 
-    public static final int PRETTYPRINT = 3;
+    public static final int LINKS = 4;
 
-    /**
-     * The description() method returns the type and names of this
-     * object and all the objects it refers to along with the connections
-     * between those objects in a list format with elements separated
-     * by curly brackets.
+    /** Indicate that the description() method should include the contained
+     *  objects (if any) that the object has.  This has the form
+     *  "keyword {{class {name}} {class {name}} ... }" where the keyword
+     *  can be ports, entities, relations, or anything else that might
+     *  indicate what the object contains.
      */ 
-    public static final int LIST_CONTENTS = 4;
+    public static final int CONTENTS = 8;
 
-    /**
-     * The description() method returns the type and names of this
-     * object and all the objects it refers to along with the connections
-     * between those objects in a list format with elements separated
-     * by curly brackets
+    /** Indicate that the description() method should include the contained
+     *  objects (if any) that the contained objects have.  This has no effect
+     *  if CONTENTS is not also specified.  The returned string has the form
+     *  "keyword {{class {name} keyword {...}} ... }".
      */ 
-    public static final int LIST_CONNECTIONS = 5;
+    public static final int DEEP = 16;
 
-    /**
-     * The description() method returns the type and names of this
-     * object and all the objects it refers to along with the connections
-     * between those objects in list format with elements separated
-     * by curly brackets.
+    /** Indicate that the description() method should include parameters
+     *  (if any).
      */ 
-    public static final int LIST_PRETTYPRINT = 6;
+    public static final int PARAMS = 32;
 }

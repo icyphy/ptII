@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
 
 */
 
@@ -39,32 +39,41 @@ import collections.LinkedList;
 A port supporting hierarchy. A component port can have "inside"
 links as well as the usual "outside" links supported by the base
 class. An inside link is a link to a relation that is within the
-container of the port. Any ComponentPort object may be transparent
-or not. It is transparent if it has one or
-more inside links.
-
-As with all classes that support hierarchical graphs,
-methods that read the graph structure come in two versions,
-shallow and deep.  The deep version flattens the hierarchy.
-Deep traversals pass through transparent ports. This is
+container of the port.
+<p>
+A ComponentPort may be transparent or opaque.  If it is transparent,
+then "deep" accesses of the topology see through the port.
+Methods that read the topology come in two versions, shallow and deep.
+The deep versions pass through transparent ports. This is
 done with a simple rule. If a transparent port is encountered from
 inside, then the traversal continues with its outside links. If it
 is encountered from outside, then the traversal continues with its
-inside links. 
-
-For ComponentPort to support both inside links and outside links, it
-has to override the link() and unlink() methods. Given a relation as
-an argument, these methods can determine whether a link is an inside
-link or an outside link by checking the container of the relation.
-If that container is also the container of the port, then the link
-is an inside link.
-
-For a few applications, such as Statecharts, level-crossing
-connections are needed. The links in these connections are created
-using the liberalLink() method of ComponentPort. The link() method
+inside links.  A ComponentPort is opaque if its container is atomic
+(its isAtomic() method returns true).  Derived classes may use other
+strategies to specify whether a port is opaque.
+<p>
+Normally, links to a transparent port from the outside are to
+relations contained by the container of the container of the port.
+Links from the inside are to relations contained by the container
+of the port.  That is, levels of the hierarchy are not crossed.
+For a few applications, links that cross levels of the hierarchy
+are needed. The links in these connections are created
+using the liberalLink() method. The link() method
 prohibits such links, throwing an exception if they are attempted
 (most applications will prohibit level-crossing connections by using
 only the link() method).
+<p>
+A ComponentPort can link to any instance of ComponentRelation.
+An attempt to link to an instance of Relation will trigger an exception.
+Derived classes may wish to further constrain links to a subclass
+of ComponentRelation.  To do this, subclasses should override the
+protected methods _link() and _linkInside() to throw an exception
+if their arguments are relations that are not of the appropriate
+subclass.  Similarly, a ComponentPort can be contained by a
+ComponentEntity, and an attempt to set the container to an instance
+of Entity will trigger an exception.  If a subclass wishes to
+constrain the containers of the port to be of a subclass of
+ComponentEntity, they should override setContainer().
 
 @author Edward A. Lee
 @version $Id$
@@ -72,8 +81,7 @@ only the link() method).
 public class ComponentPort extends Port {
 
     /** Construct a port in the default workspace with an empty string
-     *  as its name.
-     *  Increment the version number of the workspace.
+     *  as its name. Increment the version number of the workspace.
      */
     public ComponentPort() {
 	super();
@@ -84,7 +92,7 @@ public class ComponentPort extends Port {
     }
 
     /** Construct a port in the specified workspace with an empty
-     *  string as a name (you can then change the name with setName()).
+     *  string as a name. You can then change the name with setName().
      *  If the workspace argument is null, then use the default workspace.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the port.
@@ -101,15 +109,17 @@ public class ComponentPort extends Port {
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This port will use the
      *  workspace of the container for synchronization and version counts.
-     *  If the name argument is null, then the name is set to the empty string.
-     *  Increment the version of the workspace.
-     *  @param container The parent entity.
+     *  If the name argument is null, then the name is set to the empty 
+     *  string.  Increment the version of the workspace.
+     *  @param container The container entity.
      *  @param name The name of the port.
-     *  @exception NameDuplicationException Name coincides with
+     *  @exception IllegalActionException If the port is not of an acceptable
+     *   class for the container.
+     *  @exception NameDuplicationException If the name coincides with
      *   a port already in the container.
      */	
     public ComponentPort(ComponentEntity container, String name) 
-            throws NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
 	super(container,name);
         // Ignore exception because "this" cannot be null.
         try {
@@ -119,6 +129,18 @@ public class ComponentPort extends Port {
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
+
+    /** Clone the object and register the clone in the workspace.
+     *  The result is a port with no connections and no container that
+     *  is registered with the workspace.
+     *  @exception CloneNotSupportedException Thrown only in derived classes.
+     */
+    public Object clone() throws CloneNotSupportedException {
+        // NOTE: It is not actually necessary to override the base class
+        // method, but we do it anyway so that the exact behavior of this
+        // method is documented with the class.
+        return super.clone();
+    }
 
     /** Deeply enumerate the ports connected to this port on the outside.
      *  Begin by enumerating the ports that are connected to this port.
@@ -142,24 +164,27 @@ public class ComponentPort extends Port {
                     (ComponentRelation)nearrelations.nextElement();
 
                 Enumeration connectedports =
-                    relation.linkedPortsExcept(this);
+                    relation.linkedPorts(this);
                 while (connectedports.hasMoreElements()) {
                     ComponentPort port =
                         (ComponentPort)connectedports.nextElement();
                     // NOTE: If level-crossing transitions are not allowed, then
                     // a simpler test than that of the following would work.
                     if (port._outside(relation.getContainer())) {
-                        // Port is transparent, and we are coming at it from
-                        // the inside.
-                        result.appendElements(port.deepConnectedPorts());
+                        // We are coming at the port from the inside.
+                        if (port.isOpaque()) {
+                            result.insertLast(port);
+                        } else {
+                            // Port is transparent
+                            result.appendElements(port.deepConnectedPorts());
+                        }
                     } else {
                         // We are coming at the port from the outside.
-                        // Is it transparent?
-                        if (port.numInsideLinks() > 0) {
+                        if (port.isOpaque()) {
+                            result.insertLast(port);
+                        } else {
                             // It is transparent.
                             result.appendElements(port.deepInsidePorts());
-                        } else {
-                            result.insertLast(port);
                         }
                     }
                 }
@@ -170,14 +195,11 @@ public class ComponentPort extends Port {
         }
     }
 
-    /** Deeply enumerate the ports connected on the inside to this port.
-     *  A port is connected on the inside to this port if it is connected
-     *  via a relation that linked on the inside to this port.
-     *  If there are no such ports, then enumerate just this port.
-     *  All ports enumerated are opaque, in that they have no
-     *  inside links.  Note that the returned enumeration could
-     *  conceivably be empty, for example if this port has an inside
-     *  link, but no other ports are linked to the inside relation.
+    /** If this port is transparent, then deeply enumerate the ports
+     *  connected on the inside.  Otherwise, enumerate
+     *  just this port. All ports enumerated are opaque. Note that
+     *  the returned enumeration could conceivably be empty, for
+     *  example if this port is transparent but has no inside links.
      *  This method is synchronized on the workspace.
      *  @return An enumeration of ComponentPort objects.
      */	
@@ -188,28 +210,39 @@ public class ComponentPort extends Port {
                 return _deeplinkedinports.elements();
             }
             LinkedList result = new LinkedList();
-            if (numInsideLinks() > 0) {
+            if (isOpaque()) {
+                // Port is opaque.
+                result.insertLast(this);
+            } else {
                 // Port is transparent.
                 Enumeration relations = insideRelations();
                 while (relations.hasMoreElements()) {
                     Relation relation = (Relation)relations.nextElement();
                     Enumeration insideports =
-                        relation.linkedPortsExcept(this);
+                        relation.linkedPorts(this);
                     while (insideports.hasMoreElements()) {
                         ComponentPort downport =
                             (ComponentPort)insideports.nextElement();
+                        // The inside port may not be actually inside,
+                        // in which case we want to look through it
+                        // from the inside (this supports transparent
+                        // entities).
                         if (downport._outside(relation.getContainer())) {
-                            result.appendElements(
-                                    downport.deepConnectedPorts());
+                            // The inside port is not truly inside.
+                            // Check to see whether it is transparent.
+                            if (downport.isOpaque()) {
+                                result.insertLast(downport);
+                            } else {
+                                result.appendElements(
+                                        downport.deepConnectedPorts());
+                            }
                         } else {
+                            // The inside port is truly inside.
                             result.appendElements(
                                     downport.deepInsidePorts());
                         }
                     }
                 }
-            } else {
-                // Port is opaque.
-                result.insertLast(this);
             }
             _deeplinkedinports = result;
             _deeplinkedinportsversion = workspace().getVersion();
@@ -217,44 +250,36 @@ public class ComponentPort extends Port {
         }
     }
 
-    /** Return a description of the object
-     *  @param verbosity The level of verbosity.
+    /** Return a description of the object.  The level of detail depends
+     *  on the argument, which is an or-ing of the static final constants
+     *  defined in the Nameable interface.
+     *  This method is synchronized on the workspace.
+     *  @param verbosity The level of detail.
+     *  @return A description of the object.
      */
     public String description(int verbosity){
-        String results = new String();
-        switch (verbosity) {
-        case pt.kernel.Nameable.LIST_CONTENTS:
-            return toString();
-        case pt.kernel.Nameable.CONTENTS:
-            return toString() + "\n";
-        case pt.kernel.Nameable.LIST_CONNECTIONS:
-        case pt.kernel.Nameable.CONNECTIONS:
-            Enumeration enum = insideRelations();
-            while (enum.hasMoreElements()) {
-                Relation relation = (Relation)enum.nextElement();
-                results = results.concat(toString() + " link "
-                        + relation.toString() + "\n");
+        synchronized(workspace()) {
+            String result = super.description(verbosity);
+            if ((verbosity & LINKS) != 0) {
+                if (result.length() > 0) {
+                    result += " ";
+                }
+                // To avoid infinite loop, turn off the LINKS flag
+                // when querying the Ports.
+                verbosity &= ~LINKS;
+                result += "insidelinks {";
+                Enumeration enum = insideRelations();
+                while (enum.hasMoreElements()) {
+                    Relation rel = (Relation)enum.nextElement();
+                    result = result + "\n" + rel.description(verbosity);
+                }
+                result += "\n}";
             }
-            enum = linkedRelations();
-            while (enum.hasMoreElements()) {
-                Relation relation = (Relation)enum.nextElement();
-                results = results.concat(toString() + " link "
-                        + relation.toString() + "\n");
-            }
-            return results;
-        case pt.kernel.Nameable.PRETTYPRINT:
-            return description(CONTENTS) + description(CONNECTIONS);
-        case pt.kernel.Nameable.LIST_PRETTYPRINT:
-            return description(LIST_CONTENTS) + description(LIST_CONNECTIONS);
-        case pt.kernel.Nameable.QUIET:
-        default:
-            return toString();
+            return result;
         }
     }
 
     /** Enumerate the ports connected on the inside to this port.
-     *  A port is connected on the inside to this port if it is connected
-     *  via a relation that linked on the inside to this port.
      *  This method is synchronized on the workspace.
      *  @return An enumeration of ComponentPort objects.
      */	
@@ -264,15 +289,13 @@ public class ComponentPort extends Port {
             Enumeration relations = insideRelations();
             while (relations.hasMoreElements()) {
                 Relation relation = (Relation)relations.nextElement();
-                result.appendElements(relation.linkedPortsExcept(this));
+                result.appendElements(relation.linkedPorts(this));
             }
             return result.elements();
         }
     }
 
     /** Enumerate the relations linked on the inside to this port.
-     *  A relation is linked on the inside if it is contained (directly
-     *  or indirectly) by the container of this port.
      *  This method is synchronized on the workspace.
      *  @return An enumeration of ComponentRelation objects.
      */	
@@ -301,6 +324,15 @@ public class ComponentPort extends Port {
         return _insideLinks.isLinked(relation);
     }
     
+    /** Return true if the container entity is atomic.
+     *  @return True if the container entity is atomic.
+     */
+    public boolean isOpaque() {
+        ComponentEntity ent = (ComponentEntity)getContainer();
+        if (ent == null) return true;
+        return ent.isAtomic();
+    }
+
     /** Link this port with a relation.  The only constraints are
      *  that the port and the relation share the same workspace, and
      *  that the relation be of a compatible type (ComponentRelation).
@@ -311,11 +343,10 @@ public class ComponentPort extends Port {
      *  This method is synchronized on the workspace
      *  and increments its version number.
      *  @param relation The relation to link to.
-     *  @exception IllegalActionException Relation does not share the same
-     *   workspace, or attempt to link with an incompatible relation,
-     *   of the port has no container.
+     *  @exception IllegalActionException If the relation does not share 
+     *   the same workspace, or the port has no container.
      */	
-    public void liberalLink(Relation relation) 
+    public void liberalLink(ComponentRelation relation) 
             throws IllegalActionException {
         if (relation == null) return;
         if (workspace() != relation.workspace()) {
@@ -325,12 +356,7 @@ public class ComponentPort extends Port {
         synchronized(workspace()) {
             if (_outside(relation.getContainer())) {
                 // An inside link
-                _checkRelation(relation);
-                if (getContainer() == null) {
-                    throw new IllegalActionException(this, relation,
-                            "Port must have a container to establish a link.");
-                }
-                _insideLinks.link(relation._getPortList(this));
+                _linkInside(relation);
             } else {
                 // An outside link
                 _link(relation);
@@ -339,25 +365,28 @@ public class ComponentPort extends Port {
     }
 
     /** Link this port with a relation.  This method calls liberalLink()
-     *  if the proposed link does not cross levels of the hierarchy, and
-     *  otherwise throws an exception.
-     *  If the argument is null, do nothing.
+     *  if the proposed link does not cross levels of the hierarchy and
+     *  the proposed relation is of class ComponentRelation, and
+     *  otherwise throws an exception. If the argument is null, do nothing.
      *  This method is synchronized on the workspace
      *  and increments its version number.
-     *  @param relation
-     *  @exception IllegalActionException Link crosses levels of
-     *   the hierarchy, or attempts to link with an incompatible relation,
-     *   or the port has no container.
+     *  @param relation The relation to link to. 
+     *  @exception IllegalActionException If the link crosses levels of
+     *   the hierarchy, or the port has no container, or the relation
+     *   is not a ComponentRelation.
      */	
     public void link(Relation relation) 
             throws IllegalActionException {
         if (relation == null) return;
+        if (!(relation instanceof ComponentRelation)) {
+            throw new IllegalActionException(this, relation,
+            "ComponentPort can only link to instances of ComponentRelation.");
+        }
         if (workspace() != relation.workspace()) {
             throw new IllegalActionException(this, relation,
                     "Cannot link because workspaces are different.");
         }
         synchronized(workspace()) {
-            _checkRelation(relation);
             Nameable container = getContainer();
             if (container != null) {
                 Nameable relcont = relation.getContainer();
@@ -367,13 +396,13 @@ public class ComponentPort extends Port {
                             "Link crosses levels of the hierarchy");
                 }
             }
-            liberalLink(relation);
+            liberalLink((ComponentRelation)relation);
         }
     }
 
     /** Return the number of inside links.
      *  This method is synchronized on the workspace.
-     *  @return A non-negative integer
+     *  @return The number of inside links.
      */
     public int numInsideLinks() {
         synchronized(workspace()) {
@@ -381,11 +410,29 @@ public class ComponentPort extends Port {
         }
     }
 
+    /** Override the base class to ensure that the proposed container is a
+     *  ComponentEntity.
+     *  @param entity The proposed container.
+     *  @exception IllegalActionException If the container is not a
+     *   ComponentEntity, or it has no name,
+     *   or the port and container are not in the same workspace.
+     *  @exception NameDuplicationException If the container already has
+     *   a port with the name of this port.
+     */
+    public void setContainer(Entity container)
+            throws IllegalActionException, NameDuplicationException {
+        if (!(container instanceof ComponentEntity)) {
+            throw new IllegalActionException(container, this,
+            "ComponentPort can only be contained by ComponentEntity");
+        }
+        super.setContainer(container);
+    }
+
     /** Unlink the specified Relation. If the Relation
      *  is not linked to this port, do nothing.
      *  This method is synchronized on the workspace
      *  and increments its version number.
-     *  @param relation
+     *  @param relation The relation to unlink.
      */
     public void unlink(Relation relation) {
         synchronized(workspace()) {
@@ -411,23 +458,74 @@ public class ComponentPort extends Port {
     //////////////////////////////////////////////////////////////////////////
     ////                         protected methods                        ////
 
-    /** Do nothing if the specified relation is compatible with this port.
-     *  Otherwise, throw an exception.
-     *  @param relation
-     *  @exception IllegalActionException Incompatible relation.
+    /** Clear references that are not valid in a cloned object.  The clone()
+     *  method makes a field-by-field copy, which results
+     *  in invalid references to objects. 
+     *  In this class, this method resets the private member _insideLinks.
+     */
+    protected void _clear() {
+        super._clear();
+        // Ignore exception because "this" cannot be null.
+        try {
+            _insideLinks = new CrossRefList(this);
+        } catch (IllegalActionException ex) {}
+    }
+
+    /** Override the base class to throw an exception if the relation is
+     *  not a ComponentRelation.  If it is, then invoke the base class method.
+     *  This method should not be used
+     *  directly.  Use the public version instead.
+     *  @param relation The relation to link to.
+     *  @exception IllegalActionException If this port has no container or
+     *   the relation is not a ComponentRelation.
      */	
-    protected void _checkRelation(Relation relation) 
+    protected void _link(Relation relation) 
             throws IllegalActionException {
         if (!(relation instanceof ComponentRelation)) {
             throw new IllegalActionException(this,
-                    "Attempt to link to an incompatible relation.");
+            "Attempt to link to an incompatible relation.");
+        }
+        super._link(relation);
+    }
+
+    /** Link this port on the inside with a relation. This method should
+     *  not be used directly.  Use the public version instead.
+     *  The argument is a
+     *  ComponentRelation, but derived classes may constrain the relation
+     *  further. If this port has no container, throw an exception.
+     *  Level-crossing links are allowed.
+     *  This port and the relation are assumed to be in the same workspace,
+     *  but this not checked here.  The caller should check.
+     *  This method is synchronized on the
+     *  workspace and increments its version number.
+     *  @param relation The relation to link to.
+     *  @exception IllegalActionException If this port has no container or
+     *   is not a ComponentPort.
+     */	
+    protected void _linkInside(ComponentRelation relation) 
+            throws IllegalActionException {
+        synchronized(workspace()) {
+            if (!(relation instanceof ComponentRelation)) {
+                throw new IllegalActionException(this,
+                "Attempt to link to an incompatible relation.");
+            }
+            if (getContainer() == null) {
+                throw new IllegalActionException(this, relation,
+                "Port must have a container to establish a link.");
+            }
+            // Throw an exception if this port is not of an acceptable
+            // class for the relation.
+            relation._checkPort(this);
+            // It is acceptable.
+            _insideLinks.link( relation._getPortList() );
+            workspace().incrVersion();
         }
     }
 
     /** Return true if the port is either a port of the specified entity,
      *  or a port of an entity that contains the specified entity.
      *  This method is synchronized on the workspace.
-     *  @param entity A container.
+     *  @param entity A possible container.
      */	
     protected boolean _outside(Nameable entity) {
         synchronized(workspace()) {
@@ -450,7 +548,7 @@ public class ComponentPort extends Port {
     // construct it.
     // 'transient' means that the variable will not be serialized.
     private transient LinkedList _deeplinkedports;
-    private long _deeplinkedportsversion = -1;
+    private transient long _deeplinkedportsversion = -1;
     private transient LinkedList _deeplinkedinports;
-    private long _deeplinkedinportsversion = -1;
+    private transient long _deeplinkedinportsversion = -1;
 }

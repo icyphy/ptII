@@ -37,12 +37,11 @@ import collections.CollectionEnumeration;
 //////////////////////////////////////////////////////////////////////////
 //// Workspace
 /** 
-An object for synchronization and version tracking of groups of objects
-("elements") that are interrelated in some way.
-Those objects can use the workspace
-to synchronize actions and to track versions of the group as a whole.
-In addition, they may register with the workspace by calling add(),
+A Workspace is used for synchronization and version tracking 
+of interdependent groups of objects.
+Elements may register with the workspace by calling add(),
 although they are not required to do so in order to use the workspace.
+The names of the elements in the workspace are not required to be unique.
 
 @author Edward A. Lee
 @version $Id$
@@ -70,7 +69,8 @@ public class Workspace implements Nameable, Serializable {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Append an element to the contents list.
+    /** Append an element to the contents list. The names of the objects
+     *  in the workspace are not required to be unique.
      *  Only elements with no container can be added.  Elements with
      *  a container are still viewed as being within the workspace, but
      *  they are not explicitly listed in the contents list.  Instead,
@@ -94,35 +94,47 @@ public class Workspace implements Nameable, Serializable {
         incrVersion();
     }
 
-    /** Return a description of the object.
-     *  @param verbosity The level of verbosity.
+    /** Return a description of the object.  The level of detail depends
+     *  on the argument, which is an or-ing of the static final constants
+     *  defined in the Nameable interface.
+     *  This method is synchronized on the workspace.
+     *  @param verbosity The level of detail.
+     *  @return A description of the object.
      */
-    public String description(int verbosity){
-        String results = new String();
-        switch (verbosity) {
-        case pt.kernel.Nameable.CONTENTS:
-        case pt.kernel.Nameable.CONNECTIONS:
-        case pt.kernel.Nameable.LIST_CONTENTS:
-        case pt.kernel.Nameable.LIST_CONNECTIONS:
+    public synchronized String description(int verbosity){
+        String result = new String("");
+        if((verbosity & CLASS) != 0) {
+            result = getClass().getName();
+            if((verbosity & NAME) != 0) {
+                result += " ";
+            }
+        }
+        if((verbosity & NAME) != 0) {
+            result = result + "{" + getFullName() + "}";
+        }
+        if ((verbosity & CONTENTS) != 0) {
+            if (result.length() > 0) {
+                result += " ";
+            }
+            result += "elements {";
             CollectionEnumeration enum = elements();
             while (enum.hasMoreElements()) {
-                NamedObj namedObj = (NamedObj) enum.nextElement();
-                results = results.concat(namedObj.description(verbosity));
+                NamedObj obj = (NamedObj)enum.nextElement();
+                // If deep is not set, the zero-out the contents flag
+                // for the next round.
+                if ((verbosity & DEEP) == 0) {
+                    verbosity &= ~CONTENTS;
+                }
+                result = result + "\n" + obj.description(verbosity);
             }
-            return results;
-        case pt.kernel.Nameable.PRETTYPRINT:
-            return description(CONTENTS) + description(CONNECTIONS);
-        case pt.kernel.Nameable.LIST_PRETTYPRINT:
-            return description(LIST_CONTENTS) + description(LIST_CONNECTIONS);
-        case pt.kernel.Nameable.QUIET:
-        default:
-            return toString();
+            result += "\n}";
         }
+        return result;
     }
 
     /** Enumerate the elements in the contents list, in the order in which
      *  they were added.
-     *  @return An enumaration of Nameable objects.
+     *  @return An enumeration of Nameable objects.
      */	
     public synchronized CollectionEnumeration elements() {
         return _contents.elements();
@@ -164,7 +176,8 @@ public class Workspace implements Nameable, Serializable {
 
     /** Remove the specified element from the contents list.
      *  Note that that element will still refer to this workspace as
-     *  its workspace (its workspace is immutable).
+     *  its workspace (its workspace is immutable).  If the object is
+     *  not in the workspace, do nothing.
      *  Increment the version number.
      */	
     public synchronized void remove(Object element) {
