@@ -47,8 +47,12 @@ PTPACKAGE = 	analysis
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	AcyclicAnalysis.java \
 	Analysis.java \
-	SelfLoopAnalysis.java
+	SelfLoopAnalysis.java \
+	SinkNodeAnalysis.java \
+	SourceNodeAnalysis.java \
+	TransitiveClosureAnalysis.java
 
 EXTRA_SRCS =	$(JSRCS)
 
