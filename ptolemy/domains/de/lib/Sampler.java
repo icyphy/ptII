@@ -60,11 +60,14 @@ the input port. If the width of the <i>output</i> is greater
 than that of the <i>input</i>, then the last few
 channels of the <i>output</i> will never emit tokens.
 <p>
+Note that an event on the input port does not diretly cause an output event.
+Hence, this actor can be used to break feedback loops.
+<p>
 Note: If the width of the input changes during execution, then
 the most recent inputs are forgotten, as if the execution of the model
 were starting over.
 
-@author Jie Liu, Edward A. Lee
+@author Jie Liu, Edward A. Lee, Steve Neuendorffer
 @version $Id$
 */
 
@@ -82,6 +85,7 @@ public class Sampler extends DETransformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         input.setMultiport(true);
+        input.delayTo(output);
         output.setMultiport(true);
         output.setTypeAtLeast(input);
         trigger = new TypedIOPort(this, "trigger", true, false);
@@ -111,6 +115,11 @@ public class Sampler extends DETransformer {
             throws CloneNotSupportedException {
         Sampler newObject = (Sampler)super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.input);
+        try {
+            newObject.input.delayTo(newObject.output);
+        } catch (IllegalActionException ex) {
+            // Ignore.
+        }
         return newObject;
     }
 
