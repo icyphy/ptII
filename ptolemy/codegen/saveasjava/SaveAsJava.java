@@ -87,7 +87,7 @@ class SaveAsJava {
         // Check that the argument is a composite entity.
         if (!(toplevel instanceof CompositeEntity)) {
             throw new IllegalActionException(toplevel,
-                    "SavaAsJava feature only operates on composite entities");
+                    "SaveAsJava feature only operates on composite entities");
         }
         compositeModel = (CompositeEntity)toplevel;
 
@@ -170,7 +170,7 @@ class SaveAsJava {
 
     /** Generate Java code that creates attributes, if necessary,
      *  and initializes them with their initial values.
-     *  Since attributes can themselves have attrivbutes, this
+     *  Since attributes can themselves have attributes, this
      *  routine is recursive.
      *  @param object The object with attributes.
      *  @return The Java code defining attributes for the specified
@@ -246,7 +246,7 @@ class SaveAsJava {
         String containerName;
 
         // The name of <model> when it is referenced as a container
-        // of another entitiy.
+        // of another entity.
         String nameAsContainer;
 
         if ((container = ((CompositeEntity)(model.getContainer()))) != null) {
@@ -433,9 +433,9 @@ class SaveAsJava {
     // imported in the generated Java code, insert the class name
     // (fully qualified) into this list.
     private String _getClassName(NamedObj object) {
-        String clfullname = object.getClass().getName();
-        String className = _extractSuffix(clfullname);
-        _insertIfUnique(clfullname, _importList);
+        String classFullName = object.getClass().getName();
+        String className = _extractSuffix(classFullName);
+        _insertIfUnique(classFullName, _importList);
         return className;
     }
 

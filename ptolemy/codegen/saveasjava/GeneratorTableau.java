@@ -315,7 +315,7 @@ public class GeneratorTableau extends Tableau {
 			    codeGenerator.setModels(models);
 
 			    // FIXME: the output should go into the text widget
-			    // FIXME: this should be run in the backgroun
+			    // FIXME: this should be run in the background
 			    codeGenerator.generateCode();
 			    destination = new File(
                                     codeGenerator.getPackageDirectoryName(),
@@ -478,7 +478,7 @@ public class GeneratorTableau extends Tableau {
         }
 
         // Execute the specified commands and report errors to the
-	// JTextArea.  This will termintate the process if it has previously
+	// JTextArea.  This will terminate the process if it has previously
         // been started.
         public void run() {
             Runtime runtime = Runtime.getRuntime();
