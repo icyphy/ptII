@@ -71,7 +71,7 @@ public class StringUtilities {
      *  characters.
      *  If the <i>longName</i> argument is null, then the string
      *  "&gt;Unnamed&lt;" is returned.
-     *  @param The string to be abbreviated.
+     *  @param longName The string to be abbreviated.
      *  @return The name.
      *  @see #split(String)
      */
