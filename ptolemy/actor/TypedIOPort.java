@@ -349,39 +349,6 @@ public class TypedIOPort extends IOPort {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Set the resolved type of this port.  The type is represented
-     *  by an instance of Class that is an element in the type lattice.
-     *  If the specified type is different from the old type, this
-     *  method notifies the typelisteners registered on this port
-     *  by calling their typeChanged() method.
-     *  Note that this method should not be used directly. It should
-     *  only be used by the type resolution algorithm.
-     *  This method is write-synchronized on the workspace.
-     *  @param type an instance of Class that is an element in the type
-     *   lattice.
-     */
-    protected void _setResolvedType(Class c) {
-	try {
-	    workspace().getWriteAccess();
-
-	    if (_resolvedType != c && _typeListeners.size() > 0) {
-		TypeEvent event = new TypeEvent(this, _resolvedType, c);
-		Enumeration listeners = _typeListeners.elements();
-		while (listeners.hasMoreElements()) {
-		    ((TypeListener)listeners.nextElement()).typeChanged(event);
-		}
-	    }
-
-	    _resolvedType = c;
-	    _convertMethod = null;
-	} finally {
-	    workspace().doneWriting();
-	}
-    }
-
-    ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
     /** Indicate that the description(int) method should include
@@ -496,6 +463,36 @@ public class TypedIOPort extends IOPort {
                     " TypedIOPort requires TypedIORelation.");
         }
         super._linkInside((TypedIORelation)relation);
+    }
+
+    /** Set the resolved type of this port.  The type is represented
+     *  by an instance of Class that is an element in the type lattice.
+     *  If the specified type is different from the old type, this
+     *  method notifies the typelisteners registered on this port
+     *  by calling their typeChanged() method.
+     *  Note that this method should not be used directly. It should
+     *  only be used by the type resolution algorithm.
+     *  This method is write-synchronized on the workspace.
+     *  @param type an instance of Class that is an element in the type
+     *   lattice.
+     */
+    protected void _setResolvedType(Class c) {
+	try {
+	    workspace().getWriteAccess();
+
+	    if (_resolvedType != c && _typeListeners.size() > 0) {
+		TypeEvent event = new TypeEvent(this, _resolvedType, c);
+		Enumeration listeners = _typeListeners.elements();
+		while (listeners.hasMoreElements()) {
+		    ((TypeListener)listeners.nextElement()).typeChanged(event);
+		}
+	    }
+
+	    _resolvedType = c;
+	    _convertMethod = null;
+	} finally {
+	    workspace().doneWriting();
+	}
     }
 
     ///////////////////////////////////////////////////////////////////
