@@ -335,22 +335,39 @@ public class DDEReceiver extends TimedQueueReceiver
 	String name = ((Nameable)getContainer().getContainer()).getName();
 	timeKeeper.resortRcvrList();
 
-        System.out.println("RcvrTime = " + getRcvrTime() );
+	if( name.equals("actorThru") ) {
+	    System.out.println(name + ":   hasToken being called." );
+	    double time = getRcvrTime();
+	    if( time == IGNORE ) {
+		System.out.println(name + ":   RcvrTime = IGNORE." );
+	    } else {
+		System.out.println(name + ":   RcvrTime = " + getRcvrTime() );
+	    }
+	}
         if( timeKeeper.getNextTime() == INACTIVE ) {
             requestFinish();
 	}
-        /*
         if( getRcvrTime() == IGNORE ) {
-            timeKeeper.updateRcvrList(this);
-            return false;
+	    if( _ignoreNotSeen ) {
+		System.out.println("Ignore seen for the first time.");
+		_ignoreNotSeen = false;
+		return false;
+	    } else {
+		System.out.println("Ignore seen for the second time.");
+		_ignoreNotSeen = true;
+		clearIgnoredTokens();
+		// return _hasToken( workspace, director, timeKeeper );
+		return false;
+	    }
         }
-        */
 	if( getRcvrTime() > timeKeeper.getNextTime() && !_terminate ) {
             System.out.println("RcvrTime = "+getRcvrTime()+";   Time Keeper Time = "
             	+timeKeeper.getNextTime());
 	    return false;
 	} else if( !timeKeeper.hasMinRcvrTime() && !_terminate ) {
-	    // System.out.println("Time is minimum but not unique");
+	    if( name.equals("actorThru") ) {
+		System.out.println(name+":  Time is minimum but not unique");
+	    }
             if( this != timeKeeper.getHighestPriorityReceiver() ) {
 	        // System.out.println("This is not the highest priority receiver!");
                 timeKeeper.updateRcvrList(this);
@@ -369,18 +386,15 @@ public class DDEReceiver extends TimedQueueReceiver
 	    } else if ( timeKeeper.getNextTime() == IGNORE ) {
                 System.out.println("Inside of DDEReceiver._hasToken() with IGNORE");
 		super.get();
-                if( !super.hasToken() ) {
-                    System.out.println("IGNORE Token removed - the queue is empty");
-                } else {
-                    System.out.println("IGNORE Token removed - the queue is not empty");
-                }
 		// FIXME: Should we call clearIgnoredTokens() here???
 		return _hasToken(workspace, director, timeKeeper);
 	    } else {
 		return true;
 	    }
 	}
-	System.out.println(name + ": about to call read block()");
+	if( name.equals("actorThru") ) {
+	    System.out.println(name + ": about to call read block()");
+	}
 	director.addReadBlock();
 	_readPending = true;
 	if( !super.hasToken() && !_terminate ) {
@@ -413,6 +427,7 @@ public class DDEReceiver extends TimedQueueReceiver
     private boolean _terminate = false; 
     private boolean _readPending = false;
     private boolean _writePending = false;
+    public boolean _ignoreNotSeen = true;
 }
 
 
