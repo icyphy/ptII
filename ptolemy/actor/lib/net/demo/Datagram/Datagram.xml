@@ -1,12 +1,12 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="2play" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Datagram" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 635]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, 12]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, 10]">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -23,7 +23,7 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="600.0, 170.0">
+        <property name="_location" class="ptolemy.moml.Location" value="610.0, 185.0">
         </property>
     </property>
     <property name="partnersIPAddress" class="ptolemy.data.expr.Parameter" value="&quot;localhost&quot;">
@@ -35,7 +35,7 @@
             <configure><svg><text x="20" y="20" style="font-size:18; font-family:SansSerif; fill:red">This model facilitates collaboration while demonstrating the Datagram actors.
 Run the model, enter your partner's IP address, and click the 'Update partner's IP'
 button.  Ask your collaboration partner to do likewise.  Then you can share text
-and Ptolemy models by copy-pasting them to each other.  Have fun!</text></svg></configure>
+and Ptolemy models with each other!</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -52,7 +52,7 @@ and Ptolemy models by copy-pasting them to each other.  Have fun!</text></svg></
         </property>
     </property>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.data.expr.Parameter" value="input + &quot; bytes received from partner at IP = \&quot;&quot; + address + &quot;\&quot;&quot;">
+        <property name="expression" class="ptolemy.data.expr.Parameter" value="N + &quot; bytes received from partner at IP = \&quot;&quot; + address + &quot;\&quot;&quot;">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -60,15 +60,10 @@ and Ptolemy models by copy-pasting them to each other.  Have fun!</text></svg></
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="435.0, 450.0">
+        <property name="_location" class="ptolemy.moml.Location" value="460.0, 450.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
-            </property>
-        </port>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
             </property>
         </port>
@@ -77,11 +72,16 @@ and Ptolemy models by copy-pasting them to each other.  Have fun!</text></svg></
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
             </property>
         </port>
+        <port name="N" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+            </property>
+        </port>
     </entity>
-    <entity name="EventButton send" class="ptolemy.domains.de.lib.EventButton">
+    <entity name="EventButton1" class="ptolemy.domains.de.lib.EventButton">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Send my clipboard contents to partner.">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="70.0, 295.0">
+        <property name="_location" class="ptolemy.moml.Location" value="80.0, 300.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -91,10 +91,10 @@ and Ptolemy models by copy-pasting them to each other.  Have fun!</text></svg></
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="EventButton for copy" class="ptolemy.domains.de.lib.EventButton">
+    <entity name="EventButton2" class="ptolemy.domains.de.lib.EventButton">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Copy partner's sent contents to my clipboard.">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="70.0, 570.0">
+        <property name="_location" class="ptolemy.moml.Location" value="80.0, 550.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -104,8 +104,8 @@ and Ptolemy models by copy-pasting them to each other.  Have fun!</text></svg></
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="ArrayLength" class="ptolemy.actor.lib.ArrayLength">
-        <property name="_location" class="ptolemy.moml.Location" value="210.0, 440.0">
+    <entity name="ArrayLength4" class="ptolemy.actor.lib.ArrayLength">
+        <property name="_location" class="ptolemy.moml.Location" value="220.0, 480.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -115,7 +115,7 @@ and Ptolemy models by copy-pasting them to each other.  Have fun!</text></svg></
         </port>
     </entity>
     <entity name="IntArrayToString" class="ptolemy.actor.lib.conversions.IntArrayToString">
-        <property name="_location" class="ptolemy.moml.Location" value="297.0, 510.0">
+        <property name="_location" class="ptolemy.moml.Location" value="315.0, 565.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -125,7 +125,7 @@ and Ptolemy models by copy-pasting them to each other.  Have fun!</text></svg></
         </port>
     </entity>
     <entity name="StringToIntArray" class="ptolemy.actor.lib.conversions.StringToIntArray">
-        <property name="_location" class="ptolemy.moml.Location" value="250.0, 285.0">
+        <property name="_location" class="ptolemy.moml.Location" value="260.0, 300.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -161,7 +161,7 @@ and Ptolemy models by copy-pasting them to each other.  Have fun!</text></svg></
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="90.0, 430.0">
+        <property name="_location" class="ptolemy.moml.Location" value="110.0, 450.0">
         </property>
         <port name="returnAddress" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -196,7 +196,7 @@ and Ptolemy models by copy-pasting them to each other.  Have fun!</text></svg></
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="415.0, 275.0">
+        <property name="_location" class="ptolemy.moml.Location" value="425.0, 290.0">
         </property>
         <port name="remoteAddress" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -220,15 +220,15 @@ and Ptolemy models by copy-pasting them to each other.  Have fun!</text></svg></
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="740.0, 450.0">
+        <property name="_location" class="ptolemy.moml.Location" value="715.0, 520.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="2:ArrayLength" class="ptolemy.actor.lib.ArrayLength">
-        <property name="_location" class="ptolemy.moml.Location" value="340.0, 330.0">
+    <entity name="ArrayLength" class="ptolemy.actor.lib.ArrayLength">
+        <property name="_location" class="ptolemy.moml.Location" value="350.0, 345.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -237,7 +237,7 @@ and Ptolemy models by copy-pasting them to each other.  Have fun!</text></svg></
             <property name="output"/>
         </port>
     </entity>
-    <entity name="3:Expression" class="ptolemy.actor.lib.Expression">
+    <entity name="Expression1" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.data.expr.Parameter" value="input + &quot; bytes sent to partner.&quot;">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -246,7 +246,7 @@ and Ptolemy models by copy-pasting them to each other.  Have fun!</text></svg></
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="490.0, 330.0">
+        <property name="_location" class="ptolemy.moml.Location" value="500.0, 345.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -259,8 +259,8 @@ and Ptolemy models by copy-pasting them to each other.  Have fun!</text></svg></
             </property>
         </port>
     </entity>
-    <entity name="4:ArrayLength" class="ptolemy.actor.lib.ArrayLength">
-        <property name="_location" class="ptolemy.moml.Location" value="297.0, 575.0">
+    <entity name="ArrayLength2" class="ptolemy.actor.lib.ArrayLength">
+        <property name="_location" class="ptolemy.moml.Location" value="330.0, 510.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -269,7 +269,7 @@ and Ptolemy models by copy-pasting them to each other.  Have fun!</text></svg></
             <property name="output"/>
         </port>
     </entity>
-    <entity name="5:Expression" class="ptolemy.actor.lib.Expression">
+    <entity name="Expression2" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.data.expr.Parameter" value="input + &quot; bytes copied to my clipboard.&quot;">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -278,7 +278,7 @@ and Ptolemy models by copy-pasting them to each other.  Have fun!</text></svg></
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="465.0, 575.0">
+        <property name="_location" class="ptolemy.moml.Location" value="510.0, 510.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -292,7 +292,7 @@ and Ptolemy models by copy-pasting them to each other.  Have fun!</text></svg></
         </port>
     </entity>
     <entity name="Queue" class="ptolemy.domains.de.lib.Queue">
-        <property name="_location" class="ptolemy.moml.Location" value="192.0, 500.0">
+        <property name="_location" class="ptolemy.moml.Location" value="205.0, 540.0">
         </property>
         <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
             <property name="input"/>
@@ -304,8 +304,8 @@ and Ptolemy models by copy-pasting them to each other.  Have fun!</text></svg></
             <property name="input"/>
         </port>
     </entity>
-    <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
-        <property name="_location" class="ptolemy.moml.Location" value="670.0, 450.0">
+    <entity name="Merge2" class="ptolemy.domains.de.lib.Merge">
+        <property name="_location" class="ptolemy.moml.Location" value="715.0, 450.0">
         </property>
         <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
             <property name="input"/>
@@ -320,16 +320,16 @@ and Ptolemy models by copy-pasting them to each other.  Have fun!</text></svg></
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="90.0, 170.0">
+        <property name="_location" class="ptolemy.moml.Location" value="140.0, 235.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
     </entity>
-    <entity name="1:EventButton IP update" class="ptolemy.domains.de.lib.EventButton">
+    <entity name="EventButton3" class="ptolemy.domains.de.lib.EventButton">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Update partner's IP address.">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="70.0, 220.0">
+        <property name="_location" class="ptolemy.moml.Location" value="80.0, 185.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -339,8 +339,8 @@ and Ptolemy models by copy-pasting them to each other.  Have fun!</text></svg></
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="Merge4" class="ptolemy.domains.de.lib.Merge">
-        <property name="_location" class="ptolemy.moml.Location" value="190.0, 220.0">
+    <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
+        <property name="_location" class="ptolemy.moml.Location" value="215.0, 185.0">
         </property>
         <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
             <property name="input"/>
@@ -350,7 +350,7 @@ and Ptolemy models by copy-pasting them to each other.  Have fun!</text></svg></
             <property name="output"/>
         </port>
     </entity>
-    <entity name="2:Const" class="ptolemy.actor.lib.Const">
+    <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="partnersIPAddress">
         </property>
         <doc>Create a constant sequence</doc>
@@ -360,7 +360,7 @@ and Ptolemy models by copy-pasting them to each other.  Have fun!</text></svg></
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="305.0, 220.0">
+        <property name="_location" class="ptolemy.moml.Location" value="310.0, 185.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -370,9 +370,9 @@ and Ptolemy models by copy-pasting them to each other.  Have fun!</text></svg></
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="SystemClipboard" class="ptolemy.actor.lib.gui.SystemClipboard">
+    <entity name="Datagram2" class="ptolemy.actor.lib.net.demo.Datagram.Datagram">
         <doc>Gives access to the system clipboard</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="445.0, 520.0">
+        <property name="_location" class="ptolemy.moml.Location" value="460.0, 565.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -384,9 +384,9 @@ and Ptolemy models by copy-pasting them to each other.  Have fun!</text></svg></
             <property name="output"/>
         </port>
     </entity>
-    <entity name="SystemClipboard3" class="ptolemy.actor.lib.gui.SystemClipboard">
+    <entity name="Datagram1" class="ptolemy.actor.lib.net.demo.Datagram.Datagram">
         <doc>Gives access to the system clipboard</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="165.0, 285.0">
+        <property name="_location" class="ptolemy.moml.Location" value="175.0, 300.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -399,19 +399,17 @@ and Ptolemy models by copy-pasting them to each other.  Have fun!</text></svg></
         </port>
     </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="140.0, 440.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="155.0, 460.0">
         </vertex>
     </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="295.0, 285.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="305.0, 300.0">
         </vertex>
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="237.0, 535.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="275.0, 540.0">
         </vertex>
     </relation>
     <relation name="relation17" class="ptolemy.actor.TypedIORelation">
@@ -442,13 +440,15 @@ and Ptolemy models by copy-pasting them to each other.  Have fun!</text></svg></
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Expression.output" relation="relation20"/>
-    <link port="Expression.input" relation="relation8"/>
     <link port="Expression.address" relation="relation3"/>
-    <link port="EventButton send.output" relation="relation4"/>
-    <link port="EventButton for copy.output" relation="relation18"/>
-    <link port="ArrayLength.input" relation="relation5"/>
-    <link port="ArrayLength.output" relation="relation8"/>
+    <link port="Expression.N" relation="relation14"/>
+    <link port="EventButton1.output" relation="relation4"/>
+    <link port="EventButton2.output" relation="relation18"/>
+    <link port="ArrayLength4.input" relation="relation5"/>
+    <link port="ArrayLength4.output" relation="relation14"/>
     <link port="IntArrayToString.input" relation="relation15"/>
     <link port="IntArrayToString.output" relation="relation2"/>
     <link port="StringToIntArray.input" relation="relation"/>
@@ -458,29 +458,29 @@ and Ptolemy models by copy-pasting them to each other.  Have fun!</text></svg></
     <link port="DatagramWriter.remoteAddress" relation="relation9"/>
     <link port="DatagramWriter.data" relation="relation11"/>
     <link port="Display.input" relation="relation22"/>
-    <link port="2:ArrayLength.input" relation="relation11"/>
-    <link port="2:ArrayLength.output" relation="relation13"/>
-    <link port="3:Expression.output" relation="relation21"/>
-    <link port="3:Expression.input" relation="relation13"/>
-    <link port="4:ArrayLength.input" relation="relation15"/>
-    <link port="4:ArrayLength.output" relation="relation17"/>
-    <link port="5:Expression.output" relation="relation19"/>
-    <link port="5:Expression.input" relation="relation17"/>
+    <link port="ArrayLength.input" relation="relation11"/>
+    <link port="ArrayLength.output" relation="relation13"/>
+    <link port="Expression1.output" relation="relation21"/>
+    <link port="Expression1.input" relation="relation13"/>
+    <link port="ArrayLength2.input" relation="relation15"/>
+    <link port="ArrayLength2.output" relation="relation17"/>
+    <link port="Expression2.output" relation="relation19"/>
+    <link port="Expression2.input" relation="relation17"/>
     <link port="Queue.input" relation="relation5"/>
     <link port="Queue.output" relation="relation15"/>
     <link port="Queue.trigger" relation="relation18"/>
-    <link port="Merge.input" relation="relation19"/>
-    <link port="Merge.input" relation="relation20"/>
-    <link port="Merge.input" relation="relation21"/>
-    <link port="Merge.output" relation="relation22"/>
+    <link port="Merge2.input" relation="relation19"/>
+    <link port="Merge2.input" relation="relation20"/>
+    <link port="Merge2.input" relation="relation21"/>
+    <link port="Merge2.output" relation="relation22"/>
     <link port="SingleEvent.output" relation="relation6"/>
-    <link port="1:EventButton IP update.output" relation="relation7"/>
-    <link port="Merge4.input" relation="relation6"/>
-    <link port="Merge4.input" relation="relation7"/>
-    <link port="Merge4.output" relation="relation10"/>
-    <link port="2:Const.output" relation="relation9"/>
-    <link port="2:Const.trigger" relation="relation10"/>
-    <link port="SystemClipboard.input" relation="relation2"/>
-    <link port="SystemClipboard3.trigger" relation="relation4"/>
-    <link port="SystemClipboard3.output" relation="relation"/>
+    <link port="EventButton3.output" relation="relation7"/>
+    <link port="Merge.input" relation="relation6"/>
+    <link port="Merge.input" relation="relation7"/>
+    <link port="Merge.output" relation="relation10"/>
+    <link port="Const.output" relation="relation9"/>
+    <link port="Const.trigger" relation="relation10"/>
+    <link port="Datagram2.input" relation="relation2"/>
+    <link port="Datagram1.trigger" relation="relation4"/>
+    <link port="Datagram1.output" relation="relation"/>
 </entity>

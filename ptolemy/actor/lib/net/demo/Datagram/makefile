@@ -47,16 +47,17 @@ PTPACKAGE =	Datagram
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS =
+JSRCS = \
+	Datagram.java
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	Datagram.xml \
-	DemoDatagramDE.xml \
-	DemoDatagramInjector.xml \
-	DemoDatagramNetworkedCopyPaste.xml \
-	DemoDatagramParsed.xml \
-	DemoDatagramUnparsed.xml
+	DatagramDE.xml \
+	DatagramInjector.xml \
+	DatagramNetworkedCopyPaste.xml \
+	DatagramParsed.xml \
+	DatagramUnparsed.xml
 
 
 EXTRA_SRCS = \
