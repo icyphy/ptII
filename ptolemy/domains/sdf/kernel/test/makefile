@@ -1,4 +1,4 @@
-# FIXME: Makefile for Ptolemy II SDF kernel tests
+# Makefile for Ptolemy II SDF kernel tests
 #
 # @Authors: Christopher Hylands
 #
@@ -47,6 +47,7 @@ TCL_SRCS = \
 
 JSRCS = \
 	SDFTestConsumer.java \
+	SDFTestDirector.java \
 	SDFTestDelay.java \
 	SDFTestJoin.java \
 	SDFTestRamp.java \
