@@ -38,11 +38,11 @@ include $(CONFIG)
 
 JPACKAGE = 	ptplot
 JPACKAGE_DIR = 	ptplot
-JVERSION =	1.1
+JVERSION =	1.2
 JDIST =		$(JPACKAGE)$(JVERSION)
 JZIP =		ptplot/$(JPACKAGE).zip
 
-DIRS = 	demo #test
+DIRS = 	demo doc #test
 
 CLASSPATH =	..
 # Order matters here.
