@@ -54,19 +54,6 @@ set director [java::new pt.actor.Director]
 ######################################################################
 ####
 #
-# FIXME: set the following test
-# test IORelation-1.1 {Get information about an instance of IORelation} {
-#     # If anything changes, we want to know about it so we can write tests.
-#     set n [java::new pt.actor.IORelation]
-#     list [getJavaInfo $n]
-# } {{
-# }}
-
-# FIXME: Should the Component and Composite Entities be Actors?
-
-######################################################################
-####
-#
 test IORelation-2.1 {Construct Relations} {
     set e1 [java::new pt.actor.CompositeActor [java::null] $director]
     set r1 [java::new pt.actor.IORelation]
@@ -114,7 +101,7 @@ test IORelation-3.3 {Test getWidth} {
 test IORelation-3.4 {Test getWidth of a port} {
     set e1 [java::new pt.actor.CompositeActor [java::null] $director]
     $e1 setName E1
-    set e2 [java::new pt.actor.Actor $e1 E2]
+    set e2 [java::new pt.actor.AtomicActor $e1 E2]
     set r1 [java::new pt.actor.IORelation $e1 R1]
     set p1 [java::new pt.actor.IOPort $e2 P1]
     $p1 link $r1
@@ -125,7 +112,7 @@ test IORelation-3.4 {Test getWidth of a port} {
 test IORelation-3.4.1 {Test getWidth of a port} {
     set e1 [java::new pt.actor.CompositeActor [java::null] $director]
     $e1 setName E1
-    set e2 [java::new pt.actor.Actor $e1 E2]
+    set e2 [java::new pt.actor.AtomicActor $e1 E2]
     set r1 [java::new pt.actor.IORelation $e1 R1]
     set p1 [java::new pt.actor.IOPort $e2 P1]
     $p1 link $r1
@@ -137,7 +124,7 @@ test IORelation-3.4.1 {Test getWidth of a port} {
 test IORelation-3.5 {Test getWidth of a port with unspecified relation width} {
     set e1 [java::new pt.actor.CompositeActor [java::null] $director]
     $e1 setName E1
-    set e2 [java::new pt.actor.Actor $e1 E2]
+    set e2 [java::new pt.actor.AtomicActor $e1 E2]
     set r1 [java::new pt.actor.IORelation $e1 R1]
     set p1 [java::new pt.actor.IOPort $e2 P1]
     $r1 setWidth 0
@@ -148,7 +135,7 @@ test IORelation-3.5 {Test getWidth of a port with unspecified relation width} {
 test IORelation-3.6 {Test getWidth of a port with unspecified relation width} {
     set e1 [java::new pt.actor.CompositeActor [java::null] $director]
     $e1 setName E1
-    set e2 [java::new pt.actor.Actor $e1 E2]
+    set e2 [java::new pt.actor.AtomicActor $e1 E2]
     set r1 [java::new pt.actor.IORelation $e1 R1]
     set p1 [java::new pt.actor.IOPort $e2 P1]
     $r1 setWidth 0
@@ -161,7 +148,7 @@ test IORelation-3.7 {Test getWidth of a port with inferred relation width} {
     set e0 [java::new pt.actor.CompositeActor [java::null] $director]
     $e1 setName E0
     set e1 [java::new pt.actor.CompositeActor $e0 E1 [java::null]]
-    set e2 [java::new pt.actor.Actor $e1 E2]
+    set e2 [java::new pt.actor.AtomicActor $e1 E2]
     set r1 [java::new pt.actor.IORelation $e1 R1]
     set r2 [java::new pt.actor.IORelation $e0 R2]
     set p1 [java::new pt.actor.IOPort $e2 P1]
@@ -177,7 +164,7 @@ test IORelation-3.8 {Test getWidth of a port with inferred relation width} {
     set e0 [java::new pt.actor.CompositeActor [java::null] $director]
     $e1 setName E0
     set e1 [java::new pt.actor.CompositeActor $e0 E1 [java::null]]
-    set e2 [java::new pt.actor.Actor $e1 E2]
+    set e2 [java::new pt.actor.AtomicActor $e1 E2]
     set r1 [java::new pt.actor.IORelation $e1 R1]
     set r2 [java::new pt.actor.IORelation $e0 R2]
     set p1 [java::new pt.actor.IOPort $e2 P1]
@@ -194,7 +181,7 @@ test IORelation-3.9 {Test getWidth of a port with inferred relation width} {
     set e0 [java::new pt.actor.CompositeActor [java::null] $director]
     $e1 setName E0
     set e1 [java::new pt.actor.CompositeActor $e0 E1 [java::null]]
-    set e2 [java::new pt.actor.Actor $e1 E2]
+    set e2 [java::new pt.actor.AtomicActor $e1 E2]
     set r1 [java::new pt.actor.IORelation $e1 R1]
     set r2 [java::new pt.actor.IORelation $e0 R2]
     set p1 [java::new pt.actor.IOPort $e2 P1]
@@ -228,7 +215,7 @@ test IORelation-3.12 {Test getWidth of a port with inferred relation width} {
     set e0 [java::new pt.actor.CompositeActor [java::null] $director]
     $e1 setName E0
     set e1 [java::new pt.actor.CompositeActor $e0 E1 [java::null]]
-    set e2 [java::new pt.actor.Actor $e0 E2]
+    set e2 [java::new pt.actor.AtomicActor $e0 E2]
     set r1 [java::new pt.actor.IORelation $e0 R1]
     $r1 setWidth 0
     set p1 [java::new pt.actor.IOPort $e1 P1]
@@ -249,7 +236,7 @@ test IORelation-3.13 {Resolve width through three levels} {
     set e1 [java::new pt.actor.CompositeActor $e0 E1 [java::null]]
     set p1 [java::new pt.actor.IOPort $e1 P1]
     $p1 makeMultiport true
-    set e2 [java::new pt.actor.Actor $e1 E2]
+    set e2 [java::new pt.actor.AtomicActor $e1 E2]
     set p2 [java::new pt.actor.IOPort $e2 P2]
     $p2 makeMultiport true
     set r0 [java::new pt.actor.IORelation]
@@ -291,7 +278,7 @@ test IORelation-4.1 {Elaborate test system} {
     $p5 makeMultiport true
     set p6 [java::new pt.actor.IOPort $e3 P6]
 
-    set e6 [java::new pt.actor.Actor $e0 E6]
+    set e6 [java::new pt.actor.AtomicActor $e0 E6]
     set p7 [java::new pt.actor.IOPort $e6 P7]
     $p7 makeMultiport true
     $p7 makeInput true
@@ -311,7 +298,7 @@ test IORelation-4.1 {Elaborate test system} {
     $p7 link $r4
 
     # Inside E1
-    set e2 [java::new pt.actor.Actor $e1 E2]
+    set e2 [java::new pt.actor.AtomicActor $e1 E2]
     set p1 [java::new pt.actor.IOPort $e2 P1]
     $p1 makeMultiport true
     $p1 makeOutput true
@@ -323,11 +310,11 @@ test IORelation-4.1 {Elaborate test system} {
     $p4 link $r1
 
     # Inside E3
-    set e4 [java::new pt.actor.Actor $e3 E4]
+    set e4 [java::new pt.actor.AtomicActor $e3 E4]
     set p8 [java::new pt.actor.IOPort $e4 P8]
     $p8 makeMultiport true
     $p8 makeInput true
-    set e5 [java::new pt.actor.Actor $e3 E5]
+    set e5 [java::new pt.actor.AtomicActor $e3 E5]
     set p9 [java::new pt.actor.IOPort $e5 P9]
     $p9 makeMultiport true
     $p9 makeInput true
@@ -438,3 +425,42 @@ test IORelation-7.1 {Test widthFixed} {
             [$r6 widthFixed] \
             [$r7 widthFixed]
 } {0 1 1 1 0 1 1}
+
+######################################################################
+####
+# Test description
+# NOTE: These build on system above...
+
+test IORelation-8.1 {Test description} {
+    set configuration [java::field pt.actor.IORelation CONFIGURATION]
+    $r1 description $configuration
+} {configuration {width 4}}
+
+test IORelation-8.2 {Test description} {
+    set configuration [java::field pt.actor.IORelation CONFIGURATION]
+    $r2 description $configuration
+} {configuration {width 3 fixed}}
+
+test IORelation-8.3 {Test description} {
+    set configuration [java::field pt.actor.IORelation CONFIGURATION]
+    $r3 description $configuration
+} {configuration {width 1 fixed}}
+
+######################################################################
+####
+# Test clone
+# NOTE: These build on system above...
+
+test IORelation-9.1 {Test clone} {
+    set w [java::new pt.kernel.util.Workspace W]
+    set r8 [$r1 clone $w]
+    $r8 description $configuration
+} {configuration {width 1}}
+
+test IORelation-9.2 {Test clone} {
+    set w [java::new pt.kernel.util.Workspace W]
+    set r9 [$r2 clone $w]
+    $r9 description $configuration
+} {configuration {width 3 fixed}}
+
+

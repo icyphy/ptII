@@ -67,7 +67,7 @@ set director [java::new pt.actor.Director]
 #
 test IOPort-2.1 {Construct Ports} {
     set e0 [java::new pt.actor.CompositeActor [java::null] $director]
-    set e1 [java::new pt.actor.Actor $e0 E1]
+    set e1 [java::new pt.actor.AtomicActor $e0 E1]
     set p1 [java::new pt.actor.IOPort]
     set p2 [java::new pt.actor.IOPort $e1 P2]
     list [$p1 getFullName] [$p2 getFullName]
@@ -75,7 +75,7 @@ test IOPort-2.1 {Construct Ports} {
 
 test IOPort-2.2 {Construct Ports} {
     set e0 [java::new pt.actor.CompositeActor [java::null] $director]
-    set e1 [java::new pt.actor.Actor $e0 E1]
+    set e1 [java::new pt.actor.AtomicActor $e0 E1]
     set p1 [java::new pt.actor.IOPort $e1 P1]
     set p2 [java::new pt.actor.IOPort $e1 P2]
     list [$p1 getFullName] [$p2 getFullName]
@@ -87,14 +87,14 @@ test IOPort-2.3 {Attempt to set erroneous container} {
     set p1 [java::new pt.actor.IOPort]
     catch {$p1 setContainer $e1} msg
     list $msg
-} {{pt.kernel.util.IllegalActionException: ..E1 and .: IOPort can only be contained by Actor or CompositeActor}}
+} {{pt.kernel.util.IllegalActionException: ..E1 and .: IOPort can only be contained by objects implementing the Actor interface.}}
 
 ######################################################################
 ####
 #
 test IOPort-3.1 {Test input/output predicates} {
     set e0 [java::new pt.actor.CompositeActor [java::null] $director]
-    set e1 [java::new pt.actor.Actor $e0 E1]
+    set e1 [java::new pt.actor.AtomicActor $e0 E1]
     set p1 [java::new pt.actor.IOPort $e1 P1]
     set p2 [java::new pt.actor.IOPort $e1 P2 true true]
     list [$p1 isInput] [$p1 isOutput] [$p2 isInput] [$p2 isOutput]
@@ -102,7 +102,7 @@ test IOPort-3.1 {Test input/output predicates} {
 
 test IOPort-3.2 {Test input/output changes} {
     set e0 [java::new pt.actor.CompositeActor [java::null] $director]
-    set e1 [java::new pt.actor.Actor $e0 E1]
+    set e1 [java::new pt.actor.AtomicActor $e0 E1]
     set p1 [java::new pt.actor.IOPort $e1 P1 true true]
     set result [list [$p1 isInput] [$p1 isOutput]]
     $p1 makeInput false
@@ -112,7 +112,7 @@ test IOPort-3.2 {Test input/output changes} {
 
 test IOPort-3.3 {Test input/output predicates on transparent ports} {
     set e0 [java::new pt.actor.CompositeActor [java::null] $director]
-    set e1 [java::new pt.actor.Actor $e0 E1]
+    set e1 [java::new pt.actor.AtomicActor $e0 E1]
     set p0 [java::new pt.actor.IOPort $e0 P0]
     set p1 [java::new pt.actor.IOPort $e1 P1 true true]
     set r1 [java::new pt.actor.IORelation $e0 R1]
@@ -126,7 +126,7 @@ test IOPort-3.3 {Test input/output predicates on transparent ports} {
 #
 test IOPort-4.1 {Test multiport predicate} {
     set e0 [java::new pt.actor.CompositeActor [java::null] $director]
-    set e1 [java::new pt.actor.Actor $e0 E1]
+    set e1 [java::new pt.actor.AtomicActor $e0 E1]
     set p0 [java::new pt.actor.IOPort $e0 P0]
     set p1 [java::new pt.actor.IOPort $e1 P1 true true]
     set r1 [java::new pt.actor.IORelation $e0 R1]
@@ -138,7 +138,7 @@ test IOPort-4.1 {Test multiport predicate} {
 
 test IOPort-4.2 {Test multiport predicate on transparent port} {
     set e0 [java::new pt.actor.CompositeActor [java::null] $director]
-    set e1 [java::new pt.actor.Actor $e0 E1]
+    set e1 [java::new pt.actor.AtomicActor $e0 E1]
     set p1 [java::new pt.actor.IOPort $e1 P1 true false]
     set temp [$p1 isMultiport]
     $p1 makeMultiport true
@@ -150,7 +150,7 @@ test IOPort-4.2 {Test multiport predicate on transparent port} {
 #
 test IOPort-5.1 {Test getWidth} {
     set e0 [java::new pt.actor.CompositeActor [java::null] $director]
-    set e1 [java::new pt.actor.Actor $e0 E1]
+    set e1 [java::new pt.actor.AtomicActor $e0 E1]
     set p1 [java::new pt.actor.IOPort $e1 P1 true false]
     set r1 [java::new pt.actor.IORelation $e0 R1]
     set temp [$p1 getWidth]
@@ -160,7 +160,7 @@ test IOPort-5.1 {Test getWidth} {
 
 test IOPort-5.2 {Test getWidth} {
     set e0 [java::new pt.actor.CompositeActor [java::null] $director]
-    set e1 [java::new pt.actor.Actor $e0 E1]
+    set e1 [java::new pt.actor.AtomicActor $e0 E1]
     set p1 [java::new pt.actor.IOPort $e1 P1 true true]
     set r1 [java::new pt.actor.IORelation $e0 R1]
     set r2 [java::new pt.actor.IORelation $e0 R2]
@@ -172,7 +172,7 @@ test IOPort-5.2 {Test getWidth} {
 
 test IOPort-5.3 {Test getWidth} {
     set e0 [java::new pt.actor.CompositeActor [java::null] $director]
-    set e1 [java::new pt.actor.Actor $e0 E1]
+    set e1 [java::new pt.actor.AtomicActor $e0 E1]
     set p1 [java::new pt.actor.IOPort $e1 P1 true true]
     set r1 [java::new pt.actor.IORelation $e0 R1]
     $r1 setWidth 2
@@ -186,10 +186,10 @@ test IOPort-5.3 {Test getWidth} {
 test IOPort-5.4 {Test getWidth after unlinking} {
     set e0 [java::new pt.actor.CompositeActor [java::null] $director]
     # sending entity
-    set e1 [java::new pt.actor.Actor $e0 E1]
+    set e1 [java::new pt.actor.AtomicActor $e0 E1]
     set p1 [java::new pt.actor.IOPort $e1 P1 false true]
     # receiving entity
-    set e2 [java::new pt.actor.Actor $e0 E2]
+    set e2 [java::new pt.actor.AtomicActor $e0 E2]
     set p2 [java::new pt.actor.IOPort $e2 P2 true false]
     # connection
     # Can't use this because it uses a plain relation.
@@ -207,7 +207,7 @@ test IOPort-5.4 {Test getWidth after unlinking} {
 #
 test IOPort-6.1 {Make sure multiple links not allowed on single ports} {
     set e0 [java::new pt.actor.CompositeActor [java::null] $director]
-    set e1 [java::new pt.actor.Actor $e0 E1]
+    set e1 [java::new pt.actor.AtomicActor $e0 E1]
     set p1 [java::new pt.actor.IOPort $e1 P1 true true]
     set r1 [java::new pt.actor.IORelation $e0 R1]
     set r2 [java::new pt.actor.IORelation $e0 R2]
@@ -221,26 +221,26 @@ test IOPort-6.1 {Make sure multiple links not allowed on single ports} {
 #
 test IOPort-7.1 {Check getReceivers on an unlinked port} {
     set e0 [java::new pt.actor.CompositeActor [java::null] $director]
-    set e1 [java::new pt.actor.Actor $e0 E1]
+    set e1 [java::new pt.actor.AtomicActor $e0 E1]
     set p1 [java::new pt.actor.IOPort $e1 P1 true true]
     expr {[$p1 getReceivers] == [java::null]}
 } {1}
 
 test IOPort-7.2 {Check getReceivers} {
     set e0 [java::new pt.actor.CompositeActor [java::null] $director]
-    set e1 [java::new pt.actor.Actor $e0 E1]
+    set e1 [java::new pt.actor.AtomicActor $e0 E1]
     set p1 [java::new pt.actor.IOPort $e1 P1 true true]
     set r1 [java::new pt.actor.IORelation $e0 R1]
     catch {$p1 getReceivers $r1} msg
     list $msg
-} {{pt.kernel.util.IllegalActionException: ..E1.P1: getReceivers: Relation argument is not linked to me.}}
+} {{pt.kernel.util.IllegalActionException: ..E1.P1 and ..R1: getReceivers: Relation argument is not linked to me.}}
 
 ######################################################################
 ####
 #
 test IOPort-8.1 {Check getRemoteReceivers on a port with no links} {
     set e0 [java::new pt.actor.CompositeActor [java::null] $director]
-    set e1 [java::new pt.actor.Actor $e0 E1]
+    set e1 [java::new pt.actor.AtomicActor $e0 E1]
     set p1 [java::new pt.actor.IOPort $e1 P1 true true]
     expr {[$p1 getRemoteReceivers] == [java::null]}
 } {1}
@@ -248,10 +248,10 @@ test IOPort-8.1 {Check getRemoteReceivers on a port with no links} {
 test IOPort-8.2 {Check getRemoteReceivers on a port after unlinking} {
     set e0 [java::new pt.actor.CompositeActor [java::null] $director]
     # sending entity
-    set e1 [java::new pt.actor.Actor $e0 E1]
+    set e1 [java::new pt.actor.AtomicActor $e0 E1]
     set p1 [java::new pt.actor.IOPort $e1 P1 false true]
     # receiving entity
-    set e2 [java::new pt.actor.Actor $e0 E2]
+    set e2 [java::new pt.actor.AtomicActor $e0 E2]
     set p2 [java::new pt.actor.IOPort $e1 P2 true false]
     # connection
     # Can't use this because it uses a plain relation.
@@ -270,11 +270,11 @@ test IOPort-8.2 {Check getRemoteReceivers on a port after unlinking} {
 test IOPort-9.1 {Check connectivity via send} {
     set e0 [java::new pt.actor.CompositeActor [java::null] $director]
     # sending entity
-    set e1 [java::new pt.actor.Actor $e0 E1]
+    set e1 [java::new pt.actor.AtomicActor $e0 E1]
     set p1 [java::new pt.actor.IOPort $e1 P1 false true]
     # receiving entity
-    set e2 [java::new pt.actor.Actor $e0 E2]
-    set p2 [java::new pt.actor.IOPort $e1 P2 true false]
+    set e2 [java::new pt.actor.AtomicActor $e0 E2]
+    set p2 [java::new pt.actor.IOPort $e2 P2 true false]
     # connection
     # Can't use this because it uses a plain relation.
     # set r1 [$e0 connect $p1 $p2 R1]
@@ -291,14 +291,12 @@ test IOPort-9.1 {Check connectivity via send} {
 test IOPort-9.2 {Check unlink and send to dangling relation} {
     set e0 [java::new pt.actor.CompositeActor [java::null] $director]
     # sending entity
-    set e1 [java::new pt.actor.Actor $e0 E1]
+    set e1 [java::new pt.actor.AtomicActor $e0 E1]
     set p1 [java::new pt.actor.IOPort $e1 P1 false true]
     # receiving entity
-    set e2 [java::new pt.actor.Actor $e0 E2]
-    set p2 [java::new pt.actor.IOPort $e1 P2 true false]
+    set e2 [java::new pt.actor.AtomicActor $e0 E2]
+    set p2 [java::new pt.actor.IOPort $e2 P2 true false]
     # connection
-    # Can't use connect because it uses a plain relation.
-    # set r1 [$e0 connect $p1 $p2 R1]
     set r1 [java::new pt.actor.IORelation $e0 R1]
     $p1 link $r1
     $p2 link $r1
@@ -309,16 +307,16 @@ test IOPort-9.2 {Check unlink and send to dangling relation} {
     $p1 send 0 $token
     catch {$p2 get 0} msg
     list [$p2 getWidth] $msg
-} {0 {pt.kernel.util.NoSuchItemException: ..E1.P2: get: channel index is out of range.}}
+} {0 {pt.kernel.util.NoSuchItemException: ..E2.P2: get: channel index is out of range.}}
 
 test IOPort-9.3 {Check unlink and get from unlinked port} {
     set e0 [java::new pt.actor.CompositeActor [java::null] $director]
     # sending entity
-    set e1 [java::new pt.actor.Actor $e0 E1]
+    set e1 [java::new pt.actor.AtomicActor $e0 E1]
     set p1 [java::new pt.actor.IOPort $e1 P1 false true]
     # receiving entity
-    set e2 [java::new pt.actor.Actor $e0 E2]
-    set p2 [java::new pt.actor.IOPort $e1 P2 true false]
+    set e2 [java::new pt.actor.AtomicActor $e0 E2]
+    set p2 [java::new pt.actor.IOPort $e2 P2 true false]
     # connection
     # Can't use connect because it uses a plain relation.
     # set r1 [$e0 connect $p1 $p2 R1]
@@ -332,84 +330,117 @@ test IOPort-9.3 {Check unlink and get from unlinked port} {
     catch {$p1 send 0 $token} msg1
     catch {$p2 get 0} msg2
     list [$p2 getWidth] $msg1 $msg2
-} {1 {pt.kernel.util.IllegalActionException: ..E1.P1: send: channel index is out of range.} {pt.kernel.util.NoSuchItemException: ..E1.P2: Attempt to get data from an empty mailbox.}}
+} {1 {pt.kernel.util.IllegalActionException: ..E1.P1: send: channel index is out of range.} {pt.kernel.util.NoSuchItemException: ..E2.P2: Attempt to get data from an empty mailbox.}}
+
+test IOPort-9.4 {Check loopback send} {
+    set e0 [java::new pt.actor.CompositeActor [java::null] $director]
+    set e1 [java::new pt.actor.AtomicActor $e0 E1]
+    # sending port
+    set p1 [java::new pt.actor.IOPort $e1 P1 false true]
+    # receiving port
+    set p2 [java::new pt.actor.IOPort $e1 P2 true false]
+    set r1 [$e0 connect $p1 $p2 R1]
+    # token to send
+    set token [java::new pt.data.StringToken foo]
+    $p1 send 0 $token
+    set received [$p2 get 0]
+    $received toString
+} {pt.data.StringToken(foo)}
 
 ######################################################################
 ####
-#   TEST description(). Note 7 = RECEIVERS; 8 = REMOTE_RECEIVERS
+#   TEST description().
+
+# Set bits to give class, name, receivers, and remotereceivers only
+set detail [expr [java::field pt.kernel.util.NamedObj CLASSNAME]|[java::field pt.kernel.util.NamedObj FULLNAME]|[java::field pt.actor.IOPort RECEIVERS]|[java::field pt.actor.IOPort REMOTERECEIVERS]]
+
 test IOPort-10.1 {Check description on a new IOPort} {
     set p0 [java::new pt.actor.IOPort]
-    list [$p0 description 7] [$p0 description 8]
-} {{null
-} {null
+    $p0 description $detail
+} {pt.actor.IOPort {.} receivers {
+} remotereceivers {
 }}
 
 test IOPort-10.2 {Check description use test-7.1 topology} {
     set e0 [java::new pt.actor.CompositeActor [java::null] $director]
-    set e1 [java::new pt.actor.Actor $e0 E1]
+    set e1 [java::new pt.actor.AtomicActor $e0 E1]
     set p1 [java::new pt.actor.IOPort $e1 P1 true true]
-    list [$p1 description 7] [$p1 description 8]
-} {{null
-} {null
+    $p1 description $detail
+} {pt.actor.IOPort {..E1.P1} receivers {
+} remotereceivers {
 }}
 
 test IOPort-10.3 {Check description use test-9.1 topology} {
     set e0 [java::new pt.actor.CompositeActor [java::null] $director]
     # sending entity
-    set e1 [java::new pt.actor.Actor $e0 E1]
+    set e1 [java::new pt.actor.AtomicActor $e0 E1]
     set p1 [java::new pt.actor.IOPort $e1 P1 false true]
     # receiving entity
-    set e2 [java::new pt.actor.Actor $e0 E2]
-    set p2 [java::new pt.actor.IOPort $e1 P2 true false]
-    # connection
-    # Can't use this because it uses a plain relation.
-    # set r1 [$e0 connect $p1 $p2 R1]
-    set r1 [java::new pt.actor.IORelation $e0 R1]
-    $p1 link $r1
-    $p2 link $r1
-    list [$p1 description 7] [$p1 description 8] [$p2 description 7] [$p2 description 8]
-} {{null
-} {..E1.P2.pt.actor.Mailbox
-} {..E1.P2.pt.actor.Mailbox
-} {null
-}}
+    set e2 [java::new pt.actor.AtomicActor $e0 E2]
+    set p2 [java::new pt.actor.IOPort $e2 P2 true false]
+    set r1 [$e0 connect $p1 $p2 R1]
+    list "[$p1 description $detail]\n[$p2 description $detail]"
+} {{pt.actor.IOPort {..E1.P1} receivers {
+} remotereceivers {
+    {
+        {pt.actor.Mailbox in ..E2.P2}
+    }
+}
+pt.actor.IOPort {..E2.P2} receivers {
+    {
+        {pt.actor.Mailbox}
+    }
+} remotereceivers {
+}}}
 
 test IOPort-10.4 {Check description use 1 sender 2 destinaton topology} {
     set e0 [java::new pt.actor.CompositeActor [java::null] $director]
     # sender
-    set e1 [java::new pt.actor.Actor $e0 E1]
+    set e1 [java::new pt.actor.AtomicActor $e0 E1]
     set p1 [java::new pt.actor.IOPort $e1 P1 false true]
     # receiver 1
-    set e2 [java::new pt.actor.Actor $e0 E2]
+    set e2 [java::new pt.actor.AtomicActor $e0 E2]
     set p2 [java::new pt.actor.IOPort $e2 P2 true false]
     # receiver 2
-    set e3 [java::new pt.actor.Actor $e0 E3]
+    set e3 [java::new pt.actor.AtomicActor $e0 E3]
     set p3 [java::new pt.actor.IOPort $e3 P3 true false]
     # connection
     set r1 [java::new pt.actor.IORelation $e0 R1]
     $p1 link $r1
     $p2 link $r1
     $p3 link $r1
-    list [$p1 description 7] [$p1 description 8] [$p2 description 7] [$p2 description 8] [$p3 description 7] [$p3 description 8]
-} {{null
-} {..E2.P2.pt.actor.Mailbox ..E3.P3.pt.actor.Mailbox
-} {..E2.P2.pt.actor.Mailbox
-} {null
-} {..E3.P3.pt.actor.Mailbox
-} {null
-}}
+    list "[$p1 description $detail]\n[$p2 description $detail]\n[$p3 description $detail]"
+} {{pt.actor.IOPort {..E1.P1} receivers {
+} remotereceivers {
+    {
+        {pt.actor.Mailbox in ..E2.P2}
+        {pt.actor.Mailbox in ..E3.P3}
+    }
+}
+pt.actor.IOPort {..E2.P2} receivers {
+    {
+        {pt.actor.Mailbox}
+    }
+} remotereceivers {
+}
+pt.actor.IOPort {..E3.P3} receivers {
+    {
+        {pt.actor.Mailbox}
+    }
+} remotereceivers {
+}}}
 
 test IOPort-10.5 {Check description use multi-output port} {
     set e0 [java::new pt.actor.CompositeActor [java::null] $director]
     # sender
-    set e1 [java::new pt.actor.Actor $e0 E1]
+    set e1 [java::new pt.actor.AtomicActor $e0 E1]
     set p1 [java::new pt.actor.IOPort $e1 P1 false true]
     $p1 makeMultiport true
     # receiver 1
-    set e2 [java::new pt.actor.Actor $e0 E2]
+    set e2 [java::new pt.actor.AtomicActor $e0 E2]
     set p2 [java::new pt.actor.IOPort $e2 P2 true false]
     # receiver 2
-    set e3 [java::new pt.actor.Actor $e0 E3]
+    set e3 [java::new pt.actor.AtomicActor $e0 E3]
     set p3 [java::new pt.actor.IOPort $e3 P3 true false]
     # connection
     set r1 [java::new pt.actor.IORelation $e0 R1]
@@ -418,22 +449,33 @@ test IOPort-10.5 {Check description use multi-output port} {
     set r2 [java::new pt.actor.IORelation $e0 R2]
     $p1 link $r2
     $p3 link $r2
-    list [$p1 description 7] [$p1 description 8] \
-          [$p2 description 7] [$p2 description 8] \
-          [$p3 description 7] [$p3 description 8]
-} {{null
-} {..E2.P2.pt.actor.Mailbox
-..E3.P3.pt.actor.Mailbox
-} {..E2.P2.pt.actor.Mailbox
-} {null
-} {..E3.P3.pt.actor.Mailbox
-} {null
-}}
+    list "[$p1 description $detail]\n[$p2 description $detail]\n[$p3 description $detail]"
+} {{pt.actor.IOPort {..E1.P1} receivers {
+} remotereceivers {
+    {
+        {pt.actor.Mailbox in ..E2.P2}
+    }
+    {
+        {pt.actor.Mailbox in ..E3.P3}
+    }
+}
+pt.actor.IOPort {..E2.P2} receivers {
+    {
+        {pt.actor.Mailbox}
+    }
+} remotereceivers {
+}
+pt.actor.IOPort {..E3.P3} receivers {
+    {
+        {pt.actor.Mailbox}
+    }
+} remotereceivers {
+}}}
 
 test IOPort-10.6 {Check description use the example in design doc} {
     set e0 [java::new pt.actor.CompositeActor [java::null] $director]
     set e1 [java::new pt.actor.CompositeActor $e0 E1 [java::null]]
-    set e2 [java::new pt.actor.Actor $e1 E2]
+    set e2 [java::new pt.actor.AtomicActor $e1 E2]
     set p1 [java::new pt.actor.IOPort $e2 P1 false true]
     $p1 makeMultiport true
     set p2 [java::new pt.actor.IOPort $e1 P2 false true]
@@ -443,8 +485,8 @@ test IOPort-10.6 {Check description use the example in design doc} {
     set p4 [java::new pt.actor.IOPort $e1 P4 false true]
     $p4 makeMultiport true
     set e3 [java::new pt.actor.CompositeActor $e0 E3 [java::null]]
-    set e4 [java::new pt.actor.Actor $e3 E4]
-    set e5 [java::new pt.actor.Actor $e3 E5]
+    set e4 [java::new pt.actor.AtomicActor $e3 E4]
+    set e5 [java::new pt.actor.AtomicActor $e3 E5]
     # set p5 without specify input/output
     set p5 [java::new pt.actor.IOPort $e3 P5]
     $p5 makeMultiport true
@@ -454,11 +496,11 @@ test IOPort-10.6 {Check description use the example in design doc} {
     set p9 [java::new pt.actor.IOPort $e5 P9 true false]
     $p9 makeMultiport true
 
-    set e6 [java::new pt.actor.Actor $e0 E6]
+    set e6 [java::new pt.actor.AtomicActor $e0 E6]
     set p7 [java::new pt.actor.IOPort $e6 P7 true false]
     $p7 makeMultiport true
 
-    set e7 [java::new pt.actor.Actor $e0 E7]
+    set e7 [java::new pt.actor.AtomicActor $e0 E7]
     set p10 [java::new pt.actor.IOPort $e7 P10 false true]
     $p10 makeMultiport true
 
@@ -494,17 +536,36 @@ test IOPort-10.6 {Check description use the example in design doc} {
     $p9 link $r7
     set r8 [java::new pt.actor.IORelation $e0 R8]
     $p3 link $r8
-    list [$p1 description 7] [$p1 description 8] \
-         [$p10 description 7] [$p10 description 8]
-} {{null
-} {..E3.E4.P8.pt.actor.Mailbox ..E6.P7.pt.actor.Mailbox
-..E3.E4.P8.pt.actor.Mailbox ..E6.P7.pt.actor.Mailbox
-..E3.E4.P8.pt.actor.Mailbox
-..E3.E5.P9.pt.actor.Mailbox ..E3.E5.P9.pt.actor.Mailbox
-} {null
-} {..E3.E4.P8.pt.actor.Mailbox ..E6.P7.pt.actor.Mailbox
-..E3.E4.P8.pt.actor.Mailbox ..E6.P7.pt.actor.Mailbox
-}}
+    list "[$p1 description $detail]\n[$p10 description $detail]"
+} {{pt.actor.IOPort {..E1.E2.P1} receivers {
+} remotereceivers {
+    {
+        {pt.actor.Mailbox in ..E3.E4.P8}
+        {pt.actor.Mailbox in ..E6.P7}
+    }
+    {
+        {pt.actor.Mailbox in ..E3.E4.P8}
+        {pt.actor.Mailbox in ..E6.P7}
+    }
+    {
+        {pt.actor.Mailbox in ..E3.E4.P8}
+    }
+    {
+        {pt.actor.Mailbox in ..E3.E5.P9}
+        {pt.actor.Mailbox in ..E3.E5.P9}
+    }
+}
+pt.actor.IOPort {..E7.P10} receivers {
+} remotereceivers {
+    {
+        {pt.actor.Mailbox in ..E3.E4.P8}
+        {pt.actor.Mailbox in ..E6.P7}
+    }
+    {
+        {pt.actor.Mailbox in ..E3.E4.P8}
+        {pt.actor.Mailbox in ..E6.P7}
+    }
+}}}
 
 
 ######################################################################
@@ -518,11 +579,11 @@ test IOPort-11.1 {Check liberalLink on transparent multiport and inferred width}
     set p0 [java::new pt.actor.IOPort $e0 P0 false true]
     $p0 makeMultiport true
     # inside entity
-    set e1 [java::new pt.actor.Actor $e0 E1]
+    set e1 [java::new pt.actor.AtomicActor $e0 E1]
     set p1 [java::new pt.actor.IOPort $e1 P1 false true]
     $p1 makeMultiport true
     # outside entoty
-    set e2 [java::new pt.actor.Actor $e0 E2]
+    set e2 [java::new pt.actor.AtomicActor $e0 E2]
     set p2 [java::new pt.actor.IOPort $e2 P2 true false]
     $p2 makeMultiport true
     # connection
@@ -619,10 +680,10 @@ test IOPOrt-12.1 {deepConnectedIn(out)Ports} {
     # Create objects
     set e0 [java::new pt.actor.CompositeActor $director $director]
     $e0 setName E0
-    set e1 [java::new pt.actor.Actor $e0 "E1"]
+    set e1 [java::new pt.actor.AtomicActor $e0 "E1"]
     set e2 [java::new pt.actor.CompositeActor $e0 "E2" [java::null]]
-    set e3 [java::new pt.actor.Actor $e2 "E3"]
-    set e4 [java::new pt.actor.Actor $e0 "E4"]
+    set e3 [java::new pt.actor.AtomicActor $e2 "E3"]
+    set e4 [java::new pt.actor.AtomicActor $e0 "E4"]
     set p1 [java::new pt.actor.IOPort $e1 "P1"]
     set p2 [java::new pt.actor.IOPort $e2 "P2"]
     set p3 [java::new pt.actor.IOPort $e3 "P3"]
@@ -707,3 +768,145 @@ test IOPort-12.3 {deepConnectedIn(Out)Ports} {
             [enumToNames [$p5 deepConnectedOutPorts]]
 } {P5 P3 P1 {} {P1 P5} {} P5 {} P1 P3}
 
+######################################################################
+####
+# Test getReceivers() on transparent ports.
+# In particular, test the following comment:
+#      *  For a transparent port (a port of a non-atomic entity), this method
+#      *  returns the receivers in ports connected to this port on the inside.
+#      *  For an opaque port, the receivers returned are contained directly by
+#      *  this port.
+#      *  <p>
+#      *  The number of channels (rows) is the width of the port.
+#      *  If the width is zero, then this method will return null,
+#      *  as if the port were not an input port.
+# The test uses the description method to represent the results.
+
+test IOPort-13.1 {test getReceivers()} {
+    set e0 [java::new pt.actor.CompositeActor $director [java::null]]
+    $e0 setName E0
+    set e1 [java::new pt.actor.CompositeActor $e0 "E1" [java::null]]
+    set e2 [java::new pt.actor.CompositeActor $e0 "E2" [java::null]]
+    set e3 [java::new pt.actor.AtomicActor $e1 "E3"]
+    set e4 [java::new pt.actor.AtomicActor $e2 "E4"]
+    set p1 [java::new pt.actor.IOPort $e1 "P1"]
+    set p2 [java::new pt.actor.IOPort $e2 "P2"]
+    set p3 [java::new pt.actor.IOPort $e3 "P3"]
+    set p4 [java::new pt.actor.IOPort $e4 "P4"]
+    $p1 makeMultiport true
+    $p2 makeMultiport true
+    $p3 makeMultiport true
+    $p3 makeOutput true
+    $p4 makeMultiport true
+    $p4 makeInput true
+    set r1 [$e0 connect $p1 $p2]
+    $r1 setWidth 3
+    set r2 [$e1 connect $p3 $p1]
+    $r2 setWidth 2
+    set r3 [$e2 connect $p2 $p4]
+    $r3 setWidth 4
+    set receivers [java::field pt.actor.IOPort RECEIVERS]
+    set remotereceivers [java::field pt.actor.IOPort REMOTERECEIVERS]
+    $p2 description $receivers
+} {receivers {
+    {
+        {pt.actor.Mailbox}
+    }
+    {
+        {pt.actor.Mailbox}
+    }
+    {
+        {pt.actor.Mailbox}
+    }
+}}
+
+test IOPort-13.2 {test getReceivers()} {
+    # NOTE: Uses setup in previous test.
+    $p4 description $receivers
+} {receivers {
+    {
+        {pt.actor.Mailbox}
+    }
+    {
+        {pt.actor.Mailbox}
+    }
+    {
+        {pt.actor.Mailbox}
+    }
+    {
+        {pt.actor.Mailbox}
+    }
+}}
+
+test IOPort-13.3 {test getReceivers()} {
+    # NOTE: Uses setup in previous test.
+    $p1 description $receivers
+} {receivers {
+}}
+
+test IOPort-13.4 {test getReceivers()} {
+    # NOTE: Uses setup in previous test.
+    $p3 description $receivers
+} {receivers {
+}}
+
+######################################################################
+####
+# Test getReceivers() on transparent ports.
+# NOTE: Uses the same setup from the previous batch of tests.
+
+test IOPort-14.1 {test getRemoteReceivers()} {
+    # NOTE: Uses setup in previous test.
+    $p1 description $remotereceivers
+} {remotereceivers {
+    {
+        {pt.actor.Mailbox in .E0.E2.E4.P4}
+    }
+    {
+        {pt.actor.Mailbox in .E0.E2.E4.P4}
+    }
+    {
+        {pt.actor.Mailbox in .E0.E2.E4.P4}
+    }
+}}
+
+test IOPort-14.2 {test getRemoteReceivers()} {
+    # NOTE: Uses setup in previous test.
+    $p3 description $remotereceivers
+} {remotereceivers {
+    {
+        {pt.actor.Mailbox in .E0.E2.E4.P4}
+    }
+    {
+        {pt.actor.Mailbox in .E0.E2.E4.P4}
+    }
+}}
+
+test IOPort-14.3 {test getRemoteReceivers()} {
+    # NOTE: Uses setup in previous test.
+    $p2 description $remotereceivers
+} {remotereceivers {
+}}
+
+test IOPort-14.3 {test getRemoteReceivers()} {
+    # NOTE: Uses setup in previous test.
+    $p4 description $remotereceivers
+} {remotereceivers {
+}}
+
+######################################################################
+####
+# Test clone().
+# NOTE: Uses the same setup from the previous batch of tests.
+
+test IOPort-15.1 {test clone()} {
+    # NOTE: Uses setup in previous test.
+    set w [java::new pt.kernel.util.Workspace W]
+    set p5 [$p4 clone $w]
+    $p5 description
+} {pt.actor.IOPort {W.P4} attributes {
+} links {
+} insidelinks {
+} configuration {input multiport opaque{width 0}} receivers {
+} remotereceivers {
+}}
