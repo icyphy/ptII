@@ -38,7 +38,20 @@
     <input source="ptolemy/configs/utilitiesLibrary.xml"/>
 
     <!-- Default director library. -->
-    <input source="ptolemy/configs/ptinyDirectors.xml"/>
+    <!-- We split these into submenus so as to have a smaller footprint -->
+    <class name="director library" extends="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+	    <doc>default director library</doc>
+	    <input source="ptolemy/configs/ptinyDirectors.xml"/>
+	    <!-- No experimental directors -->
+          </group>
+        ?>
+      </configure>
+    </class>
+
+
 
     <!-- Default entity library to appear in the library browser. -->
     <class name="actor library" extends="ptolemy.moml.EntityLibrary">
