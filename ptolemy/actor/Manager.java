@@ -406,6 +406,10 @@ public class Manager extends NamedObj implements Runnable {
         
         Thread unpauser = new Thread() {
                 public void run() {
+                    // FIXME: During wrapup, the Manager is locked
+                    // and the ProcessDirector is waiting for threads
+                    // to end.  Since Manager is locked, these unpausers
+                    // can run, and the processes can't end.
                     synchronized(Manager.this) {
                         Manager.this.notifyAll();
                     }
