@@ -159,7 +159,7 @@ public class FunctionToken extends Token {
          *  @exception IllegalActionException If thrown during evaluating
          *   the function.
          */
-        public Token apply(List args) throws IllegalActionException;
+        public Token apply(List arguments) throws IllegalActionException;
 
         /** Return the number of arguments of the function.
          *  @return The number of arguments of the function.

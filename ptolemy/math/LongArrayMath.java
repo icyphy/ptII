@@ -559,7 +559,7 @@ public class LongArrayMath {
      *  of the second argument. If the second argument is 0, no
      *  operation is performed (the array is just copied).
      *
-     *  @param matrix A first array of longs.
+     *  @param array A first array of longs.
      *  @param shiftAmount The amount to shift by, positive for left shift,
      *  negative for right shift.
      *  @return A new array of longs.

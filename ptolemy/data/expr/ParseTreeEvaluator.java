@@ -1030,7 +1030,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
     /** Loop through all of the children of this node,
      *  visiting each one of them; this will cause their token
      *  value to be determined.
-     *  @param The node whose children are evaluated.
+     *  @param node The node whose children are evaluated.
      *  @exception IllegalActionException If an evaluation error occurs.
      */
     protected ptolemy.data.Token[] _evaluateAllChildren(ASTPtRootNode node)
@@ -1130,11 +1130,10 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
 
     /** Evaluate the given parse tree in the scope given to the
      *  constructor of this class.
-     *  @param The root of the parse tree to evaluate.
+     *  @param node The root of the parse tree to evaluate.
      *  @exception IllegalActionException If an evaluation error occurs.
      */
-    protected ptolemy.data.Token _evaluateParseTree(
-            ASTPtRootNode node)
+    protected ptolemy.data.Token _evaluateParseTree(ASTPtRootNode node)
             throws IllegalActionException {
         // Evaluate the value of the root node.
         node.visit(this);

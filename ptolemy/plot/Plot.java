@@ -483,7 +483,7 @@ public class Plot extends PlotBox {
     /** Read a file with the old syntax (non-XML).
      *  Override the base class to register that we are reading a new
      *  data set.
-     *  @param inputstream The input stream.
+     *  @param inputStream The input stream.
      *  @exception IOException If the stream cannot be read.
      */
     public synchronized void read(InputStream inputStream) throws IOException {
