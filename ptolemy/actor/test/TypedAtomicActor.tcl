@@ -69,3 +69,48 @@ test TypedAtomicActor-1.1 {Constructor tests} {
     list [$e1 getFullName] [$e2 getFullName] [$e3 getFullName] \
 	    [expr {[$e2 workspace] == $w}]
 } {. . .E0.E3 1}
+
+######################################################################
+####
+#
+test TypedAtomicActor-2.1 {Test array valued parameter and port} {
+    set e0 [sdfModel 5]
+    set actor [java::new ptolemy.actor.TypedAtomicActor $e0 actor]
+    set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
+
+    # add parameter and port to actor
+    set param [java::new ptolemy.data.expr.Parameter $actor param]
+    set output [java::new ptolemy.actor.TypedIOPort $actor output false true]
+
+    # set both the parameter and the output port to array type
+    set unk [java::field ptolemy.data.type.BaseType UNKNOWN]
+    set unkArrayType [java::new ptolemy.data.type.ArrayType $unk]
+    $param setTypeEquals $unkArrayType
+    $output setTypeEquals $unkArrayType
+
+    # set the type of the parameter and output to be the same
+    $output setTypeSameAs $param
+
+    # set initial value of parameter
+    $param setExpression {{1, 2}}
+
+    # connect and execute
+    set recIn [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+    $e0 connect $output $recIn
+    [$e0 getManager] execute
+
+    list [[$param getType] toString] [[$output getType] toString] \
+         [[$recIn getType] toString]
+} {(int)array (int)array (int)array}
+
+######################################################################
+####
+#
+test TypedAtomicActor-2.2 {Change initial value to double array} {
+    $param setExpression {{1.5, 2.5}}
+    [$e0 getManager] execute
+
+    list [[$param getType] toString] [[$output getType] toString] \
+         [[$recIn getType] toString]
+} {(double)array (double)array (double)array}
+
