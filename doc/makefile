@@ -47,7 +47,6 @@ EXTRA_SRCS = \
 	banner.htm \
 	body.htm \
 	buttons.htm \
-	codegen.htm \
 	contents.css \
 	contentsheader.htm \
 	default.css \
@@ -60,6 +59,7 @@ EXTRA_SRCS = \
 	help.htm \
 	index.htm \
 	install.htm \
+	javahtml.awk \
 	main.htm \
 	mainheader.htm \
 	ptII1.0.release.htm \
@@ -78,7 +78,7 @@ VERGIL_DOCS = \
 # want make checkjunk to barf on them.
 MISC_FILES =	\
 	$(DIRS) \
-	$(VERGILDOCS) \
+	$(VERGIL_DOCS) \
 	img \
 	tutorial
 
@@ -86,18 +86,38 @@ MISC_FILES =	\
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES =	\
 	codeDoc \
+	codeDocPtiny \
 	uml
 
-ALLJSRCS =		ptolemy.plot \
+PTINYJSRCS = \
+			ptolemy.actor.lib \
+			ptolemy.actor.lib.conversions \
+			ptolemy.actor.lib.gui \
+			ptolemy.domains.ct.lib \
+			ptolemy.domains.de.lib \
+			ptolemy.domains.sdf.lib \
+			ptolemy.domains.sdf.lib.vq
+
+# GR domain uses Java 3D, which is not part of the default
+# JDK1.3 download, so we can't include the GR domain classes in
+# the default build.
+#GRJSRCS =		ptolemy.domains.gr.kernel \
+#			ptolemy.domains.gr.lib
+
+# Javasound is not part of JDK1.2
+#JAVASOUNDJSRCS =	ptolemy.actor.lib.javasound \
+#			ptolemy.media.javasound
+
+ALLJSRCS =		$(PTINYJSRCS) \
+			$(GRJSRCS) \
+			$(JAVASOUNDJSRCS) \
+			ptolemy.plot \
 			ptolemy.plot.plotml \
 			ptolemy.plot.compat \
 			ptolemy.kernel \
 			ptolemy.kernel.util \
 			ptolemy.actor \
 			ptolemy.actor.gui \
-			ptolemy.actor.lib \
-			ptolemy.actor.lib.conversions \
-			ptolemy.actor.lib.gui \
 			ptolemy.actor.process \
 			ptolemy.actor.sched \
 			ptolemy.actor.util \
@@ -106,29 +126,17 @@ ALLJSRCS =		ptolemy.plot \
 			ptolemy.domains.ct.kernel \
 			ptolemy.domains.ct.kernel.solver \
 			ptolemy.domains.ct.kernel.util \
-			ptolemy.domains.ct.lib \
 			ptolemy.domains.dde.kernel \
 			ptolemy.domains.dde.lib \
 			ptolemy.domains.de.kernel \
-			ptolemy.domains.de.lib \
 			ptolemy.domains.fsm.kernel \
 			ptolemy.domains.pn.kernel \
 			ptolemy.domains.sdf.kernel \
-			ptolemy.domains.sdf.lib \
-			ptolemy.domains.sdf.lib.vq \
 			ptolemy.data \
 			ptolemy.data.expr \
 			ptolemy.data.type \
 			ptolemy.graph \
 			ptolemy.gui \
-			ptolemy.lang \
-			ptolemy.lang.java \
-			ptolemy.lang.java.extended \
-			ptolemy.lang.java.nodetypes \
-			ptolemy.lang.java.tree \
-			ptolemy.codegen \
-			ptolemy.codegen.saveasjava \
-			ptolemy.domains.sdf.codegen \
 			ptolemy.math \
 			ptolemy.media \
 			ptolemy.moml \
@@ -196,14 +204,6 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/data/type/*.java \
 			../ptolemy/graph/*.java \
 			../ptolemy/gui/*.java \
-			../ptolemy/lang/*.java \
-			../ptolemy/lang/java/*.java \
-			../ptolemy/lang/java/extended/*.java \
-			../ptolemy/lang/java/nodetypes/*.java \
-			../ptolemy/lang/java/tree/*.java \
-			../ptolemy/codegen/*.java \
-			../ptolemy/codegen/saveasjava/*.java \
-			../ptolemy/domains/sdf/codegen \
 			../ptolemy/math/*.java \
 			../ptolemy/media/*.java \
 			../ptolemy/moml/*.java \
@@ -219,6 +219,13 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 	@echo "If this fails because of memory problems, try"
 	@echo 'make JDOCFLAGS="-author -version -J-Xmx132m"'
 	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)" "$(JAVADOC)" $(JDOCFLAGS) $(JDOCSIZE) -d doc/codeDoc $(ALLJSRCS) )
+
+
+codeDocPtiny/tree.html:
+	if [ ! -d codeDocPtiny ]; then mkdir -p codeDocPtiny; fi
+	@echo "If this fails because of memory problems, try"
+	@echo 'make JDOCFLAGS="-author -version -J-Xmx132m"'
+	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)" "$(JAVADOC)" $(JDOCFLAGS) $(JDOCSIZE) -d doc/codeDocPtiny $(PTINYJSRCS) )
 
 
 # We don't include common.mk since we don't use the compiler here

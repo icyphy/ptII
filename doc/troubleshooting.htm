@@ -23,7 +23,7 @@ Contents
 <li> <a href="#applets">Troubleshooting Applets</a>
 	<menu>
 	<li> <a href="#jdk">Java version</a>
-	<li> <a href="#plugin">The Java Plugin</a>
+	<li> <a href="#plugin">The Java Plug-in</a>
 	<li> <a href="#Diagnosing problems">Diagnosing problems</a>
 	<li> <a href="#CLASSPATH">CLASSPATH variable</a>
 	<li> <a href="#appletviewer">Appletviewer</a>
@@ -31,17 +31,38 @@ Contents
 	</menu>
 </menu>
 <!--vergilDocs-->
-<h2><a name="#installer">Troubleshooting the Installer</a></h2>
-<dl>
-<dt> The installer is not starting up
-<dd> Try starting up by cd'ing to where the release is installed and doing:
-<pre>
-java -classpath "./ptolemy/ptolemy.jar;./ptolemy/vergil/vergil.jar;./lib/diva.jar;./doc/codeDoc/codeDocRuntime.jar" ptolemy.vergil.VergilApplication
-</pre>
-</dl>
-
 <h2><a name="#vergil">Troubleshooting Vergil</a></h2>
 <dl>
+<dt> How do I start Vergil by hand?
+<dd> Vergil uses the following jar files
+	<ul>
+	<li> <CODE>./ptolemy/ptolemy.jar</CODE>
+	<li> <CODE>./ptolemy/vergil/vergil.jar</CODE>
+	<li> <CODE>./ptolemy/lib/diva.jar</CODE>
+	</ul>
+The directory where Ptolemy II is installed should also be in the classpath.
+
+ <p>To start Vergil by hand, try starting up by cd'ing to where the
+release is installed and doing:
+
+ <!-- Split this into multiple lines so that the display does not
+have a horizontal scroll bar because of the length of the line. -->
+<pre>
+java -classpath ".;./ptolemy/ptolemy.jar;\
+./ptolemy/vergil/vergil.jar;\
+./lib/diva.jar" ptolemy.vergil.VergilApplication
+</pre>
+
+
+<dt> Under Windows, how do I start vergil.exe and get a console window?
+<dd> Under windows, the Installshield installer creates
+a launcher called <CODE>vergil.exe</CODE>.  That file is
+located in the top level directory where Ptolemy II was installed.
+ <p>To start with a console window, try:
+<pre>
+vergil.exe -is:javaconsole
+</pre>
+
 <dt> The user interface appears to be frozen, but windows are redrawn.
 
 <dd> A modal dialog may be open.  Unfortunately, these dialogs do not
@@ -141,14 +162,14 @@ The applets on these pages require JDK 1.3 (JDK stands for the
 Java Development Kit).
 (See the <a href="install.htm#java">Java section</a> of the installation page for details)
 
-<h3><a name="plugin">The Java Plugin</a></h3>
+<h3><a name="plugin">The Java Plug-in</a></h3>
 The
-<a href="http://www.javasoft.com/products/plugin/" target="_top">Javasoft Java Plugin</a>
+<a href="http://www.javasoft.com/products/plugin/" target="_top">Javasoft Java Plug-in</a>
 provides support for JDK1.3 under Netscape Communicator 4.5 and Internet
 Explorer 4.0.
-Netscape 6.x optionally includes a JDK1.3 plugin.
+Netscape 6.x optionally includes a Java plug-in 1.3.
 
- <p>Under Windows, the JDK1.3 plugin is automatically installed
+ <p>Under Windows, the Java Plug-in 1.3 is automatically installed
 when JRE 1.3 is installed (JRE stands for Java Runtime Environment).
 JRE 1.3 is available as a standalone install from Sun.
 
@@ -158,32 +179,32 @@ the JDK, not the JRE.  See the
 <a href="install.htm">Ptolemy II Installation</a> page for
 installation instructions.
 
- <p>Under Solaris 2.6 and 2.7, the plugin is available as a separate
+ <p>Under Solaris 2.6 and 2.7, the plug-in is available as a separate
 download (which we have not tested).
 
  <p>If you are on a platform where the browser does not have
-the JDK1.3 plugin, then you can still run the demos with the
+the Java plug-in 1.3, then you can still run the demos with the
 JDK <a href="#appletviewer">Appletviewer</a>
 
 <H3><a name="Diagnosing problems">Diagnosing problems</a></H3>
 
-The Java plugin includes a console window which reports errors.
+The Java Plug-in includes a console window which reports errors.
  <p>Under JDK1.3, the console window can be enabled by going to
 <CODE>Start</CODE> -&gt; <CODE>Settings</CODE> -&gt;
 <CODE>Control Panel</CODE> -&gt; <CODE>Java Plug-in</CODE>
 and selecting <CODE>Show Java Console</CODE>.  Then restart the browser.
 
- <p>Note that the JDK1.3 Plugin console is different than
+ <p>Note that the Java Plug-In console is different than
 the Netscape or IE Java console.
 
- <p><a name="jit">The</a> plugin control panel also has a checkbox
+ <p><a name="jit">The</a> plug-in control panel also has a checkbox
 to turn off the Just In Time (JIT) Compiler.  If you are having problems
 with the Netscape process lingering after you exit the browser, then
 try turning the JIT off and restarting Navigator.  This is a bug
 in the JDK1.2.1 Plug-in that may have been fixed in JDK1.2.2, see
 <a href="http://developer.java.sun.com/developer/bugParade/bugs/4236070.html">bug 4236070 in the Java Developer Connection</a>
 
- <p><a name="jar cache">The</a> plugin control panel also has a checkbox
+ <p><a name="jar cache">The</a> plug-in control panel also has a checkbox
 that turns off the Jar Cache.  If you are debugging applets, you
 may want to turn off the Jar Cache so that .class files and jar files
 are reloaded when the applet is reloaded.  Note that if you turn
@@ -272,25 +293,25 @@ the <CODE>Reload</CODE> button will reload any Java
 
 <li> Restart your browser.
 
- <li>Verify that the Plugin Control Panel menu choice is present.
+ <li>Verify that the Plug-In Control Panel menu choice is present.
  <br>Under JDK1.3, look for
 <CODE>Start</CODE> -&gt; <CODE>Settings</CODE> -&gt;
 <CODE>Control Panel</CODE> -&gt; <CODE>Java Plug-in</CODE>
-  <br>If the <CODE>Java Plugin Control Panel</CODE>
+  <br>If the <CODE>Java Plug-In Control Panel</CODE>
  menu choice is not present, then
-you may need to install or reinstall the Java plugin.
+you may need to install or reinstall the Java plug-in.
  <li> Look for an error message in the Java console.
 See <a href="#Diagnosing problems">Diagnosing problems</a> above.
 
- <li> Verify that the browser sees the plugin
+ <li> Verify that the browser sees the plug-in
  <br>In Netscape, go to help->About plugins, or type in
 <a href="about:plugins"><CODE>about:plugins </CODE></a>
 into the Location entry widget.
 
-The JDK1.3 plugin should be listed.  If it is not reinstall
-the plugin.
+The Java plug-in 1.3 should be listed.  If it is not reinstall
+the plug-in.
 
-If the plugin is not listed after reinstalling, then remove and reinstall
+If the plug-in is not listed after reinstalling, then remove and reinstall
 Netscape.
 
 
@@ -299,10 +320,10 @@ See the <a href="#CLASSPATH">CLASSPATH variable</a> instructions above.
 
 <li> Verify that you are running a recent version of the browser
 
-<dt> Try out a non-Ptolemy JDK1.3 applet
-<dd> If are having problems with the plugin you may want to try
-<a href="http://www.javasoft.com/products/plugin/1.3/demos/applets.html" target="_top">Java Plugin 1.3 Demonstration Applets</a>
-page has a few sample JDK1.3 applets.
+<dt> Try out a non-Ptolemy Java 1.3 applet
+<dd> If are having problems with the plug-in you may want to try
+<a href="http://www.javasoft.com/products/plugin/1.3/demos/applets.html" target="_top">Java Plug-In 1.3 Demonstration Applets</a>
+page has a few sample Java 1.3 applets.
 
 <li> Under Internet Explorer, the Swing Query boxes will sometimes
 not respond. The workaround is to minimize the IE window and bring it back.
@@ -319,10 +340,10 @@ The query box should now work.
 <li> If you are running under Microsoft Windows or NT, try rebooting.
 
 <li> Use the Plugin Control Panel to turning off the Just In Time
-(JIT) compiler in the plugin and restart the browser.
-Under NT, the Plugin Control Panel can
+(JIT) compiler in the plug-in and restart the browser.
+Under NT, the Plug-In Control Panel can
 be found at <CODE>Start</CODE> -&gt; <CODE>Programs</CODE> -&gt;
-<CODE>Java Plugin Control Panel</CODE>
+<CODE>Java Plug-In Control Panel</CODE>
 
 <li> Try running the applets from a different machine or as a different
 user.
@@ -331,7 +352,7 @@ user.
 
 <br> The most drastic step is to uninstall the browser and JDK.
 Unfortunately, this is likely to require that you reinstall any other
-plugins, such as Adobe Acrobat.
+plug-ins, such as Adobe Acrobat.
 <ol>
   <li> Uninstall the browser
 

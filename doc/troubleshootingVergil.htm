@@ -8,17 +8,38 @@
 </head>
 <body>
 <!--vergilDocs-->
-<h2><a name="#installer">Troubleshooting the Installer</a></h2>
-<dl>
-<dt> The installer is not starting up
-<dd> Try starting up by cd'ing to where the release is installed and doing:
-<pre>
-java -classpath "./ptolemy/ptolemy.jar;./ptolemy/vergil/vergil.jar;./lib/diva.jar;./doc/codeDoc/codeDocRuntime.jar" ptolemy.vergil.VergilApplication
-</pre>
-</dl>
-
 <h2><a name="#vergil">Troubleshooting Vergil</a></h2>
 <dl>
+<dt> How do I start Vergil by hand?
+<dd> Vergil uses the following jar files
+	<ul>
+	<li> <CODE>./ptolemy/ptolemy.jar</CODE>
+	<li> <CODE>./ptolemy/vergil/vergil.jar</CODE>
+	<li> <CODE>./ptolemy/lib/diva.jar</CODE>
+	</ul>
+The directory where Ptolemy II is installed should also be in the classpath.
+
+ <p>To start Vergil by hand, try starting up by cd'ing to where the
+release is installed and doing:
+
+ <!-- Split this into multiple lines so that the display does not
+have a horizontal scroll bar because of the length of the line. -->
+<pre>
+java -classpath ".;./ptolemy/ptolemy.jar;\
+./ptolemy/vergil/vergil.jar;\
+./lib/diva.jar" ptolemy.vergil.VergilApplication
+</pre>
+
+
+<dt> Under Windows, how do I start vergil.exe and get a console window?
+<dd> Under windows, the Installshield installer creates
+a launcher called <CODE>vergil.exe</CODE>.  That file is
+located in the top level directory where Ptolemy II was installed.
+ <p>To start with a console window, try:
+<pre>
+vergil.exe -is:javaconsole
+</pre>
+
 <dt> The user interface appears to be frozen, but windows are redrawn.
 
 <dd> A modal dialog may be open.  Unfortunately, these dialogs do not
