@@ -29,7 +29,8 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS = ct sdf pn
+# pn has been removed until PNActors compiles
+DIRS = ct sdf #pn
 
 # Root of Tycho directory
 ROOT =		../../..
