@@ -132,10 +132,9 @@ public class PBODirector extends Director {
      *  @exception It may be thrown in derived classes if the
      *      director is not compatible with the specified container.
      */
-    public PBODirector(CompositeActor container, String name)
+    public PBODirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        container.setDirector(this);
 	_init();
     }
 
