@@ -56,8 +56,13 @@ public class  CTPlot extends CTActor {
     public CTPlot  (TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
 
-        this(container, name, (new PlotFrame(name)).plot);
+        // this(container, name, (new PlotFrame(name)).plot);
+        super(container, name);
 
+        // create the input port and make it a multiport.
+        input = new TypedIOPort(this, "input", true, false);
+        input.setMultiport(true);
+        input.setDeclaredType(DoubleToken.class);
     }
 
     /** Construct a plot actor that uses the specified plot object.
@@ -66,7 +71,7 @@ public class  CTPlot extends CTActor {
      *
      *  @exception NameDuplicationException If the parent class throws it.
      *  @exception IllegalActionException If the parent class throws it.
-     */
+     *
     public CTPlot (TypedCompositeActor container, String name, Plot plot)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
@@ -89,7 +94,7 @@ public class  CTPlot extends CTActor {
         // FIXME: This is not the right way to handle this...
         _yMin = (double)-1;
         _yMax = (double)1;
-    }
+    }*/
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -98,13 +103,29 @@ public class  CTPlot extends CTActor {
      *  @exception IllegalActionException Not thrown in this class.
      */
     public void initialize() throws IllegalActionException {
+        _plot = (new PlotFrame(getName())).plot;
+        _plot.setButtons(true);
+	_plot.setPointsPersistence(0);
+        //_plot.setMarksStyle("points");
+        _plot.setImpulses(false);
+        _plot.setConnected(true);
+        _plot.setTitle(getName());
 
+        // FIXME: This is not the right way to handle this...
+        _yMin = (double)-1;
+        _yMax = (double)1;
         // Call clear with 'true' argument, so it'll reset the legend...
         _plot.clear(false);
         int width = input.getWidth();
         _firstPoint = new boolean[width];
-	for (int i = 0; i < width; i++) {
-            _plot.addLegend(i, "Data " + i);
+        for (int i = 0; i < width; i++) {
+             if (_legends != null && i < _legends.length &&
+                    _legends[i].length() != 0) {
+                _plot.addLegend(i, _legends[i]);
+            } else {
+                _plot.addLegend(i, "Data " + i);
+
+            }
             _firstPoint[i] = true;
 	}
 
@@ -187,6 +208,12 @@ public class  CTPlot extends CTActor {
         }
     }
 
+    /** Set the legends.
+     */
+    public void setLegend(String[] legends) {
+        _legends = legends;
+    }
+
     /** Rescale the plot so that all the data plotted is visible.
      *  @exception IllegalActionException If the parent class throws it.
      */
@@ -216,7 +243,8 @@ public class  CTPlot extends CTActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
+    private String[] _legends;
+//    private Parameter _paramLegends;
     private Plot _plot;
 
     private double _yMin;
