@@ -33,7 +33,7 @@ messages like:
 <PRE>
 Applet Marks can't start: security violation: security.class
 from local disk trying to access url:
-http://ptolemy.eecs.berkeley.edu/java/pt/plot/demo/data.plt
+http://ptolemy.eecs.berkeley.edu/java/ptolemy/plot/demo/data.plt
 </PRE>
 
 <H3><CODE>pxgraph</CODE> script fails with: Unable to initialize threads: cannot find class</H3>
@@ -51,18 +51,18 @@ of your JDK.
 HOME <P>Another fix is to set the <CODE>JAVAHOME</CODE> variable
 to point to your JDK and rerun pxgraph:
 <PRE>
-cxh@carson 41% setenv JAVAHOME /opt/jdk1.1.4
+cxh@carson 41% setenv JAVAHOME /optolemy/jdk1.1.4
 cxh@carson 42% pxgraph -help
 Usage: pxgraph [ options ] [=WxH+X+Y] [file ...]
  options that take values as second args:
 </PRE>
 For further debugging, you might find it helpful to follow the instructions below.
  <HR>
-<H3><CODE>pxgraph</CODE> script fails with: Can't find class pt.plot.Pxgraph</H3>
+<H3><CODE>pxgraph</CODE> script fails with: Can't find class ptolemy.plot.Pxgraph</H3>
 Here is an example
 <PRE>
 carson [3] pxgraph -help
-Can't find class pt.plot.Pxgraph
+Can't find class ptolemy.plot.Pxgraph
 carson [4]
 </PRE>
 
@@ -82,7 +82,7 @@ you are running.
 carson [10] sh -x /users/ptdesign/bin.sol2.5/pxgraph -help
 PTDEFAULT=/users/ptdesign
 TYDEFAULT=/users/ptdesign/tycho
-JAVADEFAULT=/opt/jdk1.1.4
+JAVADEFAULT=/optolemy/jdk1.1.4
 + [ -z /users/cxh/ptbuild ]
 + [ -z  ]
 + [ /users/cxh/ptbuild -a -f /users/cxh/ptbuild/tycho/bin/ptarch ]
@@ -92,29 +92,29 @@ windows=no
 + uname
 + [ SunOS = CYGWIN32/NT ]
 + [ -z  ]
-+ [ -d /opt/jdk1.1.4 ]
-JAVAHOME=/opt/jdk1.1.4
++ [ -d /optolemy/jdk1.1.4 ]
+JAVAHOME=/optolemy/jdk1.1.4
 + export JAVAHOME
-+ [ -z /opt/jdk1.1.4 ]
-+ [ ! -r /opt/jdk1.1.4/lib/classes.zip ]
++ [ -z /optolemy/jdk1.1.4 ]
++ [ ! -r /optolemy/jdk1.1.4/lib/classes.zip ]
 + [ no = yes ]
-+ /opt/jdk1.1.4/bin/java -classpath /users/cxh/ptbuild/tycho/java:/opt/jdk1.1.4/lib/classes.zip pt.plot.Pxgraph -help
-Can't find class pt.plot.Pxgraph
++ /optolemy/jdk1.1.4/bin/java -classpath /users/cxh/ptbuild/tycho/java:/optolemy/jdk1.1.4/lib/classes.zip ptolemy.plot.Pxgraph -help
+Can't find class ptolemy.plot.Pxgraph
 carson [11]
 </PRE>
 
 In the output below, the key line is the line towards that bottom that
 runs the <CODE>java</CODE> interpreter:
 <PRE>
-+ /opt/jdk1.1.4/bin/java -classpath /users/cxh/ptbuild/tycho/java:/opt/jdk1.1.4/lib/classes.zip pt.plot.Pxgraph -help
++ /optolemy/jdk1.1.4/bin/java -classpath /users/cxh/ptbuild/tycho/java:/optolemy/jdk1.1.4/lib/classes.zip ptolemy.plot.Pxgraph -help
 </PRE>
 In the pxgraph script, the first element in the <CODE>-classpath</CODE>
 argument should point lead to the <CODE>ptplot.zip</CODE> file.
-In this case, <CODE>/users/cxh/ptbuild/tycho/java/pt/plot/ptplot.zip</CODE>
+In this case, <CODE>/users/cxh/ptbuild/tycho/java/ptolemy/plot/ptplot.zip</CODE>
 should exist, but it does not:
 <PRE>
-carson [12] ls -l /users/cxh/ptbuild/tycho/java/pt/plot/ptplot.zip
-/users/cxh/ptbuild/tycho/java/pt/plot/ptplot.zip not found
+carson [12] ls -l /users/cxh/ptbuild/tycho/java/ptolemy/plot/ptplot.zip
+/users/cxh/ptbuild/tycho/java/ptolemy/plot/ptplot.zip not found
 </PRE>
 In this case the problem was that the user did not have Ptplot installed
 in the location that the <CODE>pxgraph</CODE> script was guessing.
@@ -122,7 +122,7 @@ The fix was to install it.
  <P>Another common fix is to edit the <CODE>pxgraph</CODE> script
 and change the variables at the top to point to the proper location.
 See the Pxgraph
-<A HREF="../codeDoc/pt.plot.Pxgraph.html#Installation Instructions">Installation Instructions</A> for details.
+<A HREF="../codeDoc/ptolemy.plot.Pxgraph.html#Installation Instructions">Installation Instructions</A> for details.
 
 
  <HR>
@@ -130,9 +130,9 @@ See the Pxgraph
 If you try to run the Pxgraph class by passing the Pxgraph classname as a command line argument to the java interpreter, you might see:
 <PRE>
 ptplot&gt; java Pxgraph
-java.lang.NoClassDefFoundError: pt/plot/Plot
-        at pt.plot.Pxgraph.&lt;init&gt;(Pxgraph.java)
-        at pt.plot.Pxgraph.main(Pxgraph.java)
+java.lang.NoClassDefFoundError: ptolemy/plot/Plot
+        at ptolemy.plot.Pxgraph.&lt;init&gt;(Pxgraph.java)
+        at ptolemy.plot.Pxgraph.main(Pxgraph.java)
 </PRE>
 The problem here is that the Ptplot java classes are in the Ptplot java
 package, so you need to set your CLASSPATH to the directory that
@@ -143,8 +143,8 @@ directory, you
 would set your classpath to <CODE>/usr/local/java</CODE>
  <P>The following two examples show two ways to set your classpath.
 <PRE>
-cxh@carson 32% setenv CLASSPATH ..:/opt/jdk1.1.4/lib/classes.zip
-cxh@carson 33% java pt.plot.Pxgraph -help
+cxh@carson 32% setenv CLASSPATH ..:/optolemy/jdk1.1.4/lib/classes.zip
+cxh@carson 33% java ptolemy.plot.Pxgraph -help
 Usage: pxgraph [ options ] [=WxH+X+Y] [file ...]
  options that take values as second args:
  -bd &lt;color&gt; (Unsupported)
@@ -152,7 +152,7 @@ Usage: pxgraph [ options ] [=WxH+X+Y] [file ...]
 
 <PRE>
 cxh@carson 34% unsetenv CLASSPATH
-cxh@carson 35% java -classpath ..:/opt/jdk1.1.4/lib/classes.zip ptplot.Pxgraph -help
+cxh@carson 35% java -classpath ..:/optolemy/jdk1.1.4/lib/classes.zip ptplot.Pxgraph -help
 Usage: pxgraph [ options ] [=WxH+X+Y] [file ...]
  options that take values as second args:
  -bd &lt;color&gt; (Unsupported)
@@ -162,7 +162,7 @@ file, rather than including the directory that the <CODE>ptplot</CODE>
 directory resides in:
 <PRE>
 cxh@carson 36% unsetenv CLASSPATH
-cxh@carson 57% java -classpath ptplot.zip:/opt/jdk1.1.4/lib/classes.zip ptplot.Pxgraph -help
+cxh@carson 57% java -classpath ptplot.zip:/optolemy/jdk1.1.4/lib/classes.zip ptplot.Pxgraph -help
 Usage: pxgraph [ options ] [=WxH+X+Y] [file ...]
  options that take values as second args:
  -bd &lt;color&gt; (Unsupported)
