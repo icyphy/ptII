@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (neuendor@robotics.eecs.berkeley.edu)
-@AcceptedRating Red (winthrop@robotics.eecs.berkeley.edu)
+@AcceptedRating Yellow (winthrop@robotics.eecs.berkeley.edu)
 
 */
 
@@ -42,16 +42,24 @@ import ptolemy.data.type.TypeLattice;
 //////////////////////////////////////////////////////////////////////////
 //// ByteToken
 /**
-A token that contains a byte number in the range 0 through 255.
-This is in contrast to Java's default that a byte is in the range
--128 through 127.  To get our desired behavior we need only apply
-a custom conversion <i>unsignedConvert()</i> from byte to integer.
-Conversion to byte already gives the desired behavior of truncating
-the value, keeping the lowest 8 bits.  Thus, for example, the integers
--1 and 1023 both truncate to the byte 255.  Throughout the code, casts
-(byte) to byte occur.  These are necessary because Java converts to
-integer or higher by default when doing arithmetic.  Java does this
-even when the types of both operands are byte.
+A token that contains a byte number in the range 0 through 255.  This
+ByteToken definition is in contrast to Java's definition of a byte as
+a number in the range -128 through 127.
+
+Overflow and underflow are handled by returning the result of all
+operations modulo 256.  Thus, the result is always in the range 0
+through 255.  Likewise, constructors of this class generate tokens
+whose values are the argument modulo 256.  Note, for example, that
+ByteToken((byte)(-100)) generates a ByteToken representing the value
+156, which is -100 modulo 256.
+
+Note, also, that the byteValue() method returns a Java byte in the
+range -128 through 127.  This is in contrast to the intValue(),
+longValue(), doubleValue(), and complexValue() methods which all
+return values in the range 0 through 255.  The value returned by
+byteValue() is the value represented by the ByteToken but with 256
+subtracted if this value is greater than 127.  In other words, the
+result and the argument are equal modulo 256.
 
 @author Winthrop Williams, Steve Neuendorffer
 @version $Id$
@@ -68,7 +76,7 @@ public class ByteToken extends ScalarToken {
     /** Construct a ByteToken with the specified byte value.  The
      *  ByteToken constructed represents a value in the range 0
      *  through 255.  However, the byte passed in as the argument to
-     *  this method represents a value in java in the range -128 to
+     *  this method represents a value in Java in the range -128 to
      *  127.  Due to the difference between these definitions, this
      *  method effectively adds 256 if the argument is negative,
      *  resulting in a positive value for the ByteToken.
@@ -80,7 +88,7 @@ public class ByteToken extends ScalarToken {
     /** Construct a ByteToken with the specified integer value.  The
      *  ByteToken constructed represents a value in the range 0
      *  through 255.  However, the integer passed in as the argument
-     *  to this method represents a value in java in the range -2^31
+     *  to this method represents a value in Java in the range -2^31
      *  to (2^31)-1.  This method's cast to (byte) keeps only the low
      *  order 8 bits of the integer.  This effectively adds or
      *  subtracts a multiple of 256 to/from the argument.  The
@@ -91,7 +99,7 @@ public class ByteToken extends ScalarToken {
     }
 
     /** Construct a ByteToken from the specified string.  The string
-     *  is parsed by the valueOf() method of the java Byte object.
+     *  is parsed by the valueOf() method of the Java Byte object.
      *  @exception IllegalActionException If the token could not
      *   be created from the given string.
      */
@@ -122,7 +130,7 @@ public class ByteToken extends ScalarToken {
      *  ByteToken, an exception is thrown with a message stating that
      *  either the conversion is not supported, or the types are
      *  incomparable.  If none of the above conditions is met, then the
-     *  argument must be below ByteToken in the type heirarchy.
+     *  argument must be below ByteToken in the type hierarchy.
      *  However, not such types exist at this time, so an exception is
      *  thrown with a message stating simply that the conversion is
      *  not supported.
@@ -148,7 +156,10 @@ public class ByteToken extends ScalarToken {
                 notSupportedConversionMessage(token, "byte"));
     }
 
-    /** Return the value in the token as a double.
+    /** Return the value in the token as a double.  First, the
+     *  unsignedConvert() method of this class is used to
+     *  convert the byte to an integer in the range 0 through 255.
+     *  Then this integer is cast to a double.
      *  @return The value contained in this token as a double.
      */
     public double doubleValue() {
@@ -188,24 +199,34 @@ public class ByteToken extends ScalarToken {
         return _value;
     }
 
-    /** Return the value in the token as a byte.
-     *  @return The byte value contained in this token.
+    /** Return the value in this token as a byte, modulo 256.  The
+     *  ByteToken being converted represents a value in the range 0
+     *  through 255.  However, the Java byte it is being converted to
+     *  represents a value in the range -128 through 127.  Thus, this
+     *  method has the effect subtracting 256 from the value if the
+     *  value is greater than 127.
+     *  @return The byte value contained in this token, modulo 256.
      */
     public byte byteValue() {
         return _value;
     }
 
-    //FIXME - Seems this caused some problem so I took it out.
-    // Now that it is back in it may cause trouble again.
-    /** Return the value in the token as an int.
-     *  @return The byte  value contained in this token as a int.
+    /** Return the value in the token as an integer.  The ByteToken
+     *  being converted to an integer represents a value in the range
+     *  0 through 255.  The unsignedConvert() method of this class is
+     *  used to convert the byte to an integer in the range 0 through
+     *  255.
+     *  @return The byte value contained in this token as a int.
      */
     public int intValue() {
         return unsignedConvert(_value);
     }
 
-    /** Return the value in the token as a long.
-     *  @return The byte  value contained in this token as a long.
+    /** Return the value in the token as a long.  The ByteToken being
+     *  converted to a long represents a value in the range 0 through
+     *  255.  The unsignedConvert() method of this class is used to
+     *  convert the byte to an integer in the range 0 through 255.
+     *  @return The byte value contained in this token as a long.
      */
     public long longValue() {
         return (long) unsignedConvert(_value);
@@ -234,17 +255,12 @@ public class ByteToken extends ScalarToken {
         return Byte.toString(_value) + unitString;
     }
 
-    /** Convert the given unsigned byte to an integer.  This is
-     *  different from the default <i>(int)</i> conversion.  The
-     *  default (int) conversion yields negative values from bytes
-     *  whose high bit is true.  This is necessary because Java, by
-     *  default, interprets bytes as signed numbers.  We are
-     *  interested in unsigned bytes.  Conversion from integers to
-     *  bytes requires no hand coding.  This is because Java converts
-     *  to bytes by keeping just the least significant 8 bits.  It
-     *  pays no attention to sign in that conversion.
-     *  @param byte The byte to convert.
-     *  @return An integer between 0 and 255.
+    /** Convert a byte to an integer, treating the byte as an unsigned
+     *  value in the range 0 through 255.  Note that Java defines the
+     *  byte as having a value ranging from -128 through 127, so 256
+     *  is added if this value is negative.
+     *  @param value The byte to convert as an unsigned byte.
+     *  @return An integer in the range 0 through 255.
      */
     public static int unsignedConvert(byte value) {
         int intValue = value;
@@ -279,9 +295,11 @@ public class ByteToken extends ScalarToken {
         return this;
     }
 
-    /** Return a new token whose value is the value of the
-     *  argument Token added to the value of this Token.  It is assumed
-     *  that the type of the argument is an ByteToken.
+    /** Return a new token whose value is the value of the argument
+     *  Token added to the value of this Token.  It is assumed that
+     *  the type of the argument is an ByteToken.  Overflow is handled
+     *  by subtracting 256 so that the resulting sum falls in the
+     *  range 0 through 255.
      *  @param rightArgument The token to add to this token.
      *  @return A new ByteToken containing the result.
      */
@@ -327,12 +345,12 @@ public class ByteToken extends ScalarToken {
 
     /** Return a new token whose value is the value of this token
      *  divided by the value of the argument token. It is assumed that
-     *  the type of the argument is an ByteToken. If two bytes are
-     *  divided, then the result will be a byte containing the
-     *  quotient.  For example, 255 divided by 10 returns 25.
+     *  the type of the argument is an ByteToken.  The result will be
+     *  a byte containing the quotient.  For example, 255 divided by
+     *  10 returns 25.  This method does not test for or attempt to
+     *  prevent division by 0.
      *  @param rightArgument The token to divide this token by.
-     *  @return A new ByteToken containing the result.
-     */
+     *  @return A new ByteToken containing the result.  */
     protected ScalarToken _divide(ScalarToken rightArgument) {
         byte quotient = (byte) (unsignedConvert(_value)
                 / unsignedConvert(((ByteToken)rightArgument).byteValue()));
@@ -384,7 +402,8 @@ public class ByteToken extends ScalarToken {
 
     /** Return a new token whose value is the value of this token
      *  modulo the value of the argument token.  It is assumed that
-     *  the type of the argument is ByteToken.
+     *  the type of the argument is ByteToken.  This method does not
+     *  test for or attempt to prevent division by 0.
      *  @param rightArgument The token to modulo this token by.
      *  @return A new ByteToken containing the result.
      */
@@ -395,10 +414,13 @@ public class ByteToken extends ScalarToken {
     }
 
     /** Return a new token whose value is the value of this token
-     *  multiplied by the value of the argument token.  It is assumed that
-     *  the type of the argument is ByteToken.
+     *  multiplied by the value of the argument token.  It is assumed
+     *  that the type of the argument is ByteToken.  Overflow is
+     *  handled by subtracting the multiple of 256 which puts the
+     *  result into the range 0 through 255.  In other words, return
+     *  the product modulo 256.
      *  @param rightArgument The token to multiply this token by.
-     *  @return A new ByteToken containing the result.
+     *  @return A new ByteToken containing the product modulo 256.
      */
     protected ScalarToken _multiply(ScalarToken rightArgument) {
         byte product = (byte) (unsignedConvert(_value)
@@ -406,11 +428,13 @@ public class ByteToken extends ScalarToken {
         return new ByteToken(product);
     }
 
-    /** Return a new token whose value is the value of the argument token
-     *  subtracted from the value of this token.  It is assumed that
-     *  the type of the argument is ByteToken.
+    /** Return a new token whose value is the value of the argument
+     *  token subtracted from the value of this token.  It is assumed
+     *  that the type of the argument is ByteToken.  Underflow is
+     *  handled by adding 256 to the result if it is less than 0.
+     *  Thus the result is always in the range 0 through 255.
      *  @param rightArgument The token to subtract from this token.
-     *  @return A new ByteToken containing the result.
+     *  @return A new ByteToken containing the difference modulo 256.
      */
     protected ScalarToken _subtract(ScalarToken rightArgument) {
         byte difference = (byte) (unsignedConvert(_value)
