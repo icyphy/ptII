@@ -142,7 +142,10 @@ JINI_DIR =	@JINI_DIR@
 # lib/ directory of the Jini distribution
 JINI_LIB =	$(JINI_DIR)/lib
 
-JINI_JARS =     $(JINI_LIB)/jini-core.jar$(CLASSPATHSEPARATOR)$(JINI_LIB)/jini-jspaces.jar$(CLASSPATHSEPARATOR)
+# Do not include a trailng $(CLASSPATHSEPARATOR) here, or
+# we may run into problems compiling under Solaris8 with JavaScope
+# because we end up with a classpath with an empty element ::
+JINI_JARS =     $(JINI_LIB)/jini-core.jar$(CLASSPATHSEPARATOR)$(JINI_LIB)/jini-jspaces.jar
 
 # Set to gr and used in
 # $PTII/ptolemy/domains/makefile if Java 3D was found
