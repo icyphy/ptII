@@ -171,7 +171,8 @@ public class TimeKeeper {
 	    }
 
 	    if( time > firstTime || 
-		    time == TimedQueueReceiver.INACTIVE ) {
+		    time == TimedQueueReceiver.INACTIVE || 
+			    time == TimedQueueReceiver.IGNORE ) {
 	        rcvrNotFound = false;
 	    } else if( maxPriority < triple.getPriority() ) {
 		maxPriority = triple.getPriority();
@@ -407,40 +408,71 @@ public class TimeKeeper {
     /** Add the specified RcvrTimeTriple to the list of triples.
      *  If the time stamp of the specified triple is 
      *  TimedQueueReceiver.INACTIVE, then insert the triple into 
-     *  the last position of the RcvrTimeTriple list. Otherwise, 
-     *  insert the triple immediately after all other triples with 
-     *  time stamps less than or equal to the time stamp of the 
-     *  specified triple. ALWAYS call _removeRcvrTriple immediately 
-     *  before calling this method if the RcvrTimeTriple list already 
-     *  contains the triple specified in the argument.
+     *  the last position of the RcvrTimeTriple list. If the time
+     *  stamp of the specified triple is TimedQueueReceiver.IGNORE
+     *  then insert the triple before the first INACTIVE receiver.
+     *  In all other cases insert the triple immediately after all 
+     *  other triples with time stamps less than or equal to the 
+     *  time stamp of the specified triple. ALWAYS call 
+     *  _removeRcvrTriple immediately before calling this method if 
+     *  the RcvrTimeTriple list already contains the triple specified 
+     *  in the argument.
      */
     private void _addRcvrTriple(RcvrTimeTriple newTriple) {
+        boolean notAddedYet = true;
         if( _rcvrTimeList.size() == 0 ) {
             _rcvrTimeList.insertAt( 0, newTriple );
             return;
         }
 
+	// Add INACTIVE receivers
 	if( newTriple.getTime() == TimedQueueReceiver.INACTIVE ) {
 	    _rcvrTimeList.insertLast(newTriple);
 	    return;
 	}
 
-	int cnt = 0;
-        boolean notAddedYet = true;
-	while( cnt < _rcvrTimeList.size() ) {
-	    RcvrTimeTriple triple = 
-		    (RcvrTimeTriple)_rcvrTimeList.at(cnt);
-
-	    if( triple.getTime() == TimedQueueReceiver.INACTIVE ) {
-	        _rcvrTimeList.insertAt( cnt, newTriple );
-		cnt = _rcvrTimeList.size();
-                notAddedYet = false;
-	    } else if( newTriple.getTime() < triple.getTime() ) {
-	        _rcvrTimeList.insertAt( cnt, newTriple );
-		cnt = _rcvrTimeList.size();
-                notAddedYet = false;
+	// Add IGNORE receivers
+	else if( newTriple.getTime() == TimedQueueReceiver.IGNORE ) {
+	    int cnt = 0; 
+	    // boolean notAddedYet = true; 
+	    while( cnt < _rcvrTimeList.size() && notAddedYet ) {
+		RcvrTimeTriple triple = 
+		        (RcvrTimeTriple)_rcvrTimeList.at(cnt);
+	        if( triple.getTime() == TimedQueueReceiver.INACTIVE ) {
+		    _rcvrTimeList.insertAt( cnt, newTriple ); 
+		    cnt = _rcvrTimeList.size(); 
+		    notAddedYet = false;
+		} else if( triple.getTime() == TimedQueueReceiver.IGNORE ) {
+		    _rcvrTimeList.insertAt( cnt, newTriple ); 
+		    cnt = _rcvrTimeList.size(); 
+		    notAddedYet = false;
+	        }
+	        cnt++;
 	    }
-	    cnt++;
+	}
+
+	// Add regular receivers
+	else {
+	    int cnt = 0; 
+	    // boolean notAddedYet = true; 
+	    while( cnt < _rcvrTimeList.size() && notAddedYet ) {
+		RcvrTimeTriple triple = 
+		        (RcvrTimeTriple)_rcvrTimeList.at(cnt);
+	        if( triple.getTime() == TimedQueueReceiver.INACTIVE ) {
+		    _rcvrTimeList.insertAt( cnt, newTriple ); 
+		    cnt = _rcvrTimeList.size(); 
+		    notAddedYet = false;
+		} else if( triple.getTime() == TimedQueueReceiver.IGNORE ) {
+		    _rcvrTimeList.insertAt( cnt, newTriple ); 
+		    cnt = _rcvrTimeList.size(); 
+		    notAddedYet = false;
+	        } else if( newTriple.getTime() < triple.getTime() ) {
+	            _rcvrTimeList.insertAt( cnt, newTriple ); 
+		    cnt = _rcvrTimeList.size(); 
+		    notAddedYet = false;
+	        }
+	        cnt++;
+	    }
 	}
 
         if( notAddedYet ) {
@@ -516,7 +548,8 @@ public class TimeKeeper {
 			" is not a TimedQueueReceiver.");
 	    } 
 	    if( rcvrTime < _rcvrTime && 
-		    rcvrTime != TimedQueueReceiver.INACTIVE ) {
+		    rcvrTime != TimedQueueReceiver.INACTIVE &&
+		    rcvrTime != TimedQueueReceiver.IGNORE ) {
 	        throw new IllegalArgumentException(
 			"Rcvr times must be monotonically " 
 			+ "non-decreasing.");
