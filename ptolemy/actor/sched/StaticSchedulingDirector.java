@@ -231,15 +231,11 @@ public class StaticSchedulingDirector extends Director {
      *   but derived classes may throw it if the scheduler is not compatible.
      */
     public void setScheduler(Scheduler scheduler)
-            throws IllegalActionException {
-        try {
-            if (scheduler != null) {
-                scheduler.setContainer(this);
-            } else {
-                _setScheduler(null);
-            }
-        } catch (NameDuplicationException ex) {
-            throw new InternalErrorException("Name collision in setDirector!");
+            throws IllegalActionException, NameDuplicationException {
+        if (scheduler != null) {
+            scheduler.setContainer(this);
+        } else {
+            _setScheduler(null);
         }
     }
 
