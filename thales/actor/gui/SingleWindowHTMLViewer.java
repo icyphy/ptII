@@ -275,7 +275,7 @@ public class SingleWindowHTMLViewer
      * Finds the corresponding Tableau according to the
      * Component contained by a Tab.
      * @param aComp
-     * @return
+     * @return the corresponding Tableau.
      */
     protected Tableau findComponentTableau(String tableauFullName) {
         Tableau answer = null;
@@ -383,7 +383,7 @@ public class SingleWindowHTMLViewer
     }
 
     /**
-     * @return
+     * @return the configuration.
      */
     public Configuration getConfiguration() {
         return _configuration;

@@ -91,7 +91,7 @@ public class NavigableEffigy extends PtolemyEffigy {
     }
 
     /**
-     * @return
+     * @return a NavigationModel.
      */
     public NavigationTreeModel getNavigationModel() {
         Nameable container = getContainer();
