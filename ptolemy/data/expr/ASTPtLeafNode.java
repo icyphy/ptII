@@ -34,7 +34,6 @@ Created : May 1998
 package ptolemy.data.expr;
 
 import ptolemy.kernel.util.IllegalActionException;
-import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtLeafNode
