@@ -8,8 +8,8 @@
 @java@ @jvmSize@
  -classpath @classPath@
  "@javaPtIIProperty@"
- "--debug"
  ptolemy.copernicus.c.Main @modelPath@ -d @ptIIUserDirectory@
+ "--debug"
  -p wjtp.watchDog time:@watchDogTimeout@
- -p wjtp.snapshot1 outdir:@ptIIUserDirectory@/@targetPath@
+ -p wjtp.snapshot1 outDir:@ptIIUserDirectory@/@targetPath@
  @compileOptions@
