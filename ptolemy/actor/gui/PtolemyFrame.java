@@ -30,8 +30,11 @@
 package ptolemy.actor.gui;
 
 import ptolemy.kernel.CompositeEntity;
-
 import ptolemy.kernel.util.InternalErrorException;
+
+import java.net.URL;
+import java.awt.Image;
+import java.awt.Toolkit;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyFrame
@@ -69,6 +72,7 @@ public abstract class PtolemyFrame extends TableauFrame {
     public PtolemyFrame(CompositeEntity model, Tableau tableau) {
         super(tableau);
         setModel(model);
+	setIconImage(_getDefaultIconImage());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -89,8 +93,27 @@ public abstract class PtolemyFrame extends TableauFrame {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /**
+     *
+     */
+    protected Image _getDefaultIconImage() {
+	if(_defaultIconImage == null) {
+	    URL url = 
+		getClass().getResource("/doc/img/PtolemyIISmallIcon.gif");
+	    Toolkit tk = Toolkit.getDefaultToolkit();
+            _defaultIconImage = tk.createImage(url);
+	}	
+	return _defaultIconImage;
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // The model that this window controls, if any.
     private CompositeEntity _model;
+
+    // The singleton icon image used for all ptolemy frames.
+    private static Image _defaultIconImage = null;
 }
