@@ -54,7 +54,7 @@ public class ASTReflect {
     /** Return an AST that contains the class, methods, fields
      *	and constructors.
      */  
-    public static CompileUnitNode ASTClass(Class myClass) {
+    public static CompileUnitNode ASTCompileUnitNode(Class myClass) {
 	if (_debug) {
 	    System.out.println("// " + myClass.toString());
 	    System.out.println("package " +
@@ -74,7 +74,25 @@ public class ASTReflect {
 	    System.out.println("{");
 	}
 
+	ClassDeclNode classDeclNode = ASTClassDeclNode(myClass);
+	NameNode packageName = 
+	    (NameNode) _makeNameNode(myClass.getPackage().getName());
 
+	// FIXME: we are not trying to generate a list of imports here
+	// we could look at the return values and args and import
+	// anything outside of the package.
+	CompileUnitNode compileUnitNode =
+			      new CompileUnitNode(packageName,
+						  /*imports*/ new LinkedList(),
+						  TNLManip.cons(classDeclNode));
+	if (_debug) {
+	    System.out.println("}");
+	}
+	return compileUnitNode;
+
+    }
+
+    public static ClassDeclNode ASTClassDeclNode(Class myClass) {
 	int modifiers =
 	    Modifier.convertModifiers(myClass.getModifiers());
 
@@ -85,9 +103,41 @@ public class ASTReflect {
 			 fullClassName.substring(1 + 
 						 fullClassName.lastIndexOf('.')));
 
-	List interfaceList = Arrays.asList((Object [])myClass.getInterfaces());
+	// Unfortunately, we can't use Arrays.asList() here since
+	// what getParameterTypes returns of type Class[], and
+	// what we want is a list of ParameterNodes.
+	List interfaceList = new LinkedList();
+	Class interfaceClasses[] = myClass.getInterfaces();
+	for(int i = 0; i < interfaceClasses.length; i++) {
+	    int interfaceModifiers =
+		Modifier.convertModifiers(interfaceClasses[i].getModifiers());
+
+	    //NameNode interfaceName = 
+	    //	(NameNode) _makeNameNode(interfaceClasses[i].getName());
+
+	    String fullInterfaceName = interfaceClasses[i].getName();
+	    // FIXME: We should probably use the fully qualified name here?
+	    TypeNode interfaceDeclNode =
+		    new TypeNameNode(new NameNode(AbsentTreeNode.instance,
+				 fullInterfaceName.substring(1 + 
+							 fullInterfaceName.lastIndexOf('.')
+							 )));
+	    /* FIXME: The output of Skelton does not seem to use
+	     * InterfaceDeclNode?
+	     */
+	    //InterfaceDeclNode interfaceDeclNode =
+	    //	new InterfaceDeclNode(modifiers,
+	    //			      interfaceName,
+	    //			      /* interfaces */ new LinkedList(),
+	    //			      /* members */ new LinkedList());
+
+	    interfaceList.add(interfaceDeclNode);
+	}
 
 	LinkedList memberList = new LinkedList();
+
+	// Get the AST for all the constructor.
+	memberList.addAll(constructorsASTList(myClass));
 
 	// Get the AST for all the methods.
 	memberList.addAll(methodsASTList(myClass));
@@ -95,34 +145,21 @@ public class ASTReflect {
 	// Get the AST for all the fields.
 	memberList.addAll(fieldsASTList(myClass));
 
-	// Get the AST for all the constructor.
-	memberList.addAll(constructorsASTList(myClass));
-
 	// Get the AST for all the inner classes.
-	memberList.addAll(innerClassesASTList(myClass));
+	//memberList.addAll(innerClassesASTList(myClass));
 
 	// FIXME: If this is java.lang.Object, should we use AbsentTreeNode?
 	TreeNode superClass =
 	    (TreeNode) _makeNameNode(myClass.getSuperclass().getName());
 
-	ClassDeclNode classDeclNode =
+	ClassDeclNode classDeclNode =  
 	    new ClassDeclNode(modifiers,
 			      className,
 			      interfaceList,
 			      memberList,
 			      superClass);
 
-	NameNode packageName = 
-	    (NameNode) _makeNameNode(myClass.getPackage().getName());
-
-	CompileUnitNode compileUnitNode =
-			      new CompileUnitNode(packageName,
-						  /*imports*/ new LinkedList(),
-						  TNLManip.cons(classDeclNode));
-	if (_debug) {
-	    System.out.println("}");
-	}
-	return compileUnitNode;
+	return classDeclNode;
     }
 
 
@@ -132,7 +169,7 @@ public class ASTReflect {
         if (_debug) {
 	    System.out.println(_indent + "// Constructors");
 	}
-	Constructor constructors[] = myClass.getConstructors();
+	Constructor constructors[] = myClass.getDeclaredConstructors();
 	Constructor constructor = null;
 	for(int i = 0; i < constructors.length; i++) {
 	    constructor = constructors[i];
@@ -207,21 +244,15 @@ public class ASTReflect {
      */
     public static List innerClassesASTList(Class myClass) {
 	List innerClassList = new LinkedList(); 
-	if (_debug) {
-	    // Handle inner classes
-	    Class classes[] = myClass.getClasses();
-	    if (classes.length > 0 ) {
-		System.out.println(_indent + "// Inner classes");
-	    }
-	    for(int i = 0; i < classes.length; i++) {
-		// Dealing with the _indent would be cool
-		// FIXME: where do we put these???
-		ASTClass(classes[i]);
-		throw new RuntimeException("ASTReflect: found an inner class" +
-					   " don't know what to do");
-	    }
+	// Handle inner classes
+	Class classes[] = myClass.getClasses();
+	if (classes.length > 0 && _debug) {
+	    System.out.println(_indent + "// Inner classes");
 	}
-	return innerClassList;
+	for(int i = 0; i < classes.length; i++) {
+	    innerClassList.add(ASTClassDeclNode(classes[i]));
+	}
+    	return innerClassList;
     }
 
     /** Return a List containing an AST that describes the methods
@@ -275,7 +306,8 @@ public class ASTReflect {
     /** Print the AST for ptolemy.lang.java.Skeleton for testing purposes. */
     public static void main(String[] args) {
 	try {
-	    System.out.println(ASTClass(Class.forName("ptolemy.lang.java.test.ReflectTest")));
+	    System.out.println(ASTCompileUnitNode(Class.forName("ptolemy.lang.java.test.ReflectTest")));
+	    //System.out.println(ASTCompileUnitNode(Class.forName("ptolemy.lang.java.Skeleton")));
 	} catch (Exception e) {
 	    System.err.println("Error: " + e);
 	    e.printStackTrace();
@@ -407,7 +439,7 @@ public class ASTReflect {
     private final static String _indent = new String("    ");
 
     // Set to true to turn on debugging messages
-    private final static boolean _debug = true;
+    private final static boolean _debug = false;
 }
 
 
