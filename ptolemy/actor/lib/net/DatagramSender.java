@@ -51,10 +51,10 @@ UDP protocol.  Before being sent, the data is optionally encoded as a
 text string representing the value being sent.  Any Ptolemy data type
 may be represented.  See the <i>encodeForPtolemyParser</i> parameter.
 
-The address and socket number towards which the datagram is sent are 
-given by optional inputs <i>remoteAddress</i> and <i>remoteSocketNumber</i>.  
-Each optional input has an associated parameter giving its default value.  
-The default values are used unless/until replaced by a token arriving at 
+The address and socket number towards which the datagram is sent are
+given by optional inputs <i>remoteAddress</i> and <i>remoteSocketNumber</i>.
+Each optional input has an associated parameter giving its default value.
+The default values are used unless/until replaced by a token arriving at
 that optional input.
 
 Each instance of this actor needs to allocate a local socket from
@@ -129,13 +129,13 @@ public class DatagramSender extends TypedAtomicActor {
 	encodeForPtolemyParser.setExpression("true");
 
 	// Added for SDF usability.  No real output, just a trigger.
-  	triggerOutput = new TypedIOPort(this, "triggerOutput"); 
+  	triggerOutput = new TypedIOPort(this, "triggerOutput");
 	 // Had had ', true, false' before ');' above.
         triggerOutput.setTypeEquals(BaseType.GENERAL);
 	 // 'INT' workes too in place of 'GENERAL'.
         triggerOutput.setOutput(true);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
@@ -143,7 +143,7 @@ public class DatagramSender extends TypedAtomicActor {
      *  forcing input ports connected here to also be of type GENERAL,
      *  (as trigger inputs typically are).  This port always transmits
      *  a Token with nothing in it.  This is used to trigger the next
-     *  actor in SDF.  
+     *  actor in SDF.
      */
     public TypedIOPort triggerOutput;
 
@@ -203,12 +203,12 @@ public class DatagramSender extends TypedAtomicActor {
 
                     _localSocketNumber =
                         ((IntToken)(localSocketNumber.getToken())).intValue();
-                    if (_debugging) _debug("Socket number is " 
+                    if (_debugging) _debug("Socket number is "
 		            + _localSocketNumber);
                     try {
                         if (_debugging) _debug("Try create socket for port "
                                 + _localSocketNumber);
-                        DatagramSocket newSocket = 
+                        DatagramSocket newSocket =
                                 new DatagramSocket(_localSocketNumber);
                         if (_debugging) _debug("A socket is created!!");
                         _socket.close();
@@ -248,10 +248,10 @@ public class DatagramSender extends TypedAtomicActor {
             }
         }
 
-        if (remoteSocketNumber.getWidth() > 0 && 
+        if (remoteSocketNumber.getWidth() > 0 &&
                 remoteSocketNumber.hasToken(0)) {
             // Valid socket numbers are 0..65535 so keep only lower 16 bits.
-            _remoteSocketNumber = 65535 & 
+            _remoteSocketNumber = 65535 &
                     ((IntToken)remoteSocketNumber.get(0)).intValue();
         }
 
@@ -262,7 +262,7 @@ public class DatagramSender extends TypedAtomicActor {
 	    if (forParser) {
 		dataBytes = data.get(0).toString().getBytes();
 	    } else {
-		//An exception, thrown as this line calls *Token, is 
+		//An exception, thrown as this line calls *Token, is
 		//likely because the actor's input is not an integer array.
 		//Please configure the <i>data</i> port as {int}.
 		ArrayToken dataIntArrayToken = (ArrayToken) data.get(0);
@@ -273,7 +273,7 @@ public class DatagramSender extends TypedAtomicActor {
                     dataBytes[j] = (byte)dataIntOneToken.intValue();
                 }
  	    }
-	    DatagramPacket packet = new 
+	    DatagramPacket packet = new
                     DatagramPacket(dataBytes, dataBytes.length,
                     _address, _remoteSocketNumber);
             try {
@@ -313,14 +313,14 @@ public class DatagramSender extends TypedAtomicActor {
 	//System.out.println("preinitialize() called in " + this);
 
         super.preinitialize();
-        _localSocketNumber = 
+        _localSocketNumber =
                 ((IntToken)(localSocketNumber.getToken())).intValue();
         if (_localSocketNumber < 0 || _localSocketNumber > 65535) {
             throw new IllegalActionException(this, "Local socket number is "
                     + "invalid, must be between 0 and 65535.");
         }
         try {
-            if (_debugging) _debug("PI Try create socket number " 
+            if (_debugging) _debug("PI Try create socket number "
                     + _localSocketNumber);
             _socket = new DatagramSocket(_localSocketNumber);
             if (_debugging) _debug("PI A socket is created!!");
