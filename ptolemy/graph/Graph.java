@@ -35,7 +35,8 @@ import java.util.*;
 An undirected graph.
 This class is evolved from the staticGraph class written by Jie Liu.
 Each node in the graph is represented by an Object. To construct a graph,
-use add() to add nodes and addEdge() to add edges between nodes.
+use <code>add()</code> to add nodes and <code>addEdge()</code> to add
+edges between nodes.
 
 @author Yuhong Xiong, Jie Liu 
 $Id$
@@ -69,7 +70,13 @@ public class Graph {
     /** Adds a node to this graph.  The node is represented by the
      *  specified Object. The Object cannot be <code>null</code>.
      *  In addition, two Objects equal to each other, as determined
-     *  by the <code>equals</code> method, cannot both be added.
+     *  by the <code>equals</code> method, cannot both be added.<p>
+     *
+     *  After nodes are added to a graph, The node Objects should not
+     *  be changed in such a way that the Objects representing
+     *  distinct nodes are equal, as determined by the
+     *  <code>equals</code> method. Doing so may generate unexpected
+     *  results.
      *
      *  @param o the Object representing a graph node
      *  @exception IllegalArgumentException an Object equals to the
@@ -94,7 +101,7 @@ public class Graph {
      *  @param o1 the Object representing one graph node
      *  @param o2 the Object representing another graph node
      *  @exception IllegalArgumentException at least one of the arguments
-     *   is not a graph node, i.e., the arguement is not equal to an
+     *   is not a graph node, i.e., the argument is not equal to an
      *   Object specified in a successful <code>add</code> call. Equality
      *   is determined by the <code>equals</code> method.
      */ 
@@ -162,7 +169,7 @@ public class Graph {
      *  </pre>
      *  where each node is described by the <code>toString()</code>
      *  method of the Object representing the node.
-     *  @return a string description of this graph.
+     *  @return a String description of this graph.
      */
     public String description() {
 	String result = new String("{" + this.getClass().getName() + "\n");

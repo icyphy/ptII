@@ -32,9 +32,8 @@ import ptolemy.kernel.util.IllegalActionException;
 //////////////////////////////////////////////////////////////////////////
 //// InequalityTerm
 /**
-An interface for a term in an inequality over an underlining CPO.
-The classes implementing this interface model constants, variables,
-or functions.
+An interface for a term in an inequality over a CPO.
+A term is either a constant, a variable, or a function.
 
 @author Yuhong Xiong
 $Id$
@@ -43,17 +42,18 @@ $Id$
 
 public interface InequalityTerm {
     /** Sets the value of this term to the specified CPO element.
-     *  @param e an object representing an element in the
+     *  Only terms consisting of a single variable can have their
+     *  values set.
+     *  @param e an Object representing an element in the
      *   underlining CPO.
      *  @exception IllegalActionException this term is not a variable.
-     *  @exception IllegalArgumentException The specified object
-     *   is not an element in the CPO.
      */
     public void set(Object e)
             throws IllegalActionException;
 
-    /** Checks if this term can be set to a constant.  Only a variable
-     *  can be set, constants and functions cannot.
+    /** Checks if this term can be set to a specific element of the
+     *  underlining CPO. Only variable terms are settable, constant
+     *  and function terms are not.
      *  @return <code>true</code> if this term is a variable;
      *   <code>false</code> otherwise.
      */
@@ -62,9 +62,9 @@ public interface InequalityTerm {
     /** Returns the value of this term.  If this term is a constant,
      *  that constant is returned; if this term is a variable, the
      *  current value of that variable is returned; if this term
-     *  is a function, the value of the function based on the current
+     *  is a function, the evaluation of the function based on the current
      *  value of variables in the function is returned.
-     *  @return an object representing an element in the underlining CPO.
+     *  @return an Object representing an element in the underlining CPO.
      */
     public Object value();
 }

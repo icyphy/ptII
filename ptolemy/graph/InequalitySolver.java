@@ -36,36 +36,35 @@ import ptolemy.kernel.util.InvalidStateException;
 //// InequalitySolver
 /**
 An algorithm to solve a set of inequalities.
-This algorithm is based on
-<a href=http://www.diku.dk/topps/personal/rehof/publications.html>
-<i>Tractable Constraints in Finite Semilattices</i></a> by Jakob Rehof
-and Torben Mogensen.<p>
+This algorithm is based on J. Rehof and T. Mogensen, "Tractable
+Constraints in Finite Semilattices," Third International Static Analysis
+Symposium, pp. 285-301, Vol 1145 of Lecture Notes in Computer Science,
+Springer, Sept., 1996.<p>
 
-The algorithm in Rehof works for definite inequalities, which are
-inequalities that the greater term is a constant or a variable.  This
-solver doesn't enforce this requirement.  However, if the inequalities
+The algorithm in Rehof works for definite inequalities.  This
+class does not enforce this requirement.  However, if the inequalities
 are not definite, this solver may not be able to find the solution even
-when the set of inequalities is satisfiable.  See the paper for
+when the set of inequalities is satisfiable.  See the above paper for
 details.<p>
 
 This solver supports finding both the least and greatest solutions (if
 they exist).  It assumes that the CPO passed to the constructor is a
-lattice, but it does not verify it.  If the LUB or GLB of some
-elements doesn't exist during the execution of the algorithm, an
-exception is thrown.
+lattice, but it does not verify it.  If the algorithm finds that the
+LUB or GLB of some elements does not exist, an exception is thrown.
 
 @author Yuhong Xiong
 $Id$
 */
 
-// Note: To make it easier to reference the above paper, this class
-// uses the same names for methods and variables as in the paper, which
-// may violate the naming convention in some cases.
+// Note: To make it easier to reference the above paper, some of the
+// private methods and variables in this class have the same names that
+// are used in the paper, which may violate the naming convention
+// in some cases.
 
 public class InequalitySolver {
 
-    /** Constructs and initializes this inequality solver.
-     *  @param cpo a CPO over which the inequalities are defined.
+    /** Constructs an inequality solver.
+     *  @param cpo the CPO over which the inequalities are defined.
      */
     public InequalitySolver(CPO cpo) {
         _cpo = cpo;
@@ -75,10 +74,11 @@ public class InequalitySolver {
     ////                         public methods                    ////
 
     /** Adds all of the inequalities in the specified
-     *  <code>Enumeration </code> to the set of constraints.
-     *  @param ineqs an <code>Enumeration</code> of <code>Inequality</code>
+     *  <code>Enumeration</code> to the set of constraints.
+     *  @param ineqs an <code>Enumeration</code> of
+     *   <code>Inequalities</code>
      *  @exception IllegalArgumentException the specified
-     *   <code>Enumeration</code> contains an object that is not an
+     *   <code>Enumeration</code> contains an Object that is not an
      *   <code>Inequality</code>.
      */
     public void addInequalities(Enumeration ineqs) {
@@ -87,15 +87,15 @@ public class InequalitySolver {
 	    if ( !(element instanceof Inequality)) {
 		throw new IllegalArgumentException(
 			"InequalitySolver.addInequalities: the specified " +
-			"enumeration contains an object that is not an " +
+			"Enumeration contains an Object that is not an " +
 			"Inequality.");
 	    }
 	    addInequality((Inequality)element);
 	}
     }
 
-    /** Adds an inequality to the set of constraints.
-     *  @param ineq an <code>Inequality</code>.
+    /** Adds an <code>Inequality</code> to the set of constraints.
+     *  @param ineq an <code>Inequality</code>
      */
     public void addInequality(Inequality ineq) {
 
@@ -118,8 +118,9 @@ public class InequalitySolver {
 
     /** Returns an Enumeration of the variables whose current values are
      *  the bottom of the underlining CPO. If none of the variables have
-     *  the current value set to bottom, an empty Enumeration is returned.
-     *  @return an Enumeration of InequalityTerm
+     *  its current value set to the bottom, an empty Enumeration is
+     *  returned.
+     *  @return an <code>Enumeration</code> of <code>InequalityTerms</code>
      *  @exception InvalidStateException the underlining CPO does not have
      *   a bottom element.
      */
@@ -142,20 +143,19 @@ public class InequalitySolver {
     }
 
     /** Solves the set of inequalities and updates the variables.
-     *  If the set of inequalities is satisfiable, this method returns
-     *  <code>true</code> and the variables are set to the least or
-     *  greatest solution depending on the <code>least</code> parameter;
-     *  if the set of inequalities is definite (see class document), and
-     *  the set of inequalities is not satisfiable, this method returns
-     *  <code>false</code>; if the set of inequalities is not definite,
-     *  a <code>false</code> return value doesn't guarantee the set of
-     *  inequalities is not satisfiable. 
+     *  If the set of inequalities is definite (see the paper refered in
+     *  the class document), this method can always determine satisfiability.
+     *  In this case, it returns <code>true</code> if the set of constraints
+     *  is satisfiable, and the variables are set to the least or
+     *  greatest solution depending on the <code>least</code> argument.
+     *  If the set of inequalities is not definite, this method will return
+     *  <code>false</code> if the inequalities are not satisfiable, but 
+     *  may not return <code>true</code> if satisfiable.
      *  @param least if <code>true</code>, this method will try to
      *   find the least solution; otherwise, this method will try to find
      *   the greatest solution.
-     *  @return <code>true</code> if the set of inequalities is
-     *   satisfiable; <code>false</code> if not satisfiable, or
-     *   the set of inequalities is not definite.
+     *  @return <code>true</code> if a solution for the inequalities is found,
+     *   <code>false</code> otherwise.
      *  @exception InvalidStateException the CPO over which the
      *   inequalities are defined is not a lattice.
      */
@@ -293,8 +293,8 @@ public class InequalitySolver {
 
     /** Returns an Enumeration of the variables whose current values are
      *  the top of the underlining CPO. If none of the variables have
-     *  the current value set to top, an empty Enumeration is returned.
-     *  @return an Enumeration of InequalityTerm
+     *  the current value set to the top, an empty Enumeration is returned.
+     *  @return an Enumeration of InequalityTerms
      *  @exception InvalidStateException the underlining CPO does not have
      *   a top element.
      */
@@ -315,11 +315,11 @@ public class InequalitySolver {
 	return result.elements();
     }
 
-    /** Returns an enumeration of Inequality that are not satisfied under
-     *  the current value of variables. This method can be called regardless
-     *  of whether <code>solve()</code> is called or not. If all the
-     *  inequalities are satisfied, an empty Enumeration is returned.
-     *  @return an Enumeration of Inequality
+    /** Returns an <code>Enumeration</code> of <code>Inequalities</code>
+     *  that are not satisfied with the current value of variables.
+     *  If all the inequalities are satisfied, an empty
+     *  <code>Enumeration</code> is returned.
+     *  @return an Enumeration of Inequalities
      */
     public Enumeration unsatisfiedIneq() {
 	LinkedList result = new LinkedList();

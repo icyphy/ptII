@@ -74,6 +74,7 @@ public class DirectedGraph extends Graph {
      *   specified one is already in this graph.
      *  @exception NullPointerException the specified Object is
      *   <code>null</code>.
+     *  @see ptolemy.graph.Graph#add
      */
     public void add(Object o) {
         super.add(o);
