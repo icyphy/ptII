@@ -271,19 +271,20 @@ public class FSMController extends CompositeEntity implements TypedActor {
         }
     }
 
-    /** Return an enumeration of the input ports.
+
+    /** Return a list of the input ports.
      *  This method is read-synchronized on the workspace.
-     *  @return An enumeration of IOPort objects.
+     *  @return A list of IOPort objects.
      */
-    public Enumeration inputPorts() {
+    public List inputPortList() {
         try {
             workspace().getReadAccess();
             if(_inputPortsVersion != workspace().getVersion()) {
                 // Update the cache.
-                LinkedList inports = new LinkedList();
-                Enumeration ports = Collections.enumeration(portList());
-                while(ports.hasMoreElements()) {
-                    IOPort p = (IOPort)ports.nextElement();
+                List inports = new LinkedList();
+                Iterator ports = portList().iterator();
+                while(ports.hasNext()) {
+                    IOPort p = (IOPort)ports.next();
                     if( p.isInput()) {
                         inports.add(p);
                     }
@@ -291,10 +292,19 @@ public class FSMController extends CompositeEntity implements TypedActor {
                 _cachedInputPorts = inports;
                 _inputPortsVersion = workspace().getVersion();
             }
-            return Collections.enumeration(_cachedInputPorts);
+            return _cachedInputPorts;
         } finally {
             workspace().doneReading();
         }
+    }
+
+    /** Return an enumeration of the input ports.
+     *  This method is read-synchronized on the workspace.
+     *  @deprecated Use inputPortList() instead.
+     *  @return An enumeration of IOPort objects.
+     */
+    public Enumeration inputPorts() {
+        return Collections.enumeration(inputPortList());
     }
 
 
@@ -350,28 +360,37 @@ public class FSMController extends CompositeEntity implements TypedActor {
     }
 
 
-    /** Return an enumeration of the output ports.
+    /** Return a list of the output ports.
      *  This method is read-synchronized on the workspace.
-     *  @return An enumeration of IOPort objects.
+     *  @return A list of IOPort objects.
      */
-    public Enumeration outputPorts() {
+    public List outputPortList() {
         try {
             workspace().getReadAccess();
             if(_outputPortsVersion != workspace().getVersion()) {
                 _cachedOutputPorts = new LinkedList();
-                Enumeration ports = Collections.enumeration(portList());
-                while(ports.hasMoreElements()) {
-                    IOPort p = (IOPort)ports.nextElement();
+                Iterator ports = portList().iterator();
+                while(ports.hasNext()) {
+                    IOPort p = (IOPort)ports.next();
                     if( p.isOutput()) {
                         _cachedOutputPorts.add(p);
                     }
                 }
                 _outputPortsVersion = workspace().getVersion();
             }
-            return Collections.enumeration(_cachedOutputPorts);
+            return _cachedOutputPorts;
         } finally {
             workspace().doneReading();
         }
+    }
+
+    /** Return an enumeration of the output ports.
+     *  This method is read-synchronized on the workspace.
+     *  @deprecated Use outputPortList() instead.
+     *  @return An enumeration of IOPort objects.
+     */
+    public Enumeration outputPorts() {
+        return Collections.enumeration(outputPortList());
     }
 
 
@@ -746,14 +765,13 @@ public class FSMController extends CompositeEntity implements TypedActor {
         }
     }
 
-
     protected void _setInputVars()
             throws IllegalArgumentException, IllegalActionException {
         // Do not deal with multiport, multiple tokens now.
-        Enumeration inports = inputPorts();
+        Iterator inports = inputPortList().iterator();
         IOPort port;
-        while (inports.hasMoreElements()) {
-            port = (IOPort)inports.nextElement();
+        while (inports.hasNext()) {
+            port = (IOPort)inports.next();
             if (port.numLinks() > 0) {
                 if (port.hasToken(0)) {
 
@@ -828,9 +846,9 @@ public class FSMController extends CompositeEntity implements TypedActor {
      *  @exception IllegalActionException If any port throws it.
      */
     private void _createReceivers() throws IllegalActionException {
-        Enumeration inports = inputPorts();
-        while (inports.hasMoreElements()) {
-            IOPort inport = (IOPort)inports.nextElement();
+        Iterator inports = inputPortList().iterator();
+        while (inports.hasNext()) {
+            IOPort inport = (IOPort)inports.next();
             inport.createReceivers();
         }
     }

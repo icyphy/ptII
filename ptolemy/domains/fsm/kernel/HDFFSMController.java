@@ -320,12 +320,12 @@ public class HDFFSMController  extends FSMController implements TypedActor {
         }
     }
 
-    /** Return an enumeration of the input ports contained by the
+    /** Return a list of the input ports contained by the
      *  container of this controller.
      *  This method is read-synchronized on the workspace.
-     *  @return An enumeration of IOPort objects.
+     *  @return A list of IOPort objects.
      */
-    public Enumeration inputPorts() {
+    public List inputPortList() {
         try {
             workspace().getReadAccess();
             if(_inputPortsVersion != workspace().getVersion()) {
@@ -334,9 +334,9 @@ public class HDFFSMController  extends FSMController implements TypedActor {
                 //Enumeration ports = getPorts();
 		// Is this right?
 		//Enumeration ports = ((CompositeEntity)getContainer()).getPorts();
-		Enumeration ports = Collections.enumeration(((CompositeEntity)getContainer()).portList());
-                while(ports.hasMoreElements()) {
-                    IOPort p = (IOPort)ports.nextElement();
+		Iterator ports = ((CompositeEntity)getContainer()).portList().iterator();
+                while(ports.hasNext()) {
+                    IOPort p = (IOPort)ports.next();
                     if( p.isInput()) {
                         inports.add(p);
                     }
@@ -344,10 +344,20 @@ public class HDFFSMController  extends FSMController implements TypedActor {
                 _cachedInputPorts = inports;
                 _inputPortsVersion = workspace().getVersion();
             }
-            return Collections.enumeration(_cachedInputPorts);
+            return _cachedInputPorts;
         } finally {
             workspace().doneReading();
         }
+    }
+
+    /** Return an enumeration of the input ports contained by the
+     *  container of this controller.
+     *  This method is read-synchronized on the workspace.
+     *  @deprecated Use inputPortList() instead.
+     *  @return An enumeration of IOPort objects.
+     */
+    public Enumeration inputPorts() {
+        return Collections.enumeration(inputPortList());
     }
 
 
@@ -393,28 +403,37 @@ public class HDFFSMController  extends FSMController implements TypedActor {
     }
 
 
-    /** Return an enumeration of the output ports.
+    /** Return a list of the output ports.
      *  This method is read-synchronized on the workspace.
-     *  @return An enumeration of IOPort objects.
+     *  @return A list of IOPort objects.
      */
-    public Enumeration outputPorts() {
+    public List outputPortList() {
         try {
             workspace().getReadAccess();
             if(_outputPortsVersion != workspace().getVersion()) {
                 _cachedOutputPorts = new LinkedList();
-                Enumeration ports = Collections.enumeration(portList());
-                while(ports.hasMoreElements()) {
-                    IOPort p = (IOPort)ports.nextElement();
+                Iterator ports = portList().iterator();
+                while(ports.hasNext()) {
+                    IOPort p = (IOPort)ports.next();
                     if( p.isOutput()) {
                         _cachedOutputPorts.add(p);
                     }
                 }
                 _outputPortsVersion = workspace().getVersion();
             }
-            return Collections.enumeration(_cachedOutputPorts);
+            return _cachedOutputPorts;
         } finally {
             workspace().doneReading();
         }
+    }
+
+    /** Return an enumeration of the output ports.
+     *  This method is read-synchronized on the workspace.
+     *  @deprecated Use outputPortList() instead.
+     *  @return An enumeration of IOPort objects.
+     */
+    public Enumeration outputPorts() {
+        return Collections.enumeration(outputPortList());
     }
 
 

@@ -220,6 +220,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
 
     /** Return an enumeration of the input ports.
      *  This method is read-synchronized on the workspace.
+     *  @deprecated Use inportList() instead;
      *  @return An enumeration of input TypedIOPort objects.
      */
     public Enumeration inputPorts() {
@@ -293,6 +294,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
 
     /** Return an enumeration of the output ports.
      *  This method is read-synchronized on the workspace.
+     *  @deprecated Use outputPortList() instead.
      *  @return An enumeration of output TypedIOPort objects.
      */
     public Enumeration outputPorts() {
