@@ -23,6 +23,9 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
+@ProposedRating Red (mudit@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.pn.lib;
@@ -47,7 +50,7 @@ Input and output are DoubleMatrixTokens.
 public class PNAdder extends AtomicActor {
 
     /** Constructor. Creates ports
-     * @exception NameDuplicationException is thrown if more than one port
+     * @exception NameDuplicationException If more than one port
      *  with the same name is added to the star or if another star with an
      *  an identical name already exists.
      */
