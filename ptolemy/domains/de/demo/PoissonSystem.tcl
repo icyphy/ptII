@@ -48,9 +48,10 @@ $sys setManager $exec
 $dir setStopTime 50.0
 
 # Build the system
-set poisson [java::new ptolemy.domains.de.lib.DEPoisson $sys Poisson 1.0 1.0]
-set ramp [java::new {ptolemy.domains.de.lib.Ramp \
-    ptolemy.actor.TypedCompositeActor String String String} $sys Ramp 0.0 1.0]
+set poisson [java::new {ptolemy.domains.de.lib.DEPoisson \
+    ptolemy.actor.TypedCompositeActor String double double} $sys Poisson 1.0 1.0]
+set ramp [java::new {ptolemy.domains.de.lib.DERamp \
+    ptolemy.actor.TypedCompositeActor String double double} $sys Ramp 0.0 1.0]
 set plot [java::new ptolemy.domains.de.lib.DEPlot $sys Plot]
 
 # Identify the ports
@@ -71,4 +72,4 @@ set r1 [$sys connect $poissonOut $rampIn R1]
 set r2 [$sys connect $rampOut $plotIn R2]
 
 # Run it
-$exec go
+$exec run

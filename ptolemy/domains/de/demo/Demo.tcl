@@ -44,8 +44,8 @@ $sys setName DEDemo
 # Create directors and associate them with the top level composite actor.
 set dir [java::new ptolemy.domains.de.kernel.DECQDirector DELocalDirector]
 $sys setDirector $dir
-set exec [java::new ptolemy.actor.Manager]
-$sys setManager $exec
+set manager [java::new ptolemy.actor.Manager]
+$sys setManager $manager
 
 
 #####################
@@ -53,8 +53,8 @@ $sys setManager $exec
 #####################
 
 set clock [java::new ptolemy.domains.de.lib.DEClock $sys Clock 1.0 1.0]
-set ramp [java::new {ptolemy.domains.de.lib.Ramp \
-    ptolemy.actor.TypedCompositeActor String String String} $sys Ramp 0 1.0]
+set ramp [java::new {ptolemy.domains.de.lib.DERamp \
+    ptolemy.actor.TypedCompositeActor String double double} $sys Ramp 0 1.0]
 
 # num demands pending = 1, consolidate demands = 1, capacity = 10
 set fifo1 [java::new ptolemy.domains.de.lib.DEFIFOQueue $sys FIFO1 1 true 10]
@@ -74,9 +74,9 @@ set fifo2 [java::new ptolemy.domains.de.lib.DEFIFOQueue $sys FIFO2 1 true 1000]
 set plot2 [java::new ptolemy.domains.de.lib.DEPlot $sys "Queue 2 Size"]
 
 # crossingsOnly = true, threshold = 4
-set testlevel [java::new ptolemy.domains.de.lib.TestLevel $sys TestLevel true 4]
+set testlevel [java::new ptolemy.domains.de.lib.DETestLevel $sys TestLevel true 4]
 
-set not [java::new ptolemy.domains.de.lib.Not $sys Not]
+set not [java::new ptolemy.domains.de.lib.DENot $sys DENot]
 
 # service time of server 2 is equal to 3.0
 set server2 [java::new ptolemy.domains.de.lib.DEServer $sys Server2 3.0]
@@ -222,4 +222,4 @@ set r13 [$sys connect $fifo2OutData $server2In R13]
 $dir setStopTime 30.0
 
 # Run it
-$exec startRun
+$manager run

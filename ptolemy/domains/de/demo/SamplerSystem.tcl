@@ -54,9 +54,9 @@ $sys setManager $exec
 set poisson [java::new {ptolemy.domains.de.lib.DEPoisson ptolemy.actor.TypedCompositeActor String double double} $sys Poisson 1.0 0.5]
 set sampler1 [java::new ptolemy.domains.de.lib.DESampler $sys Sampler1]
 set sampler2 [java::new ptolemy.domains.de.lib.DESampler $sys Sampler2]
-set ramp1 [java::new {ptolemy.domains.de.lib.Ramp \
+set ramp1 [java::new {ptolemy.domains.de.lib.DERamp \
     ptolemy.actor.TypedCompositeActor String double double} $sys Ramp1 0 2]
-set ramp2 [java::new {ptolemy.domains.de.lib.Ramp \
+set ramp2 [java::new {ptolemy.domains.de.lib.DERamp \
     ptolemy.actor.TypedCompositeActor String double double} $sys Ramp2 -2 2]
 set clock [java::new ptolemy.domains.de.lib.DEClock $sys Clock 1.0 1.0] 
 set plot [java::new ptolemy.domains.de.lib.DEPlot $sys Plot]

@@ -273,7 +273,7 @@ public class SigmaDeltaApplet extends Applet {
             IOPort firout = (IOPort)fir.getPort("output");
             IOPort quanin = (IOPort)quan.getPort("input");
             IOPort quanout = (IOPort)quan.getPort("output");
-            IOPort accin = (IOPort)accu.getPort("data input");
+            IOPort accin = (IOPort)accu.getPort("input");
             IOPort accout = (IOPort)accu.getPort("average");
             IOPort demand = (IOPort)accu.getPort("demand");
             IOPort reset = (IOPort)accu.getPort("reset");

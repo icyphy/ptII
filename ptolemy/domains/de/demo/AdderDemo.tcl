@@ -80,10 +80,10 @@ $sys setManager $exec
 # Build the system
 set clock1 [java::new ptolemy.domains.de.lib.DEClock $sys Clock1 1.0 1.0] 
 set clock2 [java::new ptolemy.domains.de.lib.DEClock $sys Clock2 1.0 1.0] 
-set ramp1 [java::new {ptolemy.domains.de.lib.Ramp \
-    ptolemy.actor.TypedCompositeActor String String String} $sys Ramp1 0 0.5]
-set ramp2 [java::new {ptolemy.domains.de.lib.Ramp \
-    ptolemy.actor.TypedCompositeActor String String String} $sys Ramp2 2 0]
+set ramp1 [java::new {ptolemy.domains.de.lib.DERamp \
+    ptolemy.actor.TypedCompositeActor String double double} $sys Ramp1 0 0.5]
+set ramp2 [java::new {ptolemy.domains.de.lib.DERamp \
+    ptolemy.actor.TypedCompositeActor String double double} $sys Ramp2 2 0]
 set add [java::new ptolemy.actor.lib.Add $sys Add]
 set plot [java::new ptolemy.domains.de.lib.DEPlot $sys Plot]
 
