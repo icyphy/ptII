@@ -170,7 +170,7 @@ fi
 #	Figure out whether to use javac -depend or javac -Xdepend
 #--------------------------------------------------------------------
 AC_MSG_CHECKING([the Java compiler with a simple compile])
-# We need to run javac in the mk directory so that javac from jdk1.1.6
+# We need to run javac in the config directory so that javac from jdk1.1.6
 # under NT and cygwin works properly
 startdir=`pwd`
 cd $srcdir/config
@@ -288,50 +288,48 @@ JavaCC can be downloaded from http://www.sun.com/suntest'])
 fi
 
 #--------------------------------------------------------------------
-#	See if there was a command-line option for where Tcl Blend is
+#	See if there was a command-line option for where Jacl is
 #--------------------------------------------------------------------
 
-# We only need to find Tcl Blend if $PTII/util/testsuite
+# We only need to find Jacl if $PTII/util/testsuite
 # exists.  If we are shipping ptplot, then this directory might not
 # exist
-if test ! -d "$PTII/util/testsuite"; then
-    AC_MSG_RESULT([$PTII/testsuite is not a directory, so we need not
-find Tcl Blend or Jacl])
-    JTCLSH=jtclsh
-else
-    AC_ARG_WITH(jtclsh, [  --with-jtclsh=SCRIPT    tclsh is at. jtclsh is
-                           used for running the test scripts],
-	JTCLSH=$withval, JTCLSH=jtclsh)
-    if test "$JTCLSH" != "jtclsh"; then
-	AC_MSG_CHECKING([for jtclsh])
-	AC_MSG_RESULT($JTCLSH);
-    else
-	AC_PATH_PROG(JTCLSH, jtclsh)
-	if test ! -x "$JTCLSH"; then	
-	    AC_MSG_WARN([jtclsh not found, so we'll look for tclsh.
-jtclsh is a startup script for Tcl Blend, which is used to run the test suite.
-You only need to have jtclsh or tclsh if you are planning on running
-the test suite.
-See http://www.scriptics.com/java for Tcl Blend sources and binaries.])
+PTJACL_JAR=$PTII/ptjacl.jar
+# The reference version of JDK 1.2 has a -native flag
+# If we don't use -native, then some of the threading tests fail
+PTJACL_JFLAG=-native
+JTCLSH='[$(JAVA) $PTJACL_JFLAG tcl.lang.Shell]'
 
-	    case "`uname -s`" in
-		    CYGWIN_NT-4.0) DEFAULT_TCLSH=tclsh80;;
-		    *) DEFAULT_TCLSH=tclsh;;
-	    esac
-	echo "DEFAULT_TCLSH=$DEFAULT_TCLSH"
-	    # Apparently AC_PATH_PROGS fails if the path contains directories
-	    # with spaces in their names.
-	    AC_PATH_PROGS(TCLSH, "tclsh80 tclsh8.0 tclsh tclsh80.exe",
-			    $DEFAULT_TCLSH)
-	    if test ! -x "$TCLSH"; then	
-		    AC_MSG_WARN([tclsh80 not found either,
-	so we default to '$TCLSH'.
-	tclsh is only necessary for the test suite.]);
-	    fi
-	    JTCLSH=$TCLSH
-	fi     
-    fi 
+if test ! -d "$PTII/util/testsuite"; then
+    AC_MSG_RESULT([$PTII/util/testsuite is not a directory, so we need not
+find Jacl])
+else
+    AC_MSG_CHECKING([for ptjacl.jar])
+    AC_ARG_WITH(ptjacl_jar, [  --with-ptjacl_jar=PTJACL.JAR  ptjacl.jar file,
+                           used for running the test scripts],
+	PTJACL_JAR=$withval, PTJACL_JAR=$PTII/ptjacl.jar)
+
+    if test -f "$PTJACL_JAR"; then
+	AC_MSG_RESULT([$PTJACL_JAR])
+	AC_MSG_CHECKING([for how to run jacl])
+	# This command starts up Jacl
+	if echo "set java::jdkVersion; exit" | CLASSPATH=$PTJACL_JAR $JAVA $JACL_JFLAG tcl.lang.Shell; then
+		AC_MSG_RESULT([CLASSPATH=$PTJACL_JAR $JAVA $PTJACL_JFLAG tcl.lang.Shell])
+	else
+		PTJACL_JFLAG=
+		AC_MSG_RESULT(['$JAVA -native' failed,
+  use CLASSPATH=$PTJACL_JAR $JAVA tcl.lang.Shell])
+		JTCLSH='[$(JAVA) tcl.lang.Shell]'
+	fi
+    else
+	AC_MSG_WARN([The ptjacl.jar file was not found at '$PTJACL_JAR'
+  ptjacl.jar is only necessary if you plan on running the test suite.
+  You can download ptjacl.jar from
+  http://ptolemy.eecs.berkeley.edu/~cxh/java/jacl/ptjacl.html])
+    fi	 
 fi
+
+
 
 # Keep these substitutions alphabetical, with a description
 
@@ -356,6 +354,12 @@ AC_SUBST(JTREE)
 # JDK Version determined by running confTest.class and getting java.version
 AC_SUBST(JVERSION)
 
+# ptjacl.jar file, used to run the test suites
+AC_SUBST(PTJACL_JAR)
+
+# Flag to pass to java when we start up jacl
+AC_SUBST(PTJACL_JFLAG)
+
 # Location of the JDK
 AC_SUBST(PTJAVA_DIR)
 
@@ -363,4 +367,8 @@ AC_SUBST(PTJAVA_DIR)
 AC_SUBST(PTII_DEFAULT)
 
 # Files we substitute in
-AC_OUTPUT(mk/ptII.mk ptolemy/plot/ptplot)
+if test -f "$PTJACL_JAR"; then
+	AC_OUTPUT(mk/ptII.mk bin/ptjacl ptolemy/plot/ptplot, chmod a+x bin/ptjacl; cp bin/ptjacl bin/ptjaclapp)
+else
+	AC_OUTPUT(mk/ptII.mk ptolemy/plot/ptplot)
+fi
