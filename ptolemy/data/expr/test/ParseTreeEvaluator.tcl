@@ -732,3 +732,10 @@ test ParseTreeEvaluator-23.18 {Test various function calls} {
          [theTest {tanh({1+i, 1-i})}] \
          [theTest {tanh([1+i, 1-i])}]
  } {{1.0839233273386946 + 0.27175258531951163i} {{1.0839233273386946 + 0.27175258531951163i, 1.0839233273386946 - 0.27175258531951163i}} {[1.0839233273386946 + 0.27175258531951163i, 1.0839233273386946 - 0.27175258531951163i]}}
+
+####################################################################
+
+test ParseTreeEvaluator-24.1 {Test Function closures} {
+    list [theTest {function(x:double) x*5.0}] \
+         [theTest {(function(x:double) x*5.0)(10)}] \
+     } {{(function(x:double) (x*5.0))} 50.0}
