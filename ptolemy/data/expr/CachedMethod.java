@@ -32,6 +32,7 @@
  package ptolemy.data.expr;
 
  import ptolemy.kernel.util.IllegalActionException;
+ import ptolemy.kernel.util.InternalErrorException;
  import ptolemy.data.type.*;
  import ptolemy.data.ArrayToken;
  import ptolemy.data.MatrixToken;
@@ -42,234 +43,267 @@
  import java.util.Hashtable;
  import java.util.Iterator;
 
- //////////////////////////////////////////////////////////////////////////
- //// CachedMethod
- /** Cache information about methods invoked from the Ptolemy expression
-  parser (PtParser).  This includes both functions that are registered with
- the parser, and methods that are invoked on tokens.
+//////////////////////////////////////////////////////////////////////////
+//// CachedMethod
+/**
 
- Searching all the registered function classes for a method
- repetitively every time when a Parameter containing a function
- expression is evaluated becomes very expensive.  This is especially
- true when using polymorphic reflection to find methods, and automatic
- type conversions to find methods that take native types.  This class
- provides a cache of the function/method signatures already analyzed, so
- that next time when the same method with the same signature is invoked
- the search is replaced by fast hashed access to the cache.<p>
+An instance of this class represents a method or function that is invoked
+by the Ptolemy II expression evaluator.  Instances of this class are
+created by the findMethod() method and then stored in a hash table.
+Repeated calls to findMethod() for the same method will return the
+instance from the hash table, which is considerably faster than finding
+the method again.  Finding methods is particularly expensive for
+polymorphic methods and methods that take native types.
+<p>
+The functions represented by instances of this class are static methods
+of classes that are registered with the parser (using
+PtParser.registerFunctionClass()).  The methods represented
+by instances of this class are methods of a Token and its subclasses.
+<p>
+Instances of this class have a type returned by getType(), which 
+is a bitwise OR of either {@link #REAL} or {@link #MISSING} with
+either {@link #FUNCTION} or {@link #METHOD}.  REAL indicates that
+the method or function has been searched for and found, while
+MISSING indicates that it has been searched for and not found.
+FUNCTION indicates that it is a function (a static method of a
+class registered with the parser), while METHOD indicates that it
+is a method of a Token.
+<p>
+The cache is cleared by PtParser.registerFunctionClass() so that any
+changes to the registered function classes cause the cache to be
+re-generated.
+<p>
+Note that this class maintains the cache totally using instances of
+ptolemy.data.type.Type.  While this is somewhat constraining since it
+prevents using this class for reflecting things that are not methods
+on ptolemy tokens, it makes it much easier to maintain the cache,
+perform coherent type conversions on invocation, and generate code from
+the expression language.
 
- {@link #REAL} {@link #FUNCTION}s exist in classes registered with
- PtParser.
- {@link #REAL} {@link #METHOD}s exist in various token class instances
- (Tokens or other).
- {@link #MISSING} methods are the ones for which the search
- has failed. The existence of either of these in the cache avoids
- the expensive (function) search through all the registered
- function classes, at the expense of additional memory management.
+@author Zoltan Kemenczy, Research in Motion Limited., Steve Neuendorffer, Edward Lee
+@version $Id$
+@since Ptolemy II 2.0
+@see ptolemy.data.expr.ASTPtFunctionNode
+@see ptolemy.data.expr.PtParser
+*/
 
- The cache is cleared by PtParser.registerFunctionClass() so that any
- changes to the registered function classes cause the cache to be
- re-generated.<p>
+public class CachedMethod {
 
- Note that this class maintains the cache totally using instances of
- ptolemy.data.type.Type.  While this is somewhat constraining since it
- prevents using this class for reflecting things that are not methods
- on ptolemy tokens, it makes it much easier to maintain the cache,
- perform coherent type conversions on invocation, and generate code from
- the expression language.
+    // FIXME: should the constructor be private? The correct entry point
+    // is findMethod().
+    /** Construct a new CachedMethod and compute its hashcode. */
+    public CachedMethod(String methodName, Type[] argTypes,
+            Method method, ArgumentConversion[] conversions, int type) {
+        // Note clones for safety...
+        _methodName = methodName;
+        _argTypes = (Type[]) argTypes.clone();
+        _method = method;
+        if(conversions != null) {
+            _conversions = (ArgumentConversion[]) conversions.clone();
+        } else {
+            _conversions = null;
+        }
+        _type = type;
 
- @author Zoltan Kemenczy, Research in Motion Limited., Steve Neuendorffer
- @version $Id$
- @since Ptolemy II 2.0
- @see ptolemy.data.expr.ASTPtFunctionNode
- @see ptolemy.data.expr.PtParser
- */
+        // compute the hashcode, based on the method name and argument types.
+        _hashcode = methodName.hashCode();
+        for (int i = 0; i < argTypes.length; i++) {
+            _hashcode += argTypes[i].hashCode();
+        }
+    }
 
- public class CachedMethod {
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-     /** Construct a new CachedMethod and compute its hashcode. */
-     public CachedMethod(String methodName, Type[] argTypes,
-             Method method, ArgumentConversion[] conversions, int type) {
-         // Note clones for safety...
-         _methodName = methodName;
-         _argTypes = (Type[]) argTypes.clone();
-         _method = method;
-         if(conversions != null) {
-             _conversions = (ArgumentConversion[]) conversions.clone();
-         } else {
-             _conversions = null;
-         }
-         _type = type;
+    // FIXME: Should this be private?
+    /** Add the specified instance of this class to the cache.
+     *  @param cachedMethod The instance to add to the cache.
+     */
+    public static void add(CachedMethod cachedMethod) {
+        _cachedMethods.put(cachedMethod, cachedMethod);
+    }
 
-         // compute the hashcode, based on the method name and argument types.
-         _hashcode = methodName.hashCode();
-         for (int i = 0; i < argTypes.length; i++) {
-             _hashcode += argTypes[i].hashCode();
-         }
-     }
+    /** Clear the cache.
+     */
+    public static void clear() {
+        _cachedMethods.clear();
+    }
 
-     ///////////////////////////////////////////////////////////////////
-     ////                         public variables                  ////
+    /** Return true if the argument is an instance of CachedMethod
+     *  that represents the same method or function as this instance.
+     *  Note that if this returns true, then both this instance and
+     *  the argument will have the same hashcode, as required by Hashtable.
+     *  @param arg The object to compare to.
+     *  @return True if the argument represents the same method or function.
+     */
+    public boolean equals(Object arg) {
+        if (arg == this) {
+            return true;
+        }
+        if(!(arg instanceof CachedMethod)) {
+            return false;
+        }
+        CachedMethod argMethod = (CachedMethod)arg;
+        if (!_methodName.equals(argMethod._methodName)) {
+            return false;
+        }
+        if ((_type & (FUNCTION+METHOD)) !=
+                (argMethod._type & (FUNCTION+METHOD))) {
+            return false;
+        }
+        if (_argTypes.length != argMethod._argTypes.length) {
+            return false;
+        }
+        for (int i = 0; i < _argTypes.length; i++) {
+            if (!_argTypes[i].equals(argMethod._argTypes[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
 
-     /** A "missing" method that is not real and cannot be constructed. */
-     public static final int MISSING = 1;
+    /** Return the conversions the are applied to the arguments of this
+     *  function or method.
+     *  @return The conversions applied to the arguments.
+     */
+    public ArgumentConversion[] getConversions() {
+        return _conversions;
+    }
 
-     /** A method "constructed" by ASTPtFunctionNode by reducing argument
-         array dimensions to reach a real method . */
-     // public static final int CONSTRUCTED = 2;
+    /** Return the type of the token that results from an invocation
+     *  of this method.
+     *  @exception IllegalActionException If this method or function
+     *   was not found (it is MISSING).
+     */
+    public Type getReturnType() throws IllegalActionException {
+        if(isMissing()) {
+            throw new IllegalActionException("The return type of the method "
+                    + toString() + " cannot be determined because "
+                    + "no matching method was found.");
+        }
+        Class returnType = _method.getReturnType();
+        Type type = ASTPtFunctionNode.convertJavaTypeToTokenType(returnType);
+        return type;
+    }
 
-     /** A method/function that is "real" - found in class with the
-         specified signature. */
-     public static final int REAL = 4;
+    /** Return the hash code calculated when this was constructed.
+     *  This ensures that if two instances of this class are equal (as
+     *  determined by the equals() method), then they have the same
+     *  hash code.
+     *  @return A hash code.
+     */
+    public int hashCode() {
+        return _hashcode;
+    }
 
-     /** A function (could end up real/constructed or missing). */
-     public static final int FUNCTION = 8;
+    /** Find method or function with the specified name and argument types.
+     *  The last argument is either METHOD or FUNCTION to distinguish the
+     *  two cases.  For the METHOD case, the first argument type is class
+     *  on which the method is to be invoked.  For the FUNCTION case, the
+     *  function is a static method of a registered class.
+     *  This method attempts to find the specified function in the cache,
+     *  and searches the registered classes only if the function is not
+     *  in the cache.
+     *  @param methodName The method or function name.
+     *  @param argTypes The argument types, including as the first element
+     *   the type of object on which the method is invoked, if this is a
+     *   method invocation.
+     *  @param type FUNCTION or METHOD.
+     *  @return A function or method.
+     */
+    public static CachedMethod findMethod(
+            String methodName,
+            Type[] argTypes,
+            int type)
+            throws IllegalActionException {
+        //  System.out.println("findMethod(" + methodName + ")");
+        // Check to see if there is a cache already.
+        CachedMethod cachedMethod = get(methodName, argTypes, type);
+        if (cachedMethod != null) {
+            // System.out.println("in cache");
+            return cachedMethod;
+        }
+        // System.out.println("not in cache");
 
-     /** A method (could end up real/constructed or missing). */
-     public static final int METHOD = 16;
+        if (type == METHOD) {
+            // Try to reflect the method.
+            int num = argTypes.length;
+            ArgumentConversion[] conversions =
+                    new ArgumentConversion[num - 1];
 
-     ///////////////////////////////////////////////////////////////////
-     ////                         public methods                    ////
+            Class destTokenClass = argTypes[0].getTokenClass();
+            Type[] methodArgTypes;
+            if (num == 1) {
+                methodArgTypes = null;
+            } else {
+                methodArgTypes = new Type[num - 1];
+                for (int i = 1; i < num; i++) {
+                    methodArgTypes[i-1] = argTypes[i];
+                }
+            }
 
-     /** Return true if the argument represents the same CachedMethod as
-         this. Required by Hashtable. */
-     public boolean equals(Object arg) {
-         boolean retval = true;
-         if(!(arg instanceof CachedMethod)) {
-             return false;
-         }
-         CachedMethod argMethod = (CachedMethod)arg;
-         if (!_methodName.equals(argMethod._methodName)) {
-             return false;
-         }
-         if ((_type & (FUNCTION+METHOD)) !=
-                 (argMethod._type & (FUNCTION+METHOD)))
-             return false;
-         if (_argTypes.length != argMethod._argTypes.length)
-             return false;
-         for (int i = 0; i < _argTypes.length; i++) {
-             if (!_argTypes[i].equals(argMethod._argTypes[i]))
-                 return false;
-         }
-         return true;
-     }
-
-     public ArgumentConversion[] getConversions() {
-         return _conversions;
-     }
-
-     /** Return the type of the token that results from an invocation
-      *  of this method.  If this method is missing, then an exception
-      *  will be thrown.
-      */
-     public Type getReturnType() throws IllegalActionException {
-         if(isMissing()) {
-             throw new IllegalActionException("The return type of the method "
-                     + toString() + " cannot be determined because "
-                     + "no matching method was found.");
-         }
-         Class returnType = _method.getReturnType();
-         Type type = ASTPtFunctionNode.convertJavaTypeToTokenType(returnType);
-         return type;
-     }
-
-     /** Return the hashcode calculated when this was constructed. */
-     public int hashCode() {
-         return _hashcode;
-     }
-
-     public boolean isMissing() {
-         return (_type & MISSING) == MISSING;
-     }
-     public boolean isReal() {
-         return (_type & REAL) == REAL;
-     }
-     public boolean isFunction() {
-         return (_type & FUNCTION) == FUNCTION;
-     }
-     public boolean isMethod() {
-         return (_type & METHOD) == METHOD;
-     }
-
-     /** Find method specified by its methodName, argument types
-      * and argument values by first checking in the method cache
-      * followed by checking the first argument's class, followed by
-      * checking all the function classes registered with PtParser.
-      */
-     public static CachedMethod findMethod(String methodName,
-             Type[] argTypes,
-             int type
-      ) throws IllegalActionException {
-         //  System.out.println("findMethod(" + methodName + ")");
-         // Check to see if there is a cache already.
-         CachedMethod cachedMethod = get(methodName, argTypes, type);
-         if (cachedMethod != null) {
-             //   System.out.println("inCache");
-             return cachedMethod;
-         }
-         // System.out.println("notInCache");
-
-         if (type == METHOD) {
-             // Try to reflect the method.
-             int num = argTypes.length;
-             ArgumentConversion[] conversions =
-                 new ArgumentConversion[num - 1];
-
-             Class destTokenClass = argTypes[0].getTokenClass();
-             Type[] methodArgTypes;
-             if (num == 1) {
-                 methodArgTypes = null;
-             } else {
-                 methodArgTypes = new Type[num - 1];
-                 for (int i = 1; i < num; i++) {
-                     methodArgTypes[i-1] = argTypes[i];
-                 }
-             }
-
-             try {
-                 Method method = _polymorphicGetMethod(destTokenClass,
-                         methodName, methodArgTypes, conversions);
-                 if(method != null) {
-                     cachedMethod = new CachedMethod(methodName, argTypes,
-                             method, conversions, type+REAL);
-                 }
+            try {
+                Method method = _polymorphicGetMethod(destTokenClass,
+                        methodName, methodArgTypes, conversions);
+                if(method != null) {
+                    cachedMethod = new CachedMethod(methodName, argTypes,
+                            method, conversions, type+REAL);
+                }
             } catch (SecurityException security) {
-                 // If we are running under an Applet, then we
-                 // may end up here if, for example, we try
-                 // to invoke the non-existent quantize function on
-                 // java.lang.Math.
-             }
+                // If we are running under an Applet, then we
+                // may end up here if, for example, we try
+                // to invoke the non-existent quantize function on
+                // java.lang.Math.
+            }
 
-             if(cachedMethod == null) {
-                 // Native convert the base class.
-                 //  System.out.println("Checking for array map");
-                 destTokenClass =
-                     ASTPtFunctionNode.convertTokenTypeToJavaType(argTypes[0]);
+            if(cachedMethod == null) {
+                // Native convert the base class.
+                //  System.out.println("Checking for array map");
+                destTokenClass = ASTPtFunctionNode
+                        .convertTokenTypeToJavaType(argTypes[0]);
 
-                 Method method = _polymorphicGetMethod(destTokenClass,
-                         methodName, methodArgTypes, conversions);
-                 if(method != null) {
-                     cachedMethod = new BaseConvertCachedMethod(
-                             methodName, argTypes, method, NATIVE, conversions,
-                             type+REAL);
-                 }
-             }
-
-         } else { //if(type == FUNCTION) {
-             ArgumentConversion[] conversions =
-                 new ArgumentConversion[argTypes.length];
-             // Search the registered function classes
-             Iterator allClasses =
-                 PtParser.getRegisteredClasses().iterator();
-             while (allClasses.hasNext() && cachedMethod == null) {
-                 Class nextClass = (Class)allClasses.next();
-                 //      System.out.println("ASTPtFunctionNode: " + nextClass);
-                 try {
-                     Method method = _polymorphicGetMethod
-                         (nextClass, methodName, argTypes, conversions);
-                     if(method != null) {
-                         // System.out.println("method = " + method);
-                       cachedMethod = new CachedMethod(methodName, argTypes,
-                               method, conversions, type+REAL);
+                Method method = _polymorphicGetMethod(destTokenClass,
+                        methodName, methodArgTypes, conversions);
+                if(method != null) {
+                    cachedMethod = new BaseConvertCachedMethod(
+                            methodName, argTypes, method, NATIVE, conversions,
+                            type+REAL);
+                }
+            }
+        } else { //if(type == FUNCTION) {
+            ArgumentConversion[] conversions =
+                   new ArgumentConversion[argTypes.length];
+            // Search the registered function classes
+            Iterator allClasses =
+                     PtParser.getRegisteredClasses().iterator();
+            // Keep track of multiple matches, to try to find the
+            // most specific one.
+            Method preferredMethod = null;
+            ArgumentConversion[] preferredConversions = null;
+            while (allClasses.hasNext() && cachedMethod == null) {
+                Class nextClass = (Class)allClasses.next();
+                // System.out.println("Examining registered class: "
+                //        + nextClass);
+                try {
+                    Method method = _polymorphicGetMethod
+                            (nextClass, methodName, argTypes, conversions);
+                    if(method != null) {
+                        // System.out.println("Found match: " + method);
+                        // Compare to previous match, if there has
+                        // been one.
+                        if (preferredMethod == null
+                                || _areConversionsPreferable(
+                                conversions,
+                                method.getParameterTypes(),
+                                preferredConversions,
+                                preferredMethod.getParameterTypes())) {
+                            // Either there is no previous match,
+                            // or the current match is preferable
+                            // or equivalent to the previous match.
+                            preferredMethod = method;
+                            preferredConversions = (ArgumentConversion[])
+                                    conversions.clone();
+                        }
                     }
                 } catch (SecurityException security) {
                     // If we are running under an Applet, then we
@@ -278,31 +312,39 @@
                     // java.lang.Math.
                 }
             }
+            if (preferredMethod != null) {
+                // System.out.println("*** Chosen method: "
+                //        + preferredMethod);
+                // System.out.println("*** Chosen conversions: "
+                //        + preferredConversions[0]);
+                cachedMethod = new CachedMethod(methodName, argTypes,
+                        preferredMethod, preferredConversions, type+REAL);
+            }
         }
 
         if(cachedMethod == null) {
             // System.out.println("Checking for array map");
 
             // Go Look for an ArrayMapped method, instead.
- 	    // Check if any arguments are of array type.
-	    boolean hasArray = false;
+            // Check if any arguments are of array type.
+            boolean hasArray = false;
             boolean[] isArrayArg = new boolean[argTypes.length];
-	    Type[] newArgTypes = new Type[argTypes.length];
+            Type[] newArgTypes = new Type[argTypes.length];
             for (int i = 0; i < argTypes.length; i++) {
-                //   System.out.println("argType[" + i + "] = " + argTypes[i].getClass());
+                // System.out.println("argType[" + i + "] = "
+                //         + argTypes[i].getClass());
                 if (argTypes[i] instanceof ArrayType) {
                     hasArray = true;
                     newArgTypes[i] = ((ArrayType)argTypes[i]).getElementType();
                     isArrayArg[i] = true;
                 } else {
-		    newArgTypes[i] = argTypes[i];
+                    newArgTypes[i] = argTypes[i];
                     isArrayArg[i] = false;
-		}
-	    }
-
+                }
+            }
             if(hasArray) {
                 CachedMethod mapCachedMethod =
-                    findMethod(methodName, newArgTypes, type);
+                        findMethod(methodName, newArgTypes, type);
                 if(!mapCachedMethod.isMissing()) {
                     cachedMethod = new ArrayMapCachedMethod(
                             methodName, argTypes, type+REAL,
@@ -310,39 +352,41 @@
                 }
             }
         }
-
+        
         if(cachedMethod == null) {
-            //  System.out.println("Checking for matrix map");
+            // System.out.println("Checking for matrix map");
             // Go Look for a MatrixMapped method, instead.
- 	    // Check if any arguments are of matrix type.
-	    boolean hasArray = false;
+            // Check if any arguments are of matrix type.
+            boolean hasArray = false;
             boolean[] isArrayArg = new boolean[argTypes.length];
-	    Type[] newArgTypes = new Type[argTypes.length];
+            Type[] newArgTypes = new Type[argTypes.length];
             for (int i = 0; i < argTypes.length; i++) {
-                //     System.out.println("argType[" + i + "] = " + argTypes[i].getClass());
+                // System.out.println("argType[" + i + "] = "
+                //        + argTypes[i].getClass());
                 if (argTypes[i] instanceof UnsizedMatrixType) {
                     hasArray = true;
-                    newArgTypes[i] = ((UnsizedMatrixType)argTypes[i]).getElementType();
+                    newArgTypes[i] = ((UnsizedMatrixType)argTypes[i])
+                            .getElementType();
                     isArrayArg[i] = true;
                 } else {
-		    newArgTypes[i] = argTypes[i];
+                    newArgTypes[i] = argTypes[i];
                     isArrayArg[i] = false;
-		}
-	    }
-
+                }
+            }
+           
             if(hasArray) {
                 CachedMethod mapCachedMethod =
-                    findMethod(methodName, newArgTypes, type);
+                        findMethod(methodName, newArgTypes, type);
                 if(!mapCachedMethod.isMissing()) {
                     cachedMethod = new MatrixMapCachedMethod(
-                            methodName, argTypes, type+REAL,
-                            mapCachedMethod, isArrayArg);
+                             methodName, argTypes, type+REAL,
+                             mapCachedMethod, isArrayArg);
                 }
             }
         }
 
         if(cachedMethod == null) {
-            //  System.out.println("not found...");
+            // System.out.println("not found...");
             // If we haven't found anything by this point, then give
             // up...
             cachedMethod = new CachedMethod(methodName, argTypes,
@@ -354,21 +398,50 @@
         return cachedMethod;
     }
 
-    /** Run method represented by this cachedMethod.  This includes any
-     *  conversions necessary to turn token arguments into other arguments, and
-     *  to convert the result back into a token.
-     *  @param argValues An array of token objects that will be used
-     *  as the arguments.
-     *  @return The token result of the method invocation.
+    /** Return the CachedMethod that corresponds to methodName and
+     *  argTypes if it had been cached previously.
+     */
+    public static CachedMethod get(
+            String methodName, Type[] argTypes, int type) {
+        CachedMethod key = new CachedMethod(
+                   methodName, argTypes, null, null, type);
+        // System.out.println("findMethod:" + key);
+        CachedMethod method = (CachedMethod)_cachedMethods.get(key);
+        return method;
+    }
+
+    /** Return the type of this class, which is one of
+     *  REAL or MISSING or'ed with one of METHOD or FUNCTION.
+     *  @return The type of this class.
+     */
+    public int getType() {
+        return _type;
+    }
+
+    /** Return the method or function associated with this instance, or null
+     *  if none has been found.
+     *  @return The method associated with this instance.
+     */
+    public Method getMethod() {
+        return _method;
+    }
+
+    /** Apply the method or function represented by this object to
+     *  the specified arguments.  This method performs any necessary
+     *  conversions on token arguments, and, if necessary,
+     *  converts the returned value into a token.
+     *  @param argValues An array of Token objects that will be used
+     *   as the arguments.
+     *  @return The result of the method invocation, as a Token.
      *  @exception IllegalActionException If this cached method is
-     *  MISSING, or the invoked method throws it.
+     *   MISSING, or the invoked method throws it.
      */
     public ptolemy.data.Token invoke(Object[] argValues)
             throws IllegalActionException {
-        //     System.out.println("invoking " + toString() + " on:");
-        //         for(int i = 0; i < argValues.length; i++) {
-//             System.out.println("arg " + i + " = " + argValues[i]);
-//         }
+        // System.out.println("invoking " + toString() + " on:");
+        // for(int i = 0; i < argValues.length; i++) {
+        //     System.out.println("arg " + i + " = " + argValues[i]);
+        // }
 
         if(isMissing()) {
             throw new IllegalActionException("A method compatible with "
@@ -389,9 +462,11 @@
                 methodArgValues[i-1] = _conversions[i-1].convert(
                         (ptolemy.data.Token)argValues[i]);
             }
-     //        for(int i = 0; i < num - 1; i++) {
-//                 System.out.println("Convertedarg " + i + " = " + methodArgValues[i] + " class = " + methodArgValues[i].getClass());
-//             }
+            // for(int i = 0; i < num - 1; i++) {
+            //    System.out.println("Convertedarg " + i + " = "
+            //            + methodArgValues[i] + " class = "
+            //            + methodArgValues[i].getClass());
+            // }
             try {
                 result = method.invoke(argValues[0], methodArgValues);
             } catch (InvocationTargetException ex) {
@@ -412,13 +487,15 @@
 	    if (num == 0)
 		methodArgValues = null;
             for (int i = 0; i < num; i++) {
-                //          System.out.println("Conversion = " + _conversions[i]);
+                // System.out.println("Conversion = " + _conversions[i]);
                 methodArgValues[i] = _conversions[i].convert(
                         (ptolemy.data.Token)argValues[i]);
             }
-      //       for(int i = 0; i < num; i++) {
-//                 System.out.println("Convertedarg " + i + " = " + methodArgValues[i] + " class = " + methodArgValues[i].getClass());
-//             }
+            // for(int i = 0; i < num; i++) {
+            //    System.out.println("Convertedarg " + i + " = "
+            //           + methodArgValues[i] + " class = "
+            //           + methodArgValues[i].getClass());
+            // }
             try {
                 result = method.invoke(method.getDeclaringClass(),
                         methodArgValues);
@@ -435,20 +512,34 @@
                 + method +  " that is not simple function or method");
     }
 
-    /** Returns the CONSTRUCTED, MISSING, METHOD, FUNCTION type of this.
+    /** Return true if this instance represents a function (vs. a method).
+     *  @return True if this instance represents a function.
      */
-    public int getType() {
-        return _type;
+    public boolean isFunction() {
+        return (_type & FUNCTION) == FUNCTION;
     }
 
-    /** Returns the method associated with this REAL CachedMethod, null
-     *  otherwise.
+    /** Return true if this instance represents a method (vs. a function).
+     *  @return True if this instance represents a method.
      */
-    public Method getMethod() {
-        return _method;
+    public boolean isMethod() {
+        return (_type & METHOD) == METHOD;
+    }
+
+    /** Return true if the search for the method or function represented
+     *  by this object turned up nothing.
+     *  @return True if there is no such method.
+     */
+    public boolean isMissing() {
+        return (_type & MISSING) == MISSING;
+    }
+
+    public boolean isReal() {
+        return (_type & REAL) == REAL;
     }
 
     /** Return a string representation.
+     *  @return A string representation.
      */
     public String toString() {
         int initialArg = 0;
@@ -471,49 +562,149 @@
         return buffer.toString();
     }
 
-    /** Add the CachedMethod to the cache.
-     */
-    public static void add(CachedMethod cachedMethod) {
-        _cachedMethods.put(cachedMethod, cachedMethod);
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+    
+    /** A "missing" method or function is one that was not found. */
+    public static final int MISSING = 1;
 
-    /** Clear the cache - restarts the search of registered classes for methods
-     *  and the rebuilding of the cache.
+    /** A method or function that is "real" is one that has been
+     *  found with the specified signature.
      */
-    public static void clear() {
-        _cachedMethods.clear();
-    }
+    public static final int REAL = 4;
 
-    /** Return the CachedMethod that corresponds to methodName and
-     *  argTypes if it had been cached previously.
-     */
-    public static CachedMethod get(String methodName, Type[] argTypes,
-            int type) {
-        CachedMethod key = new CachedMethod(methodName, argTypes, null, null, type);
-        // System.out.println("findMethod:" + key);
-        CachedMethod method = (CachedMethod)_cachedMethods.get(key);
-        return method;
-    }
+    /** Indicator of a function (vs. method). */
+    public static final int FUNCTION = 8;
+
+    /** Indicator of a method (vs. function). */
+    public static final int METHOD = 16;
+
+    // Note that conversions are ordered by preference..  IMPOSSIBLE is the
+    // least preferable conversion, and has type of zero.
+
+    /** Impossible argument conversion. */
+    public static final ArgumentConversion
+            IMPOSSIBLE = new ArgumentConversion(0);
+
+    /** Conversion from an ArrayToken to a Token array (Token[]). */
+    public static final ArgumentConversion
+            ARRAYTOKEN = new ArgumentConversion(1) {
+        public Object convert(ptolemy.data.Token input)
+                throws IllegalActionException {
+            // Convert ArrayToken to Token[]
+            return ((ArrayToken)input).arrayValue();
+        }
+    };
+
+    /** Conversion from tokens to Java native types. */
+    public static final ArgumentConversion
+            NATIVE = new ArgumentConversion(2) {
+        public Object convert(ptolemy.data.Token input)
+                throws IllegalActionException {
+            // Convert tokens to native types.
+            return ASTPtFunctionNode.convertTokenToJavaType(input)[0];
+        }
+    };
+
+    /** Identity conversion.  Does nothing. */
+    public static final ArgumentConversion
+            IDENTITY = new ArgumentConversion(3) {
+        public Object convert(ptolemy.data.Token input)
+                throws IllegalActionException {
+            // The do nothing conversion.
+            return input;
+        }
+    };
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    // Regrettably, the getMethod() method in the java Class does not
-    // support polymorphism.  In particular, it does not recognize a method
-    // if the class you supply for an argument type is actually derived
-    // from the class in the method signature.  So we have to reimplement
-    // this here.  This method returns the first method that it finds that
-    // has the specified name and can be invoked with the specified
-    // argument types.  It is arguable that it should return the most
-    // specific method that it finds, but it turns out that this is difficult
-    // to define.  So it simply returns the first match.
-    // It returns null if there is no match.
+    /** Return true if the conversions in the first argument are
+     *  preferable to the conversions in the third argument, for methods
+     *  with argument types given by the second and fourth arguments.
+     *  To return true, every conversion in the first method
+     *  must be preferable or equal to conversions in the second.
+     *  The two arguments are required to have the same length, or
+     *  else an InternalErrorException will be thrown.
+     *  @param conversions1 The first set of conversions.
+     *  @param arguments1 The arguments of the first method.
+     *  @param conversions2 The second set of conversions.
+     *  @param arguments2 The arguments of the second method.
+     *  @return True if the first set of conversions is preferable
+     *   to the second.
+     */
+    protected static boolean _areConversionsPreferable(
+            ArgumentConversion[] conversions1,
+            Class[] arguments1,
+            ArgumentConversion[] conversions2,
+            Class[] arguments2) {
+        if (conversions1.length != conversions2.length) {
+            throw new InternalErrorException(
+                    "Conversion arrays have to have the same length.");
+        }
+        for(int j = 0; j < conversions1.length; j++) {
+            if(conversions2[j].isPreferableTo(conversions1[j])) {
+                // Found one conversion where the second argument is
+                // preferable.  That is enough to return false.
+                return false;
+            } else if(conversions2[j].equals(conversions1[j])) {
+                // Conversions are the same.
+                // Use the types of the arguments to get more specific.
+                Class class1 = arguments1[j];
+                Class class2 = arguments2[j];
+                try {
+                    Type type1 = ASTPtFunctionNode
+                            .convertJavaTypeToTokenType(class1);
+                    Type type2 = ASTPtFunctionNode
+                            .convertJavaTypeToTokenType(class2);
+                    if(TypeLattice.compare(type2, type1)
+                            == ptolemy.graph.CPO.LOWER) {
+                        // Found one conversion where the second method
+                        // is preferable. This is enough to return false.
+                        // An argument that is lower is the lower in the
+                        // type lattice is preferable because it is
+                        // more specific.
+                        return false;
+                    }
+                } catch (IllegalActionException ex) {
+                    // Failed to find a token type, so can't perform
+                    // the comparison.  Ignore the error so that it remains
+                    // possible to return true.  This allows the latest
+                    // matching method to be used.
+                }
+            }
+        }
+        // No argument was found where the second is preferable,
+        // so we return true.
+        return true;
+    }
+
+    /** Return the first method in the specified library that has
+     *  the specified name and can be invoked with the specified
+     *  argument types. The last argument is an array that is populated
+     *  with the conversions that will be required to invoke this method.
+     *  It is arguable that it should return the most specific method
+     *  that it finds, but it turns out that this is difficult
+     *  to define.  So it simply returns the first match.
+     *  It returns null if there is no match.
+     *  Regrettably, the getMethod() method in the java Class does not
+     *  support polymorphism.  In particular, it does not recognize a method
+     *  if the class you supply for an argument type is actually derived
+     *  from the class in the method signature.  So we have to reimplement
+     *  this here.
+     *  @param library A class with methods giving a function library.
+     *  @param methodName The name of the method.
+     *  @param argTypes The types of the arguments.
+     *  @param conversions An array of the same length as <i>argTypes</i>
+     *   that will be populated by this method with the conversions to
+     *   use for the arguments.
+     */
     protected static Method _polymorphicGetMethod(Class library,
             String methodName, Type[] argTypes,
             ArgumentConversion[] conversions) {
         Method matchedMethod = null;
         ArgumentConversion[] matchedConversions = 
-            new ArgumentConversion[conversions.length];
+                new ArgumentConversion[conversions.length];
         while (library != null) {
             // We want to ascend the class hierarchy in a controlled way
             // so we use getDeclaredMethods() and getSuperclass()
@@ -542,50 +733,37 @@
                 // Check the number of arguments.
                 if (arguments.length != actualArgCount) continue;
 
-                //    System.out.println("checking method " + methods[i]);
+                // System.out.println("checking method " + methods[i]);
+
                 // Check the compatability of arguments.
                 boolean match = true;
                 for (int j = 0; j < arguments.length && match; j++) {
                     ArgumentConversion conversion =
-                        _getConversion(arguments[j], argTypes[j]);
-                    //    System.out.println("formalType is " + arguments[j] + " " + arguments[j].getName());
-                    //   System.out.println("actualType is " + argTypes[j] + " " + argTypes[j].getClass().getName());
+                            _getConversion(arguments[j], argTypes[j]);
+                    // System.out.println("formalType is "
+                    //       + arguments[j] + " " + arguments[j].getName());
+                    // System.out.println("actualType is " + argTypes[j]
+                    //       + " " + argTypes[j].getClass().getName());
                     match = match && (conversion != IMPOSSIBLE);
                     conversions[j] = conversion;
                 }
+                // If there was a previous match, then check to see
+                // which one is preferable.
                 if (match && matchedMethod != null) {
-                    // Check to see if the new method involves
-                    // less conversion that the old one.
-                    for(int j = 0; j < actualArgCount; j++) {
-                        if(matchedConversions[j].isPreferableTo(conversions[j])) {
-                            match = false;
-                        } else if(matchedConversions[j].equals(conversions[j])) {
-                            Class matchedClass = matchedMethod.getParameterTypes()[j];
-                            Class testClass = arguments[j];
-                            try {
-                                Type matchedType =       
-                                    ASTPtFunctionNode.convertJavaTypeToTokenType(
-                                            matchedClass);
-                                Type testType =       
-                                    ASTPtFunctionNode.convertJavaTypeToTokenType(
-                                            testClass);
-                                if(TypeLattice.compare(testType, matchedType) == ptolemy.graph.CPO.HIGHER) {
-                                match = false;
-                                } else if(TypeLattice.compare(testType, matchedType) == ptolemy.graph.CPO.SAME) {
-                                    match = false;
-                                }
-                            } catch (Exception ex) {
-                                // Ignore...
-                            }
-                        }
-                    }
+                    // Set match to false if previously found match is
+                    // preferable to this one.  matchedConversions is
+                    // the set of previously found conversions.
+                    match = _areConversionsPreferable(
+                            conversions, arguments,
+                            matchedConversions,
+                            matchedMethod.getParameterTypes());
                 }
                 if (match) {
-                    // If still a match, then remember the method for later.
+                    // If still a match, then remember the method for later,
+                    // so it can be checked against any other match found.
                     matchedMethod = methods[i];
                     System.arraycopy(conversions, 0,
                             matchedConversions, 0, actualArgCount);
-                    
                 }
             }
             library = library.getSuperclass();
@@ -595,8 +773,9 @@
         return matchedMethod;
     }
 
-    /** Return true if an instance of actual can be used as an argument to
-     *  a formal method argument of class formal.
+    /** Return a conversion to convert the second argument into the class
+     *  given by the first argument. If no such conversion is possible, then
+     *  the returned conversion is IMPOSSIBLE.
      */
     protected static ArgumentConversion _getConversion(
             Class formal, Type actual) {
@@ -612,7 +791,8 @@
             return ARRAYTOKEN;
         try {
             // Tokens can be converted to native types.
-            Class typeClass = ASTPtFunctionNode.convertTokenTypeToJavaType(actual);
+            Class typeClass = ASTPtFunctionNode.convertTokenTypeToJavaType(
+                    actual);
             if(formal.isAssignableFrom(
                        ASTPtFunctionNode.convertTokenTypeToJavaType(actual))) {
                 return NATIVE;
@@ -640,6 +820,23 @@
         return IMPOSSIBLE;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private String _methodName;
+    private Type[] _argTypes;
+    private Method _method;
+    private ArgumentConversion[] _conversions;
+    private int _hashcode;
+    private int _type;
+    private static Hashtable _cachedMethods = new Hashtable();
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** Class representing an argument conversion.
+     *  Instances of this class are returned by getConversions().
+     */
     public static class ArgumentConversion {
         private ArgumentConversion(int type) {
             _type = type;
@@ -665,35 +862,6 @@
 
         private int _type;
     }
-
-     // Note that these are ordered by preference..  IMPOSSIBLE is the
-     // least preferable conversion, and has type of zero.
-    public static final ArgumentConversion IMPOSSIBLE = 
-    new ArgumentConversion(0);
-    public static final ArgumentConversion ARRAYTOKEN = 
-    new ArgumentConversion(1) {
-        public Object convert(ptolemy.data.Token input)
-                throws IllegalActionException {
-            // Convert ArrayToken to Token[]
-            return ((ArrayToken)input).arrayValue();
-        }
-    };    
-    public static final ArgumentConversion NATIVE = 
-    new ArgumentConversion(2) {
-        public Object convert(ptolemy.data.Token input)
-                throws IllegalActionException {
-            // Convert tokens to native types.
-            return ASTPtFunctionNode.convertTokenToJavaType(input)[0];
-        }
-    };
-    public static final ArgumentConversion IDENTITY = 
-    new ArgumentConversion(3) {
-        public Object convert(ptolemy.data.Token input)
-                throws IllegalActionException {
-            // The do nothing conversion.
-            return input;
-        }
-    };
 
     // A cached method that converts the base as well.  This allows us to
     // invoke methods on, e.g. The ptolemy.math.Complex class and the
@@ -855,17 +1023,18 @@
 
             int pos = 0;
             for(int j = 0; j < ydim; j++) {
-            for(int k = 0; k < xdim; k++) {
-                for(int i = 0; i < argValues.length; i++) {
-                    if(_reducedArgs[i]) {
-                        subArgs[i] = ((MatrixToken)argValues[i]).getElementAsToken(j, k);
+                for(int k = 0; k < xdim; k++) {
+                    for(int i = 0; i < argValues.length; i++) {
+                        if(_reducedArgs[i]) {
+                            subArgs[i] = ((MatrixToken)argValues[i])
+                                    .getElementAsToken(j, k);
+                        }
                     }
+                    tokenArray[pos++] = _cachedMethod.invoke(subArgs);
                 }
-                tokenArray[pos++] = _cachedMethod.invoke(subArgs);
-            }
             }
 
-            return MatrixToken.create(tokenArray, ydim, xdim);
+            return MatrixToken.createMatrix(tokenArray, ydim, xdim);
         }
 
         public Type getReturnType() throws IllegalActionException {
@@ -881,15 +1050,4 @@
         private CachedMethod _cachedMethod;
         private boolean[] _reducedArgs;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    private String _methodName;
-    private Type[] _argTypes;
-    private Method _method;
-    private ArgumentConversion[] _conversions;
-    private int _hashcode;
-    private int _type;
-    private static Hashtable _cachedMethods = new Hashtable();
 }
