@@ -864,15 +864,15 @@ public class DEDirector extends Director {
 
         // First, include all actors as nodes in the graph.
         // get all the contained actors.
-        Enumeration actors = container.deepGetEntities();
-        while (actors.hasMoreElements()) {
-            dag.add(actors.nextElement());
+        Iterator actors = container.deepEntityList().iterator();
+        while (actors.hasNext()) {
+            dag.add(actors.next());
         }
 
         // Next, create the directed edges by iterating again.
-        actors = container.deepGetEntities();
-        while (actors.hasMoreElements()) {
-            Actor actor = (Actor)actors.nextElement();
+        actors = container.deepEntityList().iterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor)actors.next();
             // get all the input ports in that actor
             Enumeration ports = actor.inputPorts();
             while (ports.hasMoreElements()) {
