@@ -99,6 +99,7 @@ public class MailboxBoundaryReceiver extends Mailbox
      */
     public Token get(Branch branch) {
         Workspace workspace = getContainer().workspace();
+        Token result = null;
         synchronized(this) {
             if( !_terminate && !hasToken() ) {
                 _readBlock = true;
@@ -112,13 +113,19 @@ public class MailboxBoundaryReceiver extends Mailbox
             if( _terminate ) {
             	throw new TerminateProcessException("");
             } else {
+                System.out.println("About to call checkIfBranchIterationIsOver()");
                 checkIfBranchIterationIsOver(branch);
+                System.out.println("About to call waitForBranchPermission()");
                 waitForBranchPermission(branch);
+                System.out.println("About to call super.get()");
+            	result = super.get();
                 if( _writeBlock ) {
-                    _writeBlock = false;
                     wakeUpBlockedPartner();
+                    _writeBlock = false;
+                    notifyAll();
                 }
-            	return super.get();
+                System.out.println("About to end get()");
+            	return result;
             }
         }
     }
@@ -146,6 +153,9 @@ public class MailboxBoundaryReceiver extends Mailbox
         }
         
         Workspace workspace = getContainer().workspace();
+        if( !branch.isBranchPermitted() ) {
+            System.out.println("Branch is not permitted");
+        }
         while( !branch.isBranchPermitted() && !branch.isIterationOver() ) {
             branch.registerRcvrBlocked(this);
             workspace.wait(this);
@@ -246,7 +256,6 @@ public class MailboxBoundaryReceiver extends Mailbox
             } else {
                 
                 checkIfBranchIterationIsOver(branch);
-                
                 waitForBranchPermission(branch);
                 
                 super.put(token);
