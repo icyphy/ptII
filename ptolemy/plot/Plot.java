@@ -374,6 +374,11 @@ public class Plot extends PlotBox {
             }
         }
         _xyInvalid = false;
+        // If this is a bar graph, then make sure the Y range includes 0
+        if (_bars) {
+            if (_yBottom > 0.0) _yBottom = 0.0;
+            if (_yTop < 0.0) _yTop = 0.0;
+        }
         super.fillPlot();
     }
 
@@ -1565,9 +1570,6 @@ public class Plot extends PlotBox {
                     setBars(false);
                 } else {
                     setBars(true);
-                    if (! _yRangeGiven) {
-                        _yBottom = 0;
-                    }
                     int comma = line.indexOf(",", 5);
                     String barwidth;
                     String baroffset = null;
