@@ -1,5 +1,6 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE class SYSTEM "../moml.dtd">
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
 <class name="sinewave" extends="ptolemy.actor.TypedCompositeActor">
     <doc>
     This composite actor generates a sine wave.

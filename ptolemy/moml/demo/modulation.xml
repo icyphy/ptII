@@ -1,5 +1,6 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE model SYSTEM "../moml.dtd">
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
 <model name="modulation" class="ptolemy.actor.TypedCompositeActor">
   <doc>Multiply a low-frequency sine wave by a higher frequency one.</doc>
 
