@@ -77,7 +77,7 @@ public class ResolveImportsVisitor extends JavaVisitor
                 (Scope) StaticResolution.SYSTEM_PACKAGE.getScope(), null, null,
                 CG_USERTYPE);
 
-        JavaDecl old = (JavaDecl) _fileScope.lookupProper(name.getIdent());
+        JavaDecl old = (JavaDecl) _fileScope.lookupLocal(name.getIdent());
         JavaDecl current = (JavaDecl) name.getProperty(DECL_KEY);
 
         if ((old != null) && (old != current)) {
@@ -128,7 +128,7 @@ public class ResolveImportsVisitor extends JavaVisitor
 
         Scope pkgScope = importedPackage.getScope();
 
-        Iterator scopeItr = pkgScope.allProperDecls();
+        Iterator scopeItr = pkgScope.allLocalDecls();
 
         while (scopeItr.hasNext()) {
             JavaDecl type = (JavaDecl) scopeItr.next();

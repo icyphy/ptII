@@ -209,7 +209,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
 
         Scope encScope = (Scope) args.get(1);
 
-        Decl d = encScope.lookupProper(nameString, CG_FIELD);
+        Decl d = encScope.lookupLocal(nameString, CG_FIELD);
 
         if (d != null) {
             throw new RuntimeException("redeclaration of " + d.getName());
@@ -314,7 +314,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
 
         /* Do not do any checking that involves types.
 
-           Iterator constructorItr = classEnv.lookupFirstProper(constructorName,
+           Iterator constructorItr = classEnv.lookupFirstLocal(constructorName,
            CG_CONSTRUCTOR);
 
            while (constructorItr.hasNext()) {
@@ -410,7 +410,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         NameNode name = node.getName();
         String methodName = name.getIdent();
 
-        Iterator methodItr = classEnv.lookupFirstProper(methodName, CG_METHOD);
+        Iterator methodItr = classEnv.lookupFirstLocal(methodName, CG_METHOD);
 
         MethodDecl d = new MethodDecl(methodName, CG_METHOD,
                 node.getReturnType(), modifiers, node, classDecl,

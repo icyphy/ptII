@@ -151,7 +151,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 		// to className everywhere in this method.
 		String className = noExtensionFilename;
                 ClassDecl classDecl =
-		    (ClassDecl) pkgScope.lookupProper(StringManip.unqualifiedPart(className),
+		    (ClassDecl) pkgScope.lookupLocal(StringManip.unqualifiedPart(className),
 						    CG_USERTYPE);
 
                 if (classDecl != null) {
@@ -636,7 +636,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
         Scope packageScope = decl.getScope();
 
-        Iterator declItr = packageScope.allProperDecls();
+        Iterator declItr = packageScope.allLocalDecls();
 
         while (declItr.hasNext()) {
             JavaDecl type = (JavaDecl) declItr.next();
@@ -701,11 +701,11 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
                 if ((categories & CG_USERTYPE) != 0) {
 
-                    possibles = container.getTypeScope().lookupFirstProper(
+                    possibles = container.getTypeScope().lookupFirstLocal(
                             name.getIdent(), categories);
 
                 } else {
-                    possibles = container.getScope().lookupFirstProper(
+                    possibles = container.getScope().lookupFirstLocal(
                             name.getIdent(), categories);
                 }
 
@@ -719,13 +719,13 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 					     " represented by " + type);
                 } else if (type instanceof ArrayTypeNode) {
                     possibles =
-			ARRAY_CLASS_DECL.getScope().lookupFirstProper(
+			ARRAY_CLASS_DECL.getScope().lookupFirstLocal(
                             name.getIdent(),
 			    categories & (CG_FIELD | CG_METHOD));
                 } else {
                     // what is this for ???
                     Scope e = JavaDecl.getDecl(type).getScope();
-                    possibles = e.lookupFirstProper(name.getIdent(),
+                    possibles = e.lookupFirstLocal(name.getIdent(),
                             categories & (CG_FIELD | CG_METHOD | CG_USERTYPE));
                 }
             }

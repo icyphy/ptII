@@ -197,7 +197,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
             sourceNode.accept(this, null);
         }
 
-        Iterator declItr = from.getScope().allProperDecls();
+        Iterator declItr = from.getScope().allLocalDecls();
 
         Scope toScope = to.getScope();
 
@@ -219,7 +219,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
     private static boolean _hasAbstractMethod(UserTypeDeclNode node) {
         Scope classScope = JavaDecl.getDecl((NamedNode) node).getScope();
 
-        Iterator memberItr = classScope.allProperDecls();
+        Iterator memberItr = classScope.allLocalDecls();
 
         while (memberItr.hasNext()) {
             JavaDecl member = (JavaDecl) memberItr.next();
@@ -240,7 +240,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
 
         if (member.category == CG_FIELD) {
             FieldDecl current = (FieldDecl)
-                scope.lookupProper(memberName, CG_FIELD);
+                scope.lookupLocal(memberName, CG_FIELD);
 
             // Only definitions in the destination scope override fields
             // If multiple definitions are inherited, a compile-time error
@@ -255,7 +255,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
             MethodDecl methodMember = (MethodDecl) member;
 
             Iterator methodItr =
-                scope.lookupFirstProper(memberName, CG_METHOD);
+                scope.lookupFirstLocal(memberName, CG_METHOD);
 
             while (methodItr.hasNext()) {
 

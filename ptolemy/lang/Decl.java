@@ -48,16 +48,6 @@ Also, if member "foo" is not valid for all Decls, there is a member
 "hasFoo()" that returns true or false depending on whether object
 on which it is called has a class for which "foo" may be called.
 <p>
-Objects of type Decl should not be allocated; the class is intended
-as a base class for others.
-<p>
- ATTRIBUTE name
-   All Decls have a name, of type String.  These are
-   the unique representative strings assigned by lexical analysis.
-   The names of two Decls are considered the same iff they are the
-   same pointer, ignoring contents: names that are different pointers
-   to strings containing the same characters are considered distinct.
-<p>
 Portions of this code were derived from sources developed under the
 auspices of the Titanium project, under funding from the DARPA, DoE,
 and Army Research Office.
@@ -67,9 +57,9 @@ and Army Research Office.
  */
 public abstract class Decl extends TrackedPropertyMap {
 
-    public Decl(String name, int category0) {
+    public Decl(String name, int newCategory) {
         _name = name;
-        category = category0;
+        category = newCategory;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -98,6 +88,17 @@ public abstract class Decl extends TrackedPropertyMap {
      *  @return The name of this Decl.
      */
     public final String getName() { return _name; }
+
+    /** Returns a hash code value for the object. This method is
+     * supported for the benefit of hashtables such as those provided by
+     * java.util.Hashtable.
+     */
+    public int hashCode () {
+        // If we override equals, we should override hashCode.
+        // http://java.sun.com/docs/books/tutorial/java/javaOO/objectclass.html
+        // FIXME: should we divide by 2 here or not to avoid overflow?
+        return _name.hashCode/2 + category/2;
+    }
 
     /** Return true if at least some of the bits in the mask are set
      *  in the category argument and the name argument matches the name of

@@ -106,7 +106,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
             throw new RuntimeException("declaration shadows " + varName);
         }
 
-        other = scope.lookupProper(varName, CG_LOCALVAR);
+        other = scope.lookupLocal(varName, CG_LOCALVAR);
 
         if (other != null) {
             throw new RuntimeException("redeclaration of " + varName);

@@ -211,7 +211,7 @@ public class PackageDecl extends JavaDecl
 
                         // make sure we don't create 2 class decls if there are two files
                         // with the same base name, but with different extensions.
-                        if (_scope.lookupProper(className, CG_USERTYPE) == null) {
+                        if (_scope.lookupLocal(className, CG_USERTYPE) == null) {
 
                             //System.out.println("adding class/interface " +
                             //                   className + " from " +
@@ -265,7 +265,7 @@ public class PackageDecl extends JavaDecl
                 String systemPackageName =
                     StringManip.partBeforeLast(className, '.');
                 if (systemPackageName.equals(packageName)) {
-                    if (_scope.lookupProper(className, CG_USERTYPE) == null) {
+                    if (_scope.lookupLocal(className, CG_USERTYPE) == null) {
                 String shortClassName =
                     className.substring(packageName.length() + 1);
                 //System.out.println("PackageDecl._initScope" +

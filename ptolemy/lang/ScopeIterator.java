@@ -123,7 +123,7 @@ public class ScopeIterator implements Iterator {
             //System.out.println("ScopeIterator : going to next " +
             // "scope looking for " + _name);
 
-            _declIter = _nextScope.allProperDecls();
+            _declIter = _nextScope.allLocalDecls();
             _nextScope = _nextScope.parent();
 
         } while (true);
@@ -204,7 +204,7 @@ public class ScopeIterator implements Iterator {
 
             // move on to the next scope, discarding last scope
 
-            _declIter = _nextScope.allProperDecls();
+            _declIter = _nextScope.allLocalDecls();
             _nextScope = _nextScope.parent();
 
             // try again on this modified ScopeIterator

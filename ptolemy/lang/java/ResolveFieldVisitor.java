@@ -138,7 +138,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         ClassDecl classDecl = ctx.currentClassDecl;
         Scope classScope = classDecl.getScope();
 
-        ScopeIterator methods = classScope.lookupFirstProper(classDecl.getName(),
+        ScopeIterator methods = classScope.lookupFirstLocal(classDecl.getName(),
                 CG_CONSTRUCTOR);
 
         node.setArgs(TNLManip.traverseList(this, args, node.getArgs()));
@@ -162,7 +162,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
 
         Scope superScope = superDecl.getScope();
 
-        ScopeIterator methods = superScope.lookupFirstProper(superDecl.getName(),
+        ScopeIterator methods = superScope.lookupFirstLocal(superDecl.getName(),
                 CG_CONSTRUCTOR);
 
         node.setArgs(TNLManip.traverseList(this, args, node.getArgs()));
@@ -338,7 +338,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
                         typeName.getName().getIdent());
             }
 
-            ScopeIterator methods = typeDecl.getScope().lookupFirstProper(
+            ScopeIterator methods = typeDecl.getScope().lookupFirstLocal(
                     typeDecl.getName(), CG_CONSTRUCTOR);
 
             MethodDecl constructor = resolveCall(methods, node.getArgs());
@@ -371,7 +371,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
 
         ClassDecl superDecl = (ClassDecl) node.getDefinedProperty(SUPERCLASS_KEY);
 
-        ScopeIterator methods = superDecl.getScope().lookupFirstProper(
+        ScopeIterator methods = superDecl.getScope().lookupFirstLocal(
                 superDecl.getName(), CG_CONSTRUCTOR);
 
         MethodDecl constructor = resolveCall(methods, node.getSuperArgs());
@@ -471,7 +471,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         if (methodArgs == null) {
             d = JavaDecl.getDecl((NamedNode) node);
             if (d == null) { // don't repeat work
-                resolutions = typeDecl.getScope().lookupFirstProper(nameString, CG_FIELD);
+                resolutions = typeDecl.getScope().lookupFirstLocal(nameString, CG_FIELD);
 
                 if (!resolutions.hasNext()) {
                     throw new RuntimeException ("no " + nameString + " field in " +
@@ -484,7 +484,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
                 }
             }
         } else {
-            resolutions = typeDecl.getScope().lookupFirstProper(nameString,
+            resolutions = typeDecl.getScope().lookupFirstLocal(nameString,
                     CG_METHOD);
 
             if (!resolutions.hasNext()) {

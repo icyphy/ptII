@@ -321,9 +321,9 @@ test Environ-6.3 {lookup(String, mask, more)} {
 ######################################################################
 ####
 #
-test Environ-20.1 {allProperDecls)} {
+test Environ-20.1 {allLocalDecls)} {
     # Uses setup from Environ-5.1 above
-    set environIter [$listEnv allProperDecls]
+    set environIter [$listEnv allLocalDecls]
     # objectsToStrings and iterToObjects are defined
     # in ptII/util/testsuite/enums.tcl
     list [objectsToStrings [iterToObjects $environIter]]
@@ -332,9 +332,9 @@ test Environ-20.1 {allProperDecls)} {
 ######################################################################
 ####
 #
-test Environ-21.1 {allProperDecls(mask))} {
+test Environ-21.1 {allLocalDecls(mask))} {
     # Uses setup from Environ-5.1 above
-    set environIter [$listEnv allProperDecls 1]
+    set environIter [$listEnv allLocalDecls 1]
     # objectsToStrings and iterToObjects are defined
     # in ptII/util/testsuite/enums.tcl
     list [objectsToStrings [iterToObjects $environIter]]
@@ -343,9 +343,9 @@ test Environ-21.1 {allProperDecls(mask))} {
 ######################################################################
 ####
 #
-test Environ-21.2 {allProperDecls(mask) with a different mask} {
+test Environ-21.2 {allLocalDecls(mask) with a different mask} {
     # Uses setup from Environ-5.1 above
-    set environIter [$listEnv allProperDecls 2]
+    set environIter [$listEnv allLocalDecls 2]
     # objectsToStrings and iterToObjects are defined
     # in ptII/util/testsuite/enums.tcl
     list [objectsToStrings [iterToObjects $environIter]]
@@ -354,9 +354,9 @@ test Environ-21.2 {allProperDecls(mask) with a different mask} {
 ######################################################################
 ####
 #
-test Environ-22.1 {allProperDecls(name))} {
+test Environ-22.1 {allLocalDecls(name))} {
     # Uses setup from Environ-5.1 above
-    set environIter [$listEnv allProperDecls "my Decl"]
+    set environIter [$listEnv allLocalDecls "my Decl"]
     # objectsToStrings and iterToObjects are defined
     # in ptII/util/testsuite/enums.tcl
     list [objectsToStrings [iterToObjects $environIter]]

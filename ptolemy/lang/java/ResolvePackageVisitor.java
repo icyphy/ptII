@@ -144,7 +144,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
 
         String className = ((NameNode) node.getName()).getIdent();
 
-        Decl other = encScope.lookupProper(className);
+        Decl other = encScope.lookupLocal(className);
 
         if (other != null) {
             throw new RuntimeException("attempt to redefine " + other.getName() +
@@ -157,7 +157,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
             ocl = null;
         } else {
             // lookup in package
-            ocl = (ClassDecl) _pkgScope.lookupProper(className);
+            ocl = (ClassDecl) _pkgScope.lookupLocal(className);
         }
 
         if ((ocl != null) &&
