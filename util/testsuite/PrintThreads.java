@@ -32,7 +32,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 /* This code was originally found at
    http://www.fsg.com/tech/threadmon.htm
    and is
-   Copyright (c) 1997 Fusion Systems Group, a division of Context Integration, Inc. All rights reserved.
+   Copyright (c) 1997-2003 Fusion Systems Group, a division of Context Integration, Inc. All rights reserved.
 
    Fusion Systems Group
    One Wall Street Court, New York, NY, 10005
