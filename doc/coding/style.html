@@ -12,9 +12,10 @@ Places to go
 </menu>
 
 <p>
-The following programming style will be followed in the Ptolemy II project.
+The following programming style is followed in the Ptolemy II project.
 Please submit comments or suggestions to eal@eecs.berkeley.edu.
 <ol>
+<li><a href="#proofreading">Proofreading</a>
 <li><a href="#indentation">Indentation</a>
 <li><a href="#spaces">Spaces</a>
 <li><a href="#comment conventions">Comment conventions</a>
@@ -24,12 +25,31 @@ Please submit comments or suggestions to eal@eecs.berkeley.edu.
 <li><a href="#documentation conventions">Documentation conventions</a>
 <li><a href="#applet conventions">Applet conventions</a>
 <li><a href="#copyright conventions">Copyright and acknowledgements</a>
-<li><a href="#proofreading">Proofreading </a>
 </ol>
+
+<h2><a name="proofreading">Proofreading</a></h2>
+
+Software has become a publication medium.  People will read your code.
+Your name is on it, so you want to be proud of it.  It seems that most
+people stop working on the code when it "works."  This is like stopping
+work on a paper when what it says is correct, and not worrying at all
+about how it is said.  PROOFREAD YOUR CODE AFTER YOU'VE GOT IT WORKING.
+ <p>
+<a href="../../util/testsuite/chkjava"><CODE>$PTII/util/testsuite/chkjava</CODE></a> is a script that will indicate problems with your <CODE>.java</CODE>
+files.  To run it, type
+<pre>
+$PTII/util/testsuite/chkjava *.java
+</pre>
+ <p>You should also spell check your code with <CODE>spell *.java</CODE>.
+See also the <a href="rating.html">Code Rating</a> and
+<a href="testing.html">Testing</a> pages
 
 <h2><a name="indentation">Indentation</a></h2>
 
-Tabs are 8 characters.  Do not override this in your text editor.
+Tabs are 8 space characters.
+The reason for this is that code becomes unreadable when the Tab
+character is interpreted differently by different viewers.
+Do not override this in your text editor.
 Nested statements should be indented 4 characters, as in:
 <pre>
 public class NamedObj implements Nameable, Serializable, Cloneable {
@@ -90,6 +110,9 @@ equals signs:
 	<ul>
 	<li> Right: <CODE>a = b + 1;</CODE>
 	<li> Wrong: <CODE>a=b+1;</CODE>
+
+	<li> Right: <CODE>for (i = 0; i &lt; 10; i += 2)</CODE>
+	<li> Wrong: <CODE>for (i=0; i&lt;10; i+=2)</CODE>
 	</ul>
 </menu>
 
@@ -102,6 +125,7 @@ the object definition.
 
 <LI> Comments should be complete sentences and complete thoughts.
 
+<li> Spelling and grammar should be correct.
 </MENU>
 
 
@@ -113,10 +137,10 @@ Do not hesitate to use long names.
  <P>Method and variable names that are <CODE>protected</CODE>
 or <CODE>private</CODE> are preceded by
 a leading underscore "<CODE>_</CODE>".
-(i.e. <CODE>_protectedMethod()</CODE>, <CODE>_privateMethod()</CODE>.
+(as in <CODE>_protectedMethod()</CODE>, <CODE>_privateMethod()</CODE>.
 
  <P>Method names should have internal capitalization and start with
-a lower case letter (i.e. <CODE>aPublicMethod()</CODE>).
+a lower case letter (as in <CODE>aPublicMethod()</CODE>).
 
  <P>If possible, variables should not use internal capitalization
 unless the name is long.  This makes it easier to distinguish between
@@ -124,7 +148,8 @@ methods and variables.  However, avoiding capitalization in variable
 names is up to the implementer.
 
  <P><CODE>static final</CODE> constants should be in uppercase, with
-  words separated by underscores if necessary.
+  words separated by underscores if necessary, as in
+<CODE>INFINITE_CAPACITY</CODE>.
 
  <P>Method and variable names should avoid using underscores internally, except
 if they are <CODE>static final</CODE> constants.
@@ -137,7 +162,8 @@ Java exception classes should follow these conventions.
 or java.lang.RuntimeException.
 
 <LI> Exceptions should be defined in the same package as the classes
-that throw them.  The exceptions in java.lang follow this convention.
+that throw them or in packages that they depend on.
+The exceptions in java.lang follow this convention.
 
 <LI> In Java, most Exceptions have two constructors, a nullary constructor
 and a constructor that takes a String detail argument.
@@ -148,7 +174,7 @@ and look and feel to exception messages.
 
 
 <LI> When throwing an exception, it is best if the detail message is
-a complete sentence that includes a string that describes to object
+a complete sentence that includes a string that describes the object
 that caused the exception.  For example
 <PRE>
 throw MyException(this, "The list already contains an element named `" +
@@ -179,19 +205,12 @@ exception, use the following:
 The principle for throwing exceptions is this:
 
 <BLOCKQUOTE>
-  If a precondition of a method is violated,
+  If a testable precondition of a method is violated,
   throw a runtime exception. Otherwise throw
   a regular exception.
+  A testable precondition is an assumption mady by the method that
+  can be tested prior to calling the method.
 </BLOCKQUOTE>
-
-The principle implies:
-<ol>
-<li> There is a suitable set of exceptions and
-
-<li> It is possible for clients to ascertain whether
-preconditions will be satisfied.
-
-</ol>
 
 <h4>Example 1</h4>
 
@@ -204,8 +223,10 @@ token. The precondition is
 
 
 If there is no data in a non-blocking domain,
-then the precondition fails. NoSuchItemException
-(preferably with a better name) must therefore
+then the precondition fails. 
+This can be tested by calling <CODE>hasToken()</CODE>.
+NoSuchItemException
+(preferably with a better name) should therefore
 be a runtime exception.
 
 <h4>Example 2</h4>
@@ -282,24 +303,7 @@ copyrights, then you should be sure to include the copyrights.
  <P>If your file is a rewrite of a previously copyrighted file from UC
 Berkeley, then you should include the date from that file.
 
-<h2><a name="proofreading">Proofreading</a></h2>
 
-Software has become a publication medium.  People will read your code.
-Your name is on it, so you want to be proud of it.  It seems that most
-people stop working on the code when it "works."  This is like stopping
-work on a paper when what it says is correct, and not worrying at all
-about how it is said.  PROOFREAD YOUR CODE AFTER YOU'VE GOT IT WORKING.
- <p>
-<a href="../../util/testsuite/chkjava"><CODE>$PTII/util/testsuite/chkjava</CODE></a> is a script that will indicate problems with your <CODE>.java</CODE>
-files.  To run it, type
-<pre>
-$PTII/util/testsuite/chkjava *.java
-</pre>
- <p>You should also spell check your code with <CODE>spell *.java</CODE>.
-See also the <a href="rating.html">Code Rating</a> and
-<a href="testing.html">Testing</a> pages
-
-<HR>
-Copyright &#169 1995-1999 The Regents of the University of California.
+<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
 </body>
 </html>
