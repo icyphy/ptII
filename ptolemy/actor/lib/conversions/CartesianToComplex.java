@@ -82,12 +82,12 @@ public class CartesianToComplex extends TypedAtomicActor {
 
     /** The input port for the x component of the Cartesian pair, which
         has type DoubleToken.
-     */
+    */
     public TypedIOPort real;
 
     /** The input port for the y component of the Cartesian pair, which
         has type DoubleToken.
-     */
+    */
     public TypedIOPort imag;
 
     /** The port for the output, which has type ComplexToken.
