@@ -66,17 +66,17 @@ class ExampleApplet extends java.applet.Applet
      * @param position of the rectangle, initial point(x,y), width and hight
      */	
     public Rectangle DURectangle( int x, int y, int w, int h )
-    {
-        String        alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-        FontMetrics   fm = getFontMetrics( getFont() );
-        double        fw = ( fm != null ) ? ( fm.stringWidth( alphabet ) / alphabet.length() ) : 0;
-        double        fh = ( fm != null ) ? ( fm.getHeight() / 2.0 ) : 0.0;
+        {
+            String        alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+            FontMetrics   fm = getFontMetrics( getFont() );
+            double        fw = ( fm != null ) ? ( fm.stringWidth( alphabet ) / alphabet.length() ) : 0;
+            double        fh = ( fm != null ) ? ( fm.getHeight() / 2.0 ) : 0.0;
 
-        return new Rectangle( (int) Math.round( ( (double)fw * (double)x ) / 4.0 ),
-                              (int) Math.round( ( (double)fh * (double)y ) / 4.0 ),
-                              (int) Math.round( ( (double)fw * (double)w ) / 4.0 ),
-                              (int) Math.round( ( (double)fh * (double)h ) / 4.0 ) );
-    }
+            return new Rectangle( (int) Math.round( ( (double)fw * (double)x ) / 4.0 ),
+                    (int) Math.round( ( (double)fh * (double)y ) / 4.0 ),
+                    (int) Math.round( ( (double)fw * (double)w ) / 4.0 ),
+                    (int) Math.round( ( (double)fh * (double)h ) / 4.0 ) );
+        }
     
     /** Place the Rectangle in a component.
      * @see java.awt.Rectangle
@@ -86,8 +86,8 @@ class ExampleApplet extends java.applet.Applet
     public void DUPositionComponent( java.awt.Component comp, int x, int y, int w, int h, java.awt.Insets formInsets ) {
         Rectangle     rect = DURectangle( x, y, w, h );
         if( formInsets != null ) {
-             rect.x += formInsets.left;
-             rect.y += formInsets.top;
+            rect.x += formInsets.left;
+            rect.y += formInsets.top;
         }
         comp.reshape( rect.x, rect.y, rect.width, rect.height );
     }
