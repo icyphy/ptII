@@ -60,6 +60,7 @@ public class Icon extends Attribute implements Locatable {
     public Icon(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+	setLocation(null);
 	setMoMLElementName("rendition");
     }
 

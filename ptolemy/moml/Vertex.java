@@ -66,6 +66,7 @@ public class Vertex extends Attribute implements Locatable {
     public Vertex(Relation container, String name) 
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+	setLocation(null);
 	setMoMLElementName("vertex");
     }
 
