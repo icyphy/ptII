@@ -952,7 +952,7 @@ public class DTDirector extends SDFDirector {
                     // not be called
                     for (int i = 0; i < port.getWidth(); i++) {
                         for (int j = 0;
-                            j < insideReceivers[i].length; j++) {
+                             j < insideReceivers[i].length; j++) {
                             DTReceiver receiver;
                             receiver = (DTReceiver) insideReceivers[i][j];
                             receiver.overrideHasToken = true;

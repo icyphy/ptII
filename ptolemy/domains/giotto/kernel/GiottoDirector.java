@@ -135,7 +135,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
      *   attribute in the container.
      */
     public GiottoDirector(CompositeEntity container, String name)
-	throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -177,13 +177,13 @@ public class GiottoDirector extends StaticSchedulingDirector {
      *   is <i>filename</i> and the file cannot be opened.
      */
     public void attributeChanged(Attribute attribute)
-	throws IllegalActionException {
+            throws IllegalActionException {
 	if (attribute == period) {
 	    _periodValue = ((DoubleToken)period.getToken()).doubleValue();
         } else if (attribute == synchronizeToRealTime) {
             _synchronizeToRealTime =
                 ((BooleanToken)synchronizeToRealTime.getToken())
-                        .booleanValue();
+                .booleanValue();
         }
     }
 
@@ -289,7 +289,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
             Actor actor = ((Firing) scheduleIterator.next()).getActor();
             if (_debugging) {
                 _debug("Updating destination receivers of "
-                         + ((NamedObj)actor).getFullName());
+                        + ((NamedObj)actor).getFullName());
             }
             List outputPortList = actor.outputPortList();
             Iterator outputPorts = outputPortList.iterator();
@@ -300,7 +300,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
                     Receiver[] receiverArray = channelArray[i];
                     for (int j = 0; j < receiverArray.length; j++) {
                         GiottoReceiver receiver =
-                                (GiottoReceiver) receiverArray[j];
+                            (GiottoReceiver) receiverArray[j];
                         receiver.update();
                     }
                 }
@@ -328,7 +328,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
 	    if (_unitTimeIncrement > elapsedTimeInSeconds) {
 		long timeToWait = (long)
-                        ((_unitTimeIncrement - elapsedTimeInSeconds) * 1000.0);
+                    ((_unitTimeIncrement - elapsedTimeInSeconds) * 1000.0);
 		if (timeToWait > 0) {
 		    if (_debugging) {
 			_debug("Waiting for real time to pass: " + timeToWait);
@@ -378,7 +378,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
             while (outputPorts.hasNext()) {
                 IOPort port = (IOPort) outputPorts.next();
                 Parameter initialValueParameter = (Parameter)
-                        ((NamedObj) port).getAttribute("initialValue");
+                    ((NamedObj) port).getAttribute("initialValue");
                 if (initialValueParameter != null) {
                     port.broadcast(initialValueParameter.getToken());
                 }
@@ -413,7 +413,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
      */
     public boolean postfire() throws IllegalActionException {
 	int numberOfIterations =
-	        ((IntToken) (iterations.getToken())).intValue();
+            ((IntToken) (iterations.getToken())).intValue();
         if (_debugging) {
             _debug("===== Director completing unit of iteration: "
                     + _iterationCount);
@@ -458,8 +458,8 @@ public class GiottoDirector extends StaticSchedulingDirector {
     public boolean transferInputs(IOPort port) throws IllegalActionException {
 	if (!port.isInput() || !port.isOpaque()) {
 	    throw new IllegalActionException(this, port,
-                   "transferInputs: port argument is not an opaque"
-                   + "input port.");
+                    "transferInputs: port argument is not an opaque"
+                    + "input port.");
 	}
 	boolean transfer = false;
 	Receiver[][] insideReceivers = port.deepGetReceivers();

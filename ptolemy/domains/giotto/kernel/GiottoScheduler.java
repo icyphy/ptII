@@ -165,9 +165,9 @@ public class GiottoScheduler extends Scheduler {
      */
     protected Schedule _getSchedule() throws NotSchedulableException {
         StaticSchedulingDirector director =
-                (StaticSchedulingDirector) getContainer();
+            (StaticSchedulingDirector) getContainer();
         CompositeActor compositeActor =
-	        (CompositeActor) (director.getContainer());
+            (CompositeActor) (director.getContainer());
         List actorList = compositeActor.deepEntityList();
 	int actorCount = actorList.size();
 
@@ -192,8 +192,8 @@ public class GiottoScheduler extends Scheduler {
         }
 
 	for (i = 0; i < actorCount; i++) {
-	  intervalArray[i] = _lcm / frequencyArray[i];
-     	  //System.out.println("The " + i + " actor has frequency " + frequencyArray[i] + " ----> " + intervalArray[i]);
+            intervalArray[i] = _lcm / frequencyArray[i];
+            //System.out.println("The " + i + " actor has frequency " + frequencyArray[i] + " ----> " + intervalArray[i]);
 	}
 
 	// Compute schedule
@@ -209,15 +209,15 @@ public class GiottoScheduler extends Scheduler {
 		Actor actor = (Actor) actorListIterator.next();
 
 		if ( ((_giottoSchedulerTime % intervalArray[i]) == 0)
-		     &&
-		     (iterateArray[i] > 0)
-		   )
-		{
-		    Firing firing = new Firing();
-		    firing.setActor(actor);
-		    fireAtSameTimeSchedule.add(firing);
+                        &&
+                        (iterateArray[i] > 0)
+                     )
+                    {
+                        Firing firing = new Firing();
+                        firing.setActor(actor);
+                        fireAtSameTimeSchedule.add(firing);
 
-		}
+                    }
 	    }
 
 	    _giottoSchedulerTime += _gcd;
@@ -235,70 +235,70 @@ public class GiottoScheduler extends Scheduler {
 
     // if they are correct, they should go the ptolemy.math package...
     private int gcd(int[] array) {
-   		int count = array.length;
-		int HighestNumber = array[0];
-		int HoldX = 1;
-		int X, i, c = 1;
+        int count = array.length;
+        int HighestNumber = array[0];
+        int HoldX = 1;
+        int X, i, c = 1;
 
-		for ( i = 1; i < count; ++i ) {
-			if ( array[i] == array[0] )
-				++c;
-			if ( array[i] > HighestNumber )
-				HighestNumber = array[i] / 2;
-		}
+        for ( i = 1; i < count; ++i ) {
+            if ( array[i] == array[0] )
+                ++c;
+            if ( array[i] > HighestNumber )
+                HighestNumber = array[i] / 2;
+        }
 
-		if ( c == count )
-			return array[0];
+        if ( c == count )
+            return array[0];
 
-		X = 2;
-		i = 0;
+        X = 2;
+        i = 0;
 
-		while ( true ) {
+        while ( true ) {
 
-			// Check for Remainder
-			if ( (array[i] % X) != 0 ) {
-				X++;
-				i = 0;
-			}
+            // Check for Remainder
+            if ( (array[i] % X) != 0 ) {
+                X++;
+                i = 0;
+            }
 
-			// No remainder, passed
-			else
-				++i;
+            // No remainder, passed
+            else
+                ++i;
 
-			if ( i >= count ) {
-				HoldX = X;
-				i = 0;
-				X++;
-			}
-			if ( X >= HighestNumber + 1 )
-				break;
-		}
+            if ( i >= count ) {
+                HoldX = X;
+                i = 0;
+                X++;
+            }
+            if ( X >= HighestNumber + 1 )
+                break;
+        }
 
-		return HoldX;
-   }
+        return HoldX;
+    }
 
 
     private int lcm(int[] array) {
 
-	    int count = array.length;
-	    int X = array[0];
-	    int i = 0;
+        int count = array.length;
+        int X = array[0];
+        int i = 0;
 
-	    while ( true ) {
+        while ( true ) {
 
-		    if ( (X % array[i]) == 0 ) {
-			    if ( i >= count-1 )
-				    break;
-			    i++;
-		    }
+            if ( (X % array[i]) == 0 ) {
+                if ( i >= count-1 )
+                    break;
+                i++;
+            }
 
-		    else {
-			    X = X + 1;
-			    i = 0;
-		    }
-	    }
+            else {
+                X = X + 1;
+                i = 0;
+            }
+        }
 
-	    return X;
+        return X;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -343,7 +343,7 @@ public class GiottoScheduler extends Scheduler {
 	 */
 	public int compare(Object actor1, Object actor2) {
 	    if (actor1 != null && actor1 instanceof Actor &&
-                actor2 != null && actor2 instanceof Actor) {
+                    actor2 != null && actor2 instanceof Actor) {
 
 		if (getFrequency((Actor)actor1)
 		        < getFrequency((Actor)actor2))
