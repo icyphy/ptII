@@ -79,10 +79,9 @@ public class ZeroCrossingDetector extends Transformer
     public ZeroCrossingDetector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        input.setTypeEquals(BaseType.DOUBLE);
         Parameter inputType = new Parameter(input, "signalType",
                 new StringToken("CONTINUOUS"));
-        output.setTypeEquals(BaseType.DOUBLE);
+        output.setTypeAtLeast(input);
         Parameter outputType = new Parameter(output, "signalType",
                 new StringToken("DISCRETE"));
         trigger = new TypedIOPort(this, "trigger", true, false);
@@ -90,10 +89,17 @@ public class ZeroCrossingDetector extends Transformer
         trigger.setTypeEquals(BaseType.DOUBLE);
         Parameter triggerType = new Parameter(trigger, "signalType",
                 new StringToken("CONTINUOUS"));
+        _zeroLevel = 0.0;
+        zeroLevel = new Parameter(this, "zeroLevel", new DoubleToken(0.0));
+        zeroLevel.setTypeEquals(BaseType.DOUBLE);
+        
+        defaultEventValue = new Parameter(this, "defaultEventValue",
+                new DoubleToken(0.0));
+        output.setTypeAtLeast(defaultEventValue);
         _errorTolerance = (double)1e-4;
         errorTolerance = new Parameter(this, "errorTolerance",
                 new DoubleToken(_errorTolerance));
-
+        //addDebugListener(new ptolemy.kernel.util.StreamListener());
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -107,6 +113,20 @@ public class ZeroCrossingDetector extends Transformer
      *  it contains a DoubleToken of 1e-4.
      */
     public Parameter errorTolerance;
+
+    /** The parameter that specifies the zero level. By default, it
+     *  contains a DoubleToken of value 0.0. Note, a change of this
+     *  parameter at run time will not be applied until the next
+     *  iteration.
+     */
+    public Parameter zeroLevel;
+
+    /** The parameter that specifies the default output event value
+     *  if the input port is not connected to any thing. If the
+     *  input is connected, this value is ignored.
+     *  By default, it contains a DoubleToken of value 0.0.  
+     */
+    public Parameter defaultEventValue;
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
@@ -126,6 +146,8 @@ public class ZeroCrossingDetector extends Transformer
                         "Error tolerance must be greater than 0.");
             }
             _errorTolerance = p;
+        } else if (attribute == zeroLevel) {
+            _zeroLevelChanged = true;
         } else {
             super.attributeChanged(attribute);
         }
@@ -141,18 +163,16 @@ public class ZeroCrossingDetector extends Transformer
      */
     public void fire() throws IllegalActionException {
         CTDirector director = (CTDirector)getDirector();
-        if (director.isDiscretePhase()) {
-            if (hasCurrentEvent()) {
-                // Emit event.
-                if(_debugging) _debug(getFullName() + " Emitting event: " +
-                        _inputToken.toString());
-                if (_inputToken != null) {
-                    output.broadcast(_inputToken);
-                } else {
-                    output.broadcast(new DoubleToken(0.0));
-                }
-                _eventNow = false;
+        if (director.isDiscretePhase() && hasCurrentEvent()) {
+            // Emit event.
+            if(_debugging) _debug(getFullName() + " Emitting event: " +
+                    _inputToken.toString());
+            if (_inputToken != null) {
+                output.send(0, _inputToken);
+            } else {
+                output.send(0, defaultEventValue.getToken());
             }
+            _eventNow = false;
         } else {
             //consume the input.
             _thisTrigger = ((DoubleToken) trigger.get(0)).doubleValue();
@@ -184,6 +204,10 @@ public class ZeroCrossingDetector extends Transformer
         _eventMissed = false;
         _enabled = false;
 	_eventNow = false;
+        if(_zeroLevelChanged) {
+            _zeroLevel = ((DoubleToken)zeroLevel.getToken()).doubleValue();
+            _zeroLevelChanged = false;
+        }
         if(_debugging) _debug(getFullName() + "initialize");
     }
 
@@ -209,7 +233,7 @@ public class ZeroCrossingDetector extends Transformer
             _debug(this.getFullName() + " This trigger " + _thisTrigger);
             _debug(this.getFullName() + " The last trigger " + _lastTrigger);
         }
-        if (Math.abs(_thisTrigger) < _errorTolerance) {
+        if (Math.abs(_thisTrigger - _zeroLevel) < _errorTolerance) {
             if (_enabled) {
                 _eventNow = true;
                 if(_debugging)
@@ -223,12 +247,15 @@ public class ZeroCrossingDetector extends Transformer
             if(!_enabled) {  // if last step is a zero, always accurate.
                 _enabled = true;
             } else {
-                if ((_lastTrigger * _thisTrigger) < 0.0) {
-
+                if ((_lastTrigger - _zeroLevel) * (_thisTrigger - _zeroLevel) 
+                        < 0.0) {
+                    
                     CTDirector dir = (CTDirector)getDirector();
                     _eventMissed = true;
-                    _refineStep = (-_lastTrigger*dir.getCurrentStepSize())/
-                        (_thisTrigger-_lastTrigger);
+                    // The refined step size is a linear interpolation.
+                    _refineStep = (Math.abs(_lastTrigger - _zeroLevel)
+                            *dir.getCurrentStepSize())
+                        /Math.abs(_thisTrigger-_lastTrigger);
                     if(_debugging) _debug(getFullName() +
                             " Event Missed: refined step at" +  _refineStep);
                     return false;
@@ -245,8 +272,22 @@ public class ZeroCrossingDetector extends Transformer
      */
     public boolean postfire() {
         _lastTrigger = _thisTrigger;
-
         return true;
+    }
+
+    /** If the zeroLevel has changed during the last iteration, update
+     *  the parameter value. Note that only after the calling of this
+     *  method, would the new value of zeroLevel be used for detection.
+     *  @return Same as that in the super class.
+     *  @exception IllegalActionException If the getToken() method
+     *  of the zeroLevel parameter throws it.
+     */
+    public boolean prefire() throws IllegalActionException {
+        if(_zeroLevelChanged) {
+            _zeroLevel = ((DoubleToken)zeroLevel.getToken()).doubleValue();
+            _zeroLevelChanged = false;
+        }
+        return super.prefire();
     }
 
     /** Return the maximum Double, since this actor does not predict
@@ -298,4 +339,10 @@ public class ZeroCrossingDetector extends Transformer
 
     // the current input token.
     private  Token _inputToken;
+    
+    // Indeicating whether the zero value has changed.
+    private boolean _zeroLevelChanged;
+
+    // the zero crossing threshold.
+    private double _zeroLevel;
 }
