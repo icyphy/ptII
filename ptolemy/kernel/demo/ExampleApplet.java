@@ -189,7 +189,7 @@ class ExampleApplet extends java.applet.Applet
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables                  ////
+    ////                         protected variables               ////
 
     /** A label, a text area and a button */
     
