@@ -281,7 +281,9 @@ $(VERGIL_DOCS): javahtml.awk
 #     <a href="http://ptolemy.eecs.berkeley.edu/#in_browser">Ptolemy Project web page</a>
 mainVergil.htm: main.htm
 	sed -e 's@<a href="[^"]*" target="[^"]*">\([^<]*\)</a>@\1@' \
-		-e 's@Ptolemy Project web page@<a href="http://ptolemy.eecs.berkeley.edu/#in_browser">Ptolemy Project web page</a>@' main.htm > $@
+		-e 's@Ptolemy Project web page@<a href="http://ptolemy.eecs.berkeley.edu/#in_browser">Ptolemy Project web page</a>@' \
+	        -e 's@^<link .*>@@' \
+		main.htm > $@
 
 # Generate a file that consists of only the text within
 # <!--vergilDoc--> ... <!--/vergilDoc--> blocks
@@ -307,6 +309,8 @@ whatsnew.htm: ptII$(PTVERSION).release.htm
 whatsnewVergil.htm: whatsnew.htm
 	sed -e 's@\(demo/[^/]*/[^/]*\).htm@\1.xml@g' \
 	    -e 's@<a href="\([^"]*/domains/[^/]*/doc/\)body.htm" target="[^"]*">\([^<]*\)</a>@<a href="\1main.htm">\2</a>@' \
+            -e 's@<body .*>@<body>@' \
+            -e 's@^<link .*>@@' \
 		< whatsnew.htm > whatsnewVergil.htm
 
 # Files that are derived from other files, such as ptII$(PTVERSION).release.htm
