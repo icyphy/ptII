@@ -76,7 +76,20 @@ MISC_FILES =	# doc test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES =	#codeDoc
+OPTIONAL_FILES =  \
+	ASCII_CharStream.java \
+	JJTPtParserState.java \
+	Node.java \
+	ParseException.java \
+	PtParser.java \
+	PtParser.jj \
+	PtParserConstants.java \
+	PtParserTokenManager.java \
+	PtParserTreeConstants.java \
+	SimpleNode.java \
+	Token.java \
+	TokenMgrError.java \
+	#codeDoc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
