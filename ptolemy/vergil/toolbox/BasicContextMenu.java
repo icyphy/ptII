@@ -33,6 +33,7 @@ package ptolemy.vergil.toolbox;
 // Ptolemy imports.
 import ptolemy.actor.*;
 import ptolemy.actor.gui.*;
+import ptolemy.actor.gui.style.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
@@ -112,8 +113,26 @@ public class BasicContextMenu extends JPopupMenu {
 	action = new AbstractAction("Configure Parameter") {
 	    public void actionPerformed(ActionEvent e) {
 
-		// Create a dialog for configuring a parameter.
+		// Create a dialog for configuring the object.
                 try {
+                    StyleConfigurer panel = new StyleConfigurer(_target);
+                    // FIXME: First argument below should be a parent window
+                    // (a JFrame).
+                    ComponentDialog dialog = new ComponentDialog(
+                            null,
+                            "Edit parameter styles for " + _target.getName(),
+                            panel);
+                    if (!(dialog.buttonPressed().equals("OK"))) {
+                        // Restore original parameter values.
+                        panel.restore();
+                    }
+                } catch (IllegalActionException ex) {
+                    // FIXME: How are errors reported in Vergil?
+                    System.out.println(ex.toString());
+                }
+
+		// Create a dialog for configuring a parameter.
+		/* try {
                     List parameterList = _target.attributeList(Parameter.class);
                     String[] parameterNames = new String[parameterList.size()];
                     Iterator parameters = parameterList.iterator();
@@ -166,6 +185,7 @@ public class BasicContextMenu extends JPopupMenu {
                     // NOTE: This error should not occur.
                     System.out.println(ex.toString());
                 }
+		*/
 	    }
 	};
 	add(action, "Configure Parameters");

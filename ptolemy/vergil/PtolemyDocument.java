@@ -30,21 +30,27 @@
 
 package ptolemy.vergil;
 
+import ptolemy.vergil.graph.*;
 import ptolemy.kernel.*;
 import ptolemy.actor.*;
 import ptolemy.moml.*;
 
+import diva.graph.*;
 import diva.graph.model.*;
 import diva.graph.toolbox.GraphParser;
 import diva.graph.toolbox.GraphWriter;
 
-import diva.gui.AbstractDocument;
-import diva.gui.Application;
-import diva.gui.BasicPage;
-import diva.gui.Document;
-import diva.gui.DocumentFactory;
-import diva.gui.Page;
+import diva.canvas.interactor.SelectionModel;
+import diva.canvas.Figure;
+import diva.graph.*;
+import diva.graph.editor.*;
+import diva.graph.layout.*;
+import diva.graph.model.*;
+import diva.graph.toolbox.*;
+import diva.gui.*;
+import diva.gui.toolbox.*;
 
+import java.awt.event.*;
 import java.util.*;
 
 import java.io.File;
@@ -53,6 +59,8 @@ import java.io.FileOutputStream;
 import java.io.DataOutputStream;
 import java.io.FileWriter;
 import java.net.URL;
+
+import javax.swing.*;
 
 /**
  * A class representing graph-structured documents.
@@ -77,6 +85,29 @@ public class PtolemyDocument extends AbstractDocument
         // Do nothing
     }
 
+    /** Construct a view on this document.
+     */
+    public JComponent createView() {
+	VisualNotation notation = getVisualNotation();
+	GraphPane pane = notation.createView(this);
+
+	// CRAP.. This stuff is registered on the JGraph.  
+	// Can we figure out how to register it on the graph pane?
+	JGraph jgraph = new JGraph(pane);
+	new EditorDropTarget(jgraph);
+        GraphController controller =
+	    jgraph.getGraphPane().getGraphController();
+
+	ActionListener deletionListener = new DeletionListener();
+        jgraph.registerKeyboardAction(deletionListener, "Delete",
+                KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
+                JComponent.WHEN_IN_FOCUSED_WINDOW);
+        jgraph.setRequestFocusEnabled(true);
+	return jgraph;
+    }
+
+    /** Return the model contained in this document.
+     */
     public CompositeEntity getModel() {
 	return _model;
     }
@@ -164,10 +195,48 @@ public class PtolemyDocument extends AbstractDocument
             + "]\n" + _model.exportMoML();
     }
 
+    /** Delete any selected nodes and all attached edges in the current graph.
+     */
+    public class DeletionListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            JGraph jgraph = (JGraph) e.getSource();
+            GraphPane graphPane = jgraph.getGraphPane();
+            GraphController controller =
+                (GraphController)graphPane.getGraphController();
+            GraphImpl impl = controller.getGraphImpl();
+            SelectionModel model = controller.getSelectionModel();
+            Object selection[] = model.getSelectionAsArray();
+            // Remove all the edges first, since if we remove the nodes first,
+            // then removing the nodes might remove some of the edges.
+            for(int i = 0; i < selection.length; i++) {
+		if(selection[i] instanceof Figure) {
+		    Object userObject =
+                        ((Figure)selection[i]).getUserObject();
+		    if(userObject instanceof Edge) {
+                        model.removeSelection(selection[i]);
+                        Edge edge = (Edge) userObject;
+                        controller.removeEdge(edge);
+		    }
+                }
+            }
+	    for(int i = 0; i < selection.length; i++) {
+		if(selection[i] instanceof Figure) {
+		    Object userObject =
+                        ((Figure)selection[i]).getUserObject();
+                    if(userObject instanceof Node) {
+                        model.removeSelection(selection[i]);
+			Node node = (Node) userObject;
+			controller.removeNode(node);
+                    }
+                }
+            }
+	}
+    }
+
     /**
      * A factory for vergil documents.
      */
-    public static class Factory implements DocumentFactory {
+    public static class Factory implements VergilDocumentFactory {
         /** Create an empty graph document
          */
         public Document createDocument(Application app) {
@@ -192,6 +261,13 @@ public class PtolemyDocument extends AbstractDocument
             d.setFile(file);
             return d;
         }
+
+	/** Return the name of this document factory.
+	 */
+	public String getName() {
+	    return "Ptolemy II";
+	}
     }
+
     CompositeEntity _model;
 }

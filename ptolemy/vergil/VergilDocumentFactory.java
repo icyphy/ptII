@@ -1,4 +1,4 @@
-/* A document for Vergil that contains a visual notation.
+/* A document factory for Vergil.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -30,18 +30,17 @@
 
 package ptolemy.vergil;
 
-import diva.gui.Document;
-
-import javax.swing.*;
+import diva.gui.DocumentFactory;
 
 /**
- * A document for Vergil that is capable of creating a view on itself.
+ * A document factory for Vergil that contains a name in order to differentiate
+ * different factories.
  *
  * @author Steve Neuendorffer
  * @version $Id$
  */
-public interface VergilDocument extends Document {
-    /** Construct a view on this document.
+public interface VergilDocumentFactory extends DocumentFactory {
+    /** Return the name of this Factory
      */
-    public JComponent createView();
+    public String getName();
 }

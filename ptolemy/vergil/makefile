@@ -50,13 +50,14 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	MoMLViewerApplet.java \
 	JModelViewer.java \
+	Package.java \
 	PtolemyDocument.java \
 	PtolemyFSMNotation.java \
 	PtolemyNotation.java \
 	PtolemyPackage.java \
 	VergilApplication.java \
 	VergilDocument.java \
-	Package.java \
+	VergilDocumentFactory.java \
 	VisualNotation.java 
 
 EXTRA_SRCS =	$(JSRCS)

@@ -41,13 +41,7 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.vergil.graph.*;
 import ptolemy.vergil.toolbox.*;
 
-import diva.canvas.interactor.SelectionModel;
-import diva.canvas.Figure;
 import diva.graph.*;
-import diva.graph.editor.*;
-import diva.graph.layout.*;
-import diva.graph.model.*;
-import diva.graph.toolbox.*;
 import diva.gui.*;
 import diva.gui.toolbox.*;
 import diva.resource.DefaultBundle;
@@ -58,7 +52,6 @@ import java.awt.Image;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
-import java.awt.event.*;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -118,7 +111,7 @@ public class VergilApplication extends MDIApplication {
         fc.addChoosableFileFilter(ff);
         fc.setFileFilter(ff);
 
-        setDocumentFactory(new PtolemyDocument.Factory());
+        addDocumentFactory(new PtolemyDocument.Factory());
         // _incrementalLayout = new LevelLayout();
 
         // Initialize the menubar, toolbar, and palettes
@@ -150,7 +143,16 @@ public class VergilApplication extends MDIApplication {
 	timer.setRepeats(false);
 	timer.start();
 
+	// FIXME read this out of resources somehow.
 	new PtolemyPackage(this);
+    }
+
+    /** Add a factory that creates new documents.  The factory will appear
+     *  in the list of factories with the given name.
+     */
+    protected void addDocumentFactory(VergilDocumentFactory df) {
+        _documentFactoryList.add(df);
+	_fileNewMenu.add(df.getName());
     }
 
     /**
@@ -161,133 +163,6 @@ public class VergilApplication extends MDIApplication {
 	if(frame == null) return;
 	JMenuBar menuBar = frame.getJMenuBar();
 	menuBar.add(menu);
-    }
-
-    /** Given a document, create a new view which displays that
-     * document. This class creates a JGraph.
-     */
-    public JComponent createView(Document d) {
-	if(!(d instanceof VergilDocument)) {
-	    throw new RuntimeException("Can only create views " +
-				       "on Vergil documents.");
-	}
-	VisualNotation notation = ((VergilDocument)d).getVisualNotation();
-	GraphPane pane = notation.createView(d);
-
-	// CRAP.. This stuff is registered on the JGraph.  
-	// Can we figure out how to register it on the graph pane?
-	JGraph jgraph = new JGraph(pane);
-	new EditorDropTarget(jgraph);
-        GraphController controller =
-	    jgraph.getGraphPane().getGraphController();
-
-	ActionListener deletionListener = new DeletionListener();
-        jgraph.registerKeyboardAction(deletionListener, "Delete",
-                KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
-                JComponent.WHEN_IN_FOCUSED_WINDOW);
-        jgraph.setRequestFocusEnabled(true);
-	return jgraph;
-    }
-
-    /** Delete any selected nodes and all attached edges in the current graph.
-     */
-    public class DeletionListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            JGraph jgraph = (JGraph) e.getSource();
-            GraphPane graphPane = jgraph.getGraphPane();
-            GraphController controller =
-                (GraphController)graphPane.getGraphController();
-            GraphImpl impl = controller.getGraphImpl();
-            SelectionModel model = controller.getSelectionModel();
-            Object selection[] = model.getSelectionAsArray();
-            // Remove all the edges first, since if we remove the nodes first,
-            // then removing the nodes might remove some of the edges.
-            for(int i = 0; i < selection.length; i++) {
-		if(selection[i] instanceof Figure) {
-		    Object userObject =
-                        ((Figure)selection[i]).getUserObject();
-		    if(userObject instanceof Edge) {
-                        model.removeSelection(selection[i]);
-                        Edge edge = (Edge) userObject;
-                        controller.removeEdge(edge);
-		    }
-                }
-            }
-	    for(int i = 0; i < selection.length; i++) {
-		if(selection[i] instanceof Figure) {
-		    Object userObject =
-                        ((Figure)selection[i]).getUserObject();
-                    if(userObject instanceof Node) {
-                        model.removeSelection(selection[i]);
-			Node node = (Node) userObject;
-			controller.removeNode(node);
-                    }
-                }
-            }
-	}
-    }
-
-    /** Return the entity library for this application.
-     */
-    public CompositeEntity getEntityLibrary() {
-        return _entityLibrary;
-    }
-
-    /** Return the resources for this application.
-     */
-    public RelativeBundle getGUIResources() {
-        return _guiResources;
-    }
-
-    /** Return the icon library associated with this Vergil
-     */
-    public CompositeEntity getIconLibrary() {
-	return _iconLibrary;
-    }
-
-    /** Get the title of this application
-     */
-    public String getTitle() {
-        return "Vergil";
-    }
-
-    /** Initialize the palette in the.
-     */
-    public class PaletteInitializer implements Runnable {
-	public void run() {
-	    DesktopFrame frame = ((DesktopFrame) getApplicationFrame());
-	    JTreePane pane = (JTreePane)frame.getPalettePane();
-	    
-	    JSplitPane splitPane = frame.getSplitPane();
-	    
-	    // There are differences in the way swing acts in JDK1.2 and 1.3
-	    // The way to get it to work with both is to set
-	    // the preferred size along with the minimum size.   JDK1.2 has a
-	    // bug where the preferred size may be inferred to be less than the
-	    // minimum size when the pane is first created.
-	    pane.setMinimumSize(new Dimension(150, 150));
-	    ((JComponent)pane.getTopComponent()).
-		setMinimumSize(new Dimension(150, 150));
-	    ((JComponent)pane.getTopComponent()).
-		setPreferredSize(new Dimension(150, 150));
-    
-	    parseLibraries();
-	    //System.out.println("Icons = " + _iconLibrary.description());
-
-	    CompositeEntity lib = getEntityLibrary();
-	    
-	    // We have "" because that is the name that was given in the
-	    // treepane constructor.
-	    //System.out.println("lib = " + lib.description());
-	    createTreeNodes(pane, lib.getFullName(), lib);
-	
-	    pane.setMinimumSize(new Dimension(150, 150));
-	    ((JComponent)pane.getTopComponent()).
-	    setMinimumSize(new Dimension(150, 150));
-	    ((JComponent)pane.getTopComponent()).
-		setPreferredSize(new Dimension(150, 150));
-	    splitPane.validate();
-	}
     }
 
     public void createTreeNodes(JTreePane pane,
@@ -316,6 +191,62 @@ public class VergilApplication extends MDIApplication {
         }
     }
 
+    /** Given a document, create a new view which displays that
+     * document. If the document is vergil document then defer to the 
+     * document to create the view.
+     * @exception RuntimeException If the document is not a vergil document.
+     */
+    public JComponent createView(Document d) {
+	if(!(d instanceof VergilDocument)) {
+	    throw new RuntimeException("Can only create views " +
+				       "on Vergil documents.");
+	}
+	return ((VergilDocument)d).createView();
+    }
+
+    /** Return the list of factories that create new documents.
+     */
+    public List documentFactoryNamesList () {
+        return Collections.unmodifiableList(_documentFactoryList);
+    }
+
+    /** Return the default document factory.  This will be the first 
+     *  factory added with the addDocumentFactory method.
+     */
+    public DocumentFactory getDocumentFactory() { 
+	return (DocumentFactory)_documentFactoryList.get(0);
+    }
+
+    /** Return the document factory with the given name.
+     
+    public DocumentFactory getDocumentFactory(name) { 
+	return (DocumentFactory)_documentFactoryList.get(name);
+    }
+
+    /** Return the entity library for this application.
+     */
+    public CompositeEntity getEntityLibrary() {
+        return _entityLibrary;
+    }
+
+    /** Return the resources for this application.
+     */
+    public RelativeBundle getGUIResources() {
+        return _guiResources;
+    }
+
+    /** Return the icon library associated with this Vergil
+     */
+    public CompositeEntity getIconLibrary() {
+	return _iconLibrary;
+    }
+
+    /** Get the title of this application
+     */
+    public String getTitle() {
+        return "Vergil";
+    }
+
     /** Initialize the given menubar. Currently, all strings are
      * hard-wired, but maybe we should be getting them out of the
      * application resources.
@@ -329,9 +260,19 @@ public class VergilApplication extends MDIApplication {
         menuFile.setMnemonic('F');
         mb.add(menuFile);
 
-        action = DefaultActions.newAction(this);
+	/*
+        action = new AbstractAction (NEW) {
+            public void actionPerformed(ActionEvent e) {
+                Document doc = getDocumentFactory().createDocument(app);
+                addDocument(doc);
+                displayDocument(doc);
+                setCurrentDocument(doc);
+            }
+        };
         addAction(action);
         addMenuItem(menuFile, action, 'N', "Create a new graph document");
+	*/
+	menuFile.add(_fileNewMenu);
 
         action = DefaultActions.openAction(this);
         addAction(action);
@@ -370,8 +311,9 @@ public class VergilApplication extends MDIApplication {
         RelativeBundle resources = getResources();
 
 	// Conventional new/open/save buttons
-        action = getAction(DefaultActions.NEW);
-        addToolBarButton(tb, action, null, resources.getImageIcon("NewImage"));
+	action = DefaultActions.newAction(this);
+        addAction(action);
+	addToolBarButton(tb, action, null, resources.getImageIcon("NewImage"));
 
         action = getAction(DefaultActions.OPEN);
         addToolBarButton(tb, action, null, resources.getImageIcon("OpenImage"));
@@ -424,28 +366,13 @@ public class VergilApplication extends MDIApplication {
         //       redoLayout(jgraph, (String) _layoutComboBox.getSelectedItem());
     }
 
-    /** Redo the layout of the given JGraph.
+    /** Remove a factory that creates new documents for use by subclasses
+     * constructors only.
      */
-    public void redoLayout(JGraph jgraph, String type) {
-        GraphController controller = jgraph.getGraphPane().getGraphController();
-        LayoutTarget target = new BasicLayoutTarget(controller);
-        Graph graph = controller.getGraph();
-        GlobalLayout layout;
-
-        if (type.equals("Random layout")) {
-            layout = new RandomLayout();
-        } else if(type.equals("Grid layout")) {
-	    layout = new GridAnnealingLayout();
-	} else {
-            layout = new LevelLayout();
-        }
-        // Perform the layout and repaint
-        try {
-            layout.layout(target, graph);
-        } catch (Exception e) {
-            showError("layout", e);
-        }
-        jgraph.repaint();
+    protected void removeDocumentFactory(VergilDocumentFactory df) {
+	int index = _documentFactoryList.indexOf(df);
+        _documentFactoryList.remove(df);
+	_fileNewMenu.remove(_fileNewMenu.getItem(index));
     }
 
     /**
@@ -479,6 +406,14 @@ public class VergilApplication extends MDIApplication {
 
     }
 
+    /** Throw an Exception.  Vergil uses a factory list instead of a 
+     *  single factory.  Use addDocumentFactory to add a document factory.
+     */
+    public void setDocumentFactory(DocumentFactory df) {
+	throw new RuntimeException("setDocumentFactory is not allowed, use " + 
+				   "addDocumentFactory instead.");
+    }
+
     /**
      * Grab the keyboard focus when the component that this listener is
      *  attached to is clicked on.
@@ -502,6 +437,45 @@ public class VergilApplication extends MDIApplication {
 	}
     }
 
+    /** Initialize the palette in the.
+     */
+    public class PaletteInitializer implements Runnable {
+	public void run() {
+	    DesktopFrame frame = ((DesktopFrame) getApplicationFrame());
+	    JTreePane pane = (JTreePane)frame.getPalettePane();
+	    
+	    JSplitPane splitPane = frame.getSplitPane();
+	    
+	    // There are differences in the way swing acts in JDK1.2 and 1.3
+	    // The way to get it to work with both is to set
+	    // the preferred size along with the minimum size.   JDK1.2 has a
+	    // bug where the preferred size may be inferred to be less than the
+	    // minimum size when the pane is first created.
+	    pane.setMinimumSize(new Dimension(150, 150));
+	    ((JComponent)pane.getTopComponent()).
+		setMinimumSize(new Dimension(150, 150));
+	    ((JComponent)pane.getTopComponent()).
+		setPreferredSize(new Dimension(150, 150));
+    
+	    parseLibraries();
+	    //System.out.println("Icons = " + _iconLibrary.description());
+
+	    CompositeEntity lib = getEntityLibrary();
+	    
+	    // We have "" because that is the name that was given in the
+	    // treepane constructor.
+	    //System.out.println("lib = " + lib.description());
+	    createTreeNodes(pane, lib.getFullName(), lib);
+	
+	    pane.setMinimumSize(new Dimension(150, 150));
+	    ((JComponent)pane.getTopComponent()).
+	    setMinimumSize(new Dimension(150, 150));
+	    ((JComponent)pane.getTopComponent()).
+		setPreferredSize(new Dimension(150, 150));
+	    splitPane.validate();
+	}
+    }
+
     /** The director selection combobox
      */
     private JComboBox _directorComboBox;
@@ -510,14 +484,10 @@ public class VergilApplication extends MDIApplication {
      */
     private JComboBox _layoutComboBox;
 
-    /** The layout engine
-     */
-    private GlobalLayout _globalLayout;
-
     /** The application specific resources
      */
     private RelativeBundle _guiResources =
-    new RelativeBundle("ptolemy.vergil.Library", getClass(), null);
+	new RelativeBundle("ptolemy.vergil.Library", getClass(), null);
 
     /** The Icon Library
      */
@@ -526,4 +496,12 @@ public class VergilApplication extends MDIApplication {
     /** The Entity Library
      */
     private CompositeEntity _entityLibrary;
+
+    /** The list of factories that create graph documents.
+     */
+    private List _documentFactoryList = new LinkedList();
+
+    /** The file->new menu.  Each document factory should appear in this menu.
+     */
+    private JMenu _fileNewMenu = new JMenu("New");
 }

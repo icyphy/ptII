@@ -42,6 +42,7 @@ import ptolemy.vergil.graph.*;
 import ptolemy.vergil.toolbox.*;
 
 import diva.graph.*;
+import diva.graph.layout.*;
 import diva.graph.model.*;
 import diva.graph.toolbox.GraphParser;
 import diva.graph.toolbox.GraphWriter;
@@ -205,7 +206,7 @@ public class PtolemyPackage implements Package {
                     VergilDocument d = (VergilDocument)
 			_application.getCurrentDocument();
                     JGraph jg = (JGraph) _application.getView(d);
-                    _application.redoLayout(jg, (String) e.getItem());
+                    redoLayout(jg, (String) e.getItem());
                 }
             }
         });
@@ -282,6 +283,30 @@ public class PtolemyPackage implements Package {
 	return list;
     }
 
+    /** Redo the layout of the given JGraph.
+     */
+    public void redoLayout(JGraph jgraph, String type) {
+        GraphController controller = jgraph.getGraphPane().getGraphController();
+        LayoutTarget target = new BasicLayoutTarget(controller);
+        Graph graph = controller.getGraph();
+        GlobalLayout layout;
+
+        if (type.equals("Random layout")) {
+            layout = new RandomLayout();
+        } else if(type.equals("Grid layout")) {
+	    layout = new GridAnnealingLayout();
+	} else {
+            layout = new LevelLayout();
+        }
+        // Perform the layout and repaint
+        try {
+            layout.layout(target, graph);
+        } catch (Exception e) {
+            _application.showError("layout", e);
+        }
+        jgraph.repaint();
+    }
+
     /**
      * Remove a director from the list of directors.
      */
@@ -315,7 +340,8 @@ public class PtolemyPackage implements Package {
 	}
     }
 
-    class DirectorCellRenderer extends JLabel implements ListCellRenderer {
+    public class DirectorCellRenderer extends JLabel 
+	implements ListCellRenderer {
 	public DirectorCellRenderer() {
 	    setOpaque(true);
 	}
@@ -355,4 +381,8 @@ public class PtolemyPackage implements Package {
     /** The list of notations.
      */
     private DefaultComboBoxModel _notationModel;
+
+    /** The layout engine
+     */
+    private GlobalLayout _globalLayout;
 }
