@@ -165,16 +165,16 @@ public class TotallyOrderedSet {
      *  @param obj The argument.
      */
     public void removeAllLessThan(Object obj) {
-        if (_set == null || isEmpty()) {
+        if (_set == null) {
             return;
         }
-        while (true) {
+        while (!isEmpty()) {
             Object first = first();
             int com = _comparator.compare(obj, first);
             if(com <= 0) {
                 return;
             } else {
-                take();
+                removeFirst();
             }
         }
     }

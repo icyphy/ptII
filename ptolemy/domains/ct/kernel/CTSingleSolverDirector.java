@@ -363,44 +363,39 @@ public class CTSingleSolverDirector extends CTDirector {
     }
 
     /** Clean old breakpoints in the breakpoint table, and adjust
-     *  the the current step size according to it.
+     *  the the current step size according to the first breakpoint.
      *  @exception IllegalActionException Not thrown in this class,
      *      may be thrown by derived classes.
      */
     protected void _processBreakpoints() throws IllegalActionException {
         double bp;
         TotallyOrderedSet breakPoints = getBreakPoints();
-        double tnow = getCurrentTime();
+        Double tnow = new Double(getCurrentTime());
         _setIsBPIteration(false);
         // If now is a break point, remove the break point from table;
-        if(breakPoints != null) {
-            while (!breakPoints.isEmpty()) {
+        if(breakPoints != null && !breakPoints.isEmpty()) {
+            breakPoints.removeAllLessThan(tnow);
+            if(breakPoints.contains(tnow)) {
+                // now is the break point.
+                breakPoints.removeFirst();
+                _setIsBPIteration(true);
+            }else { 
+                // adjust step size according to the first break point.
                 bp = ((Double)breakPoints.first()).doubleValue();
-                if(bp < (tnow-getTimeResolution())) {
-                    // break point in the past or at now.
-                    breakPoints.removeFirst();
-                } else if(Math.abs(bp-tnow) < getTimeResolution()){
-                    // break point now!
-                    breakPoints.removeFirst();
-                    _setIsBPIteration(true);
-                    break;
-                } else {
-                    double iterEndTime = getCurrentTime()+getCurrentStepSize();
-                    if (iterEndTime > bp) {
-                        setCurrentStepSize(bp-getCurrentTime());
-                    }
-                    break;
+                double iterEndTime = getCurrentTime() + getCurrentStepSize();
+                if (iterEndTime > bp) {
+                    setCurrentStepSize(bp-getCurrentTime());
                 }
             }
         }
     }
-
+    
     /** Fire one iteration. Return directly if any actors return false
      *  in their prefire() method. The the time is advanced by the
      *  current step size.
      */
     protected void _fireOneIteration() throws IllegalActionException {
-        _debug(this.getFullName() +"Fire one iteration from " +
+        _debug(getFullName() +"Fire one iteration from " +
                 getCurrentTime() + " step size" +
                 getCurrentStepSize());
         ODESolver solver = getCurrentODESolver();
@@ -456,15 +451,15 @@ public class CTSingleSolverDirector extends CTDirector {
             NFUNC = 0;
             NFAIL = 0;
         }
-        _debug("updating parameters");
+        _debug(getName(), "updating parameters");
         // Instantiate ODE solver
         //if(_defaultSolver == null) {
-        _debug("instantiating ODE solver "+_solverclass);
+        _debug(getName(), " instantiating ODE solver ", _solverclass);
         _defaultSolver = _instantiateODESolver(_solverclass);
         //}
         // set time
-        _debug(this.getFullName() +
-                "_init get State Time " + getStartTime());
+        _debug(getFullName(),
+                "_init get State Time " +  getStartTime());
 
         setCurrentTime(getStartTime());
         setSuggestedNextStepSize(getInitialStepSize());

@@ -95,7 +95,7 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
     /** can only be an embedded director, so check it here.
      */
     public void initialize() throws IllegalActionException {
-        _debug(this.getFullName() + " initialize.");
+        _debug(this.getFullName(), " initialize.");
         CompositeActor ca = (CompositeActor) getContainer();
         if (ca == null) {
             throw new IllegalActionException(this, "Has no container.");
@@ -116,21 +116,25 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
         }
         sch.setValid(false);
         _first = true;
-        _debug(getName() + " _first is set to true.");
-        // don't need fireAt to run ahead of time.
+        _debug(getName(), " _first is set to true.");
         Director exe = ca.getExecutiveDirector();
         double tnow = exe.getCurrentTime();
         setStartTime(tnow);
-        _debug("Director.super initialize.");
+        _debug(getName(), " register init break point " + tnow);
+        fireAt(null, tnow);
+        _debug(getName(), "call super._initialize().");
         _initialize();
     }
 
     /** fire
      */
     public void fire() throws IllegalActionException {
-
         _eventPhaseExecution();
         _prefireSystem();
+        if(_first) {
+            produceOutput();
+            return;
+        }
         ODESolver solver = getCurrentODESolver();
         if(!solver.resolveStates()) {
             _stateAcceptable = false;
@@ -142,6 +146,29 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
         //setCurrentTime(getIterEndTime());
         produceOutput();
     }
+
+    /** Register the break point to this director and the executive
+     *  director.
+     *  @param actor The actor that requested the fire
+     *  @param time The fire time
+     *  @exception IllegalActionException If the time is before
+     *  the current time, or there is no executive director.
+     */
+    public void fireAt(Actor actor, double time) 
+            throws IllegalActionException{
+        super.fireAt(actor, time);
+        CompositeActor ca = (CompositeActor) getContainer();
+        if (ca == null) {
+            throw new IllegalActionException(this, "Has no container.");
+        }
+        Director exeDir = ca.getExecutiveDirector();
+        if (exeDir == null) {
+            throw new IllegalActionException(this,
+                    "Can not be a top-level director.");
+        }
+        exeDir.fireAt(ca, time);
+    }
+     
     /** Return true if this is an embedded director and the current fire
      *  is successful. The success is determined by asking all the
      *  step size control actors in the output schedule. If this is a
@@ -172,9 +199,7 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
         }
     }
 
-    /** If this is a top-level director, returns true if the current time
-     *  is less than the stop time, otherwise, return true always.
-     *  If this is a top-level director, and the current time is greater
+    /** If the current time is greater
      *  than the stop time, an InvalidStateException is thrown.
      *  @return True if this is not a top-level director, or the simulation
      *     is not finished.
@@ -182,9 +207,14 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
      */
     public boolean postfire() throws IllegalActionException {
         //super.postfire();
-        _debug(this.getFullName() + " postfire.");
-        _eventPhaseExecution();
+        _debug(getFullName(), " postfire.");
+        // _eventPhaseExecution();
         updateStates();
+        
+        if(_first) {
+            _first = false;
+        }
+        /**
         if(!_first) {
             double bp;
             TotallyOrderedSet breakPoints = getBreakPoints();
@@ -203,6 +233,7 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
                 }
             }
         }
+        */
         return true;
     }
 
@@ -226,7 +257,6 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
             NSTEP++;
         }
         CompositeActor ca = (CompositeActor) getContainer();
-        (Thread.currentThread()).yield();
         if(!isScheduleValid()) {
             // mutation occurred, redo the schedule;
             CTScheduler scheduler = (CTScheduler)getScheduler();
@@ -240,43 +270,32 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
         double timeAcc = getTimeResolution();
         Director exe = ca.getExecutiveDirector();
         _outsideTime = exe.getCurrentTime();
-        _debug("Outside Time = " + _outsideTime);
+        _debug(getName(), "Outside Time = "+ _outsideTime);
         double nextIterTime = exe.getNextIterationTime();
-        _debug("Next Iter Time = " + nextIterTime);
-        /**
-           if(_outsideTime < getCurrentTime()-timeAcc) {
-           throw new IllegalActionException(exe, this,
-           " time collapse. The outside time is " +
-           _outsideTime + ", but the local time is " +
-           getCurrentTime());
-           }
-        */
-
+        _debug(getName(), "Next Iter Time = " + nextIterTime);
+        setCurrentTime(_outsideTime);
         // if break point now, change solver.
         double bp;
+        Double tnow = new Double(_outsideTime);
         TotallyOrderedSet breakPoints = getBreakPoints();
-        if(breakPoints != null) {
-            while (!breakPoints.isEmpty()) {
-                bp = ((Double)breakPoints.first()).doubleValue();
-                if(Math.abs(bp - getCurrentTime()) < getTimeResolution()) {
-                    _setCurrentODESolver(getBreakpointSolver());
-                    //_debug(getFullName() +
-                    //        " Change to break point solver " +
-                    //        getCurrentODESolver().getFullName());
-                    break;
-                } else {
-                    break;
-                }
+        if(breakPoints != null && !breakPoints.isEmpty()) {
+            breakPoints.removeAllLessThan(tnow);
+            if(breakPoints.contains(tnow)) {
+                _debug(getName(), " Break point now at" + _outsideTime);
+                // now is the break point.
+                // The break point will be removed in the next iteration
+                // if this iteration is successful. Otherwise, the break
+                // point will be kept using.
+                _setCurrentODESolver(getBreakpointSolver());   
+                // does not adjust step size, since the exe-dir should do it.
+                _setIsBPIteration(true);
+            } else {
+                _setCurrentODESolver(getODESolver());
             }
+
         }
-        setCurrentTime(_outsideTime);
         _outsideStepSize = nextIterTime - _outsideTime;
         setCurrentStepSize(_outsideStepSize);
-        if(_first) { // && (getCurrentTime() == getStartTime())) {
-            produceOutput();
-            updateStates();
-            _first = false;
-        }
         return true;
     }
 

@@ -92,7 +92,7 @@ public void init() {
         // the top level DE director
         CTMultiSolverDirector topdir = new CTMultiSolverDirector(
                 _toplevel, "CTTopLevelDirector");
-        //topdir.addDebugListener(new StreamListener());
+        topdir.addDebugListener(new StreamListener());
         // a CT ramp
         Const source = new Const(_toplevel, "Const");
         source.value.setToken(new DoubleToken(1.0));
@@ -100,9 +100,11 @@ public void init() {
         // the plot
         TimedPlotter myplot = new TimedPlotter(_toplevel, "plot");
         myplot.setPanel(this);
-        myplot.plot.setGrid(false);
+        myplot.plot.setGrid(true);
         myplot.plot.setTitle("Thermostat");
         myplot.plot.addLegend(0, "Temperature");
+        myplot.plot.setConnected(false);
+        myplot.plot.setImpulses(true);
         //myplot.plot.addLegend(1, "Trigger");
 
         myplot.plot.setXRange(0.0, 5.0);
@@ -146,7 +148,7 @@ public void init() {
         HSDirector hsdir = new HSDirector(hs, "HSDirector");
         //hs.setDirector(hsdir);
         hsdir.setController(ctrl);
-        //hsdir.addDebugListener(new StreamListener());
+        hsdir.addDebugListener(new StreamListener());
 
         //System.out.println("Building the heating subsystem.");
         CTCompositeActor ctInc = new CTCompositeActor(hs, "Increasing");
@@ -193,6 +195,7 @@ public void init() {
         ctIncSt.link(ctIncR1);
         CTEmbeddedNRDirector ctIncDir = new CTEmbeddedNRDirector(
                 ctInc, "CTIncDir");
+        ctIncDir.addDebugListener(new StreamListener());
 
         //System.out.println("Building the cooling subsystem.");
         CTCompositeActor ctDec = new CTCompositeActor(hs, "Decreasing");
@@ -240,6 +243,7 @@ public void init() {
         ctDecSt.link(ctDecR1);
         CTEmbeddedNRDirector ctDecDir = new CTEmbeddedNRDirector(
                 ctDec, "CTDecDir");
+        ctDecDir.addDebugListener(new StreamListener());
 
         ctrlInc.setRefinement(ctInc);
         ctrlDec.setRefinement(ctDec);

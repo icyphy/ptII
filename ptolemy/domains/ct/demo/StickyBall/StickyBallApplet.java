@@ -72,7 +72,7 @@ public class StickyBallApplet extends CTApplet {
         _query.addQueryListener(new ParameterListener());
         controlpanel.add("West", _query);
         _query.addLine("sticky", "Stickiness Decay", "-1.0");
-
+        _query.setBackground(_getBackground());
         try {
             // The 2 argument requests a go and stop button.
             add(_createRunControls(2));
@@ -85,7 +85,6 @@ public class StickyBallApplet extends CTApplet {
                     _toplevel, "CTTopLevelDirector");
             //topdir.addDebugListener(new StreamListener());
             // two const sources
-            // FIXME: to be replaced by impulse sources
             Const source1 = new Const(_toplevel, "Const1");
             source1.value.setToken(new DoubleToken(0.0));
             Const source2 = new Const(_toplevel, "Const2");
@@ -159,10 +158,8 @@ public class StickyBallApplet extends CTApplet {
             CTCompositeActor ctInc = new CTCompositeActor(hs, "Separate");
 
             //CTZeroOrderHold ctIncH1 = new CTZeroOrderHold(ctInc, "Hold1");
-            CTIntegrator ctIncV1 = new CTIntegrator(ctInc, "V1");
-            ctIncV1.InitialState.setToken(new DoubleToken(0.0));
-            CTIntegrator ctIncP1 = new CTIntegrator(ctInc, "P1");
-            ctIncP1.InitialState.setToken(new DoubleToken(0.0));
+            _ctIncV1 = new CTIntegrator(ctInc, "V1");
+            _ctIncP1 = new CTIntegrator(ctInc, "P1");
             Expression ctIncE1 = new Expression(ctInc, "E1");
             TypedIOPort ctIncE1In = (TypedIOPort)ctIncE1.newPort("In");
             ctIncE1In.setInput(true);
@@ -176,10 +173,8 @@ public class StickyBallApplet extends CTApplet {
             ctIncE1.expression.setExpression("1.0*1.0 + In - 1.0*P1");
 
             //CTZeroOrderHold ctIncH2 = new CTZeroOrderHold(ctInc, "Hold2");
-            CTIntegrator ctIncV2 = new CTIntegrator(ctInc, "V2");
-            ctIncV2.InitialState.setToken(new DoubleToken(0.0));
-            CTIntegrator ctIncP2 = new CTIntegrator(ctInc, "P2");
-            ctIncP2.InitialState.setToken(new DoubleToken(3.0));
+            _ctIncV2 = new CTIntegrator(ctInc, "V2");
+            _ctIncP2 = new CTIntegrator(ctInc, "P2");
             Expression ctIncE2 = new Expression(ctInc, "E2");
             TypedIOPort ctIncE2In = (TypedIOPort)ctIncE2.newPort("In");
             ctIncE2In.setInput(true);
@@ -230,19 +225,19 @@ public class StickyBallApplet extends CTApplet {
             //ctInc.connect(ctIncF1, ctIncH1.input);
             //ctInc.connect(ctIncH1.output, ctIncE1In);
             ctInc.connect(ctIncF1, ctIncE1In);
-            ctInc.connect(ctIncE1.output, ctIncV1.input);
-            Relation ctIncRB0 = ctInc.connect(ctIncV1.output, ctIncP1.input);
+            ctInc.connect(ctIncE1.output, _ctIncV1.input);
+            Relation ctIncRB0 = ctInc.connect(_ctIncV1.output, _ctIncP1.input);
             ctIncOV1.link(ctIncRB0);
-            Relation ctIncRB1 = ctInc.connect(ctIncP1.output, ctIncE1P1);
+            Relation ctIncRB1 = ctInc.connect(_ctIncP1.output, ctIncE1P1);
             ctIncOP1.link(ctIncRB1);
 
             //ctInc.connect(ctIncF2, ctIncH2.input);
             //ctInc.connect(ctIncH2.output, ctIncE2In);
             ctInc.connect(ctIncF2, ctIncE2In);
-            ctInc.connect(ctIncE2.output, ctIncV2.input);
-            Relation ctIncRB3 = ctInc.connect(ctIncV2.output, ctIncP2.input);
+            ctInc.connect(ctIncE2.output, _ctIncV2.input);
+            Relation ctIncRB3 = ctInc.connect(_ctIncV2.output, _ctIncP2.input);
             ctIncOV2.link(ctIncRB3);
-            Relation ctIncRB2 = ctInc.connect(ctIncP2.output, ctIncE2P2);
+            Relation ctIncRB2 = ctInc.connect(_ctIncP2.output, ctIncE2P2);
             ctIncOP2.link(ctIncRB2);
 
             ctIncE3.plus.link(ctIncRB1);
@@ -351,7 +346,7 @@ public class StickyBallApplet extends CTApplet {
 
             //System.out.println("Set parameters.");
             // try to run the system
-            //topdir.StartTime.setToken(new DoubleToken(-100.0));
+            topdir.StartTime.setToken(new DoubleToken(0.0));
             topdir.StopTime.setToken(new DoubleToken(100.0));
 
             // CT embedded director 1 parameters
@@ -382,7 +377,7 @@ public class StickyBallApplet extends CTApplet {
             topdir.MinStepSize.setToken(new DoubleToken(1e-5));
             topdir.MaxStepSize.setToken(new DoubleToken(0.3));
             tok = new StringToken(
-                    "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
+                    "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver");
             topdir.BreakpointODESolver.setToken(tok);
             tok = new StringToken(
                     "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
@@ -404,6 +399,12 @@ public class StickyBallApplet extends CTApplet {
         try {
             _ctGain.gain.setToken(new DoubleToken(
                     _query.doubleValue("sticky")));
+            _ctIncV1.InitialState.setToken(new DoubleToken(0.0));
+            _ctIncP1.InitialState.setToken(new DoubleToken(0.0));
+            _ctIncV2.InitialState.setToken(new DoubleToken(0.0));
+            _ctIncP2.InitialState.setToken(new DoubleToken(3.0));
+            System.out.println("a new run");
+
             super._go();
         } catch (Exception ex) {
             report(ex);
@@ -418,6 +419,12 @@ public class StickyBallApplet extends CTApplet {
 
     // The gain for the stickiness decay.
     private Scale _ctGain;
+
+    // Integrators
+    CTIntegrator _ctIncV1;
+    CTIntegrator _ctIncP1;
+    CTIntegrator _ctIncV2;
+    CTIntegrator _ctIncP2;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classess                    ////

@@ -197,6 +197,7 @@ public class CTBaseIntegrator extends CTActor
             throw new IllegalActionException( dir,
                     " has no ODE solver.");
         }
+        System.out.println("using solver: " + solver.getName());
         solver.integratorFire(this);
     }
 
@@ -270,6 +271,10 @@ public class CTBaseIntegrator extends CTActor
         super.initialize();
         _initState = ((DoubleToken)InitialState.getToken()).doubleValue();
         _tentativeState = _initState;
+        _tentativeDerivative = 0.0;
+        _state = _tentativeState;
+        System.out.println(getName() + " init, token = " + _initState);
+        _history = new double[2];
     }
 
     /** Emit the tentative output, which is the tentative state of the
@@ -302,6 +307,7 @@ public class CTBaseIntegrator extends CTActor
      */
     public boolean postfire() throws IllegalActionException {
         _state = _tentativeState;
+        System.out.println(getName() + " state: " + _state);
         _pushHistory(_tentativeState, _tentativeDerivative);
         return true;
     }

@@ -142,10 +142,10 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _debug(getName() + " create breakpoint solver.");
+        _debug(getName(), " create breakpoint solver.");
         _breakpointSolver =
             _instantiateODESolver(_breakpointsolverclass);
-        _debug(getFullName() + " register the initial break point.");
+        _debug(getName(), " register the initial break point.");
         fireAt(null, getCurrentTime());
     }
 
@@ -183,37 +183,32 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
     protected void _processBreakpoints() throws IllegalActionException  {
         double bp;
         TotallyOrderedSet breakPoints = getBreakPoints();
-        double tnow = getCurrentTime();
+        Double tnow = new Double(getCurrentTime());
         _setIsBPIteration(false);
         //choose ODE solver
         _setCurrentODESolver(getODESolver());
         // If now is a break point, remove the break point from table;
-        if(breakPoints != null) {
-            while (!breakPoints.isEmpty()) {
+        if(breakPoints != null && !breakPoints.isEmpty()) {
+            breakPoints.removeAllLessThan(tnow);
+            if(breakPoints.contains(tnow)) {
+                // now is the break point.
+                breakPoints.removeFirst();
+                _setIsBPIteration(true);
+                _setCurrentODESolver(_breakpointSolver);
+                setCurrentStepSize(getMinStepSize());
+                _debug(getFullName(), 
+                        "IN BREAKPOINT iteration.");
+            }else { 
+                // adjust step size according to the first break point.
                 bp = ((Double)breakPoints.first()).doubleValue();
-                if(bp < (tnow-getTimeResolution())) {
-                    // break point in the past or at now.
-                    breakPoints.removeFirst();
-                } else if(Math.abs(bp-tnow) < getTimeResolution()){
-                    // break point now!
-                    breakPoints.removeFirst();
-                    _setCurrentODESolver(_breakpointSolver);
-                    setCurrentStepSize(getMinStepSize());
-                    _debug(getFullName() +
-                            "IN BREAKPOINT iteration.");
-                    _setIsBPIteration(true);
-                    break;
-                } else {
-                    double iterEndTime = tnow+getCurrentStepSize();
-                    if (iterEndTime > bp) {
-                        setCurrentStepSize(bp-getCurrentTime());
-                    }
-                    break;
+                double iterEndTime = getCurrentTime() + getCurrentStepSize();
+                if (iterEndTime > bp) {
+                    setCurrentStepSize(bp-getCurrentTime());
                 }
             }
         }
     }
-
+    
     /** Predict the next step size. This method should be called if the
      *  current integration step is acceptable. The predicted step size
      *  is the minimum of all predictions from step size control actors.

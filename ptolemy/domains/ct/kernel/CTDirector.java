@@ -248,6 +248,12 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         } else if(attr == TimeResolution) {
             Parameter param = (Parameter)attr;
             _timeResolution = ((DoubleToken)param.getToken()).doubleValue();
+            TotallyOrderedSet bptable = getBreakPoints();
+            if(bptable != null) {
+                FuzzyDoubleComparator comp = 
+                    (FuzzyDoubleComparator) bptable.getComparator();
+                comp.setThreshold(_timeResolution);
+            }
         } else if(attr == MaxIterations) {
             Parameter param = (Parameter)attr;
             _maxIterations = ((IntToken)param.getToken()).intValue();
@@ -387,13 +393,14 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  the exception.
      *  @param actor The actor that requested the fire
      *  @param time The fire time
-     *  @exception IllegalActionException If the time if before
+     *  @exception IllegalActionException If the time is before
      *  the current time
      */
     public void fireAt(Actor actor, double time)
             throws IllegalActionException{
         if(_breakPoints == null) {
-            _breakPoints = new TotallyOrderedSet(new DoubleComparator());
+            _breakPoints = new TotallyOrderedSet(
+                    new FuzzyDoubleComparator(_timeResolution));
         }
         if(time < getCurrentTime()-getTimeResolution()) {
             throw new IllegalActionException((Nameable)actor,
