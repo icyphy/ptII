@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/apps/cgc
+ME =		ptolemy/domains/giotto/cgc
 
 DIRS =
 
 # Root of the Ptolemy II directory
-ROOT =		../../..
+ROOT =		../../../..
 
 CLASSPATH =	$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(ROOT)
 
@@ -61,6 +61,3 @@ all: jclass
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-
-#demo: 
-#	$(JAVA) -classpath "$(CLASSPATH)" ptolemy.apps.charon.CharonToPtolemyII ./demo/v2v.cn > bar.log
