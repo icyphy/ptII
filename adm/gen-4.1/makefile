@@ -187,8 +187,8 @@ $(PTIIDIST):
 		$(PTIIDIST)/config/*.class
 	-(cd $(PTIIDIST); $(FINDCLEAN))
 	(cd $(PTIIDIST); rm -rf `cat $(GENDIR)/src.ex`)
-	@echo "Regenerate the documentation with gr and javasound"
-	(cd $(PTIIDIST)/doc; make JAVADOC=javadoc EXPERIMENTALPACKAGES= GRPACKAGES="ptolemy.domains.gr.kernel ptolemy.domains.gr.lib" COMMPACKAGES="ptolemy.actor.lib.comm")
+	@echo "Regenerate the documentation with comm, gr, JAI, JMF etc."
+	(cd $(PTIIDIST)/doc; make JAVADOC=javadoc all_packages)
 	#@echo "Do make realclean to clean up any trash"
 	#cd $(PTIIDIST); make clean
 	#cd $(PTIIDIST); make
@@ -352,6 +352,7 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		lib/synthesis.jar \
 		mk/ptII.mk \
 		ptolemy/actor/gui/python \
+		ptolemy/actor/lib/colt \
 		ptolemy/actor/lib/comm \
 		ptolemy/actor/lib/conversions/test/auto/Round.xml \
 		ptolemy/actor/lib/io/comm \
