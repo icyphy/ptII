@@ -86,7 +86,7 @@ test FIFOQueue-2.2 {Construct an empty queue and attempt two gets and a take} {
     catch { [$queue get -1] } msg2
     catch { [$queue take] } msg3
     list $msg1 $msg2 $msg3
-} {{java.util.NoSuchElementException: No object at offset 0 in the FIFOQueue.} {java.util.NoSuchElementException: No object at offset -1 in the FIFOQueue.} {java.util.NoSuchElementException: The FIFOQueue is empty!}}
+} {{java.util.NoSuchElementException: No Object at offset 0 in the FIFOQueue.} {java.util.NoSuchElementException: No Object at offset -1 in the FIFOQueue.} {java.util.NoSuchElementException: The FIFOQueue is empty!}}
 
 ######################################################################
 ####
@@ -211,7 +211,7 @@ test FIFOQueue-5.2 {Get elements from history queue} {
 test FIFOQueue-5.3 {Test get elements from history queue with error} {
     catch {[$queue get -4]} msg
     list $msg
-} {{java.util.NoSuchElementException: No object at offset -4 in the FIFOQueue.}}
+} {{java.util.NoSuchElementException: No Object at offset -4 in the FIFOQueue.}}
 
 ######################################################################
 ####
@@ -247,4 +247,4 @@ test FIFOQueue-6.2 {Test clear history queue} {
     catch {[$queue get 0]} msg1
     catch {[$queue get -1]} msg2
     list [_testEnums historyElements $newqueue] $msg1 $msg2
-} {{{n1 n2}} {java.util.NoSuchElementException: No object at offset 0 in the FIFOQueue contained by .QueueContainer} {java.util.NoSuchElementException: No object at offset -1 in the FIFOQueue contained by .QueueContainer}}
+} {{{n1 n2}} {java.util.NoSuchElementException: No Object at offset 0 in the FIFOQueue contained by .QueueContainer} {java.util.NoSuchElementException: No Object at offset -1 in the FIFOQueue contained by .QueueContainer}}
