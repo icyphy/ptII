@@ -100,7 +100,9 @@ demo: Object
 # Generate C code for java.lang.Object
 Object:
 	CLASSPATH="$(CLASSPATH)" \
-	$(JAVA) ptolemy.copernicus.c.JavaToC ".;$(JAVA_SYSTEM_JAR)" java.lang.Object
+		$(JAVA) ptolemy.copernicus.c.JavaToC \
+		".$(CLASSPATHSEPARATOR)$(JAVA_SYSTEM_JAR)" \
+		java.lang.Object
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
