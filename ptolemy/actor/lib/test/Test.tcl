@@ -132,7 +132,7 @@ Value was: 1.01. Should have been: 1}}
 ######################################################################
 #### 
 #
-test Test-1.4 {SDF model that triggers parameter is not an array of arrays} {
+test Test-1.4 {Test actor getting no input.} {
     
     # Create a model that has an unconnected test actor 
     set e4 [sdfModel 5]
@@ -146,23 +146,12 @@ test Test-1.4 {SDF model that triggers parameter is not an array of arrays} {
 	
     set ramp4 [java::new ptolemy.actor.lib.Ramp $e4 ramp4]
     set test4 [java::new ptolemy.actor.lib.Test $e4 test4]
-    $e4 connect \
-	[java::field [java::cast ptolemy.actor.lib.Source $ramp4] output] \
-	[java::field [java::cast ptolemy.actor.lib.Sink $test4] input]
-
-    # Unconnected actor
-    set test4a [java::new ptolemy.actor.lib.Test $e4 test4a]
-
-    set trainingMode4 [getParameter $test4 trainingMode]
-    $trainingMode4 setExpression "true" 
-    puts " The next command will produce a warning about training mode,"
-    puts "   which may be ignored."
     catch {[$e4 getManager] execute} errMsg
 
     list [string range $errMsg 0 176]
 } {{ptolemy.kernel.util.IllegalActionException: Test fails in iteration 0.
 Width of input is 0, but correctValues parameter is not an array of arrays.
-  in .top.test4a}}
+  in .top.test4}}
 
 
 ######################################################################
@@ -176,22 +165,11 @@ test Test-1.4.1 {If fire() is not called, throw an Exception} {
 
     set clock5 [java::new ptolemy.actor.lib.Clock $e5 clock5]
     set test5 [java::new ptolemy.actor.lib.Test $e5 test5]
-    $e5 connect \
-	[java::field [java::cast ptolemy.actor.lib.Source $clock5] output] \
-	[java::field [java::cast ptolemy.actor.lib.Sink $test5] input]
-
-    # Unconnected actor
-    set test4a [java::new ptolemy.actor.lib.Test $e5 test5a]
-
-    set trainingMode5 [getParameter $test5 trainingMode]
-    $trainingMode5 setExpression "true" 
-    puts " The next command will produce a warning about training mode,"
-    puts "   which may be ignored."
     catch {[$e5 getManager] execute} errMsg
 
     list [string range $errMsg 0 176]
 } {{ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .top.test5a}}
+  in .top.test5}}
 
 ######################################################################
 #### 
@@ -203,10 +181,10 @@ test Test-1.5 {Export} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
     </property>
     <property name="" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="timePrecisionInDigits" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1E-10">
         </property>
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
         </property>
