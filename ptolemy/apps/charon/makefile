@@ -36,7 +36,7 @@ DIRS =
 # Root of the Ptolemy II directory
 ROOT =		../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH =	$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -61,3 +61,6 @@ all: jclass
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
+
+demo: 
+	$(JAVA) -classpath "$(CLASSPATH)" ptolemy.apps.charon.CharonToPtolemyII ./demo/v2v.cn > bar.log

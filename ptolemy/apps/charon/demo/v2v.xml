@@ -289,6 +289,26 @@
                 <entity name="optimum" class="ptolemy.domains.fsm.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="optimum">
                     </property>
+                    <property name="elow" class="ptolemy.data.expr.Parameter" value="elow2">
+                    </property>
+                    <property name="eup" class="ptolemy.data.expr.Parameter" value="eup2">
+                    </property>
+                    <property name="rvlow" class="ptolemy.data.expr.Parameter" value="rvlow2">
+                    </property>
+                    <property name="rvup" class="ptolemy.data.expr.Parameter" value="rvup2">
+                    </property>
+                    <property name="k12" class="ptolemy.data.expr.Parameter" value="k12">
+                    </property>
+                    <property name="k22" class="ptolemy.data.expr.Parameter" value="k22">
+                    </property>
+                    <property name="k32" class="ptolemy.data.expr.Parameter" value="k32">
+                    </property>
+                    <property name="lambdaP" class="ptolemy.data.expr.Parameter" value="lambdaP">
+                    </property>
+                    <property name="lambdaV" class="ptolemy.data.expr.Parameter" value="lambdaV">
+                    </property>
+                    <property name="accInit" class="ptolemy.data.expr.Parameter" value="accInit">
+                    </property>
                     <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                     </port>
                     <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
@@ -296,6 +316,26 @@
                 </entity>
                 <entity name="previous" class="ptolemy.domains.fsm.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="previous">
+                    </property>
+                    <property name="elow" class="ptolemy.data.expr.Parameter" value="elow1">
+                    </property>
+                    <property name="eup" class="ptolemy.data.expr.Parameter" value="eup1">
+                    </property>
+                    <property name="rvlow" class="ptolemy.data.expr.Parameter" value="rvlow1">
+                    </property>
+                    <property name="rvup" class="ptolemy.data.expr.Parameter" value="rvup1">
+                    </property>
+                    <property name="k11" class="ptolemy.data.expr.Parameter" value="k11">
+                    </property>
+                    <property name="k21" class="ptolemy.data.expr.Parameter" value="k21">
+                    </property>
+                    <property name="k31" class="ptolemy.data.expr.Parameter" value="k31">
+                    </property>
+                    <property name="lambdaP" class="ptolemy.data.expr.Parameter" value="lambdaP">
+                    </property>
+                    <property name="lambdaV" class="ptolemy.data.expr.Parameter" value="lambdaV">
+                    </property>
+                    <property name="accInit" class="ptolemy.data.expr.Parameter" value="accInit">
                     </property>
                     <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                     </port>
