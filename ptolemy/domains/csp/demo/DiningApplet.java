@@ -59,7 +59,7 @@ import java.text.NumberFormat;
    @version $Id$
 */
 
-public class DiningApplet extends Applet 
+public class DiningApplet extends Applet
     implements Runnable, PhilosopherListener {
 
     ///////////////////////////////////////////////////////////////////
