@@ -67,7 +67,7 @@ PTII_FTP = /vol/ptolemy/pt0/ptweb/ptolemyII/ptII1.0
 # make USER=cxh PTIIHOME=/cygdrive/c/users/cxh/ptII COMPRESS=gzip TAR=/usr/local/bin/tar 
 # make USER=cxh PTIIHOME=/cygdrive/d/tmp/ptII COMPRESS=gzip TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII2.0alpha PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
-# make USER=cxh PTIIHOME=/home/eecs/cxh/ptII PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
+# make USER=cxh PTIIHOME=/vol/maury/maury2/cxh/ptII2.0beta PTIIADM=/vol/maury/maury2/cxh/ptII2.0beta/adm TAR=/usr/local/bin/tar
 # Run this command on a JDK1.3 machine so we get javasound documentation
 # 
 
@@ -147,10 +147,10 @@ $(PTIIDIST):
 	@echo "#"
 	@echo "$@ `date`"
 	mkdir $@
-	@echo "Be sure that ptolemy/media/javasound/javasound.jar exists"
-	(cd $(PTIIHOME)/ptolemy/media/javasound; make jars)
-	@echo "Be sure that ptolemy/actor/lib/javasound/javasound.jar exists"
-	(cd $(PTIIHOME)/ptolemy/actor/lib/javasound; make jars)
+	#@echo "Be sure that ptolemy/media/javasound/javasound.jar exists"
+	#(cd $(PTIIHOME)/ptolemy/media/javasound; make jars)
+	#@echo "Be sure that ptolemy/actor/lib/javasound/javasound.jar exists"
+	#(cd $(PTIIHOME)/ptolemy/actor/lib/javasound; make jars)
 	(cd $(PTIIHOME); \
 		$(TAR) -c -X $(GENDIR)/src.ex  -X $(GENDIR)/src1.ex \
 		$ -f - $(PTII_TOPDIR) )| \
@@ -159,9 +159,9 @@ $(PTIIDIST):
 	@echo "  tar -X does not seem to work under Cygwin"
 	-find $(PTIIDIST) -name codeDoc -exec rm -rf {} \;
 	-find $(PTIIDIST) -name CVS -exec rm -rf {} \;
-	@echo "Regenerate the documentation with gr and javasound"
+	#@echo "Regenerate the documentation with gr and javasound"
 	@echo "  This requires JDK1.3, so run it on doppler"
-	(cd $(PTIIDIST)/doc; make JAVADOC=javadoc JDOCFLAGS="-author -version -J-Xmx132m" GRJSRCS="ptolemy.domains.gr.kernel ptolemy.domains.gr.lib" JAVASOUNDJSRCS="ptolemy.actor.lib.javasound ptolemy.media.javasound")
+	(cd $(PTIIDIST)/doc; make JAVADOC=javadoc JDOCFLAGS="-author -version -J-Xmx132m" GRPACKAGES="ptolemy.domains.gr.kernel ptolemy.domains.gr.lib" COMMPACKAGES="ptolemy.actor.lib.comm")
 	#@echo "Do make realclean to clean up any trash"
 	#cd $(PTIIDIST); make clean
 	#cd $(PTIIDIST); make
@@ -1148,8 +1148,8 @@ $(INSTALLSHIELD_PTINY):
 	@echo "# Building $@"
 	 mkdir -p $@ $@/lib $@/ptolemy/vergil
 	 mkdir -p $@/doc/img $@/doc/design
-	 -ls -l $@/ptolemy/actor/lib/javasound/javasound.jar \
-		$@/ptolemy/media/javasound/javasound.jar
+	 #-ls -l $@/ptolemy/actor/lib/javasound/javasound.jar \
+	 #	$@/ptolemy/media/javasound/javasound.jar
 	 -mv $(INSTALLSHIELD_APP)/copyright.txt $@
 	 -mv $(INSTALLSHIELD_APP)/doc/*Vergil.htm \
 		$(INSTALLSHIELD_APP)/doc/acks.htm \
