@@ -458,7 +458,8 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/jspaces \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/jspaces/util \
 	$(REMOTE1PTIIDIST)/ptolemy/gui \
-	$(REMOTE1PTIIDIST)/ptolemy/actor/gui
+	$(REMOTE1PTIIDIST)/ptolemy/actor/gui \
+	$(REMOTE1PTIIDIST)/ptolemy/configs
 
 # Run JavaScope Code Coverage tool in the distribution tree
 # For command line options, see
