@@ -1,4 +1,4 @@
-# ptII crontab  Last Updated: @(#)crontab.ptII	1.11 05/12/00
+# ptII crontab  Last Updated: $Id$
 # This file should be found as /users/ptII/adm/crontab.ptII
 # To update, as ptII on maury (or whatever host is the ptII host), run:
 #	 crontab < /users/ptII/adm/crontab.ptII
