@@ -84,7 +84,7 @@ proc autoSaveAsJava {autoDirectory} {
 autoSaveAsJava [file join $relativePathToPTII ptolemy actor lib test auto]
 
 autoSaveAsJava [file join $relativePathToPTII ptolemy actor lib conversions test auto]
-autoSaveAsJava [file join $relativePathToPTII ptolemy actor lib javasound test auto]
+#autoSaveAsJava [file join $relativePathToPTII ptolemy actor lib javasound test auto]
 autoSaveAsJava [file join $relativePathToPTII ptolemy domains ct lib test auto]
 autoSaveAsJava [file join $relativePathToPTII ptolemy domains de lib test auto]
 autoSaveAsJava [file join $relativePathToPTII ptolemy domains dt kernel test auto]
