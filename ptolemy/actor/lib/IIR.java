@@ -1,4 +1,4 @@
-/* An IIR filter actor that uses a direct form II structure.
+/* An IIR filter actor that uses a direct form II implementation.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -43,14 +43,21 @@ This actor implements an infinite impulse response (IIR) filter. A
 direct form II implementation is used.
 <p>
 This filter has a transfer function given by:
+<pre>
+       b<sub>0</sub> + b<sub>1</sub>z<sup>-1</sup> + ... + b<sub>M</sub>z<sup>-M</sup>
+      ------------------------
+       1 + a<sub>1</sub>z<sup>-1</sup> + ... + a<sub>N</sub>z<sup>-N</sup>
+</pre>
+The constant terms of the numerator polynomial are specified by the <i>numerator</i> parameter and the constant terms of the denominator polynomial are specified by the <i>denominator</i> parameter.
 <p>
-H(z) = 
+The <i>numerator</i> parameter represents the numerator coefficients as a row vector of a token of type DoubleMatrixToken. The format is {{b<sub>0</sub>, b<sub>1</sub>, ..., b<sub>M</sub>}}. The default value of this parameter is {{1.0}}.
 <p>
-where ...
+The <i>denominator</i> parameter represents the denominator coefficients as a row vector of a token of type DoubleMatrixToken. The format is {{a<sub>0</sub>, a<sub>1</sub>, ..., a<sub>N</sub>}}. Note that the value of a<sub>0</sub> is constrained to be 1. This implementation will silently ignore whatever value the user enters for as the first element of <i>denominator</i>, and will use 1.0 instead.  The default value of this parameter is {{1.0}}.
+<p>
+The default values therefore correspond to a filter with a transfer function of 1.
 @author Brian K. Vogel
 @version $Id$
 */
-
 public class IIR extends Transformer {
 
     /** Construct an actor with the given container and name.
@@ -65,15 +72,14 @@ public class IIR extends Transformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         // parameters
-	gain = new Parameter(this, "gain", new DoubleToken(1.0));
 	double numeratorTaps[][] = {{1.0}};
-	double denominatorTaps[][] = {{0.0}};
+	double denominatorTaps[][] = {{1.0}};
 	numerator =
 	    new Parameter(this, "numerator", new DoubleMatrixToken(numeratorTaps));
 	attributeChanged(numerator);
 	denominator = 
 	    new Parameter(this, "denominator", new DoubleMatrixToken(denominatorTaps));
-	//attributeChanged(denominator);
+	attributeChanged(denominator);
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
 
@@ -82,35 +88,44 @@ public class IIR extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** 
-     */
-    public Parameter gain;
-
-    /** 
+    /** This parameter represents the numerator coefficients as a row 
+     *  vector of a token of type DoubleMatrixToken. The format is 
+     *  {{b<sub>0</sub>, b<sub>1</sub>, ..., b<sub>M</sub>}}. The default 
+     *  value of this parameter is {{1.0}}.
      */
     public Parameter numerator;
 
-    /** 
+    /** This  parameter represents the denominator coefficients as a row 
+     *  vector of a token of type DoubleMatrixToken. The format is 
+     *  {{a<sub>0</sub>, a<sub>1</sub>, ..., a<sub>N</sub>}}. Note that 
+     *  the value of a<sub>0</sub> is constrained to be 1. This 
+     *  implementation will silently ignore whatever value the user 
+     *  enters for as the first element of <i>denominator</i>, and will 
+     *  use 1.0 instead.  The default value of this parameter is {{1.0}}.
      */
     public Parameter denominator;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** 
+    /** Handle parameter change events on the
+     *  <i>numerator</i> and <i>denominator</i> parameters. The
+     *  filter state vector is reinitialized to zero state.
      *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If FIXME
+     *  @exception IllegalActionException If this method is invoked
+     *   with an unrecognized parameter.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
 	//System.out.println("attributeChanged(): invoked on " + 
-	//	   attribute.getName());
-        if (attribute == gain) {
-	    _gain =  ((DoubleToken)gain.getToken()).doubleValue();
-	} else if (attribute == numerator) {
+	//   attribute.getName());
+        if (attribute == numerator) {
 	    _numerator =  (((DoubleMatrixToken)numerator.getToken()).doubleMatrix())[0];
 	} else if (attribute == denominator) {
 	    _denominator = (((DoubleMatrixToken)denominator.getToken()).doubleMatrix())[0];
+	    // Note: a<sub>0</sub> must always be 1, so ignore whatever the user
+	    // entered and just use 1.
+	    _denominator[0] = 1.0;
 	} else {
 	    throw new IllegalActionException(this,
                 "Unrecognized parameter: " + attribute.getName());
@@ -123,22 +138,6 @@ public class IIR extends Transformer {
 	}
     }
 
-     public void attributeTypeChanged(Attribute attribute) 
-	 throws IllegalActionException {
-	 //System.out.println("attributeTypeChanged(): invoked on " + 
-	 //	   attribute.getName());
-	 if (attribute == gain) {
-
-	 } else if (attribute == numerator) {
-
-	 } else if (attribute == denominator) {
-
-	 } else {
-	     super.attributeTypeChanged(attribute);
-	 }
-	     
-     }
-
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the parameters of the new actor.
      *  @param ws The workspace for the new object.
@@ -149,13 +148,12 @@ public class IIR extends Transformer {
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
         IIR newobj = (IIR)super.clone(ws);
-        newobj.gain = (Parameter)newobj.getAttribute("gain");
         newobj.numerator = (Parameter)newobj.getAttribute("numerator");
         newobj.denominator = (Parameter)newobj.getAttribute("denominator");
         return newobj;
     }
 
-    /** 
+    /** Consume an input token and compute a single output token.
      *  @exception IllegalActionException Not thrown
      */
     public void fire() throws IllegalActionException {
@@ -164,7 +162,7 @@ public class IIR extends Transformer {
  	iterate(1);
     }
 
-    /**  Initialize the filter state.
+    /**  Initialize the filter state vector with zero state.
      *   @exception IllegalActionException If the base class throws
      *    it.
      */
@@ -172,7 +170,7 @@ public class IIR extends Transformer {
 	super.initialize();
 	// Initialize filter state.
 	int stateSize = 
-	    (int)java.lang.Math.max(_numerator.length, _denominator.length + 1);
+	    (int)java.lang.Math.max(_numerator.length, _denominator.length);
 	_stateVector = new double[stateSize];
 	_curTap = 0;
     }
@@ -215,9 +213,9 @@ public class IIR extends Transformer {
 		wn = xCur;
 		//System.out.println("_curTap = " + _curTap);
 		//System.out.println(" _denominator.length = " +  _denominator.length);
-		for (int j = 0; j < _denominator.length; j++) {
+		for (int j = 1; j < _denominator.length; j++) {
 		    wn += 
-			_denominator[j]*_stateVector[(_curTap + j+1) % 
+			_denominator[j]*_stateVector[(_curTap + j) % 
 						     _stateVector.length];
 		    // System.out.println("j = " + j + ", _stateVector val = " + 
 		    //_stateVector[(_curTap + j+1) %  _stateVector.length] +
@@ -252,7 +250,6 @@ public class IIR extends Transformer {
     private DoubleToken[] _resultArray = new DoubleToken[1];
 
     // Filter parameters
-    private double _gain;
     private double[] _numerator;
     private double[] _denominator;
 
