@@ -259,7 +259,7 @@ $(PTII_SRC): $(PTII_FULL)
 		rm -rf doc/codeDoc*; \
 		cd ..; \
 		echo "#  Starting tar of $@"; \
-		$(TAR) -zcf -X $(GENDIR)/src.ex $(PTII_SRC) ptII$(VERSION));
+		$(TAR) -zc -X $(GENDIR)/src.ex -f $(PTII_SRC) ptII$(VERSION));
 
 ###############
 # Build a jar file for use inside the installer
