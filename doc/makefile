@@ -158,7 +158,7 @@ HYBRIDSYSTEMSPACKAGES = \
 			ptolemy.domains.ct.lib
 
 # Currently, there are no .java files in fsm.lib
-			ptolemy.domains.fsm.lib
+#			ptolemy.domains.fsm.lib
 
 # Packages used by Ptiny.  
 PTINYPACKAGES = \
@@ -393,7 +393,7 @@ codeDocHybridSystems/tree.html:
 	if [ ! -d codeDocHybridSystems ]; then mkdir -p codeDocHybridSystems; fi
 	@echo "If this fails because of memory problems, try"
 	@echo 'make JDOCFLAGS="-author -version -J-Xmx132m"'
-	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocPtiny $(HYBRIDSYSTEMSPACKAGES) )
+	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocHybridSystems $(HYBRIDSYSTEMSPACKAGES) )
 
 
 # We don't include common.mk since we don't use the compiler here
