@@ -58,7 +58,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    <i>y</i> = <i>b</i>, for (<i>b</i>+<i>a</i>)/2 &lt;
    <i>u</i> &lt;= (<i>c</i>+<i>b</i>)/2;<BR>
    <i>y</i> = <i>c</i>, for <i>u</i> &gt; (<i>c</i>+<i>b</i>)/2;<BR>
-   </i><p>
+   <p>
    Thus, for the default <i>levels</i>, the output is (almost)
    the signum function of the input, or +1.0 if the input is positive,
    and -1.0 otherwise.  This is almost the signum function because it

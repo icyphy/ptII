@@ -68,11 +68,11 @@ import ptolemy.kernel.util.NameDuplicationException;
    <p>
 
    NOTES:
-   1. Some functions like exp, log, square, and sqrt act on a single
+   <p>1. Some functions like exp, log, square, and sqrt act on a single
    operand only.  Other functions like modulo act on two operands.
    The actor acquires a second input when the function is changed to
    modulo, and loses the input when the function is changed back.
-   2. There is an alternative to using the MathFunction.modulo() method
+   <p>2. There is an alternative to using the MathFunction.modulo() method
    If you want to use the IEEE remainder standard, use the Remainder actor.
 
    @author C. Fong
@@ -149,7 +149,7 @@ public class MathFunction extends TypedAtomicActor {
      */
     public TypedIOPort secondOperand = null;
 
-    /** Output port
+    /** Output port.
      *  The port has type BaseType.DOUBLE
      */
     public TypedIOPort output = null;

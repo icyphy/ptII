@@ -76,7 +76,7 @@ public class ThrowException extends Sink {
     ////                     ports and parameters                  ////
 
     /** The message reported in the exception, which is a string that
-     *  defaults to "Model triggered an exception."
+     *  defaults to "Model triggered an exception".
      */
     public StringAttribute message;
 

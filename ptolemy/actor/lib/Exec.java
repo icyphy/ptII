@@ -192,7 +192,7 @@ public class Exec extends TypedAtomicActor {
      *  <p>This parameter is an array of records that name an environment
      *  variable and the value for the value.  The format is:
      *  <pre>
-     *  {{name = "<i>NAME1</i>", value = "</i>value1</i>"}...}
+     *  {{name = "<i>NAME1</i>", value = "<i>value1</i>"}...}
      *  </pre>
      *  Where <code><i>NAME1</i></code> is the name of the environment
      *  variable, and <code><i>value1</i></code> is the value.
