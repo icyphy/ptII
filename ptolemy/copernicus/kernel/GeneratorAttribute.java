@@ -441,13 +441,20 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
      */
     public void updateModelAttributes(String modelPathOrURL)
             throws IllegalActionException {
-        URL modelURL;
+        URL modelURL = null;
         try {
             modelURL = MoMLApplication.specToURL(modelPathOrURL);
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex,
-                    "Failed to parse '"
-                    + modelPathOrURL + "'");
+            try {
+                // We might have a JAR URL because we are inside webstart
+                modelURL = JNLPUtilities.jarURLEntryResource(modelPathOrURL);
+            } catch (IOException ex2) {
+            }
+            if (modelURL == null) {
+                throw new IllegalActionException(this, ex,
+                        "Failed to parse '"
+                        + modelPathOrURL + "'");
+            }
         }
 
         MoMLParser parser = new MoMLParser();
@@ -473,7 +480,6 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 
             NamedObj toplevel = null;
             try {
-                System.out.println("GeneratorAttribute: parsing " + modelURL);
                 toplevel = parser.parse(null, modelURL);
                 // FIXME: 1st arg of parse() could be $PTII as a URL.
                 modelPathOrURL = modelURL.toExternalForm();
