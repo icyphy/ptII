@@ -63,7 +63,12 @@ JSRCS = \
 	IntToBits.java\
 	LineCoder.java \
 	RaisedCosine.java \
-	SequenceToArray.java
+	SequenceToArray.java \
+	SDFTransformer.java \
+	SDFSine.java \
+	SDFSource.java \
+	SDFRamp.java \
+	SDFConst.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	sdfentities.xml
