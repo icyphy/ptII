@@ -712,7 +712,7 @@ jnlp_verify:
 	done;
 
 # Update a location with the files necessary to download
-DIST_BASE = ptolemyII/ptII4.0/jnlp-4.0
+DIST_BASE = ptolemyII/ptII4.0/jnlp-4.0.1
 DIST_DIR = /vol/ptolemy/pt0/ptweb/$(DIST_BASE)
 DIST_URL = http://ptolemy.eecs.berkeley.edu/$(DIST_BASE)
 OTHER_FILES_TO_BE_DISTED = doc/img/PtolemyIISmall.gif \
@@ -735,7 +735,7 @@ jnlp_dist_update:
 		(cd $(DIST_DIR); tar -xpf -)
 	cp doc/webStartHelp.htm $(DIST_DIR)
 
-#make KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-storepass xxx" KEYSTORE=ptkeystore PTII_LOCALURL=http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/jnlp-4.0 jnlp_sign
+#make KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-storepass xxx" KEYSTORE=ptkeystore PTII_LOCALURL=http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/jnlp-4.0.1 jnlp_sign
 
 jnlp_dist_update_remote:
 	scp doc/webStartHelp.htm messier:$(DIST_DIR)
