@@ -132,8 +132,11 @@ JAVADOC = 	$(PTJAVA_DIR)/bin/javadoc
 # -breakiterator is only present in jdk1.4 and later
 JDOCBREAKITERATOR = @JDOCBREAKITERATOR@
 
+# Increase the amount of memory that javadoc uses.
+JDOCMEMORY =	-J-Xmx132m
+
 # Flags to pass to javadoc.
-JDOCFLAGS = 	-author -version $(JDOCBREAKITERATOR)
+JDOCFLAGS = 	-author -version $(JDOCBREAKITERATOR) $(JDOCMEMORY)
 
 # The jar command, used to produce jar files, which are similar to tar files
 JAR =		$(PTJAVA_DIR)/bin/jar
