@@ -39,7 +39,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.PtolemyThread;
 import ptolemy.kernel.util.Workspace;
 
-import java.util.Date;			// For timing measurements
+import java.util.Date;                        // For timing measurements
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -260,22 +260,22 @@ public class Manager extends NamedObj implements Runnable {
             //       throw new RuntimeException("Manager: " + e.getMessage());
 
         } finally {
-	    try {
-		wrapup();
-	    } finally {
-		// Wrapup may also throw an exception,
-		// So be sure to reset the state to idle!
-		if (_state != IDLE) {
-		    _setState(IDLE);
-		}
-		// Reset this for the next run.
-		_finishRequested = false;
-		if (completedSuccessfully) {
-		    _notifyListenersOfCompletion();
-		}
-	    }
+            try {
+                wrapup();
+            } finally {
+                // Wrapup may also throw an exception,
+                // So be sure to reset the state to idle!
+                if (_state != IDLE) {
+                    _setState(IDLE);
+                }
+                // Reset this for the next run.
+                _finishRequested = false;
+                if (completedSuccessfully) {
+                    _notifyListenersOfCompletion();
+                }
+            }
         }
-	System.out.println(timeAndMemory(startTime));
+        System.out.println(timeAndMemory(startTime));
 
     }
 
@@ -307,14 +307,14 @@ public class Manager extends NamedObj implements Runnable {
         }
         ((CompositeActor)container).stopFire();
 
-	// Since Manager.resume() is synchronized, start a thread
-	// to call resume() in order to avoid deadlock
-	Thread resumeThread = new PtolemyThread( new Runnable() {
+        // Since Manager.resume() is synchronized, start a thread
+        // to call resume() in order to avoid deadlock
+        Thread resumeThread = new PtolemyThread( new Runnable() {
                 public void run() {
                     resume();
                 }
             });
-	resumeThread.start();
+        resumeThread.start();
     }
 
     /** Return the top-level composite actor for which this manager
@@ -479,7 +479,7 @@ public class Manager extends NamedObj implements Runnable {
      *  @param ex The exception.
      */
     public void notifyListenersOfException(Exception ex) {
-	String errorMessage = "Exception occurred: " + ex.getClass()
+        String errorMessage = "Exception occurred: " + ex.getClass()
             + "(" + ex.getMessage() + ")";
         _debug(errorMessage);
         if (_executionListeners == null) {
@@ -536,22 +536,22 @@ public class Manager extends NamedObj implements Runnable {
      *  @param change The requested change.
      */
     public void requestChange(ChangeRequest change) {
-	// If the model is idle (i.e., initialize() has not yet been
-	// invoked), then process the change request right now.
-	if (_state == IDLE) {
-	    change.execute();
-	} else {
-	    // Otherwise, we must be executing, so queue the request
-	    // to happen later.
-	    // Create the list of requests if it doesn't already exist
-	    if (_changeRequests == null) {
-		_changeRequests = new LinkedList();
-	    }
-	    _changeRequests.add(change);
-	    // Now call stopFire so we can be sure the model will give us
-	    // back control.
-	    _container.stopFire();
-	}
+        // If the model is idle (i.e., initialize() has not yet been
+        // invoked), then process the change request right now.
+        if (_state == IDLE) {
+            change.execute();
+        } else {
+            // Otherwise, we must be executing, so queue the request
+            // to happen later.
+            // Create the list of requests if it doesn't already exist
+            if (_changeRequests == null) {
+                _changeRequests = new LinkedList();
+            }
+            _changeRequests.add(change);
+            // Now call stopFire so we can be sure the model will give us
+            // back control.
+            _container.stopFire();
+        }
     }
 
     /** Queue an initialization request.
@@ -577,14 +577,14 @@ public class Manager extends NamedObj implements Runnable {
         if ( !(_container instanceof TypedCompositeActor)) {
             return;
         }
-	try {
-	    _workspace.getWriteAccess();
+        try {
+            _workspace.getWriteAccess();
             _setState(RESOLVING_TYPES);
 
             TypedCompositeActor.resolveTypes((TypedCompositeActor)_container);
-	} finally {
-	    _workspace.doneWriting();
-	}
+        } finally {
+            _workspace.doneWriting();
+        }
     }
 
     /** If the model is paused, resume execution.  This method must
@@ -652,7 +652,7 @@ public class Manager extends NamedObj implements Runnable {
         // actually starts up.
         _finishRequested = false;
         _thread = new PtolemyThread(this);
-	_thread.setPriority(Thread.MIN_PRIORITY);
+        _thread.setPriority(Thread.MIN_PRIORITY);
         _thread.start();
     }
 
@@ -703,9 +703,9 @@ public class Manager extends NamedObj implements Runnable {
      *  the amount of memory used.
      */
     public static String timeAndMemory(long startTime) {
-	Runtime runtime = Runtime.getRuntime();
-	long totalMemory = runtime.totalMemory()/1024;
-	long freeMemory = runtime.freeMemory()/1024;
+        Runtime runtime = Runtime.getRuntime();
+        long totalMemory = runtime.totalMemory()/1024;
+        long freeMemory = runtime.freeMemory()/1024;
         return timeAndMemory(startTime, totalMemory, freeMemory);
     }
 
@@ -714,13 +714,13 @@ public class Manager extends NamedObj implements Runnable {
      */
     public static String timeAndMemory(long startTime,
             long totalMemory, long freeMemory) {
-	Runtime runtime = Runtime.getRuntime();
-	return System.currentTimeMillis() - startTime
-	    + " ms. Memory: "
-	    + totalMemory + "K Free: " + freeMemory + "K ("
-	    + Math.round( (((double)freeMemory)/((double)totalMemory))
+        Runtime runtime = Runtime.getRuntime();
+        return System.currentTimeMillis() - startTime
+            + " ms. Memory: "
+            + totalMemory + "K Free: " + freeMemory + "K ("
+            + Math.round( (((double)freeMemory)/((double)totalMemory))
                     * 100.0)
-	    + "%)";
+            + "%)";
     }
 
     /** The thread that calls this method will wait until resume() has
@@ -783,10 +783,10 @@ public class Manager extends NamedObj implements Runnable {
         // Wrap up the topology
         _container.wrapup();
 
-	// Process all change requests. If the model reaches this wrap up
-	// state due to the occurrence of an exception during execution,
-	// some change requests may be pending. If these requests
-	// are not processed, they will be left to the next execution.
+        // Process all change requests. If the model reaches this wrap up
+        // state due to the occurrence of an exception during execution,
+        // some change requests may be pending. If these requests
+        // are not processed, they will be left to the next execution.
         // Also, wrapping up execution may cause change requests to be queued.
         _processChangeRequests();
 
@@ -973,11 +973,11 @@ public class Manager extends NamedObj implements Runnable {
             return _description;
         }
 
-	/** Print out the current state.
-	 */
-	public String toString() {
-	    return "The model is " + getDescription();
-	}
+        /** Print out the current state.
+         */
+        public String toString() {
+            return "The model is " + getDescription();
+        }
 
         private String _description;
     }
