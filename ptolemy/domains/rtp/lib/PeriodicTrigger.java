@@ -48,8 +48,8 @@ import ptolemy.kernel.util.Workspace;
 
    @author  Jie Liu
    @version $Id$
-   @ProposedRating Red (liuj)
-   @AcceptedRating Red (liuj)
+   @Pt.ProposedRating Red (liuj)
+   @Pt.AcceptedRating Red (liuj)
 */
 public class PeriodicTrigger extends TypedAtomicActor {
 

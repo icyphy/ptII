@@ -45,8 +45,8 @@ import ptolemy.kernel.util.InvalidStateException;
 
    @author  Christoph Meyer, Ben Horowitz, and Edward A. Lee
    @version $Id$
-   @ProposedRating Red (liuj)
-   @AcceptedRating Red (liuj)
+   @Pt.ProposedRating Red (liuj)
+   @Pt.AcceptedRating Red (liuj)
 */
 public class RTPReceiver extends AbstractReceiver implements ProcessReceiver {
 
