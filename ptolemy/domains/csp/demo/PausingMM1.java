@@ -76,13 +76,13 @@ public class PausingMM1 {
      *  consists of a process representing customers arriving, a buffer
      *  process that represents a queue, and a process to represent the server.
      *  Here a single level of hierarchy is used, with the
-     *  director controlling the CompositeActor being an
+     *  director controlling the TypedCompositeActor being an
      *  instance of CSPDirector. Thus the execution of the model
      *  follows CSP semantics.
      */
     public static void main(String[] args) {
         try {
-            CompositeActor univ = new CompositeActor();
+            TypedCompositeActor univ = new TypedCompositeActor();
             univ.setName( "Pausing M/M/1 demo");
             Manager manager = new Manager("Manager");
             CSPDirector localdir = new CSPDirector("Local Director");
@@ -113,13 +113,15 @@ public class PausingMM1 {
             Parameter p3 = (Parameter)server.getAttribute("serviceRate");
             p3.setExpression("serviceRate");
 
-            IOPort out1 = (IOPort)source.getPort("output");
-	    IOPort in1 = (IOPort)middle.getPort("input");
-	    IOPort out2 = (IOPort)middle.getPort("output");
-            IOPort in2 = (IOPort)server.getPort("input");
+            TypedIOPort out1 = (TypedIOPort)source.getPort("output");
+	    TypedIOPort in1 = (TypedIOPort)middle.getPort("input");
+	    TypedIOPort out2 = (TypedIOPort)middle.getPort("output");
+            TypedIOPort in2 = (TypedIOPort)server.getPort("input");
 
-            IORelation rel1 = (IORelation)univ.connect(out1, in1, "R1");
-            IORelation rel2 = (IORelation)univ.connect(out2, in2, "R2");
+            TypedIORelation rel1 = 
+		    (TypedIORelation)univ.connect(out1, in1, "R1");
+            TypedIORelation rel2 = 
+		    (TypedIORelation)univ.connect(out2, in2, "R2");
             //System.out.println(univ.description(1023));
             System.out.println(univ.getFullName() + " starting!");
             univ.getManager().startRun();

@@ -73,7 +73,8 @@ public class Server extends CSPActor {
     public Server() throws IllegalActionException, NameDuplicationException {
         super();
         _rate = new Parameter(this, "serviceRate", (new DoubleToken(1)) );
-        _input = new IOPort(this, "input", true, false);
+        _input = new TypedIOPort(this, "input", true, false);
+	_input.setDeclaredType(Token.class);
     }
 
     /** Construct a Server in the specified container with the specified
@@ -84,14 +85,14 @@ public class Server extends CSPActor {
      *  The default service rate is 1.0. The actor is created with a
      *  single input port, of width one, called "input".
      *  <p>
-     *  @param container The CompositeActor that contains this actor.
+     *  @param container The TypedCompositeActor that contains this actor.
      *  @param name The actor's name.
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If the name argument coincides with
      *   an entity already in the container.
      */
-    public Server(CompositeActor cont, String name)
+    public Server(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
          this(cont, name, 1);
     }
@@ -104,7 +105,7 @@ public class Server extends CSPActor {
      *  The service rate is assigned the value passed in. The actor is
      *  created with a single input port, of width one, called "input".
      *  <p>
-     *  @param container The CompositeActor that contains this actor.
+     *  @param container The TypedCompositeActor that contains this actor.
      *  @param name The actor's name.
      *  @param rate The rate at which customers are served.
      *  @exception IllegalActionException If the entity cannot be contained
@@ -112,11 +113,12 @@ public class Server extends CSPActor {
      *  @exception NameDuplicationException If the name argument coincides with
      *   an entity already in the container.
      */
-    public Server(CompositeActor cont, String name, double rate)
+    public Server(TypedCompositeActor cont, String name, double rate)
         throws IllegalActionException, NameDuplicationException {
         super(cont, name);
         _rate = new Parameter(this, "serviceRate", (new DoubleToken(rate)) );
-        _input = new IOPort(this, "input", true, false);
+        _input = new TypedIOPort(this, "input", true, false);
+	_input.setDeclaredType(Token.class);
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -162,7 +164,7 @@ public class Server extends CSPActor {
     ////                         private variables                      ////
 
     // The input port for this actor.
-    private IOPort _input;
+    private TypedIOPort _input;
 
     // The rate at which customers are served. It parameterizes an
     // exponential distribution.
