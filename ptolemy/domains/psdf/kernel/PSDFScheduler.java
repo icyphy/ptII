@@ -107,6 +107,14 @@ change context of those rate variables and may refuse to schedule the
 composite actor if those rates imply that this model is not locally
 synchronous.
 
+<p> This scheduler uses a version of the P-APGAN scheduling algorithm 
+described in [1].
+
+<p> [1] B. Bhattacharya and S. S. Bhattacharyya. Quasi-static scheduling of
+reconfigurable dataflow graphs for DSP systems. In <em> Proceedings of the
+International Workshop on Rapid System Prototyping </em>, 
+pages 84-89, Paris, France, June 2000.
+
 @see ptolemy.actor.sched.Scheduler
 @see ptolemy.domains.sdf.lib.SampleDelay
 @see ptolemy.domains.sdf.kernel.SDFScheduler
@@ -274,6 +282,44 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
                 SymbolicSchedule symbolicSchedule = new SymbolicSchedule("1");
                 symbolicSchedule.add((ScheduleElement)first);
                 symbolicSchedule.add((ScheduleElement)second);
+
+                // Compute buffer sizes and associate them with the 
+                // corresponding relations.
+                Iterator edges = childGraph.edges().iterator();
+                while (edges.hasNext()) {
+                    Edge nextEdge = (Edge)edges.next();
+                    PSDFEdgeWeight weight = 
+                            (PSDFEdgeWeight)nextEdge.getWeight();
+                    IOPort sourcePort = weight.getSourcePort();
+                    List relationList = sourcePort.linkedRelationList();
+                    if (relationList.size() != 1) {
+                        // FIXME: Need to generalize this?
+                        throw new RuntimeException("Cannot handle relation "
+                                + "lists that are not singletons.\nThe size of "
+                                + "this relation list is " + relationList.size()
+                                + "\nA dump of the offending edge follows.\n"
+                                + nextEdge + "\n");
+                    }
+                    Iterator relations = relationList.iterator();
+                    Relation relation = (Relation)relations.next();
+                    String produced = apgan.producedExpression(nextEdge);
+                    String consumed = apgan.consumedExpression(nextEdge);
+                    String bufferSizeExpression = "((" 
+                            + produced 
+                            + ") * ("
+                            + consumed
+                            + ")) / "
+                            + PSDFGraphs.gcdExpression(produced, consumed);
+
+                    // Due to the bottom-up traversal in _expandAPGAN, relations
+                    // that are linked to multiple sink nodes will 
+                    // have their buffer sizes progressively replaced by
+                    // those of outer clusterings, and will end up with
+                    // the buffer size determined by the outermost clustering.
+                    _bufferSizeMap.put(relation, bufferSizeExpression); 
+                }
+                
+
                 return symbolicSchedule;
             }
         } catch (Exception exception) {
@@ -287,6 +333,7 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
         if (_debugFlag) {
             addDebugListener(new StreamListener());
         }
+        _bufferSizeMap = new HashMap();
     }
 
     /** An actor firing with an iteration count that is determined by
@@ -564,6 +611,11 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
             return getAllScopedVariableNames(null, reference);
         }
     }
+
+    // A map from relations into expressions that give symbolic buffer sizes 
+    // of the relations. Keys are of type Relation and values are of type
+    // String.
+    private HashMap _bufferSizeMap;
 
     private boolean _debugFlag = true;
     private ParseTreeEvaluator _parseTreeEvaluator;
