@@ -3,9 +3,8 @@
 <head>
 <title>Ptolemy II Directory Structure</title>
 </head>
-<body bgcolor="#faf0e6">
+<body>
 <h1>Ptolemy II Directory Structure</h1>
-<HR>
 <dl>
 <dt> <a href="../.."><CODE>ptII</CODE></a>
 <dd>
@@ -25,8 +24,31 @@
 		directory are automatically generated.
 		</dl>
 
+	<dt><a href="../../bin"><CODE>bin</CODE></a>
+	<dd> Start up scripts for utilities like ptplot
+
+	<dt><a href="../../collections"><CODE>collections</CODE></a>
+	<dd> Doug Lea's Collections Java package.  This directory
+	will go away once we no longer support JDK1.1
+
+	<dt><a href="../../com"><CODE>com</CODE></a>
+	<dd> Commercial Java packages
+		<dl>
+		<dt> <a href="../../com/microstar"><CODE>microstar</CODE></a>
+		<dd> Microstar Inc's XML Parser 
+		</dl>
+
+	<dt><a href="../../config"><CODE>config</CODE></a>
+	<dd> Used by GNU Autoconf and the <CODE>configure</CODE> 
+	script
+
 	<dt><CODE>devel/</CODE>
 	<dd> Code that is under development and not to be released.
+
+	<dt><a href="../../diva"><CODE>diva</CODE></a>
+	<dd> The
+	<a href="http://ptolemy.eecs.berkeley.edu/diva/">Diva</a> 
+	Dynamic Interactive Visualization software system
 
 	<dt><a href="../../mk"><CODE>mk</CODE></a>
 	<dd> Makefiles that are included in other makefiles
@@ -80,31 +102,42 @@
 		<dt> <a href="../../ptolemy/domains"><CODE>domains</CODE></a>
 		<dd> Various models of computation
 			<dl>
-			<dt> <a href="../../ptolemy/domains/csp"><CODE>csp</CODE></a>
+			<dt> <a href="../../ptolemy/domains/csp"><CODE>csp</CODE></a> -
+			<a href="../../ptolemy/domains/csp/kernel/doc/codeDoc/tree.html"><CODE>kernel documentation</CODE></a>
 			<dd> Communicating Sequential Processes
 
-			<dt> <a href="../../ptolemy/domains/ct"><CODE>ct</CODE></a>
+			<dt> <a href="../../ptolemy/domains/ct"><CODE>ct</CODE></a> -
+			<a href="../../ptolemy/domains/ct/kernel/doc/codeDoc/tree.html"><CODE>kernel documentation</CODE></a>
 			<dd> Continuous Time
 
-			<dt> <a href="../../ptolemy/domains/de"><CODE>de</CODE></a>
+			<dt> <a href="../../ptolemy/domains/de"><CODE>de</CODE></a> -
+			<a href="../../ptolemy/domains/de/kernel/doc/codeDoc/tree.html"><CODE>kernel documentation</CODE></a>
 			<dd> Discrete Event
 
-			<dt> <a href="../../ptolemy/domains/dfm"><CODE>dfm</CODE></a>
+			<dt> <a href="../../ptolemy/domains/dfm"><CODE>dfm</CODE></a> -
+			<a href="../../ptolemy/domains/dfm/kernel/doc/codeDoc/tree.html"><CODE>kernel documentation</CODE></a>
 			<dd> Design Flow Management
 
-			<dt> <a href="../../ptolemy/domains/od"><CODE>od</CODE></a>
+			<dt> <a href="../../ptolemy/domains/od"><CODE>od</CODE></a> -
+			<a href="../../ptolemy/domains/od/kernel/doc/codeDoc/tree.html"><CODE>kernel documentation</CODE></a>
 			<dd> Ordered Dataflow
 
-			<dt> <a href="../../ptolemy/domains/pn"><CODE>pn</CODE></a>
+			<dt> <a href="../../ptolemy/domains/pn"><CODE>pn</CODE></a> -
+			<a href="../../ptolemy/domains/pn/kernel/doc/codeDoc/tree.html"><CODE>kernel documentation</CODE></a>
 			<dd> Process Networks
 
-			<dt> <a href="../../ptolemy/domains/sc"><CODE>sc</CODE></a>
+			<dt> <a href="../../ptolemy/domains/sc"><CODE>sc</CODE></a> -
+			<a href="../../ptolemy/domains/sc/kernel/doc/codeDoc/tree.html"><CODE>kernel documentation</CODE></a>
 			<dd> Star Charts
 
-			<dt> <a href="../../ptolemy/domains/sdf"><CODE>sdf</CODE></a>
+			<dt> <a href="../../ptolemy/domains/sdf"><CODE>sdf</CODE></a> -
+			<a href="../../ptolemy/domains/sdf/kernel/doc/codeDoc/tree.html"><CODE>kernel documentation</CODE></a>
 			<dd> Synchronous Dataflow
 			</dl>
 
+
+		<dt> <a href="../../ptolemy/domains/generic"><CODE>domains/generic</CODE></a>
+		<dd> the icon libraries and demo schematics
 
 		<dt> <a href="../../ptolemy/graph"><CODE>graph</CODE></a> -
 		<a href="../../ptolemy/graph/doc/codeDoc/tree.html"><CODE>documentation</CODE></a>
@@ -135,10 +168,14 @@
 		<dd> Test suite infrastructure that uses Tcl Blend
 		</dl>
 
+
+	<dt><CODE>vendors</CODE> 
+	<dd> Code from Vendors for commercial products.  Not currently shipped.
+
 	</dl>
 
 </dl>
-<HR>
-Last updated: $Date$,
+
+<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
 </body>
 </html>
