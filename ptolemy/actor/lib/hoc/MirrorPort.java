@@ -33,6 +33,7 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
 
 //////////////////////////////////////////////////////////////////////////
@@ -45,6 +46,11 @@ import ptolemy.moml.MoMLChangeRequest;
    then the mirror port gets the same
    changes.  The changes are also applied to derived ports
    (ports that mirror this one because of the class mechanism).
+   <p>
+   Users of this class must override their clone(Workspace)
+   method to re-establish appropriate port associations in
+   the clone.  Cloning this port results in a clone with
+   no associations.
 
    @author Edward A. Lee
    @version $Id$
@@ -69,6 +75,23 @@ public class MirrorPort extends TypedIOPort {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the object into the specified workspace. This overrides
+     *  the base class to unset the associated port. Users of this
+     *  class are responsible for resetting it in their clone methods.
+     *  @param workspace The workspace for the new object.
+     *  @return A new NamedObj.
+     *  @exception CloneNotSupportedException If any of the attributes
+     *   cannot be cloned.
+     *  @see #exportMoML(Writer, int, String)
+     */
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        MirrorPort result = (MirrorPort)super.clone(workspace);
+        result._associatedPort = null;
+        result._settingAssociatedPort = false;
+        return result;
+    }
 
     /** Return the associated port, or null if there is none.
      *  @return The associated port, or null if there is none.

@@ -196,13 +196,8 @@ public class IterateOverArray extends TypedCompositeActor
     ////                         public methods                    ////
 
     /** Clone the object into the specified workspace. This overrides
-     *  the base class to set a flag indicating that cloning is complete.
-     *  While this flag is false and isDerived() returns true an
-     *  instance of this class is being cloned from another instance.
-     *  Methods of this object use this to test whether to construct
-     *  the automatically constructed contents. These should not be
-     *  constructed in a clone, since they will be copied from the
-     *  original.
+     *  the base class to set up the associations in the mirror ports
+     *  and to set a flag indicating that cloning is complete.
      *  @param workspace The workspace for the new object.
      *  @return A new NamedObj.
      *  @exception CloneNotSupportedException If any of the attributes
@@ -212,6 +207,22 @@ public class IterateOverArray extends TypedCompositeActor
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         IterateOverArray result = (IterateOverArray)super.clone(workspace);
+        result._iterationCount
+                = (Variable)result.getAttribute("iterationCount");
+        // Fix port associations.
+        Iterator entities = result.entityList().iterator();
+        while (entities.hasNext()) {
+            Entity insideEntity = (Entity)entities.next();
+            Iterator ports = result.portList().iterator();
+            while (ports.hasNext()) {
+                MirrorPort port = (MirrorPort)ports.next();
+                Port insidePort = insideEntity.getPort(port.getName());
+                if (insidePort instanceof MirrorPort) {
+                    port.setAssociatedPort((MirrorPort)insidePort);
+                }
+            }
+        }
+        // Set a flag indicating the cloning is done.
         result._cloning = false;
         return result;
     }
@@ -279,26 +290,6 @@ public class IterateOverArray extends TypedCompositeActor
         }
 
         super._addEntity(entity);
-        
-        // The strategy here is a bit tricky if this IterateOverArray
-        // is within a class definition (that is, if it has derived objects).
-        // The key is that derived objects do not permit deletion (via
-        // MoML) of contained entities. They cannot because this would
-        // violate the invariant of classes where derived objects
-        // always contain the same objects as their parents.
-        // Thus, if this is derived, we _cannot_ delete contained
-        // entities. Thus, we should not generate entity removal
-        // commands. If this is part of a propagation, the entities will be
-        // removed by propagation of the original command, and
-        // similarly the connections to the new entity will be made
-        // by propagation.
-        
-        // We also avoid doing this if the entity is being added as
-        // part of a cloning operation.
-        
-        if (isDerived() || _cloning) {
-            return;
-        }
 
         // Now we know that this object is not derived.
         // Now we can remove any previously contained entities
@@ -317,12 +308,21 @@ public class IterateOverArray extends TypedCompositeActor
                     ComponentEntity entity = null;
 
                     // Delete any previously contained entities.
+                    // The strategy here is a bit tricky if this IterateOverArray
+                    // is within a class definition (that is, if it has derived objects).
+                    // The key is that derived objects do not permit deletion (via
+                    // MoML) of contained entities. They cannot because this would
+                    // violate the invariant of classes where derived objects
+                    // always contain the same objects as their parents.
+                    // Thus, if this is derived, we _cannot_ delete contained
+                    // entities. Thus, we should not generate entity removal
+                    // commands.
                     Iterator priors = entityList().iterator();
                     while (priors.hasNext()) {
                         ComponentEntity prior = (ComponentEntity)priors.next();
                         // If there is at least one more contained object,
                         // then delete this one.
-                        if (priors.hasNext()) {
+                        if (priors.hasNext() && !isDerived()) {
                             prior.setContainer(null);
                         } else {
                             // The last entity in the entityList is
@@ -366,10 +366,7 @@ public class IterateOverArray extends TypedCompositeActor
                             ComponentRelation relation
                                     = newRelation(uniqueName("relation"));
                             newPort.link(relation);
-                            // FIXME: On the next line, get a level-crossing
-                            // transition error when instantiating a class
-                            // that contains an IterateOverArray. Why?
-                            insidePort.liberalLink(relation);
+                            insidePort.link(relation);
                         }
                     }
                 }
@@ -395,13 +392,6 @@ public class IterateOverArray extends TypedCompositeActor
             "instances of IteratePort");
         }
         super._addPort(port);
-        
-        // If this object is being cloned, then do not do all this.
-        // If it is a derived object, however, we do do this.
-        // Propagation of changes to a base class depends on it.
-        if (_cloning) {
-            return;
-        }
         
         // Create and connect a matching inside port on contained entities.
         // Do this as a change request to ensure that the action of
@@ -788,7 +778,7 @@ public class IterateOverArray extends TypedCompositeActor
 
         /** Add a port to this actor. This overrides the base class to
          *  add a corresponding port to the container using a change
-         *  request.
+         *  request, if that port does not already exist.
          *  @param port The TypedIOPort to add to this actor.
          *  @exception IllegalActionException If the port is not an instance of
          *   MirrorPort, or the port has no name.
@@ -802,7 +792,9 @@ public class IterateOverArray extends TypedCompositeActor
                 "Ports in IterateOverArray$IterateComposite must be MirrorPort.");
             }
             super._addPort(port);
+            
             final IterateOverArray container = (IterateOverArray)getContainer();
+
             if (container._inAddPort) {
                 return;
             }
@@ -812,7 +804,8 @@ public class IterateOverArray extends TypedCompositeActor
                     this,
                     "Add mirror port to the container.") {
                 protected void _execute() throws Exception {
-                    // The port may already exist (how?).
+                    // The port may already exist (if we are
+                    // inside a clone() call).
                     IteratePort newPort
                             = (IteratePort)container.getPort(port.getName());
                     if (newPort == null) {
