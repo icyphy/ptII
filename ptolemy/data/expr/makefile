@@ -80,6 +80,7 @@ JSRCS = \
 	Constants.java \
 	ConversionUtilities.java \
 	CParseTreeCodeGenerator.java \
+	ExpertParameter.java \
 	ExplicitScope.java \
 	ExpressionFunction.java \
 	FileParameter.java \
