@@ -55,6 +55,7 @@ JSRCS = \
 	ECSLConstant.java \
 	ECSLDemux.java \
 	ECSLDiscreteFilter.java \
+	ECSLDiscreteIntegrator.java \
 	ECSLDiscretePulseGenerator.java \
 	ECSLDisplay.java \
 	ECSLFrom.java \
