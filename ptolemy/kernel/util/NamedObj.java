@@ -105,6 +105,23 @@ public class NamedObj {
     //////////////////////////////////////////////////////////////////////////
     ////                         protected methods                        ////
 
+    /** Create a unique name for an object added to a container object.
+     * Names are of the form "name#num" where "name" is the name of the
+     * container object and "num" is typically an enumeration of the order 
+     * in which the object in question was added to the container.
+     * FIXME: Does createNewName_ really work?
+     * Added by John Davis on 6/17/97
+     * @param containerName The name of the container object.
+     * @param cntVariable The Enumeration of the added object's order 
+     * of inclusion.
+     * @return Return the new cntVariable.
+     */
+    protected int createNewName_(String newName, int countVariable) {
+        countVariable++;
+        newName = newName + "#" + countVariable;
+        return countVariable;
+    }
+
 
     //////////////////////////////////////////////////////////////////////////
     ////                         protected variables                      ////
