@@ -106,14 +106,14 @@ public class TypeSpecializerAnalysis {
         boolean succeeded;
         try {
             succeeded = _solver.solveLeast();
-        } catch (RuntimeException ex) {
+        } catch (Exception ex) {
             System.out.println("Type Assignment:");
             Iterator variables = _solver.variables();
             while (variables.hasNext()) {
                 System.out.println("InequalityTerm: "
                         + variables.next().toString());
             }
-            throw ex;
+            throw new RuntimeException(ex.getMessage());
         }
         if (_debug) {
             System.out.println("Type Assignment:");
@@ -126,20 +126,22 @@ public class TypeSpecializerAnalysis {
         if(succeeded) {
             if(_debug) System.out.println("solution FOUND!");
         } else {
-           System.out.println("Unsatisfied Inequalities:");
-            Iterator inequalities = _solver.unsatisfiedInequalities();
-            while (inequalities.hasNext()) {
-                System.out.println("Inequality: "
-                        + inequalities.next().toString());
+            System.out.println("Unsatisfied Inequalities:");
+            try {
+                Iterator inequalities = _solver.unsatisfiedInequalities();
+                while (inequalities.hasNext()) {
+                    System.out.println("Inequality: "
+                            + inequalities.next().toString());
+                }
+                System.err.println("Unsatisfied Inequalities:");
+                inequalities = _solver.unsatisfiedInequalities();
+                while (inequalities.hasNext()) {
+                    System.err.println("Inequality: "
+                            + inequalities.next().toString());
+                }
+            } catch (IllegalActionException ex) {
+                throw new RuntimeException("Error in type resolution");
             }
-            System.err.println("Unsatisfied Inequalities:");
-            inequalities = _solver.unsatisfiedInequalities();
-            while (inequalities.hasNext()) {
-                System.err.println("Inequality: "
-                        + inequalities.next().toString());
-            }
-
-            //       throw new RuntimeException("NO Type solution found!");
         }
         System.out.println("Done");
     }
@@ -167,14 +169,14 @@ public class TypeSpecializerAnalysis {
         boolean succeeded;
         try {
             succeeded = _solver.solveLeast();
-        } catch (RuntimeException ex) {
+        } catch (Exception ex) {
             System.out.println("Type Assignment:");
             Iterator variables = _solver.variables();
             while (variables.hasNext()) {
                 System.out.println("InequalityTerm: "
                         + variables.next().toString());
             }
-            throw ex;
+            throw new RuntimeException(ex.getMessage());
         }
         if (_debug) {
             System.out.println("Type Assignment:");
@@ -187,49 +189,75 @@ public class TypeSpecializerAnalysis {
         if(succeeded) {
             if(_debug) System.out.println("solution FOUND!");
         } else {
-           System.out.println("Unsatisfied Inequalities:");
-            Iterator inequalities = _solver.unsatisfiedInequalities();
-            while (inequalities.hasNext()) {
-                System.out.println("Inequality: "
-                        + inequalities.next().toString());
+            System.out.println("Unsatisfied Inequalities:");
+            try {
+                Iterator inequalities = _solver.unsatisfiedInequalities();
+                while (inequalities.hasNext()) {
+                    System.out.println("Inequality: "
+                            + inequalities.next().toString());
+                }
+                System.err.println("Unsatisfied Inequalities:");
+                inequalities = _solver.unsatisfiedInequalities();
+                while (inequalities.hasNext()) {
+                    System.err.println("Inequality: "
+                            + inequalities.next().toString());
+                }
+            } catch (IllegalActionException ex) {
+                throw new RuntimeException("Error in type resolution");
             }
-            System.err.println("Unsatisfied Inequalities:");
-            inequalities = _solver.unsatisfiedInequalities();
-            while (inequalities.hasNext()) {
-                System.err.println("Inequality: "
-                        + inequalities.next().toString());
-            }
-
-            //       throw new RuntimeException("NO Type solution found!");
         }
         System.out.println("Done");
     }
 
     public Type getSpecializedSootType(Local local) {
-        Type type = local.getType();
-        return _getUpdateType(local, type);
+        try {
+            Type type = local.getType();
+            return _getUpdateType(local, type);
+        } catch (IllegalActionException ex) {
+            throw new RuntimeException(ex.getMessage());
+        }
     }
 
     public Type getSpecializedSootType(NewArrayExpr expr) {
-        Type type = expr.getBaseType();
-        return _getUpdateType(expr, type);
+        try {
+            Type type = expr.getBaseType();
+            return _getUpdateType(expr, type);
+        } catch (IllegalActionException ex) {
+            throw new RuntimeException(ex.getMessage());
+        }
     }
 
     public Type getSpecializedSootType(SootField field) {
-        Type type = field.getType();
-        return _getUpdateType(field, type);
+        try {
+            Type type = field.getType();
+            return _getUpdateType(field, type);
+        } catch (IllegalActionException ex) {
+            throw new RuntimeException(ex.getMessage());
+        }
     }
 
     public ptolemy.data.type.Type getSpecializedType(Local local) {
-        return _getTokenType(local);
+        try {
+            return _getTokenType(local);
+        } catch (IllegalActionException ex) {
+            throw new RuntimeException(ex.getMessage());
+        }
     }
 
     public ptolemy.data.type.Type getSpecializedType(NewArrayExpr expr) {
-        return _getTokenType(expr);
+        try {
+            return _getTokenType(expr);
+        } catch (IllegalActionException ex) {
+            throw new RuntimeException(ex.getMessage());
+        }
     }
 
     public ptolemy.data.type.Type getSpecializedType(SootField field) {
-        return _getTokenType(field);
+        try {
+            return _getTokenType(field);
+        } catch (IllegalActionException ex) {
+            throw new RuntimeException(ex.getMessage());
+        }
     }
 
     /** Inline the given invocation point in the given box, unit, and method.
@@ -238,7 +266,8 @@ public class TypeSpecializerAnalysis {
      */
     public void inlineTypeLatticeMethods(SootMethod method,
             Unit unit, ValueBox box, StaticInvokeExpr expr,
-            LocalDefs localDefs, LocalUses localUses) {
+            LocalDefs localDefs, LocalUses localUses)
+            throws IllegalActionException {
         SootMethod tokenTokenCompareMethod =
             PtolemyUtilities.typeLatticeClass.getMethod(
                     "int compare(ptolemy.data.Token,ptolemy.data.Token)");
@@ -421,7 +450,7 @@ public class TypeSpecializerAnalysis {
     // inequality term for the object.  retrieve the resolved type,
     // and return it.
     private static Type _getUpdateType(boolean debug,
-            Object object, Type type, Map objectToInequalityTerm) {
+            Object object, Type type, Map objectToInequalityTerm) throws IllegalActionException {
         RefType tokenType = PtolemyUtilities.getBaseTokenType(type);
         if (tokenType != null) {
             if (debug) System.out.println("type of value " + object + " = " + type);
@@ -452,7 +481,7 @@ public class TypeSpecializerAnalysis {
     // the given type, look into the given map and retrieve the
     // inequality term for the object.  retrieve the resolved type,
     // and return it.
-    private Type _getUpdateType(Object object, Type type) {
+    private Type _getUpdateType(Object object, Type type) throws IllegalActionException {
         RefType tokenType = PtolemyUtilities.getBaseTokenType(type);
         if (tokenType != null) {
             if (_debug) System.out.println("type of value " +
@@ -486,7 +515,8 @@ public class TypeSpecializerAnalysis {
         return null;
     }
 
-    public ptolemy.data.type.Type _getTokenType(Object object) {
+    public ptolemy.data.type.Type _getTokenType(Object object)
+            throws IllegalActionException {
         InequalityTerm term = (InequalityTerm)
             _objectToInequalityTerm.get(object);
         if (term == null) {
