@@ -135,8 +135,8 @@ public class GiottoDirector extends StaticSchedulingDirector {
             throws CloneNotSupportedException {
         GiottoDirector newObject = (GiottoDirector)(super.clone(workspace));
         newObject.iterations = (Parameter)newObject.getAttribute("iterations");
-        return newObject
-            }
+        return newObject;
+    }
 
     /** Return the real start time.
      *  @return The real start time in terms of milliseconds counting
