@@ -72,7 +72,7 @@ test CrossRefList-2.1 {Create a CrossRefList, copy it} {
 test CrossRefList-2.2 {Create a CrossRefList, try to enumerate it} {
     set owner [java::new Object]
     set crlone [java::new pt.kernel.util.CrossRefList $owner]
-    set enum [$crlone getLinks]
+    set enum [$crlone getContainers]
     catch {$enum nextElement} errmsg
     list $errmsg [$enum hasMoreElements]
 } {{java.util.NoSuchElementException: exhausted enumeration} 0}
@@ -271,7 +271,7 @@ test CrossRefList-5.2 {link CrossRefLists, then check ordering} {
 
     $c1 link $c2
     $c1 link $c3
-    enumToNames [$c1 getLinks]
+    enumToNames [$c1 getContainers]
 } {A2 A3}
 
 ######################################################################
