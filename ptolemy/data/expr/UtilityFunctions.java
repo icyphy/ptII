@@ -907,6 +907,8 @@ public class UtilityFunctions {
      *  interpreted using the eval() function in
      *  ptolemy.data.expr.ASTPtFunctionApplicationNode.
      *  For example: <code>eval(readFile("<i>filename</i>"))</code><p>
+     *  Note that readFile() does not work inside applets, use
+     *  {@link #readResource(String)} instead.
      *
      *  @param filename The name of the file to read from.
      *  @return A StringToken containing the text contained in
