@@ -151,7 +151,7 @@ public class CommitActionsAttribute
                 Integer channel = (Integer)channels.next();
                 ASTPtRootNode parseTree = (ASTPtRootNode)parseTrees.next();
                 Token token;
-                try {                       
+                try {
                     token = _parseTreeEvaluator.evaluateParseTree(
                             parseTree, _scope);
                 } catch (IllegalActionException ex) {
@@ -162,7 +162,7 @@ public class CommitActionsAttribute
                 }
                 if (nextDestination instanceof IOPort) {
                     IOPort destination = (IOPort)nextDestination;
-                    
+
                     try {
                         if (channel != null) {
                             if (token == null) {

@@ -57,7 +57,7 @@ public class AngleProcessor extends TypedAtomicActor {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public AngleProcessor(CompositeEntity container, String name) 
+    public AngleProcessor(CompositeEntity container, String name)
 	throws IllegalActionException, NameDuplicationException {
 
 	super(container, name);
@@ -98,7 +98,7 @@ public class AngleProcessor extends TypedAtomicActor {
         }
 
         outputAngle.send(0, new DoubleToken(angle));
-    }    
+    }
 }
 
 

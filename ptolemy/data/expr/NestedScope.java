@@ -77,7 +77,7 @@ public class NestedScope implements ParserScope {
         }
         return null;
     }
-    
+
     /** Look up and return the type of the value with the specified
      *  name in the scope. Return null if the name is not defined in
      *  this scope.
@@ -96,7 +96,7 @@ public class NestedScope implements ParserScope {
         }
         return null;
     }
-    
+
     /** Return the list of variables within the scope.
      *  @return The list of variables within the scope.
      */
@@ -107,7 +107,7 @@ public class NestedScope implements ParserScope {
     }
     //NOTE: we probably need a method to collect all the mappings defined in a
     //scope. Such a method could return a hash map from names to value tokens.
-    
+
     private List _scopeList;
 }
 

@@ -132,7 +132,7 @@ public class StyleConfigurer extends Query implements QueryListener {
 	    List styleList = new ArrayList();
             // The index of the default;
             int defaultIndex = 0;
-            
+
             if (param.getVisibility() == Settable.NOT_EDITABLE) {
                 // If the parameter is set to NOT_EDITABLE visibility,
                 // then only a fixed style is possible.
@@ -156,7 +156,7 @@ public class StyleConfigurer extends Query implements QueryListener {
                     }
                 }
             }
-            
+
             String styleArray[] =
 		(String[])styleList.toArray(new String[styleList.size()]);
 

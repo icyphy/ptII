@@ -43,7 +43,7 @@ import javax.media.jai.RenderedOp;
 /**
    Output the logarithm of an image.  This actor can be used to reduce the
    dynamic range of an image.  For instance, the magnitude of a dft can
-   have a large dynamic range not suitable for display.  Taking the 
+   have a large dynamic range not suitable for display.  Taking the
    logarithm of this image and then casting it using JAIDataCaster could
    produce a better image for displaying.
    <p>
@@ -54,8 +54,8 @@ import javax.media.jai.RenderedOp;
    negative pixel is NaN.
    <p>
    The output of this actor may not be suitable for display because of the
-   high resolution of the data.  To display or save the output of this 
-   image, use the JAIDataCaster Actor to cast the data to an appropriate 
+   high resolution of the data.  To display or save the output of this
+   image, use the JAIDataCaster Actor to cast the data to an appropriate
    type (for instance, byte).
 
    @see JAIDataCaster
@@ -72,7 +72,7 @@ public class JAILog extends Transformer {
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
-     */      
+     */
     public JAILog(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -87,7 +87,7 @@ public class JAILog extends Transformer {
      *  Output the phase of the complex image.
      *  @exception IllegalActionException If a contained method throws it,
      *  or if there is an invalid scaling type, or an invalid data nature
-     *  set.     
+     *  set.
      */
     public void fire() throws IllegalActionException {
         super.fire();

@@ -56,7 +56,7 @@ public class JAIInvert extends Transformer {
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
-     */    
+     */
     public JAIInvert(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -66,7 +66,7 @@ public class JAIInvert extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Fire this actor.
      *  Output the inverted RenderedOp.
      *  @exception IllegalActionException If a contained method throws it,
@@ -81,5 +81,5 @@ public class JAIInvert extends Transformer {
         RenderedOp newImage = JAI.create("invert", parameters);
         output.send(0, new JAIImageToken(newImage));
     }
-       
+
 }

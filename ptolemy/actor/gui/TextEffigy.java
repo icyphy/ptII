@@ -134,7 +134,7 @@ public class TextEffigy extends Effigy {
         if (in != null) {
             // A URL has been given.  Read it.
             BufferedReader reader = null;
-	    
+
             try {
 		InputStream inputStream = null;
 		try {

@@ -112,7 +112,7 @@ public class FunctionType extends StructuredType {
      *   cannot be done.
      */
     public Token convert(Token token) throws IllegalActionException {
-        
+
         if ( !isCompatible(token.getType())) {
             throw new IllegalArgumentException(
                     Token.notSupportedConversionMessage(
@@ -121,7 +121,7 @@ public class FunctionType extends StructuredType {
         // FIXME: This should actually return a new Function that
         // includes the appropriate argument and return value
         // conversions.
-        
+
         return token;
         //   if(false) {
         /*FunctionToken functionToken = (FunctionToken)token;
@@ -169,7 +169,7 @@ public class FunctionType extends StructuredType {
         }
 
         FunctionType functionType = (FunctionType)object;
-        
+
         if(getArgCount() != functionType.getArgCount()) {
             return false;
         }
@@ -259,7 +259,7 @@ public class FunctionType extends StructuredType {
 
     /** Test if the argument type is compatible with this type.  The
      *  given type will be compatible with this type if it is
-     *  BaseType.UNKNOWN, or... 
+     *  BaseType.UNKNOWN, or...
      *  @param type An instance of Type.
      *  @return True if the argument is compatible with this type.
      */
@@ -273,7 +273,7 @@ public class FunctionType extends StructuredType {
         }
 
         FunctionType argumentFunctionType = (FunctionType)type;
-        
+
         // The given type cannot be losslessly converted to this type
         // if it does not contain the same number of arguments.
         if(argumentFunctionType.getArgCount() != getArgCount()) {
@@ -282,9 +282,9 @@ public class FunctionType extends StructuredType {
 
         // Loop through all of the fields of this type...
         for(int i = 0; i < getArgCount(); i++) {
-            Type argumentFieldTypeTerm = 
+            Type argumentFieldTypeTerm =
                 argumentFunctionType.getArgType(i);
-          
+
             // The given function type cannot be losslessly converted
             // to this type if the individual arguments are not
             // compatible.
@@ -349,7 +349,7 @@ public class FunctionType extends StructuredType {
 
         // Check that the argument counts are the same
         int argCount = getArgCount();
-      
+
         if (functionType.getArgCount() != argCount) {
             return false;
         }
@@ -368,7 +368,7 @@ public class FunctionType extends StructuredType {
                    functionType.getReturnType())) {
             return false;
         }
-       
+
         return true;
     }
 
@@ -426,7 +426,7 @@ public class FunctionType extends StructuredType {
                 argTypeTerm.setValue(newArgType);
             }
         }
-        
+
         if (_returnTypeTerm.isSettable()) {
             _returnTypeTerm.setValue(((FunctionType)newType).getReturnType());
         }
@@ -495,7 +495,7 @@ public class FunctionType extends StructuredType {
 
         // construct the GLB FunctionToken
         int argCount = getArgCount();
-      
+
         if ( functionType.getArgCount() != argCount ) {
             throw new IllegalArgumentException(
                     "Types are not comparable because they have" +
@@ -540,7 +540,7 @@ public class FunctionType extends StructuredType {
 
         // construct the LUB FunctionToken
         int argCount = getArgCount();
-      
+
         if ( functionType.getArgCount() != argCount ) {
             throw new IllegalArgumentException(
                     "Types are not comparable because they have" +
@@ -575,10 +575,10 @@ public class FunctionType extends StructuredType {
 
         // construct the LUB FunctionToken
         int argCount = t1.getArgCount();
-      
+
         if ( t2.getArgCount() != argCount ) {
             return false;
-        } 
+        }
 
         // iterate over the labels of the second type
         for (int i = 0; i < argCount; i++) {

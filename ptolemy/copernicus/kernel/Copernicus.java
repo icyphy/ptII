@@ -352,10 +352,10 @@ public class Copernicus {
         String footer = "</class>\n";
         writer.write(footer, 0, footer.length());
         writer.close();
-	
+
 	// Substitute backslashes here because setting a parameter to include
 	// backslashes causes problems.
-        return 
+        return
 	    StringUtilities.substitute(temporaryFile.toString(), "\\", "/");
     }
 
@@ -491,7 +491,7 @@ public class Copernicus {
         try {
             substituteMap = newMap(namedObj);
         } catch (IllegalActionException ex) {
-	    // IOException does not have a constructor that takes a 
+	    // IOException does not have a constructor that takes a
 	    // cause argument.
 	    IOException exception = new IOException("Problem generating a "
 						    + "substitution map for "

@@ -51,9 +51,9 @@ import javax.media.jai.RenderedOp;
    Moves the origin of an image.  Typically, images in JAI, when created,
    have as their origin, (0,0) in the top left corner.  This actor moves
    the origin.  When displayed, there is no noticable difference between
-   an original image, and a translated image.  The difference shows up 
+   an original image, and a translated image.  The difference shows up
    in operations like adding (when two images are added together, a
-   region of intersection is found; this region is effected by 
+   region of intersection is found; this region is effected by
    translation).
    <p>
 
@@ -83,7 +83,7 @@ public class JAITranslate extends Transformer {
         interpolationType.setExpression("bilinear");
         _interpolationType = _BILINEAR;
 
-        subSampleBits = 
+        subSampleBits =
             new Parameter(this, "subSampleBits", new IntToken(8));
 
         input.setTypeEquals(BaseType.OBJECT);
@@ -103,13 +103,13 @@ public class JAITranslate extends Transformer {
      */
 
     public Parameter subSampleBits;
-    
+
     /** The shift amount in the horizontal direction.  A positive
      *  value causes the origin to be moved to the right.  A negative
      *  value causes the origin to be moved to the left.
      */
     public Parameter xShift;
-    
+
     /** The shift amount in the vertical direction.  A positive
      *  value causes the origin to be moved to the down.  A negative
      *  value causes the origin to be moved to the up.
@@ -138,7 +138,7 @@ public class JAITranslate extends Transformer {
                 _interpolationType = _NEARESTNEIGHBOR;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized interpolation type: " + typeName); 
+                        "Unrecognized interpolation type: " + typeName);
             }
         } else if (attribute == xShift) {
             _xShift = ((DoubleToken)xShift.getToken()).doubleValue();
@@ -151,7 +151,7 @@ public class JAITranslate extends Transformer {
             super.attributeChanged(attribute);
         }
     }
-   
+
     /** Fire this actor.
      *  Output the translated RenderedOp.
      *  @exception IllegalActionException If a contained method throws it,
@@ -175,7 +175,7 @@ public class JAITranslate extends Transformer {
         parameters.addSource(oldImage);
         parameters.add((float)_xShift);
         parameters.add((float)_yShift);
-        
+
         switch(_interpolationType) {
         case _BICUBIC:
             parameters.add(new InterpolationBicubic(_subSampleBits));
@@ -194,7 +194,7 @@ public class JAITranslate extends Transformer {
                     "Invalid value for interpolationType");
         }
         RenderedOp newImage = JAI.create("translate", parameters, null);
-        
+
         if(_debugging) {
             _debug("newimage width " + newImage.getWidth());
             _debug("newimage height " + newImage.getHeight());
@@ -204,7 +204,7 @@ public class JAITranslate extends Transformer {
             _debug("newimage max y " + newImage.getMaxY());
         }
 
-        output.send(0, new JAIImageToken(newImage));        
+        output.send(0, new JAIImageToken(newImage));
     }
 
     ///////////////////////////////////////////////////////////////////

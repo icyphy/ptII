@@ -147,13 +147,13 @@ public class ShellTextArea extends JPanel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    
+
     /** Main prompt. */
     public String mainPrompt = ">> ";
 
     /** Prompt to use on continuation lines. */
     public String contPrompt = "";
-    
+
     /** Size of the history to keep. */
     public int historyLength = 20;
 

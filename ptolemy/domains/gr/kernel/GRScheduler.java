@@ -164,7 +164,7 @@ public class GRScheduler extends Scheduler {
             Iterator outports = actor.outputPortList().iterator();
             while (outports.hasNext()) {
                 IOPort outPort = (IOPort) outports.next();
-                Iterator sinkPorts = 
+                Iterator sinkPorts =
                     outPort.sinkPortList().iterator();
                 while (sinkPorts.hasNext()) {
                     IOPort sinkPort = (IOPort)sinkPorts.next();

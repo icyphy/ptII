@@ -142,7 +142,7 @@ public class RecordDisassembler extends TypedAtomicActor {
         int size = portArray.length;
         String[] labels = new String[size];
         Type[] types = new Type[size];
-  
+
         // form the declared type for the output port
         for (int i = 0; i < size; i++) {
             labels[i] = ((Port)portArray[i]).getName();
@@ -201,7 +201,7 @@ public class RecordDisassembler extends TypedAtomicActor {
                     return fieldType;
                 }
             } else {
-                throw new IllegalActionException(RecordDisassembler.this, 
+                throw new IllegalActionException(RecordDisassembler.this,
                         "Invalid type for input port");
             }
         }
@@ -219,7 +219,7 @@ public class RecordDisassembler extends TypedAtomicActor {
             }
             return null;
         }
- 
+
         /** Return the type variable in this inequality term. If the
          *  type of the input port is not declarad, return an one
          *  element array containing the inequality term representing

@@ -57,7 +57,7 @@ import org.python.util.PythonInterpreter;
 //////////////////////////////////////////////////////////////////////////
 //// PythonShellTableau
 /**
-A tableau that provides an interactive shell for evaluating Python expressions. 
+A tableau that provides an interactive shell for evaluating Python expressions.
 @author Christopher Hylands and Edward A. Lee
 @version $Id$
 */

@@ -143,8 +143,8 @@ public class VergilApplication extends MoMLApplication {
  		});
         } catch (Throwable throwable2) {
 	    // We are not likely to get here, but just to be safe
-	    // we try to print the error message and display it in a 
-	    // graphical widget. 
+	    // we try to print the error message and display it in a
+	    // graphical widget.
 	    _errorAndExit("Command failed", args, throwable2);
         }
 
@@ -511,7 +511,7 @@ public class VergilApplication extends MoMLApplication {
     // We use a Throwable here instead of an Exception because
     // we might get an Error or and Exception. For example, if we
     // are using JNI, then we might get a java.lang.UnsatistifiedLineError,
-    // which is an Error, not and Exception. 
+    // which is an Error, not and Exception.
     private static void _errorAndExit(String message,
 				      String [] args, Throwable throwable) {
 	StringBuffer argsBuffer =
@@ -533,7 +533,7 @@ public class VergilApplication extends MoMLApplication {
 
 	// Display the error message in a stack trace
 	// If there are problems with the configuration,
-	// then there is a chance that we have not 
+	// then there is a chance that we have not
 	// registered the GraphicalMessageHandler yet
 	// so we do so now so that we are sure
 	// the user can see the message.

@@ -41,26 +41,26 @@ import ptolemy.graph.CPO;
 //// JMFImageToken
 /**
    A token that contains a javax.media.Buffer.  This token is used when
-   dealing with images in the Java Media Framework (JMF) library.  Because 
+   dealing with images in the Java Media Framework (JMF) library.  Because
    it extends ImageToken, it can be used with the standard image processing
    tools by simply casting it, and calling asAWTImage().
-   
+
    @author James Yeh
    @version $Id$
  */
 public class JMFImageToken extends ImageToken {
-    
+
     /** Construct a token with a specified Buffer
      */
-    public JMFImageToken(Buffer value) { 
+    public JMFImageToken(Buffer value) {
         _value = value;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Convert a javax.media.Buffer to a java.awt.Image and return it.
-     *  A new javax.media.util.BufferToImage is created when the 
+     *  A new javax.media.util.BufferToImage is created when the
      *  video format of the Buffer changes.
      */
     public Image asAWTImage() {
@@ -78,15 +78,15 @@ public class JMFImageToken extends ImageToken {
     public Type getType() {
         return BaseType.OBJECT;
     }
-    
+
     /** Return the value of this token.
      */
     public Buffer getValue() {
         return _value;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////    
+    ////                         private variables                 ////
     private Buffer _value;
     private static BufferToImage _bufferToImage;
     private VideoFormat _videoFormat;

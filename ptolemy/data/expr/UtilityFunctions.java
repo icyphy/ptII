@@ -77,7 +77,7 @@ public class UtilityFunctions {
     /** Convert the second token to the type of the first.
      *  @exception IllegalActionException If the token cannot be converted.
      */
-    public static Token cast(Token token1, Token token2) 
+    public static Token cast(Token token1, Token token2)
             throws IllegalActionException {
         return token1.getType().convert(token2);
     }
@@ -240,13 +240,13 @@ public class UtilityFunctions {
     /** Load a library by first using the default platform dependent
      *  System.loadLibrary() method.  If the library cannot be loaded
      *  using System.loadLibrary(), then search for the library using
-     *  {@link #findFile(String)} and if the library is found, 
+     *  {@link #findFile(String)} and if the library is found,
      *  load it using System.load().  If the library is not found
      *  by findFile(), then we through the initial exception.
      *
      *  @param library the name of the library to be loaded.  The name
      *  should not include the platform dependent suffix.
-     */ 
+     */
     public static void loadLibrary(String library) {
         try {
             if (library.indexOf(File.separator) == -1) {
@@ -268,7 +268,7 @@ public class UtilityFunctions {
                 if (index == -1) {
                     if (!library.startsWith("lib")) {
                         library = "lib" + library;
-                    } 
+                    }
                 } else {
                     if (!library.substring(index, index + 4).equals("/lib")) {
                         library = library.substring(0, index) + "/lib"

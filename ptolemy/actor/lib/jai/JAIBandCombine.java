@@ -53,7 +53,7 @@ import javax.media.jai.RenderedOp;
    1 0 0 0
    0 0 1 0
    0 1 0 0
-   
+
    @see BandSelect
    @author James Yeh
    @version $Id$
@@ -72,13 +72,13 @@ public class JAIBandCombine extends Transformer {
     public JAIBandCombine(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
-        matrix = new Parameter(this, "matrix", 
+
+        matrix = new Parameter(this, "matrix",
                 new DoubleMatrixToken(_initialMatrix));
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  //// 
+    ////                     ports and parameters                  ////
 
     /** The transformation matrix.  The entries in this matrix should
      *  doubles.  The default matrix passes each band with no offsetting.
@@ -92,10 +92,10 @@ public class JAIBandCombine extends Transformer {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If a contained method throws it.
      */
-    public void attributeChanged(Attribute attribute) 
+    public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == matrix) {
-            _matrixValue = 
+            _matrixValue =
                 ((DoubleMatrixToken)matrix.getToken()).doubleMatrix();
         } else {
             super.attributeChanged(attribute);
@@ -114,8 +114,8 @@ public class JAIBandCombine extends Transformer {
         parameters.addSource(oldImage);
         parameters.add(_matrixValue);
         RenderedOp newImage = JAI.create("bandCombine", parameters);
-        output.send(0, new JAIImageToken(newImage)); 
-    }    
+        output.send(0, new JAIImageToken(newImage));
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

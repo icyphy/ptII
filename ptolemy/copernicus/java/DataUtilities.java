@@ -158,7 +158,7 @@ public class DataUtilities {
      *  @param entity The entity containing the expression.
      *  @param entityClass The class corresponding to the given entity.
      *  @param expression The expression.
-     *  @param nameToField A map from an identifier to a SootField in 
+     *  @param nameToField A map from an identifier to a SootField in
      *  entityClass.
      *  @param nameToType A map from an identifier to a ptolemy data type.
      *  @param body The body to add code to.
@@ -196,7 +196,7 @@ public class DataUtilities {
      *  @param entity The entity containing the expression.
      *  @param entityClass The class corresponding to the given entity.
      *  @param expression The expression.
-     *  @param nameToField A map from an identifier to a SootField in 
+     *  @param nameToField A map from an identifier to a SootField in
      *  entityClass.
      *  @param nameToType A map from an identifier to a ptolemy data type.
      *  @param body The body to add code to.
@@ -214,7 +214,7 @@ public class DataUtilities {
      *  method.  This class creates the correct code to resolve
      *  identifier values when they are discovered in traversing the
      *  parse tree.
-     */ 
+     */
     public static class ActorCodeGenerationScope
         implements CodeGenerationScope {
         public ActorCodeGenerationScope(

@@ -151,7 +151,7 @@ public class ExceptionEliminator extends SceneTransformer {
         for (Iterator units = body.getUnits().snapshotIterator();
              units.hasNext();) {
             Stmt unit = (Stmt)units.next();
-            
+
             // If any box is removable, then remove the statement.
             for (Iterator boxes = unit.getUseBoxes().iterator();
                  boxes.hasNext();) {
@@ -166,7 +166,7 @@ public class ExceptionEliminator extends SceneTransformer {
                     if (_isPtolemyException(exceptionClass)) {
                         expr.setBaseType(
                                 RefType.v(PtolemyUtilities.runtimeExceptionClass));
-                        
+
                     }
                 } else if (value instanceof SpecialInvokeExpr) {
                     // Fix the exception constructors.

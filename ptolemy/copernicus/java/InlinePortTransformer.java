@@ -118,7 +118,7 @@ public class InlinePortTransformer extends SceneTransformer {
     }
 
     /** Set the port inliner for the given model.
-     *  This method is expected to be called by the Director inliner when 
+     *  This method is expected to be called by the Director inliner when
      *  when a decision is made about how to inline ports.
      */
     public static void setPortInliner(

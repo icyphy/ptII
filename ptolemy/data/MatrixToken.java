@@ -296,7 +296,7 @@ public abstract class MatrixToken extends Token {
         } else if (type == BaseType.FIX) {
             token = new FixMatrixToken(tokens, rows, columns);
         } else {
-            throw new IllegalActionException("Unrecognized type " + type + 
+            throw new IllegalActionException("Unrecognized type " + type +
                     " for matrix creation.");
         }
         return token;
@@ -404,7 +404,7 @@ public abstract class MatrixToken extends Token {
      *   does not make sense for the given types.
      */
     public final Token divide(Token rightArgument)
-            throws IllegalActionException {  
+            throws IllegalActionException {
         // Get the corresponding element type for this matrix type,
         // and try a scalar operation.
         Type elementType = getElementType();
@@ -429,7 +429,7 @@ public abstract class MatrixToken extends Token {
 
         // If we get here, then either our element type is lower than
         // the rightArgument or incomparable to it.
- 
+
         typeInfo = TypeLattice.compare(getType(), rightArgument);
         if (typeInfo == CPO.INCOMPARABLE) {
             // Items being added are incomparable.
@@ -448,7 +448,7 @@ public abstract class MatrixToken extends Token {
                     return lub.divide(rightArgument);
                 }
             }
-        }   
+        }
         throw new IllegalActionException(
                 notSupportedMessage("divide", this, rightArgument));
     }
@@ -619,7 +619,7 @@ public abstract class MatrixToken extends Token {
     }
 
     /** Return a new token whose value is this token
-     *  modulo the value of the argument token.  
+     *  modulo the value of the argument token.
      *  @param rightArgument The token that performs modulo on this token.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the operation
@@ -643,7 +643,7 @@ public abstract class MatrixToken extends Token {
 	/*
 	// If this is a complex array, throw an error message as modulo
 	// can't be performed on it
-	if(elementType == BaseType.COMPLEX) 
+	if(elementType == BaseType.COMPLEX)
 	    throw new IllegalActionException(
 	            notSupportedMessage("modulo", this, rightArgument));
 	*/
@@ -668,7 +668,7 @@ public abstract class MatrixToken extends Token {
 
         // If we get here, then either our element type is lower than
         // the rightArgument or incomparable to it.
- 
+
         typeInfo = TypeLattice.compare(getType(), rightArgument);
         if (typeInfo == CPO.INCOMPARABLE) {
             // Items being added are incomparable.
@@ -687,7 +687,7 @@ public abstract class MatrixToken extends Token {
                     return lub.modulo(rightArgument);
                 }
             }
-        } 
+        }
         throw new IllegalActionException(
                 notSupportedMessage("modulo",
 		this, rightArgument));
@@ -1157,7 +1157,7 @@ public abstract class MatrixToken extends Token {
 
     /** Return a new token whose value is the value of the argument
      *  Token added to the value of each element of this Token. It is
-     *  guaranteed by the caller that the type of the argument 
+     *  guaranteed by the caller that the type of the argument
      *  is the same as the type of each element of this class.
      *  @param rightArgument The token to add to this token.
      *  @exception IllegalActionException If this operation is not
@@ -1172,7 +1172,7 @@ public abstract class MatrixToken extends Token {
 
     /** Return a new token whose elements are the result of dividing
      *  the elements of this token by the argument. It is
-     *  guaranteed by the caller that the type of the argument 
+     *  guaranteed by the caller that the type of the argument
      *  is the same as the type of each element of this class.
      *  @param rightArgument The token that divides this token.
      *  @exception IllegalActionException If this operation is not
@@ -1222,7 +1222,7 @@ public abstract class MatrixToken extends Token {
 
     /** Return a new token whose elements are the modulo of
      *  the elements of this token by the argument. It is
-     *  guaranteed by the caller that the type of the argument 
+     *  guaranteed by the caller that the type of the argument
      *  is the same as the type of each element of this class.
      *  @param rightArgument The token that performs modulo on this token.
      *  @exception IllegalActionException If this operation is not

@@ -291,9 +291,9 @@ public class UndoContext {
     /** Return a string representation of this object */
     public String toString() {
         return "UndoContext: "
-            + (isUndoable() ? "are" : "are not") 
+            + (isUndoable() ? "are" : "are not")
             + " undoable and "
-            + (hasUndoableChildren() ? "has" : "does not have") 
+            + (hasUndoableChildren() ? "has" : "does not have")
             + " undoable children\n"
             + "undoMoML: " + getUndoMoML() + "\n"
             + "closingUndoMoML: " + _closingUndoMoML.toString() + "\n";
@@ -313,7 +313,7 @@ public class UndoContext {
      * @return the relative context.
      */
     private String _getRelativeContext(NamedObj container,
-            NamedObj containee) { 
+            NamedObj containee) {
         // First get the full name of the containee relative to the
         // container
         String relativeName = containee.getName(container);

@@ -42,11 +42,11 @@ import javax.media.jai.RenderedOp;
 //// JAIPolarToComplex
 /**
    Output a complex image with alternating real and imaginary bands.  This
-   actor takes two inputs, an image representing the magnitude of the 
+   actor takes two inputs, an image representing the magnitude of the
    bands, and an image representing the phase of the bands.  The two
    inputs must have the same number of bands.
    <p>
-   The output of this actor may not be suitable for displaying or saving 
+   The output of this actor may not be suitable for displaying or saving
    because of the increase in the number of bands, as well as the high
    resolution of the data (doubles).
 
@@ -64,37 +64,37 @@ public class JAIPolarToComplex extends TypedAtomicActor {
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
-     */      
+     */
     public JAIPolarToComplex(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         magnitude = new TypedIOPort(this, "magnitude", true, false);
         phase = new TypedIOPort(this, "phase", true, false);
         output = new TypedIOPort(this, "output", false, true);
-        
+
         magnitude.setTypeEquals(BaseType.OBJECT);
         phase.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
-        
+
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The magnitude image input.  This image must have the same 
+    /** The magnitude image input.  This image must have the same
      *  amount of bands as the phase image input.
      */
     public TypedIOPort magnitude;
-    
-    /** The output of the actor.  This image contains twice as many 
+
+    /** The output of the actor.  This image contains twice as many
      *  as the input.  The first two bands correspond to the cartesian
      *  values of the first magnitude and phase bands.  The second two
      *  bands correspond to the cartesian values of the second magnitude
      *  and phase bands, etc.
      */
     public TypedIOPort output;
-    
+
     /** The phase image input.  This image must have the same amount of
      *  bands as the phase magnitude image input.
      */
@@ -106,8 +106,8 @@ public class JAIPolarToComplex extends TypedAtomicActor {
     /** Fire this actor.
      *  Output the the complex image from its magnitude and phase
      *  components.
-     *  @exception IllegalActionException If a contained method throws 
-     *  it.    
+     *  @exception IllegalActionException If a contained method throws
+     *  it.
      */
     public void fire() throws IllegalActionException {
         super.fire();
@@ -115,7 +115,7 @@ public class JAIPolarToComplex extends TypedAtomicActor {
         JAIImageToken phaseToken = (JAIImageToken)phase.get(0);
         RenderedOp magnitude = magnitudeToken.getValue();
         RenderedOp phase = phaseToken.getValue();
-        RenderedOp newImage = 
+        RenderedOp newImage =
             JAI.create("polartocomplex", magnitude, phase);
         output.send(0, new JAIImageToken(newImage));
     }

@@ -165,7 +165,7 @@ public class TclShellTableau extends Tableau
 
 	    _shellTextArea = new ShellTextArea();
             _shellTextArea.setInterpreter(TclShellTableau.this);
-	    _shellTextArea.mainPrompt = "% "; 
+	    _shellTextArea.mainPrompt = "% ";
 	    component.add(_shellTextArea);
             getContentPane().add(component, BorderLayout.CENTER);
 	}

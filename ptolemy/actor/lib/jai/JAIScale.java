@@ -76,7 +76,7 @@ public class JAIScale extends Transformer {
 
         width = new Parameter(this, "width", new IntToken(800));
         height = new Parameter(this, "height", new IntToken(600));
-        
+
         xScaleFactor =
             new Parameter(this, "xScaleFactor", new DoubleToken("1.0F"));
         yScaleFactor =
@@ -85,10 +85,10 @@ public class JAIScale extends Transformer {
         interpolationType = new StringAttribute(this, "interpolationType");
         interpolationType.setExpression("bilinear");
         _interpolationType = _BILINEAR;
-        
-        subSampleBits = 
+
+        subSampleBits =
             new Parameter(this, "subSampleBits", new IntToken(8));
-        
+
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
     }
@@ -107,7 +107,7 @@ public class JAIScale extends Transformer {
      *  respective amounts provided in xScaleFactor and yScaleFactor.
      */
     public Parameter specifySize;
-    
+
     /** The subsample precision.  The default value of this parameter
      *  is the integer value 8.
      */
@@ -123,14 +123,14 @@ public class JAIScale extends Transformer {
      */
     public Parameter yScaleFactor;
 
-    /** The desired width in pixels.  The default value of this 
+    /** The desired width in pixels.  The default value of this
      *  parameter is the integer 800.
      */
     public Parameter width;
 
-    /** The desired height in pixels.  The default value of this 
+    /** The desired height in pixels.  The default value of this
      *  parameter is the integer 600.
-     */    
+     */
     public Parameter height;
 
     ///////////////////////////////////////////////////////////////////
@@ -154,20 +154,20 @@ public class JAIScale extends Transformer {
                 _interpolationType = _NEARESTNEIGHBOR;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized interpolation type: " + typeName); 
+                        "Unrecognized interpolation type: " + typeName);
             }
         } else if (attribute == xScaleFactor) {
-            _xScaleFactor = 
+            _xScaleFactor =
                 ((DoubleToken)xScaleFactor.getToken()).doubleValue();
         } else if (attribute == yScaleFactor) {
-            _yScaleFactor = 
+            _yScaleFactor =
                 ((DoubleToken)yScaleFactor.getToken()).doubleValue();
         } else if (attribute == width) {
             _width = ((IntToken)width.getToken()).intValue();
         } else if (attribute == height) {
             _height = ((IntToken)height.getToken()).intValue();
         } else if (attribute == specifySize) {
-            _specifySize = 
+            _specifySize =
                 ((BooleanToken)specifySize.getToken()).booleanValue();
         } else if (attribute == subSampleBits) {
             _subSampleBits =
@@ -194,14 +194,14 @@ public class JAIScale extends Transformer {
             int oldImageHeight = oldImage.getHeight();
             parameters.add((float)_width/(float)oldImageWidth);
             parameters.add((float)_height/(float)oldImageHeight);
-        } else {   
+        } else {
             parameters.add((float)_xScaleFactor);
             parameters.add((float)_yScaleFactor);
         }
-        
+
         parameters.add(0.0F);
-        parameters.add(0.0F);        
-        
+        parameters.add(0.0F);
+
         switch(_interpolationType) {
         case _BICUBIC:
             parameters.add(new InterpolationBicubic(_subSampleBits));
@@ -251,7 +251,7 @@ public class JAIScale extends Transformer {
 
     /** The desired width in pixels. */
     private int _width;
-    
+
     /** The desired height in pixels. */
     private int _height;
 

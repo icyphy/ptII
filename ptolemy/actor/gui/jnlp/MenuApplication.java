@@ -75,7 +75,7 @@ we create these wrapper classes that call the a class appropriate main class.
 
 <p>Each JNLP Application should extends this class and simply
 have its main() call this main().  The makefile will need
-to be extended to create a jar file that includes 
+to be extended to create a jar file that includes
 <pre>
 MenuApplication.class
 <i>Foo</i>Application.class
@@ -102,7 +102,7 @@ public class MenuApplication {
 	// the value of user.dir.  In general, changing user.dir
 	// is frowned upon, but we do what we can here.
 
-	if (_invokedFromAMenu()) {  
+	if (_invokedFromAMenu()) {
 	    try {
 		System.setProperty("user.dir",
 				   StringUtilities.getProperty("user.home"));

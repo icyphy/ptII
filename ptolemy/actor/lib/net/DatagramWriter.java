@@ -264,7 +264,7 @@ public class DatagramWriter extends TypedAtomicActor {
             try {
                 _address = InetAddress.getByName(address);
             } catch (UnknownHostException ex) {
-                throw new IllegalActionException(this, ex, 
+                throw new IllegalActionException(this, ex,
                         "The default remote "
                         + "address specifies an unknown host");
             }

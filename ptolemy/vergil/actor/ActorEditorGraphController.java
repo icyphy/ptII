@@ -400,7 +400,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         public JMenuItem create(final JContextMenu menu, NamedObj object) {
             String name = "Listen to Actor";
             final NamedObj target = object;
-            
+
             // Ensure that we actually have a target, and that it
             // implements Debuggable.
             if (!(target instanceof Debuggable)) return null;

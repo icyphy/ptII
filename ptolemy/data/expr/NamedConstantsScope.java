@@ -58,7 +58,7 @@ public class NamedConstantsScope implements ParserScope {
     public NamedConstantsScope(Map map) {
         _map = map;
     }
-    
+
     /** Look up and return the value with the specified name in the
      *  scope. Return null if the name is not defined in this scope.
      *  @return The token associated with the given name in the scope.
@@ -67,7 +67,7 @@ public class NamedConstantsScope implements ParserScope {
         ptolemy.data.Token result = (ptolemy.data.Token)_map.get(name);
         return result;
     }
-    
+
     /** Look up and return the type of the value with the specified
      *  name in the scope. Return null if the name is not defined in
      *  this scope.
@@ -81,14 +81,14 @@ public class NamedConstantsScope implements ParserScope {
             return value.getType();
         }
     }
-    
+
     /** Return null.
      *  @return null.
      */
     public NamedList variableList() {
         return null;
     }
-    
+
     private Map _map;
 }
 

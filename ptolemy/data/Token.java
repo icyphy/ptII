@@ -356,7 +356,7 @@ public class Token implements Serializable {
      *  <li> For negative <i>times</i> arguments, the result
      *  represents the multiplicative inverse of the product of this
      *  token multiplied by itself the number of times given by the
-     *  absolute value of the argument.  
+     *  absolute value of the argument.
      *  <br> More succinctly: one().divide(pow(-times))
      *  <li> If the argument is zero, then the result is defined to be
      *  the result of applying the one() method to this token.

@@ -107,14 +107,14 @@ public class ExecShellTableau extends Tableau
     public String evaluateCommand(String command) throws Exception {
 	_executeCommand(command);
 
-	// FIXME: this is _so_ wrong 
+	// FIXME: this is _so_ wrong
 	return "";
     }
 
     /** Return true if the specified command is complete (ready
      *  to be interpreted).
      *  @param command The command.
-     *  @return True 
+     *  @return True
      */
     public boolean isCommandComplete(String command) {
 	return true;
@@ -175,7 +175,7 @@ public class ExecShellTableau extends Tableau
 
 	    _shellTextArea = new ShellTextArea();
             _shellTextArea.setInterpreter(ExecShellTableau.this);
-	    _shellTextArea.mainPrompt = "% "; 
+	    _shellTextArea.mainPrompt = "% ";
 	    component.add(_shellTextArea);
             getContentPane().add(component, BorderLayout.CENTER);
 	}

@@ -74,16 +74,16 @@ import ptolemy.copernicus.kernel.*;
 @since Ptolemy II 2.0
 */
 public class FSMCreator implements AtomicActorCreator {
- 
+
     /** Generate a new class with the given name that can take the
      *  place of the given actor.  Use the given options when
      *  necessary.  The given entity is assumed to be an expression actor.
      */
     public SootClass createAtomicActor(
-            Entity actor, String newClassName, 
+            Entity actor, String newClassName,
             ConstVariableModelAnalysis constAnalysis, Map options) {
         FSMActor entity = (FSMActor)actor;
- 
+
         SootClass entityClass = PtolemyUtilities.actorClass;
 
         // create a class for the entity instance.

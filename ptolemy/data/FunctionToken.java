@@ -75,28 +75,28 @@ public class FunctionToken extends Token {
         _function = f;
         _type = type;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     public Token apply(List args) throws IllegalActionException {
         return _function.apply(args);
     }
-    
+
     /** Return the number of arguments of the function.
      *  @return The number of arguments of the function.
      */
     public int getNumberOfArguments() {
         return _function.getNumberOfArguments();
     }
-    
+
     /** Return the type of this token.
      *  @return BaseType.GENERAL
      */
     public Type getType() {
         return _type;
     }
-    
+
     /** Test for closeness of the values of this Token and the argument
      *  Token.  It is assumed that the type of the argument is
      *  FunctionToken.
@@ -139,19 +139,19 @@ public class FunctionToken extends Token {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
-    
+
     // The object that implements the function.
     private Function _function;
 
     private FunctionType _type;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    
+
     /** The interface for functions contained by function tokens.
      */
     public interface Function {
-        
+
         /** Apply the function to the list of arguments, which are tokens.
          *  @param arguments The list of arguments.
          *  @return The result of applying the function to the given
@@ -160,7 +160,7 @@ public class FunctionToken extends Token {
          *   the function.
          */
         public Token apply(List args) throws IllegalActionException;
-        
+
         /** Return the number of arguments of the function.
          *  @return The number of arguments of the function.
          */

@@ -437,7 +437,7 @@ public class DEDirector extends Director {
 
                     if (next.timeStamp() > getCurrentTime()) {
                         break;
-                    } else if (next.timeStamp() != Double.NEGATIVE_INFINITY 
+                    } else if (next.timeStamp() != Double.NEGATIVE_INFINITY
                             && next.timeStamp() < getCurrentTime()) {
                         throw new InternalErrorException(
                                 "fire(): the time stamp of the next event "
@@ -516,7 +516,7 @@ public class DEDirector extends Director {
             // responsibility. This error would be fairly hard to make,
             // so we don't check for it here.
 
-            // "As soon as possible" is encoded in this class by the time 
+            // "As soon as possible" is encoded in this class by the time
             // Double.NEGATIVE_INFINITY.
             _enqueueEvent(actor, Double.NEGATIVE_INFINITY);
             super.fireAtCurrentTime(actor);
@@ -766,7 +766,7 @@ public class DEDirector extends Director {
         if (!_eventQueue.isEmpty()) {
             nextEventTime =  _eventQueue.get().timeStamp();
         }
-        
+
         // A nextEventTime of Double.NEGATIVE_INFINITY is used to represent
         // a firing as soon as possible.
         if (nextEventTime == Double.NEGATIVE_INFINITY) {
@@ -782,7 +782,7 @@ public class DEDirector extends Director {
                     + " The outside time is already " +
                     + outsideCurrentTime + ".");
         }
-        
+
         // Now we check if there's any input.
         Iterator inputPorts = container.inputPortList().iterator();
         boolean hasInput = false;
@@ -1144,7 +1144,7 @@ public class DEDirector extends Director {
                 // Check whether the next event has equal tag.
                 // If so, the destination actor should
                 // be the same, but check anyway.
-                if ((nextEvent.timeStamp() == Double.NEGATIVE_INFINITY || 
+                if ((nextEvent.timeStamp() == Double.NEGATIVE_INFINITY ||
                         nextEvent.isSimultaneousWith(currentEvent)) &&
                         nextEvent.actor() == currentEvent.actor()) {
                     // Consume the event from the queue.

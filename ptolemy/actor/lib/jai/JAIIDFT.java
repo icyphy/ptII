@@ -42,11 +42,11 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// JAIIDFT
 /**
-   Calculate the inverse discrete Fourier transform of an image.  If the 
+   Calculate the inverse discrete Fourier transform of an image.  If the
    input is complex, there are two options.  One is to set the dataNature
-   parameter to <i>complexToReal</i> (the default).  The output would have 
+   parameter to <i>complexToReal</i> (the default).  The output would have
    half the bands of the input (bands 0 and 1 get transformed into band 0,
-   bands 2 and 3 would get transformed into band 1, etc.), and could be 
+   bands 2 and 3 would get transformed into band 1, etc.), and could be
    display or saved after passing through a JAIDataCaster actor.
    <p>
    The other option would be to set it to <i>complexToComplex</i>, in which
@@ -58,11 +58,11 @@ import ptolemy.kernel.util.*;
    image, and creating a phase image of all 0's, and making a complex image
    using the JAIPolarToComplex actor.
    <p>
-   The data of the output is of a high resolution (doubles), not suitable 
+   The data of the output is of a high resolution (doubles), not suitable
    for displaying or saving.  To display or save the output of this image,
    use the JAIDataCaster Actor to cast the data to an appropriate type
    (for instance, byte).
- 
+
    @see JAIDataCaster
    @see JAIDFT
    @author James Yeh
@@ -78,11 +78,11 @@ public class JAIIDFT extends Transformer {
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
-     */      
+     */
     public JAIIDFT(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         scalingType = new StringAttribute(this, "scalingType");
         scalingType.setExpression("dimensions");
         _scalingType = _DIMENSIONS;
@@ -90,7 +90,7 @@ public class JAIIDFT extends Transformer {
         dataNature = new StringAttribute(this, "dataNature");
         dataNature.setExpression("complexToReal");
         _dataNature = _COMPLEX_TO_REAL;
-        
+
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
     }
@@ -101,17 +101,17 @@ public class JAIIDFT extends Transformer {
     /** A parameter that describes the nature of the input and output
      *  data.  The default is <i>complexToReal</i> (so that the output
      *  can be saved and/or displayed after putting it through the
-     *  JAIDataCaster actor).  The setting <i>complexToComplex</i> can 
+     *  JAIDataCaster actor).  The setting <i>complexToComplex</i> can
      *  also be used.  The setting <i>realToComplex</i> should probably
      *  not be used.
      */
     public StringAttribute dataNature;
 
    /** The scaling to be done on the output.  There are three options,
-     *  <i>none</i> (does no scaling), <i>unitary</i> (multiplies by 
-     *  square root of the product of the dimensions), and 
-     *  <i>dimensions</i> (the default, multiplies by the product of the 
-     *  dimensions).  In a DFT-IDFT chain, the overall scaling should 
+     *  <i>none</i> (does no scaling), <i>unitary</i> (multiplies by
+     *  square root of the product of the dimensions), and
+     *  <i>dimensions</i> (the default, multiplies by the product of the
+     *  dimensions).  In a DFT-IDFT chain, the overall scaling should
      *  equal the product of the dimensions.
      */
     public StringAttribute scalingType;
@@ -155,11 +155,11 @@ public class JAIIDFT extends Transformer {
     }
 
     /** Fire this actor.
-     *  Output the inverse discrete Fourier transform of the inputted 
+     *  Output the inverse discrete Fourier transform of the inputted
      *  image.
      *  @exception IllegalActionException If a contained method throws it,
      *  or if there is an invalid scaling type, or an invalid data nature
-     *  set.     
+     *  set.
      */
     public void fire() throws IllegalActionException {
         super.fire();
@@ -208,7 +208,7 @@ public class JAIIDFT extends Transformer {
      *  of data being outputted.
      */
     private int _dataNature;
-    
+
     /** An indicator for the type of scaling done */
     private int _scalingType;
 
@@ -216,7 +216,7 @@ public class JAIIDFT extends Transformer {
     private static final int _COMPLEX_TO_COMPLEX = 0;
     private static final int _COMPLEX_TO_REAL = 1;
     private static final int _REAL_TO_COMPLEX = 2;
-    
+
     private static final int _DIMENSIONS = 0;
     private static final int _NONE = 1;
     private static final int _UNITARY = 2;

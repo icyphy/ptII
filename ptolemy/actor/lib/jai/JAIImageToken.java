@@ -64,7 +64,7 @@ public class JAIImageToken extends ImageToken {
     ////                         public methods                    ////
 
     /** Return a new token whose value is the sum of this token and
-     *  the argument.  The image size is the size of the intersection of 
+     *  the argument.  The image size is the size of the intersection of
      *  the two images.  The number of bands in the image is equal to
      *  the smallest number of bands of the two sources.  The data type
      *  is the smallest data type to have sufficient range for both input
@@ -95,10 +95,10 @@ public class JAIImageToken extends ImageToken {
         return _awtImage;
     }
 
-    /** Return a new token whose value is the division of this 
-     *  token and the argument.  The image size is the size of the 
-     *  intersection of the two images.  The number of bands in the image 
-     *  is equal to the smallest number of bands of the two sources.  The 
+    /** Return a new token whose value is the division of this
+     *  token and the argument.  The image size is the size of the
+     *  intersection of the two images.  The number of bands in the image
+     *  is equal to the smallest number of bands of the two sources.  The
      *  data type is the bigger of the two input data types
      *
      * @param rightArgument The token to divide this token by.
@@ -130,10 +130,10 @@ public class JAIImageToken extends ImageToken {
         return _renderedOp;
     }
 
-    /** Return a new token whose value is the multiplication of this 
-     *  token and the argument.  The image size is the size of the 
-     *  intersection of the two images.  The number of bands in the image 
-     *  is equal to the smallest number of bands of the two sources.  The 
+    /** Return a new token whose value is the multiplication of this
+     *  token and the argument.  The image size is the size of the
+     *  intersection of the two images.  The number of bands in the image
+     *  is equal to the smallest number of bands of the two sources.  The
      *  data type is the bigger of the two input data types
      *
      * @param rightArgument The token to multiply this token by.
@@ -151,8 +151,8 @@ public class JAIImageToken extends ImageToken {
         }
     }
 
-    /** Return a new token whose value is the subtraction of this token 
-     *  from the argument.  The image size is the size of the intersection 
+    /** Return a new token whose value is the subtraction of this token
+     *  from the argument.  The image size is the size of the intersection
      *  of the two images.  The number of bands in the image is equal to
      *  the smallest number of bands of the two sources.  The data type
      *  is the smallest data type to have sufficient range for both input

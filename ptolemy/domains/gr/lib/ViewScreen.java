@@ -112,31 +112,31 @@ public class ViewScreen extends GRActor implements Placeable {
         horizontalResolution = new Parameter(this,
                 "horizontalResolution", new IntToken(400));
         horizontalResolution.setTypeEquals(BaseType.INT);
-   
+
         verticalResolution = new Parameter(this,
                 "verticalResolution", new IntToken(400));
         verticalResolution.setTypeEquals(BaseType.INT);
-        
+
         rotatable = new Parameter(this,
                 "rotatable", new BooleanToken(true));
         rotatable.setTypeEquals(BaseType.BOOLEAN);
-   
+
         scalable = new Parameter(this,
                 "scalable", new BooleanToken(false));
         scalable.setTypeEquals(BaseType.BOOLEAN);
-        
+
         translatable = new Parameter(this,
                 "translatable", new BooleanToken(false));
         translatable.setTypeEquals(BaseType.BOOLEAN);
 
         showAxes = new Parameter(this,"showAxes", new BooleanToken(false));
         showAxes.setTypeEquals(BaseType.BOOLEAN);
-     
+
         iterationSynchronized = new Parameter(this,
                 "iterationSynchronized", new BooleanToken(false));
         iterationSynchronized.setTypeEquals(BaseType.BOOLEAN);
 
-        backgroundColor = new Parameter(this, "backgroundColor", 
+        backgroundColor = new Parameter(this, "backgroundColor",
                 new DoubleMatrixToken(new double[][] {{ 0.0, 0.0, 0.0}} ));
         backgroundColor.setTypeEquals(BaseType.DOUBLE_MATRIX);
 
@@ -476,7 +476,7 @@ public class ViewScreen extends GRActor implements Placeable {
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         int width = sceneGraphIn.getWidth();
         for (int i = 0 ; i < width; i++) {
-            SceneGraphToken objectToken = (SceneGraphToken) 
+            SceneGraphToken objectToken = (SceneGraphToken)
                 sceneGraphIn.get(i);
             Node node = (Node) objectToken.getSceneGraphNode();
             _addChild(node);

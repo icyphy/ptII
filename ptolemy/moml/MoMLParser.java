@@ -1577,7 +1577,7 @@ public class MoMLParser extends HandlerBase {
 			if (source.endsWith(inputFileName)) {
 			    skip = true;
 			    break;
-			} 
+			}
 		    }
 		}
 
@@ -1639,7 +1639,7 @@ public class MoMLParser extends HandlerBase {
 
                 // Parse port
                 ComponentPort port = _getPort(portName, context);
-          
+
                 // Save to help generate undo MoML
                 int origNumOutsideLinks = port.numLinks();
                 int origNumInsideLinks = port.numInsideLinks();
@@ -2219,7 +2219,7 @@ public class MoMLParser extends HandlerBase {
                 _checkForNull(portName, "No port for element \"unlink\"");
                 String relationName = (String)_attributes.get("relation");
                 String indexSpec = (String)_attributes.get("index");
-                String insideIndexSpec = 
+                String insideIndexSpec =
                     (String)_attributes.get("insideIndex");
 
                 _checkClass(_current, CompositeEntity.class,
@@ -2275,7 +2275,7 @@ public class MoMLParser extends HandlerBase {
                             List insideLinkedRelations =
                                 port.insideRelationList();
                             index = insideLinkedRelations.indexOf(tmpRelation);
-                    
+
                             // Linked on the inside.
                             _undoContext.appendUndoMoML("<link port=\"" +
                                     portName + "\" insertInsideAt=\"" +
@@ -2545,7 +2545,7 @@ public class MoMLParser extends HandlerBase {
      *  This variable is used primarily for testing configurations.
      *  The value of this variable is a List of Strings, where each
      *  element names a file name that should _not_ be loaded if
-     *  it is encounted in an input statement.  
+     *  it is encounted in an input statement.
      */
     public static List inputFileNamesToSkip = null;
 

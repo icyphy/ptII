@@ -66,8 +66,8 @@ public class BackwardCompatibility {
      *  newline.
      */
     public String toString() {
-        // This is a little strange because when we call 
-        // BackwardCompatibility.allFilters(), we add the individual filters 
+        // This is a little strange because when we call
+        // BackwardCompatibility.allFilters(), we add the individual filters
         // so when we iterate through the filters and call toString, we never
         // actually call BackwardCompatibility.toString().
 

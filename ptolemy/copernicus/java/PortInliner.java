@@ -79,7 +79,7 @@ public interface PortInliner {
      * storage buffers that should only be created once.
      */
     public void initialize();
-    
+
     /** Replace the broadcast invocation in the given box
      *  at the given unit in the
      *  given body with a circular array reference.

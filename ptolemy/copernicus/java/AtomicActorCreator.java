@@ -73,7 +73,7 @@ import ptolemy.copernicus.kernel.SootUtilities;
 @since Ptolemy II 2.0
 */
 public interface AtomicActorCreator {
- 
+
     /** Generate a new class with the given name that can take the
      *  place of the given actor.  Use the given options when
      *  necessary.

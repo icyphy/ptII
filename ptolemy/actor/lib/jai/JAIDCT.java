@@ -42,8 +42,8 @@ import ptolemy.kernel.util.*;
 //// JAIDCT
 /**
    Calculate the discrete cosine transform of an image.  Even though the
-   input image data may be 3 bytes (one for each band) per pixel, the 
-   output image data is of a higher resolution (doubles), not suitable for 
+   input image data may be 3 bytes (one for each band) per pixel, the
+   output image data is of a higher resolution (doubles), not suitable for
    displaying or saving.  To display or save the output of this image,
    use the JAIDataCaster actor to cast the data to an appropriate type
    (for instance, byte).  The output of the DCT is zero padded to the
@@ -57,7 +57,7 @@ import ptolemy.kernel.util.*;
  */
 
 public class JAIDCT extends Transformer {
-    
+
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -72,7 +72,7 @@ public class JAIDCT extends Transformer {
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -86,7 +86,7 @@ public class JAIDCT extends Transformer {
         JAIImageToken jaiImageToken = (JAIImageToken) input.get(0);
         RenderedOp oldImage = jaiImageToken.getValue();
         dctParameters.addSource(oldImage);
-        RenderedOp newImage = JAI.create("dct", dctParameters);        
+        RenderedOp newImage = JAI.create("dct", dctParameters);
         output.send(0, new JAIImageToken(newImage));
     }
 }

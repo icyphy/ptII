@@ -390,21 +390,21 @@ public class PlotFrame extends JFrame {
      *  FIXME: this dialog is slow and is often hidden
      *  behind other windows.  However, it does honor
      *  the user's choice of portrait vs. landscape
-     */	
+     */
     protected void _printCrossPlatform() {
 	// Build a set of attributes
-	PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet(); 
+	PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
 	PrinterJob job = PrinterJob.getPrinterJob();
 	job.setPrintable(plot);
 	if (job.printDialog(aset)) {
-	    try { 
-		job.print(aset); 
+	    try {
+		job.print(aset);
 	    } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this,
                         "Printing failed:\n" + ex.toString(),
                         "Print Error", JOptionPane.WARNING_MESSAGE);
 	    }
-	} 
+	}
     }
 
     /** Print using the native dialog.
@@ -414,12 +414,12 @@ public class PlotFrame extends JFrame {
     protected void _printNative() {
 	PrinterJob job = PrinterJob.getPrinterJob();
 	//PageFormat pageFormat = job.defaultPage();
-	
+
         //job.setPrintable(plot, pageFormat);
 	job.setPrintable(plot);
         if (job.printDialog()) {
             try {
-		// job.print() eventually 
+		// job.print() eventually
 		// calls PlotBox.print(Graphics, PageFormat)
                 job.print();
             } catch (Exception ex) {

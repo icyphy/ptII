@@ -169,7 +169,7 @@ public class NonStrictTest extends Transformer {
         _numberOfInputTokensSeen = 0;
         _iteration = 0;
         _trainingTokens = null;
-        if(((BooleanToken)trainingMode.getToken()).booleanValue()) { 
+        if(((BooleanToken)trainingMode.getToken()).booleanValue()) {
             if (isRunningNightlyBuild()) {
                 throw new IllegalActionException(this,
                     TRAINING_MODE_ERROR_MESSAGE);
@@ -189,7 +189,7 @@ public class NonStrictTest extends Transformer {
      *  <pre>
      *  make nightly
      *  </pre>
-     */   
+     */
     public static boolean isRunningNightlyBuild() {
         if (StringUtilities
                 .getProperty("ptolemy.ptII.isRunningNightlyBuild")
@@ -281,8 +281,8 @@ public class NonStrictTest extends Transformer {
      */
     public static String TRAINING_MODE_ERROR_MESSAGE =
         "Training Mode set for test actor and isRunningNightlyBuild()\n"
-        + "  returned true, indicating that the\n" 
-        + "  ptolemy.ptII.isRunningNightlyBuild property is set.\n" 
+        + "  returned true, indicating that the\n"
+        + "  ptolemy.ptII.isRunningNightlyBuild property is set.\n"
         + "  The trainingMode parameter should not be set in files\n"
         + "  that are checked into the nightly build!"
         + "  To run the tests in nightly build mode, use"

@@ -205,13 +205,13 @@ public class RecordUpdater extends TypedAtomicActor {
         int size = portArray.length;
         String[] labels = new String[0];
         Type[] types = new Type[0];
-  
+
         RecordType declaredType = new RecordType(labels, types);
         input.setTypeAtMost(declaredType);
-        
+
         // Set the constraints between record fields and output ports
         List constraints = new LinkedList();
-     
+
         // Since the input port has a clone of the above RecordType, need to
         // get the type from the input port.
         Inequality inequality =

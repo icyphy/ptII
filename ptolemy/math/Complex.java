@@ -580,7 +580,7 @@ public class Complex implements Cloneable, Serializable {
     /** Return true if either the real or imaginary part of the given
      *  complex number is infinite.  This is determined by the
      *  isInfinite() method of the java.lang.Double class.
-     *  
+     *
      *  @param z A complex number.
      *  @return True if this is infinite.
      */
@@ -680,7 +680,7 @@ public class Complex implements Cloneable, Serializable {
      *  to compute than the magnitude (which is the square root of this
      *  result).
      *
-     *  @param z A complex number. 
+     *  @param z A complex number.
      *  @return A non-negative number which is the magnitude of this
      *  complex number.
      */

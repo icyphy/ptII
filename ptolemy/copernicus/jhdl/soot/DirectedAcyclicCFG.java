@@ -189,7 +189,7 @@ public class DirectedAcyclicCFG extends DirectedGraph {
             toDotty.writeDotFile(".", "bbgraph", bbgraph);
 	    _cfg = new DirectedAcyclicCFG(bbgraph);
 
-            PtDirectedGraphToDotty dgToDotty = 
+            PtDirectedGraphToDotty dgToDotty =
                 new PtDirectedGraphToDotty();
             dgToDotty.writeDotFile(".", testMethod.getName(), _cfg);
 	} catch (IllegalActionException e) {

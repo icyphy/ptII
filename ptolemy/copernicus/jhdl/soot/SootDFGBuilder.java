@@ -212,7 +212,7 @@ public class SootDFGBuilder extends SootASTVisitor {
 
 	_graph.addEdge(invokeNode, baseNode, "constructor");
 	return ie;
-	
+
     }
 
     public Value processNewExpr(NewExpr ifr) {
@@ -235,7 +235,7 @@ public class SootDFGBuilder extends SootASTVisitor {
 	    ptolemy.copernicus.jhdl.test.Test.getMethodBlocks(args);
 	SootBlockDirectedGraph graphs[] =
 	    new SootBlockDirectedGraph[blocks.length];
-        PtDirectedGraphToDotty dgToDotty = 
+        PtDirectedGraphToDotty dgToDotty =
             new PtDirectedGraphToDotty();
         for (int i = 0 ; i < blocks.length; i++) {
 	    try {
@@ -256,7 +256,7 @@ public class SootDFGBuilder extends SootASTVisitor {
 	    ptolemy.copernicus.jhdl.test.Test.getMethodBlocks(args);
 	SootBlockDirectedGraph graphs[] =
 	    new SootBlockDirectedGraph[blocks.length];
-	PtDirectedGraphToDotty dgToDotty = 
+	PtDirectedGraphToDotty dgToDotty =
             new PtDirectedGraphToDotty();
         for (int i = 0 ; i < blocks.length; i++) {
 	    try {
@@ -282,4 +282,4 @@ public class SootDFGBuilder extends SootASTVisitor {
 
     protected ValueMap _valueMap;
 }
-    
+

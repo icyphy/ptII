@@ -473,7 +473,7 @@ public class FixMatrixToken extends MatrixToken {
         }
         FixPoint[][] result
                 = new FixPoint[_rowCount][convertedArgument._columnCount];
-        
+
         for (int i = 0; i < _rowCount; i++) {
             for (int j = 0; j < convertedArgument._columnCount; j++) {
                 FixPoint sum = _value[i][0].multiply(
@@ -486,7 +486,7 @@ public class FixMatrixToken extends MatrixToken {
             }
         }
         return new FixMatrixToken(result);
-    }    
+    }
 
     /** Return a new token whose value is the value of the argument
      *  Token multiplyed from the value of each element of this Token. It is

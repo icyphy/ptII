@@ -127,7 +127,7 @@ public class AbstractParseTreeVisitor implements ParseTreeVisitor {
     }
 
     protected IllegalActionException _unsupportedVisitException(String name) {
-        return new IllegalActionException("Nodes of type " + name + 
+        return new IllegalActionException("Nodes of type " + name +
                 " cannot be visited by a " + getClass().getName() + ".");
     }
 

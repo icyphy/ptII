@@ -128,7 +128,7 @@ public abstract class ScalarToken extends Token
                 throw new IllegalActionException(null, ex,
                         notSupportedMessage("add", this, rightArgument));
             }
-        } else if ((typeInfo == CPO.LOWER)                
+        } else if ((typeInfo == CPO.LOWER)
                 || (rightArgument instanceof MatrixToken)) {
             // NOTE: If the right argument is an instance of MatrixToken,
             // then we try reversing the add. This is because the
@@ -230,7 +230,7 @@ public abstract class ScalarToken extends Token
         } else if (typeInfo == CPO.LOWER) {
             if (!(rightArgument instanceof BitwiseOperationToken)) {
                 throw new IllegalActionException(
-			notSupportedMessage("bitwiseAnd", 
+			notSupportedMessage("bitwiseAnd",
                                 this, rightArgument));
 	    } else {
                 // This code uses the fact that bitwise AND is always
@@ -286,7 +286,7 @@ public abstract class ScalarToken extends Token
         } else if (typeInfo == CPO.LOWER) {
             if (!(rightArgument instanceof BitwiseOperationToken)) {
                 throw new IllegalActionException(
-			notSupportedMessage("bitwiseOr", 
+			notSupportedMessage("bitwiseOr",
                                 this, rightArgument));
 	    } else {
                 // This code uses the fact that bitwise OR is always
@@ -329,7 +329,7 @@ public abstract class ScalarToken extends Token
         } else if (typeInfo == CPO.LOWER) {
             if (!(rightArgument instanceof BitwiseOperationToken)) {
                 throw new IllegalActionException(
-			notSupportedMessage("bitwiseXor", 
+			notSupportedMessage("bitwiseXor",
                                 this, rightArgument));
 	    } else {
                 // This code uses the fact that bitwise XOR is always
@@ -1007,7 +1007,7 @@ public abstract class ScalarToken extends Token
                 throw new IllegalActionException(null, ex,
                         notSupportedMessage("subtract", this, rightArgument));
             }
-        } else if ((typeInfo == CPO.LOWER) 
+        } else if ((typeInfo == CPO.LOWER)
                 || (rightArgument instanceof MatrixToken)) {
             // NOTE: If the right argument is an instance of MatrixToken,
             // then we try reversing the subtract. This is because the
@@ -1375,9 +1375,9 @@ public abstract class ScalarToken extends Token
      *  class.
      *  @return A new Token containing the result.
      */
-    private BitwiseOperationToken _doBitwiseAnd(Token rightArgument) 
+    private BitwiseOperationToken _doBitwiseAnd(Token rightArgument)
 	    throws IllegalActionException {
-        ScalarToken convertedArgument = (ScalarToken)rightArgument;    
+        ScalarToken convertedArgument = (ScalarToken)rightArgument;
         if (!_areUnitsEqual(convertedArgument)) {
             throw new IllegalActionException(
                     notSupportedMessage("bitwiseAnd", this, rightArgument)
@@ -1404,9 +1404,9 @@ public abstract class ScalarToken extends Token
      *  class.
      *  @return A new Token containing the result.
      */
-    private BitwiseOperationToken _doBitwiseOr(Token rightArgument) 
+    private BitwiseOperationToken _doBitwiseOr(Token rightArgument)
 	    throws IllegalActionException {
-        ScalarToken convertedArgument = (ScalarToken)rightArgument;    
+        ScalarToken convertedArgument = (ScalarToken)rightArgument;
         if (!_areUnitsEqual(convertedArgument)) {
             throw new IllegalActionException(
                     notSupportedMessage("bitwiseOr", this, rightArgument)
@@ -1425,7 +1425,7 @@ public abstract class ScalarToken extends Token
      *  type of this class.  The resulting token will also have the same
      *  type. This method checks that the two tokens have the same units
      *  and throws an exception if the units are not the same. The resulting
-     *  token will have the same units as the operands. This method defers 
+     *  token will have the same units as the operands. This method defers
      *  to the _bitwiseXOR() method that takes a ScalarToken.
      *  @param rightArgument The token to bitwise XOR to this token.
      *  @exception IllegalActionException If the units are not
@@ -1433,9 +1433,9 @@ public abstract class ScalarToken extends Token
      *  class.
      *  @return A new Token containing the result.
      */
-    private BitwiseOperationToken _doBitwiseXor(Token rightArgument) 
+    private BitwiseOperationToken _doBitwiseXor(Token rightArgument)
 	    throws IllegalActionException {
-        ScalarToken convertedArgument = (ScalarToken)rightArgument;    
+        ScalarToken convertedArgument = (ScalarToken)rightArgument;
         if (!_areUnitsEqual(convertedArgument)) {
             throw new IllegalActionException(
                     notSupportedMessage("bitwiseXor", this, rightArgument)

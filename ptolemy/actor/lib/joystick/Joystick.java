@@ -37,18 +37,18 @@ import ptolemy.kernel.util.*;
 ////
 /**
 This actor reads data from a Joystick using the Joystick interface
-from 
+from
 <a href="http://sourceforge.net/projects/javajoystick/" target="_top"><code>http://sourceforge.net/projects/javajoystick/</code></a>
 
-<p>Currently, this actor will only work under Windows, though 
-the Joystick interface also supports Linux. 
+<p>Currently, this actor will only work under Windows, though
+the Joystick interface also supports Linux.
 
 <p>If you get the following error on the console:
 <pre>
 TBA
 </pre>
-then you need to be sure that the 
-<code>jjstick.dll</code> is in your path.  
+then you need to be sure that the
+<code>jjstick.dll</code> is in your path.
 <p>The default location of the Joystick interface is
 add
 <code>$PTII/vendors/misc/joystick/lib</code>, so you could either
@@ -57,7 +57,7 @@ to <code>$PTII/bin</code>
 
 
 <b>FIXME: the information below is about the SerialComm actor, but
-might be relevant</b> 
+might be relevant</b>
 
 <p>This actor is designed for use in DE and SDF.  By default, this actor
 does not block in fire().  When fired, if no data is available on the

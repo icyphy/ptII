@@ -246,7 +246,7 @@ public abstract class AbstractActionsAttribute extends Action {
                 _destinationNames.add(completeDestinationSpec);
                 _numbers.add(null);
             }
-            
+
             // Parse the expression
             _parseTrees.add(node.getExpressionTree());
         }
@@ -283,11 +283,11 @@ public abstract class AbstractActionsAttribute extends Action {
     protected long _destinationsListVersion = -1;
 
     // The list of parse trees.
-    protected List _parseTrees; 
+    protected List _parseTrees;
 
     // The parse tree evaluator.
     protected ParseTreeEvaluator _parseTreeEvaluator;
-    
+
     // The scope.
     protected ActionScope _scope;
 

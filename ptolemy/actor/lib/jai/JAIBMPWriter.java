@@ -54,7 +54,7 @@ import ptolemy.gui.MessageHandler;
 //////////////////////////////////////////////////////////////////////////
 //// JAIBMPWriter
 /**
-   Write a javax.media.jai.RenderedOp to a specified BMP file.  
+   Write a javax.media.jai.RenderedOp to a specified BMP file.
    <p>
    The file is specified by the <i>fileName</i> attribute
    using any form acceptable to FileAttribute.
@@ -67,7 +67,7 @@ import ptolemy.gui.MessageHandler;
    then this actor will overwrite the specified file if it exists
    without asking.  If <i>true</i> (the default), then if the file
    exists, then this actor will ask for confirmation before overwriting.
-   
+
    @see FileAttribute
    @author James Yeh
    @version $Id$
@@ -88,11 +88,11 @@ public class JAIBMPWriter extends Sink {
         super(container, name);
         input.setTypeEquals(BaseType.OBJECT);
         fileName = new FileAttribute(this, "fileName");
-        
+
         storeTopDown = new Parameter(this, "storeTopDown");
         storeTopDown.setTypeEquals(BaseType.BOOLEAN);
         storeTopDown.setToken(BooleanToken.FALSE);
-        
+
         confirmOverwrite = new Parameter(this, "confirmOverwrite");
         confirmOverwrite.setTypeEquals(BaseType.BOOLEAN);
         confirmOverwrite.setToken(BooleanToken.TRUE);
@@ -111,7 +111,7 @@ public class JAIBMPWriter extends Sink {
     /** If <i>false</i>, then overwrite the specified file if it exists
      *  without asking.  If <i>true</i> (the default), then if the file
      *  exists, ask for confirmation before overwriting.
-     */    
+     */
     public Parameter confirmOverwrite;
 
     /** If <i>true</i>, then write the data in top to bottom order.
@@ -125,11 +125,11 @@ public class JAIBMPWriter extends Sink {
 
     /** Initialize this actor.
      *  There are two parameters to set here.  The version of bitmap that
-     *  we are writing (which at the time being can only be version 3), 
-     *  and whether to store the data from top to bottom or from bottom 
+     *  we are writing (which at the time being can only be version 3),
+     *  and whether to store the data from top to bottom or from bottom
      *  to top.
      *  @exception IllegalActionException If a contained method throws it.
-     */    
+     */
     public void initialize() throws IllegalActionException {
         super.initialize();
         _file = fileName.asFile();
@@ -140,7 +140,7 @@ public class JAIBMPWriter extends Sink {
         _bmpEncodeParameters.setTopDown(storeTopDownValue);
 
     }
-    
+
     /** Read an input JAIImageToken and write it to the file.
      *  If the file does not exist then create it.  If the file
      *  already exists, then query the user for overwrite.
@@ -160,7 +160,7 @@ public class JAIBMPWriter extends Sink {
                             "OK to overwrite " + _file + "?")) {
                     throw new IllegalActionException(this,
                             "Please select another file name.");
-                }                
+                }
             }
         }
         else {
@@ -196,13 +196,13 @@ public class JAIBMPWriter extends Sink {
 
     /** The Bitmap encoding parameters. */
     private BMPEncodeParam _bmpEncodeParameters;
-    
+
     /** The File to be saved to. */
     private File _file;
-    
+
     /** The above file as a String. */
     private String _fileRoot;
-    
+
     /** The FileOutputStream for file writing. */
     private FileOutputStream _stream;
 }

@@ -155,7 +155,7 @@ public class ActorController extends AttributeController {
             _menuFactory.addMenuItemFactory(_breakpointDialogFactory);
         }
 
-        
+
         // "Configure Arguments", used by JNI
         //if (access == FULL) {
         //    _menuFactory.addMenuItemFactory(new jni.ArgumentDialogFactory());
@@ -171,7 +171,7 @@ public class ActorController extends AttributeController {
                 if(candidate instanceof Locatable &&
                    model.getSemanticObject(candidate) instanceof Entity) {
                     return true;
-                } else { 
+                } else {
                     return false;
                 }
             }

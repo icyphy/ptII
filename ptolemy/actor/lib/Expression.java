@@ -395,7 +395,7 @@ public class Expression extends TypedAtomicActor {
                 _parseTree = parser.generateParseTree(
                         expression.getExpression());
             }
-                
+
             if (_scope == null) {
                 _scope = new VariableScope();
                 }
@@ -497,7 +497,7 @@ public class Expression extends TypedAtomicActor {
          */
         public String toString() {
             try {
-                return "(" + expression.getExpression() + ", " + 
+                return "(" + expression.getExpression() + ", " +
                     getValue() + ")";
             } catch (IllegalActionException ex) {
                 return "(" + expression.getExpression() + ", INVALID)";

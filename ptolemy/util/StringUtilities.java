@@ -134,7 +134,7 @@ public class StringUtilities {
 	String preferencesDirectoryName =
 	    StringUtilities.getProperty("user.home")
             + StringUtilities.getProperty("file.separator")
-	    + StringUtilities.PREFERENCES_DIRECTORY 
+	    + StringUtilities.PREFERENCES_DIRECTORY
             + StringUtilities.getProperty("file.separator");
         File preferencesDirectory = new File(preferencesDirectoryName);
 	if (!preferencesDirectory.isDirectory()) {

@@ -539,7 +539,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
 
         Type elementType = value[0].getType();
         int length = value.length;
-        // It would be nice to have this, but the Code generator cannot 
+        // It would be nice to have this, but the Code generator cannot
         // deal with the least upper bound.
      //    for (int i = 0; i < length; i++) {
 //             Type valueType = value[i].getType();

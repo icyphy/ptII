@@ -54,7 +54,7 @@ class just by using the Thread class. Obviously, some efficiency will be lost
 as the workspace has to store and then search the readDepth fields in a hash
 table. (as was mentioned in the previous paragraph)
 
-@author Lukito Muliadi, contributor: Edward A. Lee 
+@author Lukito Muliadi, contributor: Edward A. Lee
 @version $Id$
 @since Ptolemy II 0.2
 */

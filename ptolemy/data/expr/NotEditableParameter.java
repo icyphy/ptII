@@ -65,7 +65,7 @@ public class NotEditableParameter extends Variable {
      *  objects in the workspace.
      *  Increment the version number of the workspace.
      */
-    public NotEditableParameter() 
+    public NotEditableParameter()
             throws IllegalActionException, NameDuplicationException {
         super();
         setVisibility(Settable.NOT_EDITABLE);
@@ -79,7 +79,7 @@ public class NotEditableParameter extends Variable {
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the parameter.
      */
-    public NotEditableParameter(Workspace workspace) 
+    public NotEditableParameter(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
         super(workspace);
         setVisibility(Settable.NOT_EDITABLE);
@@ -125,7 +125,7 @@ public class NotEditableParameter extends Variable {
      *  @exception NameDuplicationException If the name coincides with
      *   an parameter already in the container.
      */
-    public NotEditableParameter(NamedObj container, String name, 
+    public NotEditableParameter(NamedObj container, String name,
             ptolemy.data.Token token)
             throws IllegalActionException, NameDuplicationException {
         super(container, name, token);

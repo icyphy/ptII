@@ -41,15 +41,15 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// JAIIDCT
 /**
-   Calculate the inverse discrete cosine transform of an image.  The output 
-   image data is of a high resolution (doubles), not suitable for 
+   Calculate the inverse discrete cosine transform of an image.  The output
+   image data is of a high resolution (doubles), not suitable for
    displaying or saving.  To display or save the output of this image,
    use the JAIDataCaster actor to cast the data to an appropriate type
    (for instance, byte).  The output is zero-padded in each dimension to
    the next power of two (unless it already is a power of two in which case
    nothing happens).
    <p>
-   No JAIDataCaster actors should be used in between a JAIDCT and JAIIDCT 
+   No JAIDataCaster actors should be used in between a JAIDCT and JAIIDCT
    actor, unless if loss of spectral information is okay (or even desired).
 
    @see JAIDataCaster
@@ -72,14 +72,14 @@ public class JAIIDCT extends Transformer {
              throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.OBJECT);
-        output.setTypeEquals(BaseType.OBJECT);    
+        output.setTypeEquals(BaseType.OBJECT);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Fire this actor.
-     *  Output the inverse discrete cosine transform of the inputted 
+     *  Output the inverse discrete cosine transform of the inputted
      *  image.
      *  @exception IllegalActionException If a contained method throws it.
      */

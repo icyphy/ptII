@@ -299,7 +299,7 @@ public class TypeSpecializerAnalysis {
             type2 = PtolemyUtilities.getTypeValue(
                     method, typeLocal2, unit, localDefs, localUses);
             Local newTypeLocal = PtolemyUtilities.buildConstantTypeLocal(
-                    method.getActiveBody(), unit, 
+                    method.getActiveBody(), unit,
                     TypeLattice.leastUpperBound(type1, type2));
             box.setValue(newTypeLocal);
             return;

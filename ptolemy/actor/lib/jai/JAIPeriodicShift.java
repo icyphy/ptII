@@ -43,11 +43,11 @@ import javax.media.jai.RenderedOp;
 //////////////////////////////////////////////////////////////////////////
 //// JAIPeriodicShift
 /**
-   An actor that computes the periodic translation of an image.  The 
-   output is clamped version of the infinitely periodic image with the 
-   horizontal and vertical periods equal to the image width and height 
+   An actor that computes the periodic translation of an image.  The
+   output is clamped version of the infinitely periodic image with the
+   horizontal and vertical periods equal to the image width and height
    respectively.
-   
+
    @author James Yeh
    @version $Id$
  */
@@ -65,13 +65,13 @@ public class JAIPeriodicShift extends Transformer {
     public JAIPeriodicShift(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         xShift = new Parameter(this, "xShift", new IntToken(0));
         yShift = new Parameter(this, "yShift", new IntToken(0));
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  //// 
+    ////                     ports and parameters                  ////
 
     /** The amount to shift in the horizontal direction.  This value
      *  must be positive.  An increase in this value causes the image
@@ -82,7 +82,7 @@ public class JAIPeriodicShift extends Transformer {
     /** The amount to shift in the vertical direction.  This value must
      *  be positive.  An increase in this value causes the image to move
      *  upwards.
-     */    
+     */
     public Parameter yShift;
 
     ///////////////////////////////////////////////////////////////////
@@ -93,7 +93,7 @@ public class JAIPeriodicShift extends Transformer {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If a contained method throws it.
      */
-    public void attributeChanged(Attribute attribute) 
+    public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == xShift) {
             _xShift = ((IntToken)xShift.getToken()).intValue();
@@ -103,7 +103,7 @@ public class JAIPeriodicShift extends Transformer {
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Fire this actor.
      *  Output the shifted RenderedOp.
      *  @exception IllegalActionException If a contained method throws it,
@@ -119,15 +119,15 @@ public class JAIPeriodicShift extends Transformer {
         parameters.add(_xShift);
         parameters.add(_yShift);
         RenderedOp newImage = JAI.create("PeriodicShift", parameters);
-        output.send(0, new JAIImageToken(newImage)); 
-    }    
+        output.send(0, new JAIImageToken(newImage));
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** The horizontal shifting amount.  */
     private int _xShift;
-    
+
     /** The vertical shifting amount.  */
     private int _yShift;
 }

@@ -129,7 +129,7 @@ abstract public class GRTransform extends GRActor {
         int width = sceneGraphIn.getWidth();
         for (int i = 0; i < width; i++) {
             if (sceneGraphIn.hasToken(i)) {
-                SceneGraphToken nodeToken = (SceneGraphToken) 
+                SceneGraphToken nodeToken = (SceneGraphToken)
                     sceneGraphIn.get(i);
                 Node node = (Node) nodeToken.getSceneGraphNode();
                 _addChild(node);

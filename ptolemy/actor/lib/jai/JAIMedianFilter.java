@@ -45,10 +45,10 @@ import javax.media.jai.operator.MedianFilterShape;
 //////////////////////////////////////////////////////////////////////////
 //// JAIMedianFilter
 /**
-   An actor that median filter an image.  Median filtering is a useful 
-   tool when there are noise spikes in the image.  This filter is 
+   An actor that median filter an image.  Median filtering is a useful
+   tool when there are noise spikes in the image.  This filter is
    non-linear.
-   
+
    @author James Yeh
    @version $Id$
  */
@@ -66,11 +66,11 @@ public class JAIMedianFilter extends Transformer {
     public JAIMedianFilter(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         shape = new StringAttribute(this, "shape");
         shape.setExpression("Square");
         _shape = MedianFilterDescriptor.MEDIAN_MASK_SQUARE;
-        
+
         size = new Parameter(this, "size", new IntToken(3));
     }
 
@@ -78,27 +78,27 @@ public class JAIMedianFilter extends Transformer {
     ////                     ports and parameters                  ////
 
     /** The filter shape to use.  There are four shapes available.
-     *  
+     *
      *  Square - A square mask looks at all elements in the square, and
      *  find the median value.
-     *  
-     *  Seperable Square - A seperable square mask, first calculates 
+     *
+     *  Seperable Square - A seperable square mask, first calculates
      *  the median of every row, and then takes the median of those
      *  values.  Only supported for size 3 and size 5 filters.
-     *  
+     *
      *  Plus - A 3x3 plus mask looks like the following
-     *   x 
+     *   x
      *  xxx
      *   x
      *  It calculates the median of those values indicated by an x.
-     *  
+     *
      *  X - A 3x3 X mask looks like the following
      *  x x
      *   x
      *  x x
      *  It calculates the median of those values indicated by an x.
      */
-    public StringAttribute shape;    
+    public StringAttribute shape;
 
     /** The size of the median filter.  This indicates both the
      *  width and height of the filter.  The size must be an odd
@@ -119,17 +119,17 @@ public class JAIMedianFilter extends Transformer {
         if (attribute == shape) {
             String name = shape.getExpression();
             if (name.equals("Square")) {
-                _shape = 
+                _shape =
                     MedianFilterDescriptor.MEDIAN_MASK_SQUARE;
             } else if (name.equals("Separable Square")) {
-                _shape = 
-                    MedianFilterDescriptor.MEDIAN_MASK_SQUARE_SEPARABLE;   
+                _shape =
+                    MedianFilterDescriptor.MEDIAN_MASK_SQUARE_SEPARABLE;
             } else if (name.equals("Plus")) {
                 _shape = MedianFilterDescriptor.MEDIAN_MASK_PLUS;
             } else if (name.equals("X")) {
                 _shape = MedianFilterDescriptor.MEDIAN_MASK_X;
             } else {
-                throw new IllegalActionException(this, 
+                throw new IllegalActionException(this,
                         "Unrecognized Shape Name: " + name);
             }
         } else if (attribute == size) {
@@ -154,9 +154,9 @@ public class JAIMedianFilter extends Transformer {
         parameters.add(_shape);
         parameters.add(_size);
         RenderedOp newImage = JAI.create("medianfilter", parameters);
-        output.send(0, new JAIImageToken(newImage)); 
+        output.send(0, new JAIImageToken(newImage));
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

@@ -927,7 +927,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          */
         public String getDeleteNodeMoML(Object node) {
 	    NamedObj deleteObj = (NamedObj)((Locatable)node).getContainer();
-           
+
             NamedObj container = _getChangeRequestParent(getPtolemyModel());
 
             String moml = "<deletePort name=\""
@@ -1032,7 +1032,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          */
         public String getDeleteNodeMoML(Object node) {
 	    NamedObj deleteObj = (NamedObj)((Locatable)node).getContainer();
-           
+
             NamedObj container = _getChangeRequestParent(getPtolemyModel());
 
             StringBuffer moml = new StringBuffer("<group>/n");

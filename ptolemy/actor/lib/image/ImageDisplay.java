@@ -150,7 +150,7 @@ public class ImageDisplay extends Sink implements Placeable {
 
             //Image image = (Image) objectToken.getValue();
             Image image = imageToken.asAWTImage();
-            
+
             if (image == null) {
                 throw new IllegalActionException(this,
                 "ImageDisplay: input image was null!");

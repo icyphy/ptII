@@ -616,8 +616,8 @@ public class GeneratorTableau extends Tableau {
                     "_generatorAttributeFileName",
                     new StringToken(generatorAttributeFileName));
 	    } else {
-		// Already have a Parameter by that name, so we 
-		// set its value. 
+		// Already have a Parameter by that name, so we
+		// set its value.
 		generatorAttributeFileNameParameter
 		    .setExpression("\"" + generatorAttributeFileName + "\"");
 	    }

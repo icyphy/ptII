@@ -73,7 +73,7 @@ public class TwoPlotExample extends JFrame {
         setSize(800, 300);
 
         // Create the left plot by calling methods.
-	// Note that most of these methods should be called in 
+	// Note that most of these methods should be called in
 	// the event thread, see the Plot.java class comment.
 	// In this case, main() is invoking this constructor in
 	// the event thread.

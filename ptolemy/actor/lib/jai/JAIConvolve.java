@@ -45,12 +45,12 @@ import javax.media.jai.RenderedOp;
 /**
    An actor that convolves an image with a given filter.  The filter must
    be rectangular.
-   
+
    @author James Yeh
    @version $Id$
  */
 public class JAIConvolve extends Transformer {
-    
+
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -58,23 +58,23 @@ public class JAIConvolve extends Transformer {
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
-     */    
+     */
     public JAIConvolve(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-        
+
         super(container, name);
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
-        
-        filter = new Parameter(this, "filter", 
-                new DoubleMatrixToken(_initialMatrix));        
+
+        filter = new Parameter(this, "filter",
+                new DoubleMatrixToken(_initialMatrix));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
     /** The filter to convolve the image width.  It is represented by
-     *  a DoubleMatrixToken.  
+     *  a DoubleMatrixToken.
      */
     public Parameter filter;
 
@@ -93,19 +93,19 @@ public class JAIConvolve extends Transformer {
             int height = matrix.getRowCount();
             int width = matrix.getColumnCount();
             float[] floatArray = new float[width*height];
-            int count = 0; 
+            int count = 0;
             for (int i = 0; i < height; i = i+1) {
                 for (int j = 0; j < width; j = j+1) {
                     floatArray[count] = (float)matrixValue[i][j];
                     count = count + 1;
                 }
-            }        
+            }
             _filter = new KernelJAI(width,height,floatArray);
         } else {
             super.attributeChanged(attribute);
-        }            
+        }
     }
-    
+
     /** Fire this actor.
      *  Output the filtered image.
      *  @exception IllegalActionException If a contained method throws
@@ -116,17 +116,17 @@ public class JAIConvolve extends Transformer {
         JAIImageToken jaiImageToken = (JAIImageToken) input.get(0);
         RenderedOp oldImage = jaiImageToken.getValue();
         RenderedOp newImage = JAI.create("convolve", oldImage, _filter);
-        output.send(0, new JAIImageToken(newImage));                
+        output.send(0, new JAIImageToken(newImage));
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** The filter to convolve the image with */
     private KernelJAI _filter;
-    
+
     /** A filter that does nothing to an image when convolved with it. */
-    private double[][] _initialMatrix = {{0.0F, 0.0F, 0.0F}, 
+    private double[][] _initialMatrix = {{0.0F, 0.0F, 0.0F},
                                          {0.0F, 1.0F, 0.0F},
                                          {0.0F, 0.0F, 0.0F}};
 }

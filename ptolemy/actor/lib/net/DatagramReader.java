@@ -504,7 +504,7 @@ public class DatagramReader extends TypedAtomicActor {
                                 _socket = new DatagramSocket(newSocketNumber);
                             }
                             catch (SocketException ex) {
-                                throw new InternalErrorException(this, ex, 
+                                throw new InternalErrorException(this, ex,
                                         "Couldn't open new socket number "
                                         + newSocketNumber);
 

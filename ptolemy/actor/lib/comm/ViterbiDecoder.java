@@ -294,7 +294,7 @@ public class ViterbiDecoder extends Transformer {
                    reg = reg + state;
                    int[] parity =  _calculateParity(_mask, _maskNumber, reg);
                    int outValue = 0;
-                   // store the output values as an integer 
+                   // store the output values as an integer
                    // in the order of yn...y1y0
                    for (int i = _maskNumber - 1; i >= 0; i --) {
                        outValue = outValue << 1;

@@ -46,7 +46,7 @@ import org.w3c.dom.Document;
 /** Utilities methods for operating on HSIF files.  These methods
 are in a separate non-graphical class so that we can test them
 as part of the nightly build, or provide non-graphical tools
-that use these methods 
+that use these methods
 
 
 @author Christopher Hylands
@@ -72,7 +72,7 @@ public class HSIFUtilities {
 	// This method takes a FileWriter so that the user can
 	// ensure that the FileWriter exists and is writable before going
 	// through the trouble of doing the conversion.
-	
+
         Document inputDocument = null;
 	try {
 	    inputDocument = XSLTUtilities.parse(input);

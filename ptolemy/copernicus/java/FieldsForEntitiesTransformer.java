@@ -123,7 +123,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
 
         _options = options;
         _debug = Options.getBoolean(options, "debug");
-   
+
         _replaceEntityCalls(ModelTransformer.getModelClass(),
                 _model);
     }
@@ -272,7 +272,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
             DefinitionStmt stmt = _getFieldDef(baseLocal, unit, localDefs);
             FieldRef ref = (FieldRef) stmt.getRightOp();
             SootField field = ref.getField();
-            CompositeEntity container = (CompositeEntity) 
+            CompositeEntity container = (CompositeEntity)
                 ModelTransformer.getEntityForField(field);
             return ModelTransformer.getFieldRefForEntity(container.getEntity(name));
         }

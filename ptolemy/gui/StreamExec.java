@@ -83,7 +83,7 @@ public class StreamExec {
     /** Return the value of the Process.  Typically the return value
      *  of this method is used to have the caller wait for the process
      *  to exit.
-     */   
+     */
     public Process getProcess() {
         return _process;
     }
@@ -144,7 +144,7 @@ public class StreamExec {
 
     /** Set the text of the status bar.  In this base class, do
      *  nothing, derived classes may update a status bar.
-     */   
+     */
     public void updateStatusBar(final String text) {
     }
 
@@ -155,7 +155,7 @@ public class StreamExec {
     /** Set the maximum of the progress bar.  In this base class, do
      *  nothing, derived classes may update the size of the progress bar.
      *  @param size The maximum size of the progress bar.
-     */   
+     */
     protected void _setProgressBarMaximum(int size) {
     }
 

@@ -219,9 +219,9 @@ abstract public class GRPickActor extends GRActor {
         public void updateScene(int xpos, int ypos) {
             PickResult pickResult = null;
             Shape3D shape = null;
-            
+
             pickCanvas.setShapeLocation(xpos, ypos);
-            
+
             pickResult = pickCanvas.pickClosest();
     	    if (pickResult != null) {
     	        if (mevent.getModifiers() == 4) {

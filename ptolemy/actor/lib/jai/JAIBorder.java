@@ -50,7 +50,7 @@ import javax.media.jai.BorderExtenderConstant;
 //// JAIBorder
 /**
    Adds a border to an image.  The amount to pad must be specified for all
-   four sides.  There are five different borders to choose from.  
+   four sides.  There are five different borders to choose from.
    <p>
    Constant - A constant border adds constant values to the sides of the
    image.  The user may specify either one constant to be applied to all
@@ -59,14 +59,14 @@ import javax.media.jai.BorderExtenderConstant;
    Copy - This border copys the edges of the original image, and uses it
    to fill in the border values.
    <p>
-   Reflect - This border reflects the edge of the image, and keeps 
+   Reflect - This border reflects the edge of the image, and keeps
    flipping until it reaches the edge of the new image.
    <p>
    Wrap - This border periodically repeats the image and clamps the size
    to only include what is specified.
    <p>
    Zero - This border fills in the borders with zeros in each band.
-   
+
    @author James Yeh
    @version $Id$
  */
@@ -89,17 +89,17 @@ public class JAIBorder extends Transformer {
         rightPadding = new Parameter(this, "rightPadding", new IntToken(0));
         topPadding = new Parameter(this, "topPadding", new IntToken(0));
         bottomPadding = new Parameter(this, "bottomPadding", new IntToken(0));
-        
+
         borderType = new StringAttribute(this, "borderType");
         borderType.setExpression("Zero");
         _borderType = _BORDER_ZERO;
 
-        constants = 
+        constants =
             new Parameter(this, "constants", new ArrayToken(_initialArray));
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  //// 
+    ////                     ports and parameters                  ////
 
     /** The type of border to use */
     public StringAttribute borderType;
@@ -107,24 +107,24 @@ public class JAIBorder extends Transformer {
     /** The constants to use if the Constant border type is chosen. */
     public Parameter constants;
 
-    /** The amount of pixels to pad the bottom with.  The default is 
+    /** The amount of pixels to pad the bottom with.  The default is
      *  the integer value 0.
      */
     public Parameter bottomPadding;
 
-    /** The amount of pixels to pad the left side with.  The default is 
+    /** The amount of pixels to pad the left side with.  The default is
      *  the integer value 0.
-     */    
+     */
     public Parameter leftPadding;
 
-    /** The amount of pixels to pad the right side with.  The default is 
+    /** The amount of pixels to pad the right side with.  The default is
      *  the integer value 0.
-     */     
+     */
     public Parameter rightPadding;
 
-    /** The amount of pixels to pad the top with.  The default is 
+    /** The amount of pixels to pad the top with.  The default is
      *  the integer value 0.
-     */    
+     */
     public Parameter topPadding;
 
 
@@ -151,7 +151,7 @@ public class JAIBorder extends Transformer {
             } else if (name.equals("Zero")) {
                 _borderType = _BORDER_ZERO;
             } else {
-                throw new IllegalActionException(this, 
+                throw new IllegalActionException(this,
                         "Unrecognized Border Name: " + name);
             }
         } else if (attribute == leftPadding) {
@@ -172,7 +172,7 @@ public class JAIBorder extends Transformer {
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Fire this actor.
      *  @exception IllegalActionException If a contained method throws it,
      *   or if a token is received that contains a null image.
@@ -214,8 +214,8 @@ public class JAIBorder extends Transformer {
         }
 
         RenderedOp newImage = JAI.create("Border", parameters);
-        output.send(0, new JAIImageToken(newImage)); 
-    }       
+        output.send(0, new JAIImageToken(newImage));
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

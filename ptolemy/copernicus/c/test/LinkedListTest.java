@@ -49,7 +49,7 @@ public class  LinkedListTest{
 
     public static void main(String args[]) {
         LinkedList list = new LinkedList();
-        
+
         // Test add
         list.add("1");
         list.add("3");
@@ -71,16 +71,16 @@ public class  LinkedListTest{
             System.out.println(items.next());
         }
         System.out.println();
-        
+
         // Test size.
         int size = list.size();
-        
+
         // Test get()
         for (int i = 0; i < size; i++) {
             System.out.println(list.get(i));
         }
         System.out.println();
-        
+
         // Test removeFirst()
         for (int i = 0; i < size; i++) {
             // FIXME: Make this an Object print instead of a String print.

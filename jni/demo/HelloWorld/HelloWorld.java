@@ -7,7 +7,7 @@ public class HelloWorld {
     // private static void writeHelloWorldToStdout() {
     //    System.out.println("Hello World");
     //}
-    
+
     public static void main(String[] args) {
 	System.loadLibrary("HelloWorld");
         writeHelloWorldToStdout();

@@ -43,10 +43,10 @@ import javax.media.jai.RenderedOp;
 //////////////////////////////////////////////////////////////////////////
 //// JAIBoxFilter
 /**
-   Convolve an image with a box filter.  A box filter is a filter where 
+   Convolve an image with a box filter.  A box filter is a filter where
    each value in the filter is the same.  In this actor, the value used is
    one divided by the number of entries in the filter.
-   
+
    @author James Yeh
    @version $Id$
  */
@@ -64,31 +64,31 @@ public class JAIBoxFilter extends Transformer {
     public JAIBoxFilter(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         width = new Parameter(this, "width", new IntToken(3));
         height = new Parameter(this, "height", new IntToken(3));
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  //// 
+    ////                     ports and parameters                  ////
 
     /** The height of the box filter.
      */
     public Parameter height;
 
     /** The width of the box filter.
-     */    
+     */
     public Parameter width;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Override the base class and set the width, and the height of 
+    /** Override the base class and set the width, and the height of
      *  the box filter.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If a contained method throws it.
      */
-    public void attributeChanged(Attribute attribute) 
+    public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == width) {
             _width = ((IntToken)width.getToken()).intValue();
@@ -98,7 +98,7 @@ public class JAIBoxFilter extends Transformer {
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Fire this actor.
      *  Output the cropped RenderedOp.
      *  @exception IllegalActionException If a contained method throws it,
@@ -114,15 +114,15 @@ public class JAIBoxFilter extends Transformer {
         parameters.add(_width);
         parameters.add(_height);
         RenderedOp newImage = JAI.create("boxfilter", parameters);
-        output.send(0, new JAIImageToken(newImage)); 
-    }    
+        output.send(0, new JAIImageToken(newImage));
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** The value of the height of the box filter.  */
     private int _height;
-    
+
     /** The value of the width of the box filter.  */
     private int _width;
 }

@@ -116,7 +116,7 @@ public class LibraryUsageReporter extends SceneTransformer {
             if(method.isStatic() ||
                     createableClasses.contains(method.getDeclaringClass())) {
                 list.add(methodName);
-                RTAReachableClasses.add(method.getDeclaringClass());  
+                RTAReachableClasses.add(method.getDeclaringClass());
             }
         }
         Collections.sort(list);
@@ -125,7 +125,7 @@ public class LibraryUsageReporter extends SceneTransformer {
         }
         try {
             FileWriter writer = new FileWriter(outDir + "/jarClassList.txt");
-            for(Iterator classes = RTAReachableClasses.iterator(); 
+            for(Iterator classes = RTAReachableClasses.iterator();
                 classes.hasNext();) {
                 SootClass theClass = (SootClass)classes.next();
                 if(!theClass.getName().startsWith("java")) {

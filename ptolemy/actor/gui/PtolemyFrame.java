@@ -209,9 +209,9 @@ public abstract class PtolemyFrame extends TableauFrame {
                 if (state == Manager.IDLE
                         && state == Manager.PAUSED) {
                     return super._saveAs();
-                } else {                
+                } else {
                     manager.pause();
-                    boolean returnValue = super._saveAs(); 
+                    boolean returnValue = super._saveAs();
                     manager.resume();
                     return returnValue;
                 }

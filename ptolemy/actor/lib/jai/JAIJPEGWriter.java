@@ -57,7 +57,7 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// JAIJPEGWriter
 /**
-   Write a javax.media.jai.RenderedOp to a specified JPEG file.  
+   Write a javax.media.jai.RenderedOp to a specified JPEG file.
    <p>
    The file is specified by the <i>fileName</i> attribute
    using any form acceptable to FileAttribute.
@@ -66,7 +66,7 @@ import ptolemy.kernel.util.*;
    then this actor will overwrite the specified file if it exists
    without asking.  If <i>true</i> (the default), then if the file
    exists, then this actor will ask for confirmation before overwriting.
-   
+
    @see FileAttribute
    @author James Yeh
    @version $Id$
@@ -86,43 +86,43 @@ public class JAIJPEGWriter extends Sink {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.OBJECT);
-        
+
         fileName = new FileAttribute(this, "fileName");
-        
+
         writeJFIFHeader = new Parameter(this, "writeJFIFHeader");
         writeJFIFHeader.setTypeEquals(BaseType.BOOLEAN);
-        writeJFIFHeader.setToken(BooleanToken.TRUE);        
+        writeJFIFHeader.setToken(BooleanToken.TRUE);
 
         writeImageDataOnly = new Parameter(this, "writeImageDataOnly");
         writeImageDataOnly.setTypeEquals(BaseType.BOOLEAN);
         writeImageDataOnly.setToken(BooleanToken.FALSE);
-        
+
         writeTableDataOnly = new Parameter(this, "writeTableDataOnly");
         writeTableDataOnly.setTypeEquals(BaseType.BOOLEAN);
         writeTableDataOnly.setToken(BooleanToken.FALSE);
 
         quality = new Parameter(this, "quality", new DoubleToken("0.75F"));
-        
+
         useDefaultLuminanceTable = new Parameter(this, "useDefaultLuminanceTable");
         useDefaultLuminanceTable.setTypeEquals(BaseType.BOOLEAN);
         useDefaultLuminanceTable.setToken(BooleanToken.TRUE);
 
-        userSpecifiedLuminanceTable = new Parameter(this, "userSpecifiedLuminanceTable", 
+        userSpecifiedLuminanceTable = new Parameter(this, "userSpecifiedLuminanceTable",
                 new ArrayToken(_defaultSpecifiedTable));
-        
+
         useDefaultChrominanceTable = new Parameter(this, "useDefaultChrominanceTable");
         useDefaultChrominanceTable.setTypeEquals(BaseType.BOOLEAN);
         useDefaultChrominanceTable.setToken(BooleanToken.TRUE);
 
-        userSpecifiedChrominanceTable = new Parameter(this, "userSpecifiedChrominanceTable", 
+        userSpecifiedChrominanceTable = new Parameter(this, "userSpecifiedChrominanceTable",
                 new ArrayToken(_defaultSpecifiedTable));
-                
+
         horizontalSubsampling = new Parameter(this, "horizontalSubsampling", new ArrayToken(_defaultSubsampling));
 
-        verticalSubsampling = new Parameter(this, "verticalSubsampling", new ArrayToken(_defaultSubsampling));       
+        verticalSubsampling = new Parameter(this, "verticalSubsampling", new ArrayToken(_defaultSubsampling));
 
         restartInterval = new Parameter(this, "restartInterval", new IntToken(0));
-        
+
         confirmOverwrite = new Parameter(this, "confirmOverwrite");
         confirmOverwrite.setTypeEquals(BaseType.BOOLEAN);
         confirmOverwrite.setToken(BooleanToken.TRUE);
@@ -137,11 +137,11 @@ public class JAIJPEGWriter extends Sink {
      *  @see FileAttribute
      */
     public FileAttribute fileName;
-    
+
     /** If <i>false</i>, then overwrite the specified file if it exists
      *  without asking.  If <i>true</i> (the default), then if the file
      *  exists, ask for confirmation before overwriting.
-     */    
+     */
     public Parameter confirmOverwrite;
 
     /** The subsampling scheme in the horizontal direction.  This
@@ -149,7 +149,7 @@ public class JAIJPEGWriter extends Sink {
      *  band, such as in grayscale, then only the first value is used.
      *  Otherwise, all three values are used.  The default values are
      *  (1,2,2) because the two chrominance bands can be subsampled
-     *  because the human visual system has a lower sensitivity to 
+     *  because the human visual system has a lower sensitivity to
      *  errors in these two bands compared to the luminance band.
      */
     public Parameter horizontalSubsampling;
@@ -161,8 +161,8 @@ public class JAIJPEGWriter extends Sink {
      */
     public Parameter quality;
 
-    /** The restart interval in number of JPEG Minimum Coded Units 
-     *  (MCUs).  JPEG images can use these restart markers to 
+    /** The restart interval in number of JPEG Minimum Coded Units
+     *  (MCUs).  JPEG images can use these restart markers to
      *  periodically delineate image segments to limit the effect
      *  of bitstream errors to a single interval.  The default
      *  is zero.
@@ -170,31 +170,31 @@ public class JAIJPEGWriter extends Sink {
     public Parameter restartInterval;
 
     /** If <i>true</i> (the default), then the encoder will use the
-     *  default chrominance quantization table.  The default table 
+     *  default chrominance quantization table.  The default table
      *  depends on the Quality parameter.
      *  If <i>false</i> then the encoder will use the user specified
-     *  luminance table.  The Quality parameter is ignored in the 
+     *  luminance table.  The Quality parameter is ignored in the
      *  creation of the chrominance table.
      */
     public Parameter useDefaultChrominanceTable;
 
     /** If <i>true</i> (the default), then the encoder will use the
-     *  default luminance quantization table.  The default table 
+     *  default luminance quantization table.  The default table
      *  depends on the Quality parameter.
      *  If <i>false</i> then the encoder will use the user specified
-     *  luminance table.  The Quality parameter is ignored in the 
+     *  luminance table.  The Quality parameter is ignored in the
      *  creation of the luminance table.
      */
     public Parameter useDefaultLuminanceTable;
 
-    /** If the user decides not to use the default chrominance 
+    /** If the user decides not to use the default chrominance
      *  quantization table then the user must specify a table to use
      *  in zig-zag order.  The table must be 8x8, hence then array
      *  must have 64 values.
      */
     public Parameter userSpecifiedChrominanceTable;
-    
-    /** If the user decides not to use the default luminance 
+
+    /** If the user decides not to use the default luminance
      *  quantization table then the user must specify a table to use
      *  in zig-zag order.  The table must be 8x8, hence then array
      *  must have 64 values.
@@ -206,20 +206,20 @@ public class JAIJPEGWriter extends Sink {
      *  band, such as in grayscale, then only the first value is used.
      *  Otherwise, all three values are used.  The default values are
      *  (1,2,2) because the two chrominance bands can be subsampled
-     *  because the human visual system has a lower sensitivity to 
+     *  because the human visual system has a lower sensitivity to
      *  errors in these two bands compared to the luminance band.
      */
     public Parameter verticalSubsampling;
 
     /** If <i>true</i>, the encoder will only write the image data
-     *  to the file.  If <i>false</i> (the default) and if 
-     *  writeTableDataOnly is false, then the file will be written 
-     *  with both table and image data.  If both are true, an 
+     *  to the file.  If <i>false</i> (the default) and if
+     *  writeTableDataOnly is false, then the file will be written
+     *  with both table and image data.  If both are true, an
      *  exception will be thrown.
      */
     public Parameter writeImageDataOnly;
-    
-    /** If <i>true</i> (the default), the encoder will write a JFIF 
+
+    /** If <i>true</i> (the default), the encoder will write a JFIF
      *  header, using a marker.The marker includes data such as
      *  version number, x and y pixel density, pixel aspect ratio.
      *  If <i>false</i>, then the encoder will not write a JFIF header.
@@ -236,20 +236,20 @@ public class JAIJPEGWriter extends Sink {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Initialize this actor.
      *  Set the encoding parameters.
      *  @exception IllegalActionException If a contained method throws,
-     *  it, or if both writeImageDataOnly and writeTableDataOnly are 
+     *  it, or if both writeImageDataOnly and writeTableDataOnly are
      *  set to true.
-     */    
+     */
     public void initialize() throws IllegalActionException {
         super.initialize();
         _file = fileName.asFile();
         _fileRoot = _file.toString();
         _jpegEncodeParameters = new JPEGEncodeParam();
         _jpegEncodeParameters.setWriteJFIFHeader(((BooleanToken)writeJFIFHeader.getToken()).booleanValue());
-        boolean writeImageDataOnlyValue = 
+        boolean writeImageDataOnlyValue =
             ((BooleanToken)writeImageDataOnly.getToken()).booleanValue();
         boolean writeTableDataOnlyValue =
             ((BooleanToken)writeTableDataOnly.getToken()).booleanValue();
@@ -265,7 +265,7 @@ public class JAIJPEGWriter extends Sink {
             _jpegEncodeParameters.setLumaQTable(_tableFiller((ArrayToken)userSpecifiedLuminanceTable.getToken()));
         }
         if (!((BooleanToken)useDefaultChrominanceTable.getToken()).booleanValue()) {
-            _jpegEncodeParameters.setChromaQTable(_tableFiller((ArrayToken)userSpecifiedChrominanceTable.getToken()));            
+            _jpegEncodeParameters.setChromaQTable(_tableFiller((ArrayToken)userSpecifiedChrominanceTable.getToken()));
         }
 
         Token horizontalSubsamplingData[] = ((ArrayToken)horizontalSubsampling.getToken()).arrayValue();
@@ -297,7 +297,7 @@ public class JAIJPEGWriter extends Sink {
                             "OK to overwrite " + _file + "?")) {
                     throw new IllegalActionException(this,
                             "Please select another file name.");
-                }                
+                }
             }
         }
         else {
@@ -325,7 +325,7 @@ public class JAIJPEGWriter extends Sink {
         } catch (IOException error) {
             throw new IllegalActionException("Couldn't encode image");
         }
-        return false; 
+        return false;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -350,12 +350,12 @@ public class JAIJPEGWriter extends Sink {
     /** IntTokens used in the creation of IntToken arrays. */
     private IntToken _one = new IntToken(1);
     private IntToken _two = new IntToken(2);
-    
+
     /** The default Subsampling array */
     private IntToken _defaultSubsampling[] = {_one, _two, _two};
-    
+
     /** The default quantization table */
-    private IntToken _defaultSpecifiedTable[] = 
+    private IntToken _defaultSpecifiedTable[] =
     {_one, _one, _one, _one, _one, _one, _one, _one,
      _one, _one, _one, _one, _one, _one, _one, _one,
      _one, _one, _one, _one, _one, _one, _one, _one,
@@ -370,7 +370,7 @@ public class JAIJPEGWriter extends Sink {
 
     /** The File to be saved to. */
     private File _file;
-    
+
     /** The above file as a String. */
     private String _fileRoot;
 

@@ -143,7 +143,7 @@ public class OutputActionsAttribute
                 Integer channel = (Integer)channels.next();
                 ASTPtRootNode parseTree = (ASTPtRootNode)parseTrees.next();
                 Token token;
-                try {                       
+                try {
                     token = _parseTreeEvaluator.evaluateParseTree(
                             parseTree, _scope);
                 } catch (IllegalActionException ex) {

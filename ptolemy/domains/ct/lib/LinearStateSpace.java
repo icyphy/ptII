@@ -430,15 +430,15 @@ public class LinearStateSpace extends TypedCompositeActor {
         int m = b.getColumnCount();
         if (input.getWidth() != m) {
             throw new IllegalActionException(this,
-                    "The number of columns of the B matrix (" + 
+                    "The number of columns of the B matrix (" +
                     b.getColumnCount() + ") should be equal to "
-                    + "the width of the input port (" 
+                    + "the width of the input port ("
                     + input.getWidth() + ").");
         }
         DoubleMatrixToken c = (DoubleMatrixToken)C.getToken();
         if (c.getColumnCount() != n) {
             throw new IllegalActionException(this,
-                    "The number of columns of the C matrix (" + 
+                    "The number of columns of the C matrix (" +
                     c.getColumnCount() + ") should be equal to "
                     + "the number of rows of the A matrix (" + n + ").");
         }
@@ -449,14 +449,14 @@ public class LinearStateSpace extends TypedCompositeActor {
             throw new IllegalActionException(this,
                     "The number of rows of the D matrix (" + d.getRowCount() +
                     ") should be equal to "
-                    + "the number of rows of the C matrix (" + 
+                    + "the number of rows of the C matrix (" +
                     c.getRowCount() + ").");
         }
         if (d.getColumnCount() != input.getWidth()) {
             throw new IllegalActionException(this,
                     "The number of columns of the D matrix (" +
                     d.getColumnCount() + ") should be equal to "
-                    + "the width of the input port (" 
+                    + "the width of the input port ("
                     + input.getWidth() + ").");
         }
         DoubleMatrixToken x0 = (DoubleMatrixToken)initialStates.getToken();

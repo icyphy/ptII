@@ -122,8 +122,8 @@ public class TestPtolemyThread extends PtolemyThread {
     /** Send a debug event to all debug listeners that have registered.
      *  TestPtolemyThread exists solely because in the parent class
      *  _debug() is protected
-     *  @param event The event. 
-     */ 
+     *  @param event The event.
+     */
     public void debug(DebugEvent event) {
        _debug(event);
     }

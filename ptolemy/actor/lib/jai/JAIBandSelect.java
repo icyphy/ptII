@@ -47,10 +47,10 @@ import javax.media.jai.RenderedOp;
 /**
    Copy bands of an image to another image.  The number of bands to copy
    is indicated by the length of the array.  The band to copy is indicated
-   by each value of the array.  For instance, if the user wants to 
-   duplicate each band of a three band image, the value of the array 
+   by each value of the array.  For instance, if the user wants to
+   duplicate each band of a three band image, the value of the array
    parameter should be {0,0,1,1,2,2}.
-   
+
    @author James Yeh
    @version $Id$
  */
@@ -68,13 +68,13 @@ public class JAIBandSelect extends Transformer {
     public JAIBandSelect(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
-        bandIndices = 
+
+        bandIndices =
             new Parameter(this, "bandIndices", new ArrayToken(_initialArray));
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  //// 
+    ////                     ports and parameters                  ////
 
     /** The bands to copy to the output.
      */
@@ -87,7 +87,7 @@ public class JAIBandSelect extends Transformer {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If a contained method throws it.
      */
-    public void attributeChanged(Attribute attribute) 
+    public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == bandIndices) {
             Token data[] = ((ArrayToken)bandIndices.getToken()).arrayValue();
@@ -98,8 +98,8 @@ public class JAIBandSelect extends Transformer {
         } else {
             super.attributeChanged(attribute);
         }
-    }    
-    
+    }
+
     /** Fire this actor.
      *  @exception IllegalActionException If a contained method throws it,
      *   or if a token is received that contains a null image.
@@ -113,8 +113,8 @@ public class JAIBandSelect extends Transformer {
         parameters.addSource(oldImage);
         parameters.add(_indiceArray);
         RenderedOp newImage = JAI.create("bandSelect", parameters);
-        output.send(0, new JAIImageToken(newImage)); 
-    }        
+        output.send(0, new JAIImageToken(newImage));
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

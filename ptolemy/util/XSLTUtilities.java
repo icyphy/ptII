@@ -89,14 +89,14 @@ public class XSLTUtilities {
      *       $PTII/ptolemy/hsif/xsl/GlobalVariablePreprocessor.xsl \
      *       /tmp/SwimmingPool_1.xml
      * </pre>
-     
+
      * @args args At least three arguments:
      * <ul>
      * <li> The first argument is the input file name.
      * <li> The second through n-1 arguments are the names xsl files.
      * <li> The final argument is the output file name.
-     * @exception Exception If there are problems with the transform. 
-     */ 
+     * @exception Exception If there are problems with the transform.
+     */
     public static void main(String []args) throws Exception {
 	if (args.length < 3) {
 	    System.err.println("Usage: java -classpath $PTII "
@@ -141,7 +141,7 @@ public class XSLTUtilities {
      */
     public static String toString(Document document) throws Exception {
 	// FIXME: Joern's sample code had this in it, but if we
-	// include it, then we get Provider   not found errors 
+	// include it, then we get Provider   not found errors
 	//String defaultDBFI =
 	//    System.getProperty("javax.xml.parsers.DocumentBuilderFactory");
 	//System.setProperty("javax.xml.parsers.DocumentBuilderFactory",

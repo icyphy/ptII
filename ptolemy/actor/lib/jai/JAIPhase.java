@@ -46,10 +46,10 @@ import javax.media.jai.RenderedOp;
    (0 and 1, 2 and 3, etc.) correspond to a real-imaginary pair.
    <p>
    The output of this actor may not be suitable for display because of the
-   high resolution of the data.  To display or save the output of this 
-   image, use the JAIDataCaster Actor to cast the data to an appropriate 
-   type (for instance, byte).  For images with non-floating point data, 
-   the theoretical output range of -pi to pi, gets mapped to 0 to 
+   high resolution of the data.  To display or save the output of this
+   image, use the JAIDataCaster Actor to cast the data to an appropriate
+   type (for instance, byte).  For images with non-floating point data,
+   the theoretical output range of -pi to pi, gets mapped to 0 to
    MAX_VALUE, where MAX_VALUE is the largest representable number of the
    data type.  If the input is floating point data, then it returns the
    value given by java.lang.math.atan2().
@@ -68,7 +68,7 @@ public class JAIPhase extends Transformer {
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
-     */      
+     */
     public JAIPhase(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -83,7 +83,7 @@ public class JAIPhase extends Transformer {
      *  Output the phase of the complex image.
      *  @exception IllegalActionException If a contained method throws it,
      *  or if there is an invalid scaling type, or an invalid data nature
-     *  set.     
+     *  set.
      */
     public void fire() throws IllegalActionException {
         super.fire();

@@ -148,7 +148,7 @@ public class MoMLUndoChangeRequest extends ChangeRequest {
                 (ParserAttribute)toplevel.getAttribute("_parser");
         // No parser associated with this model??
         if (parserAttribute == null) {
-            // If there is a context, but no parser, then there is 
+            // If there is a context, but no parser, then there is
             // nothing to undo.  This may or may not be a bug.
             return;
             // 	    throw new InternalErrorException(_context, null,

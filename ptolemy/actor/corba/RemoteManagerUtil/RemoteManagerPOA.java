@@ -208,13 +208,13 @@ public abstract class RemoteManagerPOA extends org.omg.PortableServer.Servant
     return (String[])__ids.clone ();
   }
 
-  public RemoteManager _this() 
+  public RemoteManager _this()
   {
     return RemoteManagerHelper.narrow(
     super._this_object());
   }
 
-  public RemoteManager _this(org.omg.CORBA.ORB orb) 
+  public RemoteManager _this(org.omg.CORBA.ORB orb)
   {
     return RemoteManagerHelper.narrow(
     super._this_object(orb));

@@ -74,13 +74,13 @@ import ptolemy.copernicus.kernel.*;
 @since Ptolemy II 2.0
 */
 public class ExpressionCreator implements AtomicActorCreator {
- 
+
     /** Generate a new class with the given name that can take the
      *  place of the given actor.  Use the given options when
      *  necessary.  The given entity is assumed to be an expression actor.
      */
     public SootClass createAtomicActor(
-            Entity actor, String newClassName, 
+            Entity actor, String newClassName,
             ConstVariableModelAnalysis constAnalysis, Map options) {
         Expression entity = (Expression)actor;
         SootClass entityClass = PtolemyUtilities.actorClass;
@@ -257,7 +257,7 @@ public class ExpressionCreator implements AtomicActorCreator {
         // FIXME: This would be nice to do by inlining instead of
         // special casing.
         ModelTransformer.implementExecutableInterface(entityInstanceClass);
-        
+
         // Reinitialize the hierarchy, since we've added classes.
         Scene.v().setActiveHierarchy(new Hierarchy());
         Scene.v().setActiveFastHierarchy(new FastHierarchy());

@@ -213,7 +213,7 @@ public abstract class Top extends JFrame {
     }
 
     /** Report a Throwable, which is usually an Exception but can also
-     *	be an Error. 
+     *	be an Error.
      *  This pops up a window with the option of examining the stack
      *  trace, and reports the specified message in the status bar, if
      *  there is one.

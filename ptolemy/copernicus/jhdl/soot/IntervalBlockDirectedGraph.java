@@ -101,8 +101,8 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
      * This constructor will create an IntervalBlockDirectedGraph
      * object from a SootMethod.
      **/
-    public IntervalBlockDirectedGraph(SootMethod method) 
-	throws JHDLUnsupportedException, SootASTException, 
+    public IntervalBlockDirectedGraph(SootMethod method)
+	throws JHDLUnsupportedException, SootASTException,
 	       IllegalActionException {
 	this(new IntervalChain(method));
     }

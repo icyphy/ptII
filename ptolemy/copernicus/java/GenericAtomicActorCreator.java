@@ -73,7 +73,7 @@ import ptolemy.copernicus.kernel.*;
 @since Ptolemy II 2.0
 */
 public class GenericAtomicActorCreator implements AtomicActorCreator {
- 
+
     /** Generate a new class with the given name that can take the
      *  place of the given actor.  Use the given options when
      *  necessary.  The given entity is assumed to be an expression actor.
@@ -82,7 +82,7 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
             Entity actor, String newClassName,
             ConstVariableModelAnalysis constAnalysis, Map options) {
         TypedAtomicActor entity = (TypedAtomicActor)actor;
-  
+
         String className = entity.getClass().getName();
 
         SootClass entityClass = Scene.v().loadClassAndSupport(className);

@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 */
 package ptolemy.data;
- 
+
 import java.awt.Image;
 
 import ptolemy.data.type.*;
@@ -33,20 +33,20 @@ import ptolemy.data.type.*;
 //////////////////////////////////////////////////////////////////////////
 //// AWTImageToken
 /**
-   A token that contains a java.awt.Image.  This token is used in the 
+   A token that contains a java.awt.Image.  This token is used in the
    standard image processing library.
    @author James Yeh
    @version $Id$
 */
 
 public class AWTImageToken extends ImageToken {
-    
+
     /** Construct a token with a specified java.awt.Image.
      */
     public AWTImageToken(Image value) {
         _value = value;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -60,16 +60,16 @@ public class AWTImageToken extends ImageToken {
     public Type getType() {
         return BaseType.OBJECT;
     }
-    
+
     /** Return the java.awt.Image
      */
     public Image getValue() {
         return _value;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The java.awt.Image */
     private Image _value;
 

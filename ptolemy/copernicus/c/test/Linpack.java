@@ -49,11 +49,11 @@ public class Linpack{
         Linpack a = new Linpack();
         a.run_benchmark(500, 500*2);
     }
- 
+
     final double abs (double d) {
         return (d >= 0) ? d : -d;
     }
-    
+
     double second()
     {
         if (second_orig==-1) {
@@ -61,7 +61,7 @@ public class Linpack{
         }
         return (System.currentTimeMillis() - second_orig)/1000;
     }
-    
+
     public void run_benchmark (int n, int ldaa)
     {
         int lda = ldaa+1;
@@ -73,11 +73,11 @@ public class Linpack{
         double kf;
         int i,ntimes,info,kflops;
         int ipvt[] = new int[ldaa];
-        
+
         cray = .056;
-        
+
         ops = (2.0e0*(n*n*n))/3.0 + 2.0*(n*n);
-        
+
         /* Norm a == max element. */
         norma = matgen(a,lda,n,b);
         time = second();
@@ -86,7 +86,7 @@ public class Linpack{
         /* Solve ax=b. */
         dgesl(a,lda,n,ipvt,b,0);
         total = second() - time;
-        
+
         for (i = 0; i < n; i++) {
             x[i] = b[i];
         }
@@ -101,7 +101,7 @@ public class Linpack{
             resid = (resid > abs(b[i])) ? resid : abs(b[i]);
             normx = (normx > abs(x[i])) ? normx : abs(x[i]);
         }
-        
+
         eps_result = epslon((double)1.0);
         residn_result = resid/( n*norma*normx*eps_result );
         residn_result += 0.005; // for rounding
@@ -115,16 +115,16 @@ public class Linpack{
         mflops_result += 0.0005; // for rounding
         mflops_result = (int)(mflops_result*1000);
         mflops_result /= 1000;
-       
+
     }
-    
-    
+
+
     final double matgen (double a[][], int lda, int n, double b[])
     {
         Random gen;
         double norma;
         int init, i, j;
-        
+
         init = 1325;
         norma = 0.0;
         gen = new Random();
@@ -146,39 +146,39 @@ norma = (a[j][i] > norma) ? a[j][i] : norma;
 b[i] += a[j][i];
             }
         }
-        
+
         return norma;
     }
-    
+
     /*
         dgefa factors a double precision matrix by gaussian elimination.
-        
+
         dgefa is usually called by dgeco, but it can be called
         directly with a saving in time if    rcond    is not needed.
         (time for dgeco) = (1 + 9/n)*(time for dgefa) .
-        
+
         on entry
-        
+
         a             double precision[n][lda]
         the matrix to be factored.
-        
+
         lda         integer
         the leading dimension of the array    a .
-        
+
         n             integer
         the order of the matrix    a .
-        
+
         on return
-        
+
         a             an upper triangular matrix and the multipliers
         which were used to obtain it.
         the factorization can be written    a = l*u    where
         l    is a product of permutation and unit lower
         triangular matrices and    u    is upper triangular.
-        
+
         ipvt        integer[n]
         an integer vector of pivot indices.
-        
+
         info        integer
         = 0    normal value.
         = k    if    u[k][k] .eq. 0.0 .    this is not an error
@@ -186,12 +186,12 @@ b[i] += a[j][i];
         indicate that dgesl or dgedi will divide by zero
         if called.    use    rcond    in dgeco for a reliable
         indication of singularity.
-        
+
         linpack. this version dated 08/14/78.
         cleve moler, university of new mexico, argonne national lab.
-        
+
         functions
-        
+
         blas daxpy,dscal,idamax
     */
     final int dgefa( double a[][], int lda, int n, int ipvt[])
@@ -200,9 +200,9 @@ b[i] += a[j][i];
         double t;
         int j,k,kp1,l,nm1;
         int info;
-        
+
         // gaussian elimination with partial pivoting
-        
+
         info = 0;
         nm1 = n - 1;
         if (nm1 >=    0) {
@@ -218,22 +218,22 @@ ipvt[k] = l;
 // zero pivot implies this column already triangularized
 
 if (col_k[l] != 0) {
-    
+
     // interchange if necessary
-    
+
     if (l != k) {
         t = col_k[l];
         col_k[l] = col_k[k];
         col_k[k] = t;
     }
-    
+
     // compute multipliers
-    
+
     t = -1.0/col_k[k];
     dscal(n-(kp1),t,col_k,kp1,1);
-    
+
     // row elimination with column indexing
-    
+
     for (j = kp1; j < n; j++) {
         col_j = a[j];
         t = col_j[l];
@@ -252,11 +252,11 @@ else {
         }
         ipvt[n-1] = n-1;
         if (a[(n-1)][(n-1)] == 0) info = n-1;
-        
+
         return info;
     }
-    
-    
+
+
     /**
      * dgesl solves the double precision system
      * a * x = b    or    trans(a) * x = b
@@ -304,12 +304,12 @@ else {
      * for (j=0,j<p,j++)
      * dgesl(a,lda,n,ipvt,c[j][0],0);
      * }
-     * 
+     *
      * linpack. this version dated 08/14/78 .
      * cleve moler, university of new mexico, argonne national lab.
-     * 
+     *
      * functions
-     * 
+     *
      * blas daxpy,ddot
      **/
     final void dgesl( double a[][], int lda, int n, int ipvt[], double b[], int job)
@@ -345,7 +345,7 @@ daxpy(k,t,a[k],0,1,b,0,1);
 t = ddot(k,a[k],0,1,b,0,1);
 b[k] = (b[k] - t)/a[k][k];
             }
-            // now solve trans(l)*x = y 
+            // now solve trans(l)*x = y
             if (nm1 >= 1) {
 //for (kb = 1; kb < nm1; kb++) {
 for (kb = 0; kb < nm1; kb++) {
@@ -401,7 +401,7 @@ for (i=0; i < n; i++)
         int i,ix,iy;
         dtemp = 0;
         if (n > 0) {
-            
+
             if (incx != 1 || incy != 1) {
                 // code for unequal increments or equal increments not equal to 1
                 ix = 0;
@@ -443,7 +443,7 @@ for (i = 0; i < n; i++)
             }
         }
     }
-    
+
     /**
      * finds the index of element having max. absolute value.
      * jack dongarra, linpack, 3/11/78.
@@ -482,10 +482,10 @@ if (dtemp > dmax) {
         }
         return (itemp);
     }
-    
+
     /**
      * estimate unit roundoff in quantities of size x.
-     * 
+     *
      * this program should function properly on all systems
      * satisfying the following two assumptions,
      * 1.    the base used in representing dfloating point
@@ -504,12 +504,12 @@ if (dtemp > dmax) {
      * the next larger dfloating point number.
      * the developers of eispack would appreciate being informed
      * about any systems where these assumptions do not hold.
-     * 
+     *
      * *****************************************************************
      * this routine is one of the auxiliary routines used by eispack iii
      * to avoid machine dependencies.
      * *****************************************************************
-     * 
+     *
      *     this version dated 4/6/83.
      **/
     final double epslon (double x)
@@ -527,22 +527,22 @@ if (dtemp > dmax) {
     /**
      * purpose:
      * multiply matrix m times vector x and add the result to vector y.
-     * 
+     *
      * parameters:
-     * 
+     *
      * n1 integer, number of elements in vector y, and number of rows in
      * matrix m
-     * 
+     *
      * y double [n1], vector of length n1 to which is added
      * the product m*x
-     * 
+     *
      * n2 integer, number of elements in vector x, and number of columns
      * in matrix m
-     * 
+     *
      * ldm integer, leading dimension of array m
-     * 
+     *
      * x double [n2], vector of length n2
-     * 
+     *
      * m double [ldm][n2], matrix of n1 rows and n2 columns
      **/
     final void dmxpy ( int n1, double y[], int n2, int ldm, double x[], double m[][])
@@ -556,7 +556,7 @@ y[i] += x[j]*m[j][i];
         }
     }
 
-    public void setCurrentRun( double mflops_result, double residn_result, 
+    public void setCurrentRun( double mflops_result, double residn_result,
         double time_result, double eps_result)
     {
         this.mflops_result = mflops_result;

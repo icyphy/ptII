@@ -788,7 +788,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         GraphController controller =
                 (GraphController)graphPane.getGraphController();
         SelectionModel model = controller.getSelectionModel();
-     
+
         AbstractBasicGraphModel graphModel =
             (AbstractBasicGraphModel)controller.getGraphModel();
         Object selection[] = model.getSelectionAsArray();
@@ -812,7 +812,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         // Generate the MoML to carry out the deletion
         StringBuffer moml = new StringBuffer();
         moml.append("<group>\n");
- 
+
         // Delete edges then nodes, since deleting relations may
         // result in deleting links to that relation.
         for (int i = 0; i < selection.length; i++) {
@@ -943,7 +943,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                     edgeSet.add(userObject);
                 }
             }
-            
+
         }
         // Merge the two hashsets so that any edges get deleted first.
         // This is need to avoid problems with relations not existing due to

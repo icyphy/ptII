@@ -105,7 +105,7 @@ public class HSPortInliner implements PortInliner {
         _model = model;
         _options = options;
     }
-    
+
     /** Initialize the inliner.  Create one place buffers for each relation.
      */
     public void initialize() {

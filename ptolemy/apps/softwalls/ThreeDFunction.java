@@ -54,7 +54,7 @@ subset of R^3 for which the dataset is defined.
 */
 public class ThreeDFunction {
     /** Constructs the 3D dataset.
-     *  @exception IllegalActionException if any exception is 
+     *  @exception IllegalActionException if any exception is
      *     is generated during file i/o.
      */
     public ThreeDFunction(String fileName) throws IllegalActionException {
@@ -63,9 +63,9 @@ public class ThreeDFunction {
 	double dimension;
 
 	try {
-	    BufferedReader in = 
+	    BufferedReader in =
 		new BufferedReader(new FileReader(fileName));
-	    
+
             /** Read the dimension of the state space and ignore it,
              * since we know it's value is 3.
              */
@@ -94,7 +94,7 @@ public class ThreeDFunction {
 	    yPoints = (int)Math.round(ySpan / _yStepSize) + 1;
 	    thetaPoints = (int)Math.round(thetaSpan / _thetaStepSize) + 1;
 	    _values = new double[xPoints][yPoints][thetaPoints];
-	    
+
 	    /** Fill in the values array with values, sorted in
              *lexicographical order.
              */
@@ -152,13 +152,13 @@ public class ThreeDFunction {
 
     ///////////////////////////////////////////////////////////////////
     ////                      private variables                    ////
-    
+
     /* Lower bound for each dimension */
-    double _xLowerBound,  _yLowerBound, _thetaLowerBound;	
+    double _xLowerBound,  _yLowerBound, _thetaLowerBound;
 
     /* Step size for each dimension */
     double _xStepSize, _yStepSize, _thetaStepSize;
-	
+
     /* Upper bound for each dimension */
     double _xUpperBound, _yUpperBound, _thetaUpperBound;
 
@@ -173,9 +173,9 @@ public class ThreeDFunction {
 
     ///////////////////////////////////////////////////////////////////
     ////                       private methods                     ////
-    
+
     /*  If a line has no data, it tries to return the next line.
-     *  If no next line exists, it returns null, 
+     *  If no next line exists, it returns null,
      **/
     private double _readDouble(BufferedReader reader) throws IOException {
 	String line;
@@ -212,7 +212,7 @@ public class ThreeDFunction {
             double[][][] split = _splitArray(gridPoints);
             double[][] first = split[0];
             double[][] second = split[1];
-            
+
             /** Determine the dimension along which the division
              * occured, and do linear interpolation along this
              * dimension.
@@ -224,7 +224,7 @@ public class ThreeDFunction {
             secondY = second[0][1];
             firstTheta = first[0][2];
             secondTheta = second[0][2];
-            
+
             double x, y, theta;
             x = point[0];
             y = point[1];
@@ -246,7 +246,7 @@ public class ThreeDFunction {
             else {
                 return Double.NaN;
             }
-            
+
             return firstWeight * _linInterp(point, first)
                 + secondWeight * _linInterp(point, second);
         }
@@ -316,7 +316,7 @@ public class ThreeDFunction {
         for (int i = 0; i < xPoints.length; i += 1) {
             for (int j = 0; j < yPoints.length; j += 1) {
                 for (int k = 0; k < thetaPoints.length; k += 1) {
-                    output[outputIndex] = 
+                    output[outputIndex] =
                         new double[] {xPoints[i], yPoints[j], thetaPoints[k]};
                     outputIndex += 1;
                 }
@@ -336,7 +336,7 @@ public class ThreeDFunction {
 	int[] indices = new int[3];
 	indices[0] = (int)Math.round((x - _xLowerBound) / _xStepSize);
 	indices[1] = (int)Math.round((y - _yLowerBound) / _yStepSize);
-	indices[2] = 
+	indices[2] =
 	    (int)Math.round((theta - _thetaLowerBound) / _thetaStepSize);
         return indices;
     }
@@ -354,13 +354,13 @@ public class ThreeDFunction {
             double xLB, yLB, tLB;
             double xUB, yUB, tUB;
             boolean xOK, yOK, tOK;
-            
+
             x = gridPoints[0][0];
             y = gridPoints[0][1];
             t = gridPoints[0][2];
 
             /** xLB is the lowerbound on x, allowing for some
-             * numerical error. 
+             * numerical error.
              */
             xLB = _xLowerBound - _xTolerance / 2.0;
             yLB = _yLowerBound - _yTolerance / 2.0;

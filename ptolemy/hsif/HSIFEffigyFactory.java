@@ -143,7 +143,7 @@ public class HSIFEffigyFactory extends EffigyFactory {
                 String temporaryOutputFileName =
 		    inputDirectoryBaseName + "_moml.xml";
 
-		
+
 		// Try to open the output file before we go through
 		// the trouble of ding the conversion.
 		FileWriter outputFileWriter = null;
@@ -175,7 +175,7 @@ public class HSIFEffigyFactory extends EffigyFactory {
 			// syntax is incorrect"
 			// FIXME: IOException does not take a cause argument?
 			throw new Exception("Could not create a temporary "
-					    + "file based on '" + baseName 
+					    + "file based on '" + baseName
 					    + "'", ex2);
 		    }
 
@@ -197,7 +197,7 @@ public class HSIFEffigyFactory extends EffigyFactory {
 		}
 
 		System.out.print("Converting HSIFToMoML ('"
-				 + inputFileName + "' to '" 
+				 + inputFileName + "' to '"
 				 + temporaryOutputFileName + "'");
 
 		// Read in from the URL so that Web Start works.
@@ -208,7 +208,7 @@ public class HSIFEffigyFactory extends EffigyFactory {
 
 		URL temporaryOutputURL =
 		    MoMLApplication.specToURL(temporaryOutputFileName);
-    
+
 		// Note that createEffigy might end up substituting %20
 		// for spaces.
 		Effigy effigy = ((EffigyFactory)getContainer())
@@ -234,7 +234,7 @@ public class HSIFEffigyFactory extends EffigyFactory {
 	try {
 	    inputStream = inputURL.openStream();
 	} catch (FileNotFoundException ex) {
-	    // Try it as a jar URL 
+	    // Try it as a jar URL
 	    try {
 		URL jarURL =
 		    JNLPUtilities.jarURLEntryResource(inputURL.toString());

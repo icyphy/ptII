@@ -137,7 +137,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *  time before proceeding to the next frame. This parameter is
      *  measured in milliseconds.
      *  This parameter must contain an IntToken.
-     *  The default value is an IntToken with value the 33, which 
+     *  The default value is an IntToken with value the 33, which
      *  corresponds roughly to 30 frames per second.
      */
     public Parameter iterationTimeLowerBound;
@@ -243,7 +243,7 @@ public class GRDirector extends StaticSchedulingDirector {
                 // Make sure we reset the pseudotime flag.
                 _pseudoTimeEnabled = false;
             }
-            
+
             // FIXME: should remove actor from schedule
             // if it returns false on postfire()
         }
@@ -503,7 +503,7 @@ public class GRDirector extends StaticSchedulingDirector {
 
         List list = object.entityList();
         Iterator listIterator = list.iterator();
-        
+
         _debug("\nentity List:");
         while (listIterator.hasNext()) {
             Entity entity = (Entity) listIterator.next();
@@ -577,7 +577,7 @@ public class GRDirector extends StaticSchedulingDirector {
             // if setScheduler fails, then we should just set it to Null.
             // this should never happen because we don't override
             // setScheduler() to do sanity checks.
-            throw new InternalErrorException(this, ex, 
+            throw new InternalErrorException(this, ex,
                     "Could not create Default scheduler.");
         }
 

@@ -64,7 +64,7 @@ and getVariables() abstract methods.
 @version $Id$
 */
 public abstract class MonotonicFunction implements InequalityTerm {
-  
+
     ///////////////////////////////////////////////////////////////
     ////                       public methods                  ////
 
@@ -74,23 +74,23 @@ public abstract class MonotonicFunction implements InequalityTerm {
     public Object getAssociatedObject() {
         return null;
     }
-    
+
     /** Return the result of this monotonic function.   Derived
      *  classes should implement this method to return the current value
      *  of the monotonic function.
      *  @return A Type.
      */
     public abstract Object getValue() throws IllegalActionException;
-    
+
     /** Return the type variables in this inequality term.  Derived
      *  classes should implement this method to return an array of
      *  InequalityTerms that this function depends on.
      *  @return An array of InequalityTerm.
      */
     public abstract InequalityTerm[] getVariables();
-    
+
     /** Return an additional string describing the current value
-     *  of this function.  Subclasses may override this method to 
+     *  of this function.  Subclasses may override this method to
      *  give additional information in the toString() method.   This
      *  method may return null, indicating that no additional information is
      *  desired.
@@ -99,7 +99,7 @@ public abstract class MonotonicFunction implements InequalityTerm {
     public String getVerboseString() {
         return null;
     }
- 
+
     /** Throw an Exception. This method cannot be called on a
      *  monotonic function term.
      *  @exception IllegalActionException Always thrown.
@@ -109,14 +109,14 @@ public abstract class MonotonicFunction implements InequalityTerm {
         throw new IllegalActionException(getClass().getName()
                 + ": Cannot initialize a function term.");
     }
-    
+
     /** Return false.  Monotonic Functions are not settable.
      *  @return False.
      */
     public final boolean isSettable() {
         return false;
     }
-    
+
     /** Return true.  Monotonic Functions are, by default, always
      *  acceptable.  This method might be overridden by derived classes.
      *  @return True.
@@ -124,7 +124,7 @@ public abstract class MonotonicFunction implements InequalityTerm {
     public boolean isValueAcceptable() {
         return true;
     }
-    
+
     /** Throw an Exception. The value of a function term cannot be set.
      *  @exception IllegalActionException Always thrown.
      */
@@ -132,7 +132,7 @@ public abstract class MonotonicFunction implements InequalityTerm {
         throw new IllegalActionException(getClass().getName()
                 + ": The type is not settable.");
     }
-    
+
     /** Override the base class to give a description of this term.
      *  @return A description of this term.
      */
@@ -144,10 +144,10 @@ public abstract class MonotonicFunction implements InequalityTerm {
             string = ", " + string;
         }
         try {
-            return "(" + getClass().getName() + 
+            return "(" + getClass().getName() +
                 ", " + getValue() + string + ")";
         } catch (IllegalActionException ex) {
-            return "(" + getClass().getName() + 
+            return "(" + getClass().getName() +
                 ", INVALID" + string + ")";
         }
     }

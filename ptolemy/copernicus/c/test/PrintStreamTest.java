@@ -45,16 +45,16 @@ A simple class for testing standard output.
 */
 
 public class PrintStreamTest{
-    
+
     public static void main(String[] args) {
         System.out.println(1);
         System.out.println(2.012);
-        
+
         String string = new String("Fear the Turtle!!!");
         System.out.println(string);
         Object object = string;
         System.out.println(object);
-        
+
         System.out.println(true);
         System.out.println(false);
     }

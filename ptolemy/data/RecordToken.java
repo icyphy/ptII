@@ -89,7 +89,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
 
         ParseTreeEvaluator evaluator = new ParseTreeEvaluator();
         Token token = evaluator.evaluateParseTree(tree);
-        
+
         if(token instanceof RecordToken) {
             RecordToken recordToken = (RecordToken)token;
             Object[] labelObjects = recordToken.labelSet().toArray();
@@ -343,7 +343,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
             String label = (String)labels.next();
             Token token1 = get(label);
             Token token2 = recordToken.get(label);
-            
+
             newLabels[i] = label;
             newValues[i] = token1.add(token2);
 
@@ -377,7 +377,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
             String label = (String)labels.next();
             Token token1 = get(label);
             Token token2 = recordToken.get(label);
-            
+
             newLabels[i] = label;
             newValues[i] = token1.divide(token2);
 
@@ -452,7 +452,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
 
         return BooleanToken.TRUE;
     }
-    
+
     /** Return a new token whose value is the field-wise modulo of
      *  this token and the argument. It is assumed
      *  that the class of the argument is RecordToken.
@@ -478,7 +478,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
             String label = (String)labels.next();
             Token token1 = get(label);
             Token token2 = recordToken.get(label);
-            
+
             newLabels[i] = label;
             newValues[i] = token1.modulo(token2);
 
@@ -512,7 +512,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
             String label = (String)labels.next();
             Token token1 = get(label);
             Token token2 = recordToken.get(label);
-            
+
             newLabels[i] = label;
             newValues[i] = token1.multiply(token2);
 
@@ -546,7 +546,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
             String label = (String)labels.next();
             Token token1 = get(label);
             Token token2 = recordToken.get(label);
-            
+
             newLabels[i] = label;
             newValues[i] = token1.subtract(token2);
 

@@ -519,7 +519,7 @@ public class CTScheduler extends Scheduler {
         }
 
         // Save the resolved signal types in each port.
-        
+
 
         // Done with all actor classification and known port signal
         // type assignment.
@@ -791,7 +791,7 @@ public class CTScheduler extends Scheduler {
             for(Iterator ports = entity.portList().iterator();
                 ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
-                String typeString = 
+                String typeString =
                     typeMap.getType(port).toString();
                 buffer.append("<port name=\"");
                 buffer.append(port.getName(container));

@@ -54,7 +54,7 @@ import ptolemy.gui.MessageHandler;
 //////////////////////////////////////////////////////////////////////////
 //// JAITIFFWriter
 /**
-   Write a javax.media.jai.RenderedOp to a specified TIFF file.  
+   Write a javax.media.jai.RenderedOp to a specified TIFF file.
    <p>
    The file is specified by the <i>fileName</i> attribute
    using any form acceptable to FileAttribute.
@@ -67,7 +67,7 @@ import ptolemy.gui.MessageHandler;
    then this actor will overwrite the specified file if it exists
    without asking.  If <i>true</i> (the default), then if the file
    exists, then this actor will ask for confirmation before overwriting.
-   
+
    @see FileAttribute
    @author James Yeh
    @version $Id$
@@ -88,11 +88,11 @@ public class JAITIFFWriter extends Sink {
         super(container, name);
         input.setTypeEquals(BaseType.OBJECT);
         fileName = new FileAttribute(this, "fileName");
-        
+
         writeTiled = new Parameter(this, "writeTiled");
         writeTiled.setTypeEquals(BaseType.BOOLEAN);
         writeTiled.setToken(BooleanToken.FALSE);
-        
+
         confirmOverwrite = new Parameter(this, "confirmOverwrite");
         confirmOverwrite.setTypeEquals(BaseType.BOOLEAN);
         confirmOverwrite.setToken(BooleanToken.TRUE);
@@ -111,7 +111,7 @@ public class JAITIFFWriter extends Sink {
     /** If <i>false</i>, then overwrite the specified file if it exists
      *  without asking.  If <i>true</i> (the default), then if the file
      *  exists, ask for confirmation before overwriting.
-     */    
+     */
     public Parameter confirmOverwrite;
 
     /** If <i>false</i> (the default), then write the data in strips.
@@ -128,18 +128,18 @@ public class JAITIFFWriter extends Sink {
      *  Set the encoding parameters to either write in stripes or in
      *  tiles.
      *  @exception IllegalActionException If a contained method throws it.
-     */    
+     */
     public void initialize() throws IllegalActionException {
         super.initialize();
         _file = fileName.asFile();
         _fileRoot = _file.toString();
-        boolean writeTiledValue = 
+        boolean writeTiledValue =
             ((BooleanToken)writeTiled.getToken()).booleanValue();
         _tiffEncodeParameters = new TIFFEncodeParam();
         _tiffEncodeParameters.setWriteTiled(writeTiledValue);
 
     }
-    
+
     /** Read an input JAIImageToken and write it to the file.
      *  If the file does not exist then create it.  If the file
      *  already exists, then query the user for overwrite.
@@ -159,7 +159,7 @@ public class JAITIFFWriter extends Sink {
                             "OK to overwrite " + _file + "?")) {
                     throw new IllegalActionException(this,
                             "Please select another file name.");
-                }                
+                }
             }
         }
         else {
@@ -195,13 +195,13 @@ public class JAITIFFWriter extends Sink {
 
     /** The TIFF encoding parameters. */
     private TIFFEncodeParam _tiffEncodeParameters;
-    
+
     /** The File to be saved to. */
     private File _file;
-    
+
     /** The above file as a String. */
     private String _fileRoot;
-    
+
     /** The FileOutputStream for file writing. */
     private FileOutputStream _stream;
 }

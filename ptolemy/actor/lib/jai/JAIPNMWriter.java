@@ -68,7 +68,7 @@ import ptolemy.gui.MessageHandler;
    then this actor will overwrite the specified file if it exists
    without asking.  If <i>true</i> (the default), then if the file
    exists, then this actor will ask for confirmation before overwriting.
-   
+
    @see FileAttribute
    @author James Yeh
    @version $Id$
@@ -89,11 +89,11 @@ public class JAIPNMWriter extends Sink {
         super(container, name);
         input.setTypeEquals(BaseType.OBJECT);
         fileName = new FileAttribute(this, "fileName");
-        
+
         writeRawData = new Parameter(this, "writeRawData");
         writeRawData.setTypeEquals(BaseType.BOOLEAN);
         writeRawData.setToken(BooleanToken.FALSE);
-        
+
         confirmOverwrite = new Parameter(this, "confirmOverwrite");
         confirmOverwrite.setTypeEquals(BaseType.BOOLEAN);
         confirmOverwrite.setToken(BooleanToken.TRUE);
@@ -112,7 +112,7 @@ public class JAIPNMWriter extends Sink {
     /** If <i>false</i>, then overwrite the specified file if it exists
      *  without asking.  If <i>true</i> (the default), then if the file
      *  exists, ask for confirmation before overwriting.
-     */    
+     */
     public Parameter confirmOverwrite;
 
     /** If <i>true</i>, then write raw binary data.
@@ -125,21 +125,21 @@ public class JAIPNMWriter extends Sink {
 
     /** Initialize this actor.
      *  There are two parameters to set here.  The version of bitmap that
-     *  we are writing (which at the time being can only be version 3), 
-     *  and whether to store the data from top to bottom or from bottom 
+     *  we are writing (which at the time being can only be version 3),
+     *  and whether to store the data from top to bottom or from bottom
      *  to top.
      *  @exception IllegalActionException If a contained method throws it.
-     */    
+     */
     public void initialize() throws IllegalActionException {
         super.initialize();
         _file = fileName.asFile();
         _fileRoot = _file.toString();
-        boolean writeRawDataValue = 
+        boolean writeRawDataValue =
             ((BooleanToken)writeRawData.getToken()).booleanValue();
         _pnmEncodeParameters = new PNMEncodeParam();
         _pnmEncodeParameters.setRaw(writeRawDataValue);
     }
-   
+
     /** Read an input JAIImageToken and write it to the file.
      *  If the file does not exist then create it.  If the file
      *  already exists, then query the user for overwrite.
@@ -159,7 +159,7 @@ public class JAIPNMWriter extends Sink {
                             "OK to overwrite " + _file + "?")) {
                     throw new IllegalActionException(this,
                             "Please select another file name.");
-                }                
+                }
             }
         }
         else {
@@ -195,14 +195,14 @@ public class JAIPNMWriter extends Sink {
 
     /** The Bitmap encoding parameters. */
     private PNMEncodeParam _pnmEncodeParameters;
-    
+
     /** The File to be saved to. */
     private File _file;
-    
+
     /** The above file as a String. */
     private String _fileRoot;
-    
+
     /** The FileOutputStream for file writing. */
     private FileOutputStream _stream;
 }
-    
+

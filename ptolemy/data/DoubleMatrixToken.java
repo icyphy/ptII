@@ -468,7 +468,7 @@ public class DoubleMatrixToken extends MatrixToken {
 
     /** Return a new token whose elements are the remainders of
      *  the elements of this token when divided by the argument.
-     *  It is guaranteed by the caller that the type of the argument 
+     *  It is guaranteed by the caller that the type of the argument
      *  is the same as the type of each element of this class.
      *  @param rightArgument The token that performs modulo on this token.
      *  @exception IllegalActionException If this operation is not

@@ -60,7 +60,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    input ports, from which it receives two ArrayTokens or two Matrix
    Tokens. The elements of the ArrayTokens or MatrixTokens must be of
    type ScalarToken. The output is the dot product of the two arrays or
-   matrices.  
+   matrices.
 
    <p> This actor requires that each input port have a token
    upon firing. On each firing, it produces exactly one token, which is
@@ -234,7 +234,7 @@ public class DotProduct extends TypedAtomicActor {
 
         Token element1, element2, sum;
 
-        if ((columnCount1 == columnCount2) && 
+        if ((columnCount1 == columnCount2) &&
                 (rowCount1 == rowCount2)) {
             sum = token1.getElementAsToken(0,0).zero();
             for (int i = 0; i < rowCount1; i += 1) {
@@ -258,7 +258,7 @@ public class DotProduct extends TypedAtomicActor {
     ////                         inner classes                     ////
 
     /** This class implements a function on the two input port types.
-     *  f(port1, port2) == 
+     *  f(port1, port2) ==
      *     LUB(elementType(port1), elementType(port2)) if both are matrices
      *     LUB(elementType(port1), elementType(port2)) if both are arrays
      *     UNKNOWN                                     otherwise
@@ -289,11 +289,11 @@ public class DotProduct extends TypedAtomicActor {
         public Object getValue() {
             Type type1 = _port1.getType();
             Type type2 = _port2.getType();
-            if ((type1 == BaseType.UNKNOWN) 
+            if ((type1 == BaseType.UNKNOWN)
                     || (type2 == BaseType.UNKNOWN)) {
                 return BaseType.UNKNOWN;
             }
-            else if ((type1 instanceof ArrayType) && 
+            else if ((type1 instanceof ArrayType) &&
                     (type2 instanceof ArrayType)) {
                 Type elType1 = ((ArrayType)type1).getElementType();
                 Type elType2= ((ArrayType)type2).getElementType();
@@ -302,9 +302,9 @@ public class DotProduct extends TypedAtomicActor {
             }
             else if ((type1 instanceof UnsizedMatrixType) &&
                     (type2 instanceof UnsizedMatrixType)) {
-                Type elType1 = 
+                Type elType1 =
                     ((UnsizedMatrixType)type1).getElementType();
-                Type elType2 = 
+                Type elType2 =
                     ((UnsizedMatrixType)type2).getElementType();
                 CPO lattice = TypeLattice.lattice();
                 return lattice.leastUpperBound(elType1, elType2);
@@ -350,7 +350,7 @@ public class DotProduct extends TypedAtomicActor {
             throw new IllegalActionException(getClass().getName()
                     + ": Cannot initialize a function term.");
         }
-           
+
         /** Return false, because this is a function.
          *  @return false.
          */
@@ -383,7 +383,7 @@ public class DotProduct extends TypedAtomicActor {
 
         ///////////////////////////////////////////////////////////////
         ////                       private inner variable          ////
-        
+
         private TypedIOPort _port1;
         private TypedIOPort _port2;
 

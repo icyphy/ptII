@@ -470,7 +470,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 	    filter.put("ptolemy.kernel.util.Location", null);
 	    parser.addMoMLFilter(filter);
 
-	    
+
 	    NamedObj toplevel = null;
 	    try {
 		System.out.println("GeneratorAttribute: parsing " + modelURL);

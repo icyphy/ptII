@@ -1,4 +1,4 @@
-/* An actor that produces a JAIImageToken from an image file specified 
+/* An actor that produces a JAIImageToken from an image file specified
 as a URL.
 
 @Copyright (c) 2001-2003 The Regents of the University of California.
@@ -50,7 +50,7 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// JAIImageReader
 /**
-This actor reads an image from a file or a URL.  The file or URL is 
+This actor reads an image from a file or a URL.  The file or URL is
 specified using any form acceptable to FileAttribute.  Supports BMP, FPX,
 GIF, JPEG, PNG, PBM, PGM, PPM, and TIFF file formats.
 
@@ -114,8 +114,8 @@ public class JAIImageReader extends Source {
             throw new IllegalActionException(this, "No director.");
         }
     }
-    
-    /** If the current time is 0.0, then produce a JAIImageToken 
+
+    /** If the current time is 0.0, then produce a JAIImageToken
      *  containing the image.
      *  @exception IllegalActionException If there is no director.
      */
@@ -125,12 +125,12 @@ public class JAIImageReader extends Source {
         }
         return super.postfire();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The String that specifes where the file is located. */
-    private String _fileRoot;    
+    private String _fileRoot;
 
     /** The RenderedOp created by JAI from the stream.  This is then
      *  encapsulated by a JAIImageToken.
@@ -139,7 +139,7 @@ public class JAIImageReader extends Source {
 
     /** A stream which JAI uses to create RenderedOp's */
     private FileSeekableStream _stream;
-    
+
     /** The StringToken that contains the file's URL */
     private StringToken _urlToken;
 }

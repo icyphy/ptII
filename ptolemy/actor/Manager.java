@@ -483,8 +483,8 @@ public class Manager extends NamedObj implements Runnable {
      */
     public void notifyListenersOfThrowable(Throwable throwable) {
 	// We use Throwables instead of Exceptions so that we can catch
-	// Errors like java.lang.UnsatisfiedLink. 
-        String errorMessage = shortDescription(throwable) 
+	// Errors like java.lang.UnsatisfiedLink.
+        String errorMessage = shortDescription(throwable)
 	    + " occurred: " + throwable.getClass()
             + "(" + throwable.getMessage() + ")";
         _debug("-- Manager notifying listeners of exception: " + throwable);

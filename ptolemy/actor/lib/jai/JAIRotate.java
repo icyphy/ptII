@@ -51,8 +51,8 @@ import javax.media.jai.RenderedOp;
 /**
    Rotate an image around a given point.  The amount of rotation is in
    degrees.  If the output is displayed, the image will be displayed the
-   same, regardless of the point it was rotated around.  The difference 
-   shows up in operations like adding (when two images are added together, 
+   same, regardless of the point it was rotated around.  The difference
+   shows up in operations like adding (when two images are added together,
    a region of intersection is found; this region is effected by rotation).
 
    @author James Yeh
@@ -72,7 +72,7 @@ public class JAIRotate extends Transformer {
     public JAIRotate(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         xOrigin = new Parameter(this, "xOrigin", new IntToken(0));
         yOrigin = new Parameter(this, "yOrigin", new IntToken(0));
 
@@ -81,19 +81,19 @@ public class JAIRotate extends Transformer {
         interpolationType = new StringAttribute(this, "interpolationType");
         interpolationType.setExpression("bilinear");
         _interpolationType = _BILINEAR;
-        
-        subSampleBits = 
+
+        subSampleBits =
             new Parameter(this, "subSampleBits", new IntToken(8));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The number of degrees to rotate.  The default value of this 
+    /** The number of degrees to rotate.  The default value of this
      *  parameter is the double value 0.
      */
     public Parameter degrees;
-    
+
     /** The type of interpolation to use.  This is a string valued
      *  attribute that defaults to type "bilinear"
      */
@@ -132,7 +132,7 @@ public class JAIRotate extends Transformer {
                 _interpolationType = _NEARESTNEIGHBOR;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized interpolation type: " + typeName); 
+                        "Unrecognized interpolation type: " + typeName);
             }
         } else if (attribute == subSampleBits) {
             _subSampleBits =
@@ -167,7 +167,7 @@ public class JAIRotate extends Transformer {
             _debug("oldimage min y " + oldImage.getMinY());
             _debug("oldimage max y " + oldImage.getMaxY());
         }
-        
+
         parameters.add((float)_xOrigin);
         parameters.add((float)_yOrigin);
         float angle = (float)(_degrees * (Math.PI/180.0F));
@@ -199,7 +199,7 @@ public class JAIRotate extends Transformer {
             _debug("newimage max y " + newImage.getMaxY());
         }
         output.send(0, new JAIImageToken(newImage));
-    }    
+    }
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

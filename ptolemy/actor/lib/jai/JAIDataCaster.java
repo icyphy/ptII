@@ -39,7 +39,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
 // NOTE: If you update the list of types, then you will want
-// to update the list in actor/lib/jai/jai.xml.  
+// to update the list in actor/lib/jai/jai.xml.
 
 //////////////////////////////////////////////////////////////////////////
 //// JAIDataCaster
@@ -51,13 +51,13 @@ import ptolemy.kernel.util.*;
    The <i>dataFormat</i> attribute determines what type the data is being
    cast to.  The available options are byte, double, float, int, short,
    and unsigned short.
-   
+
    @author James Yeh
    @version $Id$
  */
 
 public class JAIDataCaster extends Transformer {
-    
+
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -69,7 +69,7 @@ public class JAIDataCaster extends Transformer {
     public JAIDataCaster(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        
+
         dataFormat = new StringAttribute(this, "dataFormat");
         dataFormat.setExpression("byte");
         _dataFormat = _BYTE;
@@ -118,7 +118,7 @@ public class JAIDataCaster extends Transformer {
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Output the JAIImageToken containing the new casted data.
      *  @exception IllegalActionException If there is no director.
      */
@@ -132,7 +132,7 @@ public class JAIDataCaster extends Transformer {
         RenderedOp newImage = JAI.create("format", parameters);
         output.send(0, new JAIImageToken(newImage));
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -182,5 +182,5 @@ public class JAIDataCaster extends Transformer {
     private static final int _FLOAT = 2;
     private static final int _INT = 3;
     private static final int _SHORT = 4;
-    private static final int _USHORT = 5;    
+    private static final int _USHORT = 5;
 }

@@ -46,7 +46,7 @@ import javax.media.jai.RenderedOp;
    Crop an image, given a point of origin, and the dimensions to crop. In
    most images (those that have not been translated or transformed under
    simlar operations) have their origin, (0,0), at the top left corner.
-   
+
    @author James Yeh
    @version $Id$
  */
@@ -64,32 +64,32 @@ public class JAICrop extends Transformer {
     public JAICrop(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         xOrigin = new Parameter(this, "xOrigin", new IntToken(0));
         yOrigin = new Parameter(this, "yOrigin", new IntToken(0));
-        
+
         width = new Parameter(this, "width", new IntToken(0));
         height = new Parameter(this, "height", new IntToken(0));
     }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  //// 
 
-    /** The vertical distance from the origin.  A positive value 
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** The vertical distance from the origin.  A positive value
      *  indicates that the final image will start downwards from the
      *  origin.  A negative value indicates that the final image will
      *  start upwards from the origin.
      */
     public Parameter height;
 
-    /** The horizontal distance from the origin.  A positive value 
+    /** The horizontal distance from the origin.  A positive value
      *  indicates that the final image will start to the right of the
      *  origin.  A negative value indicates that the final image will
      *  start to the left of the origin.
-     */    
-    public Parameter width;    
-    
-    /** The point of origin for cropping.  The default value of both 
+     */
+    public Parameter width;
+
+    /** The point of origin for cropping.  The default value of both
      *  these parameters is the integer value 0.
      */
     public Parameter xOrigin;
@@ -103,12 +103,12 @@ public class JAICrop extends Transformer {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If a contained method throws it.
      */
-    public void attributeChanged(Attribute attribute) 
+    public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == xOrigin) {
             _xOrigin = ((IntToken)xOrigin.getToken()).intValue();
         } else if (attribute == yOrigin) {
-            _yOrigin = ((IntToken)yOrigin.getToken()).intValue();        
+            _yOrigin = ((IntToken)yOrigin.getToken()).intValue();
         } else if (attribute == width) {
             _width = ((IntToken)width.getToken()).intValue();
         } else if (attribute == height) {
@@ -135,7 +135,7 @@ public class JAICrop extends Transformer {
         parameters.add((float)_width);
         parameters.add((float)_height);
         RenderedOp newImage = JAI.create("Crop", parameters);
-        output.send(0, new JAIImageToken(newImage)); 
+        output.send(0, new JAIImageToken(newImage));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -143,7 +143,7 @@ public class JAICrop extends Transformer {
 
     /** The height of the cropped image*/
     private int _height;
-    
+
     /** The width of the cropped image*/
     private int _width;
 

@@ -461,7 +461,7 @@ public class Plot extends PlotBox {
      *  or if setReuseDatasets(false) has been called.
      *  @return false if setReuseDatasets() has not yet been called
      *  or if setReuseDatasets(false) has been called.
-     *  @since Ptplot 5.3 
+     *  @since Ptplot 5.3
      *  @see #setReuseDatasets(boolean)
      */
     public boolean getReuseDatasets() {
@@ -604,7 +604,7 @@ public class Plot extends PlotBox {
      *  connected, individual points can be not connected by giving the
      *  appropriate argument to addPoint().
      *  Note that this method should be called before adding any points.
-     *  Note further that this method should probably be called from 
+     *  Note further that this method should probably be called from
      *  the event thread.
      *  @param on If true, draw lines between points.
      *  @param dataset The dataset to which this should apply.
@@ -1371,7 +1371,7 @@ public class Plot extends PlotBox {
 		    // If we see some data sets, then they are drawn
 		    // with lines, if we then see a Lines: off
 		    // the current dataset and succeeding datasets
-		    // will be drawn without lines.  
+		    // will be drawn without lines.
 
 		    // For each of the existing datasets, if
 		    // it fmt.connectedUseDefault is true, then
@@ -1386,7 +1386,7 @@ public class Plot extends PlotBox {
 			}
 		    }
 
-		}		    
+		}
 
 		if (lcLine.indexOf("off", 6) >= 0) {
 		    setConnected(false);

@@ -24,7 +24,7 @@
     PT_COPYRIGHT_VERSION_2
     COPYRIGHTENDKEY
 
-    @ProposedRating Green (cxh@eecs.berkeley.edu) 
+    @ProposedRating Green (cxh@eecs.berkeley.edu)
     added description() method
     made many methods throw IllegalActionException
     @AcceptedRating Red (cxh@eecs.berkeley.edu)

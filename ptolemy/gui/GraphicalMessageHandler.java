@@ -104,7 +104,7 @@ public class GraphicalMessageHandler extends MessageHandler {
     }
 
     /** Show the specified message and throwable information.
-     *  If the throwable is an instance of CancelException, then it 
+     *  If the throwable is an instance of CancelException, then it
      *  is not shown.  By default, only the message of the throwable
      *  is thrown.  The stack trace information is only shown if the
      *  user clicks on the "Display Stack Trace" button.
@@ -276,7 +276,7 @@ public class GraphicalMessageHandler extends MessageHandler {
     ////                         private methods                   ////
 
     /** Return a string with a maximum line length of 80 characters, limited
-     *  to the given number of characters. 
+     *  to the given number of characters.
      *  If the string is truncated, an ellipsis will be appended to the end
      *  of the string.
      *  @param string The string to truncate.

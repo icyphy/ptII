@@ -78,7 +78,7 @@ Ports of Giotto models are represented by an array of locations, one location fo
 public class GiottoPortInliner implements PortInliner {
     /** Construct a new transformer
      */
-    public GiottoPortInliner(SootClass modelClass, 
+    public GiottoPortInliner(SootClass modelClass,
             CompositeActor model, Map options) {
         _modelClass = modelClass;
         _model = model;
@@ -188,7 +188,7 @@ public class GiottoPortInliner implements PortInliner {
                                     returnArrayLocal,
                                     expr.getArg(0)),
                             stmt);
-                
+
                     Value argCount = expr.getArg(1);
                     // Get the value.
                     body.getUnits().insertBefore(
@@ -236,7 +236,7 @@ public class GiottoPortInliner implements PortInliner {
         _getBuffer(_modelClass, body,
                 stmt, port, port.getType(), bufferLocal,
                 _portToTypeNameToBufferField);
-        
+
         // If we are calling with just a channel, then read the value.
         if (expr.getArgCount() == 1) {
             // We may be calling get without setting the return value
@@ -444,7 +444,7 @@ public class GiottoPortInliner implements PortInliner {
                                         returnArrayLocal,
                                         counterLocal),
                                 returnLocal));
-               
+
                 // Increment the counter.
                 bodyList.add(
                         Jimple.v().newAssignStmt(
@@ -594,7 +594,7 @@ public class GiottoPortInliner implements PortInliner {
             _getBuffer(_modelClass, body,
                     stmt, port, port.getType(), bufferLocal,
                     _portToTypeNameToInsideBufferField);
-            
+
             // A local of type token
             Local tokenLocal =
                 Jimple.v().newLocal("tokenLocal",
@@ -757,7 +757,7 @@ public class GiottoPortInliner implements PortInliner {
     // Create a reference to the correct buffer in the given
     // class for the given port and the given type.
     private void _createPortBufferReference(SootClass entityClass,
-            TypedIOPort port, ptolemy.data.type.Type type, 
+            TypedIOPort port, ptolemy.data.type.Type type,
             Map typeNameToBufferField) {
         System.out.println("creating  buffer reference for " + port + " type = " + type);
         BaseType tokenType = PtolemyUtilities.getSootTypeForTokenType(type);
@@ -837,14 +837,14 @@ public class GiottoPortInliner implements PortInliner {
                      types.hasNext();) {
                     ptolemy.data.type.Type type =
                         (ptolemy.data.type.Type)types.next();
-                    
+
                     _createPortInsideBufferReference(_modelClass,
                             port, type, typeNameToInsideBufferField);
                 }
             } else if (port.isOutput()) {
                 ptolemy.data.type.Type type =
                     (ptolemy.data.type.Type)port.getType();
-                
+
                 _createPortInsideBufferReference(_modelClass,
                         port, type, typeNameToInsideBufferField);
             }

@@ -311,7 +311,7 @@ public class AppletWriter extends SceneTransformer {
 	    }
 	}
 	return results;
-    } 
+    }
 
 
 
@@ -331,7 +331,7 @@ public class AppletWriter extends SceneTransformer {
 	// files.
 
         Map classMap = _allAtomicEntityJars();
-	
+
         classMap.put("ptolemy.actor.gui.MoMLApplet",
                      "ptolemy/ptsupport.jar");
         classMap.put(director.getClass().getName(),
@@ -465,7 +465,7 @@ public class AppletWriter extends SceneTransformer {
     }
 
     // Given a domain package, return the corresponding jar file
-    private static String _getDomainJar(String domainPackage) { 
+    private static String _getDomainJar(String domainPackage) {
 	String domainPackageDomain =
             domainPackage.substring(0,
                     domainPackage.lastIndexOf(".")

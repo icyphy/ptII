@@ -46,10 +46,10 @@ public class GarbageTest {
         for (long i = 0; i < 1E5; i ++) {
             a = new String("dummy");
         }
-        
+
         System.out.println("done!");
 
-        // Causes execution to halt so we can examine memory 
+        // Causes execution to halt so we can examine memory
         for(int i=0; i<10; i++) {
             i--;
         }

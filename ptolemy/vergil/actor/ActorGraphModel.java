@@ -294,7 +294,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
      *  further change requests were queued.
      */
     protected boolean _update() {
-        
+
 	// Go through all the links that currently exist, and remove
         // any that don't have both ends in the model.
 	Iterator links = _linkSet.iterator();
@@ -385,7 +385,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 	    if (link.getRelation() != relation) {
                 continue;
             }
-            
+
       	    // remove any ports that this link is linked to.  We don't need
 	    // to manufacture those links.
 	    Object tail = link.getTail();
@@ -649,7 +649,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          */
         public String getDeleteNodeMoML(Object node) {
 	    NamedObj deleteObj = (NamedObj)((Locatable)node).getContainer();
-           
+
             NamedObj container = _getChangeRequestParent(getPtolemyModel());
 
             String moml = "<deleteEntity name=\""
@@ -1239,7 +1239,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          */
         public String getDeleteNodeMoML(Object node) {
 	    NamedObj deleteObj = (NamedObj)((Locatable)node).getContainer();
-           
+
             NamedObj container = _getChangeRequestParent(getPtolemyModel());
 
             String moml = "<deletePort name=\""
@@ -1358,7 +1358,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         public String getDeleteNodeMoML(Object node) {
 	    ComponentRelation deleteObj =
                 (ComponentRelation)((Vertex)node).getContainer();
-           
+
             NamedObj container = _getChangeRequestParent(getPtolemyModel());
             //  System.out.println("container = " + container.getFullName());
             String moml = "<deleteRelation name=\""

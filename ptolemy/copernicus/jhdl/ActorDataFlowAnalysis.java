@@ -49,7 +49,7 @@ import soot.*;
 */
 public class ActorDataFlowAnalysis {
 
-    public ActorDataFlowAnalysis(Entity entity, SootClass theClass) 
+    public ActorDataFlowAnalysis(Entity entity, SootClass theClass)
 	throws IllegalActionException {
 
 	DirectedGraph prefire_graph = _analyzeMethod(theClass,"prefire");
@@ -60,11 +60,11 @@ public class ActorDataFlowAnalysis {
 
     /**
      **/
-    protected DirectedGraph _analyzeMethod(SootClass theClass, 
+    protected DirectedGraph _analyzeMethod(SootClass theClass,
 					   String methodName)
 	throws IllegalActionException
     {
-	
+
 	SootMethod method = theClass.getMethodByName(methodName);
 	return new IntervalBlockDirectedGraph(method);
     }

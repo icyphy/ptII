@@ -300,7 +300,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
 		    MoMLParser parser = new MoMLParser();
 		    parserAttribute.setParser(parser);
 		}
-		    
+
                 // The name might be "blank" which is confusing.
                 // Set it to an empty string.  On Save As, this will
                 // be changed to match the file name.
@@ -411,7 +411,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                         // Note that one of the effigies is the configuration
                         // itself, which does not prevent exiting the app.
                         // Hence, we handle the error if there are 3 or fewer.
-                        
+
                         if (effigies.size() <= 3) {
 
                             // FIXME: This could cause problems with
@@ -438,11 +438,11 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
 				// If we have a parameter that has a backslash
 				// then we might get a data.expr.TokenMgrError
 				// which is an error, so we rethrow this
-				// FIXME: createEffigy() should be 
+				// FIXME: createEffigy() should be
 				// declared to throw Throwable, but that
 				// results in lots of changes elsewhere.
 				throw new Exception(throwable);
-			    }                    
+			    }
                         }
                     }
                 } finally {

@@ -292,7 +292,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             // This should not happen. The exception means that
             // _checkDeclaredType or typeConstraintList is called on a
             // transparent actor.
-            throw new InternalErrorException(topLevel, ex, 
+            throw new InternalErrorException(topLevel, ex,
                     "Type resolution failed because of an error " +
                     "during type inference");
         }
@@ -331,7 +331,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                 while (entities.hasNext()) {
                     // Collect type constraints from contained actors.
                     TypedActor actor = (TypedActor)entities.next();
-                    
+
                     // Collect constraints on all the ports in the contained
                     // actor to the ports that the actor can send data to.
                     Iterator ports = actor.outputPortList().iterator();
@@ -352,7 +352,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                                           destinationPorts));
                 }
             }
-               
+
             // Collect type constraints from contained actors.
             Iterator entities = entityList().iterator();
             while (entities.hasNext()) {

@@ -12,7 +12,7 @@ package ptolemy.actor.corba.RemoteManagerUtil;
 /* A CORBA compatible interface that implements the execution
 	 * methods of Ptolemy II.
 	 */
-public interface RemoteManagerOperations 
+public interface RemoteManagerOperations
 {
 
   /* Mirror the execute() method of Ptolemy II

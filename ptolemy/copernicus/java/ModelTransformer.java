@@ -123,12 +123,12 @@ public class ModelTransformer extends SceneTransformer {
      *  class is assumed to be associated with the given context.
      *  @param body The body to generate code in.
      *  @param insertPoint A statement in the given body.
-     *  @param context The named object corresponding to the class in which 
+     *  @param context The named object corresponding to the class in which
      *  code is being generated.
      *  @param contextLocal A local in the given body that points to
      *  an instance of the given class.
      *  @param namedObj The named object that contains attributes.
-     *  @param namedObjLocal A local in the given body.  Attributes will be 
+     *  @param namedObjLocal A local in the given body.  Attributes will be
      *  created using this local as the container.
      *  @param theClass The soot class being modified.
      *  @param attributeList The list of attributes.
@@ -182,7 +182,7 @@ public class ModelTransformer extends SceneTransformer {
 
             if (attribute instanceof Variable) {
                 // If the attribute is a parameter, then generateCode...
-                Local tokenLocal = 
+                Local tokenLocal =
                     DataUtilities.generateExpressionCodeBefore(
                         (Entity)namedObj, theClass,
                         ((Variable)attribute).getExpression(),
@@ -230,12 +230,12 @@ public class ModelTransformer extends SceneTransformer {
      *  created.  The given createdSet is update with the full names
      *  of all the created attributes.
      *  @param body The body to generate code in.
-     *  @param context The named object corresponding to the class in which 
+     *  @param context The named object corresponding to the class in which
      *  code is being generated.
      *  @param contextLocal A local in the given body that points to
      *  an instance of the given class.
      *  @param namedObj The named object that contains attributes.
-     *  @param namedObjLocal A local in the given body.  Attributes will be 
+     *  @param namedObjLocal A local in the given body.  Attributes will be
      *  created using this local as the container.
      *  @param theClass The soot class being modified.
      *  @param createdSet A set of the full names of ptolemy objects.
@@ -327,12 +327,12 @@ public class ModelTransformer extends SceneTransformer {
      *  created.  The given createdSet is updated with the full names
      *  of all the created attributes.
      *  @param body The body to generate code in.
-     *  @param context The named object corresponding to the class in which 
+     *  @param context The named object corresponding to the class in which
      *  code is being generated.
      *  @param contextLocal A local in the given body that points to
      *  an instance of the given class.
      *  @param entity The entity that contains ports.
-     *  @param entityLocal A local in the given body.  Ports will be 
+     *  @param entityLocal A local in the given body.  Ports will be
      *  created using this local as the container.
      *  @param theClass The soot class being modified.
      *  @param createdSet A set of the full names of ptolemy objects.
@@ -450,12 +450,12 @@ public class ModelTransformer extends SceneTransformer {
      *  class is assumed to be associated with the given context.
      *  @param body The body to generate code in.
      *  @param insertPoint A statement in the given body.
-     *  @param context The named object corresponding to the class in which 
+     *  @param context The named object corresponding to the class in which
      *  code is being generated.
      *  @param contextLocal A local in the given body that points to
      *  an instance of the given class.
      *  @param namedObj The named object that contains attributes.
-     *  @param namedObjLocal A local in the given body.  Attributes will be 
+     *  @param namedObjLocal A local in the given body.  Attributes will be
      *  created using this local as the container.
      *  @param theClass The soot class being modified.
      */
@@ -1453,7 +1453,7 @@ public class ModelTransformer extends SceneTransformer {
                         newClassName, constAnalysis, options);
             } else if (entity instanceof FSMActor) {
                 FSMCreator creator = new FSMCreator();
-                creator.createAtomicActor((FSMActor)entity, 
+                creator.createAtomicActor((FSMActor)entity,
                         newClassName, constAnalysis, options);
             } else {
                 // Must be an atomicActor.

@@ -205,7 +205,7 @@ public class Main extends KernelMain {
                         new TransformerAdapter(CopyPropagator.v())));
 
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
-             
+
         Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot2",
 						    ClassWriter.v()));
         Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot2",
