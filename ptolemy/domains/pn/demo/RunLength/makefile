@@ -32,7 +32,7 @@
 # Root of the Java directory
 ROOT =		../../../../..
 
-ME =		ptolemy/domains/pn/demo/RunLengthEncoder
+ME =		ptolemy/domains/pn/demo/RunLength
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -60,7 +60,7 @@ EXTRA_SRCS =	$(JSRCS)
 # should not complain about
 MISC_FILES =	$(DIRS) # doc #test
 
-PTAUXJAR =	RLEDivaApplet.jar
+#PTAUXJAR =	RLEDivaApplet.jar
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
@@ -91,7 +91,7 @@ depend:
 	@echo "no dependencies in this directory"
 
 run::
-	$(JAVA) -classpath "$(CLASSPATH)" ptolemy.domains.pn.demo.RunLengthDecoder.ThreadDemo
+	$(JAVA) -classpath "$(CLASSPATH)" ptolemy.domains.pn.demo.RunLength.ThreadDemo
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
