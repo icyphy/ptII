@@ -241,6 +241,12 @@ public class Display extends Sink implements Placeable {
                 int numColumns =
                     ((IntToken)columnsDisplayed.getToken()).intValue();
                 textArea.setColumns(numColumns);
+		// Note that in an applet, you may see problems where
+		// the text area is obscured by the horizontal scroll
+		// bar.  The solution is to make the applet wider
+		// or specify a smaller number of columns to display.
+		// The ct CarTracking demo will exhibit this bug
+		// if the applet is too narrow.
             } catch (IllegalActionException ex) {
                 // Ignore, and use default number of rows.
             }
