@@ -95,7 +95,7 @@ test Parameter-3.1 {Check setting the contained Token with another Token} {
 #
 test Parameter-3.2 {Check type constriants on contained Token type} {
     set e [java::new {ptolemy.kernel.Entity String} entity]
-    set tok1 [java::new  ptolemy.data.IntToken 11]
+    set tok1 [java::new  {ptolemy.data.IntToken int} 11]
 
     set param1 [java::new ptolemy.data.expr.Parameter $e id1 $tok1]
     set name1 [$param1 getFullName]
