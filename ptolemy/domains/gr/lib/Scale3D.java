@@ -30,16 +30,21 @@
 
 package ptolemy.domains.gr.lib;
 
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.actor.*;
-import ptolemy.domains.gr.kernel.*;
+import ptolemy.data.type.Type;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
 
-import javax.media.j3d.*;
-import javax.vecmath.*;
+import javax.media.j3d.Group;
+import javax.media.j3d.Node;
+import javax.media.j3d.Transform3D;
+import javax.media.j3d.TransformGroup;
+import javax.vecmath.Vector3d;
 
 //////////////////////////////////////////////////////////////////////////
 //// Scale3D

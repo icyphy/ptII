@@ -29,41 +29,18 @@
 
 package ptolemy.domains.gr.lib;
 
+import com.sun.j3d.loaders.IncorrectFormatException;
+import com.sun.j3d.loaders.ParsingErrorException;
+import com.sun.j3d.loaders.Scene;
+import com.sun.j3d.loaders.objectfile.ObjectFile;
+import ptolemy.data.StringToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.actor.*;
-import ptolemy.actor.lib.gui.Display;
-import ptolemy.actor.gui.Placeable;
-import ptolemy.actor.lib.*;
 
-import javax.swing.JTextArea;
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.JScrollBar;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-import javax.swing.text.BadLocationException;
-import java.util.Enumeration;
-
-import java.awt.BorderLayout;
-import java.awt.GraphicsConfiguration;
-import com.sun.j3d.utils.geometry.*;
-
-import com.sun.j3d.loaders.objectfile.ObjectFile;
-import com.sun.j3d.loaders.ParsingErrorException;
-import com.sun.j3d.loaders.IncorrectFormatException;
-import com.sun.j3d.loaders.Scene;
-import java.applet.Applet;
-import java.awt.*;
-import java.awt.event.*;
-import com.sun.j3d.utils.universe.*;
-import javax.media.j3d.*;
-import javax.vecmath.*;
-import java.io.*;
-import com.sun.j3d.utils.behaviors.mouse.*;
+import javax.media.j3d.Node;
+import java.io.FileNotFoundException;
 
 /**
 @author C. Fong

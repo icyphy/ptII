@@ -29,20 +29,27 @@
 */
 package ptolemy.domains.gr.lib;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.data.expr.Parameter;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
-import ptolemy.actor.*;
-import ptolemy.actor.lib.*;
-import ptolemy.domains.gr.kernel.*;
+import ptolemy.data.type.Type;
+import ptolemy.domains.gr.kernel.GRActor;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import javax.media.j3d.*;
-import javax.vecmath.*;
+import javax.media.j3d.Behavior;
+import javax.media.j3d.BoundingSphere;
+import javax.media.j3d.Bounds;
+import javax.media.j3d.BranchGroup;
+import javax.media.j3d.Group;
+import javax.media.j3d.Node;
+import javax.media.j3d.WakeupCriterion;
+import javax.media.j3d.WakeupOnAWTEvent;
+import java.awt.AWTEvent;
+import java.awt.event.KeyEvent;
+import java.util.Enumeration;
 
 /**
 An actor that listens for keys pressed on the viewscreen.

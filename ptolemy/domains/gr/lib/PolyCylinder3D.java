@@ -29,17 +29,22 @@
 */
 package ptolemy.domains.gr.lib;
 
+import com.sun.j3d.utils.geometry.GeometryInfo;
+import com.sun.j3d.utils.geometry.NormalGenerator;
+import com.sun.j3d.utils.geometry.Stripifier;
+import com.sun.j3d.utils.geometry.Triangulator;
+import ptolemy.data.DoubleMatrixToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.*;
-import ptolemy.actor.*;
-import ptolemy.actor.lib.*;
 
-import javax.media.j3d.*;
-import javax.vecmath.*;
-import com.sun.j3d.utils.geometry.*;
+import javax.media.j3d.Appearance;
+import javax.media.j3d.Geometry;
+import javax.media.j3d.GeometryArray;
+import javax.media.j3d.Node;
+import javax.media.j3d.Shape3D;
 
 //////////////////////////////////////////////////////////////////////////
 //// PolyCylinder3D

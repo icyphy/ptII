@@ -29,19 +29,23 @@
 */
 package ptolemy.domains.gr.lib;
 
+import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.DoubleMatrixToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.ObjectToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.domains.gr.kernel.GRActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.*;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.*;
-import ptolemy.domains.gr.kernel.*;
 
-import com.sun.j3d.utils.geometry.*;
-import javax.media.j3d.*;
-import javax.vecmath.*;
-
+import javax.media.j3d.Appearance;
+import javax.media.j3d.Material;
+import javax.media.j3d.Node;
+import javax.vecmath.Color3f;
 
 //////////////////////////////////////////////////////////////////////////
 //// GRShadedShape
