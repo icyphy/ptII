@@ -200,27 +200,6 @@ public class CTMultiSolverDirector extends CTDirector {
         return true;
     }
 
-    /** Clone the director into the specified workspace. This calls the
-     *  base class and then copies the parameter of this director.  The new
-     *  actor will have the same parameter values as the old.
-     *  Note that ODE solvers are stateless, so we only clone the class
-     *  name of the solvers.
-     *  @param workspace The workspace for the new object.
-     *  @return A new director.
-     *  @exception CloneNotSupportedException If one of the attributes
-     *   cannot be cloned.
-     */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        CTMultiSolverDirector newobj =
-            (CTMultiSolverDirector)(super.clone(workspace));
-        newobj.ODESolver =
-            (Parameter)newobj.getAttribute("ODESolver");
-        newobj.breakpointODESolver =
-            (Parameter)newobj.getAttribute("breakpointODESolver");
-        return newobj;
-    }
-
     /** Fire the system for one iteration. One iteration is defined as
      *  simulating the system at one time point, which includes
      *  processing discrete events, resolving states,

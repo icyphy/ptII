@@ -351,39 +351,6 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      */
     public abstract boolean canBeTopLevelDirector();
 
-    /** Clone the director into the specified workspace. This calls the
-     *  base class and then copies the parameter of this director.  The new
-     *  actor will have the same parameter values as the old.
-     *  @param workspace The workspace for the new object.
-     *  @return A new director.
-     *  @exception CloneNotSupportedException If one of the attributes
-     *   cannot be cloned.
-     */
-    // FIXME: Do we need this anymore?
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        CTDirector newObject = (CTDirector)(super.clone(workspace));
-        newObject.errorTolerance =
-            (Parameter)newObject.getAttribute("errorTolerance");
-        newObject.initStepSize =
-            (Parameter)newObject.getAttribute("initStepSize");
-        newObject.maxIterations =
-            (Parameter)newObject.getAttribute("maxIterations");
-        newObject.maxStepSize =
-            (Parameter)newObject.getAttribute("maxStepSize");
-        newObject.minStepSize =
-            (Parameter)newObject.getAttribute("minStepSize");
-        newObject.startTime =
-            (Parameter)newObject.getAttribute("startTime");
-        newObject.stopTime =
-            (Parameter)newObject.getAttribute("stopTime");
-        newObject.timeResolution =
-            (Parameter)newObject.getAttribute("timeResolution");
-        newObject.valueResolution =
-            (Parameter)newObject.getAttribute("valueResolution");
-        return newObject;
-    }
-
     /** Return the breakpoint table. If the breakpoint table has never
      *  been created, then return null. This method is final
      *  for performance reason.

@@ -120,22 +120,6 @@ public class RTPDirector extends ProcessDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the director into the specified workspace. This calls the
-     *  base class and then sets the interations member.  The new
-     *  actor will have the same parameter values as the old.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If one of the attributes
-     *   cannot be cloned.
-     */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        RTPDirector newObject = (RTPDirector)(super.clone(workspace));
-        newObject.executionDuration = (Parameter)newObject.getAttribute
-            ("executionDuration");
-        return newObject;
-    }
-
     /** Return the time count of the computer in the number of milliseconds,
      *  starting from 1/1/1970 (UTC).
      *  @return The current computer time.

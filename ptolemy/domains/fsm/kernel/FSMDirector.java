@@ -175,8 +175,6 @@ public class FSMDirector extends Director {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         FSMDirector newObject = (FSMDirector)super.clone(workspace);
-        newObject.controllerName =
-            (StringAttribute)newObject.getAttribute("controllerName");
         newObject._controllerVersion = -1;
         newObject._localReceiverMaps = new HashMap();
         newObject._localReceiverMapsVersion = -1;

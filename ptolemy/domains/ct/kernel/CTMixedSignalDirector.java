@@ -156,25 +156,6 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         return true;
     }
 
-    /** Clone the director into the specified workspace. This calls the
-     *  base class and then copies the parameter of this director.  The new
-     *  actor will have the same parameter values as the old.
-     *  Note that ODE solvers are stateless, so we only clone the class
-     *  name of the solvers.
-     *  @param workspace The workspace for the new object.
-     *  @return A new director.
-     *  @exception CloneNotSupportedException If one of the attributes
-     *   cannot be cloned.
-     */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        CTMixedSignalDirector newobj =
-            (CTMixedSignalDirector)(super.clone(workspace));
-        newobj.runAheadLength =
-            (Parameter)newobj.getAttribute("runAheadLength");
-        return newobj;
-    }
-
     /** Return the end time of this director's current iteration.
      *  @return The fire end time.
      */

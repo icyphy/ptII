@@ -128,21 +128,6 @@ public class GiottoDirector extends StaticSchedulingDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the director into the specified workspace. This calls the
-     *  base class and then sets the iterations member.  The new
-     *  actor will have the same parameter values as the old.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If one of the attributes
-     *   cannot be cloned.
-     */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        GiottoDirector newObject = (GiottoDirector)(super.clone(workspace));
-        newObject.iterations = (Parameter)newObject.getAttribute("iterations");
-        return newObject;
-    }
-
     /** Return the next time at which the calling actor will be fired.
      *  @return The time of the next iteration.
      */

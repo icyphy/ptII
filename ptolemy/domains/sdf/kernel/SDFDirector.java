@@ -156,24 +156,6 @@ public class SDFDirector extends StaticSchedulingDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the director into the specified workspace. This calls the
-     *  base class and then sets the interations member.  The new
-     *  actor will have the same parameter values as the old.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If one of the attributes
-     *   cannot be cloned.
-     */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        SDFDirector newObject = (SDFDirector)(super.clone(workspace));
-        newObject.iterations =
-            (Parameter)newObject.getAttribute("iterations");
-	newObject.vectorizationFactor =
-            (Parameter)newObject.getAttribute("vectorizationFactor");
-        return newObject;
-    }
-
     /** Calculate the current schedule, if necessary,
      *  and iterate the contained actors
      *  in the order given by the schedule.  No internal state of the

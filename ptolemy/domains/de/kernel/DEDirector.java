@@ -318,34 +318,6 @@ public class DEDirector extends Director {
         }
     }
 
-    /** Clone the director into the specified workspace. This calls the
-     *  base class and then copies the parameter of this director.  The new
-     *  actor will have the same parameter values as the old.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If one of the attributes
-     *   cannot be cloned.
-     */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        DEDirector newObject = (DEDirector)(super.clone(workspace));
-        newObject.startTime =
-            (Parameter)newObject.getAttribute("startTime");
-        newObject.stopTime =
-            (Parameter)newObject.getAttribute("stopTime");
-        newObject.stopWhenQueueIsEmpty =
-            (Parameter)newObject.getAttribute("stopWhenQueueIsEmpty");
-        newObject.synchronizeToRealTime =
-            (Parameter)newObject.getAttribute("synchronizeToRealTime");
-        newObject.isCQAdaptive =
-            (Parameter)newObject.getAttribute("isCQAdaptive");
-        newObject.minBinCount =
-            (Parameter)newObject.getAttribute("minBinCount");
-        newObject.binCountFactor =
-            (Parameter)newObject.getAttribute("binCountFactor");
-        return newObject;
-    }
-
     /** Advance current time to the next event in the event queue,
      *  and fire one or more actors that have events at that time.
      *  If <i>synchronizeToRealTime</i> is true, then before firing,

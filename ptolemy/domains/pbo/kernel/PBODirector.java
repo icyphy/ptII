@@ -141,23 +141,6 @@ public class PBODirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the director into the specified workspace. The new object is
-     *  <i>not</i> added to the directory of that workspace (you must do this
-     *  yourself if you want it there).
-     *  The result is a new director with no container, no pending mutations,
-     *  and no mutation listeners.
-     *
-     *  @param ws The workspace for the cloned object.
-     *  @exception CloneNotSupportedException If one of the attributes
-     *   cannot be cloned.
-     *  @return The new director.
-     */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        PBODirector newobj = (PBODirector)super.clone(ws);
-	newobj.stopTime = (Parameter) newobj.getAttribute("stopTime");
-        return newobj;
-    }
-
     /** Invoke an iteration on all of the deeply contained actors of the
      *  container of this director.  In general, this may be called more
      *  than once in the same iteration of the director's container.

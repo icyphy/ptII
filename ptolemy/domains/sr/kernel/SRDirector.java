@@ -153,21 +153,6 @@ public class SRDirector extends StaticSchedulingDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the director into the specified workspace. This calls the
-     *  base class and then sets the iterations member.  The new
-     *  actor will have the same parameter values as the old.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If one of the attributes
-     *   cannot be cloned.
-     */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        SRDirector newObject = (SRDirector)(super.clone(workspace));
-        newObject.iterations = (Parameter)newObject.getAttribute("iterations");
-        return newObject;
-    }
-
     /** Iterate every contained actor with calls to prefire(), fire(), and 
      *  postfire().
      *  @exception IllegalActionException If an actor executed by this

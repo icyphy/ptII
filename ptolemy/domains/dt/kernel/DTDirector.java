@@ -207,26 +207,6 @@ public class DTDirector extends SDFDirector {
         super.attributeChanged(attribute);
     }
 
-
-
-    /** Clone the director into the specified workspace. This calls the
-     *  base class and then copies the parameter of this director.  The new
-     *  actor will have the same parameter values as the old.
-     *  The period parameter is explicitly cloned in this method.
-     *
-     *  @param workspace The workspace for the new object.
-     *  @return A new object.
-     *  @exception CloneNotSupportedException If one of the attributes
-     *   cannot be cloned.
-     */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        _reset();
-        DTDirector newObject = (DTDirector)(super.clone(workspace));
-        newObject.period = (Parameter)newObject.getAttribute("period");
-        return newObject;
-    }
-
     /** Go through the schedule and iterate every actor with calls to
      *  prefire() , fire() , and postfire().  If this director is not
      *  in the top-level, get the outside director's current time; and 
