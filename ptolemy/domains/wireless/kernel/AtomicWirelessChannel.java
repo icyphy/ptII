@@ -420,7 +420,19 @@ public class AtomicWirelessChannel extends TypedAtomicActor
         }
 
         if (_propertyTransformersByPort != null) {
+            //Apply property transformer for the sender.
             Set transformers = (Set)_propertyTransformersByPort.get(source);
+            if (transformers != null) {
+                Iterator iterator = transformers.iterator();
+                while (iterator.hasNext()) {
+                    PropertyTransformer transformer
+                        = (PropertyTransformer)iterator.next();
+                    result = transformer.transformProperties(
+                            result, source, destination);
+                }
+            }
+            //Apply property transformers for the receiver.
+            transformers = (Set)_propertyTransformersByPort.get(destination);
             if (transformers != null) {
                 Iterator iterator = transformers.iterator();
                 while (iterator.hasNext()) {

@@ -236,10 +236,12 @@ public class TransmitPropertyTransformer extends LifeCycleManager
         if (_debugging) {
             _debug("Called preinitialize()");
         }
-        Iterator connectedPorts = output.sinkPortList().iterator();
         boolean foundOne = false;
-        while (connectedPorts.hasNext()) {
-            IOPort port = (IOPort)connectedPorts.next();
+        //register this property transformer for the connected wireless
+        //output port. It assumes there is only one.
+        Iterator connectedOutputPorts = output.sinkPortList().iterator();
+        while (connectedOutputPorts.hasNext()) {
+            IOPort port = (IOPort)connectedOutputPorts.next();
             if (port.isOutput() && port instanceof WirelessIOPort) {
                 // Found the port.
                 foundOne = true;
@@ -255,14 +257,49 @@ public class TransmitPropertyTransformer extends LifeCycleManager
                 Entity channel = container2.getEntity(channelName);
                 if (channel instanceof WirelessChannel) {
                     // Cache it here, so no need to do it again in wrapup().
-                    _channel = (WirelessChannel)channel;
-                    _wirelessIOPort = (WirelessIOPort)port;
+                    _outputWirelessChannel = (WirelessChannel)channel;
+                    _wirelessOutputPort = (WirelessIOPort)port;
                     ((WirelessChannel)channel)
                             .registerPropertyTransformer(this,
                             (WirelessIOPort)port);
                 } else {
                     throw new IllegalActionException(this,
-                            "The connected port does not refer to a "
+                            "The connected output port does not refer to a "
+                            + "valid channel.");
+                }
+            }
+        }
+        
+        //register this property transformer for the connected wireless
+        //input port. It assumes there is only one.
+        Iterator connectedInputPorts = input.sourcePortList().iterator();
+        while (connectedInputPorts.hasNext()) {
+            //register this property transformer for the connected wireless
+            //output port. It assumes there is only one.
+            IOPort port = (IOPort)connectedInputPorts.next();
+            if (port.isInput() && port instanceof WirelessIOPort) {
+                // Found the port.
+                foundOne = true;
+                Entity container = (Entity)(port.getContainer());
+                String channelName
+                        = ((WirelessIOPort)port).outsideChannel.stringValue();
+                CompositeEntity container2
+                        = (CompositeEntity)container.getContainer();
+                if (container2 == null) {
+                    throw new IllegalActionException(this,
+                            "The port's container does not have a container.");
+                }
+                Entity channel = container2.getEntity(channelName);
+                if (channel instanceof WirelessChannel) {
+                    // Cache it here, so no need to do it again in wrapup().
+                    _inputWirelessChannel = (WirelessChannel)channel;
+                    _wirelessInputPort = (WirelessIOPort)port;
+                    ((WirelessChannel)channel)
+                            .registerPropertyTransformer(this,
+                            (WirelessIOPort)port);
+                } else {
+                    throw new IllegalActionException(this,
+                            "The connected input port does not refer to a "
                             + "valid channel.");
                 }
             }
@@ -311,7 +348,7 @@ public class TransmitPropertyTransformer extends LifeCycleManager
 
         RecordToken result = (RecordToken)properties.getToken();
         if (_debugging) {
-            _debug("---- the modified properties value is. "
+            _debug("---- the modified property value is. "
                     + result.toString());
         }
         return result;
@@ -327,9 +364,13 @@ public class TransmitPropertyTransformer extends LifeCycleManager
         if (_debugging) {
             _debug("Called wrapup(), which unregisters the property transformer.");
         }
-        if (_channel != null) {
-            _channel.unregisterPropertyTransformer(this,
-                    _wirelessIOPort);
+        if (_outputWirelessChannel != null) {
+            _outputWirelessChannel.unregisterPropertyTransformer(this,
+                    _wirelessOutputPort);
+        }
+        if (_inputWirelessChannel != null) {
+            _inputWirelessChannel.unregisterPropertyTransformer(this,
+                    _wirelessInputPort);
         }
     }
     
@@ -371,11 +412,21 @@ public class TransmitPropertyTransformer extends LifeCycleManager
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
     
-    /** The channel found in preinitialize(). */
-    private WirelessChannel _channel;
+    /** The wireless channel for the connected input port found in 
+     *  preinitialize(). 
+     */
+    private WirelessChannel _inputWirelessChannel;
     
-    /** The connected port found in preinitialize(). */
-    private WirelessIOPort _wirelessIOPort;
+    /** The connected wireless input port found in preinitialize(). */
+    private WirelessIOPort _wirelessInputPort;
+    
+    /** The wireless channel for the connected output port found in 
+     *  preinitialize(). 
+     */
+    private WirelessChannel _outputWirelessChannel;
+    
+    /** The connected wireless output port found in preinitialize(). */
+    private WirelessIOPort _wirelessOutputPort;
         
     /** Name of the location attribute. */
     private static final String LOCATION_ATTRIBUTE_NAME = "_location";
