@@ -91,7 +91,7 @@ public class GiottoScheduler extends Scheduler {
      *  synchronized on the workspace.
      *
      * @see ptolemy.kernel.CompositeEntity#deepGetEntities()
-     * @return
+     * @return an Enumeration of the scheduling sequence.
      * @exception NotSchedulableException If the CompositeActor is not
      *  schedulable. Not thrown in this base class, but may be needed
      *  by the derived scheduler.
