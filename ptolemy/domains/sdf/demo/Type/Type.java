@@ -123,7 +123,7 @@ public class Type extends SDFApplet {
 
             // Display the trace
             _traceCanvas = _displayTrace(traceModel);
-            _traceCanvas.setPreferredSize(new Dimension(400,290));
+            _traceCanvas.setPreferredSize(new Dimension(400, 290));
             visPanel.add(_traceCanvas, BorderLayout.EAST);
 
 	    _addListeners();
@@ -280,7 +280,7 @@ public class Type extends SDFApplet {
     }
 
     // Construct the graph representing the Ptolemy type lattice
-    private GraphModel _constructLattice () {
+    private GraphModel _constructLattice() {
         GraphModel model = new GraphModel();
 
         // nodes, with user object set to the actor
@@ -307,31 +307,31 @@ public class Type extends SDFApplet {
         model.addNode(n10);
 
         /*
-           nodeMap.put(a1,n1);
-           nodeMap.put(a2,n2);
-           nodeMap.put(a3,n3);
-           nodeMap.put(a4,n4);
-           nodeMap.put(a5,n5);
-           nodeMap.put(a6,n6);
-           nodeMap.put(a7,n7);
-           nodeMap.put(a8,n8);
+           nodeMap.put(a1, n1);
+           nodeMap.put(a2, n2);
+           nodeMap.put(a3, n3);
+           nodeMap.put(a4, n4);
+           nodeMap.put(a5, n5);
+           nodeMap.put(a6, n6);
+           nodeMap.put(a7, n7);
+           nodeMap.put(a8, n8);
         */
 
         // Edges
-        model.createEdge(n8,n1);
-        model.createEdge(n6,n8);
+        model.createEdge(n8, n1);
+        model.createEdge(n6, n8);
 
-        model.createEdge(n6,n5);
-        model.createEdge(n5,n7);
-        model.createEdge(n7,n1);
+        model.createEdge(n6, n5);
+        model.createEdge(n5, n7);
+        model.createEdge(n7, n1);
 
-        model.createEdge(n5,n9);
-        model.createEdge(n9,n10);
-        model.createEdge(n10,n2);
-        model.createEdge(n2,n1);
-        model.createEdge(n3,n2);
-        model.createEdge(n4,n3);
-        model.createEdge(n9,n4);
+        model.createEdge(n5, n9);
+        model.createEdge(n9, n10);
+        model.createEdge(n10, n2);
+        model.createEdge(n2, n1);
+        model.createEdge(n3, n2);
+        model.createEdge(n4, n3);
+        model.createEdge(n9, n4);
 
         return model;
     }
@@ -354,7 +354,7 @@ public class Type extends SDFApplet {
         final GraphModel m = model;
         try {
             SwingUtilities.invokeLater(new Runnable() {
-                public void run () {
+                public void run() {
                     // Layout is a bit stupid
                     gv.setLayoutPercentage(0.7);
                     LevelLayout staticLayout = new LevelLayout();
@@ -448,7 +448,7 @@ public class Type extends SDFApplet {
         TraceView traceView = _tracePane.getTraceView();
         traceView.setTimeScale(25);
 
-        traceView.setLayout(10,10,400,20,20);
+        traceView.setLayout(10, 10, 400, 20, 20);
         traceView.setTraceModel(traceModel);
 
         return traceWidget;
@@ -718,7 +718,7 @@ public class Type extends SDFApplet {
         private double _size = 20;
 
         // Return the rendered visual representation of this node.
-        public Figure render (Node n) {
+        public Figure render(Node n) {
             Object typeObj = n.getSemanticObject();
 
             // Create a colored circle
@@ -873,7 +873,7 @@ public class Type extends SDFApplet {
 
             try {
                 SwingUtilities.invokeAndWait(new Runnable() {
-                    public void run () {
+                    public void run() {
                         TraceView v = _tracePane.getTraceView();
                         for (int i = 0; i < msize; i++) {
                             v.updateTraceElement(temp[i]);
