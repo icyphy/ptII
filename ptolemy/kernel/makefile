@@ -52,11 +52,9 @@ JZIP =		pt/kernel/pt.kernel.zip
 CLASSPATH = ../..
 
 JSRCS = \
-	CompositeEntity.java \
 	CrossRefList.java \
 	Entity.java \
 	GraphException.java \
-	HierEntity.java \
 	IntParam.java \
 	NamedObj.java \
 	NamedObjList.java \
