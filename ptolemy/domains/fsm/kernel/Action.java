@@ -38,11 +38,25 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// Action
 /**
-An Action is contained by a Transition in an FSMActor. An Action is executed
-when the FSMActor is fired or postfired and the Transition is taken.
+An Action is contained by a Transition in an FSMActor. 
+<p>
+When the FSMActor is fired, a transition among the outgoing transitions 
+of the current state is chosen if it is enabled. The choice actions 
+contained by the chosen transition are executed. An action is a choice 
+action if it implements the ChoiceAction marker interface. A choice 
+action may be executed more than once during an iteration in domains
+with fixed-point semantics.
+<p>
+When the FSMActor is postfired, the chosen transition of the latest firing 
+of the actor is commited. The commit actions contained by the transition
+are executed and the current state of the actor is set to the destination 
+state of the transition. An action is a commit action if it implements the
+CommitAction marker interface. 
 
 @author Xiaojun Liu
 @version $Id$
+@see ChoiceAction
+@see CommitAction
 @see Transition
 @see FSMActor
 */
@@ -72,25 +86,10 @@ public abstract class Action extends Attribute {
     ////                         public methods                    ////
 
     /** Execute the action.
-     *  @exception IllegalActionException Not thrown in this base class.
+     *  @exception IllegalActionException When the action cannot be 
+     *   successfully completed.
      */
     abstract public void execute() throws IllegalActionException;
-
-    /** Return true if this action will be executed when the FSMActor
-     *  is fired and the transition containing this action is taken.
-     *  @return A boolean.
-     */
-    public boolean isExecuteWhenFire() {
-        return _executeWhenFire;
-    }
-
-    /** Return true if this action will be executed when the FSMActor
-     *  is postfired and the transition containing this action is taken.
-     *  @return A boolean.
-     */
-    public boolean isExecuteWhenPostfire() {
-        return _executeWhenPostfire;
-    }
 
     /** Override the base class to ensure that the proposed container
      *  is an instance of Transition or null. If it is, call the
@@ -115,48 +114,5 @@ public abstract class Action extends Attribute {
         }
         super.setContainer(container);
     }
-
-    /** If the argument is true, this action is executed when the FSMActor
-     *  is fired and the transition containing this action is taken.
-     *  If a derived class does not allow this setting to be changed, an
-     *  IllegalActionException will be thrown.
-     *  @param t A boolean flag.
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    public void setExecuteWhenFire(boolean t) throws IllegalActionException {
-        _executeWhenFire = t;
-    }
-
-    /** If the argument is true, this action is executed when the FSMActor
-     *  is postfired and the transition containing this action is taken.
-     *  If a derived class does not allow this setting to be changed, an
-     *  IllegalActionException will be thrown.
-     *  @param t A boolean flag.
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    public void setExecuteWhenPostfire(boolean t) 
-            throws IllegalActionException {
-        _executeWhenPostfire = t;
-    }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Called during initialization of the FSMActor, after the input
-     *  variables are created.
-     *  @see FSMActor#preinitialize()
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    protected void _initialize() throws IllegalActionException {
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // If true, the action will be executed when firing FSMActor.
-    private boolean _executeWhenFire;
-
-    // If true, the action will be executed when postfiring FSMActor.
-    private boolean _executeWhenPostfire;
 
 }

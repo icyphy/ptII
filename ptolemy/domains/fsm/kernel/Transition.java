@@ -48,17 +48,17 @@ import java.util.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// Transition
 /**
-A Transition has a source State and a destination State. A Transition has
-a guard expression and a trigger expression. The trigger of a Transition
-should imply the guard. A Transition is enabled and can be taken when its
-guard is true. A Transition is triggered and must be taken when its trigger
+A Transition has a source state and a destination state. A transition has
+a guard expression and a trigger expression. The trigger of a transition
+should imply the guard. A transition is enabled and can be taken when its
+guard is true. A transition is triggered and must be taken when its trigger
 is true.
 <p> 
-A Transition can contain a set of Actions. The Actions are executed when
-the FSMActor containing the Transition is fired or postfired and the 
-Transition is taken.
+A transition can contain a set of actions. The actions are executed when
+the FSMActor containing the transition is fired or postfired and the 
+transition is taken.
 <p>
-A Transition can be preemptive or non-preemptive. When a preemptive transition
+A transition can be preemptive or non-preemptive. When a preemptive transition
 is taken, the refinement of its source State is not fired. A non-preemptive
 transition is only taken after the refinement of its source State is fired.
 
@@ -93,20 +93,24 @@ public class Transition extends ComponentRelation {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the list of Actions contained by this Transition.
-     *  @return A list of Actions.
+    /** Return the list of choice actions contained by this transition.
+     *  @return A list of choice actions.
      */
-    public List actionList() {
-        if (_actionListVersion != workspace().getVersion()) {
-            try {
-                workspace().getReadAccess();
-                _actionList = attributeList(Action.class);
-                _actionListVersion = workspace().getVersion();
-            } finally {
-                workspace().doneReading();
-            }
+    public List choiceActionList() {
+        if (_actionListsVersion != workspace().getVersion()) {
+            _updateActionLists();
         }
-        return _actionList;
+        return _choiceActionList;
+    }
+
+    /** Return the list of commit actions contained by this transition.
+     *  @return A list of commit actions.
+     */
+    public List commitActionList() {
+        if (_actionListsVersion != workspace().getVersion()) {
+            _updateActionLists();
+        }
+        return _commitActionList;
     }
 
     /** Return the destination state of this transition.
@@ -190,10 +194,12 @@ public class Transition extends ComponentRelation {
     }
 
     /** If the argument is true, set the transition to be preemptive.
+     *  Increment the version number of the workspace.
      *  @param t True to set the transition preemptive.
      */
     public void setPreemptive(boolean t) {
         _preemptive = t;
+        workspace().incrVersion();
     }
 
     /** Set the trigger expression.
@@ -254,33 +260,6 @@ public class Transition extends ComponentRelation {
         return;
     }
 
-    /** Add the input variables of the FSMActor and the variables contained
-     *  by the FSMActor to the scope of the variables for evaluating guard
-     *  and trigger. Initialize the Actions contained by this transition.
-     *  @see FSMActor#preinitialize()
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    protected void _initialize() throws IllegalActionException {
-        List vlist = ((FSMActor)getContainer()).attributeList(Variable.class);
-        Iterator vars = vlist.iterator();
-        while (vars.hasNext()) {
-            Variable v = (Variable)vars.next();
-            _guardVar.addToScope(v);
-            _triggerVar.addToScope(v);
-        }
-        Attribute vcont = ((FSMActor)getContainer())._inputVariableContainer;
-        vars = vcont.attributeList(Variable.class).iterator();
-        while (vars.hasNext()) {
-            Variable v = (Variable)vars.next();
-            _guardVar.addToScope(v);
-            _triggerVar.addToScope(v);
-        }
-        Iterator actions = actionList().iterator();
-        while (actions.hasNext()) {
-            ((Action)actions.next())._initialize();
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -307,14 +286,40 @@ public class Transition extends ComponentRelation {
         }
     }
 
+    // Update the cached lists of actions.
+    // This method is read-synchronized on the workspace.
+    private void _updateActionLists() {
+        try {
+            workspace().getReadAccess();
+            _choiceActionList.clear();
+            _commitActionList.clear();
+            Iterator actions = attributeList(Action.class).iterator();
+            while (actions.hasNext()) {
+                Action action = (Action)actions.next();
+                if (action instanceof ChoiceAction) {
+                    _choiceActionList.add(action);
+                }
+                if (action instanceof CommitAction) {
+                    _commitActionList.add(action);
+                }
+            }
+            _actionListsVersion = workspace().getVersion();
+        } finally {
+            workspace().doneReading();
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Cached list of Actions contained by this Transition.
-    private List _actionList = null;
+    // Version of cached lists of actions.
+    private long _actionListsVersion = -1;
 
-    // Version of cached list of Actions.
-    private long _actionListVersion = -1;
+    // Cached list of choice actions contained by this transition.
+    private List _choiceActionList = new LinkedList();
+
+    // Cached list of commit actions contained by this Transition.
+    private List _commitActionList = new LinkedList();
 
     // Cached destination state of this transition.
     private State _destinationState = null;

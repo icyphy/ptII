@@ -74,8 +74,8 @@ public class State extends ComponentEntity {
     public State(FSMActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        incomingPort = new ComponentPort(this, "_IncomingPort");
-        outgoingPort = new ComponentPort(this, "_OutgoingPort");
+        incomingPort = new ComponentPort(this, "IncomingPort");
+        outgoingPort = new ComponentPort(this, "OutgoingPort");
     }
 
     ///////////////////////////////////////////////////////////////////

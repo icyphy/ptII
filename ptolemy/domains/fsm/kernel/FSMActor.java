@@ -50,6 +50,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.Token;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.expr.Parameter;
 
@@ -119,31 +120,49 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         initialState = new Parameter(this, "InitialState");
-        _inputVariableContainer = 
-                new Attribute(this, "_InputVariableContainer");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the current refinement of this FSMActor.
-     *  @return Current refinement.
+    /** React to a change in an attribute. If the changed attribute is
+     *  the initialState parameter, set the initial state of this actor
+     *  to the state named with the value of the parameter. If this 
+     *  actor does not contain such a state, throw an exception.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the changed attribute is 
+     *   the initialState parameter and this actor does not contain a 
+     *   state named with the value of the parameter, or if thrown by
+     *   the superclass attributeChanged() method.
      */
-    public TypedActor currentRefinement() {
-        return _currentState.getRefinement();
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        super.attributeChanged(attribute);
+        if (attribute == initialState) {
+            StringToken tok = (StringToken)initialState.getToken();
+            State state = (State)getEntity(tok.toString());
+            if (state == null) {
+                throw new IllegalActionException(this,
+                        "Cannot find state with name \""
+                        + tok.toString() + "\" in this actor.");
+            } else {
+                _initialState = state;
+            }
+        }
     }
 
-    /** Return the current state of this FSMActor.
+    /** Return the current state of this actor.
      *  @return Current state.
      */
     public State currentState() {
         return _currentState;
     }
 
-    /** Set the values of input variables. Examine outgoing transitions
-     *  from the current state. Throw an exception if there are more than
-     *  one transitions enabled. Otherwise, execute the actions on the
-     *  enabled transition.
+    /** Set the values of input variables. Choose the enabled transition 
+     *  among the outgoing transitions of the current state. Throw an 
+     *  exception if there are more than one transitions enabled. 
+     *  Otherwise, execute the choice actions contained by the chosen 
+     *  transition.
      *  @exception IllegalActionException If there are more than one 
      *   transitions enabled.
      */
@@ -153,22 +172,8 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             TypedIOPort p = (TypedIOPort)inports.next();
             _setInputVariables(p);
         }
-        _lastEnabledTransition = null;
-        Transition tr1 = 
-                _enabledTransition(currentState().preemptiveTransitionList());
-        Transition tr2 = 
-                _enabledTransition(currentState().nonpreemptiveTransitionList());
-        if (tr1 == null) {
-            _lastEnabledTransition = tr2;
-        } else if (tr2 != null) {
-            throw new IllegalActionException(this, currentState(),
-                    "Multiple enabled transitions.");
-        } else {
-            _lastEnabledTransition = tr1;
-        }
-        if (_lastEnabledTransition != null) {
-            _fireTransition(_lastEnabledTransition);
-        }
+        List trList = _currentState.outgoingPort.linkedRelationList();
+        _chooseTransition(trList);
     }
 
     /** Return the director responsible for the execution of this actor.
@@ -220,7 +225,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
 
     /** Return an enumeration of the input ports.
      *  This method is read-synchronized on the workspace.
-     *  @deprecated Use inportList() instead;
+     *  @deprecated Use inputPortList() instead;
      *  @return An enumeration of input TypedIOPort objects.
      */
     public Enumeration inputPorts() {
@@ -332,9 +337,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  @exception IllegalActionException If any action throws it.
      */
     public boolean postfire() throws IllegalActionException {
-        if (_lastEnabledTransition != null) {
-            _postfireTransition(_lastEnabledTransition);
-        }
+        _commitLastChosenTransition();
         return true;
     }
 
@@ -346,27 +349,20 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         return true;
     }
 
-    /** Create receivers and input variables. Initialize transitions.
-     *
-     *  @exception IllegalActionException Not thrown in this base class.
+    /** Create receivers and input variables for the input ports of this
+     *  actor. Set current state to the initial state. Throw an 
+     *  IllegalActionException if the initial state is not set.
+     *  @exception IllegalActionException If the initial state is not set.
      */
     public void preinitialize() throws IllegalActionException {
         _createReceivers();
-        Enumeration inports = inputPorts();
-        while (inports.hasMoreElements()) {
-            TypedIOPort p = (TypedIOPort)inports.nextElement();
-            _createInputVariables(p);
-        }
-        Iterator trs = relationList().iterator();
-        while (trs.hasNext()) {
-            Transition tr = (Transition)trs.next();
-            tr._initialize();
-        }
+        _createInputVariables();
         _gotoInitialState();
     }
 
-    /** Reset state to initial state.
-     *  @exception IllegalActionException If initial state is not set.
+    /** Reset current state to the initial state. Throw an 
+     *  IllegalActionException if the initial state is not set.
+     *  @exception IllegalActionException If the initial state is not set.
      */
     public void reset() throws IllegalActionException {
         _gotoInitialState();
@@ -376,7 +372,10 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  is an instance of TypedCompositeActor or null. If it is, call the
      *  base class setContainer() method. A null argument will remove
      *  the actor from its container.
-     *
+     *  If the director of this actor is an FSMDirector and this actor is
+     *  the mode controller of the director, set the controller of the
+     *  director to null if the proposed container is not the current 
+     *  container.
      *  @param entity The proposed container.
      *  @exception IllegalActionException If the action would result in a
      *   recursive containment structure, or if
@@ -387,6 +386,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
+        Director director = getDirector();
         if (!(container instanceof TypedCompositeActor) &&
                 (container != null)) {
             throw new IllegalActionException(container, this,
@@ -394,6 +394,35 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                     "TypedCompositeActor.");
         }
         super.setContainer(container);
+        // Change NewFSMDirector to FSMDirector after the current FSMDirector
+        // phases off.
+        if ((director != null) && (director instanceof NewFSMDirector)) {
+            FSMActor controller = ((NewFSMDirector)director).getController();
+            if (controller == this) {
+                ((NewFSMDirector)director).setController(null);
+            }
+        }
+    }
+
+    /** Set the initial state. When this actor is initialized or reset,
+     *  its current state is set to the initial state.
+     *  The value of the initialState parameter of this actor is set with
+     *  the name of the initial state.
+     *  An IllegalActionException is thrown if the argument is not contained
+     *  by this actor.
+     *  @param state The proposed initial state.
+     *  @exception IllegalActionException If the argument is not contained
+     *   by this actor.
+     */
+    public void setInitialState(State state)
+            throws IllegalActionException {
+        if (state.getContainer() != this) {
+            throw new IllegalActionException(this, state, 
+                    "The proposed initial state is not contained by the "
+                    + "FSMActor.");
+        }
+        _initialState = state;
+        initialState.setToken(new StringToken(state.getName()));
     }
 
     /** Do nothing.
@@ -550,61 +579,16 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         super._addRelation(relation);
     }
 
-    /** Create input variables for the port.
-     *  @param port A port.
-     *  @exception IllegalActionException If the port is not contained
-     *   by this FSMActor.
-     */
-    protected void _createInputVariables(TypedIOPort port) 
-            throws IllegalActionException {
-        if (port.getContainer() != this) {
-            throw new IllegalActionException(this, port,
-                    "Cannot create input variables for port "
-                    + "not contained by this FSMActor.");
-        }
-        Variable sVar = null;
-        String vName = port.getName() + "$S";
-        Attribute a = _inputVariableContainer.getAttribute(vName);
-        try {
-            if(a != null) {
-                a.setContainer(null);
-            }
-            sVar = new Variable(_inputVariableContainer, vName);
-        } catch (NameDuplicationException ex) {
-            throw new InvalidStateException(this,
-                    _inputVariableContainer,
-                    "Error creating input variables for port "
-                    + port.getName());
-        }
-        Variable vVar = null;
-        vName = port.getName() + "$V";
-        a = _inputVariableContainer.getAttribute(vName);
-        try {
-            if(a != null) {
-                a.setContainer(null);
-            }
-            vVar = new Variable(_inputVariableContainer, vName);
-        } catch (NameDuplicationException ex) {
-            throw new InvalidStateException(this,
-                    _inputVariableContainer,
-                    "Error creating input variables for port "
-                    + port.getName());
-        }
-        Variable[] pVars = new Variable[2];
-        pVars[0] = sVar;
-        pVars[1] = vVar;
-        _inputVariableMap.put(port, pVars);
-    }   
-
-    /** Return null if none of the transitions in the list is enabled.
+    /** Return the enabled transition among the given list of transitions
+     *  and execute the choice actions contained by the transition.
      *  Throw an exception if more than one transitions are enabled.
-     *  Otherwise return the enabled transition.
      *  @param transitionList A list of transitions.
      *  @return An enabled transition, or null if none is enabled.
      *  @exception IllegalActionException If more than one transitions 
-     *   are enabled.
+     *   are enabled, or if thrown by any choice action contained by the
+     *   enabled transition.
      */
-    protected Transition _enabledTransition(List transitionList)
+    protected Transition _chooseTransition(List transitionList)
             throws IllegalActionException {
         Transition result = null;
         Iterator trs = transitionList.iterator();
@@ -620,47 +604,172 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                 result = tr;
             }
         }
-        return result;
-    }
-
-    /** Execute all actions on the transition that are set to execute when
-     *  fire.
-     *  @param transition A transition.
-     *  @exception IllegalActionException If any action throws it.
-     */
-    protected void _fireTransition(Transition transition) 
-            throws IllegalActionException {
-        Iterator actions = transition.actionList().iterator();
-        while (actions.hasNext()) {
-            Action action = (Action)actions.next();
-            if (action.isExecuteWhenFire()) {
+        if (result != null) {
+            Iterator actions = result.choiceActionList().iterator();
+            while (actions.hasNext()) {
+                Action action = (Action)actions.next();
                 action.execute();
             }
         }
+        _lastChosenTransition = result;
+        return result;
     }
 
-    /** Execute all actions on the transition that are set to execute when
-     *  postfire. Change state to the destination state of the transition.
-     *  @param transition A transition.
-     *  @exception IllegalActionException If any action throws it.
+    /** Execute all commit actions contained by the transition chosen
+     *  during the last call to _chooseTransition(). Change current state 
+     *  to the destination state of the transition.
+     *  @exception IllegalActionException If any commit action throws it.
      */
-    protected void _postfireTransition(Transition transition) 
+    protected void _commitLastChosenTransition() 
             throws IllegalActionException {
-        Iterator actions = transition.actionList().iterator();
+        if (_lastChosenTransition == null) {
+            return;
+        }
+        Iterator actions = _lastChosenTransition.commitActionList().iterator();
         while (actions.hasNext()) {
             Action action = (Action)actions.next();
-            if (action.isExecuteWhenPostfire()) {
-                action.execute();
-            }
+            action.execute();
+        }
+        _currentState = _lastChosenTransition.destinationState();
+    }
+
+    /** Execute all commit actions contained by the given transition.
+     *  Change current state to the destination state of the transition.
+     *  @param transition A transition.
+     *  @exception IllegalActionException If any commit action throws it.
+     */
+    protected void _commitTransition(Transition transition) 
+            throws IllegalActionException {
+        Iterator actions = transition.commitActionList().iterator();
+        while (actions.hasNext()) {
+            Action action = (Action)actions.next();
+            action.execute();
         }
         _currentState = transition.destinationState();
     }
 
+    /** Create input variables for the port. The variables are contained
+     *  by this actor and can be referenced in the guard and trigger
+     *  expressions of transitions.
+     *  If the given port is a single port, two variables are created:
+     *  one is input status variable with name "port_name$S"; the other is
+     *  input value variable with name "port_name$V". The input status 
+     *  variable always contains a BooleanToken. When this actor is fired,
+     *  The status variable is set to true if the port has a token, false
+     *  otherwise. The input value variable always contains the token 
+     *  received from the port, or null if the port has no token.
+     *  If the given port is a multiport, a status variable and a value
+     *  variable are created for each channel. The status variable is
+     *  named "port_name#channel_index$S". The value variable is named
+     *  "port_name#channel_index$V".
+     *  If a variable to be created has the same name as an attribute
+     *  already contained by this actor, the attribute will be removed
+     *  from this actor by setting its container to null.
+     *  @param port A port.
+     *  @exception IllegalActionException If the port is not contained
+     *   by this FSMActor or is not an input port.
+     */
+    protected void _createInputVariables(TypedIOPort port) 
+            throws IllegalActionException {
+        if (port.getContainer() != this) {
+            throw new IllegalActionException(this, port,
+                    "Cannot create input variables for port "
+                    + "not contained by this FSMActor.");
+        }
+        if (!port.isInput()) {
+            throw new IllegalActionException(this, port,
+                    "Cannot create input variables for port "
+                    + "that is not input.");
+        }
+        // If there are input variables already created for the port,
+        // remove them.
+        if (_inputVariableMap.get(port) != null) {
+            _removeInputVariables(port);
+        }
+        int width = port.getWidth();
+        if (width == 0) {
+            return;
+        }
+        Variable[][] pVars = new Variable[width][2];
+        boolean addChIndex = (width > 1);
+        for (int chIndex = 0; chIndex < width; ++chIndex) {
+            String vName = null;
+            if (addChIndex) {
+                vName = port.getName() + "#" + chIndex + "$S";
+            } else {
+                vName = port.getName() + "$S";
+            }
+            Attribute a = getAttribute(vName);
+            try {
+                if(a != null) {
+                    a.setContainer(null);
+                }
+                pVars[chIndex][0] = new Variable(this, vName);
+            } catch (NameDuplicationException ex) {
+                throw new InternalErrorException(getName() + ": "
+                        + "Error creating input variables for port "
+                        + port.getName() + ".\n"
+                        + ex.getMessage());
+            }
+            if (addChIndex) {
+                vName = port.getName() + "#" + chIndex + "$V";
+            } else {
+                vName = port.getName() + "$V";
+            }
+            a = getAttribute(vName);
+            try {
+                if(a != null) {
+                    a.setContainer(null);
+                }
+                pVars[chIndex][1] = new Variable(this, vName);
+            } catch (NameDuplicationException ex) {
+                throw new InvalidStateException(this,
+                        "Error creating input variables for port.\n"
+                        + ex.getMessage());
+            }
+        }
+        _inputVariableMap.put(port, pVars);
+    }
+
+    /** Remove the input variables created for the port.
+     *  @see #_createInputVariables(TypedIOPort port)
+     *  @param port A port.
+     */
+    protected void _removeInputVariables(TypedIOPort port) {
+        Variable[][] pVars = (Variable[][])_inputVariableMap.get(port);
+        if (pVars == null) {
+            return;
+        }
+        for (int index = 0; index < pVars.length; ++index) {
+            try {
+                Variable v = pVars[index][0];
+                if (v != null) {
+                    v.setContainer(null);
+                }
+                v = pVars[index][1];
+                if (v != null) {
+                    v.setContainer(null);
+                }
+            } catch (NameDuplicationException ex) {
+                throw new InternalErrorException(getName() + ": "
+                        + "Error removing input variables for port "
+                        + port.getName() + ".\n"
+                        + ex.getMessage());
+            } catch (IllegalActionException ex) {
+                throw new InternalErrorException(getName() + ": "
+                        + "Error removing input variables for port "
+                        + port.getName() + ".\n"
+                        + ex.getMessage());
+            }
+        }
+    }
+
     /** Set the input variables for the port.
+     *  @see #_createInputVariables(TypedIOPort port)
      *  @param port A port.
      *  @exception IllegalActionException If the port is not contained by
-     *   this FSMActor, or if the value variable cannot take the token read 
-     *   from the port.
+     *   this actor, or if the port is not an input port, or if the value 
+     *   variable cannot take the token read from the port.
      */
     protected void _setInputVariables(TypedIOPort port) 
             throws IllegalActionException {
@@ -669,26 +778,35 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                     "Cannot set input variables for port "
                     + "not contained by this FSMActor.");
         }
-        Variable[] pVars = (Variable[])_inputVariableMap.get(port);
-        if (pVars == null) {
-            throw new InvalidStateException(this, port,
-                    "Cannot find input variables for port.");
+        if (!port.isInput()) {
+            throw new IllegalActionException(this, port, 
+                    "Cannot set input variables for port "
+                    + "that is not input.");
         }
-        boolean t = port.hasToken(0);
-        Token tok = t ? BooleanToken.TRUE : BooleanToken.FALSE;
-        pVars[0].setToken(tok);
-        if (t == false) {
-            pVars[1].setToken(null);
-        } else {
-            pVars[1].setToken(port.get(0));
+        int width = port.getWidth();
+        if (width == 0) {
+            return;
+        }
+        Variable[][] pVars = (Variable[][])_inputVariableMap.get(port);
+        if (pVars == null) {
+            throw new InternalErrorException(getName() + ": "
+                    + "Cannot find input variables for port "
+                    + port.getName() + ".\n");
+        }
+        for (int chIndex = 0; chIndex < width; ++chIndex) {
+            boolean t = port.hasToken(chIndex);
+            Token tok = t ? BooleanToken.TRUE : BooleanToken.FALSE;
+            pVars[chIndex][0].setToken(tok);
+            if (t == false) {
+                pVars[chIndex][1].setToken(null);
+            } else {
+                pVars[chIndex][1].setToken(port.get(chIndex));
+            }
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
-    // The attribute containing the input variables.
-    protected Attribute _inputVariableContainer;
 
     // A map from ports to corresponding input variables.
     protected Map _inputVariableMap = new HashMap();
@@ -696,13 +814,30 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    /*  Create input variables for each input port.
+     */
+    private void _createInputVariables() {
+        Iterator inputPorts = inputPortList().iterator();
+        while (inputPorts.hasNext()) {
+            TypedIOPort inport = (TypedIOPort)inputPorts.next();
+            try {
+                _createInputVariables(inport);
+            } catch (IllegalActionException ex) {
+                throw new InternalErrorException(getName() + ": "
+                        + "Error creating input variables for port "
+                        + inport.getName() + ".\n"
+                        + ex.getMessage());
+            }
+        }
+    }
+
     /*  Create receivers for each input port.
      *  @exception IllegalActionException If any port throws it.
      */
     private void _createReceivers() throws IllegalActionException {
-        Enumeration inputPorts = inputPorts();
-        while (inputPorts.hasMoreElements()) {
-            IOPort inport = (IOPort)inputPorts.nextElement();
+        Iterator inputPorts = inputPortList().iterator();
+        while (inputPorts.hasNext()) {
+            IOPort inport = (IOPort)inputPorts.next();
             inport.createReceivers();
         }
     }
@@ -711,26 +846,16 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  to set the initial state: one is by calling setInitialState(), 
      *  the other is by putting the name of the initial state in a 
      *  StringToken, and setting the initialState parameter with this 
-     *  token. The first way has precedence. An exception will be
-     *  thrown if initial state is not set.
+     *  token. 
+     *  An exception will be thrown if initial state is not set.
      *  @exception IllegalActionException If initial state is not set.
      */
     private void _gotoInitialState() throws IllegalActionException {
-        if (_setInitialState != null) {
-            _currentState = _setInitialState;
-        }
-        Token tok = initialState.getToken();
-        if (tok == null) {
+        if (_initialState == null) {
             throw new IllegalActionException(this,
                     "Initial state is not set.");
         }
-        State st = (State)this.getEntity(tok.toString());
-        if (st == null) {
-            throw new IllegalActionException(this,
-                    "Invalid setting of initial state: " 
-                    + tok.toString());
-        }
-        _currentState = st;
+        _currentState = _initialState;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -745,10 +870,10 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     // Current state.
     private State _currentState = null;
 
-    // Initial state set by calling setInitialState().
-    private State _setInitialState = null;
+    // Initial state.
+    private State _initialState = null;
     
-    // The last enabled transition.
-    private Transition _lastEnabledTransition = null;
+    // The last chosen transition.
+    private Transition _lastChosenTransition = null;
 
 }
