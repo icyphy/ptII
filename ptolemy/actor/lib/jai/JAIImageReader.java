@@ -40,7 +40,6 @@ import java.net.URL;
 import javax.media.jai.JAI;
 import javax.media.jai.RenderedOp;
 
-import ptolemy.actor.Director;
 import ptolemy.actor.lib.Source;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.StringToken;
@@ -119,12 +118,6 @@ public class JAIImageReader extends Source {
                 throw new IllegalActionException("Unable to load file");
             }
             _outputtedImage = JAI.create("stream", _stream);
-        }
-        Director director = getDirector();
-        if (director != null) {
-            director.fireAt(this, 0.0);
-        } else {
-            throw new IllegalActionException(this, "No director.");
         }
     }
 
