@@ -1,6 +1,6 @@
 /* A polymorphic comparator.
 
- Copyright (c) 1997-2000 The Regents of the University of California.
+ Copyright (c) 2000 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -50,6 +50,7 @@ to doubles and comparing the doubles. Therefore, all input Tokens
 must be convertible to DoubleToken.
 
 @author Jeff Tsay
+@version $Id$
 */
 
 public class MaxIndex extends Transformer {

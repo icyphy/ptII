@@ -54,6 +54,7 @@ pmf[i] and value val[i]. The output port is of the type contained by
 the value matrix.
 
 @author Jeff Tsay
+@version $Id$
 */
 
 public class DiscreteRandomSource extends RandomSource {
