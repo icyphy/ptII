@@ -68,7 +68,7 @@ EXTRA_SRCS =	$(JSRCS)
 
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
-MISC_FILES =	$(DIRS) doc test demo
+MISC_FILES =	$(DIRS) doc test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
@@ -79,8 +79,11 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 
 all: jclass
+
 install: jclass javadocs $(PTCLASSJAR)
+
 docs: javadocs
+
 demo:
 	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.domains.od.demo.ODStringDemo
 
