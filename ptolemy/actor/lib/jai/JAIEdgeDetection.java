@@ -1,4 +1,4 @@
-/* One line description of file.
+/* An actor that does edge detection on a javax.media.jai.RenderedOp.
 
  Copyright (c) 1999-2003 The Regents of the University of California.
  All rights reserved.
@@ -46,12 +46,14 @@ import javax.media.jai.RenderedOp;
 //////////////////////////////////////////////////////////////////////////
 //// JAIEdgeDetection
 /**
-   Description of the class
-   @author yourname
+   An actor that does edge detection on a image.  This is done by taking
+   the image and seperately convolving it with two different masks.  The
+   two results are squared, summed together, and square rooted to give the 
+   final image.  The user may specify one, or both masks.  A series of
+   predefined masks are available for the user to use.
+   
+   @author James Yeh
    @version $Id$
-   @since Ptolemy II 0.2
-   @see classname
-   @see full-classname
  */
 public class JAIEdgeDetection extends Transformer {
     
@@ -140,9 +142,9 @@ public class JAIEdgeDetection extends Transformer {
     ////                         public methods                    ////
 
     /** Fire this actor.
-     *  Output the scaled RenderedOp.
-     *  @exception IllegalActionException If a contained method throws it,
-     *   or if a token is received that contains a null image.
+     *  Output the edge detected image.
+     *  @exception IllegalActionException If a contained method throws
+     *  it.
      */
     public void fire() throws IllegalActionException {
         super.fire();
@@ -154,8 +156,9 @@ public class JAIEdgeDetection extends Transformer {
     }
     
     /** Initialize this actor.
-     *  Set the horizontal and vertical scaling values.
-     *  @exception IllegalActionException If a contained method throws it.
+     *  Set the two masks to be used in edge detection.
+     *  @exception IllegalActionException If a contained method throws it,
+     *  or if the mask choice is invalid.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -188,7 +191,13 @@ public class JAIEdgeDetection extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
+    /** If the user chooses to use a prespecified mask, then this
+     *  method will assign the mask values to a KernelJAI used in edge
+     *  detection.
+     *  @exception IllegalActionException If the choice value is out of
+     *  range.
+     */
     private KernelJAI _maskAssigner(int choice) 
             throws IllegalActionException {
         switch (choice) {
@@ -221,6 +230,11 @@ public class JAIEdgeDetection extends Transformer {
         }
     }
     
+    /** If a user decides not to use a prespecified mask, this method
+     *  will return a KernalJAI filled with user specified values.
+     *  @exception IllegalActionException If the dimensions of the mask
+     *  and the number of entries do not agree.
+     */
     private KernelJAI _maskFiller(ArrayToken array, int width, int height) 
             throws IllegalActionException {
         
@@ -240,28 +254,42 @@ public class JAIEdgeDetection extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** The ArrayTokens contained the the User Specified Mask Fields */
     private ArrayToken _firstMaskData;
     private ArrayToken _secondMaskData;
 
+    /** The dimensions of the user specified masks.  */
     private int _userSpecifiedFirstXDim;
     private int _userSpecifiedFirstYDim;
     private int _userSpecifiedSecondXDim;
     private int _userSpecifiedSecondYDim;
 
+    /** The KernalJAI's that contain the masks to be used in edge
+     *  detection.
+     */
     private KernelJAI _firstKernelJAI;
     private KernelJAI _secondKernelJAI;
 
-    private int _userSpecifiedXDim;
-   
+    /** The choice of mask.  If it is 0, then it is a user specified
+     *  mask.  Otherwise, choices 1-12 are masks that are specified
+     *  below.
+     */
     private int _firstMaskChoice;
     private int _secondMaskChoice;
+
+    /** The bound on the number of prespecified masks */
     private final int _highestChoice = 12;
+    
+    /** DoubleToken's representing zero and the square root of two */
     private DoubleToken _zero = new DoubleToken("0.0F");
     private DoubleToken _halfRootTwo = new DoubleToken("0.707F");
+
+    /** The default for a user specified mask */
     private DoubleToken _doubleArrayToken[] = {_zero, _zero, _zero,
                                                _zero, _halfRootTwo, _zero,
                                                _zero, _zero, _zero};
-    
+
+    /** Prespecified masks that the user may use */
     private final float _sobelHorizontalFilter[] = {1.0F, 0.0F, -1.0F,
                                                     2.0F, 0.0F, -2.0F,
                                                     1.0F, 0.0F, -1.0F};
