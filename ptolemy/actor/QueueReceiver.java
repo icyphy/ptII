@@ -189,6 +189,7 @@ public class QueueReceiver implements Receiver {
 
     /** Reset the state of the receiver. Clear the FIFO queue. This is needed
      *  to restart the simulation
+     *  @deprecated Use reset() instead.
      */
     public void initialize() {
         while (_queue.size() > 0) {
@@ -205,6 +206,15 @@ public class QueueReceiver implements Receiver {
         if (!_queue.put(token)) {
             throw new NoRoomException(getContainer(),
                     "Queue is at capacity. Cannot put a token.");
+        }
+    }
+
+    /** Reset the state of the receiver. Clear the FIFO queue. This is needed
+     *  to restart the simulation
+     */
+    public void reset() {
+        while (_queue.size() > 0) {
+            _queue.take();
         }
     }
 
