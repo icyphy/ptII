@@ -1,0 +1,169 @@
+/*
+ * $Id$
+ *
+ * Copyright (c) 1998-2001 The Regents of the University of California.
+ * All rights reserved. See the file COPYRIGHT for details.
+ *
+ */
+
+package diva.canvas.event;
+
+import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
+
+/** A class that accepts mouse events. Instances of this class
+ * are used by event-handling code to decide whether they are
+ * interested in a particular event.
+ *
+ * @version        $Revision$
+ * @author         John Reekie
+ */
+public class MouseFilter {
+
+    /** The default mouse filter -- accepts button 1 with no
+     * modifiers.
+     */
+    public static MouseFilter defaultFilter = new MouseFilter(1);
+
+    /** The default selection filter -- accepts button 1 with <i>no</i>
+     * modifiers.
+     */
+    public static MouseFilter selectionFilter = new MouseFilter(1);
+
+    /** The alternate selection filter -- accepts button 1 with shift.
+     */
+    public static MouseFilter alternateSelectionFilter =
+        new MouseFilter(1,InputEvent.SHIFT_MASK);
+
+    /** The mouse button mask
+     */
+    private int _buttonMask =
+      InputEvent.BUTTON1_MASK
+    | InputEvent.BUTTON2_MASK
+    | InputEvent.BUTTON3_MASK;
+
+    /** The modifier mask
+     */
+    private int _modifierMask =
+      InputEvent.SHIFT_MASK
+    | InputEvent.CTRL_MASK;
+
+    // AWT is lame
+    //| InputEvent.ALT_MASK
+    //| InputEvent.META_MASK;
+
+    /** The modifier flags, after masking
+     */
+    private int _modifierFlags = 0;
+
+    /** The button press to trap, or -1 if the button press number is not
+     * important, in which events will not be filterd based on press number.
+     */
+    private int _pressNumber = -1;
+
+    ///////////////////////////////////////////////////////////////////
+    //// constructors and public methods
+
+    /**
+     * Construct a mouse filter that responds to the given mouse buttons
+     * and modifier keys. The arguments must be constructed using the
+     * button masks defined by java.awt.event.MouseEvent. More than one
+     * button can be specified, in which case the filter will accept
+     * events from any of them. In any case, modifier keys are ignored.
+     */
+    public MouseFilter (int button) {
+        // Why don't we be clever and figure out if the button number
+        // instead of mask is given? We know this works because we looked
+        // at the AWT source.
+        if (button <= 3) {
+            switch (button) {
+            case 1:
+                button = InputEvent.BUTTON1_MASK;
+                break;
+            case 2:
+                button = InputEvent.BUTTON2_MASK;
+                break;
+            case 3:
+                button = InputEvent.BUTTON3_MASK;
+                break;
+            }
+        }
+        // OK, so just set it.
+        // FIXME: check range.
+        _buttonMask = button;
+    }
+
+    /** Construct a mouse filter that responds to the given mouse
+     * buttons and modifier keys. The two arguments must be constructed
+     * using the button and modifier masks defined by
+     * java.awt.event.MouseEvent. More than one button can be specified,
+     * in which case the filter will accept events from any of them. The
+     * filter will accept modifier sets that exactly match modifiers.
+     */
+    public MouseFilter (int button, int modifiers) {
+        this(button);
+        _modifierFlags = modifiers;
+    }
+
+    /**
+     * Construct a mouse filter that responds to the given mouse buttons
+     * and modifier keys. The three arguments must be constructed using
+     * the button and modifier masks defined by
+     * java.awt.event.MouseEvent. More than one button can be specified,
+     * in which case the filter will accept events triggerd by any of
+     * them. The mask argument filters out modifiers that will be
+     * ignored; the filter will accept modifier sets that, after
+     * masking, exactly match modifiers.
+     */
+    public MouseFilter (int button, int modifiers, int mask) {
+        this(button);
+        _modifierFlags = modifiers;
+        _modifierMask = mask;
+    }
+
+   /**
+     * Construct a mouse filter that responds to the given mouse buttons
+     * and modifier keys. The three arguments must be constructed using
+     * the button and modifier masks defined by
+     * java.awt.event.MouseEvent. More than one button can be specified,
+     * in which case the filter will accept events triggerd by any of
+     * them. The mask argument filters out modifiers that will be
+     * ignored; the filter will accept modifier sets that, after
+     * masking, exactly match modifiers.  The MouseFilter will only react to
+     * the press number given in the last argument.  This will usually be one
+     * or two.  Notice that if you want to react to drag events, they always
+     * have a press number of zero.
+     */
+    public MouseFilter (int button, int modifiers, int mask, int pressNumber) {
+        this(button, modifiers, mask);
+        _pressNumber = pressNumber;
+    }
+
+    /**
+     * Test whether the given MouseEvent passes the filter.
+     */
+    public boolean accept (MouseEvent event) {
+        if(_pressNumber != -1 &&
+           event.getClickCount() != _pressNumber) return false;
+        int m = event.getModifiers();
+        boolean val = (m & _buttonMask) != 0 &&
+            (_modifierFlags == (m & _modifierMask));
+        //System.out.println("FILTER = " + this);
+        //System.out.println("ACCEPT? = " + val);
+        return val;
+    }
+
+    /** Print a useful description of the mouse filter.
+     */
+    public String toString () {
+        StringBuffer result = new StringBuffer();
+        result.append(super.toString()
+            + "; Button " + LayerEvent.toString(_buttonMask)
+            + "; Modifiers " + LayerEvent.toString(_modifierFlags)
+            + "; Modifier mask " + LayerEvent.toString(_modifierMask)
+            + "; Press Number " + LayerEvent.toString(_pressNumber));
+        return result.toString();
+    }
+}
+
+
