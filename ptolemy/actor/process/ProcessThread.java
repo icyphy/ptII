@@ -119,8 +119,19 @@ public class ProcessThread extends PtolemyThread {
 	Workspace workspace = _director.workspace();
 	boolean iterate = true;
 	try {
-	    while (iterate && !_threadStopRequested ) {
-	        iterate = false;
+	    while (iterate) {
+                // If a stop has been requested, then
+                if(_threadStopRequested) {
+                    // Tell the director we're stopped
+                    _director._actorHasStopped();
+                    // And wait until the flag has been cleared.
+                    synchronized(_director) {
+                        while(_threadStopRequested) {
+                            workspace.wait(_director);
+                        }
+                    }
+                }
+                iterate = false;
                 // container is checked for null to detect the
                 // deletion of the actor from the topology.
                 if ( ((Entity)_actor).getContainer() != null ) {
@@ -134,7 +145,8 @@ public class ProcessThread extends PtolemyThread {
             // Process was terminated.
         } catch (IllegalActionException e) {
             _manager.notifyListenersOfException(e);
-        } finally {
+        }
+        finally {
             try {
  		wrapup();
             } catch (IllegalActionException e) {
@@ -146,8 +158,16 @@ public class ProcessThread extends PtolemyThread {
               + _director.getName() + "; there are "
               + _director._getActiveActorsCount()+" active actors in "
               + _director.getName() +".");
-	    */
+             */
         }
+    }
+
+    /** Request that execution of the actor controlled by this
+     *  thread continue.  This is normally called by the ProcessDirector
+     *  in the prefire method.
+     */
+    public void cancelStopThread() {
+	_threadStopRequested = false;
     }
 
     /** Request that execution of the actor controlled by this
@@ -156,7 +176,7 @@ public class ProcessThread extends PtolemyThread {
      *  this director.
      */
     public void stopThread() {
-	_threadStopRequested = true;
+    	_threadStopRequested = true;
     }
 
     /** End the execution of the actor under the control of this
