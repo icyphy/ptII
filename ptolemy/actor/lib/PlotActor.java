@@ -37,7 +37,7 @@ import ptolemy.actor.*;
 import ptolemy.plot.*;
 import java.awt.Panel;
 
-/** A signal plotter.  This plotter contains an instance of the Plot class 
+/** A signal plotter.  This plotter contains an instance of the Plot class
  *  from the Ptolemy plot package as a public member.  Data at the input, which
  *  can consist of any number of channels, is plotted on this instance.
  *  The horizontal axis can represent either time or a count of the

@@ -132,7 +132,7 @@ public class Show extends TypedAtomicActor implements Placeable {
             for (int i = 0; i < width; i++) {
                 // FIXME: Parse the parameter "labels"
                 _table.line(getFullName() + "_" + i, "Input " + i + ":", "");
-            }            
+            }
         } else {
             int width = input.getWidth();
             for (int i = 0; i < width; i++) {
