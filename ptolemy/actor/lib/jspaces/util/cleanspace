@@ -1,2 +1,7 @@
 #!/bin/sh
-java -Djava.security.policy=/users/liuj/policy.all -Doutrigger.spacename=JavaSpaces -Dcom.sun.jini.lookup.groups=public -cp /users/liuj/ptII:/users/liuj/ptII/vendors/sun/jini/lib/jini-core.jar:/users/liuj/ptII/vendors/sun/jini/lib/jini-ext.jar:/users/liuj/ptII/vendors/sun/jini/lib/space-examples.jar -Djava.rmi.server.codebase=http://bennett.eecs.berkeley.edu:8080/space-examples-dl.jar ptolemy.actor.lib.jspaces.test.SpaceCleaner
+ 
+#######################################################################
+####  This is a script that cleans the JavsSpaces
+#
+
+java -Djava.security.policy=${PTII}/ptolemy/actor/lib/jspaces/policy.all -Doutrigger.spacename=JavaSpaces -Dcom.sun.jini.lookup.groups=public -cp ${PTII}:${PTII}/vendors/sun/jini/lib/jini-jspaces.jar -Djava.rmi.server.codebase=file:${PTII} ptolemy.actor.lib.jspaces.util.SpaceCleaner
