@@ -68,15 +68,13 @@ test FIRSingle-1.1 {Generate .c, _i.h, and .h files for FIR \
     set outputDir testOutput/FIRSingle.out
     set runtimeDir ../../../runtime
     
-    # Check if the FIRSingle.out directory exists.
+    # Remove the .out directory if it exists.
     if {[file isdirectory $outputDir]} {
-        # Remove all files generated in the previous run.
-	file delete -force [glob -nocomplain $outputDir/*]
-    } else {
-        # Create the FIRSingle.out directory.
-	file mkdir $outputDir
+	file delete -force $outputDir
     }
-
+    
+    # Create the output directory.
+    file mkdir $outputDir
 
     # We need to get the classpath so that we can run if we are running
     # under Javascope, which includes classes in a zip file
