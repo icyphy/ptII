@@ -29,16 +29,15 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-# Order matters here, tycho depends on pn and tcl.
 # Don't go down into collections, it does not have a makefile
 DIRS = pt doc gui #collections
 
-# Root of Tycho directory
-ROOT =		..
+# Root of Ptolemy II directory
+ROOT =		.
 
-ME = 		java
+ME =
 # True source directory
-VPATH =		$(ROOT)/$(ME)
+VPATH =		$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
