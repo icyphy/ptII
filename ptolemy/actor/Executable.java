@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Red
+@AcceptedRating Green (davisj@eecs.berkeley.edu)
 */
 
 package ptolemy.actor;
