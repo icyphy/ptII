@@ -118,6 +118,6 @@ public class RemoveActor extends ChangeRequest {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The actor to initialize.
+    // The actor to remove.
     private Actor _actor;
 }
