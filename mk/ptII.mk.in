@@ -202,7 +202,7 @@ JXTA_JARS = $(JXTA_DIR)/jxta.jar$(CLASSPATHSEPARATOR)$(JXTA_DIR)/log4j.jar$(CLAS
 # The major type of OS we are running under.
 # Under all forms Windows, this should be Windows; ynder Linux: Linux, etc.
 # Used in ptolemy/matlab/makefile
-MAJOR_OS_VERSION =	@MAJOR_OS_VERSION@
+MAJOR_OS_NAME =	@MAJOR_OS_NAME@
 
 # Location of the Matlab directory.  The matlab binary will be
 # found at $(MATLAB_DIR)/bin/matlab
