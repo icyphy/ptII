@@ -117,6 +117,13 @@ test StringUtilities-4.3 {split with null} {
 } {<Unnamed>}
 
 
+test StringUtilities-5.1 {tokenizeForExec} {
+    set command {ls -l "a b" c 'd e' \"f g \" d:\\tmp\\ptII\ 2.0 c:\ptII}
+    set results [java::call \
+	ptolemy.util.StringUtilities tokenizeForExec $command ]
+    $results getrange	
+} {ls -l {a b} c 'd e' \\ f\ g\ \\ d:\\\\tmp\\\\ptII\\ 2.0 {c:\ptII}}
+
 test StringUtilities-6.1 {usageString} {
     set commandOptions [java::new {java.lang.String[][]} {2 2} \
         {{{-class}  {<classname>}} \
