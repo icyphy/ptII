@@ -58,6 +58,7 @@ JSRCS = \
 	Query.java \
 	QueryListener.java \
 	StatusBar.java \
+	StreamExec.java \
 	SwingWorker.java \
 	Top.java
 
