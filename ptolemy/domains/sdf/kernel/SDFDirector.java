@@ -347,8 +347,12 @@ public class SDFDirector extends StaticSchedulingDirector {
                     "SDF system with no scheduler");
         // force the schedule to be computed.
         if (_debugging) _debug("Computing schedule");
-        Schedule sched = scheduler.getSchedule();
-
+        try {
+            Schedule sched = scheduler.getSchedule();
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex, 
+                    "Failed to compute schedule:");
+        }
     }
 
     /** Return false if the system has finished executing, either by
