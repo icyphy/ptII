@@ -456,11 +456,11 @@ public class EntityLibrary
      */
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
-        output.write(_getIndentPrefix(depth) + "<configure><?moml\n");
+        output.write(_getIndentPrefix(depth) + "<configure>\n");
         output.write(_getIndentPrefix(depth+1) + "<group>\n");
         super._exportMoMLContents(output, depth+2);
         output.write(_getIndentPrefix(depth+1) + "</group>\n");
-        output.write(_getIndentPrefix(depth) + "?></configure>\n");
+        output.write(_getIndentPrefix(depth) + "</configure>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
