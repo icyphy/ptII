@@ -179,7 +179,7 @@ public class ClassChanges implements MoMLFilter {
                 "ptolemy.actor.TypedIOPort");
 
         // Moved MultiInstanceComposite
-        _classChanges.put("ptolemy.actor.hoc.MultiInstanceComposite"
+        _classChanges.put("ptolemy.actor.hoc.MultiInstanceComposite",
                 "ptolemy.actor.lib.hoc.MultiInstanceComposite");
     }
     
