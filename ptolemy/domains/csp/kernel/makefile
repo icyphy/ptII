@@ -56,7 +56,7 @@ JSRCS = \
 	ConditionalReceive.java \
 	ConditionalSend.java \
 	CSPActor.java \
-	CSPCompositeActor \
+	CSPCompositeActor.java \
 	CSPReceiver.java 
 
 EXTRA_SRCS =	$(JSRCS)
