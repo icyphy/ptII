@@ -1,18 +1,25 @@
 <!-- $Id$ -->
-<HTML>
-<HEAD>
-   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-   <TITLE>CSP domain demo- Dining Philosophers</TITLE>
-</HEAD>
-<BODY BGCOLOR="#FAF0E6" LINK="#0000FF" VLINK="#800080">
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Dining Philosophers</title>
+<link href="../../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<H1>Dining Philosophers</H1>
 
-<CENTER>
-<H1>
-Ptolemy II CSP Domain demo - <I>Dining Philosophers</I></H1></CENTER>
-
-<HR>
-<H1>
-Problem:</H1>
+<CENTER><APPLET name="Dining Philosophers"
+   bgcolor=#FAF0E6
+   archive="ptolemy/domains/csp/demo/diningapplet.jar,
+	ptolemy/domains/csp/csp.jar,
+	ptolemy/ptsupport.jar"
+   code=ptolemy.domains.csp.demo.DiningApplet.class
+   codebase=../../../..
+   width=650 height=250>
+	<param name="background" value="#faf0e6">
+</APPLET></CENTER>
+The Dining Philosophers problem illustrates the following scenario:
+ <p>
 Five philosophers are seated at a table with a large bowl of food in 
 the middle. Between each pair of philosophers is one chopstick, and to 
 eat a philosopher must use both chopsticks beside him. Each philosopher 
@@ -24,16 +31,6 @@ philosopher, then the philosopher waits until that chopstick becomes
 available. This implies that no neighboring philosophers can eat at the 
 same time and at most two philosophers can eat at a time.
 <P>
-<CENTER><APPLET name="Dining Philosophers"
-   bgcolor=#FAF0E6
-   archive="ptolemy/domains/csp/demo/diningapplet.jar,
-	ptolemy/domains/csp/csp.jar,
-	ptolemy/ptsupport.jar"
-   code=ptolemy.domains.csp.demo.DiningApplet.class
-   codebase=../../../..
-   width=650 height=250>
-	<param name="background" value="#faf0e6">
-</APPLET></CENTER>
 <P>
 The Dining Philosophers problem was first dreamt up by Edsger W. Dijkstra 
 in 1965. It is a classic concurrent programming problem that illustrates 
@@ -79,10 +76,7 @@ philosopher uses the notion of time built into the CSP domain to allow
 itself to delay while it is eating or thinking. It should be noted that the 
 applet has been slowed down to allow the progression of the problem to be seen.
 <P>
-<HR>
-<CENTER>UNIVERSITY OF CALIFORNIA</CENTER>
 
-<CENTER>Department of Electrical Engineering and Computer Sciences</CENTER>
-
+<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
 </BODY>
 </HTML>
