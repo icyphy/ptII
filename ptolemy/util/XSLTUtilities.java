@@ -301,7 +301,7 @@ public class XSLTUtilities {
         }
     }
 
-    /** Transform a file by applying a list of XSL transforms
+    /** Transform a file by applying a list of XSL transforms.
      *  @param input The XML to be transformed
      *  @param fileWriter A FileWriter that will write to the MoML
      *  file.
@@ -311,7 +311,7 @@ public class XSLTUtilities {
      *  creating the DocumentBuilder.
      *  @exception TransformerException If there is a
      *  a problem with the transform.
-     *  @exception exception If there is a problem
+     *  @exception IOException If there is a problem
      *  finding a transform file or applying a transform.
      */
 
