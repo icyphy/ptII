@@ -38,9 +38,9 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// DEProcessor
 /**
-This opaque composite actor contains an instance of InterruptibleServer and
+This opaque composite actor contains an instance of DEInterruptibleServer and
 DEPoisson. The DEPoisson actor is used to model the arrival of interrupts,
-which delays the service time of the InterruptibleServer actor.
+which delays the service time of the DEInterruptibleServer actor.
 
 @author Lukito Muliadi
 @version $Id$
@@ -101,7 +101,7 @@ public class DEProcessor extends TypedCompositeActor {
         this.setDirector(localDir);
         
         // create the actors.
-        InterruptibleServer iServer = new InterruptibleServer(this, 
+        DEInterruptibleServer iServer = new DEInterruptibleServer(this, 
                 "InterruptibleServer");
         DEPoisson poisson = new DEPoisson(this, "InterruptPoisson");
 
