@@ -30,83 +30,24 @@
 
 package ptolemy.actor.lib.net;
 
-// Imports from ptolemy/vergil/basic/BasicGraphFrame.java
-
-import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.LocationAttribute;
-import ptolemy.actor.gui.PtolemyEffigy;
-import ptolemy.actor.gui.PtolemyFrame;
-import ptolemy.actor.gui.RunTableau;
-import ptolemy.actor.gui.SizeAttribute;
-import ptolemy.actor.gui.Tableau;
-import ptolemy.gui.CancelException;
-import ptolemy.gui.MessageHandler;
-import ptolemy.gui.Top;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
-import ptolemy.moml.LibraryAttribute;
-import ptolemy.moml.Location;
-import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.vergil.tree.EntityTreeModel;
-import ptolemy.vergil.tree.PTree;
-import ptolemy.vergil.tree.VisibleTreeModel;
-
+// Imports from ptolemy/vergil/basic/BasicGraphFrame.java (fully pruned)
 import diva.gui.toolbox.FocusMouseListener;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.JMenu;
-import javax.swing.JPanel;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JToolBar;
-import javax.swing.JTree;
 import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
-import javax.swing.tree.TreeModel;
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Window;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.StringSelection;
+//import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseListener;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.NoninvertibleTransformException;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.print.PageFormat;
-import java.awt.print.Printable;
-import java.awt.print.PrinterException;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
+//import java.awt.event.MouseListener;
 
-//=====================================================================//
-// Actor imports
-
+// Imports from ptolemy/actor/lib/net/DatagramReceiver.java (not yet pruned)
 import ptolemy.actor.AtomicActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
