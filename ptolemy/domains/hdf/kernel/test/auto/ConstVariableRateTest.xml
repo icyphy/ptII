@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Silence" class="ptolemy.actor.TypedCompositeActor">
+<entity name="ConstVariableRateTest" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
@@ -26,8 +26,56 @@
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={147, 2, 819, 565}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 101, 819, 565}}">
     </property>
+    <entity name="Pulse" class="ptolemy.actor.lib.Pulse">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3, 4, 5, 6, 7}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{-50.0, -20.0, -20.0, -20.0, -20.0, -50.0, -50.0, -50.0}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 160.0">
+        </property>
+        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-50.0, 0.0, -20.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="532.0, 200.0">
+        </property>
+        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
     <entity name="modal model" class="ptolemy.vergil.fsm.modal.ModalModel">
         <property name="IODependence" class="ptolemy.actor.IODependence">
         </property>
@@ -62,7 +110,7 @@
         </port>
         <port name="output" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="output"/>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </port>
         <port name="power" class="ptolemy.vergil.fsm.modal.ModalPort">
@@ -95,8 +143,6 @@ to another. Then delete this annotation.</text>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
-                <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-                </property>
             </property>
             <property name="thresh_off_dB" class="ptolemy.data.expr.Parameter" value="-37.0">
             </property>
@@ -116,7 +162,7 @@ to another. Then delete this annotation.</text>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location">
                 </property>
-                <property name="tokenConsumptionRate" class="ptolemy.data.expr.NotEditableParameter" value="0">
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.NotEditableParameter" value="1">
                     <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                     </property>
                 </property>
@@ -139,8 +185,6 @@ to another. Then delete this annotation.</text>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 170.0">
                 </property>
-                <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-                </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
                 <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
@@ -155,8 +199,6 @@ to another. Then delete this annotation.</text>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="265.0, 295.0">
                 </property>
-                <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-                </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
                 <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
@@ -170,8 +212,6 @@ to another. Then delete this annotation.</text>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 170.0">
-                </property>
-                <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
@@ -530,238 +570,25 @@ to another. Then delete this annotation.</text>
         <link port="state3.output" relation="outputRelation"/>
         <link port="state3.power" relation="powerRelation"/>
     </entity>
-    <entity name="SequencePlotterInput" class="ptolemy.actor.lib.gui.SequencePlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={119, 283, 508, 350}}">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
-        </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="281.0, 65.0">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-        </property>
-        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>Input audio signal</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="61.0"/>
-<yRange min="-0.0078125" max="0.0"/>
-</plot>?>
-        </configure>
-    </entity>
-    <entity name="AudioReader" class="ptolemy.actor.lib.javasound.AudioReader">
-        <property name="fileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="$CLASSPATH/ptolemy/actor/lib/javasound/voice.wav">
-        </property>
-        <property name="sourceURL" class="ptolemy.kernel.util.StringAttribute" value="file:./pt2.wav">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 190.0">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-        </property>
-        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="multiport"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
-    <entity name="PowerEstimate" class="ptolemy.actor.lib.PowerEstimate">
-        <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
-        </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
-        </property>
-        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
-        </property>
-        <property name="forgettingFactor" class="ptolemy.data.expr.Parameter" value="0.995">
-        </property>
-        <property name="annotation" class="ptolemy.kernel.util.Attribute">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This composite actor estimates the power of the input signal.
-The output is in decibels, where a power of 1 is 0 dB.
-This is done by averaging the squares of the input values
-exponentially "forgetting" old values. The forgettingFactor
-parameter determines how much averaging is done, and hence
-how quickly the output responds to changes in the input power.</text></svg></configure>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="10.0, 100.0">
-            </property>
-        </property>
-        <property name="Copy1:0:annotation1" class="ptolemy.kernel.util.Attribute">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="367.0, 57.0">
-            </property>
-            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-           <svg>
-           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This composite actor estimates the power of the input signal.
-The output is in decibels, where a power of 1 is 0 dB.
-This is done by averaging the squares of the input values
-exponentially "forgetting" old values. The forgettingFactor
-parameter determines how much averaging is done, and hence
-how quickly the output responds to changes in the input power.</text>
-           </svg>
-           </configure>
-            </property>
-            <property name="_hideName" class="ptolemy.data.expr.Parameter">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="227.0, 290.0">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-        </property>
-    </entity>
-    <entity name="SequencePlotterOutput" class="ptolemy.actor.lib.gui.SequencePlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={327, 238, 508, 350}}">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
-        </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 290.0">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-        </property>
-        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="0">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>Output audio signal</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="1.0"/>
-<yRange min="0.0" max="0.0"/>
-</plot>?>
-        </configure>
-    </entity>
-    <entity name="AudioWriter" class="ptolemy.actor.lib.javasound.AudioWriter">
-        <property name="pathName" class="ptolemy.kernel.util.StringAttribute" value="outfile2.wav">
-        </property>
-        <property name="sampleRate" class="ptolemy.data.expr.Parameter" value="8000">
-            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                <property name="8000" class="ptolemy.kernel.util.StringAttribute" value="8000">
-                </property>
-                <property name="11025" class="ptolemy.kernel.util.StringAttribute" value="11025">
-                </property>
-                <property name="22050" class="ptolemy.kernel.util.StringAttribute" value="22050">
-                </property>
-                <property name="44100" class="ptolemy.kernel.util.StringAttribute" value="44100">
-                </property>
-                <property name="48000" class="ptolemy.kernel.util.StringAttribute" value="48000">
-                </property>
-            </property>
-        </property>
-        <property name="bitsPerSample" class="ptolemy.data.expr.Parameter" value="16">
-            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                <property name="8" class="ptolemy.kernel.util.StringAttribute" value="8">
-                </property>
-                <property name="16" class="ptolemy.kernel.util.StringAttribute" value="16">
-                </property>
-            </property>
-        </property>
-        <property name="channels" class="ptolemy.data.expr.Parameter" value="1">
-            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                <property name="1" class="ptolemy.kernel.util.StringAttribute" value="1">
-                </property>
-                <property name="2" class="ptolemy.kernel.util.StringAttribute" value="2">
-                </property>
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="495.0, 67.0">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-        </property>
-        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="0">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="436.0, 200.0">
-        </vertex>
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="0">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="175.0, 190.0">
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="163.0, 175.0">
         </vertex>
         <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
             <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
             </property>
         </property>
     </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="0">
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="436.0, 200.0">
+        </vertex>
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
             <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
             </property>
         </property>
     </relation>
-    <link port="modal model.input" relation="relation3"/>
+    <link port="Pulse.output" relation="relation"/>
+    <link port="Test.input" relation="relation2"/>
+    <link port="modal model.input" relation="relation"/>
     <link port="modal model.output" relation="relation2"/>
     <link port="modal model.power" relation="relation"/>
-    <link port="SequencePlotterInput.input" relation="relation3"/>
-    <link port="AudioReader.output" relation="relation3"/>
-    <link port="PowerEstimate.input" relation="relation3"/>
-    <link port="PowerEstimate.output" relation="relation"/>
-    <link port="SequencePlotterOutput.input" relation="relation2"/>
-    <link port="AudioWriter.input" relation="relation2"/>
 </entity>

@@ -49,8 +49,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	HDFDirector.java \
-	HDFFSMDirector.java \
-	HDFFSMActor.java
+	HDFFSMDirector.java
 
 EXTRA_SRCS =	$(JSRCS)
 
