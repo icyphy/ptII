@@ -139,7 +139,7 @@ public class SoftClip {
 	    // Stop playback.
 	    //soundPlayback.stopPlayback();
 	    LiveSound.stopPlayback(producer);
-	    System.out.println("stoping");
+	    System.out.println("stopping");
 	} catch (Exception ex) {
 	    System.err.println(ex);
 	}
