@@ -380,7 +380,7 @@ proc jdkPrintArray {javaArrayObj} {
 	if [ catch {java::info class $element} ] {
 	    lappend result $element
 	} else {
-	    lappend result $element toString]
+	    lappend result [$element toString]
 	}
     }
     return $result
