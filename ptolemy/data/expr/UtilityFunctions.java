@@ -490,7 +490,7 @@ public class UtilityFunctions {
                     throw new IllegalActionException(
                         "Invalid arguments to map(): mismatched arity.");
                 } else{
-                    for (int j = 1; j< arity; j++) {
+                    for (int j = 0; j< arity; j++) {
                         arglist.add(castArgs.getElement(j));
                     }
                     result[i] =function.apply(arglist);
