@@ -313,7 +313,7 @@ else
 	AC_MSG_RESULT([$PTJACL_JAR])
 	AC_MSG_CHECKING([for how to run jacl])
 	# This command starts up Jacl
-	if echo "set java::jdkVersion; exit" | CLASSPATH=$PTJACL_JAR $JAVA $JACL_JFLAG tcl.lang.Shell; then
+	if echo "set java::jdkVersion; exit" | CLASSPATH=$PTJACL_JAR $JAVA $PTJACL_JFLAG tcl.lang.Shell; then
 		AC_MSG_RESULT([CLASSPATH=$PTJACL_JAR $JAVA $PTJACL_JFLAG tcl.lang.Shell])
 	else
 		PTJACL_JFLAG=
