@@ -1,4 +1,4 @@
-# This file contains the commmand template that is preprocessed
+# This file contains the command template that is preprocessed
 # by ptolemy.copernicus.kernel.Copernicus to create the command
 # that will generate code.
 #
