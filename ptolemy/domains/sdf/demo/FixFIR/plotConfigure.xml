@@ -3,7 +3,7 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/plotml.dtd">
 <plot>
   <xLabel>angular frequency</xLabel>
-  <yLabel>amplitude</yLabel>
+  <yLabel>amplitude (dB)</yLabel>
   <xRange min="-1.6" max="1.6"/>
   <yRange min="-100" max="1"/>
   <noGrid/>
