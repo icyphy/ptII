@@ -41,6 +41,9 @@
 # The line below gets subsituted by the configure script
 PTJAVA_DIR = 	@PTJAVA_DIR@
 
+# JDK Version from the java.version property
+JVERSION =	@JVERSION@ 
+
 # Java CLASSPATH separator
 # For Unix, this would be : 
 # For Cygwin, this would be ;
