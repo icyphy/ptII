@@ -380,6 +380,9 @@ fi
 JINI_USER_DIR="$PTII/ptolemy/domains/ct/demo/CarTracking"
 JINI_VERSION=jini1_0_1
 JINI_PRESENT=no
+# PTJSPACES_DIR is set to jspaces and used in 
+# $PTII/ptolemy/actor/lib/makefile if jini was found
+PTJSPACES_DIR=
 if test ! -d "$JINI_USER_DIR"; then
     AC_MSG_RESULT([$JINI_USER_DIR is not present, so we need not
 find Jini])
@@ -396,6 +399,8 @@ else
     if test -d "$JINI_DIR"; then
 	AC_MSG_RESULT([$JINI_DIR])
 	JINI_PRESENT=yes
+	# Subdirectory that contains Java spaces specific code
+	PTJSPACES_DIR=jspaces
     else    
 	JINI_DIR='$(PTII)/vendors/sun/$JINI_VERSION'
     fi    
@@ -501,6 +506,10 @@ AC_SUBST(PTJACL_JFLAG)
 
 # Location of the JDK
 AC_SUBST(PTJAVA_DIR)
+
+# Set to jspaces and used in 
+# $PTII/ptolemy/actor/lib/makefile if jini was found
+AC_SUBST(PTJSPACES_DIR)
 
 # Location of the PtII directory
 AC_SUBST(PTII_DEFAULT)
