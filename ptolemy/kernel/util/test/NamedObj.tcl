@@ -177,3 +177,53 @@ test NamedObj-7.1 {Test clone} {
     $b description [java::field ptolemy.kernel.util.NamedObj COMPLETE]
 } {ptolemy.kernel.util.NamedObj {N.A} attributes {
 }}
+
+######################################################################
+####
+#
+test NamedObj-8.1 {Test debug listener} {
+    set n [java::new ptolemy.kernel.util.Workspace "N"]
+    set a [java::new ptolemy.kernel.util.NamedObj $n "A" ]
+    set listener [java::new ptolemy.kernel.util.RecorderListener]
+    $a addDebugListener $listener
+    $a clone
+    $listener getMessages
+} {Cloned N.A into workspace: N}
+
+test NamedObj-8.2 {Test debug listener} {
+    set a [java::new ptolemy.kernel.util.NamedObj]
+    set listener [java::new ptolemy.kernel.util.RecorderListener]
+    $a addDebugListener $listener
+    $a setName "B"
+    $listener getMessages
+} {Changed name from . to .B}
+
+test NamedObj-8.3 {Test debug listener} {
+    set a [java::new ptolemy.kernel.util.NamedObj]
+    set listener [java::new ptolemy.kernel.util.RecorderListener]
+    $a addDebugListener $listener
+    $a setName "B"
+    $a setName "C"
+    $listener getMessages
+} {Changed name from . to .B
+Changed name from .B to .C}
+
+test NamedObj-8.4 {Test debug listener} {
+    set a [java::new ptolemy.kernel.util.NamedObj]
+    set listener [java::new ptolemy.kernel.util.RecorderListener]
+    $a addDebugListener $listener
+    $a setName "B"
+    $listener reset
+    $a setName "C"
+    $listener getMessages
+} {Changed name from .B to .C}
+
+test NamedObj-8.5 {Test debug listener} {
+    # This test is pretty lame, since the
+    # message going to std out is not checked.
+    set a [java::new ptolemy.kernel.util.NamedObj]
+    set listener [java::new ptolemy.kernel.util.StreamListener]
+    $a addDebugListener $listener
+    $a setName "B"
+    $a setName "C"
+} {}

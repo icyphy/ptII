@@ -150,6 +150,20 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Register a listener for debug messages.
+     *  @param listener The listener to which to send debug messages.
+     */
+    public void addDebugListener(DebugListener listener) {
+        if (_debugListeners == null) {
+            _debugListeners = new LinkedList();
+        } else {
+            if (_debugListeners.includes(listener)) {
+                return;
+            }
+        }
+        _debugListeners.insertLast(listener);
+    }
+
     /** React to a change in an attribute.  This method is called by
      *  a contained attribute when its value changes.  In this base class,
      *  the method does nothing.
@@ -215,6 +229,12 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
                 Attribute p = (Attribute)params.nextElement();
                 p.evaluate();
             }
+            if (ws == null) {
+                _debug("Cloned " + getFullName() + " into default workspace.");
+            } else {
+                _debug("Cloned " + getFullName() + " into workspace: "
+                + ws.getFullName());
+            }
             return newobj;
         } finally {
             workspace().doneReading();
@@ -271,6 +291,42 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      */
     public String description(int detail) {
         return _description(detail, 0, 0);
+    }
+
+    /** Get the attribute with the given name.
+     *  This method is read-synchronized on the workspace.
+     *  @param name The name of the desired attribute.
+     *  @return The requested attribute if it is found, null otherwise.
+     */
+    public Attribute getAttribute(String name) {
+        try {
+            workspace().getReadAccess();
+            if (_attributes == null) {
+                // No attribute has been added to this NamedObj yet.
+                return null;
+            } else {
+                return (Attribute) _attributes.get(name);
+            }
+        } finally {
+            workspace().doneReading();
+        }
+    }
+
+    /** Return an enumeration of the attributes attached to this object.
+     *  This method is read-synchronized on the workspace.
+     *  @return An enumeration of instances of Attribute.
+     */
+    public Enumeration getAttributes() {
+        try {
+            workspace().getReadAccess();
+            if  (_attributes == null) {
+                return (new NamedList()).elements();
+            } else {
+                return _attributes.elements();
+            }
+        } finally {
+            workspace().doneReading();
+        }
     }
 
     /** Get the container.  Always return null in this base class.
@@ -334,40 +390,17 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
         return _name;
     }
 
-    /** Get the attribute with the given name.
-     *  This method is read-synchronized on the workspace.
-     *  @param name The name of the desired attribute.
-     *  @return The requested attribute if it is found, null otherwise.
+    /** Unregister a debug listener.  If the specified listener has not
+     *  been registered, then do nothing.
+     *  @param listener The listener to remove from the list of listeners
+     *   to which debug messages are sent.
      */
-    public Attribute getAttribute(String name) {
-        try {
-            workspace().getReadAccess();
-            if (_attributes == null) {
-                // No attribute has been added to this NamedObj yet.
-                return null;
-            } else {
-                return (Attribute) _attributes.get(name);
-            }
-        } finally {
-            workspace().doneReading();
+    public void removeDebugListener(DebugListener listener) {
+        if (_debugListeners == null) {
+            return;
         }
-    }
-
-    /** Return an enumeration of the attributes attached to this object.
-     *  This method is read-synchronized on the workspace.
-     *  @return An enumeration of instances of Attribute.
-     */
-    public Enumeration getAttributes() {
-        try {
-            workspace().getReadAccess();
-            if  (_attributes == null) {
-                return (new NamedList()).elements();
-            } else {
-                return _attributes.elements();
-            }
-        } finally {
-            workspace().doneReading();
-        }
+        _debugListeners.exclude(listener);
+        return;
     }
 
     /** Set or change the name.  If a null argument is given the
@@ -380,6 +413,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      *   already contains an object with this name.
      */
     public void setName(String name) throws NameDuplicationException {
+        String oldname = getFullName();
         if (name == null) {
             name = new String("");
         }
@@ -389,6 +423,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
         } finally {
             workspace().doneWriting();
         }
+        _debug("Changed name from " + oldname + " to " + getFullName());
     }
 
     /** Return the class name and the full name of the object,
@@ -487,6 +522,19 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
         }
     }
 
+    /** Send a debug message to all debug listeners that have registered.
+     */
+    protected void _debug(String message) {
+        if (_debugListeners == null) {
+            return;
+        } else {
+            Enumeration listeners = _debugListeners.elements();
+            while (listeners.hasMoreElements()) {
+                ((DebugListener)listeners.nextElement()).message(message);
+            }
+        }
+    }
+
     /** Return a description of the object.  The level of detail depends
      *  on the argument, which is an or-ing of the static final constants
      *  defined in this class (NamedObj).  Lines are indented according to
@@ -570,6 +618,9 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    // The list of DebugListeners registered with this object.
+    private LinkedList _debugListeners = null;
 
     // Instance of a workspace that can be used if no other is specified.
     private static Workspace _defaultworkspace = new Workspace();

@@ -53,6 +53,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	Attribute.java \
 	CrossRefList.java \
+	DebugListener.java \
 	KernelException.java \
 	IllegalActionException.java \
 	InternalErrorException.java \
@@ -63,6 +64,8 @@ JSRCS = \
 	NameDuplicationException.java \
 	NoSuchItemException.java \
 	PtolemyThread.java \
+	RecorderListener.java \
+	StreamListener.java \
 	Workspace.java
 
 EXTRA_SRCS =	$(JSRCS)
