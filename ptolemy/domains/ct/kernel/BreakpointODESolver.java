@@ -42,7 +42,7 @@ package ptolemy.domains.ct.kernel;
    @version $Id$
    @since Ptolemy II 1.0
    @Pt.ProposedRating Green (hyzheng)
-   @Pt.AcceptedRating Yellow (hyzheng)
+   @Pt.AcceptedRating Green (hyzheng)
 */
 public interface BreakpointODESolver {
 }
