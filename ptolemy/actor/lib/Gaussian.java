@@ -136,8 +136,8 @@ public class Gaussian extends TypedAtomicActor {
     public void fire() {
 	double mn = ((DoubleToken)(mean.getToken())).doubleValue();
 	double sd = ((DoubleToken)(stddev.getToken())).doubleValue();
-        double rawnum = _random.nextGaussian();
-        double result = (rawnum*sd) + mn;
+        double rawNum = _random.nextGaussian();
+        double result = (rawNum*sd) + mn;
         try {
             output.broadcast(new DoubleToken(result));
         } catch (IllegalActionException ex) {

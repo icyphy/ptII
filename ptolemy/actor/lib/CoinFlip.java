@@ -131,11 +131,11 @@ public class CoinFlip extends TypedAtomicActor {
      */
     public void fire() {
 	double tp = ((DoubleToken)(trueProbability.getToken())).doubleValue();
-        double rawnum = _random.nextDouble();
+        double rawNum = _random.nextDouble();
         // Adjust so that 1.0 is not a possible outcome.
-        if (rawnum == 1.0) rawnum -= Double.MIN_VALUE;
+        if (rawNum == 1.0) rawNum -= Double.MIN_VALUE;
         boolean result;
-        if (rawnum < tp) {
+        if (rawNum < tp) {
             result = true;
         } else {
             result = false;
