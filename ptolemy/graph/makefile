@@ -53,7 +53,6 @@ JSRCS = \
 	DirectedGraph.java \
 	Edge.java \
 	Graph.java \
-	Graphs.java \
 	GraphListener.java \
 	LabeledList.java \
 	Inequality.java \
