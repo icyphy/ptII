@@ -24,6 +24,7 @@
   </entity>
   <entity name="Select" class="ptolemy.actor.lib.Select"/>
   <entity name="Sequencer" class="ptolemy.actor.lib.Sequencer"/>
+   <entity name="SignalMemory" class="ptolemy.actor.lib.SignalMemory"/>
   <entity name="Stop" class="ptolemy.actor.lib.Stop"/>
   <entity name="Switch" class="ptolemy.actor.lib.Switch"/>
   <entity name="Synchronizer" class="ptolemy.actor.lib.Synchronizer"/>

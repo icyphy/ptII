@@ -90,6 +90,7 @@ JSRCS = \
 	BooleanSwitch.java \
 	BusAssembler.java \
 	BusDisassembler.java \
+        CheckResult.java\
 	ClassWrapper.java \
 	Clock.java \
 	Commutator.java \
@@ -141,6 +142,7 @@ JSRCS = \
 	SequenceSource.java \
 	SequentialClock.java \
 	Sink.java \
+        SignalMemory.java\
 	Sleep.java \
 	Source.java \
 	Stop.java \
