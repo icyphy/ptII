@@ -1,10 +1,14 @@
 ;; Ptolemy II Java coding Style
 ;; $Id$
 
-;; To use this style, place this file in ~/lib/emacs
-;; and add the line below to your .emacs file
-;; (load-file (expand-file-name "~/lib/emacs/ptjavastyle.el"))
+;; This file contains Emacs definitions for the Ptolemy II coding
+;; style that is defined in $PTII/doc/coding/style.htm
 
+;; To use this file, place the following into your $HOME/.emacs file
+;;(load-file (expand-file-name (concat 
+;;			      (getenv "PTII") 
+;;			      "/util/lisp/ptjavastyle.el")))
+		   
 ;;;;;;;;;;;;;;;;;;;;;;;;;; C++MODE
 (autoload 'c++-mode  "cc-mode" "C++ Editing Mode" t)
 (autoload 'c-mode    "cc-mode" "C Editing Mode" t)

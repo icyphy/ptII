@@ -19,6 +19,12 @@
 ;; $PTII/doc/coding/debugging.htm for details
 (setq gud-jdb-command-name "jdb -attach javadebug")
 
+;; Load the Ptolemy II coding style that is defined
+;; in $PTII/doc/coding/style.htm
+(load-file (expand-file-name (concat 
+			      (getenv "PTII") 
+			      "/util/lisp/ptjavastyle.el")))
+
 ;; Turn on colorization of files
 (global-font-lock-mode 1)
 
