@@ -56,7 +56,6 @@ PTCLASSJAR =
 UI_FILES_TO_BE_JARED = \
 	acks.htm \
 	authors.htm \
-	coding/debugging.htm \
 	codegen.htm \
 	webStartHelp.htm \
 	whatsnew.htm \
@@ -101,6 +100,7 @@ VERGIL_DOCS = \
 # Include these jars in PTAUXALLJAR
 PTAUXALLJARS = \
 		design/usingVergil/usingVergil.jar \
+		coding/codingConfig.jar \
 		img/img.jar
 
 # All the doc/ files that are referred to by files in ptolemy/config
