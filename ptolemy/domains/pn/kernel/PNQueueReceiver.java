@@ -108,6 +108,7 @@ public class PNQueueReceiver extends QueueReceiver {
 	    } else {
 		while (_pause) {
 		    //System.out.println(" Actually pausing");
+                    director.paused();
 		    workspace.wait(this);
 		}
 	    }
@@ -187,6 +188,7 @@ public class PNQueueReceiver extends QueueReceiver {
 		while (_pause) {
 		    //System.out.println("Pausing in puuuuuuuuuut");
 		    //System.out.println(((Entity)getContainer().getFullName()Container()).getName()+" PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP");
+                    director.paused();
 		    workspace.wait(this);
 		}
 	    }
