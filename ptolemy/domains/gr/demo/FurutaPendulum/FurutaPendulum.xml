@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FurutaPendulum" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[777, 566]">
     </property>
@@ -86,7 +86,49 @@ The objective is to swing the pendulum up and then balance it.
         <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 390.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={33, 6, 992, 682}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={33, 6, 992, 675}}">
+    </property>
+    <property name="annotation2" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:12; font-family:SansSerif; fill:red">This example requires Java3D. If you do not have
+it installed, you can get it from:
+http://java.sun.com/products/java-media/3D/</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 460.0">
+        </property>
+    </property>
+    <property name="annotation3" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Johan Eker</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 530.0">
+        </property>
     </property>
     <entity name="FurutaPendulum" class="ptolemy.domains.ct.lib.DifferentialSystem">
         <property name="stateVariableNames" class="ptolemy.data.expr.Parameter" value="{&quot;x1&quot;, &quot;x2&quot;, &quot;x3&quot;, &quot;x4&quot;}">
@@ -674,6 +716,8 @@ The objective is to swing the pendulum up and then balance it.
             </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
+            <property name="iterationTimeLowerBound" class="ptolemy.data.expr.Parameter" value="33">
+            </property>
             <property name="iteration time lower bound" class="ptolemy.data.expr.Parameter" value="33">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="268.0, 31.0">
@@ -750,6 +794,8 @@ The objective is to swing the pendulum up and then balance it.
             <property name="showAxes" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="iterationSynchronized" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="backgroundColor" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="575.0, 375.0">
             </property>
@@ -1430,6 +1476,8 @@ The objective is to swing the pendulum up and then balance it.
             <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
                 <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="init">
                 </property>
+                <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
+                </property>
                 <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
@@ -1569,6 +1617,8 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
+                    <property name="relationList" class="ptolemy.domains.fsm.lib.RelationList">
+                    </property>
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                 </relation>
@@ -1588,6 +1638,8 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                    </property>
+                    <property name="relationList" class="ptolemy.domains.fsm.lib.RelationList">
                     </property>
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                     </property>
@@ -1609,6 +1661,8 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
+                    <property name="relationList" class="ptolemy.domains.fsm.lib.RelationList">
+                    </property>
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                 </relation>
@@ -1628,6 +1682,8 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                    </property>
+                    <property name="relationList" class="ptolemy.domains.fsm.lib.RelationList">
                     </property>
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                     </property>
