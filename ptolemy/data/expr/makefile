@@ -148,13 +148,27 @@ OPTIONAL_FILES =  \
 	JJPtParserCalls.class \
 	PtParser.java \
 	PtParser.jj \
+	JJMatrixParserState.class \
+	MatrixParser.jj \
+	MatrixParser.java \
+	'CachedMethod$$1.class' \
+	'CachedMethod$$2.class' \
+	'CachedMethod$$3.class' \
+	'CachedMethod$$ArgumentConversion.class' \
+	'CachedMethod$$ArrayMapCachedMethod.class' \
+	'CachedMethod$$BaseConvertCachedMethod.class' \
+	'CachedMethod$$MatrixMapCachedMethod.class' \
+	'CachedMethod$$TypeArgumentConversion.class' \
+	'Parameter$$ParseList$$Element.class' \
+	'Parameter$$ParseList.class' \
+	'ParseTreeTypeInference$$1.class' \
+	'PtParser$$1.class' \
 	'PtParser$$JJCalls.class' \
+	'PtParser$$LookaheadSuccess.class' \
 	'Variable$$1.class' \
 	'Variable$$TypeTerm.class' \
 	'Variable$$VariableScope.class' \
-	JJMatrixParserState.class \
-	MatrixParser.jj \
-	MatrixParser.java
+	'UtilityFunctions$$TokenComparator.class'
 
 JCLASS =  \
 	$(JSRCS:%.java=%.class) \
