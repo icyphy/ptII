@@ -10,3 +10,5 @@ rm -f /users/ptII/adm/test/ptIInightly.log
 
 # Run this with /bin/sh in case it is not executable
 /bin/sh /users/ptII/adm/bin/ptIInightly $1 >/users/ptII/adm/test/ptIInightly.log 2>&1
+
+cd /users/ptII/ptweb; cvs update -d -P > /users/ptII/logs/cvsupdate`date  '+%m%d'` 2>&1
