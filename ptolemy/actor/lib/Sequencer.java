@@ -43,7 +43,7 @@ import java.util.TreeMap;
 
 
 //////////////////////////////////////////////////////////////////////////
-//// Multiplexor
+//// Sequencer
 /**
 This actor takes a sequence of inputs tagged with a sequence number
 and produces them on the output port in the order given by the
