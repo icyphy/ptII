@@ -137,6 +137,8 @@ public class Translate extends Transform {
  
     /** Check the input ports for translation inputs.  Convert the translation
      *  tokens into a Java3D transformation.
+     *  @exception IllegalActionException If the value of some parameters can't
+     *   be obtained
      */
     public void fire() throws IllegalActionException {
         boolean applyTransform = false;
