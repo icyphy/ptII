@@ -214,14 +214,14 @@ public class MatrixVisualizer extends TypedAtomicActor implements Placeable {
     public boolean postfire() throws IllegalActionException {
         IntMatrixToken token = (IntMatrixToken)input.get(0);
         int rows = token.getRowCount();
-        int colums = token.getColumnCount();
+        int columns = token.getColumnCount();
 
         int stripe[] = new int[rows];
 
         // Clear the render object's image data.
         render.clearData();
         // Add the matrix stripe by stripe to the render object.
-        for (int i = 0; i < colums; i++) {
+        for (int i = 0; i < columns; i++) {
             for(int j = 0; j < rows; j++) {
                 stripe[j] = token.getElementAt(j, i);
             }
