@@ -452,8 +452,8 @@ public class IOPort extends ComponentPort {
         }
     }
 
-    /** Deeply enumerate the input ports connected to this port on the
-     *  outside.  This method is deprecated and calls
+    /** Deeply enumerate the ports connected to this port on the
+     *  outside that are input ports.  This method is deprecated and calls
      *  deepConnectedInPortList(). It is read-synchronized on the
      *  workspace.
      *
@@ -465,14 +465,30 @@ public class IOPort extends ComponentPort {
         return Collections.enumeration( deepConnectedInPortList() );
     }
 
-    /** Deeply enumerate the input ports connected to this port on the
-     *  outside and return a list of these ports.  This method calls
-     *  deepConnectedPortList() of the super class to get all the deeply
-     *  connected ports and returns only the input ports among them.
-     *  It is read-synchronized on the workspace.
+    /** Return a list of input ports connected to this port on the
+     *  outside. NOTE: This method is not as useful as it might seem.
+     *  In particular, it includes in the returned list input ports that
+     *  are higher in the hierarchy to which this port is connected
+     *  on the <i>inside</i>.  This can be confusing because such ports
+     *  cannot receive data produced by this port.  To get a list of
+     *  the ports that can receive data from this port, use the following:
+     *  <pre>
+     *    LinkedList result = new LinkedList();
+     *    Iterator ports = thisPort.deepConnectedPortList().iterator();
+     *    int thisDepth = depthInHierarchy();
+     *    while(ports.hasNext()) {
+     *        IOPort port = (IOPort)ports.next();
+     *        if (port.isInput() && port.depthInHierarchy() >= myDepth) {
+     *           result.addLast(port);
+     *        } else if (port.isOutput() && port.depthInHierarchy() < myDepth) {
+     *           result.addLast(port);
+     *        }
+     *    }
+     *  <pre>
+     *  This method is read-synchronized on the workspace.
      *
      *  @see ptolemy.kernel.ComponentPort#deepConnectedPortList
-     *  @return A list of input IOPort objects.
+     *  @return A list of IOPort objects.
      */
     public List deepConnectedInPortList() {
 	try {
@@ -480,11 +496,12 @@ public class IOPort extends ComponentPort {
 	    LinkedList result = new LinkedList();
 
 	    Iterator ports = deepConnectedPortList().iterator();
+            int myDepth = depthInHierarchy();
             while(ports.hasNext()) {
 		IOPort port = (IOPort)ports.next();
 		if (port.isInput()) {
 		    result.addLast(port);
-		}
+                }
 	    }
 	    return result;
 	} finally {
@@ -492,10 +509,10 @@ public class IOPort extends ComponentPort {
 	}
     }
 
-    /** Deeply enumerate the output ports connected to this port on the
-     *  outside.  This method is deprecated and calls
-     *  deepConnectedOutPortList().
-     *  It is read-synchronized on the workspace.
+    /** Deeply enumerate the ports connected to this port on the
+     *  outside that are output ports. This method is deprecated and calls
+     *  deepConnectedInPortList(). It is read-synchronized on the
+     *  workspace.
      *
      *  @see ptolemy.kernel.ComponentPort#deepConnectedPorts
      *  @deprecated Use deepConnectedInPortList() instead.
@@ -505,14 +522,30 @@ public class IOPort extends ComponentPort {
         return Collections.enumeration( deepConnectedOutPortList() );
     }
 
-    /** Deeply enumerate the output ports connected to this port on the
-     *  outside and a return a list of these ports.  This method calls
-     *  deepConnectedPortList() of the super *  class to get all the
-     *  deeply connected ports and returns only the output ports among
-     *  them. It is read-synchronized on the workspace.
+    /** Return a list of output ports connected to this port on the
+     *  outside. NOTE: This method is not as useful as it might seem.
+     *  In particular, it includes in the returned list output ports that
+     *  are higher in the hierarchy to which this port is connected
+     *  on the <i>inside</i>.  This can be confusing because such ports
+     *  cannot send data to this port.  To get a list of
+     *  the ports that can send data to this port, use the following:
+     *  <pre>
+     *    LinkedList result = new LinkedList();
+     *    Iterator ports = thisPort.deepConnectedPortList().iterator();
+     *    int thisDepth = depthInHierarchy();
+     *    while(ports.hasNext()) {
+     *        IOPort port = (IOPort)ports.next();
+     *        if (port.isOutput() && port.depthInHierarchy() >= myDepth) {
+     *           result.addLast(port);
+     *        } else if (port.isInput() && port.depthInHierarchy() < myDepth) {
+     *           result.addLast(port);
+     *        }
+     *    }
+     *  <pre>
+     *  This method is read-synchronized on the workspace.
      *
      *  @see ptolemy.kernel.ComponentPort#deepConnectedPorts
-     *  @return An enumeration of output IOPort objects.
+     *  @return An enumeration of IOPort objects.
      */
     public List deepConnectedOutPortList() {
 	try {
@@ -520,11 +553,12 @@ public class IOPort extends ComponentPort {
 	    LinkedList result = new LinkedList();
 
 	    Iterator ports = deepConnectedPortList().iterator();
-	    while (ports.hasNext()) {
+            int myDepth = depthInHierarchy();
+            while(ports.hasNext()) {
 		IOPort port = (IOPort)ports.next();
 		if (port.isOutput()) {
 		    result.addLast(port);
-		}
+                }
 	    }
 	    return result;
 	} finally {
