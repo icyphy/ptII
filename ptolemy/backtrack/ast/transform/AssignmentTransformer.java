@@ -1074,9 +1074,7 @@ public class AssignmentTransformer extends AbstractTransformer
      *  @param root The root of the AST.
      *  @param state The current state of the type analyzer.
      *  @param isAnonymous Whether the current class is anonymous.
-     *  @return The declaration of the method that restores the old value
-     *   of all the private fields, or <tt>null</tt> if the method already
-     *   exists in the class or its superclasses.
+     *  @return The declaration of the method that sets the checkpoint object.
      */
     private MethodDeclaration _createSetCheckpointMethod(AST ast, 
             CompilationUnit root, TypeAnalyzerState state, 
@@ -1198,6 +1196,57 @@ public class AssignmentTransformer extends AbstractTransformer
         addToLists(_checkParentMethods, parent.getName(), method);
         
         return method;
+    }
+    
+    /** Create a static set checkpoint method for a non-anonymous class.
+     * 
+     *  @param ast The {@link AST} object.
+     *  @param root The root of the AST.
+     *  @param state The current state of the type analyzer.
+     *  @return The declaration of the method that sets the checkpoint object.
+     */
+    private MethodDeclaration _createStateSetCheckpointMethod(AST ast, 
+            CompilationUnit root, TypeAnalyzerState state) {
+        MethodDeclaration setCheckpoint = ast.newMethodDeclaration();
+        setCheckpoint.setName(ast.newSimpleName(SET_CHECKPOINT_NAME));
+        String typeName = 
+            getClassName(state.getCurrentClass(), state, root);
+        setCheckpoint.setReturnType(createType(ast, typeName));
+        
+        // Add a parameter of the current object.
+        SingleVariableDeclaration object = 
+            ast.newSingleVariableDeclaration();
+        object.setName(ast.newSimpleName("object"));
+        object.setType(createType(ast, typeName));
+        setCheckpoint.parameters().add(object);
+        
+        // Add a checkpoint parameter.
+        SingleVariableDeclaration checkpoint = 
+            ast.newSingleVariableDeclaration();
+        checkpoint.setName(ast.newSimpleName("checkpoint"));
+        checkpoint.setType(
+                createType(ast, 
+                        getClassName(Checkpoint.class, state, root)));
+        setCheckpoint.parameters().add(checkpoint);
+        
+        // The body.
+        Block body = ast.newBlock();
+        setCheckpoint.setBody(body);
+        
+        // The first statement: set the checkpoint.
+        MethodInvocation invocation = ast.newMethodInvocation();
+        invocation.setExpression(ast.newSimpleName("object"));
+        invocation.setName(ast.newSimpleName(SET_CHECKPOINT_NAME));
+        invocation.arguments().add(ast.newSimpleName("checkpoint"));
+        body.statements().add(ast.newExpressionStatement(invocation));
+        
+        // The second statement: return the object.
+        ReturnStatement returnStatement = ast.newReturnStatement();
+        returnStatement.setExpression(ast.newSimpleName("object"));
+        body.statements().add(returnStatement);
+        
+        setCheckpoint.setModifiers(Modifier.PUBLIC | Modifier.STATIC);
+        return setCheckpoint;
     }
     
     /** Get the list of indices of an accessed field. If the field is not of an
@@ -1364,6 +1413,9 @@ public class AssignmentTransformer extends AbstractTransformer
                     node instanceof AnonymousClassDeclaration);
         if (setCheckpoint != null)
             newMethods.add(setCheckpoint);
+        
+        if (!(node instanceof AnonymousClassDeclaration))
+            newMethods.add(_createStateSetCheckpointMethod(ast, root, state));
         
         // Add an interface.
         if (node instanceof AnonymousClassDeclaration) 

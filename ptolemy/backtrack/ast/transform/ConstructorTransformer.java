@@ -30,7 +30,6 @@ package ptolemy.backtrack.ast.transform;
 
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
@@ -38,19 +37,13 @@ import java.util.Stack;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.AnonymousClassDeclaration;
-import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.ClassInstanceCreation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.ConstructorInvocation;
-import org.eclipse.jdt.core.dom.ExpressionStatement;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
-import org.eclipse.jdt.core.dom.Modifier;
-import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.SuperConstructorInvocation;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
-import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.ast.Type;
 import ptolemy.backtrack.ast.TypeAnalyzerState;
 
@@ -82,69 +75,6 @@ public class ConstructorTransformer extends AbstractTransformer
      *  @param state
      */
     public void handle(MethodDeclaration node, TypeAnalyzerState state) {
-        ASTNode classDeclaration = node.getParent();
-        AST ast = node.getAST();
-        CompilationUnit root = (CompilationUnit)node.getRoot();
-        
-        MethodDeclaration newConstructor = 
-            ast.newMethodDeclaration();
-        newConstructor.setConstructor(true);
-        newConstructor.setModifiers(node.getModifiers());
-        newConstructor.setName(
-                ast.newSimpleName(node.getName().getIdentifier()));
-        
-        // Copy all the parameters.
-        Iterator parameters = node.parameters().iterator();
-        List oldParameters = new LinkedList();
-        while (parameters.hasNext()) {
-            SingleVariableDeclaration parameter = 
-                (SingleVariableDeclaration)parameters.next();
-            
-            // If a checkpoint parameter already exists, do not handle this
-            // constructor.
-            if (parameter.getType().toString().equals(
-                    Checkpoint.class.getName()))
-                return;
-            
-            newConstructor.parameters().add(
-                    ASTNode.copySubtree(ast, parameter));
-            oldParameters.add(
-                    ast.newSimpleName(parameter.getName().getIdentifier()));
-        }
-        
-        // Add a checkpoint parameter.
-        SingleVariableDeclaration checkpoint = 
-            ast.newSingleVariableDeclaration();
-        String checkpointType = getClassName(Checkpoint.class, state, root);
-        checkpoint.setType(createType(ast, checkpointType));
-        checkpoint.setName(ast.newSimpleName(CHECKPOINT_NAME));
-        newConstructor.parameters().add(checkpoint);
-        
-        // The first statement: call the old constructor.
-        ConstructorInvocation invocation = ast.newConstructorInvocation();
-        invocation.arguments().addAll(oldParameters);
-        
-        // The second statement: set the checkpoint.
-        MethodInvocation setCheckpoint = ast.newMethodInvocation();
-        setCheckpoint.setName(ast.newSimpleName(SET_CHECKPOINT_NAME));
-        setCheckpoint.arguments().add(ast.newSimpleName(CHECKPOINT_NAME));
-        ExpressionStatement setCheckpointExpression = 
-            ast.newExpressionStatement(setCheckpoint);
-        
-        // Create the body.
-        Block body = ast.newBlock();
-        body.statements().add(invocation);
-        body.statements().add(setCheckpointExpression);
-        newConstructor.setBody(body);
-        
-        // Record the new constructor to be added.
-        String currentClassName = state.getCurrentClass().getName();
-        List constructorList = (List)_newConstructors.get(currentClassName);
-        if (constructorList == null) {
-            constructorList = new LinkedList();
-            _newConstructors.put(currentClassName, constructorList);
-        }
-        constructorList.add(newConstructor);
     }
 
     /**
@@ -158,19 +88,13 @@ public class ConstructorTransformer extends AbstractTransformer
             String typeName = type.getName();
             if (state.getCrossAnalyzedTypes().contains(typeName))
                 // The type needs to be cross-analyzed.
-                _refactor(node);
+                _refactor(node, state);
             else
                 addToLists(_unhandledNodes, typeName, node);
         }
     }
     
     public void handle(SuperConstructorInvocation node, TypeAnalyzerState state) {
-        /*String superName = state.getCurrentClass().getSuperclass().getName();
-        if (state.getCrossAnalyzedTypes().contains(superName))
-            // The type needs to be cross-analyzed.
-            _refactor(node);
-        else
-            _addToLists(_unhandledNodes, superName, node);*/
     }
     
     public void enter(AnonymousClassDeclaration node, 
@@ -193,29 +117,6 @@ public class ConstructorTransformer extends AbstractTransformer
         _currentMethods.pop();
     }
     
-    private void _handleDeclaration(ASTNode node, List bodyDeclarations, 
-            TypeAnalyzerState state) {
-        String currentClassName = state.getCurrentClass().getName();
-        List constructorList = (List)_newConstructors.get(currentClassName);
-        if (constructorList == null && node instanceof TypeDeclaration) {
-            // For a class without a constructor, create a dummy constructor.
-            AST ast = node.getAST();
-            MethodDeclaration constructor = ast.newMethodDeclaration();
-            constructor.setConstructor(true);
-            constructor.setName(ast.newSimpleName(
-                    ((TypeDeclaration)node).getName().getIdentifier()));
-            constructor.setBody(ast.newBlock());
-            constructor.setModifiers(Modifier.PUBLIC);
-            bodyDeclarations.add(constructor);
-            handle(constructor, state);
-            constructorList = (List)_newConstructors.get(currentClassName);
-        }
-        if (constructorList != null) {
-            _newConstructors.remove(currentClassName);
-            bodyDeclarations.addAll(constructorList);
-        }
-    }
-    
     public void handle(TypeAnalyzerState state) {
         Set crossAnalyzedTypes = state.getCrossAnalyzedTypes();
         Iterator crossAnalysisIter = crossAnalyzedTypes.iterator();
@@ -227,26 +128,30 @@ public class ConstructorTransformer extends AbstractTransformer
                 while (nodesIter.hasNext()) {
                     ASTNode node = (ASTNode)nodesIter.next();
                     if (node instanceof ClassInstanceCreation)
-                        _refactor((ClassInstanceCreation)node);
-                    else if (node instanceof SuperConstructorInvocation)
-                        _refactor((SuperConstructorInvocation)node);
+                        _refactor((ClassInstanceCreation)node, state);
                     nodesIter.remove();
                 }
             }
         }
     }
     
-    private void _refactor(ClassInstanceCreation node) {
-        AST ast = node.getAST();
-        node.arguments().add(ast.newSimpleName(CHECKPOINT_NAME));
+    private void _handleDeclaration(ASTNode node, List bodyDeclarations, 
+            TypeAnalyzerState state) {
     }
     
-    private void _refactor(SuperConstructorInvocation node) {
+    private void _refactor(ClassInstanceCreation node, 
+            TypeAnalyzerState state) {
         AST ast = node.getAST();
-        node.arguments().add(ast.newSimpleName(CHECKPOINT_NAME));
+        CompilationUnit root = (CompilationUnit)node.getRoot();
+        Type type = Type.getType(node);
+        MethodInvocation staticSetCheckpoint = ast.newMethodInvocation();
+        staticSetCheckpoint.setExpression(
+                createName(ast, getClassName(type.getName(), state, root)));
+        staticSetCheckpoint.setName(ast.newSimpleName(SET_CHECKPOINT_NAME));
+        staticSetCheckpoint.arguments().add(ASTNode.copySubtree(ast, node));
+        staticSetCheckpoint.arguments().add(ast.newSimpleName(CHECKPOINT_NAME));
+        replaceNode(node, staticSetCheckpoint);
     }
-    
-    private Hashtable _newConstructors = new Hashtable();
     
     private Hashtable _unhandledNodes = new Hashtable();
     
