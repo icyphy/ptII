@@ -3837,8 +3837,8 @@ public class MoMLParser extends HandlerBase {
     // the current undo environment
     private UndoContext _undoContext = null;
 
-    // Set this to true to get debugging information for incremental parsing
-    private boolean _undoDebug = false;
+    // Set this to true to get debugging information for undo.
+    private static boolean _undoDebug = false;
 
     // Flag indicating if the MoML currently being parsed should be
     // undoable. Primarily for incremental parsing.

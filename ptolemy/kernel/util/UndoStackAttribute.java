@@ -112,23 +112,28 @@ public class UndoStackAttribute extends SingletonAttribute {
         }
     }
 
-    /** Merge the top two undo entries into a single action. If there
+    /** Merge the top two undo entries into a single action, unless
+     *  we are in either a redo or an undo, in which case the merge
+     *  happens automatically and need not be explicitly requested
+     *  by the client. If there
      *  are fewer than two entries on the stack, do nothing. Note
      *  that when two entries are merged, the one on the top of
      *  the stack becomes the first one executed and the one
      *  below that on the stack becomes the second one executed.
      */
     public void mergeTopTwo() {
-        if (_undoEntries.size() > 1) {
-            UndoAction lastUndo = (UndoAction)_undoEntries.pop();
-            UndoAction firstUndo = (UndoAction)_undoEntries.pop();
-            UndoAction mergedAction = _mergeActions(lastUndo, firstUndo);
-            _undoEntries.push(mergedAction);
-            if (_DEBUG) {
-                System.out.println(
-                        "=======> Merging top two on undo stack:\n"
-                        + mergedAction.toString());
-            }            
+        if (_inUndo == 0 && _inRedo == 0) {
+            if (_undoEntries.size() > 1) {
+                UndoAction lastUndo = (UndoAction)_undoEntries.pop();
+                UndoAction firstUndo = (UndoAction)_undoEntries.pop();
+                UndoAction mergedAction = _mergeActions(lastUndo, firstUndo);
+                _undoEntries.push(mergedAction);
+                if (_DEBUG) {
+                    System.out.println(
+                            "=======> Merging top two on undo stack:\n"
+                            + mergedAction.toString());
+                }            
+            }
         }
     }
 
@@ -138,13 +143,14 @@ public class UndoStackAttribute extends SingletonAttribute {
      */
     public void push(UndoAction action) {
         if (_inUndo > 1) {
+            UndoAction previousRedo = (UndoAction)_redoEntries.pop();
+            UndoAction mergedAction = _mergeActions(action, previousRedo);
+            _redoEntries.push(mergedAction);
             if (_DEBUG) {
                 System.out.println(
-                        "=======> Merging action onto redo stack:\n"
-                        + action.toString());
+                        "=======> Merging action onto redo stack to get:\n"
+                        + mergedAction.toString());
             }
-            UndoAction previousRedo = (UndoAction)_redoEntries.pop();
-            _redoEntries.push(_mergeActions(previousRedo, action));
             _inUndo++;
         } else if (_inUndo == 1) {
             if (_DEBUG) {
@@ -155,13 +161,14 @@ public class UndoStackAttribute extends SingletonAttribute {
             _redoEntries.push(action);
             _inUndo++;
         } else if (_inRedo > 1) {
+            UndoAction previousUndo = (UndoAction)_undoEntries.pop();
+            UndoAction mergedAction = _mergeActions(action, previousUndo);
             if (_DEBUG) {
                 System.out.println(
-                        "=======> Merging redo action onto undo stack:\n"
-                        + action.toString());
+                        "=======> Merging redo action onto undo stack to get:\n"
+                        + mergedAction.toString());
             }
-            UndoAction previousRedo = (UndoAction)_redoEntries.pop();
-            _undoEntries.push(_mergeActions(previousRedo, action));
+            _undoEntries.push(mergedAction);
             _inRedo++;
         } else if (_inRedo == 1) {
             if (_DEBUG) {
@@ -198,6 +205,12 @@ public class UndoStackAttribute extends SingletonAttribute {
             }
             try {
                 _inRedo = 1;
+                // NOTE: We assume that if in executing this
+                // action any change request is made, that the
+                // change request is honored before execute()
+                // returns. Otherwise, _inRedo will erroneously
+                // be back at 0 when that change is finally
+                // executed.
                 action.execute();
             } finally {
                 _inRedo = 0;
