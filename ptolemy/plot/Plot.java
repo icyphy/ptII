@@ -668,9 +668,9 @@ public class Plot extends PlotBox {
      */
     protected boolean _drawPoint(int dataset, int xpos, int ypos,
 				boolean connected, boolean clip) {
-	if (_debug > 10)
-	    System.out.println("_drawPoint "+dataset+" "+xpos+" "+ypos+
-			       " "+connected+" "+clip);
+	if (_debug > 20)
+	    System.out.println("Plot:_drawPoint "+dataset+" "+xpos+
+			        " "+ypos+" "+connected+" "+clip);
         // Points are only distinguished up to _MAX_MARKS data sets.
         dataset %= _MAX_MARKS;
         if (_pointsPersistence > 0) {
@@ -811,7 +811,7 @@ public class Plot extends PlotBox {
             if (barlx < _ulx) barlx = _ulx;
             if (barrx > _lrx) barrx = _lrx;
 	    if (_debug > 20)
-	    System.out.println("_drawPoint bar "+barlx+" "+topofbar+ " " +
+	    System.out.println("Plot:_drawPoint bar "+barlx+" "+topofbar+" "+
 	                        barrx + " " + barlx + " " + _lry);
             graphics.fillRect(barlx, topofbar, barrx - barlx, _lry - topofbar);
         }
@@ -1119,7 +1119,7 @@ public class Plot extends PlotBox {
             _sawfirstdataset = true;
             ++_currentdataset;
         }
-        if (_debug > 4)
+        if (_debug > 14)
         System.out.println("Plot _addLegendIfNecessary( "+connected+" ) "+
                            + (_filecount) + " "
                            + (_currentdataset) +
