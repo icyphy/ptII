@@ -121,7 +121,7 @@ public final class ImageDisplay extends AtomicActor {
                 _frame.pack();
             }
 
-            System.out.println("new buffer");
+            //System.out.println("new buffer");
 	}
 
 	// convert the B/W image to a packed RGB image

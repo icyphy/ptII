@@ -101,7 +101,7 @@ public class PNImageSource extends AtomicActor {
                 while (dataread.startsWith("#")) {
                     dataread = _file.readLine();
                 }
-                System.out.println("Read "+dataread);
+                //System.out.println("Read "+dataread);
                 DataInputStream dim = 
                     new DataInputStream(new StringBufferInputStream(dataread));
                 StreamTokenizer datastr = new StreamTokenizer(dim);
@@ -113,7 +113,7 @@ public class PNImageSource extends AtomicActor {
                 if (datastr.nextToken() == StreamTokenizer.TT_NUMBER) {
                     datarow = (int)datastr.nval;
                 }
-                System.out.println("Rows ="+datarow+" and col = "+datacol);
+                //System.out.println("Rows ="+datarow+" and col = "+datacol);
                 int[][] image = new int[datarow][datacol];
                 datastr = new StreamTokenizer(_file);
                 for (int i=0; i<datarow; i++) {
