@@ -252,7 +252,8 @@ test Port-7.2 {Test getContainer on a Port that has a container } {
     set p1 [java::new ptolemy.kernel.Port]
     set e1 [java::new ptolemy.kernel.Entity "entity1"]
     $p1 setContainer $e1
-    list [expr { $e1 == [$p1 getContainer] } ]
+    list [expr { $e1 == \
+	    [java::cast ptolemy.kernel.Entity [$p1 getContainer]] } ]
 } {1}
 
 ######################################################################
