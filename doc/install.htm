@@ -398,6 +398,21 @@ install them
 	<CODE>Start</CODE> -&gt; <CODE>Cygnus Solutions</CODE> -&gt;
 	<CODE>Cygwin Bash Shell</CODE>
  
+
+<li> <CODE>c:/cygwin/etc/passwd</CODE> is created during the 
+Cygwin installation.  If your Windows account is a domain account
+and not a local account, then you may need to add an entry
+to <CODE>c:/cygwin/etc/passwd</CODE> by hand.
+
+ <br>Use the <CODE>mkpasswd</CODE> command to append
+a line with your login information, for example, I used:
+
+<pre>
+ mkpasswd -d -u cxh --path-to-home=/cygdrive/c/users/cxh &gt;&gt; /etc/passwd
+</pre>
+<CODE>mkpasswd -h</CODE> will print out help for the <CODE>mkpasswd</CODE>
+command
+
   </menu>
 
 
