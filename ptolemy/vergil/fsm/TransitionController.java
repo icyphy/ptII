@@ -333,7 +333,7 @@ public class TransitionController extends BasicEdgeController {
      */
     private class LookInsideAction extends FigureAction {
         public LookInsideAction() {
-            super("Look Inside)");
+            super("Look Inside");
 
             // For some inexplicable reason, the I key doesn't work here.
             // So we use L.
