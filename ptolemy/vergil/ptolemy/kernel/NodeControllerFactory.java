@@ -42,12 +42,12 @@ This is attribute that produces a custom node controller.
 This base class produces a node controller that offers only a
 configure command in the context menu, and invokes a dialog to
 edit parameters in response to that command.  It does this by
-returning an instance of ConfigureOnlyAttributeController
+returning an instance of IconController
 in its create() method.  Derived classes can override this
 base class to put whatever they want in the context menu,
 invoking whatever dialogs are appropriate.
 To use this class, just insert it as an attribute inside
-any Ptolemy II object, and then right clicking on the icon for
+ any Ptolemy II object, and then right clicking on the icon for
 that object will result in the use of the controller specified
 here.  The instance by convention will be named "_controllerFactory",
 but the only reason to enforce this is that only the first such
@@ -77,12 +77,13 @@ public class NodeControllerFactory extends SingletonAttribute {
     ////                     public methods                        ////
 
     /** Return a new node controller.  This base class returns an
-     *  instance of ConfigureOnlyAttributeController.  Derived
+     *  instance of IconController.  Derived
      *  classes can return some other class to customize the
      *  context menu.
      *  @param controller The associated graph controller.
+     *  @return A new node controller.
      */
-    public NodeController create(GraphController controller) {
-        return new ConfigureOnlyAttributeController(controller);
+    public PtolemyNodeController create(GraphController controller) {
+        return new IconController(controller);
     }
 }

@@ -95,55 +95,55 @@ public class LocatableNodeController extends BasicNodeController {
 
     /** Draw the node at its location.
      */
-    public Figure drawNode(Object n) {
-        Figure nf = super.drawNode(n);
-	locateFigure(n);
+    public Figure drawNode(Object node) {
+        Figure nf = super.drawNode(node);
+	locateFigure(node);
         return nf;
+    }
+
+    /** Return the desired location of this node.  Throw an exception if the
+     *  node does not have a desired location.
+     */
+    public double[] getLocation(Object node) {
+        if(hasLocation(node)) {
+            return ((Location) node).getLocation();
+        } else throw new RuntimeException("The node " + node +
+                "does not have a desired location");
     }
 
     /** Return true if the node is associated with a desired location.
      *  In this base class, return true if the the node's semantic object is
      *  an instance of Location.
      */
-    public boolean hasLocation(Object n) {
-        if(n instanceof Location) {
-            Location object = (Location) n;
+    public boolean hasLocation(Object node) {
+        if(node instanceof Location) {
+            Location object = (Location) node;
             double[] location = object.getLocation();
             if(location != null) return true;
         }
         return false;
     }
 
-    /** Return the desired location of this node.  Throw an exception if the
-     *  node does not have a desired location.
+    /** Move the node's figure to the location specified in the node's
+     *  semantic object, if that object is an instance of Location.
+     *  If the semantic object is not a location, then do nothing.
      */
-    public double[] getLocation(Object n) {
-        if(hasLocation(n)) {
-            return ((Location) n).getLocation();
-        } else throw new RuntimeException("The node " + n +
-                "does not have a desired location");
+    public void locateFigure(Object node) {
+	Figure nf = getController().getFigure(node);
+	if(hasLocation(node)) {
+	    double[] location = getLocation(node);
+	    CanvasUtilities.translateTo(nf, location[0], location[1]);
+        }
     }
 
     /** Set the desired location of this node.  Throw an exception if the
      *  node can not be given a desired location.
      */
-    public void setLocation(Object n, double[] location)
+    public void setLocation(Object node, double[] location)
             throws IllegalActionException {
-	if(n instanceof Location) {
-            ((Location)n).setLocation(location);
-        } else throw new RuntimeException("The node " + n +
+	if(node instanceof Location) {
+            ((Location)node).setLocation(location);
+        } else throw new RuntimeException("The node " + node +
                 "can not have a desired location");
-    }
-
-    /** Move the node's figure to the location specified in the node's
-     *  semantic object, if that object is an instance of Location.
-     *  If the semantic object is not a location, then do nothing.
-     */
-    public void locateFigure(Object n) {
-	Figure nf = getController().getFigure(n);
-	if(hasLocation(n)) {
-	    double[] location = getLocation(n);
-	    CanvasUtilities.translateTo(nf, location[0], location[1]);
-        }
     }
 }

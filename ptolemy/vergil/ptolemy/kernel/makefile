@@ -49,18 +49,20 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	AttributeController.java \
-	ConfigureOnlyAttributeController.java \
 	EditorGraphController.java \
 	EntityController.java \
 	EntityPortController.java \
+	IconController.java \
 	KernelGraphFrame.java \
 	KernelGraphTableau.java \
 	Link.java \
 	LinkController.java \
 	NodeControllerFactory.java \
+	ParameterizedNodeController.java \
 	PortController.java \
 	PortDialogFactory.java \
 	PtolemyGraphModel.java \
+	PtolemyNodeController.java \
 	RelationController.java \
 	RenameDialogFactory.java \
 	ViewerGraphController.java

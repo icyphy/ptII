@@ -1,4 +1,4 @@
-/* The node controller for relations (and verteces)
+/* The node controller for relations (and vertices)
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -30,80 +30,49 @@
 
 package ptolemy.vergil.ptolemy.kernel;
 
-import ptolemy.actor.*;
-import ptolemy.actor.gui.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.vergil.*;
-import ptolemy.vergil.toolbox.*;
-import ptolemy.vergil.ptolemy.LocatableNodeController;
-import ptolemy.gui.*;
-import ptolemy.moml.*;
-import diva.gui.*;
-import diva.gui.toolbox.*;
-import diva.graph.*;
-import diva.canvas.*;
-import diva.canvas.connector.*;
-import diva.canvas.event.*;
-import diva.canvas.interactor.*;
-import diva.canvas.toolbox.*;
-import java.awt.geom.Rectangle2D;
-import diva.util.Filter;
-import java.awt.*;
+import ptolemy.kernel.Relation;
+import ptolemy.moml.Vertex;
+import ptolemy.vergil.toolbox.MenuActionFactory;
+
+import diva.graph.GraphController;
+import diva.graph.NodeRenderer;
+import diva.canvas.Figure;
+import diva.canvas.toolbox.BasicFigure;
+
+import java.awt.Color;
 import diva.util.java2d.Polygon2D;
-import java.awt.event.InputEvent;
-import java.awt.event.ActionEvent;
-import java.util.HashMap;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.net.URL;
-import javax.swing.*;
-import javax.swing.event.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// RelationController
 /**
-This class provides interaction with nodes that represent Ptolemy II relations.
-(Or, more specifically, for the vertecies that are contained in a relation.)
-Standard selection and movement interaction is
-provided.  In addition, right clicking on the entity will create a context
-menu for the entity.
+This class provides interaction with nodes that represent Ptolemy II
+relations.  It provides a double click binding to edit the parameters
+of the relation, and a context menu containing a command to edit parameters
+("Configure"), and a command to get documentation.
 
-@author Steve Neuendorffer
+@author Steve Neuendorffer and Edward A. Lee
 @version $Id$
 */
-public class RelationController extends LocatableNodeController {
+public class RelationController extends ParameterizedNodeController {
 
+    /** Create a relation controller associated with the specified graph
+     *  controller.
+     *  @param controller The associated graph controller.
+     */
     public RelationController(GraphController controller) {
 	super(controller);
 	setNodeRenderer(new RelationRenderer());
-	SelectionModel sm = controller.getSelectionModel();
-	SelectionInteractor interactor =
-            (SelectionInteractor) getNodeInteractor();
-	interactor.setSelectionModel(sm);
-	_menuCreator = new MenuCreator(null);
-	interactor.addInteractor(_menuCreator);
+
+        // Add to the context menu.
+        _menuFactory.addMenuItemFactory(
+                new MenuActionFactory(new GetDocumentationAction()));
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                         inner classes                     ////
 
-    /** Get the menu factory that will create context menus for this
-     *  controller.
-     */
-    public MenuFactory getMenuFactory() {
-        return _menuCreator.getMenuFactory();
-    }
-
-    /** Set the menu factory that will create menus for this Entity.
-     */
-    public void setMenuFactory(MenuFactory factory) {
-        _menuCreator.setMenuFactory(factory);
-    }
-
-    /**
-     * The renderer for relation node.  This class creates a Figure that
-     * looks like a black diamond.
+    /** The renderer for relation node.  This class creates a Figure that
+     *  looks like a black diamond.
      */
     public class RelationRenderer implements NodeRenderer {
 	public Figure render(Object n) {
@@ -127,7 +96,4 @@ public class RelationController extends LocatableNodeController {
 	    return figure;
 	}
     }
-
-    // The interactor that creates menus.
-    private MenuCreator _menuCreator;
 }

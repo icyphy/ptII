@@ -119,16 +119,18 @@ executed in a separate thread.</text>
                 <property name="input"/>
                 <property name="multiport"/>
             </port>
-            <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+            <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>SequenceScope</title>
 <xRange min="-3.1415926535895693" max="3.117048960983846"/>
-<yRange min="0.3083664263125335" max="126.46280484869555"/>
+<yRange min="0.24167774792625657" max="127.42307580953582"/>
 <wrap/>
 <default marks="pixels"/>
 </plot>?>
-                        </configure>        </entity>
+            </configure>
+        </entity>
         <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
             <property name="_location" class="ptolemy.moml.Location" value="147.0, 196.0">
             </property>
@@ -211,7 +213,7 @@ executed in a separate thread.</text>
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="446.0, 74.0">
+        <property name="_location" class="ptolemy.moml.Location" value="442.0, 119.0">
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -219,16 +221,18 @@ executed in a separate thread.</text>
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="1.0E-4" max="9.9922875"/>
-<yRange min="-1.797956359507482" max="1.822304758410949"/>
+<yRange min="-1.7675101890654452" max="2.1545375117972467"/>
 </plot>?>
-                </configure>    </entity>
+        </configure>
+    </entity>
     <entity name="atomic composite actor" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.moml.Location" value="243.0, 189.0">
         </property>
@@ -364,6 +368,31 @@ executed in a separate thread.</text>
         <link port="AddSubtract.output" relation="relation4"/>
         <link port="Gaussian.output" relation="relation3"/>
     </entity>
+    <entity name="RealTimePlotter" class="ptolemy.actor.lib.gui.RealTimePlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="453.0, 50.0">
+        </property>
+        <property name="priority" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>RealTimePlotter</title>
+<xRange min="90.0" max="9994.0"/>
+<yRange min="-1.7675101890654452" max="2.1545375117972467"/>
+</plot>?>
+        </configure>
+    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="342.0, 195.0">
         </vertex>
@@ -375,4 +404,5 @@ executed in a separate thread.</text>
     <link port="TimedPlotter.input" relation="relation3"/>
     <link port="atomic composite actor.input" relation="relation"/>
     <link port="atomic composite actor.output" relation="relation3"/>
+    <link port="RealTimePlotter.input" relation="relation3"/>
 </entity>

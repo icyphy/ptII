@@ -210,19 +210,22 @@ public class FSMGraphFrame extends GraphFrame {
         doubleClickInteractor.setConsuming(false);
         doubleClickInteractor.setMouseFilter(new MouseFilter(1, 0, 0, 2));
 
- 	_controller.getPortController().setMenuFactory(new PortContextMenuFactory(_controller));
+ 	_controller.getPortController().setMenuFactory(
+                 new PortContextMenuFactory(_controller));
         _addDoubleClickInteractor((NodeInteractor)
                 _controller.getPortController().getNodeInteractor(),
                 doubleClickInteractor);        
         
-        _controller.getStateController().setMenuFactory(new StateContextMenuFactory(_controller));
+        _controller.getStateController().setMenuFactory(
+                new StateContextMenuFactory(_controller));
         _addDoubleClickInteractor((NodeInteractor)
                 _controller.getStateController().getNodeInteractor(),
                 doubleClickInteractor);        
         
-	_controller.getTransitionController().setMenuFactory(new TransitionContextMenuFactory(_controller));
+	_controller.getTransitionController().setMenuFactory(
+                new TransitionContextMenuFactory(_controller));
         CompositeInteractor interactor = (CompositeInteractor)
-            _controller.getTransitionController().getEdgeInteractor();
+                _controller.getTransitionController().getEdgeInteractor();
         interactor.addInteractor(doubleClickInteractor);
 
         return pane;
@@ -335,8 +338,7 @@ public class FSMGraphFrame extends GraphFrame {
     /**
      * The factory for creating context menus on transitions between states.
      */
-    private class TransitionContextMenuFactory
-	extends PtolemyMenuFactory {
+    private class TransitionContextMenuFactory extends PtolemyMenuFactory {
 	public TransitionContextMenuFactory(GraphController controller) {
 	    super(controller);
 	    addMenuItemFactory(new EditParametersFactory());

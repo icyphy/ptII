@@ -30,78 +30,59 @@
 
 package ptolemy.vergil.ptolemy.kernel;
 
-import ptolemy.actor.*;
+import ptolemy.actor.IOPort;
 import ptolemy.data.type.Typeable;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.vergil.*;
-import ptolemy.vergil.toolbox.*;
-import ptolemy.gui.*;
-import ptolemy.moml.*;
-import diva.gui.*;
-import diva.gui.toolbox.*;
-import diva.graph.*;
-import diva.canvas.*;
-import diva.canvas.connector.*;
-import diva.canvas.event.*;
-import diva.canvas.interactor.*;
-import diva.canvas.toolbox.*;
-import java.awt.geom.Rectangle2D;
-import diva.util.Filter;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.util.IllegalActionException;
+
+import diva.graph.GraphController;
+import diva.graph.NodeRenderer;
+import diva.canvas.CanvasUtilities;
+import diva.canvas.Figure;
+import diva.canvas.Site;
+import diva.canvas.connector.FixedNormalSite;
+import diva.canvas.connector.PerimeterSite;
+import diva.canvas.connector.TerminalFigure;
+import diva.canvas.interactor.CompositeInteractor;
+import diva.canvas.toolbox.BasicFigure;
 import diva.util.java2d.Polygon2D;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
-import java.awt.event.MouseEvent;
-import java.util.HashMap;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.net.URL;
-import javax.swing.JMenuItem;
+import java.awt.Color;
 import javax.swing.SwingUtilities;
-import javax.swing.event.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// EntityPortController
 /**
-A controller for ports of entities.  Left clicking selects the port, but
-dragging is not allowed (since the ports should remain attached to their
-entity).  Right clicking on the port will create a context menu for the port.
+This class provides interaction with nodes that represent Ptolemy II
+ports on an actor.   It provides a context menu containing commands to
+edit parameters ("Configure"), rename, and get documentation.
+Note that whether the port is an input or output or multiport cannot
+be controlled via this interface.  The "Configure Ports" command of
+the container should be invoked instead.
 
-@author Steve Neuendorffer
+@author Steve Neuendorffer and Edward A. Lee
 @version $Id$
 */
-public class EntityPortController extends BasicNodeController {
+public class EntityPortController extends AttributeController {
+
+    /** Create an attribute port controller associated with the
+     *  specified graph controller.
+     *  @param controller The associated graph controller.
+     */
     public EntityPortController(GraphController controller) {
 	super(controller);
 	setNodeRenderer(new EntityPortRenderer());
-	//SelectionModel sm = controller.getSelectionModel();
+
 	// Ports of entities do not use a selection interactor with
-	// the same selection model as
-	// the rest of the first level figures.
-	// If this is allowed, then the port can be deleted.
+	// the same selection model as the rest of the first level figures.
+	// If this were allowed, then the port would be able to be deleted.
 	CompositeInteractor interactor = new CompositeInteractor();
  	setNodeInteractor(interactor);
-	_menuCreator = new MenuCreator(null);
 	interactor.addInteractor(_menuCreator);
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Get the menu factory that will create context menus for this
-     *  controller.
-     */
-    public MenuFactory getMenuFactory() {
-        return _menuCreator.getMenuFactory();
-    }
-
-    /** Set the menu factory that will create menus for this Entity.
-     */
-    public void setMenuFactory(MenuFactory factory) {
-        _menuCreator.setMenuFactory(factory);
-    }
+    ////                         inner classes                     ////
 
     /** Render the ports of components as triangles.  Multiports are
      *  rendered hollow, while single ports are rendered filled.
@@ -130,9 +111,9 @@ public class EntityPortController extends BasicNodeController {
                         try {
                             tipText = tipText + ", type:"
                                      + ((Typeable)port).getType();
-                    } catch (IllegalActionException ex) {}
-                }
-                return tipText;
+                        } catch (IllegalActionException ex) {}
+                    }
+                    return tipText;
                 }
             };
             // Have to do this also, or the awt doesn't display any
@@ -167,7 +148,4 @@ public class EntityPortController extends BasicNodeController {
 	    return figure;
 	}
     }
-
-    // The interactor for creating context menus.
-    private MenuCreator _menuCreator;
 }

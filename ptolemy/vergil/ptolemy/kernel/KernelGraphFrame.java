@@ -178,6 +178,7 @@ public class KernelGraphFrame extends GraphFrame {
 	// create the graph editor
 	// These two things control the view of a ptolemy model.
 	_controller = new EditorGraphController();
+        _controller.setConfiguration(getConfiguration());
 	final PtolemyGraphModel graphModel = new PtolemyGraphModel(getModel());
 
 	GraphPane pane = new GraphPane(_controller, graphModel);
@@ -185,9 +186,9 @@ public class KernelGraphFrame extends GraphFrame {
         // 'Edit Icon' pop up menu not shipped with PtII1.0.
         // See also ptolemy/vergil/ptolemy/GraphFrame.java
 	//_editIconAction = new EditIconAction();
-	_lookInsideAction = new LookInsideAction();
 	_getDocumentationAction = new GetDocumentationAction();
      
+        // FIXME: This is redundant with code in the controllers.
         // Double click to edit parameters
         Action action = new AbstractAction("Edit Parameters") {
 	    public void actionPerformed(ActionEvent e) {
@@ -207,40 +208,44 @@ public class KernelGraphFrame extends GraphFrame {
         doubleClickInteractor.setConsuming(false);
         doubleClickInteractor.setMouseFilter(new MouseFilter(1, 0, 0, 2));
 
+        /* FIXME: Replaced with code in AttributeController.
+           Do the same for others.  EAL
       	_controller.getAttributeController().setMenuFactory(
                 new AttributeContextMenuFactory(_controller));
         _addDoubleClickInteractor((NodeInteractor)
                 _controller.getAttributeController().getNodeInteractor(),
                 doubleClickInteractor);
-        
+        *****/
+
+        /* FIXME: Replaced with code in EntityController.
 	_controller.getEntityController().setMenuFactory(
                 new EntityContextMenuFactory(_controller));        
         _addDoubleClickInteractor((NodeInteractor)
                 _controller.getEntityController().getNodeInteractor(),
                 doubleClickInteractor);
+        *****/
 	
+        /* FIXME: Replaced with code in EntityPortController.
  	_controller.getEntityPortController().setMenuFactory(
                 new PortContextMenuFactory(_controller));
+        *****/
         // FIXME: entity ports don't use a NodeInteractor.
         /** CompositeInteractor interactor = (CompositeInteractor)
             _controller.getAttributeController().getNodeInteractor();
         interactor.addInteractor(doubleClickInteractor);
         */
 
+        /* FIXME: Replaced with code in EntityController.
   	_controller.getPortController().setMenuFactory(
                 new PortContextMenuFactory(_controller));
         _addDoubleClickInteractor((NodeInteractor)
                _controller.getPortController().getNodeInteractor(),
                 doubleClickInteractor);
 
-  	_controller.getRelationController().setMenuFactory(
-                new RelationContextMenuFactory(_controller));
-        _addDoubleClickInteractor((NodeInteractor)
-                _controller.getRelationController().getNodeInteractor(),
-                doubleClickInteractor);
-
+// FIXME: Haven't done linkcontroller yet.
   	_controller.getLinkController().setMenuFactory(
                 new RelationContextMenuFactory(_controller));
+        ******/
 	return pane;
     }
 
@@ -259,8 +264,10 @@ public class KernelGraphFrame extends GraphFrame {
     ///////////////////////////////////////////////////////////////////
     ////                     private inner classes                 ////
 
+
     /** The factory for creating context menus on visible attributes
      */
+/* FIXME: Removing all these... EAL
     private class AttributeContextMenuFactory extends PtolemyMenuFactory {
 	public AttributeContextMenuFactory(GraphController controller) {
 	    super(controller);
@@ -275,6 +282,7 @@ public class KernelGraphFrame extends GraphFrame {
  
     /** The factory for creating context menus on entities.
      */
+/* FIXME: Removing all these.  EAL
     private class EntityContextMenuFactory extends PtolemyMenuFactory {
 	public EntityContextMenuFactory(GraphController controller) {
 	    super(controller);
@@ -288,186 +296,11 @@ public class KernelGraphFrame extends GraphFrame {
 	    //addMenuItemFactory(new MenuActionFactory(_editIconAction));
 	}
     }
-
-    /** The factory for creating context menus on ports.
-     */
-    public class PortContextMenuFactory extends PtolemyMenuFactory {
-	public PortContextMenuFactory(GraphController controller) {
-	    super(controller);
-	    addMenuItemFactory(new PortDescriptionFactory());
-	    addMenuItemFactory(new EditParametersFactory());
-            // NOTE: Removed by EAL. I don't like this interface.
-	    // addMenuItemFactory(new FormFrameFactory());
-	    addMenuItemFactory(new RenameDialogFactory());
-	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
-	}
-
-	public class PortDescriptionFactory implements MenuItemFactory {
-	    /**
-	     * Add an item to the given context menu that will configure the
-	     * parameters on the given target.
-	     */
-	    public JMenuItem create(JContextMenu menu, NamedObj target) {
-                // Removed this method since it was never used. EAL
-		// target = _getItemTargetFromMenuTarget(target);
-		if(target instanceof IOPort) {
-		    IOPort port = (IOPort)target;
-		    String string = "";
-		    int count = 0;
-		    if(port.isInput()) {
-			string += "Input";
-			count++;
-		    }
-		    if(port.isOutput()) {
-			if(count > 0) {
-			    string += ", ";
-			}
-			string += "Output";
-			count++;
-		    }
-		    if(port.isMultiport()) {
-			if(count > 0) {
-			    string += ", ";
-			}
-			string += "Multiport";
-			count++;
-		    }
-		    if(count > 0) {
-			return menu.add(new JMenuItem("   " + string));
-		    }
-		}
-		return null;
-	    }
-	}
-    }
-
-    // An action to look inside a composite.
-    private class LookInsideAction extends FigureAction {
-	public LookInsideAction() {
-	    super("Look Inside");
-	}
-	public void actionPerformed(ActionEvent e) {
-	    // Figure out what entity.
-	    super.actionPerformed(e);
-	    NamedObj object = getTarget();
-	    if(!(object instanceof CompositeEntity)) {
-                // Open the source code, if possible.
-                String filename = object.getClass()
-                        .getName().replace('.', '/') + ".java";
-                try {
-                    URL toRead = getClass().getClassLoader()
-                           .getResource(filename);
-                    if (toRead != null) {
-                        getConfiguration().openModel(null,
-                               toRead, toRead.toExternalForm());
-                    } else {
-                        MessageHandler.error("Cannot find inside definition.");
-                    }
-                } catch (Exception ex) {
-                    MessageHandler.error("Cannot find inside definition.", ex);
-                }
-                return;
-            }
-	    CompositeEntity entity = (CompositeEntity)object;
-
-            // If the entity defers its MoML definition to another,
-            // then open that other.
-	    NamedObj deferredTo = entity.getMoMLInfo().deferTo;
-	    if(deferredTo != null) {
-		entity = (CompositeEntity)deferredTo;
-	    }
-
-            // Search the model library for an effigy that already
-            // refers to this model.
-            PtolemyEffigy effigy = getEffigy(entity);
-            if (effigy != null) {
-
-                // Found one.  Display all open tableaux.
-                effigy.showTableaux();
-
-            } else {
-                try {
-
-                    // There is no pre-existing effigy.  Create one.
-                    effigy = new PtolemyEffigy(getTableau().workspace());
-                    effigy.setModel(entity);
-
-                    // Look to see whether the model has a URLAttribute.
-                    List attributes = entity.attributeList(URLAttribute.class);
-                    if (attributes.size() > 0) {
-                        // The entity has a URL, which was probably
-                        // inserted by MoMLParser.
-
-                        URL url = ((URLAttribute)attributes.get(0)).getURL();
-
-                        // Set the url and identifier of the effigy.
-                        effigy.url.setURL(url);
-                        effigy.identifier.setExpression(url.toExternalForm());
-
-                        // Put the effigy into the directory
-                        ModelDirectory directory = getDirectory();
-                        effigy.setName(directory.uniqueName(entity.getName()));
-                        effigy.setContainer(directory);
-
-                        // Create a default tableau.
-                        getConfiguration().createPrimaryTableau(effigy);
-
-                    } else {
-
-                        // If we get here, then we are looking inside a model
-                        // that is defined within the same file as the parent,
-                        // probably.  Create a new PtolemyEffigy
-                        // and open a tableau for it.
-
-                        // Put the effigy inside the effigy of the parent,
-                        // rather than directly into the directory.
-                        CompositeEntity parent =
-                            (CompositeEntity)entity.getContainer();
-                        boolean isContainerSet = false;
-                        if (parent != null) {
-                            PtolemyEffigy parentEffigy = getEffigy(parent);
-                            if (parentEffigy != null) {
-                                // OK, we can put it into this other effigy.
-                                effigy.setName(parentEffigy.uniqueName(
-                                        entity.getName()));
-                                effigy.setContainer(parentEffigy);
-
-                                // Set the identifier of the effigy to be that
-                                // of the parent with the model name appended.
-                                effigy.identifier.setExpression(
-                                        parentEffigy.identifier.getExpression()
-                                        + "#" + entity.getName());
-
-                                // Set the url of the effigy to that of
-                                // the parent.
-                                effigy.url.setURL(parentEffigy.url.getURL());
-
-                                // Indicate success.
-                                isContainerSet = true;
-                            }
-                        }
-                        // If the above code did not find an effigy to put
-                        // the new effigy within, then put it into the directory.
-                        if (!isContainerSet) {
-                            CompositeEntity directory = getDirectory();
-                            effigy.setName(
-                                    directory.uniqueName(entity.getName()));
-                            effigy.setContainer(directory);
-                            effigy.identifier.setExpression(
-                                    entity.getFullName());
-                        }
-
-                        getConfiguration().createPrimaryTableau(effigy);
-                    }
-                } catch (Exception ex) {
-                    MessageHandler.error("Look inside failed: ", ex);
-                }
-            }
-	}
-    }
+*/
 
     /** The factory for creating context menus on relations.
      */
+/* FIXME
     private class RelationContextMenuFactory
 	extends PtolemyMenuFactory {
 	public RelationContextMenuFactory(GraphController controller) {
@@ -478,6 +311,7 @@ public class KernelGraphFrame extends GraphFrame {
 	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
 	}
     }
+*/
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -485,6 +319,5 @@ public class KernelGraphFrame extends GraphFrame {
     private EditorGraphController _controller;
     private Action _getDocumentationAction;
     //private Action _editIconAction;
-    private Action _lookInsideAction;
     private JMenu _executeMenu;
 }

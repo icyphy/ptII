@@ -30,72 +30,64 @@
 
 package ptolemy.vergil.ptolemy.kernel;
 
-import ptolemy.actor.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.vergil.ptolemy.LocatableNodeController;
-import ptolemy.gui.*;
-import ptolemy.moml.*;
-import diva.gui.*;
-import diva.gui.toolbox.*;
-import diva.graph.*;
-import diva.canvas.*;
-import diva.canvas.connector.*;
-import diva.canvas.event.*;
-import diva.canvas.interactor.*;
-import diva.canvas.toolbox.*;
+import ptolemy.actor.IOPort;
+import ptolemy.kernel.Port;
+import ptolemy.moml.Location;
+
+import diva.graph.GraphController;
+import diva.graph.NodeRenderer;
+import diva.canvas.AbstractFigure;
+import diva.canvas.CanvasUtilities;
+import diva.canvas.Figure;
+import diva.canvas.Site;
+import diva.canvas.connector.FixedNormalSite;
+import diva.canvas.connector.PerimeterSite;
+import diva.canvas.connector.TerminalFigure;
+import diva.canvas.toolbox.BasicFigure;
+import diva.canvas.toolbox.LabelFigure;
+import diva.util.java2d.Polygon2D;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
-import diva.util.Filter;
-import diva.util.java2d.*;
-import java.awt.*;
-import java.awt.event.InputEvent;
-import java.awt.event.ActionEvent;
-import java.awt.geom.*;
-import java.util.HashMap;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.net.URL;
-import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// PortController
 /**
-A Controller for Ptolemy ports that are contained within the composite.
-Left clicking selects the port, which can then be dragged.
-Right clicking on the port will create a context menu for the port.
+This class provides interaction with nodes that represent Ptolemy II
+ports inside a composite.   It provides a double click binding to edit
+the parameters of the port, and a context menu containing commands to
+edit parameters ("Configure"), rename, and get documentation.
+Note that whether the port is an input or output or multiport cannot
+be controlled via this interface.  The "Configure Ports" command of
+the container should be invoked instead.
 
-@author Steve Neuendorffer
+@author Steve Neuendorffer and Edward A. Lee
 @version $Id$
 */
+public class PortController extends AttributeController {
 
-public class PortController extends LocatableNodeController {
+    /** Create a port controller associated with the specified graph
+     *  controller.
+     *  @param controller The associated graph controller.
+     */
     public PortController(GraphController controller) {
 	super(controller);
 	setNodeRenderer(new PortRenderer());
-	SelectionModel sm = controller.getSelectionModel();
-	SelectionInteractor interactor =
-            (SelectionInteractor) getNodeInteractor();
-	interactor.setSelectionModel(sm);
-	_menuCreator = new MenuCreator(null);
-	interactor.addInteractor(_menuCreator);
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                         private members                   ////
 
-    /** Get the menu factory that will create context menus for this
-     *  controller.
-     */
-    public MenuFactory getMenuFactory() {
-        return _menuCreator.getMenuFactory();
-    }
+    private static Font _labelFont = new Font("SansSerif", Font.PLAIN, 12);
 
-    /** Set the menu factory that will create menus for this Entity.
-     */
-    public void setMenuFactory(MenuFactory factory) {
-        _menuCreator.setMenuFactory(factory);
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
 
     /** Render the external ports of a graph as a 5-sided tab thingy.
      *  Multiports are rendered hollow,
@@ -113,7 +105,7 @@ public class PortController extends LocatableNodeController {
 	    int direction;
 	    Location location = (Location)n;
 	    if(location != null) {
-		Port port = (Port)location.getContainer();
+		final Port port = (Port)location.getContainer();
 
 		Color fill;
 		if(port instanceof IOPort) {
@@ -152,9 +144,9 @@ public class PortController extends LocatableNodeController {
 		    fill = Color.black;
 		}
 		figure = new BasicFigure(polygon, fill, (float)1.5);
+
                 PtolemyGraphModel model =
                     (PtolemyGraphModel)getController().getGraphModel();
-                figure.setToolTipText(port.getName());
 
 		if(!(port instanceof IOPort)) {
 		    direction = SwingUtilities.NORTH;
@@ -178,7 +170,29 @@ public class PortController extends LocatableNodeController {
 		tsite.setNormal(normal);
 		tsite = new FixedNormalSite(tsite);
                 figure = new NameWrapper(figure, port.getName());
-		figure = new TerminalFigure(figure, tsite);
+		figure = new TerminalFigure(figure, tsite)  {
+                    // Override this because the tooltip may change over time.
+                    // I.e., the port may change from being an input or
+                    // output, etc.
+                    public String getToolTipText() {
+                        String tipText = port.getName();
+                        if(port instanceof IOPort) {
+                            IOPort ioport = (IOPort)port;
+                            if(ioport.isInput()) {
+                                tipText += ", Input";
+                            }
+                            if(ioport.isOutput()) {
+                                tipText += ", Output";
+                            }
+                            if(ioport.isMultiport()) {
+                                tipText += ", Multiport";
+                            }
+                        }
+                        return tipText;
+                    }
+                };
+                // Have to do this as well or awt will not render a tooltip.
+                figure.setToolTipText(port.getName());
 	    } else {
 		polygon.moveTo(0, 0);
 		polygon.lineTo(0, 10);
@@ -187,11 +201,13 @@ public class PortController extends LocatableNodeController {
 		polygon.closePath();
 
 		figure = new BasicFigure(polygon, Color.black);
+                figure.setToolTipText("Unknown port");
 	    }
 	    return figure;
 	}
     }
 
+    // Class for the name of the port.
     private class NameWrapper extends AbstractFigure {
         /** The child
          */
@@ -274,9 +290,6 @@ public class PortController extends LocatableNodeController {
             repaint();
         }
     }
-
-    private MenuCreator _menuCreator;
-    private static Font _labelFont = new Font("SansSerif", Font.PLAIN, 12);
 }
 
 

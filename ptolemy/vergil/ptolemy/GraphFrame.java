@@ -855,6 +855,8 @@ public abstract class GraphFrame extends PtolemyFrame
 	}
     }
 
+    // FIXME: remove this class... Moved to Controllers... EAL
+
     public class GetDocumentationAction extends FigureAction {
 	public GetDocumentationAction() {
 	    super("Get Documentation");

@@ -115,13 +115,7 @@ public abstract class TableauFrame extends Top {
      */
     public ModelDirectory getDirectory() {
         Configuration configuration = getConfiguration();
-        if (configuration != null) {
-            Entity directory = configuration.getEntity("directory");
-            if (directory instanceof ModelDirectory) {
-                return (ModelDirectory)directory;
-            }
-        }
-        return null;
+        return configuration.getDirectory();
     }
 
     /** Get the effigy for the model associated with this window.
@@ -141,8 +135,12 @@ public abstract class TableauFrame extends Top {
      *  @return The effigy for the model, or null if none exists.
      */
     public PtolemyEffigy getEffigy(NamedObj model) {
-        CompositeEntity directory = getDirectory();
-        return _findEffigyForModel(directory, model);
+        Configuration configuration = getConfiguration();
+        if (configuration != null) {
+            return configuration.getEffigy(model);
+        } else {
+            return null;
+        }
     }
 
     /** Get the tableau that created this frame.
@@ -585,32 +583,6 @@ public abstract class TableauFrame extends Top {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-    // Recursively search the specified composite for an instance of
-    // PtolemyEffigy that matches the specified model.
-    private PtolemyEffigy _findEffigyForModel(
-            CompositeEntity composite, NamedObj model) {
-
-        if (composite != null) {
-            Iterator effigies =
-                composite.entityList(PtolemyEffigy.class).iterator();
-            while (effigies.hasNext()) {
-                PtolemyEffigy effigy = (PtolemyEffigy)effigies.next();
-
-                // First see whether this effigy matches.
-                if (effigy.getModel() == model) {
-                    return effigy;
-                }
-                // Then see whether any effigy inside this one matches.
-                PtolemyEffigy inside = _findEffigyForModel(effigy, model);
-                if (inside != null) {
-                    return inside;
-                }
-            }
-        }
-
-        return null;
-    }
 
     // Return true if the specified effigy has more than the specified
     // number of open tableau, or if any effigy that deeply contains it

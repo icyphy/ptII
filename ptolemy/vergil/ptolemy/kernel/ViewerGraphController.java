@@ -72,12 +72,20 @@ import javax.swing.event.*;
 //// ViewerGraphController
 /**
 A graph controller for the Ptolemy II schematic viewer.
-This controller allows nodes to be moved and context menus to be created,
-but does not provide interaction for adding or removing nodes.
-Right-clicking on the background will
+This controller contains a set of default node controllers for attributes,
+entities, links, ports, and relations.  Those default controllers can
+be overridden by attributes of type NodeControllerFactory.
+The getNodeController() method determines which controller to return
+for each node.
+<p>
+In addition, this controller provides graph-wide operations that allow
+nodes to be moved and context menus to be created.  It does
+not provide interaction for adding or removing nodes; those are provided
+by a derived class.  Right-clicking on the background will
 create a context-sensitive menu for the graph.
 
 @author Steve Neuendorffer
+@contributor Edward A. Lee
 @version $Id$
 */
 public class ViewerGraphController extends AbstractGraphController {
@@ -97,28 +105,48 @@ public class ViewerGraphController extends AbstractGraphController {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the controller for visible attributes.
+// FIXME: Consider removing all these get methods, except getNodeController()
+// and getEdgeController().  UPdate UML.  EAL.
+
+    /** Return the default controller for visible attributes.
      *  @return The controller for visible attributes.
      */
     public AttributeController getAttributeController() {
 	return _attributeController;
     }
 
-    /** Return the controller for entities.
+    /** Return the configuration that has been specified by setConfiguration(),
+     *  or null if none.
+     *  @return The configuration.
+     */
+    public Configuration getConfiguration() {
+	return _configuration;
+    }
+
+    /** Return the edge controller appropriate for the given node,
+     *  which in this case is the same link controller returned by
+     *  getLinkController().
+     *  @param edge The edge object.
+     */
+    public EdgeController getEdgeController(Object edge) {
+        return _linkController;
+    }
+
+    /** Return the default controller for entities.
      *  @return The controller for entities.
      */
     public EntityController getEntityController() {
 	return _entityController;
     }
 
-    /** Return the controller for ports of an entity.
+    /** Return the default controller for ports of an entity.
      *  @return The controller for ports of an entity.
      */
     public EntityPortController getEntityPortController() {
 	return _entityPortController;
     }
 
-    /** Return the controller for links.
+    /** Return the default controller for links.
      *  @return The controller for links.
      */
     public LinkController getLinkController() {
@@ -152,7 +180,9 @@ public class ViewerGraphController extends AbstractGraphController {
                 if(factoryList.size() > 0) {
                     NodeControllerFactory factory = (NodeControllerFactory)
                            factoryList.get(0);
-                    NodeController controller = factory.create(this);
+                    PtolemyNodeController controller = factory.create(this);
+                    controller.setConfiguration(_configuration);
+
                     // Add to the selection dragger.
                     // NOTE: This should not be null, but in case it is,
                     // it is better to just have the selection dragger not
@@ -189,19 +219,36 @@ public class ViewerGraphController extends AbstractGraphController {
        return null;
    }
 
-    /** Return the controller for ports of this composite.
+    /** Return the default controller for ports of this composite.
      *  @return The controller for ports of this composite.
      */
     public PortController getPortController() {
 	return _portController;
     }
 
-    /** Return the controller for relations.
+    /** Return the default controller for relations.
      *  @return The controller for relations.
      */
     public RelationController getRelationController() {
         return _relationController;
     }
+
+    /** Set the configuration.  This is used by some of the controllers
+     *  to open files or URLs.
+     *  @param configuration The configuration.
+     */
+    public void setConfiguration(Configuration configuration) {
+        _configuration = configuration;
+        _attributeController.setConfiguration(configuration);
+        _entityController.setConfiguration(configuration);
+        _portController.setConfiguration(configuration);
+        _entityPortController.setConfiguration(configuration);
+        _relationController.setConfiguration(configuration);
+        // FIXME: do this for all the linkcontroller
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Initialize all interaction on the graph pane. This method
      *  is called by the setGraphPane() method of the superclass.
@@ -232,50 +279,8 @@ public class ViewerGraphController extends AbstractGraphController {
 	pane.getBackgroundEventLayer().setConsuming(false);
     }
 
-    /**
-     * Return the edge controller appropriate for the given node.
-     */
-    public EdgeController getEdgeController(Object object) {
-        return _linkController;
-    }
-
-    /**
-     * Set the controller for relations
-     */
-    public void setEntityController(EntityController controller) {
-	_entityController = controller;
-    }
-
-    /**
-     * Set the controller for relations
-     */
-    public void setEntityPortController(EntityPortController controller) {
-	_entityPortController = controller;
-    }
-
-    /**
-     * Set the controller for ports
-     */
-    public void setPortController(PortController controller) {
-        _portController = controller;
-    }
-
-    /**
-     * Set the controller for relations
-     */
-    public void setRelationController(RelationController controller) {
-        _relationController = controller;
-    }
-
-    /**
-     * Set the controller for links
-     */
-    public void setLinkController(LinkController controller) {
-        _linkController = controller;
-    }
-
     ///////////////////////////////////////////////////////////////////
-    ////                        public variables                   ////
+    ////                        private variables                  ////
 
     // The selection interactor for drag-selecting nodes
     private SelectionDragger _selectionDragger;
@@ -292,6 +297,9 @@ public class ViewerGraphController extends AbstractGraphController {
     private PortController _portController;
     private RelationController _relationController;
     private LinkController _linkController;
+
+    // The configuration.
+    private Configuration _configuration;
 
     ///////////////////////////////////////////////////////////////////
     ////                          inner classes                    ////

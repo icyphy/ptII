@@ -33,9 +33,11 @@ import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
@@ -136,6 +138,32 @@ public class Configuration extends CompositeEntity {
                 }
             }
         });
+    }
+
+    /** Get the model directory.
+     *  @return The model directory, or null if there isn't one.
+     */
+    public ModelDirectory getDirectory() {
+        Entity directory = getEntity("directory");
+        if (directory instanceof ModelDirectory) {
+            return (ModelDirectory)directory;
+        }
+        return null;
+    }
+
+    /** Get the effigy for the specified Ptolemy model.
+     *  This searches all instances of PtolemyEffigy deeply contained by
+     *  the directory, and returns the first one it encounters
+     *  that is an effigy for the specified model.
+     *  @return The effigy for the model, or null if none exists.
+     */
+    public PtolemyEffigy getEffigy(NamedObj model) {
+        Entity directory = getEntity("directory");
+        if (directory instanceof ModelDirectory) {
+            return _findEffigyForModel((ModelDirectory)directory, model);
+        } else {
+            return null;
+        }
     }
 
     /** Open the specified URL.
@@ -269,5 +297,31 @@ public class Configuration extends CompositeEntity {
                 _showTableaux((CompositeEntity)entity);
             }
         }
+    }
+
+    // Recursively search the specified composite for an instance of
+    // PtolemyEffigy that matches the specified model.
+    private PtolemyEffigy _findEffigyForModel(
+            CompositeEntity composite, NamedObj model) {
+
+        if (composite != null) {
+            Iterator effigies =
+                composite.entityList(PtolemyEffigy.class).iterator();
+            while (effigies.hasNext()) {
+                PtolemyEffigy effigy = (PtolemyEffigy)effigies.next();
+
+                // First see whether this effigy matches.
+                if (effigy.getModel() == model) {
+                    return effigy;
+                }
+                // Then see whether any effigy inside this one matches.
+                PtolemyEffigy inside = _findEffigyForModel(effigy, model);
+                if (inside != null) {
+                    return inside;
+                }
+            }
+        }
+
+        return null;
     }
 }

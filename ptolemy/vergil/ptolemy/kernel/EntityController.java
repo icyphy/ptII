@@ -1,4 +1,4 @@
-/* The node controller for entities (and icons)
+/* The node controller for entities.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -30,56 +30,53 @@
 
 package ptolemy.vergil.ptolemy.kernel;
 
-// FIXME: Replace with per-class imports.
-import ptolemy.actor.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.vergil.*;
-import ptolemy.vergil.ptolemy.*;
-import ptolemy.vergil.ptolemy.LocatableNodeController;
-import ptolemy.vergil.toolbox.*;
-import ptolemy.gui.*;
-import ptolemy.moml.*;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.gui.ModelDirectory;
+import ptolemy.actor.gui.PtolemyEffigy;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.vergil.toolbox.FigureAction;
+import ptolemy.vergil.toolbox.MenuActionFactory;
+import ptolemy.gui.MessageHandler;
+import ptolemy.moml.Location;
+import ptolemy.moml.URLAttribute;
 
-import diva.canvas.*;
-import diva.canvas.connector.*;
-import diva.canvas.event.*;
-import diva.canvas.interactor.*;
-import diva.canvas.toolbox.*;
-import diva.graph.*;
-import diva.graph.basic.*;
-import diva.graph.layout.*;
-import diva.gui.*;
-import diva.gui.toolbox.*;
+import diva.canvas.CompositeFigure;
+import diva.canvas.Figure;
+import diva.canvas.connector.BoundsSite;
+import diva.graph.GraphController;
+import diva.graph.GraphModel;
+import diva.graph.basic.BasicLayoutTarget;
+import diva.graph.layout.AbstractGlobalLayout;
+import diva.graph.layout.GlobalLayout;
+import diva.graph.layout.IncrementalLayoutListener;
+import diva.graph.layout.IncrLayoutAdapter;
 import diva.util.Filter;
 
 import java.awt.geom.Rectangle2D;
-import java.awt.event.InputEvent;
 import java.awt.event.ActionEvent;
-import java.util.*;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.net.URL;
-import javax.swing.JMenuItem;
-import javax.swing.Action;
-import javax.swing.AbstractAction;
-import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
-import javax.swing.event.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// EntityController
 /**
-This class provides interaction with nodes that represent Ptolemy II entities.
-(Or, more specifically, with the icon that is contained in an entity.)
-A layout algorithm is applied so that the figures for ports are
-automatically placed on the sides of the figure for the entity.
-Standard selection and movement interaction is
-provided.  In addition, right clicking on the entity will create a context
-menu for the entity.
+This class provides interaction with nodes that represent Ptolemy II
+entities.   It provides a double click binding to edit the parameters
+of the node, and a context menu containing commands to edit parameters
+("Configure"), rename, get documentation, configure ports, and
+look inside.  In addition, a layout algorithm is applied so that
+the figures for ports are automatically placed on the sides of the
+figure for the entity.
 
-@author Steve Neuendorffer
+@author Steve Neuendorffer and Edward A. Lee
 @version $Id$
 */
-public class EntityController extends LocatableNodeController {
+public class EntityController extends AttributeController {
 
     /** Create an entity controller associated with the specified graph
      *  controller.
@@ -87,24 +84,23 @@ public class EntityController extends LocatableNodeController {
      */
     public EntityController(GraphController controller) {
 	super(controller);
-	setNodeRenderer(new EntityRenderer());
 
-	SelectionModel sm = controller.getSelectionModel();
-        NodeInteractor interactor =
-            (NodeInteractor) getNodeInteractor();
-	interactor.setSelectionModel(sm);
-
-        // Initialize the menu creator.
-	_menuCreator = new MenuCreator(null);
-	interactor.addInteractor(_menuCreator);
+        // Add to the context menu.
+        _menuFactory.addMenuItemFactory(
+                new PortDialogFactory());
+        // NOTE: This requires that the configuration be non null, or it
+        // will report an error.
+        _menuFactory.addMenuItemFactory(
+                new MenuActionFactory(new LookInsideAction()));
 
 	// The filter for the layout algorithm of the ports within this
-	// entity.
+	// entity. This returns true only if the argument is a Port
+        // and the parent is an instance of Location.
 	Filter portFilter = new Filter() {
-	    public boolean accept(Object o) {
+	    public boolean accept(Object candidate) {
 		GraphModel model = getController().getGraphModel();
-		if(o instanceof Port &&
-                        model.getParent(o) instanceof Location) {
+		if(candidate instanceof Port &&
+                        model.getParent(candidate) instanceof Location) {
 		    return true;
 		} else {
 		    return false;
@@ -119,8 +115,11 @@ public class EntityController extends LocatableNodeController {
                 new IncrLayoutAdapter(layout), portFilter));
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
     /** This layout algorithm is responsible for laying out the ports
-     * within an entity.
+     *  within an entity.
      */
     public class EntityLayout extends AbstractGlobalLayout {
 	public EntityLayout() {
@@ -198,47 +197,139 @@ public class EntityController extends LocatableNodeController {
 	}
     }
 
-    /** Get the menu factory that will create context menus for this
-     *  controller.
-     */
-    public MenuFactory getMenuFactory() {
-        return _menuCreator.getMenuFactory();
-    }
+    // An action to look inside a composite.
+    // NOTE: This requires that the configuration be non null, or it
+    // will report an error with a fairly cryptic message.
+    private class LookInsideAction extends FigureAction {
+	public LookInsideAction() {
+	    super("Look Inside");
+	}
+	public void actionPerformed(ActionEvent e) {
 
-    /** Set the menu factory that will create menus for this Entity.
-     */
-    public void setMenuFactory(MenuFactory factory) {
-        _menuCreator.setMenuFactory(factory);
-    }
+            if (_configuration == null) {
+                MessageHandler.error(
+                        "Cannot look inside without a configuration.");
+                return;
+            }
 
-    public class EntityRenderer implements NodeRenderer {
-	public Figure render(Object n) {
-	    Location location = (Location)n;
-	    NamedObj object = (NamedObj) location.getContainer();
+	    // Figure out what entity.
+	    super.actionPerformed(e);
+	    NamedObj object = getTarget();
+	    if(!(object instanceof CompositeEntity)) {
+                // Open the source code, if possible.
+                String filename = object.getClass()
+                        .getName().replace('.', '/') + ".java";
+                try {
+                    URL toRead = getClass().getClassLoader()
+                           .getResource(filename);
+                    if (toRead != null) {
+                        _configuration.openModel(null,
+                               toRead, toRead.toExternalForm());
+                    } else {
+                        MessageHandler.error("Cannot find inside definition.");
+                    }
+                } catch (Exception ex) {
+                    MessageHandler.error("Cannot find inside definition.", ex);
+                }
+                return;
+            }
+	    CompositeEntity entity = (CompositeEntity)object;
 
-	    // FIXME: may want to use another type of icon
-	    // FIXME: this code is the same as in PtolemyTreeCellRenderer and
-            // AttributeController.
-	    EditorIcon icon;
-            try {
-                icon = (EditorIcon)object.getAttribute("_icon");
-		if(icon == null) {
-		    icon = new XMLIcon(object, "_icon");
-		}
-	    } catch (KernelException ex) {
-		throw new InternalErrorException("could not create icon " +
-                        "in " + object + " even " +
-                        "though one did not exist");
+            // If the entity defers its MoML definition to another,
+            // then open that other.
+	    NamedObj deferredTo = entity.getMoMLInfo().deferTo;
+	    if(deferredTo != null) {
+		entity = (CompositeEntity)deferredTo;
 	    }
 
-	    Figure figure = icon.createFigure();
-            PtolemyGraphModel model =
-                (PtolemyGraphModel)getController().getGraphModel();
-            figure.setToolTipText(object.getClass().getName());
-	    return figure;
+            // Search the model directory for an effigy that already
+            // refers to this model.
+            PtolemyEffigy effigy = _configuration.getEffigy(entity);
+            if (effigy != null) {
+                // Found one.  Display all open tableaux.
+                effigy.showTableaux();
+            } else {
+                try {
+
+                    // There is no pre-existing effigy.  Create one.
+                    effigy = new PtolemyEffigy(_configuration.workspace());
+                    effigy.setModel(entity);
+
+                    // Look to see whether the model has a URLAttribute.
+                    List attributes = entity.attributeList(URLAttribute.class);
+                    if (attributes.size() > 0) {
+                        // The entity has a URL, which was probably
+                        // inserted by MoMLParser.
+
+                        URL url = ((URLAttribute)attributes.get(0)).getURL();
+
+                        // Set the url and identifier of the effigy.
+                        effigy.url.setURL(url);
+                        effigy.identifier.setExpression(url.toExternalForm());
+
+                        // Put the effigy into the directory
+                        ModelDirectory directory =
+                                _configuration.getDirectory();
+                        effigy.setName(directory.uniqueName(entity.getName()));
+                        effigy.setContainer(directory);
+
+                        // Create a default tableau.
+                        _configuration.createPrimaryTableau(effigy);
+
+                    } else {
+
+                        // If we get here, then we are looking inside a model
+                        // that is defined within the same file as the parent,
+                        // probably.  Create a new PtolemyEffigy
+                        // and open a tableau for it.
+
+                        // Put the effigy inside the effigy of the parent,
+                        // rather than directly into the directory.
+                        CompositeEntity parent =
+                            (CompositeEntity)entity.getContainer();
+                        boolean isContainerSet = false;
+                        if (parent != null) {
+                            PtolemyEffigy parentEffigy =
+                                    _configuration.getEffigy(parent);
+                            if (parentEffigy != null) {
+                                // OK, we can put it into this other effigy.
+                                effigy.setName(parentEffigy.uniqueName(
+                                        entity.getName()));
+                                effigy.setContainer(parentEffigy);
+
+                                // Set the identifier of the effigy to be that
+                                // of the parent with the model name appended.
+                                effigy.identifier.setExpression(
+                                        parentEffigy.identifier.getExpression()
+                                        + "#" + entity.getName());
+
+                                // Set the url of the effigy to that of
+                                // the parent.
+                                effigy.url.setURL(parentEffigy.url.getURL());
+
+                                // Indicate success.
+                                isContainerSet = true;
+                            }
+                        }
+                        // If the above code did not find an effigy to put
+                        // the new effigy within, then put it into the
+                        // directory directly.
+                        if (!isContainerSet) {
+                            CompositeEntity directory = 
+                                    _configuration.getDirectory();
+                            effigy.setName(
+                                    directory.uniqueName(entity.getName()));
+                            effigy.setContainer(directory);
+                            effigy.identifier.setExpression(
+                                    entity.getFullName());
+                        }
+
+                        _configuration.createPrimaryTableau(effigy);
+                    }
+                } catch (Exception ex) {
+                    MessageHandler.error("Look inside failed: ", ex);
+                }
+            }
 	}
     }
-
-    private EntityPortController _portController;
-    private MenuCreator _menuCreator;
 }

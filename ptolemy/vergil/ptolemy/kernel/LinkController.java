@@ -1,4 +1,4 @@
-/* The edge controller for links between ports and relations.
+/* The edge controller for links.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -30,34 +30,34 @@
 
 package ptolemy.vergil.ptolemy.kernel;
 
-import ptolemy.actor.*;
-import ptolemy.actor.gui.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.gui.*;
-import ptolemy.moml.*;
-import ptolemy.vergil.*;
-import ptolemy.vergil.toolbox.*;
-import diva.gui.*;
-import diva.gui.toolbox.*;
-import diva.graph.*;
-import diva.canvas.*;
+import ptolemy.actor.gui.EditParametersDialog;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.Location;
+import ptolemy.moml.Vertex;
+import ptolemy.vergil.toolbox.EditParametersFactory;
+import ptolemy.vergil.toolbox.PtolemyMenuFactory;
+
+import diva.gui.toolbox.MenuCreator;
+import diva.graph.BasicEdgeController;
+import diva.graph.EdgeRenderer;
+import diva.graph.GraphController;
+import diva.graph.GraphModel;
+import diva.canvas.Figure;
+import diva.canvas.Site;
 import diva.canvas.connector.*;
-import diva.canvas.event.*;
-import diva.canvas.interactor.*;
-import diva.canvas.toolbox.*;
-import java.awt.geom.Rectangle2D;
-import diva.util.Filter;
-import java.awt.*;
-import diva.util.java2d.Polygon2D;
-import java.awt.event.InputEvent;
+import diva.canvas.event.LayerEvent;
+import diva.canvas.event.MouseFilter;
+import diva.canvas.interactor.ActionInteractor;
+import diva.canvas.interactor.SelectionInteractor;
+import diva.canvas.interactor.SelectionModel;
+
+import java.awt.Component;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
-import java.util.HashMap;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.net.URL;
-import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 
 //////////////////////////////////////////////////////////////////////////
 //// LinkController
@@ -70,7 +70,12 @@ undirected edge are allowed.
 @version $Id$
 */
 public class LinkController extends BasicEdgeController {
-    public LinkController(GraphController controller) {
+
+    /** Create a link controller associated with the specified graph
+     *  controller.
+     *  @param controller The associated graph controller.
+     */
+    public LinkController(final GraphController controller) {
 	super(controller);
 	SelectionModel sm = controller.getSelectionModel();
 	SelectionInteractor interactor =
@@ -93,26 +98,56 @@ public class LinkController extends BasicEdgeController {
 
 	_menuCreator = new MenuCreator(null);
 	interactor.addInteractor(_menuCreator);
+
+        // The contents of the menu is determined by the associated
+        // menu factory, which is a protected member of this class.
+        // Derived classes can add menu items to it.
+        _menuFactory = new PtolemyMenuFactory(controller);
+        _menuFactory.addMenuItemFactory(new EditParametersFactory("Configure"));
+        _menuCreator.setMenuFactory(_menuFactory);
+
+        // Add a double click interactor.
+        Action action = new AbstractAction("Configure") {
+	    public void actionPerformed(ActionEvent e) {
+                LayerEvent event = (LayerEvent)e.getSource();
+                Figure figure = event.getFigureSource();
+                Object object = figure.getUserObject();
+                GraphModel graphModel = controller.getGraphModel();
+                NamedObj target =
+                         (NamedObj)graphModel.getSemanticObject(object);
+                // Create a dialog for configuring the object.
+                Component pane = controller.getGraphPane().getCanvas();
+                while (pane.getParent() != null) {
+                    pane = pane.getParent();
+                }
+                if (pane instanceof Frame) {
+                    // The first argument below is the parent window
+                    // (a Frame), which ensures that if this is iconified
+                    // or sent to the background, it can be found again.
+                    new EditParametersDialog((Frame)pane, target);
+                } else {
+                    new EditParametersDialog(null, target);
+                }
+	    }
+	};
+        ActionInteractor doubleClickInteractor = new ActionInteractor(action);
+        doubleClickInteractor.setConsuming(false);
+        doubleClickInteractor.setMouseFilter(new MouseFilter(1, 0, 0, 2));
+
+        interactor.addInteractor(doubleClickInteractor);
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                     protected members                     ////
 
-    /** Get the menu factory that will create context menus for this
-     *  controller.
-     */
-    public MenuFactory getMenuFactory() {
-        return _menuCreator.getMenuFactory();
-    }
+    /** The factory belonging to the menu creator. */
+    protected PtolemyMenuFactory _menuFactory;
 
-    /** Set the menu factory that will create menus for this Entity.
-     */
-    public void setMenuFactory(MenuFactory factory) {
-        _menuCreator.setMenuFactory(factory);
-    }
+    /** The menu creator. */
+    protected MenuCreator _menuCreator;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public classes                    ////
+    ////                         inner classes                     ////
 
     public class LinkTarget extends PerimeterTarget {
         public boolean acceptHead(Connector c, Figure f) {
@@ -192,6 +227,4 @@ public class LinkController extends BasicEdgeController {
 	    }
         }
     }
-
-    private MenuCreator _menuCreator;
 }

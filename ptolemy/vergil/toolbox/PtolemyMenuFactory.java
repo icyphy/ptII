@@ -59,7 +59,7 @@ subclasses of this factory to get the correct ptolemy object.
 @author Steve Neuendorffer
 @version $Id$
 */
-public class PtolemyMenuFactory extends MenuFactory {
+public class PtolemyMenuFactory implements MenuFactory {
 
     /** Create a new menu factory that contains no menu item factories.
      */

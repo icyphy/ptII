@@ -169,10 +169,15 @@ public class MoMLViewerApplet extends MoMLApplet {
             // top level is not an FSM actor.
 
             ViewerGraphController controller = new ViewerGraphController();
+            // FIXME: To get things like open documentation to work, have
+            // to specify a configuration.  But currently, there isn't one.
+            // controller.setConfiguration(getConfiguration());
             GraphModel model = new PtolemyGraphModel(
                     (CompositeEntity)_toplevel);
 
             _getDocumentationAction = new GetDocumentationAction();
+        /* FIXME: Replaced with code in AttributeController.
+           Do the same for others.  EAL
             controller.getAttributeController().setMenuFactory(
                     new ObjectContextMenuFactory(controller));
             controller.getEntityController().setMenuFactory(
@@ -185,6 +190,7 @@ public class MoMLViewerApplet extends MoMLApplet {
                     new ObjectContextMenuFactory(controller));
   	    controller.getLinkController().setMenuFactory(
                     new ObjectContextMenuFactory(controller));
+        */
 
             pane = new GraphPane(controller, model);
         }
