@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (winthrop@robotics.eecs.berkeley.edu)
-@AcceptedRating Red (winthrop@robotics.eecs.berkeley.edu)
+@ProposedRating Yellow (winthrop@robotics.eecs.berkeley.edu)
+@AcceptedRating Yellow (winthrop@robotics.eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.lib;
@@ -52,11 +52,12 @@ is constrained to be of a type at least that of the <i>input</i>. <p>
 
 An additional output port, <i>nextOut</i>, has been added which allows
 the model to know what's next to come out.  This new output produces a
-token whenever the queue has been empty and a new token is queued and
-whenever a token is taken from the queue and at least one token
-remains.  Otherwise, no output token is produced.  The token produced
-is the oldest token remaining in the queue.  This output, also, is
-constrained to be at least that of <i>input</i> <p>
+token whenever the queue has been empty and a new token is queued.  It
+also produces an output whenever a token is taken from the queue and
+at least one token remains.  Otherwise, no output token is produced at
+<i>nextOut</i>.  The token produced is the oldest token remaining in
+the queue.  This output, also, is constrained to be at least that of
+<i>input</i> <p>
 
 @author Winthrop Williams (based closely on Queue by Steve Neuendorffer)
 @version $Id$ */
@@ -93,7 +94,9 @@ public class QueueWithNextOut extends DETransformer {
      */
     public TypedIOPort trigger;
 
-    /** The nextOut port, which has type Token.
+    /** The nextOut port, which has type Token.  Gives a preview 
+     *  of the next token that will come out of the queue.  Produces 
+     *  an output only when a new token is next up in the queue.
      */
     public TypedIOPort nextOut;
 
@@ -116,11 +119,15 @@ public class QueueWithNextOut extends DETransformer {
         return newObject;
     }
 
-    /** If there is a token in the <i>trigger</i> port,
-     *  emit the most recent token from the <i>input</i> port. If there
-     *  has been no input token, or there is no token on the <i>trigger</i>
-     *  port, emit nothing.
-     *  @exception IllegalActionException If there is no director.
+    /** If there is a token in the <i>trigger</i> port, emit on the
+     *  <i>output</i> port the most recent token from the <i>input</i>
+     *  port.  If there has been no input token, or there is no token
+     *  on the <i>trigger</i> port, emit nothing on the <i>output</i>
+     *  port.  If a new token is next to come out, either because the
+     *  just received its first event or because one was emitted and 
+     *  at least one remains, then output a preview of this token at 
+     *  the <i>nextOut</i> port.
+     *  @exception IllegalActionException If there is no director.  
      */
     public void fire() throws IllegalActionException {
         if(input.hasToken(0)) {
@@ -145,11 +152,11 @@ public class QueueWithNextOut extends DETransformer {
         }
     }
 
-    /** If there is no input on the <i>trigger</i> port, return
-     *  false, indicating that this actor does not want to fire.
-     *  This has the effect of leaving input values in the input
-     *  ports, if there are any.
-     *  @exception IllegalActionException If there is no director.
+    /** If neither the <i>input</i> port nor the <i>trigger</i> port
+     *  has input, return false, indicating that this actor does not
+     *  want to fire.  This has the effect of leaving input values in
+     *  the input ports, if there are any.
+     *  @exception IllegalActionException If there is no director.  
      */
     public boolean prefire() throws IllegalActionException {
         // If the trigger input is not connected, never fire.
