@@ -77,7 +77,7 @@ public class Query extends JPanel {
     /** Create an on-off check box.
      *  @param name The name used to identify the entry (when calling get).
      *  @param label The label to attach to the entry.
-     *  @param defaultValue The default value.
+     *  @param defaultValue The default value (true for on).
      */
     public void addCheckBox(String name, String label, boolean defaultValue) {
         JLabel lbl = new JLabel(label + ": ");
@@ -92,18 +92,31 @@ public class Query extends JPanel {
         checkbox.addItemListener(new QueryItemListener(name));
     }
 
+    /** Create an uneditable choice menu.
+     *  @param name The name used to identify the entry (when calling get).
+     *  @param label The label to attach to the entry.
+     *  @param values The list of possible choices.
+     *  @param defaultChoice Default choice.
+     */
+    public void addChoice(String name, String label,
+            String[] values, String defaultChoice) {
+	addChoice(name, label, values, defaultChoice, false);
+    }
+
     /** Create a choice menu.
      *  @param name The name used to identify the entry (when calling get).
      *  @param label The label to attach to the entry.
      *  @param values The list of possible choices.
-     *  @param defaultChoice Default choice (true for on).
+     *  @param defaultChoice Default choice.
+     *  @param editable True if an arbitrary choice can be entered, in addition
+     *  to the choices in values.
      */
     public void addChoice(String name, String label,
-            String[] values, String defaultChoice) {
+            String[] values, String defaultChoice, boolean editable) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
         JComboBox combobox = new JComboBox(values);
-        combobox.setEditable(false);
+        combobox.setEditable(editable);
         combobox.setBackground(Color.white);
         combobox.setSelectedItem(defaultChoice);
         _addPair(name, lbl, combobox);
@@ -125,6 +138,7 @@ public class Query extends JPanel {
         // least in the current version of swing, JLabel.setText() does
         // not work.
         JTextArea displayField = new JTextArea(theValue, 1, 10);
+	displayField.setEditable(false);
         displayField.setBackground(_background);
         _addPair(name, lbl, displayField);
     }
