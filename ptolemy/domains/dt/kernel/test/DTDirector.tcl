@@ -105,16 +105,16 @@ test Director-5.1 {Test action methods} {
     #$a1 clear
     #set allowParam [getParameter $d3 allowDisconnectedGraphs]
     #$allowParam setToken [java::new ptolemy.data.BooleanToken true];
-    set r1 [[$director getNextIterationTime] getTimeValue]
+    set r1 [[$director getNextIterationTimeObject] getTimeValue]
     #puts [$e2 exportMoML]
     $manager initialize
     #[$e2 getManager] execute
     $director iterate 3
-    set r2 [[$director getNextIterationTime] getTimeValue]
+    set r2 [[$director getNextIterationTimeObject] getTimeValue]
     $director stop
     $director wrapup
     list $r1 $r2 [enumToTokenValues [$b2 getRecord 0]] \
-	[[$director getNextIterationTime] getTimeValue] \
-	[[$director getCurrentTime] getTimeValue]
+	[[$director getNextIterationTimeObject] getTimeValue] \
+	[[$director getCurrentTimeObject] getTimeValue]
 } {1.5 6.0 {0.0 1.5 3.0} 1.5 0.0}
 
