@@ -195,8 +195,10 @@ public class ODActor extends AtomicActor {
      *  the lowest time stamp.
      */
     public RcvrTimeTriple getHighestPriorityTriple() {
-        double time = -1.0;
-	double firstTime = -1.0;
+        // FIXME: What if time = -1.0??
+        // I think this has been fixed. See FIXME below
+        double time = -10.0;
+	double firstTime = -10.0;
         int maxPriority = 0;
 	int cnt = 0;
 	boolean rcvrNotFound = true;
@@ -207,7 +209,7 @@ public class ODActor extends AtomicActor {
 	        return highPriorityTriple;
 	    }
 	    RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeTable.at(cnt);
-	    if( time == -1.0 ) {
+	    if( time == -10.0 ) {
 	        time = triple.getTime();
 	        firstTime = time;
 		maxPriority = triple.getPriority();
@@ -215,13 +217,13 @@ public class ODActor extends AtomicActor {
 	    } else {
 	        time = triple.getTime();
 	    }
-	    if( time > firstTime ) {
+	    // FIXME: Previously
+	    // if( time > firstTime || time == -1.0 ) {
+	    if( time > firstTime || time == -1.0 ) {
 	        rcvrNotFound = false;
-	    } else {
-		if( maxPriority < triple.getPriority() ) {
-		    maxPriority = triple.getPriority();
-		    highPriorityTriple = triple;
-		}
+	    } else if( maxPriority < triple.getPriority() ) {
+		maxPriority = triple.getPriority();
+		highPriorityTriple = triple;
 	    }
 	    cnt++;
 	}
@@ -253,10 +255,34 @@ public class ODActor extends AtomicActor {
             return null;
         }
         
+        /* BEGINNING ORIGINAL STUFF
         RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeTable.first();
         ODReceiver lowestRcvr = (ODReceiver)triple.getReceiver();
         _currentTime = triple.getTime();
         _lastPort = (ODIOPort)triple.getReceiver().getContainer();
+	END OF ORIGINAL STUFF */
+
+	// BEGINNING OF NEW STUFF
+        RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeTable.first();
+        ODReceiver lowestRcvr = (ODReceiver)triple.getReceiver();
+        _currentTime = triple.getTime();
+	if( triple.getTime() != -1.0 ) {
+            _lastPort = (ODIOPort)triple.getReceiver().getContainer();
+	}
+	else {
+	    // All receivers have completed. 
+	    // Prepare to terminate.
+	    System.out.println("All receivers have completed."); 
+	    // printRcvrTable();
+	    noticeOfTermination();
+	    lowestRcvr.setFinish();
+	    lowestRcvr.get();
+	    // Should never get to this point
+	    System.out.println("Didn't throw TerminateProcessException "
+			       + "in ODActor.get()");
+	}
+	// END OF NEW STUFF
+
         
         /*
         if( name.equals("printer") ) {
@@ -361,7 +387,7 @@ public class ODActor extends AtomicActor {
      *  Remove this eventually
      */
     public void printRcvrTable() {
-        System.out.println("Print "+getName()+"'s RcvrTable.");
+        System.out.println("\nPrint "+getName()+"'s RcvrTable.");
         System.out.println("\tRcvrTable size = " + _rcvrTimeTable.size() );
         if( _rcvrTimeTable.size() == 0 ) {
             System.out.println("\tTable is empty");
@@ -372,16 +398,34 @@ public class ODActor extends AtomicActor {
             double time = testTriple.getTime();
             String testPort = testRcvr.getContainer().getName();
             String testString = "null";
-            try {
-            if( testRcvr.hasToken() && getName().equals("printer") ) {
+            String testString2 = "null";
+            // try {
+	    //if( testRcvr.hasToken() && getName().equals("printer") ) {
+            if( getName().equals("printer") ) {
 	        // System.out.println("Printer -> hasToken() = "+testRcvr.hasToken() );
-		//System.out.println("Printer -> size() = "+((ODReceiver)testRcvr)._queue.size());
+		System.out.println("Printer -> size() = "+((ODReceiver)testRcvr)._queue.size());
+		if( ((ODReceiver)testRcvr)._queue.size() > 1 ) {
+                    Event testEvent2 
+		      = ((Event)((ODReceiver)testRcvr)._queue.get(1));
+                    StringToken testToken2 
+		      = (StringToken)testEvent2.getToken();
+		    /*
+		    testString2 = testToken2.stringValue();
+		    */
+            System.out.println("\t"+getName()+"'s Receiver " 
+                    + i + " has a 2nd time of "+testEvent2.getTime()
+		    +" and string: ");
+		}
                 Event testEvent = ((Event)((ODReceiver)testRcvr)._queue.get(0));
                 StringToken testToken = (StringToken)testEvent.getToken();
-                testString = testToken.stringValue();
+		if( testToken != null ) {
+                    testString = testToken.stringValue();
+		}
+	    /*
             }
             } catch( IllegalActionException e ) {
                 System.out.println("*****ERROR*****");
+	    */
             }
             System.out.println("\t"+getName()+"'s Receiver " 
                     + i + " has a time of " +time+" and string: "+testString);
@@ -470,6 +514,37 @@ public class ODActor extends AtomicActor {
 	_addRcvrTriple( triple );
     }
     
+    /** 
+     FIXME: Write tests for this.
+     */
+  public void noticeOfTermination() { 
+        // Inform all downstream actors that no new tokens 
+        // will be forthcoming.
+	Enumeration outputPorts = outputPorts();
+	if( outputPorts == null ) {
+	    return;
+	}
+	while( outputPorts.hasMoreElements() ) {
+	    IOPort port = (IOPort)outputPorts.nextElement();
+	    Receiver rcvrs[][] = (Receiver[][])port.getRemoteReceivers();
+	    if( rcvrs == null ) {
+	        return;
+	    }
+            for (int j = 0; j < rcvrs.length; j++) {
+                for (int i = 0; i < rcvrs[j].length; i++) {
+	            ((ODReceiver) rcvrs[j][i]).put(null, -1.0);
+		}
+            }
+	}
+    }
+
+    /** 
+     FIXME: Write tests for this.
+    public void wrapup() throws IllegalActionException {
+        super.wrapup();
+    }
+     */
+    
     ///////////////////////////////////////////////////////////////////
     ////                        private methods			   ////
 
@@ -494,6 +569,11 @@ public class ODActor extends AtomicActor {
             // printRcvrTable();
             return;
         }
+
+	if( newTriple.getTime() == -1.0 ) {
+	    _rcvrTimeTable.insertLast(newTriple);
+	    return;
+	}
         
         // System.out.println("Preparing to add triple to table of size "
         //        + _rcvrTimeTable.size() );
@@ -511,7 +591,12 @@ public class ODActor extends AtomicActor {
             //System.out.println(portName2+" has time of "+newTriple.getTime());
             */
             
-	    if( newTriple.getTime() < triple.getTime() ) {
+	    if( triple.getTime() == -1.0 ) {
+	        System.out.println("Triple has time of -1.0. Insert before");
+	        _rcvrTimeTable.insertAt( cnt, newTriple );
+		cnt = _rcvrTimeTable.size();
+                notAddedYet = false;
+	    } else if( newTriple.getTime() < triple.getTime() ) {
                 /* These checks are just for debugging but they
                    violate the synchronization lock hierarchy.
                 String portName = 
@@ -583,8 +668,8 @@ public class ODActor extends AtomicActor {
     private LinkedList _rcvrTimeTable;
     
     // The currentTime of this actor is equivalent to the minimum
-    // rcvrTime of each input receiver. This value is updated in 
-    // getNextToken().
+    // positive rcvrTime of each input receiver. This value is 
+    // updated in getNextToken().
     private double _currentTime = 0.0;
 
 
