@@ -35,7 +35,7 @@ import java.awt.geom.*;
  * A test suite for ShapeUtilities.
  *
  * @author John Reekie (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class ShapeUtilitiesTest extends TestSuite {
 

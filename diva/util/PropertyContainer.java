@@ -32,7 +32,7 @@ import java.util.Iterator;
  * objects whose keys are strings.
  *
  * @author Michael Shilman (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public interface PropertyContainer {
     /**

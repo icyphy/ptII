@@ -37,7 +37,7 @@ import diva.util.Filter;
  * and adds methods related to containment of a known
  * and finite set of figures.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author John Reekie
  * @rating Yellow
  */

@@ -40,7 +40,7 @@ import javax.swing.undo.UndoableEditSupport;
  * the types of documents it can work with.
  *
  * @author John Reekie (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public interface Document {
 

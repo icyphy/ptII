@@ -38,7 +38,7 @@ import java.util.NoSuchElementException;
  * returned element.
  *
  * @author John Reekie
- * @version $Revision$
+ * @version $Id$
  */
 public class NullArrayIterator extends IteratorAdapter {
 

@@ -45,7 +45,7 @@ import diva.gui.toolbox.ListDataModel;
  * methods.
  *
  * @author John Reekie (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class MultipageModel {
     /** The support object for pages.

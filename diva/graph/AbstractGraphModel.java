@@ -33,7 +33,7 @@ import diva.graph.toolbox.GraphEventMulticaster;
  * the basic event notification system
  *
  * @author Steve Neuendorffer (neuenodr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public abstract class AbstractGraphModel implements GraphModel {

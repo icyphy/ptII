@@ -36,7 +36,7 @@ import java.awt.geom.Rectangle2D;
  * to draw arrow-heads, circles, diamonds, and various other
  * kinds of decoration at the end of connectors.
  *
- * @version $Revision$
+ * @version $Id$
  * @author  John Reekie (johnr@eecs.berkeley.edu)
  */
 public interface ConnectorEnd {

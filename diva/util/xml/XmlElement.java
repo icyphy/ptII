@@ -48,7 +48,7 @@ import diva.util.IteratorUtilities;
  * an XmlDocument and generate an XML output file.
  *
  * @author Steve Neuendorffer, John Reekie
- * @version $Revision$
+ * @version $Id$
  */
 public class XmlElement {
 

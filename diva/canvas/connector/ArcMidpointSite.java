@@ -35,7 +35,7 @@ import diva.canvas.Figure;
  * provided for convenience of figures that need to make their
  * center points connectible.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         John Reekie
  */
 public class ArcMidpointSite extends AbstractSite {

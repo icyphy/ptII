@@ -37,7 +37,7 @@ package diva.graph;
  * @see GraphController
  * @author Michael Shilman  (michaels@eecs.berkeley.edu)
  * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public class GraphViewEvent extends java.util.EventObject {

@@ -31,7 +31,7 @@ package diva.graph.layout;
  * in the graphs.
  *
  * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public interface GlobalLayout {

@@ -34,7 +34,7 @@ import java.util.Iterator;
  * printed out or otherwise analyzed.
  *
  * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public class GraphLogger implements GraphListener {

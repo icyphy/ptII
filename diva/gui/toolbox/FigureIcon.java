@@ -44,7 +44,7 @@ import diva.canvas.toolbox.ImageFigure;
  * buffered image, this class simply uses the Image of an ImageFigure.
  *
  * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class FigureIcon extends ImageIcon {
     /**

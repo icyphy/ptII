@@ -30,7 +30,7 @@ package diva.util.jester;
  * incorrect result.
  *
  * @author John Reekie      (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class TestFailedException extends Exception {
     /**

@@ -42,7 +42,7 @@ import diva.util.aelfred.XmlParser;
  * brief description of how to use this class.
  *
  * @author Steve Neuendorffer, John Reekie
- * @version $Revision$
+ * @version $Id$
  */
 public class XmlDocument {
 

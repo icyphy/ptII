@@ -31,7 +31,7 @@ import diva.canvas.Site;
 
 /** A connector target that returns sites on the perimeter of a figure.
  *
- * @version $Revision$
+ * @version $Id$
  * @author John Reekie (johnr@eecs.berkeley.edu)
  * @author Michael Shilman (michaels@eecs.berkeley.edu)
  */

@@ -44,7 +44,7 @@ import diva.util.ArrayIterator;
  * and a "target" array, which contain the figure or figures
  * that are dragged.
  *
- * @version $Revision$
+ * @version $Id$
  * @author John Reekie
  */
 public class DragInteractor extends AbstractInteractor {

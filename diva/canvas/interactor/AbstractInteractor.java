@@ -35,7 +35,7 @@ import diva.canvas.event.MouseFilter;
  * interactors. The listener methods are all implemented,
  * to make it easier to implement interactor subclasses.
  *
- * @version $Revision$
+ * @version $Id$
  * @author John Reekie
  */
 public abstract class AbstractInteractor implements Interactor {

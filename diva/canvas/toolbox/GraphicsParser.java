@@ -49,7 +49,7 @@ import diva.util.java2d.Polyline2D;
 /** A collection of utilities to help parsing graphics from strings
  * and other kinds of external storage.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         John Reekie
  * @deprecated  Will be removed in Diva 0.4. Use diva.compat.canvas if
  *              needed, or diva.canvas.toolbox.VectorFigureBuilder.

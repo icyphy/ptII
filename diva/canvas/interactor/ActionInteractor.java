@@ -36,7 +36,7 @@ import diva.canvas.event.MouseFilter;
 /**
  * An interactor that fires an Action when a mouse pressed event occurs.
  *
- * @version $Revision$
+ * @version $Id$
  * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
  */
 public class ActionInteractor extends AbstractInteractor {

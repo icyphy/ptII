@@ -48,7 +48,7 @@ import diva.util.java2d.ShapeUtilities;
  * utility class designed for use in conjunction with
  * ConnectorManipulator.
  *
- * @version $Revision$
+ * @version $Id$
  * @author John Reekie
  * @author Steve Neuendorffer
  */

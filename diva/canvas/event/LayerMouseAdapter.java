@@ -34,7 +34,7 @@ import java.awt.event.MouseMotionListener;
  * system.  XXX haven't translated it yet.
  *
  * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class LayerMouseAdapter implements LayerListener, LayerMotionListener {
     MouseFilter _filter;

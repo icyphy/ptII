@@ -34,7 +34,7 @@ import java.util.Iterator;
  * that it will fall into the required viewport.
  *
  * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public class RandomIncrLayout implements IncrementalLayout {

@@ -35,7 +35,7 @@ import java.io.PrintStream;
  * user.
  *
  * @author John Reekie
- * @version $Revision$
+ * @version $Id$
  */
 public class LoggableOp {
 

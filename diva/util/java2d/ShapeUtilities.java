@@ -40,7 +40,7 @@ import java.awt.geom.RectangularShape;
 
 /** A set of utilities on Java2D shapes.
  *
- * @version $Revision$
+ * @version $Id$
  * @author  John Reekie (johnr@eecs.berkeley.edu)
  * @author  Michael Shilman (michaels@eecs.berkeley.edu)
 

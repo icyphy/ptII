@@ -33,7 +33,7 @@ import java.util.Iterator;
  * the model is modified.
  *
  * @author         Michael Shilman (michaels@eecs.berkeley.edu)
- * @version        $Revision$
+ * @version        $Id$
  */
 public interface SelectionModel {
     /**

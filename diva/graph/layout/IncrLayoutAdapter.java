@@ -32,7 +32,7 @@ import diva.graph.GraphModel;
  * to the graph.
  *
  * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public class IncrLayoutAdapter implements IncrementalLayout {

@@ -35,7 +35,7 @@ import java.awt.AWTEvent;
  *  routines can tell whether certain objects are smart enough
  *  to handle events for themselves.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         John Reekie
  */
 public interface EventAcceptor extends CanvasComponent {

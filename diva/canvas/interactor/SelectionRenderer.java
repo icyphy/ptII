@@ -36,7 +36,7 @@ import diva.canvas.Figure;
  *
  * <p> (Should this be made into a more general class?)
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         John Reekie
  */
 public interface SelectionRenderer {

@@ -37,7 +37,7 @@ import diva.canvas.CanvasUtilities;
 
 /**
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         Steve Neuendorffer
  * @deprecated Will be removed in Diva 0.4. Use diva.compat.canvas if needed.
  */

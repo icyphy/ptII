@@ -36,7 +36,7 @@ import diva.util.SemanticObjectContainer;
  * and Edge.
  *
  * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public class BasicModularGraphModel extends MutableModularGraphModel {

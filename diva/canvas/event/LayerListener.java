@@ -32,7 +32,7 @@ package diva.canvas.event;
  * not include the enter and leave events, but does include the drag
  * event, for performance reasons.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         John Reekie
  */
 public interface LayerListener extends java.util.EventListener {

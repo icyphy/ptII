@@ -35,7 +35,7 @@ import java.util.LinkedList;
  * methods on these listeners given a GraphEvent's ID.
  *
  * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Yellow
  */
 public class GraphEventMulticaster implements GraphListener {

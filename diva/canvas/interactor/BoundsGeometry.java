@@ -41,7 +41,7 @@ import diva.canvas.Site;
 /** BoundsGeometry is a class that provides support for manipulating
  * the bounds of a figure.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         John Reekie
  */
 public class BoundsGeometry implements Geometry {

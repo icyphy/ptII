@@ -40,7 +40,7 @@ import diva.canvas.event.LayerEvent;
  * chance to intercept picks.
  *
  * @author Nick Zamora      (nzamor@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class CircleManipulator extends Manipulator {
 

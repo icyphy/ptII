@@ -48,7 +48,7 @@ import javax.swing.UIManager;
  * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
  * @author Michael Shilman (michaels@eecs.berkeley.edu)
  * @author John Reekie (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class ApplicationContext extends JFrame implements AppContext {
     /**

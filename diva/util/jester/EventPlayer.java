@@ -36,7 +36,7 @@ import java.awt.Component;
  *
  * @see EventRecorder
  * @author Michael Shilman      (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public class EventPlayer {

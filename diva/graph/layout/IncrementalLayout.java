@@ -32,7 +32,7 @@ package diva.graph.layout;
  * the graph.
  *
  * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public interface IncrementalLayout extends GlobalLayout {

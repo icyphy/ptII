@@ -39,7 +39,7 @@ import java.awt.Paint;
  *  For filled shapes, use the BasicFigure class, and for more complex
  *  figures, use VectorFigure or create a custom Figure class.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         John Reekie
  * @deprecated  BasicFigure now does everything this class used to do.
  */

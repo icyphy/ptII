@@ -33,7 +33,7 @@ package diva.graph.modular;
  * is its syntactic representation in the user interface.
  *
  * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public interface MutableNodeModel extends NodeModel {

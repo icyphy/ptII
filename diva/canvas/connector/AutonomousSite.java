@@ -42,7 +42,7 @@ import diva.canvas.TransformContext;
  * there are other constructors that accept a figures or pane, and
  * use the transform context of that object.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         John Reekie
  */
 public class AutonomousSite extends AbstractSite {

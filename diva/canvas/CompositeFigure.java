@@ -50,7 +50,7 @@ import diva.util.java2d.ShapeUtilities;
  * implement a custom subclass of AbstractFigureContainer. For an
  * example, see diva.canvas.toolbox.IconFigure.
  *
- * @version $Revision$
+ * @version $Id$
  * @author John Reekie
  * @rating Yellow
  */

@@ -43,7 +43,7 @@ import javax.swing.JMenuItem;
  *
  * @author John Reekie (johnr@eecs.berkeley.edu)
  * @author Nick Zamora (nzamor@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class BasicFrame extends ApplicationContext {
 

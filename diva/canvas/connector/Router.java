@@ -34,7 +34,7 @@ import java.awt.Shape;
  * by connectors according to the Shape that they use to draw
  * themselves.
  *
- * @version $Revision$
+ * @version $Id$
  * @author  Michael Shilman (michaels@eecs.berkeley.edu)
  * @author  John Reekie (johnr@eecs.berkeley.edu)
  */

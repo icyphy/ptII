@@ -48,7 +48,7 @@ import diva.canvas.interactor.SelectionModel;
  * of node in graphs that have multiple node types.
  *
  * @author         Steve Neuendorffer
- * @version        $Revision$
+ * @version        $Id$
  * @rating      Red
  */
 public class BasicNodeController implements NodeController {

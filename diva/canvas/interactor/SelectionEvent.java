@@ -35,7 +35,7 @@ import diva.util.NullIterator;
  * the selection model.
  *
  * @author         Michael Shilman (michaels@eecs.berkeley.edu)
- * @version        $Revision$
+ * @version        $Id$
  */
 public class SelectionEvent extends java.util.EventObject {
     /**

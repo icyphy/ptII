@@ -48,7 +48,7 @@ import diva.canvas.VisibleComponent;
  *
  * @author Michael Shilman  (michaels@eecs.berkeley.edu)
  * @author John Reekie      (johnr@eecs.berkeley.edu)
- * @version        $Revision$
+ * @version        $Id$
 */
 public class GridLayer extends CanvasLayer implements VisibleComponent {
 

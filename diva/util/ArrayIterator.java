@@ -31,7 +31,7 @@ import java.util.NoSuchElementException;
  * empty array.
  *
  * @author Michael Shilman (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class ArrayIterator extends IteratorAdapter {
     private Object[] _array;

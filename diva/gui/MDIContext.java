@@ -34,7 +34,7 @@ import javax.swing.event.EventListenerList;
  * documents and views.  [FIXME: more docs]
  *
  * @author John Reekie (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public interface MDIContext extends AppContext {
     /** Add a new content pane to this frame. Generally, a client

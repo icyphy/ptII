@@ -62,7 +62,7 @@ import diva.canvas.event.LayerEvent;
  * within some other layer. For example, it will be possible for a
  * visualization component to be "embedded" in a larger component.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author John Reekie
  * @rating Yellow
  */

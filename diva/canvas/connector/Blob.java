@@ -44,7 +44,7 @@ import diva.util.java2d.Polygon2D;
  * or not. This is a low-level utility class, not a self-contained
  * Figure.
  *
- * @version $Revision$
+ * @version $Id$
  * @author  John Reekie (johnr@eecs.berkeley.edu)
  */
 public class Blob implements ConnectorEnd {

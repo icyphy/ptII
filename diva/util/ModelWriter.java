@@ -35,7 +35,7 @@ import java.io.Writer;
  * writes out a sketch model to a stream.
  *
  * @author Heloise Hse  (hwawen@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public interface ModelWriter {
 

@@ -34,7 +34,7 @@ import java.awt.Shape;
  * wrapped around it.
  *
  * @author John Reekie      (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public interface ShapedFigure extends Figure {
     /**

@@ -37,7 +37,7 @@ import java.awt.geom.Rectangle2D;
  * abstraction.
  *
  * @author Nick Zamora
- * @version $Revision$
+ * @version $Id$
  * @deprecated Will be removed in Diva 0.4. Use diva.compat.canvas if needed.
  */
 public abstract class AbstractPaintedGraphic implements PaintedGraphic {

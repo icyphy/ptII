@@ -37,7 +37,7 @@ import diva.canvas.interactor.GrabHandle;
  * to another.
  *
  * @author         Steve Neuendorffer (neuendor@eecs.berkeley.edu)
- * @version        $Revision$
+ * @version        $Id$
  * @rating      Red
  */
 public abstract class EdgeCreator extends AbstractInteractor {

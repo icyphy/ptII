@@ -46,7 +46,7 @@ import java.awt.geom.Rectangle2D;
  * method less
  * error-prone.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author John Reekie
  * @rating Yellow
  */

@@ -52,7 +52,7 @@ import diva.canvas.interactor.SelectionModel;
  * graphs that have edges connecting simple nodes.
  *
  * @author         Michael Shilman (michaels@eecs.berkeley.edu)
- * @version        $Revision$
+ * @version        $Id$
  * @rating      Red
  */
 public class BasicEdgeController implements EdgeController {

@@ -38,7 +38,7 @@ import diva.canvas.interactor.Interactor;
  * contain one or more instances of EdgeController.
  *
  * @author         Michael Shilman (michaels@eecs.berkeley.edu)
- * @version        $Revision$
+ * @version        $Id$
  * @rating      Red
  */
 public interface EdgeController {

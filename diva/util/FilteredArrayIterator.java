@@ -38,7 +38,7 @@ package diva.util;
  * returned element.
  *
  * @author John Reekie
- * @version $Revision$
+ * @version $Id$
  */
 public abstract class FilteredArrayIterator extends NullArrayIterator {
 

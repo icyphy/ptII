@@ -49,7 +49,7 @@ import java.awt.geom.PathIterator;
  * of the path, and for the control point for those segments
  * that are quadratic or cubic curves.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         John Reekie
  * @author      Nick Zamora
  */

@@ -30,7 +30,7 @@ package diva.canvas.event;
 /** The interface for listeners that respond to motion of the mouse over a
  * figure.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         John Reekie
  */
 public interface LayerMotionListener extends java.util.EventListener {

@@ -39,7 +39,7 @@ import javax.swing.DefaultComboBoxModel;
  * if any of the behavior should not be quite right.
  *
  * @author John Reekie (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public class ListDataModel extends DefaultComboBoxModel {

@@ -33,7 +33,7 @@ import diva.util.java2d.Polyline2D;
  * of perpendicular edges. This interface extends the parent interface
  * with a couple of methods specific to Polylines.
  *
- * @version $Revision$
+ * @version $Id$
  * @author  Michael Shilman (michaels@eecs.berkeley.edu)
  * @author  John Reekie (johnr@eecs.berkeley.edu)
  */

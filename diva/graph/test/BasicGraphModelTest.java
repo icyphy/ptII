@@ -37,7 +37,7 @@ import diva.util.jester.TestSuite;
  * A test suite for the BasicGraphModel class.
  *
  * @author John Reekie
- * @version $Revision$
+ * @version $Id$
  */
 public class BasicGraphModelTest extends TestSuite {
 

@@ -33,7 +33,7 @@ import diva.canvas.GraphicsPane;
  *
  * @see JGraph
  * @author         Michael Shilman (michaels@eecs.berkeley.edu)
- * @version        $Revision$
+ * @version        $Id$
  * @rating Red
  */
 public class GraphPane extends GraphicsPane {

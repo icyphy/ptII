@@ -32,7 +32,7 @@ import diva.canvas.Figure;
  * a MenuCreator to implement context sensitive menus.
  *
  * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public interface MenuFactory {
 

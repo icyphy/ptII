@@ -45,7 +45,7 @@ import diva.canvas.Site;
  * containing circular shapes or otherwise highly-symmetric shapes.
  *
  * @author Nick Zamora      (nzamor@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class CircleGeometry implements Geometry {
 

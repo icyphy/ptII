@@ -38,7 +38,7 @@ package diva.util.xml;
  * get a low-level graphical object.
  *
  * @author John Reekie (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public interface XmlBuilder {

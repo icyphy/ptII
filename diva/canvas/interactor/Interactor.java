@@ -43,7 +43,7 @@ import diva.canvas.event.MouseFilter;
  * underneath the mouse, and then searches up the tree of figures
  * looking for an interactor that can handle that event.
  *
- * @version $Revision$
+ * @version $Id$
  * @author John Reekie
  */
 public interface Interactor extends LayerListener, LayerMotionListener {

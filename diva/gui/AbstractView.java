@@ -32,7 +32,7 @@ import javax.swing.JComponent;
  * mostly empty methods to be filled in by concrete subclasses.
  *
  * @author Michael Shilman (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public abstract class AbstractView implements View {

@@ -37,7 +37,7 @@ import java.awt.geom.Point2D;
  * allows clients to find attachment points and other key points
  * on the figure.
  *
- * @version $Revision$
+ * @version $Id$
  * @author  John Reekie
  * @rating  Red
  */

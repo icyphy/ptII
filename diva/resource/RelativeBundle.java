@@ -51,7 +51,7 @@ import javax.swing.ImageIcon;
  * </ul>
  *
  * @author John Reekie (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class RelativeBundle extends ResourceBundle {
     // FIXME If the parent is another RelativeBundle, it may have a different

@@ -47,7 +47,7 @@ import diva.util.jester.TestUtilities;
  * concrete factories must implement.
  *
  * @author John Reekie      (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class FigureTest extends TestSuite {
 

@@ -37,7 +37,7 @@ import javax.swing.JComponent;
  * work with.
  *
  * @author Michael Shilman (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public interface View {

@@ -41,7 +41,7 @@ import java.awt.geom.Rectangle2D;
  * govern how the shape is stroked, such as the line width, dashing,
  * and paint.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         John Reekie
  * @author      Nick Zamora
  * @deprecated Will be removed in Diva 0.4. Use diva.compat.canvas if needed.

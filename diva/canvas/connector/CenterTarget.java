@@ -33,7 +33,7 @@ import diva.canvas.Site;
 
 /** An implementation of connector targets that finds center sites.
  *
- * @version $Revision$
+ * @version $Id$
  * @author John Reekie (johnr@eecs.berkeley.edu)
  * @author Michael Shilman (michaels@eecs.berkeley.edu)
  */

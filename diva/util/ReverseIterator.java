@@ -31,7 +31,7 @@ import java.util.List;
  * A reverse-order iterator over a List.
  *
  * @author John Reekie
- * @version $Revision$
+ * @version $Id$
  */
 public class ReverseIterator extends  IteratorAdapter {
     private List _list;

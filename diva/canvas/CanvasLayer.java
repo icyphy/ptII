@@ -35,7 +35,7 @@ import diva.canvas.event.LayerEvent;
  * This is an abstract class -- concrete subclasses provide facilities
  * for drawing graphics or handling events.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author John Reekie
  * @rating Yellow
  */

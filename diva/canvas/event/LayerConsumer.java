@@ -33,7 +33,7 @@ package diva.canvas.event;
  * event in those methods, and require that they be consumed in
  * the other methods as well.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         John Reekie
  */
 public class LayerConsumer implements LayerListener {

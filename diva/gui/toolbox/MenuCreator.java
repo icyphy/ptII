@@ -41,7 +41,7 @@ import diva.canvas.interactor.AbstractInteractor;
  *
  *
  * @author Stephen Neuendorffer (neuendor@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class MenuCreator extends AbstractInteractor {
     /** The menu factory.

@@ -38,7 +38,7 @@ import javax.swing.RootPaneContainer;
  *
  * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
  * @author Michael Shilman (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public interface AppContext extends RootPaneContainer {
 

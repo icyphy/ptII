@@ -31,7 +31,7 @@ import java.beans.*;
  * A list of PropertyChangeListeners.
  *
  * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class PropertyChangeMulticaster implements PropertyChangeListener {
     /**

@@ -29,7 +29,7 @@ package diva.util;
  * An interface for objects that filter other objects
  *
  * @author John Reekie      (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public interface Filter {
     /** Test if an object passes the filter, returning true

@@ -29,7 +29,7 @@ package diva.graph.modular;
  * A node that is also a graph, i.e. it can contain other nodes.
  *
  * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public interface CompositeNode extends Node, Graph {

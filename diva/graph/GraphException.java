@@ -34,7 +34,7 @@ package diva.graph;
  * it.
  *
  * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public class GraphException extends RuntimeException {

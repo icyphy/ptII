@@ -31,7 +31,7 @@ import diva.graph.*;
  * A pane containing a bubble-and-arc editor.
  *
  * @author         John Reekie (johnr@eecs.berkeley.edu)
- * @version        $Revision$
+ * @version        $Id$
  * @rating Red
  */
 public class BubblePane extends GraphPane {

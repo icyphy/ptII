@@ -32,7 +32,7 @@ import diva.canvas.Site;
  * knowing anything about their implementation.
  *
  * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @version        $Revision$
+ * @version        $Id$
  */
 public interface GrabHandleFactory {
     /** Create a grab-handle that is attached to the given

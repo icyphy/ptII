@@ -36,7 +36,7 @@ import diva.canvas.event.LayerEvent;
  *  for altering the shape of the arc by dragging a midpoint grab handle.
  *  This class is designed for use in conjunction with ArcManipulator.
  *
- * @version $Revision$
+ * @version $Id$
  * @author Edward A. Lee
  */
 public class ArcInteractor extends ConnectorInteractor {

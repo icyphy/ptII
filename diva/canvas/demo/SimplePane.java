@@ -47,7 +47,7 @@ import diva.util.java2d.ShapeUtilities;
  * figures can be dragged about with the mouse.
  *
  * @author John Reekie
- * @version $Revision$
+ * @version $Id$
  */
 public class SimplePane extends GraphicsPane {
 

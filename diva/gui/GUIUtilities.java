@@ -51,7 +51,7 @@ import javax.swing.KeyStroke;
  *
  * @author John Reekie (johnr@eecs.berkeley.edu)
  * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class GUIUtilities {
 

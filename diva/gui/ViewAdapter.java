@@ -30,7 +30,7 @@ package diva.gui;
  * implementations.
  *
  * @author John Reekie  (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class ViewAdapter implements ViewListener {
 

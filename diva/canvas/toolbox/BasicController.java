@@ -42,7 +42,7 @@ import diva.canvas.interactor.SelectionRenderer;
  * interaction can give this interactor to figures
  * that they add to the foreground layer of the corresponding pane.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         John Reekie
  */
 public class BasicController {

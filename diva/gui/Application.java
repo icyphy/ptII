@@ -39,7 +39,7 @@ import java.util.List;
  * create an implementation of this interface.
  *
  * @author John Reekie (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public interface Application {

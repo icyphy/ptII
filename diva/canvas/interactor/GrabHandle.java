@@ -34,7 +34,7 @@ import diva.canvas.Figure;
  *
  * @author John Reekie      (johnr@eecs.berkeley.edu)
  * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @version        $Revision$
+ * @version        $Id$
  */
 public interface GrabHandle extends Figure {
     /**

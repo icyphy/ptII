@@ -44,7 +44,7 @@ import diva.canvas.toolbox.BasicHighlighter;
  *
  * @author John Reekie      (johnr@eecs.berkeley.edu)
  * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class ConnectorManipulator extends Manipulator {
 

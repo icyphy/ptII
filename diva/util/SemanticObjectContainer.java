@@ -31,7 +31,7 @@ package diva.util;
  * in an application.
  *
  * @author Michael Shilman (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public interface SemanticObjectContainer {
     /**

@@ -37,7 +37,7 @@ import diva.util.Filter;
 /** AbstractFigureContainer is an abstract class that roots the tree
  * of figure-containing classes.
  *
- * @version $Revision$
+ * @version $Id$
  * @author John Reekie
  * @rating Yellow
  */

@@ -35,7 +35,7 @@ import java.io.*;
  * in the future.)
  *
  * @author John Reekie (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class TestHarness {
   /** The output stream

@@ -42,7 +42,7 @@ import java.util.Hashtable;
  *
  * @author John Reekie  (johnr@eecs.berkeley.edu)
  * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public class TypedDecorator extends FigureDecorator {

@@ -41,7 +41,7 @@ import diva.util.UserObjectContainer;
  * implemented by the AbstractFigure class, which roots the tree
  * of concrete figure classes.
  *
- * @version $Revision$
+ * @version $Id$
  * @author John Reekie
  * @rating Yellow
  */

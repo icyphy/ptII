@@ -46,7 +46,7 @@ import java.awt.geom.Rectangle2D;
  * two concrete inner classes, one storing floats and one
  * storing doubles.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         John Reekie
  */
 public abstract class Polygon2D implements Shape {

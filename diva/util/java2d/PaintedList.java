@@ -37,7 +37,7 @@ import java.util.Iterator;
  * low-level utility class intended for constructing graphical
  * objects from some kind of external list.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         John Reekie
  * @deprecated Will be removed in Diva 0.4. Use diva.compat.canvas if needed.
  */

@@ -38,7 +38,7 @@ import java.awt.geom.Rectangle2D;
  * need to implement certain behaviour but don't particularly
  * care about their appearance.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author John Reekie
  * @rating Yellow
  */

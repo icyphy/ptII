@@ -46,7 +46,7 @@ import diva.util.java2d.ShapeUtilities;
  * a PaintedObject to decorate that figure, a label, and an arbitrary
  * number of attached Terminal objects.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         John Reekie
  */
 public class IconFigure extends AbstractFigure {

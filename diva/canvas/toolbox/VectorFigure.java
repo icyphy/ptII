@@ -68,7 +68,7 @@ import diva.util.java2d.ShapeUtilities;
  * with the calls lineMode() and fillMode(). The default mode
  * is line drawing with a 1-pixel black stroke.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         John Reekie
  */
 public class VectorFigure extends AbstractFigure {

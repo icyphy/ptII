@@ -29,7 +29,7 @@ package diva.graph.layout;
  * An abstract implementation of the GlobalLayout interface.
  *
  * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public abstract class AbstractGlobalLayout implements GlobalLayout {

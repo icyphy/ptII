@@ -37,7 +37,7 @@ import java.awt.geom.Point2D;
  * This is an abstract decorator for sites.  It can be used to add or change
  * the functionality of an arbitrary site.
  *
- * @version $Revision$
+ * @version $Id$
  * @author  Steve Neuendorffer (neuendor@eecs.berkeley.edu)
  * @rating  Red
  */

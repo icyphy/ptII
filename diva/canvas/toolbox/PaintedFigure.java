@@ -49,7 +49,7 @@ import diva.util.java2d.ShapeUtilities;
  * source, the initial transform should operate on the coordinates
  * only.)
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         John Reekie
  * @author      Nick Zamora
  * @deprecated Will be removed in Diva 0.4. Use diva.compat.canvas if needed.

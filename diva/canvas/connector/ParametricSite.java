@@ -38,7 +38,7 @@ import diva.canvas.Figure;
  * of the figure.  So as the figure grows, the site relocates
  * itself proportinally.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         Michael Shilman (michaels@eecs.berkeley.edu)
  */
 public class ParametricSite extends AbstractSite {

@@ -35,7 +35,7 @@ import diva.canvas.Figure;
  * because other objects they depend on haven't been created yet,
  * can't have them.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         John Reekie
  */
 public class NullSite extends AbstractSite {

@@ -52,7 +52,7 @@ import diva.util.CompoundIterator;
  * constructor, in which case it will use the background event layer,
  * outline layer, and foreground event layer from that pane.
  *
- * @version $Revision$
+ * @version $Id$
  * @author John Reekie
  */
 public class SelectionDragger extends DragInteractor {

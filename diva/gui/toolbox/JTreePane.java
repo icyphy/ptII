@@ -63,7 +63,7 @@ import diva.gui.BasicFrame;
  * @see javax.swing.JTabbedPane
  * @see diva.gui.toolbox.JShadePane
  * @author Steve Neuendorffer
- * @version $Revision$
+ * @version $Id$
  */
 public class JTreePane extends JSplitPane {
     /**

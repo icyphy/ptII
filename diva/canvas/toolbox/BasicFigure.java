@@ -52,7 +52,7 @@ import diva.util.java2d.ShapeUtilities;
  *  mainly intended for use for simple open and closed shapes. For
  *  more complex Figures, use the VectorFigure class.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         John Reekie
  * @author      Nick Zamora
  */

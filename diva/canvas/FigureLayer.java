@@ -50,7 +50,7 @@ import diva.util.Filter;
  * to a hit figure. It does not support events on the layer itself
  * (see EventLayer for that).
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author John Reekie
  * @rating Yellow
  */

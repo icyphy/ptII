@@ -34,7 +34,7 @@ import javax.swing.SwingConstants;
  * Keep a point within one of the four quadrants relative to some
  * reference point.
  *
- * @version $Revision$
+ * @version $Id$
  * @author John Reekie
  */
 public class QuadrantConstraint implements PointConstraint {

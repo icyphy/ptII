@@ -32,7 +32,7 @@ package diva.canvas;
  * CanvasPane, then consists of CanvasLayers, Figures, and other
  * kinds of recursively-structured CanvasComponents.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author John Reekie
  * @rating Yellow
  */

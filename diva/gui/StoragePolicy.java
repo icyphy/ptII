@@ -49,7 +49,7 @@ import java.net.URL;
  * set of implementing classes.
  *
  * @author John Reekie (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public interface StoragePolicy {
 

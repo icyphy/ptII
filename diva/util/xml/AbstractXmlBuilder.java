@@ -31,7 +31,7 @@ package diva.util.xml;
  * support the generate method.
  *
  * @author Michael Shilman (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public abstract class AbstractXmlBuilder implements XmlBuilder {

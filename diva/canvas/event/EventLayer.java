@@ -53,7 +53,7 @@ import java.util.Iterator;
  * of the pane, which didn't hit a figure in the figure layer.
  * </ul>
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         John Reekie
  */
 public class EventLayer extends CanvasLayer implements EventAcceptor {

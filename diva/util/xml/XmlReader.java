@@ -68,7 +68,7 @@ import diva.util.aelfred.XmlParser;
  * ID first.
  *
  * @author Steve Neuendorffer, John Reekie
- * @version $Revision$
+ * @version $Id$
  */
 public class XmlReader extends LoggableOp {
 

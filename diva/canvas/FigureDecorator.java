@@ -44,7 +44,7 @@ import diva.util.UnitIterator;
  * <p> This class is a reasonable example of the Decorator design
  * pattern, hence its name.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author John Reekie
  * @rating Red
  */

@@ -32,7 +32,7 @@ package diva.gui;
  * method.
  *
  * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class ApplicationExceptionHandler {
     // The application that needs exception handling.

@@ -60,7 +60,7 @@ import diva.util.jester.TestSuite;
  * on figures it produces.
  *
  * @author John Reekie (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class ConcreteFigures extends TestSuite {
 

@@ -37,7 +37,7 @@ import diva.canvas.connector.ConnectorTarget;
  * This class allows connector targets to only implement a single method to
  * use this functionality.
  *
- * @version $Revision$
+ * @version $Id$
  * @author John Reekie
  */
 public abstract class AbstractConnectorTarget implements ConnectorTarget {

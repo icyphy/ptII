@@ -32,7 +32,7 @@ import java.util.Iterator;
  *
  * @author John Reekie      (johnr@eecs.berkeley.edu)
  * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class IteratorUtilities {
     /** You can't instantiate this class.

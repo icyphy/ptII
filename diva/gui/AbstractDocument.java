@@ -40,7 +40,7 @@ import javax.swing.undo.UndoableEditSupport;
  * properties.
  *
  * @author John Reekie (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public abstract class AbstractDocument implements Document {
     /** The flag that says whether the content of the document has

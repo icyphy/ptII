@@ -65,7 +65,7 @@ import diva.util.java2d.ShapeUtilities;
  * out.
  *
  * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class JCanvasPanner extends JPanel {
     /**

@@ -36,7 +36,7 @@ import javax.swing.JFileChooser;
  * and so on. It is recommended only for simple examples and tutorials.
  *
  * @author John Reekie (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class BasicStoragePolicy extends AbstractStoragePolicy {
 

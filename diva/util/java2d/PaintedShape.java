@@ -40,7 +40,7 @@ import java.awt.geom.Rectangle2D;
  * govern how the shape is painted, such as the fill paint, stroke
  * stroke or line width, and stroke paint.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         John Reekie
  * @author      Nick Zamora
  * @deprecated Will be removed in Diva 0.4. Use diva.compat.canvas if needed.

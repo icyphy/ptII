@@ -37,7 +37,7 @@ import java.io.Reader;
  * of objects.  (FIXME - more documentation here)
  *
  * @author Michael Shilman (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public class CompositeBuilder extends AbstractXmlBuilder {

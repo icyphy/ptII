@@ -35,7 +35,7 @@ import java.util.Iterator;
  * an UnsupportedOperation exception if these methods do not make
  * sense for them.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author John Reekie
  * @rating Yellow
  */

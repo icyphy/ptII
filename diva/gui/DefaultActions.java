@@ -41,7 +41,7 @@ import javax.swing.Action;
  * create useful default actions.
  *
  * @author John Reekie (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class DefaultActions {
     public final static String COPY = "Copy";

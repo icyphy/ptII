@@ -37,7 +37,7 @@ import diva.canvas.Figure;
 /** A site that locates itself on the bounds of a figure's shape.
  * It has two fields that govern its position on the bounds.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         John Reekie
  */
 public class BoundsSite extends AbstractSite {

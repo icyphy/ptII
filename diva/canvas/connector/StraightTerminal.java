@@ -46,7 +46,7 @@ import java.awt.geom.Point2D;
 /** A terminal that consists of a straight line plus an additional
  * decoration at the connection end of the terminal.
  *
- * @version $Revision$
+ * @version $Id$
  * @author  John Reekie (johnr@eecs.berkeley.edu)
  */
 public class StraightTerminal extends AbstractFigure implements Terminal {

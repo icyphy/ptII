@@ -35,7 +35,7 @@ import java.awt.geom.Ellipse2D;
  * a single Ellipse2D as its shape. It provides a useful set of
  * constructors.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         John Reekie
  */
 public class BasicEllipse extends BasicFigure {

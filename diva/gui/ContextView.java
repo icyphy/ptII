@@ -31,7 +31,7 @@ package diva.gui;
  * complete with menu bars, tool bars, etc.
  *
  * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public interface ContextView {

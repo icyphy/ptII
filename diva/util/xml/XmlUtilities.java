@@ -33,7 +33,7 @@ import java.net.URL;
  * operations.
  *
  * @author Michael Shilman (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class XmlUtilities {
     /**

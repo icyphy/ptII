@@ -37,7 +37,7 @@ import diva.util.SemanticObjectContainer;
  * which is its syntactic representation in the user interface.
  *
  * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public interface Edge extends SemanticObjectContainer, PropertyContainer {

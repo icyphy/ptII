@@ -73,7 +73,7 @@ package diva.util.jester;
  * the expected formatting of the source.
  *
  * @author John Reekie (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public abstract class TestSuite {
 

@@ -38,7 +38,7 @@ package diva.graph;
  * @see GraphModel
  * @author Michael Shilman  (michaels@eecs.berkeley.edu)
  * @author John Reekie      (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Yellow
  */
 public class GraphEvent extends java.util.EventObject {

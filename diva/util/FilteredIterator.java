@@ -31,7 +31,7 @@ import java.util.Iterator;
  * to each element that it gets.
  *
  * @author John Reekie      (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class FilteredIterator extends IteratorAdapter {
     private Filter _filter;

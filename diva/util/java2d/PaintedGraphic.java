@@ -35,7 +35,7 @@ import java.awt.geom.Rectangle2D;
  * objects from the Java2D API in the most commonly useful way.
  *
  * @author  Nick Zamora
- * @version $Revision$
+ * @version $Id$
  * @deprecated Will be removed in Diva 0.4. Use diva.compat.canvas if needed.
  */
 public interface PaintedGraphic extends PaintedObject {

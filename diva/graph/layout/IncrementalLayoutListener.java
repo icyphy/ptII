@@ -34,7 +34,7 @@ import diva.util.Filter;
  * applied.
  *
  * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public class IncrementalLayoutListener

@@ -36,7 +36,7 @@ import java.awt.geom.Rectangle2D;
  * a single Rectangle2D as its shape. It provides a useful set of
  * constructors.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         John Reekie
  */
 public class BasicRectangle extends BasicFigure {

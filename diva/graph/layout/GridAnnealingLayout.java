@@ -55,7 +55,7 @@ import java.util.Iterator;
  * be relatively easy to extend or modify.
  *
  * @author Michael Shilman (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public class GridAnnealingLayout extends AbstractGlobalLayout {

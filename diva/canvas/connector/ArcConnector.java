@@ -59,7 +59,7 @@ import diva.canvas.toolbox.LabelFigure;
  * so see that class for a more detailed description of the paint- and
  * stroke-related methods.
  *
- * @version $Revision$
+ * @version $Id$
  * @author  Edward Lee (eal@eecs.berkeley.edu)
  * @author  John Reekie (johnr@eecs.berkeley.edu)
  * @rating  Red

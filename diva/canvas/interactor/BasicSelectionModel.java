@@ -41,7 +41,7 @@ import javax.swing.event.EventListenerList;
  * figures.
  *
  * @author         Michael Shilman (michaels@eecs.berkeley.edu)
- * @version        $Revision$
+ * @version        $Id$
  */
 public class BasicSelectionModel implements SelectionModel {
     /** The selection mode -- single or multiple selection

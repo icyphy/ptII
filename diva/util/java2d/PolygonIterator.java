@@ -33,7 +33,7 @@ import java.awt.geom.PathIterator;
 /** An iterator over Polygon2D. This class is private
  * to this package.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         John Reekie
  */
 public class PolygonIterator implements PathIterator {

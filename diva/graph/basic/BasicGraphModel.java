@@ -46,7 +46,7 @@ import diva.util.SemanticObjectContainer;
  * things differently.
  *
  * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public class BasicGraphModel extends BasicModularGraphModel {

@@ -31,7 +31,7 @@ package diva.resource;
  * in the diva.resource package.
  *
  * @author John Reekie (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class DefaultBundle extends RelativeBundle {
 

@@ -34,7 +34,7 @@ import java.net.URL;
  * response to user selection of a file or URL.
  *
  * @author John Reekie (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public interface DocumentFactory {
 

@@ -34,7 +34,7 @@ package diva.graph;
  * kinds of nodes, use CompositeGraphController instead.
  *
  * @author         Steve Neuendorffer (neuendor@eecs.berkeley.edu)
- * @version        $Revision$
+ * @version        $Id$
  * @rating      Red
  */
 public abstract class SimpleGraphController extends AbstractGraphController {

@@ -46,7 +46,7 @@ import diva.graph.SimpleGraphController;
  * sets up some simple interaction on its view's pane.
  *
  * @author         Michael Shilman (michaels@eecs.berkeley.edu)
- * @version        $Revision$
+ * @version        $Id$
  * @rating      Red
  */
 public class BasicGraphController extends SimpleGraphController {

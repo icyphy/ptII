@@ -48,7 +48,7 @@ import diva.util.java2d.ShapeUtilities;
  * in the Java 2D API, while others accept iterators over Figures
  * or Shapes and compute a useful composite result.
  *
- * @version $Revision$
+ * @version $Id$
  * @author John Reekie
  * @rating Red
  */

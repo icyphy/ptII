@@ -34,7 +34,7 @@ import java.io.Writer;
  * of the files in this package.
  *
  * @author John Reekie (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class XmlDemo {
 

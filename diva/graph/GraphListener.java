@@ -34,7 +34,7 @@ package diva.graph;
  *
  * @author Michael Shilman  (michaels@eecs.berkeley.edu)
  * @author John Reekie      (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Yellow
  */
 public interface GraphListener extends java.util.EventListener {

@@ -36,7 +36,7 @@ import javax.swing.JProgressBar;
  * A status bar for displaying at the bottonm of typical applications.
  *
  * @author John Reekie (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class JStatusBar extends JPanel {
 

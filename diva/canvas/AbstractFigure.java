@@ -42,7 +42,7 @@ import diva.canvas.interactor.Interactor;
  * how to move themselves.  They are not required to know when to
  * repaint, as that is done by the canvas they are drawn on.
  *
- * @version $Revision$
+ * @version $Id$
  * @author John Reekie
  * @rating Yellow
  */

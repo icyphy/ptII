@@ -39,7 +39,7 @@ import diva.canvas.connector.Arrowhead;
  * an arrow at the head.
  *
  * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public class BasicEdgeRenderer implements EdgeRenderer {

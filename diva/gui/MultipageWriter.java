@@ -37,7 +37,7 @@ import diva.util.ModelWriter;
  *
  * @author Heloise Hse  (hwawen@eecs.berkeley.edu)
  * @author  Michael Shilman (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating  Red
  */
 public class MultipageWriter {

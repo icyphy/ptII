@@ -42,7 +42,7 @@ import diva.canvas.toolbox.BasicHighlighter;
  * decorator will be set to instances of one of the Manipulator
  * classes.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         John Reekie
  */
 public class BasicSelectionRenderer implements SelectionRenderer {

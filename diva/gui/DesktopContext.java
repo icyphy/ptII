@@ -78,7 +78,7 @@ import diva.gui.toolbox.JStatusBar;
  * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
  * @author Michael Shilman (michaels@eecs.berkeley.edu)
  * @author John Reekie (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class DesktopContext extends AppContextDelegate implements MDIContext {
 

@@ -72,7 +72,7 @@ import javax.swing.event.EventListenerList;
  * of getting this done....)
  *
  * @author John Reekie (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public abstract class JPseudoFrame extends JComponent {
     /** Some glue

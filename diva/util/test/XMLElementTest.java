@@ -36,7 +36,7 @@ import java.util.*;
  * A test suite for XmlElement
  *
  * @author John Reekie (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class XMLElementTest extends TestSuite {
 

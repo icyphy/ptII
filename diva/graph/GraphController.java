@@ -41,7 +41,7 @@ import diva.canvas.interactor.SelectionModel;
  * @author         John Reekie (johnr@eecs.berkeley.edu)
  * @author         Michael Shilman (michaels@eecs.berkeley.edu)
  * @author         Steve Neuendorffer (neuendor@eecs.berkeley.edu)
- * @version        $Revision$
+ * @version        $Id$
  * @rating      Red
  */
 public interface GraphController {

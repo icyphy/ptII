@@ -37,7 +37,7 @@ import diva.canvas.JCanvas;
  *
  * @see GraphModel, GraphPane
  * @author         Michael Shilman (michaels@eecs.berkeley.edu)
- * @version        $Revision$
+ * @version        $Id$
  */
 public class JGraph extends JCanvas {
 

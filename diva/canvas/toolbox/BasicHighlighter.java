@@ -44,7 +44,7 @@ import diva.canvas.FigureDecorator;
  * but this may be changed to take notice of the figure's
  * shape in the future.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         John Reekie
  */
 public class BasicHighlighter extends FigureDecorator {

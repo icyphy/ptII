@@ -37,7 +37,7 @@ import java.awt.geom.AffineTransform;
  * implementations of several methods in the Site interface, to
  * make it easier to implement site classes.
  *
- * @version $Revision$
+ * @version $Id$
  * @author John Reekie
  * @rating Red
  */

@@ -39,7 +39,7 @@ import diva.graph.EdgeRenderer;
  * instance of ArcConnector and initializes it.
  *
  * @author Edward A. Lee  (eal@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public class ArcRenderer implements EdgeRenderer {

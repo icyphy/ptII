@@ -42,7 +42,7 @@ import diva.graph.JGraph;
  * the selection model of the graph pane's controller will be removed.
  *
  * @author Steve Neuendorffer
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public class DeletionListener implements ActionListener {

@@ -49,7 +49,7 @@ import diva.util.java2d.ShapeUtilities;
  * see that class for a more detailed description of the
  * paint- and stroke-related methods.
  *
- * @version $Revision$
+ * @version $Id$
  * @author  John Reekie (johnr@eecs.berkeley.edu)
  * @author  Michael Shilman (michaels@eecs.berkeley.edu)
  */

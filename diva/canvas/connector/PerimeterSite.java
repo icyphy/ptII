@@ -45,7 +45,7 @@ import diva.util.java2d.Polygon2D;
  * any other shape, the site locates itself on the perimeter of the bounding
  * box for the shape.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         John Reekie, Steve Neuendorffer
  */
 public class PerimeterSite extends AbstractSite {

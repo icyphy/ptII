@@ -36,7 +36,7 @@ import javax.swing.JFrame;
  * really just a few simple confidence tests.
  *
  * @author John Reekie      (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class JCanvasTest extends TestSuite {
 

@@ -34,7 +34,7 @@ import java.awt.event.MouseEvent;
  * are used by event-handling code to decide whether they are
  * interested in a particular event.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         John Reekie
  */
 public class MouseFilter {

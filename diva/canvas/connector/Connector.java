@@ -34,7 +34,7 @@ import diva.canvas.Site;
  * sites on other figures. To do so, it requires two references
  * to sites on other figures.
  *
- * @version $Revision$
+ * @version $Id$
  * @author  Michael Shilman (michaels@eecs.berkeley.edu)
  * @author  John Reekie (johnr@eecs.berkeley.edu)
  */

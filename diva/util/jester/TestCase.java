@@ -40,7 +40,7 @@ package diva.util.jester;
  * by multiple tests, common result testing methods, and so on.
  *
  * @author John Reekie      (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public abstract class TestCase {
     // The name of this test case

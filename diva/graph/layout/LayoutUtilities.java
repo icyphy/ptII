@@ -33,7 +33,7 @@ import java.util.Iterator;
  * Miscellaneous utility routines used in layout.
  *
  * @author         Michael Shilman (michaels@eecs.berkeley.edu)
- * @version        $Revision$
+ * @version        $Id$
  * @rating Red
  */
 public final class LayoutUtilities {

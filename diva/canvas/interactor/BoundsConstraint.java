@@ -32,7 +32,7 @@ import java.awt.geom.Rectangle2D;
 /**
  * Keep a point within a given rectangular bounds.
  *
- * @version $Revision$
+ * @version $Id$
  * @author John Reekie
  */
 public class BoundsConstraint implements PointConstraint {

@@ -35,7 +35,7 @@ package diva.graph.modular;
  * which is its syntactic representation in the user interface.
  *
  * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public interface EdgeModel {

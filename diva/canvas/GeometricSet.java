@@ -37,7 +37,7 @@ import java.awt.Shape;
  * allow the geometry to be changed, so they can throw an exception on
  * the setGeometry(), freshFigures(), and staleFigures() methods.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author John Reekie
  * @rating Red
  */

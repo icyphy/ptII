@@ -34,7 +34,7 @@ import diva.graph.NodeController;
  * A controller for bubble-and-arc graph editors.
  *
  * @author         Michael Shilman (michaels@eecs.berkeley.edu)
- * @version        $Revision$
+ * @version        $Id$
  * @rating      Red
  */
 public class BubbleGraphController extends BasicGraphController {

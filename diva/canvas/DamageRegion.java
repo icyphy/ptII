@@ -38,7 +38,7 @@ import diva.util.java2d.ShapeUtilities;
  * they reach the JCanvas, at which point the Swing RepaintManager
  * gets called.
  *
- * @version $Revision$
+ * @version $Id$
  * @author John Reekie
  * @rating Red
  */

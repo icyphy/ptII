@@ -37,7 +37,7 @@ import diva.canvas.Site;
  * can be properly manhattan routed so that it always leave the terminal in
  * the ight direction.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         Steve Neuendorffer
  */
 public class FixedNormalSite extends SiteDecorator {

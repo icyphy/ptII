@@ -38,7 +38,7 @@ import diva.util.java2d.Polyline2D;
 /**
  * A basic manhattan router.
  *
- * @version $Revision$
+ * @version $Id$
  * @author  Steve Neuendorffer (neuendor@eecs.berkeley.edu)
  */
 public class BasicManhattanRouter implements ManhattanRouter {

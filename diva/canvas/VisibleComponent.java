@@ -36,7 +36,7 @@ import java.awt.geom.Rectangle2D;
  * interface so that paint routines can tell whether certain objects
  * want to be painted or not.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         John Reekie
  * @rating Yellow
  */

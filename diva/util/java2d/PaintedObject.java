@@ -35,7 +35,7 @@ import java.awt.geom.Rectangle2D;
  * is to provide a simple interface for some of the more complicated
  * things in Java2D, like strings and Images.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         John Reekie
  * @deprecated Will be removed in Diva 0.4. Use diva.compat.canvas if needed.
  */

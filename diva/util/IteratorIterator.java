@@ -35,7 +35,7 @@ import java.util.Iterator;
  * sub-iterator.
  *
  * @author John Reekie      (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public abstract class IteratorIterator extends IteratorAdapter {
     private Iterator _iterator;

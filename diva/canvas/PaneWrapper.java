@@ -50,7 +50,7 @@ import diva.canvas.interactor.SelectionInteractor;
  * the PaneWrapper implements EventAccepter. It forwards events to the
  * internal pane.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author John Reekie
  * @rating Red
  */

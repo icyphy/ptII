@@ -42,7 +42,7 @@ import diva.canvas.Site;
  * positions itself on, and the "connect" site is the site
  * that connectors can connect to.
  *
- * @version $Revision$
+ * @version $Id$
  * @author  John Reekie (johnr@eecs.berkeley.edu)
  */
 public interface Terminal extends Figure {

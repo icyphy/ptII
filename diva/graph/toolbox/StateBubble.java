@@ -42,7 +42,7 @@ import diva.util.java2d.ShapeUtilities;
 
 /** A Figure that is customized for representing state bubbles.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         John Reekie
  * @author         Xiaojun Liu
  */

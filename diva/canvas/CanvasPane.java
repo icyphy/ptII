@@ -48,7 +48,7 @@ import diva.util.java2d.ShapeUtilities;
  * reorder and remove layers. Particular applications may choose
  * to create their own special-purpose sub-classes.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author John Reekie
  * @rating Yellow
  */

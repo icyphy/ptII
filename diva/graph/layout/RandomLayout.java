@@ -35,7 +35,7 @@ import java.awt.geom.Rectangle2D;
  * into the required viewport.
  *
  * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public class RandomLayout extends AbstractGlobalLayout {

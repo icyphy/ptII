@@ -38,7 +38,7 @@ import diva.canvas.interactor.GrabHandleFactory;
  *
  * @author John Reekie      (johnr@eecs.berkeley.edu)
  * @author Edward A. Lee    (eal@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class ArcManipulator extends ConnectorManipulator {
 

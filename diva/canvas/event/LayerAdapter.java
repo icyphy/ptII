@@ -31,7 +31,7 @@ package diva.canvas.event;
  * are empty -- the class is provided to make it easier to
  * produce anonymous LayerListeners.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         John Reekie
  */
 public class LayerAdapter implements LayerListener {

@@ -33,7 +33,7 @@ import diva.canvas.Figure;
  * the size of the figure.
  *
  * @author  Michael Shilman  (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating  Red
  */
 public interface NodeRenderer {

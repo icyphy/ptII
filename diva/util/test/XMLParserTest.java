@@ -43,7 +43,7 @@ import diva.util.xml.XmlWriter;
  * A test suite for XMLParser and XMLPrinter
  *
  * @author John Reekie (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class XMLParserTest extends TestSuite {
 

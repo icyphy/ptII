@@ -52,7 +52,7 @@ import diva.canvas.Figure;
  * applications, such as attaching multiple labels, you will need
  * to implement your own class.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author John Reekie
  */
 public class LabelWrapper extends AbstractFigure {

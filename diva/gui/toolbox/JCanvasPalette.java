@@ -32,7 +32,7 @@ import diva.canvas.JCanvas;
  * JComponent.
  *
  * @author John Reekie (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class JCanvasPalette extends JCanvas {
     // FIXME

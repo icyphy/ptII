@@ -66,7 +66,7 @@ import diva.gui.BasicFrame;
  *
  * @see javax.swing.JTabbedPane
  * @author Michael Shilman (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class JShadePane extends JPanel {
     /**

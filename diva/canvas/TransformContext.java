@@ -35,7 +35,7 @@ import java.awt.geom.NoninvertibleTransformException;
  * display tree.  This class provides the support for most of the
  * transform-related operations on the display tree.
  *
- * @version $Revision$
+ * @version $Id$
  * @author John Reekie
  * @rating Yellow
  */

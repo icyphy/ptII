@@ -35,7 +35,7 @@ import diva.canvas.interactor.Interactor;
  * one for each type of node.
  *
  * @author         Steve Neuendorffer
- * @version        $Revision$
+ * @version        $Id$
  * @rating      Red
  */
 public interface NodeController {

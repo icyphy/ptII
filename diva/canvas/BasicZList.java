@@ -41,7 +41,7 @@ import java.util.Iterator;
  * the redraw iterator is more important than the event-handling
  * iterator.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author John Reekie
  * @rating Yellow
  */

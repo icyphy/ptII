@@ -56,7 +56,7 @@ import diva.util.xml.XmlElement;
  *  For a description of SVG see <a href="http://www.w3.org/TR/SVG/">the
  *  specification</a>.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         John Reekie, Steve Neuendorffer
  */
 public class SVGParser {

@@ -30,7 +30,7 @@ package diva.gui;
  *
  * @author Heloise Hse  (hwawen@eecs.berkeley.edu)
  * @author John Reekie  (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public class BasicPage implements Page {

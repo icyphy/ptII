@@ -51,7 +51,7 @@ import diva.canvas.event.MouseFilter;
  * other interactors. If, however, the clicked-on figure has
  * just been removed from the figure, do not forward events.
  *
- * @version $Revision$
+ * @version $Id$
  * @author John Reekie
  */
 public class SelectionInteractor extends CompositeInteractor {

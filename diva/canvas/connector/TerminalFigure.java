@@ -46,7 +46,7 @@ import diva.canvas.interactor.Interactor;
  * class, any Figure can be made a terminal.  As per the decorator pattern,
  * the Figure should be not be accessed externally to this class.
  *
- * @version $Revision$
+ * @version $Id$
  * @author Steve Neuendorffer
  */
 public class TerminalFigure extends AbstractFigure implements Terminal {

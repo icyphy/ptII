@@ -49,7 +49,7 @@ import diva.canvas.Figure;
  * package-scope constructor, and hence cannot be subclassed outside
  * the AWT package.)
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author John Reekie
  */
 public class LayerEvent extends MouseEvent {

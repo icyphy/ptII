@@ -34,7 +34,7 @@ package diva.graph.layout;
  * to deal with.
  *
  * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public class ProxyIncrLayout implements IncrementalLayout {

@@ -32,7 +32,7 @@ import java.io.File;
  * file they last opened.  This abstract class provides such functionality.
  *
  * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public abstract class AbstractStoragePolicy implements StoragePolicy {
 

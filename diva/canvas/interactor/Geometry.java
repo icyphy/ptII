@@ -46,7 +46,7 @@ import diva.canvas.Figure;
  * should do, but merely to provide a way to loosely group
  * the geometry classes together.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author         John Reekie
  */
 public interface Geometry {

@@ -34,7 +34,7 @@ import diva.canvas.event.LayerEvent;
 /**
  * An interactor that forwards events to other interactors.
  *
- * @version $Revision$
+ * @version $Id$
  * @author John Reekie
  */
 public class CompositeInteractor extends AbstractInteractor {

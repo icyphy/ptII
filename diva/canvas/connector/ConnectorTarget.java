@@ -37,7 +37,7 @@ import diva.canvas.Site;
  * so they can set up view construction and interaction. In this
  * same package, an instance is required by ConnectorManipulator.
  *
- * @version $Revision$
+ * @version $Id$
  * @author John Reekie
  */
 public interface ConnectorTarget {

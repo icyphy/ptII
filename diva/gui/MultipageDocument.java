@@ -47,7 +47,7 @@ import diva.util.ModelWriter;
  * methods.
  *
  * @author John Reekie (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public abstract class MultipageDocument extends AbstractDocument {
     /** The support object for pages.

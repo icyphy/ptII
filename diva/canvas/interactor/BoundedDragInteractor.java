@@ -41,7 +41,7 @@ import diva.canvas.event.LayerEvent;
  * <p> This interactor is intended more as an example of how to
  * produce a customized drag-interactor than anything else.
  *
- * @version $Revision$
+ * @version $Id$
  * @author John Reekie
  */
 public class BoundedDragInteractor extends DragInteractor {

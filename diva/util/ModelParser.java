@@ -33,7 +33,7 @@ import java.io.Reader;
  * application specific data structure.
  *
  * @author Heloise Hse  (hwawen@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public interface ModelParser {
     /**

@@ -37,7 +37,7 @@ import diva.util.java2d.Polygon2D;
 /** An arrowhead that is drawn on the end of a connector.
  * This is a low-level utility class, not a self-contained Figure.
  *
- * @version $Revision$
+ * @version $Id$
  * @author  John Reekie (johnr@eecs.berkeley.edu)
  */
 public class Arrowhead implements ConnectorEnd {

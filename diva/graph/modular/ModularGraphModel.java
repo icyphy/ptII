@@ -35,7 +35,7 @@ import diva.graph.AbstractGraphModel;
  * and Edge.
  *
  * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public abstract class ModularGraphModel extends AbstractGraphModel {

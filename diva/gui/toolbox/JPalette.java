@@ -51,7 +51,7 @@ import javax.swing.JPanel;
  * when a drop is initiated by the user.
  *
  * @author Michael Shilman (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class JPalette extends JPanel {
     /**

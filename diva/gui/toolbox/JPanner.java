@@ -64,7 +64,7 @@ import diva.canvas.TransformContext;
  *
  * @author Michael Shilman (michaels@eecs.berkeley.edu)
  * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class JPanner extends JPanel {
     /**

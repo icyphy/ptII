@@ -39,7 +39,7 @@ import diva.graph.toolbox.StateBubble;
  *
  * @author  Michael Shilman  (michaels@eecs.berkeley.edu)
  * @author  John Reekie  (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating  Red
  */
 public class BubbleRenderer implements NodeRenderer {

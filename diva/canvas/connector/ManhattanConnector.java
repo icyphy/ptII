@@ -41,7 +41,7 @@ import diva.util.java2d.Polyline2D;
  * tend to look a little nicer in complex views.  To get standard right
  * angles at the corners, set the bend radius to zero.
  *
- * @version $Revision$
+ * @version $Id$
  * @author  John Reekie (johnr@eecs.berkeley.edu)
  * @author  Michael Shilman (michaels@eecs.berkeley.edu)
  */

@@ -33,7 +33,7 @@ import javax.swing.JComponent;
  *
  * @author John Reekie  (johnr@eecs.berkeley.edu)
  * @author Heloise Hse  (hwawen@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public class ViewEvent extends java.util.EventObject {

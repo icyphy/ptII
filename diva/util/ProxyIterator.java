@@ -33,7 +33,7 @@ import java.util.Iterator;
  * next() method.
  *
  * @author Michael Shilman     (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class ProxyIterator extends IteratorAdapter {
     private Iterator _iterator;

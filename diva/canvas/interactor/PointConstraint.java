@@ -32,7 +32,7 @@ import java.awt.geom.Point2D;
  * An interface implemented by classes that can constrain a point
  * to lie within a certain set of values.
  *
- * @version $Revision$
+ * @version $Id$
  * @author John Reekie
  */
 public interface PointConstraint {

@@ -44,7 +44,7 @@ import javax.swing.UIManager;
  *
  * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
  * @author Michael Shilman (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class AppletContext extends JApplet implements AppContext {
     /**

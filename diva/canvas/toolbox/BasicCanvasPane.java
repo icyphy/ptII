@@ -40,7 +40,7 @@ import diva.canvas.FigureLayer;
  * it. Real applications will probably want to create their own
  * CanvasPane subclass, instead of using this class.
  *
- * @version        $Revision$
+ * @version        $Id$
  * @author John Reekie
 */
 public class BasicCanvasPane extends CanvasPane {
