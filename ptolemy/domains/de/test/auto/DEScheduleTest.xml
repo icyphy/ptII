@@ -99,12 +99,6 @@
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
-                </property>
-            </property>
             <property name="_location" class="ptolemy.moml.Location" value="175.0, 90.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -142,12 +136,6 @@
         <property name="factor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
-            </property>
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="290.0, 350.0">
         </property>
