@@ -96,8 +96,8 @@ test Distributor-4.1 {run with mutations} {
             [java::new ptolemy.kernel.event.StreamChangeListener]
     $m initialize
     $m iterate
-    set c1 [java::new ptolemy.actor.event.RemoveActor $e0 $rec1]
-    set c2 [java::new ptolemy.actor.event.RemoveRelation $e0 $r1]
+    set c1 [java::new ptolemy.actor.event.RemoveActor $e0 $rec2]
+    set c2 [java::new ptolemy.actor.event.RemoveRelation $e0 $r2]
     $m requestChange $c1
     $m requestChange $c2
     $m iterate
