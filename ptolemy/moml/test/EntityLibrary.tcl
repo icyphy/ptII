@@ -1,6 +1,6 @@
 # Tests for the EntityLibrary class.
 #
-# @Author: Edward A. Lee
+# @Author: Edward A. Lee, Contributor: Christopher Hylands
 #
 # @Version: $Id$
 #
@@ -110,11 +110,17 @@ test EntityLibrary-1.2 {Test EntityLibrary at top level} {
 "
     set parser [java::new ptolemy.moml.MoMLParser]
     set toplevel [$parser parse $moml_1]
-    $toplevel exportMoML
-} {<?xml version="1.0" standalone="no"?>
+    set entityLibrary [java::cast ptolemy.moml.EntityLibrary $toplevel]
+    list [$toplevel exportMoML] "\n" \
+	    [$entityLibrary -noconvert getSource] "\n" \
+	    [$entityLibrary getText] "\n" \
+	    [$entityLibrary numEntities]
+} {{<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.moml.EntityLibrary">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+    </property>
     <configure>
         <group>
             <property name="_libraryMarker" class="ptolemy.kernel.util.Attribute">
@@ -126,4 +132,12 @@ test EntityLibrary-1.2 {Test EntityLibrary at top level} {
         </group>
     </configure>
 </entity>
-}
+} {
+} java0x0 {
+} {<group>
+    <entity name="a" class="ptolemy.actor.AtomicActor">
+    </entity>
+    <entity name="b" class="ptolemy.actor.AtomicActor">
+    </entity>
+</group>} {
+} 2}
