@@ -38,6 +38,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 
 //////////////////////////////////////////////////////////////////////////
 //// SingleEvent
@@ -66,6 +67,7 @@ public class SingleEvent extends TypedAtomicActor {
         super(container, name);
     	output = new TypedIOPort(this, "output", false, true);
         time = new Parameter(this, "time", new DoubleToken(0.0));
+        time.setTypeEquals(BaseType.DOUBLE);
         value = new Parameter(this, "value", new BooleanToken(true));
         output.setTypeSameAs(value);
     }
@@ -120,7 +122,7 @@ public class SingleEvent extends TypedAtomicActor {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         SingleEvent newObject = (SingleEvent)super.clone(workspace);
-        newObject.output.setTypeSameAs(value);
+        newObject.output.setTypeSameAs(newObject.value);
         return newObject;
     }
 
