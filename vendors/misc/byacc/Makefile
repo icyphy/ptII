@@ -38,14 +38,15 @@ SRCS   = closure.c \
 # it from the regular yacc and byacc
 ptbyacc: $(OBJ)
 	$(CC) -o $@ $(OBJ)
-	@echo "done"
+	@echo "Run 'make update_lang_java' to update the files in"
+	@echo "$(PTII)/ptolemy/lang/java"
 
 # This command will overwrite the following files in
 # $PTII/ptolemy/lang/java
 # 	JavaParser.java
 # 	JavaParserval.java
 #	*.tbl
-update_lang_java:
+update_lang_java: ptbyacc
 	(cd $(PTII)/ptolemy/lang/java; \
 		$(PTII)/vendors/misc/byacc/ptbyacc -j \
 		-p ptolemy.lang.java -f JavaParser jparser.y)
