@@ -82,18 +82,6 @@ public class SchematicElement extends XMLElement {
         parameters.putAt(parameter.getName(), parameter);
     }
 
-    /**
-     * Add a new parameter to this element. The name
-     * of the parameter must be unique in this element.
-     */
-    public void addParameter (String name, String type, 
-    String value) {
-        SchematicParameter parameter = 
-            new SchematicParameter(name, type, value);
-        addChildElement(parameter);
-        parameters.putAt(name, parameter);
-    }
-
    /**
      * Test if there is a parameter with the given name in this
      * element.
@@ -109,21 +97,12 @@ public class SchematicElement extends XMLElement {
     }
 
    /**
-     * Return the value of schematic parameter with the given name.
+     * Return the schematic parameter with the given name.
      * Throw an exception if there is no parameter with the
      * given name in this element.
      */
-    public String getParameterValue (String name) {
-        return ((SchematicParameter) parameters.at(name)).getValue();
-    }
-
-   /**
-     * Return the type of the schematic parameter with the given name.
-     * Throw an exception if there is no parameter with the
-     * given name in this element.
-     */
-    public String getParameterType (String name) {
-        return ((SchematicParameter) parameters.at(name)).getType();
+    public SchematicParameter getParameter (String name) {
+        return ((SchematicParameter) parameters.at(name));
     }
 
    /**
