@@ -73,6 +73,22 @@ test NamedList-2.1 {Construct a list, call get} {
 ######################################################################
 ####
 #
+test NamedList-2.2 {Construct a list with a container} {
+    set c1 [java::new ptolemy.kernel.util.NamedObj "c1"]
+    set dir [java::new ptolemy.kernel.util.NamedList $c1]
+    set n1 [java::new ptolemy.kernel.util.NamedObj "n1"]
+    set n2 [java::new ptolemy.kernel.util.NamedObj "n2"]
+    # Note that n3 has the same name as n1
+    set n3 [java::new ptolemy.kernel.util.NamedObj "n1"]
+    $dir prepend $n1
+    $dir prepend $n2
+    catch {$dir prepend $n3} errMsg
+    list [_testEnums elements $dir] $errMsg
+} {}
+
+######################################################################
+####
+#
 test NamedList-3.1 {Test append by using a class that can take null names} {
     set dir [java::new ptolemy.kernel.util.NamedList]
     set n1 [java::new ptolemy.kernel.util.test.TestNullNamedObj "n1"]
