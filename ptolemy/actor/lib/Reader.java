@@ -55,7 +55,7 @@ This actor has a multiport, where each port corresponds to
 one column in the data file.
 <P>
 The file format at the URL is assumed as the following.
-A newline character separates the rows, and a tab or a space charactor
+A newline character separates the rows, and a tab or a space character
 separates the columns.
 <P>
 If the "URL" parameter is an empty string, then the System.in
