@@ -302,7 +302,7 @@ public class PlotBoxMLParser extends HandlerBase {
      *  causes the error.
      *  @param systemId The URI for the external entity.
      */
-    public void startExternalEntity (String systemId) {
+    public void startExternalEntity(String systemId) {
         _externalEntities.push(systemId);
     }
 
