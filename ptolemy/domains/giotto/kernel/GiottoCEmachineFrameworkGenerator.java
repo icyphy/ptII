@@ -944,6 +944,8 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
         codeString += _endLine;
         codeString += "inline unsigned constant_true( void );" +  _endLine;
         codeString += _endLine;
+        codeString += "void f_code_init( void );" +  _endLine;
+        codeString += _endLine;
         codeString += FHfuncVarDeclString;
         codeString += _endLine;
         codeString += "#endif" +  _endLine;
