@@ -404,6 +404,7 @@ bldmastrcoverage:
 		remote1distjsall \
 		remote1distjsrestore \
 		remote1build \
+		remote1distnonjsall \
 		remote1jnlp
 
 # Remove the remote dist
@@ -545,9 +546,10 @@ JSALLDIRS = \
 
 # Directories to run tests in outside of JavaScope
 NONJSALLDIRS = \
-	ptolemy/copernicus/java \
-	ptolemy/copernicus/shallow \
 	ptolemy/copernicus/c
+
+#	ptolemy/copernicus/java
+#	ptolemy/copernicus/shallow
 
 # Run JavaScope Code Coverage tool in the distribution tree
 # For command line options, see
