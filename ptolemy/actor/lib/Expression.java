@@ -177,7 +177,7 @@ public class Expression extends TypedAtomicActor {
      */
 
     public Object clone(Workspace workspace)
- 	    throws CloneNotSupportedException {
+             throws CloneNotSupportedException {
         Expression newObject = (Expression)super.clone(workspace);
         newObject._iterationCount = 1;
         newObject._tokenMap = null;
@@ -362,20 +362,20 @@ public class Expression extends TypedAtomicActor {
     // expression, in the scope of this Expression actor.
     private class OutputTypeFunction implements InequalityTerm {
 
-	///////////////////////////////////////////////////////////////
-	////                       public inner methods            ////
+        ///////////////////////////////////////////////////////////////
+        ////                       public inner methods            ////
 
-	/** Return null.
-	 *  @return null.
-	 */
-	public Object getAssociatedObject() {
-	    return null;
-	}
+        /** Return null.
+         *  @return null.
+         */
+        public Object getAssociatedObject() {
+            return null;
+        }
 
-	/** Return the function result.
-	 *  @return A Type.
-	 */
-	public Object getValue() {
+        /** Return the function result.
+         *  @return A Type.
+         */
+        public Object getValue() {
             try {
                 if(_parseTree == null) {
                     PtParser parser = new PtParser();
@@ -396,10 +396,10 @@ public class Expression extends TypedAtomicActor {
         }
 
         /** Return the type variable in this inequality term. If the type
-	 *  of the input port is not declarad, return an one element array
-	 *  containing the inequality term representing the type of the port;
-	 *  otherwise, return an empty array.
-	 *  @return An array of InequalityTerm.
+         *  of the input port is not declarad, return an one element array
+         *  containing the inequality term representing the type of the port;
+         *  otherwise, return an empty array.
+         *  @return An array of InequalityTerm.
          */
         public InequalityTerm[] getVariables() {
             // Return an array that contains type terms for all of the
@@ -444,12 +444,12 @@ public class Expression extends TypedAtomicActor {
         }
 
         /** Throw an Exception. This method cannot be called on a function
-	 *  term.
+         *  term.
          *  @exception IllegalActionException Always thrown.
          */
         public void initialize(Object e)
-		throws IllegalActionException {
-	    throw new IllegalActionException(getClass().getName()
+                throws IllegalActionException {
+            throw new IllegalActionException(getClass().getName()
                     + ": Cannot initialize a function term.");
         }
 
@@ -457,7 +457,7 @@ public class Expression extends TypedAtomicActor {
          *  @return false.
          */
         public boolean isSettable() {
-	    return false;
+            return false;
         }
 
         /** Return true.
@@ -471,7 +471,7 @@ public class Expression extends TypedAtomicActor {
          *  @exception IllegalActionException Always thrown.
          */
         public void setValue(Object e) throws IllegalActionException {
-	    throw new IllegalActionException(getClass().getName()
+            throw new IllegalActionException(getClass().getName()
                     + ": The type is not settable.");
         }
 
@@ -485,7 +485,7 @@ public class Expression extends TypedAtomicActor {
         ///////////////////////////////////////////////////////////////
         ////                       private inner variable          ////
 
-	private ParseTreeTypeInference _typeInference =
+        private ParseTreeTypeInference _typeInference =
         new ParseTreeTypeInference();
         private ParseTreeFreeVariableCollector _variableCollector =
         new ParseTreeFreeVariableCollector();

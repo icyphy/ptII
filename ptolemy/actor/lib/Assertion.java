@@ -117,14 +117,14 @@ public class Assertion extends TypedAtomicActor {
      *   actor with this name.
      */
     public Assertion(CompositeEntity container, String name)
-	throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
         assertion = new Parameter(this, "assertion");
 
         _errorTolerance = (double)1e-4;
         errorTolerance = new Parameter(this, "errorTolerance",
-				       new DoubleToken(_errorTolerance));
+                                       new DoubleToken(_errorTolerance));
 
     }
 
@@ -151,15 +151,15 @@ public class Assertion extends TypedAtomicActor {
      *  @exception IllegalActionException If the attribute change failed.
      */
     public void attributeTypeChanged(Attribute attribute)
-	throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == errorTolerance) {
-	    double p = ((DoubleToken)errorTolerance.getToken()).doubleValue();
-	    if (p <= 0) {
-		throw new IllegalActionException(this,
-						 "Error tolerance must be greater than 0.");
-	    }
-	    _errorTolerance = p;
-	}
+            double p = ((DoubleToken)errorTolerance.getToken()).doubleValue();
+            if (p <= 0) {
+                throw new IllegalActionException(this,
+                                                 "Error tolerance must be greater than 0.");
+            }
+            _errorTolerance = p;
+        }
     }
 
     /** Clone the actor into the specified workspace. This calls the
@@ -171,7 +171,7 @@ public class Assertion extends TypedAtomicActor {
      */
 
     public Object clone(Workspace workspace)
-	throws CloneNotSupportedException {
+        throws CloneNotSupportedException {
         Assertion newObject = (Assertion)super.clone(workspace);
         newObject._tokenMap = null;
         newObject._errorTolerance = (double)1e-4;
@@ -200,7 +200,7 @@ public class Assertion extends TypedAtomicActor {
             }
             result = _parseTreeEvaluator.evaluateParseTree(
                     _parseTree, _scope);
-	    return result;
+            return result;
         } catch (IllegalActionException ex) {
             // Chain exceptions to get the actor that threw the exception.
             throw new IllegalActionException(this, ex, "Assertion invalid.");
@@ -227,28 +227,28 @@ public class Assertion extends TypedAtomicActor {
             if (port.getWidth() > 0) {
                 if (port.hasToken(0)) {
                     Token inputToken = port.get(0);
-		    // if the token has type as double, round the value of a token
-		    // to the precision of error tolerance.
-		    if (inputToken.getType() == BaseType.DOUBLE) {
+                    // if the token has type as double, round the value of a token
+                    // to the precision of error tolerance.
+                    if (inputToken.getType() == BaseType.DOUBLE) {
 
-			double value = ((DoubleToken) inputToken).doubleValue();
+                        double value = ((DoubleToken) inputToken).doubleValue();
 
-			// calculate the precison specified by the error tolerance
-			// log10(errorTolerance) = logE(errorTolerance)/logE(10)
-			double precision = Math.log(_errorTolerance)/Math.log(10);
-			int preciseBits = (int) Math.abs(Math.round(precision));
+                        // calculate the precison specified by the error tolerance
+                        // log10(errorTolerance) = logE(errorTolerance)/logE(10)
+                        double precision = Math.log(_errorTolerance)/Math.log(10);
+                        int preciseBits = (int) Math.abs(Math.round(precision));
 
-			BigDecimal valueBD = new BigDecimal(value);
-			valueBD = valueBD.setScale(preciseBits,BigDecimal.ROUND_HALF_UP);
-			value = valueBD.doubleValue();
-			inputToken = new DoubleToken(value);
+                        BigDecimal valueBD = new BigDecimal(value);
+                        valueBD = valueBD.setScale(preciseBits,BigDecimal.ROUND_HALF_UP);
+                        value = valueBD.doubleValue();
+                        inputToken = new DoubleToken(value);
 
-			if (_debugging) {
-			    _debug("the modified input is" + ((DoubleToken)inputToken).doubleValue());
-			}
-		    }
+                        if (_debugging) {
+                            _debug("the modified input is" + ((DoubleToken)inputToken).doubleValue());
+                        }
+                    }
 
-		    // update the local copy of the input values
+                    // update the local copy of the input values
                     _tokenMap.put(port.getName(), inputToken);
                 }
             }
@@ -272,8 +272,8 @@ public class Assertion extends TypedAtomicActor {
 
         if (!result.booleanValue()) {
             throw new IllegalActionException(this,
-					     "Assertion fails! " +
-					     assertion.getExpression());
+                                             "Assertion fails! " +
+                                             assertion.getExpression());
         }
 
         // This actor never requests termination.
@@ -312,11 +312,11 @@ public class Assertion extends TypedAtomicActor {
      *   name already in the entity.
      */
     protected void _addPort(Port port)
-	throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         if (!(port instanceof TypedIOPort)) {
             throw new IllegalActionException(this,
-					     "Cannot add an input port that is not a TypedIOPort: "
-					     + port.getName());
+                                             "Cannot add an input port that is not a TypedIOPort: "
+                                             + port.getName());
         }
         super._addPort(port);
         String portName = port.getName();
@@ -330,9 +330,9 @@ public class Assertion extends TypedAtomicActor {
             Variable variable =
                 new Variable(this, portName, new DoubleToken(1.0));
         } else if ((there instanceof Parameter)
-		   || !(there instanceof Variable)) {
+                   || !(there instanceof Variable)) {
             throw new IllegalActionException(this, "Port name collides with"
-					     + " another attribute name: " + portName);
+                                             + " another attribute name: " + portName);
         }
         // NOTE: We assume that if there is already a variable with
         // this name then that is the variable we are intended to use.
