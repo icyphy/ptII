@@ -122,6 +122,13 @@ public class TimedQueueReceiver {
         return token;
     }
 
+    /** Get the queue capacity of this receiver.
+     * @return The capacity of this receiver's queue.
+     */
+    public int getCapacity() {
+        return _queue.getCapacity();
+    }
+
     /** Return the IOPort container of this receiver.
      * @return IOPort The containing IOPort.
      */
