@@ -93,11 +93,11 @@ public final class ImageSequence extends SDFAtomicActor {
         numframes = endframe - startframe + 1;
         frames = new byte[numframes][ysize * xsize];
         frame = new int[ysize * xsize];
-        try {
-            for(framenumber = 0;
-                framenumber < numframes;
-                framenumber++) {
-
+        for(framenumber = 0;
+            framenumber < numframes;
+            framenumber++) {
+            
+            try {
                 byte arr[] = fileroot.getBytes();
                 int i = framenumber + startframe;
                 String tfilename = new String(fileroot);
@@ -138,23 +138,23 @@ public final class ImageSequence extends SDFAtomicActor {
                         source = new FileInputStream(sourcefile);
                     }
                 }
-
-                if(source.read(frames[framenumber], 0, ysize * xsize)
+               
+                if(_fullread(source, frames[framenumber])
                         != ysize*xsize)
                     throw new IllegalActionException("Error reading " +
                             "Image file!");
             }
-        }
-        catch (Exception e) {
-            throw new IllegalActionException(e.getMessage());
-        }
-        finally {
-            if(source != null) {
-                try {
-                    source.close();
-                }
-                catch (IOException e) {
-                    throw new IllegalActionException(e.getMessage());
+            catch (Exception e) {
+                throw new IllegalActionException(e.getMessage());
+            }
+            finally {
+                if(source != null) {
+                    try {
+                        source.close();
+                    }
+                    catch (IOException e) {
+                        throw new IllegalActionException(e.getMessage());
+                    }
                 }
             }
         }
@@ -186,6 +186,20 @@ public final class ImageSequence extends SDFAtomicActor {
 
     public void wrapup() throws IllegalActionException {
         workspace().setReadOnly(false);
+    }
+
+    int _fullread(InputStream s, byte b[]) throws IOException {
+        int len = 0;
+        int remaining = b.length;
+        int bytesread = 0;
+        while(remaining > 0) {
+            bytesread = s.read(b, len, remaining);
+            if(bytesread == -1) throw new IOException(
+                    "HTVQEncode: _fullread: Unexpected EOF");
+            remaining -= bytesread;
+            len += bytesread;
+        }
+        return len;
     }
 
     String filetemplate;
