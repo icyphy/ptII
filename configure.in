@@ -326,6 +326,16 @@ case "$JVERSION" in
     and later.
     Please upgrade your JDK to 1.3 and try again]) 	
 	;;
+	1.4*)
+		AC_MSG_WARN([Warning, you are running '$JVERSION'.
+    The deep and shallow code generation facilities use Soot, which
+    does not yet work under JDK1.4.  Soot requires JDK1.3 or JDK1.3.1.
+    If you do not plan on using code generation, then you may build
+    under JDK1.4.
+    If you plan on using code generation, then you must _build_ under
+    JDK1.4.  Soot will not run properly if you compile with JDK1.3
+    and try to run with JDK1.4 later.])
+        ;;
 	*) AC_MSG_RESULT([ok, you are running $JVERSION])
 	;;
 esac
