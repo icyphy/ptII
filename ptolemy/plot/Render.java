@@ -90,9 +90,9 @@ public class Render extends PlotBox {
 //         }
     }
 
-    /** Clear the render object's data structure.
+    /** Clear the render object of any image data.
      */
-    public synchronized void clear() {
+    public synchronized void clearData() {
 	_imageData = new LinkedList();
     }
 
