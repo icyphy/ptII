@@ -193,6 +193,6 @@ test AtomicActor-9.1 {Test setContainer tolerance} {
 test AtomicActor-9.2 {Test remove a AtomicActor} {
     # NOTE: Uses the setup above
     set entity [java::new ptolemy.actor.AtomicActor $e0 ENTITY]
-    $entity setContainer [java::null]
+    $entity {setContainer ptolemy.kernel.CompositeEntity} [java::null]
     list [$e0 deepContains $entity]
 } {0}

@@ -46,8 +46,8 @@ test Server-1.1 {test constructor and clone} {
     set serverbase [java::new ptolemy.domains.de.lib.Server $e0 server]
     set server [java::cast ptolemy.domains.de.lib.Server \
 		    [$serverbase clone [$e0 workspace]]]
-    $serverbase setContainer [java::null]
-    $server setContainer $e0
+    $serverbase {setContainer ptolemy.kernel.CompositeEntity} [java::null]
+    $server {setContainer ptolemy.kernel.CompositeEntity} $e0
     # Success here is just not throwing an exception.
     list {}
 } {{}}

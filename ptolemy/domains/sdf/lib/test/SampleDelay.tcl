@@ -54,8 +54,8 @@ test SampleDelay-2.1 {test constructor and clone} {
     # tested for type satisfaction!
     set sampleDelay [java::cast ptolemy.domains.sdf.lib.SampleDelay \
 			 [$sampleDelayBase clone [$e0 workspace]]]
-    $sampleDelayBase setContainer [java::null]
-    $sampleDelay setContainer $e0
+    $sampleDelayBase {setContainer ptolemy.kernel.CompositeEntity} [java::null]
+    $sampleDelay {setContainer ptolemy.kernel.CompositeEntity} $e0
     set initialOutputs [getParameter $sampleDelay initialOutputs]
     # Success here is just not throwing an exception.
     list {}
@@ -115,7 +115,7 @@ test SampleDelay-2.5 {test with type change to error condition} {
 } {1 1 1}
 
 test SampleDelay-3.0 {test in feedback loop} {
-    $ramp setContainer [java::null]
+    $ramp {setContainer ptolemy.kernel.CompositeEntity} [java::null]
     set input \
             [java::field [java::cast ptolemy.domains.sdf.lib.SDFTransformer $sampleDelay] \
             input]

@@ -51,9 +51,9 @@ test FixToDouble-1.1 {Test FixToDouble} {
     # Get a clone to test cloning.
     set clone [java::cast ptolemy.actor.lib.conversions.FixToDouble \
 		   [$conver clone [$e0 workspace]]]
-    $conver setContainer [java::null]
+    $conver {setContainer ptolemy.kernel.CompositeEntity} [java::null]
     $clone setName f2dClone
-    $clone setContainer $e0
+    $clone {setContainer ptolemy.kernel.CompositeEntity} $e0
 
     set value [getParameter $const value]
     $value setToken [java::new {ptolemy.data.FixToken double int int} 4.0 5 2 ]

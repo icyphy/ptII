@@ -48,8 +48,8 @@ test Sampler-1.1 {test constructor and clone} {
     set samplerbase [java::new ptolemy.domains.de.lib.Sampler $e0 sampler]
     set sampler [java::cast ptolemy.domains.de.lib.Sampler \
 		     [$samplerbase clone [$e0 workspace]]]
-    $samplerbase setContainer [java::null]
-    $sampler setContainer $e0
+    $samplerbase {setContainer ptolemy.kernel.CompositeEntity} [java::null]
+    $sampler {setContainer ptolemy.kernel.CompositeEntity} $e0
     # Success here is just not throwing an exception.
     list {}
 } {{}}

@@ -48,8 +48,8 @@ test WaitingTime-1.1 {test constructor and clone} {
     set waitbase [java::new ptolemy.domains.de.lib.WaitingTime $e0 wait]
     set wait [java::cast ptolemy.domains.de.lib.WaitingTime \
 		  [$waitbase clone [$e0 workspace]]]
-    $waitbase setContainer [java::null]
-    $wait setContainer $e0
+    $waitbase {setContainer ptolemy.kernel.CompositeEntity} [java::null]
+    $wait {setContainer ptolemy.kernel.CompositeEntity} $e0
     # Success here is just not throwing an exception.
     list {}
 } {{}}

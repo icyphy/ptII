@@ -63,9 +63,9 @@ test Repeat-2.1 {test with the default output values} {
     # Use clone of repeat to make sure that is ok.
     set clone [java::cast ptolemy.domains.sdf.lib.SDFTransformer \
 		   [$repeat clone [$e0 workspace]]]
-    $repeat setContainer [java::null]
+    $repeat {setContainer ptolemy.kernel.CompositeEntity} [java::null]
     $clone setName clone
-    $clone setContainer $e0
+    $clone {setContainer ptolemy.kernel.CompositeEntity} $e0
 
     set blocksize [getParameter $clone blockSize]
     $blocksize setExpression { 3 }

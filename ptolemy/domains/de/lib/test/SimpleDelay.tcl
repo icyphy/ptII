@@ -48,8 +48,8 @@ test SimpleDelay-1.1 {test constructor and clone} {
     set delaybase [java::new ptolemy.domains.de.lib.test.SimpleDelay $e0 delay]
     set delay [java::cast ptolemy.domains.de.lib.test.SimpleDelay \
 		   [$delaybase clone [$e0 workspace]]]
-    $delaybase setContainer [java::null]
-    $delay setContainer $e0
+    $delaybase {setContainer ptolemy.kernel.CompositeEntity} [java::null]
+    $delay {setContainer ptolemy.kernel.CompositeEntity} $e0
     # Success here is just not throwing an exception.
     list {}
 } {{}}

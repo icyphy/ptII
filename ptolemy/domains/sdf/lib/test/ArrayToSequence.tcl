@@ -68,13 +68,13 @@ test ArrayToSequence-2.1 {test double array} {
     # Use a SequenceToArray to generate ArrayToken
     set s2a [java::new ptolemy.domains.sdf.lib.SequenceToArray $e0 s2a]
     $s2a setName s2a
-    $s2a setContainer $e0
+    $s2a {setContainer ptolemy.kernel.CompositeEntity} $e0
     set s2aIn [java::field [java::cast ptolemy.domains.sdf.lib.SDFTransformer $s2a] input]
     set s2aOut [java::field [java::cast ptolemy.domains.sdf.lib.SDFTransformer $s2a] output]
     [java::field $s2a arrayLength] setExpression {2}
 
     # Use the ArrayToSequence clone
-    $a2s setContainer $e0
+    $a2s {setContainer ptolemy.kernel.CompositeEntity} $e0
     $a2s setName a2s
     set a2sIn [java::field [java::cast ptolemy.domains.sdf.lib.SDFTransformer $a2s] input]
     set a2sOut [java::field [java::cast ptolemy.domains.sdf.lib.SDFTransformer $a2s] output]
@@ -129,7 +129,7 @@ test ArrayToSequence-2.5 {test cascading SequenceToArray and ArrayToSequence} {
     set s2a2 [java::cast ptolemy.domains.sdf.lib.SequenceToArray \
 		  [$s2a clone [$e0 workspace]]]
     $s2a2 setName s2a2
-    $s2a2 setContainer $e0
+    $s2a2 {setContainer ptolemy.kernel.CompositeEntity} $e0
     set s2a2In [java::field [java::cast ptolemy.domains.sdf.lib.SDFTransformer $s2a2] input]
     set s2a2Out [java::field [java::cast ptolemy.domains.sdf.lib.SDFTransformer $s2a2] output]
 
@@ -137,7 +137,7 @@ test ArrayToSequence-2.5 {test cascading SequenceToArray and ArrayToSequence} {
     set a2s2 [java::cast ptolemy.domains.sdf.lib.ArrayToSequence \
 		  [$a2s clone [$e0 workspace]]]
     $a2s2 setName a2s2
-    $a2s2 setContainer $e0
+    $a2s2 {setContainer ptolemy.kernel.CompositeEntity} $e0
     set a2s2In [java::field [java::cast ptolemy.domains.sdf.lib.SDFTransformer $a2s2] input]
     set a2s2Out [java::field [java::cast ptolemy.domains.sdf.lib.SDFTransformer $a2s2] output]
 

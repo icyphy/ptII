@@ -48,8 +48,8 @@ test TimedDelay-1.1 {test constructor and clone} {
     set timedDelayBase [java::new ptolemy.domains.de.lib.TimedDelay $e0 TimedDelay]
     set timedDelay [java::cast ptolemy.domains.de.lib.TimedDelay \
 			[$timedDelayBase clone [$e0 workspace]]]
-    $timedDelayBase setContainer [java::null]
-    $timedDelay setContainer $e0
+    $timedDelayBase {setContainer ptolemy.kernel.CompositeEntity} [java::null]
+    $timedDelay {setContainer ptolemy.kernel.CompositeEntity} $e0
     # Success here is just not throwing an exception.
     list {}
 } {{}}

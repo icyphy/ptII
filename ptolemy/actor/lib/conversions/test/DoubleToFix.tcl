@@ -51,9 +51,9 @@ test DoubleToFix-1.1 {Test DoubleToFix} {
     # Get a clone to test cloning.
     set clone [java::cast ptolemy.actor.lib.conversions.DoubleToFix \
 		   [$conver clone [$e0 workspace]]]
-    $conver setContainer [java::null]
+    $conver {setContainer ptolemy.kernel.CompositeEntity} [java::null]
     $clone setName d2fClone
-    $clone setContainer $e0
+    $clone {setContainer ptolemy.kernel.CompositeEntity} $e0
 
     set value [getParameter $const value]
     $value setToken [java::new {ptolemy.data.DoubleToken double} 3.0]

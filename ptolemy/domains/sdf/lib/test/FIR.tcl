@@ -51,9 +51,9 @@ test FIR-1.1 {Test FIR for double FIR} {
     # Get a clone of the FIR to test cloning.
     set clone [java::cast ptolemy.domains.sdf.lib.FIR \
 		   [$conver clone [$e0 workspace]]]
-    $conver setContainer [java::null]
+    $conver {setContainer ptolemy.kernel.CompositeEntity} [java::null]
     $clone setName FIRclone
-    $clone setContainer $e0
+    $clone {setContainer ptolemy.kernel.CompositeEntity} $e0
 
     $e0 connect \
       [java::field [java::cast ptolemy.actor.lib.Source $pulse] output] \
