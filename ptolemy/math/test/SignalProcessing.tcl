@@ -367,17 +367,212 @@ test SignalProcessing-9.1 {fftInverse Complex: empty array} {
 } {{java.lang.IllegalArgumentException: SignalProcessing.fftInverse: empty array argument.}}
 
 ####################################################################
-test SignalProcessing-9.2 {fftInverse Complex: empty array} {
+test SignalProcessing-9.2 {fftInverse Complex: null array} {
     catch {set result [java::call ptolemy.math.SignalProcessing \
 	    fftInverse [java::null]]} errMsg
     list $errMsg
 } {{java.lang.IllegalArgumentException: SignalProcessing.fftInverse: empty array argument.}}
 
 ####################################################################
-test SignalProcessing-9.3 {fftInverse Complex: array that is not a power of two in length} {
-    set ca3 [java::new {ptolemy.math.Complex[]} 3 [list $c1 $c0 $c0]]
-    # This should fail, since the array size is 3
+test SignalProcessing-9.3 {fftInverse Complex: order 1} {
+    # The inverse of test 5.4 above
+    set ca2 [java::new {ptolemy.math.Complex[]} 2 [list $c1 $c1 ]]
+    set result [java::call ptolemy.math.SignalProcessing \
+	    fftInverse $ca2]
+    javaPrintArray $result
+} {{1.0 + 0.0i} {0.0 + 0.0i}}
+
+####################################################################
+test SignalProcessing-9.4 {fftInverse Complex: array that is not a power of two in length} {
+    set ca3 [java::new {ptolemy.math.Complex[]} 3 [list $c1 $c0 $c0 ]]
+    set result [java::call ptolemy.math.SignalProcessing \
+	    fftInverse $ca3]
+    javaPrintArray $result
+} {{0.25 + 0.0i} {0.25 + 0.0i} {0.25 + 0.0i} {0.25 + 0.0i}}
+
+####################################################################
+test SignalProcessing-10.1 {fftInverse Complex int: empty array} {
+    set ca0 [java::new {ptolemy.math.Complex[]} 0]
     catch {set result [java::call ptolemy.math.SignalProcessing \
-	    fftInverse $ca3]} errMsg
+	    fftInverse $ca0 1]} errMsg
     list $errMsg
-} {} {KNOWN_FAILED}
+} {{java.lang.IllegalArgumentException: SignalProcessing.fftInverse: empty array argument.}}
+
+####################################################################
+test SignalProcessing-10.2 {fftInverse Complex int: null array} {
+    catch {set result [java::call ptolemy.math.SignalProcessing \
+	    fftInverse [java::null] 1]} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: SignalProcessing.fftInverse: empty array argument.}}
+
+####################################################################
+test SignalProcessing-10.3 {fftInverse Complex: order 0} {
+    set ca2 [java::new {ptolemy.math.Complex[]} 2 [list $c1 $c1 ]]
+    catch {set result [java::call ptolemy.math.SignalProcessing \
+	    fftInverse $ca2 0]} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: SignalProcessing.fftInverse: order must be positive.}}
+
+####################################################################
+test SignalProcessing-10.4 {fftInverse Complex: order 1} {
+    # The inverse of test 5.4 above
+    set ca2 [java::new {ptolemy.math.Complex[]} 2 [list $c1 $c1 ]]
+    set result [java::call ptolemy.math.SignalProcessing \
+	    fftInverse $ca2 1]
+    javaPrintArray $result
+} {{1.0 + 0.0i} {0.0 + 0.0i}}
+
+####################################################################
+test SignalProcessing-10.5 {fftInverse Complex: array that is not a power of two in length} {
+    set ca3 [java::new {ptolemy.math.Complex[]} 3 [list $c1 $c0 $c0 ]]
+    set result [java::call ptolemy.math.SignalProcessing \
+	    fftInverse $ca3 2]
+    javaPrintArray $result
+} {{0.25 + 0.0i} {0.25 + 0.0i} {0.25 + 0.0i} {0.25 + 0.0i}}
+
+####################################################################
+test SignalProcessing-10.6 {fftInverse Complex: array is longer than order} {
+    set ca3 [java::new {ptolemy.math.Complex[]} 3 [list $c1 $c0 $c0 ]]
+    set result [java::call ptolemy.math.SignalProcessing \
+	    fftInverse $ca3 1]
+    javaPrintArray $result
+} {{0.5 + 0.0i} {0.5 + 0.0i}}
+
+####################################################################
+test SignalProcessing-11.1 {poleZeroToFreq:} {
+    list "We need tests for poleZeroToFreq with realistic input data"
+} {1} {KNOW_ERROR}
+
+####################################################################
+test SignalProcessing-12.1  {powerOfTwo: check range} {
+    set negative [catch {[java::call \
+	    ptolemy.math.SignalProcessing powerOfTwo -0.01]} errMsg]
+    set zero [catch {[java::call \
+	    ptolemy.math.SignalProcessing powerOfTwo 0.01]} errMsg]
+    set positive [java::call \
+	    ptolemy.math.SignalProcessing powerOfTwo 2.1]
+    set anotherpositive [java::call \
+	    ptolemy.math.SignalProcessing powerOfTwo 10.0]
+    list $negative $zero $positive $anotherpositive
+} {1 1 4 16}
+
+####################################################################
+test SignalProcessing-13.1 {raisedCosine} {
+    list "We need tests for raisedCosine with realistic input data"
+} {1} {KNOW_ERROR}
+
+####################################################################
+test SignalProcessing-14.1 {raisedCosinePulse} {
+    list "We need tests for raisedCosinePulse with realistic input data"
+} {1} {KNOW_ERROR}
+
+
+# Used to test sawtooth, square and triangle
+proc _testSignalProcessingFunction { function period phase \
+	starttime endtime steptime} {
+    set plot 0
+    if {$plot} {
+	global plotfilenumber
+	if ![info exists plotfilenumber] {
+	    set plotfilenumber 1
+	} else {
+	    incr plotfilenumber
+	}
+	set plotfile /tmp/sp$plotfilenumber.plt
+	set fd [open $plotfile "w"]
+	puts $fd "TitleText: $function period=$period phase=$phase $starttime <= t <= $endtime by $steptime"
+
+    } 
+    set results {}
+    for {set time $starttime} \
+	    {$time < $endtime} \
+	    {set time [expr {$time + $steptime}]} {
+	set value  [java::call \
+		ptolemy.math.SignalProcessing $function $period $phase $time]
+	lappend results $value
+	if {$plot} {
+	    puts $fd "$time $value"
+	}
+    }
+    if {$plot} {
+	close $fd
+	exec pxgraph $plotfile &
+    }
+    return $results
+}
+
+####################################################################
+test SignalProcessing-15.1 {sawtooth} {
+    _testSignalProcessingFunction sawtooth 1.0 0.0 -1.0 2.0 0.2
+} {-2.0 -1.6 -1.2 -0.8 -0.4 0.0 0.4 0.8 -0.8 -0.4 0.0 0.4 0.8 -0.8 -0.4}
+
+####################################################################
+test SignalProcessing-15.2 {sawtooth: negative period} {
+    # FIXME, some of the results are less than -1.0?
+    _testSignalProcessingFunction sawtooth -1.0 0.5 -1.0 2.0 0.2
+} {} {KNOWN_ERROR}
+
+####################################################################
+test SignalProcessing-15.3 {sawtooth: negative phase} {
+    # FIXME, some of the results are less than -1.0?
+    _testSignalProcessingFunction sawtooth 1.0 -0.5 -1.0 2.0 0.2
+    #{-1.0 0.6 0.2 -0.2 -0.6 -1.0 0.6 0.2 -0.2 -0.6 -1.0 -1.4 -1.8 -2.2 -2.6}
+} {} {KNOWN_ERROR}
+
+####################################################################
+test SignalProcessing-16.1 {square} {
+    # FIXME, should these vary more at the beginning
+    _testSignalProcessingFunction square 1.0 0.5 -1.0 2.0 0.2
+    #1.0 1.0 1.0 1.0 1.0 -1.0 -1.0 -1.0 1.0 1.0 -1.0 -1.0 -1.0 1.0 1.0
+} {} {KNOWN_ERROR}
+
+####################################################################
+test SignalProcessing-16.2 {square: negative period} {
+    # FIXME, the value goes to -1 and stays there?
+    _testSignalProcessingFunction square -1.0 0.5 -1.0 2.0 0.2
+    #-1.0 -1.0 -1.0 1.0 1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0
+} {} {KNOWN_ERROR}
+
+####################################################################
+test SignalProcessing-16.3 {square: negative phase} {
+    # FIXME, the value is always -1?
+    _testSignalProcessingFunction square -1.0 -0.5 -1.0 2.0 0.2
+    #-1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0
+} {} {KNOWN_ERROR}
+
+
+####################################################################
+test SignalProcessing-17.1 {sqrtRaisedCosine} {
+    list "We need tests for sqrtRaisedCosine with realistic input data"
+} {1} {KNOW_ERROR}
+
+####################################################################
+test SignalProcessing-18.1 {sqrtRaisedCosinePulse} {
+    list "We need tests for sqrtRaisedCosinePulse with realistic input data"
+} {1} {KNOW_ERROR}
+
+####################################################################
+test SignalProcessing-19.1 {triangle} {
+    # FIXME: Does not look very triangular to me
+    _testSignalProcessingFunction triangle 1.0 0.5 -1.0 2.0 0.2
+    #-2.0 -1.2 -0.4 0.4 0.8 0.0 -0.8 -0.4 0.4 0.8 0.0 -0.8 -0.4 0.4 0.8
+} {} {KNOWN_ERROR}
+
+####################################################################
+test SignalProcessing-19.2 {triangle: negative period} {
+    # FIXME: values are less than -1.0
+    _testSignalProcessingFunction triangle -1.0 0.5 -1.0 2.0 0.2
+    #0.0 0.8 0.4 -0.4 -0.8 0.0 0.8 0.4 -0.4 -1.2 -2.0 -2.8 -3.6 -4.4 -1.2
+} {} {KNOW_ERROR}
+
+####################################################################
+test SignalProcessing-19.3 {triangle: negative phase} {
+    # FIXME: values are less than -1.0
+    _testSignalProcessingFunction triangle -1.0 -0.5 -1.0 2.0 0.2
+    #0.0 0.8 0.4 -0.4 -1.2 -2.0 -2.8 -3.6 -4.4 -1.2 -2.0 -2.8 -3.6 -4.4 -1.2
+} {} {KNOW_ERROR}
+
+####################################################################
+test SignalProcessing-20.1 {unwrap} {
+    list "We need tests for unwrap with realistic input data"
+} {1} {KNOW_ERROR}
