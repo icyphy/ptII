@@ -121,7 +121,7 @@ class JHDLClass extends SootClass  {
 
 	// add call to superclass constructor
 	Chain locals = body.getLocals();
-	Local parent_local=null;
+	Local parent_local = null;
   	for (Iterator ls = locals.iterator();ls.hasNext();) {
   	    JimpleLocal local = (JimpleLocal) ls.next();
 	    if (local.getType().equals(nodeClass.getType()))
@@ -129,7 +129,7 @@ class JHDLClass extends SootClass  {
 
             //  	    System.out.println("Local name="+local.getType());
   	}
-        //  	System.out.println("this="+parent_local);
+        //  	System.out.println("this = "+parent_local);
 
 
         args = new LinkedList();
@@ -238,7 +238,8 @@ class JHDLClass extends SootClass  {
 	Chain c_units = c_body.getUnits();
 
         SootMethod connectMethod = cellClass.getMethod(
-                "byucc.jhdl.base.Wire connect(java.lang.String,byucc.jhdl.base.Wire)");
+                "byucc.jhdl.base.Wire "
+                + "connect(java.lang.String, byucc.jhdl.base.Wire)");
 
 	Local paramWire = c_body.getParameterLocal(num_params-1);
 
@@ -248,7 +249,7 @@ class JHDLClass extends SootClass  {
                     paramWire);
 	// find temporary wire local
 	Chain locals = c_body.getLocals();
-	Local localWire=null;
+	Local localWire = null;
   	for (Iterator ls = locals.iterator();ls.hasNext();) {
   	    JimpleLocal local = (JimpleLocal) ls.next();
 	    if (local.getName().equals(tempWireName));
@@ -260,8 +261,9 @@ class JHDLClass extends SootClass  {
    	c_units.insertBefore(Jimple.v().newAssignStmt(
                 localWire,invoke),c_units.getLast());
 	c_units.insertBefore(Jimple.v().newAssignStmt(
-                Jimple.v().newInstanceFieldRef(c_body.getThisLocal(),wireField),
-                localWire),c_units.getLast());
+                Jimple.v().newInstanceFieldRef(c_body.getThisLocal(),
+                        wireField),
+                localWire), c_units.getLast());
 
 
 
@@ -292,8 +294,8 @@ class JHDLClass extends SootClass  {
                 "byucc.jhdl.base.CellInterface out(java.lang.String,int)");
 	SootMethod portMethod = (input ? inFactoryMethod : outFactoryMethod);
 	// find temporary locals
-	Local cellInterfaceLocal=null;
-	Local interfaceArrayLocal=null;
+	Local cellInterfaceLocal = null;
+	Local interfaceArrayLocal = null;
 	for (Iterator i=si_body.getLocals().iterator();i.hasNext();) {
 	    Local l = (Local) i.next();
 	    if (l.getName().equals(cellInterfaceLocalName))
@@ -308,7 +310,7 @@ class JHDLClass extends SootClass  {
                         inFactoryMethod,
                         StringConstant.v(portname),
                         IntConstant.v(width)));
-  	si_units.insertBefore(newport_stmt,si_units.getLast());
+  	si_units.insertBefore(newport_stmt, si_units.getLast());
 	// assign local to array
 	si_units.insertBefore(Jimple.v().newAssignStmt(
                 Jimple.v().newArrayRef(interfaceArrayLocal,
@@ -333,8 +335,8 @@ class JHDLClass extends SootClass  {
   	JHDLClass jclass = new JHDLClass("mycircuit",Modifier.PUBLIC);
   	Scene.v().addClass(jclass);
 	jclass.initClass();
-	jclass.addPort("datain",true,8);
-	jclass.addPort("dataout",false,8);
+	jclass.addPort("datain", true, 8);
+	jclass.addPort("dataout",f alse, 8);
   	jclass.write();
     }
 

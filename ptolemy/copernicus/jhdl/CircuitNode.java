@@ -42,8 +42,8 @@ package ptolemy.copernicus.jhdl;
 @since Ptolemy II 2.0
 */
 public class CircuitNode {
-    public CircuitNode(Object obj){
-	_internal=obj;
+    public CircuitNode(Object obj) {
+	_internal = obj;
     }
 
     public Object getObject(){

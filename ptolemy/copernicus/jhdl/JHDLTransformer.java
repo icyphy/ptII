@@ -270,13 +270,15 @@ class JHDLTransformer extends SceneTransformer {
 	    if (port.isInput()) {
 		units.insertBefore(Jimple.v().newAssignStmt(
                         cellInterfaceLocal, Jimple.v().newStaticInvokeExpr(
-                                inFactoryMethod, StringConstant.v(port.getName()),
+                                inFactoryMethod,
+                                StringConstant.v(port.getName()),
                                 IntConstant.v(32))),
                         units.getLast());
 	    } else {
 		units.insertBefore(Jimple.v().newAssignStmt(
                         cellInterfaceLocal, Jimple.v().newStaticInvokeExpr(
-                                outFactoryMethod, StringConstant.v(port.getName()),
+                                outFactoryMethod,
+                                StringConstant.v(port.getName()),
                                 IntConstant.v(32))),
                         units.getLast());
 	    }
@@ -378,7 +380,8 @@ class JHDLTransformer extends SceneTransformer {
         SootClass cellClass = Scene.v().loadClassAndSupport(
                 "byucc.jhdl.base.Cell");
         SootMethod connectMethod = cellClass.getMethod(
-                "byucc.jhdl.base.Wire connect(java.lang.String,byucc.jhdl.base.Wire)");
+                "byucc.jhdl.base.Wire "
+                + "connect(java.lang.String,byucc.jhdl.base.Wire)");
         SootClass wireClass = Scene.v().loadClassAndSupport(
                 "byucc.jhdl.base.Wire");
         Type wireType = RefType.v(wireClass);
@@ -520,24 +523,28 @@ class JHDLTransformer extends SceneTransformer {
 		// invoke expression
 		if (expr instanceof InstanceInvokeExpr) {
 		    // See if the invocation is done on a port
-		    Local instance = (Local) ((InstanceInvokeExpr)expr).getBase();
-                    //  		    System.out.println("statement="+statement+" base="+
-                    //  				       instance + " type="+instance.getType());
-  		    if (instance.getType().equals(TypedIOPortClass.getType())) {
-  			System.out.println("Found an invoke instance on a port"+
+		    Local instance =
+                        (Local) ((InstanceInvokeExpr)expr).getBase();
+                    // System.out.println("statement="+statement+" base="+
+                    // instance + " type="+instance.getType());
+  		    if (instance.getType()
+                            .equals(TypedIOPortClass.getType())) {
+  			System.out.println("Found an invoke "
+                                + "instance on a port"+
                                 statement);
   			SootMethod instanceMethod = expr.getMethod();
 			if (instanceMethod.equals(getIOPortMethod)) {
 			    System.out.println("get on "+instance.getName());
 
-  			    Local localWire = Jimple.v().newLocal(instance.getName(),
-                                    wireClass.getType());
-                            //  			    SootField wireField = getField(String name,
-                            //                                               wireClass.getType());
-                            //     			    Jimple.v().newInstanceFieldRef(localWire,
-                            //                                               SootField);
+  			    Local localWire =
+                                Jimple.v().newLocal(instance.getName(),
+                                        wireClass.getType());
+                            // SootField wireField = getField(String name,
+                            //                         wireClass.getType());
+                            // Jimple.v().newInstanceFieldRef(localWire,
+                            //                                SootField);
 
-                            //  			    instancefieldref
+                            // instancefieldref
 
 			    /*
                               // create a method invocation to the wire.get()
@@ -553,9 +560,10 @@ class JHDLTransformer extends SceneTransformer {
 			    System.out.println("send");
 			}
 		    }
-                    //  		    for (Iterator ports = portlist.iterator();ports.hasNext();) {
-                    //  			TypedIOPort port = (TypedIOPort) ports.next();
-                    //  		    }
+                    // for (Iterator ports = portlist.iterator();
+                    //      ports.hasNext();) {
+                    //      TypedIOPort port = (TypedIOPort) ports.next();
+                    // }
 		}
 	    }
 	}
@@ -593,8 +601,8 @@ class JHDLTransformer extends SceneTransformer {
 
 		    Type parameterType = (Type) parameters.next();
 		    if (parameterType.equals(rightOpType)) {
-                        //    			System.out.println("*** Removed statement"+statement
-                        //  					   +" ***");
+                        // System.out.println("*** Removed statement"+statement
+                        // 		   +" ***");
 
                         units.remove(statement);
 		    }

@@ -105,7 +105,7 @@ public class CircuitAnalysis {
             Port input = entity.getPort("input");
             Port output = entity.getPort("output");
             //CircuitNode delay = new CircuitNode(entity);
-	    //String delay="delay"+count++;
+	    //String delay = "delay"+count++;
             graph.addNode(input);
             graph.addNode(output);
             graph.addNode(entity);
@@ -117,7 +117,7 @@ public class CircuitAnalysis {
             Port input = entity.getPort("input");
             Port output = entity.getPort("output");
 	    //CircuitNode fir = new CircuitNode(entity);
-	    //String fir="FIR"+count++;
+	    //String fir = "FIR"+count++;
             graph.addNode(input);
             graph.addNode(output);
             graph.addNode(entity);
@@ -269,19 +269,19 @@ public class CircuitAnalysis {
 			//This is a token that has been initialized to some
 			//value
                         // Get the constant value of the token.
-                        //                          String valueString =
-                        //                              ((Token)tag.getObject()).toString();
-                        //                          requiredNodeSet.add(valueString);
-                        //                          if (!graph.containsNode(valueString)) {
-                        //                              graph.addNode(valueString);
-                        //                          }
-                        //                          graph.addEdge(valueString, leftOp);
-			Token valueToken=(Token)tag.getObject();
+                        // String valueString =
+                        //    ((Token)tag.getObject()).toString();
+                        //    requiredNodeSet.add(valueString);
+                        // if (!graph.containsNode(valueString)) {
+                        //    graph.addNode(valueString);
+                        // }
+                        // graph.addEdge(valueString, leftOp);
+			Token valueToken = (Token)tag.getObject();
                         requiredNodeSet.add(valueToken);
                         if (!graph.containsNode(valueToken)) {
                             graph.addNode(valueToken);
                         }
-                        //                          graph.addEdge(valueString, leftOp);
+                        // graph.addEdge(valueString, leftOp);
                         graph.addEdge(valueToken, leftOp);
                     }
                 } else if (rightOp instanceof Local) {
@@ -302,19 +302,19 @@ public class CircuitAnalysis {
                             // String portName = port.getName();
                             if (!graph.containsNode(port)) {
                                 graph.addNode(port);
-                                //    			      graph.addNode(port.getName());
+                                // graph.addNode(port.getName());
                             }
 			    requiredNodeSet.add(port);
 			    graph.addEdge(port, leftOp);
-                            //  			    requiredNodeSet.add(port.getName());
-                            //  			    graph.addEdge(port.getName(), leftOp);
+                            // requiredNodeSet.add(port.getName());
+                            // graph.addEdge(port.getName(), leftOp);
                             continue;
                         } else {
 			    //This is for all methods that have not been
 			    //inlined yet (and aren't "get"s).  Must handle
 			    //these eventually
-                            //                              graph.addNode(opName);
-                            //                              graph.addEdge(base, opName);
+                            //graph.addNode(opName);
+                            //graph.addEdge(base, opName);
                             graph.addNode(invokedMethod);
                             graph.addEdge(base, invokedMethod);
                         }
@@ -361,19 +361,21 @@ public class CircuitAnalysis {
 
     protected ptolemy.data.type.Type _getPortType(Port port)
             throws RuntimeException {
-	ptolemy.data.type.Type t=null;
+	ptolemy.data.type.Type t = null;
 	try {
-	    TypedIOPort tport=(TypedIOPort)port;
-	    t=tport.getType();
+	    TypedIOPort tport = (TypedIOPort)port;
+	    t = tport.getType();
 	} catch (ClassCastException e){
-	    throw new RuntimeException("Must have ports that are TypedIOPorts");
+	    throw new RuntimeException("Must have ports that are "
+                    + "TypedIOPorts");
 	}
 	if (t.equals(BaseType.FIX) || t.equals(BaseType.INT) ||
                 t.equals(BaseType.LONG) || t.equals(BaseType.BYTE) ||
                 t.equals(BaseType.BOOLEAN) ) {
 	    return t;
 	} else {
-	    throw new RuntimeException("Unsupported port type "+t+" in port "+port);
+	    throw new RuntimeException("Unsupported port type " + t
+                    + " in port "+port);
 	}
     }
 
