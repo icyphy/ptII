@@ -161,13 +161,17 @@ public class ModelTransformer extends SceneTransformer {
             SootUtilities.searchForMethodByName(compositeActorClass,
                     "initialize");
         SootMethod prefireMethod =
-            SootUtilities.searchForMethodByName(compositeActorClass, "prefire");
+            SootUtilities.searchForMethodByName(compositeActorClass,
+                    "prefire");
         SootMethod fireMethod =
-            SootUtilities.searchForMethodByName(compositeActorClass, "fire");
+            SootUtilities.searchForMethodByName(compositeActorClass,
+                    "fire");
         SootMethod postfireMethod =
-            SootUtilities.searchForMethodByName(compositeActorClass, "postfire");
+            SootUtilities.searchForMethodByName(compositeActorClass,
+                    "postfire");
         SootMethod wrapupMethod =
-            SootUtilities.searchForMethodByName(compositeActorClass, "wrapup");
+            SootUtilities.searchForMethodByName(compositeActorClass,
+                    "wrapup");
 
         // Initialize the model.
         {
@@ -213,7 +217,8 @@ public class ModelTransformer extends SceneTransformer {
                     units.add(Jimple.v().newInvokeStmt(
                             Jimple.v().newInterfaceInvokeExpr(settableLocal,
                                     setExpressionMethod,
-                                    StringConstant.v(((Settable)attribute).getExpression()))));
+                                    StringConstant.v(((Settable)attribute)
+                                            .getExpression()))));
                 }
             }
 
@@ -333,10 +338,12 @@ public class ModelTransformer extends SceneTransformer {
                         // first assign to temp
                         units.add(Jimple.v().newAssignStmt(tempPortLocal,
                                 Jimple.v().newVirtualInvokeExpr(entityLocal,
-                                        method, StringConstant.v(port.getName()))));
+                                        method,
+                                        StringConstant.v(port.getName()))));
                         // and then cast to portLocal
                         units.add(Jimple.v().newAssignStmt(portLocal,
-                                Jimple.v().newCastExpr(tempPortLocal, portType)));
+                                Jimple.v().newCastExpr(tempPortLocal,
+                                        portType)));
                     }
 
                     // Set the type of the port if we need to.
@@ -550,7 +557,8 @@ public class ModelTransformer extends SceneTransformer {
             units.add(Jimple.v().newInvokeStmt(
                     Jimple.v().newInterfaceInvokeExpr(settableLocal,
                             setExpressionMethod,
-                            StringConstant.v(((Settable)attribute).getExpression()))));
+                            StringConstant.v(((Settable)attribute)
+                                    .getExpression()))));
 
         }
     }

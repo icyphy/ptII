@@ -110,9 +110,10 @@ public class CommandLineTransformer extends SceneTransformer {
         _model = model;
     }
 
-    /** Return an instance of this transformer that will operate on the given model.
-     *  The model is assumed to already have been properly initialized so that
-     *  resolved types and other static properties of the model can be inspected.
+    /** Return an instance of this transformer that will operate on
+     *  the given model.  The model is assumed to already have been
+     *  properly initialized so that resolved types and other static
+     *  properties of the model can be inspected.
      */
     public static CommandLineTransformer v(CompositeActor model) {
         return new CommandLineTransformer(model);
@@ -219,7 +220,8 @@ public class CommandLineTransformer extends SceneTransformer {
             if(iterationLimit > 1) {
                 // Increment the number of iterations.
                 units.add(Jimple.v().newAssignStmt(iterationLocal,
-                        Jimple.v().newAddExpr(iterationLocal, IntConstant.v(1))));
+                        Jimple.v().newAddExpr(iterationLocal,
+                        IntConstant.v(1))));
                 // If the number of iterations is greater than the limit,
                 // then we're done.
                 units.add(Jimple.v().newIfStmt(
@@ -250,7 +252,8 @@ public class CommandLineTransformer extends SceneTransformer {
                     new LinkedList(), VoidType.v(),
                     Modifier.PUBLIC);
             SootMethod actorMethod =
-                SootUtilities.searchForMethodByName(actorClass, classMethod.getName());
+                SootUtilities.searchForMethodByName(actorClass,
+                        classMethod.getName());
             modelClass.addMethod(classMethod);
              JimpleBody body = Jimple.v().newBody(classMethod);
              //DavaBody body = Dava.v().newBody(classMethod);
@@ -306,7 +309,8 @@ public class CommandLineTransformer extends SceneTransformer {
                     new LinkedList(), VoidType.v(),
                     Modifier.PUBLIC);
             SootMethod actorMethod =
-                SootUtilities.searchForMethodByName(actorClass, classMethod.getName());
+                SootUtilities.searchForMethodByName(actorClass,
+                        classMethod.getName());
             modelClass.addMethod(classMethod);
             JimpleBody body = Jimple.v().newBody(classMethod);
             classMethod.setActiveBody(body);
@@ -354,7 +358,8 @@ public class CommandLineTransformer extends SceneTransformer {
             SDFDirector director = (SDFDirector)_model.getDirector();
             Iterator schedule = null;
             try {
-                schedule = director.getScheduler().getSchedule().actorIterator();
+                schedule =
+                     director.getScheduler().getSchedule().actorIterator();
             } catch (Exception ex) {
                 ex.printStackTrace();
                 throw new RuntimeException();
@@ -385,7 +390,8 @@ public class CommandLineTransformer extends SceneTransformer {
                     new LinkedList(), VoidType.v(),
                     Modifier.PUBLIC);
             SootMethod actorMethod =
-                SootUtilities.searchForMethodByName(actorClass, classMethod.getName());
+                SootUtilities.searchForMethodByName(actorClass,
+                        classMethod.getName());
             modelClass.addMethod(classMethod);
             JimpleBody body = Jimple.v().newBody(classMethod);
             classMethod.setActiveBody(body);
@@ -465,9 +471,9 @@ public class CommandLineTransformer extends SceneTransformer {
 
     }
 
-    /** Anywhere where the iterator of the given field is referenced in the given class,
-     *  unroll the iterator as if it contained the objects referenced by the
-     *  given fields.
+    /** Anywhere where the iterator of the given field is referenced
+     *  in the given class, unroll the iterator as if it contained the
+     *  objects referenced by the given fields.
      */
     public void unrollIteratorInstances(SootClass theClass, SootField field,
             List fieldList) {
@@ -532,7 +538,8 @@ public class CommandLineTransformer extends SceneTransformer {
                 // walk backwards until we find a definition of the iterator.
                 while(unit != whilePredecessor.getHead() && !found) {
                     if(unit instanceof DefinitionStmt &&
-                            ((DefinitionStmt)unit).getLeftOp().equals(iteratorLocal)) {
+                            ((DefinitionStmt)unit).getLeftOp()
+                            .equals(iteratorLocal)) {
                         found = true;
                     } else {
                         unit = whilePredecessor.getPredOf(unit);
@@ -542,17 +549,25 @@ public class CommandLineTransformer extends SceneTransformer {
                 System.out.println("iterator def = " + unit);
                 DefinitionStmt iteratorDefinition = ((DefinitionStmt)unit);
 
-                if(!(iteratorDefinition.getRightOp() instanceof InterfaceInvokeExpr) ||
-                        !((InterfaceInvokeExpr)iteratorDefinition.getRightOp()).getMethod().getName().equals("iterator")) {
+                if(!(iteratorDefinition.getRightOp()
+                        instanceof InterfaceInvokeExpr) ||
+                        !((InterfaceInvokeExpr)iteratorDefinition
+                                .getRightOp()).getMethod().getName()
+                        .equals("iterator")) {
                     continue;
                 }
-                Local collectionLocal = (Local) ((InterfaceInvokeExpr)iteratorDefinition.getRightOp()).getBase();
+                Local collectionLocal =
+                    (Local) ((InterfaceInvokeExpr)iteratorDefinition
+                            .getRightOp()).getBase();
                 System.out.println("collection Local = " + collectionLocal);
                 found = false;
-                // walk backward again until we reach the definition of the collection.
+
+                // Walk backward again until we reach the definition
+                // of the collection.
                 while(unit != whilePredecessor.getHead() && !found) {
                     if(unit instanceof DefinitionStmt &&
-                            ((DefinitionStmt)unit).getLeftOp().equals(collectionLocal)) {
+                            ((DefinitionStmt)unit).getLeftOp()
+                            .equals(collectionLocal)) {
                         found = true;
                     } else {
                         unit = whilePredecessor.getPredOf(unit);
@@ -562,14 +577,16 @@ public class CommandLineTransformer extends SceneTransformer {
                 System.out.println("field = " + field);
                 DefinitionStmt collectionDefinition = ((DefinitionStmt)unit);
                 if(!(collectionDefinition.getRightOp() instanceof FieldRef) ||
-                        ((FieldRef)collectionDefinition.getRightOp()).getField() != field) {
+                        ((FieldRef)collectionDefinition.getRightOp())
+                        .getField() != field) {
                     continue;
                 }
                 // FINALLY we know we've found something we can unroll... :)
                 System.out.println("is unrollable...");
 
-                // There should be a jump from the predecessor to the condition.  Redirect this jump to the
-                // body.
+                // There should be a jump from the predecessor to the
+                // condition.  Redirect this jump to the body.
+
                 whileCond.getHead().redirectJumpsToThisTo(block.getHead());
 
                 Local thisLocal = body.getThisLocal();
@@ -599,7 +616,9 @@ public class CommandLineTransformer extends SceneTransformer {
                             if(value instanceof InvokeExpr) {
                                 InvokeExpr r = (InvokeExpr)value;
                                 if(r.getMethod() == iteratorNextMethod) {
-                                    box.setValue(Jimple.v().newInstanceFieldRef(thisLocal, insertField));
+                                    box.setValue(Jimple.v()
+                                            .newInstanceFieldRef(thisLocal,
+                                                    insertField));
                                 }
                             }
                         }
@@ -657,16 +676,17 @@ public class CommandLineTransformer extends SceneTransformer {
         }
     }
 
-    /** Make the given field final.
-     *  Anywhere where the the given field is used in the given class,
-     *  inline the reference with the given value.  Anywhere where the given field is
-     *  illegally defined in the given class, inline the definition to throw a new exception.
-     *  This happens unless the given class is the defining class for the given field and
-     *  the definition occurs within an initializer (for instance fields) or a static
-     *  initializer (for static fields).  Note that this is
-     *  rather limited, since it is only really useful for constant values.
-     *  In would be nice to specify a more complex expression to inline,
-     *  but I'm not sure how to do it.
+    /** Make the given field final.  Anywhere where the the given
+     *  field is used in the given class, inline the reference with
+     *  the given value.  Anywhere where the given field is illegally
+     *  defined in the given class, inline the definition to throw a
+     *  new exception.  This happens unless the given class is the
+     *  defining class for the given field and the definition occurs
+     *  within an initializer (for instance fields) or a static
+     *  initializer (for static fields).  Note that this is rather
+     *  limited, since it is only really useful for constant values.
+     *  In would be nice to specify a more complex expression to
+     *  inline, but I'm not sure how to do it.
      */
     public void assertFinalField(SootClass theClass,
             SootField theField, Value newValue) {
@@ -709,7 +729,8 @@ public class CommandLineTransformer extends SceneTransformer {
                             if(ref.getField() == theField) {
                                 System.out.println("inlining stmt = " + stmt);
 
-                                box.setValue(Evaluator.getConstantValueOf(newValue));
+                                box.setValue(Evaluator
+                                        getConstantValueOf(newValue));
                             }
                         }
 

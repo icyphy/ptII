@@ -65,9 +65,10 @@ public class InlineParameterTransformer extends SceneTransformer {
         _model = model;
     }
 
-    /** Return an instance of this transformer that will operate on the given model.
-     *  The model is assumed to already have been properly initialized so that
-     *  resolved types and other static properties of the model can be inspected.
+    /** Return an instance of this transformer that will operate on
+     *  the given model.  The model is assumed to already have been
+     *  properly initialized so that resolved types and other static
+     *  properties of the model can be inspected.
      */
     public static InlineParameterTransformer v(CompositeActor model) {
         return new InlineParameterTransformer(model);
