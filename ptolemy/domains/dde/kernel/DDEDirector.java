@@ -269,10 +269,10 @@ public class DDEDirector extends CompositeProcessDirector {
      *  initialization of the actors.
      */
     public void initialize() throws IllegalActionException {
-        super.initialize();
 	_completionTime = PrioritizedTimedQueue.ETERNITY;
         _writeBlockedQueues = new LinkedList();
         _pendingMutations = false;
+        super.initialize();
     }
 
     /** Return a new receiver of a type compatible with this
@@ -312,7 +312,7 @@ public class DDEDirector extends CompositeProcessDirector {
 	    TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
 	    timeKeeper.removeAllIgnoreTokens();
 	}
-	return _notDone && !_stopRequested;
+	return super.postfire();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -324,7 +324,7 @@ public class DDEDirector extends CompositeProcessDirector {
      *
      *  @param receiver The receiver whose data transfer is blocked.
      */
-    protected synchronized void _actorBlocked(DDEReceiver receiver) {
+    protected synchronized void _actorBlocked(ProcessReceiver receiver) {
         if (receiver.isWriteBlocked()) {
 	    if (_writeBlockedQueues == null) {
 	        _writeBlockedQueues = new LinkedList();
@@ -432,11 +432,12 @@ public class DDEDirector extends CompositeProcessDirector {
      */
     protected synchronized boolean _resolveInternalDeadlock()
             throws IllegalActionException {
+        System.out.println("_writeBlockedQueues.size() = " + _writeBlockedQueues.size());
 	if (_writeBlockedQueues.size() > 0) {
-	    _incrementLowestCapacityPort();
+            _incrementLowestCapacityPort();
 	    return true;
 	}
-	return false;
+	return super._resolveInternalDeadlock();
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -90,7 +90,8 @@ test FeedBackDelay-2.1 {Cycle null tokens with actor/lib/clock} {
     set fork [java::new ptolemy.domains.dde.kernel.test.TwoPut $toplevel "fork"]
     set fBack [java::new ptolemy.domains.dde.kernel.FeedBackDelay $toplevel "fBack"]
 
-    $fBack setDelay 4.0
+    set delay [java::cast ptolemy.data.expr.Parameter [$fBack getAttribute "delay"]]
+    $delay setExpression 4.0
 
     set rcvrIn [$actorReceiver getPort "input"]
     set joinIn [$join getPort "input"]
@@ -151,7 +152,9 @@ test FeedBackDelay-3.1 {Cycle real tokens with actor/lib/clock} {
     set fBack [java::new ptolemy.domains.dde.kernel.FeedBackDelay $toplevel "fBack"]
     set sink [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "sink" 1]
 
-    $fBack setDelay 4.0
+    set delay [java::cast ptolemy.data.expr.Parameter [$fBack getAttribute "delay"]]
+    $delay setExpression 4.0
+
     set realDelay [java::cast ptolemy.data.expr.Parameter [$fBack getAttribute realDelay]]
     $realDelay setToken [java::new ptolemy.data.BooleanToken true]
 
@@ -217,8 +220,11 @@ test FeedBackDelay-4.1 {Dual cycle with 0 delay in lower cycle with actor/lib/cl
     set fork2 [java::new ptolemy.domains.dde.kernel.test.TwoPut $toplevel "fork2"]
     set fBack2 [java::new ptolemy.domains.dde.kernel.FeedBackDelay $toplevel "fBack2"]
 
-    $fBack1 setDelay 4.0
-    $fBack2 setDelay 0.0
+    set delay [java::cast ptolemy.data.expr.Parameter [$fBack1 getAttribute "delay"]]
+    $delay setExpression 4.0
+
+    set delay [java::cast ptolemy.data.expr.Parameter [$fBack2 getAttribute "delay"]]
+    $delay setExpression 0.0
 
     set rcvr1In [$rcvr1 getPort "input"]
     set join1In [$join1 getPort "input"]
@@ -298,9 +304,10 @@ test FeedBackDelay-4.2 {Dual cycle with very small delay in lower cycle with act
     set fork2 [java::new ptolemy.domains.dde.kernel.test.TwoPut $toplevel "fork2"]
     set fBack2 [java::new ptolemy.domains.dde.kernel.FeedBackDelay $toplevel "fBack2"]
 
-    $fBack1 setDelay 4.0
-    $fBack2 setDelay 4.0
-    #$fBack2 setDelay 0.2
+    set delay [java::cast ptolemy.data.expr.Parameter [$fBack1 getAttribute "delay"]]
+    $delay setExpression 4.0
+    set delay [java::cast ptolemy.data.expr.Parameter [$fBack2 getAttribute "delay"]]
+    $delay setExpression 4.0
 
     set clockOut [java::cast ptolemy.actor.TypedIOPort [$clock getPort "output"]]
     set rcvr1In [$rcvr1 getPort "input"]

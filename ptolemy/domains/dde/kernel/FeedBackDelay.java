@@ -117,12 +117,12 @@ public class FeedBackDelay extends DDEActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _setVariables();
-
-        _name = name;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public  variables                 ////
+
+    public Parameter delay;
 
     public TypedIOPort input = null;
 
@@ -146,8 +146,8 @@ public class FeedBackDelay extends DDEActor {
     /** Return the delay value of this actor.
      * @return The delay value of this actor.
      */
-    public double getDelay() {
-	return _delay;
+    public double getDelay() throws IllegalActionException {
+	return ((DoubleToken)delay.getToken()).doubleValue();
     }
 
     /** Consume a single input token and produce an identical output
@@ -201,7 +201,7 @@ public class FeedBackDelay extends DDEActor {
      */
     public void initialize() throws IllegalActionException {
 	super.initialize();
-
+        
         Receiver[][] receivers = output.getRemoteReceivers();
 	for ( int i = 0; i < receivers.length; i++ ) {
 	    for ( int j = 0; j < receivers[i].length; j++ ) {
@@ -219,20 +219,6 @@ public class FeedBackDelay extends DDEActor {
 	    }
 	}
     }
-
-    /** Set the delay value of this actor.
-     * @param delay The delay value of this actor.
-     */
-    public void setDelay(double delay) {
-	_delay = delay;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    protected double _delay = 4.0;
-
-    private String _name;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -262,8 +248,13 @@ public class FeedBackDelay extends DDEActor {
 
         nullDelay = new
             Parameter(this, "nullDelay", new BooleanToken(true));
+        nullDelay.setTypeEquals(BaseType.BOOLEAN);
         realDelay = new
             Parameter(this, "realDelay", new BooleanToken(false));
+        realDelay.setTypeEquals(BaseType.BOOLEAN);
+        delay = new
+            Parameter(this, "delay", new DoubleToken(1.0));
+        delay.setTypeEquals(BaseType.DOUBLE);
     }
 
 }
