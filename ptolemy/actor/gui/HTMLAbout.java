@@ -83,24 +83,22 @@ public class HTMLAbout {
             + "<li><a href=\"about:configuration\">"
             + "<code>about:configuration</code></a> "
             + "Expand the configuration (good way to test for "
-            + "missing classes)\n"
+            + "missing classes).\n"
             + "<li><a href=\"about:copyright\"><code>about:copyright</code></a> "
             + "Display information about the copyrights.\n"
             + "<li><a href=\"about:demos\"><code>about:demos</code></a>"
-            + "Open up all the demonstrations.\n"
+            + "Open up all the demonstrations (May fail in Ptiny, DSP or "
+            + "Hyvisual configurations).\n"
             + "<li><a href=\"about:demos#ptolemy/configs/doc/demosPtiny.htm\">"
             + "<code>about:demos#ptolemy/configs/doc/demosPtiny.htm</code></a>"
             + "\nOpen up the .xml files in\n"
-            + "<code>ptolemy/configs/doc/demosPtiny.htm</code>. Note that\n"
-            + "URL can be used here, but File -&gt Open URL does not handle\n"
-            + "<code>about:</code>, so you will need to create a webpage\n"
-            + "that has this as a URL."
-            + "<li><a href=\"about:runAllDemos\"><code>about:runAllDemos</code></a>"
-            + "Run all the demonstrations.\n"
-            + "<li><a href=\"about:runAllDemos#ptolemy/configs/doc/demosPtiny.htm\">"
-            + "<code>about:runAllDemosdemos#ptolemy/configs/doc/demosPtiny.htm</code></a>"
-            + "\nRun all the .xml files in\n"
             + "<code>ptolemy/configs/doc/demosPtiny.htm</code>.\n"
+//             + "<li><a href=\"about:runAllDemos\"><code>about:runAllDemos</code></a>"
+//             + "Run all the demonstrations.\n"
+//             + "<li><a href=\"about:runAllDemos#ptolemy/configs/doc/demosPtiny.htm\">"
+//             + "<code>about:runAllDemosdemos#ptolemy/configs/doc/demosPtiny.htm</code></a>"
+//             + "\nRun all the .xml files in\n"
+//             + "<code>ptolemy/configs/doc/demosPtiny.htm</code>.\n"
             + "</ul>\n</body>\n</html>\n";
     }
 
@@ -151,13 +149,18 @@ public class HTMLAbout {
             // <a href="about:copyright">about:copyright</a>
             // then event.getURL() will return null, so we have
             // to use getDescription()
-            newURL = _temporaryHTMLFile("copyright",
+            newURL = _temporaryHTMLFile("copyright", ".htm",
                     GenerateCopyrights.generateHTML());
         } else if (event.getDescription()
                 .equals("about:configuration")) {
             // about:expandConfiguration will expand the configuration
             // and report any problems such as missing classes.
-            newURL = _temporaryHTMLFile("configuration",
+
+            // Open up the configuration as a .txt file because if
+            // we open it up as a .xml file, we get a graphical browser
+            // that does not tell us much.  If we open it up as a .htm,
+            // then the output is confusing.
+            newURL = _temporaryHTMLFile("configuration", ".txt",
                     configuration.exportMoML());
         } else if (event.getDescription()
                 .startsWith("about:demos")) {
@@ -174,7 +177,7 @@ public class HTMLAbout {
                     configuration);
         } else {
             // Display a message about the about: facility 
-            newURL = _temporaryHTMLFile("about", about());
+            newURL = _temporaryHTMLFile("about", ".htm", about());
         }
         return newURL;
     }
@@ -273,15 +276,18 @@ public class HTMLAbout {
     }
 
     // Save a string in a temporary html file and return a URL to it.
-    // @param prefix The prefix string to be used in generating the
-    // file's name; must be at least three characters long.
+    // @param prefix The prefix string to be used in generating the temporary
+    // file name; must be at least three characters long.
+    // @param suffix The suffix string to be used in generating the temporary
+    // file name.
     // @param contents  The contents of the temporary file
     // @return A URL pointing to a temporary file.
-    private static URL _temporaryHTMLFile(String prefix, String contents) 
+    private static URL _temporaryHTMLFile(String prefix, 
+            String suffix, String contents) 
             throws IOException {
         // Generate a copyright page in a temporary file
         File temporaryFile = File.createTempFile(
-                prefix, ".htm");
+                prefix, suffix);
         temporaryFile.deleteOnExit();
 
         FileWriter fileWriter = new FileWriter(temporaryFile);
