@@ -85,7 +85,17 @@ public class FilterBackwardCompatibility implements MoMLFilter {
                     attributeValue.equals("_icon")) {
 		// We are processing an annotation and it already
 		// has _icon
-		_currentlyProcessingActorThatMayNeedAnIcon = false;
+		_reset();
+	    } else if (_currentlyProcessingActorThatMayNeedAnEditorFactory) {
+		if (attributeValue.equals("_editorFactory")) {
+		    // We are processing a Parameter that already has a
+		    // _editorFactory
+		    _reset();
+		} else if (attributeValue.equals("_location")) {
+		    // We only add _editorFactory to parameters that
+		    // have locations
+		    _currentAttributeHasLocation = true;
+		}
 	    } else if (_currentlyProcessingActorWithPortNameChanges
                     && _portMap != null
                     && _portMap.containsKey(attributeValue)) {
@@ -175,7 +185,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 			.get(attributeValue);
 		} else if (_actorsThatShouldHaveIcons
                         .containsKey(attributeValue)) {
-		    // We found a class that needs an icon
+		    // We found a class that needs an _icon
 		    _currentlyProcessingActorThatRequiresUpdating = true;
 		    _currentlyProcessingActorThatMayNeedAnIcon = true;
 		    if (container != null ) {
@@ -201,27 +211,43 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 		    _newClass = null;
 		    MoMLParser.setModified(true);
 		    return temporaryNewClass;
+		} else if ((!_currentlyProcessingActorThatRequiresUpdating
+			    || !_currentlyProcessingActorWithPropertyClassChanges
+			    || (container != null
+			     && !container.getFullName()
+			     .equals(_currentActorFullName)
+			     && !container.getFullName()
+			     .startsWith(_currentActorFullName))
+			    ) 
+			   && attributeValue
+			   .equals("ptolemy.data.expr.Parameter")){ 
+		    // This test should be last in case we are currently
+		    // processing an attribute that needs a different 
+		    // sort of change
+		    _currentlyProcessingActorThatRequiresUpdating = true;
+		    _currentlyProcessingActorThatMayNeedAnEditorFactory =
+			true;
+		    if (container != null ) {
+			_currentActorFullName = container.getFullName()
+			    + "." + _lastNameSeen;
+		    } else {
+			_currentActorFullName = "." + _lastNameSeen;
+		    }
 		} else if ( (_currentlyProcessingActorWithPortNameChanges
                         || _currentlyProcessingActorWithPropertyClassChanges
+		        || _currentlyProcessingActorThatMayNeedAnEditorFactory
                         || _currentlyProcessingActorThatMayNeedAnIcon)
                         && container != null
                         && !container.getFullName()
                         .equals(_currentActorFullName)
                         && !container.getFullName()
                         .startsWith(_currentActorFullName)) {
-
 		    // We found another class in a different container
 		    // while handling a class with port name changes, so
 		    // set _doneProcessingActorWithPortNameChanges so we
 		    // can handle any port changes later.
 
-		    _currentlyProcessingActorThatRequiresUpdating = false;
-		    _currentlyProcessingActorWithPortNameChanges = false;
-		    _currentlyProcessingActorWithPropertyClassChanges = false;
-		    _currentlyProcessingActorThatMayNeedAnIcon = false;
-		    _doneProcessingActorWithPortNameChanges  = true;
-		    _currentActorFullName = null;
-		    _portMap = null;
+		    _reset();
                 }
             }
         } else if (_doneProcessingActorWithPortNameChanges
@@ -259,31 +285,68 @@ public class FilterBackwardCompatibility implements MoMLFilter {
      */
     public String filterEndElement(NamedObj container, String elementName)
             throws Exception {
-	if (!elementName.equals("entity")) {
-	    return elementName;
-	}
-
 	if ( _currentlyProcessingActorThatMayNeedAnIcon
+	     && elementName.equals("entity")
                 && container != null
                 && container.getFullName().equals(_currentActorFullName)) {
+	    _parse(container, _iconMoML);
+	} else if (_currentlyProcessingActorThatMayNeedAnEditorFactory
+		   && _currentAttributeHasLocation
+		   && elementName.equals("property")
+		   && container != null
+		   && container.getFullName().equals(_currentActorFullName)) {
+	    // In theory, we could do something like the lines below
+	    // but that would mean that the moml package would depend
+	    // on the vergil.toolbox package.
+	    //
+	    // VisibleParameterEditorFactor _editorFactory =
+	    //	new VisibleParameterEditorFactory(container, "_editorFactory");
 
-	    _currentlyProcessingActorThatMayNeedAnIcon = false;
+	    _parse(container, "<property name=\"_editorFactory\""
+		   + "class=\"ptolemy.vergil.toolbox."
+		   + "VisibleParameterEditorFactory\">"
+		   + "</property>");
 
-	    if (_parser == null) {
-		_parser = new MoMLParser();
-	    } else {
-		_parser.reset();
-	    }
-	    _parser.setContext(container);
-	    try {
-		NamedObj icon = _parser.parse(_iconMoML);
-		MoMLParser.setModified(true);
-	    } catch (Exception ex) {
-		throw new IllegalActionException(null, ex, "Failed to parse\n"
-                        + _iconMoML);
-	    }
 	}
 	return elementName;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    // Parse the moml in the container context.
+    private void _parse(NamedObj container, String moml) 
+	throws IllegalActionException {
+	_reset();
+	if (_parser == null) {
+	    _parser = new MoMLParser();
+	}
+	// setContext calls parser.reset()
+	_parser.setContext(container);
+	try {
+	    NamedObj icon = _parser.parse(moml);
+	    MoMLParser.setModified(true);
+	} catch (Exception ex) {
+	    throw new IllegalActionException(null, ex, "Failed to parse\n"
+					     + _iconMoML);
+	}
+    }
+
+    // Reset the private variables that change while we are filtering
+    // to their initial values.  Note that we do not reinitialize the
+    // maps here because they are not changed after they are created
+    // and initialized.
+    private void _reset() {
+	_currentlyProcessingActorThatRequiresUpdating = false;
+	_currentlyProcessingActorWithPortNameChanges = false;
+	_currentlyProcessingActorWithPropertyClassChanges = false;
+	_currentlyProcessingActorThatMayNeedAnEditorFactory =
+	    false;
+	_currentlyProcessingActorThatMayNeedAnIcon = false;
+	_doneProcessingActorWithPortNameChanges  = true;
+	_currentActorFullName = null;
+	_currentAttributeHasLocation = false;
+	_portMap = null;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -291,6 +354,11 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 
     // Set of all actors that require updating.
     private static Set _actorsThatRequireUpdating;
+
+    // We don't have a Map of actors that may need _editorFactory
+    // because currently only ptolemy.data.expr.Parameters that
+    // have a name="_icon" and a valueIcon need to have editorFactory
+    // added
 
     // Map of actors that should have _icon
     private static HashMap _actorsThatShouldHaveIcons;
@@ -307,15 +375,25 @@ public class FilterBackwardCompatibility implements MoMLFilter {
     // The the full name of the actor we are currently processing
     private static String _currentActorFullName;
 
+    // Set to true if the current attribute has a _location attribute.
+    // This variable is used to determine whether we need to add  a
+    // _editorFactory.
+    private static boolean _currentAttributeHasLocation = false;
+
     // Set to true if we are currently processing an actor with parameter
     // class changes, set to false when we are done.
     private static boolean
-    _currentlyProcessingActorWithPropertyClassChanges = false;
+	_currentlyProcessingActorWithPropertyClassChanges = false;
 
     // Set to true if we are currently processing an actor with port name
     // changes, set to false when we are done.
     private static boolean
-    _currentlyProcessingActorWithPortNameChanges = false;
+	_currentlyProcessingActorWithPortNameChanges = false;
+
+    // Set to true if we are currently processing an actor that may
+    // need _editorFactory added, set to false when we are done.
+    private boolean
+	_currentlyProcessingActorThatMayNeedAnEditorFactory = false;
 
     // Set to true if we are currently processing an actor that may
     // need _icon added, set to false when we are done.
@@ -349,7 +427,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
     // that requires processing. Set to false once we are
     // done processing that actor.  This is done for performance reasons.
     private static boolean _currentlyProcessingActorThatRequiresUpdating =
-    false;
+	false;
 
     static {
 	///////////////////////////////////////////////////////////
@@ -455,5 +533,8 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 	    .addAll(_actorsWithPropertyClassChanges.keySet());
 	_actorsThatRequireUpdating
 	    .addAll(_actorsThatShouldHaveIcons.keySet());
+	// ptolemy.data.expr.Parameters may need _editorFactory added.
+	_actorsThatRequireUpdating.add("ptolemy.data.expr.Parameter");
+
     }
 }

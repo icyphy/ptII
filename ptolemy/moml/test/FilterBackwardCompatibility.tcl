@@ -343,6 +343,61 @@ test FilterBackwardCompatibility-7.1 {HTVQEncode: Property Class Change} {
 
 
 
+######################################################################
+####
+#
+
+set editorFactoryMoml  "$header 
+<entity name=\"FilterBackwardCompatibilityEditorFactor\" class=\"ptolemy.actor.TypedCompositeActor\">
+    <property name=\"lambda\" class=\"ptolemy.data.expr.Parameter\" value=\"25.0\">
+        <property name=\"_hideName\" class=\"ptolemy.kernel.util.SingletonAttribute\">
+        </property>
+        <property name=\"lambda\" class=\"ptolemy.vergil.icon.ValueIcon\">
+        </property>
+        <property name=\"_smallIconDescription\" class=\"ptolemy.kernel.util.SingletonConfigurableAttribute\">
+            <configure>
+      <svg>
+        <text x=\"20\" style=\"font-size:14; font-family:SansSerif; fill:blue\" y=\"20\">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name=\"_location\" class=\"ptolemy.moml.Location\" value=\"355.0, 200.0\">
+        </property>
+    </property>
+</entity>"
+
+test FilterBackwardCompatibility-8.1 {Is a parameter, does not have _editorFactory} { 
+
+    set parser [java::new ptolemy.moml.MoMLParser]
+    # Note that 1.1 added the filter for all the parsers
+    set toplevel [$parser parse $editorFactoryMoml]
+    set newMoML [$toplevel exportMoML]
+    list $newMoML
+} {{<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="FilterBackwardCompatibilityEditorFactor" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
+    <property name="lambda" class="ptolemy.data.expr.Parameter" value="25.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="lambda" class="ptolemy.kernel.util.Attribute">
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="355.0, 200.0">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+    </property>
+</entity>
+}}
+
 test FilterBackwardCompatiblity-10.1 {Try running old models, first check that the makefile created the compat/ directory} { 
     if {! [file exists compat]} {
 	error "compat directory does not exist.  This could happen\
