@@ -169,20 +169,6 @@ public abstract class URLReader extends Source {
         super.attributeChanged(attribute);
     }
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then set the filename public member.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        URLReader newObject = (URLReader)super.clone(workspace);
-        newObject.output.setMultiport(true);
-        return newObject;
-    }
-
     /** Open the file at the URL, and set the width of the output.
      *  @exception IllegalActionException Not thrown in this base class
      */
