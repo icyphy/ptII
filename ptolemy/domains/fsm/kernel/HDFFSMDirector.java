@@ -277,10 +277,10 @@ public class HDFFSMDirector extends FSMDirector {
 				   "current refinment: " + 
 				   ta.getFullName());
 	    // Get all of its input ports.
-	    Enumeration refineInPorts = ta.inputPorts();
-	    while (refineInPorts.hasMoreElements()) {
+	    Iterator refineInPorts = ta.inputPortList().iterator();
+	    while (refineInPorts.hasNext()) {
 		IOPort refineInPort =
-		    (IOPort)refineInPorts.nextElement();
+		    (IOPort)refineInPorts.next();
 		if (_debugging) _debug("Current port of refining actor " +
 				       refineInPort.getFullName());
 		if (_debugging) _debug("token consumption rate = " +
@@ -767,14 +767,14 @@ public class HDFFSMDirector extends FSMDirector {
            actor.getFullName());
 
 	// Get all of its input ports.
-	Enumeration refineInPorts = actor.inputPorts();
+	Iterator refineInPorts = actor.inputPortList().iterator();
 	// Get the current refinement's container.
 	ComponentEntity refineInPortContainer =
 	    (ComponentEntity) actor.getContainer();
 	
-	while (refineInPorts.hasMoreElements()) {
+	while (refineInPorts.hasNext()) {
 	    IOPort refineInPort =
-		(IOPort)refineInPorts.nextElement();
+		(IOPort)refineInPorts.next();
 	    if (_debugging) _debug("Current port of refining actor " +
 				   refineInPort.getFullName());
 	    
@@ -782,17 +782,17 @@ public class HDFFSMDirector extends FSMDirector {
 	    // Get all of the input ports this port is
 	    // linked to on the outside (should only consist
 	    // of 1 port).
-	    Enumeration inPortsOutside = 
-		refineInPort.deepConnectedInPorts();
-	    if (!inPortsOutside.hasMoreElements()) {
+	    Iterator inPortsOutside = 
+		refineInPort.deepConnectedInPortList().iterator();
+	    if (!inPortsOutside.hasNext()) {
 		throw new IllegalActionException("Current " +
 			  "state's refining actor has an input " +
 			  "port not connected to an input port " +
 			                        "of its container.");
 	    }
-	    while (inPortsOutside.hasMoreElements()) {
+	    while (inPortsOutside.hasNext()) {
 		IOPort inputPortOutside =
-		    (IOPort)inPortsOutside.nextElement();
+		    (IOPort)inPortsOutside.next();
 		if (_debugging) _debug("Current outisde port connected " +
 				       "to port of refining actor " +
 				       inputPortOutside.getFullName());
@@ -851,14 +851,14 @@ public class HDFFSMDirector extends FSMDirector {
     protected void _updateOutputTokenProductionRates(TypedCompositeActor actor) 
 	throws IllegalActionException {
 	// Get all of its input ports.
-	Enumeration refineOutPorts = actor.outputPorts();
+	Iterator refineOutPorts = actor.outputPortList().iterator();
 	// Get the current refinement's container.
 	ComponentEntity refineOutPortContainer =
 	    (ComponentEntity) actor.getContainer();
 	
-	while (refineOutPorts.hasMoreElements()) {
+	while (refineOutPorts.hasNext()) {
 	    IOPort refineOutPort =
-		(IOPort)refineOutPorts.nextElement();
+		(IOPort)refineOutPorts.next();
 	    if (_debugging) _debug("Current port of refining actor " +
 				   refineOutPort.getFullName());
 	    
@@ -866,17 +866,17 @@ public class HDFFSMDirector extends FSMDirector {
 	    // Get all of the output ports this port is
 	    // linked to on the outside (should only consist
 	    // of 1 port).
-	    Enumeration outPortsOutside = 
-		refineOutPort.deepConnectedOutPorts();
-	    if (!outPortsOutside.hasMoreElements()) {
+	    Iterator outPortsOutside = 
+		refineOutPort.deepConnectedOutPortList().iterator();
+	    if (!outPortsOutside.hasNext()) {
 		throw new IllegalActionException("Current " +
 			  "state's refining actor has an output " +
 			  "port not connected to an output port " +
 			                        "of its container.");
 	    }
-	    while (outPortsOutside.hasMoreElements()) {
+	    while (outPortsOutside.hasNext()) {
 		IOPort outputPortOutside =
-		    (IOPort)outPortsOutside.nextElement();
+		    (IOPort)outPortsOutside.next();
 		if (_debugging) _debug("Current outisde port connected " +
 				       "to port of refining actor " +
 				       outputPortOutside.getFullName());
