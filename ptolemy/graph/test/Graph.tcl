@@ -1,6 +1,6 @@
 # Tests for the Graph class
 #
-# @Author: Yuhong Xiong
+# @Author: Shuvra S. Bhattacharyya, Yuhong Xiong 
 #
 # $Id$
 #
@@ -64,9 +64,10 @@ test Graph-2.2 {Create a graph with 2 nodes} {
     set n2 [java::new {java.lang.String String} node2]
     $p add $n1
     $p add $n2
-    $p addEdge $n1 $n2
+    set newEdges [$p addEdge $n1 $n2]
     $p addEdge $n2 $n1
-    list [$p contains $n1] [$p getEdgeCount] [$p getNodeCount]
+    set newEdge [[$newEdges iterator] next]
+    list [$p contains $n1] [$p edgeCount] [$p nodeCount]
 } {1 2 2}
 
 ######################################################################
@@ -74,9 +75,39 @@ test Graph-2.2 {Create a graph with 2 nodes} {
 # 
 test Graph-2.3 {try to add duplicate nodes} {
     # use the graph above
-    catch {$p add $n1} msg
+    set z [$p add $n1]
+    catch {$p {addNode ptolemy.graph.Node} $z} msg
     list $msg
-} {{java.lang.IllegalArgumentException: Graph.add: Object is already in the graph.}}
+} {{java.lang.IllegalArgumentException: Attempt to add a node that is already contained in the graph.
+Dumps of the offending node and graph follow.
+The offending node:
+node1
+The offending graph:
+{ptolemy.graph.Graph
+  {node1 node2}
+  {node2 node1}
+  {node1}
+}
+}}
+
+######################################################################
+####
+# 
+test Graph-2.4 {try to add duplicate edges} {
+    # use the graph above
+    catch {$p {addEdge ptolemy.graph.Edge} $newEdge} msg
+    list $msg
+} {{java.lang.IllegalArgumentException: Attempt to add an edge that is already in the graph.
+Dumps of the offending edge and graph follow.
+The offending edge:
+(node1, node2)
+The offending graph:
+{ptolemy.graph.Graph
+  {node1 node2}
+  {node2 node1}
+  {node1}
+}
+}}
 
 ######################################################################
 ####
@@ -87,24 +118,25 @@ test Graph-2.4 {Create a graph with 4 nodes forming a diamond} {
     set n2 [java::new {java.lang.String String} node2]
     set n3 [java::new {java.lang.String String} node3]
     set n4 [java::new {java.lang.String String} node4]
-    $p add $n1
-    $p add $n2
-    $p add $n3
-    $p add $n4
-    $p addEdge $n1 $n2
-    $p addEdge $n1 $n3
-    $p addEdge $n2 $n4
-    $p addEdge $n3 $n4
-    set nodes [$p getNodes]
-    set edges [$p getEdges]
-    set e0 [$edges get 0]
-    set e1 [$edges get 1]
-    set e2 [$edges get 2]
-    set e3 [$edges get 3]
-    list [$nodes get 0] [$nodes get 1] [$nodes get 2] [$nodes get 3] \
-	 [$e0 get 0] [$e0 get 1] [$e1 get 0] [$e1 get 1] \
-	 [$e2 get 0] [$e2 get 1] [$e3 get 0] [$e3 get 1]
-} {node1 node2 node3 node4 node1 node2 node1 node3 node2 node4 node3 node4}
+    set node1 [$p add $n1]
+    set node2 [$p add $n2]
+    set node3 [$p add $n3]
+    set node4 [$p add $n4]
+    set e1 [java::new {java.lang.String String} edge1]
+    set e2 [java::new {java.lang.String String} edge2]
+    set e3 [java::new {java.lang.String String} edge3]
+    set e4 [java::new {java.lang.String String} edge4]
+    set edge1 [$p addEdge $n1 $n2 $e1]
+    set edge2 [$p addEdge $n1 $n3 $e2]
+    set edge3 [$p addEdge $n2 $n4 $e3]
+    set edge4 [$p addEdge $n3 $n4 $e4]
+    set nodes [$p nodes]
+    set nw [java::call ptolemy.graph.Graph weightArray $nodes]
+    set edges [$p edges]
+    set ew [java::call ptolemy.graph.Graph weightArray $edges]
+    list [$nw get 0] [$nw get 1] [$nw get 2] [$nw get 3] \
+	 [$ew get 0] [$ew get 1] [$ew get 2] [$ew get 3]
+} {node1 node2 node3 node4 edge1 edge2 edge3 edge4}
 
 ######################################################################
 ####
@@ -118,3 +150,234 @@ test Graph-3.1 {Test description} {
   {node3 node4}
   {node4}
 }}}
+
+######################################################################
+####
+# 
+test Graph-4.1 {Test construction of an inudced subgraph and toString()} {
+    # use the graph built in 2.3
+    set nodes [java::new {java.util.ArrayList}]
+    $nodes add $node2
+    $nodes add $node3
+    $nodes add $node4
+    set p2 [$p subgraph $nodes]
+    list [$p2 toString]
+} {{{ptolemy.graph.Graph
+Node Set:
+0: node2
+1: node3
+2: node4
+Edge Set:
+0: (node2, node4, edge3)
+1: (node3, node4, edge4)
+}
+}}
+
+######################################################################
+####
+# 
+test Graph-4.2 {Test the construction and string representation of a larger 
+        graph} {
+    # Build a new graph
+    set p3 [java::new ptolemy.graph.Graph 9 13]
+    # FIXME: Can we use some sort of looping here?
+    set vw1 [java::new {java.lang.String String} v1]
+    set vw2 [java::new {java.lang.String String} v2]
+    set vw3 [java::new {java.lang.String String} v3]
+    set vw4 [java::new {java.lang.String String} v4]
+    set vw5 [java::new {java.lang.String String} v5]
+    set vw6 [java::new {java.lang.String String} v6]
+    set vw7 [java::new {java.lang.String String} v7]
+    set vw8 [java::new {java.lang.String String} v8]
+    set vw9 [java::new {java.lang.String String} v9]
+    set v1 [$p3 addNodeWeight $vw1]
+    set v2 [$p3 addNodeWeight $vw2]
+    set v3 [$p3 addNodeWeight $vw3]
+    set v4 [$p3 addNodeWeight $vw4]
+    set v5 [$p3 addNodeWeight $vw5]
+    set v6 [$p3 addNodeWeight $vw6]
+    set v7 [$p3 addNodeWeight $vw7]
+    set v8 [$p3 addNodeWeight $vw8]
+    set v9 [$p3 addNodeWeight $vw9]
+    set ew1 [java::new {java.lang.String String} e1]
+    set ew2 [java::new {java.lang.String String} e2]
+    set ew3 [java::new {java.lang.String String} e3]
+    set ew4 [java::new {java.lang.String String} e4]
+    set ew5 [java::new {java.lang.String String} e5]
+    set ew6 [java::new {java.lang.String String} e6]
+    set ew7 [java::new {java.lang.String String} e7]
+    set ew8 [java::new {java.lang.String String} e8]
+    set ew9 [java::new {java.lang.String String} e9]
+    set ew10 [java::new {java.lang.String String} e10]
+    set ew11 [java::new {java.lang.String String} e11]
+    set ew12 [java::new {java.lang.String String} e12]
+    set ew13 [java::new {java.lang.String String} e13]
+    set e1 [$p3 addEdge [java::new ptolemy.graph.Edge $v3 $v7 $ew1]]
+    set e2 [$p3 addEdge [java::new ptolemy.graph.Edge $v3 $v6 $ew2]]
+    set e3 [$p3 addEdge [java::new ptolemy.graph.Edge $v5 $v3 $ew3]]
+    set e4 [$p3 addEdge [java::new ptolemy.graph.Edge $v5 $v6 $ew4]]
+    set e5 [$p3 addEdge [java::new ptolemy.graph.Edge $v7 $v5 $ew5]]
+    set e6 [$p3 addEdge [java::new ptolemy.graph.Edge $v4 $v2 $ew6]]
+    set e7 [$p3 addEdge [java::new ptolemy.graph.Edge $v2 $v4 $ew7]]
+    set e8 [$p3 addEdge [java::new ptolemy.graph.Edge $v1 $v8 $ew8]]
+    set e9 [$p3 addEdge [java::new ptolemy.graph.Edge $v1 $v3 $ew9]]
+    set e10 [$p3 addEdge [java::new ptolemy.graph.Edge $v4 $v9 $ew10]]
+    set e11 [$p3 addEdge [java::new ptolemy.graph.Edge $v8 $v1 $ew11]]
+    set e12 [$p3 addEdge [java::new ptolemy.graph.Edge $v9 $v9 $ew12]]
+    set e13 [$p3 addEdge [java::new ptolemy.graph.Edge $v5 $v7 $ew13]]
+    list [$p3 toString]
+} {{{ptolemy.graph.Graph
+Node Set:
+0: v1
+1: v2
+2: v3
+3: v4
+4: v5
+5: v6
+6: v7
+7: v8
+8: v9
+Edge Set:
+0: (v3, v7, e1)
+1: (v3, v6, e2)
+2: (v5, v3, e3)
+3: (v5, v6, e4)
+4: (v7, v5, e5)
+5: (v4, v2, e6)
+6: (v2, v4, e7)
+7: (v1, v8, e8)
+8: (v1, v3, e9)
+9: (v4, v9, e10)
+10: (v8, v1, e11)
+11: (v9, v9, e12)
+12: (v5, v7, e13)
+}
+}}
+
+######################################################################
+####
+# 
+test Graph-4.3 {Test computation of connected components} {
+    set collection [$p3 connectedComponents]
+    set obj [java::cast java.lang.Object $collection]
+    set result [java::call ptolemy.graph.test.Utilities toSortedString $obj 1]
+    list $result
+} {{[[v1, v3, v5, v6, v7, v8], [v2, v4, v9]]}}
+
+######################################################################
+####
+# 
+test Graph-4.4 {Test construction of a proper subgraph} {
+    # use the graph built in 2.3
+    set nodes [java::new {java.util.ArrayList}]
+    $nodes add $v1
+    $nodes add $v8
+    $nodes add $v5
+    $nodes add $v3
+    $nodes add $v7
+    $nodes add $v9
+    set edges [java::new {java.util.ArrayList}]
+    $edges add $e11
+    $edges add $e5
+    $edges add $e13
+    $edges add $e12
+    set p4 [$p3 subgraph $nodes $edges]
+    list [$p4 toString]
+} {{{ptolemy.graph.Graph
+Node Set:
+0: v1
+1: v8
+2: v5
+3: v3
+4: v7
+5: v9
+Edge Set:
+0: (v8, v1, e11)
+1: (v7, v5, e5)
+2: (v5, v7, e13)
+3: (v9, v9, e12)
+}
+}}
+
+######################################################################
+####
+# 
+test Graph-4.5 {Test node and edge counts.} {
+    list [$p3 nodeCount] [$p3 edgeCount] \
+            [$p4 nodeCount] [$p4 edgeCount]  
+} {9 13 6 4}
+
+######################################################################
+####
+# 
+test Graph-5.1 {Tests for containment. Use the subgraph p4 constructed above.} {
+    list [$p4 containsEdge $e8] [$p4 containsEdge $e11] \
+            [$p4 containsNode $v6] [$p4 containsNode $v3] \
+            [$p4 containsEdgeWeight $ew8] [$p4 containsEdgeWeight $ew11] \
+            [$p4 containsNodeWeight $vw6] [$p4 containsNodeWeight $vw3] 
+} {0 1 0 1 0 1 0 1}
+
+######################################################################
+####
+# 
+test Graph-5.2 {Test removal of nodes and edges.} {
+    $p4 removeNode $v8
+    $p4 removeEdge $e5
+    $p4 removeNode $v3
+    list [$p4 toString]
+} {{{ptolemy.graph.Graph
+Node Set:
+0: v1
+1: v5
+2: v7
+3: v9
+Edge Set:
+0: (v5, v7, e13)
+1: (v9, v9, e12)
+}
+}}
+
+######################################################################
+####
+# 
+test Graph-5.3 {Test addition of nodes and edges after removal of others.} {
+    $p4 addEdge [java::new ptolemy.graph.Edge $v5 $v5]
+    $p4 addEdge [java::new ptolemy.graph.Edge $v5 $v5 $ew5]
+    $p4 addNode $v8
+    $p4 addEdge [java::new ptolemy.graph.Edge $v8 $v8]
+    $p4 addEdge [java::new ptolemy.graph.Edge $v5 $v5 $ew5]
+    list [$p4 toString]
+} {{{ptolemy.graph.Graph
+Node Set:
+0: v1
+1: v5
+2: v7
+3: v9
+4: v8
+Edge Set:
+0: (v5, v7, e13)
+1: (v9, v9, e12)
+2: (v5, v5)
+3: (v5, v5, e5)
+4: (v8, v8)
+5: (v5, v5, e5)
+}
+}}
+
+######################################################################
+####
+# 
+test Graph-5.4 {Test self-loop edges} {
+    set loops [java::cast java.lang.Object [$p4 selfLoopEdges]]
+    list [$loops toString]  
+} {{[(v9, v9, e12), (v5, v5), (v5, v5, e5), (v8, v8), (v5, v5, e5)]}}
+
+######################################################################
+####
+# 
+test Graph-5.5 {Test self-loop edges ofindividual nodes} {
+    set loops1 [java::cast java.lang.Object [$p4 selfLoopEdges $v5]]
+    set loops2 [java::cast java.lang.Object [$p4 selfLoopEdges $v8]]
+    set loops3 [java::cast java.lang.Object [$p4 selfLoopEdges $v1]]
+    list [$loops1 toString]  [$loops2 toString] [$loops3 toString]  
+} {{[(v5, v5), (v5, v5, e5), (v5, v5, e5)]} {[(v8, v8)]} {[]}}

@@ -47,15 +47,19 @@ TCL_SRCS = \
 
 JSRCS = \
 	TestConstant.java \
-	TestVariable.java
+	TestVariable.java \
+    Utilities.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
 	DirectedGraph.tcl \
 	DirectedAcyclicGraph.tcl \
+    Edge.tcl \
 	Graph.tcl \
+	GraphListener.tcl \
 	InequalitySolver.tcl \
-	InequalityTerm.tcl
+	InequalityTerm.tcl \
+    Node.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds

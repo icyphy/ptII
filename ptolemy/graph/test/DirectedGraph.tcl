@@ -59,10 +59,18 @@ test DirectedGraph-2.1 {Create an empty instance} {
 ######################################################################
 ####
 # 
+#    set z [$p {reachableNodes Object} null] 
 test DirectedGraph-2.2 {test reachableNodes on empty graph above} {
-    catch {$p {reachableNodes Object} null} msg
-    list $msg
-} {{java.lang.IllegalArgumentException: Graph.getNode(): the weight "null" is not associated with a node in this graph.}}
+     catch {$p {reachableNodes Object} null} msg
+     list $msg
+} {{java.lang.IllegalArgumentException: The specified weight is not a node weight in this graph.
+Dumps of the offending weight and graph follow.
+The offending weight:
+null
+The offending graph:
+{ptolemy.graph.DirectedGraph
+}
+}}
 
 ######################################################################
 ####
@@ -212,3 +220,38 @@ test DirectedGraph-5.3 { cycleNodes } {
     set cycle [$p cycleNodes]
     list [$p isAcyclic] [$cycle getrange 0]
 } {0 {node1 node2 node3 node4 node5}}
+
+######################################################################
+####
+# 
+test DirectedGraph-5.4 { successors } {
+    set p [java::new ptolemy.graph.DirectedGraph]
+    set n1 [java::new {java.lang.String String} node1]
+    set n2 [java::new {java.lang.String String} node2]
+    set n3 [java::new {java.lang.String String} node3]
+    set n4 [java::new {java.lang.String String} node4]
+    set z [$p add $n1]
+    $p add $n2
+    $p add $n3
+    $p add $n4
+    $p addEdge $n1 $n2
+    $p addEdge $n1 $n2
+    $p addEdge $n1 $n4
+    $p addEdge $n4 $n1
+    $p addEdge $n4 $n1
+    $p addEdge $n4 $n1
+    $p addEdge $n3 $n1
+    set s [$p successors $z]
+    set result [java::call ptolemy.graph.test.Utilities toSortedString $s 1]
+    list $result
+} {{[node2, node4]}}
+
+######################################################################
+####
+# 
+test DirectedGraph-5.5 { predecessors } {
+    set s [$p predecessors $z]
+    set result [java::call ptolemy.graph.test.Utilities toSortedString $s 1]
+    list $result
+} {{[node3, node4]}}
+

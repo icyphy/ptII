@@ -234,7 +234,7 @@ test InequalitySolver-2.7 {description method} {
 ######################################################################
 ####
 # 
-test InequalitySolver-3.1 {solve constraints on TypeLattic} {
+test InequalitySolver-3.1 {solve constraints on TypeLattice} {
     # This comes from a real topology in DE SamplerSystem.
     set tem [java::new ptolemy.data.type.TypeLattice]
     set lattice [$tem lattice]

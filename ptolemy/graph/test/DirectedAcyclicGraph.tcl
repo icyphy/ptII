@@ -61,7 +61,14 @@ test DirectedAcyclicGraph-2.1 {Create an empty instance} {
 test DirectedAcyclicGraph-2.2 {test methods on the above empty instance} {
     catch {$p leastUpperBound null null} msg
     list [$p bottom] [$p top] $msg
-} {java0x0 java0x0 {java.lang.IllegalArgumentException: Graph.getNode(): the weight "null" is not associated with a node in this graph.}}
+} {java0x0 java0x0 {java.lang.IllegalArgumentException: The specified weight is not a node weight in this graph.
+Dumps of the offending weight and graph follow.
+The offending weight:
+null
+The offending graph:
+{ptolemy.graph.DirectedAcyclicGraph
+}
+}}
 
 ######################################################################
 ####
@@ -125,7 +132,9 @@ test DirectedAcyclicGraph-2.6 {catch exception on self loop} {
     # use the CPO above
     catch {$p addEdge $n1 $n1} msg
     list $msg
-} {{java.lang.IllegalArgumentException: DirectedAcyclicGraph.addEdge: Cannot add a self loop in acyclic graph.}}
+} {{java.lang.IllegalArgumentException: Cannot add a self loop in an acyclic graph.
+A self loop was attempted on the following node.
+node1}}
 
 ######################################################################
 ####
