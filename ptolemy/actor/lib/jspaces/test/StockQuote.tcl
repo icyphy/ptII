@@ -51,15 +51,15 @@ test StockQuote-1.1 {test clone} {
     set tickerVal [[$newTicker getToken] toString]
 
     list $tickerVal
-} {T}
+} {YHOO}
 
 # The following tests are commented out because they depend on the stock
-# price of AT&T and Lucent.
+# price of YHOO and AOL
 
 ######################################################################
 #### Test fire
 #
-# test StockQuote-2.1 {get price of AT&T} {
+# test StockQuote-2.1 {get price of YHOO} {
 #     set e0 [sdfModel 5]
 #     set stock [java::new ptolemy.actor.lib.jspaces.StockQuote $e0 stock]
 #     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
@@ -72,7 +72,7 @@ test StockQuote-1.1 {test clone} {
 # 
 # test StockQuote-2.2 {get price of Lucent} {
 #     set symbol [getParameter $stock ticker]
-#     $symbol setExpression {"LU"}
+#     $symbol setExpression {"AOL"}
 #     [$e0 getManager] execute
 #     enumToTokenValues [$rec getRecord 0]
 # } {71 71 71 71 71}

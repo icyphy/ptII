@@ -76,7 +76,7 @@ public class StockQuote extends Source {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-	ticker = new Parameter(this, "ticker", new StringToken("T"));
+	ticker = new Parameter(this, "ticker", new StringToken("YHOO"));
 	ticker.setTypeEquals(BaseType.STRING);
 
 	// set the type constraints.
@@ -86,7 +86,7 @@ public class StockQuote extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Stock ticker. The default ticker is "T".
+    /** Stock ticker. The default ticker is "YHOO".
      */
     public Parameter ticker;
 
