@@ -90,9 +90,6 @@ public class Expression extends TypedAtomicActor {
         expression = new Parameter(this, "expression");
         _time = new Variable(this, "time", new DoubleToken(0.0));
         _firing = new Variable(this, "firing", new IntToken(1));
-        // FIXME: This has to be initialized with a token or type resolution
-        // fails.
-        _expression = new Variable(this, "_expression", new IntToken(1));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -125,10 +122,9 @@ public class Expression extends TypedAtomicActor {
             Expression newobj = (Expression)super.clone(ws);
             newobj._firingCount = 1;
             newobj.output = (TypedIOPort)newobj.getPort("output");
-            expression = (Parameter)newobj.getAttribute("expression");
+            newobj.expression = (Parameter)newobj.getAttribute("expression");
 	    newobj._time = (Variable)newobj.getAttribute("time");
 	    newobj._firing = (Variable)newobj.getAttribute("firing");
-	    newobj._expression = (Variable)newobj.getAttribute("_expression");
             return newobj;
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
@@ -143,6 +139,7 @@ public class Expression extends TypedAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _firingCount = 1;
+        _firing.setToken(new IntToken(_firingCount));
     }
 
     /** Evaluate the expression and broadcast its result to the output.
@@ -151,11 +148,6 @@ public class Expression extends TypedAtomicActor {
      *   yields an incompatible type, or if there is no director.
      */
     public void fire() throws IllegalActionException {
-        // NOTE: It is important the expr not be evaluated, since
-        // the variables it refers to are not in its scope.  Thus,
-        // we copy the expression into a variable.
-        String expr = expression.getExpression();
-        _expression.setExpression(expr);
         Director dir = getDirector();
         if (dir == null) {
             throw new IllegalActionException(this, "No director!");
@@ -172,10 +164,10 @@ public class Expression extends TypedAtomicActor {
                 var.setToken(inputToken);
             }
         }
-        Token result = _expression.getToken();
+        Token result = expression.getToken();
         if (result == null) {
             throw new IllegalActionException(this,
-            "Expression yields a null result: " + _expression.getExpression());
+            "Expression yields a null result: " + expression.getExpression());
         }
         output.broadcast(result);
     }
@@ -253,6 +245,5 @@ public class Expression extends TypedAtomicActor {
 
     private Variable _time;
     private Variable _firing;
-    private Variable _expression;
     private int _firingCount = 1;
 }
