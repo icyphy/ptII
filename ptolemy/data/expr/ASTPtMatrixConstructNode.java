@@ -118,7 +118,10 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
                         ((ComplexToken)tok).complexValue();
                 }
                 _ptToken = new ComplexMatrixToken(val);
-            } else {
+            } else if (_nRows == 1) {
+		// Create an ArrayToken from the parsed elements.
+		_ptToken = new ArrayToken(_childTokens);
+	    } else {
                 /* The resolved type does not have a corresponding
                    matrix type. */
                 throw new IllegalActionException("Cannot find a matrix type "
