@@ -274,6 +274,17 @@ public class Complex implements Cloneable, Serializable {
                 (imag*divisor.real-real*divisor.imag)/denominator);
     }
 
+    /** Return true if both the real and imaginary parts of this complex number
+     *  are close to those of the argument.  The epsilon field is used
+     *  to determine closeness.
+     *
+     *  @return True if the real and imaginary parts are equal.
+     */
+    public final boolean isCloseTo(Complex z) {
+        return (Math.abs(z.real - real) < epsilon 
+		&& Math.abs(z.imag - imag) < epsilon );
+    }
+
     /** Return true if the real and imaginary parts of this complex number
      *  are equal to those of the argument.
      *  @return True if the real and imaginary parts are equal.
@@ -582,6 +593,13 @@ public class Complex implements Cloneable, Serializable {
      *  can only be set in the constructor.
      */
     public final double imag;
+
+    /** A small number ( = 1.0e-9). This number is used by algorithms to
+     *  detect whether a double is close to zero.  This value is
+     *  public so that it can be changed on platforms with different
+     *  precisions.
+     */
+    public static double epsilon = 1.0e-9;
 
     /** A Complex number representing zero. Reference this to save
      *  memory usage and construction overhead.
