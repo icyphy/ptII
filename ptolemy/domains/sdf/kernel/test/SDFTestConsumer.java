@@ -47,7 +47,7 @@ import ptolemy.domains.sdf.kernel.*;
  * @version $Id$
  * @author Steve Neuendorffer
  */
-public class SDFTestConsumer extends SDFAtomicActor {
+public class SDFTestConsumer extends AtomicActor {
     public SDFTestConsumer(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);

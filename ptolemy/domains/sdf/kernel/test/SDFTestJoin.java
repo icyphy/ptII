@@ -45,7 +45,7 @@ import ptolemy.domains.sdf.kernel.*;
  * @version $Id$
 */
 
-public class SDFTestJoin extends SDFAtomicActor {
+public class SDFTestJoin extends AtomicActor {
 
     public SDFTestJoin(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
