@@ -717,38 +717,40 @@ public abstract class GraphFrame extends PtolemyFrame
 	}
     }
 
-    public class EditIconAction extends FigureAction {
-	public EditIconAction() {
-	    super("Edit Icon");
-	}
+// 'Edit Icon' pop up menu not shipped with PtII1.0.  
+// See also ptolemy/vergil/ptolemy/kernel/KernelGraphFrame.java
+//     public class EditIconAction extends FigureAction {
+// 	public EditIconAction() {
+// 	    super("Edit Icon");
+// 	}
 
-	public void actionPerformed(ActionEvent e) {
-	    // Figure out what entity.
-	    super.actionPerformed(e);
-	    NamedObj object = getTarget();
-	    if(!(object instanceof Entity)) return;
-	    Entity entity = (Entity) object;
-	    XMLIcon icon = null;
-	    List iconList = entity.attributeList(XMLIcon.class);
-	    if(iconList.size() == 0) {
-		try {
-		    icon = new XMLIcon(entity, entity.uniqueName("icon"));
-		} catch (Exception ex) {
-		    throw new InternalErrorException(
-                            "duplicated name, but there were no other icons.");
-		}
-	    } else if(iconList.size() == 1) {
-		icon = (XMLIcon)iconList.get(0);
-	    } else {
-		throw new InternalErrorException("entity " + entity +
-                        " contains more than one icon");
-	    }
-	    // FIXME make a tableau.
-	    ApplicationContext appContext = new ApplicationContext();
-	    appContext.setTitle("Icon editor");
-	    new IconEditor(appContext, icon);
-	}
-    }
+// 	public void actionPerformed(ActionEvent e) {
+// 	    // Figure out what entity.
+// 	    super.actionPerformed(e);
+// 	    NamedObj object = getTarget();
+// 	    if(!(object instanceof Entity)) return;
+// 	    Entity entity = (Entity) object;
+// 	    XMLIcon icon = null;
+// 	    List iconList = entity.attributeList(XMLIcon.class);
+// 	    if(iconList.size() == 0) {
+// 		try {
+// 		    icon = new XMLIcon(entity, entity.uniqueName("icon"));
+// 		} catch (Exception ex) {
+// 		    throw new InternalErrorException(
+//                             "duplicated name, but there were no other icons.");
+// 		}
+// 	    } else if(iconList.size() == 1) {
+// 		icon = (XMLIcon)iconList.get(0);
+// 	    } else {
+// 		throw new InternalErrorException("entity " + entity +
+//                         " contains more than one icon");
+// 	    }
+// 	    // FIXME make a tableau.
+// 	    ApplicationContext appContext = new ApplicationContext();
+// 	    appContext.setTitle("Icon editor");
+// 	    new IconEditor(appContext, icon);
+// 	}
+//     }
 
     private class ExecuteSystemAction extends AbstractAction {
 	public ExecuteSystemAction() {
