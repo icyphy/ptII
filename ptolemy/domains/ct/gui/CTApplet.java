@@ -30,12 +30,7 @@
 
 package ptolemy.domains.ct.gui;
 
-import java.awt.*;
-import java.awt.event.*;
-import ptolemy.kernel.util.*;
 import ptolemy.actor.gui.PtolemyApplet;
-import ptolemy.actor.*;
-import ptolemy.domains.ct.kernel.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTApplet
@@ -52,50 +47,8 @@ public class CTApplet extends PtolemyApplet {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
-    /** Each CT applet is in a new workspace. The name of the workspace
-     *  is the classname of the applet.
-     */
-    public void init() {
-        // Process the background parameter.
-        _background = Color.white;
-        try {
-            String colorSpecification = getParameter("background");
-            if (colorSpecification != null) {
-                _background = Color.decode(colorSpecification);
-            }
-        } catch (Exception ex) {
-            report("Warning: background parameter failed: ", ex);
-        }
-        setBackground(_background);
-        _workspace = new Workspace(getClass().getName());
-        try {
-            _manager = new Manager(_workspace, "TopLevelManager");
-            _toplevel = new TypedCompositeActor(_workspace);
-            _toplevel.setName("topLevel");
-            _toplevel.setManager(_manager);
-        } catch (Exception ex) {
-            report("Setup of manager and top level actor failed:\n", ex);
-        }        
-    }
-
     /** Override start() so it won't start automatically.
      */
     public void start() {
-    }
-
-      
-    /** Stop the execution. Call manager.finish(). If there's no manager,
-     *  do nothing.
-     */
-    public void stop() {
-        if(_manager != null) {
-            _stop();
-        }
-    }
-    
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected variables                    ////
-
-    /** @serial The workspace. */
-    protected Workspace _workspace;
+    } 
 }
