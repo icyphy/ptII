@@ -308,7 +308,7 @@ public class LevelCrossingDetector extends Transformer
         }
 
         if (Math.abs(_thisTrigger - _level) < _errorTolerance) {
-            if (_enabled) {
+            if (_enabled && _eventMissed) {
                 _eventNow = true;
                 if (_debugging)
                     _debug(getFullName() + " detected event at "
