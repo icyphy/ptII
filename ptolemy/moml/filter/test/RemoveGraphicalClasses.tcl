@@ -91,6 +91,10 @@ test RemoveGraphicalClasses-1.1 {This annotation already has a _hideName} {
     # ptolemy.copernicus.kernel.KernelMain does this
     $filter put "ptolemy.copernicus.kernel.GeneratorAttribute" [java::null]
 
+    # Test out the remove method by adding a class and then removing it
+    $filter put "ptolemy.actor.TypedCompositeActor" [java::null]
+    $filter remove "ptolemy.actor.TypedCompositeActor"
+
     $parser addMoMLFilter $filter
     $parser addMoMLFilter [java::new ptolemy.moml.filter.HideAnnotationNames]
     set toplevel [$parser parse $hideMoml]
