@@ -620,10 +620,16 @@ public class TypedIOPort extends IOPort implements Typeable {
      *   array to send.
      *  @exception NoRoomException If there is no room in the receiver.
      *  @exception IllegalActionException If the tokens to be sent cannot
-     *   be converted to the type of this port.
+     *   be converted to the type of this port, or if the <i>vectorLength</i>
+     *   argument is greater than the length of the <i>tokenArray</i>
+     *   argument.
      */
     public void send(int channelIndex, Token[] tokenArray, int vectorLength)
             throws IllegalActionException, NoRoomException {
+        if (vectorLength > tokenArray.length) {
+            throw new IllegalActionException(this,
+            "Not enough data supplied to send specified number of samples.");
+        }
         Receiver[][] farReceivers;
         if (_debugging) {
             _debug("send to channel " + channelIndex
@@ -634,7 +640,7 @@ public class TypedIOPort extends IOPort implements Typeable {
             try {
                 _workspace.getReadAccess();
                 // check types
-                for (int i = 0; i < tokenArray.length; i++) {
+                for (int i = 0; i < vectorLength; i++) {
                     token = tokenArray[i];
                     int compare = TypeLattice.compare(token.getType(),
                             _resolvedType);
@@ -662,7 +668,7 @@ public class TypedIOPort extends IOPort implements Typeable {
                 Type farType = port.getType();
 
                 boolean needConversion = false;
-                for (int k = 0; k < tokenArray.length; k++) {
+                for (int k = 0; k < vectorLength; k++) {
                     if ( !farType.equals(tokenArray[k].getType())) {
                         needConversion = true;
                     }
