@@ -89,8 +89,11 @@ public class Skeleton {
                 ast.accept(new FindExtraImportsVisitor(true), null);
             }
 
-            if (_debug)
-                System.out.println("Generating Output Code");
+            if (_debug) {
+                System.out.println("Generating Output Code\n" + 
+                        "ast: " + ast);
+                
+            }
             String outCode = (String) ast.accept(new JavaCodeGenerator(),
                     null);
 
