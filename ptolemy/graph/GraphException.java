@@ -71,7 +71,7 @@ public class GraphException extends RuntimeException {
      *  @return A text string dump of the edge and graph.
      */
     static public String edgeDump(Edge edge, Graph graph) {
-        return _elementDump(edge, graph, new String("edge"));
+        return _elementDump(edge, graph, "edge");
     }
 
     /** Return a dump of a graph element and the container graph suitable to
@@ -99,7 +99,7 @@ public class GraphException extends RuntimeException {
      *  @return A text string dump of the node and graph.
      */
     static public String nodeDump(Node node, Graph graph) {
-        return _elementDump(node, graph, new String("node"));
+        return _elementDump(node, graph, "node");
     }
 
     /** Return a dump of a weight and the container graph suitable to
