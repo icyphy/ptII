@@ -36,13 +36,19 @@ DIRS = \
 	CircularRange \
 	Collisions \
 	EvaderAndPursuer \
-	MACProtocolModel \
 	MatlabWirelessSoundDetection \
-	PersonalAreaNetwork \
 	PowerVariability \
 	SmallWorld \
-	TerrainModel \
 	WirelessSoundDetection
+
+# Directories we are not shipping yet
+# NOTE: If you add these to DIRS above, add them in alphabetical order
+#       and add an entry to PTCLASSALLJARS below.
+OTHER_DIRS = \
+	MACProtocolModel \
+	Network \
+	PersonalAreaNetwork \
+	TerrainModel \
 
 # Root of Ptolemy II directory
 ROOT =		../../../..
@@ -77,7 +83,8 @@ MISC_FILES = 	$(DIRS) \
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	doc \
+	$(OTHER_DIRS)
 
 all: jclass
 	@echo "To run all the demos, run 'make demo'"
