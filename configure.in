@@ -1587,7 +1587,7 @@ fi
 # $PTII/makefile if gcc or cc is found.
 PTJNI_DIR=
 
-if test ! -d "$PTII/jni" -a ! -d "$PTII/ptolemy/matlab" -a ! -d -"$PTII/mescal/kirika" ; then
+if test ! -d "$PTII/jni" -a ! -d "$PTII/ptolemy/matlab" -a ! -d "$PTII/mescal/kirika" ; then
     AC_MSG_RESULT([$PTII/jni, $PTII/ptolemy/matlab and $PTII/mescal/kirika are not present,
         so we need not find gcc or cc])
 else
