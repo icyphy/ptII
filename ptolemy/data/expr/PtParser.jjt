@@ -84,7 +84,7 @@ the syntax is
 JavaCC by itself simply generates a file (and support files) that allow an 
 input to be parsed, it does not return a parse tree. For the purposes of 
 type checking we require a parse tree, and this is obtained using JJTree, a 
-preprocesssor for JavaCC. 
+preprocessor for JavaCC. 
 <p>
 JJtree operates by annotating the grammar file to support the generation
 of the parse tree. Thus the process is
