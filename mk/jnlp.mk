@@ -397,7 +397,7 @@ KEYALIAS2=ptolemy
 
 jnlp_dist: jnlp_dist_1 jnlp_dist_update
 jnlp_dist_1:
-	rm -f $(JNLPS)
+	rm -rf $(JNLPS) $(SIGNED_DIR)
 	$(MAKE) KEYSTORE=$(KEYSTORE2) \
 		KEYALIAS=$(KEYALIAS2) KEYPASSWORD= \
 		PTII_LOCALURL=$(DIST_URL) jnlp_sign
