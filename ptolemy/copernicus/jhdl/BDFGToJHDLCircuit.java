@@ -147,7 +147,7 @@ public class BDFGToJHDLCircuit {
 	for (Iterator i=_bdfg.nodes().iterator();
 	     i.hasNext() && (returnNode == null);) {
 	    Node n = (Node) i.next();
-	    if (n.weight() instanceof ReturnStmt)
+	    if (n.getWeight() instanceof ReturnStmt)
 		returnNode = n;
 	}
 	v.add(returnNode);
@@ -181,7 +181,7 @@ public class BDFGToJHDLCircuit {
     protected void _processNode(Node node) throws JHDLUnsupportedException {
 
 	// Process Node
-	Object nweight = node.weight();
+	Object nweight = node.getWeight();
 	if (DEBUG) System.out.println("Node="+nweight.getClass().getName());
 	
 	if (nweight instanceof ParameterRef) {
@@ -205,7 +205,7 @@ public class BDFGToJHDLCircuit {
 
     protected void _processParameterRef(Node node) 
 	throws JHDLUnsupportedException {
-	ParameterRef pr = (ParameterRef) node.weight();
+	ParameterRef pr = (ParameterRef) node.getWeight();
 	Type t = pr.getType();
 	// Currently only support IntType
 	int bits=0;
@@ -237,7 +237,7 @@ public class BDFGToJHDLCircuit {
 
     protected void _processConstant(Node node) throws JHDLUnsupportedException {
 
-	Object weight = node.weight();
+	Object weight = node.getWeight();
 	if (weight instanceof IntConstant) {
 	    int value = ((IntConstant) weight).value;
 	    Wire w = _cell.constant(32,value);
@@ -260,7 +260,7 @@ public class BDFGToJHDLCircuit {
 	    Node source = e.source();
 	    Wire o = _getWire(source);
 	    
-	    String op = (String) e.weight();
+	    String op = (String) e.getWeight();
 	    if (op.equals("op1")) {
 		wire1 = o;
 	    } else if (op.equals("op2")) {
@@ -272,7 +272,7 @@ public class BDFGToJHDLCircuit {
 	    throw new JHDLUnsupportedException("Missing input wire");
  
 	Wire output=null;
-	Object nweight = node.weight();
+	Object nweight = node.getWeight();
 	if (nweight instanceof AddExpr) {
 	    // create adder
 	    output = _createAdder(wire1,wire2);
@@ -319,7 +319,7 @@ public class BDFGToJHDLCircuit {
 	    throw new JHDLUnsupportedException("Missing wire");
 
 	Wire output=null;
-	Object nweight = node.weight();
+	Object nweight = node.getWeight();
 
 	if (nweight instanceof JHDLNotExpr) {
 	    output = _createNot(wire1);
@@ -333,7 +333,7 @@ public class BDFGToJHDLCircuit {
 					 Wire wire2) 
 	throws JHDLUnsupportedException {
 
-	Object nweight = node.weight();
+	Object nweight = node.getWeight();
 	if (nweight instanceof CompoundBooleanExpression)
 	    return _processCompoundBooleanExpression(node,wire1,wire2);
 	else
@@ -344,7 +344,7 @@ public class BDFGToJHDLCircuit {
 						     Wire wire2) 
 	throws JHDLUnsupportedException {
 
-	Object nweight = node.weight();
+	Object nweight = node.getWeight();
 	if (nweight instanceof CompoundAndExpression) {
 	    return _createAnd(wire1,wire2);
 	} else if (nweight instanceof CompoundOrExpression) {
@@ -365,7 +365,7 @@ public class BDFGToJHDLCircuit {
 	Wire newWire1 = wire1.range(wireSize-1,0);
 	Wire newWire2 = wire2.range(wireSize-1,0);
 
-	Object weight = node.weight();
+	Object weight = node.getWeight();
 	Wire conditionTrue = _cell.wire(1);
 
 	// LE, GE, GT, and LT are all performed with an adder
@@ -478,7 +478,7 @@ public class BDFGToJHDLCircuit {
     protected void _processBinaryMuxNode(Node node)
 	throws JHDLUnsupportedException {
 
-	BinaryMuxNode w = (BinaryMuxNode) node.weight();
+	BinaryMuxNode w = (BinaryMuxNode) node.getWeight();
 
 	Wire condition = _getWire(w.getConditionNode());
 	Wire trueNode = _getWire(w.getTrueNode());
