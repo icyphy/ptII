@@ -45,12 +45,14 @@ if {[string compare jdkStackTrace [info procs jdkStackTrace]] == 1} then {
 # set VERBOSE 1
 
 # Complex numbers to be used
+set complex0 [java::new ptolemy.math.Complex 0.0 0.0]
 set complex1 [java::new ptolemy.math.Complex 2.0 -2.0]
 set complex2 [java::new ptolemy.math.Complex 1.0 1.0]
 set complex3 [java::new ptolemy.math.Complex -1.0 -1.0]
 set complex4 [java::new ptolemy.math.Complex 0.0 0.0]
 set complex5 [java::new ptolemy.math.Complex 3.0 -3.0]
 
+set complex0array [java::new {ptolemy.math.Complex[]} {0}]
 set complex2array [java::new {ptolemy.math.Complex[]} {2} \
 	[list $complex1 $complex2]]
 set complex4array [java::new {ptolemy.math.Complex[]} {4} \
@@ -73,7 +75,10 @@ set complexUnaryOperation \
 	[java::new ptolemy.math.test.TestComplexUnaryOperation]
 
 
-set double1 2
+set double0 0.0 
+set double1 2.0
+
+set double0array [java::new {double[]} {0}]
 set double2array [java::new {double[]} {2} [list 2.0 -1.0]]
 set double4array [java::new {double[]} {4} [list 2.0 -1.0 1.0 0.0]]
 
@@ -91,7 +96,10 @@ set doubleUnaryOperation \
 
 
 
-set float1 2
+set float0 0.0
+set float1 2.0
+
+set float0array [java::new {float[]} {0}]
 set float2array [java::new {float[]} {2} [list 2.0 -1.0]]
 set float4array [java::new {float[]} {4} [list 2.0 -1.0 1.0 0.0]]
 set float1_1 [java::new {float[][]} 1 [list 2.0]]
@@ -106,7 +114,9 @@ set floatBinaryOperation \
 set floatUnaryOperation \
 	[java::new ptolemy.math.test.TestFloatUnaryOperation]
 
+set int0 0
 set int1 2
+set int0array [java::new {int[]} {0}]
 set int2array [java::new {int[]} {2} [list 2 -1]]
 set int4array [java::new {int[]} {4} [list 2 -1 1 0]]
 # array of length 2  with power of two elements
@@ -128,7 +138,9 @@ set intBinaryOperation \
 set intUnaryOperation \
 	[java::new ptolemy.math.test.TestIntegerUnaryOperation]
 
+set long0 0
 set long1 2
+set long0array [java::new {long[]} {0}]
 set long2array [java::new {long[]} {2} [list 2 -1]]
 set long4array [java::new {long[]} {4} [list 2 -1 1 0]]
 # array of length 2  with power of two elements
@@ -190,7 +202,7 @@ proc testMatrixMath {op types matrixSize opSignature \
 
 	    set binaryOperation ${v}BinaryOperation
 	    set unaryOperation ${v}UnaryOperation
-	    global $matrix $array ${v}1 $binaryOperation $unaryOperation
+	    global $matrix $array ${v}0 ${v}1 $binaryOperation $unaryOperation
 
 	    # We could be smarter here and use Tcl's variable number
 	    # of arguments facility, but the substitution is bad enough
@@ -321,6 +333,13 @@ proc testArrayMathArrayInt {op types {matrixSize 2_2} {intValue 1}} {
 proc testArrayMathArrayScalar {op types {matrixSize 2_2}} {
     testMatrixMath $op $types $matrixSize {[list $op "$t\[\]" $t} \
 	    {[subst $$array]} {[subst $${v}1]} {} ArrayMath
+}
+
+# Test a *ArrayMath  operation that takes an array, a scalar and a scalar
+# like xxx[] limit(xxx[], xxx, xxx)
+proc testArrayMathArrayScalarScalar {op types {matrixSize 2_2}} {
+    testMatrixMath $op $types $matrixSize {[list $op "$t\[\]" $t $t} \
+	    {[subst $$array]} {[subst $${v}0]} {[subst $${v}1]} ArrayMath
 }
 
 
@@ -489,7 +508,21 @@ testMatrix allocCopy $types
 
 ######################################################################
 ####
-#  *ArrayMath Test out: xxx[] append(xxx[], xxx[])
+#  *ArrayMath Test out: xxx[] append(xxx[], xxx[]) with 0 length array
+
+set types [list \
+	[list Complex ptolemy.math.Complex complex \
+	{{}}] \
+	[list Double double double {{}}] \
+	[list Float float float {{}}] \
+	[list Integer int int {{}}] \
+	[list Long long long {{}}]]
+
+testArrayMathArrayArray append $types 0_0
+
+######################################################################
+####
+#  *ArrayMath Test out: xxx[] append(xxx[], xxx[]) with 0 length
 
 set types [list \
 	[list Complex ptolemy.math.Complex complex \
@@ -503,6 +536,23 @@ testArrayMathArrayArray append $types
 ######################################################################
 ####
 #  FIXME: *ArrayMath xxx[] append(xxx[], int, int, xxx[], int, int )
+
+######################################################################
+####
+#  Test out *ArrayMath applyBinaryOperation(XXXBinaryOperation, xxx[], xxx)
+
+# FIXME	No applyBinaryOperation(Complex[], Complex)
+
+set types [list \
+	[list Double double double {{0.0 -3.0}}] \
+	[list Float float float {{0.0 -3.0}}] \
+	[list Integer int int {{0 -3}}] \
+	[list Long long long {{0 -3}}]]
+
+testMatrixMath applyBinaryOperation $types 2_2 \
+	{[list applyBinaryOperation ptolemy.math.${m}BinaryOperation $t\[\] $t} \
+	{[subst $$binaryOperation]} \
+	{[subst $$array]} {[subst $${v}1]} ArrayMath
 
 ######################################################################
 ####
@@ -721,7 +771,17 @@ testMatrixMatrix bitwiseXor $types
 
 ######################################################################
 ####
-#  FIXME: *ArrayMath Test out: xxx[] divide(xxx[], xxx)
+#  *ArrayMath Test out: xxx[] divide(xxx[], xxx)
+
+# FIXME: Missing Complex[] divide(Complex[], Complex)
+# FIXME: Missing double[] divide(double[], double)
+# FIXME: Missing float[] divide(float[], float)
+
+set types [list \
+	[list Integer int int {{1 0}}] \
+	[list Long long long {{1 0}}]]
+
+testArrayMathArrayScalar divide $types
 
 ######################################################################
 ####
@@ -852,6 +912,14 @@ testInt identity $types 2_2 3
 ####
 #  FIXME: *ArrayMath Test out: xxx[] limit(xxx[], int int)
 
+# FIXME: Missing: Complex[] limit(Complex[], Complex, Complex)
+set types [list \
+	[list Double double double {{2.0 0.0 1.0 0.0}}] \
+	[list Float float float {{2.0 0.0 1.0 0.0}}] \
+	[list Integer int int {{2 0 1 0}}] \
+	[list Long long long {{2 0 1 0}}]] \
+
+testArrayMathArrayScalarScalar limit $types 4_4
 
 ######################################################################
 ####
