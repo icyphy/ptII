@@ -74,6 +74,13 @@ test Delay-2.2 {test with the default parameter values} {
        [java::field \
        [java::cast ptolemy.actor.lib.Transformer $delay] output] \
        [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]]
+
+#set debugger [java::new ptolemy.kernel.util.StreamListener]
+#set director [java::cast ptolemy.domains.sdf.kernel.SDFDirector [$e0 getDirector]]
+#$director addDebugListener $debugger
+#set scheduler [$director getScheduler]
+#$scheduler addDebugListener $debugger
+    
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 } {0 0 1 2 3}
