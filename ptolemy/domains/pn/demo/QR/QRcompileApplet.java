@@ -161,7 +161,7 @@ public void init() {
 
     }
 
-    /** Changing of a parameter has occured. First check if the
+    /** Changing of a parameter has occurred. First check if the
      *  parameter (K or N) falls within the range of allowed
      *  values. Then propagate the new parameter value to the various
      *  actors in the model. If a valid change of a parameter took
