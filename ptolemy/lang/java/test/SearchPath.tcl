@@ -127,9 +127,9 @@ test SearchPath-2.0 {openSource} {
 #
 test SearchPath-2.1 {openSource on not-a-file} {
     set searchPath [java::field ptolemy.lang.java.SearchPath UNNAMED_PATH]
-    set file [$searchPath openSource not-a-file]
-     list [java::isnull $file]
-} {1}
+    catch {set file [$searchPath openSource not-a-file]} errMsg
+     list $errMsg
+} {{java.io.FileNotFoundException: Could not find source for not-a-file}}
 
 ######################################################################
 ####
@@ -147,6 +147,17 @@ test SearchPath-3.1 {systemClasses} {
 ######################################################################
 ####
 #
+test SearchPath-3.2 {Do we need to resize the systemClassSet HashSet?} {
+    set systemClassSet [java::call ptolemy.lang.java.SearchPath systemClasses]
+    # Originally, the number of classes in rt.jar was 5213
+    # If the number gets too large then modify the initial size 
+    # of the hashset
+    list [expr {[$systemClassSet size] > 5500}]
+} {0}
+
+######################################################################
+####
+#
 test SearchPath-4.1 {PtolemyCoreClasses} {
     set ptolemyCoreClassSet \
 	    [java::call ptolemy.lang.java.SearchPath ptolemyCoreClasses]
@@ -154,7 +165,20 @@ test SearchPath-4.1 {PtolemyCoreClasses} {
     set notAClassString [java::new String \
 	    "ptolemy.kernel.util.NotAClass."]
     list \
+[$ptolemyCoreClassSet size] \
 	    [expr {[$ptolemyCoreClassSet size] > 100}] \
 	    [$ptolemyCoreClassSet contains $namedObjString] \
 	    [$ptolemyCoreClassSet contains $notAClassString]
-} {1 1 0}
+} {1 0 0}
+
+######################################################################
+####
+#
+test SearchPath-4.2 {Do we need to resize the ptolemyCoreClassSet HashSet?} {
+    set ptolemyCoreClassSet \
+	    [java::call ptolemy.lang.java.SearchPath ptolemyCoreClasses]
+    # Originally, the number of classes in rt.jar was 186
+    # If the number gets too large then modify the initial size 
+    # of the hashset
+    list [expr {[$ptolemyCoreClassSet size] > 240}]
+} {0}
