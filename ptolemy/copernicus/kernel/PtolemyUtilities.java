@@ -28,9 +28,10 @@
 */
 
 package ptolemy.copernicus.kernel;
-
+import ptolemy.math.Complex;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.ComplexToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
@@ -243,6 +244,31 @@ public class PtolemyUtilities {
             Local tokenLocal = _buildConstantTokenLocal(body, insertPoint,
                     localName, doubleTokenClass, doubleTokenConstructor,
                     DoubleConstant.v(((DoubleToken)token).doubleValue()));
+            return tokenLocal;
+        } else if (token instanceof ComplexToken) {
+            Complex complex = ((ComplexToken)token).complexValue();
+            // ComplexToken takes a Complex as a constructor.
+            SootClass complexClass =
+                Scene.v().loadClassAndSupport("ptolemy.math.Complex");
+            SootMethod complexConstructor =
+                complexClass.getMethod("void <init>(double,double)");
+
+            Local complexLocal = Jimple.v().newLocal(localName + "Arg",
+                    RefType.v(complexClass));
+            body.getLocals().add(complexLocal);
+            units.insertBefore(Jimple.v().newAssignStmt(complexLocal,
+                    Jimple.v().newNewExpr(RefType.v(complexClass))),
+                    insertPoint);
+            units.insertBefore(
+                    Jimple.v().newInvokeStmt(
+                            Jimple.v().newSpecialInvokeExpr(complexLocal,
+                                    complexConstructor,
+                                    DoubleConstant.v(complex.real),
+                                    DoubleConstant.v(complex.imag))),
+                    insertPoint);
+            Local tokenLocal = _buildConstantTokenLocal(body, insertPoint,
+                    localName, complexTokenClass, complexTokenConstructor,
+                    complexLocal);
             return tokenLocal;
         } else {
             SootClass tokenClass =
