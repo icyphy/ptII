@@ -131,14 +131,14 @@ a login for cvs access
 <li> If you are connecting via a DSL connection, you may
 want to use compression to transfer files:
 In Window -&gt; Preferences -&gt; Team -&gt; CVS, change Compression Level
-to 9.
+to 3.
 <br>If, under Eclipse 2.1,
 you receive a message "Terminated with fatal signal 10", then
 try using a different compression level, see the
 <a href="http://dev.eclipse.org/viewcvs/index.cgi/~checkout~/platform-vcm-home/docs/online/cvs_features2.0/cvs-faq.html#misc_3" target="_top">The Eclipse CVS FAQ</a>
 for details.
 <br><a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=15724" target="_top"><code>https://bugs.eclipse.org/bugs/show_bug.cgi?id=15724</code></a> suggests using
-a compression level of 5
+a compression level of 5.
 
 <p>After the failure, the cvs log (Window -&gt; Show Views -&gt; CVS -&gt; CVS Console says:
 
@@ -166,11 +166,17 @@ several errors reported that are due to the .classpath that was just
 created as part of the checkout/project creation process.
 
 <li> Now run configure in the ptII directory outside of Eclipse. This
-will create the "correct" .classpath. See <a
+will create the "correct" <code>ptII/.classpath</code>. See <a
 href="#dotFileSetup">Creating the .classpath and .project files</a>.
 
-<li> In Eclipse, perform a Refresh on the ptII project. This will
-cause Eclipse to see the new .classpath
+<li> In Eclipse, perform a Refresh on the ptII project
+by Window -&gt; Open Perspective -&gt; Java,
+<br> goto the Package Explorer, 
+<br> right click on the ptII icon and select Refresh
+<br> This will
+cause Eclipse to see the new <code>ptII/.classpath</code> and build
+the project
+
 
 </ol>
 
@@ -190,9 +196,22 @@ that are surrounded with <code>@</code> and generates
 proper classpath and directories to exclude.
 
 <ol>
-<li>  Exit Eclipse if it is running
-<li> In the PTII directory run configure. This will create the "correct" .classpath.
-<li> Restart Eclipse.
+<li> Start up Cygwin bash.
+<li> Set the PTII variable and export it
+<pre>
+PTII=c:/ptII
+export PTII
+</pre>
+<li> cd to the PTII directory
+<pre>
+cd $PTII
+</pre>
+<li>Run configure:
+</pre>
+./configure
+</pre>
+This will create <code>$PTII/.classpath</code>
+<li> If Eclipse is running, do a Refresh on the project.
 </ol>  
 
 <h2><a name="PtolemyPreferences">Importing the Ptolemy II specific preferences</a></h2>
