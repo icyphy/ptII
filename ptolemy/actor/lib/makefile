@@ -67,11 +67,13 @@ JSRCS = \
 	Const.java \
 	CurrentTime.java \
 	dB.java \
+        DiscreteRandomSource.java \
 	Distributor.java \
 	Expression.java \
 	FileWriter.java \
 	Gaussian.java \
 	Interpolator.java \
+        MaxIndex.java \
 	Maximum.java \
 	Minimum.java \
 	MultiplyDivide.java \
