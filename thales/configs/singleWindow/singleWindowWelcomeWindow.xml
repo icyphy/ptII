@@ -3,7 +3,7 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="directory">
   <entity name="doc" class="ptolemy.actor.gui.HTMLEffigy">
-    <entity name="tableau" class="ptolemy.actor.gui.SingleWindowHTMLViewerTableau">
+    <entity name="tableau" class="thales.actor.gui.SingleWindowHTMLViewerTableau">
       <property name="size" value="[650, 180]"/>
       <property name="url" value="ptolemy/configs/full/intro.htm"/>
     </entity>

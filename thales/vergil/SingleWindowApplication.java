@@ -1,25 +1,4 @@
 /*
- * Created on 8 juil. 2003
- *
- * @ProposedRating Yellow (jerome.blanc@thalesgroup.com)
- * @AcceptedRating
- */
-package thales.vergil;
-
-import java.net.URL;
-
-import javax.swing.UIManager;
-
-import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.Effigy;
-import ptolemy.gui.MessageHandler;
-import ptolemy.vergil.VergilApplication;
-
-import thales.actor.gui.SingleWindowHTMLViewer;
-
-/**
- * <p>Titre : SingleWindowApplication</p>
- * <p>Description : Main entry point for the SingleWindow mode</p>
 Copyright (c) 2003 THALES.
 All rights reserved.
 
@@ -39,6 +18,29 @@ LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
 A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
 BASIS, AND THALES HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
 UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+Created on 8 juil. 2003
+
+@ProposedRating Yellow (jerome.blanc@thalesgroup.com)
+@AcceptedRating
+*/
+
+package thales.vergil;
+
+import java.net.URL;
+
+import javax.swing.UIManager;
+
+import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.Effigy;
+import ptolemy.gui.MessageHandler;
+import ptolemy.vergil.VergilApplication;
+
+import thales.actor.gui.SingleWindowHTMLViewer;
+
+/**
+ * <p>Titre : SingleWindowApplication</p>
+ * <p>Description : Main entry point for the SingleWindow mode</p>
  * <p>Société : Thales Research and technology</p>
  * @author Jérôme Blanc & Benoit Masson
  * 12 nov. 2003
@@ -79,7 +81,7 @@ public class SingleWindowApplication extends VergilApplication {
      * @see ptolemy.actor.gui.MoMLApplication#_createDefaultConfiguration()
      */
     protected Configuration _createDefaultConfiguration() throws Exception {
-        return _readConfiguration(specToURL("thales/configs/singleWindow/SingleWindowConfiguration.xml"));
+        return _readConfiguration(specToURL("thales/configs/singleWindow/singleWindowConfiguration.xml"));
     }
 
     /* (non-Javadoc)
@@ -95,7 +97,7 @@ public class SingleWindowApplication extends VergilApplication {
         }
 
         // FIXME: This code is Dog slow for some reason.
-        URL inurl = specToURL("thales/configs/singleWindow/SingleWindowWelcomeWindow.xml");
+        URL inurl = specToURL("thales/configs/singleWindow/singleWindowWelcomeWindow.xml");
         _parser.reset();
         _parser.setContext(configuration);
         _parser.parse(inurl, inurl.openStream());
