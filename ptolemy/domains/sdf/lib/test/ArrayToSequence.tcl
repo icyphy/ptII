@@ -78,7 +78,7 @@ test ArrayToSequence-2.1 {test double array} {
     $a2s setName a2s
     set a2sIn [java::field [java::cast ptolemy.domains.sdf.lib.SDFTransformer $a2s] input]
     set a2sOut [java::field [java::cast ptolemy.domains.sdf.lib.SDFTransformer $a2s] output]
-    $a2sOut setTokenProductionRate 2
+    [java::field $a2s arrayLength] setExpression {2}
 
     # put in a Recorder
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
