@@ -129,10 +129,10 @@ public class Parameter extends Variable {
 
     /** Write a MoML description of this object.
      *  MoML is an XML modeling markup language.
-     *  In this class, the object is identified by the "attribute"
+     *  In this class, the object is identified by the "property"
      *  element, with "name" and "class" (XML) attributes.
-     *  The body of the element, between the "&lt;attribute&gt;"
-     *  and "&lt;/attribute&gt;", is written using
+     *  The body of the element, between the "&lt;property&gt;"
+     *  and "&lt;/property&gt;", is written using
      *  the _exportMoMLContents() protected method, so that derived classes
      *  can override that method alone to alter only how the contents
      *  of this object are described.
