@@ -108,7 +108,11 @@ public class TransitionRefinement extends Refinement {
 		// class, we assume that it is being created interactively,
 		// rather than by reading a stored MoML file, so we enable
 		// mirroring in the port.
-		port._mirrorDisable = false;
+        // NOTE: Changed RefinementPort so mirroring
+        // is enabled by default. This means mirroring
+        // will occur during MoML parsing, but this
+        // should be harmless.  EAL 12/04.
+		// port._mirrorDisable = false;
 
 		// Create the appropriate links.
 		ModalModel container = (ModalModel)getContainer();

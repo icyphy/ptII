@@ -88,6 +88,209 @@ public class ModalPort extends TypedIOPort {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Move this object down by one in the list of attributes of
+     *  its container. If this object is already last, do nothing.
+     *  This method overrides the base class to mirror the change
+     *  in any mirror ports.
+     *  Increment the version of the workspace.
+     *  @return The index of the specified object prior to moving it,
+     *   or -1 if it is not moved.
+     *  @exception IllegalActionException If this object has
+     *   no container.
+     */
+    public int moveDown() throws IllegalActionException {
+        try {
+            _workspace.getWriteAccess();
+
+            int result = super.moveDown();
+            if (result != -1) {
+                // Mirror the change in mirror ports.
+                ModalModel container = (ModalModel)getContainer();
+                Iterator entities = container.entityList().iterator();
+                while (entities.hasNext()) {
+                    Entity entity = (Entity)entities.next();
+                    Port mirrorPort = entity.getPort(getName());
+                    if (mirrorPort instanceof RefinementPort) {
+                        RefinementPort castPort = (RefinementPort)mirrorPort;
+                        boolean disableStatus = castPort._mirrorDisable;
+                        try {
+                            castPort._mirrorDisable = true;
+                            castPort.moveDown();
+                        } finally {
+                            castPort._mirrorDisable = disableStatus;
+                        }
+                    }
+                }
+            }
+            return result;
+        } finally {
+            _workspace.doneWriting();
+        }
+    }
+    
+    /** Move this object to the first position in the list
+     *  of attributes of the container. If  this object is already first,
+     *  do nothing. Increment the version of the workspace.
+     *  This method overrides the base class to mirror the change
+     *  in any mirror ports.
+     *  @return The index of the specified object prior to moving it,
+     *   or -1 if it is not moved.
+     *  @exception IllegalActionException If this object has
+     *   no container.
+     */
+    public int moveToFirst() throws IllegalActionException {
+        try {
+            _workspace.getWriteAccess();
+
+            int result = super.moveToFirst();
+            if (result != -1) {
+                // Mirror the change in mirror ports.
+                ModalModel container = (ModalModel)getContainer();
+                Iterator entities = container.entityList().iterator();
+                while (entities.hasNext()) {
+                    Entity entity = (Entity)entities.next();
+                    Port mirrorPort = entity.getPort(getName());
+                    if (mirrorPort instanceof RefinementPort) {
+                        RefinementPort castPort = (RefinementPort)mirrorPort;
+                        boolean disableStatus = castPort._mirrorDisable;
+                        try {
+                            castPort._mirrorDisable = true;
+                            castPort.moveToFirst();
+                        } finally {
+                            castPort._mirrorDisable = disableStatus;
+                        }
+                    }
+                }
+            }
+            return result;
+        } finally {
+            _workspace.doneWriting();
+        }
+    }
+
+    /** Move this object to the specified position in the list
+     *  of attributes of the container. If this object is already at the
+     *  specified position, do nothing.
+     *  This method overrides the base class to mirror the change
+     *  in any mirror ports.
+     *  Increment the version of the workspace.
+     *  @param index The position to move this object to.
+     *  @return The index of the specified object prior to moving it,
+     *   or -1 if it is not moved.
+     *  @exception IllegalActionException If this object has
+     *   no container or if the index is out of bounds.
+     */
+    public int moveToIndex(int index) throws IllegalActionException {
+        try {
+            _workspace.getWriteAccess();
+
+            int result = super.moveToIndex(index);
+            if (result != -1) {
+                // Mirror the change in mirror ports.
+                ModalModel container = (ModalModel)getContainer();
+                Iterator entities = container.entityList().iterator();
+                while (entities.hasNext()) {
+                    Entity entity = (Entity)entities.next();
+                    Port mirrorPort = entity.getPort(getName());
+                    if (mirrorPort instanceof RefinementPort) {
+                        RefinementPort castPort = (RefinementPort)mirrorPort;
+                        boolean disableStatus = castPort._mirrorDisable;
+                        try {
+                            castPort._mirrorDisable = true;
+                            castPort.moveToIndex(index);
+                        } finally {
+                            castPort._mirrorDisable = disableStatus;
+                        }
+                    }
+                }
+            }
+            return result;
+        } finally {
+            _workspace.doneWriting();
+        }
+    }
+
+    /** Move this object to the last position in the list
+     *  of attributes of the container.  If this object is already last,
+     *  do nothing. This method overrides the base class to mirror the change
+     *  in any mirror ports.
+     *  Increment the version of the workspace.
+     *  @return The index of the specified object prior to moving it,
+     *   or -1 if it is not moved.
+     *  @exception IllegalActionException If this object has
+     *   no container.
+     */
+    public int moveToLast() throws IllegalActionException {
+        try {
+            _workspace.getWriteAccess();
+
+            int result = super.moveToLast();
+            if (result != -1) {
+                // Mirror the change in mirror ports.
+                ModalModel container = (ModalModel)getContainer();
+                Iterator entities = container.entityList().iterator();
+                while (entities.hasNext()) {
+                    Entity entity = (Entity)entities.next();
+                    Port mirrorPort = entity.getPort(getName());
+                    if (mirrorPort instanceof RefinementPort) {
+                        RefinementPort castPort = (RefinementPort)mirrorPort;
+                        boolean disableStatus = castPort._mirrorDisable;
+                        try {
+                            castPort._mirrorDisable = true;
+                            castPort.moveToLast();
+                        } finally {
+                            castPort._mirrorDisable = disableStatus;
+                        }
+                    }
+                }
+            }
+            return result;
+        } finally {
+            _workspace.doneWriting();
+        }
+    }
+
+    /** Move this object up by one in the list of
+     *  attributes of the container. If  this object is already first, do
+     *  nothing.
+     *  This method overrides the base class to mirror the change
+     *  in any mirror ports.
+     *  Increment the version of the workspace.
+     *  @return The index of the specified object prior to moving it,
+     *   or -1 if it is not moved.
+     *  @exception IllegalActionException If this object has
+     *   no container.
+     */
+    public int moveUp() throws IllegalActionException {
+        try {
+            _workspace.getWriteAccess();
+
+            int result = super.moveUp();
+            if (result != -1) {
+                // Mirror the change in mirror ports.
+                ModalModel container = (ModalModel)getContainer();
+                Iterator entities = container.entityList().iterator();
+                while (entities.hasNext()) {
+                    Entity entity = (Entity)entities.next();
+                    Port mirrorPort = entity.getPort(getName());
+                    if (mirrorPort instanceof RefinementPort) {
+                        RefinementPort castPort = (RefinementPort)mirrorPort;
+                        boolean disableStatus = castPort._mirrorDisable;
+                        try {
+                            castPort._mirrorDisable = true;
+                            castPort.moveUp();
+                        } finally {
+                            castPort._mirrorDisable = disableStatus;
+                        }
+                    }
+                }
+            }
+            return result;
+        } finally {
+            _workspace.doneWriting();
+        }
+    }
+
     /** Override the base class so that if the port is being removed
      *  from the current container, then it is also removed from the
      *  controller and from each of the refinements.  This method is
@@ -298,11 +501,13 @@ public class ModalPort extends TypedIOPort {
                         try {
                             castPort._mirrorDisable = true;
                             castPort.setInput(true);
-                            // If we don't do the following,
-                            // this will port will both an input
-                            // and an output in the controller,
-                            // which is probably what we want.
-                            // castPort.setOutput(false);
+                            // Mark that the input property is
+                            // automatically set, so that if it
+                            // is changed, that change is not
+                            // mirrored.
+                            if (!isInput()) {
+                            	castPort._automaticallyInput = true;
+                            }
                         } finally {
                             castPort._mirrorDisable = controlPortStatus;
                         }

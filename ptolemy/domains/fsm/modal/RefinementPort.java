@@ -66,6 +66,7 @@ public class RefinementPort extends TypedIOPort {
      */
     public RefinementPort(Workspace workspace) {
         super(workspace);
+        _checkWhetherMirrorIsInput();
     }
 
     /** Construct a port with a containing actor and a name
@@ -83,6 +84,7 @@ public class RefinementPort extends TypedIOPort {
     public RefinementPort(ComponentEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        _checkWhetherMirrorIsInput();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -99,6 +101,236 @@ public class RefinementPort extends TypedIOPort {
         } else {
             return super.isTypeAcceptable();
         }
+    }
+
+    /** Move this object down by one in the list of attributes of
+     *  its container. If this object is already last, do nothing.
+     *  This method overrides the base class to mirror the change
+     *  in any mirror ports.
+     *  Increment the version of the workspace.
+     *  @return The index of the specified object prior to moving it,
+     *   or -1 if it is not moved.
+     *  @exception IllegalActionException If this object has
+     *   no container.
+     */
+    public int moveDown() throws IllegalActionException {
+        boolean disableStatus = _mirrorDisable;
+        try {
+            _workspace.getWriteAccess();
+            int result = -1;
+            if (_mirrorDisable || getContainer() == null) {
+                result = super.moveDown();
+            } else {
+                _mirrorDisable = true;
+                boolean success = false;
+                Nameable container = getContainer();
+                if (container != null) {
+                    Nameable modal = container.getContainer();
+                    if (modal instanceof ModalModel) {
+                        Port port = ((ModalModel)modal).getPort(getName());
+                        if (port instanceof IOPort) {
+                            ((IOPort)port).moveDown();
+                            success = true;
+                        }
+                    }
+                }
+                // The mirror port(s), if there are any,
+                // will have called this method and achieved
+                // the moveDown. But if there are no mirror
+                // ports, we need to do it here.
+                if (!success) {
+                    result = super.moveDown();
+                }
+            }
+            return result;
+        } finally {
+            _mirrorDisable = disableStatus;
+            _workspace.doneWriting();
+        }        
+    }
+    
+    /** Move this object to the first position in the list
+     *  of attributes of the container. If  this object is already first,
+     *  do nothing. Increment the version of the workspace.
+     *  This method overrides the base class to mirror the change
+     *  in any mirror ports.
+     *  @return The index of the specified object prior to moving it,
+     *   or -1 if it is not moved.
+     *  @exception IllegalActionException If this object has
+     *   no container.
+     */
+    public int moveToFirst() throws IllegalActionException {
+        boolean disableStatus = _mirrorDisable;
+        try {
+            _workspace.getWriteAccess();
+            int result = -1;
+            if (_mirrorDisable || getContainer() == null) {
+                result = super.moveToFirst();
+            } else {
+                _mirrorDisable = true;
+                boolean success = false;
+                Nameable container = getContainer();
+                if (container != null) {
+                    Nameable modal = container.getContainer();
+                    if (modal instanceof ModalModel) {
+                        Port port = ((ModalModel)modal).getPort(getName());
+                        if (port instanceof IOPort) {
+                            ((IOPort)port).moveToFirst();
+                            success = true;
+                        }
+                    }
+                }
+                // The mirror port(s), if there are any,
+                // will have called this method and achieved
+                // the moveToFirst. But if there are no mirror
+                // ports, we need to do it here.
+                if (!success) {
+                    result = super.moveToFirst();
+                }
+            }
+            return result;
+        } finally {
+            _mirrorDisable = disableStatus;
+            _workspace.doneWriting();
+        }        
+    }
+
+    /** Move this object to the specified position in the list
+     *  of attributes of the container. If this object is already at the
+     *  specified position, do nothing.
+     *  This method overrides the base class to mirror the change
+     *  in any mirror ports.
+     *  Increment the version of the workspace.
+     *  @param index The position to move this object to.
+     *  @return The index of the specified object prior to moving it,
+     *   or -1 if it is not moved.
+     *  @exception IllegalActionException If this object has
+     *   no container or if the index is out of bounds.
+     */
+    public int moveToIndex(int index) throws IllegalActionException {
+        boolean disableStatus = _mirrorDisable;
+        try {
+            _workspace.getWriteAccess();
+            int result = -1;
+            if (_mirrorDisable || getContainer() == null) {
+                result = super.moveToIndex(index);
+            } else {
+                _mirrorDisable = true;
+                boolean success = false;
+                Nameable container = getContainer();
+                if (container != null) {
+                    Nameable modal = container.getContainer();
+                    if (modal instanceof ModalModel) {
+                        Port port = ((ModalModel)modal).getPort(getName());
+                        if (port instanceof IOPort) {
+                            ((IOPort)port).moveToIndex(index);
+                            success = true;
+                        }
+                    }
+                }
+                // The mirror port(s), if there are any,
+                // will have called this method and achieved
+                // the moveToIndex. But if there are no mirror
+                // ports, we need to do it here.
+                if (!success) {
+                    result = super.moveToIndex(index);
+                }
+            }
+            return result;
+        } finally {
+            _mirrorDisable = disableStatus;
+            _workspace.doneWriting();
+        }        
+        
+    }
+
+    /** Move this object to the last position in the list
+     *  of attributes of the container.  If this object is already last,
+     *  do nothing. This method overrides the base class to mirror the change
+     *  in any mirror ports.
+     *  Increment the version of the workspace.
+     *  @return The index of the specified object prior to moving it,
+     *   or -1 if it is not moved.
+     *  @exception IllegalActionException If this object has
+     *   no container.
+     */
+    public int moveToLast() throws IllegalActionException {
+        boolean disableStatus = _mirrorDisable;
+        try {
+            _workspace.getWriteAccess();
+            int result = -1;
+            if (_mirrorDisable || getContainer() == null) {
+                result = super.moveToLast();
+            } else {
+                _mirrorDisable = true;
+                boolean success = false;
+                Nameable container = getContainer();
+                if (container != null) {
+                    Nameable modal = container.getContainer();
+                    if (modal instanceof ModalModel) {
+                        Port port = ((ModalModel)modal).getPort(getName());
+                        if (port instanceof IOPort) {
+                            ((IOPort)port).moveToLast();
+                            success = true;
+                        }
+                    }
+                }
+                if (!success) {
+                    result = super.moveToLast();
+                }
+            }
+            return result;
+        } finally {
+            _mirrorDisable = disableStatus;
+            _workspace.doneWriting();
+        }        
+    }
+
+    /** Move this object up by one in the list of
+     *  attributes of the container. If  this object is already first, do
+     *  nothing.
+     *  This method overrides the base class to mirror the change
+     *  in any mirror ports.
+     *  Increment the version of the workspace.
+     *  @return The index of the specified object prior to moving it,
+     *   or -1 if it is not moved.
+     *  @exception IllegalActionException If this object has
+     *   no container.
+     */
+    public int moveUp() throws IllegalActionException {
+        boolean disableStatus = _mirrorDisable;
+        try {
+            _workspace.getWriteAccess();
+            int result = -1;
+            if (_mirrorDisable || getContainer() == null) {
+                result = super.moveUp();
+            } else {
+                _mirrorDisable = true;
+                boolean success = false;
+                Nameable container = getContainer();
+                if (container != null) {
+                    Nameable modal = container.getContainer();
+                    if (modal instanceof ModalModel) {
+                        Port port = ((ModalModel)modal).getPort(getName());
+                        if (port instanceof IOPort) {
+                            ((IOPort)port).moveUp();
+                            success = true;
+                        }
+                    }
+                }
+                // The mirror port(s), if there are any,
+                // will have called this method and achieved
+                // the moveUp. But if there are no mirror
+                // ports, we need to do it here.
+                if (!success) {
+                	result = super.moveUp();
+                }
+            }
+            return result;
+        } finally {
+            _mirrorDisable = disableStatus;
+            _workspace.doneWriting();
+        }        
     }
 
     /** Override the base class so that if the port is being removed
@@ -163,9 +395,10 @@ public class RefinementPort extends TypedIOPort {
         boolean disableStatus = _mirrorDisable;
         try {
             _workspace.getWriteAccess();
-            if (_mirrorDisable || getContainer() == null) {
-                // Have already called the super class.
-                // This time, process the request.
+            if (_mirrorDisable
+                    || getContainer() == null
+                    || _automaticallyInput) {
+                // Do not mirror.
                 super.setInput(isInput);
             } else {
                 _mirrorDisable = true;
@@ -215,8 +448,7 @@ public class RefinementPort extends TypedIOPort {
         try {
             _workspace.getWriteAccess();
             if (_mirrorDisable || getContainer() == null) {
-                // Have already called the super class.
-                // This time, process the request.
+                // Do not mirror.
                 super.setMultiport(isMultiport);
             } else {
                 _mirrorDisable = true;
@@ -254,8 +486,7 @@ public class RefinementPort extends TypedIOPort {
         try {
             _workspace.getWriteAccess();
             if (_mirrorDisable || getContainer() == null) {
-                // Have already called the super class.
-                // This time, process the request.
+                // Do not mirror.
                 super.setName(name);
             } else {
                 _mirrorDisable = true;
@@ -300,8 +531,7 @@ public class RefinementPort extends TypedIOPort {
         try {
             _workspace.getWriteAccess();
             if (_mirrorDisable || getContainer() == null) {
-                // Have already called the super class.
-                // This time, process the request.
+                // Do not mirror.
                 super.setOutput(isOutput);
             } else {
                 _mirrorDisable = true;
@@ -328,10 +558,44 @@ public class RefinementPort extends TypedIOPort {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+    /** Indicator that the port is automatically an input port
+     *  because it was set to be an output port. This automatic change
+     *  is made in output ports of the ModalController so that if
+     *  a refinement writes to its output port, then that data is
+     *  available in scope for the guard expressions.
+     */
+    protected boolean _automaticallyInput = false;
+    
     // This is protected to be accessible to ModalPort.
 
     /** If false, then changes the port are mirrored in the container's
-     *  container.
+     *  container. This is false by default.
      */
-    protected boolean _mirrorDisable = true;
+    protected boolean _mirrorDisable = false;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** If the container is a ModalModel and has a mirror port to this
+     *  one that is not an input and is an output, then mark this port
+     *  so that if it becomes an input, that input property is not
+     *  reflected to the mirror port. 
+     */
+    private void _checkWhetherMirrorIsInput() {
+        // Need to check whether there is a containing ModalModel,
+        // and whether its mirror port is also an input.
+        Nameable container = getContainer();
+        if (container != null) {
+            Nameable modal = container.getContainer();
+            if (modal instanceof ModalModel) {
+                Port port = ((ModalModel)modal).getPort(getName());
+                if (port instanceof IOPort) {
+                    if (!((IOPort)port).isInput()
+                            && ((IOPort)port).isOutput()) {
+                        _automaticallyInput = true;
+                    }
+                }
+            }
+        }   
+    }
 }
