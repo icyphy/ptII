@@ -59,14 +59,14 @@ public class IntToken extends ScalarToken {
     }
 
     /** Construct an IntToken from the specified string.
-     *  @exception IllegalArgumentException If the Token could not
+     *  @exception IllegalActionException If the Token could not
      *   be created with the given String.
      */
-    public IntToken(String init) throws IllegalArgumentException {
+    public IntToken(String init) throws IllegalActionException {
         try {
             _value = (Integer.valueOf(init)).intValue();
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException(e.getMessage());
+            throw new IllegalActionException(e.getMessage());
         }
     }
 

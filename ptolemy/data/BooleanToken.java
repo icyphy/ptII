@@ -60,10 +60,10 @@ public class BooleanToken extends Token {
     }
 
     /** Construct a token with the specified string.
-     *  @exception IllegalArgumentException If the token could not
+     *  @exception IllegalActionException If the token could not
      *   be created with the given String.
      */
-    public BooleanToken(String init) throws IllegalArgumentException {
+    public BooleanToken(String init) throws IllegalActionException {
         _value = (Boolean.valueOf(init)).booleanValue();
     }
 
@@ -158,11 +158,8 @@ public class BooleanToken extends Token {
      *  then this method returns this token.  Otherwise it throws an
      *  exception.
      *  @param rightFactor The token to divide by.
-     *  @exception IllegalActionException If the passed token is
-     *   not a BooleanToken.
-     *  @exception IllegalArgumentException If the argument has value
-     *   <i>false</i>.  Note that this is a run-time exception, so it
-     *   need not be declared explicitly.
+     *  @exception IllegalActionException If the argument token is
+     *   not a BooleanToken, or the argument has value <i>false</i>.
      *  @return The result of division.
      */
     public Token divide(Token denominator) throws IllegalActionException {
@@ -174,8 +171,9 @@ public class BooleanToken extends Token {
             if (denomValue) {
                 return this;
             } else {
-                throw new IllegalArgumentException("BooleanToken: division "
-                        + "by false-valued token (analogous to division by zero).");
+                throw new IllegalActionException("BooleanToken: division "
+                        + "by false-valued token (analogous to division by "
+			+ "zero).");
             }
         } else {
             return super.multiply(denominator);
@@ -193,10 +191,8 @@ public class BooleanToken extends Token {
      *  The argument is assumed to be convertible to a BooleanToken.
      *  @param rightFactor The token to divide into.
      *  @exception IllegalActionException If the passed token is
-     *   not convertible to a BooleanToken.
-     *  @exception IllegalArgumentException If this token has value
-     *   <i>false</i>.  Note that this is a run-time exception, so it
-     *   need not be declared explicitly.
+     *   not convertible to a BooleanToken, or this token has value
+     *   <i>false</i>.
      *  @return A new token containing the result.
      */
     public Token divideReverse(Token numerator) throws IllegalActionException {
@@ -204,7 +200,7 @@ public class BooleanToken extends Token {
         if (_value) {
             return converted;
         } else {
-            throw new IllegalArgumentException("BooleanToken: division "
+            throw new IllegalActionException("BooleanToken: division "
                     + "by false-valued token (analogous to division by zero).");
         }
     }

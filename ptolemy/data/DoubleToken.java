@@ -66,14 +66,14 @@ public class DoubleToken extends ScalarToken {
     }
 
     /** Construct a DoubleToken from the specified string.
-     *  @exception IllegalArgumentException If the Token could not
+     *  @exception IllegalActionException If the Token could not
      *   be created with the given String.
      */
-    public DoubleToken(String init) throws IllegalArgumentException {
+    public DoubleToken(String init) throws IllegalActionException {
         try {
             _value = (Double.valueOf(init)).doubleValue();
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException(e.getMessage());
+            throw new IllegalActionException(e.getMessage());
         }
     }
 

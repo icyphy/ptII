@@ -63,6 +63,11 @@ public class FixToken extends ScalarToken {
         _value = value;
     }
 
+    // FIXME: The constructors should throw IllegalActionException instead of
+    // IllegalArgumentException. But since the FixPointFunctions class in the
+    // expression package does not catch IllegalActionException, leave
+    // IllegalArgumentException for now.
+
     /** Construct a FixToken representing the specified value with the
      *  specified precision.  The specified value is quantized to the
      *  closest value representable with the specified precision.

@@ -126,7 +126,7 @@ test BooleanToken-5.1 {Test division by zero} {
     catch {[$falseToken divide $falseToken]} msg1
     catch {[$trueToken divide $falseToken]} msg2
     list $msg1 $msg2
-} {{java.lang.IllegalArgumentException: BooleanToken: division by false-valued token (analogous to division by zero).} {java.lang.IllegalArgumentException: BooleanToken: division by false-valued token (analogous to division by zero).}}
+} {{ptolemy.kernel.util.IllegalActionException: BooleanToken: division by false-valued token (analogous to division by zero).} {ptolemy.kernel.util.IllegalActionException: BooleanToken: division by false-valued token (analogous to division by zero).}}
 
 test BooleanToken-5.2 {Test reverse division of booleans} {
     set r3 [$trueToken divideReverse $falseToken]
@@ -138,7 +138,7 @@ test BooleanToken-5.3 {Test division by zero} {
     catch {[$falseToken divideReverse $falseToken]} msg1
     catch {[$falseToken divideReverse $trueToken]} msg2
     list $msg1 $msg2
-} {{java.lang.IllegalArgumentException: BooleanToken: division by false-valued token (analogous to division by zero).} {java.lang.IllegalArgumentException: BooleanToken: division by false-valued token (analogous to division by zero).}}
+} {{ptolemy.kernel.util.IllegalActionException: BooleanToken: division by false-valued token (analogous to division by zero).} {ptolemy.kernel.util.IllegalActionException: BooleanToken: division by false-valued token (analogous to division by zero).}}
 
 
 test BooleanToken-6.0 {Test equality test} {

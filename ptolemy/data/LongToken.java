@@ -58,14 +58,14 @@ public class LongToken extends ScalarToken {
     }
 
     /** Construct a token from the given String.
-     *  @exception IllegalArgumentException If the Token could not
+     *  @exception IllegalActionException If the Token could not
      *   be created with the given String.
      */
-    public LongToken(String init) throws IllegalArgumentException {
+    public LongToken(String init) throws IllegalActionException {
         try {
 	    _value = (Long.valueOf(init)).longValue();
 	} catch (NumberFormatException e) {
-	    throw new IllegalArgumentException(e.getMessage());
+	    throw new IllegalActionException(e.getMessage());
 	}
     }
 
