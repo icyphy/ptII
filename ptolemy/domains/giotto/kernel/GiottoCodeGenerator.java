@@ -351,9 +351,13 @@ public class GiottoCodeGenerator extends Attribute {
             + _endLine;
         codeString +=  "{"
             + _endLine;
+        String portSeparator = ",";
+        if(inputPorts.equals("") || outputPorts.equals("")) {
+            portSeparator = "";
+        }
         codeString +=  "        schedule CG"
             + taskName
-            + "_Task(" + inputPorts + "," + outputPorts + ")"
+            + "_Task(" + inputPorts + portSeparator + outputPorts + ")"
             + _endLine;
         codeString +=  "}"
             + _endLine;
@@ -386,6 +390,9 @@ public class GiottoCodeGenerator extends Attribute {
      */
     private static String _driverCode(TypedCompositeActor model, Actor actor)
             throws IllegalActionException {
+        if(!_needsInputDriver(actor)) {
+            return "";
+        }
 
         String codeString = "";
 
@@ -589,6 +596,7 @@ public class GiottoCodeGenerator extends Attribute {
                                     getToken()).intValue();
                         }
                     }
+                  
                     codeString +=  "    actfreq "
                         + actorFreq
                         + " do "
@@ -615,13 +623,17 @@ public class GiottoCodeGenerator extends Attribute {
                 actorFreq = ((IntToken) actorFreqPara.
                         getToken()).intValue();
             }
+            String driverName = "";
+            if(_needsInputDriver(actor)) {
+                driverName = actorName + "_driver";
+            }
             codeString += "    taskfreq "
                 + actorFreq
                 + " do "
                 + actorName
                 + "("
-                + actorName
-                + "_driver);"
+                + driverName
+                + ");"
                 + _endLine;
 
         }
@@ -632,7 +644,16 @@ public class GiottoCodeGenerator extends Attribute {
 
     }
 
-
+    /** Return true if the given actor has at least one input port, which 
+     *  requires it to have an input driver.
+     */
+    private static boolean _needsInputDriver(Actor actor) {
+        if( actor.inputPortList().size() <= 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
 
     private static String _endLine = "\n";
