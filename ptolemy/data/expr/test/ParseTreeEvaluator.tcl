@@ -83,13 +83,12 @@ test ParseTreeEvaluator-2.4 {Construct a Parser, try simple double expressions} 
 ####
 # 
 test ParseTreeEvaluator-2.4.1 {Construct a Parser, test out power} {
-    catch {theTest "3.0 ^ -3"} errMsg
-    list $errMsg [theTest "3.0 ^ 0"] \
+    list [theTest "3.0 ^ -3"] \
+	[theTest "3.0 ^ 0"] \
 	[theTest "3.0 ^ 0ub"] \
 	[theTest "3.0 ^ 3"] \
 	[theTest "3.0 ^ 3ub"] 
-} {{ptolemy.kernel.util.IllegalActionException: Only positive integral power numbers (e.g. 10^3) are allowed.} 1.0 1.0 27.0 27.0} {power with negative integral exponents should work, see Token.pow()}
-
+} {0.0123456790123 1.0 1.0 27.0 27.0}
 
 ######################################################################
 ####
