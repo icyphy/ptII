@@ -447,6 +447,10 @@ for the nightly test suite.
 
   <dt> <CODE>$PTII/bin/ptexecute foo.xml</CODE>
   <dd> will run the model.  The model need not be graphical.
+
+  <dt> <CODE>java -classpath $PTII ptolemy.actor.gui.MoMLSimpleApplication foo.xml</CODE>
+  <dd> will run the model without requiring a connection to a display.
+  Use this method for running models as part of cron jobs etc.
   </dl>
 
 <dt> <a name="reading data from files?"><b>4.2 How do I read data from a file?</b></a>
