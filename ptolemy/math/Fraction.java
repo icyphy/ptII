@@ -47,20 +47,20 @@ A Fraction class.  Yes, it works just the way you'd expect.
 @version $Id$
 */
 public class Fraction {
-
     /** Create a new fraction.   Default Value = 0
      */
     public Fraction() {
         _num = 0;
         _den = 1;
+	_simplify();
     }
-
 
     /** Create a new fraction.   Default Value = i;
      */
     public Fraction(int i) {
         _num = i;
         _den = 1;
+	_simplify();
     }
 
     /** Create a new Fraction.   Default Value = Numerator/Denominator;
@@ -72,6 +72,7 @@ public class Fraction {
 
         _num = Numerator;
         _den = Denominator;
+	_simplify();
     }
 
     /** Create a new Fraction.   Default value = Fraction;
@@ -79,131 +80,102 @@ public class Fraction {
     public Fraction(Fraction f) {
         _num = f._num;
         _den = f._den;
+	_simplify();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
     /** Set the Numerator of an existing Fraction
      */
-    public void setNumerator(int Numerator) {
+    /*   public void setNumerator(int Numerator) {
         _num = Numerator;
     }
-
-
+    */
     /** Set the Denominator of an existing Fraction
      */
-    public void setDenominator(int Denominator) {
+    /*public void setDenominator(int Denominator) {
                 if(Denominator == 0)
                     throw new ArithmeticException("Illegal Fraction: " +
                             "cannot Divide by zero");
                 _den = Denominator;
-    }
+		}*/
 
-
-    /** Reduce the fraction to lowest terms by dividing the Numerator and
-        Denominator by their Greatest Common Divisor */
-    public void simplify() {
-        int factor = gcd(_num, _den);
-        _num = _num / factor;
-        _den = _den / factor;
-        // Standardize the sign
-        if(_den < 0) {
-            _den = -_den;
-            _num = -_num;
-        }
-    }
-
-
-    /** Multiply two Fractions.
-     *  @return The answer as another Fraction
+    /** Multiply this fraction by the given fraction.
+     *  @return The answer as another fraction in lowest terms.
      */
-    public static Fraction multiply(Fraction a, Fraction b) {
-        Fraction f = new Fraction(a._num * b._num, a._den * b._den);
+    public Fraction multiply(Fraction b) {
+        Fraction f = new Fraction(_num * b._num, _den * b._den);
         return f;
     }
 
-
-    /** Divide two Fractions.
-     *  @return The answer as another Fraction
+    /** Divide this fraction by the given fraction.
+     *  @return The answer as another fraction in lowest terms.
      */
-    public static Fraction divide(Fraction a, Fraction b) {
-        Fraction f = new Fraction(a._num * b._den, a._den * b._num);
-        if(f._den == 0)
-            throw new ArithmeticException("Illegal Fraction: " +
-                    "cannot Divide by zero");
-        return f;
+    public Fraction divide(Fraction b) {
+        Fraction f = new Fraction(_num * b._den, _den * b._num);
+	return f;
     }
 
-
-    /** Add two Fractions.
-     *  @return The answer as another Fraction
+    /** Add this fraction to the given fractions.
+     *  @return The answer as another fraction in lowest terms.
      */
-    public static Fraction add(Fraction a, Fraction b) {
+    public Fraction add(Fraction b) {
         Fraction f = new Fraction(
-                a._num * b._den + a._den * b._num, a._den * b._den);
+                _num * b._den + _den * b._num, _den * b._den);
         return f;
     }
 
-
-    /** Subtract two Fractions.
-     *  @return The answer as another Fraction
+    /** Subtract The given fraction from this fraction.
+     *  @return The answer as another fraction in lowest terms
      */
-    public static Fraction subtract(Fraction a, Fraction b) {
+    public Fraction subtract(Fraction b) {
        Fraction f = new Fraction(
-               a._num * b._den - a._den * b._num, a._den * b._den);
+               _num * b._den - _den * b._num, _den * b._den);
         return f;
     }
-
 
     /** Negate a Fraction.
-     *  @return The answer as another Fraction
+     *  @return The answer as another fraction in lowest terms
      */
-    public static Fraction negate(Fraction a) {
-        Fraction f = new Fraction(-a._num, a._den);
+    public Fraction negate() {
+        Fraction f = new Fraction(-_num, _den);
         return f;
     }
-
 
     /** Invert a Fractions.
-     *  @return The answer as another Fraction
+     *  @return The answer as another fraction in lowest terms
      */
-    public static Fraction inverse(Fraction a) {
-        Fraction f = new Fraction(a._den, a._num);
+    public Fraction inverse() {
+        Fraction f = new Fraction(_den, _num);
         return f;
     }
 
-
-    /** Do two Fractions have the same value?   The Fractions are compared in
-     *  lowest terms, standard form.
+    /** Does this fraction have the same value as the given fraction?
+     *  The Fractions are compared in lowest terms.
      */
-    public static boolean equals(Fraction ai, Fraction bi) {
-        Fraction a = new Fraction(ai);
-        Fraction b = new Fraction(bi);
-        a.simplify();
-        b.simplify();
-        return ((a._num == b._num) && (a._den == b._den));
+    public boolean equals(Fraction b) {
+	_simplify();
+        b._simplify();
+        return ((_num == b._num) && (_den == b._den));
     }
-
 
     /** Convert the fraction to a readable string
      */
     public String toString() {
         StringBuffer s = new StringBuffer();
+	_simplify();
         s.append(_num);
         s.append('/');
         s.append(_den);
         return s.toString();
     }
 
-
     /** Return the Numerator
      */
     public int getNumerator() {
         return _num;
     }
-
 
     /** Return the Denominator
      */
@@ -216,7 +188,7 @@ public class Fraction {
     /** Implement Euclid's method for finding the Greatest Common Divisor of
      *  two numbers
      */
-    // These should be moved to the Math Package
+    // FIXME: These should be moved to the Math Package
 
     public static int gcd(int u, int v) {
         int t;
@@ -235,8 +207,23 @@ public class Fraction {
         return result;
     }
 
-    protected int _num;
-    protected int _den;
+   /** Reduce the fraction to lowest terms by dividing the Numerator and
+     *  Denominator by their Greatest Common Divisor.  In addition the 
+     *  fraction is put in standard form (denominator greater than zero).
+     */
+    private void _simplify() {
+        int factor = gcd(_num, _den);
+        _num = _num / factor;
+        _den = _den / factor;
+        // Standardize the sign
+        if(_den < 0) {
+            _den = -_den;
+            _num = -_num;
+        }
+    }
+
+    private int _num;
+    private int _den;
 
 
 }

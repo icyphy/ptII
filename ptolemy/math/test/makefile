@@ -50,6 +50,7 @@ JSIMPLE_TESTS = \
 	ArrayMath.tcl \
 	Complex.tcl \
 	ExtendedMath.tcl \
+	Fraction.tcl \
 	SignalProcessing.tcl
 
 # Graphical Java tests that use Tcl.
