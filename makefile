@@ -53,6 +53,10 @@ EXTRA_SRCS = \
 OPTIONAL_FILES = \
 	config.log config.status config.cache
 
+# Files to be removed by 'make distclean'
+DISTCLEAN_STUFF = \
+	mk/ptII.mk config.log config.status config.cache
+
 all: mk/ptII.mk suball
 install: subinstall
 
@@ -73,16 +77,9 @@ glimpse: .glimpse_exclude
 mk/ptII.mk: configure mk/ptII.mk.in
 	configure
 
+
 configure: configure.in
 	autoconf
-	#for dir in $(subdirs) ; do \
-	#	(cd $$dir; autoconf) \
-	#done;
-
-distclean:
-	$(MAKE) realclean
-	# Remove mk/ptII.mk after running in the subdirs
-	rm -f mk/ptII.mk config.log config.status config.cache
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
