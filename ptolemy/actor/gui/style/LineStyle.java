@@ -1,4 +1,4 @@
-/* An attribute for specifying how a parameter is edited.
+/* An attribute for specifying that a parameter is edited with an entry line.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -28,29 +28,42 @@
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
-package ptolemy.actor.gui;
+package ptolemy.actor.gui.style;
 
 // Ptolemy imports.
+import ptolemy.data.BooleanToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.gui.Query;
 import ptolemy.kernel.util.*;
+import ptolemy.actor.gui.PtolemyQuery;
 
 // Java imports.
 
 //////////////////////////////////////////////////////////////////////////
-//// ParameterEditorStyle
+//// LineStyle
 /**
-This attribute annotates parameters to suggest an interactive
-mechanism for editing.  The EditorPaneFactory class observes the
+This attribute annotates a parameter to suggest an interactive
+mechanism for editing that uses a combobox menu.
+The EditorPaneFactory class observes the
 presence of this attribute to guide construction of an interactive
 parameter editor.
 
 @see EditorPaneFactory
-@author Steve Neuendorffer and Edward A. Lee
+@author Steve Neuendorffer
 @version $Id$
 */
 
-public abstract class ParameterEditorStyle extends Attribute {
+public class LineStyle extends ParameterEditorStyle {
+
+    /** Construct an attribute in the default workspace with an empty string
+     *  as its name.
+     *  The object is added to the directory of the workspace.
+     *  Increment the version number of the workspace.
+     */
+    public LineStyle() {
+	super();
+    }
 
     /** Construct an attribute with the specified container and name.
      *  @param container The container.
@@ -61,7 +74,7 @@ public abstract class ParameterEditorStyle extends Attribute {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public ParameterEditorStyle(NamedObj container, String name)
+    public LineStyle(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -69,34 +82,25 @@ public abstract class ParameterEditorStyle extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return true if this style is acceptable for the given parameter.
+     */
+    public boolean accept(Parameter param) {
+	return true;
+    }
+
     /** This method is called by EditorPaneFactory to delegate the
      *  construction of an entry in a Query.  This permits this class
-     *  to control how the the user modifies the value of the containing
+     *  to control how the user modifies the value of the containing
      *  parameter.
      *  @param query The query into which to add the entry.
      *  @exception IllegalActionException If the containing parameter
-     *   has a value that cannot be edited using the requested style.
+     *   has a non-boolean value.
      */
-    public abstract void addEntry(PtolemyQuery query)
-            throws IllegalActionException;
-
-    /** Override the base class to first check that the container is
-     *  an instance of Parameter.
-     *  @param container The container to attach this attribute to..
-     *  @exception IllegalActionException If this attribute is not of the
-     *   expected class for the container, or it has no name,
-     *   or the attribute and container are not in the same workspace, or
-     *   the proposed container would result in recursive containment, or
-     *   the proposed container is not an instance of Parameter.
-     *  @exception NameDuplicationException If the container already has
-     *   an attribute with the name of this attribute.
-     */
-    public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
-        if (!(container instanceof Parameter)) {
-            throw new IllegalActionException(this, container,
-                    "ParameterEditorStyle can only be contained by Parameter.");
-        }
-        super.setContainer(container);
+    public void addEntry(PtolemyQuery query) throws IllegalActionException {
+        String name = getContainer().getName();
+        Parameter param = (Parameter)getContainer();
+        Token current = param.getToken();
+        query.addLine(name, name, current.stringValue());
+        query.attachParameter(param, name);
     }
 }

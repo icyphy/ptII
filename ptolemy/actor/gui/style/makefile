@@ -29,14 +29,14 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# This directory contains polymorphic actors.
+# This directory contains styles for parameters.
 
-ME =		ptolemy/actor/gui
+ME =		ptolemy/actor/gui/style
 
-DIRS = 		style test
+DIRS = 		
 
 # Root of the Java directory
-ROOT =		../../..
+ROOT =		../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -51,27 +51,10 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	CompositeActorApplication.java \
-	Configurer.java \
-	Display.java \
-	EditorPaneFactory.java \
-	ExecEvent.java \
-	ExecEventListener.java \
-	HistogramPlotter.java \
-	MatrixViewer.java \
-	ModelFrame.java \
-	ModelPane.java \
-	MoMLApplet.java \
-	MoMLApplication.java \
-	Placeable.java \
-	Plotter.java \
-	PtolemyApplet.java \
-	PtolemyApplication.java \
-	PtolemyQuery.java \
-	SequencePlotter.java \
-	SketchedSource.java \
-	TimedPlotter.java \
-	XYPlotter.java
+	CheckBoxStyle.java \
+	LineStyle.java \
+	ParameterEditorStyle.java \
+	StyleConfigurer.java
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -81,16 +64,7 @@ MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	'Configurer$$1.class' \
-	'MatrixViewer$$MatrixAsTable.class' \
-	'ModelFrame$$FileMenuListener.class' \
-	'ModelFrame$$HelpMenuListener.class' \
-	'ModelPane$$1.class' \
-	'ModelPane$$2.class' \
-	'PtolemyApplet$$GoButtonListener.class' \
-	'PtolemyApplet$$StopButtonListener.class' \
-	'PtolemyApplication$$1.class'
+OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 

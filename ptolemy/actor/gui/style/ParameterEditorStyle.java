@@ -1,4 +1,4 @@
-/* An attribute for specifying that a parameter is edited with a check box.
+/* An attribute for specifying how a parameter is edited.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -28,32 +28,39 @@
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
-package ptolemy.actor.gui;
+package ptolemy.actor.gui.style;
 
 // Ptolemy imports.
-import ptolemy.data.BooleanToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.gui.Query;
 import ptolemy.kernel.util.*;
+import ptolemy.actor.gui.PtolemyQuery;
 
 // Java imports.
 
 //////////////////////////////////////////////////////////////////////////
-//// CheckBoxStyle
+//// ParameterEditorStyle
 /**
-This attribute annotates a parameter to suggest an interactive
-mechanism for editing that uses a single checkbox.
-The EditorPaneFactory class observes the
+This attribute annotates parameters to suggest an interactive
+mechanism for editing.  The EditorPaneFactory class observes the
 presence of this attribute to guide construction of an interactive
 parameter editor.
 
 @see EditorPaneFactory
-@author Edward A. Lee
+@author Steve Neuendorffer and Edward A. Lee
 @version $Id$
 */
 
-public class CheckBoxStyle extends ParameterEditorStyle {
+public abstract class ParameterEditorStyle extends Attribute {
+
+    /** Construct an attribute in the default workspace with an empty string
+     *  as its name.
+     *  The object is added to the directory of the workspace.
+     *  Increment the version number of the workspace.
+     */
+    public ParameterEditorStyle() {
+	super();
+    }
 
     /** Construct an attribute with the specified container and name.
      *  @param container The container.
@@ -64,7 +71,7 @@ public class CheckBoxStyle extends ParameterEditorStyle {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public CheckBoxStyle(NamedObj container, String name)
+    public ParameterEditorStyle(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -72,23 +79,38 @@ public class CheckBoxStyle extends ParameterEditorStyle {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return true if this style is acceptable for the given parameter.
+     */
+    public abstract boolean accept(Parameter param);
+
     /** This method is called by EditorPaneFactory to delegate the
      *  construction of an entry in a Query.  This permits this class
-     *  to control how the user modifies the value of the containing
+     *  to control how the the user modifies the value of the containing
      *  parameter.
      *  @param query The query into which to add the entry.
      *  @exception IllegalActionException If the containing parameter
-     *   has a non-boolean value.
+     *   has a value that cannot be edited using the requested style.
      */
-    public void addEntry(PtolemyQuery query) throws IllegalActionException {
-        String name = getContainer().getName();
-        Parameter param = (Parameter)getContainer();
-        Token current = param.getToken();
-        if (!(current instanceof BooleanToken)) {
-            throw new IllegalActionException(getContainer(),
-                    "CheckBoxStyle can only be used for boolean-valued parameters");
+    public abstract void addEntry(PtolemyQuery query)
+            throws IllegalActionException;
+
+    /** Override the base class to first check that the container is
+     *  an instance of Parameter.
+     *  @param container The container to attach this attribute to..
+     *  @exception IllegalActionException If this attribute is not of the
+     *   expected class for the container, or it has no name,
+     *   or the attribute and container are not in the same workspace, or
+     *   the proposed container would result in recursive containment, or
+     *   the proposed container is not an instance of Parameter.
+     *  @exception NameDuplicationException If the container already has
+     *   an attribute with the name of this attribute.
+     */
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
+        if (container != null && !(container instanceof Parameter)) {
+            throw new IllegalActionException(this, container,
+                "ParameterEditorStyle can only be contained by Parameter.");
         }
-        query.addCheckBox(name, name, ((BooleanToken)current).booleanValue());
-        query.attachParameter(param, name);
+        super.setContainer(container);
     }
 }
