@@ -20,9 +20,6 @@ package diva.util.aelfred;
   * @version 1.1
   * @see XmlParser
   * @see HandlerBase
-  * @see org.xml.sax.EntityHandler
-  * @see org.xml.sax.DocumentHandler
-  * @see org.xml.sax.ErrorHandler
   */
 public interface XmlHandler {
 
@@ -125,17 +122,16 @@ public interface XmlHandler {
      * necessary.
      * <p>You may use XmlParser.getAttributeType() to find the attribute's
      * declared type.
-     * @param name The name of the attribute.
-     * @param type The type of the attribute (see below).
+     * @param aname The name of the attribute.
      * @param value The value of the attribute, or null if the attribute
      *        is <code>#IMPLIED</code>.
      * @param isSpecified True if the value was specified, false if it
      *       was defaulted from the DTD.
      * @exception java.lang.Exception The handler may throw any exception.
-     * @see #startElement
-     * @see XmlParser#declaredAttributes
-     * @see XmlParser#getAttributeType
-     * @see XmlParser#getAttributeDefaultValue
+     * @see #startElement(String)
+     * @see XmlParser#declaredAttributes(String)
+     * @see XmlParser#getAttributeType(String, String)
+     * @see XmlParser#getAttributeDefaultValue(String, String)
      */
     public void attribute (String aname, String value, boolean isSpecified)
             throws java.lang.Exception;
