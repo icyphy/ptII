@@ -1228,6 +1228,12 @@ public class Variable extends Attribute
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** Listeners for changes in value. */
+    protected List _valueListeners;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /** Evaluate the current expression to a token. If this variable
@@ -1506,10 +1512,7 @@ public class Variable extends Attribute
     private Type _typeAtMost = BaseType.UNKNOWN;
 
     // Reference to the inner class that implements InequalityTerm.
-    TypeTerm _typeTerm = null;
-
-    // Listeners for changes in value.
-    private List _valueListeners;
+    private TypeTerm _typeTerm = null;
 
     // The visibility of this variable.
     private Settable.Visibility _visibility = Settable.EXPERT;
