@@ -101,7 +101,7 @@ not included in this director.
 
 @author John S. Davis II, Mudit Goel
 @version $Id$
-@see ptolemy.domains.pn.kernel.PNDirector
+@see ptolemy.domains.pn.kernel.BasePNDirector
 @see ptolemy.domains.dde.kernel.FBDelay
 @see ptolemy.domains.dde.kernel.NullToken
 */
