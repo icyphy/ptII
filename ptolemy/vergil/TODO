@@ -13,6 +13,7 @@ Icon drawing app.
 Cut and Paste.
 Improve debugger.
 Instantiation by name.
+Multiple vertexes per Relation.
 
 DONE:
 Direct connections from Ports to Ports.

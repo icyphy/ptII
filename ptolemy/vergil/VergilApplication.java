@@ -54,6 +54,7 @@ import java.awt.Point;
 import java.awt.print.Printable;
 import java.awt.print.PrinterJob;
 import java.awt.print.PrinterException;
+import java.awt.print.PageFormat;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -447,10 +448,11 @@ public class VergilApplication extends MDIApplication {
 	            JComponent pane = (JComponent) getView(d);
 		    if(pane instanceof Printable) {
 			PrinterJob job = PrinterJob.getPrinterJob();
-			job.setPrintable((Printable)pane);
+                        PageFormat format = job.pageDialog(job.defaultPage());
+			job.setPrintable((Printable)pane, format);
 			if (job.printDialog()) {
 			    try {
-				job.print();
+                                job.print();
 			    } catch (Exception ex) {
 				showError("PrintingFailed", ex);
 			    }
