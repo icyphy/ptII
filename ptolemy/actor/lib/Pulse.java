@@ -96,13 +96,13 @@ public class Pulse extends TypedAtomicActor {
      */
     // FIXME: Mutations are not supported.
     public void initialize() throws IllegalActionException {
-        Token _valuetoken = value.getToken();
-        if (_valuetoken == null) {
-            _valuetoken = new DoubleToken(1.0);
-            value.setToken(_valuetoken);
+        Token _valueToken = value.getToken();
+        if (_valueToken == null) {
+            _valueToken = new DoubleToken(1.0);
+            value.setToken(_valueToken);
         }
         output.setDeclaredType(value.getType());
-        _zero = _valuetoken.zero();
+        _zero = _valueToken.zero();
 
         _width = ((IntToken)(width.getToken())).intValue();
     }
@@ -112,7 +112,7 @@ public class Pulse extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        if (_firecount < _width) {
+        if (_fireCount < _width) {
             output.broadcast(value.getToken());
         } else {
             output.broadcast(_zero);
@@ -122,8 +122,8 @@ public class Pulse extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private Token _valuetoken;
-    private int _firecount = 0;
+    private Token _valueToken;
+    private int _fireCount = 0;
     private int _width;
     private Token _zero;
 }
