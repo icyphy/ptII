@@ -52,7 +52,7 @@ scalars, or a type error will occur. The output array will have the
 same type as the input and can can be sorted in either ascending or
 descending order. Duplicate entries can be optionally removed.
 
-@author Mark Oliver and Edward A. Lee
+@author Mark Oliver, Edward A. Lee
 @version $ID: ArraySort.java,v1.0 2003/07/09
 @since Ptolemy II 3.0.2
 */

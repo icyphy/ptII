@@ -69,7 +69,7 @@ http://java.sun.com/docs/books/tutorial/extra/regex/index.html</a>.
 <p>
 FIXME: Useful options would be to output only files or only directories.
 
-@author  Christopher Hylands and Edward A. Lee
+@author  Christopher Hylands, Edward A. Lee
 @version $Id$
 */
 public class DirectoryListing extends Source implements FilenameFilter {

@@ -64,7 +64,7 @@ threshold are reported.
 This actor is a generalization of Matlab code developed by John Signorotti of
 Southwest Research Institute. The original function was called UFDipSearch.
 
-@author Edward A. Lee and Steve Neuendorffer
+@author Edward A. Lee, Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 3.1
 */

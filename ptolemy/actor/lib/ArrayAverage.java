@@ -57,7 +57,7 @@ type of the elements of the input array.  The elements of the input
 array have to support addition and division by an integer, or an
 exception will be thrown in the fire() method.
 
-@author Mark Oliver and Edward A. Lee
+@author Mark Oliver, Edward A. Lee
 @version $ID: ArrayAverage.java,v0.1 2003/07/01
 @since Ptolemy II 3.0.2
 */
