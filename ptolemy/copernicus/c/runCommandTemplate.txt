@@ -1,4 +1,4 @@
 @java@
  -Xfuture -classpath @classPath@
- -Dptolemy.ptII.dir=@root@
+ -Dptolemy.ptII.dir='@root@'
  ptolemy.actor.gui.CompositeActorApplication
