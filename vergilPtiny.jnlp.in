@@ -15,7 +15,7 @@
 	  <description>Smaller Runtime Release of the Simulation Environment</description>
 	  <description kind="tooltip">Smaller Version</description>
 	  <icon href="doc/img/PtolemyIISmall.gif"/>
-	  <homepage href="http://ptolemy.eecs.berkeley.edu/ptolemyII"/>
+	  <homepage href="@PTII_LOCALURL@"/>
 	  <offline-allowed/>
   </information>
   <security> 

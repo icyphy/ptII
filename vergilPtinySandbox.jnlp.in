@@ -15,7 +15,7 @@
 	  <description>Smaller Runtime Release of the Simulation Environment in a safe and secure sandbox</description>
 	  <description kind="tooltip">Smaller Version, in Sandbox</description>
 	  <icon href="doc/img/PtolemyIISmall.gif"/>
-	  <homepage href="http://ptolemy.eecs.berkeley.edu/ptolemyII"/>
+	  <homepage href="@PTII_LOCALURL@"/>
 	  <offline-allowed/>
   </information>
   <security> 
