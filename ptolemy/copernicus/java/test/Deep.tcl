@@ -47,7 +47,7 @@ if {[info procs jdkClassPathSeparator] == "" } then {
 }
 
 # Uncomment this to get a full report, or set in your Tcl shell window.
-set VERBOSE 1
+#set VERBOSE 1
 
 ######################################################################
 ####
