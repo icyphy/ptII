@@ -34,6 +34,8 @@ import ptolemy.domains.de.kernel.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.actor.lib.TimedActor;
+import ptolemy.actor.lib.SequenceActor;
 import java.util.Vector;
 
 //////////////////////////////////////////////////////////////////////////
