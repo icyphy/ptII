@@ -1,0 +1,72 @@
+<!-- Copyright (c) 1998-2001 The Regents of the University of California. -->
+<!-- All rights reserved. See the file COPYRIGHT for details.             -->
+<HTML>
+
+<HEAD>
+<!--header-->
+<LINK href="../../../diva.css" rel="stylesheet" type="text/css">
+<!--/header-->
+
+	<TITLE>Creating your own Figure class</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF">
+
+<!--navbar-->
+
+
+<!--/navbar-->
+<H1>Creating custom-rendered nodes</H1>
+<P>Class: <B>NodeRendererTutorial</B></P>
+
+<P><IMG SRC="images/NodeRendererTutorial.gif" WIDTH="200" HEIGHT="286" ALIGN="RIGHT" BORDER="0">This tutorial shows
+how to customize the look of the nodes based on the semantic properties of the<BR>
+nodes.  It creates a graph which has a bunch of nodes with user objects of different types, and renders these nodes
+according to their types. The rendering looks like this:
+
+<UL>
+	<LI>String =&gt;  a blue circle
+	<LI>Set     =&gt;  a red circle
+	<LI>Integer =&gt; an orange square
+	<LI>Default =&gt; a grey circle
+</UL>
+
+<P>First we set up a default renderer which is necessary to catch a type of node that does not have a specific
+renderer associated with it.  If you wanted to disallow such nodes, you might have the default renderer throw a
+RuntimeException.</P>
+<PRE>        NodeRenderer defaultRenderer =
+            new BasicNodeRenderer(new Ellipse2D.Double(0.0,0.0,40.0,40.0),
+                    new Ellipse2D.Double(0.0,0.0,600.0,600.0), Color.gray, Color.gray, .3);</PRE>
+<P>The arguments are the single node shape, the composite node shape, the single-node color, the composite node
+color, and the scaling factor by which composite nodes shrink their contents.</P>
+
+<P>We do the same for strings, integers, and sets.
+<PRE>        NodeRenderer stringRenderer =
+            new BasicNodeRenderer(new Ellipse2D.Double(0.0,0.0,40.0,40.0),
+                    new Ellipse2D.Double(0.0,0.0,600.0,600.0), Color.blue, Color.blue, .3);
+        NodeRenderer integerRenderer =
+            new BasicNodeRenderer(new Rectangle2D.Double(0.0,0.0,40.0,40.0), 
+                    new Rectangle2D.Double(0.0,0.0,600.0,600.0), Color.orange, Color.orange, .3);
+        NodeRenderer setRenderer =
+            new BasicNodeRenderer(new Ellipse2D.Double(0.0,0.0,40.0,40.0),
+                    new Ellipse2D.Double(0.0,0.0,600.0,600.0), Color.red, Color.red, .3);</PRE>
+<P>Next, we instantiate a typed node renderer, which is sort of like a registry.  We register each renderer with
+its corresponding node type.  At first I tried to register &quot;setRenderer&quot; with &quot;Set.class&quot;,
+but unfortunately this imperfect solution doesn't provide for inherited rendering style with class inheritence.
+ Maybe in a later version.
+<PRE>        TypedNodeRenderer typedRenderer = new TypedNodeRenderer(defaultRenderer);
+        typedRenderer.addTypedRenderer(Integer.class, integerRenderer);
+        typedRenderer.addTypedRenderer(ArrayList.class, setRenderer);
+        typedRenderer.addTypedRenderer(String.class, stringRenderer);</PRE>
+<P>Finally, we set the renderer in the graph view, and we're set.</P>
+<PRE>        JGraph g = new JGraph();
+        g.getGraphPane().getGraphView().setNodeRenderer(typedRenderer); // &lt;=== HERE!</PRE>
+<P><!--customfooter--> <!--/customfooter-->
+
+</BODY>
+
+</HTML>
+
+
+
+

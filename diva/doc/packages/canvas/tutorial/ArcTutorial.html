@@ -1,0 +1,96 @@
+<!-- Copyright (c) 1998-2001 The Regents of the University of California. -->
+<!-- All rights reserved. See the file COPYRIGHT for details.             -->
+<html>
+<head>
+  <title>Using arc connectors</title>
+<!--header-->
+  <LINK href="../../../diva.css" rel="stylesheet" type="text/css">
+<!--/header-->
+</head>
+<body bgcolor="#ffffff">
+<!--navbar-->
+
+
+<!--/navbar-->
+
+
+<h1>Using arc connectors</h1>
+
+ <p>
+Class: <B>ArcTutorial</B>
+
+<p>
+<img src="images/ArcTutorial.gif" align="right">
+
+<p>
+
+This tutorial illustrates how to use ArcConnectors.  In this example,
+the connectors are attached to "perimeter sites" -- that is, sites
+that can relocated themselves to maintain themselves on the perimeter
+of an object. Unlike the first connector example, this one does not
+need to create a special kind of figure, as perimeter sites can attach
+to any figure. 
+
+<P>
+The code to create the connectors and set up the interaction
+is much the same as the
+previous tutorial, except that it uses ArcConnectors instead
+of StraightConnectors. One noticable difference is that the connector
+target uses an off-the-shelf class provided with the Diva canvas:
+
+<pre>
+   ConnectorTarget target = new PerimeterTarget();
+</pre>
+
+A second difference is that the initialization of the manipulators
+is more complicated. Because there are two different kinds of connectors,
+and we want different manipulators for each, we use an
+instance of the TypedDecorator class to set this up:
+
+<pre>
+    ConnectorManipulator cManipulator = new ConnectorManipulator();
+    cManipulator.setSnapHalo(4.0);
+    cManipulator.setConnectorTarget(target);
+
+    ArcManipulator aManipulator = new ArcManipulator();
+    aManipulator.setSnapHalo(4.0);
+    aManipulator.setConnectorTarget(target);
+
+    TypedDecorator typedDecorator = new TypedDecorator();
+    typedDecorator.addDecorator(StraightConnector.class, cManipulator);
+    typedDecorator.addDecorator(ArcConnector.class, aManipulator);
+</pre>
+
+A different way to get the same effect would be to use two different
+SelectionInteractors, one for the arcs with an ArcManipulator and one
+for the StraightConnectors with a ConnectorManipulator.
+(Currently, the ArcManipulator looks the same as the
+ConnectorManipulator, but in the near future it will have additional
+grab-handles for reshaping the arc.)
+
+<!--contents-->
+
+<!--/contents-->
+
+<p>
+<!--navigation-->
+<br>
+<a href="index.html">  <img  border=0  src="../../../images/nav-top.gif"  alt="Top: The Diva Canvas Tutorial"></a>
+<a href="ConnectorTutorial.html">  <img  border=0  src="../../../images/nav-prev.gif"  alt="Previous: Using straight connectors"></a>
+<a href="basic.html">  <img  border=0  src="../../../images/nav-section.gif"  alt="Up: Basic tutorials"></a>
+<a href="TransformedFigureTutorial.html">  <img  border=0  src="../../../images/nav-next.gif"  alt="Next: Giving a figure a transform context"></a>
+
+<br>
+
+<!--/navigation-->
+
+<!--customfooter-->
+
+<!--/customfooter-->
+</body>
+</html>
+
+
+
+
+

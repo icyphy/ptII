@@ -1,0 +1,77 @@
+<!-- Copyright (c) 1998-2001 The Regents of the University of California. -->
+<!-- All rights reserved. See the file COPYRIGHT for details.             -->
+<html>
+<head>
+  <title>Creating an Application</title>
+<!--header-->
+  <LINK href="../../../diva.css" rel="stylesheet" type="text/css">
+<!--/header-->
+</head>
+<body bgcolor="#ffffff">
+<!--navbar-->
+
+
+<!--/navbar-->
+
+<h1>Creating an Application</h1>
+
+<p> The first decision that is often made when designing an application in 
+Java is to choose a context for the application to be run in; will it be an
+applet or a command-line application?  Unfortunately, the Swing infrstracture
+for these two classes is rather fragmented, and supporting both in a simple
+way that does not require much code duplication is a difficult thing.  An
+important part of this package is the AppContext interface, which contains
+most of the functionality that JApplet and JFrame have in common.  By
+designing around this interface, essentially the same application code can run
+transparently in an Applet or as a traditional command-line application!
+
+<p> We view an application as an organized way of creating and managing
+documents and views for those documents.  A document represents some 
+largely self-contained piece of data and (usually) some way to
+persistently store that data (such as a document file).  The key to
+managing documents is to provide a storage policy that consistently
+stores and retrieves those documents, regardless of the data.  
+Some simple applications might contain only one document and require only
+simple logic to manage the document view(s).  More 
+complex applications that manage many documents using internal 
+frames need to be significantly more sophisticated in managing 
+document views.  
+
+<p> The Diva GUI framework is centered around the AppContext, Application,
+Document, and StoragePolicy interfaces.  These interfaces are designed to
+mirror the above ideas.  Basic implementations of these interfaces allow
+applications to be up and running fairly quickly.  To illustrate the basic 
+application infrastructure, we are going to
+walk you through the design of a simple text-editing application.  It is 
+never going to replace Emacs, but it contains the important aspects of
+assembling an application.  I assembled these examples from bits and pieces 
+of code in a few hours while sitting on the beach.  Hopefully you will be
+able to take these simple tutorials and do basically the same thing with
+your application.
+<p>
+
+<!--contents-->
+
+<!--/contents-->
+
+<!--navigation-->
+<br>
+<a href="index.html">  <img  border=0  src="../../../images/nav-top.gif"  alt="Top: The Diva GUI Tutorial"></a>
+<a href="SimpleTutorial.html">  <img  border=0  src="../../../images/nav-prev.gif"  alt="Previous: Constructing a canvas and placing figures"></a>
+<a href="basic.html">  <img  border=0  src="../../../images/nav-section.gif"  alt="Up: Basic tutorials"></a>
+<a href="CompositeFigureTutorial.html">  <img  border=0  src="../../../images/nav-next.gif"  alt="Next: Constructing composite figures"></a>
+
+<br>
+
+<!--/navigation-->
+
+<!--customfooter-->
+
+<!--/customfooter-->
+</body>
+</html>
+
+
+
+
+

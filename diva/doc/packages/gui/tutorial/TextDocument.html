@@ -1,0 +1,120 @@
+<!-- Copyright (c) 1998-2001 The Regents of the University of California. -->
+<!-- All rights reserved. See the file COPYRIGHT for details.             -->
+<html>
+<head>
+  <title>Writing a Document</title>
+<!--header-->
+  <LINK href="../../../diva.css" rel="stylesheet" type="text/css">
+<!--/header-->
+</head>
+<body bgcolor="#ffffff">
+<!--navbar-->
+
+
+<!--/navbar-->
+
+<h1>Writing a Document</h1>
+
+<p>Class: <B>TextDocument</B>
+
+<p>
+<img src="images/FigureTutorial.gif" align="right">
+
+<p> Before we actually dive into writing an application, we need some
+way for the application to store its data.  In many cases, applications using
+the same type of data can share a document class, but every application must
+have at least one type of document it can handle.  Some complex applications
+might even be able to handle a wide variety of documents.  Since we will
+be writing a text-editing application, we need a document that can store some
+text.  We start by extending AbstractDocument, which implements the 
+basic property methods and can propagate property change events to its
+listeners.
+
+<pre>
+public class TextDocument extends AbstractDocument {
+</pre>
+
+<p>
+
+To this we are going to add a Text property which will contain our application
+data.  The getText() method is boring, but the setText() method does something
+interesting:
+
+<pre>
+    public void setText(String text) {
+	if(_text != text) {
+	    setDirty(true);
+	    _text = text;
+	}
+    }
+</pre>
+
+<p> When the text changes, the data in the document is "dirty" since it 
+hasn't been saved yet.  The application that we write will use this flag
+to try to prevent the application from be exited without saving the text
+that is being edited.  The implementations of the open and saveAs methods
+are fairly straightforward and simply save the text property to a file using
+a FileWriter and read it back using a FileReader.  Note that from the point 
+of view of the application, exactly how the data is stored is unimportant.  
+It might as well be GZIP'd Postscript, as long as we can read it and write it.
+
+<p> The save method is simply implemented in terms of the saveAs method.  The
+close method does nothing because this document implementation makes
+use of no persistent resources.  Notice that the close operation from the
+point of view of the document is not the same as the close operationg from
+the point of view of the application.  When the application closes a document,
+its storage policy will almost always save the document first, and then call
+the document's close method.
+
+<pre>
+    public void close () {
+	// DO NOTHING.
+    }
+
+    public void save () throws Exception {
+	saveAs(getFile());
+    }   
+</pre>
+
+<p>  The final noteworthy part of the class is the document factory inner
+class.  The implementation is rather boring, but it allows the application
+infrastructure to create new documents in an abstract way.  (For an example
+of how this is used, look at the DefaultActions.netAction method.)
+
+<pre>
+    public static class Factory implements DocumentFactory {
+        public Document createDocument (Application app) {
+            TextDocument d = new TextDocument(app);
+            return d;
+        }
+	...
+    }	
+
+</pre>
+
+
+<!--contents-->
+
+<!--/contents-->
+
+<!--navigation-->
+<br>
+<a href="index.html">  <img  border=0  src="../../../images/nav-top.gif"  alt="Top: The Diva GUI Tutorial"></a>
+<a href="SimpleTutorial.html">  <img  border=0  src="../../../images/nav-prev.gif"  alt="Previous: Constructing a canvas and placing figures"></a>
+<a href="basic.html">  <img  border=0  src="../../../images/nav-section.gif"  alt="Up: Basic tutorials"></a>
+<a href="CompositeFigureTutorial.html">  <img  border=0  src="../../../images/nav-next.gif"  alt="Next: Constructing composite figures"></a>
+
+<br>
+
+<!--/navigation-->
+
+<!--customfooter-->
+
+<!--/customfooter-->
+</body>
+</html>
+
+
+
+
+

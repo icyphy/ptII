@@ -1,0 +1,165 @@
+<!-- Copyright (c) 1998-2001 The Regents of the University of California. -->
+<!-- All rights reserved. See the file COPYRIGHT for details.             -->
+<html>
+<head>
+  <title>The Multiple-Document Interface text-editor</title>
+<!--header-->
+  <LINK href="../../../diva.css" rel="stylesheet" type="text/css">
+<!--/header-->
+</head>
+<body bgcolor="#ffffff">
+<!--navbar-->
+
+
+<!--/navbar-->
+
+
+<h1>The Multiple-Document Interface text-editor</h1>
+
+ <p>Class: <B>MDIApplicationTutorial</B>
+
+<p> Let's step back to the basic text-editor again.  The view management that
+we had was truly simple... Too simple.  We could spruce it up and provide
+some way to switch between documents, but that is working around the problem.
+The problem is that we really only have one view.  A much better way to 
+implement this application is to have a single view for each document and
+making each view an independently manipulable object.  The MDIApplication
+abstract class provides exactly this functionality.  The view for each document
+is placed in an internal frame that can be moved, or maximized, or hidden. 
+
+<p> For this tutorial, alot of the code is the same as the code in the
+ApplicationTutorial.  In fact all the code in the initialize methods is
+exactly the same: The same actions, the same menu bars, the same toolbars, 
+the same document factory and the same file filter.  Let's walk through the 
+differences starting with the constructor.
+
+<pre>
+    public MDIApplicationTutorial(AppContext context) {
+	super();
+
+	// This is an MDI application that uses a desktop context.
+        DesktopContext frame = new DesktopContext(context);
+        setAppContext(frame);
+
+	initializeApp();
+	
+        // Initialize the context.  DesktopContext already has a toolbar
+	// and a menu bar.
+        initializeMenuBar(frame.getJMenuBar());
+	JPanel toolBarPane = frame.getToolBarPane();
+	toolBarPane.setLayout(new FlowLayout(FlowLayout.LEFT, 2, 2));
+        initializeToolBar(frame.getJToolBar());
+
+	// Set the icon in the upper left corner of the context.
+	Image iconImage = getResources().getImage("GraphIconImage");
+	context.setIconImage(iconImage);
+	// Set the icon for the internal frames of the desktop context.
+        Icon icon = getResources().getImageIcon("GraphIconImage");
+        frame.setFrameIcon(icon);
+
+	// Set the size of the context.
+	context.makeComponent().setSize(800, 600);
+	// and make it visible.
+	context.setVisible(true);
+    }
+</pre>
+
+<p> First off, we take the AppContext that is passed into the constructor and
+wrap it in a DesktopContext.  The desktop context implements the MDIContext
+interface, which the MDIApplication requires, but requires another basic
+context to place itself in.  This way our multiple-document text editor could
+work inside an applet just like the ApplicationTutorial did.  The DesktopContext
+assumes that both a toolbar and menubar will be used by the application and
+provides them so we don't have to create them manually.  It also provides
+a ToolBarPane, which allows our application to manage additional toolbar
+if it desires.  The desktop context also allows us to put an icon in the
+corner of each internal frame.
+
+<p> So how do we actually create these views?  In the simple application we
+had to write a displayDocument() method that would take care of managing the
+view.  MDIApplication provides a displayDocument() method that places the
+new view in an internal frame for us.  We have to write a createView method
+that creates the view for the document, however.
+
+<pre>
+    public JComponent createView (Document d) {
+	final TextDocument document = (TextDocument) d;
+		
+	final JEditorPane pane = new JEditorPane();
+	pane.setText(document.getText());
+		
+	pane.getDocument().addDocumentListener(new DocumentListener() {
+	    public void changedUpdate(DocumentEvent e) {
+		document.setText(pane.getText());
+	    }
+	    public void insertUpdate(DocumentEvent e) {
+		document.setText(pane.getText());
+	    }
+	    public void removeUpdate(DocumentEvent e) {
+		document.setText(pane.getText());
+	    }
+	});	
+
+	d.addPropertyChangeListener(_titleChanger);
+
+	return pane;
+    }
+</pre>
+<p> Hopefully you recognize the code for creating a new editor pane, and the
+document listener that updates the appropriate document whenever new text typed.
+The title changer we haven't seen before, however.  It's job is to listen
+to the properties of the document and whenever one of them changes, such as
+when a file is saved for the first time, it updates the title of the 
+internal frame.  The code is shown below.
+
+ 
+<pre>
+    public class TitleChanger implements PropertyChangeListener {
+	public void propertyChange(PropertyChangeEvent e) {
+	    String name = e.getPropertyName();
+	    if (name.equals("file") || 
+		name.equals("url") || 
+		name.equals("title")) {
+
+		Document doc = (Document)e.getSource();
+		DesktopContext context = (DesktopContext)getAppContext();
+		JInternalFrame frame = context.getInternalFrame(getView(doc));
+		frame.setTitle(doc.getTitle());
+	    }
+	}
+    }
+</pre>
+<p> The getView() method returns the view that was created for the given
+document.  The desktop context's getInternalFrame() method returns the internal
+frame that contains the given view.  The context just manages a set of views,
+while the MDIApplication base class maps between the documents and the views.
+
+<p> Believe it or not, that's it!  The MDI application is actually a fair bit
+simpler to code than a single view application since the base class takes
+care of most of the annoying view management parts.
+
+<!--contents-->
+
+<!--/contents-->
+
+<!--navigation-->
+<br>
+<a href="index.html">  <img  border=0  src="../../../images/nav-top.gif"  alt="Top: The Diva Canvas Tutorial"></a>
+<a href="SimpleTutorial.html">  <img  border=0  src="../../../images/nav-prev.gif"  alt="Previous: Constructing a canvas and placing figures"></a>
+<a href="basic.html">  <img  border=0  src="../../../images/nav-section.gif"  alt="Up: Basic tutorials"></a>
+<a href="CompositeFigureTutorial.html">  <img  border=0  src="../../../images/nav-next.gif"  alt="Next: Constructing composite figures"></a>
+
+<br>
+
+<!--/navigation-->
+
+<!--customfooter-->
+
+<!--/customfooter-->
+</body>
+</html>
+
+
+
+
+

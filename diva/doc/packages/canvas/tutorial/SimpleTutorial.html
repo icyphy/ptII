@@ -1,0 +1,98 @@
+<!-- Copyright (c) 1998-2001 The Regents of the University of California. -->
+<!-- All rights reserved. See the file COPYRIGHT for details.             -->
+<html>
+<head>
+  <title>Constructing a canvas and placing figures</title>
+<!--header-->
+  <LINK href="../../../diva.css" rel="stylesheet" type="text/css">
+<!--/header-->
+</head>
+<body bgcolor="#ffffff">
+<!--navbar-->
+
+
+<!--/navbar-->
+
+
+<h1>Constructing a canvas and placing figures</h1>
+
+ <p>Class: <B>SimpleTutorial</B>
+
+<p>
+<img src="images/SimpleTutorial.gif" align="right">
+
+ <p> This tutorial shows how to construct a JCanvas and place
+figures on it. In this example, we create figures with
+a few different shapes, using the BasicFigure class in 
+<b>diva.canvas.toolbox</b>, which takes an instance of
+Shape (an interface defined in the Java AWT) and draws
+it on the screen using given colors and strokes.
+
+<p>
+As noted earlier, each JCanvas contains by default
+an instance of GraphicsPane.
+To get the graphics pane from a JCanvas:
+
+<pre>
+  GraphicsPane graphicsPane = (GraphicsPane)canvas.getCanvasPane();
+</pre>
+
+The pane contains several layers, one of which is a foreground
+FigureLayer upon which figures are drawn and interacted with.  To get
+the figure layer:
+
+<pre>
+  FigureLayer layer = graphicsPane.getForegroundLayer();
+</pre>
+
+<p> There are three figures on the screen, each created using a different
+kind of shape. The code to create a rectangle and add it to
+the figure layer is:
+
+<pre>
+  Figure rectangle = new BasicRectangle(10,10,100,100,Color.blue);
+  layer.add(rectangle);
+</pre>
+
+The code to create the curved shape is more complex, and uses an
+instance of <b>java.awt.geom.GeneralPath</b>.
+
+<pre>
+   GeneralPath path = new GeneralPath();
+   path.moveTo(120,240);
+   path.lineTo(240,240);
+   path.quadTo(180,120,120,240);
+   path.closePath();
+   Figure semi = new BasicFigure(path, Color.green);
+   layer.add(semi);
+</pre>
+
+The third figure is much the same, but uses an instance of
+<b>diva.util.java2d.Polyline2D</b>. Polyline2D is more efficient
+than GeneralPath, and should be used anytime only straight-line
+segments are needed.
+<p>
+<!--contents-->
+
+<!--/contents-->
+
+<!--navigation-->
+<br>
+<a href="index.html">  <img  border=0  src="../../../images/nav-top.gif"  alt="Top: The Diva Canvas Tutorial"></a>
+<a href="basic.html">  <img  border=0  src="../../../images/nav-section.gif"  alt="Up: Basic tutorials"></a>
+<a href="FigureTutorial.html">  <img  border=0  src="../../../images/nav-next.gif"  alt="Next: Creating your own Figure class"></a>
+
+<br>
+
+<!--/navigation-->
+
+<!--customfooter-->
+
+<!--/customfooter-->
+</body>
+</html>
+
+
+
+
+

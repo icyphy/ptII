@@ -1,0 +1,42 @@
+<!-- Copyright (c) 1998-2001 The Regents of the University of California. -->
+<!-- All rights reserved. See the file COPYRIGHT for details.             -->
+<HTML>
+
+<HEAD>
+<!--header-->
+<LINK href="../../../diva.css" rel="stylesheet" type="text/css">
+<!--/header-->
+
+	<TITLE>The tutorial window</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF">
+
+<!--navbar-->
+
+
+<!--/navbar-->
+<H1>The tutorial window</H1>
+<P>All of the tutorials show some common code in the constructor that creates an instance of JGraph and places
+it into a frame. The code is:</P>
+<PRE>  _jgraph = new JGraph();
+  _graphPane = _jgraph.getGraphPane();
+
+  TutorialWindow window = new TutorialWindow(&quot;Simple graph tutorial&quot;);
+  window.getContentPane().add(&quot;Center&quot;,_jgraph);
+  window.setSize(600,400);
+  window.setVisible(true);
+</PRE>
+<P>(Where <B>_jgraph</B> and _<B>graphPane</B> are private variables of the class.) Every JGraph contains a top-level
+canvas pane, which in turn contains layers. By default, the top-level pane is an instance of GraphPane. </P>
+
+<P><BR>
+<!--customfooter--> <!--/customfooter-->
+
+</BODY>
+
+</HTML>
+
+
+
+

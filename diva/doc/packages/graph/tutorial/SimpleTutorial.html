@@ -1,0 +1,37 @@
+<!-- Copyright (c) 1998-2001 The Regents of the University of California. -->
+<!-- All rights reserved. See the file COPYRIGHT for details.             -->
+<HTML>
+
+<HEAD>
+<!--header-->
+<LINK href="../../../diva.css" rel="stylesheet" type="text/css">
+<!--/header-->
+
+	<TITLE>Constructing a canvas and placing figures</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF">
+
+<!--navbar-->
+
+
+<!--/navbar-->
+<H1>Constructing an editable graph pane</H1>
+<P>Class: <B>SimpleTutorial</B></P>
+<P><IMG SRC="images/SimpleTutorial.gif" WIDTH="200" HEIGHT="172" ALIGN="RIGHT" BORDER="0">This is the most basic
+tutorial. It pops up an empty graph editing window. Control-click to add nodes, select a node and control-drag
+between nodes to create new edges. This demonstrates the graph package facade; other tutorials allow you to customize
+its behavior.</P>
+<PRE>   TutorialWindow f = new TutorialWindow(&quot;Simple&quot;);
+   f.getContentPane().add(&quot;Center&quot;, new JGraph());
+   f.setSize(800, 600);
+   f.setVisible(true);</PRE>
+<P><!--customfooter--> <!--/customfooter-->
+
+</BODY>
+
+</HTML>
+
+
+
+

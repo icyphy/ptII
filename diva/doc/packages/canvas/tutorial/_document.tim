@@ -1,0 +1,50 @@
+# Outline model for the notmake documentation. This file
+# is read by Tycho to update the HTML doc structure.
+
+configure -inline 0
+configure -imagedir "../../../images"
+configure -images {nav-top.gif nav-prev.gif nav-section.gif nav-next.gif}
+configure -bgcolor #ffffff
+configure -title {The Diva Canvas Tutorial}
+
+# The document template places the navigation links at the
+# bottom of the page
+configure -template {
+<html>
+<head>
+<title></title>
+</head>
+<body>
+
+<h1></h1>
+
+<!--navigation-->
+<!--/navigation-->
+
+</body>
+</html>
+}
+
+# The header contains the link to the style sheet for this document
+configure -header {
+  <LINK href="../../../diva.css" rel="stylesheet" type="text/css">
+}
+
+# The footer contains ...
+configure -footer {
+}
+
+## section instructions -title "How to run the tutorials"
+section window -title "The tutorial window"
+
+section basic -title "Basic tutorials" {
+    section SimpleTutorial -title "Constructing a canvas and placing figures"
+    section FigureTutorial  -title "Creating your own Figure class"
+    section CompositeFigureTutorial  -title "Constructing composite figures"
+    section DragTutorial  -title "Drag interators"
+    section ConnectorTutorial  -title "Using straight connectors"
+    section ArcTutorial  -title "Using arc connectors"
+    section TransformedFigureTutorial -title "Giving a figure a transform context"
+
+}
+

@@ -1,0 +1,56 @@
+<!-- Copyright (c) 1998-2001 The Regents of the University of California. -->
+<!-- All rights reserved. See the file COPYRIGHT for details.             -->
+<HTML>
+
+<HEAD>
+<!--header-->
+<LINK href="../../../diva.css" rel="stylesheet" type="text/css">
+<!--/header-->
+
+	<TITLE>Using arc connectors</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF">
+
+<!--navbar-->
+
+
+<!--/navbar-->
+<H1>Using the XML file format to save and load graphs</H1>
+<P>Class: <B>XmlTutorial</B></P>
+
+<P>This tutorial illustrates how to use the XML file format parser and writer to save and load graphs. In this
+example, the parser is used to read a graph from an input file, display it, and then write it to an output file.</P>
+
+<P>The code to parser the file is as simple as:</P>
+<PRE>   try {
+      parser.parse(args[0]);
+   }
+   catch(Exception e) {
+      System.exit(-1);
+   }</PRE>
+<P>Where the argument is a URI and exceptions might be thrown if there is any problem parsing the file (it cannot
+be found, it is badly formatted, etc.).</P>
+
+<P>Once the file has been parsed, accessing the graph model and add it to the display:</P>
+<PRE>    JGraph g = new JGraph();
+    [...]
+    GraphModel model = parser.getParsedGraphModel();
+    g.getGraphPane().setGraphModel(model);</PRE>
+<P>Finally, write the file back to the output file:</P>
+<PRE>    try {
+        DataOutputStream out = new DataOutputStream(new FileOutputStream(argv[1]));
+        new GraphWriter().write(model, out);
+    }
+    catch(Exception e) {
+        System.exit(-1);
+    }</PRE>
+<P><!--customfooter--> <!--/customfooter-->
+
+</BODY>
+
+</HTML>
+
+
+
+

@@ -1,0 +1,105 @@
+<!-- Copyright (c) 1998-2001 The Regents of the University of California. -->
+<!-- All rights reserved. See the file COPYRIGHT for details.             -->
+<html>
+<head>
+  <title>The text-editing Applet</title>
+<!--header-->
+  <LINK href="../../../diva.css" rel="stylesheet" type="text/css">
+<!--/header-->
+</head>
+<body bgcolor="#ffffff">
+<!--navbar-->
+
+
+<!--/navbar-->
+
+
+<h1>The text-editing Applet</h1>
+
+ <p>Class: <B>AppletTutorial</B>
+
+<p> Okay, we've got our text-editing application running as a command line
+application.  Let's take a look back to see how that worked, exactly.
+
+<pre>
+    public static void main(String argv[]) {
+	AppContext context = new ApplicationContext();
+	new ApplicationTutorial(context);
+    }
+</pre>
+
+That application context that we created is actually a subclass of JFrame
+and by passing it to the application's constructor, we got a command-line
+application running in a JFrame.  So, it seems perfectly logical to
+expect that if we pass an applet context to the application, that we'll get
+an "applet version" of our application.  In fact this is exactly what we do.
+
+<pre>
+public class AppletTutorial extends AppletContext {
+    public AppletTutorial() {
+       new ApplicationTutorial(this);
+    }
+}
+</pre>
+
+<p> That was it! This tutorial would otherwise be a little boring, so 
+let's take a closer look at the AppContext interface, since there are a few
+things that our simple application doesn't really make use of.
+
+<pre>
+public interface AppContext extends RootPaneContainer {
+    public Action getExitAction();
+    public Image getIconImage ();
+    public JMenuBar getJMenuBar();
+    public String getTitle ();
+    public boolean isVisible();
+    public Component makeComponent();
+    public void setExitAction(Action exitAction);
+    public void setIconImage (Image image);
+    public void setJMenuBar(JMenuBar menu);
+    public void setSize(int w, int h);
+    public void setTitle (String title);
+    public void setVisible(boolean visible);
+    public void showStatus(String status);
+}
+</pre>
+
+<p> The Title, Visible, JMenuBar and IconImage properties we've already used
+in our application.  We've also made use of the fact that AppContext extends
+RootPaneContainer to add components to the context's content pane.   
+The makeComponent method is useful for those things that require a Component
+to be passed in their constructor, such as modal dialogs.  We know that 
+the AppContext has to be a component, so a cast would be enough, but having
+a method is a bit more type-safe.  The AbstractApplication class makes use
+of the showStatus method to display a string in the status bar. 
+<p> An important part of this interface is that the context only has 
+to implement those methods that make sense.  ApplicationContext, 
+for instance, ignores the showStatus() method and AppletContext ignores the
+setSize() method.
+
+<p>
+<!--contents-->
+
+<!--/contents-->
+
+<!--navigation-->
+<br>
+<a href="index.html">  <img  border=0  src="../../../images/nav-top.gif"  alt="Top: The Diva Canvas Tutorial"></a>
+<a href="SimpleTutorial.html">  <img  border=0  src="../../../images/nav-prev.gif"  alt="Previous: Constructing a canvas and placing figures"></a>
+<a href="basic.html">  <img  border=0  src="../../../images/nav-section.gif"  alt="Up: Basic tutorials"></a>
+<a href="CompositeFigureTutorial.html">  <img  border=0  src="../../../images/nav-next.gif"  alt="Next: Constructing composite figures"></a>
+
+<br>
+
+<!--/navigation-->
+
+<!--customfooter-->
+
+<!--/customfooter-->
+</body>
+</html>
+
+
+
+
+

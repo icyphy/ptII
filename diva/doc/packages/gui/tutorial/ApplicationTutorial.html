@@ -1,0 +1,256 @@
+<!-- Copyright (c) 1998-2001 The Regents of the University of California. -->
+<!-- All rights reserved. See the file COPYRIGHT for details.             -->
+<html>
+<head>
+  <title>The text-editing Application</title>
+<!--header-->
+  <LINK href="../../../diva.css" rel="stylesheet" type="text/css">
+<!--/header-->
+</head>
+<body bgcolor="#ffffff">
+<!--navbar-->
+
+
+<!--/navbar-->
+
+
+<h1>The text-editing Application</h1>
+
+ <p>Class: <B>ApplicationTutorial</B>
+
+<p>
+<img src="images/FigureTutorial.gif" align="right">
+
+<p> This tutorial will explain how to create a simple text-editing
+application.  It will cover how to take a document file (like TextDocument)
+and assemble it with FileFilters, some premade actions handling those
+documents, and manage a single view.
+
+<p> To begin with, we need to be able to create new documents and add them
+to the application.  Most of these operations are handled by actions that 
+can be created using static methods in DefaultActions.  As an example, let's
+look at the action for creating a new document. 
+<pre>
+    public static Action newAction(final Application app) {
+        return new AbstractAction (NEW) {
+            public void actionPerformed(ActionEvent e) {
+                Document doc = app.getDocumentFactory().createDocument(app);
+                app.addDocument(doc);
+                app.displayDocument(doc);
+                app.setCurrentDocument(doc);
+            }
+        };
+    }
+</pre>
+
+<p> The static method is a factory for new actions that create new documents.  
+Each new document is created by using the application's document factory.
+and then added to the application and displayed.
+
+<p> To see this action in the application, it has to be attached to some 
+user interface component.  In the case of the this action, it is attached to
+two components: a menu bar item and a tool bar button.  First let's look
+at the menu bar item.
+
+<pre>
+    public void initializeMenuBar(JMenuBar menuBar) {
+	Action action;
+        JMenuItem item;
+
+        // Create the File menu
+        JMenu menuFile = new JMenu("File");
+        menuFile.setMnemonic('F');
+        menuBar.add(menuFile);
+
+        action = DefaultActions.newAction(this);
+        addAction(action);
+        GUIUtilities.addMenuItem(menuFile, action, 'N', 
+				 "Create a new graph document");
+	
+	...
+    }
+</pre>
+
+<p> This method is called in the application constructor and it is responsible 
+for populating the menu bar with item.  It also addes the actions to the
+application so that the same action can be reused for a toolbar button.
+GUIUtilities is a set of utility methods that are useful for supporting 
+applications.  The addMenuItem method used here adds the action to the given
+menu with an associated keyboard mnemonic and a tooltip.  It also sets
+properties in the action so that the  and tooltip do not have to be 
+specified later if the same action is used again.
+
+<p> The toolbar is set up similarly, using a different GUIUtility method.
+<pre>
+    public void initializeToolBar (JToolBar tb) {
+        Action action;
+        RelativeBundle resources = getResources();
+
+        action = getAction("New");
+        GUIUtilities.addToolBarButton(tb, action, null,
+				      resources.getImageIcon("NewImage"));
+	...
+    }
+</pre>
+
+<p> Notice here that we retrieve the menubar action from the application 
+using the getAction() method.  The icon we use is also pulled out of a
+property file.  In this case, the property file that we use is in 
+the resource package, Defaults.properties.  The RelativeBundle class
+uses a property file to avoid hard-coding the names of resources into the
+application.  This allows us to easily change the icons later if we decide to.
+
+<pre>
+##
+# Icon resources
+#
+OpenImage=img_open.gif
+NewImage=img_new.gif
+SaveImage=img_save.gif
+</pre>
+
+<p> These resources are defined in the AbstractApplication class, 
+and can be used
+by any subclass.  Applications can also define their own property files
+in addition to the default, but we don't need to do that here.  For more
+information about resources, see the RelativeBundle class and the getResource()
+method in java.lang.Class.
+
+<p> The rest of the ations for this application are added similarly.  
+Most of the rest of them refer to a StoragePolicy object.  For instance, the
+action for closing a document completely defers to the storage policy.
+
+<pre>
+    public static Action closeAction(final Application app) {
+        return new AbstractAction (CLOSE) {
+            public void actionPerformed(ActionEvent e) {
+                app.getStoragePolicy().close(app.getCurrentDocument());
+            }
+        };
+    }
+</pre>
+
+<p> The storage policy may do many different things, depending on how
+it is implemented.  It could close the document without saving, it could not
+close the document at all, or it could popup a dialog, asking to confirm 
+closing the document without saving it.  How do we initialize the storage 
+policy?  The following piece of code is in the initializeApp() method:
+<pre>
+	try {
+	    DefaultStoragePolicy storage = new DefaultStoragePolicy();
+	    setStoragePolicy(storage);
+	
+	    FileFilter ff = new FileFilter() {
+		public boolean accept (File file) {
+		    return GUIUtilities.getFileExtension(file).
+		    toLowerCase().equals("txt");
+		}
+		public String getDescription () {
+		    return "Text files";
+		}
+	    };
+	    JFileChooser fc;      
+	    fc = storage.getOpenFileChooser();
+	    fc.addChoosableFileFilter(ff);
+	    fc.setFileFilter(ff);
+	    
+	    fc = storage.getSaveFileChooser();
+	    fc.addChoosableFileFilter(ff);
+	    fc.setFileFilter(ff);
+	} catch (SecurityException ex) {
+	    // FIXME: create a new "NoStoragePolicy"
+	}
+</pre>
+
+<p> In this case, we are using a DefaultStoragePolicy, which generally uses
+a "confirmation dialog" style of implementing each of its operations.  The 
+DefaultStoragePolicy class contains two file choosers, one for opening 
+files and one for saving files.  This allows 
+loading files from one place and saving them to another.  It also allows the
+application to understand two different sets of document types for opening 
+and saving.  The types of documents that are understood are set using the 
+FileFilter.  The security exception is caught so that the application will
+work within an applet, which is generally unable to access the local file
+system.  In that case, we switch to using a storage policy which disallows 
+persistent storage.
+
+<p> So now that we've got documents into our application, how do we deal with
+creating views for them?  This tutorial contains reference 
+to two private variables.  One is a reference to the single shared view, 
+and the other is a referece to the document that is currently
+displayed in the view.  These variables are first initialized in the
+constructor:
+
+<pre>
+	_editorPane = new JEditorPane();	
+	context.getContentPane().add(new JScrollPane(_editorPane));
+	_displayedDocument = null;
+	displayDocument(getCurrentDocument());
+</pre>
+
+The displayDocument method updates the text in the editor pane with the
+text of the given document.  At this point, however, the application
+contains no documents so the current document is null.  In this case the 
+displayDocument method clears the editorPane and sets it to not be editable.
+
+<p> So what happens when a document is added to or removed from 
+the application?  Well, we want to get the current document and display it.
+When a document is added or removed, that call should always be followed
+by a call to set the current document.  We will detect that call by adding
+a listener to the list of documents, and then displaying the current document.
+
+<pre>
+  	addDocumentListener(new ListDataListener() {
+	    public void contentsChanged(ListDataEvent e) {
+		System.out.println("current document = " +
+				   getCurrentDocument());
+		displayDocument(getCurrentDocument());
+	    }
+	    public void intervalAdded(ListDataEvent e) {
+	    }
+	    public void intervalRemoved(ListDataEvent e) {
+	    }
+	});
+</pre>
+
+<p> We also want to be sure to update the text in the document whenever any
+change is made to the view in the editor pane.   To accomplish this we will
+add another listener to the editor pane that will update the text of
+the current document.
+
+<pre>	
+	_editorPane.getDocument().addDocumentListener(new DocumentListener() {
+	    public void changedUpdate(DocumentEvent e) {
+		if(_displayedDocument != null)
+		    _displayedDocument.setText(_editorPane.getText());
+	    }
+	    ...
+	});
+</pre>
+
+<p>
+<!--contents-->
+
+<!--/contents-->
+
+<!--navigation-->
+<br>
+<a href="index.html">  <img  border=0  src="../../../images/nav-top.gif"  alt="Top: The Diva Canvas Tutorial"></a>
+<a href="SimpleTutorial.html">  <img  border=0  src="../../../images/nav-prev.gif"  alt="Previous: Constructing a canvas and placing figures"></a>
+<a href="basic.html">  <img  border=0  src="../../../images/nav-section.gif"  alt="Up: Basic tutorials"></a>
+<a href="CompositeFigureTutorial.html">  <img  border=0  src="../../../images/nav-next.gif"  alt="Next: Constructing composite figures"></a>
+
+<br>
+
+<!--/navigation-->
+
+<!--customfooter-->
+
+<!--/customfooter-->
+</body>
+</html>
+
+
+
+
+

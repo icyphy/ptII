@@ -1,0 +1,148 @@
+<!-- Copyright (c) 1998-2001 The Regents of the University of California. -->
+<!-- All rights reserved. See the file COPYRIGHT for details.             -->
+<html>
+<head>
+  <title>Using straight connectors</title>
+<!--header-->
+  <LINK href="../../../diva.css" rel="stylesheet" type="text/css">
+<!--/header-->
+</head>
+<body bgcolor="#ffffff">
+<!--navbar-->
+
+
+<!--/navbar-->
+
+
+<h1>Using straight connectors</h1>
+
+ <p>
+<B>ConnectorTutorial</B>
+
+<p>
+<img src="images/ConnectorTutorial.gif" align="right">
+
+<p>
+This example illustrates how to use connectors.  Connectors are
+figures that connect locations on two different figures. These
+locations are identified by objects called Sites, which represent
+points such as the north-west corner of a rectangle, or a vertex of a
+poly-line. In general, sites can be anywhere on a figure, and specific
+figure classes have methods to access their sites.
+
+<p>
+The code to create a connector looks like this:
+<pre>
+    Site a = figureA.getE();
+    Site b = figureB.getN();
+    connectorA = new StraightConnector(a, b);
+    layer.add(connectorA);
+</pre>       
+
+(Where the methods getE() and getN() are methods on some figure
+that return Sites -- in this case, on the east and north edges
+of the respective figures.)
+
+<P>
+In general, there can be arbitrarily many different kinds of
+connectors. The Diva canvas currently provides two: one that simply
+draws a straight line between the two sites, and one that draws a
+"manhattan" routing between the two sites. Each of these also
+accepts an object on each end that will draw a decoration such as
+an arrow-head or a circle at the attachment point. For example,
+we can add an arrowhead to the connector with:
+
+<pre>
+    Arrowhead arrow = new Arrowhead(b.getX(), b.getY(), b.getNormal());
+    connectorA.setHeadEnd(arrow);
+</pre>
+
+<p>
+Once a Connector is connected between two sites, it is easy to make it
+appear as though the Connector is "glued" to the figures containing
+the sites. Any code that moves or changes one of the two figure needs
+to call one of the methods route(), reroute(), headMoved(), or
+tailMoved() on the connector, and the connector will redraw itself
+between the sites. In this example, we have set up a DragInteractor
+to move the two rectangles shown in the image above. To also reroute
+the connectors when either changes, we add a layer listener to the
+interactor.  After the interactor has handled a mouse event, it passes
+the event on to this listener.
+
+<pre>
+    DragInteractor i = controller.getDragInteractor();
+    i.addLayerListener(new LayerAdapter () {
+        public void mouseDragged (LayerEvent e) {
+            connectorA.reroute();
+            connectorB.reroute();
+        }
+    });
+</pre>
+
+<p>
+When a connector is selected, it gets a grab-handle on either end, which
+can be grabbed to allow the connector to be disconnected from
+the figure and reconnected to another. Although the code is
+a little convoluted, the essence of it is this:
+
+<pre>
+    SelectionInteractor ci = new SelectionInteractor(si.getSelectionModel());
+    connectorA.setInteractor(ci);
+    connectorB.setInteractor(ci);
+
+    ConnectorManipulator manipulator = new ConnectorManipulator();
+    manipulator.setSnapHalo(4.0);
+    manipulator.setConnectorTarget(new SRTarget());
+    ci.setPrototypeDecorator(manipulator);
+</pre>
+
+This code first creates an instance of SelectionInteractor,
+which it sets as the interactor for the connectors. It then creates an
+instance of ConnectorManipulator, and tell the interactor that when a
+connector is selected, it should create a copy of the manipulator and
+wrap it around the connector. The manipulator highlights the connector
+with grab handles when the connector is selected.
+
+<p> Notice that in this code there are actually two selection interactors,
+one for the rectangles and one for the connectors.  They are linked by having
+the same selection model.  One effect that this has is that selecting a
+rectangle when a connector is already selected will deselect the connector.
+If there were two selection models then connectors and rectangles could
+be selected entirely independently from eachother.
+
+<p> The SRTarget in the above code is an inner class that implements
+the ConnectorTarget interface. This class is used by the
+ConnectorManipulator when trying to find a good place to connect
+to. In this example, the target is returning sites on the four edges
+of the rectangles, which is why the connectors snap to those points.
+
+<p>
+For more details, see the tutorial source code.
+
+ 
+<!--contents-->
+
+<!--/contents-->
+
+<p>
+<!--navigation-->
+<br>
+<a href="index.html">  <img  border=0  src="../../../images/nav-top.gif"  alt="Top: The Diva Canvas Tutorial"></a>
+<a href="DragTutorial.html">  <img  border=0  src="../../../images/nav-prev.gif"  alt="Previous: Drag interators"></a>
+<a href="basic.html">  <img  border=0  src="../../../images/nav-section.gif"  alt="Up: Basic tutorials"></a>
+<a href="ArcTutorial.html">  <img  border=0  src="../../../images/nav-next.gif"  alt="Next: Using arc connectors"></a>
+
+<br>
+
+<!--/navigation-->
+
+<!--customfooter-->
+
+<!--/customfooter-->
+</body>
+</html>
+
+
+
+
+
