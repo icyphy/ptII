@@ -560,7 +560,8 @@ public class Time implements Comparable {
     private BigInteger _doubleToMultiple(double value) {
         // FIXME: when the value is too big a multiple of the resolution,
         // the division fails to deliver adequate precision.
-        // Is there a better way?
+        // Is there a better way?  Or throw an exception when
+        // the value is too large relative to the precision.
 		double precision = _director.getTimeResolution();
 		return BigInteger.valueOf(Math.round(value/precision));
     }
