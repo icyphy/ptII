@@ -155,7 +155,7 @@ public class SDFApplet extends PtolemyApplet {
         int result = 1;
         if(_director != null) {
             Parameter iterparam =
-                    (Parameter)_director.getAttribute("Iterations");
+                (Parameter)_director.getAttribute("Iterations");
             result = ((IntToken)(iterparam.getToken())).intValue();
         }
         if(_iterationsbox != null) {
@@ -175,7 +175,7 @@ public class SDFApplet extends PtolemyApplet {
         try {
             int iterations = _getIterations();
             Parameter iterparam =
-                    (Parameter)_director.getAttribute("Iterations");
+                (Parameter)_director.getAttribute("Iterations");
 
             iterparam.setToken(new IntToken(iterations));
         } catch (Exception ex) {

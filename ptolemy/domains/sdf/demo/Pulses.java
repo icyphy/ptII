@@ -141,11 +141,11 @@ public class Pulses extends SDFApplet {
      */
     protected void _go() {
         _yours.excessBW.setToken
-                (new DoubleToken(((double)_query.intValue("exbw"))/100.0));
+            (new DoubleToken(((double)_query.intValue("exbw"))/100.0));
         _yours.symbolInterval.setToken
-                (new IntToken(_query.intValue("symint")));
+            (new IntToken(_query.intValue("symint")));
         _yours.root.setToken
-                (new BooleanToken(_query.booleanValue("sqrt")));
+            (new BooleanToken(_query.booleanValue("sqrt")));
         super._go();
     }
 
