@@ -31,7 +31,6 @@
 package ptolemy.data;
 
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 
@@ -206,10 +205,8 @@ public class Token implements Serializable {
             // then if we don't catch and rethrow the exception, the
             // message will say something about "equality"
             // instead of "closeness".
-            throw new IllegalActionException(
-                    _notSupportedMessage("closeness", this, token)
-                    + " Original Exception was:\n"
-                    + KernelException.stackTraceToString(ex));
+            throw new IllegalActionException(this, ex,
+                    _notSupportedMessage("closeness", this, token))
         }
     }
 
