@@ -52,8 +52,8 @@ the same key for encryption and decryption.  An asymmetric algorithm uses
 a two different keys: a public key and private key.  Asymmetric algorithms
 are usually much slower than symmetric algorithms.  The initial
 default set of algorithms that comes with the Sun JDK does
-not include a symmetric encryption algorithm, though other algorithms 
-may be installed.  
+not include a symmetric encryption algorithm, though other algorithms
+may be installed.
 
 <p>This actor reads an unsigned byte array at the <i>input<i> port,
 encrypts the data using the data from the <i>key</i> port and then

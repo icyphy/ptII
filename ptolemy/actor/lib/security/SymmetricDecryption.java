@@ -76,7 +76,7 @@ an exception will likely be thrown.
 Cryptography Extension (JCE).  See the
 {@link ptolemy.actor.lib.security.CryptographyActor} documentation for
 
-@author Christopher Hylands Brooks, Contributor: Rakesh Reddy 
+@author Christopher Hylands Brooks, Contributor: Rakesh Reddy
 @version $Id$
 @since Ptolemy II 3.1
 */

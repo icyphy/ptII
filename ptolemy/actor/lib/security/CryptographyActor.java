@@ -93,7 +93,7 @@ Cryptography Extension (JCE).
 <br>Another Java security tutorial can be found at
 <a href="http://developer.java.sun.com/developer/onlineTraining/Security/Fundamentals/index.html" target="_top">http://developer.java.sun.com/developer/onlineTraining/Security/Fundamentals/index.html</a>
 
-@author Christopher Hylands Brooks, Contributor: Rakesh Reddy 
+@author Christopher Hylands Brooks, Contributor: Rakesh Reddy
 @version $Id$
 @since Ptolemy II 3.1
 */
@@ -155,7 +155,7 @@ abstract public class CryptographyActor extends TypedAtomicActor {
      */
     public StringParameter algorithm;
 
-    /** Specify a provider for the given algorithm.  
+    /** Specify a provider for the given algorithm.
      *  The default value is "SystemDefault" which allows the
      *  system to choose the provider based on the JCE architecture.
      */

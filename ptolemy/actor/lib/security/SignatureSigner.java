@@ -72,7 +72,7 @@ Cryptography Extension (JCE).  See the
 resources about JCA and JCE.
 
 @see PrivateKeyReader
-@author Christopher Hylands Brooks, Contributor: Rakesh Reddy 
+@author Christopher Hylands Brooks, Contributor: Rakesh Reddy
 @version $Id$
 @since Ptolemy II 3.1
 */

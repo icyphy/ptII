@@ -42,7 +42,7 @@ import javax.crypto.Cipher;
 
 //////////////////////////////////////////////////////////////////////////
 //// CipherActor
-/** 
+/**
 A base class that implements general functions used by cipher
 actors.
 
@@ -74,7 +74,7 @@ Cryptography Extension (JCE).  See the
 {@link ptolemy.actor.lib.security.CryptographyActor} documentation for
 resources about JCA and JCE.
 
-@author Christopher Hylands Brooks, Contributor: Rakesh Reddy 
+@author Christopher Hylands Brooks, Contributor: Rakesh Reddy
 @version $Id$
 @since Ptolemy II 3.1
 */
@@ -210,7 +210,7 @@ abstract public class CipherActor extends CryptographyActor {
         }
     }
 
-    /** Retrieve the values of the parameters and set up 
+    /** Retrieve the values of the parameters and set up
      *  javax.crypto.Cipher.
      *
      * @exception IllegalActionException If the algorithm cannot be found,

@@ -57,9 +57,9 @@ import javax.crypto.SecretKey;
 /**
 Create a key and send it on the <i>output</i>.
 
-<p>The key can be used by the {@link SymmetricEncryption} and 
+<p>The key can be used by the {@link SymmetricEncryption} and
 {@link SymmetricDecryption} actors.  In prinicple, a class
-derived from this class could generate asymmetric public and private keys.  
+derived from this class could generate asymmetric public and private keys.
 
 <p>This key should be not be visible to users as the security of
 the encrypted message relies on the secrecy of this key.
@@ -68,7 +68,7 @@ the encrypted message relies on the secrecy of this key.
 Cryptography Extension (JCE).  See the
 {@link ptolemy.actor.lib.security.CryptographyActor} documentation for
 
-@author Christopher Hylands Brooks, Contributor: Rakesh Reddy 
+@author Christopher Hylands Brooks, Contributor: Rakesh Reddy
 @version $Id$
 @since Ptolemy II 3.1
 */
@@ -131,7 +131,7 @@ public class Key extends Source {
      */
     public StringParameter provider;
 
-    /** Specify the size of the key to be created.  
+    /** Specify the size of the key to be created.
      *  The key size is an integer value representing the number of
      *  bits in the key.  The initial default depends on the algorithm
      *  that is selected, not all algorithms use <i>keySize</i>.
@@ -181,7 +181,7 @@ public class Key extends Source {
         output.send(0, _secretKeyObjectToken);
     }
 
-    /** Initialize the key by using the cached values of the 
+    /** Initialize the key by using the cached values of the
      *  <i>algorithm</i>, <i>keySize<i> and <i>provider</i> parameters.
      *  @exception IllegalActionException If thrown by base class or
      *  if the algorithm is not found, or if the padding scheme is illegal,
