@@ -44,13 +44,13 @@ import java.util.*;
 @version $Id$
 @see ptolemy.actor.Director
 */
-public interface CTDirector extends Nameable{
+public interface CTDirector extends Nameable, Executable{
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Return the current ODESolver. 
-     *  @return The current CTODESolver
+     *  @return The current ODESolver
      */
     public ODESolver getCurrentODESolver();
 
@@ -64,17 +64,39 @@ public interface CTDirector extends Nameable{
     /** Return the currentTime.
      *  @return the currentTime.
      */
-    public double getCurrentTime(); 
+    public double getCurrentTime();
 
     /** Return the initial step size, as in the parameter.
      */
-    public double getInitialStepSize();
+    public double getInitialStepSize() ;
+
+    /** Return the startTime.
+     *  @return the startTime.
+     */
+    public double getStartTime();
+
+    /** Return the stopTime.
+     *  @return the stopTime.
+     */
+    public double getStopTime();
 
     /** Return the time accuracy such that two time stamp within this
      *  accuracy is considered identical.
      *  @return The time accuracy.
      */
     public double getTimeAccuracy();
+
+    public double getLTETolerant();
+
+    public double getValueAccuracy();
+    
+    public double getMinStepSize();
+
+    public int getMaxIterations();
+
+    /** Return the scheduler.
+     */
+    public Scheduler getScheduler();
 
     /** Set the current ODE solver. The solver's container will be
      *  set to this director.

@@ -45,6 +45,10 @@ A CT director that does not change its ODE solver.
 */
 public class CTSingleSolverDirector extends StaticSchedulingDirector
         implements CTDirector, ParameterListener{
+
+    public static final boolean VERBOSE = false;
+    public static final boolean DEBUG = false;
+
     /** Construct a CTDirector with no name and no Container.
      *  The default startTime and stopTime are all zeros. There's no
      *  scheduler associated.
@@ -187,29 +191,57 @@ public class CTSingleSolverDirector extends StaticSchedulingDirector
      *       thrown by a contained actor.
      */
     public void initialize() throws IllegalActionException {
+        if (VERBOSE||DEBUG) {
+            System.out.println("Director initialize.");
+        }
         CompositeActor ca = (CompositeActor) getContainer();
         if (ca == null) {
+            if(DEBUG) {
+                System.out.println("Director has no container.");
+            }
             throw new IllegalActionException(this, "Has no container.");
         }
         if (ca.getContainer() != null) {
+            if(DEBUG) {
+                System.out.println("Director can only be the top director.");
+            }
             throw new IllegalActionException(this,
             " can only serve as the top level director.");
         }
         CTScheduler sch = (CTScheduler)getScheduler();
         if (sch == null) {
+            if(DEBUG) {
+                System.out.println("Director does not have a scheduler.");
+            }
             throw new IllegalActionException( this,
             "does not have a scheduler.");
         }
+        if(VERBOSE) {
+            System.out.println("updating parameters");
+        }
         updateParameters();
         // Instanciate ODE solver
-        ODESolver solver = _instantiateODESolver(_solverclass);
-        setCurrentODESolver(solver);
+        if(VERBOSE) {
+            System.out.println("instantiating ODE solver"+_solverclass);
+        }
+        if(getCurrentODESolver() == null) {
+            _defaultSolver = _instantiateODESolver(_solverclass);
+        }
         // set time
         setCurrentTime(getStartTime());
         setCurrentStepSize(getInitialStepSize());
         sch.setValid(false);
         _first = true;
+        if (VERBOSE) {
+            System.out.println("Director.super initialize.");
+        }
         super.initialize();
+    }
+
+    /** Return a CTReceiver.
+     */
+    public Receiver newReceiver() {
+        return new CTReceiver();
     }
 
     /** Perform mutation and process pause/stop request.
@@ -231,6 +263,9 @@ public class CTSingleSolverDirector extends StaticSchedulingDirector
      *  @exception NameDuplicationException If thrown by a contained actor.
      */
     public boolean prefire() throws IllegalActionException {
+         if (VERBOSE) {
+            System.out.println("Director prefire.");
+        }
         if(!scheduleValid()) {
             // mutation occured, redo the schedule;
             CTScheduler scheduler = (CTScheduler)getScheduler();
@@ -239,8 +274,10 @@ public class CTSingleSolverDirector extends StaticSchedulingDirector
                 "does not have a Scheuler.");
             }
             scheduler.schedule();
+            setScheduleValid(true);
         }
         updateParameters();
+        setCurrentODESolver(_defaultSolver);
         // prefire all the actors.
         boolean ready = true;
         CompositeActor ca = (CompositeActor) getContainer();
@@ -293,12 +330,20 @@ public class CTSingleSolverDirector extends StaticSchedulingDirector
         Enumeration integrators = scheduler.dynamicActorSchedule();
         while(integrators.hasMoreElements()) {
             CTDynamicActor integrator=(CTDynamicActor)integrators.nextElement();
+            if(VERBOSE) {
+                System.out.println("Excite State..."+
+                    ((Nameable)integrator).getName());
+            }
             integrator.emitPotentialStates();
         }
         // outputSchdule.fire()
         Enumeration outputactors = scheduler.outputSchedule();
         while(outputactors.hasMoreElements()) {
             Actor nextoutputactor = (Actor)outputactors.nextElement();
+            if(VERBOSE) {
+                System.out.println("Fire output..."+
+                    ((Nameable)nextoutputactor).getName());
+            }
             nextoutputactor.fire();
         }
     }  
@@ -317,6 +362,9 @@ public class CTSingleSolverDirector extends StaticSchedulingDirector
     /** If parameter changed, queue the event
      */
     public void parameterChanged(ParameterEvent e) {
+        if(VERBOSE) {
+            System.out.println("Parameter Changed.");
+        }
         if(_parameterEvents == null) {
             _parameterEvents = new LinkedList();
         }
@@ -332,26 +380,46 @@ public class CTSingleSolverDirector extends StaticSchedulingDirector
     /** Update paramters.
      */
     public void updateParameters() throws IllegalActionException {
-        if(!_parameterEvents.isEmpty()) {
+        if((_parameterEvents != null )&& (!_parameterEvents.isEmpty())) {
+            if(DEBUG) {
+                System.out.println("events = "+_parameterEvents.size());
+            }
             Enumeration pevents = _parameterEvents.elements();
             while(pevents.hasMoreElements()) {
                 ParameterEvent event = (ParameterEvent) pevents.nextElement();
                 Parameter param = event.getParameter();
                 if(param == _paramStopTime) {
+                    if(VERBOSE) {
+                        System.out.println("StopTime updating.");
+                    }
                     _stopTime = ((DoubleToken)param.getToken()).doubleValue();
                 } else if(param == _paramInitStepSize) {
+                    if(VERBOSE) {
+                        System.out.println("initStepSize updating.");
+                    }
                     _initStepSize = 
                     ((DoubleToken)param.getToken()).doubleValue();
                 } else if(param == _paramStartTime) {
+                    if(VERBOSE) {
+                        System.out.println("starttime updating.");
+                    }
                     _startTime = ((DoubleToken)param.getToken()).doubleValue();
                 } else if(param == _paramODESolver) {
-                    String sname = 
-                    ((StringToken)param.getToken()).stringValue();
-                    _instantiateODESolver(sname);
+                    if(VERBOSE) {
+                        System.out.println("solver updating.");
+                    }
+                    _solverclass =((StringToken)param.getToken()).stringValue();
+                    _defaultSolver = _instantiateODESolver(_solverclass);
                 } else if(param == _paramLTETolerant) {
+                    if(VERBOSE) {
+                        System.out.println("LTE tolerant updating.");
+                    }
                     _lteTolerant = 
                     ((DoubleToken)param.getToken()).doubleValue();
                 } else if(param == _paramMinStepSize) {
+                    if(VERBOSE) {
+                        System.out.println("minstep updating.");
+                    }
                     _minStepSize = 
                     ((DoubleToken)param.getToken()).doubleValue();
                 }  else if(param == _paramValueAccuracy) {
@@ -363,6 +431,8 @@ public class CTSingleSolverDirector extends StaticSchedulingDirector
                 } else if(param == _paramMaxIterations) {
                     _maxIterations = 
                     ((IntToken)param.getToken()).intValue();
+                } else {
+                    System.out.println("Unknowparameter"+param.getName());
                 }
             }
             _parameterEvents.clear();
@@ -412,7 +482,7 @@ public class CTSingleSolverDirector extends StaticSchedulingDirector
             _lteTolerant = 1e-4;
             _valueAccuracy = 1e-6;
             _timeAccuracy = 1e-6;
-            _solverclass = "ptolemy.domains.ct.kernel.util.ForwardEulerSolver";
+            _solverclass = "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver";
 
             _paramStartTime = new CTParameter(
                 this, "StartTime", new DoubleToken(_startTime));
@@ -448,16 +518,28 @@ public class CTSingleSolverDirector extends StaticSchedulingDirector
     protected ODESolver _instantiateODESolver(String solverclass) 
             throws IllegalActionException {
         ODESolver newsolver;
+        if(VERBOSE) {
+            System.out.println("instantiating solver..."+solverclass);
+        }
         try {
             Class solver = Class.forName(solverclass);
             newsolver = (ODESolver)solver.newInstance();
-        } catch(ClassNotFoundException ex) {
+        } catch(ClassNotFoundException e) {
+            if(DEBUG) {
+                System.out.println("solver class not found" + e.getMessage());
+            }
             throw new IllegalActionException( this, "ODESolver: "+
                 solverclass + " not found.");
-        } catch(InstantiationException ex) {
+        } catch(InstantiationException e) {
+            if(DEBUG) {
+                System.out.println("solver instantiate error" + e.getMessage());
+            }
             throw new IllegalActionException( this, "ODESolver: "+
                 solverclass + " instantiation failed.");
-        } catch(IllegalAccessException ex) {
+        } catch(IllegalAccessException e) {
+            if(DEBUG) {
+                System.out.println("solver not accessible" + e.getMessage());
+            }
             throw new IllegalActionException( this, "ODESolver: "+
                 solverclass + " not accessible.");
         }
@@ -473,6 +555,7 @@ public class CTSingleSolverDirector extends StaticSchedulingDirector
 
     // current ODE solver.
     private ODESolver _currentSolver = null;
+    private ODESolver _defaultSolver = null;
 
     // parameters.
     private CTParameter _paramStartTime;

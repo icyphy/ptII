@@ -74,6 +74,10 @@ will be throw by the schedule(), stateSchdule() and outputSchedule() methods.
 */
 
 public class CTScheduler extends Scheduler{
+
+    public static final boolean VERBOSE = false;
+    public static final boolean DEBUG = false;
+
     /** Construct a CT topological sort schduler in the defaul workspace
      *  with the default name "CT Topological Sort Scheduler".
      */	
@@ -221,13 +225,17 @@ public class CTScheduler extends Scheduler{
      *  one step earlier than the output.
      *  This method read-synchronize on the workspace.
      */
-    public Enumeration dynamicActorSchedule() throws NotSchedulableException {
+    public Enumeration dynamicActorSchedule() 
+        throws NotSchedulableException, IllegalActionException {
         try {
-	    workspace().getReadAccess();
-            if(_scheduleversion != workspace().getVersion()) {
-                _schedule();
-                _scheduleversion = workspace().getVersion();
-            }
+            workspace().getReadAccess();
+            if(!valid()) {
+                if(DEBUG) {
+                    System.out.println("The schedule is not valid" + 
+                        " when calling dynamicActorSchedule().");
+                }
+                schedule();
+            }   
             return _stateschedule.elements();
         } finally {
             workspace().doneReading();
@@ -245,12 +253,16 @@ public class CTScheduler extends Scheduler{
      *  actor's output ports) in the topology order.
      *  This method read-synchronize on the workspace.
      */ 
-    public Enumeration outputSchedule() throws NotSchedulableException {
+    public Enumeration outputSchedule() 
+        throws NotSchedulableException, IllegalActionException  {
         try {
 	    workspace().getReadAccess();
-            if(_scheduleversion != workspace().getVersion()) {
-                _schedule();
-                _scheduleversion = workspace().getVersion();
+            if(!valid()) {
+                if(DEBUG) {
+                    System.out.println("The schedule is not valid" + 
+                        " when calling outputSchedule().");
+                }
+                schedule();
             }
             return _outputschedule.elements();
         } finally {
@@ -258,12 +270,16 @@ public class CTScheduler extends Scheduler{
         }
     }
 
-    public Enumeration EventDetectionSchedule() throws NotSchedulableException {
+    public Enumeration EventDetectionSchedule() 
+            throws NotSchedulableException, IllegalActionException {
         try {
 	    workspace().getReadAccess();
-            if(_scheduleversion != workspace().getVersion()) {
-                _schedule();
-                _scheduleversion = workspace().getVersion();
+            if(!valid()) {
+                if(DEBUG) {
+                    System.out.println("The schedule is not valid" + 
+                        " when calling eventDetectionSchedule().");
+                }
+                schedule();
             }
             return _eventschedule.elements();
         } finally {
@@ -282,12 +298,16 @@ public class CTScheduler extends Scheduler{
      *  actor's output ports) in the topology order.
      *  This method read-synchronize on the workspace.
      */ 
-    public Enumeration stateTransitionSchedule() throws NotSchedulableException {
+    public Enumeration stateTransitionSchedule()
+            throws NotSchedulableException, IllegalActionException {
         try {
 	    workspace().getReadAccess();
-            if(_scheduleversion != workspace().getVersion()) {
-                _schedule();
-                _scheduleversion = workspace().getVersion();
+            if(!valid()) {
+                if(DEBUG) {
+                    System.out.println("The schedule is not valid" + 
+                        " when calling stateTransitionSchedule().");
+                }
+                schedule();
             }
             return _transitionschedule.elements();
         } finally {
@@ -302,6 +322,9 @@ public class CTScheduler extends Scheduler{
      *  CompositeActor. 
      */	
     protected void _classifyActors() {
+        if(VERBOSE) {
+            System.out.println("in _classifyActors");
+        }
         if(_dynamicversion == -1) {
             _sink = new LinkedList();
             _dynam = new LinkedList();
@@ -315,7 +338,8 @@ public class CTScheduler extends Scheduler{
             _ectrl.clear();
             _evdct.clear();
         }
-        CompositeActor ca = (CompositeActor) getContainer();
+        
+        CompositeActor ca = (CompositeActor) getContainer().getContainer();
         Enumeration actors = ca.deepGetEntities();
         while(actors.hasMoreElements()) {
             Actor a = (Actor) actors.nextElement();
@@ -325,7 +349,7 @@ public class CTScheduler extends Scheduler{
             if (a instanceof CTEventDetector) {
                 _evdct.insertLast(a);
             }
-            if (a.outputPorts() == null) {
+            if (!((a.outputPorts()).hasMoreElements())) {
                 _sink.insertLast(a);
             }
             if (a instanceof CTDynamicActor) {
@@ -353,70 +377,110 @@ public class CTScheduler extends Scheduler{
         if(ca == null) {
             return null;
         }
-        LinkedList _stateschedule = new LinkedList();
-        LinkedList _transitionschedule = new LinkedList();
-        LinkedList _outputschedule = new LinkedList();
-        LinkedList _eventschedule = new LinkedList();
+        _stateschedule = new LinkedList();
+        _transitionschedule = new LinkedList();
+        _outputschedule = new LinkedList();
+        _eventschedule = new LinkedList();
         LinkedList _scheList = new LinkedList();
         
         DirectedAcyclicGraph g =  _toGraph(ca.deepGetEntities());
-        if(g.isAcyclic()) {
+        if(!g.isAcyclic()) {
             throw new NotSchedulableException("Arithmetic loop found.");
         }
+        _classifyActors();
         // construct an array of dynamic actors.
         int numofdyn = _dynam.size();
-        Object[] dynactors = new Object[numofdyn];
-        Enumeration enumdynactors = _dynam.elements();
-        int count = 0;
-        while (enumdynactors.hasMoreElements()) {
-            dynactors[count++] = enumdynactors.nextElement();
+        if(DEBUG) {
+            System.out.println("Number of Dynamic Actors:"+numofdyn);
         }
-        // Dynamic actors are reverse ordered.
-        Object[] xsort = g.topologicalSort(dynactors);
-        for(int i=0; i < xsort.length; i++) {
-            _stateschedule.insertFirst(xsort[i]);
-        }
-        _scheList.insertLast(_stateschedule);
+        if(numofdyn > 0) {
+            Object[] dynactors = new Object[numofdyn];
+            Enumeration enumdynactors = _dynam.elements();
+            int count = 0;
+            while (enumdynactors.hasMoreElements()) {
+                dynactors[count++] = enumdynactors.nextElement();
+            }
+            
+            // Dynamic actors are reverse ordered.
+            Object[] xsort = g.topologicalSort(dynactors);
+            if(DEBUG) {
+                System.out.println("Num of dynamic actors after sort: "+
+                    xsort.length);
+            }
+            for(int i=0; i < xsort.length; i++) {
+                _stateschedule.insertFirst((Actor)xsort[i]);
+            }
+            if(VERBOSE) {
+                System.out.println("state schedule constructed.");
+            }
+            _scheList.insertLast(_stateschedule);
 
-        // State transition map
-        Object[] fx = g.backwardReachableNodes(dynactors);
-        Object[] fxsort = g.topologicalSort(fx);
-        for(int i=0; i < fxsort.length; i++) {
-            _transitionschedule.insertLast(fxsort[i]);
-        }  
-        _scheList.insertLast(_transitionschedule);
+            // State transition map
+            Object[] fx = g.backwardReachableNodes(dynactors);
+            if(DEBUG) {
+                System.out.println("Number of reachable nodes from" +
+                    "integrators="+fx.length);
+            }    
+            Object[] fxsort = g.topologicalSort(fx);
+            for(int i=0; i < fxsort.length; i++) {
+                _transitionschedule.insertLast(fxsort[i]);
+            }  
+            if(VERBOSE) {
+                System.out.println("state transition schedule constructed.");
+            }
+            _scheList.insertLast(_transitionschedule);
+        }
 
         // construct an array of sink actors.
         int numofsink = _sink.size();
-        Object[] sinkactors = new Object[numofsink];
-        Enumeration enumsinks = _sink.elements();
-        count = 0;
-        while(enumsinks.hasMoreElements()) {
-            sinkactors[count++] = enumsinks.nextElement();
+        if(DEBUG) {
+            System.out.println("Number of Sink Actors:"+numofsink);
         }
-        //Output map.
-        Object[] gx = g.backwardReachableNodes(sinkactors);
-        Object[] gxsort = g.topologicalSort(gx);
-        for(int i=0; i < gxsort.length; i++) {
-            _outputschedule.insertLast(gxsort[i]);
-        }  
-        _scheList.insertLast(_outputschedule);
-
+        if(numofsink > 0) {
+            Object[] sinkactors = new Object[numofsink];
+            Enumeration enumsinks = _sink.elements();
+            int count = 0;
+            while(enumsinks.hasMoreElements()) {
+                sinkactors[count++] = enumsinks.nextElement();
+            }
+            //Output map.
+            Object[] gx = g.backwardReachableNodes(sinkactors);
+            Object[] gxsort = g.topologicalSort(gx);
+            for(int i=0; i < gxsort.length; i++) {
+                _outputschedule.insertLast(gxsort[i]);
+            }
+            // add sinks to the output schedule
+            _outputschedule.appendElements(_sink.elements());
+            if(VERBOSE) {
+                System.out.println("output schedule constructed.");
+            }
+            _scheList.insertLast(_outputschedule);
+        }
+        
         // construct an array of event detectors.
         int numofevdct = _evdct.size();
-        Object[] eventdetectors = new Object[numofevdct];
-        Enumeration enumevdct = _evdct.elements();
-        count = 0;
-        while(enumevdct.hasMoreElements()) {
-            eventdetectors[count++] = enumevdct.nextElement();
+        if(DEBUG) {
+            System.out.println("Number of Event Detector:"+numofevdct);
         }
-        // Event detection map.
-        Object[] hx = g.backwardReachableNodes(eventdetectors);
-        Object[] hxsort = g.topologicalSort(hx);
-        for(int i=0; i < hxsort.length; i++) {
-            _eventschedule.insertLast(hxsort[i]);
-        }  
-        _scheList.insertLast(_outputschedule);
+        if(numofevdct > 0) {
+            Object[] eventdetectors = new Object[numofevdct];
+            Enumeration enumevdct = _evdct.elements();
+            int count = 0;
+            while(enumevdct.hasMoreElements()) {
+                eventdetectors[count++] = enumevdct.nextElement();
+            }
+            // Event detection map.
+            Object[] hx = g.backwardReachableNodes(eventdetectors);
+            Object[] hxsort = g.topologicalSort(hx);
+            for(int i=0; i < hxsort.length; i++) {
+                _eventschedule.insertLast(hxsort[i]);
+            }
+            _eventschedule.appendElements(_evdct.elements());
+            if(VERBOSE) {
+                System.out.println("event detection schedule constructed.");
+            }
+            _scheList.insertLast(_outputschedule);
+        }
         return _scheList.elements();
     }
     
@@ -483,6 +547,9 @@ public class CTScheduler extends Scheduler{
      *  @return A graph representation of the actors. 
      */     
     protected DirectedAcyclicGraph _toGraph(Enumeration actors) {
+        if(VERBOSE) {
+            System.out.println("in _toGraph()");
+        }
         CTDirector dir =(CTDirector)getContainer();
         CompositeActor ca = (CompositeActor)(dir.getContainer());
      
@@ -497,19 +564,27 @@ public class CTScheduler extends Scheduler{
             g.add(a);
             actorlist.insertLast(a);
         }
+        if(DEBUG) {
+            System.out.println("Size of the graph="+g.getNodeCount());
+        }
         // Create the edges.
         Enumeration allactors = actorlist.elements();
         while (allactors.hasMoreElements()) {
             Actor a = (Actor) allactors.nextElement();
-            if(a instanceof CTDynamicActor) {
-                break;
+            if(DEBUG) {
+                System.out.println("For node:"+((Nameable)a).getName());
             }
-            // Find the successors of a
-            Enumeration successors = _successors(a);
-            while (successors.hasMoreElements()) {
-                Actor s = (Actor) successors.nextElement();
-                if(actorlist.includes(s)) {
-                    g.addEdge(a, s);
+            if(!(a instanceof CTDynamicActor)) {
+                // Find the successors of a
+                Enumeration successors = _successors(a);
+                while (successors.hasMoreElements()) {
+                    Actor s = (Actor) successors.nextElement();
+                    if(actorlist.includes(s)) {
+                        g.addEdge(a, s);
+                        if(DEBUG) {
+                            System.out.println("edge added" );
+                        }
+                    }
                 }
             }
         }
@@ -523,7 +598,6 @@ public class CTScheduler extends Scheduler{
     // The static name of the scheduler.
     private static final String _staticname = "CT_Cluster_Scheduler";
     // schedule version
-    private long _scheduleversion = -1;
     private LinkedList _stateschedule;
     private LinkedList _transitionschedule;
     private LinkedList _outputschedule;

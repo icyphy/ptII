@@ -32,7 +32,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// CTODESolver
+//// ODESolver
 /** 
 Abstract base class for ODE solvers. This class hooks the method in one
 iteration in the CTDirector, ie. prefire(), fire(), and postfire().
@@ -109,12 +109,13 @@ public abstract class ODESolver extends NamedObj {
      * 
      *  @return The round of fire().
      */
-    public int round() {
+    public int getRound() {
         return _round;
     }
 
     /** Abstract fire() method for integrators.
      *
+     *  @param integrator The integrator of that calls this method.
      * @exception IllegalActionException Not thrown in this base
      *  class. May be needed by the derived class.
      */
@@ -122,16 +123,22 @@ public abstract class ODESolver extends NamedObj {
             throws  IllegalActionException;
 
     /** Abstract hook method for isSuccess() method of integrators.
+     *  @param integrator The integrator of that calls this method.
+     *  @return True if the intergrator report a success on the last step.
      */
     public abstract boolean integratorIsSuccess(CTBaseIntegrator integrator);
 
     /** Abstract hook method for suggestedNextStepSize() method of 
      *  integrators.
+     *  @param integrator The integrator of that calls this method.
+     *  @return The suggested next step by the given integrator.
      */
     public abstract double integratorSuggestedNextStepSize(
         CTBaseIntegrator integrator);
 
     /** Integrator's aux variable number needed when solving the ODE.
+     *  @return The number of auxilary variables for the solver in each
+     *       integrator.
      */
     public abstract int integratorAuxVariableNumber();
 
@@ -151,17 +158,17 @@ public abstract class ODESolver extends NamedObj {
             startOverLastStep();
         }        
     }
-
-    public void startOverLastStep() {
-        CTDirector dir = (CTDirector)getContainer();
-        dir.setCurrentStepSize(dir.getCurrentStepSize()/2.0);
-    }
-
-    /** Error Control, may label this step to be unsuccessful.
+   
+    /** Reinitialize the last step and start over again.
+     *  The typical operations incolved in this method are reset
+     *  the currentTime and currentStepSize of the director.
      */
-    public boolean errorTolerable() {
-        return true;
-    }
+    public abstract void startOverLastStep();
+
+    /** Return true if the local error in the last step is tolerable.
+     *  @return true if the local error in the last step is tolerable.
+     */
+    public abstract boolean errorTolerable();
     
     /** Return the director contains this solver.
      *  @return the director contains this solver.

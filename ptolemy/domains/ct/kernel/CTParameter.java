@@ -119,6 +119,7 @@ public class CTParameter extends Parameter{
         super(container, name, token);
         try {
             addParameterListener((ParameterListener)container);
+            evaluate();
         } catch (ClassCastException ex) {
             // remove the parameter from the container.
             this.setContainer(null);
