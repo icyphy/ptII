@@ -30,6 +30,15 @@
 	<LI> <A HREF="#ptolemy II installation, what do I need"><B>2.3 What do I need to Install Ptolemy II?</B></A>
 	<MENU>
 
+<LI> <A HREF="#ptolemy II faq: extending"><B>3. Extending Ptolemy II</B></A>
+	<MENU>
+	<LI> <A HREF="#Adding actors"><B>3.1 How do I add an actor?</B></A>
+
+	<LI> <A HREF="#Interfacing to C/C++"><B>3.1 How do I interface to C/C++</B></A>
+
+	<LI> <A HREF="#Customizing the GUI"><B>3.3 How do I customize the GUI?</B></A>
+	<MENU>
+
 </menu>
 
 <h2><a name="General Questions"><B>1. General</B></a></h2>
@@ -82,7 +91,17 @@ mostly unchanging. The Ptolemy II software system is under active development.
 <li> They have different file formats. Ptolemy 0.x uses Octtools,
 Ptolemy II uses a system based on XML
 
-<li> They have different user interfaces.
+<li> They have different user interfaces.  The Ptolemy II UI
+is much easier to use than the Ptolemy Classic UI.
+<li> Ptolemy Classic works best under Unix.  There is a 
+Windows port of Ptolemy Classic, but it does not work well.
+<br>Ptolemy II works under both Unix and Windows.
+<li> Ptolemy Classic can generate code for various DSP primarily
+using SDF semantics.
+<br> Ptolemy II can generate code for non-hierarchical SDF models
+and for hierarchical Giotto models.
+
+
 </menu>
 
 <DT> <A NAME="ptolemy II copyright"><B>1.3 What is the copyright?</B></A>
@@ -149,7 +168,7 @@ send email to: ptolemy@eecs.berkeley.edu.
 
 <H2><A NAME="ptplot faq: installation"><B>2. Installation questions</B></A></H2>
 <dl>
-<dt> <A NAME="#downloading Ptolemy II"><B>2.1 How do I download	Ptolemy II?</B></A>
+<dt> <A NAME="downloading Ptolemy II"><B>2.1 How do I download	Ptolemy II?</B></A>
 <dd> Ptolemy II is available in several formats including applets, source code, a Windows installer and Web Start. 
 For details, see
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/</CODE></a>
@@ -158,8 +177,8 @@ For details, see
 <dt> <A NAME="#platforms that Ptolemy II runs under"><B>2.2 What platforms does Ptolemy II run under?</B></A>
 <dd> Ptolemy II is written in Java, so it should run on any platform
 that supports a recent Java Virtual machine.  Locally, we use
-Windows 2000 with the Cygwin toolkit for development.  The nightly
-builds run under Solaris 8.  Some people in the group use Linux.
+Windows XP and Windows 2000 with the Cygwin toolkit for development.
+The nightly builds run under Solaris 8.  Some people in the group use Linux.
 
 <dl>
 <dt> <A NAME="#ptolemy II installation, what do I need"><B>2.3 What do I need to Install Ptolemy II?</B></A>
@@ -169,6 +188,16 @@ For details, see the installation pages at
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/"><CODE></CODE></a>
 </dl>
 
+<H2><A NAME="ptolemy II faq: extending"><B>3. Extending Ptolemy II</B></A></H2>
+<dl>
+<dt> <A NAME="Adding actors"><B>3.1 How do I add an actor?</B></A>
+
+	<LI> <A HREF="#Interfacing to C/C++"><B>3.1 How do I interface to C/C++</B></A>
+
+	<LI> <A HREF="#Customizing the GUI"><B>3.3 How do I customize the GUI?</B></A>
+	<MENU>
+
+</menu>
 
 <p><font size="2" color="#cc0000">Last Updated: $Date$</font>
 </body>
