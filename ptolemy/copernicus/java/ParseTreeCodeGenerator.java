@@ -634,6 +634,11 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
                     PtolemyUtilities.arrayTokenClass,
                     PtolemyUtilities.arrayTokenConstructor,
                     returnLocal);
+        } else if (returnType.equals(IntType.v())) {
+            tokenLocal = PtolemyUtilities.addTokenLocalBefore(_body, _insertPoint, "token",
+                    PtolemyUtilities.intTokenClass,
+                    PtolemyUtilities.intTokenConstructor,
+                    returnLocal);
         } else if (returnType.equals(DoubleType.v())) {
             tokenLocal = PtolemyUtilities.addTokenLocalBefore(_body, _insertPoint, "token",
                     PtolemyUtilities.doubleTokenClass,
@@ -701,7 +706,8 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
                     returnLocal);
 
         } else {
-            throw new IllegalActionException("unrecognized case");
+            throw new IllegalActionException("unrecognized case: "
+                    + returnType);
         }
         return tokenLocal;
     }

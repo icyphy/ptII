@@ -125,6 +125,15 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements Ha
     /** Return true if the first object is contained in the second.
      */
     public static boolean isContained(Nameable object1, Nameable object2) {
+        if (object1 != null) {
+            object1 = object1.getContainer();
+        }
+        return (object1 == object2);
+    }
+
+    /** Return true if the first object is contained in the second.
+     */
+    public static boolean isDeeplyContained(Nameable object1, Nameable object2) {
         while (object1 != null && object1 != object2) {
             object1 = object1.getContainer();
         }
@@ -140,21 +149,22 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements Ha
     public static Local getLocalReferenceForEntity(
             Entity entity, SootClass sourceClass, Local local,
             JimpleBody body, Unit unit, Map options) {
-        //  System.out.println("Get reference to " + entity + " from " + sourceClass);
+        //  System.out.println("Get reference to " + entity + 
+        //         " from " + sourceClass);
         if (ModelTransformer.isActorClass(sourceClass)) {
             Entity sourceEntity =
                 ModelTransformer.getActorForClass(sourceClass);
             if (entity.equals(sourceEntity)) {
                 return local;
             }
-            if (isContained(entity, sourceEntity)) {
+            if (isDeeplyContained(entity, sourceEntity)) {
                 Entity entityContainer = getEntityContainerOfObject(entity);
                 SootClass entityContainerClass =
                     ModelTransformer.getClassForActor(entityContainer);
                 Local entityContainerLocal = getLocalReferenceForEntity(
                         entityContainer, sourceClass, local, body, unit, options);
                 String fieldName = ModelTransformer.getFieldNameForEntity(
-                        entity, sourceEntity);
+                        entity, entityContainer);
                 SootField field =
                     entityContainerClass.getFieldByName(fieldName);
                 Local newLocal = Jimple.v().newLocal("container",
@@ -167,26 +177,28 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements Ha
                                         field)),
                         unit);
                 return newLocal;
+            } else {
+                // Otherwise, the source class must be something up
+                // the hierarchy.
+                CompositeEntity container =
+                    (CompositeEntity)sourceEntity.getContainer();
+                SootClass containerClass =
+                    ModelTransformer.getClassForActor(container);
+                RefType type = RefType.v(containerClass);
+                Local containerLocal = Jimple.v().newLocal("container",
+                        type);
+                SootField field = sourceClass.getFieldByName(
+                        ModelTransformer.getContainerFieldName());
+                body.getLocals().add(containerLocal);
+                body.getUnits().insertBefore(
+                        Jimple.v().newAssignStmt(
+                                containerLocal,
+                                Jimple.v().newInstanceFieldRef(
+                                        local, field)),
+                        unit);
+                return getLocalReferenceForEntity(entity, containerClass,
+                        containerLocal, body, unit, options); // FIXME!
             }
-            // Then the source class must be something up the hierarchy.
-            CompositeEntity container =
-                (CompositeEntity)sourceEntity.getContainer();
-            SootClass containerClass =
-                ModelTransformer.getClassForActor(container);
-            RefType type = RefType.v(containerClass);
-            Local containerLocal = Jimple.v().newLocal("container",
-                    type);
-            SootField field = sourceClass.getFieldByName(
-                    ModelTransformer.getContainerFieldName());
-            body.getLocals().add(containerLocal);
-            body.getUnits().insertBefore(
-                    Jimple.v().newAssignStmt(
-                            containerLocal,
-                            Jimple.v().newInstanceFieldRef(
-                                    local, field)),
-                    unit);
-            return getLocalReferenceForEntity(entity, containerClass,
-                    containerLocal, body, unit, options); // FIXME!
         } else {
             // Then the source class must be a class for a settable attribute.
             NamedObj sourceObject =

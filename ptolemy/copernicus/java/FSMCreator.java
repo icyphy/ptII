@@ -108,6 +108,11 @@ public class FSMCreator implements AtomicActorCreator {
         Scene.v().addClass(entityInstanceClass);
         entityInstanceClass.setApplicationClass();
 
+        // Create methods that will compute and set the values of the
+        // parameters of this actor.
+        ModelTransformer.createAttributeComputationFunctions(
+                entity, entity, entityInstanceClass, constAnalysis);
+
         // Record everything that the class creates.
         HashSet tempCreatedSet = new HashSet();
 

@@ -28,13 +28,7 @@ COPYRIGHTENDKEY
 package ptolemy.copernicus.java;
 
 import java.lang.reflect.Constructor;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
@@ -56,6 +50,7 @@ import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Variable;
 import ptolemy.domains.fsm.kernel.FSMActor;
+import ptolemy.graph.DirectedGraph;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
@@ -171,7 +166,7 @@ public class ModelTransformer extends SceneTransformer
             SootClass theClass, List attributeList) {
 
         // Check to see if we have anything to do.
-        if (namedObj.attributeList().size() == 0) return;
+        if (attributeList.size() == 0) return;
 
         Type variableType = RefType.v(PtolemyUtilities.variableClass);
 
@@ -187,12 +182,13 @@ public class ModelTransformer extends SceneTransformer
                 variableType);
         body.getLocals().add(variableLocal);
 
-        for (Iterator attributes = namedObj.attributeList().iterator();
+        for (Iterator attributes = attributeList.iterator();
              attributes.hasNext();) {
-            Attribute attribute = (Attribute)attributes.next();
+            Object object = attributes.next();
+            System.out.println("object = " + object.getClass());
+            Attribute attribute = (Attribute)object;
 
-            if (_isIgnorableAttribute(attribute) ||
-                    !attributeList.contains(attribute)) {
+            if (_isIgnorableAttribute(attribute)) {
                 continue;
             }
 
@@ -245,12 +241,6 @@ public class ModelTransformer extends SceneTransformer
                         insertPoint);
 
             }
-
-            // recurse so that we get all parameters deeply.
-            computeAttributesBefore(
-                    body, insertPoint,
-                    context, contextLocal,
-                    attribute, local, theClass, attributeList);
         }
     }
 
@@ -280,7 +270,6 @@ public class ModelTransformer extends SceneTransformer
 
         // Check to see if we have anything to do.
         if (namedObj.attributeList().size() == 0) return;
-
 
         Type variableType = RefType.v(PtolemyUtilities.variableClass);
 
@@ -400,6 +389,7 @@ public class ModelTransformer extends SceneTransformer
             //   System.out.println("ModelTransformer: port: " + port);
 
             String className = port.getClass().getName();
+            // FIXME: what about subclasses of TypedIOPort?
             String portName = port.getName(context);
             String fieldName = getFieldNameForPort(port, context);
             RefType portType = RefType.v(className);
@@ -523,6 +513,188 @@ public class ModelTransformer extends SceneTransformer
             }
             createAttributes(body, context, contextLocal,
                     port, portLocal, theClass, createdSet);
+        }
+    }
+
+    /** Create a method in the given class for each variables or
+     *  settable attributes in the given namedObj that will compute
+     *  the value of the variables and settable attributes and set the
+     *  token for the associated parameter. The given class is assumed
+     *  to be associated with the given context.
+     *  @param context The named object corresponding to the class in which
+     *  code is being generated.
+     *  @param contextLocal A local in the given body that points to
+     *  an instance of the given class.
+     *  @param namedObj The named object that contains attributes.
+     *  @param namedObjLocal A local in the given body.  Attributes will be
+     *  created using this local as the container.
+     *  @param theClass The soot class being modified.
+     */
+    public static void createAttributeComputationFunctions(
+            NamedObj context, NamedObj namedObj, SootClass theClass,
+            ConstVariableModelAnalysis constAnalysis) {
+
+        System.out.println("creatingParameterComputationFunctions for " 
+                + namedObj);
+
+        // Check to see if we have anything to do.
+        if (namedObj.attributeList().size() == 0) return;
+        
+        for (Iterator attributes = namedObj.attributeList().iterator();
+             attributes.hasNext();) {
+            Attribute attribute = (Attribute)attributes.next();
+            
+            if (_isIgnorableAttribute(attribute)) {
+                continue;
+            }
+
+            SootMethod method = new SootMethod(
+                    getAttributeComputationFunctionName(attribute, context),
+                    Collections.EMPTY_LIST, VoidType.v(), Modifier.PUBLIC);
+            Type variableType = RefType.v(PtolemyUtilities.variableClass);
+            theClass.addMethod(method);
+            JimpleBody body = Jimple.v().newBody(method);
+            method.setActiveBody(body);
+            body.insertIdentityStmts();
+            Stmt insertPoint = Jimple.v().newReturnVoidStmt();
+            body.getUnits().add(insertPoint);
+            
+            if(_constAnalysis.getConstVariables(namedObj).contains(attribute)) {
+                Local local = SootUtilities.createRuntimeException(
+                        body, insertPoint, 
+                      "Parameter is constant and should not be re-evaluated");
+                body.getUnits().insertBefore(
+                        Jimple.v().newThrowStmt(local),
+                        insertPoint);
+                continue;
+            }
+            // A local that we will use to set the value of our
+            // settable attributes.
+            Local attributeLocal = Jimple.v().newLocal("attribute",
+                    PtolemyUtilities.attributeType);
+            body.getLocals().add(attributeLocal);
+            Local settableLocal = Jimple.v().newLocal("settable",
+                    PtolemyUtilities.settableType);
+            body.getLocals().add(settableLocal);
+            
+            String className = attribute.getClass().getName();
+            Type attributeType = RefType.v(className);
+            String attributeName = attribute.getName(context);
+            String fieldName = getFieldNameForAttribute(
+                    attribute, context);
+
+            Local local = attributeLocal;
+            body.getUnits().insertBefore(
+                    Jimple.v().newAssignStmt(
+                            attributeLocal,
+                            Jimple.v().newVirtualInvokeExpr(
+                                    body.getThisLocal(),
+                                    PtolemyUtilities.getAttributeMethod,
+                                    StringConstant.v(attributeName))),
+                    insertPoint);
+
+            if (attribute instanceof Variable) {
+                // If the attribute is a parameter, then set its
+                // token to the correct value.
+
+//                 Token token = null;
+//                 try {
+//                     token = ((Variable)attribute).getToken();
+//                 } catch (IllegalActionException ex) {
+//                     throw new RuntimeException(ex.getMessage());
+//                 }
+
+//                 if (token == null) {
+//                     throw new RuntimeException("Calling getToken() on '"
+//                             + attribute + "' returned null.  This may occur "
+//                             + "if an attribute has no value in the moml file");
+//                 }
+
+//                 Local tokenLocal =
+//                     PtolemyUtilities.buildConstantTokenLocal(body,
+//                             insertPoint, token, "token");
+
+                Local tokenLocal =
+                    DataUtilities.generateExpressionCodeBefore(
+                            (Entity)context, theClass,
+                            ((Variable)attribute).getExpression(),
+                            new HashMap(), new HashMap(), body, insertPoint);
+
+                Local variableLocal = Jimple.v().newLocal("variable",
+                        variableType);
+                body.getLocals().add(variableLocal);
+
+                // cast to Variable.
+                body.getUnits().insertBefore(
+                        Jimple.v().newAssignStmt(
+                                variableLocal,
+                                Jimple.v().newCastExpr(
+                                        local,
+                                        variableType)),
+                        insertPoint);
+
+                // call setToken.
+                body.getUnits().insertBefore(
+
+                        Jimple.v().newInvokeStmt(
+                                Jimple.v().newVirtualInvokeExpr(
+                                        variableLocal,
+                                        PtolemyUtilities.variableSetTokenMethod,
+                                        tokenLocal)),
+                        insertPoint);
+
+                body.getUnits().insertBefore(
+                        Jimple.v().newInvokeStmt(
+                                Jimple.v().newInterfaceInvokeExpr(
+                                        variableLocal,
+                                        PtolemyUtilities.validateMethod)),
+                        insertPoint);         
+                
+            } else if (attribute instanceof Settable) {
+                // If the attribute is settable, then set its
+                // expression.
+
+                // cast to Settable.
+                body.getUnits().insertBefore(
+                        Jimple.v().newAssignStmt(
+                                settableLocal,
+                                local),
+                        insertPoint);
+
+                String expression = ((Settable)attribute).getExpression();
+
+                // call setExpression.
+                body.getUnits().insertBefore(
+                        Jimple.v().newInvokeStmt(
+                                Jimple.v().newInterfaceInvokeExpr(
+                                        settableLocal,
+                                        PtolemyUtilities.setExpressionMethod,
+                                        StringConstant.v(expression))),
+                        insertPoint);
+                // call validate to ensure that attributeChanged is called.
+                body.getUnits().insertBefore(
+                        Jimple.v().newInvokeStmt(
+                                Jimple.v().newInterfaceInvokeExpr(
+                                        settableLocal,
+                                        PtolemyUtilities.validateMethod)),
+                        insertPoint);
+            }
+
+            // recurse so that we get all parameters deeply.
+            createAttributeComputationFunctions(
+                    context, attribute, theClass, constAnalysis);
+        }
+
+        if (namedObj instanceof Entity) {
+            Entity entity = (Entity)namedObj;
+            for (Iterator ports = entity.portList().iterator();
+                 ports.hasNext();) {
+                Port port = (Port)ports.next();
+               
+                // recurse so that we get all parameters deeply.
+                createAttributeComputationFunctions(
+                        context, port, theClass, constAnalysis);
+            }
         }
     }
 
@@ -719,6 +891,14 @@ public class ModelTransformer extends SceneTransformer
 
     public String getDeclaredOptions() {
         return "targetPackage";
+    }
+
+    /** Return the name of the method that is created to compute the current
+     *  value of a variable.
+     */
+    public static String getAttributeComputationFunctionName(
+            Attribute attribute, NamedObj context) {
+        return "_CGcompute" + getFieldNameForAttribute(attribute, context);
     }
 
     /** Return the name of the field that is created for the
@@ -1749,8 +1929,8 @@ public class ModelTransformer extends SceneTransformer
     // the given entity.
     private static EntitySootClass _createCompositeActor(
             CompositeActor entity, String newClassName, Map options) {
-        // FIXME: what about subclasses of CompositeActor?
         SootClass entityClass = PtolemyUtilities.compositeActorClass;
+        
         // create a class for the entity instance.
         EntitySootClass entityInstanceClass =
             new EntitySootClass(entityClass, newClassName,
@@ -1760,6 +1940,11 @@ public class ModelTransformer extends SceneTransformer
 
         // Record everything that the class creates.
         HashSet tempCreatedSet = new HashSet();
+
+        // Create methods that will compute and set the values of the
+        // parameters of this actor.
+        createAttributeComputationFunctions(
+                entity, entity, entityInstanceClass, _constAnalysis);
 
         {
             // create a new body for the initialization method.
@@ -1810,29 +1995,88 @@ public class ModelTransformer extends SceneTransformer
         Scene.v().setActiveHierarchy(new Hierarchy());
         Scene.v().setFastHierarchy(new FastHierarchy());
         
-//         {
-//             LinkedList notConstantAttributeList = new LinkedList(
-//                     entity.attributeList(Variable.class));
-//             notConstantAttributeList.removeAll(
-//                     _constAnalysis.getConstVariables(entity));
-//             // Sort according to dependencies.
+        {
+            Set locallyModifiedAttributeSet = 
+                _constAnalysis.getVariablesWithChangeContext(entity);
+            // Filter out any attribute that is independent (and might
+            // be modified).
+            for(Iterator i = locallyModifiedAttributeSet.iterator();
+                i.hasNext();) {
+                if(_constAnalysis.isIndependent((Variable)i.next())) {
+                    i.remove();
+                }
+            }
 
-//             System.out.println("notConstantAttributeList of " + entity 
-//                     + " = " + notConstantAttributeList);
-//             // Add code to the beginning of the prefire method that
-//             // computes the attribute values of anything that is not a
-//             // constant.
-//             SootMethod method = entityInstanceClass.getMethodByName("prefire");
-//             JimpleBody body = (JimpleBody)method.getActiveBody();
-//             Stmt insertPoint = body.getFirstNonIdentityStmt();
-//             ModelTransformer.computeAttributesBefore(body, insertPoint,
-//                     entity, body.getThisLocal(),
-//                     entity, body.getThisLocal(),
-//                     entityInstanceClass,
-//                     notConstantAttributeList);
-//             LocalNameStandardizer.v().transform(body, "at.lns");
-//             LocalSplitter.v().transform(body, "at.ls");
-//         }
+            // Sort according to dependencies.
+            List locallyModifiedAttributeList;
+            try {
+                DirectedGraph graph = _constAnalysis.getDependencyGraph();
+                locallyModifiedAttributeList = Arrays.asList(
+                        graph.weightArray(
+                                graph.topologicalSort(
+                                        graph.nodes(
+                                                locallyModifiedAttributeSet))));
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+            System.out.println("locallyModifiedAttributeList of " + entity 
+                    + " = " + locallyModifiedAttributeList);
+            // Add code to the beginning of the prefire method that
+            // computes the attribute values of anything that is not a
+            // constant.
+            SootMethod method = entityInstanceClass.getMethodByName("prefire");
+            JimpleBody body = (JimpleBody)method.getActiveBody();
+            Stmt insertPoint = body.getFirstNonIdentityStmt();
+            System.out.println("insertPoint = " + insertPoint);
+            Local containerLocal = Jimple.v().newLocal("entity",
+                    PtolemyUtilities.componentEntityType);
+            body.getLocals().add(containerLocal);
+                            
+            // Invoke the method to compute each attribute, in order.
+            for(Iterator attributes = locallyModifiedAttributeList.iterator();
+                attributes.hasNext();) {
+                Attribute attribute = (Attribute)attributes.next();
+                Entity attributeContainer = 
+                    FieldsForEntitiesTransformer.getEntityContainerOfObject(
+                            attribute);           
+                SootClass containerClass = 
+                    (SootClass)_objectToClassMap.get(attributeContainer);
+                System.out.println("containerClass = " + containerClass);
+                System.out.println(
+                        "function = " + getAttributeComputationFunctionName(
+                                attribute, attributeContainer));
+                SootMethod computeMethod = containerClass.getMethodByName(
+                        getAttributeComputationFunctionName(
+                                attribute, attributeContainer));
+                body.getUnits().insertBefore(
+                        Jimple.v().newAssignStmt(containerLocal,
+                                Jimple.v().newVirtualInvokeExpr(
+                                        body.getThisLocal(),
+                                        PtolemyUtilities.getEntityMethod,
+                                        StringConstant.v(
+                                                attributeContainer.getName(entity)))),
+                        insertPoint);
+                // and then cast
+                body.getUnits().insertBefore(
+                        Jimple.v().newAssignStmt(containerLocal,
+                                Jimple.v().newCastExpr(containerLocal,
+                                        RefType.v(containerClass))),
+                        insertPoint);
+                
+                body.getUnits().insertBefore(
+                        Jimple.v().newInvokeStmt(
+                                Jimple.v().newVirtualInvokeExpr(containerLocal,
+                                        computeMethod)),
+                        insertPoint);
+            }
+            //    ModelTransformer.computeAttributesBefore(body, insertPoint,
+            //                     entity, body.getThisLocal(),
+            //                     entity, body.getThisLocal(),
+            //                     entityInstanceClass,
+            //                     locallyModifiedAttributeList);
+            LocalNameStandardizer.v().transform(body, "at.lns");
+            LocalSplitter.v().transform(body, "at.ls");
+        }
 
         // Inline all methods in the class that are called from
         // within the class.

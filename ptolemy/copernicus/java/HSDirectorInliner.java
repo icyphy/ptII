@@ -196,9 +196,9 @@ public class HSDirectorInliner implements DirectorInliner {
             SootMethod classMethod =
                 modelClass.getMethodByName("prefire");
             JimpleBody body = (JimpleBody)classMethod.getActiveBody();
-            Stmt insertPoint = body.getFirstNonIdentityStmt();
-
             Chain units = body.getUnits();
+            Stmt insertPoint = (Stmt)units.getLast();
+            
             Local thisLocal = body.getThisLocal();
 
             Local prefireReturnsLocal = Jimple.v().newLocal("preReturns", BooleanType.v());

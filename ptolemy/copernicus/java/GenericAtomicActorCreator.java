@@ -134,6 +134,11 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
                 entity.getFullName(),
                 classEntity, classEntity, tempCreatedSet);
 
+        // Create methods that will compute and set the values of the
+        // parameters of this actor.
+        ModelTransformer.createAttributeComputationFunctions(
+                entity, entity, entityInstanceClass, constAnalysis);
+
         {
             // replace the previous dummy body
             // for the initialization method with a new one.

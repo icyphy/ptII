@@ -622,7 +622,8 @@ public class PtolemyUtilities {
      *  @param base A local that is assumed to have an attribute type.
      */
     public static void callAttributeChanged(
-            Local base, Local attributeLocal, SootClass theClass, SootMethod method,
+            Local base, Local attributeLocal, 
+            SootClass theClass, SootMethod method,
             JimpleBody body, Object insertPoint) {
         // Make sure we have a local of type attribute to pass
         // to attributeChanged
