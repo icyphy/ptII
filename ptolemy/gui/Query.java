@@ -707,13 +707,42 @@ public class Query extends JPanel {
             _messageArea.setEditable(false);
             _messageArea.setLineWrap(true);
             _messageArea.setWrapStyleWord(true);
+
+	    // It seems like setLineWrap is somewhat broken.  Really,
+	    // setLineWrap works best with scrollbars.  We have
+	    // a couple of choices: use scrollbars or hack in something
+	    // that guesses the number of lines.  Note that to
+	    // use scrollbars, the tutorial at
+	    // http://java.sun.com/docs/books/tutorial/uiswing/components/simpletext.html#textarea
+	    // suggests: "If you put a text area in a scroll pane, be
+	    // sure to set the scroll pane's preferred size or use a
+	    // text area constructor that sets the number of rows and
+	    // columns for the text area."
+
+	    // I'm not sure why we need to add 1 here?
+	    int lineCount = _messageArea.getLineCount() + 1;
+	    // Keep the line count to less than 30 lines.  If
+	    // we have more than 30 lines, we get a scroll bar. 
+	    if (lineCount > 30) {
+		lineCount = 30;
+	    }
+	    _messageArea.setRows(lineCount);
+
+	    JScrollPane messageScrollPane = new JScrollPane(_messageArea);
+	    messageScrollPane.setVerticalScrollBarPolicy(
+                          JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+	    // Get rid of the border.
+	    messageScrollPane.setBorder(BorderFactory.createEmptyBorder());
+
             _messageArea.setBackground(getBackground());
+
             // Left Justify.
             _messageArea.setAlignmentX(0.0f);
 
             _messagePanel.setLayout(
                     new BoxLayout(_messagePanel, BoxLayout.Y_AXIS));
-            _messagePanel.add(_messageArea);
+            _messagePanel.add(messageScrollPane);
+
             // Add a spacer.
             _messagePanel.add(Box.createRigidArea(new Dimension(0,10)));
         } else {
