@@ -120,11 +120,11 @@ public class UndoStackAttribute extends SingletonAttribute {
             final UndoAction actionLast = (UndoAction)_undoEntries.pop();
             final UndoAction actionFirst = (UndoAction)_undoEntries.pop();
             UndoAction newAction = new UndoAction() {
-                public void execute() throws Exception {
-                    actionFirst.execute();
-                    actionLast.execute();
-                }
-            };
+                    public void execute() throws Exception {
+                        actionFirst.execute();
+                        actionLast.execute();
+                    }
+                };
             _undoEntries.push(newAction);
         }
     }
