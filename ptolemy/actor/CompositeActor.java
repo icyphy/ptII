@@ -38,6 +38,7 @@ initialize now clears receivers.. This helps SampleDelay inside a modal models w
 package ptolemy.actor;
 
 //import ptolemy.kernel.*;
+import ptolemy.actor.IODependence.IOInformation;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
@@ -107,6 +108,12 @@ relations to be IORelations, and the actors to be instances of
 ComponentEntity that implement the Actor interface.  Derived classes
 may impose further constraints by overriding newPort(), _addPort(),
 newRelation(), _addRelation(), and _addEntity().
+<p>
+The composite actor constructs the IODependence information of its 
+inputs and outputs if it is embedded as an opaque actor. The construction
+is made inside the preinitialize method after its director initializes.
+By this way, the construction is in a bottom up way based on its entities'
+IODependence information.
 
 @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer
 @version $Id$
@@ -164,6 +171,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
     public CompositeActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        _addIODependence();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -345,6 +353,14 @@ public class CompositeActor extends CompositeEntity implements Actor {
         }
     }
 
+    /** Get the IODependence attribute of the composite actor 
+     *  if there is one. Othwise, return null.
+     * 
+     */
+    public IODependence getIODependence() {
+        return _IODependence;
+    }
+    
     /** Get the manager responsible for execution of this composite actor.
      *  If this is the toplevel composite actor, then return what was
      *  set with setManager().
@@ -688,7 +704,10 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  read-synchronized on the workspace, so the preinitialize()
      *  method of the director need not be, assuming it is only called
      *  from here.
-     *
+     *  After the director preinitializes, construct the IODependence 
+     *  information about the inputs and outputs if this composite actor
+     *  is embedded as an opaque actor. 
+     * 
      *  @exception IllegalActionException If there is no director, or if
      *   the director's preinitialize() method throws it, or if this actor
      *   is not opaque.
@@ -701,6 +720,13 @@ public class CompositeActor extends CompositeEntity implements Actor {
         try {
             _workspace.getReadAccess();
             _createReceivers();
+            
+            // clear the IODependence attribute if there is one
+            // already.
+            if (_IODependence != null) {
+                _IODependence.clear();
+            } 
+            
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
                         "Cannot preinitialize a non-opaque actor.");
@@ -708,6 +734,13 @@ public class CompositeActor extends CompositeEntity implements Actor {
             // Note that this is assured of firing the local director,
             // not the executive director, because this is opaque.
             getDirector().preinitialize();
+
+            // if this composite actor is an opaque and embedded one,
+            // resolve the IODependence attribute.
+        
+            if (getExecutiveDirector() != null && isOpaque()) {
+                _resolveIODependence();
+            }
         } finally {
             _workspace.doneReading();
         }
@@ -1074,6 +1107,17 @@ public class CompositeActor extends CompositeEntity implements Actor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    /*  Add the IODependence attribute.
+     *  @exception IllegalActionException If the constructor of 
+     *  IODependence throws it.
+     *  @exception NameDuplicationException If an attribute with the same 
+     *  name already exists.
+     */
+    private void _addIODependence() 
+        throws IllegalActionException, NameDuplicationException {
+        _IODependence = new IODependence(this, "IODependence");
+    }
+
     /*  Create receivers for each input port.
      *  @exception IllegalActionException If any port throws it.
      */
@@ -1085,6 +1129,98 @@ public class CompositeActor extends CompositeEntity implements Actor {
         }
     }
 
+    private void _resolveIODependence() throws IllegalActionException {
+        // If there is no _IODependence, do nothing.
+        // This situation happens when the composite actor 
+        // is at top level.
+        if (_IODependence == null) return;
+        Iterator inputs = inputPortList().listIterator();
+        // Iterate the input ports of the composite actor
+        while (inputs.hasNext()) {
+            IOPort input = (IOPort) inputs.next();
+            IOInformation inputInfo = _IODependence.addInputPort(input);
+            _resolveIODependence(inputInfo, input.insideSinkPortList(), false);
+        }            
+    }
+
+    /*  Resolve the IODependence for each input port. The parameter
+     *  inputInfo is an IOInformation element for an input port and
+     *  will be referred when the IO relation to any output ports is 
+     *  resolved.
+     */
+    private void _resolveIODependence (IOInformation inputInfo, 
+        List ports, boolean delayed) throws IllegalActionException {
+        Iterator insidePorts = ports.listIterator();
+        // Iterate the inside inputs 
+        while (insidePorts.hasNext()) {
+            IOPort insidePort = (IOPort) insidePorts.next();
+            // Get the container of the inside input
+            Actor container = (Actor) insidePort.getContainer();
+            // If the container is just this composite actor,
+            // the insideInput is actually an output port of the 
+            // composite actor connected inside. At this point,
+            // we resolved the relation between the output port
+            // and the given input port (referred by inputInfo).
+            if (container.equals(this)) {
+                if (delayed) {
+                    inputInfo.addToDelayToPorts(insidePort);
+                } else {
+                    inputInfo.addToDirectFeedthroughPorts(insidePort);
+                }
+                continue;
+            }
+            
+            IODependence containerIODependence = container.getIODependence();
+            IOInformation inputIOInfo;                
+            Iterator insideDelayedOutputs;
+            Iterator insideDirectFeedthroughOutputs;
+            
+            // FIXME:
+            // If the IODependence is null, if the container is an atomic
+            // actor, we assume the inputs and outputs are direct feedthrough
+            // dependent; if the container is a composite actor, we assume 
+            // the dependence between inputs and outputs are not important. 
+            if (containerIODependence == null) {
+                if (container instanceof AtomicActor) {
+                    List insideOutputs = 
+                        ((AtomicActor) container).outputPortList();
+                    if (insideOutputs.size() != 0) {
+                        insideDirectFeedthroughOutputs = 
+                            insideOutputs.listIterator();
+                        insideDelayedOutputs = 
+                            (new LinkedList()).listIterator();
+                    } else {
+                        continue;
+                    }
+                } else {
+                    continue;
+                }
+            } else {
+                // From the IODependence attribute of the container,
+                // we get the lists of the delayed and direct feedthrough
+                // outputs.
+                inputIOInfo = 
+                    containerIODependence.getInputPort(insidePort);
+                insideDelayedOutputs = 
+                    inputIOInfo.getDelayToPorts().listIterator();
+                insideDirectFeedthroughOutputs =
+                    inputIOInfo.getDirectFeedthroughPorts().listIterator();
+            }
+            // Iterate the delayed output ports
+            while (insideDelayedOutputs.hasNext()) {
+                IOPort insideOutput = (IOPort)insideDelayedOutputs.next();
+                List connectedInsideInputs = insideOutput.sinkPortList();
+                _resolveIODependence(inputInfo, connectedInsideInputs, true);    
+            }
+            // Iterate the direct feedthrough output ports
+            while (insideDirectFeedthroughOutputs.hasNext()) {
+                IOPort insideOutput = (IOPort)insideDirectFeedthroughOutputs.next();
+                List connectedInsideInputs = insideOutput.sinkPortList();
+                _resolveIODependence(inputInfo, connectedInsideInputs, delayed);    
+            }
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -1093,6 +1229,9 @@ public class CompositeActor extends CompositeEntity implements Actor {
 
     // Indicator that we are in the connectionsChanged method.
     private boolean _inConnectionsChanged = false;
+    
+    // IODependence attribute
+    private IODependence _IODependence;
 
     // The manager for this composite actor.
     private Manager _manager;
