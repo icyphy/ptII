@@ -113,12 +113,12 @@ public class PtolemyQuery extends Query
      */
     public void addStyledEntry(Variable param) {
 	// Look for a ParameterEditorStyle.
-	Iterator styles
-	    = param.attributeList(ParameterEditorStyle.class).iterator();
+	Iterator styles =
+            param.attributeList(ParameterEditorStyle.class).iterator();
 	boolean foundStyle = false;
 	while (styles.hasNext() && !foundStyle) {
-	    ParameterEditorStyle style
-		= (ParameterEditorStyle)styles.next();
+	    ParameterEditorStyle style =
+                (ParameterEditorStyle)styles.next();
 	    try {
 		style.addEntry(this);
 		foundStyle = true;
@@ -155,7 +155,8 @@ public class PtolemyQuery extends Query
         Attribute tooltipAttribute = parameter.getAttribute("tooltip");
         if (tooltipAttribute != null
                 && tooltipAttribute instanceof Documentation) {
-            setToolTip(entryName, ((Documentation)tooltipAttribute).getValue());
+            setToolTip(entryName,
+                    ((Documentation)tooltipAttribute).getValue());
         } else {
             String tip = Documentation.consolidate(parameter);
             if (tip != null) {
