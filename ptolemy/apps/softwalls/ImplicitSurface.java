@@ -31,13 +31,16 @@ package ptolemy.apps.softwalls;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.FileParameter;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.data.expr.FileParameter;
 
 import java.util.StringTokenizer;
@@ -76,33 +79,44 @@ public class ImplicitSurface extends TypedAtomicActor {
         throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        // Create and configure ports
+        dx = new TypedIOPort(this, "dx", false, true);
+        dx.setTypeEquals(BaseType.DOUBLE);
+
+        dxFile = new FileParameter(this, "dxFile");
+
+        dy = new TypedIOPort(this, "dy", false, true);
+        dy.setTypeEquals(BaseType.DOUBLE);
+
+        dyFile = new FileParameter(this, "dyFile");
+
+        dtheta = new TypedIOPort(this, "dz", false, true);
+        dtheta.setTypeEquals(BaseType.DOUBLE);
+
+        dthetaFile = new FileParameter(this , "dthetaFile");
+
+        heading = new TypedIOPort(this, "heading", true, false);
+        heading.setTypeEquals(BaseType.DOUBLE);
+
+        filesAreCompressed =
+            new Parameter(this, "filesAreCompressed", new BooleanToken(false));
+        filesAreCompressed.setTypeEquals(BaseType.BOOLEAN);
+
+        functionFile = new FileParameter(this, "functionFile");
+
+        functionValue = new TypedIOPort(this, "functionValue", false, true);
+        functionValue.setTypeEquals(BaseType.DOUBLE);
+
+        writeOutData =
+            new Parameter(this, "writeOutData", new BooleanToken(false));
+        writeOutData.setTypeEquals(BaseType.BOOLEAN);
+        // Hide the writeOutData parameter.
+        writeOutData.setVisibility(Settable.EXPERT);
+
         x = new TypedIOPort(this, "x", true, false);
         x.setTypeEquals(BaseType.DOUBLE);
 
         y = new TypedIOPort(this, "y", true, false);
         y.setTypeEquals(BaseType.DOUBLE);
-
-        heading = new TypedIOPort(this, "heading", true, false);
-        heading.setTypeEquals(BaseType.DOUBLE);
-
-        functionValue = new TypedIOPort(this, "functionValue", false, true);
-        functionValue.setTypeEquals(BaseType.DOUBLE);
-
-        dx = new TypedIOPort(this, "dx", false, true);
-        dx.setTypeEquals(BaseType.DOUBLE);
-
-        dy = new TypedIOPort(this, "dy", false, true);
-        dy.setTypeEquals(BaseType.DOUBLE);
-
-        dtheta = new TypedIOPort(this, "dz", false, true);
-        dtheta.setTypeEquals(BaseType.DOUBLE);
-
-        // Create and configure FileParameters
-        functionFile = new FileParameter(this, "functionFile");
-        dxFile = new FileParameter(this, "dxFile");
-        dyFile = new FileParameter(this, "dyFile");
-        dthetaFile = new FileParameter(this , "dthetaFile");
 
         // This flag will become true after initialize() is first
         // called, to avoid reloading the surface function.
@@ -112,17 +126,68 @@ public class ImplicitSurface extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and FileParameters                  ////
 
-    /** The location of the function file. */
-    public FileParameter functionFile;
+    /** Output gradiant value for the x coordinate.  The type of this
+     *  port is double.
+     */
+    public TypedIOPort dx;
 
     /** The location of the dx file. */
     public FileParameter dxFile;
 
+    /** Output gradiant value for the y coordinate.  The type of this
+     *  port is double.
+     */
+    public TypedIOPort dy;
+
     /** The location of the dy file. */
     public FileParameter dyFile;
 
+    /** Output gradiant value theta.  The type of this
+     *  port is double.
+     */   
+    public TypedIOPort dtheta;
+
     /** The location of the dtheta file. */
     public FileParameter dthetaFile;
+
+    /** A boolean parameter that by default is set to true if the files
+     *  are compressed.
+     */
+    public Parameter filesAreCompressed;
+
+    /** The location of the function file. */
+    public FileParameter functionFile;
+
+    /** Output functionValue of type double. */
+    public TypedIOPort functionValue;
+
+    /** Input heading angle. The type of this port is double. */
+    public TypedIOPort heading;
+
+    /** A boolean parameter that determines whether the input data files
+     *  are written out in the 'other format'.
+     *  
+     *  <p>This parameter is only visible in expert mode.
+     *
+     *  <p>The initial value of this parameters is false, which means
+     *  that no action is taken.  
+
+     *  <p> This actor reads data files that can be either compressed
+     *  or uncompressed, as per the <i>filesAreCompressed</i>
+     *  parameter.  
+
+     *  <p>If this parameter is true, and the input files are in uncompressed
+     *  format, then the input files are written out in compressed format
+     *  in the current directory with ".out" appended to the base file name 
+     *  of each file.  For example, if <i>dxFile</i> is set to
+     *  "surfaces/softwall.final.gradx.data", then the output file will be
+     *  called "softwall.final.gradx.data.out".
+     *
+     *  <p>If this parameter is true, and the input files are in compressed
+     *  format, then the input files are written out in compressed format
+     *  with a ".out" appended to the base file name of each file.
+     */   
+    public Parameter writeOutData;
 
     /** Input x position.  The type of this port is double. */
     public TypedIOPort x;
@@ -130,26 +195,6 @@ public class ImplicitSurface extends TypedAtomicActor {
     /** Current y position.  The type of this port is double. */
     public TypedIOPort y;
 
-    /** Input heading angle. The type of this port is double. */
-    public TypedIOPort heading;
-
-    /** Output functionValue of type double. */
-    public TypedIOPort functionValue;
-
-    /** Output gradiant value for the x coordinate.  The type of this
-     *  port is double.
-     */   
-    public TypedIOPort dx;
-
-    /** Output gradiant value for the y coordinate.  The type of this
-     *  port is double.
-     */   
-    public TypedIOPort dy;
-
-    /** Output gradiant value theta.  The type of this
-     *  port is double.
-     */   
-    public TypedIOPort dtheta;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -193,24 +238,25 @@ public class ImplicitSurface extends TypedAtomicActor {
             _alreadyInitialized = true;
         }
 
-        String ptII, functionName, dxName, dyName, dthetaName;
+        //String ptII, functionName, dxName, dyName, dthetaName;
 
         // Make the file names relative to the correct path.
-        functionName = functionFile.asFile().getAbsolutePath();
-        dxName = dxFile.asFile().getAbsolutePath();
-        dyName = dyFile.asFile().getAbsolutePath();
-        dthetaName = dthetaFile.asFile().getAbsolutePath();
+        // functionName = functionFile.asFile().getAbsolutePath();
+        // dxName = dxFile.asFile().getAbsolutePath();
+        // dyName = dyFile.asFile().getAbsolutePath();
+        // dthetaName = dthetaFile.asFile().getAbsolutePath();
 
-        // FIXME: The above code doesn't work... Hardwire in the names.
-        //_surfaceFunction = new ThreeDFunction(functionName);
-        //_xGradientFunction = new ThreeDFunction(dxName);
-        //_yGradientFunction = new ThreeDFunction(dyName);
-        //_thetaGradientFunction = new ThreeDFunction(dthetaName);
+        boolean compressed =
+            ((BooleanToken)filesAreCompressed.getToken()).booleanValue();
 
-        _surfaceFunction = ThreeDFunction.read(functionName);
-        _xGradientFunction = ThreeDFunction.read(dxName);
-        _yGradientFunction = ThreeDFunction.read(dyName);
-        _thetaGradientFunction = ThreeDFunction.read(dthetaName);
+        boolean write =
+            ((BooleanToken)writeOutData.getToken()).booleanValue();
+
+        _surfaceFunction = new ThreeDFunction(functionFile, compressed, write);
+        _xGradientFunction = new ThreeDFunction(dxFile, compressed, write);
+        _yGradientFunction = new ThreeDFunction(dyFile, compressed, write);
+        _thetaGradientFunction =
+            new ThreeDFunction(dthetaFile, compressed, write);
     }
 
 //     /** Clears the the implicit surface function and gradient function.
