@@ -31,6 +31,9 @@
 
 package ptolemy.data;
 
+import ptolemy.graph.InequalityTerm;
+import java.util.Enumeration;
+
 //////////////////////////////////////////////////////////////////////////
 //// Typeable
 /**
