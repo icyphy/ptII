@@ -71,9 +71,10 @@ test ConstVariableModelAnalysis-1.1 {Test simple model} {
     $step setExpression init
 
     set analysis [java::new ptolemy.copernicus.java.ConstVariableModelAnalysis $e0]
+    # Use lsort for platform independence
     list [listToObjects [$analysis getConstVariableNames $e0]] \
-	[listToObjects [$analysis getConstVariableNames $ramp]]
-} {{} {firingCountLimit step init}}
+	[lsort [listToObjects [$analysis getConstVariableNames $ramp]]]
+} {{} {firingCountLimit init step}}
 
 
 test ConstVariableModelAnalysis-1.2 {Test hierarchical dependance} {
@@ -88,8 +89,8 @@ test ConstVariableModelAnalysis-1.2 {Test hierarchical dependance} {
 
     set analysis [java::new ptolemy.copernicus.java.ConstVariableModelAnalysis $e0]
     list [listToObjects [$analysis getConstVariableNames $e0]] \
-	[listToObjects [$analysis getConstVariableNames $ramp]]
-} {p0 {firingCountLimit step init}}
+	[lsort [listToObjects [$analysis getConstVariableNames $ramp]]]
+} {p0 {firingCountLimit init step}}
 
 test ConstVariableModelAnalysis-1.3 {Test flat dependance} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
@@ -105,8 +106,8 @@ test ConstVariableModelAnalysis-1.3 {Test flat dependance} {
 
     set analysis [java::new ptolemy.copernicus.java.ConstVariableModelAnalysis $e0]
     list [listToObjects [$analysis getConstVariableNames $e0]] \
-	[listToObjects [$analysis getConstVariableNames $ramp]]
-} {{p1 p0} {firingCountLimit step init}}
+	[lsort [listToObjects [$analysis getConstVariableNames $ramp]]]
+} {{p1 p0} {firingCountLimit init step}}
 
 
 test ConstVariableModelAnalysis-1.4 {Test unbound variables} {
@@ -209,7 +210,7 @@ test ConstVariableModelAnalysis-1.9 {test scoping} {
 
     set analysis [java::new ptolemy.copernicus.java.ConstVariableModelAnalysis $e0]
     list [listToObjects [$analysis getConstVariableNames $e0]] \
-	[listToObjects [$analysis getConstVariableNames $ramp]]
+	[lsort [listToObjects [$analysis getConstVariableNames $ramp]]]
 } {init {firingCountLimit init}}
 
 # FSM tests.
