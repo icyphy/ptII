@@ -2672,39 +2672,61 @@ public class MoMLParser extends HandlerBase {
                     // the programmer, not for the user. EAL
                     StringBuffer errorMessage = new StringBuffer();
 
-                    // If there is a class format error in the
-                    // code generator, then we may end up obscuring
-                    // that error, requiring debugging here.
+                    if (error instanceof ExceptionInInitializerError) {
+                        // Running a Python applet may cause
+                        // an ExceptionInInitializerError
+                        
+                        // There was a problem in the initializer, but
+                        // we can get the original exception that was
+                        // thrown.
+                        Throwable staticThrowable =
+                            ((ExceptionInInitializerError)error)
+                            .getCause();
 
-                    // We use error.toString() here instead of
-                    // error.getMessage() so that the name of the
-                    // actual class that caused the error is reported.
-                    // This is critical if the problem is a class not
-                    // found error.  If we use error.getMessage()
-                    // and try to open up
-                    // actor/lib/comm/demo/SerialPort/SerialPort.xml
-                    // when the Java Serial Comm API is not installed, we get
+                        // I think we should report the cause and a stack
+                        // trace for all the exceptions thrown here,
+                        // but it sure makes the output ugly. 
+                        // Instead, I just debug from here -cxh
+                        errorMessage.append("ExceptionInInitializerError: "
+                                + "Caused by:\n "
+                                + KernelException.stackTraceToString(
+                                        staticThrowable));
+                    } else {
+                        // If there is a class format error in the
+                        // code generator, then we may end up obscuring
+                        // that error, requiring debugging here.
 
-                    // Error encounted in:
-                    // <entity name="SerialComm" class="ptolemy.actor.lib ...
-                    // -- ptolemy.actor.lib.comm.SerialComm:
-                    // javax/comm/SerialPortEventListener
-                    // ptolemy.actor.lib.comm.SerialComm: XmlException:
-                    // Could not find 'ptolemy/actor/lib/comm/SerialComm.xml'..
+                        // We use error.toString() here instead of
+                        // error.getMessage() so that the name of the
+                        // actual class that caused the error is reported.
+                        // This is critical if the problem is a class not
+                        // found error.  If we use error.getMessage()
+                        // and try to open up
+                        // actor/lib/comm/demo/SerialPort/SerialPort.xml
+                        // when the Java Serial Comm API is not installed,
+                        // we get
+                        
+                        // Error encounted in:
+                        // <entity name="SerialComm" class="ptolemy.actor.lib...
+                        // -- ptolemy.actor.lib.comm.SerialComm:
+                        // javax/comm/SerialPortEventListener
+                        // ptolemy.actor.lib.comm.SerialComm: XmlException:
+                        // Could not find 'ptolemy/actor/lib/comm/SerialComm.xml'..
 
-                    // If we use toString(), we get:
-                    // Error encounted in:
-                    // <entity name="SerialComm" class="ptolemy.actor.lib ...
-                    // -- ptolemy.actor.lib.comm.SerialComm:
-                    // java.lang.NoClassDefFoundError: javax/comm/SerialPortEventListener
-                    // ptolemy.actor.lib.comm.SerialComm: XmlException:
-                    // Could not find 'ptolemy/actor/lib/comm/SerialComm.xml'..
+                        // If we use toString(), we get:
+                        // Error encounted in:
+                        // <entity name="SerialComm" class="ptolemy.actor.lib..
+                        // -- ptolemy.actor.lib.comm.SerialComm:
+                        // java.lang.NoClassDefFoundError: javax/comm/SerialPortEventListener
+                        // ptolemy.actor.lib.comm.SerialComm: XmlException:
+                        // Could not find 'ptolemy/actor/lib/comm/SerialComm.xml'..
+                        
+                        // It is critical that the error include the
+                        // NoClassDefFoundError string -cxh
 
-                    // It is critical that the error include the
-                    // NoClassDefFoundError string -cxh
-
-                    errorMessage.append(className + ": \n "
-                            + error.toString() + "\n");
+                        errorMessage.append(className + ": \n "
+                                + error.toString() + "\n");
+                    }
 
                     try {
                         reference = _attemptToFindMoMLClass(className, source);
