@@ -67,7 +67,7 @@ public interface GraphController {
     public void addGraphViewListener(GraphViewListener l);
 
     /**
-     * Add the node to this graph editor and place it whereever convenient.
+     * Add the node to this graph editor and place it wherever convenient.
      */
     public void addNode(Object node);
 
