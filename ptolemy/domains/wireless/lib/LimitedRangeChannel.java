@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Green (cxh@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.wireless.lib;
@@ -80,7 +80,7 @@ public class LimitedRangeChannel extends DelayChannel {
      *  @param name The name of the channel.
      *  @exception IllegalActionException If the container is incompatible.
      *  @exception NameDuplicationException If the name coincides with
-     *   a relation already in the container.
+     *   an actor already in the container.
      */
     public LimitedRangeChannel(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -99,7 +99,7 @@ public class LimitedRangeChannel extends DelayChannel {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** React to the fact that the specified Settable has changed.
+    /** React to a change of the specified Settable value.
      *  This class registers as a listener to attributes that
      *  specify transmit properties.  If those change, then
      *  it is necessary to invalidate the cache of receivers
@@ -118,15 +118,18 @@ public class LimitedRangeChannel extends DelayChannel {
 
     /** Return true if the specified port is in range of the
      *  specified source port, assuming the source port transmits with
-     *  the specified properties.  If the properties are an instance of
-     *  DoubleToken, then that token is assumed to be the range of the
-     *  transmission.  This method returns true if the distance between
+     *  the specified properties. The properties are an instance of 
+     *  RecordToken. If the properties have a "range" field given by
+     *  a double vlaue, then that value is assumed to be the range of the
+     *  transmission. Otherwise, use the "range" field value of the 
+     *  <i>defaultProperties</i> as the range of the transmission. This
+     *  method returns true if the distance between
      *  the source and the destination is less than or equal to the
      *  value of the properties.  If the properties argument is not
      *  a DoubleToken, then it simply returns true.
      *  @param source The source port.
      *  @param destination The destination port.
-     *  @param properties The range of transmission.
+     *  @param properties Properties of the transmission.
      *  @return True if the destination is in range of the source.
      *  @exception IllegalActionException If it cannot be determined
      *   whether the destination is in range (not thrown in this base

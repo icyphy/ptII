@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Green (cxh@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.wireless.lib;
@@ -54,11 +54,10 @@ loss probability. The propagation speed introduces delay that depends
 on the distance between the transmitter and receiver at the time
 that the transmitter initiates the communication. This channel model
 assumes that the duration of the message is (effectively) zero, so
-the neither the transmitter nor the receiver move during the
-transmission. In a more questionable assumption, it also assumes that
-the receiver does not move during propagation. I.e., it assume that
-the location of the receiver when it receives the message is the same
-as when the transmitter sent it.
+that neither the transmitter nor the receiver move during the
+transmission. It also assumes that the receiver does not move during 
+propagation. I.e., it assumes that the propagation of the message is 
+much faster than the node movement.
 <p>
 A speed equal to Infinity (the default) results in no
 propagation delay. If the loss probability is greater than zero then on each
@@ -110,7 +109,7 @@ public class DelayChannel extends ErasureChannel {
      *  defer to the base class.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the change is not acceptable
-     *   to this container (not thrown in this base class).
+     *   to this container.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -129,9 +128,10 @@ public class DelayChannel extends ErasureChannel {
     /** If the current time matches one of the times that we have previously
      *  recorded as the reception time for a transmission, then deliver
      *  the token to the receiver.
-     *  @exception IllegalActionException If the token cannot be converted
-     *   or if the token argument is null and the destination receiver
-     *   does not support clear.
+     *  @exception IllegalActionException If the _transimitTo() method of the
+     *  base class throws it, i.e. the token attribute of the reception
+     *  cannot be converted or the token attribute is null and the receiver 
+     *  attribute of the receptions does not support clear.
      */
     public void fire() throws IllegalActionException {
         super.fire();
@@ -166,7 +166,7 @@ public class DelayChannel extends ErasureChannel {
      *  the specified receiver will receive the token if it has room.
      *  If <i>lossProbability</i> is greater than zero, the token will
      *  be lost with the specified probability, independently
-     *  for each channel in range.
+     *  for each receiver in range.
      *  Note that in this base class, a port is in range if it refers to
      *  this channel by name and is at the right place in the hierarchy.
      *  This base class makes no use of the properties argument.

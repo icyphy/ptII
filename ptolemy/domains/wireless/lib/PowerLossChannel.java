@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Green (cxh@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.wireless.lib;
@@ -47,31 +47,30 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// PowerLossChannel
 
 /**
-This is a model of a wireless channel with a specified power loss formula.
-This power loss is given as an expression that is evaluated and then
-multiplied by the power field of the transmit properties before
-delivery to the receiver. For convenience, a variable named
-"distance" is available and equal to the distance between the
-transmitter and the receiver when the power loss formula is
-evaluated.  Thus, the expression can depend on this distance.
-In addition, a parameter <i>efficiency</i> can be used in this
-formula to reflect constant factor losses (independent of distance).
-The value of the power field at the receiver should be interpreted
-as a power density (per unit area), so the receiver should again
-multiply it by an area (typically the sensor area).
-A receiver can then use the resulting power
-to compare against a detectable threshold, or to determine
+This is a model of a wireless channel with a specified power propagation 
+formula. The power propagation is given as an expression that is evaluated 
+and then multiplied by the power field of the transmit properties before
+delivery to the receiver. For convenience, a variable named "distance" 
+is available and equal to the distance between the transmitter and the 
+receiver when the power propagation formula is evaluated.  Thus, the 
+expression can depend on this distance. The value of the power field should
+be interpreted as power at the transmitter but power density at the receiver.
+A receiver may multiply the power density with its efficiency and an 
+area(typically the antenna area). A receiver can then use the resulting 
+power to compare against a detectable threshold, or to determine
 signal-to-interference ratio, for example.
 <p>
-The default value of <i>powerLossFactor</i> is
+The default value of <i>powerPropagationFactor</i> is
 <pre>
-   efficiency / (4 * PI * distance * distance).
+   1.0 / (4 * PI * distance * distance).
 </pre>
 This assumes that the transmit power is uniformly distributed
 on a sphere of radius <i>distance</i>. The result of multiplying
 this by a transmit power is a power density (power per unit area).
 The receiver should multiply this power density by the area of the
-sensor it uses to capture the energy (such as antenna area).
+sensor it uses to capture the energy (such as antenna area) and 
+also an efficiency factor which represents how effictively it capture 
+the energy.
 <p>
 The power field of the transmit properties can be supplied by
 the transmitter as a record with a <i>power</i> field of type double.
@@ -114,7 +113,7 @@ public class PowerLossChannel extends LimitedRangeChannel {
      *  @param name The name of the channel.
      *  @exception IllegalActionException If the container is incompatible.
      *  @exception NameDuplicationException If the name coincides with
-     *   a relation already in the container.
+     *   an actor already in the container.
      */
     public PowerLossChannel(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -135,27 +134,14 @@ public class PowerLossChannel extends LimitedRangeChannel {
         // Setting an upper bound allows the addition of fields.
         defaultProperties.setTypeAtMost(type);
 
-        efficiency = new Parameter(this, "efficiency");
-        efficiency.setTypeEquals(BaseType.DOUBLE);
-        efficiency.setExpression("1.0");
-
-        powerLossFactor = new Parameter(this, "powerLossFactor");
-        powerLossFactor.setTypeEquals(BaseType.DOUBLE);
-        powerLossFactor.setExpression(
-                "efficiency / (4 * PI * distance * distance)");
+        powerPropagationFactor = new Parameter(this, "powerPropagationFactor");
+        powerPropagationFactor.setTypeEquals(BaseType.DOUBLE);
+        powerPropagationFactor.setExpression(
+                "1.0 / (4 * PI * distance * distance)");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-
-    /** The efficiency of the receiver.
-     *  This is used in the default expression for <i>powerLossFactor</i>,
-     *  and nowhere else.  If that expression is changed to ignore this
-     *  value, then this parameter will have no effect on the channel.
-     *  This is a double that defaults to 1.0.
-     */
-    public Parameter efficiency;
-
     /** The default formula for the power loss factor.
      *  This value, when multiplied by the transmit power, yields
      *  the power density (per unit area) at a receiver. It can
@@ -163,9 +149,9 @@ public class PowerLossChannel extends LimitedRangeChannel {
      *  which has the value of the distance between a transmitter
      *  and receiver when this parameter is evaluated.  This is
      *  a double that defaults to
-     *  "min(1.0, efficiency / (distance * distance))".
+     *  "1.0 / (distance * distance))".
      */
-    public Parameter powerLossFactor;
+    public Parameter powerPropagationFactor;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -173,7 +159,7 @@ public class PowerLossChannel extends LimitedRangeChannel {
     /** Transform the properties to take into account channel losses,
      *  noise, etc., for transmission between the specified sender
      *  and the specified receiver.  In this base class, the
-     *  specified properties are merged with the defaultProperties
+     *  specified properties are merged with the <i>defaultProperties</i>
      *  so that the resulting properties contain at least all the
      *  fields of the defaultProperties.
      *  @param properties The transmit properties.
@@ -198,12 +184,12 @@ public class PowerLossChannel extends LimitedRangeChannel {
 
         // Evaluate the power loss factor, which will have been updated
         // with the new value of "distance."
-        double powerLossFactorValue
-            = ((DoubleToken)powerLossFactor.getToken()).doubleValue();
+        double powerPropagationFactorValue
+            = ((DoubleToken)powerPropagationFactor.getToken()).doubleValue();
 
         // Calculate the receive power.
         double receivePower
-            = transmitPower.doubleValue() * powerLossFactorValue;
+            = transmitPower.doubleValue() * powerPropagationFactorValue;
 
         // Create a record token with the receive power.
         String[] names = {"power"};

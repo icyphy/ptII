@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Green (cxh@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.wireless.lib;
@@ -100,8 +100,8 @@ public class ErasureChannel extends AtomicWirelessChannel {
         seed.setExpression("0L");
         seed.setTypeEquals(BaseType.LONG);
 
-        _distance = new Variable(this, "distance");
-        _distance.setExpression("Infinity");
+        distance = new Variable(this, "distance");
+        distance.setExpression("Infinity");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -126,15 +126,19 @@ public class ErasureChannel extends AtomicWirelessChannel {
      *  This parameter contains a LongToken, initially with value 0.
      */
     public Parameter seed;
+    
+    /** A variable that is set to the distance between the transmitter
+     *  and the receiver before the
+     *  <i>powerLossFactor</i> expression is evaluated.
+     */
+    public Variable distance;
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Initialize the random number generator with the seed, if it
-     *  has been given.  A seed of zero is interpreted to mean that no
-     *  seed is specified.  In such cases, a seed based on the current
-     *  time and this instance of a RandomSource is used to be fairly
-     *  sure that two identical sequences will not be returned.
+     *  has been given.  
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void initialize() throws IllegalActionException {
@@ -178,8 +182,8 @@ public class ErasureChannel extends AtomicWirelessChannel {
             throws IllegalActionException {
         // Get the distance and set the "distance" variable.
         WirelessIOPort destination = (WirelessIOPort)receiver.getContainer();
-        double distance = _distanceBetween(sender, destination);
-        _distance.setToken(new DoubleToken(distance));
+        double d = _distanceBetween(sender, destination);
+        distance.setToken(new DoubleToken(d));
 
         double experiment = _random.nextDouble();
         double probability = ((DoubleToken)lossProbability.getToken())
@@ -200,12 +204,6 @@ public class ErasureChannel extends AtomicWirelessChannel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
-    /** A variable that is set to the distance between the transmitter
-     *  and the receiver before the
-     *  <i>powerLossFactor</i> expression is evaluated.
-     */
-    protected Variable _distance;
 
     /** A random number generator.
      */
