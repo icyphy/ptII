@@ -100,12 +100,15 @@ public class VergilApplication extends MDIApplication {
      * for this application and open a starting document using the default
      * document factory.
      */
-    protected VergilApplication(AppContext context) {
+    protected VergilApplication(AppContext frame) {
         super();
 
         // Initialize behavioral objects for superclass
-        DesktopContext frame = new DesktopContext(context, new JPanel());
-        setAppContext(frame);
+        DesktopContext context = new DesktopContext(frame, new JPanel());
+        setAppContext(context);
+
+	// Handle exceptions thrown by awt events in a nice way.
+	ApplicationExceptionHandler.setApplication(this);
 
         // Create and initialize the storage policy
         try {
@@ -137,15 +140,15 @@ public class VergilApplication extends MDIApplication {
 	}
 
         // Initialize the menubar, toolbar, and palettes
-        _initializeActions(frame.getJMenuBar(), frame.getJToolBar());
-	JPanel toolBarPane = frame.getToolBarPane();
+        _initializeActions(context.getJMenuBar(), context.getJToolBar());
+	JPanel toolBarPane = context.getToolBarPane();
 	toolBarPane.setLayout(new FlowLayout(FlowLayout.LEFT, 2, 2));
 
         Icon icon = getResources().getImageIcon("GraphIconImage");
         Image iconImage = getResources().getImage("GraphIconImage");
 
-        frame.setFrameIcon(icon);
-	frame.setIconImage(iconImage);
+        context.setFrameIcon(icon);
+	context.setIconImage(iconImage);
 
         setCurrentDocument(null);
 
@@ -155,7 +158,7 @@ public class VergilApplication extends MDIApplication {
 	new ptolemy.vergil.ptolemy.PtolemyModule(this);
         new ptolemy.vergil.debugger.DebuggerModule(this);
 	
-	frame.setVisible(true);
+	context.setVisible(true);
 	
 	// Start with a new document.
 	// This is kindof
@@ -197,9 +200,9 @@ public class VergilApplication extends MDIApplication {
      * Add the menu to the menu bar of this application.
      */
     public void addMenu(JMenu menu) {
-	AppContext frame = getAppContext();
-	if(frame == null) return;
-	JMenuBar menuBar = frame.getJMenuBar();
+	AppContext context = getAppContext();
+	if(context == null) return;
+	JMenuBar menuBar = context.getJMenuBar();
 	menuBar.add(menu);
     }
 
@@ -319,9 +322,9 @@ public class VergilApplication extends MDIApplication {
      * Remove the given menu from the menu bar of this application.
      */
     public void removeMenu(JMenu menu) {
-	AppContext frame = getAppContext();
-	if(frame == null) return;
-	JMenuBar menuBar = frame.getJMenuBar();
+	AppContext context = getAppContext();
+	if(context == null) return;
+	JMenuBar menuBar = context.getJMenuBar();
 	menuBar.remove(menu);
     }
 
@@ -424,7 +427,7 @@ public class VergilApplication extends MDIApplication {
         RelativeBundle resources = getResources();
 
 	// FIXME pull the strings out of resources instead of hardcoding.
-
+	
 	// Create the File menu
         JMenu menuFile = new JMenu("File");
         menuFile.setMnemonic('F');
@@ -485,6 +488,8 @@ public class VergilApplication extends MDIApplication {
         action = DefaultActions.exitAction(this);
         addAction(action);
         GUIUtilities.addMenuItem(menuFile, action, 'X', "Exit from the graph editor");
+	// Set the exit action of the context.
+	getAppContext().setExitAction(action);
 
         // Create the File menu
         menuFile = new JMenu("Edit");
