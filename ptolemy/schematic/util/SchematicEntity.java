@@ -35,7 +35,7 @@ import java.util.NoSuchElementException;
 import collections.CircularList;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+ //////////////////////////////////////////////////////////////////////////
 //// SchematicEntity
 /**
 The SchematicEntity class represents an Entity within a Schematic. 
@@ -48,7 +48,7 @@ upon creation (or by the resetTerminalStyle method).
 @author Steve Neuendorffer, John Reekie
 @version $Id$
 */
-public class SchematicEntity extends PTMLObject {
+public class SchematicEntity extends PTMLTemplateObject {
 
     /**
      * Create a new SchematicEntity object with no set attributes.
@@ -65,26 +65,62 @@ public class SchematicEntity extends PTMLObject {
      * an attribute to a String specifying the attribute's value.
      */
     public SchematicEntity (String name, EntityTemplate et) {
-        super(name);
-	_template = et;
+        super(name, et);
 	_terminalstyle = et.getTerminalStyle();
         _x = 0;
         _y = 0;
+        _ports = new CircularList();
+        _terminals = new CircularList();
  	//setIcon(DEFAULTICONNAME);
+    }
+
+    /**
+     * Add a new port to the schematic. The port name must be unique
+     * within this schematic.
+     *
+     * @throw IllegalActionException if a port with the same name as
+     * the new port is already contained in this Schematic.
+     */
+    public void addPort (SchematicPort port) throws IllegalActionException {
+        if(containsPort(port))
+            throw new IllegalActionException("Port with name " + 
+		 port.getName() + " already exists.");
+        _ports.insertLast(port);
+    }
+
+    /**
+     * Add a new port to the schematic. The port name must be unique
+     * within this schematic.
+     *
+     * @throw IllegalActionException if a port with the same name as
+     * the new port is already contained in this Schematic.
+     */
+    public void addPort (SchematicTerminal port) throws IllegalActionException {
+        if(containsTerminal(port))
+            throw new IllegalActionException("Terminal with name " + 
+		 port.getName() + " already exists.");
+        _ports.insertLast(port);
     }
 
     /**
      * Test if this entity contains the given port.
      */
     public boolean containsPort (SchematicPort port) {
-        return _template.containsPort(port);
+        return _ports.includes(port);
+    }
+    
+    /**
+     * Test if this entity contains the given port.
+     */
+    public boolean containsTerminal (SchematicTerminal port) {
+        return _ports.includes(port);
     }
     
     /**
      * Get the icon of this entity.
      */
     public Icon getIcon () {
-        return _template.getIcon();
+        return ((EntityTemplate) getTemplate()).getIcon();
     }
 
     /**
@@ -124,7 +160,35 @@ public class SchematicEntity extends PTMLObject {
      * @return an enumeration of SchematicPorts
      */
     public Enumeration ports() {
-        return _template.ports();
+        return _ports.elements();
+    }
+
+    /**
+     * Remove a port from the entity. Throw an exception if
+     * a port with this name is not contained in the entity.
+     */
+    public void removePort (SchematicPort port) throws IllegalActionException {
+        try {
+	    _ports.removeOneOf(port);
+	}
+        catch (NoSuchElementException e) {
+            throw new IllegalActionException("Entity does not contain a " +
+                    "port with name " + port.getName());
+        }
+    }
+
+    /**
+     * Remove a port from the entity. Throw an exception if
+     * a port with this name is not contained in the entity.
+     */
+    public void removeTerminal (SchematicTerminal port) throws IllegalActionException {
+        try {
+	    _ports.removeOneOf(port);
+	}
+        catch (NoSuchElementException e) {
+            throw new IllegalActionException("Entity does not contain a " +
+                    "port with name " + port.getName());
+        }
     }
 
     /** 
@@ -132,14 +196,14 @@ public class SchematicEntity extends PTMLObject {
      * template.
      */
     public void resetTerminalStyle () {
-	_terminalstyle = _template.getTerminalStyle();
+	_terminalstyle = ((EntityTemplate) getTemplate()).getTerminalStyle();
     }
 
     /**
      * Set the TerminalStyle that describes this entity.
      */
-    public void setTerminalStyle (TerminalStyle tstyle) {
-	_terminalstyle = tstyle;
+    public void setTerminalStyle (TerminalStyle style) {
+	_terminalstyle = style;
     }
     
    /**
@@ -156,9 +220,41 @@ public class SchematicEntity extends PTMLObject {
         _y = y;
     }
 
+    /**
+     * Return an enumeration over the terminals in this object.
+     *
+     * @return an enumeration of SchematicTerminals
+     */
+    public Enumeration terminals() {
+        return _terminals.elements();
+    }
+
+    /**
+     * Return a string this representing Entity.
+     */
+    protected String _description(int indent) {
+        String result = super._description(indent);
+        result += _getIndentPrefix(indent) + "ports\n";
+        Enumeration els = ports();
+        while(els.hasMoreElements()) {
+            SchematicPort port = (SchematicPort) els.nextElement();
+	    result += port._description(indent);
+        }
+        //       result += _getIndentPrefix(indent) + "terminalstyle";
+        //result += getTerminalStyle().getFullName();
+        result += _getIndentPrefix(indent) + "terminals\n";
+        els = terminals();
+        while(els.hasMoreElements()) {
+            SchematicTerminal term = (SchematicTerminal) els.nextElement();
+	    result += term._description(indent);
+            }    
+        return result;
+    }
+
     public static final String DEFAULTICONNAME = "default";
     private TerminalStyle _terminalstyle;
-    private EntityTemplate _template;
+    private CircularList _ports;
+    private CircularList _terminals;
     private double _x;
     private double _y;
 }

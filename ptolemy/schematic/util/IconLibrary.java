@@ -80,6 +80,13 @@ public class IconLibrary extends PTMLObject {
     }
 
     /**
+     * Add a sublibrary to this library.
+     */
+    public void addTerminalStyle(TerminalStyle style) {
+        _terminalstyles.insertLast(style);
+    }
+
+    /**
      * Test if the library contains an Icon with the given name
      */
     public boolean containsIcon(Icon icon) {
@@ -94,22 +101,58 @@ public class IconLibrary extends PTMLObject {
     }
 
     /**
-     * Get the Icon that is stored in this IconLibrary with the specified
-     * type signature
+     * Test if the library contains the sublibrary
      */
-    // public Icon getIcon(EntityType e) {
-    //    return (Icon) _icons.at(e);
-    //}
-    //    public Icon getIcon(String s) {
-    //    return (Icon) _icons.at(s);
-    // }
+    public boolean containsTerminalStyle(TerminalStyle style) {
+        return _terminalstyles.includes(style);
+    }
+
+    /**
+     * Get the Icon that is stored in this IconLibrary with the given name
+     */
+    public Icon getIcon(String name) 
+        throws IllegalActionException {
+        Enumeration enumicons = icons();
+        while(enumicons.hasMoreElements()) {
+            Icon icon = (Icon) enumicons.nextElement();
+            if(name.equals(icon.getName()))
+                return icon;
+        }
+        throw new IllegalActionException("Icon does not exist with " +
+                "the name " + name);
+    }
 
     /** 
      * return the URL of the given sublibrary.
      */
-    //public IconLibrary getSubLibrary(String name) {
-    //    return (IconLibrary) _sublibraries.at(name);
-    //}
+    public IconLibrary getSubLibrary(String name) 
+        throws IllegalActionException {
+        Enumeration enumsubLibraries = subLibraries();
+        while(enumsubLibraries.hasMoreElements()) {
+            IconLibrary iconLibrary = 
+                (IconLibrary) enumsubLibraries.nextElement();
+            if(name.equals(iconLibrary.getName()))
+                return iconLibrary;
+        }
+        throw new IllegalActionException(
+                "SubLibrary does not exist with " +
+                "the name " + name);
+    }
+
+    /**
+     * Get the TerminalStyle that is stored in this IconLibrary with the given name
+     */
+    public TerminalStyle getTerminalStyle(String name) 
+        throws IllegalActionException {
+        Enumeration enumstyles = terminalStyles();
+        while(enumstyles.hasMoreElements()) {
+            TerminalStyle style = (TerminalStyle) enumstyles.nextElement();
+            if(name.equals(style.getName()))
+                return style;
+        }
+        throw new IllegalActionException("TerminalStyle does not exist with " +
+                "the name " + name);
+    }
 
     /** Return the version of this library.
      */
@@ -140,6 +183,13 @@ public class IconLibrary extends PTMLObject {
         _sublibraries.removeOneOf(lib);
     }
 
+    /**
+     * Remove a sublibrary from this IconLibrary
+     */
+    public void removeTerminalStyle(TerminalStyle style) {
+        _terminalstyles.removeOneOf(style);
+    }
+
     /** Set the string that represents the version of this library.
      */
     //public void setVersion(String s) {
@@ -154,6 +204,16 @@ public class IconLibrary extends PTMLObject {
      */
     public Enumeration subLibraries() {
         return _sublibraries.elements();
+    }
+
+    /**
+     * Return the names of subLibraries of this IconLibrary.   These names
+     * are URL Strings which can be passed to other IconLibrary objects
+     * for parsing.
+     * @return an Enumeration of Strings
+     */
+    public Enumeration terminalStyles() {
+        return _terminalstyles.elements();
     }
 
     /**
@@ -175,7 +235,7 @@ public class IconLibrary extends PTMLObject {
         return str + "})";
     }
 
-    private CircularList _sublibraries;
     private CircularList _icons;
+    private CircularList _sublibraries;
+    private CircularList _terminalstyles;
 }
-

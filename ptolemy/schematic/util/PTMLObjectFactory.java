@@ -31,7 +31,7 @@
 package ptolemy.schematic.util;
 
 import ptolemy.kernel.util.*;
-import java.util.Enumeration;
+import java.util.*;
 import collections.*;
 import java.io.*;
 import ptolemy.schematic.xml.*;
@@ -89,7 +89,7 @@ public class PTMLObjectFactory {
                 }
 
             } else if(etype.equals("description")) {
-                entitylibrary.setDescription(child.getPCData());
+                entitylibrary.setDocumentation(child.getPCData());
             } else {
                 _unknownElementType(child, "entitylibrary");
             }
@@ -147,7 +147,7 @@ public class PTMLObjectFactory {
                 }
 
             } else if(etype.equals("description")) {
-                iconlibrary.setDescription(child.getPCData());
+                iconlibrary.setDocumentation(child.getPCData());
             } else if(etype.equals("terminalstyle")) {
             } else {
                 _unknownElementType(child, "iconlibrary");
@@ -212,7 +212,7 @@ public class PTMLObjectFactory {
             XMLElement child = (XMLElement)children.nextElement();
             String etype = child.getElementType();
             if(etype.equals("description")) {
-                entity.setDescription(child.getPCData());
+                entity.setDocumentation(child.getPCData());
             } else {
                 _unknownElementType(child, "entity");
             }    
@@ -225,9 +225,9 @@ public class PTMLObjectFactory {
                     entity.setName(_getString(e, n));
                 } catch (Exception ex) {};
             } else if (n.equals("icon")) {
-                //  _findIcon(iconroot, _getString(e, n));
+                _findIcon(iconroot, _getString(e, n));
             } else if (n.equals("terminalstyle")) {
-                // _findTerminalStyle(iconroot, _getString(e, n));
+                _findTerminalStyle(iconroot, _getString(e, n));
             } else {
                 _unknownAttribute(e, n);
             }
@@ -269,7 +269,7 @@ public class PTMLObjectFactory {
                 // if it's an Icon, then create it, 
                 // and add it to the list of icons.
             } else if(etype.equals("description")) {
-                icon.setDescription(child.getPCData());
+                icon.setDocumentation(child.getPCData());
             } else if(etype.equals("terminal")) {
             } else if(etype.equals("xmlgraphic")) {
                 Enumeration graphics = child.childElements();
@@ -331,6 +331,42 @@ public class PTMLObjectFactory {
             }
         }
         return terminal;
+    }
+
+    /** Return the icon with the given name in the given root icon library.
+     *  If no icon with the given name exists, then throw an exception.
+     */
+    private static Icon _findIcon(
+            IconLibrary root, String name) 
+            throws IllegalActionException {
+        StringTokenizer tokens = new StringTokenizer(name, ".");
+        IconLibrary temp = root;
+        int count = tokens.countTokens();
+        
+        int i;
+        for(i = 0; i < (count - 1); i++) 
+            temp = temp.getSubLibrary((String) (tokens.nextElement()));
+        
+        return temp.getIcon((String) (tokens.nextElement()));
+    }
+
+    /** Return the terminalstyle with the given name in the 
+     *  given root icon library.
+     *  If no terminal style with the given name exists, 
+     *  then throw an exception.
+     */
+    private static TerminalStyle _findTerminalStyle(
+            IconLibrary root, String name)
+            throws IllegalActionException {
+        StringTokenizer tokens = new StringTokenizer(name, ".");
+        IconLibrary temp = root;
+        int count = tokens.countTokens();
+        
+        int i;
+        for(i = 0; i < (count - 1); i++) 
+            temp = temp.getSubLibrary((String) (tokens.nextElement()));
+        
+        return temp.getTerminalStyle((String) (tokens.nextElement()));
     }
 
     /** Return a boolean corresponding to the value of the attribute with

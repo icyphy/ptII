@@ -53,23 +53,23 @@ test SchematicLink-2.1 {Constructor tests} {
     set e0 [java::new ptolemy.schematic.util.SchematicLink]
     set e1 [java::new ptolemy.schematic.util.SchematicLink "TestSchematicLink"]
     list [$e0 toString] [$e1 toString]
-} {{link(to_terminal((0.0, 0.0)), from_terminal((0.0, 0.0)))} {TestSchematicLink(to_terminal((0.0, 0.0)), from_terminal((0.0, 0.0)))}}
+} {{link(ptolemy.schematic.util.SchematicPort {to_port}, ptolemy.schematic.util.SchematicPort {from_port})} {TestSchematicLink(ptolemy.schematic.util.SchematicPort{to_port}, ptolemy.schematic.util.SchematicPort {from_port})}}
 
-test SchematicLink-2.2 {setDescription, isDescription tests} {
+test SchematicLink-2.2 {setDocumentation, isDocumentation tests} {
     # NOTE: Uses the setup above
-    set r0 [$e0 getDescription]
-    $e0 setDescription {Oh what a tangled web we weave,}
-    set r1 [$e0 getDescription]
-    $e0 setDescription {when we practice to deceive.}
-    set r2 [$e0 getDescription]
+    set r0 [$e0 getDocumentation]
+    $e0 setDocumentation {Oh what a tangled web we weave,}
+    set r1 [$e0 getDocumentation]
+    $e0 setDocumentation {when we practice to deceive.}
+    set r2 [$e0 getDocumentation]
     list $r0 $r1 $r2
 } {{} {Oh what a tangled web we weave,} {when we practice to deceive.}}
 
 ######################################################################
 ####
 #
-set t1 [java::new ptolemy.schematic.util.Terminal terminal1]
-set t2 [java::new ptolemy.schematic.util.Terminal terminal2]
+set t1 [java::new ptolemy.schematic.util.SchematicTerminal T1]
+set t2 [java::new ptolemy.schematic.util.SchematicTerminal T2]
 
 test SchematicLink-3.1 {setTo, getTo tests} {
     # NOTE: Uses the setup above

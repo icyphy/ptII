@@ -70,7 +70,7 @@ public class SchematicRelation extends PTMLObject {
     public SchematicRelation (String name) {
         super(name);
         _links = (CircularList) new CircularList();
-	_terminals = (CircularList) new CircularList();
+	_ports = (CircularList) new CircularList();
 	setWidth(1);
     }
 
@@ -82,10 +82,10 @@ public class SchematicRelation extends PTMLObject {
     }
 
     /**
-     * Add a new terminal to this relation. 
+     * Add a new port to this relation. 
      */
-    public void addTerminal (Terminal term) {
-        _terminals.insertLast(term);
+    public void addSchematicPort (SchematicPort port) {
+        _ports.insertLast(port);
     }
 
     /**
@@ -96,10 +96,10 @@ public class SchematicRelation extends PTMLObject {
     }
 
    /**
-     * Test if this relation contains the given terminal.
+     * Test if this relation contains the given port.
      */
-    public boolean containsTerminal (Terminal term) {
-        return _terminals.includes(term);
+    public boolean containsSchematicPort (SchematicPort port) {
+        return _ports.includes(port);
     }
 
     /**
@@ -119,12 +119,12 @@ public class SchematicRelation extends PTMLObject {
     }
 
     /**
-     * Return an enumeration over the terminals in this relation. \
+     * Return an enumeration over the ports in this relation. \
      *
-     * @return An Enumeration of Terminal
+     * @return An Enumeration of SchematicPort
      */
-    public Enumeration terminals () {
-        return _terminals.elements();
+    public Enumeration ports () {
+        return _ports.elements();
     }
 
     /**
@@ -137,8 +137,8 @@ public class SchematicRelation extends PTMLObject {
     /**
      * Remove the given link from this relation.
      */
-    public void removeTerminal(Terminal term) {
-        _terminals.removeOneOf(term);
+    public void removeSchematicPort(SchematicPort port) {
+        _ports.removeOneOf(port);
     }
 
     /**
@@ -152,11 +152,11 @@ public class SchematicRelation extends PTMLObject {
      * Return a string representing this relation.
      */
     public String toString() {
-        Enumeration enumterminals = terminals();
+        Enumeration enumports = ports();
         String str = getName() + "({";
-        while(enumterminals.hasMoreElements()) {
-            Terminal term = (Terminal) enumterminals.nextElement();
-            str += "\n..." + term.toString();
+        while(enumports.hasMoreElements()) {
+            SchematicPort port = (SchematicPort) enumports.nextElement();
+            str += "\n..." + port.toString();
         }
         str += "}{";
 	Enumeration enumlinks = links();
@@ -171,6 +171,6 @@ public class SchematicRelation extends PTMLObject {
 
     int _width;
     CircularList _links;
-    CircularList _terminals;
+    CircularList _ports;
 }
 

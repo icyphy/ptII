@@ -97,7 +97,7 @@ public class TerminalStyle extends PTMLObject {
 
     /**
      * Remove a graphic element from the TerminalStyle. Throw an exception if
-     * the graphic element is not contained in this TerminalStyle
+     * the Terminal is not contained in this TerminalStyle.
      */
     public void removeTerminal (Terminal t)
             throws IllegalActionException {

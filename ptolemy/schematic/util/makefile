@@ -55,11 +55,14 @@ JSRCS = \
 	IconLibrary.java \
 	PTMLObject.java \
 	PTMLObjectFactory.java \
+	PTMLTemplateObject.java \
 	Schematic.java \
 	SchematicEntity.java \
 	SchematicLink.java \
+	SchematicParameter.java \
 	SchematicPort.java \
 	SchematicRelation.java \
+	SchematicTerminal.java \
 	Terminal.java \
 	TerminalStyle.java	
 

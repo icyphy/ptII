@@ -77,7 +77,7 @@ public class EntityTemplate extends PTMLObject {
      * @throw IllegalActionException if a port with the same name as
      * the new port is already contained in this EntityTemplate.
      */
-    public void addPort (SchematicPort port) throws IllegalActionException {
+    public void addPort (EntityPort port) throws IllegalActionException {
         if(containsPort(port))
             throw new IllegalActionException("Port with name " + 
 		 port.getName() + " already exists.");
@@ -88,7 +88,7 @@ public class EntityTemplate extends PTMLObject {
      * Test if this entity contains a port with the
      * given name.
      */
-    public boolean containsPort (SchematicPort port) {
+    public boolean containsPort (EntityPort port) {
         return _ports.includes(port);
     }
     
@@ -111,10 +111,10 @@ public class EntityTemplate extends PTMLObject {
      *
      * @throw IllegalActionException if no port exists with the given name.
      */
-    /*   public SchematicPort getPort(String name)
+    /*   public EntityPort getPort(String name)
 	throws IllegalActionException {
         try {
-            SchematicPort s = (SchematicPort) _ports.at(name);
+            EntityPort s = (EntityPort) _ports.at(name);
             return s;
         }
         catch (NoSuchElementException e) {
@@ -126,7 +126,7 @@ public class EntityTemplate extends PTMLObject {
     /**
      * Return an enumeration over the ports in this object.
      *
-     * @return an enumeration of SchematicPorts
+     * @return an enumeration of EntityPorts
      */
     public Enumeration ports() {
         return _ports.elements();
@@ -136,7 +136,7 @@ public class EntityTemplate extends PTMLObject {
      * Remove a port from the entity. Throw an exception if
      * a port with this name is not contained in the entity.
      */
-    public void removePort (SchematicPort port) throws IllegalActionException {
+    public void removePort (EntityPort port) throws IllegalActionException {
         try {
 	    _ports.removeOneOf(port);
 	}

@@ -129,6 +129,6 @@ public class Icon extends PTMLObject {
         return str + ")";
     }
 
-    CircularList _graphics;
+    private CircularList _graphics;
 }
 

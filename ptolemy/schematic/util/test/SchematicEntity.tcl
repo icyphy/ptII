@@ -1,4 +1,4 @@
-# Tests for the Terminal class
+# Tests for the SchematicEntity class
 #
 # @Author: Stephen Neuendorffer
 #
@@ -50,26 +50,27 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-test Terminal-2.1 {Constructor tests} {
-    set e0 [java::new ptolemy.schematic.util.Terminal]
-    set e1 [java::new ptolemy.schematic.util.Terminal "TestTerminal"]
-    list [$e0 toString] [$e1 toString]
-} {{Terminal((0.0, 0.0))} {TestTerminal((0.0, 0.0))}}
+test SchematicEntity-2.1 {Constructor tests} {
+    set template [java::new ptolemy.schematic.util.EntityTemplate "TestEntityTemplate"]
+    set e0 [java::new ptolemy.schematic.util.SchematicEntity $template]
+    set e1 [java::new ptolemy.schematic.util.SchematicEntity "TestSchematicEntity" $template]
+    list [$e0 description] [$e1 description]
+} {{SchematicEntity((0.0, 0.0))} {TestSchematicEntity((0.0, 0.0))}}
 
-test Terminal-2.2 {setDescription, isDescription tests} {
+test SchematicEntity-2.2 {setDocumentation, isDocumentation tests} {
     # NOTE: Uses the setup above
-    set r0 [$e0 getDescription]
-    $e0 setDescription {Oh what a tangled web we weave,}
-    set r1 [$e0 getDescription]
-    $e0 setDescription {when we practice to deceive.}
-    set r2 [$e0 getDescription]
+    set r0 [$e0 getDocumentation]
+    $e0 setDocumentation {Oh what a tangled web we weave,}
+    set r1 [$e0 getDocumentation]
+    $e0 setDocumentation {when we practice to deceive.}
+    set r2 [$e0 getDocumentation]
     list $r0 $r1 $r2
 } {{} {Oh what a tangled web we weave,} {when we practice to deceive.}}
 
 ######################################################################
 ####
 #
-test Terminal-3.1 {setX, getX tests} {
+test SchematicEntity-3.1 {setX, getX tests} {
     # NOTE: Uses the setup above
     set r0 [$e0 getX]
     $e0 setX 1.0
@@ -79,7 +80,7 @@ test Terminal-3.1 {setX, getX tests} {
     list $r0 $r1 $r2
 } {0.0 1.0 0.2}
 
-test Terminal-3.2 {setY, getY tests} {
+test SchematicEntity-3.2 {setY, getY tests} {
     # NOTE: Uses the setup above
     set r0 [$e0 getY]
     $e0 setY 1.0
@@ -89,51 +90,9 @@ test Terminal-3.2 {setY, getY tests} {
     list $r0 $r1 $r2
 } {0.0 1.0 0.2}
 
-test Terminal-3.3 {setInput, isInput tests} {
-    # NOTE: Uses the setup above
-    set r0 [$e0 isInput]
-    $e0 setInput 1
-    set r1 [$e0 isInput]
-    $e0 setInput 0
-    set r2 [$e0 isInput]
-    list $r0 $r1 $r2
-} {0 1 0}
 
-test Terminal-3.4 {setOutput, isOutput tests} {
-    # NOTE: Uses the setup above
-    set r0 [$e0 isOutput]
-    $e0 setOutput 1
-    set r1 [$e0 isOutput]
-    $e0 setOutput 0
-    set r2 [$e0 isOutput]
-    list $r0 $r1 $r2
-} {0 1 0}
-
-test Terminal-3.5 {setMulti, isMulti tests} {
-    # NOTE: Uses the setup above
-    set r0 [$e0 isMulti]
-    $e0 setMulti 1
-    set r1 [$e0 isMulti]
-    $e0 setMulti 0
-    set r2 [$e0 isMulti]
-    list $r0 $r1 $r2
-} {0 1 0}
-
-test Terminal-3.6 {setMulti, isMulti tests} {
-    # NOTE: Uses the setup above
-    set r0 [$e0 isMulti]
-    $e0 setMulti 1
-    set r1 [$e0 isMulti]
-    $e0 setMulti 0
-    set r2 [$e0 isMulti]
-    list $r0 $r1 $r2
-} {0 1 0}
-
-test Terminal-3.7 {toString} {
+test SchematicEntity-3.7 {toString} {
     $e1 setX 1.1
     $e1 setY 2.4
-    $e1 setInput 1
-    $e1 setOutput 1
-    $e1 setMulti 1
     $e1 toString
-} {TestTerminal((1.1, 2.4), Input, Output, Multi)}
+} {TestSchematicEntity((1.1, 2.4), Input, Output, Multi)}

@@ -63,9 +63,6 @@ public class Terminal extends PTMLObject {
         super(name);
         _x = 0;
         _y = 0;
-        _input = false;
-        _output = false;
-        _multi = false;
     }
 
     /**
@@ -82,27 +79,6 @@ public class Terminal extends PTMLObject {
         return _y;
     }
 
-    /**
-     * Return whether or not this is an input terminal
-     */
-    public boolean isInput() {
-        return _input;
-    }
-
-    /**
-     * Return whether or not this is an output terminal
-     */
-    public boolean isOutput() {
-        return _output;
-    }
-
-    /**
-     * Return whether or not this is a multi terminal
-     */
-    public boolean isMulti() {
-        return _multi;
-    }
-
    /**
      * Set the X location of this Terminal.
      */
@@ -117,39 +93,14 @@ public class Terminal extends PTMLObject {
         _y = y;
     }
 
-   /**
-     * Set whether this terminal is an input terminal.
-     */
-    public void setInput(boolean input) {
-        _input = input;
-    }
-
-   /**
-     * Set whether this terminal is an output terminal.
-     */
-    public void setOutput(boolean output) {
-        _output = output;
-    }
-
-    /**
-     * Set whether this terminal is a multi-terminal.
-     */
-    public void setMulti(boolean multi) {
-        _multi = multi;
-    }
-
     /** 
      * Return a string representation of the terminal
      */
     public String toString() {
         String str = getName() + "((" + _x + ", " + _y + ")";
-        if(_input) str += ", Input";
-        if(_output) str += ", Output";
-        if(_multi) str += ", Multi";
         return str + ")";
     }
 
     private double _x, _y;
-    private boolean _input, _output, _multi;
 }
 

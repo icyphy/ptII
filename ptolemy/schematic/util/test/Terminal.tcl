@@ -56,13 +56,13 @@ test Terminal-2.1 {Constructor tests} {
     list [$e0 toString] [$e1 toString]
 } {{Terminal((0.0, 0.0))} {TestTerminal((0.0, 0.0))}}
 
-test Terminal-2.2 {setDescription, isDescription tests} {
+test Terminal-2.2 {setDescription, isDocumentation tests} {
     # NOTE: Uses the setup above
-    set r0 [$e0 getDescription]
-    $e0 setDescription {Oh what a tangled web we weave,}
-    set r1 [$e0 getDescription]
-    $e0 setDescription {when we practice to deceive.}
-    set r2 [$e0 getDescription]
+    set r0 [$e0 getDocumentation]
+    $e0 setDocumentation {Oh what a tangled web we weave,}
+    set r1 [$e0 getDocumentation]
+    $e0 setDocumentation {when we practice to deceive.}
+    set r2 [$e0 getDocumentation]
     list $r0 $r1 $r2
 } {{} {Oh what a tangled web we weave,} {when we practice to deceive.}}
 
@@ -89,51 +89,8 @@ test Terminal-3.2 {setY, getY tests} {
     list $r0 $r1 $r2
 } {0.0 1.0 0.2}
 
-test Terminal-3.3 {setInput, isInput tests} {
-    # NOTE: Uses the setup above
-    set r0 [$e0 isInput]
-    $e0 setInput 1
-    set r1 [$e0 isInput]
-    $e0 setInput 0
-    set r2 [$e0 isInput]
-    list $r0 $r1 $r2
-} {0 1 0}
-
-test Terminal-3.4 {setOutput, isOutput tests} {
-    # NOTE: Uses the setup above
-    set r0 [$e0 isOutput]
-    $e0 setOutput 1
-    set r1 [$e0 isOutput]
-    $e0 setOutput 0
-    set r2 [$e0 isOutput]
-    list $r0 $r1 $r2
-} {0 1 0}
-
-test Terminal-3.5 {setMulti, isMulti tests} {
-    # NOTE: Uses the setup above
-    set r0 [$e0 isMulti]
-    $e0 setMulti 1
-    set r1 [$e0 isMulti]
-    $e0 setMulti 0
-    set r2 [$e0 isMulti]
-    list $r0 $r1 $r2
-} {0 1 0}
-
-test Terminal-3.6 {setMulti, isMulti tests} {
-    # NOTE: Uses the setup above
-    set r0 [$e0 isMulti]
-    $e0 setMulti 1
-    set r1 [$e0 isMulti]
-    $e0 setMulti 0
-    set r2 [$e0 isMulti]
-    list $r0 $r1 $r2
-} {0 1 0}
-
 test Terminal-3.7 {toString} {
     $e1 setX 1.1
     $e1 setY 2.4
-    $e1 setInput 1
-    $e1 setOutput 1
-    $e1 setMulti 1
     $e1 toString
 } {TestTerminal((1.1, 2.4), Input, Output, Multi)}

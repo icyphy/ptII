@@ -56,13 +56,13 @@ test TerminalStyle-2.1 {Constructor tests} {
     list [$e0 toString] [$e1 toString]
 } {TerminalStyle() TestTerminalStyle()}
 
-test TerminalStyle-2.2 {setDescription, isDescription tests} {
+test TerminalStyle-2.2 {setDocumenation, isDocumentation tests} {
     # NOTE: Uses the setup above
-    set r0 [$e0 getDescription]
-    $e0 setDescription {Oh what a tangled web we weave,}
-    set r1 [$e0 getDescription]
-    $e0 setDescription {when we practice to deceive.}
-    set r2 [$e0 getDescription]
+    set r0 [$e0 getDocumentation]
+    $e0 setDocumentation {Oh what a tangled web we weave,}
+    set r1 [$e0 getDocumentation]
+    $e0 setDocumentation {when we practice to deceive.}
+    set r2 [$e0 getDocumentation]
     list $r0 $r1 $r2
 } {{} {Oh what a tangled web we weave,} {when we practice to deceive.}}
 

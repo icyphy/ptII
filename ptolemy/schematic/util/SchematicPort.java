@@ -50,13 +50,13 @@ type (string|double|doubleArray) #REQUIRED>
 @author Steve Neuendorffer, John Reekie
 @version $Id$
 */
-public class SchematicPort extends PTMLObject {
+public class SchematicPort extends PTMLTemplateObject {
 
     /**
      * Create a new SchematicPort object, with no attributes.
      */
-    public SchematicPort () {
-        this("port");
+    public SchematicPort (EntityPort template) {
+        this(template.getName(), template);
      }
 
     /**
@@ -64,78 +64,8 @@ public class SchematicPort extends PTMLObject {
      * @param attributes a HashedMap from a String specifying the name of
      * an attribute to a String specifying the attribute's value.
      */
-    public SchematicPort (String name) {
-        super(name);
-	setInput(false);
-        setOutput(false);
-        setMultiport(false);
-        setType("undeclared");
-    }
-
-    /**
-     * Return a string that represents the type of this port.  If the type
-     * is not specified and should be determined at runtime, then
-     * the type returned will be "undeclared".
-     */
-    public String getType() {
-        return _type;
-    }
-
-    /**
-     * Return true if and only if the port is an input port.
-     */
-    public boolean isInput() {
-        return _input;
-    }
-
-    /**
-     * Return true if and only if the port is a multiport.
-     */
-    public boolean isMultiport() {
-        return _multi;
-    }
-
-    /**
-     * Return true if and only if the port is an output port.
-     */
-    public boolean isOutput() {
-        return _output;
-    }
-
-    /**
-     * Set whether or not this port is an input port.
-     */
-    public void setInput(boolean flag) {
-	_input = flag;
-    }
-
-    /**
-     * Set whether or not this port is a multiport.
-     */
-    public void setMultiport(boolean flag) {
-	_multi = flag;
-    }
-
-    /**
-     * Set whether or not this port is an output port.
-     */
-    public void setOutput(boolean flag) {
-	_output = flag;
-    }
-
-    /**
-     * Set the type of this port.   If the type is to be dynamically
-     * determined, then set the type to "undeclared".
-     *
-     * @param a String representing the type of this port.
-     */
-    public void setType(String type) {
-	_type = type;
-    }
-
-    private boolean _input;
-    private boolean _multi;
-    private boolean _output;
-    private String _type;
+    public SchematicPort (String name, EntityPort template) {
+        super(name, template);
+    } 
 }
 

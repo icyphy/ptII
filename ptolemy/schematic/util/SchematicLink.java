@@ -62,36 +62,36 @@ public class SchematicLink extends PTMLObject {
 
     /**
      * Create a new SchematicLink object with the given name.
-     * The terminals associated with this object are created
+     * The ports associated with this object are created
      */
     public SchematicLink (String name) {
         super(name);
-	_to = new Terminal("to_terminal");
-	_from = new Terminal("from_terminal");
+	_to = new SchematicTerminal("to_port");
+	_from = new SchematicTerminal("from_port");
     }
 
-    public Terminal getTo() {
+    public SchematicTerminal getTo() {
 	return _to;
     }
 
-    public Terminal getFrom() {
+    public SchematicTerminal getFrom() {
 	return _from;
     }
 
     /** 
-     * Set the from terminal of this Link to the given non-null terminal.  
-     * If the given terminal is null, then do nothing.
+     * Set the from port of this Link to the given non-null port.  
+     * If the given port is null, then do nothing.
      */
-    public void setFrom(Terminal term) {
-	if(term != null) _from = term;
+    public void setFrom(SchematicTerminal port) {
+	if(port != null) _from = port;
     }
 
     /** 
-     * Set the to terminal of this Link to the given non-null terminal.  
-     * If the given terminal is null, then do nothing.
+     * Set the to port of this Link to the given non-null port.  
+     * If the given port is null, then do nothing.
      */
-    public void setTo(Terminal term) {
-	if(term != null) _to = term;
+    public void setTo(SchematicTerminal port) {
+	if(port != null) _to = port;
     }
    
     /** 
@@ -103,8 +103,8 @@ public class SchematicLink extends PTMLObject {
         return str;
     }
     
-    Terminal _to;
-    Terminal _from;
+    SchematicTerminal _to;
+    SchematicTerminal _from;
     
 }
 
