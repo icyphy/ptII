@@ -138,7 +138,7 @@ public class ConstVariableModelAnalysis {
 
         Set set = new HashSet();
         for (Iterator names = constVariables.iterator();
-            names.hasNext();) {
+             names.hasNext();) {
             set.add(entity.getAttribute((String)names.next()));
         }
         return Collections.unmodifiableSet(set);
@@ -171,7 +171,7 @@ public class ConstVariableModelAnalysis {
 
         Set set = new HashSet();
         for (Iterator names = variables.iterator();
-            names.hasNext();) {
+             names.hasNext();) {
             set.add(entity.getAttribute((String)names.next()));
         }
         return Collections.unmodifiableSet(set);
@@ -181,7 +181,7 @@ public class ConstVariableModelAnalysis {
             AbstractActionsAttribute action, Set set)
             throws IllegalActionException {
         for (Iterator names = action.getDestinationNameList().iterator();
-            names.hasNext();) {
+             names.hasNext();) {
             String name = (String)names.next();
             NamedObj object = action.getDestination(name);
             if (object instanceof Variable) {
@@ -196,22 +196,22 @@ public class ConstVariableModelAnalysis {
             throws IllegalActionException {
         if (entity instanceof FSMActor) {
             for (Iterator states = ((FSMActor)entity).entityList().iterator();
-                states.hasNext();) {
+                 states.hasNext();) {
                 State state = (State)states.next();
                 for (Iterator transitions =
-                        state.outgoingPort.linkedRelationList().iterator();
-                    transitions.hasNext();) {
+                         state.outgoingPort.linkedRelationList().iterator();
+                     transitions.hasNext();) {
                     Transition transition = (Transition)transitions.next();
                     for (Iterator actions =
-                            transition.choiceActionList().iterator();
-                        actions.hasNext();) {
+                             transition.choiceActionList().iterator();
+                         actions.hasNext();) {
                         AbstractActionsAttribute action =
                             (AbstractActionsAttribute)actions.next();
                         _collectNotConstantVariables(action, set);
                     }
                     for (Iterator actions =
-                            transition.commitActionList().iterator();
-                        actions.hasNext();) {
+                             transition.commitActionList().iterator();
+                         actions.hasNext();) {
                         AbstractActionsAttribute action =
                             (AbstractActionsAttribute)actions.next();
                         _collectNotConstantVariables(action, set);
@@ -221,7 +221,7 @@ public class ConstVariableModelAnalysis {
         } else if (entity instanceof CompositeEntity) {
             CompositeEntity composite = (CompositeEntity)entity;
             for (Iterator entities = composite.entityList().iterator();
-                entities.hasNext();) {
+                 entities.hasNext();) {
                 _collectNotConstantVariables((Entity)entities.next(), set);
             }
         }
@@ -267,7 +267,7 @@ public class ConstVariableModelAnalysis {
                         Set freeVarNames = new HashSet(
                                 collector.collectFreeVariables(root));
                         for (Iterator names = freeVarNames.iterator();
-                            names.hasNext() && !isNotConstant;) {
+                             names.hasNext() && !isNotConstant;) {
                             String name = (String)names.next();
                             Variable scopeVariable =
                                 ModelScope.getScopedVariable(
@@ -304,7 +304,7 @@ public class ConstVariableModelAnalysis {
 
         Set constants = new HashSet();
         for (Iterator variables = variableList.iterator();
-            variables.hasNext();) {
+             variables.hasNext();) {
             constants.add(((Variable)variables.next()).getName());
             constants.removeAll(notConstants);
         }
@@ -314,8 +314,8 @@ public class ConstVariableModelAnalysis {
         // recurse down.
         if (model instanceof CompositeEntity) {
             for (Iterator entities =
-                    ((CompositeEntity)model).entityList().iterator();
-                entities.hasNext();) {
+                     ((CompositeEntity)model).entityList().iterator();
+                 entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
                 _analyzeAllVariables(entity);
             }

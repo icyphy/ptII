@@ -108,7 +108,7 @@ public class MethodCodeGenerator {
                     , thisLocalName));
 
             String description = "Function that implements Method "
-                    + method.getSignature();
+                + method.getSignature();
 
             code.append("} ");
             code.append(_comment(description));
@@ -151,7 +151,7 @@ public class MethodCodeGenerator {
         @param tracker The ExceptionTracker for the method for which the
         declarations are needed.
         @return A string containing these declarations.
-     */
+    */
     protected String _declareExceptionVariables(ExceptionTracker tracker) {
         StringBuffer code = new StringBuffer();
 
@@ -179,7 +179,7 @@ public class MethodCodeGenerator {
      *  @return the code.
      */
     protected String _generateEpilogue(ExceptionTracker tracker, CSwitch
-        visitor) {
+            visitor) {
 
         StringBuffer code = new StringBuffer();
 
@@ -210,7 +210,7 @@ public class MethodCodeGenerator {
 
         //Code for mapping an exception type to its handler.
         code.append("\n"+_indent(2)+
-                    "/* Map exception_id to handler */\n");
+                "/* Map exception_id to handler */\n");
         code.append(_indent(2)+"switch (epc)\n");
         code.append(_indent(2)+"{\n");
         for (int i = 0;i<= (tracker.getEpc()-1);i++) {
@@ -220,32 +220,32 @@ public class MethodCodeGenerator {
 
                 code.append(_indent(4));
                 while (j.hasNext()) {
-                        Trap currentTrap = (Trap)j.next();
-                        code.append("if (PCCG_instanceof("
-                                + "(PCCG_CLASS_INSTANCE*)exception_id, "
-                                + CNames.hashNumberOf(currentTrap
-                                        .getException())
-                                + "))\n");
-                        code.append(_indent(4) + "{\n");
-                        code.append(_indent(5) + "goto " +
+                    Trap currentTrap = (Trap)j.next();
+                    code.append("if (PCCG_instanceof("
+                            + "(PCCG_CLASS_INSTANCE*)exception_id, "
+                            + CNames.hashNumberOf(currentTrap
+                                    .getException())
+                            + "))\n");
+                    code.append(_indent(4) + "{\n");
+                    code.append(_indent(5) + "goto " +
                             visitor.getLabel(currentTrap.getHandlerUnit())
-                                + ";\n");
-                        code.append(_indent(4) + "}\n");
-                        code.append(_indent(4) + "else ");
+                            + ";\n");
+                    code.append(_indent(4) + "}\n");
+                    code.append(_indent(4) + "else ");
                 }
 
                 // For the last else.
                 code.append("\n"+_indent(4) + "{\n");
                 code.append(_indent(5) +
-                    "longjmp(caller_env, caller_epc);\n");
+                        "longjmp(caller_env, caller_epc);\n");
                 code.append(_indent(5) +
-                    "/* unhandled exception: " +
-                    "return control to caller */\n");
+                        "/* unhandled exception: " +
+                        "return control to caller */\n");
                 code.append(_indent(4) + "}\n");
             }
             else {
                 code.append(_indent(4) +
-                    "/* No active Traps for this epc. */\n");
+                        "/* No active Traps for this epc. */\n");
             }
 
         }
@@ -304,8 +304,8 @@ public class MethodCodeGenerator {
                 Local nextLocal = (Local)(locals.next());
                 if (!parameterAndThisLocals.contains(nextLocal)) {
                     code.append(_indent(1)
-                        + CNames.localNameOf(nextLocal)
-                        + " = ");
+                            + CNames.localNameOf(nextLocal)
+                            + " = ");
 
                     // Set RefTypes to NULL pointers, and all other variables
                     // to 0.
@@ -346,7 +346,7 @@ public class MethodCodeGenerator {
             code.append(_generateMethodPrologue(tracker, visitor));
         }
         else {
-           visitor.indentLevel = 1;
+            visitor.indentLevel = 1;
         }
 
         code.append("\n" + _generateMethodUnitCode(tracker, visitor
@@ -366,11 +366,11 @@ public class MethodCodeGenerator {
      *  @return The code for the method's declaration(its head).
      */
     protected String _generateMethodDeclaration(SootMethod method, HashSet
-        parameterAndThisLocals, String thisLocalName) {
+            parameterAndThisLocals, String thisLocalName) {
         JimpleBody body = (JimpleBody)method.retrieveActiveBody();
         StringBuffer code = new StringBuffer();
         String description = "Function that implements Method " +
-                method.getSignature();
+            method.getSignature();
         Type returnType = method.getReturnType();
         code.append(_comment(description));
         code.append(CNames.typeNameOf(returnType));
@@ -389,15 +389,15 @@ public class MethodCodeGenerator {
         }
 
         for (parameterIndex = 0;parameterIndex < method.getParameterCount();
-                parameterIndex++) {
+             parameterIndex++) {
             if (parameterCount++ > 0) code.append(", ");
-                Local local = body.getParameterLocal(parameterIndex);
-                parameterAndThisLocals.add(local);
-                Type parameterType = local.getType();
-                code.append(CNames.typeNameOf(parameterType) + " "
+            Local local = body.getParameterLocal(parameterIndex);
+            parameterAndThisLocals.add(local);
+            Type parameterType = local.getType();
+            code.append(CNames.typeNameOf(parameterType) + " "
                     + CNames.localNameOf(local));
-                _updateRequiredTypes(parameterType);
-            }
+            _updateRequiredTypes(parameterType);
+        }
         code.append(")\n{\n");
         return code.toString();
     }
@@ -449,14 +449,14 @@ public class MethodCodeGenerator {
      *  @return The code.
      */
     protected String _generateMethodUnitCode(ExceptionTracker tracker,
-        CSwitch visitor, SootMethod method, byte indentLevel) {
+            CSwitch visitor, SootMethod method, byte indentLevel) {
         JimpleBody body = (JimpleBody)method.retrieveActiveBody();
         StringBuffer code = new StringBuffer();
 
         //Exception-catching in the body.
         Iterator units = body.getUnits().iterator();
         boolean handle_exceptions = tracker.trapsExist()
-                    && (!_context.getSingleClassMode());
+            && (!_context.getSingleClassMode());
 
         while (units.hasNext()) {
             Unit unit = (Unit)(units.next());
@@ -521,7 +521,7 @@ public class MethodCodeGenerator {
      *  @param method  The method for which labels need to be initialized.
      */
     protected void _initializeLabels(CSwitch visitor, ExceptionTracker
-        tracker, SootMethod method) {
+            tracker, SootMethod method) {
         JimpleBody body = (JimpleBody)method.retrieveActiveBody();
         Iterator units = body.getUnits().iterator();
         while (units.hasNext()) {
@@ -531,7 +531,7 @@ public class MethodCodeGenerator {
             if (unit instanceof GotoStmt) {
                 target = ((GotoStmt)unit).getTarget();
                 if (target != null) {
-                visitor.addTarget(target);
+                    visitor.addTarget(target);
                 }
             }
             // Target of "if" statement.
@@ -545,13 +545,13 @@ public class MethodCodeGenerator {
             else if (tracker.isHandlerUnit(unit)){
                 target = unit;
                 if (target != null) {
-                visitor.addTarget(target);
+                    visitor.addTarget(target);
                 }
             }
             // All targets for switch statements must be added.
             else if (unit instanceof TableSwitchStmt) {
                 Iterator targets = ((TableSwitchStmt)unit).getTargets()
-                        .iterator();
+                    .iterator();
 
                 while (targets.hasNext()) {
                     visitor.addTarget((Unit)targets.next());
@@ -561,7 +561,7 @@ public class MethodCodeGenerator {
             }
             else if (unit instanceof LookupSwitchStmt) {
                 Iterator targets = ((LookupSwitchStmt)unit).getTargets()
-                        .iterator();
+                    .iterator();
 
                 while (targets.hasNext()) {
                     visitor.addTarget((Unit)targets.next());

@@ -62,7 +62,7 @@ A tableau that provides an interactive shell for evaluating Python expressions.
 @version $Id$
 */
 public class PythonShellTableau extends Tableau
-        implements ShellInterpreter {
+    implements ShellInterpreter {
 
     /** Create a new tableau.
      *  The tableau is itself an entity contained by the effigy

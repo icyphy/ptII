@@ -113,7 +113,7 @@ public class RequiredFileGenerator {
             }
 
 
-         }
+        }
     }
 
 
@@ -163,14 +163,14 @@ public class RequiredFileGenerator {
         _pruneLevel = Options.v().getInt("pruneLevel");
 
         switch (_pruneLevel) {
-            case 0 :
-                _pruneLevel0(classPath, className);
-                break;
-            case 1 :
-                _pruneLevel1(classPath, className);
-                break;
-            default :
-                throw new RuntimeException("Level " + _pruneLevel
+        case 0 :
+            _pruneLevel0(classPath, className);
+            break;
+        case 1 :
+            _pruneLevel1(classPath, className);
+            break;
+        default :
+            throw new RuntimeException("Level " + _pruneLevel
                     + " pruning not supported!");
         }
 
@@ -183,7 +183,7 @@ public class RequiredFileGenerator {
      */
     public static boolean isRequired(SootClass source) {
         if (Options.v().get("compileMode").equals("full")
-            && (_pruneLevel > 0)) {
+                && (_pruneLevel > 0)) {
             return _requiredClasses.contains(source);
         }
         else {
@@ -197,7 +197,7 @@ public class RequiredFileGenerator {
      */
     public static boolean isRequired(SootField field) {
         if (Options.v().get("compileMode").equals("full")
-            && (_pruneLevel >0) ) {
+                && (_pruneLevel >0) ) {
             return _requiredFields.contains(field);
         }
         else {
@@ -212,7 +212,7 @@ public class RequiredFileGenerator {
      */
     public static boolean isRequired(SootMethod method) {
         if (Options.v().get("compileMode").equals("full")
-            && (_pruneLevel >0) ) {
+                && (_pruneLevel >0) ) {
             return _requiredMethods.contains(method);
         }
         else {
@@ -244,7 +244,7 @@ public class RequiredFileGenerator {
         prune-level 1 analysis is called.
         @param classPath The classpath.
         @param className The name of the class.
-     */
+    */
     private static void _pruneLevel0(String classPath, String className) {
         _requiredClasses = new HashSet(Scene.v().getClasses());
     }
@@ -253,7 +253,7 @@ public class RequiredFileGenerator {
         prune-level 1 analysis is called.
         @param classPath The classpath.
         @param className The name of the class.
-     */
+    */
     private static void _pruneLevel1(String classPath, String className) {
         // FIXME: Remove this code.
         // Scene.v().loadClassAndSupport(className);
@@ -271,7 +271,7 @@ public class RequiredFileGenerator {
         @param className The name of the class.
         @param compileMode The compilation mode.
         @param verbose Whether routine messages should be generated.
-     */
+    */
     private static void _generateC(String classPath, String className) {
 
         // Initialize code generation.
@@ -297,13 +297,13 @@ public class RequiredFileGenerator {
                 }
             }
             else
-            {
-                code = cGenerator.generate(sootClass);
-                FileHandler.write(fileName+".c", code);
-                if (verbose) {
-                    System.out.println( "\tcreated: " +fileName+".c");
+                {
+                    code = cGenerator.generate(sootClass);
+                    FileHandler.write(fileName+".c", code);
+                    if (verbose) {
+                        System.out.println( "\tcreated: " +fileName+".c");
+                    }
                 }
-            }
         }
     }
 
@@ -336,27 +336,27 @@ public class RequiredFileGenerator {
         boolean verbose = Options.v().getBoolean("verbose");
         // Create any parent directories, if required.
         if (fileName.lastIndexOf('/')>0) {
-        // The file requires some directories.
+            // The file requires some directories.
             if (verbose) {
                 System.out.println(className);
             }
 
             File dummyFile = new File(fileName.substring(0,
-                                        fileName.lastIndexOf('/')));
+                    fileName.lastIndexOf('/')));
             dummyFile.mkdirs();
         }
 
 
         // Generate the stub header file.
         if (FileHandler.exists(fileName
-                    + StubFileGenerator.stubFileNameSuffix())) {
+                + StubFileGenerator.stubFileNameSuffix())) {
             if (verbose) System.out.println( "\texists: " + fileName
-                + StubFileGenerator.stubFileNameSuffix());
+                    + StubFileGenerator.stubFileNameSuffix());
         }
         else {
             code = sGenerator.generate(sootClass);
             String name = fileName
-                    + StubFileGenerator.stubFileNameSuffix();
+                + StubFileGenerator.stubFileNameSuffix();
 
             if (! FileHandler.exists(name)) {
                 FileHandler.write(name, code);

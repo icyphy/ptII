@@ -51,7 +51,7 @@ public class Utilities{
      *  @return The indentation string that corresponds to the given
      *  indentation level.
      */
-     public static String indent(int level) {
+    public static String indent(int level) {
         StringBuffer indent = new StringBuffer();
         int i;
         for (i = 0; i < level; i++) {

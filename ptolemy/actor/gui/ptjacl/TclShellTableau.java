@@ -63,7 +63,7 @@ a 100% Java implementation of Tcl
 @version $Id$
 */
 public class TclShellTableau extends Tableau
-        implements ShellInterpreter {
+    implements ShellInterpreter {
 
     /** Create a new tableau.
      *  The tableau is itself an entity contained by the effigy
@@ -87,8 +87,8 @@ public class TclShellTableau extends Tableau
             //
             _tclInterp.setVar("panelShell",
                     ReflectObject.newInstance(_tclInterp,
-                    ShellTextArea.class,
-                    frame._shellTextArea), 0);
+                            ShellTextArea.class,
+                            frame._shellTextArea), 0);
             _tclInterp.eval("proc puts {s} {"
                     + "global panelShell; "
                     + "$panelShell appendJTextArea $s\\n}");
@@ -98,9 +98,9 @@ public class TclShellTableau extends Tableau
             _tclInterp.eval("if [catch {source [java::call ptolemy.data.expr.UtilityFunctions findFile \"ptolemy/actor/gui/ptjacl/init.tcl\"]} errMsg ] { puts $errorInfo};");
         } catch (TclException ex) {
             throw new IllegalActionException(this, ex,
-                                             "Could not initialize the "
-                                             + "tcl interpreter:\n"
-                                             + _tclInterp.getResult().toString());
+                    "Could not initialize the "
+                    + "tcl interpreter:\n"
+                    + _tclInterp.getResult().toString());
         }
     }
 

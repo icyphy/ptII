@@ -81,8 +81,8 @@ public class  ClassStructureGenerator extends CodeGenerator {
         // Pointer to superclass structure.
         code.append(_indent(1));
         if (source.hasSuperclass()
-            && !_context.getSingleClassMode()
-            && RequiredFileGenerator.isRequired(source.getSuperclass())) {
+                && !_context.getSingleClassMode()
+                && RequiredFileGenerator.isRequired(source.getSuperclass())) {
             code.append(_comment("Pointer to superclass structure"));
             code.append(_indent(1));
             code.append(CNames.classNameOf(source.getSuperclass()));
@@ -136,15 +136,15 @@ public class  ClassStructureGenerator extends CodeGenerator {
                 "Inherited/overridden methods");
         _context.clearDisableImports();
         String introducedMethods =
-                _generateMethodPointers(
-                MethodListGenerator.getNewMethods(source),
-                "New public and protected methods")
-                + _generateMethodPointers(
-                MethodListGenerator.getConstructors(source),
-                "Constructors")
-                + _generateMethodPointers(
-                MethodListGenerator.getPrivateMethods(source),
-                "Private methods");
+            _generateMethodPointers(
+                    MethodListGenerator.getNewMethods(source),
+                    "New public and protected methods")
+            + _generateMethodPointers(
+                    MethodListGenerator.getConstructors(source),
+                    "Constructors")
+            + _generateMethodPointers(
+                    MethodListGenerator.getPrivateMethods(source),
+                    "Private methods");
         if (((_context.getSingleClassMode()) || inheritedMethods.equals("")) &&
                 introducedMethods.equals("")) {
             code.append(_comment("Empty method table"));
@@ -246,7 +246,7 @@ public class  ClassStructureGenerator extends CodeGenerator {
             SootMethod method = (SootMethod)(methods.next());
 
             if (!method.isStatic()
-                && _isDeclarable(method)) {
+                    && _isDeclarable(method)) {
                 if (insertedMethods == 0) {
                     methodCode.append("\n" + indent + _comment(comment));
                     // If importing of referenced include files in
@@ -272,7 +272,7 @@ public class  ClassStructureGenerator extends CodeGenerator {
 
                 // The type of the class that declares this method.
                 Type declaringClassType = method.getDeclaringClass()
-                        .getType();
+                    .getType();
 
                 if (RequiredFileGenerator
                         .isRequired(declaringClassType)) {
@@ -285,7 +285,7 @@ public class  ClassStructureGenerator extends CodeGenerator {
                 // required type if it is an array.
                 if (method.getReturnType() instanceof ArrayType) {
                     _context.addArrayInstance(
-                        CNames.typeNameOf(method.getReturnType()));
+                            CNames.typeNameOf(method.getReturnType()));
                 }
 
             }
@@ -303,7 +303,7 @@ public class  ClassStructureGenerator extends CodeGenerator {
         while (fields.hasNext()) {
             SootField field = (SootField)(fields.next());
             if (Modifier.isStatic(field.getModifiers())
-                && RequiredFileGenerator.isRequired(field)) {
+                    && RequiredFileGenerator.isRequired(field)) {
                 fieldCode.append(_indent(1) + _generateField(field));
                 insertedFields++;
             }
@@ -350,13 +350,13 @@ public class  ClassStructureGenerator extends CodeGenerator {
     // The end of a comment for generated code that is to be
     // commented-out.
     private static final String _closeComment =
-            "**********************************" + _commentEnd + "\n";
+    "**********************************" + _commentEnd + "\n";
 
     // The beginning of a comment for generated code that is to be
     // The beginning of a comment for generated code that is to be
     // commented-out.
     private static final String _openComment =
-            _commentStart + "**********************************\n";
+    _commentStart + "**********************************\n";
 
 
 }

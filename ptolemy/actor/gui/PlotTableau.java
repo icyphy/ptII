@@ -107,7 +107,7 @@ public class PlotTableau extends Tableau {
                 _parseURL(toRead);
             } catch (MalformedURLException ex) {
                 throw new IllegalActionException(this, ex,
-                "Invalid URL specification.");
+                        "Invalid URL specification.");
             }
         } else {
             super.attributeChanged(attribute);
@@ -122,7 +122,7 @@ public class PlotTableau extends Tableau {
     public void setFrame(JFrame frame) throws IllegalActionException {
         if (!(frame instanceof PlotTableauFrame)) {
             throw new IllegalActionException(this,
-            "Frame for PlotTableau must be an instance of PlotTableauFrame.");
+                    "Frame for PlotTableau must be an instance of PlotTableauFrame.");
         }
         super.setFrame(frame);
         ((PlotTableauFrame)frame).setTableau(this);
@@ -234,7 +234,7 @@ public class PlotTableau extends Tableau {
                 // First see whether the effigy already contains an
                 // PlotTableau.
                 PlotTableau tableau =
-                       (PlotTableau)effigy.getEntity("plotTableau");
+                    (PlotTableau)effigy.getEntity("plotTableau");
                 if (tableau == null) {
                     tableau = new PlotTableau(
                             (PlotEffigy)effigy, "plotTableau");

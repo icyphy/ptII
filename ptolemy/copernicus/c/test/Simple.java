@@ -62,9 +62,9 @@ public class Simple {
 
     // Constructor with arguments.
     public Simple(int value1, int value2) {
-       publicField1 = value1;
-       publicField2 = value2 + 5;
-       privateField = value1 - value2;
+        publicField1 = value1;
+        publicField2 = value2 + 5;
+        privateField = value1 - value2;
     }
 
     // Another constructor with arguments.
@@ -103,9 +103,9 @@ public class Simple {
             x--;
         }
         if (denom == 0) {
-             denom = 1;
+            denom = 1;
         } else {
-             denom *= 2;
+            denom *= 2;
         }
         if (denom < 0) {
             publicField1 = 15;

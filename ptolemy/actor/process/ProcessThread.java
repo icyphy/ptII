@@ -221,29 +221,29 @@ public class ProcessThread extends PtolemyThread {
             }
         }
         /*
-        catch (TerminateProcessException t) {
-            // Process was terminated.
-            _debug("-- Blocked Receiver call threw TerminateProcessException.");
-        } catch (IllegalActionException e) {
-            _debug("-- Exception: " + e);
-            System.out.println(_name + " encountered exception");
-            _manager.notifyListenersOfException(e);
-            System.out.println(_name + " notified exception");
-        } catch (Throwable t) {
-            System.out.println("caught throwable " + t);
-            t.printStackTrace();
-        } finally {
-            try {
-                wrapup();
-            } catch (IllegalActionException e) {
-                _debug("-- Exception: " + e);
-                _manager.notifyListenersOfException(e);
-            } finally {
-                System.out.println(_name + " going to stop");
-                _director._decreaseActiveCount();
-                _debug("-- Thread stopped.");
-            }
-        }*/
+          catch (TerminateProcessException t) {
+          // Process was terminated.
+          _debug("-- Blocked Receiver call threw TerminateProcessException.");
+          } catch (IllegalActionException e) {
+          _debug("-- Exception: " + e);
+          System.out.println(_name + " encountered exception");
+          _manager.notifyListenersOfException(e);
+          System.out.println(_name + " notified exception");
+          } catch (Throwable t) {
+          System.out.println("caught throwable " + t);
+          t.printStackTrace();
+          } finally {
+          try {
+          wrapup();
+          } catch (IllegalActionException e) {
+          _debug("-- Exception: " + e);
+          _manager.notifyListenersOfException(e);
+          } finally {
+          System.out.println(_name + " going to stop");
+          _director._decreaseActiveCount();
+          _debug("-- Thread stopped.");
+          }
+          }*/
     }
 
     /** Request that execution of the actor controlled by this

@@ -87,8 +87,8 @@ public class CWriter extends SceneTransformer {
         // copernicus.c.options.
         String outDir = soot.Options.getString(options, "outDir");
         String mainFile = soot.Options
-                .getString(options, "targetPackage")
-                + ".Main";
+            .getString(options, "targetPackage")
+            + ".Main";
 
         // Initialize generation of overridden methods.
         OverriddenMethodGenerator.init();
@@ -105,7 +105,7 @@ public class CWriter extends SceneTransformer {
         StringBuffer sourcesList = new StringBuffer();
 
         for (Iterator sootClasses = classList.iterator();
-                sootClasses.hasNext(); ) {
+             sootClasses.hasNext(); ) {
             SootClass sootClass = (SootClass)sootClasses.next();
 
             // Determine the base of the source code file names.
@@ -156,7 +156,7 @@ public class CWriter extends SceneTransformer {
             code = sGenerator.generate(sootClass);
             FileHandler.write(fileName
                     + StubFileGenerator.stubFileNameSuffix(),
-                      code);
+                    code);
             code = hGenerator.generate(sootClass);
             FileHandler.write(fileName + ".h", code);
             code = cGenerator.generate(sootClass);

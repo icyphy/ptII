@@ -100,7 +100,7 @@ public class StubFileGenerator extends CodeGenerator {
         // of the class-specific structure.
         bodyCode.append("struct " + typeName + ";\n");
         bodyCode.append("typedef struct " + typeName + " *" +
-                        typeName + ";\n\n");
+                typeName + ";\n\n");
 
         // Generate the type declaration header for the class
         // structure. This structure represents the class as a whole.
@@ -110,14 +110,14 @@ public class StubFileGenerator extends CodeGenerator {
         bodyCode.append("/* Structure that implements " + className + " */\n");
         bodyCode.append("struct " + objectName +";\n\n");
         bodyCode.append("/* Pointer to structure that implements " +
-                        className + " */\n");
+                className + " */\n");
         bodyCode.append("typedef struct " +objectName+ " *" + objectName
-                        +";\n");
+                +";\n");
 
         // Return an appropriate concatenation of the code strings.
         return headerCode.toString()
-                + bodyCode.toString()
-                + footerCode.toString();
+            + bodyCode.toString()
+            + footerCode.toString();
     }
 
     /** Return the appropriate suffix for the stub header files.

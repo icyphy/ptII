@@ -111,7 +111,7 @@ public class HeaderFileGenerator extends CodeGenerator {
         // Runtime include files
         headerCode.append("/* Runtime Include Files */\n");
         if (!_context.getSingleClassMode()) {
-                        headerCode.append("#include \"pccg_array.h\"\n\n");
+            headerCode.append("#include \"pccg_array.h\"\n\n");
         }
         else {
             headerCode.append("#include \"pccg_single.h\"\n\n");
@@ -126,7 +126,7 @@ public class HeaderFileGenerator extends CodeGenerator {
 
         // Generate the structure for instances of this class.
         InstanceStructureGenerator ISG =
-                new InstanceStructureGenerator(_context);
+            new InstanceStructureGenerator(_context);
         bodyCode.append(ISG.generate(source));
         _requiredTypeMap.putAll(ISG.getRequiredTypeMap());
 
@@ -137,7 +137,7 @@ public class HeaderFileGenerator extends CodeGenerator {
             SootMethod method = (SootMethod)(methods.next());
 
             if ((!method.isPrivate())
-                && RequiredFileGenerator.isRequired(method)) {
+                    && RequiredFileGenerator.isRequired(method)) {
                 bodyCode.append("\n" + _comment(method.getSubSignature()));
                 bodyCode.append("extern " +
                         _generateMethodHeader(method) + ";\n");
@@ -163,23 +163,23 @@ public class HeaderFileGenerator extends CodeGenerator {
 
         if (source.hasSuperclass()) {
             if (RequiredFileGenerator.isRequired(source
-                        .getSuperclass())) {
+                    .getSuperclass())) {
                 _updateRequiredTypes(source.getSuperclass().getType());
             }
         }
 
         headerCode.append("#include \""
                 + CNames.sanitize(source.toString().replace('.', '/')
-                + StubFileGenerator.stubFileNameSuffix() +
-                "\"\n"));
+                        + StubFileGenerator.stubFileNameSuffix() +
+                        "\"\n"));
         headerCode.append(_generateIncludeDirectives());
         headerCode.append("\n" + _generateArrayInstanceDeclarations());
         headerCode.append("\n");
 
         // Return an appropriate concatenation of the code strings.
         return headerCode.toString()
-                + bodyCode.toString()
-                + footerCode.toString();
+            + bodyCode.toString()
+            + footerCode.toString();
 
     }
 
@@ -205,8 +205,8 @@ public class HeaderFileGenerator extends CodeGenerator {
             String fileName = new String((String)includeFiles.next());
 
             fileName = CNames.sanitize(fileName.substring(0
-                            , fileName.length()-3))
-                    + StubFileGenerator.stubFileNameSuffix() + "\"";
+                    , fileName.length()-3))
+                + StubFileGenerator.stubFileNameSuffix() + "\"";
 
             headerCode.append(fileName);
 
@@ -230,8 +230,8 @@ public class HeaderFileGenerator extends CodeGenerator {
             String fileName = new String((String)requiredTypes.next());
 
             fileName = CNames.sanitize(fileName.substring(0
-                            , fileName.length()-2))
-                    + StubFileGenerator.stubFileNameSuffix() + "\"";
+                    , fileName.length()-2))
+                + StubFileGenerator.stubFileNameSuffix() + "\"";
 
             headerCode.append(fileName);
 
@@ -260,13 +260,13 @@ public class HeaderFileGenerator extends CodeGenerator {
     // The end of a comment for generated code that is to be
     // commented-out.
     private static final String _closeComment =
-            "**********************************" + _commentEnd + "\n";
+    "**********************************" + _commentEnd + "\n";
 
     // The beginning of a comment for generated code that is to be
     // The beginning of a comment for generated code that is to be
     // commented-out.
     private static final String _openComment =
-            _commentStart + "**********************************\n";
+    _commentStart + "**********************************\n";
 
 
 }

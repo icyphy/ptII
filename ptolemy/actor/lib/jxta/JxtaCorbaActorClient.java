@@ -65,14 +65,14 @@ import net.jxta.resolver.ResolverService;
 public class JxtaCorbaActorClient extends TypedAtomicActor implements QueryHandler{
 
     public JxtaCorbaActorClient(CompositeEntity container, String name)
-                throws NameDuplicationException, IllegalActionException  {
-            super(container, name);
+            throws NameDuplicationException, IllegalActionException  {
+        super(container, name);
 
-            ORBInitProperties  = new Parameter(this, "ORBInit");
-            ORBInitProperties.setToken(new StringToken(""));
-            remoteActorName = new Parameter(this, "RemoteActorName");
-            remoteActorName.setToken(new StringToken(""));
-        }
+        ORBInitProperties  = new Parameter(this, "ORBInit");
+        ORBInitProperties.setToken(new StringToken(""));
+        remoteActorName = new Parameter(this, "RemoteActorName");
+        remoteActorName.setToken(new StringToken(""));
+    }
 
 
     ///////////////////////////////////////////////////////////////////
@@ -88,101 +88,101 @@ public class JxtaCorbaActorClient extends TypedAtomicActor implements QueryHandl
 
 
     ///////////////////////////////////////////////////////////////////
-     ////                         public methods                    ////
+    ////                         public methods                    ////
 
     public void initialize() throws IllegalActionException {
         super.initialize();
 
-            _remoteActorName = ((StringToken)remoteActorName.getToken()).
-                        stringValue();
-            // String tokenize the parameter ORBInitProperties
-            StringTokenizer st = new StringTokenizer(
-                    ((StringToken)ORBInitProperties.getToken()).stringValue());
-            String[] args = new String[st.countTokens()];
-            int i = 0;
-            while (st.hasMoreTokens()) {
-                args[i] = st.nextToken();
-                _debug("ORB initial argument: " + args[i]);
-                i++;
-            }
+        _remoteActorName = ((StringToken)remoteActorName.getToken()).
+            stringValue();
+        // String tokenize the parameter ORBInitProperties
+        StringTokenizer st = new StringTokenizer(
+                ((StringToken)ORBInitProperties.getToken()).stringValue());
+        String[] args = new String[st.countTokens()];
+        int i = 0;
+        while (st.hasMoreTokens()) {
+            args[i] = st.nextToken();
+            _debug("ORB initial argument: " + args[i]);
+            i++;
+        }
 
-            PropertyConfigurator.configure(System.getProperties());
+        PropertyConfigurator.configure(System.getProperties());
 
-                //String Dir = "c:/Cygwin/home/ellen_zh/ptII/ptolemy/actor/lib/jxta";
-            //String _actorListFileName = "c:/Cygwin/home/ellen_zh/ptII/ptolemy/actor/lib/jxta/actors.xml";
-            _properties = new Properties(System.getProperties());
-            _configDir = System.getProperty(_CONFIG_DIR);
-            if (_configDir == null) {
-                        _configDir = System.getProperty("user.dir");
-                        System.setProperty(_CONFIG_DIR, _configDir);
-            }
-             try
+        //String Dir = "c:/Cygwin/home/ellen_zh/ptII/ptolemy/actor/lib/jxta";
+        //String _actorListFileName = "c:/Cygwin/home/ellen_zh/ptII/ptolemy/actor/lib/jxta/actors.xml";
+        _properties = new Properties(System.getProperties());
+        _configDir = System.getProperty(_CONFIG_DIR);
+        if (_configDir == null) {
+            _configDir = System.getProperty("user.dir");
+            System.setProperty(_CONFIG_DIR, _configDir);
+        }
+        try
             {
-               InputStream configProperties = new FileInputStream(_configDir + "/" + _CONFIG_FILE);
-               _properties.load(configProperties);
-               configProperties.close();
+                InputStream configProperties = new FileInputStream(_configDir + "/" + _CONFIG_FILE);
+                _properties.load(configProperties);
+                configProperties.close();
             }
-            catch( IOException e)
+        catch( IOException e)
             {
-               System.out.println( "Warning: Can't find configuration propertiees file. ' " + e.getMessage() + "'");
+                System.out.println( "Warning: Can't find configuration propertiees file. ' " + e.getMessage() + "'");
             }
 
-            PeerGroup netPeerGroup = null;
-            try {
-               netPeerGroup = PeerGroupFactory.newNetPeerGroup();
-            } catch (PeerGroupException ex) {
-                        System.out.println("Error: cannot locate net peer group.\n"
-                                        + ex.getMessage());
+        PeerGroup netPeerGroup = null;
+        try {
+            netPeerGroup = PeerGroupFactory.newNetPeerGroup();
+        } catch (PeerGroupException ex) {
+            System.out.println("Error: cannot locate net peer group.\n"
+                    + ex.getMessage());
+        }
+
+        // load the peer group adv for actor exchange
+        String groupAdvFileName = _properties.getProperty("GroupAdvFileName");
+        if (groupAdvFileName == null) {
+            System.out.println("Error: property undefined - GroupAdvFileName.\n");
+        }
+        PeerGroupAdvertisement groupAdv = null;
+        try {
+            groupAdv = (PeerGroupAdvertisement)
+                AdvertisementFactory.newAdvertisement(
+                        XML_MIME_TYPE,
+                        new FileInputStream(_configDir + "/" + groupAdvFileName));
+        } catch (FileNotFoundException ex) {
+            System.out.println("Error: cannot find group adv file.\n"
+                    + ex.getMessage());
+        } catch (IOException ex) {
+            System.out.println("Error: reading group adv file.\n"
+                    + ex.getMessage());
+        }
+        System.out.println("peer groupAdv: " + groupAdvFileName);
+        System.out.println("success before instantiate peer group");
+        // instantiate the peer group for actor exchange
+        try {
+            _group = netPeerGroup.newGroup(groupAdv);
+        } catch (PeerGroupException ex) {
+            System.out.println("Error: cannot instantiate peer group.\n"
+                    + ex.getMessage());
+        }
+
+        // join the peer group for actor exchange
+        // no authentication is done here
+        // modeled after JoinDemo from JXTA Examples
+        StructuredDocument identityInfo = null;
+        try {
+            AuthenticationCredential authCred =
+                new AuthenticationCredential(_group, null, identityInfo);
+            MembershipService membershipService = _group.getMembershipService();
+            _authenticator = membershipService.apply(authCred);
+            if (_authenticator.isReadyForJoin()) {
+                _credential = membershipService.join(_authenticator);
+                System.out.println("Info: join group successful.");
+                _credential.getDocument(XML_MIME_TYPE).sendToStream(System.out);
+            } else {
+                System.out.println("Error: unable to join group.");
             }
-
-                // load the peer group adv for actor exchange
-                String groupAdvFileName = _properties.getProperty("GroupAdvFileName");
-                if (groupAdvFileName == null) {
-                        System.out.println("Error: property undefined - GroupAdvFileName.\n");
-                }
-                PeerGroupAdvertisement groupAdv = null;
-                try {
-                        groupAdv = (PeerGroupAdvertisement)
-                                        AdvertisementFactory.newAdvertisement(
-                                                        XML_MIME_TYPE,
-                                                        new FileInputStream(_configDir + "/" + groupAdvFileName));
-                } catch (FileNotFoundException ex) {
-                        System.out.println("Error: cannot find group adv file.\n"
-                                        + ex.getMessage());
-                } catch (IOException ex) {
-                        System.out.println("Error: reading group adv file.\n"
-                                        + ex.getMessage());
-                }
-                System.out.println("peer groupAdv: " + groupAdvFileName);
-                System.out.println("success before instantiate peer group");
-                // instantiate the peer group for actor exchange
-                try {
-                        _group = netPeerGroup.newGroup(groupAdv);
-                } catch (PeerGroupException ex) {
-                        System.out.println("Error: cannot instantiate peer group.\n"
-                                        + ex.getMessage());
-                }
-
-                // join the peer group for actor exchange
-                // no authentication is done here
-                // modeled after JoinDemo from JXTA Examples
-                StructuredDocument identityInfo = null;
-                try {
-                        AuthenticationCredential authCred =
-                                        new AuthenticationCredential(_group, null, identityInfo);
-                        MembershipService membershipService = _group.getMembershipService();
-                        _authenticator = membershipService.apply(authCred);
-                        if (_authenticator.isReadyForJoin()) {
-                                _credential = membershipService.join(_authenticator);
-                                System.out.println("Info: join group successful.");
-                                _credential.getDocument(XML_MIME_TYPE).sendToStream(System.out);
-                        } else {
-                                System.out.println("Error: unable to join group.");
-                        }
-                } catch (Exception ex) {
-                        System.out.println("Error: failure in authentication.\n"
-                                        + ex.getMessage());
-                }
+        } catch (Exception ex) {
+            System.out.println("Error: failure in authentication.\n"
+                    + ex.getMessage());
+        }
 
         _resolverService = _group.getResolverService();
         // register this as a query handler
@@ -192,7 +192,7 @@ public class JxtaCorbaActorClient extends TypedAtomicActor implements QueryHandl
         StringBuffer queryTextBuffer = new StringBuffer();
         queryTextBuffer = queryTextBuffer.append("<CorbaActorQuery>\n");
         queryTextBuffer = queryTextBuffer.append("<CorbaActor>"
-                           + _remoteActorName + "</CorbaActor>");
+                + _remoteActorName + "</CorbaActor>");
         queryTextBuffer = queryTextBuffer.append("\n</CorbaActorQuery>\n");
         _actorQueryMessage = new ResolverQuery(_ACTOR_QUERY_HANDLER_NAME,
                 null, null, queryTextBuffer.toString(), 0);
@@ -202,8 +202,8 @@ public class JxtaCorbaActorClient extends TypedAtomicActor implements QueryHandl
         synchronized (this) {
             System.out.println("send out corba actor query message, and wait for response... ");
             try {
-            wait();
-            System.out.println("get response and wake up.");
+                wait();
+                System.out.println("get response and wake up.");
             } catch (InterruptedException ex) {}
         }
         try {
@@ -215,8 +215,8 @@ public class JxtaCorbaActorClient extends TypedAtomicActor implements QueryHandl
             _remoteActor = CorbaActorHelper.narrow(obj);
             System.out.println("narrow to a corbaActor object from the ior.");
             if (_remoteActor == null) {
-                        throw new IllegalActionException(this,
-                                " can not find the remote actor.");
+                throw new IllegalActionException(this,
+                        " can not find the remote actor.");
             }
         } catch (SystemException ex) {
             _debug(getName(), " CORBA set up failed " + ex.getMessage());
@@ -306,7 +306,7 @@ public class JxtaCorbaActorClient extends TypedAtomicActor implements QueryHandl
         }
     }
 
-     /** Transfer the input tokens to the remote actor, postfire the remote
+    /** Transfer the input tokens to the remote actor, postfire the remote
      *  actor, transfer the output tokens, and broadcast them.
      *  @exception IllegalActionException If any of the above actions
      *  failed or if there is no director.
@@ -334,7 +334,7 @@ public class JxtaCorbaActorClient extends TypedAtomicActor implements QueryHandl
         return true;
     }
 
-     /** Transfer the input tokens to the remote actor, prefire the remote
+    /** Transfer the input tokens to the remote actor, prefire the remote
      *  actor, transfer the output tokens, and broadcast them.
      *  @exception IllegalActionException If any of the above actions
      *  failed or if there is no director.
@@ -362,7 +362,7 @@ public class JxtaCorbaActorClient extends TypedAtomicActor implements QueryHandl
         return result;
     }
 
-     /** wrapup the remote actor.
+    /** wrapup the remote actor.
      */
     public void wrapup() throws IllegalActionException {
         try {
@@ -377,64 +377,64 @@ public class JxtaCorbaActorClient extends TypedAtomicActor implements QueryHandl
         }
     }
 
-        /**
-         * @see net.jxta.resolver.QueryHandler#processQuery(ResolverQueryMsg)
-         */
-        public ResolverResponseMsg processQuery(ResolverQueryMsg query)
-                throws
-                        NoResponseException,
-                        ResendQueryException,
-                        DiscardQueryException,
-                        IOException {
+    /**
+     * @see net.jxta.resolver.QueryHandler#processQuery(ResolverQueryMsg)
+     */
+    public ResolverResponseMsg processQuery(ResolverQueryMsg query)
+            throws
+            NoResponseException,
+            ResendQueryException,
+            DiscardQueryException,
+            IOException {
         //do nothing.
-                return null;
-        }
+        return null;
+    }
 
-        /**
-         * @see net.jxta.resolver.QueryHandler#processResponse(ResolverResponseMsg)
-         */
-        public synchronized void processResponse(ResolverResponseMsg response) {
+    /**
+     * @see net.jxta.resolver.QueryHandler#processResponse(ResolverResponseMsg)
+     */
+    public synchronized void processResponse(ResolverResponseMsg response) {
         _ior = response.getResponse();
         //_ior = r.substring(4) ;
         //System.out.println("the response is: " + _ior);
 
         /*StructuredTextDocument doc = (StructuredTextDocument)
-                            response.getDocument(XML_MIME_TYPE);
-        Enumeration rps = doc.getChildren("Response");
-        //TextElement rrr = (TextElement) rps.nextElement();
-        //System.out.println("the name of the element is: " + rrr.getName());
-        while (rps.hasMoreElements()) {
-            TextElement rp = (TextElement) rps.nextElement();
-            Enumeration cbrps = rp.getChildren();
-            TextElement rrr = (TextElement) cbrps.nextElement();
-            System.out.println("the name of the element is: " + rrr.getName());
+          response.getDocument(XML_MIME_TYPE);
+          Enumeration rps = doc.getChildren("Response");
+          //TextElement rrr = (TextElement) rps.nextElement();
+          //System.out.println("the name of the element is: " + rrr.getName());
+          while (rps.hasMoreElements()) {
+          TextElement rp = (TextElement) rps.nextElement();
+          Enumeration cbrps = rp.getChildren();
+          TextElement rrr = (TextElement) cbrps.nextElement();
+          System.out.println("the name of the element is: " + rrr.getName());
 
-        while (cbrps.hasMoreElements()) {
-            TextElement cbrp = (TextElement) cbrps.nextElement();
-            System.out.println("the name of the element is: " + cbrp.getName());
-            Enumeration  acts = cbrp.getChildren("CorbaActor");
-                while (acts.hasMoreElements()) {
-                    TextElement act = (TextElement) acts.nextElement();
-                    System.out.println("the name of the actor element is: " + act.getName());
-                    if (act.getTextValue() == _remoteActorName) {
-                        Enumeration  iors = cbrp.getChildren("CorbaActorIOR");
-                        while (iors.hasMoreElements()) {
-                            TextElement ior = (TextElement) iors.nextElement();
-                            _ior = ior.getTextValue();
+          while (cbrps.hasMoreElements()) {
+          TextElement cbrp = (TextElement) cbrps.nextElement();
+          System.out.println("the name of the element is: " + cbrp.getName());
+          Enumeration  acts = cbrp.getChildren("CorbaActor");
+          while (acts.hasMoreElements()) {
+          TextElement act = (TextElement) acts.nextElement();
+          System.out.println("the name of the actor element is: " + act.getName());
+          if (act.getTextValue() == _remoteActorName) {
+          Enumeration  iors = cbrp.getChildren("CorbaActorIOR");
+          while (iors.hasMoreElements()) {
+          TextElement ior = (TextElement) iors.nextElement();
+          _ior = ior.getTextValue();
 
-                        }
-                    }
-                }
-            }
-        }
+          }
+          }
+          }
+          }
+          }
         */
 
         System.out.println("the IOR is: " + _ior);
         notifyAll();
 
-        }
+    }
 
-        ///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Transfer the input tokens to the remote actor.
@@ -526,22 +526,22 @@ public class JxtaCorbaActorClient extends TypedAtomicActor implements QueryHandl
         }
     }
 
-     ///////////////////////////////////////////////////////////////////
-     ////                         private members                   ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private members                   ////
 
     private Properties _properties;
-        private PeerGroup _group;
-        private ResolverService _resolverService;
-        private Authenticator _authenticator;
-        private Credential _credential;
-        private ResolverQueryMsg _actorQueryMessage;
-        private ResolverResponseMsg _actorQueryResponse;
-        private String _configDir;
-        private static String _CONFIG_DIR = "pae.config.dir";
-        private String _CONFIG_FILE = "Peer.properties";
-        private String _actorListFileName;
-        private String _ACTOR_QUERY_HANDLER_NAME = "ActorQueryHandler";
-        private MimeMediaType XML_MIME_TYPE = new MimeMediaType("text/xml");
+    private PeerGroup _group;
+    private ResolverService _resolverService;
+    private Authenticator _authenticator;
+    private Credential _credential;
+    private ResolverQueryMsg _actorQueryMessage;
+    private ResolverResponseMsg _actorQueryResponse;
+    private String _configDir;
+    private static String _CONFIG_DIR = "pae.config.dir";
+    private String _CONFIG_FILE = "Peer.properties";
+    private String _actorListFileName;
+    private String _ACTOR_QUERY_HANDLER_NAME = "ActorQueryHandler";
+    private MimeMediaType XML_MIME_TYPE = new MimeMediaType("text/xml");
 
     private String _ior = null;
     private String _remoteActorName;

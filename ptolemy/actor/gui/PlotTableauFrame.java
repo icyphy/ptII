@@ -160,7 +160,7 @@ public class PlotTableauFrame extends TableauFrame {
         super._addMenus();
 
         // Edit menu
-               _editMenu = new JMenu("Edit");
+        _editMenu = new JMenu("Edit");
         _editMenu.setMnemonic(KeyEvent.VK_E);
         _menubar.add(_editMenu);
 
@@ -168,7 +168,7 @@ public class PlotTableauFrame extends TableauFrame {
         GUIUtilities.addMenuItem(_editMenu, formatAction);
 
         // Special menu
-               _specialMenu = new JMenu("Special");
+        _specialMenu = new JMenu("Special");
         _specialMenu.setMnemonic(KeyEvent.VK_S);
         _menubar.add(_specialMenu);
 
@@ -229,7 +229,7 @@ public class PlotTableauFrame extends TableauFrame {
         }
 
         fileDialog.setSelectedFile(new File(fileDialog.getCurrentDirectory(),
-                                            "plot.eps"));
+                "plot.eps"));
 
         int returnVal = fileDialog.showDialog(this, "Export");
         if (returnVal == JFileChooser.APPROVE_OPTION) {

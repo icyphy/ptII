@@ -277,7 +277,7 @@ public class ProcessDirector extends Director {
      *  throws it.
      */
     public void preinitialize() throws IllegalActionException {
-         _notDone = true;
+        _notDone = true;
         _activeActorCount = 0;
         _blockedActorCount = 0;
         _actorThreadList = new LinkedList();
@@ -316,16 +316,16 @@ public class ProcessDirector extends Director {
      *  non-blocking.
      */
     public void stopFire() {
-         Iterator threads = _actorThreadList.iterator();
-         while (threads.hasNext() ) {
-             ProcessThread thread = (ProcessThread)threads.next();
+        Iterator threads = _actorThreadList.iterator();
+        while (threads.hasNext() ) {
+            ProcessThread thread = (ProcessThread)threads.next();
 
             // Call stopThread() on the threads first.
             // FIXME: Race condition here... When thread stops
             // and when stop is called is probably nondeterministic.
             thread.stopThread();
             thread.getActor().stopFire();
-         }
+        }
     }
 
     /** Terminates all threads under control of this director immediately.
@@ -392,7 +392,7 @@ public class ProcessDirector extends Director {
         Nameable container = getContainer();
         if (container instanceof CompositeActor) {
             Iterator actors = ((CompositeActor)container)
-                    .deepEntityList().iterator();
+                .deepEntityList().iterator();
             Iterator actorPorts;
             ProcessReceiver nextReceiver;
             LinkedList receiversList = new LinkedList();
@@ -532,7 +532,7 @@ public class ProcessDirector extends Director {
      *  reasons.
      */
     protected synchronized void _decreaseActiveCount() {
-         _activeActorCount--;
+        _activeActorCount--;
         notifyAll();
     }
 

@@ -161,7 +161,7 @@ public class ArrayElement extends Transformer {
         ArrayType inputArrayType = (ArrayType)input.getType();
         InequalityTerm elementTerm = inputArrayType.getElementTypeTerm();
         Inequality inequality = new Inequality(elementTerm,
-               output.getTypeTerm());
+                output.getTypeTerm());
 
         result.add(inequality);
         return result;

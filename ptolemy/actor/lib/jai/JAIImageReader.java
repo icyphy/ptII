@@ -77,7 +77,7 @@ public class JAIImageReader extends Source {
         super(container, name);
         output.setTypeEquals(BaseType.OBJECT);
         fileOrURL = new FileAttribute(this, "fileOrURL");
-}
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////

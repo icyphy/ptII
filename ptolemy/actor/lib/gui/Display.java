@@ -254,10 +254,10 @@ public class Display extends Sink implements Placeable {
             }
             textArea = _frame.text;
             int numRows =
-                    ((IntToken)rowsDisplayed.getToken()).intValue();
+                ((IntToken)rowsDisplayed.getToken()).intValue();
             textArea.setRows(numRows);
             int numColumns =
-                    ((IntToken)columnsDisplayed.getToken()).intValue();
+                ((IntToken)columnsDisplayed.getToken()).intValue();
             textArea.setColumns(numColumns);
             _windowProperties.setProperties(_frame);
             _frame.show();
@@ -267,9 +267,9 @@ public class Display extends Sink implements Placeable {
         }
         /** NOTE: This causes a bug where manual placement
          *  gets overridden on re-run.
-        if (_frame != null) {
-            _frame.show();
-        }
+         if (_frame != null) {
+         _frame.show();
+         }
         */
         /*
           int tab = ((IntToken)tabSize.getToken()).intValue();
@@ -320,10 +320,10 @@ public class Display extends Sink implements Placeable {
         }
         try {
             int numRows =
-                    ((IntToken)rowsDisplayed.getToken()).intValue();
+                ((IntToken)rowsDisplayed.getToken()).intValue();
             textArea.setRows(numRows);
             int numColumns =
-                    ((IntToken)columnsDisplayed.getToken()).intValue();
+                ((IntToken)columnsDisplayed.getToken()).intValue();
             textArea.setColumns(numColumns);
             // Note that in an applet, you may see problems where
             // the text area is obscured by the horizontal scroll

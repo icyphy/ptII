@@ -122,21 +122,21 @@ public class ConvolutionalCoder extends Transformer {
         // Declare data types, consumption rate and production rate.
         input.setTypeEquals(BaseType.INT);
         _inputRate = new Parameter(input, "tokenConsumptionRate",
-            new IntToken(1));
+                new IntToken(1));
         output.setTypeEquals(BaseType.INT);
         _outputRate = new Parameter(output, "tokenProductionRate",
-            new IntToken(1));
+                new IntToken(1));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-     /** An array of integers defining an array of polynomials with
-      *  binary coefficients. The coefficients indicate the presence (1)
-      *  or absence (0) of a tap in the shift register. Each element
-      *  of this array parameter should be a positive integer.
-      *  The array's default value is {05, 07}.
-      */
+    /** An array of integers defining an array of polynomials with
+     *  binary coefficients. The coefficients indicate the presence (1)
+     *  or absence (0) of a tap in the shift register. Each element
+     *  of this array parameter should be a positive integer.
+     *  The array's default value is {05, 07}.
+     */
     public Parameter polynomialArray;
 
     /** Integer defining the intial state of the shift register.
@@ -171,7 +171,7 @@ public class ConvolutionalCoder extends Transformer {
             int initialValue = ((IntToken)initial.getToken()).intValue();
             if (initialValue < 0 ) {
                 throw new IllegalActionException(this,
-                "shift register's value must be non-negative.");
+                        "shift register's value must be non-negative.");
             }
         } else if (attribute == inputBlockSize) {
             _inputNumber = ((IntToken)inputBlockSize.getToken()).intValue();
@@ -194,7 +194,7 @@ public class ConvolutionalCoder extends Transformer {
                 _mask[i] = ((IntToken)maskToken.getElement(i)).intValue();
                 if (_mask[i] <= 0) {
                     throw new IllegalActionException(this,
-                    "Polynomial is required to be strictly positive.");
+                            "Polynomial is required to be strictly positive.");
                 }
                 if (_mask[i] > _maxPolyValue) {
                     _maxPolyValue = _mask[i];
@@ -219,7 +219,7 @@ public class ConvolutionalCoder extends Transformer {
         if (_inputNumberInvalid) {
             if (_inputNumber >= _maskNumber) {
                 throw new IllegalActionException(this,
-                "Output rate should be larger than input rate.");
+                        "Output rate should be larger than input rate.");
             }
             if ((1<< _inputNumber) > _maxPolyValue) {
                 throw new IllegalActionException(this,
@@ -235,12 +235,12 @@ public class ConvolutionalCoder extends Transformer {
         Token[] inputToken = (Token[])input.get(0, _inputNumber);
         int reg = _latestShiftReg;
         for (int i = 0; i < _inputNumber; i++) {
-             reg = reg << 1;
-             IntToken input = (IntToken)inputToken[i];
-             if (input.intValue() == 1 || input.intValue() == 0) {
+            reg = reg << 1;
+            IntToken input = (IntToken)inputToken[i];
+            if (input.intValue() == 1 || input.intValue() == 0) {
                 reg = reg | input.intValue();
-             } else { throw new IllegalActionException(this,
-                      "Input should be either 0 or 1.");
+            } else { throw new IllegalActionException(this,
+                    "Input should be either 0 or 1.");
             }
         }
         _latestShiftReg = reg;

@@ -84,7 +84,7 @@ public class PythonShellEffigy extends Effigy {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         PythonShellEffigy newObject
-               = (PythonShellEffigy)super.clone(workspace);
+            = (PythonShellEffigy)super.clone(workspace);
         if (_model != null) {
             newObject._model = (NamedObj)_model.clone(new Workspace());
         }

@@ -100,7 +100,7 @@ public class BoundaryDetector {
                     // Now determine if this receiver's channel is
                     // connected to the boundary port.
                     Receiver[][] receivers =
-                            connectedPort.deepGetReceivers();
+                        connectedPort.deepGetReceivers();
                     for ( int i = 0; i < receivers.length; i++ ) {
                         for ( int j = 0; j < receivers[i].length; j++ ) {
                             if ( _receiver == receivers[i][j] ) {
@@ -171,7 +171,7 @@ public class BoundaryDetector {
                     // Now determine if this receiver's channel is
                     // connected to the boundary port.
                     Receiver[][] receivers =
-                            connectedPort.deepGetReceivers();
+                        connectedPort.deepGetReceivers();
                     for ( int i = 0; i < receivers.length; i++ ) {
                         for ( int j = 0; j < receivers[i].length; j++ ) {
                             if ( _receiver == receivers[i][j] ) {
@@ -342,12 +342,12 @@ public class BoundaryDetector {
     /** Reset the cache variables in boundary detector.
      */
     public void reset() {
-            _insideBoundaryCacheIsOn = false;
-            _isInsideBoundaryValue = false;
-            _outsideBoundaryCacheIsOn = false;
-            _isOutsideBoundaryValue = false;
-            _connectedBoundaryCacheIsOn = false;
-            _isConnectedBoundaryValue = false;
+        _insideBoundaryCacheIsOn = false;
+        _isInsideBoundaryValue = false;
+        _outsideBoundaryCacheIsOn = false;
+        _isOutsideBoundaryValue = false;
+        _connectedBoundaryCacheIsOn = false;
+        _isConnectedBoundaryValue = false;
     }
 
     ///////////////////////////////////////////////////////////////////

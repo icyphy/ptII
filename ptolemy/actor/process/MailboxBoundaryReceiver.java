@@ -135,15 +135,15 @@ public class MailboxBoundaryReceiver extends Mailbox
             }
 
             if ( _terminate ) {
-                    throw new TerminateProcessException("");
+                throw new TerminateProcessException("");
             } else {
-                    result = super.get();
+                result = super.get();
                 if ( _writeBlock ) {
                     wakeUpBlockedPartner();
                     _writeBlock = false;
                     notifyAll();
                 }
-                    return result;
+                return result;
             }
         }
     }
@@ -196,7 +196,7 @@ public class MailboxBoundaryReceiver extends Mailbox
         if ( isConnectedToBoundary() ) {
             return true;
         }
-            return false;
+        return false;
     }
 
     /** Return true if this receiver is contained on the inside of a
@@ -237,7 +237,7 @@ public class MailboxBoundaryReceiver extends Mailbox
         if ( isOutsideBoundary() || isInsideBoundary() ) {
             return true;
         }
-            return false;
+        return false;
     }
 
     /** Return true if this receiver is read blocked; return false
@@ -303,7 +303,7 @@ public class MailboxBoundaryReceiver extends Mailbox
             }
 
             if ( _terminate ) {
-                    throw new TerminateProcessException("");
+                throw new TerminateProcessException("");
             } else {
                 super.put(token);
                 if ( _readBlock ) {
@@ -331,7 +331,7 @@ public class MailboxBoundaryReceiver extends Mailbox
      *  containing this receiver discontinue.
      */
     public synchronized void requestFinish() {
-            _terminate = true;
+        _terminate = true;
         notifyAll();
     }
 
@@ -339,7 +339,7 @@ public class MailboxBoundaryReceiver extends Mailbox
      *  restarting execution.
      */
     public void reset() {
-            _terminate = false;
+        _terminate = false;
         _readBlock = false;
         _writeBlock = false;
         _boundaryDetector.reset();

@@ -130,19 +130,19 @@ public class BranchController implements Runnable {
 
         if ( _ports.contains(port) ) {
             throw new IllegalActionException(port, "This port "
-                        + "is already controlled by this "
+                    + "is already controlled by this "
                     + "BranchController");
         }
         // Careful; maintain order of following test in case
         // Java is like C
         if ( _hasInputPorts() && !port.isInput() ) {
             throw new IllegalActionException("BranchControllers "
-                        + "must contain only input ports or only output "
+                    + "must contain only input ports or only output "
                     + "ports; not both");
         }
         if ( _hasOutputPorts() && !port.isOutput() ) {
             throw new IllegalActionException("BranchControllers "
-                        + "must contain only input ports or only output "
+                    + "must contain only input ports or only output "
                     + "ports; not both");
         }
         _ports.add(port);
@@ -261,7 +261,7 @@ public class BranchController implements Runnable {
      *  branch controller is notified.
      */
     public void run() {
-            synchronized(this) {
+        synchronized(this) {
             try {
                 activateBranches();
                 while ( isActive() ) {
@@ -351,7 +351,7 @@ public class BranchController implements Runnable {
      *  with it. False otherwise.
      */
     private boolean _hasInputPorts() {
-            if ( _ports.size() == 0 ) {
+        if ( _ports.size() == 0 ) {
             return false;
         }
         Iterator ports = _ports.iterator();
@@ -368,7 +368,7 @@ public class BranchController implements Runnable {
      *  with it. False otherwise.
      */
     private boolean _hasOutputPorts() {
-            if ( _ports.size() == 0 ) {
+        if ( _ports.size() == 0 ) {
             return false;
         }
         Iterator ports = _ports.iterator();

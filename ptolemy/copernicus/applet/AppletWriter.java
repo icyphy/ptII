@@ -200,7 +200,7 @@ public class AppletWriter extends SceneTransformer {
                 while (jarFiles.hasNext()) {
                     String jarFile = (String)jarFiles.next();
                     if (jarFilesResults.length() > 0) {
-                    jarFilesResults.append(",");
+                        jarFilesResults.append(",");
                     }
                     jarFilesResults.append(jarFile);
                 }
@@ -237,7 +237,7 @@ public class AppletWriter extends SceneTransformer {
         String modelFileName =
             _outputDirectory + "/" + _sanitizedModelName + ".xml";
         System.out.println("AppletWriter: about to write '"
-                           + modelFileName + "'");
+                + modelFileName + "'");
         try {
             Writer modelFileWriter =
                 new BufferedWriter(new OutputStreamWriter(new FileOutputStream(modelFileName)));
@@ -258,19 +258,19 @@ public class AppletWriter extends SceneTransformer {
         _templateDirectory = Options.getString(options, "templateDirectory");
 
         System.out.println("AppletWriter: _templateDirectory: '"
-                           + _templateDirectory + "'");
+                + _templateDirectory + "'");
 
         // Read in the templates and generate new files.
         try {
             Copernicus.substitute(_templateDirectory + "model.htm.in",
-                                    _substituteMap,
-                                    _outputDirectory + "/"
-                                    + _sanitizedModelName + ".htm");
+                    _substituteMap,
+                    _outputDirectory + "/"
+                    + _sanitizedModelName + ".htm");
             Copernicus.substitute(_templateDirectory + "modelVergil.htm.in",
-                                    _substituteMap,
-                                    _outputDirectory + "/"
-                                    + _sanitizedModelName
-                                    + "Vergil.htm");
+                    _substituteMap,
+                    _outputDirectory + "/"
+                    + _sanitizedModelName
+                    + "Vergil.htm");
 
             // Copy $PTII/doc/default.css as well.
             File defaultStyleSheetDirectory =
@@ -278,9 +278,9 @@ public class AppletWriter extends SceneTransformer {
             defaultStyleSheetDirectory.mkdirs();
 
             Copernicus.substitute(_templateDirectory + "default.css",
-                                  _substituteMap,
-                                  defaultStyleSheetDirectory.toString()
-                                  + "/default.css" );
+                    _substituteMap,
+                    defaultStyleSheetDirectory.toString()
+                    + "/default.css" );
 
         } catch (IOException ex) {
             // This exception tends to get eaten by soot, so we print as well.
@@ -299,15 +299,15 @@ public class AppletWriter extends SceneTransformer {
         while (atomicEntities.hasNext()) {
             Object object = atomicEntities.next();
             results.put(object.getClass().getName(),
-                        _getDomainJar(object.getClass().getPackage()
-                                      .getName()));
+                    _getDomainJar(object.getClass().getPackage()
+                            .getName()));
 
             if (object instanceof AtomicActor) {
                 // Add in the Managers.
                 results.put(((AtomicActor)object).getDirector().getClass()
-                            .getName(),
-                            _getDomainJar(((AtomicActor)object).getDirector()
-                                          .getClass().getPackage().getName()));
+                        .getName(),
+                        _getDomainJar(((AtomicActor)object).getDirector()
+                                .getClass().getPackage().getName()));
             }
         }
         return results;
@@ -318,7 +318,7 @@ public class AppletWriter extends SceneTransformer {
     // Copy jar files into _outputDirectory
     // Return the jar files that have been copied
     private Set _copyJarFiles(Director director)
-        throws IOException {
+            throws IOException {
 
         // In the perfect world, we would run tree shaking here, or
         // look up classes as resources.  However, if we are running
@@ -333,19 +333,19 @@ public class AppletWriter extends SceneTransformer {
         Map classMap = _allAtomicEntityJars();
 
         classMap.put("ptolemy.actor.gui.MoMLApplet",
-                     "ptolemy/ptsupport.jar");
+                "ptolemy/ptsupport.jar");
         classMap.put(director.getClass().getName(),
-                     _domainJar);
+                _domainJar);
         classMap.put("ptolemy.vergil.MoMLViewerApplet",
-                     "ptolemy/vergil/vergilApplet.jar");
+                "ptolemy/vergil/vergilApplet.jar");
         // FIXME: unfortunately, vergil depends on FSM now.
         classMap.put("ptolemy.domains.fsm.kernel.FSMActor",
-                     "ptolemy/domains/fsm/fsm.jar");
+                "ptolemy/domains/fsm/fsm.jar");
         // FIXME: vergil.fsm.modal.ModalModel depends on CTStepSizeControlActor
         classMap.put("ptolemy.domains.ct.kernel.CTStepSizeControlActor",
-                     "ptolemy/domains/ct/ct.jar");
+                "ptolemy/domains/ct/ct.jar");
         classMap.put("diva.graph.GraphController",
-                     "lib/diva.jar");
+                "lib/diva.jar");
 
         // First, we search for the jar file, then we try
         // getting the class as a resource.
@@ -367,7 +367,7 @@ public class AppletWriter extends SceneTransformer {
             File potentialSourceJarFile =
                 new File(_ptIIDirectory, (String)classMap.get(className));
             if (jarFilesThatHaveBeenCopied
-                .contains((String)classMap.get(className))) {
+                    .contains((String)classMap.get(className))) {
                 // If we have already copied the jar file, then skip it
                 continue;
             }
@@ -378,9 +378,9 @@ public class AppletWriter extends SceneTransformer {
                 // Ptolemy II development trees will have jar files
                 // if 'make install' was run.
                 _copyFile(_ptIIDirectory + File.separator
-                          + (String)classMap.get(className),
-                          _outputDirectory,
-                          (String)classMap.get(className));
+                        + (String)classMap.get(className),
+                        _outputDirectory,
+                        (String)classMap.get(className));
 
             } else {
                 // Under Web Start, the resource that contains a class
@@ -391,9 +391,9 @@ public class AppletWriter extends SceneTransformer {
 
                 if (classResource == null) {
                     throw new IOException("Could not find '" + className
-                                          + "' as a resource.\n"
-                                          + "Try adding this class to the "
-                                          + "necessaryClasses parameter"
+                            + "' as a resource.\n"
+                            + "Try adding this class to the "
+                            + "necessaryClasses parameter"
                                           );
                 }
 
@@ -430,25 +430,25 @@ public class AppletWriter extends SceneTransformer {
 
     // Copy sourceFile to the destinationFile in destinationDirectory.
     private void _copyFile(String sourceFileName,
-                              String destinationDirectory,
-                              String destinationFileName )
-        throws IOException {
+            String destinationDirectory,
+            String destinationFileName )
+            throws IOException {
         File sourceFile = new File(sourceFileName);
         if ( !sourceFile.isFile()) {
             throw new FileNotFoundException("Could not find '"
-                                            + sourceFileName + "'."
-                                            + "\nPerhaps you need "
-                                            + "to run 'make install'?");
+                    + sourceFileName + "'."
+                    + "\nPerhaps you need "
+                    + "to run 'make install'?");
         }
 
         File destinationFile = new File(destinationDirectory,
-                                            destinationFileName);
+                destinationFileName);
         File destinationParent = new File(destinationFile.getParent());
         destinationParent.mkdirs();
 
         System.out.println("AppletWriter: Copying " + sourceFile
-                           + " (" + sourceFile.length()/1024 + "K) to "
-                           + destinationFile);
+                + " (" + sourceFile.length()/1024 + "K) to "
+                + destinationFile);
 
         // Avoid end of line and localization issues.
         BufferedInputStream in =
@@ -469,7 +469,7 @@ public class AppletWriter extends SceneTransformer {
         String domainPackageDomain =
             domainPackage.substring(0,
                     domainPackage.lastIndexOf(".")
-                                      );
+                                    );
 
         String domainDomain =
             domainPackageDomain.substring(domainPackageDomain

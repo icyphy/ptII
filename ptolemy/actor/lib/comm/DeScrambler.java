@@ -91,12 +91,12 @@ public class DeScrambler extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-     /** Integer defining a polynomial with binary coefficients.
-      *  The coefficients indicate the presence (1) or absence (0)
-      *  of a tap in a feedback shift register. This parameter should
-      *  contain a positive integer with the lower-order bit being 1.
-      *  Its default value is the integer 0440001.
-      */
+    /** Integer defining a polynomial with binary coefficients.
+     *  The coefficients indicate the presence (1) or absence (0)
+     *  of a tap in a feedback shift register. This parameter should
+     *  contain a positive integer with the lower-order bit being 1.
+     *  Its default value is the integer 0440001.
+     */
     public Parameter polynomial;
 
     /** Integer defining the intial state of the shift register.
@@ -112,30 +112,30 @@ public class DeScrambler extends Transformer {
     /** If the attribute being changed is <i>initial</i>, then verify
         that is a non-negative interger; if it is <i>polynomial</i>, then
         verify that is a positive interger and the lower-order bit is 1.
-     *  @exception IllegalActionException If <i>initial</i> is non-positive
-     *  or polynomial is non-positive or the lower-order bit is not 1.
-     */
+        *  @exception IllegalActionException If <i>initial</i> is non-positive
+        *  or polynomial is non-positive or the lower-order bit is not 1.
+        */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-          if (attribute == initial) {
-          int seed = ((IntToken)initial.getToken()).intValue();
-          if (seed<0 ) {
+        if (attribute == initial) {
+            int seed = ((IntToken)initial.getToken()).intValue();
+            if (seed<0 ) {
                 throw new IllegalActionException(this,
-                "shift register's value must be non-negative.");
+                        "shift register's value must be non-negative.");
             }
-           } else if (attribute == polynomial) {
-               int mask = ((IntToken)polynomial.getToken()).intValue();
-               if (mask <= 0) {
-                   throw new IllegalActionException(this,
-                   "Polynomial is required to be strictly positive.");
-               }
-               if ((mask & 1) == 0) {
-                   throw new IllegalActionException(this,
-                   "The low-order bit of the the polynomial is not set.");
-               }
-           } else {
-               super.attributeChanged(attribute);
-           }
+        } else if (attribute == polynomial) {
+            int mask = ((IntToken)polynomial.getToken()).intValue();
+            if (mask <= 0) {
+                throw new IllegalActionException(this,
+                        "Polynomial is required to be strictly positive.");
+            }
+            if ((mask & 1) == 0) {
+                throw new IllegalActionException(this,
+                        "The low-order bit of the the polynomial is not set.");
+            }
+        } else {
+            super.attributeChanged(attribute);
+        }
     }
 
     /** Read bit from the input port and fill it into the shift register
@@ -151,7 +151,7 @@ public class DeScrambler extends Transformer {
         if (inputTokenValue == 0 || inputTokenValue == 1){
             reg = reg | inputTokenValue;
         } else { throw new IllegalActionException(this,
-                         "The input must be either 0 or 1.");
+                "The input must be either 0 or 1.");
         }
         // Find the parity of "masked".
         int masked = mask & reg;
@@ -160,7 +160,7 @@ public class DeScrambler extends Transformer {
         while (masked >0){
             parity = parity ^ (masked & 1);
             masked = masked >> 1;
-            }
+        }
 
         _latestShiftReg = reg;
         if (parity == 1){

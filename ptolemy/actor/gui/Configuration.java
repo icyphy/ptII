@@ -445,8 +445,8 @@ public class Configuration extends CompositeEntity {
                         separator = ".";
                     }
                     effigy.identifier.setExpression(entityName
-                                                    + separator
-                                                    + entity.getName());
+                            + separator
+                            + entity.getName());
 
                     // Set the uri of the effigy to that of
                     // the parent.

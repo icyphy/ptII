@@ -79,7 +79,7 @@ public class Branch implements Runnable {
      *  @deprecated Use this constructor for testing purposes only.
      */
     public Branch(BranchController controller) throws
-                IllegalActionException {
+            IllegalActionException {
         _controller = controller;
     }
 
@@ -99,7 +99,7 @@ public class Branch implements Runnable {
 
         if ( producerReceiver == null || consumerReceiver == null ) {
             throw new IllegalActionException("The boundary "
-                        + "receivers of this branch are null.");
+                    + "receivers of this branch are null.");
         }
         if ( !producerReceiver.isProducerReceiver() ) {
             String name = ((Nameable)consumerReceiver.getContainer()).getName();
@@ -154,8 +154,8 @@ public class Branch implements Runnable {
      *   is blocked.
      */
     public void registerReceiverBlocked(ProcessReceiver receiver) {
-            if ( !_receiverBlocked ) {
-                _receiverBlocked = true;
+        if ( !_receiverBlocked ) {
+            _receiverBlocked = true;
             _controller._branchBlocked(receiver);
         }
     }
@@ -167,8 +167,8 @@ public class Branch implements Runnable {
      *   which a block is being removed.
      */
     public void registerReceiverUnBlocked(ProcessReceiver receiver) {
-            if ( _receiverBlocked ) {
-                _receiverBlocked = false;
+        if ( _receiverBlocked ) {
+            _receiverBlocked = false;
             _controller._branchUnBlocked(receiver);
         }
     }

@@ -109,7 +109,7 @@ public class CodeFileGenerator extends CodeGenerator {
         while (methods.hasNext()) {
             SootMethod method = (SootMethod)(methods.next());
             if (method.isPrivate()
-                && RequiredFileGenerator.isRequired(method)) {
+                    && RequiredFileGenerator.isRequired(method)) {
                 if (count++ == 0) {
                     bodyCode.append(_comment("Prototypes for functions that "
                             + "implement private methods"));
@@ -124,7 +124,7 @@ public class CodeFileGenerator extends CodeGenerator {
         // JDK1.4 under Solaris fails if the next line is iterator()
         // instead of snapshotIterator()
         MethodCodeGenerator methodCodeGenerator =
-                new MethodCodeGenerator(_context, _requiredTypeMap);
+            new MethodCodeGenerator(_context, _requiredTypeMap);
 
         methods = source.getMethods().snapshotIterator();
         while (methods.hasNext()) {
@@ -137,14 +137,14 @@ public class CodeFileGenerator extends CodeGenerator {
             }
 
             if (methodCode.length() != 0) {
-                    bodyCode.append("\n");
+                bodyCode.append("\n");
             }
 
         }
 
         // Generate the code for the method that looks up interfaces.
         InterfaceLookupGenerator interfaceHandler =
-                new InterfaceLookupGenerator();
+            new InterfaceLookupGenerator();
         bodyCode.append(interfaceHandler.generate(source));
 
         // Function for handing "instanceof".
@@ -222,23 +222,23 @@ public class CodeFileGenerator extends CodeGenerator {
             code.append(_indent(1) + "/* Inherited Methods */\n");
             code.append(_generateMethodPointerInitialization(
                     MethodListGenerator.getInheritedMethods(source)
-                            , argumentReference));
+                    , argumentReference));
         }
         // New methods.
         code.append(_indent(1) + "/* New Methods */\n");
         code.append(_generateMethodPointerInitialization(
                 MethodListGenerator.getNewMethods(source)
-                        , argumentReference));
+                , argumentReference));
         // Constructors.
         code.append(_indent(1) + "/* Constructors */\n");
         code.append(_generateMethodPointerInitialization(
                 MethodListGenerator.getConstructors(source)
-                        , argumentReference));
+                , argumentReference));
         // Private methods.
         code.append(_indent(1) + "/* Private Methods */\n");
         code.append(_generateMethodPointerInitialization(
                 MethodListGenerator.getPrivateMethods(source)
-                        , argumentReference));
+                , argumentReference));
 
         Iterator stringConstants = _context.getStringConstants();
 
@@ -254,7 +254,7 @@ public class CodeFileGenerator extends CodeGenerator {
                     _comment("Initialization of string constants"));
             while (stringConstants.hasNext()) {
                 StringBuffer value = new StringBuffer(
-                                        stringConstants.next().toString());
+                        stringConstants.next().toString());
                 // Replace all incidences of " with \" to prevent bad characters
                 // between quotes.
                 for (int i = 0; i<value.length(); i++) {
@@ -284,8 +284,8 @@ public class CodeFileGenerator extends CodeGenerator {
             if (!RequiredFileGenerator.isRequired(source
                     .getSuperclass())) {
                 code.append("/* "
-                +   "&" + CNames.classStructureNameOf(source.getSuperclass())
-                + " */ NULL");
+                        +   "&" + CNames.classStructureNameOf(source.getSuperclass())
+                        + " */ NULL");
             }
             else {
                 code.append("&" + CNames.classStructureNameOf(
@@ -326,7 +326,7 @@ public class CodeFileGenerator extends CodeGenerator {
         @param argumentReference A C reference pointing to the structure
         which has the "methods" substructure containing the method
         pointers. Typically this is a class structure in the C code.
-     */
+    */
     private String _generateMethodPointerInitialization(List methodList
             , String argumentReference) {
         StringBuffer code = new StringBuffer();
@@ -339,7 +339,7 @@ public class CodeFileGenerator extends CodeGenerator {
             if ((!method.isStatic())
                     && RequiredFileGenerator.isRequired(method)
                     && (!method.isAbstract())
-                    ) {
+                ) {
 
                 code.append(_indent(1) + argumentReference
                         + "methods." + CNames.methodNameOf(method) + " = "

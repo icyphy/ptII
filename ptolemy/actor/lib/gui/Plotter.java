@@ -184,9 +184,9 @@ public class Plotter extends PlotterBase {
         }
         /* NOTE: This causes a bug where manual resizes of the window
            get overridden on re-run.
-        if (_frame != null) {
-            _frame.show();
-        }
+           if (_frame != null) {
+           _frame.show();
+           }
         */
     }
 }

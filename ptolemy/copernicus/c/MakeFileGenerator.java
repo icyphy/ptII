@@ -61,7 +61,7 @@ public class MakeFileGenerator {
      */
     public static String classNameToMakeFileName(String className) {
         StringBuffer name = new StringBuffer(
-            CNames.classNameToFileName(className));
+                CNames.classNameToFileName(className));
         return name.toString();
     }
 
@@ -174,7 +174,7 @@ public class MakeFileGenerator {
         code.append(";\n");
 
         code.append("# DO NOT DELETE THIS LINE "
-                    + " -- make depend depends on it.\n\n");
+                + " -- make depend depends on it.\n\n");
 
         FileHandler.write(className + ".make", code.toString());
 

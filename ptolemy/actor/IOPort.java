@@ -1780,7 +1780,7 @@ public class IOPort extends ComponentPort {
                 Receiver[][] receivers = getReceivers();
                 if (receivers.length <= channelIndex) {
                     throw new IllegalActionException(this,
-                    "Channel index is out of range: " + channelIndex);
+                            "Channel index is out of range: " + channelIndex);
                 }
                 if (receivers != null && receivers[channelIndex] != null) {
                     for (int j = 0; j < receivers[channelIndex].length; j++) {
@@ -1795,7 +1795,7 @@ public class IOPort extends ComponentPort {
                 Receiver[][] receivers = getRemoteReceivers();
                 if (receivers.length <= channelIndex) {
                     throw new IllegalActionException(this,
-                    "Channel index is out of range: " + channelIndex);
+                            "Channel index is out of range: " + channelIndex);
                 }
                 if (receivers != null && receivers[channelIndex] != null) {
                     for (int j = 0; j < receivers[channelIndex].length; j++) {
@@ -2423,34 +2423,34 @@ public class IOPort extends ComponentPort {
      *  @param receiver The receiver.
      *  @return A list of IOPort objects, or an empty list if there are none.
      */
-     /* NOTE: This method is commented out because it is untested,
-      * extremely complicated, and appears to be not needed (yet).
-    public List sourcePortList(Receiver receiver) {
-        // This is a surprisingly difficult thing to do...
-        List result = new LinkedList();
+    /* NOTE: This method is commented out because it is untested,
+     * extremely complicated, and appears to be not needed (yet).
+     public List sourcePortList(Receiver receiver) {
+     // This is a surprisingly difficult thing to do...
+     List result = new LinkedList();
 
-        // Next, we iterate over ports in the sourcePortList() to find
-        // those that have one of these receivers in their remote
-        // receiver list.
-        Iterator sourcePorts = sourcePortList().iterator();
-        while (sourcePorts.hasNext()) {
-            IOPort sourcePort = (IOPort)sourcePorts.next();
-            Receiver[][] sourcesRemoteReceivers
-                    = sourcePort.getRemoteReceivers();
-            if (sourcesRemoteReceivers == null) continue;
-            for (int i = 0; i < sourcesRemoteReceivers.length; i++) {
-                if (sourcesRemoteReceivers[i] == null) continue;
-                for (int j = 0; j < sourcesRemoteReceivers[i].length; j++) {
-                    if (sourcesRemoteReceivers[i][j] == null) continue;
-                    if (sourcesRemoteReceivers[i][j] == receiver) {
-                        result.add(sourcesRemoteReceivers[i][j].getContainer());
-                    }
-                }
-            }
-        }
-        return result;
-    }
-     */
+     // Next, we iterate over ports in the sourcePortList() to find
+     // those that have one of these receivers in their remote
+     // receiver list.
+     Iterator sourcePorts = sourcePortList().iterator();
+     while (sourcePorts.hasNext()) {
+     IOPort sourcePort = (IOPort)sourcePorts.next();
+     Receiver[][] sourcesRemoteReceivers
+     = sourcePort.getRemoteReceivers();
+     if (sourcesRemoteReceivers == null) continue;
+     for (int i = 0; i < sourcesRemoteReceivers.length; i++) {
+     if (sourcesRemoteReceivers[i] == null) continue;
+     for (int j = 0; j < sourcesRemoteReceivers[i].length; j++) {
+     if (sourcesRemoteReceivers[i][j] == null) continue;
+     if (sourcesRemoteReceivers[i][j] == receiver) {
+     result.add(sourcesRemoteReceivers[i][j].getContainer());
+     }
+     }
+     }
+     }
+     return result;
+     }
+    */
 
     /** Transfer data from this port to the ports it is connected to
      *  on the inside.
@@ -2872,7 +2872,7 @@ public class IOPort extends ComponentPort {
                         result += "{";
                         if (receivers[i][j] != null) {
                             result +=
-                            receivers[i][j].getClass().getName();
+                                receivers[i][j].getClass().getName();
                         }
                         result += "}\n";
                     }

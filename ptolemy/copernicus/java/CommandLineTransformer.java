@@ -226,13 +226,13 @@ public class CommandLineTransformer extends SceneTransformer {
                 System.out.println("clt: " + method + " " + body);
             }
             /*
-            SootUtilities.createAndSetFieldFromLocal(
-                    body,
-                    modelField,
-                    mainClass,
-                    modelField.getType(),
-                    "_model");
-             */
+              SootUtilities.createAndSetFieldFromLocal(
+              body,
+              modelField,
+              mainClass,
+              modelField.getType(),
+              "_model");
+            */
         }
 
         // Find calls to Manager.startRun() and replace it with
@@ -258,39 +258,39 @@ public class CommandLineTransformer extends SceneTransformer {
                 if (!stmt.containsInvokeExpr()) {
                     continue;
                 }
-                    ValueBox box = stmt.getInvokeExprBox();
-                    Value value = box.getValue();
-                    if (value instanceof InstanceInvokeExpr) {
-                        InstanceInvokeExpr expr =
-                            (InstanceInvokeExpr)value;
-                        if (expr.getMethod().equals(mainStartRunMethod)) {
-                            // Replace the start run method call
-                            // with code to iterate the model.
-                            // First create a local that refers to the model.
-                            // FIXME This is redundant, since the local
-                            // already exists somewhere...
-                            Local modelLocal = Jimple.v().newLocal(
-                                    "_CGTemp" +
-                                    modelField.getName(),
-                                    modelField.getType());
+                ValueBox box = stmt.getInvokeExprBox();
+                Value value = box.getValue();
+                if (value instanceof InstanceInvokeExpr) {
+                    InstanceInvokeExpr expr =
+                        (InstanceInvokeExpr)value;
+                    if (expr.getMethod().equals(mainStartRunMethod)) {
+                        // Replace the start run method call
+                        // with code to iterate the model.
+                        // First create a local that refers to the model.
+                        // FIXME This is redundant, since the local
+                        // already exists somewhere...
+                        Local modelLocal = Jimple.v().newLocal(
+                                "_CGTemp" +
+                                modelField.getName(),
+                                modelField.getType());
 
-                            body.getLocals().add(modelLocal);
-                            body.getUnits().insertBefore(
-                                    Jimple.v().newAssignStmt(
-                                            modelLocal,
-                                            Jimple.v().newInstanceFieldRef(
-                                                    body.getThisLocal(),
-                                                    modelField)),
-                                    stmt);
+                        body.getLocals().add(modelLocal);
+                        body.getUnits().insertBefore(
+                                Jimple.v().newAssignStmt(
+                                        modelLocal,
+                                        Jimple.v().newInstanceFieldRef(
+                                                body.getThisLocal(),
+                                                modelField)),
+                                stmt);
 
-                            _insertIterateCalls(body,
-                                    stmt,
-                                    modelClass,
-                                    modelLocal,
-                                    options);
-                            body.getUnits().remove(stmt);
-                        }
+                        _insertIterateCalls(body,
+                                stmt,
+                                modelClass,
+                                modelLocal,
+                                options);
+                        body.getUnits().remove(stmt);
                     }
+                }
             }
         }
 
@@ -484,17 +484,17 @@ public class CommandLineTransformer extends SceneTransformer {
 
         // call postfire on the model.
         units.insertBefore(Jimple.v().newAssignStmt(postfireReturnsLocal,
-                          Jimple.v().newVirtualInvokeExpr(modelLocal,
-                                  SootUtilities.searchForMethodByName(modelClass,
-                                          "postfire"))),
+                Jimple.v().newVirtualInvokeExpr(modelLocal,
+                        SootUtilities.searchForMethodByName(modelClass,
+                                "postfire"))),
                 unit);
 
         // If postfire returned false,
         // then we're done.
         units.insertBefore(Jimple.v().newIfStmt(
-                                   Jimple.v().newEqExpr(postfireReturnsLocal,
-                                           IntConstant.v(0)),
-                                   iterationEndStmt),
+                Jimple.v().newEqExpr(postfireReturnsLocal,
+                        IntConstant.v(0)),
+                iterationEndStmt),
                 unit);
 
         // If we need to keep track of the number of iterations, then...

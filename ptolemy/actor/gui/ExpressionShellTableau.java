@@ -57,7 +57,7 @@ A tableau that provides an interactive shell for evaluating expressions.
 @since Ptolemy II 3.0
 */
 public class ExpressionShellTableau extends Tableau
-        implements ShellInterpreter {
+    implements ShellInterpreter {
 
     /** Create a new tableau.
      *  The tableau is itself an entity contained by the effigy

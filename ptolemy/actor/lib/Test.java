@@ -148,8 +148,8 @@ public class Test extends NonStrictTest {
         output.send(0, new BooleanToken(false));
 
         Token referenceToken
-                = ((ArrayToken)(correctValues.getToken()))
-                .getElement(_numberOfInputTokensSeen);
+            = ((ArrayToken)(correctValues.getToken()))
+            .getElement(_numberOfInputTokensSeen);
         Token[] reference;
         if (width == 1 && !(referenceToken instanceof ArrayToken)) {
             reference = new Token[1];

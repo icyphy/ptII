@@ -344,9 +344,9 @@ public class BrowserLauncher {
 
         if (exitCode != 0) {
             throw new IOException("Process exec'd by BrowserLauncher returned "
-                                  + exitCode + "."
-                                  + "\n url was: " + url
-                                  + "\n browser was: " + browser);
+                    + exitCode + "."
+                    + "\n url was: " + url
+                    + "\n browser was: " + browser);
         }
     }
 

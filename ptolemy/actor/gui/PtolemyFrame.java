@@ -98,8 +98,8 @@ public abstract class PtolemyFrame extends TableauFrame {
         // model specifying them.  Errors are ignored.
         try {
             WindowPropertiesAttribute properties
-                    = (WindowPropertiesAttribute)model.getAttribute(
-                    "_windowProperties", WindowPropertiesAttribute.class);
+                = (WindowPropertiesAttribute)model.getAttribute(
+                        "_windowProperties", WindowPropertiesAttribute.class);
             if (properties != null) {
                 properties.setProperties(this);
             }
@@ -153,7 +153,7 @@ public abstract class PtolemyFrame extends TableauFrame {
     protected void _help() {
         try {
             FileAttribute helpAttribute = (FileAttribute)getModel()
-                    .getAttribute("_help", FileAttribute.class);
+                .getAttribute("_help", FileAttribute.class);
             URL doc = helpAttribute.asURL();
             getConfiguration().openModel(null, doc, doc.toExternalForm());
         } catch (Exception ex) {
@@ -169,10 +169,10 @@ public abstract class PtolemyFrame extends TableauFrame {
     protected void _print() {
         if (_model != null) {
             ChangeRequest request = new ChangeRequest(this, "Print") {
-                protected void _execute() throws Exception {
-                    PtolemyFrame.super._print();
-                }
-            };
+                    protected void _execute() throws Exception {
+                        PtolemyFrame.super._print();
+                    }
+                };
             _model.requestChange(request);
         } else {
             super._print();
@@ -250,7 +250,7 @@ public abstract class PtolemyFrame extends TableauFrame {
                         uri.setURI(file.toURI());
                     } catch (KernelException ex) {
                         throw new InternalErrorException(
-                        "Failed to create URIAttribute for new location!");
+                                "Failed to create URIAttribute for new location!");
                     }
                 }
                 return;

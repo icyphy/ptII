@@ -114,7 +114,7 @@ public class JAIJPEGWriter extends Sink {
 
         userSpecifiedLuminanceTable
             = new Parameter(this, "userSpecifiedLuminanceTable",
-                new ArrayToken(_defaultSpecifiedTable));
+                    new ArrayToken(_defaultSpecifiedTable));
 
         useDefaultChrominanceTable =
             new Parameter(this, "useDefaultChrominanceTable");
@@ -123,7 +123,7 @@ public class JAIJPEGWriter extends Sink {
 
         userSpecifiedChrominanceTable
             = new Parameter(this, "userSpecifiedChrominanceTable",
-                new ArrayToken(_defaultSpecifiedTable));
+                    new ArrayToken(_defaultSpecifiedTable));
 
         horizontalSubsampling
             = new Parameter(this, "horizontalSubsampling",
@@ -322,10 +322,10 @@ public class JAIJPEGWriter extends Sink {
         RenderedOp image = jaiImageToken.getValue();
         boolean confirmOverwriteValue
             = ((BooleanToken)confirmOverwrite.getToken()).booleanValue();
-               if (_file.exists()) {
+        if (_file.exists()) {
             if (confirmOverwriteValue) {
                 if (!MessageHandler.yesNoQuestion(
-                            "OK to overwrite " + _file + "?")) {
+                        "OK to overwrite " + _file + "?")) {
                     throw new IllegalActionException(this,
                             "Please select another file name.");
                 }

@@ -143,10 +143,10 @@ public class PortConfigurerDialog extends ComponentDialog
                         MoMLChangeRequest request = null;
                         if (composite != null) {
                             request = new MoMLChangeRequest(this, composite,
-                                                            moml.toString());
+                                    moml.toString());
                         } else {
                             request = new MoMLChangeRequest(this, container,
-                                                            moml.toString());
+                                    moml.toString());
                         }
                         request.setUndoable(true);
                         container.addChangeListener(this);
@@ -260,7 +260,7 @@ public class PortConfigurerDialog extends ComponentDialog
                 + "/>";
             _target.addChangeListener(this);
             MoMLChangeRequest change = new MoMLChangeRequest(this,
-                                                             _target, moml);
+                    _target, moml);
             change.setUndoable(true);
             _target.requestChange(change);
         }

@@ -80,7 +80,7 @@ values were set by the user.
 @since Ptolemy II 1.0
 */
 public class EditParametersDialog extends ComponentDialog
-        implements ChangeListener {
+    implements ChangeListener {
 
     /** Construct a dialog with the specified owner and target.
      *  A "Commit" and a "Cancel" button are added to the dialog.
@@ -146,7 +146,7 @@ public class EditParametersDialog extends ComponentDialog
                     + "\"/>";
                 _target.addChangeListener(this);
                 MoMLChangeRequest request = new MoMLChangeRequest(this, _target,
-                                                                  moml);
+                        moml);
                 request.setUndoable(true);
                 _target.requestChange(request);
             }
@@ -176,7 +176,7 @@ public class EditParametersDialog extends ComponentDialog
                 boolean success = false;
                 if (_owner instanceof TableauFrame) {
                     Configuration configuration
-                            = ((TableauFrame)_owner).getConfiguration();
+                        = ((TableauFrame)_owner).getConfiguration();
                     if (configuration != null) {
                         configuration.openModel(
                                 null, doc, doc.toExternalForm());
@@ -248,10 +248,10 @@ public class EditParametersDialog extends ComponentDialog
                     String newName = _query.getStringValue("name");
                     ComponentDialog dialog =
                         _openAddDialog(exception.getMessage()
-                            + "\n\nPlease enter a new default value:",
-                            newName,
-                            _query.getStringValue("default"),
-                            _query.getStringValue("class"));
+                                + "\n\nPlease enter a new default value:",
+                                newName,
+                                _query.getStringValue("default"),
+                                _query.getStringValue("class"));
                     _target.removeChangeListener(EditParametersDialog.this);
                     if (!dialog.buttonPressed().equals("OK")) {
                         // Remove the parameter, since it seems to be erroneous
@@ -328,7 +328,7 @@ public class EditParametersDialog extends ComponentDialog
                 + "\"/>";
             _target.addChangeListener(this);
             MoMLChangeRequest request = new MoMLChangeRequest(this, _target,
-                                                              moml);
+                    moml);
             request.setUndoable(true);
             _target.requestChange(request);
         }

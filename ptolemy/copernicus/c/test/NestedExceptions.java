@@ -50,16 +50,16 @@ public class NestedExceptions {
         // Outer Exception.
         try {
 
-                // Inner Exception.
-                try {
-                    throw new Exception();
-                }
-
-                catch (Exception e) {
-                     System.out.println("Caught First Exception.");
-                }
-
+            // Inner Exception.
+            try {
                 throw new Exception();
+            }
+
+            catch (Exception e) {
+                System.out.println("Caught First Exception.");
+            }
+
+            throw new Exception();
         }
 
         catch (Exception e) {

@@ -118,28 +118,28 @@ public class TextEditorTableau extends Tableau {
             Class effigyClass;
             try {
 
-            if (editorPreference.equals("emacs")) {
-                tableauClass = Class.forName
-                    ("ptolemy.actor.gui.ExternalTextTableau");
-                effigyClass = Class.forName
-                    ("ptolemy.actor.gui.ExternalTextEffigy");
-            } else {
-                tableauClass = Class.forName
-                    ("ptolemy.actor.gui.TextEditorTableau");
-                effigyClass = Class.forName
-                    ("ptolemy.actor.gui.TextEffigy");
-            }
-            _tableauConstructor =
-                tableauClass.getConstructor
-                (new Class[]{TextEffigy.class, String.class});
-            _newTextEffigyText =
-                effigyClass.getMethod
-                ("newTextEffigy",
-                 new Class[]{CompositeEntity.class, String.class});
-            _newTextEffigyURL =
-                effigyClass.getMethod
-                ("newTextEffigy",
-                 new Class[]{CompositeEntity.class, URL.class, URL.class});
+                if (editorPreference.equals("emacs")) {
+                    tableauClass = Class.forName
+                        ("ptolemy.actor.gui.ExternalTextTableau");
+                    effigyClass = Class.forName
+                        ("ptolemy.actor.gui.ExternalTextEffigy");
+                } else {
+                    tableauClass = Class.forName
+                        ("ptolemy.actor.gui.TextEditorTableau");
+                    effigyClass = Class.forName
+                        ("ptolemy.actor.gui.TextEffigy");
+                }
+                _tableauConstructor =
+                    tableauClass.getConstructor
+                    (new Class[]{TextEffigy.class, String.class});
+                _newTextEffigyText =
+                    effigyClass.getMethod
+                    ("newTextEffigy",
+                            new Class[]{CompositeEntity.class, String.class});
+                _newTextEffigyURL =
+                    effigyClass.getMethod
+                    ("newTextEffigy",
+                            new Class[]{CompositeEntity.class, URL.class, URL.class});
 
             } catch (ClassNotFoundException ex) {
                 throw new IllegalActionException(ex.toString());

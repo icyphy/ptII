@@ -111,7 +111,7 @@ public class JAIIDFT extends Transformer {
      */
     public StringAttribute dataNature;
 
-   /** The scaling to be done on the output.  There are three options,
+    /** The scaling to be done on the output.  There are three options,
      *  <i>none</i> (does no scaling), <i>unitary</i> (multiplies by
      *  square root of the product of the dimensions), and
      *  <i>dimensions</i> (the default, multiplies by the product of the

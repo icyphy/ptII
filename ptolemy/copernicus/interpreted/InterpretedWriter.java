@@ -139,7 +139,7 @@ public class InterpretedWriter extends SceneTransformer {
         String modelFileName =
             _outputDirectory + "/" + _sanitizedModelName + ".xml";
         System.out.println("InterpretedWriter: about to write '"
-                           + modelFileName + "'");
+                + modelFileName + "'");
         try {
             Writer modelFileWriter =
                 new BufferedWriter(new OutputStreamWriter(new FileOutputStream(modelFileName)));

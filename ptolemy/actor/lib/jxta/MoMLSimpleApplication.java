@@ -92,7 +92,7 @@ public class MoMLSimpleApplication extends NamedObj implements ChangeListener {
                 new File(xmlFilename).toURL());
 
         _manager =new Manager(toplevel.workspace(),
-               "MoMLSimpleApplication");
+                "MoMLSimpleApplication");
         toplevel.setManager(_manager);
         toplevel.addChangeListener(this);
         //_manager.execute();

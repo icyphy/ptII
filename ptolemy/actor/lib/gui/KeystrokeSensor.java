@@ -87,7 +87,7 @@ public class KeystrokeSensor extends TypedAtomicActor {
      *   actor with this name.
      */
     public KeystrokeSensor(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         controlC = new TypedIOPort(this, "controlC");
@@ -177,7 +177,7 @@ public class KeystrokeSensor extends TypedAtomicActor {
                             throw new RuntimeException("-fireAt* C catch-");
                         }
                     }
-            };
+                };
 
             // Paste call-back
             ActionListener myPasteListener = new ActionListener() {
@@ -193,7 +193,7 @@ public class KeystrokeSensor extends TypedAtomicActor {
                             throw new RuntimeException("-fireAt* catch-");
                         }
                     }
-            };
+                };
 
             getContentPane().setLayout(new BorderLayout());
             JLabel label = new JLabel("Copy and/or Paste here!");
@@ -202,13 +202,13 @@ public class KeystrokeSensor extends TypedAtomicActor {
             // Paste registration of call-back.
             label.registerKeyboardAction(myPasteListener, "Paste",
                     KeyStroke.getKeyStroke(
-                    KeyEvent.VK_V, java.awt.Event.CTRL_MASK),
+                            KeyEvent.VK_V, java.awt.Event.CTRL_MASK),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             // Copy registration of call-back.
             label.registerKeyboardAction(myCopyListener, "Copy",
                     KeyStroke.getKeyStroke(
-                    KeyEvent.VK_C, java.awt.Event.CTRL_MASK),
+                            KeyEvent.VK_C, java.awt.Event.CTRL_MASK),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             label.setRequestFocusEnabled(true);

@@ -180,7 +180,7 @@ public class BarGraph extends Plotter implements SequenceActor {
                         double currentValue =
                             ((DoubleToken)currentArray[j]).doubleValue();
                         ((Plot)plot).addPoint(
-                               i + _offset, j, currentValue, true);
+                                i + _offset, j, currentValue, true);
                     }
                 }
             }

@@ -84,7 +84,7 @@ public class TclShellEffigy extends Effigy {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         TclShellEffigy newObject
-               = (TclShellEffigy)super.clone(workspace);
+            = (TclShellEffigy)super.clone(workspace);
         if (_model != null) {
             newObject._model = (NamedObj)_model.clone(new Workspace());
         }

@@ -160,7 +160,7 @@ public class JAIPNMWriter extends Sink {
         if (_file.exists()) {
             if (confirmOverwriteValue) {
                 if (!MessageHandler.yesNoQuestion(
-                            "OK to overwrite " + _file + "?")) {
+                        "OK to overwrite " + _file + "?")) {
                     throw new IllegalActionException(this,
                             "Please select another file name.");
                 }

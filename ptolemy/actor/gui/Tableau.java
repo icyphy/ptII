@@ -331,9 +331,9 @@ public class Tableau extends CompositeEntity {
                 // NOTE: This used to override the location that might
                 // have been set in the _windowProperties attribute.
                 /*
-                if (frame instanceof Top) {
-                    ((Top)frame).centerOnScreen();
-                }
+                  if (frame instanceof Top) {
+                  ((Top)frame).centerOnScreen();
+                  }
                 */
                 frame.setVisible(true);
             }

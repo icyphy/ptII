@@ -64,17 +64,17 @@ public class OverriddenMethodGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-     /** Return the name of the file where the C code for an overridden method
-      *  should be. This name also includes the appropriate directory path.
-      *  @param method The method.
-      *  @return The name of the file.
-      */
-     public static String fileContainingCodeFor(SootMethod method) {
+    /** Return the name of the file where the C code for an overridden method
+     *  should be. This name also includes the appropriate directory path.
+     *  @param method The method.
+     *  @return The name of the file.
+     */
+    public static String fileContainingCodeFor(SootMethod method) {
         String fileName = overriddenBodyLib + CNames.functionNameOf(method)
-                + ".c";
+            + ".c";
 
         return fileName;
-     }
+    }
 
     /** Returns the code for a given overridden method.
      *
@@ -147,161 +147,161 @@ public class OverriddenMethodGenerator {
 
 
         _forceOverriddenMethods.add(
-            "<java.security.Signature: java.security.Signature "
-            + "getInstance(java.lang.String,java.lang.String)>");
+                "<java.security.Signature: java.security.Signature "
+                + "getInstance(java.lang.String,java.lang.String)>");
         // Overridden because inner classes have problems accessing private
         // fields of outer classes. Specifically outerClass cannot call
         // InnerClass.privateFieldOfOuterClass.
 
         _forceOverriddenMethods.add(
-            "<java.io.File: void <clinit>()>");
+                "<java.io.File: void <clinit>()>");
 
         _forceOverriddenMethods.add(
-            "<java.lang.SecurityManager: "
-            + "java.lang.ThreadGroup getRootGroup()>");
+                "<java.lang.SecurityManager: "
+                + "java.lang.ThreadGroup getRootGroup()>");
 
 
         _forceOverriddenMethods.add(
-            "<sun.net.InetAddressCachePolicy: void <clinit>()>");
+                "<sun.net.InetAddressCachePolicy: void <clinit>()>");
         // Overridden because Object.hashCode() is not up yet.
 
         _forceOverriddenMethods.add(
-            "<java.io.ObjectOutputStream: long getUTFLength(char[],int)>");
+                "<java.io.ObjectOutputStream: long getUTFLength(char[],int)>");
         // Overridden because it threw a warning.
 
         _forceOverriddenMethods.add(
-            "<java.lang.ClassLoader: void <clinit>()>");
+                "<java.lang.ClassLoader: void <clinit>()>");
         // Overridden because of the implicit "super()" it ends up calling
         // in Stack.
 
         _forceOverriddenMethods.add(
-            "<java.lang.System: void <clinit>()>");
+                "<java.lang.System: void <clinit>()>");
         // Overridden because nullPrintStream etc. are not up yet.
 
         _forceOverriddenMethods.add(
-            "<sun.net.www.MimeTable: boolean "
-            + "saveAsProperties(java.io.File)>");
+                "<sun.net.www.MimeTable: boolean "
+                + "saveAsProperties(java.io.File)>");
         // Overridden it throws a warning for an unused variable.
 
         _forceOverriddenMethods.add(
-            "<java.lang.reflect.Proxy: java.lang.Class "
-            + "getProxyClass(java.lang.ClassLoader,java.lang.Class[])>");
+                "<java.lang.reflect.Proxy: java.lang.Class "
+                + "getProxyClass(java.lang.ClassLoader,java.lang.Class[])>");
         // Overridden it throws a warning for an unused variable.
 
         _forceOverriddenMethods.add(
-            "<java.lang.reflect.AccessibleObject: void <clinit>()>");
+                "<java.lang.reflect.AccessibleObject: void <clinit>()>");
 
         _forceOverriddenMethods.add(
-            "<java.io.DataOutputStream: "
-            + "int writeUTF(java.lang.String,java.io.DataOutput)>");
+                "<java.io.DataOutputStream: "
+                + "int writeUTF(java.lang.String,java.io.DataOutput)>");
         // Overridden because it threw a warning.
 
         _forceOverriddenMethods.add(
-            "<java.lang.InheritableThreadLocal: "
-            + "void bequeath(java.lang.Thread,java.lang.Thread)>");
+                "<java.lang.InheritableThreadLocal: "
+                + "void bequeath(java.lang.Thread,java.lang.Thread)>");
         // Overridden because call to an interface led to a statement with
         // no effect which caused a warning.
 
         _forceOverriddenMethods.add(
-            "<java.util.ResourceBundle: "
-            + "java.lang.Object "
-            + "loadBundle(java.lang.ClassLoader,"
-            + "java.lang.String,java.util.Locale)>");
+                "<java.util.ResourceBundle: "
+                + "java.lang.Object "
+                + "loadBundle(java.lang.ClassLoader,"
+                + "java.lang.String,java.util.Locale)>");
         // Overridden because it threw a warning for an unused variable.
 
         _forceOverriddenMethods.add("<java.security.MessageDigest: "
-            + "java.security.MessageDigest getInstance(java.lang.String)>");
+                + "java.security.MessageDigest getInstance(java.lang.String)>");
         // Overridden because inner classes have problems accessing private
         // fields of outer classes. Specifically outerClass cannot call
         // InnerClass.privateFieldOfOuterClass.
 
         _forceOverriddenMethods.add("<java.io.ObjectOutputStream: "
-            + "void writeUTFBody(char[],int)>");
+                + "void writeUTFBody(char[],int)>");
 
         _forceOverriddenMethods.add("<java.security.Signature: "
-            + "java.security.Signature getInstance(java.lang.String)>");
+                + "java.security.Signature getInstance(java.lang.String)>");
         // Overridden because inner classes have problems accessing private
         // fields of outer classes. Specifically outerClass cannot call
         // InnerClass.privateFieldOfOuterClass.
 
         _forceOverriddenMethods.add("<java.lang.ClassNotFoundException: "
-            + "void printStackTrace()>");
+                + "void printStackTrace()>");
         // Overridden because it had a statement with no effect. This was
         // because CSwitch expects method class to be superclass of base.
 
         _forceOverriddenMethods.add("<java.text.AttributedString: "
-            + "void <init>(java.text.AttributedCharacterIterator[])>");
+                + "void <init>(java.text.AttributedCharacterIterator[])>");
         _forceOverriddenMethods.add("<java.text.AttributedString: "
-            + "void <init>(java.lang.String,java.util.Map)>");
+                + "void <init>(java.lang.String,java.util.Map)>");
         _forceOverriddenMethods.add("<java.text.AttributedString: "
-            + "void <init>(java.text.AttributedCharacterIterator)>");
+                + "void <init>(java.text.AttributedCharacterIterator)>");
         _forceOverriddenMethods.add("<java.text.AttributedString: "
-            + "void <init>(java.text.AttributedCharacterIterator,int,"
-            + "int,java.text.AttributedCharacterIterator$Attribute[])>");
+                + "void <init>(java.text.AttributedCharacterIterator,int,"
+                + "int,java.text.AttributedCharacterIterator$Attribute[])>");
         // Overridden because they assume inheritance from interfaces, and
         // we don't have interfaces up yet.
 
         _forceOverriddenMethods.add("<org.apache.crimson.tree.ElementNode2: "
-            + "void trimToSize()>");
+                + "void trimToSize()>");
         _forceOverriddenMethods.add("<org.apache.crimson.tree.ElementNode2: "
-            + "void setReadonly(boolean)>");
+                + "void setReadonly(boolean)>");
         _forceOverriddenMethods.add("<org.apache.crimson.tree.ElementNode2: "
-            + "org.w3c.dom.Attr getAttributeNodeNS(java.lang.String"
-            + ",java.lang.String)>");
+                + "org.w3c.dom.Attr getAttributeNodeNS(java.lang.String"
+                + ",java.lang.String)>");
         // Overridden because they did an incorrect cast on an inherited
         // method. Needs to be fixed.
 
         _forceOverriddenMethods.add("<java.security.MessageDigest: "
-            + "java.security.MessageDigest getInstance(java.lang.String"
-            + ",java.security.Provider)>");
+                + "java.security.MessageDigest getInstance(java.lang.String"
+                + ",java.security.Provider)>");
         // Overridden because an inner class tried to access the private
         // method of an outer class, and this is not supported right now.
 
 
         _forceOverriddenMethods.add("<sun.nio.ch.FileChannelImpl: "
-            + "java.nio.channels.FileLock lock(long,long,boolean)>");
+                + "java.nio.channels.FileLock lock(long,long,boolean)>");
         // Overridden because it threw a warning for an unused variable.
 
         _forceOverriddenMethods.add("<sun.net.www.URLConnection: "
-            + "void setFileNameMap(java.net.FileNameMap)>");
+                + "void setFileNameMap(java.net.FileNameMap)>");
         // Overridden because it calls a nonexistent method.
 
         _forceOverriddenMethods.add("<java.security.Signature: "
-            + "java.security.Signature getInstance"
-            + "(java.lang.String,java.security.Provider)>");
+                + "java.security.Signature getInstance"
+                + "(java.lang.String,java.security.Provider)>");
 
         _forceOverriddenMethods.add("<java.math.BigInteger: void <clinit>()>");
         _forceOverriddenMethods.add(
-            "<java.text.AttributedCharacterIterator$Attribute: "
-            + "void <clinit>()>");
+                "<java.text.AttributedCharacterIterator$Attribute: "
+                + "void <clinit>()>");
         _forceOverriddenMethods.add(
-            "<java.text.MessageFormat$Field: void <clinit>()>");
+                "<java.text.MessageFormat$Field: void <clinit>()>");
         // Causes segfault.
 
 
 
-       // Overridden because it asks for a nonexistent field.
+        // Overridden because it asks for a nonexistent field.
 
         ///////// Methods replaced with actual code ////////
 
         // Methods that provide basic I/O functionality in
         // java.io.PrintStream.
         _forceOverriddenMethods.add(
-            "<java.io.PrintStream: void println(float)>");
+                "<java.io.PrintStream: void println(float)>");
         _forceOverriddenMethods.add(
-            "<java.io.PrintStream: void println(int)>");
+                "<java.io.PrintStream: void println(int)>");
 
         //_forceOverriddenMethods.add(
         //    "<java.io.PrintStream: void println(java.lang.String)>");
 
         _forceOverriddenMethods.add(
-            "<java.io.PrintStream: void print(java.lang.Object)>");
+                "<java.io.PrintStream: void print(java.lang.Object)>");
         _forceOverriddenMethods.add(
-            "<java.io.PrintStream: void newLine()>");
+                "<java.io.PrintStream: void newLine()>");
         _forceOverriddenMethods.add(
-            "<java.io.PrintStream: void println(double)>");
+                "<java.io.PrintStream: void println(double)>");
         _forceOverriddenMethods.add(
-            "<java.io.PrintStream: void write(java.lang.String)>");
+                "<java.io.PrintStream: void write(java.lang.String)>");
 
 
         _forceOverriddenMethods.add(
@@ -309,7 +309,7 @@ public class OverriddenMethodGenerator {
         // Overridden because java.lang.Object.clone() is not implemented yet.
 
         _forceOverriddenMethods.add(
-        "<java.lang.System: void initializeSystemClass()>");
+                "<java.lang.System: void initializeSystemClass()>");
         // Contains initializations needed to get System.out.println() and
         // other needed functionality to be supported.
 
@@ -323,7 +323,7 @@ public class OverriddenMethodGenerator {
     public static boolean isOverridden(SootMethod method) {
         if (_forceOverriddenMethods.contains(method.getSignature())
                 || isOverridden(method.getDeclaringClass())
-                ) {
+            ) {
             return true;
         }
         else {
@@ -394,7 +394,7 @@ public class OverriddenMethodGenerator {
         code.append(indent + "/* OVERRIDDEN METHOD */\n");
 
         if (FileHandler.exists(fileContainingCodeFor(method))) {
-                code.append(indent + "#include \""
+            code.append(indent + "#include \""
                     + overriddenBodyLib
                     + CNames.functionNameOf(method) + ".c\"");
         }

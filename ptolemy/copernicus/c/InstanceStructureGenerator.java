@@ -105,9 +105,9 @@ public class  InstanceStructureGenerator extends CodeGenerator {
      * @return The set of array instances in the local context.
      */
     /* FIXME: Remove This.
-    public HashSet getArrayInstances() {
-        return _context.getArrayInstances();
-    }
+       public HashSet getArrayInstances() {
+       return _context.getArrayInstances();
+       }
     */
 
     /** Get the map of types required by the generated class.
@@ -135,7 +135,7 @@ public class  InstanceStructureGenerator extends CodeGenerator {
 
     // Generate a C declaration that corresponds to a class field.
     private String _generateField(SootField field) {
-         if (RequiredFileGenerator.isRequired(field)) {
+        if (RequiredFileGenerator.isRequired(field)) {
             StringBuffer fieldCode = new StringBuffer(_indent(1));
             fieldCode.append(CNames.typeNameOf(field.getType()) + " ");
             _updateRequiredTypes(field.getType());
@@ -164,17 +164,17 @@ public class  InstanceStructureGenerator extends CodeGenerator {
         Iterator fields = source.getFields().iterator();
         int insertedFields = 0;
         String header = "\n" + _indent(1)
-                + "/* Public and protected fields for "
-                + source.getName() + " */\n";
+            + "/* Public and protected fields for "
+            + source.getName() + " */\n";
 
 
         // Generate public and protected fields
         while (fields.hasNext()) {
             SootField field = (SootField)(fields.next());
             if ((!field.isPrivate())
-                && (!Modifier.isStatic(field.getModifiers()))
-                && (RequiredFileGenerator.isRequired(field))
-                && (!_doneFields.contains(field.getName()))) {
+                    && (!Modifier.isStatic(field.getModifiers()))
+                    && (RequiredFileGenerator.isRequired(field))
+                    && (!_doneFields.contains(field.getName()))) {
 
                 if (insertedFields == 0) {
                     fieldCode.append(header);
@@ -193,16 +193,16 @@ public class  InstanceStructureGenerator extends CodeGenerator {
         while (fields.hasNext()) {
             SootField field = (SootField)(fields.next());
             if (field.isPrivate()
-                && !(Modifier.isStatic(field.getModifiers()))
-                && (!_doneFields.contains(field.getName())))
+                    && !(Modifier.isStatic(field.getModifiers()))
+                    && (!_doneFields.contains(field.getName())))
                 {
-                if (insertedFields == 0) {
-                    fieldCode.append(header);
-                }
+                    if (insertedFields == 0) {
+                        fieldCode.append(header);
+                    }
 
-                fieldCode.append(_generateField(field));
-                insertedFields++;
-            }
+                    fieldCode.append(_generateField(field));
+                    insertedFields++;
+                }
         }
 
         return fieldCode.toString();
@@ -215,7 +215,7 @@ public class  InstanceStructureGenerator extends CodeGenerator {
      *  Protected fields  - visible only to subclasses
      *  Private   fields  - visible only inside the class.
      *  "friendly" fields - visible in the same package.
-    */
+     */
     private String _generateInheritedFields(SootClass source,
             SootClass superClass) {
 
@@ -223,7 +223,7 @@ public class  InstanceStructureGenerator extends CodeGenerator {
         Iterator fields = superClass.getFields().iterator();
         int insertedFields = 0;
         String header = "\n" + _indent(1) +
-                _comment("Fields inherited from " + superClass.getName());
+            _comment("Fields inherited from " + superClass.getName());
 
         while (fields.hasNext()) {
             SootField field = (SootField)(fields.next());
@@ -261,7 +261,7 @@ public class  InstanceStructureGenerator extends CodeGenerator {
         if (classes  == null) {
             if (source.hasSuperclass()) {
                 classes = (LinkedList)
-                        (_getSuperClasses(source.getSuperclass()).clone());
+                    (_getSuperClasses(source.getSuperclass()).clone());
                 classes.add(source.getSuperclass());
                 _superClasses.put(source, classes);
             } else {

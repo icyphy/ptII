@@ -68,12 +68,12 @@ import soot.RefType;
 */
 public class NativeMethodGenerator {
 
-     /** The location of the native library methods.
-      */
-     public static final String nativeLib = "natives/";
+    /** The location of the native library methods.
+     */
+    public static final String nativeLib = "natives/";
 
-     /** The location of the hand-coded native library method bodies.
-      */
+    /** The location of the hand-coded native library method bodies.
+     */
     public static final String nativeBodyLib = "../runtime/native_bodies/";
 
 
@@ -101,7 +101,7 @@ public class NativeMethodGenerator {
 
         // Add a #include if the method body exists.
         if (FileHandler.exists(nativeBodyLib
-                    + fileContainingCodeFor(method))) {
+                + fileContainingCodeFor(method))) {
 
             code.append(_indent(1) + "#include \""
                     + fileContainingCodeFor(method)
@@ -177,17 +177,17 @@ public class NativeMethodGenerator {
         return code;
     }
 
-     /** Return the name of the file where the C code for a native method
-      *  should be.
-      *  @param method The method.
-      *  @return The name of the file.
-      */
-     public static String fileContainingCodeFor(SootMethod method) {
+    /** Return the name of the file where the C code for a native method
+     *  should be.
+     *  @param method The method.
+     *  @return The name of the file.
+     */
+    public static String fileContainingCodeFor(SootMethod method) {
         String fileName = CNames.functionNameOf(method)
-                + ".c";
+            + ".c";
 
         return fileName;
-     }
+    }
 
 
     /** Returns the first line of the stub for the given method.

@@ -88,7 +88,7 @@ public class SketchedSource extends SequencePlotter implements EditListener {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-            output = new TypedIOPort(this, "output", false, true);
+        output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
 
         // Create the parameters.
@@ -238,7 +238,7 @@ public class SketchedSource extends SequencePlotter implements EditListener {
             // Optionally execute the model here if it is idle.
             try {
                 boolean runValue = ((BooleanToken)runOnModification.getToken())
-                         .booleanValue();
+                    .booleanValue();
                 if (runValue) {
                     Manager manager = getManager();
                     if (manager != null && manager.getState() == Manager.IDLE) {
@@ -262,7 +262,7 @@ public class SketchedSource extends SequencePlotter implements EditListener {
         // Read the trigger input, if there is one.
         super.fire();
         boolean periodicValue
-                = ((BooleanToken)periodic.getToken()).booleanValue();
+            = ((BooleanToken)periodic.getToken()).booleanValue();
         // If this isn't periodic, then send zero only, since we already
         // sent out the entire waveform in the initialize method.
         if (!periodicValue) {
@@ -375,7 +375,7 @@ public class SketchedSource extends SequencePlotter implements EditListener {
                 double value = 0.0;
                 if (defaultValues != null && i < defaultValues.length()) {
                     value = ((DoubleToken)defaultValues.getElement(i))
-                    .doubleValue();
+                        .doubleValue();
                 }
                 ((Plot)plot).addPoint(0, (double)i, value, connected);
                 connected = true;

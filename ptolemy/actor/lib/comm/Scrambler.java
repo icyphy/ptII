@@ -187,12 +187,12 @@ public class Scrambler extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-     /** Integer defining a polynomial with binary coefficients.
-      *  The coefficients indicate the presence (1) or absence (0)
-      *  of a tap in a feedback shift register. This parameter should
-      *  contain a positive integer with the lower-order bit being 1.
-      *  Its default value is the integer 0440001.
-      */
+    /** Integer defining a polynomial with binary coefficients.
+     *  The coefficients indicate the presence (1) or absence (0)
+     *  of a tap in a feedback shift register. This parameter should
+     *  contain a positive integer with the lower-order bit being 1.
+     *  Its default value is the integer 0440001.
+     */
     public Parameter polynomial;
 
     /** Integer defining the intial state of the shift register.
@@ -218,21 +218,21 @@ public class Scrambler extends Transformer {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-          if (attribute == initial) {
-          int seed = ((IntToken)initial.getToken()).intValue();
-          if (seed < 0 ) {
+        if (attribute == initial) {
+            int seed = ((IntToken)initial.getToken()).intValue();
+            if (seed < 0 ) {
                 throw new IllegalActionException(this,
-                "shift register's value must be non-negative.");
+                        "shift register's value must be non-negative.");
             }
-            } else if (attribute == polynomial) {
+        } else if (attribute == polynomial) {
             int mask = ((IntToken)polynomial.getToken()).intValue();
             if (mask <= 0) {
                 throw new IllegalActionException(this,
-                "Polynomial is required to be strictly positive.");
+                        "Polynomial is required to be strictly positive.");
             }
             if ((mask & 1) == 0) {
                 throw new IllegalActionException(this,
-                "The low-order bit of the the polynomial is not set.");
+                        "The low-order bit of the the polynomial is not set.");
             }
         } else {
             super.attributeChanged(attribute);
@@ -258,14 +258,14 @@ public class Scrambler extends Transformer {
         }
 
         // Exclusive-or with the input if there is any.
-         for (int i = 0; i < input.getWidth(); i++){
+        for (int i = 0; i < input.getWidth(); i++){
             if (input.hasToken(0)){
                 IntToken inputToken = (IntToken)input.get(0);
                 int inputTokenValue = inputToken.intValue();
                 if (inputTokenValue == 1 || inputTokenValue == 0){
                     parity = parity ^ inputTokenValue;
                 } else { throw new IllegalActionException(this,
-                                 "Input must be either 0 or 1.");
+                        "Input must be either 0 or 1.");
                 }
             }
         }

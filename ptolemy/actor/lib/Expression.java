@@ -398,7 +398,7 @@ public class Expression extends TypedAtomicActor {
 
             if (_scope == null) {
                 _scope = new VariableScope();
-                }
+            }
             Type type = _typeInference.inferTypes(_parseTree, _scope);
             return type;
         }
@@ -427,7 +427,7 @@ public class Expression extends TypedAtomicActor {
                         _parseTree, _scope);
                 List termList = new LinkedList();
                 for (Iterator elements = set.iterator();
-                    elements.hasNext();) {
+                     elements.hasNext();) {
                     String name = (String)elements.next();
                     if (name.equals("time") ||
                             name.equals("iteration")) {
@@ -441,7 +441,7 @@ public class Expression extends TypedAtomicActor {
                             termList.add(terms[i]);
                         }
                         continue;
-                     }
+                    }
                     Variable result = ModelScope.getScopedVariable(
                             null, Expression.this, name);
                     if (result != null) {

@@ -183,7 +183,7 @@ public class MethodListGenerator {
                     // Static initializer for the class.
                     // Assume that there is at most one such initializer.
                     SootMethod previousEntry =
-                            (SootMethod)(_classInitializerMap.get(source));
+                        (SootMethod)(_classInitializerMap.get(source));
                     if (previousEntry == null)  {
                         _classInitializerMap.put(source, method);
                     }
@@ -202,9 +202,9 @@ public class MethodListGenerator {
                 else {
                     // Unrecognized method with name that contains '<'
                     throw new RuntimeException(
-                        "Unknown type of special method: "
-                        + method.getSubSignature() + " in class "
-                        + source.getName());
+                            "Unknown type of special method: "
+                            + method.getSubSignature() + " in class "
+                            + source.getName());
                 }
             }
             else {
@@ -224,7 +224,7 @@ public class MethodListGenerator {
                         } else {
                             inheritedMethodIndex++;
                         }
-                     }
+                    }
                     if (found) {
                         // The method overrides a previously defined method
                         inheritedList.set(inheritedMethodIndex, method);
@@ -250,35 +250,35 @@ public class MethodListGenerator {
         // First we create a list of the subSignatures of all inherited
         // methods.
         /*
-        HashSet subSignatures = new HashSet();
-        Iterator inheritedMethods = (Iterator)inheritedList.listIterator();
-        while (inheritedMethods.hasNext()) {
-            SootMethod inheritedMethod = (SootMethod)inheritedMethods.next();
-            subSignatures.add(inheritedMethod.getSubSignature());
-        }
-        // Iterate over all the interfaces this class implements.
-        // FIXME: There must be a faster implementation than a
-        // triple-nested loop.
-        // FIXME: Methods end up duplicated. Need to take care of that.
-        Iterator interfaces = source.getInterfaces().iterator();
-        while (interfaces.hasNext()) {
-            SootClass thisInterface = (SootClass)interfaces.next();
+          HashSet subSignatures = new HashSet();
+          Iterator inheritedMethods = (Iterator)inheritedList.listIterator();
+          while (inheritedMethods.hasNext()) {
+          SootMethod inheritedMethod = (SootMethod)inheritedMethods.next();
+          subSignatures.add(inheritedMethod.getSubSignature());
+          }
+          // Iterate over all the interfaces this class implements.
+          // FIXME: There must be a faster implementation than a
+          // triple-nested loop.
+          // FIXME: Methods end up duplicated. Need to take care of that.
+          Iterator interfaces = source.getInterfaces().iterator();
+          while (interfaces.hasNext()) {
+          SootClass thisInterface = (SootClass)interfaces.next();
 
-            // Iterate over each method in each interface.
-            Iterator interfaceMethods = thisInterface.getMethods().iterator();
-            while (interfaceMethods.hasNext()) {
-                SootMethod thisMethod = (SootMethod)interfaceMethods.next();
-                // Prevent the method from being listed as "inherited" if
-                // its declared by this class itself, or if its
-                // subSignature is already present.
-                String thisSubsignature = thisMethod.getSubSignature();
-                if (!source.declaresMethod(thisSubsignature)
-                    && !subSignatures.contains(thisSubsignature)) {
-                    inheritedList.addLast(thisMethod);
-                    subSignatures.add(thisSubsignature);
-                }
-            }
-        }
+          // Iterate over each method in each interface.
+          Iterator interfaceMethods = thisInterface.getMethods().iterator();
+          while (interfaceMethods.hasNext()) {
+          SootMethod thisMethod = (SootMethod)interfaceMethods.next();
+          // Prevent the method from being listed as "inherited" if
+          // its declared by this class itself, or if its
+          // subSignature is already present.
+          String thisSubsignature = thisMethod.getSubSignature();
+          if (!source.declaresMethod(thisSubsignature)
+          && !subSignatures.contains(thisSubsignature)) {
+          inheritedList.addLast(thisMethod);
+          subSignatures.add(thisSubsignature);
+          }
+          }
+          }
         */
 
         _constructorListMap.put(source, constructorList);

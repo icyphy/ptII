@@ -88,7 +88,7 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
         synchronizedPlay.setTypeEquals(BaseType.BOOLEAN);
         synchronizedPlay.setToken(BooleanToken.TRUE);
 
-            onOff = new TypedIOPort(this, "onOff", true, false);
+        onOff = new TypedIOPort(this, "onOff", true, false);
         onOff.setTypeEquals(BaseType.BOOLEAN);
 
         percentGain = new IntRangeParameter(this, "percentGain");
@@ -150,10 +150,10 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
                 }
             } catch (IOException ex) {
                 throw new IllegalActionException(this,
-                "Cannot open file: " + ex.toString());
+                        "Cannot open file: " + ex.toString());
             } catch (MediaException ex) {
                 throw new IllegalActionException(this,
-                "Exception thrown by media framework: " + ex.toString());
+                        "Exception thrown by media framework: " + ex.toString());
             }
         } else if (attribute == percentGain && _gainControl != null) {
             _gainControl.setLevel(0.01f * percentGain.getCurrentValue());
@@ -197,11 +197,11 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
 
             // If synchronizedPlay is true, then wait for the play to complete.
             boolean synch
-                   = ((BooleanToken)synchronizedPlay.getToken()).booleanValue();
+                = ((BooleanToken)synchronizedPlay.getToken()).booleanValue();
             if (synch) {
                 synchronized(this) {
                     while (_player.getState() == Controller.Started
-                    && !_stopRequested) {
+                            && !_stopRequested) {
                         try {
                             wait();
                         } catch (InterruptedException ex) {

@@ -109,7 +109,7 @@ public class Main extends KernelMain {
         // For example, to time out after 5 minutes, or 300000 ms:
         // -p wjtp.watchDog time:30000
         Scene.v().getPack("wjtp").add(new Transform("wjtp.watchDog",
-                                              WatchDogTimer.v()));
+                WatchDogTimer.v()));
 
         // Sanitize names of objects in the model.
         // We change the names to all be valid java identifiers
@@ -146,7 +146,7 @@ public class Main extends KernelMain {
 
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ffet",
-                         FieldsForEntitiesTransformer.v(toplevel)));
+                        FieldsForEntitiesTransformer.v(toplevel)));
 
         // Infer the types of locals again, since replacing attributes
         // depends on the types of fields
@@ -194,12 +194,12 @@ public class Main extends KernelMain {
                         InlineParameterTransformer.v(toplevel)));
 
         // Remove equality checks, which arise from inlining attributeChanged.
-       //  Scene.v().getPack("wjtp").add(
-//                 new Transform("wjtp.ta",
-//                         new TransformerAdapter(TypeAssigner.v())));
-//         Scene.v().getPack("wjtp").add(
-//                 new Transform("wjtp.nee",
-//                         NamedObjEqualityEliminator.v(toplevel)));
+        //  Scene.v().getPack("wjtp").add(
+        //                 new Transform("wjtp.ta",
+        //                         new TransformerAdapter(TypeAssigner.v())));
+        //         Scene.v().getPack("wjtp").add(
+        //                 new Transform("wjtp.nee",
+        //                         NamedObjEqualityEliminator.v(toplevel)));
 
         // Anywhere we have a method call on a token that can be
         // statically evaluated (usually, these will have been
@@ -306,222 +306,222 @@ public class Main extends KernelMain {
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
 
         /*
-        // Remove Unreachable methods.  This happens BEFORE
-        // NamedObjElimination so that we don't have to pick between
-        // multiple constructors, if there are more than one.  I'm
-        // lazy and instead of trying to pick one, lets use the only
-        // one that is reachable.
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.umr", UnreachableMethodRemover.v()));
+          // Remove Unreachable methods.  This happens BEFORE
+          // NamedObjElimination so that we don't have to pick between
+          // multiple constructors, if there are more than one.  I'm
+          // lazy and instead of trying to pick one, lets use the only
+          // one that is reachable.
+          Scene.v().getPack("wjtp").add(
+          new Transform("wjtp.umr", UnreachableMethodRemover.v()));
 
 
-        // Remove references to named objects.
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.ee",
-                        ExceptionEliminator.v(toplevel)));
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.ls",
-                        new TransformerAdapter(LocalSplitter.v())));
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.cie",
-                        new TransformerAdapter(
-                                CastAndInstanceofEliminator.v())));
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.ta",
-                        new TransformerAdapter(TypeAssigner.v())));
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.ib",
-                        InvocationBinder.v()));
+          // Remove references to named objects.
+          Scene.v().getPack("wjtp").add(
+          new Transform("wjtp.ee",
+          ExceptionEliminator.v(toplevel)));
+          Scene.v().getPack("wjtp").add(
+          new Transform("wjtp.ls",
+          new TransformerAdapter(LocalSplitter.v())));
+          Scene.v().getPack("wjtp").add(
+          new Transform("wjtp.cie",
+          new TransformerAdapter(
+          CastAndInstanceofEliminator.v())));
+          Scene.v().getPack("wjtp").add(
+          new Transform("wjtp.ta",
+          new TransformerAdapter(TypeAssigner.v())));
+          Scene.v().getPack("wjtp").add(
+          new Transform("wjtp.ib",
+          InvocationBinder.v()));
 
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.noe",
-                        NamedObjEliminator.v(toplevel)));
+          Scene.v().getPack("wjtp").add(
+          new Transform("wjtp.noe",
+          NamedObjEliminator.v(toplevel)));
 
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.umr", UnreachableMethodRemover.v()));
+          Scene.v().getPack("wjtp").add(
+          new Transform("wjtp.umr", UnreachableMethodRemover.v()));
 
-        // Some cleanup.
-        // Remove object creations that are now dead (i.e. aren't used
-        // and have no side effects).  This currently only deals with
-        // Token and Type constructors, since we know that these will
-        // have no interesting side effects.  More complex analysis
-        // is possible here, but not likely worth it.
+          // Some cleanup.
+          // Remove object creations that are now dead (i.e. aren't used
+          // and have no side effects).  This currently only deals with
+          // Token and Type constructors, since we know that these will
+          // have no interesting side effects.  More complex analysis
+          // is possible here, but not likely worth it.
 
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.doe",
-                        new TransformerAdapter(
-                                DeadObjectEliminator.v())));
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.dae",
-                        new TransformerAdapter(
-                                ImprovedDeadAssignmentEliminator.v())));
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.doe",
-                        new TransformerAdapter(
-                                DeadObjectEliminator.v())));
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.dae",
-                        new TransformerAdapter(
-                                ImprovedDeadAssignmentEliminator.v())));
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.doe",
-                        new TransformerAdapter(
-                                DeadObjectEliminator.v())));
-        _addStandardOptimizations(Scene.v().getPack("wjtp"));
-        /*
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.snapshot4", JimpleWriter.v()));
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.snapshot4", ClassWriter.v()));
+          Scene.v().getPack("wjtp").add(
+          new Transform("wjtp.doe",
+          new TransformerAdapter(
+          DeadObjectEliminator.v())));
+          Scene.v().getPack("wjtp").add(
+          new Transform("wjtp.dae",
+          new TransformerAdapter(
+          ImprovedDeadAssignmentEliminator.v())));
+          Scene.v().getPack("wjtp").add(
+          new Transform("wjtp.doe",
+          new TransformerAdapter(
+          DeadObjectEliminator.v())));
+          Scene.v().getPack("wjtp").add(
+          new Transform("wjtp.dae",
+          new TransformerAdapter(
+          ImprovedDeadAssignmentEliminator.v())));
+          Scene.v().getPack("wjtp").add(
+          new Transform("wjtp.doe",
+          new TransformerAdapter(
+          DeadObjectEliminator.v())));
+          _addStandardOptimizations(Scene.v().getPack("wjtp"));
+          /*
+            Scene.v().getPack("wjtp").add(
+            new Transform("wjtp.snapshot4", JimpleWriter.v()));
+            Scene.v().getPack("wjtp").add(
+            new Transform("wjtp.snapshot4", ClassWriter.v()));
 
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.ttn",
-                        TokenToNativeTransformer.v(toplevel)));
+            Scene.v().getPack("wjtp").add(
+            new Transform("wjtp.ttn",
+            TokenToNativeTransformer.v(toplevel)));
 
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.ufr",
-                        UnusedFieldRemover.v()));
+            Scene.v().getPack("wjtp").add(
+            new Transform("wjtp.ufr",
+            UnusedFieldRemover.v()));
 
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.smr",
-                        SideEffectFreeInvocationRemover.v()));
-
-
-        // Remove references to named objects.
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.ee",
-                        ExceptionEliminator.v(toplevel)));
-
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.doe",
-                        new TransformerAdapter(
-                                DeadObjectEliminator.v())));
-        _addStandardOptimizations(Scene.v().getPack("wjtp"));
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.smr",
-                        SideEffectFreeInvocationRemover.v()));
-
-   /*
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.ts",
-                        TypeSpecializer.v(toplevel)));
-
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.tie",
-                        new TransformerAdapter(
-                                TokenInstanceofEliminator.v())));
-
-        // Some cleanup.
-        // Remove object creations that are now dead (i.e. aren't used
-        // and have no side effects).  This currently only deals with
-        // Token and Type constructors, since we know that these will
-        // have no interesting side effects.  More complex analysis
-        // is possible here, but not likely worth it.
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.doe",
-                        new TransformerAdapter(
-                                DeadObjectEliminator.v())));
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.dae",
-                        new TransformerAdapter(
-                                ImprovedDeadAssignmentEliminator.v())));
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.doe",
-                        new TransformerAdapter(
-                                DeadObjectEliminator.v())));
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.dae",
-                        new TransformerAdapter(
-                                ImprovedDeadAssignmentEliminator.v())));
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.doe",
-                        new TransformerAdapter(
-                                DeadObjectEliminator.v())));
-
-        // Remove unnecessary assignments using alias analysis.
-        // This catches assignments to fields which other assignments miss.
-        //  Scene.v().getPack("wjtp").add(
-        //                 new Transform("wjtp.aae",
-        //                         new TransformerAdapter(
-        //                                 AliasAssignmentEliminator.v())));
+            Scene.v().getPack("wjtp").add(
+            new Transform("wjtp.smr",
+            SideEffectFreeInvocationRemover.v()));
 
 
-        // Remove other useless getFoo() methods.
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.smr",
-                        SideEffectFreeInvocationRemover.v()));
+            // Remove references to named objects.
+            Scene.v().getPack("wjtp").add(
+            new Transform("wjtp.ee",
+            ExceptionEliminator.v(toplevel)));
 
-        // Run the standard soot optimizations.  We explicitly specify
-        // this instead of using soot's -O flag so that we can
-        // have access to the result.
-        _addStandardOptimizations(Scene.v().getPack("wjtp"));
+            Scene.v().getPack("wjtp").add(
+            new Transform("wjtp.doe",
+            new TransformerAdapter(
+            DeadObjectEliminator.v())));
+            _addStandardOptimizations(Scene.v().getPack("wjtp"));
+            Scene.v().getPack("wjtp").add(
+            new Transform("wjtp.smr",
+            SideEffectFreeInvocationRemover.v()));
 
-        // Remove Unreachable methods.  This happens BEFORE NamedObjElimination
-        // so that we don't have to pick between multiple constructors, if
-        // there are more than one.  I'm lazy and instead of trying to pick
-        // one, lets use the only one that is reachable.
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.umr", UnreachableMethodRemover.v()));
+            /*
+              Scene.v().getPack("wjtp").add(
+              new Transform("wjtp.ts",
+              TypeSpecializer.v(toplevel)));
 
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.ta",
-                        new TransformerAdapter(TypeAssigner.v())));
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.nee",
-                        NamedObjEqualityEliminator.v(toplevel)));
+              Scene.v().getPack("wjtp").add(
+              new Transform("wjtp.tie",
+              new TransformerAdapter(
+              TokenInstanceofEliminator.v())));
 
-        // Remove references to named objects.
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.ee",
-                        ExceptionEliminator.v(toplevel)));
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.noe",
-                        NamedObjEliminator.v(toplevel)));
+              // Some cleanup.
+              // Remove object creations that are now dead (i.e. aren't used
+              // and have no side effects).  This currently only deals with
+              // Token and Type constructors, since we know that these will
+              // have no interesting side effects.  More complex analysis
+              // is possible here, but not likely worth it.
+              Scene.v().getPack("wjtp").add(
+              new Transform("wjtp.doe",
+              new TransformerAdapter(
+              DeadObjectEliminator.v())));
+              Scene.v().getPack("wjtp").add(
+              new Transform("wjtp.dae",
+              new TransformerAdapter(
+              ImprovedDeadAssignmentEliminator.v())));
+              Scene.v().getPack("wjtp").add(
+              new Transform("wjtp.doe",
+              new TransformerAdapter(
+              DeadObjectEliminator.v())));
+              Scene.v().getPack("wjtp").add(
+              new Transform("wjtp.dae",
+              new TransformerAdapter(
+              ImprovedDeadAssignmentEliminator.v())));
+              Scene.v().getPack("wjtp").add(
+              new Transform("wjtp.doe",
+              new TransformerAdapter(
+              DeadObjectEliminator.v())));
 
-        // We REALLY need to cleanup here or the code is not correct..
-        _addStandardOptimizations(Scene.v().getPack("wjtp"));
+              // Remove unnecessary assignments using alias analysis.
+              // This catches assignments to fields which other assignments miss.
+              //  Scene.v().getPack("wjtp").add(
+              //                 new Transform("wjtp.aae",
+              //                         new TransformerAdapter(
+              //                                 AliasAssignmentEliminator.v())));
 
-        // Remove Unreachable methods.
-        // FIXME: This has bugs...
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.umr", UnreachableMethodRemover.v()));
 
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.snapshot6", JimpleWriter.v()));
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.snapshot6", ClassWriter.v()));
+              // Remove other useless getFoo() methods.
+              Scene.v().getPack("wjtp").add(
+              new Transform("wjtp.smr",
+              SideEffectFreeInvocationRemover.v()));
 
-        //    Scene.v().getPack("wjtp").add(new Transform("wjtp.ts",
-        //                                               TypeSpecializer.v(toplevel)));
+              // Run the standard soot optimizations.  We explicitly specify
+              // this instead of using soot's -O flag so that we can
+              // have access to the result.
+              _addStandardOptimizations(Scene.v().getPack("wjtp"));
 
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.tie",
-                        new TransformerAdapter(
-                                TokenInstanceofEliminator.v())));
+              // Remove Unreachable methods.  This happens BEFORE NamedObjElimination
+              // so that we don't have to pick between multiple constructors, if
+              // there are more than one.  I'm lazy and instead of trying to pick
+              // one, lets use the only one that is reachable.
+              Scene.v().getPack("wjtp").add(
+              new Transform("wjtp.umr", UnreachableMethodRemover.v()));
 
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.ttn",
-                        TokenToNativeTransformer.v(toplevel)));
+              Scene.v().getPack("wjtp").add(
+              new Transform("wjtp.ta",
+              new TransformerAdapter(TypeAssigner.v())));
+              Scene.v().getPack("wjtp").add(
+              new Transform("wjtp.nee",
+              NamedObjEqualityEliminator.v(toplevel)));
 
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.ee",
-                        ExceptionEliminator.v(toplevel)));
+              // Remove references to named objects.
+              Scene.v().getPack("wjtp").add(
+              new Transform("wjtp.ee",
+              ExceptionEliminator.v(toplevel)));
+              Scene.v().getPack("wjtp").add(
+              new Transform("wjtp.noe",
+              NamedObjEliminator.v(toplevel)));
 
-        _addStandardOptimizations(Scene.v().getPack("wjtp"));
+              // We REALLY need to cleanup here or the code is not correct..
+              _addStandardOptimizations(Scene.v().getPack("wjtp"));
 
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.ufr",
-                        UnusedFieldRemover.v()));
+              // Remove Unreachable methods.
+              // FIXME: This has bugs...
+              Scene.v().getPack("wjtp").add(
+              new Transform("wjtp.umr", UnreachableMethodRemover.v()));
 
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.smr",
-                        SideEffectFreeInvocationRemover.v()));
+              Scene.v().getPack("wjtp").add(
+              new Transform("wjtp.snapshot6", JimpleWriter.v()));
+              Scene.v().getPack("wjtp").add(
+              new Transform("wjtp.snapshot6", ClassWriter.v()));
 
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.doe",
-                        new TransformerAdapter(
-                                DeadObjectEliminator.v())));
-         */
+              //    Scene.v().getPack("wjtp").add(new Transform("wjtp.ts",
+              //                                               TypeSpecializer.v(toplevel)));
+
+              Scene.v().getPack("wjtp").add(
+              new Transform("wjtp.tie",
+              new TransformerAdapter(
+              TokenInstanceofEliminator.v())));
+
+              Scene.v().getPack("wjtp").add(
+              new Transform("wjtp.ttn",
+              TokenToNativeTransformer.v(toplevel)));
+
+              Scene.v().getPack("wjtp").add(
+              new Transform("wjtp.ee",
+              ExceptionEliminator.v(toplevel)));
+
+              _addStandardOptimizations(Scene.v().getPack("wjtp"));
+
+              Scene.v().getPack("wjtp").add(
+              new Transform("wjtp.ufr",
+              UnusedFieldRemover.v()));
+
+              Scene.v().getPack("wjtp").add(
+              new Transform("wjtp.smr",
+              SideEffectFreeInvocationRemover.v()));
+
+              Scene.v().getPack("wjtp").add(
+              new Transform("wjtp.doe",
+              new TransformerAdapter(
+              DeadObjectEliminator.v())));
+        */
 
         // This snapshot should be last...
         Scene.v().getPack("wjtp").add(
@@ -539,8 +539,8 @@ public class Main extends KernelMain {
         super.addTransforms();
         addStandardTransforms(_toplevel);
         // And write C!
-       //  Scene.v().getPack("wjtp").add(
-//                 new Transform("wjtp.finalSnapshot", CWriter.v()));
+        //  Scene.v().getPack("wjtp").add(
+        //                 new Transform("wjtp.finalSnapshot", CWriter.v()));
 
         // Generate the makefile files in outDir
         Scene.v().getPack("wjtp").add(new Transform("wjtp.makefileWriter",
@@ -593,24 +593,24 @@ public class Main extends KernelMain {
      */
     private static void _addStandardOptimizations(Pack pack) {
         pack.add(new Transform("jop.cse",
-                         new TransformerAdapter(CommonSubexpressionEliminator.v())));
+                new TransformerAdapter(CommonSubexpressionEliminator.v())));
         pack.add(new Transform("jop.cp",
-                         new TransformerAdapter(CopyPropagator.v())));
+                new TransformerAdapter(CopyPropagator.v())));
         pack.add(new Transform("jop.cpf",
-                         new TransformerAdapter(ConstantPropagatorAndFolder.v())));
+                new TransformerAdapter(ConstantPropagatorAndFolder.v())));
         pack.add(new Transform("jop.cbf",
-                         new TransformerAdapter(ConditionalBranchFolder.v())));
+                new TransformerAdapter(ConditionalBranchFolder.v())));
         pack.add(new Transform("jop.dae",
-                         new TransformerAdapter(ImprovedDeadAssignmentEliminator.v())));
+                new TransformerAdapter(ImprovedDeadAssignmentEliminator.v())));
         pack.add(new Transform("jop.uce1",
-                         new TransformerAdapter(UnreachableCodeEliminator.v())));
+                new TransformerAdapter(UnreachableCodeEliminator.v())));
         pack.add(new Transform("jop.ubf1",
-                         new TransformerAdapter(UnconditionalBranchFolder.v())));
+                new TransformerAdapter(UnconditionalBranchFolder.v())));
         pack.add(new Transform("jop.uce2",
-                         new TransformerAdapter(UnreachableCodeEliminator.v())));
+                new TransformerAdapter(UnreachableCodeEliminator.v())));
         pack.add(new Transform("jop.ubf2",
-                         new TransformerAdapter(UnconditionalBranchFolder.v())));
+                new TransformerAdapter(UnconditionalBranchFolder.v())));
         pack.add(new Transform("jop.ule",
-                         new TransformerAdapter(UnusedLocalEliminator.v())));
-  }
+                new TransformerAdapter(UnusedLocalEliminator.v())));
+    }
 }

@@ -211,7 +211,7 @@ public class MatrixTokenTableau extends TokenTableau {
                 // First see whether the effigy already contains a
                 // TokenTableau.
                 TokenTableau tableau =
-                       (TokenTableau)effigy.getEntity("tokenTableau");
+                    (TokenTableau)effigy.getEntity("tokenTableau");
                 if (tableau != null) {
                     return tableau;
                 }

@@ -160,7 +160,7 @@ public class RecordUpdater extends TypedAtomicActor {
             }
         }
 
-         // Construct a RecordToken and fill it with the values
+        // Construct a RecordToken and fill it with the values
         // in the HashMap.
         String[] labels = new String[outputMap.size()];
         Token[] values = new Token[outputMap.size()];
@@ -269,7 +269,7 @@ public class RecordUpdater extends TypedAtomicActor {
                 }
             }
 
-             // Construct the RecordType
+            // Construct the RecordType
             Object[] labelsObj = outputMap.keySet().toArray();
             String[] labels = new String[labelsObj.length];
             Type[] types = new Type[labelsObj.length];

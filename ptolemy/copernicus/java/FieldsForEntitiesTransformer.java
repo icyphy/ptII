@@ -155,8 +155,8 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
                 if (value instanceof InstanceInvokeExpr) {
                     InstanceInvokeExpr r = (InstanceInvokeExpr)value;
                     if (r.getMethod().getSubSignature().equals(
-                                PtolemyUtilities
-                                .getContainerMethod.getSubSignature())) {
+                            PtolemyUtilities
+                            .getContainerMethod.getSubSignature())) {
 
                         Value newFieldRef =
                             _getContainerMethodReplacementFieldRef(
@@ -165,14 +165,14 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
                         box.setValue(newFieldRef);
                         if (_debug) System.out.println("replacing " + unit);
                     } else if (r.getMethod().equals(
-                                       PtolemyUtilities.toplevelMethod)) {
+                            PtolemyUtilities.toplevelMethod)) {
                         // Replace with reference to the toplevel
                         Value newFieldRef =
                             ModelTransformer.getFieldRefForEntity(_model);
                         box.setValue(newFieldRef);
                         if (_debug) System.out.println("replacing " + unit);
-                   } else if (r.getMethod().getSubSignature().equals(
-                                       PtolemyUtilities.getEntityMethod.getSubSignature())) {
+                    } else if (r.getMethod().getSubSignature().equals(
+                            PtolemyUtilities.getEntityMethod.getSubSignature())) {
                         Value nameValue = r.getArg(0);
                         if (Evaluator.isValueConstantValued(nameValue)) {
                             StringConstant nameConstant =
@@ -240,19 +240,19 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
             return ModelTransformer.getFieldRefForEntity(container);
 
             //            throw new RuntimeException("unimplemented case");
-          //   // Walk back and get the definition of the field.
-//             DefinitionStmt definition =
-//                 _getFieldDef(baseLocal, unit, localDefs);
-//             InstanceFieldRef fieldRef = (InstanceFieldRef)
-//                 definition.getRightOp();
-//             SootField baseField = fieldRef.getField();
-//             System.out.println("baseField = " + baseField);
-//             return _getContainerMethodReplacementFieldRef(
-//                     (Local)fieldRef.getBase(),
-//                     baseField.getName() + "." + name, definition,
-//                     localDefs);
-//             //baseField.getDeclaringClass().getFieldByName(
-//             //    baseField.getName() + "_" + name);
+            //   // Walk back and get the definition of the field.
+            //             DefinitionStmt definition =
+            //                 _getFieldDef(baseLocal, unit, localDefs);
+            //             InstanceFieldRef fieldRef = (InstanceFieldRef)
+            //                 definition.getRightOp();
+            //             SootField baseField = fieldRef.getField();
+            //             System.out.println("baseField = " + baseField);
+            //             return _getContainerMethodReplacementFieldRef(
+            //                     (Local)fieldRef.getBase(),
+            //                     baseField.getName() + "." + name, definition,
+            //                     localDefs);
+            //             //baseField.getDeclaringClass().getFieldByName(
+            //             //    baseField.getName() + "_" + name);
         }
     }
 

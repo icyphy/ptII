@@ -629,7 +629,7 @@ public class TypedIOPort extends IOPort implements Typeable {
             throws IllegalActionException, NoRoomException {
         if (vectorLength > tokenArray.length) {
             throw new IllegalActionException(this,
-            "Not enough data supplied to send specified number of samples.");
+                    "Not enough data supplied to send specified number of samples.");
         }
         Receiver[][] farReceivers;
         if (_debugging) {
@@ -683,8 +683,8 @@ public class TypedIOPort extends IOPort implements Typeable {
                     // Note: This is very bad for performance!
                     // For better efficiency, make sure
                     // all ports have the same type.
-                        for (int i = 0; i < vectorLength; i++) {
-                            farReceivers[channelIndex][j].put(
+                    for (int i = 0; i < vectorLength; i++) {
+                        farReceivers[channelIndex][j].put(
                                 farType.convert(tokenArray[i]));
                     }
                 }

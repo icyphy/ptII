@@ -180,22 +180,22 @@ public class ExpressionCreator implements AtomicActorCreator {
 
                     Stmt target = Jimple.v().newNopStmt();
                     units.add(Jimple.v().newIfStmt(
-                                      Jimple.v().newEqExpr(hasTokenLocal,
-                                              IntConstant.v(0)),
-                                      target));
+                            Jimple.v().newEqExpr(hasTokenLocal,
+                                    IntConstant.v(0)),
+                            target));
                     units.add(Jimple.v().newAssignStmt(
-                                      tokenLocal,
-                                      Jimple.v().newVirtualInvokeExpr(
-                                              portLocal,
-                                              PtolemyUtilities.getMethod,
-                                              IntConstant.v(0))));
+                            tokenLocal,
+                            Jimple.v().newVirtualInvokeExpr(
+                                    portLocal,
+                                    PtolemyUtilities.getMethod,
+                                    IntConstant.v(0))));
                     SootField tokenField =
                         entityInstanceClass.getFieldByName(name + "Token");
                     units.add(Jimple.v().newAssignStmt(
-                                      Jimple.v().newInstanceFieldRef(
-                                              thisLocal,
-                                              tokenField),
-                                      tokenLocal));
+                            Jimple.v().newInstanceFieldRef(
+                                    thisLocal,
+                                    tokenField),
+                            tokenLocal));
                     units.add(target);
                 }
             }

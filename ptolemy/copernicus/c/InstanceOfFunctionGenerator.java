@@ -64,7 +64,7 @@ public class InstanceOfFunctionGenerator {
         code.append("{\n");
 
         code.append(_indent(1) + "switch (checkIndex)\n"
-            + _indent(1) + "{\n");
+                + _indent(1) + "{\n");
         // If its this class itself
         code.append(_indent(2) + _comment(source.getName()));
         code.append(_indent(2) + "case "
@@ -83,9 +83,9 @@ public class InstanceOfFunctionGenerator {
 
         code.append(_indent(2) + "default: return ");
         if (source.hasSuperclass()) {
-                code.append(
-                "((PCCG_CLASS_PTR)thisClass->superclass)->instanceOf"
-                + "((PCCG_CLASS_PTR)thisClass->superclass, checkIndex);\n");
+            code.append(
+                    "((PCCG_CLASS_PTR)thisClass->superclass)->instanceOf"
+                    + "((PCCG_CLASS_PTR)thisClass->superclass, checkIndex);\n");
         }
         else {
             code.append("0;\n");

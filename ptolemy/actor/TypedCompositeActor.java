@@ -240,7 +240,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             if (constraintList.size() > 0) {
                 InequalitySolver solver = new InequalitySolver(
                         TypeLattice.lattice());
-                       Iterator constraints = constraintList.iterator();
+                Iterator constraints = constraintList.iterator();
                 solver.addInequalities(constraints);
 
                 // Find the least solution (most specific types)
@@ -339,7 +339,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                         TypedIOPort sourcePort = (TypedIOPort)ports.next();
                         List destinationPorts = sourcePort.sinkPortList();
                         result.addAll(_typeConstraintsFromTo(sourcePort,
-                                              destinationPorts));
+                                destinationPorts));
                     }
                 }
                 // Also need to check connection from the input ports on
@@ -349,7 +349,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                     TypedIOPort sourcePort = (TypedIOPort)boundaryPorts.next();
                     List destinationPorts = sourcePort.insideSinkPortList();
                     result.addAll(_typeConstraintsFromTo(sourcePort,
-                                          destinationPorts));
+                            destinationPorts));
                 }
             }
 
@@ -538,22 +538,22 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             Type srcDeclared = sourcePort.getType();
             Iterator destinationPorts = destinationPortList.iterator();
             while (destinationPorts.hasNext()) {
-                    TypedIOPort destinationPort =
+                TypedIOPort destinationPort =
                     (TypedIOPort)destinationPorts.next();
                 isUndeclared = destinationPort.getTypeTerm().isSettable();
 
-                    if (!isUndeclared) {
-                        // both source/destination ports are declared,
-                        // check type
-                        Type destDeclared = destinationPort.getType();
+                if (!isUndeclared) {
+                    // both source/destination ports are declared,
+                    // check type
+                    Type destDeclared = destinationPort.getType();
                     int compare = TypeLattice.compare(srcDeclared,
                             destDeclared);
                     if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
                         Inequality inequality = new Inequality(
                                 sourcePort.getTypeTerm(),
                                 destinationPort.getTypeTerm());
-                            result.add(inequality);
-                        }
+                        result.add(inequality);
+                    }
                 }
             }
         }

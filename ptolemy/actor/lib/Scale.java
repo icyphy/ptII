@@ -147,7 +147,7 @@ public class Scale extends Transformer {
                 result = _scaleOnLeft(in, factorToken);
             } else {
                 // Scale on the right.
-               result = _scaleOnRight(in, factorToken);
+                result = _scaleOnRight(in, factorToken);
             }
             output.send(0, result);
         }

@@ -129,7 +129,7 @@ public class ChoiceStyle extends ParameterEditorStyle {
             values[i] = choices[i].getExpression();
         }
         Settable container = (Settable)getContainer();
-               String defaultChoice = container.getExpression();
+        String defaultChoice = container.getExpression();
         query.addChoice(name, name, values, defaultChoice, _isEditable);
         query.attachParameter(container, name);
     }

@@ -117,12 +117,12 @@ public class MultiInstanceComposite extends TypedCompositeActor {
     /** Construct a MultiInstanceComposite actor in the specified
      *  workspace with no container and an empty string as a name.
      */
-     public MultiInstanceComposite(Workspace workspace) {
+    public MultiInstanceComposite(Workspace workspace) {
         super(workspace);
         _initialize();
-     }
+    }
 
-   /** Construct a MultiInstanceComposite actor with the given container
+    /** Construct a MultiInstanceComposite actor with the given container
      *  and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -157,7 +157,7 @@ public class MultiInstanceComposite extends TypedCompositeActor {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-        throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         MultiInstanceComposite newObject =
             (MultiInstanceComposite)super.clone(workspace);
         newObject._isMasterCopy = _isMasterCopy;
@@ -223,8 +223,8 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                         if (relations.size() > 1) {
                             throw new IllegalActionException
                                 (getFullName() + ".preinitialize(): port " +
-                                     port.getName() + " can be linked to " +
-                                 "one relation only");
+                                        port.getName() + " can be linked to " +
+                                        "one relation only");
                         }
                         if (relations.size() < 1) {
                             continue;
@@ -244,29 +244,29 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                             TypedIOPort otherPort = (TypedIOPort)
                                 otherPorts.next();
                             if (port.isOutput() &&
-                                !otherPort.isMultiport()) {
+                                    !otherPort.isMultiport()) {
                                 throw new IllegalActionException
                                     (getFullName()+ ".preinitialize(): "+
-                                     "output port "+port.getName()+
-                                     "must be connected to a multi-port");
+                                            "output port "+port.getName()+
+                                            "must be connected to a multi-port");
                             }
                             if ((port.isInput() && otherPort.isOutput()) ||
-                                (port.isOutput() && otherPort.isInput())) {
+                                    (port.isOutput() && otherPort.isInput())) {
                                 if (otherPort.isMultiport()) {
                                     relation = new TypedIORelation
                                         (container,"r_" + getName() + "_" +
-                                         i + "_" + port.getName());
+                                                i + "_" + port.getName());
                                     otherPort.link(relation);
                                     if (_debugging)
                                         _debug(port.getFullName()+
-                                               ": created relation "+
-                                               relation.getFullName());
+                                                ": created relation "+
+                                                relation.getFullName());
                                 }
                                 newPort.link(relation);
                                 if (_debugging)
                                     _debug(newPort.getFullName()+
-                                           ": linked to "+
-                                           relation.getFullName());
+                                            ": linked to "+
+                                            relation.getFullName());
                                 container.connectionsChanged(otherPort);
                                 clone.connectionsChanged(newPort);
                             }
@@ -330,7 +330,7 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                         // Unlink the clone's port from the relation
                         if (_debugging)
                             _debug("Unlinking "+port.getFullName()+" from "+
-                                   relation.getFullName());
+                                    relation.getFullName());
                         port.unlink(relation);
                     }
                 }
@@ -362,7 +362,7 @@ public class MultiInstanceComposite extends TypedCompositeActor {
     ////                         private methods                 ////
 
     private void _addScopeExtendingAttribute()
-        throws IllegalActionException {
+            throws IllegalActionException {
         try {
             ScopeExtendingAttribute scopeExtender = (ScopeExtendingAttribute)
                 getAttribute(_scopeExtendingAttributeName);
@@ -376,7 +376,7 @@ public class MultiInstanceComposite extends TypedCompositeActor {
             while (scopeVariables.hasNext()) {
                 Variable variable = (Variable)scopeVariables.next();
                 new Variable(scopeExtender, variable.getName(),
-                             variable.getToken());
+                        variable.getToken());
             }
         } catch (NameDuplicationException ex) {
             throw new IllegalActionException(getFullName()+ex.toString());
@@ -385,7 +385,7 @@ public class MultiInstanceComposite extends TypedCompositeActor {
 
     /** Clone to create a copy of the master copy. */
     private Object _cloneClone(Workspace workspace)
-        throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         MultiInstanceComposite newObject =
             (MultiInstanceComposite)super.clone(workspace);
         newObject._isMasterCopy = false;
@@ -405,21 +405,21 @@ public class MultiInstanceComposite extends TypedCompositeActor {
         }
         _isMasterCopy = true;
         _attachText("_iconDescription", "<svg>\n" +
-                    "<rect x=\"-30\" y=\"-20\" width=\"60\" " +
-                    "height=\"40\" style=\"fill:red\"/>\n" +
-                    "<rect x=\"-28\" y=\"-18\" width=\"56\" " +
-                    "height=\"36\" style=\"fill:lightgrey\"/>\n" +
-                    "<rect x=\"-18\" y=\"-14\" width=\"40\" " +
-                    "height=\"24\" style=\"fill:lightgrey\"/>\n" +
-                    "<rect x=\"-20\" y=\"-12\" width=\"40\" " +
-                    "height=\"24\" style=\"fill:lightgrey\"/>\n" +
-                    "<rect x=\"-22\" y=\"-10\" width=\"40\" " +
-                    "height=\"24\" style=\"fill:lightgrey\"/>\n" +
-                    "</svg>\n");
+                "<rect x=\"-30\" y=\"-20\" width=\"60\" " +
+                "height=\"40\" style=\"fill:red\"/>\n" +
+                "<rect x=\"-28\" y=\"-18\" width=\"56\" " +
+                "height=\"36\" style=\"fill:lightgrey\"/>\n" +
+                "<rect x=\"-18\" y=\"-14\" width=\"40\" " +
+                "height=\"24\" style=\"fill:lightgrey\"/>\n" +
+                "<rect x=\"-20\" y=\"-12\" width=\"40\" " +
+                "height=\"24\" style=\"fill:lightgrey\"/>\n" +
+                "<rect x=\"-22\" y=\"-10\" width=\"40\" " +
+                "height=\"24\" style=\"fill:lightgrey\"/>\n" +
+                "</svg>\n");
     }
 
     private void _removeScopeExtendingAttribute()
-        throws IllegalActionException {
+            throws IllegalActionException {
         try {
             ScopeExtendingAttribute scopeExtender = (ScopeExtendingAttribute)
                 getAttribute(_scopeExtendingAttributeName);

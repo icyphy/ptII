@@ -132,7 +132,7 @@ public class BrowserTableau extends Tableau {
                     // In this case, the temporary file is deleted when
                     // we exit.
                     url = JNLPUtilities.saveJarURLAsTempFile(url, "tmp",
-                                                         null, null);
+                            null, null);
                 }
             }
             BrowserLauncher.openURL(url);
@@ -153,8 +153,8 @@ public class BrowserTableau extends Tableau {
             }
         } catch (IOException ex) {
             throw new InvalidStateException((Nameable)null, ex,
-                                            "Failed to handle '"
-                                             + url + "': ");
+                    "Failed to handle '"
+                    + url + "': ");
         }
     }
 

@@ -71,7 +71,7 @@ public class InvokeGraphPruner {
      * pruning strategy to it, tailored for C code generation.
      * @param source The class to use as the root for the pruned tree.
      */
-   public InvokeGraphPruner(SootClass source) {
+    public InvokeGraphPruner(SootClass source) {
         InvokeGraph invokeGraph;
         Scene.v().setMainClass(source);
         source.setApplicationClass();
@@ -99,7 +99,7 @@ public class InvokeGraphPruner {
      * @param invokeGraph The InvokeGraph.
      * @param method The method.
      */
-     public void printStats(InvokeGraph invokeGraph
+    public void printStats(InvokeGraph invokeGraph
             , SootMethod method) {
         Iterator methods = invokeGraph.getReachableMethods().iterator();
         HashSet requiredClasses = new HashSet();
@@ -121,7 +121,7 @@ public class InvokeGraphPruner {
                 + " methods in "
                 + requiredClasses.size()
                 + " classes.");
-     }
+    }
 
     /** Get the set of all reachable classes.
      *  @return The set of all reachable classes.
@@ -264,15 +264,15 @@ public class InvokeGraphPruner {
      * @return The set of nodes unambiguously referenced in the statements
      * comprising its body.
      */
-     private HashSet _getNodesAccessedInBodyOf(SootMethod method) {
+    private HashSet _getNodesAccessedInBodyOf(SootMethod method) {
         HashSet nodes = new HashSet();
 
         if (method.isConcrete() && !OverriddenMethodGenerator
-                    .isOverridden(method)) {
+                .isOverridden(method)) {
             boolean leaf = _isLeaf(method);
 
             Iterator units = method.retrieveActiveBody()
-                    .getUnits().iterator();
+                .getUnits().iterator();
             while (units.hasNext()) {
                 Unit unit = (Unit)units.next();
                 if (unit instanceof Stmt) {
@@ -288,7 +288,7 @@ public class InvokeGraphPruner {
                     // Add directly called methods.
                     if (!leaf && stmt.containsInvokeExpr()) {
                         SootMethod m = ((InvokeExpr)stmt.getInvokeExpr())
-                                .getMethod();
+                            .getMethod();
                         nodes.add(m);
                     }
                 }
@@ -310,7 +310,7 @@ public class InvokeGraphPruner {
         }
 
         return nodes;
-     }
+    }
 
     /** Sets the set of fields, methods and classes to be started off with.
      */
@@ -377,7 +377,7 @@ public class InvokeGraphPruner {
             // Add all superClasses.
             SootClass superclass = node;
             while (superclass.hasSuperclass()
-                && !_reachableClasses.contains(superclass)) {
+                    && !_reachableClasses.contains(superclass)) {
                 superclass = superclass.getSuperclass();
                 _add(superclass);
             }
@@ -410,7 +410,7 @@ public class InvokeGraphPruner {
             source.setApplicationClass();
             _add(source);
             InvokeGraph invokeGraph = ClassHierarchyAnalysis
-                    .newInvokeGraph(true);
+                .newInvokeGraph(true);
 
             Scene.v().setActiveInvokeGraph(invokeGraph);
         }
@@ -421,7 +421,7 @@ public class InvokeGraphPruner {
             InvokeGraph invokeGraph = Scene.v().getActiveInvokeGraph();
             Collection targets = invokeGraph.getTargetsOf(method);
             _add(targets);
-         }
+        }
 
         // Add the nodes called in the body of the method.
         _add(_getNodesAccessedInBodyOf(method));
@@ -432,7 +432,7 @@ public class InvokeGraphPruner {
         if (method.isConcrete()
                 && !OverriddenMethodGenerator.isOverridden(method)) {
             Iterator traps = method.retrieveActiveBody().getTraps()
-                    .iterator();
+                .iterator();
             while (traps.hasNext()){
                 Trap trap = (Trap)traps.next();
                 _add(trap.getException());
@@ -446,9 +446,9 @@ public class InvokeGraphPruner {
         _add(AnalysisUtilities.getLocalTypeClasses(method));
 
         /*
-        if (_gray.size() - oldSize >20) {
-            System.out.println(method);
-        }
+          if (_gray.size() - oldSize >20) {
+          System.out.println(method);
+          }
         */
         // Remove the method from the queue.
         _done(method);

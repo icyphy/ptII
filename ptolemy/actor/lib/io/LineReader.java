@@ -108,7 +108,7 @@ public class LineReader extends Source {
         fileOrURL = new FileAttribute(this, "fileOrURL");
 
         numberOfLinesToSkip = new Parameter(this, "numberOfLinesToSkip",
-                                            new IntToken(0));
+                new IntToken(0));
         numberOfLinesToSkip.setTypeEquals(BaseType.INT);
 
         _attachText("_iconDescription", "<svg>\n"
@@ -177,7 +177,7 @@ public class LineReader extends Source {
             }
         } else if (attribute == numberOfLinesToSkip) {
             int linesToSkip =
-                    ((IntToken)numberOfLinesToSkip.getToken()).intValue();
+                ((IntToken)numberOfLinesToSkip.getToken()).intValue();
             if (linesToSkip < 0) {
                 throw new IllegalActionException(this, "The number of lines "
                         + "to skip cannot be negative.");
@@ -313,7 +313,7 @@ public class LineReader extends Source {
         try {
             // Read (numberOfLinesToSkip + 1) lines
             int numberOfLines =
-                    ((IntToken)numberOfLinesToSkip.getToken()).intValue();
+                ((IntToken)numberOfLinesToSkip.getToken()).intValue();
             for (int i = 0; i <= numberOfLines; i++) {
                 _currentLine = _reader.readLine();
                 if (_currentLine == null) {

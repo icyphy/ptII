@@ -97,20 +97,20 @@ public class DeadObjectEliminator extends BodyTransformer {
         Set set = new HashSet();
 
         set.addAll(hierarchy.getSubclassesOfIncluding(
-                           PtolemyUtilities.tokenClass));
+                PtolemyUtilities.tokenClass));
         set.addAll(hierarchy.getSubclassesOfIncluding(
-                           PtolemyUtilities.baseTypeClass));
+                PtolemyUtilities.baseTypeClass));
         set.addAll(hierarchy.getSubclassesOfIncluding(
-                           PtolemyUtilities.arrayTypeClass));
+                PtolemyUtilities.arrayTypeClass));
         set.addAll(hierarchy.getSubclassesOfIncluding(
-                           PtolemyUtilities.recordTypeClass));
+                PtolemyUtilities.recordTypeClass));
         set.addAll(hierarchy.getSubclassesOfIncluding(
-                           PtolemyUtilities.matrixTypeClass));
+                PtolemyUtilities.matrixTypeClass));
         set.addAll(hierarchy.getSubclassesOfIncluding(
-                           PtolemyUtilities.attributeClass));
+                PtolemyUtilities.attributeClass));
         set.addAll(hierarchy.getSubclassesOfIncluding(
-                           Scene.v().loadClassAndSupport(
-                                   "ptolemy.data.expr.PtParser")));
+                Scene.v().loadClassAndSupport(
+                        "ptolemy.data.expr.PtParser")));
 
         _removeDeadObjectCreation(body, set);
     }
@@ -138,8 +138,8 @@ public class DeadObjectEliminator extends BodyTransformer {
             Value value = box.getValue();
             if (value instanceof SpecialInvokeExpr) {
                 SpecialInvokeExpr r = (SpecialInvokeExpr)value;
-           //      System.out.println("compare " + r.getMethod().getDeclaringClass());
-//                 System.out.println("with " + theClass);
+                //      System.out.println("compare " + r.getMethod().getDeclaringClass());
+                //                 System.out.println("with " + theClass);
                 if (classSet.contains(r.getMethod().getDeclaringClass()) &&
                         !liveLocals.getLiveLocalsAfter(stmt).contains(
                                 r.getBase())) {
@@ -149,7 +149,7 @@ public class DeadObjectEliminator extends BodyTransformer {
                     // not be true.
                     body.getUnits().remove(stmt);
                     for (Iterator defs = localDefs.getDefsOfAt(
-                                 (Local)r.getBase(), stmt).iterator();
+                            (Local)r.getBase(), stmt).iterator();
                          defs.hasNext();) {
                         Unit defUnit = (Unit)defs.next();
                         if (defUnit instanceof DefinitionStmt) {

@@ -145,7 +145,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
                     InstanceInvokeExpr r = (InstanceInvokeExpr)value;
                     // FIXME: string matching is probably not good enough.
                     if (r.getMethod().getSubSignature().equals(
-                                PtolemyUtilities.getPortMethod.getSubSignature())) {
+                            PtolemyUtilities.getPortMethod.getSubSignature())) {
                         if (_debug) {
                             System.out.println("replacing getPort in " + unit);
                         }

@@ -109,7 +109,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-            output = new TypedIOPort(this, "output", false, true);
+        output = new TypedIOPort(this, "output", false, true);
 
         period = new Parameter(this, "period", new DoubleToken(2.0));
         period.setTypeEquals(BaseType.DOUBLE);

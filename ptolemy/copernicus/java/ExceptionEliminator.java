@@ -176,7 +176,7 @@ public class ExceptionEliminator extends SceneTransformer {
                     if (_isPtolemyException(exceptionClass)) {
                         Value foundArg = null;
                         for (Iterator args = expr.getArgs().iterator();
-                            args.hasNext();) {
+                             args.hasNext();) {
                             Value arg = (Value)args.next();
                             if (arg.getType().equals(RefType.v(PtolemyUtilities.stringClass))) {
                                 foundArg = arg;
@@ -185,14 +185,14 @@ public class ExceptionEliminator extends SceneTransformer {
                         }
                         if (foundArg == null || _obfuscate) {
                             box.setValue(Jimple.v().newSpecialInvokeExpr(
-                                                 (Local)expr.getBase(),
-                                                 PtolemyUtilities.runtimeExceptionConstructor,
-                                                 Collections.EMPTY_LIST));
+                                    (Local)expr.getBase(),
+                                    PtolemyUtilities.runtimeExceptionConstructor,
+                                    Collections.EMPTY_LIST));
                         } else {
                             box.setValue(Jimple.v().newSpecialInvokeExpr(
-                                                 (Local)expr.getBase(),
-                                                 PtolemyUtilities.runtimeExceptionStringConstructor,
-                                                 foundArg));
+                                    (Local)expr.getBase(),
+                                    PtolemyUtilities.runtimeExceptionStringConstructor,
+                                    foundArg));
                         }
                     }
                 } else if (value instanceof VirtualInvokeExpr) {

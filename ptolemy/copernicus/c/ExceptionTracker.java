@@ -62,7 +62,7 @@ public class ExceptionTracker {
      *  @return The index of Unit u in the list.
      */
     public int beginIndexOf(Unit u) {
-       return(_beginUnitList.indexOf(u));
+        return(_beginUnitList.indexOf(u));
     }
 
     /** Record that this beginUnit has been encountered and perform the
@@ -89,54 +89,54 @@ public class ExceptionTracker {
      *  @return The index of Unit u in the list.
      */
     public int endIndexOf(Unit u) {
-            return(_endUnitList.indexOf(u));
+        return(_endUnitList.indexOf(u));
     }
 
-   /** Record that this endUnit has been encountered and perform the
-    *  appropriate housekeeping functions.
-    *  @param u The Unit.
-    */
-   public void endUnitEncountered(Unit u) {
-       _storeState();
+    /** Record that this endUnit has been encountered and perform the
+     *  appropriate housekeeping functions.
+     *  @param u The Unit.
+     */
+    public void endUnitEncountered(Unit u) {
+        _storeState();
 
-       _epc++;
-       Iterator i = _trapChain.iterator();
+        _epc++;
+        Iterator i = _trapChain.iterator();
 
-       // Record all traps ending here as inactive.
-       while (i.hasNext()) {
-           Trap ThisTrap = (Trap)i.next();
-           if (ThisTrap.getEndUnit() == u)
-              _currently_active_traps.remove(ThisTrap);
-       }
+        // Record all traps ending here as inactive.
+        while (i.hasNext()) {
+            Trap ThisTrap = (Trap)i.next();
+            if (ThisTrap.getEndUnit() == u)
+                _currently_active_traps.remove(ThisTrap);
+        }
 
-   }
+    }
 
 
     /** Returns the current Exceptional PC.
      *  @return The current Exceptional PC.
      */
     public int getEpc() {
-       return _epc;
+        return _epc;
     }
 
-   /** Returns a list of all handler units associated with the given exceptional
-    *  pc.
-    *  @param epc The exceptional pc.
-    *  @return A list of all handlerUnits associated with
-    *  the given epc.
-    */
-   public LinkedList getHandlerUnitList(int epc) {
-       LinkedList ListOfTraps = (LinkedList)_trapsForEachEpc.get(epc);
-       LinkedList ListOfHandlers = new LinkedList();
-       Iterator i = ListOfTraps.listIterator();
+    /** Returns a list of all handler units associated with the given exceptional
+     *  pc.
+     *  @param epc The exceptional pc.
+     *  @return A list of all handlerUnits associated with
+     *  the given epc.
+     */
+    public LinkedList getHandlerUnitList(int epc) {
+        LinkedList ListOfTraps = (LinkedList)_trapsForEachEpc.get(epc);
+        LinkedList ListOfHandlers = new LinkedList();
+        Iterator i = ListOfTraps.listIterator();
 
-       while (i.hasNext()) {
-           Trap t = (Trap)i.next();
-           ListOfHandlers.add(t.getHandlerUnit());
-       }
+        while (i.hasNext()) {
+            Trap t = (Trap)i.next();
+            ListOfHandlers.add(t.getHandlerUnit());
+        }
 
-       return ListOfHandlers;
-   }
+        return ListOfHandlers;
+    }
 
     /** Returns a chain of all the Traps in the body.
      *  @return A chain of all the Traps in the body.
@@ -160,7 +160,7 @@ public class ExceptionTracker {
      *  @return The index of Unit u in the list.
      */
     public int handlerIndexOf(Unit u) {
-            return(_handlerUnitList.indexOf(u));
+        return(_handlerUnitList.indexOf(u));
     }
 
 

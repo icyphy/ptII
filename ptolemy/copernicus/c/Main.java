@@ -154,7 +154,7 @@ public class Main extends ptolemy.copernicus.java.Main {
             // plotter fall in this category.
             System.exit(0);
         } catch (Exception ex) {
-        System.err.println("Code generation of '" + modelName
+            System.err.println("Code generation of '" + modelName
                     + "' failed:");
             ex.printStackTrace(System.err);
             System.err.flush();

@@ -457,7 +457,7 @@ public class ModelPane extends JPanel implements CloseListener {
 
         // Put placeable objects in a reasonable place.
         Iterator atomicEntities = model
-                .allAtomicEntityList().iterator();
+            .allAtomicEntityList().iterator();
         while (atomicEntities.hasNext()) {
             Object object = atomicEntities.next();
             if (object instanceof Placeable) {

@@ -141,9 +141,9 @@ public class TextEffigy extends Effigy {
                     inputStream = in.openStream();
                 } catch (NullPointerException npe) {
                     throw new IOException("Failed to open '" + in
-                                          + "', base: '" + base
-                                          + "' : openStream() threw a "
-                                          + "NullPointerException");
+                            + "', base: '" + base
+                            + "' : openStream() threw a "
+                            + "NullPointerException");
                 }
                 reader = new BufferedReader(
                         new InputStreamReader(inputStream));
@@ -249,17 +249,17 @@ public class TextEffigy extends Effigy {
             Class effigyClass;
             try {
 
-            if (editorPreference.equals("emacs")) {
-                effigyClass = Class.forName
-                    ("ptolemy.actor.gui.ExternalTextEffigy");
-            } else {
-                effigyClass = Class.forName
-                    ("ptolemy.actor.gui.TextEffigy");
-            }
-            _newTextEffigyURL =
-                effigyClass.getMethod
-                ("newTextEffigy",
-                 new Class[]{CompositeEntity.class, URL.class, URL.class});
+                if (editorPreference.equals("emacs")) {
+                    effigyClass = Class.forName
+                        ("ptolemy.actor.gui.ExternalTextEffigy");
+                } else {
+                    effigyClass = Class.forName
+                        ("ptolemy.actor.gui.TextEffigy");
+                }
+                _newTextEffigyURL =
+                    effigyClass.getMethod
+                    ("newTextEffigy",
+                            new Class[]{CompositeEntity.class, URL.class, URL.class});
 
             } catch (ClassNotFoundException ex) {
                 throw new IllegalActionException(ex.toString());

@@ -293,7 +293,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                 // might be overkill, but it is safer.
                 ParserAttribute parserAttribute = (ParserAttribute)
                     newModel.getAttribute("_parser",
-                                          ParserAttribute.class);
+                            ParserAttribute.class);
                 if (parserAttribute == null) {
                     parserAttribute =
                         new ParserAttribute(newModel, "_parser");
@@ -368,16 +368,16 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                                 // cause problems in Web Start
                                 String inputExternalFormFixed = StringUtilities
                                     .substitute(input.toExternalForm(),
-                                                " ", "%20");
+                                            " ", "%20");
                                 try {
                                     inputURI = new URI(inputExternalFormFixed);
                                 } catch (Exception ex2) {
                                     throw new Exception("Failed to generate "
-                                                        + "a URI from '"
-                                                        + input.toExternalForm()
-                                                        + "' and from '"
-                                                        + inputExternalFormFixed
-                                                        + "'", ex);
+                                            + "a URI from '"
+                                            + input.toExternalForm()
+                                            + "' and from '"
+                                            + inputExternalFormFixed
+                                            + "'", ex);
                                 }
                             }
                             uriAttribute.setURI(inputURI);

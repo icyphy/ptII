@@ -64,7 +64,7 @@ public class Const extends Source {
     public Const(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-            value = new Parameter(this, "value", new IntToken(1));
+        value = new Parameter(this, "value", new IntToken(1));
 
         // Set the type constraint.
         output.setTypeAtLeast(value);

@@ -88,7 +88,7 @@ public class Subscriber extends Source implements RemoteEventListener {
     public Subscriber(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-            jspaceName = new Parameter(this, "jspaceName",
+        jspaceName = new Parameter(this, "jspaceName",
                 new StringToken("JavaSpaces"));
         jspaceName.setTypeEquals(BaseType.STRING);
         entryName = new Parameter(this, "entryName",

@@ -172,7 +172,7 @@ public class NonStrictTest extends Transformer {
         if (((BooleanToken)trainingMode.getToken()).booleanValue()) {
             if (isRunningNightlyBuild()) {
                 throw new IllegalActionException(this,
-                    TRAINING_MODE_ERROR_MESSAGE);
+                        TRAINING_MODE_ERROR_MESSAGE);
             } else {
                 System.err.println("Warning: '" + this.getFullName()
                         + "' is in training mode, set the trainingMode "
@@ -215,7 +215,7 @@ public class NonStrictTest extends Transformer {
                     + "but NonStrictTest only supports a width of 1.");
         }
         boolean training = ((BooleanToken)trainingMode.getToken())
-                .booleanValue();
+            .booleanValue();
         if (training) {
             if (_trainingTokens == null) {
                 _trainingTokens = new ArrayList();
@@ -236,7 +236,7 @@ public class NonStrictTest extends Transformer {
         }
 
         Token referenceToken = ((ArrayToken)(correctValues.getToken()))
-                .getElement(_numberOfInputTokensSeen);
+            .getElement(_numberOfInputTokensSeen);
         if (input.hasToken(0)) {
             Token token = input.get(0);
             _numberOfInputTokensSeen++;
@@ -259,7 +259,7 @@ public class NonStrictTest extends Transformer {
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         boolean training = ((BooleanToken)trainingMode.getToken())
-                .booleanValue();
+            .booleanValue();
         // Note that wrapup() might get called by the manager before
         // we have any data...
         if (training && _trainingTokens != null &&
@@ -280,13 +280,13 @@ public class NonStrictTest extends Transformer {
      *  the nightly build and the trainingMode parameter is true.
      */
     public static String TRAINING_MODE_ERROR_MESSAGE =
-        "Training Mode set for test actor and isRunningNightlyBuild()\n"
-        + "  returned true, indicating that the\n"
-        + "  ptolemy.ptII.isRunningNightlyBuild property is set.\n"
-        + "  The trainingMode parameter should not be set in files\n"
-        + "  that are checked into the nightly build!"
-        + "  To run the tests in nightly build mode, use"
-        + "     make nightly";
+    "Training Mode set for test actor and isRunningNightlyBuild()\n"
+    + "  returned true, indicating that the\n"
+    + "  ptolemy.ptII.isRunningNightlyBuild property is set.\n"
+    + "  The trainingMode parameter should not be set in files\n"
+    + "  that are checked into the nightly build!"
+    + "  To run the tests in nightly build mode, use"
+    + "     make nightly";
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////

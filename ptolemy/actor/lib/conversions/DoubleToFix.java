@@ -179,6 +179,6 @@ public class DoubleToFix extends Converter {
 
     // The quantization of the output.
     private FixPointQuantization _quantization =
-       new FixPointQuantization(null, Overflow.SATURATE, Rounding.NEAREST);
+    new FixPointQuantization(null, Overflow.SATURATE, Rounding.NEAREST);
 }
 

@@ -39,11 +39,11 @@ public class FIR2 {
         }
     }
 
-   /** Perform an invocation of the FIR filter that operates on given input
-    *  and output arrays.
-    *  @param input The input array.
-    *  @param output The output array.
-    */
+    /** Perform an invocation of the FIR filter that operates on given input
+     *  and output arrays.
+     *  @param input The input array.
+     *  @param output The output array.
+     */
     public static void fire(float input[], float output[]) {
         // Pointers into the input and output buffers
         int inputIndex = 0;

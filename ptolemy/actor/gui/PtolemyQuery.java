@@ -146,10 +146,10 @@ public class PtolemyQuery extends Query
         boolean foundStyle = false;
         if (attribute instanceof NamedObj) {
             Iterator styles = ((NamedObj)attribute)
-                    .attributeList(ParameterEditorStyle.class).iterator();
+                .attributeList(ParameterEditorStyle.class).iterator();
             while (styles.hasNext() && !foundStyle) {
                 ParameterEditorStyle style =
-                        (ParameterEditorStyle)styles.next();
+                    (ParameterEditorStyle)styles.next();
                 try {
                     style.addEntry(this);
                     foundStyle = true;
@@ -172,7 +172,7 @@ public class PtolemyQuery extends Query
             try {
                 if (attribute instanceof IntRangeParameter) {
                     int current = ((IntRangeParameter)attribute)
-                           .getCurrentValue();
+                        .getCurrentValue();
                     int min = ((IntRangeParameter)attribute).getMinValue();
                     int max = ((IntRangeParameter)attribute).getMaxValue();
 
@@ -188,10 +188,10 @@ public class PtolemyQuery extends Query
                         // to an expression that evaluates to to a boolean,
                         // and the default Line style should be used.
                         if (attribute.getExpression().equals("true")
-                               || attribute.getExpression().equals("false")) {
+                                || attribute.getExpression().equals("false")) {
                             addCheckBox(name,
                                     name,
-                                 ((BooleanToken)current).booleanValue());
+                                    ((BooleanToken)current).booleanValue());
                             attachParameter(attribute, name);
                             foundStyle = true;
                         }
@@ -489,32 +489,32 @@ public class PtolemyQuery extends Query
                     parent = (NamedObj)castAttribute.getContainer();
                 }
                 String moml = "<property name=\""
-                        + castAttribute.getName(parent)
-                        + "\" value=\""
-                        + StringUtilities.escapeForXML(getStringValue(name))
-                        + "\"/>";
+                    + castAttribute.getName(parent)
+                    + "\" value=\""
+                    + StringUtilities.escapeForXML(getStringValue(name))
+                    + "\"/>";
                 request = new MoMLChangeRequest(
                         this,         // originator
                         parent,       // context
                         moml,         // MoML code
                         null) {       // base
-                   protected void _execute() throws Exception {
-                       synchronized (PtolemyQuery.this) {
-                           try {
-                               _ignoreChangeNotifications = true;
-                               super._execute();
-                           } finally {
-                               _ignoreChangeNotifications = false;
-                           }
-                       }
-                   }
-               };
+                        protected void _execute() throws Exception {
+                            synchronized (PtolemyQuery.this) {
+                                try {
+                                    _ignoreChangeNotifications = true;
+                                    super._execute();
+                                } finally {
+                                    _ignoreChangeNotifications = false;
+                                }
+                            }
+                        }
+                    };
             } else {
                 // If the attribute is not a NamedObj, then we
                 // set its value directly.
                 request = new ChangeRequest(this, name) {
                         protected void _execute()
-                            throws IllegalActionException {
+                                throws IllegalActionException {
                             attribute.setExpression(getStringValue(name));
 
                             attribute.validate();

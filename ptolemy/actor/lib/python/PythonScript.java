@@ -439,7 +439,7 @@ public class PythonScript extends TypedAtomicActor {
     // Listed here are all methods of the Executable interface, except
     // iterate().
     private static final String[] _METHOD_NAMES =
-            {"fire", "initialize", "postfire", "prefire", "preinitialize",
-             "stop", "stopFire", "terminate", "wrapup"};
+    {"fire", "initialize", "postfire", "prefire", "preinitialize",
+     "stop", "stopFire", "terminate", "wrapup"};
 
 }

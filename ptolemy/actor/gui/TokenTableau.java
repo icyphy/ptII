@@ -200,7 +200,7 @@ public class TokenTableau extends Tableau {
                 // First see whether the effigy already contains an
                 // TokenTableau.
                 TokenTableau tableau =
-                       (TokenTableau)effigy.getEntity("tokenTableau");
+                    (TokenTableau)effigy.getEntity("tokenTableau");
                 if (tableau != null) {
                     return tableau;
                 }

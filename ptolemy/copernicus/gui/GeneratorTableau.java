@@ -174,8 +174,8 @@ public class GeneratorTableau extends Tableau {
             }
 
             if (getEffigy() == null
-                || getEffigy().uri == null
-                || getEffigy().uri.getURI() == null) {
+                    || getEffigy().uri == null
+                    || getEffigy().uri.getURI() == null) {
                 // If the user does File -> New -> GraphEditor,
                 // View -> Code Generator, then we might end up
                 // dealing with an Effigy that has a null url.
@@ -193,7 +193,7 @@ public class GeneratorTableau extends Tableau {
             caveatsPanel.setBorder(
                     BorderFactory.createEmptyBorder(5, 0, 0, 0));
             caveatsPanel.setLayout(new BoxLayout(caveatsPanel,
-                                                 BoxLayout.X_AXIS));
+                    BoxLayout.X_AXIS));
             JTextArea messageArea = new JTextArea(
                     "NOTE: This is a highly preliminary "
                     + "code generator facility, with many "
@@ -236,7 +236,7 @@ public class GeneratorTableau extends Tableau {
             JButton parametersButton = new JButton("Parameters");
             parametersButton
                 .setToolTipText("Sanity check the Parameters and then "
-                                + "display a summary.");
+                        + "display a summary.");
             buttonPanel.add(parametersButton);
 
             JButton goButton = new JButton("Generate");
@@ -282,11 +282,11 @@ public class GeneratorTableau extends Tableau {
 
             // Create a JTextAreaExec without Start and Cancel buttons.
             final JTextAreaExec exec =
-            new JTextAreaExec("Code Generator Commands", false);
+                new JTextAreaExec("Code Generator Commands", false);
 
             JSplitPane splitPane =
                 new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-                               left, exec);
+                        left, exec);
             splitPane.setOneTouchExpandable(true);
 
             // Adjust the divider so that the control panel does not
@@ -327,18 +327,18 @@ public class GeneratorTableau extends Tableau {
                             boolean decompile = false;
                             boolean compile =
                                 ((BooleanToken)
-                                 ((Parameter)options.getAttribute("compile"))
-                                 .getToken())
+                                        ((Parameter)options.getAttribute("compile"))
+                                        .getToken())
                                 .booleanValue();
                             boolean show =
                                 ((BooleanToken)
-                                 ((Parameter)options.getAttribute("show"))
-                                 .getToken())
+                                        ((Parameter)options.getAttribute("show"))
+                                        .getToken())
                                 .booleanValue();
                             boolean run =
                                 ((BooleanToken)
-                                 ((Parameter)options.getAttribute("run"))
-                                 .getToken())
+                                        ((Parameter)options.getAttribute("run"))
+                                        .getToken())
                                 .booleanValue();
 
                             // The code generator to run.  The value of this
@@ -366,17 +366,17 @@ public class GeneratorTableau extends Tableau {
                             File directory = new File(ptIIUserDirectory, targetPath);
                             if (!directory.isDirectory()) {
                                 throw new IllegalActionException(model,
-                                                 "Not a directory: "
-                                                 + ptIIUserDirectory + "/"
-                                                 + targetPath
-                                                 + "\n.Try hitting the "
-                                                 + "Parameters button to "
-                                                 + "create the directory.");
+                                        "Not a directory: "
+                                        + ptIIUserDirectory + "/"
+                                        + targetPath
+                                        + "\n.Try hitting the "
+                                        + "Parameters button to "
+                                        + "create the directory.");
                             }
                             if (!directory.canWrite()) {
                                 throw new IllegalActionException(model,
-                                                 "Can't write: "
-                                                 + ptIIUserDirectory + "/" + targetPath);
+                                        "Can't write: "
+                                        + ptIIUserDirectory + "/" + targetPath);
                             }
 
                             // Commands that we will eventually execute,
@@ -395,14 +395,14 @@ public class GeneratorTableau extends Tableau {
                                 try {
                                     commands =
                                         _generateCodeGeneratorCommands(model,
-                                                                       options,
-                                                                       "applet"
+                                                options,
+                                                "applet"
                                                                        );
                                 } catch (Exception ex) {
                                     throw new IllegalActionException(model, ex, null);
                                 }
                             } else if (codeGenerator.equals("c")
-                                       && compile) {
+                                    && compile) {
                                 exec.updateStatusBar("Starting c "
                                         + "code generation");
                                 // FIXME: How come the status bar
@@ -420,12 +420,12 @@ public class GeneratorTableau extends Tableau {
                                 try {
                                     commands =
                                         _generateCodeGeneratorCommands(model,
-                                                                       options,
-                                                                       "java");
+                                                options,
+                                                "java");
                                     decompile = true;
                                 } catch (Exception ex) {
                                     throw new IllegalActionException(model,
-                                                                     ex, null);
+                                            ex, null);
                                 }
                             } else if (codeGenerator.equals("interpreted")) {
                                 // Soot is a memory pig, so we run
@@ -433,14 +433,14 @@ public class GeneratorTableau extends Tableau {
                                 try {
                                     commands =
                                         _generateCodeGeneratorCommands(model,
-                                                                       options,
-                                                                       "interpreted"
+                                                options,
+                                                "interpreted"
                                                                        );
                                 } catch (Exception ex) {
                                     throw new IllegalActionException(model, ex, null);
                                 }
                             } else if (codeGenerator.equals("jhdl")
-                                       && compile) {
+                                    && compile) {
                                 exec.updateStatusBar("Starting jhdl "
                                         + "code generation");
                                 // FIXME: How come the status bar
@@ -458,18 +458,18 @@ public class GeneratorTableau extends Tableau {
                                 try {
                                     commands =
                                         _generateCodeGeneratorCommands(model,
-                                                                       options,
-                                                                      "shallow"
+                                                options,
+                                                "shallow"
                                                                        );
                                 } catch (Exception ex) {
                                     throw new IllegalActionException(model,
-                                                                     ex, null);
+                                            ex, null);
                                 }
                                 decompile = true;
                             } else {
                                 throw new IllegalActionException(model,
-                                         "Don't know about '"
-                                         + codeGenerator + "'.  Try 'java'");
+                                        "Don't know about '"
+                                        + codeGenerator + "'.  Try 'java'");
                             }
 
 
@@ -490,7 +490,7 @@ public class GeneratorTableau extends Tableau {
                                     className = className + ".Main";
                                 } else {
                                     if (className.length() > 0
-                                        && ! className.endsWith(".") ) {
+                                            && ! className.endsWith(".") ) {
                                         className = className + '.'
                                             + "CG" + model.getName();
                                     } else {
@@ -589,7 +589,7 @@ public class GeneratorTableau extends Tableau {
             GeneratorAttribute generatorAttribute,
             String copernicusSubdirectory)
             throws IllegalArgumentException, IllegalActionException,
-                   InternalErrorException, NameDuplicationException {
+            InternalErrorException, NameDuplicationException {
 
         generatorAttribute.sanityCheckAndUpdateParameters(null);
 
@@ -602,7 +602,7 @@ public class GeneratorTableau extends Tableau {
             // Write out the GeneratorAttribute so that we can read it in
             // when generating a makefile.
             String generatorAttributeFileName =
-            Copernicus.exportMoMLToTemporaryFile(generatorAttribute);
+                Copernicus.exportMoMLToTemporaryFile(generatorAttribute);
 
             Parameter generatorAttributeFileNameParameter =
                 (Parameter) generatorAttribute
@@ -613,8 +613,8 @@ public class GeneratorTableau extends Tableau {
                 // GeneratorAttribute so that we can use it when substituting
                 // while running commandToCompile() and commandToRun();
                 new Parameter(generatorAttribute,
-                    "_generatorAttributeFileName",
-                    new StringToken(generatorAttributeFileName));
+                        "_generatorAttributeFileName",
+                        new StringToken(generatorAttributeFileName));
             } else {
                 // Already have a Parameter by that name, so we
                 // set its value.
@@ -626,8 +626,8 @@ public class GeneratorTableau extends Tableau {
             results.add(Copernicus.commandToRun(generatorAttribute));
         } catch (Exception ex) {
             throw new InternalErrorException(model, ex,
-                                             "Failed to generate "
-                                             + "command strings");
+                    "Failed to generate "
+                    + "command strings");
         }
         return results;
     }
@@ -635,20 +635,20 @@ public class GeneratorTableau extends Tableau {
     // Get a StringToken by name, throw IllegalActionException if
     // a StringToken by that name cannot be found.
     private String getStringToken(Attribute attribute, String tokenName)
-        throws IllegalActionException {
+            throws IllegalActionException {
         try {
             // getToken() could throw ptolemy.data.expr.TokenMgrError,
             // which is an Error, not an Exception.
             return ((StringToken)
                     ((Variable)attribute
-                     .getAttribute(tokenName))
+                            .getAttribute(tokenName))
                     .getToken()).stringValue();
         } catch (Throwable throwable) {
             throw new IllegalActionException(attribute, throwable,
-                                             "Could not find an attribute "
-                                             + "named '"
-                                             + tokenName + "' in "
-                                             + attribute);
+                    "Could not find an attribute "
+                    + "named '"
+                    + tokenName + "' in "
+                    + attribute);
         }
     }
 

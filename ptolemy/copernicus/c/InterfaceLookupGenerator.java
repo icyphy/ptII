@@ -90,11 +90,11 @@ public class InterfaceLookupGenerator {
 
             // The corresponding actual method.
             SootMethod actualMethod = (SootMethod)interfaceMethodsMap
-                        .get(interfaceMethod);
+                .get(interfaceMethod);
 
             if (RequiredFileGenerator.isRequired(actualMethod)
-                // We don't need to map abstract methods.
-                && !actualMethod.isAbstract()) {
+                    // We don't need to map abstract methods.
+                    && !actualMethod.isAbstract()) {
 
                 code.append(_indent(indentLevel)
                         + _comment(interfaceMethod.toString()));
@@ -124,7 +124,7 @@ public class InterfaceLookupGenerator {
     public static HashMap getLookupMethods(SootClass source) {
         HashMap interfaceMethodMap = new HashMap();
         Iterator interfaces = AnalysisUtilities.getAllInterfacesOf(source)
-                .iterator();
+            .iterator();
 
         while (interfaces.hasNext()){
             SootClass thisInterface = (SootClass)interfaces.next();
@@ -143,12 +143,12 @@ public class InterfaceLookupGenerator {
                 }
                 else {
                     Iterator inheritedMethods = MethodListGenerator
-                            .getInheritedMethods(source).iterator();
+                        .getInheritedMethods(source).iterator();
                     while (inheritedMethods.hasNext()) {
                         SootMethod inheritedMethod =
-                                (SootMethod)inheritedMethods.next();
+                            (SootMethod)inheritedMethods.next();
                         if (inheritedMethod.getSubSignature().equals(
-                            method.getSubSignature())) {
+                                method.getSubSignature())) {
                             interfaceMethodMap.put(method,inheritedMethod);
                             break;
                         }

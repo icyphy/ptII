@@ -132,11 +132,11 @@ public class Stop extends Sink {
                     manager.finish();
                 } else {
                     throw new IllegalActionException(this,
-                    "Cannot stop without a Manager.");
+                            "Cannot stop without a Manager.");
                 }
             } else {
                 throw new IllegalActionException(this,
-                "Cannot stop without a container that is a CompositeActor.");
+                        "Cannot stop without a container that is a CompositeActor.");
             }
         }
         return !result;

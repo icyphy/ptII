@@ -134,8 +134,8 @@ public class Linpack{
          */
         for (i = 0; i < n; i++) {
             for (j = 0; j < n; j++) {
-a[j][i] = gen.nextDouble() - .5;
-norma = (a[j][i] > norma) ? a[j][i] : norma;
+                a[j][i] = gen.nextDouble() - .5;
+                norma = (a[j][i] > norma) ? a[j][i] : norma;
             }
         }
         for (i = 0; i < n; i++) {
@@ -143,7 +143,7 @@ norma = (a[j][i] > norma) ? a[j][i] : norma;
         }
         for (j = 0; j < n; j++) {
             for (i = 0; i < n; i++) {
-b[i] += a[j][i];
+                b[i] += a[j][i];
             }
         }
 
@@ -151,48 +151,48 @@ b[i] += a[j][i];
     }
 
     /*
-        dgefa factors a double precision matrix by gaussian elimination.
+      dgefa factors a double precision matrix by gaussian elimination.
 
-        dgefa is usually called by dgeco, but it can be called
-        directly with a saving in time if    rcond    is not needed.
-        (time for dgeco) = (1 + 9/n)*(time for dgefa) .
+      dgefa is usually called by dgeco, but it can be called
+      directly with a saving in time if    rcond    is not needed.
+      (time for dgeco) = (1 + 9/n)*(time for dgefa) .
 
-        on entry
+      on entry
 
-        a             double precision[n][lda]
-        the matrix to be factored.
+      a             double precision[n][lda]
+      the matrix to be factored.
 
-        lda         integer
-        the leading dimension of the array    a .
+      lda         integer
+      the leading dimension of the array    a .
 
-        n             integer
-        the order of the matrix    a .
+      n             integer
+      the order of the matrix    a .
 
-        on return
+      on return
 
-        a             an upper triangular matrix and the multipliers
-        which were used to obtain it.
-        the factorization can be written    a = l*u    where
-        l    is a product of permutation and unit lower
-        triangular matrices and    u    is upper triangular.
+      a             an upper triangular matrix and the multipliers
+      which were used to obtain it.
+      the factorization can be written    a = l*u    where
+      l    is a product of permutation and unit lower
+      triangular matrices and    u    is upper triangular.
 
-        ipvt        integer[n]
-        an integer vector of pivot indices.
+      ipvt        integer[n]
+      an integer vector of pivot indices.
 
-        info        integer
-        = 0    normal value.
-        = k    if    u[k][k] .eq. 0.0 .    this is not an error
-        condition for this subroutine, but it does
-        indicate that dgesl or dgedi will divide by zero
-        if called.    use    rcond    in dgeco for a reliable
-        indication of singularity.
+      info        integer
+      = 0    normal value.
+      = k    if    u[k][k] .eq. 0.0 .    this is not an error
+      condition for this subroutine, but it does
+      indicate that dgesl or dgedi will divide by zero
+      if called.    use    rcond    in dgeco for a reliable
+      indication of singularity.
 
-        linpack. this version dated 08/14/78.
-        cleve moler, university of new mexico, argonne national lab.
+      linpack. this version dated 08/14/78.
+      cleve moler, university of new mexico, argonne national lab.
 
-        functions
+      functions
 
-        blas daxpy,dscal,idamax
+      blas daxpy,dscal,idamax
     */
     final int dgefa( double a[][], int lda, int n, int ipvt[])
     {
@@ -207,47 +207,47 @@ b[i] += a[j][i];
         nm1 = n - 1;
         if (nm1 >=    0) {
             for (k = 0; k < nm1; k++) {
-col_k = a[k];
-kp1 = k + 1;
+                col_k = a[k];
+                kp1 = k + 1;
 
-// find l = pivot index
+                // find l = pivot index
 
-l = idamax(n-k,col_k,k,1) + k;
-ipvt[k] = l;
+                l = idamax(n-k,col_k,k,1) + k;
+                ipvt[k] = l;
 
-// zero pivot implies this column already triangularized
+                // zero pivot implies this column already triangularized
 
-if (col_k[l] != 0) {
+                if (col_k[l] != 0) {
 
-    // interchange if necessary
+                    // interchange if necessary
 
-    if (l != k) {
-        t = col_k[l];
-        col_k[l] = col_k[k];
-        col_k[k] = t;
-    }
+                    if (l != k) {
+                        t = col_k[l];
+                        col_k[l] = col_k[k];
+                        col_k[k] = t;
+                    }
 
-    // compute multipliers
+                    // compute multipliers
 
-    t = -1.0/col_k[k];
-    dscal(n-(kp1),t,col_k,kp1,1);
+                    t = -1.0/col_k[k];
+                    dscal(n-(kp1),t,col_k,kp1,1);
 
-    // row elimination with column indexing
+                    // row elimination with column indexing
 
-    for (j = kp1; j < n; j++) {
-        col_j = a[j];
-        t = col_j[l];
-        if (l != k) {
-            col_j[l] = col_j[k];
-            col_j[k] = t;
-        }
-        daxpy(n-(kp1),t,col_k,kp1,1,
-    col_j,kp1,1);
-    }
-}
-else {
-    info = k;
-}
+                    for (j = kp1; j < n; j++) {
+                        col_j = a[j];
+                        t = col_j[l];
+                        if (l != k) {
+                            col_j[l] = col_j[k];
+                            col_j[k] = t;
+                        }
+                        daxpy(n-(kp1),t,col_k,kp1,1,
+                                col_j,kp1,1);
+                    }
+                }
+                else {
+                    info = k;
+                }
             }
         }
         ipvt[n-1] = n-1;
@@ -320,45 +320,45 @@ else {
         if (job == 0) {
             // job = 0 , solve    a * x = b.    first solve    l*y = b
             if (nm1 >= 1) {
-for (k = 0; k < nm1; k++) {
-    l = ipvt[k];
-    t = b[l];
-    if (l != k){
-        b[l] = b[k];
-        b[k] = t;
-    }
-    kp1 = k + 1;
-    daxpy(n-(kp1),t,a[k],kp1,1,b,kp1,1);
-}
+                for (k = 0; k < nm1; k++) {
+                    l = ipvt[k];
+                    t = b[l];
+                    if (l != k){
+                        b[l] = b[k];
+                        b[k] = t;
+                    }
+                    kp1 = k + 1;
+                    daxpy(n-(kp1),t,a[k],kp1,1,b,kp1,1);
+                }
             }
             // now solve    u*x = y
             for (kb = 0; kb < n; kb++) {
-k = n - (kb + 1);
-b[k] /= a[k][k];
-t = -b[k];
-daxpy(k,t,a[k],0,1,b,0,1);
+                k = n - (kb + 1);
+                b[k] /= a[k][k];
+                t = -b[k];
+                daxpy(k,t,a[k],0,1,b,0,1);
             }
         }
         else {
             // job = nonzero, solve    trans(a) * x = b.    first solve    trans(u)*y = b
             for (k = 0; k < n; k++) {
-t = ddot(k,a[k],0,1,b,0,1);
-b[k] = (b[k] - t)/a[k][k];
+                t = ddot(k,a[k],0,1,b,0,1);
+                b[k] = (b[k] - t)/a[k][k];
             }
             // now solve trans(l)*x = y
             if (nm1 >= 1) {
-//for (kb = 1; kb < nm1; kb++) {
-for (kb = 0; kb < nm1; kb++) {
-    k = n - (kb+1);
-    kp1 = k + 1;
-    b[k] += ddot(n-(kp1),a[k],kp1,1,b,kp1,1);
-    l = ipvt[k];
-    if (l != k) {
-        t = b[l];
-        b[l] = b[k];
-        b[k] = t;
-    }
-}
+                //for (kb = 1; kb < nm1; kb++) {
+                for (kb = 0; kb < nm1; kb++) {
+                    k = n - (kb+1);
+                    kp1 = k + 1;
+                    b[k] += ddot(n-(kp1),a[k],kp1,1,b,kp1,1);
+                    l = ipvt[k];
+                    if (l != k) {
+                        t = b[l];
+                        b[l] = b[k];
+                        b[k] = t;
+                    }
+                }
             }
         }
     }
@@ -372,21 +372,21 @@ for (kb = 0; kb < nm1; kb++) {
         int i,ix,iy;
         if ((n > 0) && (da != 0)) {
             if (incx != 1 || incy != 1) {
-// code for unequal increments or equal increments not equal to 1
-ix = 0;
-iy = 0;
-if (incx < 0) ix = (-n+1)*incx;
-if (incy < 0) iy = (-n+1)*incy;
-for (i = 0;i < n; i++) {
-    dy[iy +dy_off] += da*dx[ix +dx_off];
-    ix += incx;
-    iy += incy;
-}
-return;
+                // code for unequal increments or equal increments not equal to 1
+                ix = 0;
+                iy = 0;
+                if (incx < 0) ix = (-n+1)*incx;
+                if (incy < 0) iy = (-n+1)*incy;
+                for (i = 0;i < n; i++) {
+                    dy[iy +dy_off] += da*dx[ix +dx_off];
+                    ix += incx;
+                    iy += incy;
+                }
+                return;
             } else {
-// code for both increments equal to 1
-for (i=0; i < n; i++)
-    dy[i +dy_off] += da*dx[i +dx_off];
+                // code for both increments equal to 1
+                for (i=0; i < n; i++)
+                    dy[i +dy_off] += da*dx[i +dx_off];
             }
         }
     }
@@ -395,7 +395,7 @@ for (i=0; i < n; i++)
      * jack dongarra, linpack, 3/11/78.
      **/
     final double ddot( int n, double dx[], int dx_off, int incx, double dy[],
-             int dy_off, int incy)
+            int dy_off, int incy)
     {
         double dtemp;
         int i,ix,iy;
@@ -432,14 +432,14 @@ for (i=0; i < n; i++)
         int i,nincx;
         if (n > 0) {
             if (incx != 1) {
-// code for increment not equal to 1
-nincx = n*incx;
-for (i = 0; i < nincx; i += incx)
-    dx[i +dx_off] *= da;
+                // code for increment not equal to 1
+                nincx = n*incx;
+                for (i = 0; i < nincx; i += incx)
+                    dx[i +dx_off] *= da;
             } else {
-// code for increment equal to 1
-for (i = 0; i < n; i++)
-    dx[i +dx_off] *= da;
+                // code for increment equal to 1
+                for (i = 0; i < n; i++)
+                    dx[i +dx_off] *= da;
             }
         }
     }
@@ -461,23 +461,23 @@ for (i = 0; i < n; i++)
             dmax = (dx[dx_off] < 0.0) ? -dx[dx_off]: dx[dx_off];
             ix = 1 + incx;
             for (i = 0; i < n; i++) {
-dtemp = (dx[ix + dx_off] < 0.0) ? -dx[ix + dx_off]: dx[ix + dx_off];
-if (dtemp > dmax)    {
-    itemp = i;
-    dmax = dtemp;
-}
-ix += incx;
+                dtemp = (dx[ix + dx_off] < 0.0) ? -dx[ix + dx_off]: dx[ix + dx_off];
+                if (dtemp > dmax)    {
+                    itemp = i;
+                    dmax = dtemp;
+                }
+                ix += incx;
             }
         } else {
             // code for increment equal to 1
             itemp = 0;
             dmax = (dx[dx_off] < 0.0)? -dx[dx_off] : dx[dx_off];
             for (i = 0; i < n; i++) {
-dtemp = (dx[i + dx_off] < 0.0) ? -dx[i+dx_off]: dx[i+dx_off];
-if (dtemp > dmax) {
-    itemp = i;
-    dmax = dtemp;
-}
+                dtemp = (dx[i + dx_off] < 0.0) ? -dx[i+dx_off]: dx[i+dx_off];
+                if (dtemp > dmax) {
+                    itemp = i;
+                    dmax = dtemp;
+                }
             }
         }
         return (itemp);
@@ -551,13 +551,13 @@ if (dtemp > dmax) {
         // cleanup odd vector
         for (j = 0; j < n2; j++) {
             for (i = 0; i < n1; i++) {
-y[i] += x[j]*m[j][i];
+                y[i] += x[j]*m[j][i];
             }
         }
     }
 
     public void setCurrentRun( double mflops_result, double residn_result,
-        double time_result, double eps_result)
+            double time_result, double eps_result)
     {
         this.mflops_result = mflops_result;
         this.residn_result = residn_result;

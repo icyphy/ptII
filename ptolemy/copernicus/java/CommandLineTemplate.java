@@ -309,7 +309,7 @@ public class CommandLineTemplate {
         buffer.append(freeMemory);
         buffer.append("K (");
         buffer.append(Math.round( (((double)freeMemory)/((double)totalMemory))
-                              * 100.0));
+                * 100.0));
         buffer.append("%)");
     }
 

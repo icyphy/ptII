@@ -69,7 +69,7 @@ a 100% Java implementation of Exec
 @version $Id$
 */
 public class ExecShellTableau extends Tableau
-        implements ShellInterpreter {
+    implements ShellInterpreter {
 
     /** Create a new tableau.
      *  The tableau is itself an entity contained by the effigy
@@ -92,7 +92,7 @@ public class ExecShellTableau extends Tableau
             _interpreter = Runtime.getRuntime().exec("bash -i");
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                                             "Failed to create Process");
+                    "Failed to create Process");
         }
     }
 
@@ -125,7 +125,7 @@ public class ExecShellTableau extends Tableau
      */
     public void stderr(/*final*/ String text) {
         _frame._shellTextArea.appendJTextArea(text + "\n");
-   }
+    }
 
     /** Append the text message to the text area.
      *  The output automatically gets a trailing newline appended.
@@ -256,62 +256,62 @@ public class ExecShellTableau extends Tableau
                 //}
 
 
-                    // Preprocess by removing lines that begin with '#'
-                    // and converting substrings that begin and end
-                    // with double quotes into one array element.
-                    final String [] commandTokens =
-                        StringUtilities
-                        .tokenizeForExec((String)command);
+                // Preprocess by removing lines that begin with '#'
+                // and converting substrings that begin and end
+                // with double quotes into one array element.
+                final String [] commandTokens =
+                    StringUtilities
+                    .tokenizeForExec((String)command);
 
-                    //stdout("About to execute:\n");
-                    StringBuffer statusCommand = new StringBuffer();
-                    for (int i = 0; i < commandTokens.length; i++) {
-                        //stdout("        " + commandTokens[i]);
+                //stdout("About to execute:\n");
+                StringBuffer statusCommand = new StringBuffer();
+                for (int i = 0; i < commandTokens.length; i++) {
+                    //stdout("        " + commandTokens[i]);
 
-                        // Accumulate the first 50 chars for use in
-                        // the status buffer.
-                        if (statusCommand.length() < 50) {
-                            if (statusCommand.length() > 0) {
-                                statusCommand.append(" ");
-                            }
-                            statusCommand.append(commandTokens[i]);
+                    // Accumulate the first 50 chars for use in
+                    // the status buffer.
+                    if (statusCommand.length() < 50) {
+                        if (statusCommand.length() > 0) {
+                            statusCommand.append(" ");
                         }
+                        statusCommand.append(commandTokens[i]);
                     }
+                }
 
-                    if (statusCommand.length() >= 50) {
-                        statusCommand.append(" . . .");
+                if (statusCommand.length() >= 50) {
+                    statusCommand.append(" . . .");
+                }
+                //updateStatusBar("Executing: "
+                //        + statusCommand.toString());
+
+                _interpreter = runtime.exec(commandTokens);
+
+                // Set up a Thread to read in any error messages
+                _StreamReaderThread errorGobbler = new
+                    _StreamReaderThread(_interpreter.getErrorStream(),
+                            "ERROR", this);
+
+                // Set up a Thread to read in any output messages
+                _StreamReaderThread outputGobbler = new
+                    _StreamReaderThread(_interpreter.getInputStream(),
+                            "OUTPUT", this);
+
+                // Start up the Threads
+                errorGobbler.start();
+                outputGobbler.start();
+
+
+                try {
+                    int processReturnCode = _interpreter.waitFor();
+                    synchronized(this) {
+                        _interpreter = null;
                     }
-                    //updateStatusBar("Executing: "
-                    //        + statusCommand.toString());
-
-                    _interpreter = runtime.exec(commandTokens);
-
-                    // Set up a Thread to read in any error messages
-                    _StreamReaderThread errorGobbler = new
-                        _StreamReaderThread(_interpreter.getErrorStream(),
-                                "ERROR", this);
-
-                    // Set up a Thread to read in any output messages
-                    _StreamReaderThread outputGobbler = new
-                        _StreamReaderThread(_interpreter.getInputStream(),
-                                "OUTPUT", this);
-
-                    // Start up the Threads
-                    errorGobbler.start();
-                    outputGobbler.start();
-
-
-                    try {
-                        int processReturnCode = _interpreter.waitFor();
-                        synchronized(this) {
-                            _interpreter = null;
-                        }
-                        //if (processReturnCode != 0) break;
-                    } catch (InterruptedException interrupted) {
-                        stderr("InterruptedException: "
-                                + interrupted);
-                        throw interrupted;
-                        }
+                    //if (processReturnCode != 0) break;
+                } catch (InterruptedException interrupted) {
+                    stderr("InterruptedException: "
+                            + interrupted);
+                    throw interrupted;
+                }
             } catch (final IOException io) {
                 stderr("IOException: " + ptolemy.kernel.util.KernelException.stackTraceToString(io));
             }

@@ -178,7 +178,7 @@ public class RemoteManagerClient extends TypedAtomicActor {
 
     /** React to a change of the _director or other property. */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == controllerURL) {
             try {
                 StringToken URLToken = (StringToken)controllerURL.getToken();
@@ -206,9 +206,9 @@ public class RemoteManagerClient extends TypedAtomicActor {
                     else {
                         System.out.println("### please provide the URL of the model. \n");
 
-                }
+                    }
 
-            }
+                }
 
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex.getMessage());
@@ -295,13 +295,13 @@ public class RemoteManagerClient extends TypedAtomicActor {
         }
         trigger.get(0);
 
-            try {
-                _remoteManager.startRun();
-            } catch (CorbaIllegalActionException ex) {
-                throw new IllegalActionException(this,
-                        "remote actor throws IllegalActionException"
-                        + ex.getMessage());
-            }
+        try {
+            _remoteManager.startRun();
+        } catch (CorbaIllegalActionException ex) {
+            throw new IllegalActionException(this,
+                    "remote actor throws IllegalActionException"
+                    + ex.getMessage());
+        }
     }
 
 

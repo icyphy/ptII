@@ -121,7 +121,7 @@ public abstract class CodeGenerator {
         Iterator includeFiles = _context.getIncludeFiles();
         if (includeFiles.hasNext()) {
             headerCode.append(_comment("System, runtime and "
-                +"CSwitch-generated include files"));
+                    +"CSwitch-generated include files"));
         }
         while (includeFiles.hasNext()) {
             headerCode.append("#include ");
@@ -216,7 +216,7 @@ public abstract class CodeGenerator {
      */
     protected String _indent(int level) {
         return Utilities.indent(level);
-     }
+    }
 
     /** Remove a class from the list of required types (types whose associated
      *  include files must be imported) if the class exists in the list.

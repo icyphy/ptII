@@ -110,7 +110,7 @@ public class TokenEffigy extends Effigy {
                 }
             } catch (IOException ex) {
                 throw new IllegalActionException(this, null, ex,
-                "Failed to read data: " + ex.getMessage());
+                        "Failed to read data: " + ex.getMessage());
             }
         }
     }
@@ -161,14 +161,14 @@ public class TokenEffigy extends Effigy {
                     _tokens.add(token);
                     // Notify the contained tableaux.
                     Iterator tableaux
-                            = entityList(TokenTableau.class).iterator();
+                        = entityList(TokenTableau.class).iterator();
                     while (tableaux.hasNext()) {
                         ((TokenTableau)tableaux.next()).append(token);
                     }
                 }
             } catch (KernelException ex) {
                 throw new IOException("Error evaluating data expression: "
-                + ex.getMessage());
+                        + ex.getMessage());
             }
         }
     }

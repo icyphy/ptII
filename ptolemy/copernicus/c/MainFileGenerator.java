@@ -88,7 +88,7 @@ public class MainFileGenerator extends CodeGenerator {
                 + ".h\"\n");
 
         Iterator requiredClasses = RequiredFileGenerator
-                .getRequiredClasses().iterator();
+            .getRequiredClasses().iterator();
 
         // Call the Class Structure Initializations for all required
         // classes.
@@ -110,7 +110,7 @@ public class MainFileGenerator extends CodeGenerator {
         headerCode.append("void classStructInit();\n");
         headerCode.append("void staticInit();\n");
         headerCode.append("iA1_i1195259493_String "
-            + "commandLineArgs(int, char**);\n");
+                + "commandLineArgs(int, char**);\n");
 
         headerCode.append("\nvoid _INITIALIZE_SYSTEM_CLASS();\n");
 
@@ -141,7 +141,7 @@ public class MainFileGenerator extends CodeGenerator {
                 + "/* Class Structure initializations*/\n");
 
         Iterator requiredClasses = RequiredFileGenerator
-                .getRequiredClasses().iterator();
+            .getRequiredClasses().iterator();
 
         // Call the Class Structure Initializations for all required
         // classes.
@@ -149,11 +149,11 @@ public class MainFileGenerator extends CodeGenerator {
             SootClass nextClass = (SootClass)requiredClasses.next();
 
             code.append("\n" + _indent(1) + "/* " + nextClass.toString()
-                        + " */\n");
+                    + " */\n");
 
             code.append(_indent(1) +  CNames.initializerNameOf(nextClass)
-                        + "(&" + CNames.classStructureNameOf(nextClass)
-                        + ");\n");
+                    + "(&" + CNames.classStructureNameOf(nextClass)
+                    + ");\n");
         }
 
         code.append("}\n");
@@ -170,7 +170,7 @@ public class MainFileGenerator extends CodeGenerator {
         StringBuffer code = new StringBuffer();
 
         code.append("iA1_i1195259493_String "
-            + "commandLineArgs(int argc, char** argv) {\n");
+                + "commandLineArgs(int argc, char** argv) {\n");
         code.append(_indent(1) + "int i;\n");
         code.append(_indent(1) + "iA1_i1195259493_String string_array;\n\n");
 
@@ -292,25 +292,25 @@ public class MainFileGenerator extends CodeGenerator {
                 + "/* Static initialization methods. */\n");
 
         Iterator requiredClasses = RequiredFileGenerator
-                .getRequiredClasses().iterator();
+            .getRequiredClasses().iterator();
 
         while (requiredClasses.hasNext()){
             // Invoke the static initializer method (clinit) for the class if it
             // exists.
             SootClass nextClass = (SootClass)requiredClasses.next();
             SootMethod initializer = MethodListGenerator
-                    .getClassInitializer(nextClass);
+                .getClassInitializer(nextClass);
 
             if ((initializer!= null)
                     &&(!OverriddenMethodGenerator
-                        .isOverridden(initializer))){
+                            .isOverridden(initializer))){
 
                 code.append("\n" + _indent(1)
                         + _comment("Static initializer method for "
                                 + nextClass.toString()));
 
                 code.append(_indent(1) +
-                                CNames.functionNameOf(initializer) + "();\n");
+                        CNames.functionNameOf(initializer) + "();\n");
             }
         }
 

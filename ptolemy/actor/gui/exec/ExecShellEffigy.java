@@ -84,7 +84,7 @@ public class ExecShellEffigy extends Effigy {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         ExecShellEffigy newObject
-               = (ExecShellEffigy)super.clone(workspace);
+            = (ExecShellEffigy)super.clone(workspace);
         if (_model != null) {
             newObject._model = (NamedObj)_model.clone(new Workspace());
         }

@@ -82,11 +82,11 @@ public class Options {
 
     /** Get the value corresponding to a key from the options table.
 
-    @param key The name of the option to be looked up.
-    @return The value corresponding to this option.
+        @param key The name of the option to be looked up.
+        @return The value corresponding to this option.
     */
     public String get(String key) {
-         return (String)_optionTable.get(key);
+        return (String)_optionTable.get(key);
     }
 
     /** Get a boolean value corresponding to a given key. This returns true
@@ -98,33 +98,33 @@ public class Options {
      * @exception RuntimeException If a lookup of a value that is not
      * "true" or "false" occurs.
      */
-     public boolean getBoolean(String key) {
-         String value = get(key);
-         if (value.compareTo("true") == 0) {
-             return true;
-         }
-         else if (value.compareTo("false") == 0) {
-             return false;
-         }
-         else {
-             throw new RuntimeException(
-                "Stored value cannot be converted to boolean.");
-         }
-     }
+    public boolean getBoolean(String key) {
+        String value = get(key);
+        if (value.compareTo("true") == 0) {
+            return true;
+        }
+        else if (value.compareTo("false") == 0) {
+            return false;
+        }
+        else {
+            throw new RuntimeException(
+                    "Stored value cannot be converted to boolean.");
+        }
+    }
 
-     /** Get the integer value corresponding to a given key.
-      * @param key The name of the option to be looked up.
-      * @return The integer value corresponding to this key.
-      */
+    /** Get the integer value corresponding to a given key.
+     * @param key The name of the option to be looked up.
+     * @return The integer value corresponding to this key.
+     */
     public int getInt(String key) {
         return Integer.valueOf(get(key)).intValue();
     }
 
 
     /** Put a key-value pair into the options table.
-     @param key The name of the option to be set.
-     @param value The value assigned to this option.
-     */
+        @param key The name of the option to be set.
+        @param value The value assigned to this option.
+    */
     public void put(String key, String value) {
         _optionTable.put(key, value);
     }

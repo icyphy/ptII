@@ -244,7 +244,7 @@ public class GiottoPortInliner implements PortInliner {
             if (stmt instanceof DefinitionStmt) {
                 // Replace the get() with an array read.
                 box.setValue(Jimple.v().newArrayRef(bufferLocal,
-                                     channelValue));
+                        channelValue));
             } else {
                 body.getUnits().remove(stmt);
             }
@@ -907,7 +907,7 @@ public class GiottoPortInliner implements PortInliner {
         }
     }
 
-   /** Insert code into the given body before the given unit that will
+    /** Insert code into the given body before the given unit that will
      *  retrieve the communication buffer associated with the given
      *  given port.  The given local variable will refer to the
      *  buffer.

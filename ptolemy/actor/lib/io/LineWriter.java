@@ -186,10 +186,10 @@ public class LineWriter extends Sink {
                 // Open the file.
                 File file = fileName.asFile();
                 boolean appendValue
-                        = ((BooleanToken)append.getToken()).booleanValue();
+                    = ((BooleanToken)append.getToken()).booleanValue();
                 boolean confirmOverwriteValue
-                        = ((BooleanToken)confirmOverwrite.getToken())
-                        .booleanValue();
+                    = ((BooleanToken)confirmOverwrite.getToken())
+                    .booleanValue();
                 // Don't ask for confirmation in append mode, since there
                 // will be no loss of data.
                 if (file.exists() && !appendValue && confirmOverwriteValue) {

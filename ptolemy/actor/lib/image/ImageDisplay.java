@@ -64,15 +64,15 @@ input image contains greyscale pixel intensities between 0 and 255 (inclusive).
 */
 public class ImageDisplay extends Sink implements Placeable {
 
-// FIXME:
-// This actor and sdf.lib.vq.ImageDisplay are very similar except that this
-// actor takes an Object token that wraps a java.awt.Image object.
-// That actor should be removed, and instead, we need an actor that
-// converts matrices to java.awt.Image.
+    // FIXME:
+    // This actor and sdf.lib.vq.ImageDisplay are very similar except that this
+    // actor takes an Object token that wraps a java.awt.Image object.
+    // That actor should be removed, and instead, we need an actor that
+    // converts matrices to java.awt.Image.
 
-// FIXME: We need to create an ImageEffigy and ImageTableau,
-// similar to TokenEffigy and MatrixTokenTableau, and then associate
-// them with this class in ways similar to what MatrixViewer does.
+    // FIXME: We need to create an ImageEffigy and ImageTableau,
+    // similar to TokenEffigy and MatrixTokenTableau, and then associate
+    // them with this class in ways similar to what MatrixViewer does.
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -153,7 +153,7 @@ public class ImageDisplay extends Sink implements Placeable {
 
             if (image == null) {
                 throw new IllegalActionException(this,
-                "ImageDisplay: input image was null!");
+                        "ImageDisplay: input image was null!");
             } else {
                 int xsize = image.getWidth(null);
                 int ysize = image.getHeight(null);

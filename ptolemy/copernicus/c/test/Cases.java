@@ -53,19 +53,19 @@ public class Cases {
 
         // Selects an appropriate message.
         switch(choice) {
-            case 4:
+        case 4:
             System.out.println("Today is Thursday.");
             break;
 
-            case 5:
+        case 5:
             System.out.println("Today is Friday.");
             break;
 
-            case 8:
+        case 8:
             System.out.println("Today is Saturday.");
             break;
 
-            default:
+        default:
             System.out.println("Invalid entry.");
         }
 
@@ -73,19 +73,19 @@ public class Cases {
 
         // Selects an appropriate message.
         switch(choice) {
-            case 4:
+        case 4:
             System.out.println("Today is Thursday.");
             break;
 
-            case 5:
+        case 5:
             System.out.println("Today is Friday.");
             break;
 
-            case 1729:
+        case 1729:
             System.out.println("Today is Saturday.");
             break;
 
-            default:
+        default:
             System.out.println("Invalid entry.");
         }
 

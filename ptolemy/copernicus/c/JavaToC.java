@@ -71,7 +71,7 @@ public class JavaToC {
             throws IOException {
 
         boolean generateSingleClass = Options.v().get("compileMode")
-                .equals("singleClass");
+            .equals("singleClass");
         boolean verbose = Options.v().getBoolean("verbose");
 
         if (verbose) {
@@ -169,7 +169,7 @@ public class JavaToC {
                     }
                     else {
                         System.err.println(
-                            "Invalid command-line format.");
+                                "Invalid command-line format.");
                     }
                 }
 

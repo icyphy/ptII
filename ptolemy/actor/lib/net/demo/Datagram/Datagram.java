@@ -67,7 +67,7 @@ configured for 16-bit Unicode characters.
 */
 
 public class Datagram extends TypedAtomicActor
-        implements ClipboardOwner {
+    implements ClipboardOwner {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -78,7 +78,7 @@ public class Datagram extends TypedAtomicActor
      *   actor with this name.
      */
     public Datagram(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Inputs
@@ -123,12 +123,12 @@ public class Datagram extends TypedAtomicActor
         if (trigger.getWidth() > 0 && trigger.hasToken(0)) {
             trigger.get(0);
             Clipboard clipboard = Toolkit.getDefaultToolkit()
-                    .getSystemClipboard();
+                .getSystemClipboard();
             Transferable transferable = clipboard.getContents(this);
             try{
                 output.broadcast(new StringToken( (String)transferable
                         .getTransferData(DataFlavor.stringFlavor) ));
-            // NullPointerException also possible //
+                // NullPointerException also possible //
                 // Ignore this for now, allowing exception to go uncaught.
             } catch (IOException ex) {
                 throw new IllegalActionException(this,
@@ -142,7 +142,7 @@ public class Datagram extends TypedAtomicActor
         // Copy
         if (input.getWidth()>0 && input.hasToken(0)) {
             Clipboard clipboard = Toolkit.getDefaultToolkit()
-                    .getSystemClipboard();
+                .getSystemClipboard();
             String myString = ((StringToken)(input.get(0))).stringValue();
             clipboard.setContents(new StringSelection(myString), this);
         }

@@ -113,7 +113,7 @@ public class JAIImageToken extends ImageToken {
             throws IllegalActionException {
         if (rightArgument instanceof JAIImageToken) {
             ParameterBlock parameters =
-                    _parameterize(_renderedOp, (JAIImageToken) rightArgument);
+                _parameterize(_renderedOp, (JAIImageToken) rightArgument);
             return new JAIImageToken(JAI.create("divide", parameters));
         } else {
             throw new IllegalActionException("illegal data type");
@@ -148,7 +148,7 @@ public class JAIImageToken extends ImageToken {
             throws IllegalActionException {
         if (rightArgument instanceof JAIImageToken) {
             ParameterBlock parameters =
-                    _parameterize(_renderedOp, (JAIImageToken) rightArgument);
+                _parameterize(_renderedOp, (JAIImageToken) rightArgument);
             return new JAIImageToken(JAI.create("multiply", parameters));
         } else {
             throw new IllegalActionException("illegal data type");
@@ -170,7 +170,7 @@ public class JAIImageToken extends ImageToken {
             throws IllegalActionException {
         if (rightArgument instanceof JAIImageToken) {
             ParameterBlock parameters =
-                    _parameterize(_renderedOp, (JAIImageToken) rightArgument);
+                _parameterize(_renderedOp, (JAIImageToken) rightArgument);
             return new JAIImageToken(JAI.create("subtract", parameters));
         } else {
             throw new IllegalActionException("illegal data type");

@@ -46,15 +46,15 @@ public class GlobalExceptions
         System.out.println(1);
 
         try
-        {
-            System.out.println(2);
-            // This will throw an exception.
-            a();
-        }
+            {
+                System.out.println(2);
+                // This will throw an exception.
+                a();
+            }
         catch(Exception e)
-        {
-            System.out.println(4);
-        }
+            {
+                System.out.println(4);
+            }
     }
 
     protected static void a() throws Exception

@@ -89,7 +89,7 @@ is not enforced.
 @since Ptolemy II 2.1
 */
 public class PlotterBase extends TypedAtomicActor
-        implements Configurable, Placeable {
+    implements Configurable, Placeable {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.

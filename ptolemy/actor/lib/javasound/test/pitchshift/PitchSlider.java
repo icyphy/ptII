@@ -97,20 +97,20 @@ public class PitchSlider extends JFrame {
         sliderModel = new ConverterRangeModel();
         textField.setValue(0.001*sliderModel.getDoubleValue());
         textField.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                sliderModel.setDoubleValue(1000*textField.getValue());
+                public void actionPerformed(ActionEvent e) {
+                    sliderModel.setDoubleValue(1000*textField.getValue());
 
-            }
-        });
+                }
+            });
 
         JSlider pitchSlider = new JSlider(sliderModel);
         pitchSlider.addChangeListener(new SliderListener());
         sliderModel.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
-                //textField.setValue(sliderModel.getDoubleValue());
-                textField.setValue(0.001*sliderModel.getDoubleValue());
-            }
-        });
+                public void stateChanged(ChangeEvent e) {
+                    //textField.setValue(sliderModel.getDoubleValue());
+                    textField.setValue(0.001*sliderModel.getDoubleValue());
+                }
+            });
 
         //Turn on labels at major tick marks.
         pitchSlider.setPaintTicks(false);
@@ -133,10 +133,10 @@ public class PitchSlider extends JFrame {
 
         //Add a listener for window events
         addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                System.exit(0);
-            }
-        });
+                public void windowClosing(WindowEvent e) {
+                    System.exit(0);
+                }
+            });
 
     }
 

@@ -102,7 +102,7 @@ public class StyleConfigurer extends Query implements QueryListener {
             parameterStyles[2].setName("Choice");
             parameterStyles[3] = new EditableChoiceStyle();
             parameterStyles[3].setName("EditableChoice");
-             parameterStyles[4] = new TextStyle();
+            parameterStyles[4] = new TextStyle();
             parameterStyles[4].setName("Text");
             parameterStyles[5] = new FileChooserStyle();
             parameterStyles[5].setName("FileChooser");
@@ -119,7 +119,7 @@ public class StyleConfigurer extends Query implements QueryListener {
             // Skip if the parameter is not visible.
             if (param.getVisibility() == Settable.NONE) continue;
 
-             // Get the current style.
+            // Get the current style.
             boolean foundOne = false;
             Iterator styles = ((NamedObj)param)
                 .attributeList(ParameterEditorStyle.class).iterator();
@@ -213,21 +213,21 @@ public class StyleConfigurer extends Query implements QueryListener {
         // That notification occurs some time after the
         // window is destroyed.
         SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                Iterator entries = _originalValues.entrySet().iterator();
-                while (entries.hasNext()) {
-                    Map.Entry entry = (Map.Entry)entries.next();
-                    Settable param = (Settable)
-                        _object.getAttribute((String)entry.getKey());
-                    try {
-                        param.setExpression((String)entry.getValue());
-                    } catch (IllegalActionException ex) {
-                        throw new InternalErrorException(
-                                "Cannot restore style value!");
+                public void run() {
+                    Iterator entries = _originalValues.entrySet().iterator();
+                    while (entries.hasNext()) {
+                        Map.Entry entry = (Map.Entry)entries.next();
+                        Settable param = (Settable)
+                            _object.getAttribute((String)entry.getKey());
+                        try {
+                            param.setExpression((String)entry.getValue());
+                        } catch (IllegalActionException ex) {
+                            throw new InternalErrorException(
+                                    "Cannot restore style value!");
+                        }
                     }
                 }
-            }
-        });
+            });
     }
 
     ///////////////////////////////////////////////////////////////////

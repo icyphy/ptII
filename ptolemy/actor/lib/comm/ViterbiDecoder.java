@@ -128,22 +128,22 @@ public class ViterbiDecoder extends Transformer {
         // Declare data types, consumption rate and production rate.
         input.setTypeEquals(BaseType.DOUBLE);
         _inputRate = new Parameter(input, "tokenConsumptionRate",
-                     new IntToken(1));
+                new IntToken(1));
         output.setTypeEquals(BaseType.INT);
         _outputRate = new Parameter(output, "tokenProductionRate",
-                      new IntToken(1));
+                new IntToken(1));
 
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-     /** An array of integers defining an array of polynomials with
-      *  binary coefficients. The coefficients indicate the presence (1)
-      *  or absence (0) of a tap in the shift register. Each element
-      *  of this array parameter should be a positive integer.
-      *  The array's default value is {05, 07}.
-      */
+    /** An array of integers defining an array of polynomials with
+     *  binary coefficients. The coefficients indicate the presence (1)
+     *  or absence (0) of a tap in the shift register. Each element
+     *  of this array parameter should be a positive integer.
+     *  The array's default value is {05, 07}.
+     */
     public Parameter polynomialArray;
 
     /** Integer defining the number of bits that the shift register
@@ -207,7 +207,7 @@ public class ViterbiDecoder extends Transformer {
                 _mask[i] = ((IntToken)maskToken.getElement(i)).intValue();
                 if (_mask[i] <= 0) {
                     throw new IllegalActionException(this,
-                    "Polynomial is required to be strictly positive.");
+                            "Polynomial is required to be strictly positive.");
                 }
                 // Find maximum value in integer of all polynomials.
                 if (_mask[i] > _maxPolyValue) {
@@ -237,7 +237,7 @@ public class ViterbiDecoder extends Transformer {
         if (_inputNumberInvalid) {
             if (_inputNumber >= _maskNumber) {
                 throw new IllegalActionException(this,
-                "Output rate should be larger than input rate.");
+                        "Output rate should be larger than input rate.");
             }
 
             //Comput the length of shift register.
@@ -252,7 +252,7 @@ public class ViterbiDecoder extends Transformer {
 
             if (_inputNumber >= _shiftRegLength) {
                 throw new IllegalActionException(this,
-               "The highest order of all polynomials is still too low.");
+                        "The highest order of all polynomials is still too low.");
             }
             _inputNumberInvalid = false;
 
@@ -290,22 +290,22 @@ public class ViterbiDecoder extends Transformer {
             // produced from the encoder.
             for (int state = 0; state < _rowNum; state ++) {
                 for (int head = 0; head < _colNum; head ++) {
-                   int reg = head << (_shiftRegLength - _inputNumber);
-                   reg = reg + state;
-                   int[] parity =  _calculateParity(_mask, _maskNumber, reg);
-                   int outValue = 0;
-                   // store the output values as an integer
-                   // in the order of yn...y1y0
-                   for (int i = _maskNumber - 1; i >= 0; i --) {
-                       outValue = outValue << 1;
-                       outValue = outValue + parity[i];
-                   }
-                   _truthTable[state][head][0] = outValue;
-                   int oldState = reg >> _inputNumber;
-                   _truthTable[state][head][1] = oldState;
-                   int input = reg & inputMask;
-                   _truthTable[state][head][2] = input;
-               }
+                    int reg = head << (_shiftRegLength - _inputNumber);
+                    reg = reg + state;
+                    int[] parity =  _calculateParity(_mask, _maskNumber, reg);
+                    int outValue = 0;
+                    // store the output values as an integer
+                    // in the order of yn...y1y0
+                    for (int i = _maskNumber - 1; i >= 0; i --) {
+                        outValue = outValue << 1;
+                        outValue = outValue + parity[i];
+                    }
+                    _truthTable[state][head][0] = outValue;
+                    int oldState = reg >> _inputNumber;
+                    _truthTable[state][head][1] = oldState;
+                    int input = reg & inputMask;
+                    _truthTable[state][head][2] = input;
+                }
             }
         }
 
@@ -324,7 +324,7 @@ public class ViterbiDecoder extends Transformer {
             for (int colIndex = 0; colIndex < _colNum; colIndex ++) {
                 // Compute the distance for each possible path to "state".
                 double d = _computeDistance(y,
-                    _truthTable[state][colIndex][0], _maskNumber, _mode);
+                        _truthTable[state][colIndex][0], _maskNumber, _mode);
                 // The previous state for that possibility.
                 int oldState = _truthTable[state][colIndex][1];
                 d = _tempDistance[oldState] + d;
@@ -371,7 +371,7 @@ public class ViterbiDecoder extends Transformer {
             // to the front of the buffers.
             for (int state = 0; state < _rowNum; state ++ ) {
                 for (int i = 0; i < _flag; i ++) {
-                   _path[state][i] = _path[state][i+1];
+                    _path[state][i] = _path[state][i+1];
                 }
             }
             _flag = _flag - 1;

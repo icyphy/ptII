@@ -138,8 +138,8 @@ public class VideoCamera extends Source implements ControllerListener {
     public void controllerUpdate(ControllerEvent evt) {
 
         if (evt instanceof ConfigureCompleteEvent ||
-            evt instanceof RealizeCompleteEvent ||
-            evt instanceof PrefetchCompleteEvent) {
+                evt instanceof RealizeCompleteEvent ||
+                evt instanceof PrefetchCompleteEvent) {
             synchronized (waitSync) {
                 stateTransitionOK = true;
                 waitSync.notifyAll();
@@ -161,17 +161,17 @@ public class VideoCamera extends Source implements ControllerListener {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-//         while (!_newFrame) {
-//             if (_debugging) {
-//                 _debug("image not new");
-//             }
-//             try {
-//                 wait();
-//             } catch (InterruptedException ex) {
-//                 throw new IllegalActionException(this,
-//                 "Interrupted while waiting for the first video frame.");
-//             }
-//         }
+        //         while (!_newFrame) {
+        //             if (_debugging) {
+        //                 _debug("image not new");
+        //             }
+        //             try {
+        //                 wait();
+        //             } catch (InterruptedException ex) {
+        //                 throw new IllegalActionException(this,
+        //                 "Interrupted while waiting for the first video frame.");
+        //             }
+        //         }
         //_imageNew = JamesCodec.getFrame();
         //output.send(0, new ObjectToken(frameBuffer));
         _bufferNew = CameraCodec.getFrame();
@@ -197,7 +197,7 @@ public class VideoCamera extends Source implements ControllerListener {
 
         if (deviceList.size() == 0) {
             throw new IllegalActionException(this,
-            "No video capture devices found by the Java Media Framework.");
+                    "No video capture devices found by the Java Media Framework.");
         }
         if (_debugging) {
             _debug("--- Capture devices found:");
@@ -210,7 +210,7 @@ public class VideoCamera extends Source implements ControllerListener {
         }
         // FIXME: Need a mechanism for selecting the device.
         CaptureDeviceInfo captureDeviceInfo
-               = (CaptureDeviceInfo) deviceList.get(0);
+            = (CaptureDeviceInfo) deviceList.get(0);
         MediaLocator locator = captureDeviceInfo.getLocator();
 
         try {
@@ -268,7 +268,7 @@ public class VideoCamera extends Source implements ControllerListener {
             videoTrack.setCodecChain(codec);
         } catch (UnsupportedPlugInException e) {
             throw new IllegalActionException(
-                   "The process does not support codec plug ins.");
+                    "The process does not support codec plug ins.");
         }
 
         // Realize the processor.
@@ -347,7 +347,7 @@ public class VideoCamera extends Source implements ControllerListener {
         }
 
         /**
-          * The code for a pass through codec.
+         * The code for a pass through codec.
          */
 
         synchronized Buffer getFrame() throws IllegalActionException {
@@ -370,13 +370,13 @@ public class VideoCamera extends Source implements ControllerListener {
         // We'll advertize as supporting all video formats.
         protected Format supportedIns[] = new Format [] {
             new YUVFormat()
-        };
+                };
 
         // We'll advertize as supporting all video formats.
         protected Format supportedOuts[] = new Format [] {
             new YUVFormat()
-            //new VideoFormat(null)
-        };
+                //new VideoFormat(null)
+                };
 
         Format input = null, output = null;
 

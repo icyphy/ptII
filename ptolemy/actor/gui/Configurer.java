@@ -160,7 +160,7 @@ public class Configurer extends JPanel implements CloseListener {
         } else {
             return false;
         }
-     }
+    }
 
     /** Request restoration of the user settable attribute values to what they
      *  were when this object was created.  The actual restoration

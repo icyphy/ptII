@@ -150,7 +150,7 @@ public class DatagramWriter extends TypedAtomicActor {
         localSocketNumber.setToken(new IntToken(4003)); //setToken works too
 
         // Added for SDF usability.  Empty Token() is output, just a trigger.
-          triggerOutput = new TypedIOPort(this, "triggerOutput");
+        triggerOutput = new TypedIOPort(this, "triggerOutput");
         triggerOutput.setTypeEquals(BaseType.GENERAL);
         // 'INT' works too in place of 'GENERAL'.
         triggerOutput.setOutput(true);

@@ -77,7 +77,7 @@ public class Multiplexor extends Transformer {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-            input.setMultiport(true);
+        input.setMultiport(true);
 
         select = new TypedIOPort(this, "select", true, false);
         select.setTypeEquals(BaseType.INT);

@@ -249,8 +249,8 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
                     body.getUnits().remove(stmt);
                 }
                 if (r.getMethod().getSubSignature().equals(
-                            PtolemyUtilities
-                            .variableConstructorWithToken.getSubSignature())) {
+                        PtolemyUtilities
+                        .variableConstructorWithToken.getSubSignature())) {
                     SootClass variableClass =
                         r.getMethod().getDeclaringClass();
                     SootMethod constructorWithoutToken =

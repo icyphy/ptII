@@ -101,8 +101,8 @@ public class FreeVariableModelAnalysis {
         Set set = new HashSet();
         if (model instanceof CompositeEntity) {
             for (Iterator entities =
-                    ((CompositeEntity)model).entityList().iterator();
-                entities.hasNext();) {
+                     ((CompositeEntity)model).entityList().iterator();
+                 entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
                 set.addAll(_freeVariables(entity));
             }
@@ -110,8 +110,8 @@ public class FreeVariableModelAnalysis {
 
         Set variableNames = new HashSet();
         for (Iterator variables =
-                model.attributeList(Variable.class).iterator();
-            variables.hasNext();) {
+                 model.attributeList(Variable.class).iterator();
+             variables.hasNext();) {
             Variable variable = (Variable)variables.next();
             variableNames.add(variable.getName());
         }
@@ -123,8 +123,8 @@ public class FreeVariableModelAnalysis {
         ParseTreeFreeVariableCollector collector =
             new ParseTreeFreeVariableCollector();
         for (Iterator variables =
-                model.attributeList(Variable.class).iterator();
-            variables.hasNext();) {
+                 model.attributeList(Variable.class).iterator();
+             variables.hasNext();) {
             Variable variable = (Variable)variables.next();
             String expression = variable.getExpression();
             ASTPtRootNode root = parser.generateParseTree(expression);

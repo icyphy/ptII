@@ -311,9 +311,9 @@ public class AudioReader extends Source {
                         getSamplesArraySize);
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex,
-                          "Cannot open fileOrURL '"
-                          + fileOrURL.getExpression()
-                          + "'.");
+                        "Cannot open fileOrURL '"
+                        + fileOrURL.getExpression()
+                        + "'.");
             }
             // Get the number of audio channels.
             _channels = _soundReader.getChannels();
@@ -328,7 +328,7 @@ public class AudioReader extends Source {
                 _audioIn = _soundReader.getSamples();
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
-                "Unable to get samples from the file.");
+                        "Unable to get samples from the file.");
             }
             _sampleIndex = 0;
             // Check that the read was successful

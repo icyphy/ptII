@@ -172,8 +172,8 @@ public class BrowserEffigy extends Effigy {
             String extension = getExtension(in);
             // This could be a list, or a user preference
             if (extension.equals("pdf")
-                   || extension.startsWith("htm")
-                   || extension.startsWith("shtm")) {
+                    || extension.startsWith("htm")
+                    || extension.startsWith("shtm")) {
                 Effigy effigy = newBrowserEffigy(container, base, in);
                 return effigy;
             }

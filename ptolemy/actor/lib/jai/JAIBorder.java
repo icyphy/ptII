@@ -199,19 +199,19 @@ public class JAIBorder extends Transformer {
             break;
         case _BORDER_COPY:
             parameters.add(BorderExtender.createInstance(
-                                   BorderExtender.BORDER_COPY));
+                    BorderExtender.BORDER_COPY));
             break;
         case _BORDER_REFLECT:
             parameters.add(BorderExtender.createInstance(
-                                   BorderExtender.BORDER_REFLECT));
+                    BorderExtender.BORDER_REFLECT));
             break;
         case _BORDER_WRAP:
             parameters.add(BorderExtender.createInstance(
-                                   BorderExtender.BORDER_WRAP));
+                    BorderExtender.BORDER_WRAP));
             break;
         case _BORDER_ZERO:
             parameters.add(BorderExtender.createInstance(
-                                   BorderExtender.BORDER_ZERO));
+                    BorderExtender.BORDER_ZERO));
             break;
         default:
             throw new IllegalActionException("Could not assign border");

@@ -58,11 +58,11 @@ public class  LinkedListTest{
         list.addFirst("0");
 
         /*
-        LinkedList list2 = new LinkedList();
-        list.addAll(list2);
-        list2.add("5");
-        list2.add("6");
-        list.addAll(list2);
+          LinkedList list2 = new LinkedList();
+          list.addAll(list2);
+          list2.add("5");
+          list2.add("6");
+          list.addAll(list2);
         */
 
         // Test Iterator.

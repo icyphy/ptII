@@ -85,15 +85,15 @@ public class JAIAffineTransform extends Transformer {
         super(container, name);
 
         affineMatrix =
-                new Parameter(this, "affineMatrix",
-                        new DoubleMatrixToken(_initialMatrix));
+            new Parameter(this, "affineMatrix",
+                    new DoubleMatrixToken(_initialMatrix));
 
         interpolationType = new StringAttribute(this, "interpolationType");
         interpolationType.setExpression("bilinear");
         _interpolationType = _BILINEAR;
 
         subSampleBits =
-                new Parameter(this, "subSampleBits", new IntToken(8));
+            new Parameter(this, "subSampleBits", new IntToken(8));
 
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
@@ -144,18 +144,18 @@ public class JAIAffineTransform extends Transformer {
             }
         } else if (attribute == subSampleBits) {
             _subSampleBits =
-                    ((IntToken) subSampleBits.getToken()).intValue();
+                ((IntToken) subSampleBits.getToken()).intValue();
         } else if (attribute == affineMatrix) {
             DoubleMatrixToken affineMatrixToken =
-                    (DoubleMatrixToken) affineMatrix.getToken();
+                (DoubleMatrixToken) affineMatrix.getToken();
             if (affineMatrixToken.getColumnCount() == 3
                     && affineMatrixToken.getRowCount() == 2) {
                 _matrixValue = affineMatrixToken.doubleMatrix();
                 _affineTransform =
-                        new AffineTransform(_matrixValue[0][0],
-                                _matrixValue[1][0], _matrixValue[0][1],
-                                _matrixValue[1][1], _matrixValue[0][2],
-                                _matrixValue[1][2]);
+                    new AffineTransform(_matrixValue[0][0],
+                            _matrixValue[1][0], _matrixValue[0][1],
+                            _matrixValue[1][1], _matrixValue[0][2],
+                            _matrixValue[1][2]);
             } else {
                 throw new IllegalActionException(this,
                         "Matrix must have two rows and three "
@@ -178,25 +178,25 @@ public class JAIAffineTransform extends Transformer {
         RenderedOp oldImage = jaiImageToken.getValue();
 
         switch (_interpolationType) {
-            case _BICUBIC:
-                _interpolation = new InterpolationBicubic(_subSampleBits);
-                break;
-            case _BICUBIC2:
-                _interpolation = new InterpolationBicubic2(_subSampleBits);
-                break;
-            case _BILINEAR:
-                _interpolation = new InterpolationBilinear(_subSampleBits);
-                break;
-            case _NEARESTNEIGHBOR:
-                _interpolation = new InterpolationNearest();
-                break;
-            default:
-                throw new IllegalActionException(
-                        "Invalid value for interpolationType");
+        case _BICUBIC:
+            _interpolation = new InterpolationBicubic(_subSampleBits);
+            break;
+        case _BICUBIC2:
+            _interpolation = new InterpolationBicubic2(_subSampleBits);
+            break;
+        case _BILINEAR:
+            _interpolation = new InterpolationBilinear(_subSampleBits);
+            break;
+        case _NEARESTNEIGHBOR:
+            _interpolation = new InterpolationNearest();
+            break;
+        default:
+            throw new IllegalActionException(
+                    "Invalid value for interpolationType");
         }
         RenderedOp newImage =
-                JAI.create("affine", oldImage,
-                        _affineTransform, _interpolation);
+            JAI.create("affine", oldImage,
+                    _affineTransform, _interpolation);
         output.send(0, new JAIImageToken(newImage));
     }
 
@@ -206,7 +206,7 @@ public class JAIAffineTransform extends Transformer {
     private AffineTransform _affineTransform;
 
     private double[][] _initialMatrix =
-            {{1.0F, 0.0F, 0.0F}, {0.0F, 1.0F, 0.0F}};
+    {{1.0F, 0.0F, 0.0F}, {0.0F, 1.0F, 0.0F}};
 
     private Interpolation _interpolation;
 

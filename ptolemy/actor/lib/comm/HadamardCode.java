@@ -126,7 +126,7 @@ public class HadamardCode extends Source {
             int indexValue = ((IntToken)index.getToken()).intValue();
             if (indexValue < 0) {
                 throw new IllegalActionException(this,
-                "index parameter is not permitted to be negative.");
+                        "index parameter is not permitted to be negative.");
             }
             // Set a flag indicating that the private variable _row
             // is invalid, but don't recompute the value until all
@@ -138,13 +138,13 @@ public class HadamardCode extends Source {
             int log2LengthValue = ((IntToken)log2Length.getToken()).intValue();
             if (log2LengthValue <= 0) {
                 throw new IllegalActionException(this,
-                "log2Length parameter is required to be strictly positive.");
+                        "log2Length parameter is required to be strictly positive.");
             }
             // Assuming an int is 32 bits, our implementation will only
             // work if this is less than 32.
             if (log2LengthValue >= 32) {
                 throw new IllegalActionException(this,
-                "log2Length parameter is required to be less than 32.");
+                        "log2Length parameter is required to be less than 32.");
             }
             // Set a flag indicating that the private variable _row
             // is invalid, but don't recompute the value until all
@@ -175,7 +175,7 @@ public class HadamardCode extends Source {
             int matrixDimension = 1 << log2LengthValue;
             if (_latestIndex >= matrixDimension) {
                 throw new IllegalActionException(this,
-                "index is out of range.");
+                        "index is out of range.");
             }
             _row = _calculateRow(matrixDimension, _latestIndex);
             _rowValueInvalid = false;

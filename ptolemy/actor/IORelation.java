@@ -138,9 +138,9 @@ public class IORelation extends ComponentRelation {
      *   to this container.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute instanceof Parameter &&
-            "width".equals(attribute.getName())) {
+                "width".equals(attribute.getName())) {
             IntToken t = (IntToken)((Parameter)attribute).getToken();
             if (t != null) {
                 int width = t.intValue();

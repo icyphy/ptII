@@ -98,14 +98,14 @@ public class PortConfigurer extends Query implements QueryListener {
                 // Add a column that controls on which side
                 // of the icon the port lies.
                 StringAttribute cardinal
-                        = (StringAttribute)port.getAttribute("_cardinal");
+                    = (StringAttribute)port.getAttribute("_cardinal");
                 String cardinalValue = "SOUTH";
                 if (cardinal != null) {
-                   cardinalValue = cardinal.getExpression().toUpperCase();
+                    cardinalValue = cardinal.getExpression().toUpperCase();
                 } else if (port.isInput() && !port.isOutput()) {
-                   cardinalValue = "WEST";
+                    cardinalValue = "WEST";
                 } else if (port.isOutput() && !port.isInput()) {
-                   cardinalValue = "EAST";
+                    cardinalValue = "EAST";
                 }
                 addChoice(port.getName() + " cardinal",
                         port.getName() + ": cardinal direction",
@@ -202,7 +202,7 @@ public class PortConfigurer extends Query implements QueryListener {
                         moml.append("<property name=\"multiport\"/>");
                     } else {
                         moml.append(
-                            "<property name=\"multiport\" value=\"false\"/>");
+                                "<property name=\"multiport\" value=\"false\"/>");
                     }
 
                     if (_changed.contains(typeEntryName)) {

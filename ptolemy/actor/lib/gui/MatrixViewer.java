@@ -199,7 +199,7 @@ public class MatrixViewer extends Sink implements Placeable {
                     // set the size of the frame, we have to also set the
                     // size of the internal component.
                     Component[] components
-                            = _frame.getContentPane().getComponents();
+                        = _frame.getContentPane().getComponents();
                     if (components.length > 0) {
                         _paneSize.setSize(components[0]);
                     }
@@ -207,7 +207,7 @@ public class MatrixViewer extends Sink implements Placeable {
                     _tableau.show();
                 } catch (Exception ex) {
                     throw new IllegalActionException(this, null, ex,
-                             "Error creating effigy and tableau");
+                            "Error creating effigy and tableau");
                 }
             } else {
                 // Erase previous text.

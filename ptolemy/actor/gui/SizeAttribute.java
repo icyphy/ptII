@@ -42,15 +42,15 @@ import javax.swing.JComponent;
 //////////////////////////////////////////////////////////////////////////
 //// SizeAttribute
 /**
-This attribute stores the width and height of a graphical component.
-The token in this attribute is an IntMatrixToken containing a matrix
-of dimension 1x2, containing the width and the height, in that order.
-By default, this attribute has visibility NONE, so the user will not
-see it in parameter editing dialogs.
+   This attribute stores the width and height of a graphical component.
+   The token in this attribute is an IntMatrixToken containing a matrix
+   of dimension 1x2, containing the width and the height, in that order.
+   By default, this attribute has visibility NONE, so the user will not
+   see it in parameter editing dialogs.
 
-@author Edward A. Lee
-@version $Id$
-@since Ptolemy II 1.0
+   @author Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 1.0
 */
 public class SizeAttribute extends Parameter {
 

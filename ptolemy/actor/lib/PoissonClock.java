@@ -228,7 +228,7 @@ public class PoissonClock extends TimedSource {
             getDirector().fireAt(this, currentTime);
         } else {
             double meanTimeValue =
-                    ((DoubleToken)meanTime.getToken()).doubleValue();
+                ((DoubleToken)meanTime.getToken()).doubleValue();
             double exp = -Math.log((1-Math.random()))*meanTimeValue;
             Director director = getDirector();
             _nextFiringTime = director.getCurrentTime() + exp;

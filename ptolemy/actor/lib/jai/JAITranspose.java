@@ -137,7 +137,7 @@ public class JAITranspose extends Transformer {
         JAIImageToken jaiImageToken = (JAIImageToken) input.get(0);
         RenderedOp oldImage = jaiImageToken.getValue();
         RenderedOp newImage =
-                JAI.create("transpose", oldImage, _transposeType);
+            JAI.create("transpose", oldImage, _transposeType);
         output.send(0, new JAIImageToken(newImage));
     }
     ///////////////////////////////////////////////////////////////////

@@ -245,7 +245,7 @@ public class TableauFrame extends Top {
             try {
                 Configuration configuration = getConfiguration();
                 FileAttribute aboutAttribute = (FileAttribute)configuration
-                        .getAttribute("_about", FileAttribute.class);
+                    .getAttribute("_about", FileAttribute.class);
                 URL doc;
                 if (aboutAttribute != null) {
                     doc = aboutAttribute.asURL();
@@ -498,7 +498,7 @@ public class TableauFrame extends Top {
         try {
             Configuration configuration = getConfiguration();
             FileAttribute helpAttribute = (FileAttribute)configuration
-                    .getAttribute("_help", FileAttribute.class);
+                .getAttribute("_help", FileAttribute.class);
             URL doc;
             if (helpAttribute != null) {
                 doc = helpAttribute.asURL();
@@ -600,7 +600,7 @@ public class TableauFrame extends Top {
         if (_initialSaveAsFileName != null) {
             fileDialog.setSelectedFile(
                     new File(fileDialog.getCurrentDirectory(),
-                             _initialSaveAsFileName));
+                            _initialSaveAsFileName));
         }
 
         int returnVal = fileDialog.showSaveDialog(this);

@@ -121,13 +121,13 @@ public class IIR extends Transformer {
         InequalityTerm elementTerm = numeratorType.getElementTypeTerm();
         output.setTypeAtLeast(elementTerm);
 
-             ArrayType denominatorType = (ArrayType)denominator.getType();
+        ArrayType denominatorType = (ArrayType)denominator.getType();
         InequalityTerm elementTerm2 = denominatorType.getElementTypeTerm();
         output.setTypeAtLeast(elementTerm2);
 
         input.setTypeAtLeast(output);
         output.setTypeAtLeast(input);
-     }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -171,7 +171,7 @@ public class IIR extends Transformer {
             // Note: a<sub>0</sub> must always be 1.
             // Issue a warning if it isn't.
             if (!_denominator[0].isEqualTo(_denominator[0].one())
-                        .booleanValue()) {
+                    .booleanValue()) {
                 try {
                     MessageHandler.warning(
                             "First denominator value is required to be 1. "

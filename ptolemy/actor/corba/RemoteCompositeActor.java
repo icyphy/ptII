@@ -273,7 +273,7 @@ public class RemoteCompositeActor extends CompositeActor {
      */
     public void setDirector(Director director)
             throws IllegalActionException, NameDuplicationException {
-            super.setDirector(director);
+        super.setDirector(director);
         _hasLocalDirector = true;
     }
 

@@ -90,7 +90,7 @@ public class PtExecuteApplication extends MoMLApplication
      *  @param throwable The throwable being reported.
      */
     public synchronized void executionError(Manager manager,
-                                            Throwable throwable) {
+            Throwable throwable) {
         _activeCount--;
         if (_activeCount == 0) {
             notifyAll();

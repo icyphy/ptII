@@ -149,7 +149,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                 if (value instanceof InstanceInvokeExpr) {
                     InstanceInvokeExpr r = (InstanceInvokeExpr)value;
                     if (r.getMethod().getSubSignature().equals(
-                               _getDirectorSig)) {
+                            _getDirectorSig)) {
                         // Replace calls to getDirector with
                         // null.  FIXME: we should be able to
                         // do better than this?
@@ -159,9 +159,9 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                             box.setValue(NullConstant.v());
                         }
                     } else if (r.getMethod().getSubSignature().equals(
-                                       _getAttributeSig)) {
+                            _getAttributeSig)) {
                         if (unit instanceof InvokeStmt) {
-                                body.getUnits().remove(unit);
+                            body.getUnits().remove(unit);
                         } else {
                             // Replace calls to getAttribute(arg)
                             // when arg is a string that can be
@@ -238,7 +238,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                 local = baseLocal;
             } else {
                 local = Jimple.v().newLocal("container",
-                                RefType.v(PtolemyUtilities.entityClass));
+                        RefType.v(PtolemyUtilities.entityClass));
                 body.getLocals().add(local);
                 body.getUnits().insertBefore(
                         Jimple.v().newAssignStmt(local,
@@ -249,7 +249,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                 System.out.println(unit.getClass().toString());
                 System.out.println(box.getClass().toString());
                 box.setValue(Jimple.v().newInstanceFieldRef(
-                       local, attributeField));
+                        local, attributeField));
             } else {
                 throw new RuntimeException(
                         "Failed to find field for attribute " + attribute.getFullName());

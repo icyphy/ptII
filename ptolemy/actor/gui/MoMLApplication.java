@@ -463,7 +463,7 @@ public class MoMLApplication {
                             String detailMessage = "";
                             try {
                                 if (inURL.toString().indexOf("!/") != -1
-                                    && inURL.toString().indexOf("%20") != -1) {
+                                        && inURL.toString().indexOf("%20") != -1) {
                                     detailMessage = " The URL contains "
                                         + "'!/', so it may be a jar "
                                         + "URL, and jar URLs cannot contain "
@@ -475,7 +475,7 @@ public class MoMLApplication {
                                 // Ignored
                             }
                             throw new Exception("Failed to parse '" + inURL
-                                            + "'" + detailMessage , ex);
+                                    + "'" + detailMessage , ex);
                         }
                     }
                 } else {
@@ -593,12 +593,12 @@ public class MoMLApplication {
      *   if the contents of the URL is not a configuration.
      */
     protected Configuration _readConfiguration(URL specificationURL)
-        throws Exception {
+            throws Exception {
         _parser.reset();
 
         Configuration toplevel =
             (Configuration) _parser.parse(specificationURL,
-                                          specificationURL.openStream());
+                    specificationURL.openStream());
 
         // If the toplevel model is a configuration containing a directory,
         // then create an effigy for the configuration itself, and put it

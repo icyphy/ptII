@@ -139,8 +139,8 @@ public class HTMLViewer extends TableauFrame
                     useBrowser = true;
                 } else if (!target.equals("_blank")
                         && !target.equals("_top")) {
-                // If the target is "_blank" or "_top", then we want to open
-                // in a new window, so we defer to the below.
+                    // If the target is "_blank" or "_top", then we want to open
+                    // in a new window, so we defer to the below.
 
                     HTMLDocument doc = (HTMLDocument)pane.getDocument();
                     try {
