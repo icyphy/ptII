@@ -140,9 +140,14 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	}
     }
 
+    public PortModel getPortModel() {
+	return _portModel;
+    }
+
     public StateModel getStateModel() {
 	return _stateModel;
     }
+
     public ArcModel getArcModel() {
 	return _arcModel;
     }
@@ -156,7 +161,13 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
      */
     public NodeModel getNodeModel(Object node) {
 	if(node instanceof Location) {
-	    return _stateModel;
+            Location location = (Location)node;
+            if(location.getContainer() instanceof ComponentEntity) 
+                return _stateModel;
+            else if(location.getContainer() instanceof ComponentPort)
+                return _portModel;
+            else
+                return null;
 	} else {
 	    return null;
 	}
@@ -569,6 +580,95 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	}
     }
 
+    /** The model for external ports.
+     */
+    public class PortModel implements RemoveableNodeModel {
+	/**
+	 * Return the graph parent of the given node.
+	 * @param node The node, which is assumed to be an icon contained in
+	 * this graph model.
+	 * @return The container of the icon's container, which should
+	 * be the root of this graph model.
+	 */
+	public Object getParent(Object node) {
+	    return ((Location)node).getContainer().getContainer();
+	}
+
+	/**
+	 * Return an iterator over the edges coming into the given node.
+	 * This method first ensures that there is an arc
+	 * object for every link.
+	 * The iterator is constructed by
+	 * removing any arcs that do not have the given node as head.
+	 * @param node The node, which is assumed to be an icon contained in
+	 * this graph model.
+	 * @return An iterator of Arc objects, all of which have
+	 * the given node as their head.
+	 */
+	public Iterator inEdges(Object node) {
+	    return new NullIterator();
+	}
+
+	/**
+	 * Return an iterator over the edges coming into the given node.
+	 * This method first ensures that there is an arc
+	 * object for every link.
+	 * The iterator is constructed by
+	 * removing any arcs that do not have the given node as tail.
+	 * @param node The node, which is assumed to be an icon contained in
+	 * this graph model.
+	 * @return An iterator of Arc objects, all of which have
+	 * the given node as their tail.
+	 */
+	public Iterator outEdges(Object node) {
+            return new NullIterator();
+	}
+
+	/** Remove the given node from the model.  The node is assumed
+	 *  to be an icon.
+	 */
+	public void removeNode(final Object eventSource, Object node) {
+            NamedObj deleteObj = (NamedObj)((Location)node).getContainer();
+            String elementName = null;
+            if (deleteObj instanceof ComponentPort) {
+                // Object is an entity.
+                elementName = "deletePort";
+            } else {
+		throw new InternalErrorException(
+		    "Attempt to remove a node that is not an Entity. " +
+		    "node = " + node);
+            }
+
+            String moml = "<" + elementName + " name=\""
+                + ((NamedObj)deleteObj).getName() + "\"/>\n";
+
+            // Make the request in the context of the container.
+            NamedObj container = (NamedObj)getChangeRequestParent(deleteObj);
+            ChangeRequest request =
+                new MoMLChangeRequest(
+                        FSMGraphModel.this, container, moml);
+            request.addChangeListener(new ChangeListener() {
+		public void changeFailed(ChangeRequest change,
+                        Exception exception) {
+                    // If we fail, then issue structureChanged.
+                    dispatchGraphEvent(new GraphEvent(eventSource, 
+                            GraphEvent.STRUCTURE_CHANGED,
+                            getRoot()));
+		}
+
+		public void changeExecuted(ChangeRequest change) {
+                    // If we succeed, then issue structureChanged, since
+                    // this is likely connected to something.
+                    dispatchGraphEvent(new GraphEvent(eventSource, 
+                            GraphEvent.STRUCTURE_CHANGED,
+                            getRoot()));
+                }
+	    });
+            container.requestChange(request);
+	}
+    }
+    
+
     /** The model for an icon that represent states.
      */
     public class StateModel implements RemoveableNodeModel {
@@ -701,6 +801,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	public int getNodeCount(Object composite) {
 	    CompositeEntity entity = (CompositeEntity)composite;
 	    int count = entity.entityList().size();
+            count += entity.portList().size();
 	    return count;
 	}
 
@@ -715,11 +816,17 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	public Iterator nodes(Object composite) {
 	    // FIXME visible attributes?
 	    Set nodes = new HashSet();
-	    Iterator entities = getToplevel().entityList().iterator();
+	    CompositeEntity toplevel = (CompositeEntity)composite;
+	    Iterator entities = toplevel.entityList().iterator();
 	    while(entities.hasNext()) {
 		ComponentEntity entity = (ComponentEntity)entities.next();
 		nodes.add(_getLocation(entity));
 	    }
+            Iterator ports = toplevel.portList().iterator();
+            while(ports.hasNext()) {
+                ComponentPort port = (ComponentPort)ports.next();
+                nodes.add(_getLocation(port));
+            }
 
 	    return nodes.iterator();
 	}
@@ -864,6 +971,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
     // The models of the different types of nodes and edges.
     private ArcModel _arcModel = new ArcModel();
     private ToplevelModel _toplevelModel = new ToplevelModel();
+    private PortModel _portModel = new PortModel();
     private StateModel _stateModel = new StateModel();
 }
 

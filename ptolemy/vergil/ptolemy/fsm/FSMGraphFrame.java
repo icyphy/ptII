@@ -64,6 +64,7 @@ import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.PtolemyListCellRenderer;
 import ptolemy.vergil.toolbox.PtolemyMenuFactory;
 import ptolemy.vergil.toolbox.XMLIcon;
+import ptolemy.vergil.ptolemy.kernel.RenameDialogFactory;
 
 import diva.canvas.CanvasUtilities;
 import diva.canvas.Site;
@@ -184,13 +185,73 @@ public class FSMGraphFrame extends GraphFrame {
 	_editIconAction = new EditIconAction();
         */
 	_getDocumentationAction = new GetDocumentationAction();
-	_controller.getStateController().setMenuFactory(new StateContextMenuFactory(_controller));
+	_controller.getPortController().setMenuFactory(new PortContextMenuFactory(_controller));
+        _controller.getStateController().setMenuFactory(new StateContextMenuFactory(_controller));
 	_controller.getTransitionController().setMenuFactory(new TransitionContextMenuFactory(_controller));
         return pane;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     private inner classes                 ////
+
+    /**
+     * The factory for creating context menus on ports.
+     */
+    public class PortContextMenuFactory extends PtolemyMenuFactory {
+	public PortContextMenuFactory(GraphController controller) {
+	    super(controller);
+	    addMenuItemFactory(new PortDescriptionFactory());
+	    addMenuItemFactory(new EditParametersFactory());
+	    addMenuItemFactory(new RenameDialogFactory());
+	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
+	}
+
+	public class PortDescriptionFactory extends MenuItemFactory {
+	    /**
+	     * Add an item to the given context menu that will configure the
+	     * parameters on the given target.
+	     */
+	    public JMenuItem create(JContextMenu menu, NamedObj target) {
+		target = _getItemTargetFromMenuTarget(target);
+		if(target instanceof IOPort) {
+		    IOPort port = (IOPort)target;
+		    String string = "";
+		    int count = 0;
+		    if(port.isInput()) {
+			string += "Input";
+			count++;
+		    }
+		    if(port.isOutput()) {
+			if(count > 0) {
+			    string += ", ";
+			}
+			string += "Output";
+			count++;
+		    }
+		    if(port.isMultiport()) {
+			if(count > 0) {
+			    string += ", ";
+			}
+			string += "Multiport";
+			count++;
+		    }
+		    if(count > 0) {
+			return menu.add(new JMenuItem("   " + string));
+		    }
+		}
+		return null;
+	    }
+
+	    /**
+	     * Get the name of the items that will be created.
+	     * This is provided so
+	     * that factory can be overriden slightly with the name changed.
+	     */
+	    protected String _getName() {
+		return null;
+	    }
+	}
+    }
 
     /**
      * The factory for creating context menus on states.

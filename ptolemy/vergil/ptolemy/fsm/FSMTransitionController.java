@@ -117,14 +117,18 @@ public class FSMTransitionController extends EdgeController {
     public class LinkTarget extends PerimeterTarget {
         public boolean acceptHead(Connector c, Figure f) {
             Object object = f.getUserObject();
-   	    if(object instanceof Location) return true;
+   	    if(object instanceof Location) {
+                Location location = (Location)object;
+                if(location.getContainer() instanceof Entity)
+                    return true;
+                else 
+                    return false;
+            }
 	    return false;
         }
 
         public boolean acceptTail(Connector c, Figure f) {
-            Object object = f.getUserObject();
-     	    if(object instanceof Location) return true;
-	    return false;
+            return acceptHead(c, f);
         }
     }
 

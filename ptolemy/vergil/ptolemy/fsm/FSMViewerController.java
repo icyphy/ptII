@@ -36,6 +36,7 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.vergil.*;
 import ptolemy.vergil.ptolemy.*;
+import ptolemy.vergil.ptolemy.kernel.PortDialogFactory;
 import ptolemy.vergil.toolbox.*;
 import ptolemy.gui.*;
 import ptolemy.moml.*;
@@ -81,12 +82,20 @@ public class FSMViewerController extends GraphController {
      * terminal and edge interactors.
      */
     public FSMViewerController() {
+        _portController = new FSMPortController(this);
 	_stateController = new FSMStateController(this);
 	_transitionController = new FSMTransitionController(this);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /**
+     * Return the controller for entities
+     */
+    public FSMPortController getPortController() {
+	return _portController;
+    }
 
     /**
      * Return the controller for entities
@@ -114,10 +123,12 @@ public class FSMViewerController extends GraphController {
 
         // Create and set up the selection dragger
 	SelectionDragger _selectionDragger = new SelectionDragger(pane);
+        _selectionDragger.addSelectionInteractor(
+                (SelectionInteractor)_portController.getNodeInteractor());
 	_selectionDragger.addSelectionInteractor(
                 (SelectionInteractor)_stateController.getNodeInteractor());
 	_selectionDragger.addSelectionInteractor(
-                (SelectionInteractor)_transitionController.getEdgeInteractor());
+                (SelectionInteractor)_transitionController.getEdgeInteractor());	
 
         MenuCreator _menuCreator = new MenuCreator(
                 new SchematicContextMenuFactory(this));
@@ -129,8 +140,18 @@ public class FSMViewerController extends GraphController {
     /**
      * Return the node controller appropriate for the given node.
      */
-    public NodeController getNodeController(Object node) {
-	return _stateController;
+    public NodeController getNodeController(Object object) {
+	if(object instanceof Location &&
+                getGraphModel().getSemanticObject(object)
+                instanceof Entity) {
+            return _stateController;
+	} else if(object instanceof Location &&
+                getGraphModel().getSemanticObject(object)
+                instanceof Port) {
+            return _portController;
+	} else
+            throw new RuntimeException(
+                    "Node with unknown semantic object: " + object);
     }
 
     /**
@@ -148,6 +169,7 @@ public class FSMViewerController extends GraphController {
 	public SchematicContextMenuFactory(GraphController controller) {
 	    super(controller);
 	    addMenuItemFactory(new EditParametersFactory());
+	    addMenuItemFactory(new PortDialogFactory());
 	}
 
 	public NamedObj _getObjectFromFigure(Figure source) {
@@ -166,6 +188,7 @@ public class FSMViewerController extends GraphController {
     private MenuCreator _menuCreator;
 
     // The controllers
+    private FSMPortController _portController;
     private FSMStateController _stateController;
     private FSMTransitionController _transitionController;
 }
