@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/ct/demo
 
-DIRS = lorenz sigmadelta
+DIRS = heli lorenz sigmadelta
 
 # Root of the Java directory
 ROOT =		../../../..
