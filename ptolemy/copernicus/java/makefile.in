@@ -156,6 +156,7 @@ treeShake:
 	@echo "  using the jarClassList.txt file"
 	@"$(TREESHAKE)" "$(JAR)" $(TREESHAKE_PREFIX)_codegen.jar \
 		-c $(TARGETPATH)jarClassList.txt \
+		-main $(TARGETPACKAGE).Main \
 		"$(JAVA)" \
 			-classpath "$(TARGETPATH)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
 			$(TARGETPACKAGE).Main | tail -1
@@ -165,6 +166,7 @@ treeShake:
 treeShakeByRunning:
 	@echo "Create the minimal jar file from the final codegen version"
 	@"$(TREESHAKE)" "$(JAR)" $(TREESHAKE_PREFIX)_codegen.jar \
+		-main $(TARGETPACKAGE).Main \
 		"$(JAVA)" \
 			-classpath "$(TARGETPATH)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
 			$(TARGETPACKAGE).Main | tail -1
@@ -200,6 +202,7 @@ treeShakeWithoutCodegen:
 	@echo "Treeshake $(MODEL) without codegen"
 	@CLASSPATH="$(CLASSPATH)" \
 		"$(TREESHAKE)" "$(JAR)" $(TREESHAKE_PREFIX).jar \
+			-main ptolemy.copernicus.java.TestApplication \
 			"$(JAVA)" \
 			ptolemy.copernicus.java.TestApplication \
 			"$(MODELPATH)" \
@@ -238,6 +241,7 @@ treeShakeSnapshots:
 	do \
 		echo "Treeshake $$snapshot"; \
 		"$(TREESHAKE)" "$(JAR)" $(TREESHAKE_PREFIX)_$${snapshot}.jar \
+			-main $(TARGETPACKAGE).Main \
 			"$(JAVA)" -Xfuture -classpath \
 		"$(TARGETPATH)/$$snapshot$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
 					$(TARGETPACKAGE).Main | tail -1 ; \
