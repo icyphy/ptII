@@ -33,16 +33,16 @@ package ptolemy.backtrack.ast;
 /**
    Thrown on an attempt to load a class that cannot be found in the class
    path, or a class that is not properly imported. It is caused only in AST
-   manipulation procedures. Because those procedures are not explicitly
-   declared to raise exceptions in the superclasses, this exception is
-   subclassed from {@link RuntimeException}.
+   analysis and manipulation procedures. Because those procedures are not
+   explicitly declared to raise exceptions in the superclasses, this
+   exception is a descendant of {@link RuntimeException}.
 
    @author Thomas Feng
    @version $Id$
    @since Ptolemy II 4.1
    @Pt.ProposedRating Red (tfeng)
 */
-public class ASTClassNotFoundException extends ASTException {
+public class ASTClassNotFoundException extends ASTRuntimeException {
 
     /** Construct an exception representing a failure occurred when
      *  trying to load a class during AST building or transformation.
@@ -51,6 +51,15 @@ public class ASTClassNotFoundException extends ASTException {
      */
     public ASTClassNotFoundException(String className) {
         super("Class \"" + className + "\" not found.");
+    }
+    
+    /** Construct an exception representing a failure occurred when
+     *  trying to load a class during AST building or transformation.
+     *  
+     *  @param type The type that cannot be loaded as a class.
+     */
+    public ASTClassNotFoundException(Type type) {
+        this(type.getName());
     }
     
 }
