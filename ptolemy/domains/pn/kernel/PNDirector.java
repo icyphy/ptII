@@ -269,8 +269,8 @@ public class PNDirector extends BasePNDirector {
      *  
      *  @param request An object with commands to perform topology changes
      *  and to inform the topology listeners of the same.
-     *  @see ptolemy.kernel.event.TopologyChangeRequest
-     *  @see ptolemy.kernel.event.TopologyListener
+     *  @see ptolemy.kernel.event.ChangeRequest
+     *  @see ptolemy.kernel.event.ChangeListener
      *  @see #fire
      */
     public void queueTopologyChangeRequest(TopologyChangeRequest request) {
