@@ -335,6 +335,12 @@ public class Main extends KernelMain {
 
         // Print out memory usage info
 	System.out.println(ptolemy.actor.Manager.timeAndMemory(startTime));
+
+        WatchDogTimer.v().cancel();
+
+        // For some reason, we need to call exit here, perhaps because
+        // the WatchDog timer thread is still running in the background?
+        System.exit(0);
     }
 }
 
