@@ -1344,8 +1344,8 @@ public class Plot extends PlotBox {
         }
 
         if (_bars) output.println(
-            "<barGraph width=\"" + _barwidth
-            + "\" offset=\"" + _baroffset + "\"/>");
+                "<barGraph width=\"" + _barwidth
+                + "\" offset=\"" + _baroffset + "\"/>");
 
         for (int dataset = 0; dataset < _points.size(); dataset++) {
 
@@ -1398,7 +1398,7 @@ public class Plot extends PlotBox {
                 output.print("x=\"" + pt.x + "\" y=\"" + pt.y + "\"");
                 if (pt.errorBar) {
                     output.print(" lowErrorBar=\"" + pt.yLowEB
-                    + "\" highErrorBar=\"" + pt.yHighEB + "\"");
+                            + "\" highErrorBar=\"" + pt.yHighEB + "\"");
                 }
                 output.println("/>");
             }
@@ -1500,7 +1500,7 @@ public class Plot extends PlotBox {
      */
     private boolean _addLegendIfNecessary(boolean connected) {
         if ((! _sawfirstdataset  || _currentdataset < 0) &&
-	    ! _reusedatasets) {
+                ! _reusedatasets) {
             // We did not set a DataSet line, but
             // we did get called with -<digit> args and
 	    // we did not see reusedatasets: yes

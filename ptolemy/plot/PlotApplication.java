@@ -250,7 +250,7 @@ public class PlotApplication extends PlotFrame {
             } else if (arg.equals("-width")) {
                 if (i > args.length - 1) {
                     throw new CmdLineArgException(
-                        "-width requires an integer argument");
+                            "-width requires an integer argument");
                 }
 
                 width = (int)Integer.valueOf(args[i++]).intValue();
