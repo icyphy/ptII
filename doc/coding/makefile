@@ -42,6 +42,7 @@ DIRS =
 EXTRA_SRCS = \
 	directories.html \
 	index.html \
+	javalinks.html \
 	packages.html \
 	rating.html \
 	style.html
