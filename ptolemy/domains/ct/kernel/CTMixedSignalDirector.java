@@ -341,7 +341,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
             }
             if(ready) {
                 while(true) {
-                    getCurrentODESolver().iterate();
+                    getCurrentODESolver().proceedOneStep();
                     detectEvent();
                     if(hasMissedEvent()) {
                         setCurrentTime(getCurrentTime()-getCurrentStepSize());

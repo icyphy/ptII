@@ -223,7 +223,7 @@ public class CTMultiSolverDirector extends CTDirector {
 
         if(ready) {
             ODESolver solver = getCurrentODESolver();
-            solver.iterate();
+            solver.proceedOneStep();
             produceOutput();
         }
     }

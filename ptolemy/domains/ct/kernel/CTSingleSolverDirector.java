@@ -238,7 +238,7 @@ public class CTSingleSolverDirector extends CTDirector {
         }
         if(ready) {
             ODESolver solver = getCurrentODESolver();
-            solver.iterate();
+            solver.proceedOneStep();
             produceOutput();
         }
     }

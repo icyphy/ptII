@@ -163,7 +163,7 @@ public abstract class ODESolver extends NamedObj {
      * @exception IllegalActionException Not thrown in this base
      *  class. May be needed by the derived class.
      */
-    public void iterate() throws IllegalActionException {
+    public void proceedOneStep() throws IllegalActionException {
         while(true) {
             resolveStates();
             if(errorTolerable()){
