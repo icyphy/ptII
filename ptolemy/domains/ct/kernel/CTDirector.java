@@ -264,12 +264,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         if(attribute == startTime) {
             _startTime = ((DoubleToken)startTime.getToken()).doubleValue();
         } else if(attribute == stopTime) {
-            double value = ((DoubleToken)stopTime.getToken()).doubleValue();
-            if (value < getCurrentTime()) {
-                throw new IllegalActionException(this, 
-                        " The current time has already passed the stop time.");
-            }
-            _stopTime = value;
+            _stopTime = ((DoubleToken)stopTime.getToken()).doubleValue();
         } else if(attribute == initStepSize) {
             double value = ((DoubleToken)initStepSize.getToken()).
                 doubleValue();
@@ -733,7 +728,8 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         if(STAT) {
             if(_debugging) {
                 _debug(getName() + ": Total # of STEPS "+NSTEP);
-                _debug(getName() + ": Total # of Function Evaluation "+NFUNC);
+                _debug(getName() + ": Total # of Function Evaluation "
+                        + NFUNC);
                 _debug(getName() + ": Total # of Failed Steps "+NFAIL);
             }
         }
