@@ -1216,50 +1216,57 @@ test Function-FFT {Test FFT} {
 # generateBartlettWindow
 
 test Function-generateBartlettWindow {Test generateBartlettWindow} {
-    list [evaluate {generateBartlettWindow(1)}] \
-    } {{{NaN}}}
+    list [evaluate {generateBartlettWindow(5)}] \
+        } {{{0.0, 0.5, 1.0, 0.5, 0.0}}}
 
 ####################################################################
 # generateBlackmanWindow
 
 test Function-generateBlackmanWindow {Test generateBlackmanWindow} {
-    list [evaluate {generateBlackmanWindow(1)}] \
-    } {{{NaN}}}
+    list [evaluate {(generateBlackmanWindow(5)).isCloseTo({0.0, 0.34, 1.0, 0.34, 0.0})}] \
+    } {true}
 
 ####################################################################
 # generateBlackmanHarrisWindow
 
 test Function-generateBlackmanHarrisWindow {Test generateBlackmanHarrisWindow} {
-    list [evaluate {generateBlackmanHarrisWindow(1)}] \
-    } {{{NaN}}}
+    list [evaluate {(generateBlackmanHarrisWindow(5)).isCloseTo({6.0000000000001E-5, 0.21747, 1.0, 0.21747, 6.0000000000001E-5})}] \
+    } {true}
+
+####################################################################
+# generateGaussianCurve
+
+test Function-generateGaussianCurve {Test generateGaussianCurve} {
+    list [evaluate {generateGaussianCurve(1.0, 4.0, 4).isCloseTo({1.3383022576489E-4, 0.0539909665132, 0.3989422804014, 0.0539909665132})}]
+} {true}
 
 ####################################################################
 # generateHammingWindow
 
 test Function-generateHammingWindow {Test generateHammingWindow} {
-    list [evaluate {generateHammingWindow(1)}] \
-    } {{{NaN}}}
+    list [evaluate {(generateHammingWindow(5)).isCloseTo({0.08, 0.54, 1.0, 0.54, 0.08})}] \
+    } {true}
 
 ####################################################################
 # generateHanningWindow
 
 test Function-generateHanningWindow {Test generateHanningWindow} {
-    list [evaluate {generateHanningWindow(1)}] \
-    } {{{NaN}}}
+    list [evaluate {(generateHanningWindow(5)).isCloseTo({0.0, 0.5, 1.0, 0.5, 0.0})}] \
+    } {true}
+
+####################################################################
+# generatePolynomialCurve
+
+test Function-generatePolynomialCurve {Test generatePolynomialCurve} {
+    list [evaluate {generatePolynomialCurve({0.0, 0.0, 1.0, -0.1}, 0.0, 0.1, 4).isCloseTo({0.0, 0.0099, 0.0392, 0.0873})}]
+} {true}
 
 ####################################################################
 # generateRectangularWindow
 
 test Function-generateRectangularWindow {Test generateRectangularWindow} {
-    list [evaluate {generateRectangularWindow(1)}] \
-    } {{{1.0}}}
-
-####################################################################
-# generateWindow
-
-test Function-generateWindow {Test generateWindow} {
-    list [evaluate {generateWindow(1, 3)}] \
-    } {{{NaN}}}
+    list [evaluate {generateRectangularWindow(5)}] \
+    } {{{1.0, 1.0, 1.0, 1.0, 1.0}}}
 
 ####################################################################
 # IDCT
@@ -1285,7 +1292,7 @@ test Function-IFFT {Test IFFT} {
 # nextPowerOfTwo
 
 test Function-nextPowerOfTwo {Test nextPowerOfTwo} {
-    list [evaluate {nextPowerOfTwo(5.0F)}] \
+    list [evaluate {nextPowerOfTwo(5.0)}] \
     } {8}
 
 ####################################################################
@@ -1296,12 +1303,34 @@ test Function-order {Test order} {
     } {3}
 
 ####################################################################
+# poleZeroToFrequency
+
+test Function-poleZeroToFrequency {Test poleZeroToFrequency} {
+    list [evaluate {poleZeroToFrequency({0.0 + 0.0i, 0.0 + 0.0i}, {1.0 + 0.0i, -1.0 + 0.0i}, 1.0 + 0.0i, 4).isCloseTo({0.0i, 2.0 + 0.0i, 0.0 + 0.0i, 2.0 + 0.0i})}]
+} {true}
+
+####################################################################
+# sinc
+
+test Function-sinc {Test sinc} {
+    list [evaluate {sinc(0.0)}] \
+         [evaluate {sinc(pi).isCloseTo(0.0)}] \
+         [evaluate {sinc(-pi).isCloseTo(0.0)}]
+    } {1.0 true true}
+
+####################################################################
 # toDecibels
 
 test Function-toDecibels {Test toDecibels} {
     list [evaluate {toDecibels({10.0})}] \
     } {{{20.0}}}
 
+####################################################################
+# unwrap
+
+test Function-unwrap {Test unwrap} {
+    list [evaluate {unwrap({0.0, pi+pi/2, pi+pi/2+2*pi}).isCloseTo({0.0, -pi+pi/2, -pi+pi/2})}]
+} {true}
 
 ####################################################################
 ####################################################################
