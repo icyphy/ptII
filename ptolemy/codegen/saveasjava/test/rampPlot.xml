@@ -1,6 +1,6 @@
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="test" class="ptolemy.actor.TypedCompositeActor">
+<model name="RampPlot" class="ptolemy.actor.TypedCompositeActor">
 	<doc>Sample model from chapter 2 of the Ptolemy II Design doc</doc>
 	<director class="ptolemy.domains.sdf.kernel.SDFDirector"/>
 	<entity name="ramp" class="ptolemy.actor.lib.Ramp"/>
