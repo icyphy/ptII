@@ -26,9 +26,13 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.fsm.kernel;
 
+import java.util.Iterator;
+
+import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.TypedActor;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.domains.sdf.kernel.SDFReceiver;
 import ptolemy.kernel.CompositeEntity;
@@ -87,6 +91,119 @@ public class MultirateFSMDirector extends FSMDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** FIXME: comment is wrong.  
+     *  Examine the transitions from the given state.
+     *  If there is more than one transition enabled, an exception is
+     *  thrown. If there is exactly one non-preemptive transition
+     *  enabled, then it is chosen and the choice actions contained by
+     *  transition are executed. Return the destination state. If no
+     *  transition is enabled, return the current state.
+     *  @return The destination state, or the current state if no
+     *   transition is enabled.
+     */
+    public State chooseTransition(State state)
+            throws IllegalActionException {
+        FSMActor controller = getController();
+        State destinationState;
+        Transition transition = null;
+
+        if ((state.getRefinement() != null)
+                && (state.preemptiveTransitionList().size() != 0)) {
+            throw new IllegalActionException(this,
+                    state.getName() + " cannot have outgoing preemptive "
+                    + "transitions because the state has a refinement.");
+        }
+
+        if (state.getRefinement() == null) {
+            transition = _chooseTransition(state.preemptiveTransitionList());
+        }
+
+        if (transition == null) {
+            // No preemptiveTransition enabled. Choose nonpreemptiveTransition.
+            transition = _chooseTransition(state.nonpreemptiveTransitionList());
+        }
+
+        if (transition != null) {
+            destinationState = transition.destinationState();
+
+            TypedActor[] trRefinements = (transition.getRefinement());
+
+            Actor[] actors = transition.getRefinement();
+
+            if (actors != null) {
+                throw new IllegalActionException(this,
+                        "HDFFSM Director does not support transition refinements.");
+            }
+
+            _readOutputsFromRefinement();
+
+            //execute the output actions
+            Iterator actions = transition.choiceActionList().iterator();
+
+            while (actions.hasNext()) {
+                Action action = (Action) actions.next();
+                action.execute();
+            }
+        } else {
+            destinationState = state;
+        }
+
+        return destinationState;
+    }
+
+    /** Choose the next non-transient state given the current state.
+     * @param currentState The current state.
+     * @throws IllegalActionException If a transient state is reached
+     *  but no further transition is enabled.
+     */
+    public void chooseNonTransientTransition(State currentState) 
+    throws IllegalActionException {
+        State state = chooseTransition(currentState);
+        Actor[] actors = state.getRefinement();
+        Transition transition;
+        while (actors == null) {
+            super.postfire();
+            state = chooseTransition(state);
+            transition = _getLastChosenTransition();
+            if (transition == null) {
+                throw new IllegalActionException(this,
+                        "Reached a state without a refinement: "
+                        + state.getName());
+            }
+            actors = (transition.destinationState()).getRefinement();
+        }
+    }
+
+    /** Get the current state. If it does not have any refinement,
+     *  consider it as a transient state and make a state transition
+     *  until a state with a refinement is
+     *  found. Set that non-transient state to be the current state
+     *  and return it.
+     * @throws IllegalActionException If a transient state is reached
+     *  while no further transition is enabled.
+     * @return The intransient state.
+     */
+    public State getNonTransientState()
+                throws IllegalActionException {
+        
+        FSMActor controller = getController();
+        State currentState = controller.currentState();
+        TypedActor[] currentRefinements = currentState.getRefinement();
+        while (currentRefinements == null) {
+            chooseTransition(currentState);
+            super.postfire();
+            currentState = controller.currentState();
+            Transition lastChosenTransition = _getLastChosenTransition();
+            if (lastChosenTransition == null) {
+                throw new IllegalActionException(this,
+                    "Reached a transient state " +
+                    "without an enabled transition.");
+            }
+            currentRefinements = currentState.getRefinement();
+        }
+        return currentState;       
+    }
 
     /** Return a new receiver of a type compatible with this director.
      *  This returns an instance of SDFReceiver.
@@ -216,4 +333,8 @@ public class MultirateFSMDirector extends FSMDirector {
 
         return transferred;
     }
+
+    /////////////////////////////////////////////////////////////////////////
+    ////                           private methods                       ////
+
 }
