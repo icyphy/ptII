@@ -282,6 +282,7 @@ public class DDEReceiver extends TimedQueueReceiver
      *  scheduled for termination.
      */
     public void reset() {
+	super.reset();
 	_terminate = false;
     	_readPending = false;
     	_writePending = false;
@@ -290,7 +291,6 @@ public class DDEReceiver extends TimedQueueReceiver
             ((Actor)getContainer().getContainer()).getDirector();
         String name =
             ((Nameable)getContainer().getContainer()).getName();
-        setRcvrTime( 0.0 );
     }
 
     ///////////////////////////////////////////////////////////////////
