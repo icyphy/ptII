@@ -50,8 +50,10 @@ import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.ModelErrorHandler;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
@@ -615,14 +617,21 @@ public class FSMDirector extends Director
         _currentLocalReceiverMap =
             (Map)_localReceiverMaps.get(controller.currentState());
 
-        // Note, we increment the workspace version such that the
-        // function dependencies will be reconstructed. This design is based
-        // on that each time one transition happens, the new refinement
-        // takes place of the modal model for execution, consequently,
-        // the model structure changes.
-        if (_enabledTransition != null) {
-            ((NamedObj) getContainer()).workspace().incrVersion();
-        }
+        ChangeRequest request =
+            new ChangeRequest(this, "increment workspace version by 1") {
+                protected void _execute() throws KernelException {
+                    // Note, we increment the workspace version such that the
+                    // function dependencies will be reconstructed. This design 
+                    // is based on that each time one transition happens, the 
+                    // new refinement takes place of the modal model for 
+                    // execution, consequently, the model structure changes.
+                    if (_enabledTransition != null) {
+                        ((NamedObj) getContainer()).workspace().incrVersion();
+                    }
+                }
+            };
+        request.setPersistent(false);
+        getContainer().requestChange(request);
         
         return result && !_stopRequested;
     }

@@ -373,8 +373,6 @@ public class DEDirector extends Director implements TimedDirector {
      */
     public void fire() throws IllegalActionException {
         
-        _mutationEnabled = false;
-
         // NOTE: This fire method does not call super.fire()
         // because this method is very different from that of the super class.
 
@@ -506,10 +504,6 @@ public class DEDirector extends Director implements TimedDirector {
                     }
                 }
                 
-                // NOTE: if we want to support mutation inside an iteration,
-                // uncomment the following statement.
-                // _validateSchedule();
-
                 // Check all the input ports of the actor to see whether there
                 // are more input tokens to be processed.
                 Iterator inputPorts = actorToFire.inputPortList().iterator();
@@ -570,10 +564,6 @@ public class DEDirector extends Director implements TimedDirector {
             }
         } // Close the BIG while loop.
         
-        _mutationEnabled = true;
-        _validateSchedule();
-        _mutationEnabled = false;
-
         if (_debugging) {
             _debug("DE director fired!");
         }
@@ -739,7 +729,6 @@ public class DEDirector extends Director implements TimedDirector {
         _disabledActors = null;
         _exceedStopTime = false;
         _microstep = 0;
-        _mutationEnabled = false;
         _noMoreActorsToFire = false;
         _realStartTime = System.currentTimeMillis();
 
@@ -1536,7 +1525,7 @@ public class DEDirector extends Director implements TimedDirector {
      *  is not sorted.
      */
     private int _getDepthOfActor(Actor actor) throws IllegalActionException {
-        if ((_mutationEnabled && _sortValid != workspace().getVersion()) 
+        if (_sortValid != workspace().getVersion() 
                 || _actorToDepth == null) {
             _computePortDepth();
             _computeActorDepth();
@@ -1559,7 +1548,7 @@ public class DEDirector extends Director implements TimedDirector {
      *  @exception IllegalActionException If the ioPort is not sorted.
      */
     private int _getDepthOfIOPort(IOPort ioPort) throws IllegalActionException {
-        if ((_mutationEnabled && _sortValid != workspace().getVersion())
+        if (_sortValid != workspace().getVersion()
                 || _portToDepth == null) {
             _computePortDepth();
             _computeActorDepth();
@@ -1929,15 +1918,6 @@ public class DEDirector extends Director implements TimedDirector {
             .fireAt(container, nextEvent.timeStamp());
     }
 
-    // Validate schedule, calculate depths for ports and actors if necessary.
-    private void _validateSchedule() throws IllegalActionException {
-        if (_sortValid != workspace().getVersion()
-                || _actorToDepth == null || _portToDepth == null) {
-            _computePortDepth();
-            _computeActorDepth();
-        }
-    }
-    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -1970,9 +1950,6 @@ public class DEDirector extends Director implements TimedDirector {
      * The current microstep.
      */
     private int _microstep = 0;
-    
-    // boolean variable indicating whether mutation can happen
-    private boolean _mutationEnabled = false;
     
     /**
      * Set to true when it is time to end the execution.
