@@ -80,8 +80,7 @@ glimpse: .glimpse_exclude
 
 # Generate ptII.mk by running configure
 mk/ptII.mk: configure mk/ptII.mk.in
-	configure
-
+	./configure
 
 configure: configure.in
 	autoconf
