@@ -130,6 +130,13 @@ public abstract class ConditionalBranch {
             ((ConditionalBranchActor)tmp).getConditionalBranchController();
     }
 
+    public ConditionalBranch(boolean guard, IOPort port, int branchID, ConditionalBranchController cbc)
+            throws IllegalActionException {
+        _branchID = branchID;
+        _guard = guard;
+        _controller = cbc;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

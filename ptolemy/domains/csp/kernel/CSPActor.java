@@ -199,7 +199,7 @@ public class CSPActor extends TypedAtomicActor
      *  @param delta The time to delay this actor for from the current
      *   time.
      *  @exception IllegalActionException If the argument is negative.
-     *  @exception ProcessTerminationException If the director requests
+     *  @exception TerminateProcessException If the director requests
      *   termination by calling the protected method _cancelDelay().
      */
     public void delay(double delta) throws IllegalActionException {
