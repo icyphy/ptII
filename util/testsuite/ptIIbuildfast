@@ -15,7 +15,7 @@ do
 	if [ -d $PTII/$dir ]; then
 		cd $PTII/$dir
 
-		if [ "`ls *.java" != "" ]; then
+		if [ "`ls *.java`" != "" ]; then
 			echo "javac *.java"
 			CLASSPATH=$PTII javac *.java
 		fi
