@@ -86,50 +86,46 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         Token result = null;
 	//System.out.println(getContainer().getFullName() +" in receiver.get");
         synchronized (this) {
-            try {
-                while (!_terminate && !super.hasToken()) {
-                    //System.out.println(getContainer().getFullName()+" Reading block");
-		    director.readBlock();
-		    //System.out.println("After the readblocking.. I am "+getContainer().getFullName());
-		    _readpending = true;
-		    while (_readpending && !_terminate) {
-			//System.out.println("Waiting in the workspace");
-			workspace.wait(this);
-		    }
-		}
-
-                //System.out.println("Halfway thru receiver.get()");
-                if (_terminate) {
-                    throw new TerminateProcessException("");
-                } else {
-                    result = super.get();
-                    //Check if pending write to the Queue;
-                    if (_writepending) {
-                        //System.out.println(getContainer().getFullName()+" being unblocked");
-                        director.writeUnblock(this);
-                        _writepending = false;
-                        notifyAll(); //Wake up threads waiting on a write;
-                    }
-                }
-
-                while (_pause) {
-                    //System.out.println(" Actually pausing");
-                    director.increasePausedCount();
+            while (!_terminate && !super.hasToken()) {
+                //System.out.println(getContainer().getFullName()+" Reading block");
+                director.readBlock();
+                //System.out.println("After the readblocking.. I am "+getContainer().getFullName());
+                _readpending = true;
+                while (_readpending && !_terminate) {
+                    //System.out.println("Waiting in the workspace");
                     workspace.wait(this);
                 }
-            } catch (IllegalActionException e) {
-                System.err.println(e.toString());
+            }
+
+            //System.out.println("Halfway thru receiver.get()");
+            if (_terminate) {
+                throw new TerminateProcessException("");
+            } else {
+                result = super.get();
+                //Check if pending write to the Queue;
+                if (_writepending) {
+                    //System.out.println(getContainer().getFullName()+" being unblocked");
+                    director.writeUnblock(this);
+                    _writepending = false;
+                    notifyAll(); //Wake up threads waiting on a write;
+                }
+            }
+            
+            while (_pause) {
+                //System.out.println(" Actually pausing");
+                director.increasePausedCount();
+                workspace.wait(this);
             }
             return result;
         }
     }
-
+    
     /** Always returns true as the Process Network model of computation does
      *  not allow polling for data.
      * @return true
      * @exception IllegalActionException never thrown in this class.
      */
-    public boolean hasRoom() throws IllegalActionException {
+    public boolean hasRoom() {
 	return true;
     }
 
@@ -138,7 +134,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      * @return true
      * @exception IllegalActionException never thrown in this class.
      */
-    public boolean hasToken() throws IllegalActionException {
+    public boolean hasToken() {
 	return true;
     }
 
@@ -168,39 +164,34 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 	//System.out.println("putting token in PNQueueReceiver and pause = "+_pause);
 
         synchronized(this) {
-            try {
-                if (!super.hasRoom()) {
-                    _writepending = true;
-                    //System.out.println(getContainer().getFullName()+" being writeblocked");
-                    director.writeBlock(this);
-                    while (!_terminate && !super.hasRoom()) {
-			//System.out.println(getContainer().getFullName()+" waiting on write");
-			while(_writepending) {
-			    workspace.wait(this);
-			}
-		    }
-                }
-                if (_terminate) {
-                    throw new TerminateProcessException("");
-                } else {
-                    //token can be put in the queue;
-                    super.put(token);
-                    //Check if pending write to the Queue;
-                    if (_readpending) {
-                        director.readUnblock();
-                        _readpending = false;
-                        notifyAll();
-                        //Wake up all threads waiting on a write to this receiver;
+            if (!super.hasRoom()) {
+                _writepending = true;
+                //System.out.println(getContainer().getFullName()+" being writeblocked");
+                director.writeBlock(this);
+                while (!_terminate && !super.hasRoom()) {
+                    //System.out.println(getContainer().getFullName()+" waiting on write");
+                    while(_writepending) {
+                        workspace.wait(this);
                     }
                 }
-                while (_pause) {
-                    //System.out.println("Pausing in puuuuuuuuuut");
-                    director.increasePausedCount();
-                    workspace.wait(this);
+            }
+            if (_terminate) {
+                throw new TerminateProcessException("");
+            } else {
+                //token can be put in the queue;
+                super.put(token);
+                //Check if pending write to the Queue;
+                if (_readpending) {
+                    director.readUnblock();
+                    _readpending = false;
+                    notifyAll();
+                    //Wake up all threads waiting on a write to this receiver;
                 }
-
-            } catch (IllegalActionException e) {
-                System.out.println(e.toString());
+            }
+            while (_pause) {
+                //System.out.println("Pausing in puuuuuuuuuut");
+                director.increasePausedCount();
+                workspace.wait(this);
             }
         }
     }
