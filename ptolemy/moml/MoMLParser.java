@@ -1273,20 +1273,20 @@ public class MoMLParser extends HandlerBase {
                         "Element \"vertex\" found inside an element that "
                         + "is not a Relation. It is: "
                         + _current);
-
+               
+                // Note that vertexes are settable, but they are handled
+                // separately.  This is probably the wrong way to do this.
                 // Create an instance of Vertex and attach it to the Relation.
                 Vertex vertex = new Vertex((Relation)_current, vertexName);
 
-                // FIXME THIS CODE IS BOGUS.. The vertex should contain
-                // a location.
                 // Deal with setting the location.
                 String value = (String)_attributes.get("value");
                 // If value is null and the property already
                 // exists, then there is nothing to do.
                 if (value != null) {
                     vertex.setExpression(value);
+                    _paramsToParse.add(vertex);
                 }
-                // END FIXME
 
                 _containers.push(_current);
                 _namespaces.push(_namespace);
