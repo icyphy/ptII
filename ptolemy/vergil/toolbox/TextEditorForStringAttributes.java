@@ -40,9 +40,6 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.StringUtilities;
 
-///////////////////////////////////////////////////////////////////
-////                         inner classes                     ////
-
 /**
 A text editor to edit a specified string attribute.
 
@@ -58,11 +55,11 @@ public class TextEditorForStringAttributes extends TextEditor {
      *  @param title The window title to use.
      */
     public TextEditorForStringAttributes(
-        TextEditorFactory factory,
-        StringAttribute attributeToEdit,
-        int rows,
-        int columns,
-        String title) {
+            TextEditorFactory factory,
+            StringAttribute attributeToEdit,
+            int rows,
+            int columns,
+            String title) {
 
         super(title);
         this._factory = factory;
