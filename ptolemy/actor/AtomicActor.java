@@ -360,25 +360,38 @@ public class AtomicActor extends ComponentEntity implements Actor {
         return true;
     }
 
-    /** Create receivers and validate attributes. Derived classes can
-     *  override this method to perform additional initialization
+    /** Create receivers and validate the attributes contained by this
+     *  actor and the ports contained by this actor. Derived classes
+     *  can override this method to perform additional initialization
      *  functions, but they should call this base class methods or
      *  create the receivers and initialize attributes themselves.
-     *  This method gets executed exactly once prior to
-     *  any other action methods.  It cannot produce output data
-     *  since type resolution is typically not yet done. It also gets
-     *  invoked prior to any static scheduling that might occur in the
-     *  domain, so it can change scheduling information.
+     *  This method gets executed exactly once prior to any other
+     *  action methods.  It cannot produce output data since type
+     *  resolution is typically not yet done. It also gets invoked
+     *  prior to any static scheduling that might occur in the domain,
+     *  so it can change scheduling information.
      *  @see Settable#validate()
      *
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void preinitialize() throws IllegalActionException {
         _createReceivers();
-        Iterator attributes = attributeList(Settable.class).iterator();
-        while(attributes.hasNext()) {
+        // Validate the attributes of this actor.
+        for(Iterator attributes = attributeList(Settable.class).iterator();
+            attributes.hasNext();) {
             Settable attribute = (Settable)attributes.next();
             attribute.validate();
+        }
+        // Validate the attributes of the ports of this actor.
+        for(Iterator ports = portList().iterator();
+            ports.hasNext();) {
+            IOPort port = (IOPort)ports.next();
+            for(Iterator attributes = 
+                    port.attributeList(Settable.class).iterator();
+                attributes.hasNext();) {
+                Settable attribute = (Settable)attributes.next();
+                attribute.validate();
+            }
         }
     }
 

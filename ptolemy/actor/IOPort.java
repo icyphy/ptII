@@ -377,11 +377,6 @@ public class IOPort extends ComponentPort {
                     "createReceivers: Can only create " +
                     "receivers on opaque ports.");
         }
-        Iterator attributes = attributeList(Settable.class).iterator();
-        while(attributes.hasNext()) {
-            Settable attribute = (Settable)attributes.next();
-            attribute.validate();
-        }
 
         // Create the hashtable of lists of receivers in this port, keyed by
         // relation.  This replaces any previous table.

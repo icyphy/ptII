@@ -45,6 +45,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.util.Settable;
 
 import java.util.Iterator;
 import java.util.List;
@@ -590,7 +591,21 @@ public class CompositeActor extends CompositeEntity implements Actor {
         // attributes of atomic actors will be validated, and will
         // force evaluation of any attributes they depend on.
         // Ultimately, it is in the atomic actors that attributes are
-        // used, so this is sufficient.
+        // used, so this is sufficient.  We do, however, have to validate
+        // the parameters of any ports, since they will likely not be used
+        // in other places.
+
+        // Validate the attributes of the ports of this actor.
+        for(Iterator ports = portList().iterator();
+            ports.hasNext();) {
+            IOPort port = (IOPort)ports.next();
+            for(Iterator attributes = 
+                    port.attributeList(Settable.class).iterator();
+                attributes.hasNext();) {
+                Settable attribute = (Settable)attributes.next();
+                attribute.validate();
+            }
+        }
         try {
             _workspace.getReadAccess();
             _createReceivers();
