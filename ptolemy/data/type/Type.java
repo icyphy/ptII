@@ -56,6 +56,17 @@ public interface Type
      */
     public Token convert(Token t) throws IllegalActionException;
  
+    /** Test if the argument token is compatible with this type.
+     *  Compatible is defined as follows: If this type is a constant, the
+     *  argument is compatible if it can be converted losslessly to a token
+     *  of this type; If this type is a variable, the argument is compatible
+     *  if its type is a substitution instance of this type, or if it can
+     *  be converted losslessly to a substitution instance of this type.
+     *  @param t A Token.
+     *  @return True if the argument is compatible with this type.
+     */
+    public boolean isCompatible(Token t);
+
     /** Test if this Type is a constant. A Type is a constant if it
      *  does not contain BaseType.NAT in any level within it.
      *  @return True if this type is a constant.

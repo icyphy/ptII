@@ -34,6 +34,7 @@ import java.lang.reflect.Modifier;
 import java.util.Hashtable;
 
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.graph.CPO;
 import ptolemy.data.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -89,6 +90,23 @@ public class BaseType implements Type {
 //    public Class getTokenClass() {
 //	return _tokenClass;
 //    }
+
+    /** Test if the argument token is compatible with this type. The method
+     *  returns true if this type is NAT, since any type is a substitution
+     *  instance of it. If this type is not NAT, this method returns true
+     *  if the argument type is less than or equal to this type in the type
+     *  lattice, and false otherwise.
+     *  @param t A Token.
+     *  @return True if the argument token is compatible with this type.
+     */
+     public boolean isCompatible(Token t) {
+	if (this == NAT) {
+	    return true;
+	}
+
+	int typeInfo = TypeLattice.compare(this, t.getType());
+	return (typeInfo == CPO.SAME || typeInfo == CPO.HIGHER);
+    }
 
     /** Test if this Type is NAT.
      *  @return True if this Type is not NAT; false otherwise.

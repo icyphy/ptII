@@ -35,6 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.graph.*;
 import ptolemy.data.Token;
+import ptolemy.data.MatrixToken;
 import ptolemy.data.ArrayToken;
 
 //////////////////////////////////////////////////////////////////////////
@@ -84,8 +85,15 @@ public class ArrayType extends StructuredType {
 	return newObj;
     }
 
-    /** Convert the specified token into an ArrayToken having the
-     *  type represented by this object.
+    /** Convert the argument token into an ArrayToken having this type,
+     *  if losslessly conversion can be done.
+     *  The argument can be an ArrayToken or a MatrixToken. If the argument
+     *  is a MatrixToken, it will be converted to an ArrayToken containing
+     *  a one dimensional token array if the MatrixToken has only one row,
+     *  or it will be converted to an ArrayToken containing another ArrayToken
+     *  (an array of arrays) if the MatrixToken has more than one row.
+     *  If this type is a variable, convert the the argument into a
+     *  substitution instance of this variable.
      *  @param t A token.
      *  @return An ArrayToken.
      *  @exception IllegalActionException If lossless conversion
@@ -93,26 +101,64 @@ public class ArrayType extends StructuredType {
      */
     public Token convert(Token t)
 	    throws IllegalActionException {
-	int compare = TypeLattice.compare(this, t.getType());
-	if (compare == CPO.INCOMPARABLE || compare == CPO.LOWER) {
+	if ( !isCompatible(t)) {
 	    throw new IllegalArgumentException("ArrayType.convert: " +
 		"Cannot convert the argument token to this type.");
 	}
 
-	// argument must be an ArrayToken.
-	Token[] argArray = ((ArrayToken)t).arrayValue();
-	Token[] result = new Token[argArray.length];
-	for (int i = 0; i < argArray.length; i++) {
-	    result[i] = _elementType.convert(argArray[i]);
+	ArrayToken argArrTok;
+	if (t instanceof MatrixToken) {
+	    argArrTok = fromMatrixToken((MatrixToken)t);
+	} else {
+	    argArrTok = (ArrayToken)t;
 	}
 
-	return new ArrayToken(result);
+	if (isConstant()) {
+	    if (isEqualTo(argArrTok.getType())) {
+		return argArrTok;
+	    } else {
+		Token[] argArray = argArrTok.arrayValue();
+		Token[] result = new Token[argArray.length];
+		for (int i = 0; i < argArray.length; i++) {
+	    	    result[i] = _elementType.convert(argArray[i]);
+		} 
+		return new ArrayToken(result);
+	    }
+	}
+
+	// This type is a variable. argArrTok must be a substitution instance
+	// since it is compatible. But do a sanity check.
+	if (isSubstitutionInstance(argArrTok.getType())) {
+	    return argArrTok;
+	} else {
+	    throw new InternalErrorException("ArrayType.convert: Argument " +
+		"is not a substitution instance but is compatible.");
+	}
     }
 
     /** Disallow type resolution to change this type.
      */
     public void fixType() {
 	getElementTypeTerm().fixValue();
+    }
+
+    /** Convert the argument MatrixToken to an ArrayToken. If the argument
+     *  has more than one row, convert it to an ArrayToken containing an
+     *  ArrayToken (an array of array).
+     *  @param tok A MatrixToken.
+     *  @return An ArrayToken.
+     */
+    public static ArrayToken fromMatrixToken(MatrixToken tok) {
+	int rows = tok.getRowCount();
+	if (rows == 1) {
+	    return _fromMatrixToken(tok, 0);
+	} else {
+	    Token[] tokArray = new Token[rows];
+	    for (int i=0; i<rows; i++) {
+		tokArray[i] = _fromMatrixToken(tok, i);
+	    }
+	    return new ArrayToken(tokArray);
+	}
     }
 
     /** Return the type of the array elements. This methods always
@@ -140,6 +186,48 @@ public class ArrayType extends StructuredType {
      */
     public Object getUser() {
 	return _user;
+    }
+
+    /** Test if the argument token is compatible with this type.
+     *  If this type is a constant, the argument is compatible if it can be
+     *  converted losslessly to a token of this type; If this type is a
+     *  variable, the argument is compatible if its type is a substitution
+     *  instance of this type, or if it can be converted losslessly to a
+     *  substitution instance of this type. For ArrayTypes, in addition to
+     *  the lossless conversion relation defined by the type lattice,
+     *  MatrixTokens can also be losslessly converted to ArrayTokens of the
+     *  same type.
+     *  @param t A Token.
+     *  @return True if the argument is compatible with this type.
+     *  @see ptolemy.data.type.ArrayType#convert
+     */
+    public boolean isCompatible(Token t) {
+	Type argType = t.getType();
+	if (t instanceof MatrixToken) {
+	    MatrixToken argCast = (MatrixToken)t;
+	    if (argCast.getRowCount() == 1) {
+		// argument is 1-D
+		argType = new ArrayType(
+				argCast.getElementAsToken(0,0).getType());
+	    } else {
+		// argument is 2-D
+		argType = new ArrayType(new ArrayType(
+				argCast.getElementAsToken(0,0).getType()));
+	    }
+	}
+
+	if (isConstant()) {
+	    int typeInfo = TypeLattice.compare(this, argType);
+	    if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
+		return true;
+	    }
+	} else {
+	    // This type is a variable.
+	    if (isSubstitutionInstance(argType)) {
+		return true;
+	    }
+	}
+	return false;
     }
 
     /** Test if this ArrayType is a constant. An ArrayType is a constant if
@@ -359,6 +447,16 @@ public class ArrayType extends StructuredType {
 
     ///////////////////////////////////////////////////////////////////
     ////                        private methods                    ////
+
+    // convert a row of a MatrixToken into an ArrayToken.
+    private static ArrayToken _fromMatrixToken(MatrixToken tok, int row) {
+	int cols = tok.getColumnCount();
+	Token[] tokArray = new Token[cols];
+	for (int i=0; i<cols; i++) {
+	    tokArray[i] = tok.getElementAsToken(row, i);
+	}
+	return new ArrayToken(tokArray);
+    }
 
     // Set the elementType. Clone and set the user of the specified
     // element type if necessary.
