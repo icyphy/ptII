@@ -125,10 +125,13 @@ all: sources jclass $(PTCLASSZIP) $(PTCLASSJAR) ptolemy.plotapplet.jar
 	-chmod a+x ptplot
 	rm -f pxgraph
 	ln -s ptplot pxgraph
-install: sources jclass javadocs subinstall $(PTCLASSJAR) ptolemy.plotapplet.jar
+install: sources jclass javadocs subinstall \
+		$(PTCLASSJAR) ptolemy.plotapplet.jar bin_install_dir
 	-chmod a+x ptplot
 	rm -f pxgraph
 	ln -s ptplot pxgraph
+	$(INSTALL_PROGRAM) ptplot $(BIN_INSTALL_DIR)
+	$(INSTALL_PROGRAM) pxgraph $(BIN_INSTALL_DIR)
 
 # FIXME: this is ugly, dangerous, and unportable.
 #
