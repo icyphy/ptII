@@ -123,7 +123,7 @@ public class HTMLViewer extends TableauFrame
             }
             // Attempt to open in a new window.
             Configuration configuration = getConfiguration();
-            // FIXME: Should detect target="_blank" and open
+            // FIXME: Should detect target == "_blank" and open
             // in a new window, rather than always opening in a new
             // window.  However, regrettably, there appears to be
             // no way to access the target unless the event is an
@@ -156,7 +156,7 @@ public class HTMLViewer extends TableauFrame
      *  @param graphics The context into which the page is drawn.
      *  @param format The size and orientation of the page being drawn.
      *  @param index The zero based index of the page to be drawn.
-     *  @returns PAGE_EXISTS if the page is rendered successfully, or
+     *  @return PAGE_EXISTS if the page is rendered successfully, or
      *   NO_SUCH_PAGE if pageIndex specifies a non-existent page.
      *  @exception PrinterException If the print job is terminated.
      */

@@ -150,7 +150,7 @@ public class Tableau extends CompositeEntity {
      *  this tableau.
      *  @return A top-level window.
      */
-    public JFrame getFrame () {
+    public JFrame getFrame() {
 	return _frame;
     }
 
@@ -339,9 +339,9 @@ public class Tableau extends CompositeEntity {
                 // ignores all this.  This means that centerOnScreen
                 // as called in show() doesn't quite work.  Please complain
                 // to Sun about their incredibly lame packers.
-                _frame.setSize(x,y);
-                _frame.getRootPane().setPreferredSize(new Dimension(x,y));
-                _frame.getContentPane().setSize(x,y);
+                _frame.setSize(x, y);
+                _frame.getRootPane().setPreferredSize(new Dimension(x, y));
+                _frame.getContentPane().setSize(x, y);
             }
         } catch (IllegalActionException ex) {
             // Ignore... should not be thrown, and worst case is default size.

@@ -277,9 +277,9 @@ public class Configuration extends CompositeEntity {
      *  create a new tableau.
      *  @param entity The model.
      *  @return The tableau that is created, or null if none.
-     *  @throws IllegalActionException If constructing an effigy or tableau
+     *  @exception IllegalActionException If constructing an effigy or tableau
      *   fails.
-     *  @throws NameDuplicationException If a name conflict occurs (this
+     *  @exception NameDuplicationException If a name conflict occurs (this
      *   should not be thrown).
      */
     public Tableau openModel(NamedObj entity)
@@ -383,7 +383,8 @@ public class Configuration extends CompositeEntity {
             throws IllegalActionException {
         if (container != null) {
             throw new IllegalActionException(this,
-                    "Configuration can only be at the top level of a hierarchy.");
+                    "Configuration can only be at the top level "
+                    + "of a hierarchy.");
         }
     }
 

@@ -125,7 +125,7 @@ public class CompositeActorApplication {
 
     /** Parse the command-line arguments, creating models as specified.
      *  @param args The command-line arguments.
-     *  @exception If something goes wrong.
+     *  @exception Exception If something goes wrong.
      */
     public void processArgs(String args[]) throws Exception {
         if (args != null) {

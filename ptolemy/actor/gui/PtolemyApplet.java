@@ -30,11 +30,14 @@
 
 package ptolemy.actor.gui;
 
-import ptolemy.actor.*;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.ExecutionListener;
+import ptolemy.actor.Manager;
 import ptolemy.gui.BasicJApplet;
 import ptolemy.kernel.util.*;
 
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;

@@ -175,7 +175,7 @@ public class Effigy extends CompositeEntity {
     /** Get a tableau factory that offers multiple views of this effigy, or
      *  null if none has been specified.
      *  This can be used by a contained tableau to set up a View menu.
-     *  @returns A tableau factory offering multiple views.
+     *  @return A tableau factory offering multiple views.
      */
     public TableauFactory getTableauFactory() {
         return _factory;

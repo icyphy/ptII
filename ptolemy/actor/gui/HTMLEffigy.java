@@ -32,7 +32,6 @@ package ptolemy.actor.gui;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
-import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import javax.swing.text.BadLocationException;

@@ -49,8 +49,6 @@ import ptolemy.moml.Documentation;
 import javax.swing.JOptionPane;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.event.*;
-import java.io.*;
 import java.net.URL;
 import java.util.Vector;
 

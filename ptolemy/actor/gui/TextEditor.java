@@ -39,7 +39,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.Point;
-import java.io.*;
 import java.net.URL;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;

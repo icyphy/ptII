@@ -33,8 +33,6 @@ package ptolemy.actor.gui;
 // Ptolemy imports.
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.data.expr.Parameter;
-import ptolemy.actor.gui.style.*;
 
 // Java imports.
 import java.awt.Component;

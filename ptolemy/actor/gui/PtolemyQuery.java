@@ -33,9 +33,11 @@ package ptolemy.actor.gui;
 
 import ptolemy.data.expr.Variable;
 import ptolemy.data.expr.Parameter;
-import ptolemy.gui.*;
-import ptolemy.actor.gui.style.*;
-import ptolemy.data.*;
+import ptolemy.gui.CloseListener;
+import ptolemy.gui.ComponentDialog;
+import ptolemy.gui.Query;
+import ptolemy.gui.QueryListener;
+import ptolemy.actor.gui.style.ParameterEditorStyle;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.Documentation;

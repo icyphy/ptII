@@ -100,8 +100,8 @@ public class LocationAttribute extends Parameter {
         try {
             IntMatrixToken token = (IntMatrixToken)getToken();
             if (token != null) {
-                int x = token.getElementAt(0,0);
-                int y = token.getElementAt(0,1);
+                int x = token.getElementAt(0, 0);
+                int y = token.getElementAt(0, 1);
 
                 // NOTE: As usual with swing, it's not obvious what the
                 // right way to do this is. The following seems to work,

@@ -32,7 +32,6 @@ package ptolemy.actor.gui;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
-import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import javax.swing.text.BadLocationException;
@@ -43,6 +42,9 @@ import javax.swing.text.Document;
 //// HTMLEffigyFactory
 /**
 A factory for creating new effigies.
+
+@author Steve Neuendorffer and Edward A. Lee
+@version $Id$
 */
 public class HTMLEffigyFactory extends EffigyFactory {
 
