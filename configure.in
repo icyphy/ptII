@@ -300,6 +300,8 @@ esac
 #--------------------------------------------------------------------
 AC_MSG_CHECKING([for the proper CLASSPATH separator])
 
+# If you mess with this, consider changing the jdkClassPathSeparator
+# proc in ptII/util/testsuite/jdktools.tcl
 case "`uname -s`" in
     CYGWIN_NT-*) CLASSPATHSEPARATOR=";";;
     CYGWIN_98-*) CLASSPATHSEPARATOR=";";;
