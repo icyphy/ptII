@@ -33,6 +33,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.lang.java;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import ptolemy.lang.*;
@@ -40,13 +42,27 @@ import ptolemy.lang.java.nodetypes.*;
 
 public class ResolveImportsVisitor extends JavaVisitor 
        implements JavaStaticSemanticConstants {
-    ResolveImportsVisitor() {
+       
+    public ResolveImportsVisitor() {
         super(TM_CUSTOM);
     }
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
         _compileUnit = node; 
         _fileEnv = (Environ) node.getDefinedProperty(ENVIRON_KEY); // file environment
+
+        // initialize importedPackages property
+        if (!node.hasProperty(IMPORTED_PACKAGES_KEY)) {
+        
+           _importedPackages = new LinkedList();
+            
+           node.setProperty(IMPORTED_PACKAGES_KEY, _importedPackages);
+        } else {
+           _importedPackages = 
+            (Collection) node.getDefinedProperty(IMPORTED_PACKAGES_KEY);                
+        }
+
+        _importOnDemand(new String[] { "java", "lang" });
 
         TNLManip.traverseList(this, node, null, node.getImports());
 
@@ -71,7 +87,7 @@ public class ResolveImportsVisitor extends JavaVisitor
            }
   	    }
 	     
-	      // add to the import environment, which is 2 levels above the file environment
+        // add to the import environment, which is 2 levels above the file environment
         _fileEnv.parent().parent().add((ClassDecl) name.getDefinedProperty(DECL_KEY));
 
         return null;
@@ -87,7 +103,8 @@ public class ResolveImportsVisitor extends JavaVisitor
 
         PackageDecl decl = (PackageDecl) name.getDefinedProperty(DECL_KEY);
 
-        StaticResolution.importOnDemand(_compileUnit, decl);
+        _importOnDemand(decl);
+        
         return null;
     }
 
@@ -96,10 +113,58 @@ public class ResolveImportsVisitor extends JavaVisitor
         throw new RuntimeException("ResolveImports not defined on node type : " +
          node.getClass().getName());
     }
+
+    protected final void _importOnDemand(PackageDecl importedPackage) {
+
+        ApplicationUtility.trace("importOnDemand : importing " +
+         importedPackage.toString());
+     
+        // ignore duplicate imports
+        if (_importedPackages.contains(importedPackage)) {
+           ApplicationUtility.warn("importOnDemand : ignoring duplicated package "
+            + importedPackage.toString());
+           return;
+        }
+
+        _importedPackages.add(importedPackage);
+
+        Environ importEnv = _fileEnv.parent().parent();
+
+        Environ pkgEnv = importedPackage.getEnviron();
+
+        Iterator envItr = pkgEnv.allProperDecls();
+
+        while (envItr.hasNext()) {
+           JavaDecl type = (JavaDecl) envItr.next();
+
+           if (type.category != JavaDecl.CG_PACKAGE) {
+              ApplicationUtility.trace("importOnDemand: adding " + type.toString());
+              importEnv.add(type); // conflicts appear on use only
+           }
+        }
+
+        ApplicationUtility.trace("importOnDemand : finished" +
+         importedPackage.toString());
+    }
+
+    // we can get rid of this by added java.lang to the import list
+    protected final void _importOnDemand(String[] qualName) {
+        NameNode name = (NameNode) StaticResolution.makeNameNode(qualName);
+
+        StaticResolution.resolveAName(name, 
+         StaticResolution.SYSTEM_PACKAGE.getEnviron(), null, null,
+         JavaDecl.CG_PACKAGE);
+
+        _importOnDemand((PackageDecl) name.getDefinedProperty(DECL_KEY));
+    }
+
     
     /** The CompileUnitNode that is the root of the tree. */
     protected CompileUnitNode _compileUnit = null;
     
     /** The file environment. */
     protected Environ _fileEnv = null;
+
+    /** The Collection of imported packages for this compile unit. */    
+    protected Collection _importedPackages = null;
 }

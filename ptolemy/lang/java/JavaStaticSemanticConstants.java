@@ -28,8 +28,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 @ProposedRating Red (ctsay@eecs.berkeley.edu)
 @AcceptedRating Red (ctsay@eecs.berkeley.edu)
-*/
-   
+*/  
 
 package ptolemy.lang.java;
 
@@ -113,7 +112,9 @@ public interface JavaStaticSemanticConstants extends NodeClassID {
 
     // keys for property map
   
-    /** The key that rhe filename of the parsed Java file, set in a CompileUnitNode. */
+    /** The key that retrieves the canonical filename of the parsed Java file, 
+     *  set in a CompileUnitNode. 
+     */
     public static final Integer IDENT_KEY = new Integer(0);
     
     /** The key that retreives the PackageDecl that the compilation unit 
@@ -142,7 +143,7 @@ public interface JavaStaticSemanticConstants extends NodeClassID {
     
     /** The key that retrieves the InterfaceDecl associated with the interfaces 
      *  that a anonymous class implements, set in AllocateAnonymousClassNode.  
-     *  The value retrieved may be NullValue.
+     *  The value retrieved may be NullValue.instance.
      */
     public static final Integer INTERFACE_KEY = new Integer(8); 
 

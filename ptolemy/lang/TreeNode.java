@@ -40,6 +40,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.LinkedList;
 
+/**
+ *  The common base type for nodes in an abstract syntax tree.
+ *
+ *  @author Jeff Tsay
+ */
 public abstract class TreeNode extends PropertyMap {
 
     /** Return the class ID number, which is unique for each sub-type. */    
@@ -144,7 +149,7 @@ public abstract class TreeNode extends PropertyMap {
         {
         // Traverse the children first
         traverseChildren(v, visitorArgs);
-        retval = acceptHere(v, visitorArgs);
+        retval = _acceptHere(v, visitorArgs);
 
         // remove the children return values to prevent exponential usage
         // of memory
@@ -155,7 +160,7 @@ public abstract class TreeNode extends PropertyMap {
         case IVisitor.TM_SELF_FIRST:
         {
         // Visit myself first
-        retval = acceptHere(v, visitorArgs);
+        retval = _acceptHere(v, visitorArgs);
         traverseChildren(v, visitorArgs);
         }
         break;
@@ -163,7 +168,7 @@ public abstract class TreeNode extends PropertyMap {
         case IVisitor.TM_CUSTOM:
         {
         // Let visitor do custom traversal
-        retval = acceptHere(v, visitorArgs);
+        retval = _acceptHere(v, visitorArgs);
         }
         break;
 
@@ -199,7 +204,33 @@ public abstract class TreeNode extends PropertyMap {
         _childList = childList;
     }
 
-    protected Object acceptHere(IVisitor v, LinkedList visitArgs) {      
+    public Object childReturnValueAt(int index) {
+        List retList = (List) getDefinedProperty(CHILD_RETURN_VALUES_KEY);
+        return retList.get(index);
+    }
+
+    public Object childReturnValueFor(Object child) {
+        Iterator itr = _childList.iterator();
+        int index = 0;
+
+        while (itr.hasNext()) {
+          if (child == itr.next()) {
+             return childReturnValueAt(index);
+          }
+          index++;
+        }
+        ApplicationUtility.error("Child not found");
+        return null;
+    }
+
+    /** Return true iff this subclass of TreeNode is a singleton, i.e. there exists only
+     *  one object of the subclass. This method needs to be overridden by 
+     *  singleton classes.
+     */
+    public boolean isSingleton() { return false; }
+
+
+    protected Object _acceptHere(IVisitor v, LinkedList visitArgs) {      
         if (_myClass == null) {
            _myClass = getClass();
 
@@ -236,31 +267,9 @@ public abstract class TreeNode extends PropertyMap {
         return null;
     }
 
-    public Object childReturnValueAt(int index) {
-        List retList = (List) getDefinedProperty(CHILD_RETURN_VALUES_KEY);
-        return retList.get(index);
-    }
-
-    public Object childReturnValueFor(Object child) {
-        Iterator itr = _childList.iterator();
-        int index = 0;
-
-        while (itr.hasNext()) {
-          if (child == itr.next()) {
-             return childReturnValueAt(index);
-          }
-          index++;
-        }
-        ApplicationUtility.error("Child not found");
-        return null;
-    }
-
-    /** Return true iff this subclass of TreeNode is a singleton, i.e. there exists only
-     *  one object of the subclass. This method needs to be overridden by 
-     *  singleton classes.
+    /** Return the unqualified part of a Java name. For example, if the argument
+     *  is "ptolemy.lang.TreeNode" return "TreeNode". 
      */
-    public boolean isSingleton() { return false; }
-
     protected static String _unqualifiedNameString(String s) {
         return s.substring(s.lastIndexOf('.') + 1);  
     }

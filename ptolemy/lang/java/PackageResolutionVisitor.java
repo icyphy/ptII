@@ -14,11 +14,6 @@ public class PackageResolutionVisitor extends JavaVisitor
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
 
-        // initialize importedPackages property
-        if (!node.hasProperty(IMPORTED_PACKAGES_KEY)) {
-           node.setProperty(IMPORTED_PACKAGES_KEY, new LinkedList());
-        }
-
         PackageDecl thePkgDecl;
         TreeNode pkgDeclNode = node.getPkg();
 
@@ -45,7 +40,7 @@ public class PackageResolutionVisitor extends JavaVisitor
 
         node.setProperty(ENVIRON_KEY, environ);
 
-        StaticResolution.importOnDemand(node, new String[] { "java", "lang" });
+        // StaticResolution.importOnDemand(node, new String[] { "java", "lang" });
 
         node.accept(new ResolvePackageVisitor(), null);
 

@@ -98,180 +98,180 @@ import ptolemy.lang.java.nodetypes.*;
  */
 public abstract class JavaDecl extends Decl implements JavaStaticSemanticConstants {
 
-  protected JavaDecl(String name, int category0) {
-    super(name, category0);
-  }
-
-  /** Return the container of this declaration.
-   *  Members, classes, interfaces, and packages are all parts of some
-   *  larger declared entity, which is their container.  Members are
-   *  contained in classes and interfaces, which are themselves contained
-   *  in packages, which are in turn contained in other packages.
-   *  Outer-level packages have as their container the special JavaDecl
-   *  StaticResolution.SYSTEM_PACKAGE.
-   */
-  public JavaDecl getContainer() {
-    throw new RuntimeException(getClass().getName() + " has no container.");
-  }
-
-  /** Set the container of this declaration. */
-  public void setContainer(JavaDecl dummy) {
-    throw new RuntimeException(getClass().getName() + " has no container.");
-  }
-
-  /** Return true iff this declaration has a container. */
-  public boolean hasContainer() { return false; }
-
-
-  /** Return the resolved TypeNameNode that stands for the type this class 
-   *  represents.  That is, it is a TypeNameNode whose getDecl() is THIS.
-   */
-  public TypeNameNode getDefType() {
-    throw new RuntimeException(getClass().getName() + " defined no type.");
-  }
-
-  /** Set the TypeNameNode associated with this declaration. */
-  public void setDefType(TypeNameNode node) {
-    throw new RuntimeException(getClass().getName() + " defines no type.");
-  }
-
-  /** Return true iff this declaration defines a type. */
-  public boolean hasDefType() { return false; }
-
-  /** Return the environment associated with this declaration.
-   *  Classes, interfaces, and packages define environments:  mappings of
-   *  names (of members, classes, interfaces, and subpackages) to
-   *  JavaDecls of these entities.
-   */
-  public Environ getEnviron() {
-    throw new RuntimeException(getClass().getName() + " has no environ.");
-  }
-
-  /** Set the environment associated with this declaration. */
-  public void setEnviron(Environ environ) {
-    throw new RuntimeException(getClass().getName() + " has no environ.");
-  }
-
-  /** Return true iff this declaration has an environment associated with it. */
-  public boolean hasEnviron() { return false; }
-
-  /** Return the modifiers of this declaration.
-   *  Classes, interfaces, and their members have modifiers, as defined in
-   *  Modifiers.
-   */
-  public int getModifiers() {
-    throw new RuntimeException(getClass().getName() + " has no modifiers.");
-  }
-
-  /** Set the modifiers of this declaration. */
-  public void setModifiers(int dummy) {
-    throw new RuntimeException(getClass().getName() + " has no modifiers.");
-  }
-
-  /** Return true iff this declaration has modifiers. */
-  public boolean hasModifiers() { return false; }
-
-  /** Return the source node associated with this declaration. */
-  public TreeNode getSource() {
-    throw new RuntimeException(getClass().getName() + " has no source.");
-  }
-
-  /** Set the source node associated with this declaration. */
-  public void setSource(TreeNode dummy) {
-    throw new RuntimeException(getClass().getName() + " has no source.");
-  }
-
-  /** Return true iff there is a source node associated with this declaration. */
-  public boolean hasSource() { return false; }
-
-  /** Return a string giving the full name (including class, etc) of this
-   *  JavaDecl.  Optional delimiter will appear between nested components and
-   *  defaults to a period.
-   */
-  public String fullName() {
-    return fullName('.');
-  }
-
-  /** Return a string giving the full name (including class, etc) of this
-   *  JavaDecl.  Optional delimiter will appear between nested components.
-   */
-  public String fullName(char delimiter) {
-    StringBuffer prefix = new StringBuffer();
-
-    if (hasContainer() && (getContainer() != null)) {
-       prefix.append(getContainer().fullName(delimiter));
+    protected JavaDecl(String name, int category0) {
+        super(name, category0);
     }
 
-    if (prefix.length() > 0) {
-       prefix.append(delimiter);
+    /** Return the container of this declaration.
+     *  Members, classes, interfaces, and packages are all parts of some
+     *  larger declared entity, which is their container.  Members are
+     *  contained in classes and interfaces, which are themselves contained
+     *  in packages, which are in turn contained in other packages.
+     *  Outer-level packages have as their container the special JavaDecl
+     *  StaticResolution.SYSTEM_PACKAGE.
+     */
+    public JavaDecl getContainer() {
+        throw new RuntimeException(getClass().getName() + " has no container.");
     }
 
-    prefix.append(getName());
-    return prefix.toString();
-  }
-
-  /** Return true iff this declaration is contained by the container Decl.
-   *  Search all super-containers of this declaration for the container.
-   */
-  public boolean deepContainedBy(JavaDecl container) {
-
-    JavaDecl decl = this;
-
-    while (decl.hasContainer()) {
-      decl = decl.getContainer();
-
-      if (decl == container) {
-         return true;
-      }
-
-      if (decl == null) {
-         return false;
-      }
+    /** Set the container of this declaration. */
+    public void setContainer(JavaDecl dummy) {
+        throw new RuntimeException(getClass().getName() + " has no container.");
     }
-    return false;
-  }
 
-  protected static final SearchPath _pickLibrary(JavaDecl container) {
-    if (container == StaticResolution.UNNAMED_PACKAGE) {
-       return SearchPath.UNNAMED_PATH;
+    /** Return true iff this declaration has a container. */
+    public boolean hasContainer() { return false; }
+
+
+    /** Return the resolved TypeNameNode that stands for the type this class 
+     *  represents.  That is, it is a TypeNameNode whose getDecl() is THIS.
+     */
+    public TypeNameNode getDefType() {
+        throw new RuntimeException(getClass().getName() + " defined no type.");
     }
-    return SearchPath.NAMED_PATH;
-  }
 
-  /** Return the Decl associated with the node. Return null if the
-   *  Decl is not found. This method figures out the type of node, and
-   *  passes to the appropriate more specific getDecl() method.
-   */
-  public static final JavaDecl getDecl(TreeNode node) {                 
-    if (node instanceof NamedNode) {
-       return getDecl((NamedNode) node);
-    } 
+    /** Set the TypeNameNode associated with this declaration. */
+    public void setDefType(TypeNameNode node) {
+        throw new RuntimeException(getClass().getName() + " defines no type.");
+    }
+
+    /** Return true iff this declaration defines a type. */
+    public boolean hasDefType() { return false; }
+
+    /** Return the environment associated with this declaration.
+     *  Classes, interfaces, and packages define environments:  mappings of
+     *  names (of members, classes, interfaces, and subpackages) to
+     *  JavaDecls of these entities.
+     */
+    public Environ getEnviron() {
+        throw new RuntimeException(getClass().getName() + " has no environ.");
+    }
+
+    /** Set the environment associated with this declaration. */
+    public void setEnviron(Environ environ) {
+        throw new RuntimeException(getClass().getName() + " has no environ.");
+    }
+
+    /** Return true iff this declaration has an environment associated with it. */
+    public boolean hasEnviron() { return false; }
+
+    /** Return the modifiers of this declaration.
+     *  Classes, interfaces, and their members have modifiers, as defined in
+     *  Modifiers.
+     */
+    public int getModifiers() {
+        throw new RuntimeException(getClass().getName() + " has no modifiers.");
+    }
+
+    /** Set the modifiers of this declaration. */
+    public void setModifiers(int dummy) {
+        throw new RuntimeException(getClass().getName() + " has no modifiers.");
+    }
+
+    /** Return true iff this declaration has modifiers. */
+    public boolean hasModifiers() { return false; }
+
+    /** Return the source node associated with this declaration. */
+    public TreeNode getSource() {
+        throw new RuntimeException(getClass().getName() + " has no source.");
+    }
+
+    /** Set the source node associated with this declaration. */
+    public void setSource(TreeNode dummy) {
+        throw new RuntimeException(getClass().getName() + " has no source.");
+    }
+
+    /** Return true iff there is a source node associated with this declaration. */
+    public boolean hasSource() { return false; }
+
+    /** Return a string giving the full name (including class, etc) of this
+     *  JavaDecl.  Optional delimiter will appear between nested components and
+     *  defaults to a period.
+     */
+    public String fullName() {
+        return fullName('.');
+    }
+
+    /** Return a string giving the full name (including class, etc) of this
+     *  JavaDecl.  Optional delimiter will appear between nested components.
+     */
+    public String fullName(char delimiter) {
+        StringBuffer prefix = new StringBuffer();
+
+        if (hasContainer() && (getContainer() != null)) {
+           prefix.append(getContainer().fullName(delimiter));
+        }
+
+        if (prefix.length() > 0) {
+           prefix.append(delimiter);
+        }
+
+        prefix.append(getName());
+        return prefix.toString();
+    }
+  
+    /** Return true iff this declaration is contained by the container Decl.
+     *  Search all super-containers of this declaration for the container.
+     */
+    public boolean deepContainedBy(JavaDecl container) {
+
+        JavaDecl decl = this;
+
+        while (decl.hasContainer()) {
+          decl = decl.getContainer();
+
+          if (decl == container) {
+             return true;
+          }
+
+          if (decl == null) {
+             return false;
+          }
+        }
+        return false;
+    }
+
+    protected static final SearchPath _pickLibrary(JavaDecl container) {
+        if (container == StaticResolution.UNNAMED_PACKAGE) {
+           return SearchPath.UNNAMED_PATH;
+        }
+        return SearchPath.NAMED_PATH;
+    }
+
+    /** Return the Decl associated with the node. Return null if the
+     *  Decl is not found. This method figures out the type of node, and
+     *  passes to the appropriate more specific getDecl() method.
+     */
+    public static final JavaDecl getDecl(TreeNode node) {                 
+        if (node instanceof NamedNode) {
+           return getDecl((NamedNode) node);
+        } 
     
-    return (JavaDecl) node.getProperty(DECL_KEY);
-  }
+        return (JavaDecl) node.getProperty(DECL_KEY);
+    }
 
-  /** Return the Decl associated with the named node. Return null if the
-   *  Decl is not found.
-   */
-  public static final JavaDecl getDecl(NamedNode node) {
-    return (JavaDecl) node.getName().getProperty(DECL_KEY);
-  }
+    /** Return the Decl associated with the named node. Return null if the
+     *   Decl is not found.
+     */
+    public static final JavaDecl getDecl(NamedNode node) {
+        return (JavaDecl) node.getName().getProperty(DECL_KEY);
+    }
 
-  /** Set the Decl associated with the node. 
-   *  This method figures out the type of node, and
-   *  passes to the appropriate more specific setDecl() method.
-   */
-  public static final void setDecl(TreeNode node, JavaDecl decl) {
-    if (node instanceof NamedNode) {
-       setDecl((NamedNode) node, decl);
-       return;
-    } 
+    /** Set the Decl associated with the node. 
+     *  This method figures out the type of node, and
+     *  passes to the appropriate more specific setDecl() method.
+     */
+    public static final void setDecl(TreeNode node, JavaDecl decl) {
+        if (node instanceof NamedNode) {
+           setDecl((NamedNode) node, decl);
+           return;
+        } 
     
-    node.setProperty(DECL_KEY, decl);
-  }
+        node.setProperty(DECL_KEY, decl);
+    }
 
-  /** Set the Decl associated with the named node. */
-  public static final void setDecl(NamedNode node, JavaDecl decl) {
-      node.getName().setProperty(DECL_KEY, decl);
-  }
+    /** Set the Decl associated with the named node. */
+    public static final void setDecl(NamedNode node, JavaDecl decl) {
+        node.getName().setProperty(DECL_KEY, decl);
+    }
 }

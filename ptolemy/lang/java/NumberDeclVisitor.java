@@ -35,10 +35,11 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.lang.java;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.LinkedList;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Set;
 
 import ptolemy.lang.*;
 
@@ -81,13 +82,13 @@ public class NumberDeclVisitor extends JavaVisitor {
     
     /** Given a list of TreeNode's, number all declarations in the list uniquely,
      *  including descendents of individual TreeNode's. 
-     *  Return the HashSet of all declarations.
+     *  Return the set of all declarations.
      */
-    public static HashSet numberDecls(List list) {
+    public static Set numberDecls(Collection decls) {
         HashSet set = new HashSet();
         NumberDeclVisitor v = new NumberDeclVisitor(set);
         
-        Iterator itr = list.iterator();
+        Iterator itr = decls.iterator();
         
         while (itr.hasNext()) {
             TreeNode node = (TreeNode) itr.next();

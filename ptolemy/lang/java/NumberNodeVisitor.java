@@ -34,8 +34,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.lang.java;
 
+import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.HashMap;
@@ -73,11 +73,11 @@ public class NumberNodeVisitor extends JavaVisitor {
      *  including descendents of individual TreeNode's. 
      *  Return the Set of all nodes.
      */
-    public static Map numberNodes(List list) {
+    public static Map numberNodes(Collection nodes) {
         HashMap map = new HashMap();
         NumberNodeVisitor v = new NumberNodeVisitor(map);
         
-        Iterator itr = list.iterator();
+        Iterator itr = nodes.iterator();
         
         while (itr.hasNext()) {
             TreeNode node = (TreeNode) itr.next();

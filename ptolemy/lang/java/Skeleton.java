@@ -1,5 +1,5 @@
 /*
-An application that writes a skeleton file with extension "j" after
+An application that writes a skeleton file with extension "jskel" after
 parsing an input Java file.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
@@ -54,7 +54,7 @@ public class Skeleton {
     }
 
     if (files < 1) {
-       System.out.println("usage : ptolemy.lang.Skeleton [-d] f1.java [f2.java ...]");
+       System.out.println("usage : ptolemy.lang.java.Skeleton [-d] f1.java [f2.java ...]");
     }
 
 

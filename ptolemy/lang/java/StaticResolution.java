@@ -35,9 +35,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.lang.java;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
@@ -237,242 +240,135 @@ public class StaticResolution implements JavaStaticSemanticConstants {
       }
     }
 
-  public static MethodDecl resolveCall(EnvironIter methods, List args) {
+    public static MethodDecl resolveCall(EnvironIter methods, List args) {
 
-      Decl aMethod = methods.head();      
-      Decl d;
+        Decl aMethod = methods.head();      
+        Decl d;
    
-      LinkedList types = new LinkedList();
+        LinkedList types = new LinkedList();
       
-      LinkedList argTypes = new LinkedList();
+        LinkedList argTypes = new LinkedList();
   
-      Iterator argsItr = args.iterator();
+        Iterator argsItr = args.iterator();
       
-      while (argsItr.hasNext()) {
-          ExprNode expr = (ExprNode) argsItr.next();
-          argTypes.addLast(TypeUtility.type(expr));
-      }
+        while (argsItr.hasNext()) {
+           ExprNode expr = (ExprNode) argsItr.next();
+           argTypes.addLast(TypeUtility.type(expr));
+        }
       
-      LinkedList matches = new LinkedList();
+        LinkedList matches = new LinkedList();
                 
-      while (methods.hasNext()) {
-          MethodDecl method = (MethodDecl) methods.next();
-          if (TypeUtility.isCallableWith(method, argTypes)) {
-             matches.addLast(method);
-          }          
-      }
+        while (methods.hasNext()) {
+           MethodDecl method = (MethodDecl) methods.next();
+           if (TypeUtility.isCallableWith(method, argTypes)) {
+              matches.addLast(method);
+           }          
+        }
       
-      if (matches.size() == 0) {
-         ApplicationUtility.error("no matching " + aMethod.getName() +
-          "(" + TNLManip.toString(argTypes) + ")");
-      }
+        if (matches.size() == 0) {
+           ApplicationUtility.error("no matching " + aMethod.getName() +
+            "(" + TNLManip.toString(argTypes) + ")");
+        }
        
-      Iterator matchesItr1 = matches.iterator();
+        Iterator matchesItr1 = matches.iterator();
       
-      while (matchesItr1.hasNext()) {
-         MethodDecl m1 = (MethodDecl) matchesItr1.next();
-         Iterator matchesItr2 = matches.iterator();
-         boolean thisOne = true;
+        while (matchesItr1.hasNext()) {
+           MethodDecl m1 = (MethodDecl) matchesItr1.next();
+           Iterator matchesItr2 = matches.iterator();
+           boolean thisOne = true;
          
-         while (matchesItr2.hasNext()) {
-             MethodDecl m2 = (MethodDecl) matchesItr2.next();
-             if (m1 == m2) {
+           while (matchesItr2.hasNext()) {
+              MethodDecl m2 = (MethodDecl) matchesItr2.next();
+              if (m1 == m2) {
                 continue; // get out of this inner loop      
-             }
-             if (!TypeUtility.isMoreSpecific(m1, m2) || TypeUtility.isMoreSpecific(m2, m1)) {
-                thisOne = false; // keep looking
-                continue; // get out of this inner loop      
-             }             
-         } 
+              }
+              if (!TypeUtility.isMoreSpecific(m1, m2) || TypeUtility.isMoreSpecific(m2, m1)) {
+                 thisOne = false; // keep looking
+                 continue; // get out of this inner loop      
+              }             
+           } 
                    
-         if (thisOne) {
-            return m1;
-         }
-      }
+           if (thisOne) {
+              return m1;
+           }
+        }
       
-      ApplicationUtility.error ("ambiguous method call to " + aMethod.getName());
-      return null;
-  }
+        ApplicationUtility.error ("ambiguous method call to " + aMethod.getName());
+        return null;
+    }
    
-  public static final void importOnDemand(CompileUnitNode node,
-   PackageDecl importedPackage) {
+    public static final TreeNode makeNameNode(String[] qualName) {
+        TreeNode retval = AbsentTreeNode.instance;
 
-    ApplicationUtility.trace("importOnDemand : importing " +
-     importedPackage.toString());
-     
-    LinkedList importedPackages =
-     (LinkedList) node.getDefinedProperty(IMPORTED_PACKAGES_KEY);
+        for (int i = 0; i < qualName.length; i++) {
+            retval = new NameNode(retval, qualName[i]);
+        }
 
-    // ignore duplicate imports
-    if (importedPackages.contains(importedPackage)) {
-       ApplicationUtility.warn("importOnDemand : ignoring duplicated package "
-        + importedPackage.toString());
-       return;
+        return retval;
     }
 
-    importedPackages.addLast(importedPackage);
+    /** Parse the file, doing no static resolution whatsoever. */
+    public static CompileUnitNode parse(String filename) {
 
-    Environ myEnviron = (Environ) node.getDefinedProperty(StaticResolution.ENVIRON_KEY);
+        JavaParser p = new JavaParser();
 
-    Environ importEnv = myEnviron.parent().parent();
+        try {
+          p.init(filename);
+        } catch (Exception e) {
+          ApplicationUtility.error("error opening " + filename + " : " + e);
+        }
 
-    Environ pkgEnv = importedPackage.getEnviron();
+        p.yyparse();
 
-    Iterator envItr = pkgEnv.allProperDecls();
-
-    while (envItr.hasNext()) {
-      JavaDecl type = (JavaDecl) envItr.next();
-
-      if (type.category != JavaDecl.CG_PACKAGE) {
-         ApplicationUtility.trace("importOnDemand: adding " + type.toString());
-         importEnv.add(type); // conflicts appear on use only
-      }
+        return p.getAST();
     }
 
-    ApplicationUtility.trace("importOnDemand : finished" +
-     importedPackage.toString());
-  }
-
-  // we can get rid of this by added java.lang to the import list
-  public static final void importOnDemand(CompileUnitNode node,
-   String[] qualName) {
-    NameNode name = (NameNode) makeNameNode(qualName);
-
-    resolveAName(name, SYSTEM_PACKAGE.getEnviron(), null, null,
-     JavaDecl.CG_PACKAGE);
-
-    importOnDemand(node, (PackageDecl) name.getDefinedProperty(DECL_KEY));
-  }
-
-  public static final TreeNode makeNameNode(String[] qualName) {
-    TreeNode retval = AbsentTreeNode.instance;
-
-    for (int i = 0; i < qualName.length; i++) {
-      retval = new NameNode(retval, qualName[i]);
+    public static CompileUnitNode load(File file, boolean primary) {        
+        try {
+          return load(file.getCanonicalPath(), primary);
+        } catch (IOException ioe) {
+          ApplicationUtility.error(ioe.toString());
+        } 
+        return null; 
     }
 
-    return retval;
-  }
-
-  public static void buildEnvironments() {
-    Iterator itr = recentFiles.iterator();
-    LinkedList list2 = new LinkedList();
-
-    while (!recentFiles.isEmpty()) {
-      CompileUnitNode cun = (CompileUnitNode) recentFiles.removeFirst();
-      list2.addLast(cun);
-
-      //cun.accept(new ResolveClassVisitor(), null);
-    }
-
-    while (!list2.isEmpty()) {
-      CompileUnitNode cun = (CompileUnitNode) list2.removeFirst();
-
-      //cun.accept(new ResolveInheritanceVisitor(), null);
-    }
-
-    //recentFiles.clear();
-  }
-
-  public static CompileUnitNode parse(File file) {
-
-    JavaParser p = new JavaParser();
-
-    try {
-      p.init(file.toString());
-    } catch (Exception e) {
-      ApplicationUtility.error("error opening " + file.toString() + " : " +
-       e.toString());
-    }
-
-    p.yyparse();
-
-    CompileUnitNode loadedAST = p.getAST();
-
-    // need to run package resolution??
-    //
-
-    return loadedAST;
-  }
-
-  public static void load(String name, boolean primary) {
-    load(name, new File(name), primary);
-  }
-
-    public static void load(String name, File file, boolean primary) {
-        System.out.println(">loading " + name);
+    /** Load the source file with the given canonical filename. If
+     *  primary is true, do full resolution of the source. Otherwise
+     *  do partial resolution only.
+     */ 
+    public static CompileUnitNode load(String filename, boolean primary) {        
+        System.out.println(">loading " + filename);
   
         CompileUnitNode loadedAST = null;
-    // look for an incomplete parse tree in the lazily resolved list
-/*    CompileUnitNode foundCun = null;
-
-    Iterator lazyItr = lazilyResolvedFiles.iterator();
-    while ((foundCun == null) && lazyItr.hasNext()) {
-       CompileUnitNode cun = (CompileUnitNode) lazyItr.next();
-       String id = StringManip.rawFilename(
-        (String) cun.getDefinedProperty("ident"));
-
-       if (id.equals(StringManip.rawFilename(name))) {
-          foundCun = cun;
-       }
-    }
-
-    if (foundCun != null) {
-       if (!primary) {
-          // already lazily resolved this file
-          return;
-       }
-
-       foundCun.setProperty("fullResolve", Boolean.TRUE);
-
-       lazilyResolvedFiles.remove(foundCun);
-       fullyResolvedFiles.addLast(foundCun);
-
-       // run package resolution here for now
-       foundCun.accept(new PackageResolutionVisitor(), null);
-
-       recentFiles.addLast(foundCun);
-       unresolvedFiles.addLast(foundCun);
-
-       return;
-    }
-
-    // look for an complete parse tree in the fully resolved list
-    foundCun = null;
-    Iterator fullItr = fullyResolvedFiles.iterator();
-    while ((foundCun == null) && fullItr.hasNext()) {
-       CompileUnitNode cun = (CompileUnitNode) fullItr.next();
-       String id = StringManip.rawFilename(
-        (String) cun.getDefinedProperty("ident"));
-
-       if (id.equals(StringManip.rawFilename(name))) {
-          foundCun = cun;
-       }
-    }
-
-    if (foundCun != null) {
-       return; // already resolved file
-    }
-
-    if (!file.isFile()) {
-       ApplicationUtility.error("Couldn't load " + name);
-    } */
-
-      loadedAST = parse(file);
-
-      if (loadedAST == null) {
-         ApplicationUtility.error("Couldn't load " + name);
-      }
-
-      loadedAST.setProperty(IDENT_KEY, name);    
     
-      load(loadedAST, primary);
-    
+        loadedAST = 
+         (CompileUnitNode) partiallyResolvedMap.get(filename);           
+                
+        if (loadedAST == null) {
+           loadedAST = parse(filename);
+           
+           if (loadedAST == null) {
+              ApplicationUtility.error("Couldn't load " + filename);
+           }
+
+           loadedAST.setProperty(IDENT_KEY, filename);    
+        
+           return load(loadedAST, primary);                          
+        } else {
+           if (!primary) {
+              return loadedAST;
+           }
+           
+           return load(loadedAST, true);        
+        }
     }
   
-    public static void load(CompileUnitNode node, boolean primary) {
+    /** Load a CompileUnitNode that has just been parsed. Fully resolve the
+     *  node if primary is true, otherwise just partially resolve it.
+     */
+    public static CompileUnitNode load(CompileUnitNode node, boolean primary) {
         node.setProperty(FULL_RESOLVE_KEY, new Boolean(primary));
-    
+                      
         node.accept(new PackageResolutionVisitor(), null);    
         node.accept(new ResolveClassVisitor(), null);
         node.accept(new ResolveInheritanceVisitor(), null);
@@ -480,43 +376,36 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         allFiles.addLast(node);
 
         recentFiles.addLast(node);
-    
+        
+        String filename = (String) node.getProperty(IDENT_KEY);                 
+        if (filename != null) {
+           partiallyResolvedMap.put(filename, node);
+        }            
+                                            
         if (primary) {
-           unresolvedFiles.addLast(node);
-        }             
-    }
-
-  public static void declResolution() {
-    buildEnvironments();
-
-    LinkedList filesToResolve = new LinkedList(); 
-
-    while (!unresolvedFiles.isEmpty()) {
-
-      CompileUnitNode unitNode = (CompileUnitNode) unresolvedFiles.removeFirst();
-      
-      ApplicationUtility.enableTrace = true;
-      ApplicationUtility.trace("resolveName on " +
-       (String) unitNode.getDefinedProperty(IDENT_KEY));
-      ApplicationUtility.enableTrace = false;
-          
-      unitNode.accept(new ResolveNameVisitor(), null);     
-      
-      filesToResolve.addLast(unitNode);
-    }
-      
-    while (!filesToResolve.isEmpty()) {
-        CompileUnitNode unitNode = (CompileUnitNode) filesToResolve.removeFirst();
-
-        ApplicationUtility.trace("resolveField on " +       
-         (String) unitNode.getDefinedProperty(IDENT_KEY));        
         
-        unitNode.accept(new ResolveFieldVisitor(), null);                    
+           // check to see if the node has already been fully resolved
+           boolean fullyResolved = false;
+           
+           CompileUnitNode fullyResolvedNode = 
+            (CompileUnitNode) fullyResolvedMap.get(filename);
+                      
+           if (fullyResolvedNode != null) {
+              return fullyResolvedNode;
+           }
         
-        fullyResolvedFiles.addLast(unitNode);
+           // unresolvedFiles.addLast(node);
+           node.accept(new ResolveNameVisitor(), null);     
+           node.accept(new ResolveFieldVisitor(), null);                               
+           
+           if (filename != null) {
+              fullyResolvedMap.put(filename, node);              
+           }           
+        }            
+        
+        return node;
     }
-  }
-
+    
     public static final void importPackage(Environ env, NameNode name) {
 
         resolveAName(name, SYSTEM_PACKAGE.getEnviron(), null, null,
@@ -536,25 +425,25 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         }
     }
 
-  public static final ClassDecl _requireClass(Environ env, String name) {
-    Decl decl = env.lookup(name);
+    protected static final ClassDecl _requireClass(Environ env, String name) {
+        Decl decl = env.lookup(name);
 
-    if (decl == null) {
-       ApplicationUtility.error("could not find class or interface \"" +
-        name + "\" in bootstrap environment: " + env);
+        if (decl == null) {
+           ApplicationUtility.error("could not find class or interface \"" +
+            name + "\" in bootstrap environment: " + env);
+        }
+
+        if ((decl.category & (JavaDecl.CG_CLASS | JavaDecl.CG_INTERFACE)) == 0) {
+           ApplicationUtility.error("fatal error: " + decl.getName() +
+	        " should be a class or interface");
+        }
+
+        ClassDecl cdecl = (ClassDecl) decl;
+
+        cdecl.loadSource();
+
+        return cdecl;
     }
-
-    if ((decl.category & (JavaDecl.CG_CLASS | JavaDecl.CG_INTERFACE)) == 0) {
-       ApplicationUtility.error("fatal error: " + decl.getName() +
-	       " should be a class or interface");
-    }
-
-    ClassDecl cdecl = (ClassDecl) decl;
-
-    cdecl.loadSource();
-
-    return cdecl;
-  }
 
     public static final PackageDecl SYSTEM_PACKAGE;
     public static final PackageDecl UNNAMED_PACKAGE;
@@ -580,6 +469,18 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
     public static final LinkedList lazilyResolvedFiles = new LinkedList();
     public static final LinkedList fullyResolvedFiles = new LinkedList();    
+    
+    
+    /** A Map containing values of CompileUnitNodes that have been partially 
+     *  resolved (including those that are also fully resolved), indexed by the 
+     *  absolute pathname of the source file.
+     */
+    public static final Map partiallyResolvedMap = new HashMap();
+   
+    /** A Map containing values of CompileUnitNodes that have been fully 
+     *  resolved, indexed by the absolute pathname of the source file.
+     */
+    public static final Map fullyResolvedMap = new HashMap();
     
     static {
         SYSTEM_PACKAGE  = new PackageDecl("", null);

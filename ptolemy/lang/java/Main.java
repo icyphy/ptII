@@ -3,6 +3,7 @@ package ptolemy.lang.java;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
@@ -10,7 +11,8 @@ import java.util.Map;
 import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.CompileUnitNode;
 
-class Main {
+public class Main {
+
   public static void main(String[] args) {
     int numArgs = args.length;
     int fileStart = 0;
@@ -30,19 +32,20 @@ class Main {
 
     ApplicationUtility.enableTrace = debug;
     
+    LinkedList units = new LinkedList();
     for (int f = fileStart; f < numArgs; f++) {
-        StaticResolution.load(args[f], true);
+        units.add(StaticResolution.load(args[f], true));
         
-        ApplicationUtility.trace(">declResolution on " + args[f]);
-        StaticResolution.declResolution();
+        //ApplicationUtility.trace(">declResolution on " + args[f]);
+        //StaticResolution.declResolution();
     }
 
-    LinkedList unitList = StaticResolution.fullyResolvedFiles;
+    //Collection units = StaticResolution.fullyResolvedFiles;
     
-    Map nodeMap = NumberNodeVisitor.numberNodes(unitList);
-    NumberDeclVisitor.numberDecls(unitList);
+    Map nodeMap = NumberNodeVisitor.numberNodes(units);
+    NumberDeclVisitor.numberDecls(units);
     
-    Iterator unitItr = unitList.iterator();
+    Iterator unitItr = units.iterator();
 
     while (unitItr.hasNext()) {
         CompileUnitNode ast = (CompileUnitNode) unitItr.next();
