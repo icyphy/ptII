@@ -1,4 +1,4 @@
-/* A Queue with optional history and capacity, performing blocking reads
+/* A receiver with a FIFO queue and performing blocking reads
    and blocking writes.
 
  Copyright (c) 1997-1998 The Regents of the University of California.
@@ -37,18 +37,17 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// PNQueueReceiver
 /**
-A first-in, first-out (FIFO) queue with optional capacity and
-history, with blocking reads and writes. Objects are appended to the queue
-with the put() method, performing a blocking write, and removed from the queue
-with the get() method using blocking reads. The object removed is the oldest
-one in the queue. 
-If the history capacity is greater than zero (or infinite, indicated by 
-a capacity of -1), then objects removed from the queue are transferred to a
-second queue rather than simply deleted. By default, the history
-capacity is zero. In case the queue is empty, the get() method blocks till
-a token is introduced into the queue or a termination exception is thrown.
-In case the queue is full, the put() method blocks till there is enough
-room in the queue to introduce the token.
+
+A receiver with a FIFO queue and performs blocking reads and blocking writes to provide the basic functionality of a FIFO channel in the process networks model of computation.
+Tokens are appended to the queue with the put() method which blocks on a write if the queue is full. 
+Tokens are removed from the queue with the get() method which blocks on a read if the queue is empty.
+In case a process blocks on a read or a write, the receiver informs the director about the same.
+It similarly unblocks a blocked process on availability of a token (read-blocked) or room (write-blocked) and informs the director of the same.
+<p>
+This is also responsible for pausing or terminating a process that tries to read from or write to the receiver. In case of termination, it throws a TerminateProcessException when a process tries to read or write from the receiver. 
+This terminates the process. 
+In case of pausing, it suspends the process when it tries to read or write to the receiver and resumes it only after a request to resume the process has been received.
+<p>
 
 @author Mudit Goel
 @version $Id$
