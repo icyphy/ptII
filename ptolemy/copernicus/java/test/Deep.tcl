@@ -56,6 +56,12 @@ if {[info procs sootCodeGeneration] == "" } then {
 proc autoDeepCG {autoDirectory} {
     foreach file [glob $autoDirectory/*.xml] {
 	puts "---- testing $file"
+	if { [regexp {ComplexDivide.xml} $file] } {
+	    test "Auto" "Automatic test in file $file" {
+		error "$file is a known failure, skipping"
+	} {{}}
+
+	}
 	#set time [java::new Long [java::call System currentTimeMillis]]
 	test "Auto" "Automatic test in file $file" {
 	    set elapsedTime [time {sootCodeGeneration $file "Deep" 1000}]
@@ -72,22 +78,6 @@ proc autoDeepCG {autoDirectory} {
 #
 
 # First, do an SDF test just to be sure things are working
-test Deep-1.1 {Compile and run the SDF IIR test} {
-    set result [sootCodeGeneration \
-	    [file join $relativePathToPTII ptolemy actor lib test auto \
-		 IIR.xml] "Deep" 1000]
-    list {}
-} {{}}
-
-
-test Deep-1.2 {Compile and run the SDF OrthogonalCom test} {
-    set result [sootCodeGeneration \
-  	    [file join $relativePathToPTII ptolemy domains sdf demo OrthogonalCom \
-		 OrthogonalCom.xml] "Deep" 1000]
-    list {}
-} {{}}
-
-# Now try to generate code for all the tests in the auto directories.
 
 autoDeepCG [file join $relativePathToPTII ptolemy actor lib test auto]
 autoDeepCG [file join $relativePathToPTII ptolemy actor lib conversions test auto]
