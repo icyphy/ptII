@@ -67,7 +67,7 @@ test CalendarQueue-2.2 {Construct an empty queue and attempt a take} {
     set queue [java::new ptolemy.actor.util.CalendarQueue $comparator]
     catch {[$queue take]} msg1
     list $msg1
-} {{ptolemy.kernel.util.IllegalActionException: Invoking take() on empty queue is not allowed.}}
+} {{ptolemy.kernel.util.IllegalActionException: Cannot take from an empty queue.}}
 
 ######################################################################
 ######################################################################
@@ -175,7 +175,7 @@ test CalendarQueue-3.2 {Put 5 datas in the queue and take one by one} {
 ######################################################################
 ####
 #
-test CalendarQueue-3.3 {Tests the resize method and the direct search } {
+test CalendarQueue-3.3 {Tests the resize method } {
     set queue [java::new ptolemy.actor.util.CalendarQueue $comparator]
     $queue put $p9 $n1
     $queue put $p5 $n2
@@ -333,6 +333,22 @@ test CalendarQueue-3.5 {Tests interleaved put and take} {
 ######################################################################
 ####
 #
+test CalendarQueue-3.6 {Test toArray} {
+    set queue [java::new ptolemy.actor.util.CalendarQueue $comparator]
+    $queue put $p9 $n1
+    $queue put $p5 $n2
+    $queue put $p7 $n3
+    $queue put $p2 $n4
+    $queue put $p1 $n5
+    set result [$queue toArray]
+    list \
+            [arrayToNames [$result get 1]] \
+            [arrayToStrings [$result get 0]]
+} {{n5 n4 n2 n3 n1} {0.0 0.1 4.0 8.9 999.1}}
+
+######################################################################
+####
+#
 test CalendarQueue-4.1 {Tests the getNextKey method} {
     set queue [java::new ptolemy.actor.util.CalendarQueue $comparator]
     catch {[$queue getNextKey]} msg1
@@ -398,9 +414,7 @@ test CalendarQueue-4.1 {Tests the getNextKey method} {
             [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
             getName] \
 	    [$queue getPreviousKey]
-} {ptolemy.kernel.util.IllegalActionException: Invoking getNextKey() on empty queue is not allowed. 0.0 0.0 0.0 0.0 n5 0.0 0.0 n10 0.0 n4 0.1 n11 0.2 n9 3.0 n2 4.0 n8 7.6 8.9 n3 8.9 50.0 n7 50.0 999.1 n1 999.1}
-
-
+} {ptolemy.kernel.util.IllegalActionException: Cannot getNextKey() on an empty queue. 0.0 0.0 0.0 0.0 n5 0.0 0.0 n10 0.0 n4 0.1 n11 0.2 n9 3.0 n2 4.0 n8 7.6 8.9 n3 8.9 50.0 n7 50.0 999.1 n1 999.1}
 
 ######################################################################
 ####
@@ -433,7 +447,7 @@ test CalendarQueue-5.1 {Tests remove and includes method} {
     catch {[$queue take]} msg1
     catch {[$queue getNextKey]} msg2
     lappend mylist $msg1 $msg2
-} {0.0 1 0.1 n4 0.1 1 0 0 1 n3 n8 n7 {ptolemy.kernel.util.IllegalActionException: Invoking take() on empty queue is not allowed.} {ptolemy.kernel.util.IllegalActionException: Invoking getNextKey() on empty queue is not allowed.}}
+} {0.0 1 0.1 n4 0.1 1 0 0 1 n3 n8 n7 {ptolemy.kernel.util.IllegalActionException: Cannot take from an empty queue.} {ptolemy.kernel.util.IllegalActionException: Cannot getNextKey() on an empty queue.}}
 
 ######################################################################
 ####
@@ -443,32 +457,44 @@ test CalendarQueue-5.2 {Comprehensive tests of everything} {
     catch {[$queue getNextKey]} msg1
     catch {[$queue take]} msg2
     catch {[$queue getPreviousKey]} msg3
-    set mylist [list $msg1 $msg2 $msg3]
+    list $msg1 $msg2 $msg3
+} {{ptolemy.kernel.util.IllegalActionException: Cannot getNextKey() on an empty queue.} {ptolemy.kernel.util.IllegalActionException: Cannot take from an empty queue.} {ptolemy.kernel.util.IllegalActionException: No previous key available.}}
+
+test CalendarQueue-5.3 {Comprehensive tests of everything} {
 
     $queue put $p1 $n5;# queue size should get doubled here, becomes 4
-    lappend mylist [$queue getNextKey]
+    $queue getNextKey
+} {0.0}
 
-    $queue put $p1again $n10;# Note that due to implementation, this will come before n1
-    lappend mylist [$queue getNextKey]
+test CalendarQueue-5.4 {Comprehensive tests of everything} {
+
+    # Note that due to implementation, this will come before n1
+    $queue put $p1again $n10
+    set mylist [list [$queue getNextKey]]
 
     $queue put $p5 $n2
     lappend mylist [$queue getNextKey] \
 	    [$queue remove $p5 $n2]
+} {0.0 0.0 1}
 
+test CalendarQueue-5.5 {Comprehensive tests of everything} {
     # This sequence of take would half the queue size to 4
-    lappend mylist [$queue getNextKey] \
-            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
-            getName] \
+    set mylist [list [$queue getNextKey] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] getName] \
 	    [$queue getPreviousKey] \
 	    [$queue getNextKey] \
-            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
-            getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] getName] \
             [$queue getPreviousKey] \
-	    [$queue size]
+	    [$queue size]]
+} {0.0 n5 0.0 0.0 n10 0.0 0}
+
+test CalendarQueue-5.6 {Comprehensive tests of everything} {
     catch {[$queue take]} msg1
     catch {[$queue getNextKey]} msg2
-    lappend mylist $msg1 $msg2 \
-	    [$queue remove $p2 $n4]
+    list $msg1 $msg2 [$queue remove $p2 $n4]
+} {{ptolemy.kernel.util.IllegalActionException: Cannot take from an empty queue.} {ptolemy.kernel.util.IllegalActionException: Cannot getNextKey() on an empty queue.} 0}
+
+test CalendarQueue-5.7 {Comprehensive tests of everything} {
 
     $queue put $p2 $n4
     $queue put $p6 $n8
@@ -476,44 +502,52 @@ test CalendarQueue-5.2 {Comprehensive tests of everything} {
     $queue put $p3 $n11
     $queue put $p9 $n1
 
-    lappend mylist [$queue remove $p3 $n4] \
+    list [$queue remove $p3 $n4] \
 	    [$queue includes $p2 $n4] \
 	    [$queue remove $p6 $n8] \
-            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
-            getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] getName] \
 	    [$queue getPreviousKey] \
-            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
-            getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] getName] \
             [$queue getPreviousKey] \
-            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
-            getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] getName] \
 	    [$queue getPreviousKey] \
-            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
-            getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] getName] \
 	    [$queue getPreviousKey]
+} {0 1 1 n4 0.1 n11 0.2 n9 3.0 n1 999.1}
+
+test CalendarQueue-5.8 {Comprehensive tests of everything} {
     catch {[$queue take]} msg1
     catch {[$queue getPreviousKey]} msg2
-    lappend mylist $msg1 $msg2
+    list $msg1 $msg2
+} {{ptolemy.kernel.util.IllegalActionException: Cannot take from an empty queue.} {ptolemy.kernel.util.IllegalActionException: No previous key available.}}
 
+test CalendarQueue-5.9 {Comprehensive tests of everything} {
     $queue put $p7 $n3
     $queue put $p10 $n16
     $queue put $p8 $n7
 
+    $queue getNextKey
+} {8.9}
 
-    lappend mylist [$queue getNextKey] \
-            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
-            getName] \
+test CalendarQueue-5.10 {Comprehensive tests of everything} {
+    [java::cast ptolemy.kernel.util.NamedObj [$queue take]] getName
+} {n3}
+
+test CalendarQueue-5.11 {Comprehensive tests of everything} {
+    $queue getPreviousKey
+} {8.9}
+
+test CalendarQueue-5.12 {Comprehensive tests of everything} {
+    $queue getNextKey
+} {50.0}
+
+test CalendarQueue-5.13 {Comprehensive tests of everything} {
+    list [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] getName] \
 	    [$queue getPreviousKey] \
 	    [$queue getNextKey] \
-            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
-            getName] \
-	    [$queue getPreviousKey] \
-	    [$queue getNextKey] \
-            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
-            getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] getName] \
 	    [$queue getPreviousKey]
-} {{ptolemy.kernel.util.IllegalActionException: Invoking getNextKey() on empty queue is not allowed.} {ptolemy.kernel.util.IllegalActionException: Invoking take() on empty queue is not allowed.} {ptolemy.kernel.util.IllegalActionException: No take() or valid take() precedes this operation} 0.0 0.0 0.0 1 0.0 n5 0.0 0.0 n10 0.0 0 {ptolemy.kernel.util.IllegalActionException: Invoking take() on empty queue is not allowed.} {ptolemy.kernel.util.IllegalActionException: Invoking getNextKey() on empty queue is not allowed.} 0 0 1 1 n4 0.1 n11 0.2 n9 3.0 n1 999.1 {ptolemy.kernel.util.IllegalActionException: Invoking take() on empty queue is not allowed.} {ptolemy.kernel.util.IllegalActionException: No take() or valid take() precedes this operation} 8.9 n3 8.9 50.0 n7 50.0 999.3 n16 999.3}
-
+} {n7 50.0 999.3 n16 999.3}
 
 ######################################################################
 ####
@@ -549,7 +583,7 @@ test CalendarQueue-6.1 {Test identical entry} {
     catch {[$queue getNextKey]} msg1
     lappend mylist $msg1
 
-} {0.0 1 0.0 n5 0.0 0 0 0 0 n5 n5 n5 n5 {ptolemy.kernel.util.IllegalActionException: Invoking getNextKey() on empty queue is not allowed.}}
+} {0.0 1 0.0 n5 0.0 0 0 0 0 n5 n5 n5 n5 {ptolemy.kernel.util.IllegalActionException: Cannot getNextKey() on an empty queue.}}
 
 ######################################################################
 ####
@@ -594,8 +628,32 @@ test CalendarQueue-7.1 {Test the clear method} {
     catch {[$queue getNextKey]} msg1
     lappend mylist $msg1
 
-} {0.0 1 0.0 n5 0.0 0 0 0 0 n5 n5 n5 n5 {ptolemy.kernel.util.IllegalActionException: Invoking getNextKey() on empty queue is not allowed.}}
+} {0.0 1 0.0 n5 0.0 0 0 0 0 n5 n5 n5 n5 {ptolemy.kernel.util.IllegalActionException: Cannot getNextKey() on an empty queue.}}
 
 ######################################################################
 ####
 #
+test CalendarQueue-8.0 {Test queue with identical keys} {
+    set queue [java::new ptolemy.actor.util.CalendarQueue $comparator]
+    $queue put $p1 $n1
+    $queue put $p1 $n2
+    $queue put $p1 $n3
+    $queue put $p1 $n4
+    $queue put $p1 $n5
+    $queue put $p1 $n6
+    $queue put $p1 $n7
+    $queue put $p1 $n8
+    $queue put $p1 $n9
+    $queue put $p1 $n10
+    list \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] getName]
+} {n1 n2 n3 n4 n5 n6 n7 n8 n9 n10}
