@@ -266,7 +266,7 @@ public class Expression extends TypedAtomicActor {
                 _addPathCommand = "addedPath_ = " + cellFormat.toString()
                     + ";addpath(addedPath_{:});";
                 synchronized (Engine.semaphore) {
-                    int status = matlabEngine.evalString
+                    matlabEngine.evalString
                         (engine, "previousPath_=path");
                     _previousPath = matlabEngine.get(engine, "previousPath_");
                 }
@@ -309,12 +309,13 @@ public class Expression extends TypedAtomicActor {
                 // persistent storage created by a function (this usually
                 // for speed-up purposes to avoid recalculation on every
                 // function call)
-                int status = matlabEngine.evalString
+                matlabEngine.evalString
                     (engine, "clear variables;clear globals");
 
-                if (_addPathCommand != null)
-                    status = matlabEngine.evalString(engine, _addPathCommand);
-
+                if (_addPathCommand != null) {
+                    matlabEngine.evalString(engine, _addPathCommand);
+                }
+                
                 matlabEngine.put(engine, "time",
                         new DoubleToken(director.getCurrentTime()));
                 matlabEngine.put(engine, "iteration",
@@ -324,7 +325,7 @@ public class Expression extends TypedAtomicActor {
                     IOPort port = (IOPort)(inputPorts.next());
                     matlabEngine.put(engine, port.getName(), port.get(0));
                 }
-                status = matlabEngine.evalString
+                matlabEngine.evalString
                     (engine, expression.getExpression());
                 Iterator outputPorts = outputPortList().iterator();
                 while (outputPorts.hasNext()) {
@@ -338,7 +339,7 @@ public class Expression extends TypedAtomicActor {
                 // Restore previous path if path was modified above
                 if (_previousPath != null) {
                     matlabEngine.put(engine, "previousPath_",_previousPath);
-                    status = matlabEngine.evalString
+                    matlabEngine.evalString
                         (engine, "path(previousPath_);");
                 }
             }
