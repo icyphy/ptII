@@ -435,9 +435,7 @@ public class CalendarQueue implements Debuggable {
         int currentBucket = _minBucket;
         long virtualBucket = _minVirtualBucket;
         long minimumNextVirtualBucket = Long.MAX_VALUE;
-        int indexOfMinimum = currentBucket;
         int nextStartBucket = _minBucket;
-        Object minSoFar = null;
 
         // Keep track of where we are in each bucket.
         CQCell[] bucketHead = new CQCell[_bucket.length];
