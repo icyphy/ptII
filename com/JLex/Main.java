@@ -350,14 +350,14 @@ class CEmit
   /***************************************************************
     Constants: Anchor Types
     **************************************************************/
-    private final int START = 1;
-    private final int END = 2;
-    private final int NONE = 4;
+    // private final int START = 1;
+    // private final int END = 2;
+    // private final int NONE = 4;
 
     /***************************************************************
     Constants
     **************************************************************/
-    private final boolean EDBG = true;
+    //private final boolean EDBG = true;
     private final boolean NOT_EDBG = false;
 
   /***************************************************************
@@ -1791,7 +1791,6 @@ class CMakeNfa
             throws java.io.IOException
     {
         CNfaPair pair;
-        CNfa p;
         CNfa start = null;
         CNfa end = null;
         int anchor = CSpec.NONE;
@@ -2055,8 +2054,7 @@ class CMakeNfa
     {
         CNfa start;
         boolean isAlphaL;
-        int c;
-
+      
         if (CUtility.DESCENT_DEBUG)
             {
                 CUtility.enter("term",m_spec.m_lexeme,m_spec.m_current_token);
@@ -2764,7 +2762,6 @@ class CMinimize
         int j;
         int group_count;
         int size;
-        CAccept accept;
         CDTrans dtrans;
         Vector dtrans_group;
         CDTrans first;
@@ -2965,7 +2962,6 @@ class CNfa2Dfa
             CSpec spec
             )
     {
-        int i;
 
         reset();
         set(lexGen,spec);
@@ -2991,7 +2987,6 @@ class CNfa2Dfa
      )
             /* throws java.lang.CloneNotSupportedException*/
     {
-        CDfa next;
         CDfa dfa;
         CBunch bunch;
         int i;
@@ -4904,7 +4899,6 @@ class CLexGen
      )
             throws java.io.IOException
     {
-        int count = 0;
 
         if (false == m_init_flag)
             {
@@ -5769,7 +5763,6 @@ class CLexGen
      )
             throws java.io.IOException
     {
-        int code;
 
         if (false == m_init_flag)
             {
@@ -7048,9 +7041,7 @@ class CLexGen
         Enumeration states;
         String state;
         Integer index;
-        int elem;
-        int size;
-
+ 
         System.out.println("\n\t** Macros **");
         names = m_spec.m_macros.keys();
         while (names.hasMoreElements())

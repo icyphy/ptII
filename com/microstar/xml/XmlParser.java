@@ -609,7 +609,7 @@ public class XmlParser {
   {
     String version;
     String encodingName = null;
-    String standalone = null;
+    // String standalone = null;
 
 				// Read the version.
     require("version");
@@ -631,7 +631,8 @@ public class XmlParser {
     skipWhitespace();
     if (tryRead("standalone")) {
       parseEq();
-      standalone = readLiteral(0);
+      // FIXME: Why is the literal read, but the value ignored?
+      /* standalone = */readLiteral(0);
     }
 
     skipWhitespace();
@@ -769,7 +770,6 @@ public class XmlParser {
   void parseDoctypedecl ()
     throws java.lang.Exception
   {
-    char c;
     String doctypeName, ids[];
 
 				// Read the document type name.
@@ -1059,7 +1059,6 @@ public class XmlParser {
   void parseContent ()
     throws java.lang.Exception
   {
-    String data;
     char c;
 
     while (true) {
@@ -1306,7 +1305,6 @@ public class XmlParser {
   void parseMixed ()
     throws java.lang.Exception
   {
-    char c;
 
 				// Check for PCDATA alone.
     skipWhitespace();
@@ -1422,8 +1420,6 @@ public class XmlParser {
   void parseEnumeration ()
     throws java.lang.Exception
   {
-    char c;
-
     dataBufferAppend('(');
 
 				// Read the first token.
@@ -1468,7 +1464,6 @@ public class XmlParser {
   {
     int valueType = ATTRIBUTE_DEFAULT_SPECIFIED;
     String value = null;
-    boolean normalizeWSFlag;
 
     if (tryRead('#')) {
       if (tryRead("FIXED")) {
@@ -1520,7 +1515,6 @@ public class XmlParser {
     } else if (tryRead("IGNORE")) {
       skipWhitespace();
       require('[');
-      int nesting = 1;
       char c;
       for (int nest = 1; nest > 0; ) {
 	c = readCh();
@@ -2130,7 +2124,6 @@ public class XmlParser {
   String[] readExternalIds (boolean inNotation)
     throws java.lang.Exception
   {
-    char c;
     String ids[] = new String[2];
 
     if (tryRead("PUBLIC")) {
@@ -3645,9 +3638,8 @@ public class XmlParser {
 			     + "Perhaps there is a missing '>' "
 			     + "or a comment is unterminated by '->'?");
     } else {
-      String s;
       input = (Object[])inputStack.pop();
-      s = (String)entityStack.pop();
+      entityStack.pop();
     }
 
     sourceType = ((Integer)input[0]).intValue();
@@ -3904,7 +3896,7 @@ public class XmlParser {
   void readDataChunk ()
     throws java.lang.Exception
     {
-    int count, i, j;
+    int count;
 
     // See if we have any overflow.
     if (readBufferOverflow > -1)
@@ -4050,10 +4042,8 @@ public class XmlParser {
     int i = 0;
     int j = readBufferPos;
     int b1;
-    boolean isSurrogate = false;
     while (i < count) {
       b1 = rawReadBuffer[i++];
-      isSurrogate = false;
 
 				// Determine whether we are dealing
 				// with a one-, two-, three-, or four-
@@ -4076,7 +4066,6 @@ public class XmlParser {
 	// 4-byte sequence: 11101110wwwwzzzzyy + 110111yyyyxxxxxx
 	//     = 11110uuu 10uuzzzz 10yyyyyy 10xxxxxx
 	// (uuuuu = wwww + 1)
-	isSurrogate = true;
 	int b2 = getNextUtf8Byte(i++, count);
 	int b3 = getNextUtf8Byte(i++, count);
 	int b4 = getNextUtf8Byte(i++, count);
@@ -4277,7 +4266,7 @@ public class XmlParser {
     */
   void initializeVariables ()
   {
-				// No errors; first line
+				// No errors; first lineb
     errorCount = 0;
     line = 1;
     column = 0;
@@ -4365,6 +4354,10 @@ public class XmlParser {
   private int readBufferLength;
   private int readBufferOverflow; // overflow character from last data chunk.
 
+  //
+  // Stack of entity names, to help detect recursion.
+  //
+  private Stack entityStack;
 
   //
   // Buffer for undecoded raw byte input.
@@ -4406,17 +4399,10 @@ public class XmlParser {
   //
   private String basePublicId;
   private String baseURI;
-  private int baseEncoding;
+
   private Reader baseReader;
   private InputStream baseInputStream;
-  private char baseInputBuffer[];
-  private int baseInputBufferStart;
-  private int baseInputBufferLength;
 
-  //
-  // Stack of entity names, to help detect recursion.
-  //
-  private Stack entityStack;
 
   //
   // Are we in a context where PEs are allowed?

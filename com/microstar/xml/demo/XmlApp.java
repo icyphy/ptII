@@ -213,7 +213,7 @@ public class XmlApp implements XmlHandler {
   void doParse (String url)
     throws java.lang.Exception
   {
-    String docURL = makeAbsoluteURL(url);
+    /* String docURL = */ makeAbsoluteURL(url);
 
 				// create the parser
     parser = new XmlParser();
