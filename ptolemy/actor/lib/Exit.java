@@ -38,15 +38,14 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// Exit
 /**
-/* A simple sink actor that consumes and discards input tokens and
+A simple sink actor that consumes and discards input tokens and
 then calls System.exit() in wrapup.
 
 @see Stop
 @author Edward A. Lee
 @version $Id$
-@since Ptolemy II 1.0
+@since Ptolemy II 3.1
 */
-
 public class Exit extends Sink {
 
     /** Construct an actor with an input multiport.
