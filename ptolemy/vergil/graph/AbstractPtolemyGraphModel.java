@@ -252,8 +252,9 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
          *  @param exception The exception that was thrown.
          */
         public void changeFailed(ChangeRequest change, Exception exception) {
-            // Ignore unless this is the originator.
-            if(change.getOriginator() == AbstractPtolemyGraphModel.this) {
+            // Report it if it has not been reported.
+            if (!change.isErrorReported()) {
+                change.setErrorReported(true);
                 MessageHandler.error("Change failed", exception);
             }
 	    // Just in case something happened to the graph.

@@ -88,7 +88,7 @@ which will result in faster execution.
 @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer, John Reekie
 @version $Id$
 */
-public class Director extends ComponentEntity implements Executable {
+public class Director extends Attribute implements Executable {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -124,35 +124,12 @@ public class Director extends ComponentEntity implements Executable {
      */
     public Director(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container.workspace());
-        setName(name);
-        if (container instanceof CompositeActor) {
-            ((CompositeActor)container).setDirector(this);
-        } else {
-            setContainer(container);
-        }
+        super(container, name);
         setMoMLElementName("director");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Clone the object into the specified workspace. The new object is
-     *  <i>not</i> added to the directory of that workspace (you must do this
-     *  yourself if you want it there).
-     *  The result is a new entity with the same ports as the original, but
-     *  no connections and no container.
-     *  @param ws The workspace for the cloned object.
-     *  @exception CloneNotSupportedException If cloned ports cannot have
-     *   as their container the cloned entity (this should not occur), or
-     *   if one of the attributes cannot be cloned.
-     *  @return A new ComponentEntity.
-     */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        Director newobj = (Director)super.clone(ws);
-        newobj._container = null;
-        return newobj;
-    }
 
     /** Invoke an iteration on all of the deeply contained actors of the
      *  container of this director.  In general, this may be called more
@@ -208,17 +185,6 @@ public class Director extends ComponentEntity implements Executable {
         // But we didn't do that, because otherwise we wouldn't be able
         // to run Tcl Blend testscript on this class.
 
-    }
-
-    /** Get the container entity.
-     *  @return The container, which is an instance of CompositeEntity.
-     */
-    public Nameable getContainer() {
-        if (_container != null) {
-            return _container;
-        } else {
-            return super.getContainer();
-        }
     }
 
     /** Return the current time of the model being executed by this director.
@@ -506,24 +472,20 @@ public class Director extends ComponentEntity implements Executable {
     }
 
     /** Specify the container.  If the specified container is an instance
-     *  of CompositeActor, then this becomes the one unique director for
-     *  that composite.  Otherwise, this is an entity like any other within
-     *  the container. In that case, if the container already contains
-     *  an entity with the same name, then throw an exception and do not make
-     *  any changes.  Similarly, if the container is not in the same
-     *  workspace as this entity, throw an exception.
-     *  If this director is already contained by the container, do nothing.
+     *  of CompositeActor, then this becomes the active director for
+     *  that composite.  Otherwise, this is an attribute like any other within
+     *  the container. If the container is not in the same
+     *  workspace as this director, throw an exception.
+     *  If this director is already an attribute of the container,
+     *  then this has the effect only of making it the active director.
      *  If this director already has a container, remove it
      *  from that container first.  Otherwise, remove it from
      *  the directory of the workspace, if it is present.
-     *  If the argument is null, then unlink the ports of the director
-     *  (if any) from any relations and remove it from its container.
+     *  If the argument is null, then remove it from its container.
      *  This director is not added to the workspace directory, so calling
      *  this method with a null argument could result in
      *  this director being garbage collected.
-     *  Derived classes may further constrain the container
-     *  to subclasses of CompositeEntity by overriding the protected
-     *  method _checkContainer(). This method is write-synchronized
+     *  This method is write-synchronized
      *  to the workspace and increments its version number.
      *  @param container The proposed container.
      *  @exception IllegalActionException If the action would result in a
@@ -535,51 +497,18 @@ public class Director extends ComponentEntity implements Executable {
      *   be thrown if the container argument is an instance of
      *   CompositeActor.
      */
-    public void setContainer(CompositeEntity container)
+    public void setContainer(NamedObj container)
             throws IllegalActionException, NameDuplicationException {
-        if (container instanceof CompositeActor) {
-            if (container != null && _workspace != container.workspace()) {
-                throw new IllegalActionException(this, container,
-                "Cannot set container because workspaces are different.");
-            }
-            try {
-                _workspace.getWriteAccess();
-                _checkContainer(container);
-                CompositeActor castContainer = (CompositeActor)container;
-                // NOTE: The following code is quite tricky.  It is very careful
-                // to leave a consistent state even in the face of unexpected
-                // exceptions.  Be very careful if modifying it.
-                CompositeEntity prevcontainer = (CompositeEntity)getContainer();
-                if (prevcontainer == container) return;
-
-                // Do this first, because it may throw an exception, and we have
-                // not yet changed any state.
-                if (container != null) {
-                    castContainer._setDirector(this);
-                    if (prevcontainer == null) {
-                        _workspace.remove(this);
-                    }
-                }
-                _container = castContainer;
-                // This is safe now because it does not throw an exception.
-                if (prevcontainer instanceof CompositeActor) {
-                    ((CompositeActor)prevcontainer)._setDirector(null);
-                } else if (prevcontainer != null || container == null) {
-                    // If the previous container was not null or the
-                    // new container is null, call the superclass with a
-                    // null argument.  This has the effect of removing
-                    // this entity from the previous container (if there
-                    // was one) and disconnecting all the port (if there
-                    // are any).
-                    super.setContainer(null);
-                }
-            } finally {
-                _workspace.doneWriting();
-            }
-        } else {
-            // Not a CompositeActor container.
+        try {
+            _workspace.getWriteAccess();
             super.setContainer(container);
-            _container = null;
+
+            if (container instanceof CompositeActor) {
+                // Set cached value in composite actor.
+                ((CompositeActor)container)._setDirector(this);
+            }
+        } finally {
+            _workspace.doneWriting();
         }
     }
 
@@ -838,10 +767,4 @@ public class Director extends ComponentEntity implements Executable {
 
     /** The current time of the model. */
     protected double _currentTime = 0.0;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // The composite actor that this is the director of, if any.
-    private CompositeActor _container;
 }

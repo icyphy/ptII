@@ -48,6 +48,7 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.data.expr.Variable;
 import ptolemy.gui.MessageHandler;
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -413,6 +414,34 @@ public class MoMLApplication {
         }
     }
 
+    /** Read a Configuration from the URL given by the specified string.
+     *  The URL may absolute, or relative to the Ptolemy II tree root.
+     *  @param urlSpec A string describing a URL.
+     *  @return A configuration.
+     *  @exception Exception If the configuration cannot be opened, or
+     *   if the contents of the URL is not a configuration.
+     */
+    protected Configuration _readConfiguration(String urlSpec)
+            throws Exception {
+        URL inurl = specToURL(urlSpec);
+        _parser = new MoMLParser();
+        Configuration toplevel = (Configuration)
+                _parser.parse(inurl, inurl.openStream());
+        // If the toplevel model is a configuration containing a directory,
+        // then create an effigy for the configuration itself, and put it
+        // in the directory.
+        ComponentEntity directory
+                = ((Configuration)toplevel).getEntity("directory");
+        if (directory instanceof ModelDirectory) {
+            PtolemyEffigy effigy
+                   = new PtolemyEffigy(
+                       (ModelDirectory)directory, toplevel.getName());
+            effigy.setModel(toplevel);
+            effigy.identifier.setExpression(inurl.toExternalForm());
+        }
+        return toplevel;
+    }
+
     /** Return a string summarizing the command-line arguments.
      *  @return A usage string.
      */
@@ -453,6 +482,9 @@ public class MoMLApplication {
 
     // The configuration model of this application.
     protected Configuration _config;
+
+    // The parser used to construct the configuration.
+    protected MoMLParser _parser;
 
     /** If true, then auto exit after a few seconds. */
     protected static boolean _test = false;

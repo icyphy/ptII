@@ -36,6 +36,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
@@ -43,7 +44,6 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.gui.MessageHandler;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DocumentationViewerTableau;
@@ -74,7 +74,7 @@ import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.PtolemyListCellRenderer;
 import ptolemy.vergil.toolbox.PtolemyMenuFactory;
 import ptolemy.vergil.toolbox.XMLIcon;
-import ptolemy.vergil.tree.EntityTreeModel;
+import ptolemy.vergil.tree.VisibleTreeModel;
 import ptolemy.vergil.tree.PTree;
 
 import diva.canvas.CanvasUtilities;
@@ -152,7 +152,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
-
+import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 //////////////////////////////////////////////////////////////////////////
@@ -164,15 +164,17 @@ are supported using MoML and the graph itself is created using a visual
 notation as a a factory
 
 @author  Steve Neuendorffer
+@contributor Edward A. Lee
 @version $Id$
 */
 public abstract class GraphFrame extends PtolemyTop
-    implements Printable, ClipboardOwner {
+    implements Printable, ClipboardOwner, ChangeListener {
    
     public GraphFrame(CompositeEntity entity, Tableau tableau) {
         super(tableau);
 
 	_model = entity;
+        _model.addChangeListener(this);
 
 	// ensure that the icons are loaded
 	Configuration configuration = (Configuration)tableau.toplevel();
@@ -235,7 +237,7 @@ public abstract class GraphFrame extends PtolemyTop
             if (tableau != null) {
                 NamedObj toplevel = tableau.toplevel();
                 if (toplevel instanceof CompositeEntity) {
-                    // FIXME: Should we get this by name "library" instead?
+                    // Put a clone of all libraries in the library panel.
                     Iterator libraries = ((CompositeEntity)toplevel)
                             .entityList(EntityLibrary.class).iterator();
                     while (libraries.hasNext()) {
@@ -253,17 +255,13 @@ public abstract class GraphFrame extends PtolemyTop
             }
         }
 
-        // FIXME
-        // System.out.println("---------------------------------------");
-        // System.out.println(topLibrary.exportMoML());
-        // System.out.println("---------------------------------------");
-
-        EntityTreeModel treeModel = new EntityTreeModel(topLibrary);
+        TreeModel treeModel = new VisibleTreeModel(topLibrary);
         _library = new PTree(treeModel);
         _library.setRootVisible(false);
         _library.setBackground(BACKGROUND_COLOR);
 
-        // Expand the top-level libraries.
+        // If you want to expand the top-level libraries, uncomment this.
+        /*
         Object[] path = new Object[2];
         path[0] = topLibrary;
         Iterator libraries = topLibrary.entityList().iterator();
@@ -271,6 +269,7 @@ public abstract class GraphFrame extends PtolemyTop
             path[1] = libraries.next();
             _library.expandPath(new TreePath(path));
         }
+        */
 
         _libraryScrollPane = new JScrollPane(_library);
         _libraryScrollPane.setMinimumSize(new Dimension(200, 200));
@@ -301,6 +300,30 @@ public abstract class GraphFrame extends PtolemyTop
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** React to the fact that a change has been successfully executed
+     *  by marking the data associated with this window modified.  This
+     *  will trigger a dialog when the window is closed, prompting the
+     *  user to save the data.
+     *  @param change The change that has been executed.
+     */
+    public void changeExecuted(ChangeRequest change) {
+        setModified(true);
+    }
+
+    /** React to the fact that a change has triggered an error by
+     *  doing nothing (the effigy is also listening and will report
+     *  the error).
+     *  @param change The change that was attempted.
+     *  @param exception The exception that resulted.
+     */
+    public void changeFailed(ChangeRequest change, Exception exception) {
+        // Do not report if it has already been reported.
+        if (!change.isErrorReported()) {
+            change.setErrorReported(true);
+            MessageHandler.error("Change failed", exception);
+        }
+    }
 
     /** Get the currently selected objects from this document, if any,
      * and place them on the given clipboard. 
@@ -355,8 +378,8 @@ public abstract class GraphFrame extends PtolemyTop
     }
  
     /** Remove the currently selected objects from this document, if any,
-     * and place them on the given clipboard.  If the document does not
-     * support such an operation, then do nothing.
+     *  and place them on the given clipboard.  If the document does not
+     *  support such an operation, then do nothing.
      */
     public void cut () {
 	// FIXME
@@ -565,15 +588,14 @@ public abstract class GraphFrame extends PtolemyTop
 		try {
 		    icon = new XMLIcon(entity, entity.uniqueName("icon"));
 		} catch (Exception ex) {
-		    throw new InternalErrorException("duplicated name, but "
-						     + "there were no " +
-						     "other icons.");
+		    throw new InternalErrorException(
+                            "duplicated name, but there were no other icons.");
 		}
 	    } else if(iconList.size() == 1) {
 		icon = (XMLIcon)iconList.get(0);
 	    } else {
 		throw new InternalErrorException("entity " + entity + 
-				 "contains more than one icon");
+                       " contains more than one icon");
 	    }
 	    // FIXME make a tableau.
 	    ApplicationContext appContext = new ApplicationContext();
@@ -604,27 +626,6 @@ public abstract class GraphFrame extends PtolemyTop
 	}
     }
         
-    // An action to look inside a composite.
-    private class LookInsideAction extends FigureAction {
-	public LookInsideAction() {
-	    super("Look Inside");
-	}
-	public void actionPerformed(ActionEvent e) {
-	    // Figure out what entity.
-	    super.actionPerformed(e);		
-	    NamedObj object = getTarget();
-	    if(!(object instanceof CompositeEntity)) return;
-	    CompositeEntity entity = (CompositeEntity)object;
-	    NamedObj deferredTo = entity.getDeferMoMLDefinitionTo();
-	    if(deferredTo != null) {
-		entity = (CompositeEntity)deferredTo;
-	    }
-
-	    // FIXME create a new ptolemy effigy and
-	    // a new graphTableau for it.
-	}
-    }
-   
     // A layout algorithm for laying out ptolemy graphs.  Since our edges
     // are undirected, this layout algorithm turns them into directed edges
     // aimed consistently. i.e. An edge should always be "out" of an

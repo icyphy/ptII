@@ -1,4 +1,4 @@
-/* A tree model for Ptolemy II objects, for use with JTree.
+/* A tree model for the Vergil library panel.
 
  Copyright (c) 2000 The Regents of the University of California.
  All rights reserved.
@@ -30,40 +30,39 @@
 
 package ptolemy.vergil.tree;
 
-import ptolemy.kernel.util.NamedObj;
+import ptolemy.actor.Director;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.LibraryMarkerAttribute;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.gui.MessageHandler;
+import ptolemy.moml.MoMLParser;
 
-import java.util.Iterator;
+import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
-import javax.swing.event.TreeModelEvent;
-import javax.swing.event.TreeModelListener;
-import javax.swing.tree.TreeModel;
+import javax.swing.JTree;
 import javax.swing.tree.TreePath;
 
 //////////////////////////////////////////////////////////////////////////
-//// FullTreeModel
+//// VisibleTreeModel
 /**
-A tree model for Ptolemy II models.  Nodes in this tree contain
-the following child elements, in this order:
-<ul>
-<li> attributes
-<li> ports
-<li> relations
-<li> contained entities
-</ul>
 
-FIXME: More information.
+A tree model for the Vergil library panel.  This is a tree model that
+shows entities, ports, relations, and visible attributes.  Attributes
+that are not marked visible are not shown. A composite entity that contains
+an instance of LibraryMarkerAttribute is treated as a sublibrary.
+A composite entity without such an attribute is treated as an atomic entity.
+This is designed for use with JTree, which renders the hierarchy.
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
 */
-public class FullTreeModel extends EntityTreeModel {
+public class VisibleTreeModel extends EntityTreeModel {
 
     /** Create a new tree model with the specified root.
      *  @param root The root of the tree.
      */
-    public FullTreeModel(CompositeEntity root) {
+    public VisibleTreeModel(CompositeEntity root) {
 	super(root);
     }
 
@@ -77,10 +76,11 @@ public class FullTreeModel extends EntityTreeModel {
      *  @return A node, or null if there is no such child.
      */
     public Object getChild(Object parent, int index) {
-        // FIXME: doing attributes only.
+        // FIXME: How do we determine whether an attribute is visible?
+        // Here, we only show directors.
 	if(!(parent instanceof NamedObj)) return null;
         NamedObj obj = (NamedObj)parent;
-        List attributes = obj.attributeList();
+        List attributes = obj.attributeList(Director.class);
         int numAttributes = attributes.size();
 	if(index >= numAttributes) {
             return super.getChild(parent, index - numAttributes);
@@ -89,6 +89,10 @@ public class FullTreeModel extends EntityTreeModel {
         } else {
             return attributes.get(index);
         }
+
+        // FIXME: Perhaps the list of visible attributes should be cached.
+
+        // FIXME: need to do ports and relations.
     }
 
     /** Return the number of children of the given parent.
@@ -102,7 +106,9 @@ public class FullTreeModel extends EntityTreeModel {
         // FIXME: Only doing attributes for now.
 	if (!(parent instanceof NamedObj)) return 0;
         NamedObj obj = (NamedObj)parent;
-        List attributes = obj.attributeList();
+        // FIXME: How do we determine whether an attribute is visible?
+        // Here, we only show directors.
+        List attributes = obj.attributeList(Director.class);
         int numAttributes = attributes.size();
         int result = numAttributes + super.getChildCount(parent);
         return result;
@@ -116,7 +122,9 @@ public class FullTreeModel extends EntityTreeModel {
         // FIXME: doing attributes only.
 	if (!(parent instanceof NamedObj)) return -1;
         NamedObj obj = (NamedObj)parent;
-        List attributes = obj.attributeList();
+        // FIXME: How do we determine whether an attribute is visible?
+        // Here, we only show directors.
+        List attributes = obj.attributeList(Director.class);
         int index = attributes.indexOf(child);
 	if(index >= 0) return index;
         else return super.getIndexOfChild(parent, child);
@@ -131,7 +139,9 @@ public class FullTreeModel extends EntityTreeModel {
         // FIXME: Only doing attributes for now.
 	if (!(object instanceof NamedObj)) return true;
         NamedObj obj = (NamedObj)object;
-        List attributes = obj.attributeList();
+        // FIXME: How do we determine whether an attribute is visible?
+        // Here, we only show directors.
+        List attributes = obj.attributeList(Director.class);
         int numAttributes = attributes.size();
         if (numAttributes > 0) return false;
         else return super.isLeaf(object);

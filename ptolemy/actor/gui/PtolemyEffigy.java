@@ -32,10 +32,8 @@ package ptolemy.actor.gui;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.util.*;
+import ptolemy.gui.MessageHandler;
 
 import java.awt.Dimension;
 import javax.swing.JFrame;
@@ -49,7 +47,7 @@ An effigy for a Ptolemy II model.
 @author Steve Neuendorffer
 @version $Id$
 */
-public class PtolemyEffigy extends Effigy {
+public class PtolemyEffigy extends Effigy implements ChangeListener {
 
     /** Create a new proxy in the specified workspace with an empty string
      *  for its name.
@@ -71,6 +69,25 @@ public class PtolemyEffigy extends Effigy {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
+    /** React to the fact that a change has been successfully executed.
+     *  This method does nothing.
+     *  @param change The change that has been executed.
+     */
+    public void changeExecuted(ChangeRequest change) {}
+
+    /** React to the fact that a change has triggered an error by
+     *  reporting the error in a top-level dialog.
+     *  @param change The change that was attempted.
+     *  @param exception The exception that resulted.
+     */
+    public void changeFailed(ChangeRequest change, Exception exception) {
+        // Do not report if it has already been reported.
+        if (!change.isErrorReported()) {
+            change.setErrorReported(true);
+            MessageHandler.error("Change failed", exception);
+        }
+    }
+
     /** Return the ptolemy model proxied by this object.
      *  @return The model, or null if none has been set.
      */
@@ -78,11 +95,18 @@ public class PtolemyEffigy extends Effigy {
 	return _model;
     }
 
-    /** Set the ptolemy model proxied by this object.
+    /** Set the ptolemy model that this is an effigy of.
+     *  Register with that model as a change listener.
      *  @param model The model.
      */
     public void setModel(NamedObj model) {
+        if (_model != null) {
+            _model.removeChangeListener(this);
+        }
         _model = model;
+        if (model != null) {
+            _model.addChangeListener(this);
+        }
     }
 
     /** A factory for creating new ptolemy effigies.

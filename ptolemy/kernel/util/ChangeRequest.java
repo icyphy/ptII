@@ -73,6 +73,7 @@ public abstract class ChangeRequest {
     public ChangeRequest(Object originator, String description) {
         _originator = originator;
         _description = description;
+        _errorReported = false;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -129,6 +130,32 @@ public abstract class ChangeRequest {
      */
     public Object getOriginator() {
         return _originator;
+    }
+
+    /** Return true if setErrorReported() has been called with a true
+     *  argument.  This is used by listeners to avoid reporting an
+     *  error repeatedly.  By convention, a listener that reports the
+     *  error to the user, in a dialog box for example, should call
+     *  this method to determine whether the error has already been
+     *  reported.  If it reports the error, then it should call
+     *  setErrorReported() with a true argument.
+     *  @return True if an error has already been reported.
+     */
+    public boolean isErrorReported() {
+        return _errorReported;
+    }
+
+    /** Call with a true argument to indicate that an error has been
+     *  reported to the user. This is used by listeners to avoid reporting an
+     *  error repeatedly.  By convention, a listener that reports the
+     *  error to the user, in a dialog box for example, should call
+     *  this method after reporting an error.  It should call
+     *  isErrorReported() to determine whether it is necessary to report
+     *  the error.
+     *  @param reported True if an error has been reported.
+     */
+    public void setErrorReported(boolean reported) {
+        _errorReported = reported;
     }
 
     /** Specify a list of listeners to be notified when changes are
@@ -190,6 +217,9 @@ public abstract class ChangeRequest {
 
     // A list of listeners.
     private List _listeners;
+
+    // A flag indicating whether the error has been reported.
+    private boolean _errorReported;
 
     // The originator of the change request.
     private Object _originator;

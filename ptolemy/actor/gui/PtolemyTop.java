@@ -33,7 +33,10 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.gui.CancelException;
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.Top;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 
 import java.awt.event.ActionEvent;
@@ -85,6 +88,54 @@ public abstract class PtolemyTop extends Top {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Get the configuration at the top level of the hierarchy.
+     *  @return The configuration controlling this frame, or null
+     *   if there isn't one.
+     */
+    public Configuration getConfiguration() {
+        NamedObj tableau = getTableau();
+        if (tableau != null) {
+            NamedObj toplevel = tableau.toplevel();
+            if (toplevel instanceof Configuration) {
+                return (Configuration)toplevel;
+            }
+        }
+        return null;
+    }
+
+    /** Get the model directory in the top level configuration.
+     *  @return The model directory, or null if there isn't one.
+     */
+    public ModelDirectory getDirectory() {
+        Configuration configuration = getConfiguration();
+        if (configuration != null) {
+            Entity directory = configuration.getEntity("directory");
+            if (directory instanceof ModelDirectory) {
+                return (ModelDirectory)directory;
+            }
+        }
+        return null;
+    }
+
+    /** Get the effigy for the specified Ptolemy model.
+     *  @return The effigy for the model, or null if none exists.
+     */
+    public PtolemyEffigy getEffigy(NamedObj model) {
+        CompositeEntity directory = getDirectory();
+        if (directory != null) {
+            Iterator effigies = 
+                   directory.entityList(PtolemyEffigy.class).iterator();
+            while (effigies.hasNext()) {
+                PtolemyEffigy effigy = (PtolemyEffigy)effigies.next();
+                if (effigy.getModel() == model) {
+                    return effigy;
+                }
+            }
+        }
+        return null;
+    }
+
 
     /** Get the tableau that created this frame.
      *  @return The tableau.

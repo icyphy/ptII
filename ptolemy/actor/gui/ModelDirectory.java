@@ -45,6 +45,7 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
@@ -108,7 +109,8 @@ public class ModelDirectory extends CompositeEntity {
     ////                         protected methods                 ////
 
     /** Remove the specified entity, and if there are no more models
-     *  in the directory, then remove this directory from its container.
+     *  in the directory, except possibly the configuration, then
+     *  remove this directory from its container.
      *  This method should not be used directly.  Call the setContainer()
      *  method of the entity instead with a null argument.
      *  The entity is assumed to be contained by this composite (otherwise,
@@ -121,11 +123,26 @@ public class ModelDirectory extends CompositeEntity {
      */
     protected void _removeEntity(ComponentEntity entity) {
 	super._removeEntity(entity);
-	if (entityList(Effigy.class).size() == 0) {
+        List remainingEntities = entityList(Effigy.class);
+	if (remainingEntities.size() == 0) {
             try {
 		setContainer(null);
             } catch (KernelException ex) {
                 throw new InternalErrorException("Cannot remove directory!");
+            }
+        } else 	if (remainingEntities.size() == 1) {
+            // Check to see whether what remains is only the configuration.
+            Object remaining = remainingEntities.get(0);
+            if (remaining instanceof PtolemyEffigy) {
+                if (((PtolemyEffigy)remaining).getModel()
+                        instanceof Configuration) {
+                    try {
+                        setContainer(null);
+                    } catch (KernelException ex) {
+                        throw new InternalErrorException(
+                            "Cannot remove directory!");
+                    }
+                }
             }
         }
     }

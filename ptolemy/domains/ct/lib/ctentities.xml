@@ -2,18 +2,11 @@
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 
-<entity name="continuous time" class="ptolemy.moml.TypedActorLibrary">
+<entity name="continuous time" class="ptolemy.moml.EntityLibrary">
   <doc>Continuous-time actors</doc>
   <configure>
     <?moml
       <group>
-<!--  FIXME: Why isn't this evaluation deferred????????????????
-<entity name="CTButtonEvent" class="ptolemy.domains.ct.lib.CTButtonEvent">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.transformer</configure>
-</rendition>
-</entity>
--->
 
 <entity name="CTPeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">

@@ -715,7 +715,9 @@ public class MoMLParser extends HandlerBase {
                 // If the container is cloned from something, then
                 // add to it a MoML description of the director, so that
                 // this new director will be persistent.
-                _recordNewObject(container, _current);
+                // NOTE: This is no longer needed, since Director is
+                // now an attribute, and hence always exported.
+                // _recordNewObject(container, _current);
 
             } else if (elementName.equals("doc")) {
                 _currentDocName = (String)_attributes.get("name");

@@ -44,7 +44,6 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.gui.MessageHandler;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DocumentationViewerTableau;
@@ -180,8 +179,6 @@ public class KernelGraphFrame extends GraphFrame {
 
 	diva.gui.GUIUtilities.addMenuItem(_editMenu, _newRelationAction);
 	diva.gui.GUIUtilities.addToolBarButton(_toolbar, _newRelationAction);
-
-        _toolbar.add(_directorComboBox);
     }
 
     /** Create a new graph pane.
@@ -195,56 +192,7 @@ public class KernelGraphFrame extends GraphFrame {
 	GraphPane pane = new GraphPane(_controller, graphModel);
 	_newPortAction = _controller.getNewPortAction();
 	_newRelationAction = _controller.getNewRelationAction();
-	// FIXME make a service.
-	_directorModel = new DefaultComboBoxModel();
-	try {
-	    Configuration configuration = 
-		(Configuration)getTableau().toplevel();
-	    CompositeEntity directorLibrary = 
-		(CompositeEntity)configuration.getEntity("directorLibrary");
-	    Iterator directors = 
-		directorLibrary.entityList(Director.class).iterator();
-	    while(directors.hasNext()) {
-		Director director = (Director)directors.next();
-		_directorModel.addElement(director);
-	    }
-	}
-	catch (Exception ex) {
-	    MessageHandler.error("Director combobox creation failed", ex);
-	}
 
-	_directorComboBox = new JComboBox(_directorModel);
-	_directorComboBox.setRenderer(new PtolemyListCellRenderer());
-	_directorComboBox.setMaximumSize(_directorComboBox.getMinimumSize());
-        _directorComboBox.addItemListener(new ItemListener() {
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-		    // When a director is selected, update the 
-		    // director of the model in the current document.
-		    final Director director = (Director) e.getItem();
-		    PtolemyEffigy effigy = 
-			(PtolemyEffigy)getTableau().getContainer();
-		    if(effigy == null) return;
-		    CompositeEntity entity = 
-			(CompositeEntity)effigy.getModel();
-		    if(entity instanceof CompositeActor) {
-			final CompositeActor actor = (CompositeActor) entity;
-			final Director oldDirector = actor.getDirector();
-                        if((oldDirector == null) || (director.getClass()
-                                != oldDirector.getClass())) {
-                            actor.requestChange(new ChangeRequest(
-                                   this, "Set Director") {
-                                protected void _execute() throws Exception {
-                                    Director clone = (Director)
-                                            director.clone(actor.workspace());
-                                    actor.setDirector(clone);
-                                }
-                            });
-                        }					      
-		    }
-                }
-            }
-        });
 	_editIconAction = new EditIconAction();
 	_lookInsideAction = new LookInsideAction();
 	_getDocumentationAction = new GetDocumentationAction();
@@ -405,12 +353,30 @@ public class KernelGraphFrame extends GraphFrame {
 		entity = (CompositeEntity)deferredTo;
 	    }
 
-	    // FIXME how do we know where that object came from?
-	    // URL url = ???
-	    // _read(url);
+            // Search the model library for an effigy that already
+            // refers to this model.
+            PtolemyEffigy effigy = getEffigy(entity);
+            if (effigy != null) {
+                effigy.showTableaux();
+            } else if(false) {
+                // FIXME get the URL from the entity, which has to
+                // be inserted by MoMLParser.  Then use the openModel()
+                // method of the Configuration.
+            } else {
+                // If all else fails, create a new PtolemyEffigy
+                // and open a tableau for it.
+                effigy = new PtolemyEffigy(getTableau().workspace());
+                effigy.setModel(entity);
+                try {
+                    effigy.setContainer(getDirectory());
+                    getConfiguration().createPrimaryTableau(effigy);
+                } catch (Exception ex) {
+                    MessageHandler.error("Look inside failed: ", ex);
+                }
+            }
 	}
     }
-   
+      
     // A layout algorithm for laying out ptolemy graphs.  Since our edges
     // are undirected, this layout algorithm turns them into directed edges
     // aimed consistently. i.e. An edge should always be "out" of an
@@ -589,7 +555,4 @@ public class KernelGraphFrame extends GraphFrame {
     private Action _newPortAction;
     private Action _newRelationAction;
     private JMenu _executeMenu;
-
-    private JComboBox _directorComboBox;
-    private DefaultComboBoxModel _directorModel;
 }

@@ -1,4 +1,4 @@
-# Tests for the TypedActorLibrary class.
+# Tests for the EntityLibrary class.
 #
 # @Author: Edward A. Lee
 #
@@ -47,21 +47,21 @@ set header {<?xml version="1.0" standalone="no"?>
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">}
 
 #----------------------------------------------------------------------
-test TypedActorLibrary-1.1 {Test TypedActorLibrary class with configure element} {
+test EntityLibrary-1.1 {Test EntityLibrary class with configure element} {
     set moml_1 "$header
-<model name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
+<model name=\"top\" class=\"ptolemy.kernel.CompositeEntity\">
 </model>
 "
     set parser [java::new ptolemy.moml.MoMLParser]
     set toplevel [$parser parse $moml_1]
     $parser parse {
 <model name=".top">
-    <entity name="lib" class="ptolemy.moml.TypedActorLibrary">
+    <entity name="lib" class="ptolemy.moml.EntityLibrary">
         <configure>
             <?moml
                 <group>
-                    <entity name="a" class="ptolemy.actor.lib.Const"/>
-                    <entity name="b" class="ptolemy.actor.lib.Ramp"/>
+                    <entity name="a" class="ptolemy.actor.AtomicActor"/>
+                    <entity name="b" class="ptolemy.actor.AtomicActor"/>
                 </group>
             ?>
         </configure>
@@ -72,28 +72,33 @@ test TypedActorLibrary-1.1 {Test TypedActorLibrary class with configure element}
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.actor.TypedCompositeActor">
-    <entity name="lib" class="ptolemy.moml.TypedActorLibrary">
-        <configure>
-            <?moml <group>
-                    <entity name="a" class="ptolemy.actor.lib.Const"/>
-                    <entity name="b" class="ptolemy.actor.lib.Ramp"/>
-                </group>
-            ?>
-        </configure>
+<model name="top" class="ptolemy.kernel.CompositeEntity">
+    <entity name="lib" class="ptolemy.moml.EntityLibrary">
+        <configure><?moml
+            <group>
+                <property name="_libraryMarker" class="ptolemy.kernel.util.LibraryMarkerAttribute">
+                </property>
+                <entity name="a" class="ptolemy.actor.AtomicActor">
+                </entity>
+                <entity name="b" class="ptolemy.actor.AtomicActor">
+                </entity>
+            </group>
+        ?></configure>
     </entity>
 </model>
 }
 
 #----------------------------------------------------------------------
-test TypedActorLibrary-1.2 {Test TypedActorLibrary at top level} {
+test EntityLibrary-1.2 {Test EntityLibrary at top level} {
     set moml_1 "$header
-<model name=\"top\" class=\"ptolemy.moml.TypedActorLibrary\">
+<model name=\"top\" class=\"ptolemy.moml.EntityLibrary\">
     <configure>
         <?moml
             <group>
-                <entity name=\"a\" class=\"ptolemy.actor.lib.Const\"/>
-                <entity name=\"b\" class=\"ptolemy.actor.lib.Ramp\"/>
+                <entity name=\"a\" class=\"ptolemy.actor.AtomicActor\">
+                </entity>
+                <entity name=\"b\" class=\"ptolemy.actor.AtomicActor\">
+                </entity>
             </group>
         ?>
     </configure>
@@ -105,13 +110,16 @@ test TypedActorLibrary-1.2 {Test TypedActorLibrary at top level} {
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.moml.TypedActorLibrary">
-    <configure>
-        <?moml <group>
-                <entity name="a" class="ptolemy.actor.lib.Const"/>
-                <entity name="b" class="ptolemy.actor.lib.Ramp"/>
-            </group>
-        ?>
-    </configure>
+<model name="top" class="ptolemy.moml.EntityLibrary">
+    <configure><?moml
+        <group>
+            <property name="_libraryMarker" class="ptolemy.kernel.util.LibraryMarkerAttribute">
+            </property>
+            <entity name="a" class="ptolemy.actor.AtomicActor">
+            </entity>
+            <entity name="b" class="ptolemy.actor.AtomicActor">
+            </entity>
+        </group>
+    ?></configure>
 </model>
 }

@@ -46,10 +46,11 @@ JSRCS =
 
 EXTRA_SRCS =	$(JSRCS) \
 	intro.htm \
-	runBlankConfiguration.xml \
+	runWelcomeWindow.xml \
 	runConfiguration.xml \
 	runPanelConfiguration.xml \
-	vergilConfiguration.xml
+	vergilConfiguration.xml \
+	vergilWelcomeWindow.xml
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

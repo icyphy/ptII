@@ -54,8 +54,7 @@ JSRCS =	EntityLibrary.java \
 	Vertex.java \
 	MoMLAttribute.java \
 	MoMLChangeRequest.java \
-	MoMLParser.java \
-	TypedActorLibrary.java
+	MoMLParser.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	moml.dtd

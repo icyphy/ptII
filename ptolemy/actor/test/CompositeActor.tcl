@@ -201,18 +201,13 @@ test CompositeActor-7.1 {Test clone and description} {
     }}
 } entities {
     {ptolemy.actor.CompositeActor {.E3.E5} attributes {
+        {ptolemy.actor.Director {.E3.E5.WORMDIR} attributes {
+        }}
     } ports {
     } entities {
     } relations {
-    } director {
-        {ptolemy.actor.Director {.E3.E5.WORMDIR} attributes {
-        } ports {
-        }}
-    } executivedirector {
     }}
 } relations {
-} director {
-} executivedirector {
 }}
 
 ######################################################################

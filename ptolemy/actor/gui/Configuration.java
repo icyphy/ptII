@@ -90,6 +90,23 @@ public class Configuration extends CompositeEntity {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Create the first tableau for the given effigy, using the 
+     *  tableau factory.  This is called after an effigy is first opened,
+     *  or when a new effigy is created.
+     *  @exception Exception if an error occurs while creating the tableau.
+     */
+    public void createPrimaryTableau(Effigy effigy) throws Exception {
+        // Create a tableau if there is a tableau factory.
+        TableauFactory factory = (TableauFactory)getEntity("factory");
+        if (factory != null) {
+            Tableau tableau = factory.createTableau(effigy);
+            if (tableau == null) {
+                throw new Exception("Unable to create a Tableau.");
+            }
+            // The first tableau is a master.
+            tableau.setMaster(true);
+        }
+    }
 
     /** Create a new model.  This defers to the effigy factory contained
      *  by this configuration.
@@ -128,7 +145,7 @@ public class Configuration extends CompositeEntity {
 					     ex);
 		    } 
 		    try {
-			_createPrimaryTableau(effigy);
+			createPrimaryTableau(effigy);
 		    } catch (Exception ex) {
 			MessageHandler.error("Could not create tableau " +
 					     "for new effigy", ex);
@@ -176,10 +193,17 @@ public class Configuration extends CompositeEntity {
             }
             effigy = reader.read(base, in);
 	    effigy.identifier.setExpression(identifier);
+
             effigy.setName(directory.uniqueName("effigy"));
 	    effigy.setContainer(directory);
 
-	    _createPrimaryTableau(effigy);
+            // If this fails, we do not want the effigy in the directory.
+            try {
+                createPrimaryTableau(effigy);
+            } catch (Exception ex) {
+                effigy.setContainer(null);
+                throw (Exception)(ex.fillInStackTrace());
+            }
         } else {
             // Model already exists.
             effigy.showTableaux();
@@ -202,24 +226,6 @@ public class Configuration extends CompositeEntity {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-    /** Create the first tableau for the given effigy, using the 
-     *  tableau factory.  This is called after an effigy is first opened,
-     *  or when a new effigy is created.
-     *  @exception Exception if an error occurs while creating the tableau.
-     */
-    protected void _createPrimaryTableau(Effigy effigy) throws Exception {
-        // Create a tableau if there is a tableau factory.
-        TableauFactory factory = (TableauFactory)getEntity("factory");
-        if (factory != null) {
-            Tableau tableau = factory.createTableau(effigy);
-            if (tableau == null) {
-                throw new Exception("Unable to create a Tableau.");
-            }
-            // The first tableau is a master.
-            tableau.setMaster(true);
-        }
-    }
 
     /** Remove the specified entity; if that entity is the model directory,
      *  then exit the application.  This method should not be called

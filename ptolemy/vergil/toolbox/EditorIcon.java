@@ -107,8 +107,8 @@ public class EditorIcon extends Icon {
 	Figure background = createBackgroundFigure();
 	Rectangle2D backBounds = background.getBounds();
         Figure figure = new CompositeFigure(background);
-        Entity entity = (Entity) getContainer();
-        LabelFigure label = new LabelFigure(entity.getName());
+        Nameable container = getContainer();
+        LabelFigure label = new LabelFigure(container.getName());
         label.setFont(new Font("SansSerif", Font.PLAIN, 12));
 	label.setPadding(1);
 	label.setAnchor(SwingConstants.SOUTH_WEST);

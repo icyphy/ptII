@@ -46,6 +46,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.gui.MessageHandler;
@@ -62,31 +64,46 @@ receives a Transferable object containing a ptolemy entity, it creates
 a new instance of the entity, and adds it to the given graph.
 
 @author Steve Neuendorffer
-@contributor Michael Shilman
+@contributor Michael Shilman and Edward A. Lee
 @version $Id$
 */
 public class EditorDropTarget extends DropTarget {
 
     /** Construct a new graph target to operate on the given JGraph.
-     *  FIXME: @param tags.
+     *  @param graph The diva graph panel.
      */
-    public EditorDropTarget(JGraph g) {
-        setComponent(g);
+    public EditorDropTarget(JGraph graph) {
+        setComponent(graph);
         try {
             addDropTargetListener(new DTListener());
         } catch(java.util.TooManyListenersException wow) {}
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                         public memebers                   ////
 
-    /**
-     * A drop target listener that comprehends
-     * the different available keys.
+    /** The plain-text flavor that we will be using for our
+     *  basic drag-and-drop protocol.
+     */
+    public static final DataFlavor TEXT_FLAVOR = DataFlavor.plainTextFlavor;
+
+    /** The plain-text flavor that we will be using for our
+     *  basic drag-and-drop protocol.
+     */
+    public static final DataFlavor STRING_FLAVOR = DataFlavor.stringFlavor;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** The drop target listener used with the diva graph object.
      */
     private class DTListener implements DropTargetListener {
-        /**
-         * Accept the event if the data is a known key.
+
+        ///////////////////////////////////////////////////////////////
+        ////                     public methods                    ////
+
+        /** Accept the event if the data is a known key.
+         *  @param dtde The drop event.
          */
         public void dragEnter(DropTargetDragEvent dtde) {
             if(dtde.isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
@@ -97,23 +114,23 @@ public class EditorDropTarget extends DropTarget {
             }
         }
 
-        /**
-         * Do nothing.
+        /** Do nothing.
+         *  @param dtde The drop event.
          */
         public void dragExit(DropTargetEvent dtde) {
         }
 
-        /**
-         * Accept the event if the data is a known key.
+        /** Accept the event if the data is a known key.
+         *  @param dtde The drop event.
          */
         public void dragOver(DropTargetDragEvent dtde) {
             dragEnter(dtde); //for now
         }
 
-        /**
-         * Accept the event if the data is a known key;
-         * clone the associated figure and place it in the
-         * graph editor.
+        /** If the data is recognized as a Ptolemy II object, then use the
+         *  MoML description of the object to create a new instance of the
+         *  object at the drop location.
+         *  @param dtde The drop event.
          */
         public void drop(DropTargetDropEvent dtde) {
 	    Iterator iterator = null;
@@ -141,56 +158,120 @@ public class EditorDropTarget extends DropTarget {
 	    GraphModel model = controller.getGraphModel();
 	    final CompositeEntity container = (CompositeEntity)model.getRoot();
 	    while(iterator.hasNext()) {
-		NamedObj data = (NamedObj) iterator.next();
+                NamedObj dropObj = (NamedObj) iterator.next();
                 // FIXME: Might consider giving a simpler name and then
                 // displaying the classname in the icon.
-                final String name = container.uniqueName(data.getName());
-                String moml = data.exportMoML(name);
+                final String name = container.uniqueName(dropObj.getName());
+                String moml = dropObj.exportMoML(name);
 
-                ChangeRequest request = new MoMLChangeRequest(this,
-                        container, moml) {
-                    protected void _execute() throws Exception {
-			super._execute();
-			// Set the location of the icon.
-			// Note that this really needs to be done after
-			// the change request has succeeded, which is why
-			// it is done here.  When the graph controller
-			// gets around to handling this, it will draw 
-			// the icon at this location.
-			
-			// FIXME: Have to know whether this is an entity,
-			// port, etc. For now, assuming it is an entity.
-			NamedObj newObject = container.getEntity(name);
-			Icon icon = (Icon) newObject.getAttribute("_icon");
-			// If there is no icon, then manufacture one.
-			if(icon == null) {
-			    icon = new EditorIcon(newObject, "_icon");
-			}
-			
-			double location[] = new double[2];
-			location[0] = ((int)point.x);
-			location[1] = ((int)point.y);
-			icon.setLocation(location);
-		    }
-                };
+                // NOTE: Have to know whether this is an entity,
+                // port, etc. This seems awkward.
+                ChangeRequest request = null;
+                if (dropObj instanceof ComponentEntity) {
+                    // Dropped object is an entity.
+                    // Might be a director...
+                    if (dropObj instanceof Director
+                            && container instanceof CompositeActor) {
+                        // Dropped object is a director.
+                        request = new MoMLChangeRequest(
+                                this, container, moml) {
+                            protected void _execute() throws Exception {
+                                super._execute();
+                                NamedObj newObject = ((CompositeActor)container)
+                                        .getDirector();
+                                if (!newObject.getName().equals(name)) {
+                                    newObject = null;
+                                }
+                                _setLocation(newObject, point);
+                            }
+                        };
+                    } else {
+                        // Dropped object is not a director of an actor
+                        request = new MoMLChangeRequest(
+                                this, container, moml) {
+                            protected void _execute() throws Exception {
+                                super._execute();
+                                NamedObj newObject = container.getEntity(name);
+                                _setLocation(newObject, point);
+                            }
+                        };
+                    }
+                } else if (dropObj instanceof Port) {
 
-                container.requestChange(request);
+                    // Dropped object is a port.
+                    request = new MoMLChangeRequest(
+                            this, container, moml) {
+                        protected void _execute() throws Exception {
+                            super._execute();
+                            NamedObj newObject = container.getPort(name);
+                            _setLocation(newObject, point);
+                        }
+                    };
+
+                } else if (dropObj instanceof Relation) {
+
+                    // Dropped object is a relation.
+                    request = new MoMLChangeRequest(
+                            this, container, moml) {
+                        protected void _execute() throws Exception {
+                            super._execute();
+                            NamedObj newObject = container.getRelation(name);
+                            _setLocation(newObject, point);
+                        }
+                    };
+
+                } else if (dropObj instanceof Attribute) {
+
+                    // Dropped object is an attribute.
+                    request = new MoMLChangeRequest(
+                            this, container, moml) {
+                        protected void _execute() throws Exception {
+                            super._execute();
+                            NamedObj newObject = container.getAttribute(name);
+                            _setLocation(newObject, point);
+                        }
+                    };
+                }
+
+                // NOTE: If the drop object is not recognized, nothing
+                // happens.  Is this the right behavior?
+                if (request != null) {
+                    container.requestChange(request);
+                }
 	    }
 	    dtde.dropComplete(true); //success!
 	}
 
-        /**
-         * Accept the event if the data is a known key.
+        /** Accept the event if the data is a known key.
+         *  @param dtde The drop event.
          */
         public void dropActionChanged(DropTargetDragEvent dtde) {
             dragEnter(dtde); //for now
         }
-    }
 
-    /**
-     * The plain-text flavor that we will be using for our
-     * basic drag-and-drop protocol.
-     */
-    public static final DataFlavor TEXT_FLAVOR = DataFlavor.plainTextFlavor;
-    public static final DataFlavor STRING_FLAVOR = DataFlavor.stringFlavor;
+        ///////////////////////////////////////////////////////////////
+        ////                     private methods                   ////
+
+        // Create an icon if necessary for the specified object, and
+        // set its location to the specified point.
+        // Note that this needs to be done after the change request
+        // that creates the object has succeeded.			
+        private void _setLocation(NamedObj newObject, Point point)
+               throws Exception {
+            if (newObject == null) {
+                throw new InternalErrorException(
+                    "Dropped object not found after change completed!");
+            }
+            Icon icon = (Icon) newObject.getAttribute("_icon");
+            // If there is no icon, then manufacture one.
+            if(icon == null) {
+                icon = new EditorIcon(newObject, "_icon");
+            }
+			
+            double location[] = new double[2];
+            location[0] = ((int)point.x);
+            location[1] = ((int)point.y);
+            icon.setLocation(location);
+        }
+    }
 }

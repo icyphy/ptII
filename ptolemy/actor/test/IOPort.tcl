@@ -814,8 +814,6 @@ test IOPort-10.7 {Construct a simple system, then call description} {
         } remotereceivers {
         } type {declared NaT resolved NaT}}
     } configuration {width 1 fixed}}
-} director {
-} executivedirector {
 }}
 
 ######################################################################

@@ -94,32 +94,32 @@ public class PtolemyApplication extends MoMLApplication {
     ////                         protected methods                      ////
 
     /** Return a default Configuration, which in this case is given by
-     *  the MoML file ptolemy/configuration/runPanelConfiguration.xml.
+     *  the MoML file ptolemy/configs/runPanelConfiguration.xml.
      *  That configuration supports executing, but not editing,
      *  Ptolemy models.
      *  @return A default configuration.
      *  @exception Exception If the configuration cannot be opened.
      */
     protected Configuration _createDefaultConfiguration() throws Exception {
-        URL inurl = specToURL(
-                "ptolemy/configs/runPanelConfiguration.xml");
-        MoMLParser parser = new MoMLParser();
-        NamedObj toplevel = parser.parse(inurl, inurl.openStream());
-        return (Configuration)toplevel;
+        return _readConfiguration("ptolemy/configs/runPanelConfiguration.xml");
     }
 
     /** Return a default Configuration to use when there are no command-line
-     *  arguments, which in this case is given by the MoML file
-     *  ptolemy/configuration/runBlankConfiguration.xml.
+     *  arguments, which in this case is the same as the default configuration
+     *  given by _createDefaultConfiguration, but with the additional
+     *  contents of the file ptolemy/configs/runWelcomeWindow.xml.
      *  @return A configuration for when there no command-line arguments.
      *  @exception Exception If the configuration cannot be opened.
      */
     protected Configuration _createEmptyConfiguration() throws Exception {
-        URL inurl = specToURL(
-                "ptolemy/configs/runBlankConfiguration.xml");
-        MoMLParser parser = new MoMLParser();
-        NamedObj toplevel = parser.parse(inurl, inurl.openStream());
-        return (Configuration)toplevel;
+        Configuration configuration = _createDefaultConfiguration();
+        URL inurl = specToURL("ptolemy/configs/runWelcomeWindow.xml");
+        _parser.reset();
+        _parser.setContext(configuration);
+        _parser.parse(inurl, inurl.openStream());
+        Effigy doc = (Effigy)configuration.getEntity("directory.doc");
+        doc.identifier.setExpression(inurl.toExternalForm());
+        return configuration;
     }
 
     /** Parse the command-line arguments. This overrides the base class
@@ -129,7 +129,6 @@ public class PtolemyApplication extends MoMLApplication {
      */
     protected void _parseArgs(String args[]) throws Exception {
         _commandTemplate = "ptolemy [ options ] [file ...]";
-
         super._parseArgs(args);
     }
 }

@@ -1,13 +1,11 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-
-<entity name="discrete event" class="ptolemy.moml.TypedActorLibrary">
+<entity name="discrete event" class="ptolemy.moml.EntityLibrary">
   <doc>Discrete-event actors</doc>
   <configure>
     <?moml
       <group>
-
 <entity name="Delay" class="ptolemy.domains.de.lib.Delay">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.transformer</configure>
@@ -55,7 +53,9 @@
 <configure>generic.transformer</configure>
 </rendition>
 </entity>
+
       </group>
     ?>
   </configure>
 </entity>
+

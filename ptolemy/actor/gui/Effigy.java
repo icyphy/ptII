@@ -169,13 +169,26 @@ public class Effigy extends CompositeEntity {
     }
 
     /** Make all tableaux associated with this model visible by raising
-     *  or deiconifying them.
+     *  or deiconifying them.  If there is no tableau associated with
+     *  this effigy, then create one by calling createPrimaryTableau()
+     *  in the configuration.
      */
     public void showTableaux() {
         Iterator tableaux = entityList(Tableau.class).iterator();
+        boolean foundOne = false;
         while(tableaux.hasNext()) {
             Tableau tableau = (Tableau)tableaux.next();
             tableau.show();
+            foundOne = true;
+        }
+        if (!foundOne) {
+            // Create a new tableau.
+            Configuration configuration = (Configuration)toplevel();
+            try {
+                configuration.createPrimaryTableau(this);
+            } catch (Exception ex) {
+                MessageHandler.error("Unable to create a tableau.", ex);
+            }
         }
     }
 

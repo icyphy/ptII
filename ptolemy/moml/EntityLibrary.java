@@ -35,14 +35,7 @@ import ptolemy.actor.Director;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.InvalidStateException;
-import ptolemy.kernel.util.LibraryMarkerAttribute;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.util.*;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -58,13 +51,20 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// EntityLibrary
 /**
-A hierarchical library of components specified in MoML.  The contents are
-specified via the configure() method.  The MoML is evaluated
+This class provides a hierarchical library of components specified
+in MoML.  The contents are typically specified via the configure()
+method, which is passed MoML code.  The MoML is evaluated
 lazily; i.e. it is not actually evaluated until there is a request
 for its contents, via a call to getEntity(), numEntities(),
 entityList(), or any related method. You can also force evaluation
-of the MoML by calling populate().  This object contains an
+of the MoML by calling populate().  When you export MoML for this
+object, the MoML description of the contents is wrapped in a configure
+element.  This object contains an
 attribute of class LibraryMarkerAttribute, to mark it as a library.
+<p>
+The contents of the library can be entities, ports, relations, or
+attributes.  I.e., it can contain anything contained by a CompositeEntity.
+An attempt to access any of these will trigger populating the library.
 <p>
 The configure method can be given a URL or MoML text or both.
 If it is given MoML text, that text will normally be wrapped in a
@@ -98,17 +98,21 @@ This method, therefore, violates the condition for using runtime
 exceptions in that the condition that causes these exceptions to
 be thrown is not a testable precondition.
 <p>
-Note that although this is a TypedCompositeActor, it is designed
-to be able to contain entities that are not actors.  Similarly,
-it can be contained by entities that are not instances of
-TypedCompositeActor.
+A second subtlety involves cloning.  When this class is cloned,
+if the configure MoML text has not yet been evaluated, then the clone
+is created with the same (unevaluated) MoML text, rather than being
+populated with the contents specified by that text.  If the object
+is cloned after being populated, the clone will also be populated.
+<p>
 
 @author Edward A. Lee
 @version $Id$
 */
 
+// FIXME: Have to do ports and relations.  Only done attributes and entities.
+
 public class EntityLibrary
-        extends TypedCompositeActor implements Configurable {
+        extends CompositeEntity implements Configurable {
 
     /** Construct a library in the default workspace with no
      *  container and an empty string as its name. Add the library to the
@@ -118,7 +122,11 @@ public class EntityLibrary
     public EntityLibrary() {
         super();
         try {
-            new LibraryMarkerAttribute(this, uniqueName("_marker"));
+            // NOTE: Used to call uniqueName() here to choose the name for the
+            // marker.  This is a bad idea.  This calls getEntity(), which
+            // triggers populate() on the library, defeating deferred
+            // evaluation.
+            new LibraryMarkerAttribute(this, "_libraryMarker");
         } catch (KernelException ex) {
             throw new InternalErrorException(ex.toString());
         }
@@ -161,37 +169,61 @@ public class EntityLibrary
         super(container.workspace());
         setName(name);
         setContainer(container);
-        new LibraryMarkerAttribute(this, uniqueName("_marker"));
+        // NOTE: Used to call uniqueName() here to choose the name for the
+        // marker.  This is a bad idea.  This calls getEntity(), which
+        // triggers populate() on the library, defeating deferred
+        // evaluation.
+        new LibraryMarkerAttribute(this, "_libraryMarker");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. The new object is
+    /** Return a list of the attributes contained by this object.
+     *  If there are no attributes, return an empty list.
+     *  This overrides the base class
+     *  to first populate the library, if necessary, by calling populate().
+     *  This method is read-synchronized on the workspace.
+     *  @return An unmodifiable list of instances of Attribute.
+     */
+    public List attributeList() {
+        populate();
+        return super.attributeList();
+    }
+
+    /** Return a list of the attributes contained by this object that
+     *  are instances of the specified class.  If there are no such
+     *  instances, then return an empty list.
+     *  This overrides the base class
+     *  to first populate the library, if necessary, by calling populate().
+     *  This method is read-synchronized on the workspace.
+     *  @param filter The class of attribute of interest.
+     *  @return A list of instances of specified class.
+     */
+    public List attributeList(Class filter) {
+        populate();
+        return super.attributeList(filter);
+    }
+
+    /** Clone the library into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
-     *  yourself if you want it there).  This method overrides the base class
-     *  so that if the model has not been populating, then we avoid
-     *  populating it while doing the clone.  Otherwise, it simply
-     *  defers to the clone() method of the parent class.
+     *  yourself if you want it there). If the library has not yet been
+     *  populated, then the clone will also not have been populated.
      *  @param ws The workspace for the cloned object.
-     *  @exception CloneNotSupportedException If the actor contains
+     *  @exception CloneNotSupportedException If the library contains
      *   level crossing transitions so that its connections cannot be cloned,
      *   or if one of the attributes cannot be cloned.
-     *  @return A new CompositeActor.
+     *  @return A new EntityLibrary.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
-        if (!_configureDone) {
-            // Avoid cloning by the usual method because this evaluates
-            // the contents, which triggers a call to populate(), defeating
-            // deferred evaluation.
-            // NOTE: This assumes that there are no ports and no relations
-            // that have been added independently of the configure() method.
-            // FIXME: What the heck is the syntax for this????????????????????
-            // return super.ComponentEntity.clone(ws);
-            return super.clone(ws);
-        } else {
-            // Configure has been done, so we need to do an ordinary clone.
-            return super.clone(ws);
+        // To prevent populating during cloning, we set a flag.
+        _cloning = true;
+        try {
+            EntityLibrary result = (EntityLibrary)super.clone(ws);
+            result._cloning = false;
+            return result;
+        } finally {
+            _cloning = false;
         }
     }
 
@@ -214,11 +246,22 @@ public class EntityLibrary
         _configureDone = false;
     }
 
-// FIXME: All the methods that add to the model should also call populate()
-// so that mixtures of configure() and direct additions are correctly
-// supported.  Actually... All these methods fail to work properly.
-// Perhaps this should be limited so that this class can _only_ be
-// populated by the configure() method.
+    /** Return true if this object contains the specified object,
+     *  directly or indirectly.  That is, return true if the specified
+     *  object is contained by an object that this contains, or by an
+     *  object contained by an object contained by this, etc.
+     *  This method ignores whether the entities report that they are
+     *  atomic (see CompositeEntity), and always returns false if the entities
+     *  are not in the same workspace. This overrides the base class
+     *  to first populate the library, if necessary, by calling populate().
+     *  This method is read-synchronized on the workspace.
+     *  @see ptolemy.kernel.CompositeEntity#isAtomic()
+     *  @return True if this contains the argument, directly or indirectly.
+     */
+    public boolean deepContains(NamedObj inside) {
+        populate();
+        return super.deepContains(inside);
+    }
 
     /** List the opaque entities that are directly or indirectly
      *  contained by this entity.  The list will be empty if there
@@ -248,6 +291,20 @@ public class EntityLibrary
     public List entityList() {
         populate();
         return super.entityList();
+    }
+
+    /** Get the attribute with the given name. The name may be compound,
+     *  with fields separated by periods, in which case the attribute
+     *  returned is contained by a (deeply) contained attribute.
+     *  This overrides the base class
+     *  to first populate the library, if necessary, by calling populate().
+     *  This method is read-synchronized on the workspace.
+     *  @param name The name of the desired attribute.
+     *  @return The requested attribute if it is found, null otherwise.
+     */
+    public Attribute getAttribute(String name) {
+        populate();
+        return super.getAttribute(name);
     }
 
     /** Get a contained entity by name. The name may be compound,
@@ -291,13 +348,19 @@ public class EntityLibrary
     public void populate() throws InvalidStateException {
         try {
             if (_populating) return;
+
+            // Avoid populating during cloning.
+            if (_cloning) return;
             _populating = true;
             if (!_configureDone) {
                 // NOTE: Set this early to prevent repeated attempts to
                 // evaluate if an exception occurs.  This way, it will
                 // be possible to examine a partially populated entity.
                 _configureDone = true;
-                removeAllEntities();
+
+                // NOTE: This does not seem like the right thing to do!
+                // removeAllEntities();
+
                 if (_parser == null) {
                     _parser = new MoMLParser(workspace());
                 }
@@ -336,74 +399,25 @@ public class EntityLibrary
         }
     }
 
-    /** Override the base class to prevent there being a director.
-     *  @param director The Director responsible for execution.
-     *  @exception IllegalActionException Always thrown.
-     */
-    public void setDirector(Director director) throws IllegalActionException {
-        throw new IllegalActionException(this,
-        "EntityLibrary cannot have a director.");
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Add an entity to this container. This method should not be used
-     *  directly.  Call the setContainer() method of the entity instead.
-     *  This method does not set
-     *  the container of the entity to point to this composite entity.
-     *  It assumes that the entity is in the same workspace as this
-     *  container, but does not check.  The caller should check.
-     *  This overrides the base class to avoid type checks for the
-     *  contained entities.
-     *  This method is <i>not</i> synchronized on the workspace, so the
-     *  caller should be.
-     *  @param entity Entity to contain.
-     *  @exception IllegalActionException If the entity has no name, or the
-     *   action would result in a recursive containment structure.
-     *  @exception NameDuplicationException If the name collides with a name
-     *  already in the entity.
-     */
-    protected void _addEntity(ComponentEntity entity)
-            throws IllegalActionException, NameDuplicationException {
-        if (entity.deepContains(this)) {
-            throw new IllegalActionException(entity, this,
-                    "Attempt to construct recursive containment.");
-        }
-        _containedEntities.append(entity);
-    }
-
-    /** Check that the specified container is of a suitable class for
-     *  this entity.  This overrides the base class to return immediately
-     *  without doing anything.
-     *  @param container The proposed container.
-     *  @exception IllegalActionException If the container is not of
-     *   an acceptable class.  Not thrown in this class.
-     */
-    protected void _checkContainer(CompositeEntity container)
-             throws IllegalActionException {}
-
-    /** Write a MoML description of the contents of this object, which
-     *  in this class is the configuration information. This method is called
-     *  by exportMoML().  Each description is indented according to the
-     *  specified depth and terminated with a newline character.
+    /** Write a MoML description of the contents of this object, wrapped
+     *  in a configure element.  This is done by first populating the model,
+     *  and then exporting its contents into a configure element. This method
+     *  is called by exportMoML().  Each description is indented according to
+     *  the specified depth and terminated with a newline character.
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @exception IOException If an I/O error occurs.
      */
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
-        // NOTE: Do not call the super class because that will result
-        // in the library contents being exported.
-        String configElement = "<configure>";
-        if (_source != null && !_source.equals("")) {
-            configElement = "<configure source=\"" + _source + "\">";
-        }
-        if (_text == null) _text = "";
-        output.write(_getIndentPrefix(depth)
-                + configElement
-                + _text
-                + "</configure>\n");
+        output.write(_getIndentPrefix(depth) + "<configure><?moml\n");
+        output.write(_getIndentPrefix(depth+1) + "<group>\n");
+        super._exportMoMLContents(output, depth+2);
+        output.write(_getIndentPrefix(depth+1) + "</group>\n");
+        output.write(_getIndentPrefix(depth) + "?></configure>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -411,6 +425,9 @@ public class EntityLibrary
 
     /** The base specified by the configure() method. */
     private URL _base;
+
+    /** Indicate that we are cloning. */
+    private boolean _cloning = false;
 
     /** Indicate whether data given by configure() has been processed. */
     private boolean _configureDone = false;

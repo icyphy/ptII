@@ -48,7 +48,7 @@ import java.io.Writer;
 //// CompositeActor
 /**
 A CompositeActor is an aggregation of actors.  It may have a
-<i>local director</i>, which is an object of class Director that
+<i>local director</i>, which is an attribute of class Director that
 is responsible for executing the contained actors.
 At the top level of a hierarchy, a composite actor (the toplevel
 CompositeActor of the topology) will normally exist with a local Director,
@@ -107,7 +107,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
     /** Construct a CompositeActor in the default workspace with no container
      *  and an empty string as its name. Add the actor to the workspace
      *  directory.
-     *  You should set the director before attempting to execute it.
+     *  You should set a director before attempting to execute it.
      *  You should set the container before sending data to it.
      *  Increment the version number of the workspace.
      */
@@ -119,7 +119,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  and an empty string as a name. You can then change the name with
      *  setName(). If the workspace argument is null, then use the default
      *  workspace.
-     *  You should set the director before attempting to execute it.
+     *  You should set a director before attempting to execute it.
      *  You should set the container before sending data to it.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the actor.
@@ -137,7 +137,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  This actor will have no
      *  local director initially, and its executive director will be simply
      *  the director of the container.
-     *  You should set the director before attempting to execute it.
+     *  You should set a director before attempting to execute it.
      *
      *  @param container The container actor.
      *  @param name The name of this actor.
@@ -174,17 +174,6 @@ public class CompositeActor extends CompositeEntity implements Actor {
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         CompositeActor newobj = (CompositeActor)super.clone(ws);
-        if (_director != null) {
-            Director newDirector = (Director)_director.clone(ws);
-            try {
-                newDirector.setContainer(newobj);
-            } catch (Exception ex) {
-                throw new CloneNotSupportedException(
-                        "Failed to clone the director: " + ex);
-            }
-        } else {
-            newobj._director = null;
-        }
         newobj._inputPortsVersion = -1;
         newobj._outputPortsVersion = -1;
         return newobj;
@@ -213,9 +202,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
                 IOPort p = (IOPort)inports.next();
                 _director.transferInputs(p);
             }
-            // Note that this is assured of firing the local director,
-            // not the executive director, because this is opaque.
-            getDirector().fire();
+            _director.fire();
             // Use the executive director to transfer outputs.
             Director edir = getExecutiveDirector();
             if (edir != null) {
@@ -225,36 +212,6 @@ public class CompositeActor extends CompositeEntity implements Actor {
                     edir.transferOutputs(p);
                 }
             }
-        } finally {
-            _workspace.doneReading();
-        }
-    }
-
-    /** Get the attribute with the given name. The name may be compound,
-     *  with fields separated by periods, in which case the attribute
-     *  returned is contained by a (deeply) contained attribute, port,
-     *  relation, entity, or director.
-     *  This method is read-synchronized on the workspace.
-     *  @param name The name of the desired attribute.
-     *  @return The requested attribute if it is found, null otherwise.
-     */
-    public Attribute getAttribute(String name) {
-        try {
-            _workspace.getReadAccess();
-            // Check attributes and ports first.
-            Attribute result = super.getAttribute(name);
-            if (result == null) {
-                // Check director.
-                String[] subnames = _splitName(name);
-                if (_director != null &&
-                        _director.getName().equals(subnames[0])) {
-                    // Director name matches.
-                    if (subnames[1] != null) {
-                        result = _director.getAttribute(subnames[1]);
-                    }
-                }
-            }
-            return result;
         } finally {
             _workspace.doneReading();
         }
@@ -676,8 +633,11 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  The container of the specified director is set to this composite
      *  actor, and if there was previously a local director, its container
      *  is set to null. This method is write-synchronized on the workspace.
-     *  NOTE: Calling this method is equivalent to calling setContainer()
-     *  on the director with this composite as an argument.
+     *  NOTE: Calling this method is almost equivalent to calling setContainer()
+     *  on the director with this composite as an argument. The difference
+     *  is that if you call this method with a null argument, it effectively
+     *  removes the director from its role as director, but without
+     *  removing it from its container.
      *
      *  @param director The Director responsible for execution.
      *  @exception IllegalActionException If the director is not in
@@ -689,10 +649,6 @@ public class CompositeActor extends CompositeEntity implements Actor {
             if (director != null) {
                 director.setContainer(this);
             } else {
-                Director oldDirector = getDirector();
-                if (oldDirector != null) {
-                    oldDirector.setContainer(null);
-                }
                 _setDirector(null);
             }
         } catch (NameDuplicationException ex) {
@@ -785,14 +741,6 @@ public class CompositeActor extends CompositeEntity implements Actor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    /** Indicate that the description(int) method should include the
-     *  director and executive director.
-     */
-    public static final int DIRECTOR = 512;
-
-    ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Add an actor to this container with minimal error checking.
@@ -869,86 +817,23 @@ public class CompositeActor extends CompositeEntity implements Actor {
             throw new IllegalActionException(this, relation,
                     "CompositeActor can only contain instances of IORelation.");
         }
-        Director director = getDirector();
         super._addRelation(relation);
-    }
-
-    /** Return a description of the object.  The level of detail depends
-     *  on the argument, which is an or-ing of the static final constants
-     *  defined in the NamedObj class and this class.  Lines are indented
-     *  according to to the level argument using the protected method
-     *  _getIndentPrefix(). Zero, one or two brackets can be specified
-     *  to surround the returned description.  If one is specified it is
-     *  the leading bracket. This is used by derived classes that will
-     *  append to the description. Those derived classes are responsible
-     *  for the closing bracket. An argument other than 0, 1, or 2 is
-     *  taken to be equivalent to 0.
-     *  This method is <i>not</i> read-synchronized on the workspace,
-     *  so the caller should be.
-     *
-     *  @param detail The level of detail.
-     *  @param indent The amount of indenting.
-     *  @param bracket The number of surrounding brackets (0, 1, or 2).
-     *  @return A description of the object.
-     */
-    protected String _description(int detail, int indent, int bracket) {
-        try {
-            _workspace.getReadAccess();
-            String result;
-            if (bracket == 1 || bracket == 2) {
-                result = super._description(detail, indent, 1);
-            } else {
-                result = super._description(detail, indent, 0);
-            }
-            if ((detail & DIRECTOR) != 0) {
-                if (result.trim().length() > 0) {
-                    result += " ";
-                }
-                result += "director {\n";
-                Director dir = getDirector();
-                if (dir != null) {
-                    result += dir._description(detail, indent+1, 2);
-                    result += "\n";
-                }
-                result += _getIndentPrefix(indent) + "} executivedirector {\n";
-                dir = getExecutiveDirector();
-                if (dir != null) {
-                    result += dir._description(detail, indent+1, 2);
-                }
-                result += _getIndentPrefix(indent) + "}";
-            }
-            if (bracket == 2) result += "}";
-            return result;
-        } finally {
-            _workspace.doneReading();
-        }
-    }
-
-    /** Write a MoML description of the contents of this object, which
-     *  in this class is the director, attributes, ports, contained relations,
-     *  and contained entities, plus all links.  The links are written
-     *  in an order that respects the ordering in ports, but not necessarily
-     *  the ordering in relations.  This method is called
-     *  by exportMoML().  Each description is indented according to the
-     *  specified depth and terminated with a newline character.
-     *  @param output The output stream to write to.
-     *  @param depth The depth in the hierarchy, to determine indenting.
-     *  @exception IOException If an I/O error occurs.
-     */
-    protected void _exportMoMLContents(Writer output, int depth)
-            throws IOException {
-        if (_director != null) {
-            _director.exportMoML(output, depth);
-        }
-        super._exportMoMLContents(output, depth);
     }
 
     /** Set the local director for execution of this CompositeActor.
      *  This should not be called be directly.  Instead, call setContainer()
-     *  on the director.
+     *  on the director.  This method removes any previous director
+     *  from this container, and caches a local reference to the director
+     *  so that this composite does not need to search its attributes each
+     *  time the director is accessed.
      *  @param director The Director responsible for execution.
+     *  @exception IllegalActionException If removing the old director
+     *   causes this to be thrown. Should not be thrown.
+     *  @exception NameDuplicationException If removing the old director
+     *   causes this to be thrown. Should not be thrown.
      */
-    protected void _setDirector(Director director) {
+    protected void _setDirector(Director director)
+            throws IllegalActionException, NameDuplicationException {
         _director = director;
     }
 

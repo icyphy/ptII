@@ -40,6 +40,7 @@ import ptolemy.data.expr.Variable;
 import ptolemy.data.Token;
 import ptolemy.data.ObjectToken;
 import ptolemy.vergil.toolbox.EditorIcon;
+import ptolemy.vergil.toolbox.VisibleAttributeIcon;
 
 import diva.graph.AbstractGraphModel;
 import diva.graph.GraphEvent;
@@ -311,14 +312,15 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 			  container,
 			  moml.toString());
 		container.requestChange(request);
-		request.waitForCompletion();
+                // NOTE: This is not a good idea...
+		// request.waitForCompletion();
 	    } catch (Exception ex) {
 		throw new GraphException(ex);
 	    }
 	}	
     }
 
-    /** The model for an icon that contain ports.
+    /** The model for an icon that contains ports.
      */
     private class IconModel implements CompositeNodeModel {
 	/**
@@ -353,7 +355,9 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	
 	/**
 	 * Provide an iterator over the nodes in the
-	 * given graph or composite node.  This iterator
+	 * given graph or composite node. The nodes are ports, so if the
+         * container of the node is not an entity, then an empty iterator
+         * is returned.  This iterator
 	 * does not necessarily support removal operations.
 	 * @param composite The composite, which is assumed to be an icon.
 	 * @return An iterator over the ports contained in the container
@@ -361,8 +365,13 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	 */
 	public Iterator nodes(Object composite) {
 	    Icon icon = (Icon) composite;
-	    ComponentEntity entity = (ComponentEntity)icon.getContainer();
-	    return entity.portList().iterator();
+            Nameable container = icon.getContainer();
+            if (container instanceof Entity) {
+                ComponentEntity entity = (ComponentEntity)icon.getContainer();
+                return entity.portList().iterator();
+            } else {
+                return (new LinkedList()).iterator();
+            }
 	}
 
 	/**
@@ -391,16 +400,15 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    NamedObj container = (NamedObj)entity.getContainer();
 	    try {
 		// Delete the entity.
-		StringBuffer moml = new StringBuffer();
-		moml.append("<deleteEntity name=\"" + 
-			    entity.getName(container) +
-			    "\"/>\n");
+		String moml = "<deleteEntity name=\"" + 
+                        entity.getName(container) +
+                        "\"/>\n";
 		ChangeRequest request = 
-                    new MoMLChangeRequest(PtolemyGraphModel.this, 
-					  container,
-					  moml.toString());
+                        new MoMLChangeRequest(
+                        PtolemyGraphModel.this, container, moml);
 		container.requestChange(request);
-		request.waitForCompletion();
+                // NOTE: This is not a good idea...
+		// request.waitForCompletion();
 	    } catch (Exception ex) {
 		ex.printStackTrace();
 		throw new GraphException(ex);
@@ -665,7 +673,8 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 					  container,
 					  moml.toString());
 		container.requestChange(request);
-		request.waitForCompletion();
+                // NOTE: This is not a good idea...
+		// request.waitForCompletion();
 	    } catch (Exception ex) {
 		throw new GraphException(ex);
 	    }
@@ -709,33 +718,33 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	public Iterator nodes(Object composite) {
 	    // FIXME change request.
 	    Set nodes = new HashSet();
-	    Iterator entities = getToplevel().entityList().iterator();
+            CompositeEntity toplevel = getToplevel();
+	    Iterator entities = toplevel.entityList().iterator();
 	    while(entities.hasNext()) {
 		ComponentEntity entity = (ComponentEntity)entities.next();
 		List icons = entity.attributeList(Icon.class);
 		if(icons.size() > 0) {
 		    nodes.add(icons.get(0));
 		} else {
-		    // FIXME this is pretty minimal for an icon.
+		    // Create a default icon.
 		    try {
 			Icon icon = new EditorIcon(entity, "_icon");
 			nodes.add(icon);
-		    }
-		    catch (Exception e) {
+		    } catch (Exception e) {
 			throw new InternalErrorException("Failed to create " +
-			    "icon, even though one does not exist:" +
-							 e.getMessage());
+			    "an icon, even though one does not exist: " +
+                            e.getMessage());
 		    }
 		}
 	    }
 	    
-	    Iterator ports = getToplevel().portList().iterator();
+	    Iterator ports = toplevel.portList().iterator();
 	    while(ports.hasNext()) {
 		ComponentPort port = (ComponentPort)ports.next();
 		nodes.add(_getLocation(port));
 	    }
 	    
-	    Iterator relations = getToplevel().relationList().iterator();
+	    Iterator relations = toplevel.relationList().iterator();
 	    while(relations.hasNext()) {
 		ComponentRelation relation = 
                     (ComponentRelation)relations.next();
@@ -761,13 +770,39 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 			}
 			catch (Exception e) {
 			    throw new InternalErrorException(
-			        "Failed to create " +
-				"new vertex, even though one does not " +
-				"already exist:" + e.getMessage());
+			            "Failed to create an icon! " +
+                                    e.getMessage());
 			}
 		    }
 		}
 	    }
+
+            // Add any visible attributes.
+	    Iterator attributes = toplevel.attributeList().iterator();
+	    while(attributes.hasNext()) {
+		Attribute attribute = (Attribute)attributes.next();
+
+                // FIXME: How do we tell whether an attribute is visible?
+                // For now, only an instance of Director is visible.
+                if (attribute instanceof Director) {
+                    List icons = attribute.attributeList(Icon.class);
+                    if(icons.size() > 0) {
+                        nodes.add(icons.get(0));
+                    } else {
+                        // Create a default icon.
+                        try {
+                            Icon icon = new EditorIcon(attribute, "_icon");
+                            nodes.add(icon);
+                        } catch (Exception e) {
+                            throw new InternalErrorException(
+                                    "Failed to create an icon! " +
+                                    e.getMessage());
+                        }
+		    }
+                }
+            }
+
+            // Return the final result.
 	    return nodes.iterator();
 	}
     }
@@ -875,7 +910,8 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 					  container,
 					  moml.toString());
 		container.requestChange(request);
-		request.waitForCompletion();
+                // NOTE: This is not a good idea...
+		// request.waitForCompletion();
 	    } catch (Exception ex) {
 		throw new GraphException(ex);
 	    }
