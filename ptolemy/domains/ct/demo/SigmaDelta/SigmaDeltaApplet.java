@@ -127,7 +127,8 @@ public class SigmaDeltaApplet extends CTApplet {
             // CTActors
 
             CurrentTime time = new CurrentTime(ctsub, "CurTime");
-            Sine sine = new Sine(ctsub, "Sine");
+            TrigFunction trigFunction =
+		new TrigFunction(ctsub, "TrigFunction");
             ZeroOrderHold hold = new ZeroOrderHold(ctsub, "Hold");
             AddSubtract add1 = new AddSubtract(ctsub, "Add1");
 
@@ -154,8 +155,8 @@ public class SigmaDeltaApplet extends CTApplet {
                 new CTPeriodicSampler(ctsub, "Sampler");
 
             // CT Connections
-            ctsub.connect(time.output, sine.input);
-            Relation cr0 = ctsub.connect(sine.output, gain0.input, "CR0");
+            ctsub.connect(time.output, trigFunction.input);
+            Relation cr0 = ctsub.connect(trigFunction.output, gain0.input, "CR0");
             Relation cr1 = ctsub.connect(gain0.output, add1.plus, "CR1");
             Relation cr2 = ctsub.connect(add1.output, intgl1.input, "CR2");
             Relation cr3 = ctsub.connect(intgl1.output, intgl2.input, "CR3");
@@ -237,7 +238,7 @@ public class SigmaDeltaApplet extends CTApplet {
 
             // CT Actor Parameters
 
-            sine.omega.setToken(new DoubleToken(0.5));
+            //trigFunction.omega.setToken(new DoubleToken(0.5));
 
             gain0.factor.setToken(new DoubleToken(50.0));
             gain1.factor.setToken(new DoubleToken(-2.50));
