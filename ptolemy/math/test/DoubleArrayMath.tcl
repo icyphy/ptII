@@ -152,7 +152,7 @@ test DoubleArrayMath-7.2 {limit} {
 test DoubleArrayMath-7.3 {limit: no bottom} {
     set da2 [java::call ptolemy.math.DoubleArrayMath limit \
 	    $da3 \
-	    [java::field java.lang.Double MIN_VALUE] \
+	    [java::field java.lang.Double NEGATIVE_INFINITY] \
 	    1.25]
     $da2 getrange 0
 } {1.0 1.25 4.94065645841e-324 1.25 4.94065645841e-324 4.94065645841e-324 4.94065645841e-324 1.25 4.94065645841e-324 NaN 4.94065645841e-324 1.25}
@@ -163,7 +163,7 @@ test DoubleArrayMath-7.4 {limit: no top} {
     set da2 [java::call ptolemy.math.DoubleArrayMath limit \
 	    $da3 \
 	    -0.5 \
-	    [java::field java.lang.Double MAX_VALUE] \
+	    [java::field java.lang.Double POSITIVE_INFINITY] \
 	    ]
     $da2 getrange 0
 } {1.0 2.0 -0.5 4.1 0.0 -0.0 0.0 1.79769313486e+308 -0.5 NaN 4.94065645841e-324 1.79769313486e+308}
@@ -227,3 +227,15 @@ test DoubleArrayMath-12.3 {subtract with two empty arrays} {
     jdkPrintArray $ar
 } {}
 
+####################################################################
+test DoubleArrayMath-13.1 {within true} {
+    set ar [java::new {double[]} 5 [list 3.702 -6.6005 0.0003 -3829.0015 -3.261999]]
+    set br [java::call ptolemy.math.DoubleArrayMath {within double[] double[] double} $a1 $ar 0.002]
+    list $br
+} {1}
+
+####################################################################
+test DoubleArrayMath-13.2 {within with unequally sized arrays} {
+    catch {set br [java::call ptolemy.math.DoubleArrayMath {within double[] double[] double} $b1 $a1 0.002]} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: ptolemy.math.DoubleArrayMath.within() : input arrays must have the same length, but the first array has length 3 and the second array has length 5.}}

@@ -91,6 +91,12 @@ KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 	$(JTCLSH) alljtests.tcl
 
+test_jdam: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) DoubleArrayMath.tcl
+	   $(JTCLSH) DoubleArrayMath.tcl
+
+test_jsp: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) SignalProcessing.tcl
+	  $(JTCLSH) SignalProcessing.tcl
+
 docs: javadocs
 
 depend:
