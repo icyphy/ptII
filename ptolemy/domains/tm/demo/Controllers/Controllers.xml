@@ -56,11 +56,11 @@
         <property name="_location" class="ptolemy.moml.Location" value="60.0, 38.0">
         </property>
     </property>
-    <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+    <property name="preemptive" class="ptolemy.data.expr.Parameter" value="true">
     </property>
     <property name="priority1" class="ptolemy.data.expr.Parameter" value="2">
     </property>
-    <property name="priority2" class="ptolemy.data.expr.Parameter" value="3">
+    <property name="priority2" class="ptolemy.data.expr.Parameter" value="1">
     </property>
     <property name="executionTime1" class="ptolemy.data.expr.Parameter" value="0.042">
     </property>
@@ -285,8 +285,8 @@ preemptive ones can.
 <title>Output of Plant 1</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="30.0"/>
-<yRange min="0.0" max="0.19628322347253235"/>
+<xRange min="0.0" max="11.299999999999976"/>
+<yRange min="-0.029337983571413026" max="0.2323123898294862"/>
 </plot>?>
         </configure>
     </entity>
@@ -699,8 +699,8 @@ preemptive ones can.
 <title>Output of Plant 2</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="30.0"/>
-<yRange min="0.0" max="0.13182833344628034"/>
+<xRange min="0.0" max="11.299999999999976"/>
+<yRange min="0.0" max="0.1284684223206446"/>
 </plot>?>
         </configure>
     </entity>
