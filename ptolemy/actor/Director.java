@@ -485,6 +485,13 @@ public class Director extends Attribute implements Executable {
      *  This director is not added to the workspace directory, so calling
      *  this method with a null argument could result in
      *  this director being garbage collected.
+     *  <p>
+     *  If this method results in removing this director from a container
+     *  that is a CompositeActor, then this director ceases to be the active
+     *  director for that CompositeActor.  Moreover, if the composite actor
+     *  contains any other directors, then the most recently added of those
+     *  directors becomes the active director.
+     *  <p>
      *  This method is write-synchronized
      *  to the workspace and increments its version number.
      *  @param container The proposed container.
@@ -501,6 +508,29 @@ public class Director extends Attribute implements Executable {
             throws IllegalActionException, NameDuplicationException {
         try {
             _workspace.getWriteAccess();
+            Nameable oldContainer = getContainer();
+            if (oldContainer instanceof CompositeActor
+                    && oldContainer != container) {
+                // Need to remove this director as the active one of the
+                // old container. Search for another director contained
+                // by the composite.  If it contains more than one,
+                // use the most recently added one.
+                Director previous = null;
+                CompositeActor castContainer = (CompositeActor)oldContainer;
+                Iterator directors = 
+                       castContainer.attributeList(Director.class).iterator();
+                while (directors.hasNext()) {
+                    Director altDirector = (Director)directors.next();
+                    // Since we haven't yet removed this director, we have
+                    // to be sure to not just set it to the active
+                    // director again.
+                    if (altDirector != this) {
+                        previous = altDirector;
+                    }
+                }
+                castContainer._setDirector(previous);
+            }
+
             super.setContainer(container);
 
             if (container instanceof CompositeActor) {
