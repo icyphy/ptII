@@ -1,0 +1,59 @@
+<!--$Id$ -->
+<html>
+<head>
+<title>Setting up a development tree</title>
+</head>
+<body bgcolor="#faf0e6">
+<h1>Setting up a development tree</h1>
+<HR>
+This page describes how local developers setup parallel development trees.
+The information below is primarily for use by developers at U.C. Berkeley.
+
+<h2>Parallel trees</h2>
+Locally, the master development tree is in <CODE>~ptII</CODE>.
+The <a href="../../bin/ptlndir"><CODE>ptlndir</CODE></a> script
+will create a parallel tree with links into the <CODE>~ptII</CODE> tree.
+<pre>
+mkdir ~/ptII
+cd ptII
+~ptII/bin/ptlndir ~ptII .
+</pre>
+
+
+<h2>Browsing you tree from the web</h2>
+If you would like to be able to browse your development tree from the 
+web, then you should set it up so that the development tree is
+not publically available to anyone on the net.
+
+<ol>
+<li>  Create a directory for your private webpages:
+<pre>
+mkdir ~/public_html/private
+</pre>
+
+An alternative name is <CODE>~/public_html/local</CODE>
+
+<li> Create a link to a <CODE>.htaccess</CODE> file that limits access:
+<pre>
+cd ~/public_html/private 
+ln -s /usr/local/apache/htaccess/ohmCluster .htaccess
+</pre>
+
+<li>  Create any links you want from that directory.
+<pre>
+ln -s ~/ptII .
+</pre>
+</ol>
+
+
+
+ <P>
+<a href="../index.html">Ptolemy Home Page</a><br>
+<HR>
+Copyright &#169 1997- The Regents of the University of California.
+All rights reserved.
+<br>
+Last updated: $Date$,
+comments to: <author>ptII@eecs.berkeley.edu</author>
+</body>
+</html>
