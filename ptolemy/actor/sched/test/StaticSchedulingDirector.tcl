@@ -54,11 +54,14 @@ if {[string compare test [info procs test]] == 1} then {
 test StaticSchedulingDirector-2.1 {Constructor tests} {
     set d1 [java::new ptolemy.actor.sched.StaticSchedulingDirector]
     $d1 setName D1
-    set d2 [java::new ptolemy.actor.sched.StaticSchedulingDirector D2]
     set w [java::new ptolemy.kernel.util.Workspace W]
-    set d3 [java::new ptolemy.actor.sched.StaticSchedulingDirector $w D3]
+    set d2 [java::new ptolemy.actor.sched.StaticSchedulingDirector $w]
+    $d2 setName D2
+    set e0 [java::new ptolemy.actor.TypedCompositeActor]
+    $e0 setName E0
+    set d3 [java::new ptolemy.actor.sched.StaticSchedulingDirector $e0 D3]
     list [$d1 getFullName] [$d2 getFullName] [$d3 getFullName]
-} {.D1 .D2 W.D3}
+} {.D1 W.D2 .E0.D3}
 
 ######################################################################
 ####
@@ -66,10 +69,10 @@ test StaticSchedulingDirector-2.1 {Constructor tests} {
 test StaticSchedulingDirector-3.1 {Test clone} {
     # NOTE: Uses the setup above
     set d4 [java::cast ptolemy.actor.sched.StaticSchedulingDirector \
-            [$d2 clone $w]]
+            [$d1 clone $w]]
     $d4 setName D4
     enumToFullNames [$w directory]
-} {W.D3}
+} {W.D2}
 
 ######################################################################
 ####
@@ -80,9 +83,9 @@ test StaticSchedulingDirector-4.1 {Test setScheduler and getScheduler} {
     $d1 setScheduler $s0
     set s1 [$d1 getScheduler]
     set s2 [java::new ptolemy.actor.sched.Scheduler]
-    catch {[$d3 setScheduler $s2]} err1
+    catch {[$d2 setScheduler $s2]} err1
     list [$s0 getFullName] [$s1 getFullName] $err1
-} {.D1.Scheduler .D1.Scheduler {ptolemy.kernel.util.IllegalActionException: W.D3 and .Scheduler: Cannot set scheduler because workspaces are different.}}
+} {.D1.Scheduler .D1.Scheduler {ptolemy.kernel.util.IllegalActionException: W.D2 and .Scheduler: Cannot set scheduler because workspaces are different.}}
 
 ######################################################################
 ####

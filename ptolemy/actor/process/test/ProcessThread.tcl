@@ -54,10 +54,9 @@ if {[string compare test [info procs test]] == 1} then {
 test ProcessThread-2.1 {Constructor tests} {
     set manager [java::new ptolemy.actor.Manager manager]
     set e0 [java::new ptolemy.actor.CompositeActor]
-    set d1 [java::new ptolemy.actor.process.ProcessDirector director]
+    set d1 [java::new ptolemy.actor.process.ProcessDirector $e0 director]
     $e0 setName E0
     $e0 setManager $manager
-    $e0 setDirector $d1
     set a1 [java::new ptolemy.actor.process.test.TestProcessActor $e0 A1]
     set a2 [java::new ptolemy.actor.process.test.TestProcessActor $e0 A2]
 
@@ -81,10 +80,9 @@ test ProcessThread-3.1 {Test state methods} {
 test ProcessThread-3.2 {Test action methods} {
     set manager [java::new ptolemy.actor.Manager manager]
     set e0 [java::new ptolemy.actor.CompositeActor]
-    set d1 [java::new ptolemy.actor.process.ProcessDirector director]
+    set d1 [java::new ptolemy.actor.process.ProcessDirector $e0 director]
     $e0 setName E0
     $e0 setManager $manager
-    $e0 setDirector $d1
     set a1 [java::new ptolemy.actor.process.test.TestProcessActor $e0 A1]
     $a1 clear
     $manager run

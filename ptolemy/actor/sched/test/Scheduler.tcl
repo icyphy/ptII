@@ -76,11 +76,12 @@ test Scheduler-3.1 {Test clone} {
 #
 test Scheduler-4.1 {Test setScheduler and getScheduler} {
     # NOTE: Uses the setup above
-    set d0 [java::new ptolemy.actor.sched.StaticSchedulingDirector $w D1]
+    set d0 [java::new ptolemy.actor.sched.StaticSchedulingDirector $w]
+    $d0 setName D0
     $d0 setScheduler $s2
     set d1 [$s2 getContainer]
     list [$d0 getFullName] [$d1 getFullName] [$s2 getFullName]
-} {W.D1 W.D1 W.D1.Scheduler}
+} {W.D0 W.D0 W.D0.Scheduler}
 
 ######################################################################
 ####
@@ -100,12 +101,11 @@ test Scheduler-4.2 {Test setValid and isValid} {
 #
 test Scheduler-5.1 {Scheduling tests} {
     set manager [java::new ptolemy.actor.Manager $w Manager]
-    set director [java::new ptolemy.actor.sched.StaticSchedulingDirector \
-	    $w Director]
     set toplevel [java::new ptolemy.actor.CompositeActor $w]
+    set director [java::new ptolemy.actor.sched.StaticSchedulingDirector \
+	    $toplevel Director]
     $toplevel setName Toplevel
     $toplevel setManager $manager
-    $toplevel setDirector $director
     set scheduler [java::new ptolemy.actor.sched.Scheduler $w]
     $director setScheduler $scheduler
 
