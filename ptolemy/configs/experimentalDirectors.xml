@@ -16,8 +16,7 @@
       <!--property name="HDFFSM Director" class="ptolemy.domains.hdf.kernel.HDFFSMDirector"/-->
       <property name="Giotto Director" class="ptolemy.domains.giotto.kernel.GiottoDirector"/>
       <property name="TM Director" class="ptolemy.domains.tm.kernel.TMDirector"/>
-      <!-- PSDF is not shipping in 4.0 -->
-      <!--property name="PSDF Director" class="ptolemy.domains.psdf.kernel.PSDFDirector"/-->
+      <property name="PSDF Director" class="ptolemy.domains.psdf.kernel.PSDFDirector"/>
       <property name="PetriNet Director" class="ptolemy.domains.petrinet.kernel.PetriNetDirector"/>
       <!-- Don't include RTP -->
       <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">      
