@@ -39,6 +39,7 @@ PCCG_ARRAY_CLASS GENERIC_ARRAY_CLASS;
 /* Allocate space for a Java array using a va_arg instead of variable
  * number of arguments. This enables recursion.
  * next_argument stores dimensions_to_fill, empty_dimensions ... 
+ * Note that empty_dimensions is not used at all.
  */
 PCCG_ARRAY_INSTANCE_PTR pccg_array_allocate_list(
         PCCG_CLASS_PTR element_class, int element_size,
@@ -56,7 +57,7 @@ PCCG_ARRAY_INSTANCE_PTR pccg_array_allocate_list(
     // If the elements of this array are normal Objects/items and not
     // arrays, then they are allocated directly, else pointers to them are
     // allocated.
-    if (empty_dimensions == 0) {
+    if (dimensions_to_fill == 1) {
         first_element_size = element_size;
     }
     else {
@@ -69,7 +70,7 @@ PCCG_ARRAY_INSTANCE_PTR pccg_array_allocate_list(
     // If this is an array of arrays, its elements must be pointers to the
     // sub-arrays. It is not sufficient to merely allocate memory. The
     // pointers must also be set correctly.
-    if (empty_dimensions != 0) {
+    if (dimensions_to_fill > 1) {
         new_empty_dimensions = empty_dimensions - 1;
         for (i = 0; i <= first_dimension_size; i++) {
             *((void**)new_array + i) =

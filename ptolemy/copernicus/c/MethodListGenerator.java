@@ -40,9 +40,12 @@ package ptolemy.copernicus.c;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.HashSet;
+import java.lang.reflect.Method;
 
 import soot.SootClass;
 import soot.SootMethod;
+import soot.Scene;
 
 /** A class that extracts ordered lists of method declarations
    with an ordering convention that facilitates translation
@@ -102,6 +105,44 @@ public class MethodListGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Some SootMethods belong to a class that does not implement them.
+     *  This method uses reflection to figure out the actual method
+     *  referred to.
+     *  @param method The original SootMethod.
+     *  @return  The SootMethod coresponding to its actual implementation.
+     */
+     public static SootMethod getActualMethod(SootMethod method) {
+
+        try {
+            SootClass source = method.getDeclaringClass();
+            Class javaClass = Class.forName(source.getName());
+            Class params[] = new Class[method.getParameterCount()];
+            for (int i = 0; i < method.getParameterCount(); i++) {
+                params[i] = Class.forName(method.getParameterType(i)
+                        .toString());
+            }
+            Method javaMethod = javaClass.getMethod(method
+                    .getName(), params);
+
+            javaClass = javaMethod.getDeclaringClass();
+
+            SootClass actualClass = Scene.v().getSootClass(javaClass
+                    .getName());
+
+            SootMethod actualMethod =actualClass.getMethod(method
+                    .getSubSignature());
+            return actualMethod;
+        }
+        // FIXME: Narrow down this exception.
+        // Do not resolve the method if there is a problem while reflecting
+        // it.
+        catch (Exception e) {
+                return method;
+        }
+
+     }
+
 
     /** Given a class, return the class initializer method if it exists,
      *  or return null if the class does not have a class initializer method.
@@ -176,6 +217,9 @@ public class MethodListGenerator {
         Iterator methods = source.getMethods().iterator();
         while (methods.hasNext()) {
             SootMethod method = (SootMethod)(methods.next());
+
+            method = getActualMethod(method);
+
             String name;
             if ((name = method.getName()).indexOf('<') != -1) {
                 if (name.indexOf("clinit") != -1) {
@@ -223,6 +267,7 @@ public class MethodListGenerator {
                         } else {
                             inheritedMethodIndex++;
                         }
+                        method = getActualMethod(method);
                     }
                     if (found) {
                         // The method overrides a previously defined method
@@ -234,6 +279,43 @@ public class MethodListGenerator {
                 }
             }
         }
+
+        // JDK1.4.1 seems to have a number of methods that are inherited
+        // from interfaces, but not implemented in the class. These methods
+        // need to be inherited too.
+
+        // First we create a list of the subSignatures of all inherited
+        // methods.
+        HashSet subSignatures = new HashSet();
+        Iterator inheritedMethods = (Iterator)inheritedList.listIterator();
+        while (inheritedMethods.hasNext()) {
+            SootMethod inheritedMethod = (SootMethod)inheritedMethods.next();
+            subSignatures.add(inheritedMethod.getSubSignature());
+        }
+        // Iterate over all the interfaces this class implements.
+        // FIXME: There must be a faster implementation than a
+        // triple-nested loop.
+        // FIXME: Methods end up duplicated. Need to take care of that.
+        Iterator interfaces = source.getInterfaces().iterator();
+        while (interfaces.hasNext()) {
+            SootClass thisInterface = (SootClass)interfaces.next();
+
+            // Iterate over each method in each interface.
+            Iterator interfaceMethods = thisInterface.getMethods().iterator();
+            while(interfaceMethods.hasNext()) {
+                SootMethod thisMethod = (SootMethod)interfaceMethods.next();
+                // Prevent the method from being listed as "inherited" if
+                // its declared by this class itself, or if its
+                // subSignature is already present.
+                String thisSubsignature = thisMethod.getSubSignature();
+                if (!source.declaresMethod(thisSubsignature)
+                    && !subSignatures.contains(thisSubsignature)) {
+                    inheritedList.addLast(thisMethod);
+                    subSignatures.add(thisSubsignature);
+                }
+            }
+        }
+
         _constructorListMap.put(source, constructorList);
         _inheritedListMap.put(source, inheritedList);
         _newListMap.put(source, newList);

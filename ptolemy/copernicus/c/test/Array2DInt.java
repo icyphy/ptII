@@ -51,6 +51,7 @@ public class Array2DInt{
         // Initialize array.
         int data[][] = new int[2][];
         data [0] = new int[2];
+        data [1] = new int[2];
 
         // Set the data.
         data[0][0] = 0;

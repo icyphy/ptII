@@ -38,6 +38,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import soot.SootMethod;
+import soot.SootClass;
 import soot.Type;
 import soot.VoidType;
 import soot.BaseType;
@@ -132,24 +133,12 @@ public class OverriddenMethodGenerator {
         // InnerClass.privateFieldOfOuterClass.
 
         _forceOverriddenMethods.add(
-            "<sun.security.util.Debug: void <clinit>()>");
-        // Overridden because Object.hashCode() is not up yet.
-
-        _forceOverriddenMethods.add(
-            "<sun.security.util.Debug: void <clinit>()>");
-        // Overridden because Object.hashCode() is not up yet.
-
-        _forceOverriddenMethods.add(
-            "<sun.misc.Version: void <clinit>()>");
-        // Overridden because it tried setProperty, which is not currently
-        // permitted.
-
-        _forceOverriddenMethods.add(
             "<java.io.File: void <clinit>()>");
 
         _forceOverriddenMethods.add(
             "<java.lang.SecurityManager: "
             + "java.lang.ThreadGroup getRootGroup()>");
+
 
         _forceOverriddenMethods.add(
             "<sun.net.InetAddressCachePolicy: void <clinit>()>");
@@ -193,9 +182,11 @@ public class OverriddenMethodGenerator {
         // no effect which caused a warning.
 
         _forceOverriddenMethods.add(
-            "<sun.security.x509.CertificateX509Key: "
-            + "void encode(java.io.OutputStream)>");
-        // Overridden because it did not compile.
+            "<java.util.ResourceBundle: "
+            + "java.lang.Object "
+            + "loadBundle(java.lang.ClassLoader,"
+            + "java.lang.String,java.util.Locale)>");
+        // Overridden because it threw a warning for an unused variable.
 
         _forceOverriddenMethods.add("<java.security.MessageDigest: "
             + "java.security.MessageDigest getInstance(java.lang.String)>");
@@ -216,6 +207,48 @@ public class OverriddenMethodGenerator {
             + "void printStackTrace()>");
         // Overridden because it had a statement with no effect. This was
         // because CSwitch expects method class to be superclass of base.
+
+        _forceOverriddenMethods.add("<java.text.AttributedString: "
+            + "void <init>(java.text.AttributedCharacterIterator[])>");
+        _forceOverriddenMethods.add("<java.text.AttributedString: "
+            + "void <init>(java.lang.String,java.util.Map)>");
+        _forceOverriddenMethods.add("<java.text.AttributedString: "
+            + "void <init>(java.text.AttributedCharacterIterator)>");
+        _forceOverriddenMethods.add("<java.text.AttributedString: "
+            + "void <init>(java.text.AttributedCharacterIterator,int,"
+            + "int,java.text.AttributedCharacterIterator$Attribute[])>");
+        // Overridden because they assume inheritance from interfaces, and
+        // we don't have interfaces up yet.
+
+        _forceOverriddenMethods.add("<org.apache.crimson.tree.ElementNode2: "
+            + "void trimToSize()>");
+        _forceOverriddenMethods.add("<org.apache.crimson.tree.ElementNode2: "
+            + "void setReadonly(boolean)>");
+        _forceOverriddenMethods.add("<org.apache.crimson.tree.ElementNode2: "
+            + "org.w3c.dom.Attr getAttributeNodeNS(java.lang.String"
+            + ",java.lang.String)>");
+        // Overridden because they did an incorrect cast on an inherited
+        // method. Needs to be fixed.
+
+        _forceOverriddenMethods.add("<java.security.MessageDigest: "
+            + "java.security.MessageDigest getInstance(java.lang.String"
+            + ",java.security.Provider)>");
+        // Overridden because an inner class tried to access the private
+        // method of an outer class, and this is not supported right now.
+
+
+        _forceOverriddenMethods.add("<sun.nio.ch.FileChannelImpl: "
+            + "java.nio.channels.FileLock lock(long,long,boolean)>");
+        // Overridden because it threw a warning for an unused variable.
+
+       _forceOverriddenMethods.add("<sun.net.www.URLConnection: "
+            + "void setFileNameMap(java.net.FileNameMap)>");
+       // Overridden because it calls a nonexistant method.
+
+       _forceOverriddenMethods.add("<java.security.Signature: "
+            + "java.security.Signature getInstance"
+            + "(java.lang.String,java.security.Provider)>");
+       // Overridden because it asks for a nonexistant field.
 
         ///////// Methods replaced with actual code ////////
 
@@ -241,11 +274,38 @@ public class OverriddenMethodGenerator {
     }
 
     /** Checks if the given method is overridden.
-     *
+     * @param method The method to be checked.
      * @return True if the method is overridden.
      */
     public static boolean isOverridden(SootMethod method) {
-        if (_forceOverriddenMethods.contains(method.getSignature())) {
+        if (_forceOverriddenMethods.contains(method.getSignature())
+                || isOverridden(method.getDeclaringClass())
+                ) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    /** Checks if the given class is overridden.
+     *  @param class The class to check.
+     *  @return True if the entire class is overridden.
+     */
+    public static boolean isOverridden(SootClass sootClass) {
+        String className = sootClass.getName();
+
+        if ((className.indexOf("sun.") == 0)
+                ||(className.indexOf("org.") == 0)
+                ||(className.indexOf("com.") == 0)
+                ||(className.indexOf("javax.") == 0)
+                ||(className.indexOf("java.nio.") == 0)
+                ||(className.indexOf("java.lang.reflect.") == 0)
+                ||(className.indexOf("java.lang.ref.") == 0)
+                ||(className.indexOf("java.util.prefs.") == 0)
+                ||(className.indexOf("java.util.logging.") == 0)
+                ||(className.indexOf("java.security.") == 0)
+            ) {
             return true;
         }
         else {

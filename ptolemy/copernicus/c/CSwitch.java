@@ -53,7 +53,6 @@ import soot.jimple.internal.*;
 */
 public class CSwitch implements JimpleValueSwitch, StmtSwitch {
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public fields                     ////
 
@@ -61,10 +60,6 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
      *  change  the degree of indentation in the currently generated code.
      */
     public byte indentLevel;
-
-    /** Type to be cast for return statements */
-    public Type returnType;
-
 
     /** Construct a new CSwitch with an empty context. */
     public CSwitch() {
@@ -167,10 +162,16 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
 
     }
 
+    /* Generate code for a breakpoint statement
+     * @param stmt The statement.
+     */
     public void caseBreakpointStmt(BreakpointStmt stmt) {
         defaultCase(stmt);
     }
 
+    /* Generate the code for a cast expression.
+     * @param v The expression.
+     */
     public void caseCastExpr(CastExpr v) {
         //FIXME: Does not handle null cast.
         if (!v.getOp().toString().equals("null")) {
@@ -187,54 +188,52 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         }
     }
 
+    /* Generate the code for a caught exception reference.
+     * @param v The caught expression reference
+     */
     public void caseCaughtExceptionRef(CaughtExceptionRef v) {
-
-        /*
-        System.out.println("Caught exception ref of type: " +
-                v.getType().toString());
-        Iterator useBoxes = v.getUseBoxes().iterator();
-        while (useBoxes.hasNext()) {
-            Object box = useBoxes.next();
-            System.out.println("use box of type " + box.getClass().getName());
-        }
-        defaultCase(v);
-        */
-
         _push("exception_id");
     }
 
 
-    /** Generate code for a CmpExpr expression.
+    /** Generate code for a Compare expression.
      *  @param v The expression.
      */
     public void caseCmpExpr(CmpExpr v) {
         _generateCompare(v);
     }
 
-    /** Generate code for a Cmpg expression. Presently this is equivalent
-     *  to generating code for a Cmp expression since NaN is not supported
-     *  at present.
-     *  @param v The expression.
+    /** Generate code for a Cmpg(compare greater than) expression. Presently
+     * this is equivalent to generating code for a Cmp expression since NaN
+     * is not supported at present.
+     * @param v The expression.
      */
     public void caseCmpgExpr(CmpgExpr v) {
         _generateCompare(v);
     }
 
-    /** Generate code for a Cmpl expression. Presently this is equivalent
-     *  to generating code for a Cmp expression since NaN is not supported
-     *  at present.
-     *  @param v The expression.
+    /** Generate code for a Cmpl(comare less than) expression. Presently
+     * this is equivalent to generating code for a Cmp expression since NaN
+     * is not supported at present.
+     * @param v The expression.
      */
     public void caseCmplExpr(CmplExpr v) {
         _generateCompare(v);
     }
 
+    /* Generate code for a division.
+     * @param v The division expression.
+     */
     public void caseDivExpr(DivExpr v) {
         _generateBinaryOperation(v, "/");
     }
 
 
-
+    /* Generate code for a double constant.
+     * This makes approximations for +/- infinity by using large numbers
+     * instead.
+     * @param v The double constant.
+     */
     public void caseDoubleConstant(DoubleConstant v) {
         String constant = v.toString();
 
@@ -248,22 +247,36 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
             // as close to -inf as we can get
         }
 
-
         _push("((double)" + constant +")");
     }
 
+    /* Generate the code to enter a monitor for synchronization. This is
+     * currently disabled.
+     * @param v The enter monitor statement.
+     */
     public void caseEnterMonitorStmt(EnterMonitorStmt stmt) {
         defaultCase(stmt);
     }
 
+    /* Generate the code to check for equality.
+     * @param v The equality expression.
+     */
     public void caseEqExpr(EqExpr v) {
         _generateBinaryOperation(v, "==");
     }
 
+    /* Generate the code to exit from a monitor (for synchronization).
+     * This is currently disabled.
+     * @param v The exit monitor statement.
+     */
     public void caseExitMonitorStmt(ExitMonitorStmt stmt) {
         defaultCase(stmt);
     }
 
+    /* Generate the code for a floating point constant. NaN and infinities
+     * are handled as large numbers.
+     * @param v The floating point constant.
+     */
     public void caseFloatConstant(FloatConstant v) {
         String constant = v.toString();
 
@@ -280,18 +293,32 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         _push("((float) " + constant +")");
     }
 
+    /* Generate the code for a "greater than or equal to" expression.
+     * @param v The expression.
+     */
     public void caseGeExpr(GeExpr v) {
         _generateBinaryOperation(v, ">=");
     }
 
+    /* Generate the code for an unconditional goto statement for jumping to
+     * a label.
+     * @param stmt The statement.
+     */
     public void caseGotoStmt(GotoStmt stmt) {
         _push("goto " + getLabel(stmt.getTarget()));
     }
 
+    /* Generate the code for a "greater than" expression.
+     * @param v The expression.
+     */
     public void caseGtExpr(GtExpr v) {
         _generateBinaryOperation(v, ">");
     }
 
+    /* Generate the code for an identity statement.
+     * This is typically of the a = b type.
+     * @param stmt The statement.
+     */
     public void caseIdentityStmt(IdentityStmt stmt) {
         Value rightOp = stmt.getRightOp();
         if ((rightOp instanceof ParameterRef) || (rightOp instanceof ThisRef))
@@ -317,6 +344,10 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
                 + "goto " + getLabel(stmt.getTarget())));
     }
 
+    /** Generate code for a reference to a non-static field of an object.
+     *  A non-static field belongs to an instance(object), not a class.
+     *  @param v The instance field reference.
+     */
     public void caseInstanceFieldRef(InstanceFieldRef v) {
         v.getBase().apply(this);
         _push(_pop().append("->").append(CNames.fieldNameOf(v.getField())));
@@ -366,15 +397,25 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         _push(Integer.toString(constant));
     }
 
+    /** Generate code for calling a method that was declared in an
+     * interface.
+     * @param v The interface invoke expression.
+     */
     public void caseInterfaceInvokeExpr(InterfaceInvokeExpr v) {
-        _generateInstanceInvokeExpression(v);
-        //defaultCase(v);
+        //_generateInstanceInvokeExpression(v);
+        defaultCase(v);
     }
 
+    /** Generate code for an invoke statement.
+     *  @param stmt The invoke statement.
+     */
     public void caseInvokeStmt(InvokeStmt stmt) {
         stmt.getInvokeExpr().apply(this);
     }
 
+    /** Generate code for a "less than or equal to" expression.
+     *  @param v The expression.
+     */
     public void caseLeExpr(LeExpr v) {
         _generateBinaryOperation(v, "<=");
     }
@@ -398,6 +439,9 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         _push(CNames.localNameOf(l));
     }
 
+    /** Generate the code for a long constant.
+     * @param v The long constant.
+     */
     public void caseLongConstant(LongConstant v) {
         // FIXME: verify long qualifier
         long constant = v.value;
@@ -413,6 +457,10 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         _push(Long.toString(constant));
     }
 
+    /* Generate the code for a lookup switch statement. There is also a
+     * table switch statement that is slightly different.
+     * @param stmt The statent.
+     */
     public void caseLookupSwitchStmt(LookupSwitchStmt stmt) {
         StringBuffer code = new StringBuffer();
         int numberOfTargets = stmt.getTargetCount();
@@ -436,22 +484,37 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         _push(code);
     }
 
+    /** Generate the code for a "less than" expression.
+     *  @param v The expression.
+     */
     public void caseLtExpr(LtExpr v) {
         _generateBinaryOperation(v, "<");
     }
 
+    /** Generate the code for a multiply expression.
+     *  @param v The expression.
+     */
     public void caseMulExpr(MulExpr v) {
         _generateBinaryOperation(v, "*");
     }
 
+    /** Generate the code for an inequality expression.
+     *  @param v The expression.
+     */
     public void caseNeExpr(NeExpr v) {
         _generateBinaryOperation(v, "!=");
     }
 
+    /** Generate code for a "negative of" expression.
+     *  @param v The expression.
+     */
     public void caseNegExpr(NegExpr v) {
         _push("-" + CNames.localNameOf((Local)v.getOp()));
     }
 
+    /* Generate code allocating space for a new array.
+     * @param v The new array expression.
+     */
     public void caseNewArrayExpr(NewArrayExpr v) {
 
         v.getSize().apply(this);
@@ -459,6 +522,9 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         _push(_generateArrayAllocation(v.getBaseType(), 1, sizeCode));
     }
 
+    /** Generate code for a "new object" expression.
+     *  @param v The expression.
+     */
     public void caseNewExpr(NewExpr v) {
         if (_debug) {
             System.out.println("new expr types: "
@@ -473,6 +539,9 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         _push("( malloc(sizeof(struct " + name + ")))");
     }
 
+    /** Generate code for defining a new multidimensional array.
+     *  @param v The "new multidimensional array" expression.
+     */
     public void caseNewMultiArrayExpr(NewMultiArrayExpr v) {
         if (_debug) {
             System.out.println("NewMultiArrayExpr: " + v.getSizeCount() +
@@ -485,6 +554,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
             sizeCode += _pop();
             if (sizes.hasNext()) sizeCode += ", ";
         }
+
         _push(_generateArrayAllocation(v.getBaseType(), v.getSizeCount(),
                 sizeCode));
     }
@@ -495,33 +565,53 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     }
 */
 
+    /** Generate code for a Nop(No operation) statement.
+     *  @param stmt The statement.
+     */
     public void caseNopStmt(NopStmt stmt) {
         //do nothing
         //defaultCase(stmt);
     }
 
+    /** Generate code for a null constant.
+     *  @param v The constant.
+     */
     public void caseNullConstant(NullConstant v) {
         _push("NULL");
     }
 
+    /** Generate code for an "bitwise or" expression.
+     *  @param v The expression.
+     */
     public void caseOrExpr(OrExpr v) {
-        // Bitwise OR.
         _generateBinaryOperation(v,"|");
     }
 
+    /** Generate code for a parameter reference. Not currently implemented.
+     *  @param v The parameter reference.
+     */
     public void caseParameterRef(ParameterRef v) {
         defaultCase(v);
     }
 
+    /** Generate code for a remainder, or "mod", expression.
+     *  @param v The expression.
+     */
     public void caseRemExpr(RemExpr v) {
         _generateBinaryOperation(v, "%");
     }
 
 
+    /** Generate code for a Ret statement. This is currently not supported.
+     *  @param stmt The statement.
+     */
     public void caseRetStmt(RetStmt stmt) {
         defaultCase(stmt);
     }
 
+    /** Generate code for a "return" statement.
+     *  @param stmt The statement.
+     */
     public void caseReturnStmt(ReturnStmt stmt) {
         stmt.getOp().apply(this);
 
@@ -534,12 +624,13 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
             indent = "        ";
         }
 
+        // Do not do exception-management in single-class mode.
         if (!_context.getSingleClassMode()) {
             _push("\n"
                 + indent + "memcpy(env, caller_env, sizeof(jmp_buf));\n"
                 + indent + "epc = caller_epc;\n"
                 + indent + "return "
-                + "(" + CNames.typeNameOf(returnType) + ")"
+                + "(" + CNames.typeNameOf(_returnType) + ")"
                 + _pop());
         }
         else {
@@ -547,6 +638,9 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         }
     }
 
+    /** Generate code for a "return void" statement.
+     *  @param stmt The statement.
+     */
     public void caseReturnVoidStmt(ReturnVoidStmt stmt) {
         String indent = new String();
 
@@ -557,6 +651,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
             indent = "        ";
         }
 
+        // Do not do exception-management in single-class mode.
         if (!_context.getSingleClassMode()) {
             _push("\n"
                 + indent + "memcpy(env, caller_env, sizeof(jmp_buf));\n"
@@ -568,6 +663,9 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         }
     }
 
+    /** Generate code for a shift-left expression.
+     * @param v The expression.
+     */
     public void caseShlExpr(ShlExpr v) {
         v.getOp2().apply(this);
         v.getOp1().apply(this);
@@ -604,6 +702,10 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
                 + "):0");
     }
 
+    /** Generate code for a Shift Right expression. The upper bits should
+     * be filled with the sign.
+     * @param v The expression.
+     */
     public void caseShrExpr(ShrExpr v) {
         v.getOp2().apply(this);
         v.getOp1().apply(this);
@@ -648,7 +750,9 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
                     + "( "
                         + "( -"
                             + "("
-                                + "(-" + number + ") >> "
+                                + "(-"
+                                    + "(" + number +")"
+                                + ") >> "
                                 + "("
                                     +"(" + shiftIndex + " % " + dataWidth + ")"
                                 + ")"
@@ -668,8 +772,41 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         // that is declared by the superclass of the base. This
         // occurs when the base class constructor is invoked automatically
         // from with a given class constructor.
-        SootClass methodClass = v.getMethod().getDeclaringClass();
         SootMethod method = v.getMethod();
+
+        // Generate cast for first argument of method.
+        String cast = new String();
+
+        SootMethod actualMethod = MethodListGenerator.getActualMethod(method);
+        SootClass actualClass = actualMethod.getDeclaringClass();
+
+        if (!actualClass.isInterface()) {
+            cast = "("
+                    + CNames.instanceNameOf(actualClass)
+                    + "/* actual cast */)";
+        }
+
+
+        Iterator inheritedMethods = MethodListGenerator
+                .getInheritedMethods(method.getDeclaringClass())
+                .iterator();
+
+        while (inheritedMethods.hasNext()) {
+            SootMethod inheritedMethod = (SootMethod)inheritedMethods
+                                                            .next();
+
+
+            if (inheritedMethod.getSubSignature()
+                    .equals(method.getSubSignature())) {
+                cast = "("
+                        + CNames.instanceNameOf(inheritedMethod
+                            .getDeclaringClass())
+                        + "/* inherited cast */)";
+                break;
+            }
+        }
+
+        SootClass methodClass = method.getDeclaringClass();
         if (!(v.getBase().getType() instanceof RefType)) {
             _unexpectedCase(v, "RefType base type expected.");
         } else {
@@ -695,14 +832,21 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
             } else {
                 v.getBase().apply(this);
                 StringBuffer baseCode = _pop();
-                _push(CNames.classStructureNameOf(methodClass) + ".methods." +
-                        CNames.methodNameOf(method) + "((" +
-                        CNames.instanceNameOf(methodClass) + ")"+ baseCode
-                        + _generateArguments(v, 1) + ")");
+                _push(CNames.classStructureNameOf(methodClass)
+                        + ".methods."
+                        + CNames.methodNameOf(method)
+                        + "("
+                            + cast
+                            + baseCode
+                            + _generateArguments(v, 1)
+                        + ")");
             }
         }
     }
 
+    /** Generate code for a reference to a static field.
+     *  @param v The static field reference.
+     */
     public void caseStaticFieldRef(StaticFieldRef v) {
         SootField field = v.getField();
         SootClass className = field.getDeclaringClass();
@@ -715,6 +859,9 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
 
     }
 
+    /** Generate code for invoking a static method.
+     *  @param v The static invoke expression.
+     */
     public void caseStaticInvokeExpr(StaticInvokeExpr v) {
         if (!_context.getSingleClassMode()) {
             String includeFileName =
@@ -744,6 +891,9 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
 
     }
 
+    /** Generate code for a string constant.
+     *  @param v The string constant.
+     */
     public void caseStringConstant(StringConstant v) {
         StringBuffer stringConst = new StringBuffer(v.value);
 
@@ -795,10 +945,17 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         _push("charArrayToString(\"" + stringConst + "\")" );
     }
 
+    /** Generate code for a subtract expression.
+     *  @param v The expression.
+     */
     public void caseSubExpr(SubExpr v) {
         _generateBinaryOperation(v, "-");
     }
 
+    /** Generate code for a Table switch statement. There is also a
+     *  related statement called a lookup switch statement.
+     *  @param stmt The statement.
+     */
     public void caseTableSwitchStmt(TableSwitchStmt stmt) {
         StringBuffer code = new StringBuffer();
         int min = stmt.getLowIndex();
@@ -823,10 +980,16 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         _push(code);
     }
 
+    /** Generate code for a "this" reference. Currently not supported.
+     *  @param v The reference.
+     */
     public void caseThisRef(ThisRef v) {
         defaultCase(v);
     }
 
+    /** Generate code for a throw statement.
+     *  @param stmt The statement.
+     */
     public void caseThrowStmt(ThrowStmt stmt) {
 
         String indent = new String();
@@ -846,6 +1009,10 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
 
     }
 
+    /** Generate code for an "unsigned shift right" expression. This causes
+     *  the empty upper bits to be filled with zeros.
+     *  @param v The expression.
+     */
     public void caseUshrExpr(UshrExpr v) {
         v.getOp2().apply(this);
         v.getOp1().apply(this);
@@ -921,10 +1088,17 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
                 + "): 0");
     }
 
+    /** Generate code for a virtual invoke expression.
+     *  @param v The expression.
+     */
     public void caseVirtualInvokeExpr(VirtualInvokeExpr v) {
         _generateInstanceInvokeExpression(v);
     }
 
+
+    /** Generate code for an Xor expression.
+     *  @param v The expression.
+     */
     public void caseXorExpr(XorExpr v) {
         _generateBinaryOperation(v,"^");
     }
@@ -937,12 +1111,15 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     }
 
 
+    /** Generate code for unhandled expressions or statements.
+     *  @param obj The object(expression or statement) to be handled.
+     */
     public void defaultCase(Object obj) {
         if (obj instanceof Stmt) {
             _push("/*UNHANDLED STATEMENT: " + obj.getClass().getName() + "*/");
         }
         else if (obj instanceof Expr) {
-            _push("0 /*UNHANDLED EXPRESSION HERE:"
+            _push("epc++; epc-- /*UNHANDLED EXPRESSION HERE:"
                 +obj.getClass().getName() +"*/");
         }
         else {
@@ -950,10 +1127,6 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
             _push("< UNHANDLED: "+obj.getClass().getName()+">");
         }
 
-        /* FIXME: Enable this when diagnostic output is needed.
-        System.out.println("Unsupported visitation type: "
-                + obj.getClass().getName() + "(ignored).");
-        */
     }
 
     /** Retrieve the code generated by the switch since the last time
@@ -1003,6 +1176,13 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         return _targetMap.containsKey(unit);
     }
 
+    /** Set the type to be cast for return statements
+     *  @param type The type to be cast for a return statement.
+     */
+    public void setReturnType(Type type) {
+        _returnType = type;
+    }
+
     /** Set the name of the local in the current method that represents
      *  the current class.
      *  @param name The name.
@@ -1048,6 +1228,8 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         return code.toString();
     }
 
+    /** Allocate memory for a given array.
+     */
     protected String _generateArrayAllocation(Type elementType,
             int dimensionsToFill, String sizeCode) {
         if (!((elementType instanceof BaseType) ||
@@ -1085,7 +1267,8 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
                     + " malloc(sizeof(" + elementClass + "))"
                     + ", sizeof(" + elementSizeType + "), "
                     + dimensionsToFill + ", " + emptyDimensions
-                    + ", " + sizeCode + ")";
+                    + ", " + sizeCode
+                    + ")";
         }
     }
 
@@ -1133,14 +1316,12 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     protected void _generateInstanceInvokeExpression(
             InstanceInvokeExpr expression) {
 
-        SootMethod method = expression.getMethod();
-        StringBuffer code = new StringBuffer();
-        // We clone the expression and make modifications only to its
-        // clone.
-        InstanceInvokeExpr expressionClone = (InstanceInvokeExpr)
-                expression.clone();
+        SootMethod method = MethodListGenerator
+                .getActualMethod(expression.getMethod());
 
-        expressionClone.getBase().apply(this);
+        StringBuffer code = new StringBuffer();
+
+        expression.getBase().apply(this);
         StringBuffer instanceName = _pop();
 
 
@@ -1153,32 +1334,30 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
 
         String cast = new String();
 
-        if (true) {
-            //expression.getBase().getType() instanceof ArrayType)
-            cast = "("
-                    + CNames.instanceNameOf(
-                        expression.getMethod().getDeclaringClass())
-                    + ")";
-        }
+        // This call had to be repeated. Rewason unknown.
+        SootMethod actualMethod = MethodListGenerator.getActualMethod(method);
+        SootClass actualClass = actualMethod.getDeclaringClass();
 
-        // Make sure that the arguments are generated for the correct
-        // method and class. This needs to be done only for
-        // classes(RefType). This is done to suppress warnings caused by
-        // improper casts for the arguments.
-        if (expression.getBase().getType() instanceof RefType) {
-            // This is a "try" because some methods don't have names.
-            try {
-                SootClass actualClass = ((RefType)(expression.getBase()
-                        .getType())).getSootClass();
+        cast = "("
+                + CNames.instanceNameOf(actualClass)
+                + "/* actual cast */)";
 
-                SootMethod actualMethod = actualClass.getMethod(method
-                        .getSubSignature());
+        Iterator inheritedMethods = MethodListGenerator
+                .getInheritedMethods(method.getDeclaringClass())
+                .iterator();
 
-                expressionClone.setMethod(actualMethod);
+        while (inheritedMethods.hasNext()) {
+            SootMethod inheritedMethod = (SootMethod)inheritedMethods
+                                                            .next();
 
-                cast = "(" + CNames.instanceNameOf(actualClass) + ")";
-            }
-            catch (Exception e) {
+
+            if (inheritedMethod.getSubSignature()
+                    .equals(method.getSubSignature())) {
+                cast = "("
+                        + CNames.instanceNameOf(inheritedMethod
+                            .getDeclaringClass())
+                        + "/* inherited cast */)";
+                break;
             }
         }
 
@@ -1186,7 +1365,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         code.append("("
                 + cast
                 + instanceName
-                + _generateArguments(expressionClone, 1)
+                + _generateArguments(expression, 1)
                 + ")");
 
         _push(code);
@@ -1278,4 +1457,8 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     // class.
     // FIXME: do we really need this field, and the associated methods?
     private String _thisLocalName;
+
+    /** Type to be cast for return statements */
+    private Type _returnType;
+
 }

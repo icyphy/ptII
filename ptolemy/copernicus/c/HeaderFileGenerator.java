@@ -44,6 +44,7 @@ import soot.Type;
 import soot.ArrayType;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -62,10 +63,15 @@ import java.util.List;
 
 public class HeaderFileGenerator extends CodeGenerator {
 
+    /////////////////////////////////////////////////////////////////
+    ///////////////             public fields             ///////////
+
     /** Construct a header file generator.
      */
     public HeaderFileGenerator() {
         super();
+        _doneFields = new HashSet();
+        _doneMethods = new HashSet();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -203,6 +209,9 @@ public class HeaderFileGenerator extends CodeGenerator {
         bodyCode.append("\n" + _indent(1) + CNames.classNameOf(source) +
                 " class;\n");
 
+        // Clear the list of "done" fields.
+        _doneFields.clear();
+
         // Extract the non-static fields, and insert them into the struct
         // that is declared to implement the class.
         Iterator superClasses = _getSuperClasses(source).iterator();
@@ -210,6 +219,7 @@ public class HeaderFileGenerator extends CodeGenerator {
             SootClass superClass = (SootClass)superClasses.next();
             bodyCode.append(_generateInheritedFields(source, superClass));
         }
+
         bodyCode.append(_generateFields(source));
 
 
@@ -217,7 +227,7 @@ public class HeaderFileGenerator extends CodeGenerator {
         bodyCode.append("\n};\n\n");
 
         // Export function prototypes for all non-private
-        // methods
+        // methods.
         Iterator methods = source.getMethods().iterator();
         while (methods.hasNext()) {
             SootMethod method = (SootMethod)(methods.next());
@@ -263,11 +273,11 @@ public class HeaderFileGenerator extends CodeGenerator {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+    ////                         protected methods                 ////
 
-    // override method in CodeFileGenerator and include "interface header"
-    // files instead of .h files.
-
+    /** Override method in CodeFileGenerator and include directives for
+     * "interface header" files instead of .h files.
+     */
     protected String _generateIncludeDirectives() {
         StringBuffer headerCode = new StringBuffer();
 
@@ -324,6 +334,8 @@ public class HeaderFileGenerator extends CodeGenerator {
         return headerCode.toString();
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     // Generate a C declaration that corresponds to a class field.
     private String _generateField(SootField field) {
@@ -338,6 +350,7 @@ public class HeaderFileGenerator extends CodeGenerator {
 
         fieldCode.append(CNames.fieldNameOf(field));
         fieldCode.append(";\n");
+
         return fieldCode.toString();
     }
 
@@ -349,7 +362,7 @@ public class HeaderFileGenerator extends CodeGenerator {
         Iterator fields = source.getFields().iterator();
         int insertedFields = 0;
         String header = "\n" + _indent(1)
-                + "/* Public and protected fields defined in "
+                + "/* Public and protected fields for "
                 + source.getName() + " */\n";
 
         // Generate public and protected fields
@@ -361,10 +374,18 @@ public class HeaderFileGenerator extends CodeGenerator {
             */
             //FIXME: Is this correct for static and native fields?
             if ((!field.isPrivate())
-                && (!Modifier.isStatic(field.getModifiers()))) {
-                if (insertedFields == 0) fieldCode.append(header);
+                && (!Modifier.isStatic(field.getModifiers()))
+                && (!_getDone(field))) {
+
+                if (insertedFields == 0) {
+                    fieldCode.append(header);
+                }
+
                 fieldCode.append(_generateField(field));
                 insertedFields++;
+
+                // To prevent duplication of this field.
+                _setDone(field);
             }
         }
 
@@ -374,16 +395,27 @@ public class HeaderFileGenerator extends CodeGenerator {
         fields = source.getFields().iterator();
         while (fields.hasNext()) {
             SootField field = (SootField)(fields.next());
-            if (field.isPrivate() && !(Modifier.isStatic(field.
-                        getModifiers()))) {
-                if (insertedFields == 0) fieldCode.append(header);
+            if (field.isPrivate()
+                && !(Modifier.isStatic(field.getModifiers()))
+                && !(_getDone(field)))
+                {
+                if (insertedFields == 0) {
+                    fieldCode.append(header);
+                }
+
                 fieldCode.append(_generateField(field));
                 insertedFields++;
+
+                // This statement is not strictly needed, since private
+                // fields won't end up duplicated. It is just there for
+                // safety.
+                _setDone(field);
             }
         }
 
         return fieldCode.toString();
     }
+
 
     /** Generate C declarations corresponding to all non-static fields inherited
      *  from a given superclass.
@@ -412,13 +444,21 @@ public class HeaderFileGenerator extends CodeGenerator {
             boolean samePack = (source.getPackageName().compareTo(
                     superClass.getPackageName()) == 0);
 
+            // Whether this field should be visible to this class.
             boolean visible = (!stat)
                 && (pub || prot || (friendly && samePack)) ;
 
-            if (visible) {
-                if (insertedFields == 0) fieldCode.append(header);
+            if (visible && (!_getDone(field))) {
+
+                if (insertedFields == 0) {
+                    fieldCode.append(header);
+                }
+
                 fieldCode.append(_generateField(field));
                 insertedFields++;
+
+                // To prevent duplication.
+                _setDone(field);
             }
 
         }
@@ -447,32 +487,44 @@ public class HeaderFileGenerator extends CodeGenerator {
         int insertedMethods = 0;
         while (methods.hasNext()) {
             SootMethod method = (SootMethod)(methods.next());
-            if (!method.isStatic()) {
-                if (insertedMethods == 0) {
-                    methodCode.append("\n" + indent + _comment(comment));
-                    // If importing of referenced include files in disabled,
-                    // then place the method table in comments.
-                    if (_context.getDisableImports()) {
-                        methodCode.append(_indent(2) + _openComment);
+
+            // To prevent duplication of this method.
+            if (!_getDone(method)) {
+                if (!method.isStatic()) {
+                    if (insertedMethods == 0) {
+                        methodCode.append("\n" + indent + _comment(comment));
+                        // If importing of referenced include files in
+                        // disabled, then place the method table in
+                        // comments.
+                        if (_context.getDisableImports()) {
+                            methodCode.append(_indent(2) + _openComment);
+                        }
                     }
-                }
-                methodCode.append(indent);
-                methodCode.append(CNames.typeNameOf(method.getReturnType()));
-                methodCode.append(" (*");
-                methodCode.append(CNames.methodNameOf(method));
-                methodCode.append(")(");
-                methodCode.append(_generateParameterTypeList(method));
-                methodCode.append(");\n");
-                _updateRequiredTypes(method.getReturnType());
-                insertedMethods++;
+                    methodCode.append(indent);
 
-                // Add the method's return type to the context as a required
-                // type if it is an array.
-                if (method.getReturnType() instanceof ArrayType) {
-                    _context.addArrayInstance(
-                        CNames.typeNameOf(method.getReturnType()));
+                    methodCode.append(CNames.typeNameOf(method
+                            .getReturnType()));
+
+                    methodCode.append(" (*");
+                    methodCode.append(CNames.methodNameOf(method));
+                    methodCode.append(")(");
+                    methodCode.append(_generateParameterTypeList(method));
+                    methodCode.append(");\n");
+
+                    _updateRequiredTypes(method.getReturnType());
+                    insertedMethods++;
+
+                    // Add the method's return type to the context as a
+                    // required type if it is an array.
+                    if (method.getReturnType() instanceof ArrayType) {
+                        _context.addArrayInstance(
+                            CNames.typeNameOf(method.getReturnType()));
+                    }
+
                 }
 
+                // To prevent duplication of this method.
+                _setDone(method);
             }
         }
         if ((insertedMethods > 0) && _context.getDisableImports())
@@ -497,6 +549,22 @@ public class HeaderFileGenerator extends CodeGenerator {
         return fieldCode.toString();
     }
 
+    /** Return whether a field has been written to the header file yet.
+     *  @param field The field to be checked.
+     *  @return True if the field is done.
+     */
+    private boolean _getDone(SootField field) {
+        return _doneFields.contains(CNames.fieldNameOf(field));
+    }
+
+    /** Return whether a method has been written to the header file yet.
+     *  @param method The method to be checked.
+     *  @return True if the method is done.
+     */
+    private boolean _getDone(SootMethod method) {
+        return _doneMethods.contains(CNames.methodNameOf(method));
+    }
+
     // Return the superclasses of a class as a linked list.
     // The list entries are ordered in decreasing (parents before children)
     // hierarchy order.
@@ -514,6 +582,21 @@ public class HeaderFileGenerator extends CodeGenerator {
         }
         return classes;
     }
+
+    /** Note that a field is already in the header.
+     *  @param field The field.
+     */
+    private void _setDone(SootField field) {
+        _doneFields.add(CNames.fieldNameOf(field));
+    }
+
+    /** Note that a method is already in the header.
+     *  @param method The method.
+     */
+    private void _setDone(SootMethod method) {
+        _doneMethods.add(CNames.methodNameOf(method));
+    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -538,4 +621,16 @@ public class HeaderFileGenerator extends CodeGenerator {
     // Mapping from classes into lists of superclasses as computed by
     // {@link #_getSuperClasses(SootClass)}.
     private static HashMap _superClasses = new HashMap();
+
+    // List of fields already taken care of.  The same field may be there
+    // in both a class and its superclass by the same name, but different
+    // signatures so we store CNames.fieldNameOf(field) instead of the
+    // field itself. This prevents any duplicate definition of fields.
+    private static HashSet _doneFields;
+
+    // List of methods taken care of. Some methods(for example, methods
+    // inherited from interfaces) end up duplicated. This field stores the
+    // CNames.methodNameOf the method, thus preventing any duplication.
+    private static HashSet _doneMethods;
+
 }

@@ -412,7 +412,7 @@ public class CodeFileGenerator extends CodeGenerator {
             tracker.init(body);
 
             // Set the visitor to this return type too.
-            visitor.returnType = method.getReturnType();
+            visitor.setReturnType(method.getReturnType());
 
             // Initialize the labels for jump targets.
             _initializeLabels(visitor, tracker, method);
@@ -443,6 +443,7 @@ public class CodeFileGenerator extends CodeGenerator {
                 return NativeMethodGenerator.getCode(method);
             }
             else if (OverriddenMethodGenerator.isOverridden(method)) {
+                _updateRequiredTypes(method.getReturnType());
                 return OverriddenMethodGenerator.getCode(method);
             }
             else {

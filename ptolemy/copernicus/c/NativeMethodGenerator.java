@@ -54,7 +54,7 @@ import soot.RefType;
     The approach taken is that when a native method's code is asked for, it
     returns the pre-defined C code for the method from a library. However,
     if the body of the method has not been defined, then it simply
-        generates a stub for the method.
+    generates a stub for the method.
 
     The native method code is stored in a directory (nativeLib). However,
     this does not contain any body code for the methods. The body codes for

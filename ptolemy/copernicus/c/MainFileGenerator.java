@@ -149,12 +149,11 @@ public class MainFileGenerator extends CodeGenerator {
             SootClass nextClass = (SootClass)requiredClasses.next();
 
             code.append("\n" + _indent(1) + "/* " + nextClass.toString()
-                    + " */\n");
+                        + " */\n");
 
             code.append(_indent(1) +  CNames.initializerNameOf(nextClass)
-                    + "(&" + CNames.classStructureNameOf(nextClass)
-                    + ");\n");
-
+                        + "(&" + CNames.classStructureNameOf(nextClass)
+                        + ");\n");
         }
 
         code.append("}\n");
@@ -179,13 +178,6 @@ public class MainFileGenerator extends CodeGenerator {
 
         // Variable declarations.
         bodyCode.append(_indent(1) + instanceName + " instance;\n");
-
-        // String array for calling main with "String[] args".
-        /*if (mainMethod.getParameterCount() == 1) {
-            bodyCode.append(_indent(1)
-                    + "iA1_i1195259493_String string_array;\n");
-        }
-        */
 
         // Initialize required class structures.
         bodyCode.append("\n" + _indent(1) + "classStructInit();\n");
@@ -256,19 +248,19 @@ public class MainFileGenerator extends CodeGenerator {
         Iterator requiredClasses = RequiredFileGenerator
                 .getStrictlyRequiredClasses().iterator();
 
-        requiredClasses = RequiredFileGenerator.getStrictlyRequiredClasses()
-                .iterator();
         while (requiredClasses.hasNext()){
             // Invoke the static initializer method (clinit) for the class if it
             // exists.
-            SootMethod initializer;
             SootClass nextClass = (SootClass)requiredClasses.next();
 
             // FIXME: Does not initialize inner classes. Inner Classes have
             // a "$" in their name.
-            if (((initializer = MethodListGenerator
-                        .getClassInitializer(nextClass))!= null) &&
-                        (nextClass.toString().indexOf("$") == -1)){
+            SootMethod initializer = MethodListGenerator
+                    .getClassInitializer(nextClass);
+
+            if ((initializer!= null)
+                    &&(nextClass.toString().indexOf("$") == -1)
+                    &&(!OverriddenMethodGenerator.isOverridden(initializer))){
 
                 code.append("\n" + _indent(1)
                         + _comment("Static initializer method for "

@@ -93,9 +93,8 @@ public class RequiredFileGenerator {
             Scene.v().setSootClassPath(classPath);
             Scene.v().loadClassAndSupport(className);
 
-            // Generate headers for everything in the transitive closure
-            // that does not already exist.
-            Iterator j = Scene.v().getClasses().iterator();
+            // Generate headers for everything in the transitive closure.
+            Iterator j = getRequiredClasses().iterator();
             while(j.hasNext()) {
                 String nextClassName=((SootClass)j.next()).getName();
                 _generateHeaders(classPath, nextClassName, compileMode,
@@ -103,7 +102,8 @@ public class RequiredFileGenerator {
             }
 
 
-            // Generate only the required .c files.
+            // Generate only the .c files for everything in the transitive
+            // closure.
             Iterator i = getRequiredClasses().iterator();
             while (i.hasNext()) {
                 String nextClassName=((SootClass)i.next()).getName();
@@ -142,6 +142,7 @@ public class RequiredFileGenerator {
      */
     public void init(String classPath, String className) {
         _compute(classPath, className);
+
     }
 
 
@@ -193,7 +194,7 @@ public class RequiredFileGenerator {
         }
 
 
-       Scene.v().setMainClass(Scene.v().getSootClass(className));
+        Scene.v().setMainClass(Scene.v().getSootClass(className));
 
 
         // Note all methods in the main class as required methods.
@@ -364,7 +365,6 @@ public class RequiredFileGenerator {
      *  is required, its "clinit" and "init" methods are all required. If a
      *  method is required, its class is automatically required.
      *
-     *  @return Whether further growth in the tree is possible.
      */
     private static void _growRequiredTree() {
         // We will recurse if any new classes or methods are added.
@@ -393,6 +393,7 @@ public class RequiredFileGenerator {
              }
 
              // The superclass of each class is also a required class.
+             /*
              if (thisClass.hasSuperclass()) {
                  SootClass superclass = thisClass.getSuperclass();
                  if (!_strictlyRequiredClasses.contains(superclass)) {
@@ -400,9 +401,11 @@ public class RequiredFileGenerator {
                      newClassesAdded = true;
                  }
              }
+             */
 
              // All methods of a class that correspond to methods declared
              // in interfaces are required.
+             /*
              Iterator interfaces = thisClass.getInterfaces().iterator();
              while (interfaces.hasNext()) {
                  SootClass thisInterface = (SootClass)interfaces.next();
@@ -424,6 +427,7 @@ public class RequiredFileGenerator {
                     }
                  }
              }
+             */
         }
 
 
@@ -494,7 +498,7 @@ public class RequiredFileGenerator {
 
 
 
-        // If this call to _growRequiredTree cause any changes, another call to
+        // If this call to _growRequiredTree caused any changes, another call to
         // _growRequiredTree is required.
         if (newMethodsAdded || newClassesAdded) {
             _growRequiredTree();

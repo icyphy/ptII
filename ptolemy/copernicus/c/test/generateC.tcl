@@ -108,41 +108,46 @@ proc generateC {className {commandLineArgs {}}} {
     generateCExec javac $javaFile
     
     # Generate the code.
-    # Catch errors on the first pass to prevent memory overruns.
-    if {[catch {generateCExec java -classpath $classpath \
-	    ptolemy.copernicus.c.JavaToC $classpath -lib $lib $className}]} {
-        
-        generateCExec java -classpath $classpath ptolemy.copernicus.c.JavaToC \
-            $classpath -lib $lib $className
-    }
+    generateCExec java -Xmx600m -classpath $classpath ptolemy.copernicus.c.JavaToC \
+        $classpath -lib $lib $className
 
    
-    generateCExec make depend -s -f $makeFile
-
+    generateCExec  make depend -s -f $makeFile
     # This creates the .mk file.
-    generateCExec make -s -f $mkFile
-
+    
+    #exec -stderrok [generateCExec make -s -f $mkFile] 1>$outputDir/out.txt 2>$outputDir/err.txt
+    set error ""
+    catch {generateCExec make -s -f $mkFile} error
+    
     # Move all generated files to the output directory.
     file rename -force $cFile $mainCFile $oFile $mainOFile $hFile \
-	    $iFile $makeFile $mkFile $exeFile $classFile $outputDir
+	    $iFile $makeFile $mkFile $classFile $outputDir
     
-    # Run the automatically generated executable.
-    cd $outputDir
+    # exefile may not have been created due to compilation errors.
+    if [file exists $exeFile] {
+        file rename -force $exeFile $outputDir
+        
 
-    # The nightly build does not have . in the path, so we use ./ here.
-    set exeFile ".[java::call System getProperty file.separator]$exeFile"
-    if {$commandLineArgs == {}} {
-	set output [generateCExec $exeFile]
-    } else {
-	set output [generateCExec $exeFile $commandLineArgs]
-    }
+        # Run the automatically generated executable.
+        cd $outputDir
 
-    # Turn newlines into spaces.
-    regsub -all "\n" $output " " output
-    regsub -all "
+        # The nightly build does not have . in the path, so we use ./ here.
+        set exeFile ".[java::call System getProperty file.separator]$exeFile"
+        if {$commandLineArgs == {}} {
+            set output [generateCExec $exeFile]
+        } else {
+            set output [generateCExec $exeFile $commandLineArgs]
+        }
+
+        # Turn newlines into spaces.
+        regsub -all "\n" $output " " output
+        regsub -all "
 " $output "" output
     
-    return $output
+        return $output 
+    }
+    #else
+    return $error
 }
 
 
@@ -164,5 +169,5 @@ proc generateCExec {args} {
     # -stderrok means that if make generates output on stderr, then
     # exec will _not_ report this as an error. 
     # -stderrok was introduced in $PTII/lib/ptjacl.jar on 8/14/02
-    return [eval exec -stderrok $args]
+    return [eval exec -stderrok $args]  
 } 
