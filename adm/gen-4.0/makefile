@@ -1181,6 +1181,7 @@ remote4: $(PTII_FULL) $(GENLOGDIR)
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
+	-ssh $(REMOTE4HOST) "cd $(GENDIR); cp $(REMOTE4LOG) $(REMOTE4LOG).old"
 	ssh $(REMOTE4HOST) "cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
 		remote4nuke remote4ptiidist remote4configure \
 		remote4distclean remote4build \
