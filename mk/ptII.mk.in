@@ -129,9 +129,6 @@ JFLAGS = 	$(JDEBUG) $(JOPTIMIZE)
 # The 'javadoc' program
 JAVADOC = 	$(PTJAVA_DIR)/bin/javadoc
 
-# Javadoc size flag for JDK1.2, see ptII/doc/makefile
-JDOCSIZE =      @JDOCSIZE@
-
 # Flags to pass to javadoc.
 JDOCFLAGS = 	-author -version
 
