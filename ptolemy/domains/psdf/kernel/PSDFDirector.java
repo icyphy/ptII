@@ -36,25 +36,27 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// PSDFDirector
 /**
-   <h1>PSDF overview</h1> The Parameterized Synchronous Dataflow(PSDF)
-   domain is an extension of the Synchronous Dataflow(SDF) domain that
-   allows for more extensive reconfiguration of models.  The SDF domain
-   uses static analysis of variable dependence to detect cases where rate
-   parameters may change.  By default, SDF disallows reconfiguration of
-   all rate parameters.  If rate parameters are allowed to change, then
-   SDF checks that rate parameters do not change during execution of the
-   schedule, and declares that inferred rate parameters for external
-   ports change as often as the internal rate parameters.
+   The Parameterized Synchronous Dataflow (PSDF) domain is an
+   extension of the Synchronous Dataflow (SDF) domain that allows for
+   more extensive reconfiguration of models.  The SDF domain uses
+   static analysis of variable dependence to detect cases where rate
+   parameters may change.  By default, SDF disallows reconfiguration
+   of all rate parameters.  If rate parameters are allowed to change,
+   then SDF checks that rate parameters do not change during execution
+   of the schedule, and declares that inferred rate parameters for
+   external ports change as often as the internal rate parameters.
 
-   This domain offers two key extensions:
-
-   1) Dependence analysis is used to determine if the modification to the
+   <p>This domain offers two key extensions:
+   <ol>
+   <li> Dependence analysis is used to determine if the modification to the
    rate parameters occurs during execution of the SDF schedule.  If
    this test passes, then a parameterized schedule is constructed.
 
-   2) The generated schedule is checked for local synchrony, to determine
+   <li> The generated schedule is checked for local synchrony, to determine
    if external rate parameters may change.  The correct dependency
    information for external ports is then declared.
+
+   </ol>
 
    Note that the resulting behavior is identical to the SDF scheduler,
    with rate parameter changes allowed, except much more efficient, since
@@ -63,7 +65,6 @@ import ptolemy.kernel.util.Workspace;
    for efficient reconfiguration.  The added precision of dependency analysis
    for external rate parameters also means that some hierarchical models that
    would be ruled out by the SDF checks are allowed.
-
 
    @see ptolemy.domains.psdf.kernel.PSDFScheduler
 
