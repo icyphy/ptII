@@ -191,7 +191,9 @@ public class QueueReceiver implements Receiver {
      *  to restart the simulation
      */
     public void initialize() {
-	_queue = new FIFOQueue();
+        while (_queue.size() > 0) {
+            _queue.take();
+        }
     }
 
     /** Put a token to the receiver. If the receiver is full, throw an
