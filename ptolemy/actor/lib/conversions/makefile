@@ -68,6 +68,7 @@ JSRCS = \
 	PolarToCartesian.java \
 	PolarToComplex.java \
 	Round.java \
+        StringToIntArray.java \
         StringToUnsignedByteArray.java \
 	TokenToExpression.java
 
