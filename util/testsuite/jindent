@@ -1,5 +1,5 @@
 #! /bin/sh
-# -[Wed Aug 25 10:01:23 1999 by cxh]-
+# -[Fri Feb 22 13:05:28 2002 by cxh]-
 # Indent Java code using emacs
 # Usage: jindent [-n] [-d]
 #    -n Print what would happen, but don't checkout or modify files
@@ -62,12 +62,14 @@ do
 		sccs edit $file
 	    fi
 	    if [ -w $file ]; then
-		echo "$file is now writable, now reindenting"
-		$emacs -q -batch -l $jindent_el $file -f jindent
+
 		if [ -d SCCS ]; then
+		    echo "$file is now writable, now reindenting"
+		    $emacs -q -batch -l $jindent_el $file -f jindent
 		    sccs delget -y"Reindented with jindent" $file
 		else
 		    if [ -d CVS ]; then
+			cp $tmpfile $file
 			cvs commit -m "Reindented with jindent" $file
 		    fi
 		fi
