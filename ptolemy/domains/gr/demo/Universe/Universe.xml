@@ -1,18 +1,40 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="universe2" class="ptolemy.actor.TypedCompositeActor">
-    <property name="GR0" class="ptolemy.domains.gr.kernel.GRDirector">
+<entity name="Universe" class="ptolemy.actor.TypedCompositeActor">
+    <property name="GR" class="ptolemy.domains.gr.kernel.GRDirector">
+        <property name="GRScheduler" class="ptolemy.domains.gr.kernel.GRScheduler">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="100000">
         </property>
         <property name="iteration time lower bound" class="ptolemy.data.expr.Parameter" value="100">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="527.0, 27.0">
+        <property name="_location" class="ptolemy.moml.Location" value="78.0, 33.5">
         </property>
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[641, 450]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[84, 102]">
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The Ptolemaic Universe</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="538.0, 26.0">
+        </property>
     </property>
     <entity name="ViewScreen" class="ptolemy.domains.gr.lib.ViewScreen">
         <property name="horizontalResolution" class="ptolemy.data.expr.Parameter" value="400">
@@ -26,6 +48,8 @@
         <property name="translatable" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="showAxes" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="iterationSynchronized" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="584.9999847412109, 178.0">
         </property>
@@ -348,6 +372,8 @@
     <entity name="Scale69" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="0.2">
         </property>
+        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.moml.Location" value="257.0, 178.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -359,6 +385,8 @@
     </entity>
     <entity name="Scale70" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="0.2">
+        </property>
+        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="258.0, 120.0">
         </property>
