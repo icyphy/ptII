@@ -70,7 +70,8 @@ public class BreakpointConfigurer extends Query implements QueryListener {
     /** Construct a port configurer for the specified entity.
      *  @param object The entity to configure.
      */
-    public BreakpointConfigurer(Entity object, BasicGraphController graphController) {
+    public BreakpointConfigurer(Entity object,
+            BasicGraphController graphController) {
         super();
         this.addQueryListener(this);
 
@@ -177,7 +178,8 @@ public class BreakpointConfigurer extends Query implements QueryListener {
             }
 
             // Check if there is already a DebugListener for this _object.
-            DebugListener listener = (DebugListener) _object.getAttribute("DebugController");
+            DebugListener listener = (DebugListener) _object.getAttribute(
+                    "DebugController");
             if (listener == null) {
                 // Register a new DebugListener with the director.
                 BasicGraphFrame frame = _graphController.getFrame();

@@ -45,7 +45,7 @@ Highlight objects in magenta, rather than red or yellow.
 @version $Id$
 */
 public class DebugRenderer extends AnimationRenderer {
-    
+
     /** Create a new selection renderer with the default prototype
      *  decorator.
      */

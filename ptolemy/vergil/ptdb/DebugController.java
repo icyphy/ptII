@@ -116,20 +116,32 @@ public class DebugController extends TransientSingletonConfigurableAttribute
                         // the firing events, highlight the actor and
                         // wait for keyboard input.
                         if (event.getType() == FiringEvent.BEFORE_PREFIRE &&
-                                objToHighlight.getAttribute("BEFORE_PREFIRE") != null) {
+                                objToHighlight.getAttribute("BEFORE_PREFIRE")
+                                != null) {
                             render(figure);
-                            System.out.println("DebugController: prefire " + event.getActor().toString());
+                            System.out.println("DebugController: prefire " +
+                                    event.getActor().toString());
 
-                        } else if (event.getType() == FiringEvent.BEFORE_FIRE &&
-                                   objToHighlight.getAttribute("BEFORE_FIRE") != null) {
+                        } else if (event.getType() == FiringEvent.BEFORE_FIRE
+                                && objToHighlight.getAttribute("BEFORE_FIRE")
+                                != null) {
                             render(figure);
-                            System.out.println("DebugController: fire " + event.getActor().toString());
-                        } else if (event.getType() == FiringEvent.BEFORE_POSTFIRE && objToHighlight.getAttribute("BEFORE_POSTFIRE") != null) {
+                            System.out.println("DebugController: fire " +
+                                    event.getActor().toString());
+                        } else if (event.getType()
+                                == FiringEvent.BEFORE_POSTFIRE
+                                && objToHighlight.getAttribute(
+                                        "BEFORE_POSTFIRE") != null) {
                             render(figure);
-                            System.out.println("DebugController: postfire " + event.getActor().toString());
-                        } else if (event.getType() == FiringEvent.AFTER_POSTFIRE&& objToHighlight.getAttribute("AFTER_POSTFIRE") != null) {
+                            System.out.println("DebugController: postfire " +
+                                    event.getActor().toString());
+                        } else if (event.getType()
+                                == FiringEvent.AFTER_POSTFIRE
+                                && objToHighlight.getAttribute(
+                                        "AFTER_POSTFIRE") != null) {
                             render(figure);
-                            System.out.println("DebugController: postpostfire " + event.getActor().toString());
+                            System.out.println("DebugController: postpostfire "
+                                    + event.getActor().toString());
                         }
                     }
                 }
