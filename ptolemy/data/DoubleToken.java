@@ -669,6 +669,13 @@ public class DoubleToken extends ScalarToken {
     // display nicely.
     private static DecimalFormat _regularFormat =
     new DecimalFormat("####0.0############");
+
+    // Note: This used to be new DecimalFormat("0.0############E0##"),
+    // but compiling with gcj resulted in the following error:
+    //  'Exception in thread "main" class
+    //  java.lang.ExceptionInInitializerError:
+    //  java.lang.IllegalArgumentException: digit mark following zero
+    //  in exponent - index: 17'
     private static DecimalFormat _exponentialFormat =
-    new DecimalFormat("0.0############E0##");
+    new DecimalFormat("0.0############E0");
 }
