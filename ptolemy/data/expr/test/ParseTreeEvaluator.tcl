@@ -555,18 +555,22 @@ LongMatrixToken: The specified array is not of the correct length}}
 
 test ParseTreeEvaluator-23.6.7.1 {Test various function calls: createSequence} {
     # FIXME: what about UnsignedByteArray and FixMatrixToken
-    list "[theTest {createSequence(false, true, 5)}]\n \
+    list "[theTest {createSequence(false, false, 5)}]\n \
+	[theTest {createSequence(false, true, 5)}]\n \
+	[theTest {createSequence(true, false, 5)}]\n \
+	[theTest {createSequence(true, true, 5)}]\n \
 	[theTest {createSequence(-1, 1, 5)}]\n \
 	[theTest {createSequence(-1L, 1L, 5)}]\n \
 	[theTest {createSequence(-1.0, 1.0, 5)}]\n \
 	[theTest {createSequence(-1.0 - 1i, 1.0 - 1i, 5)}]"
-} {{{false, true, true, true, true}
+} {{{false, false, false, false, false}
+  {false, true, true, true, true}
+  {true, true, true, true, true}
+  {true, true, true, true, true}
   {-1, 0, 1, 2, 3}
   {-1L, 0L, 1L, 2L, 3L}
   {-1.0, 0.0, 1.0, 2.0, 3.0}
-  {-1.0 - 1.0i, 0.0 - 2.0i, 1.0 - 3.0i, 2.0 - 4.0i, 3.0 - 5.0i}}
-}
-
+  {-1.0 - 1.0i, 0.0 - 2.0i, 1.0 - 3.0i, 2.0 - 4.0i, 3.0 - 5.0i}}}
 
 test ParseTreeEvaluator-23.7 {Test various function calls} {
     list [theTest {exp(1+i)}] \
