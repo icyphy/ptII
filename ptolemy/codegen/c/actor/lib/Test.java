@@ -47,13 +47,23 @@ public class Test extends CCodeGeneratorHelper {
     /** FIXME
      *
      */
-    public Test(ptolemy.actor.lib.Ramp actor) {
+    public Test(ptolemy.actor.lib.Test actor) {
         super(actor);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    public String generateInitializeCode()
+        throws IllegalActionException {
+    	    super.generateInitializeCode();
+    	    CodeStream tmpStream = new CodeStream(this);        
+    	    tmpStream.appendCodeBlock("initBlock");
+
+    	    //stream.append(processCode(tmpStream.toString()));
+    	    return processCode(tmpStream.toString());
+    } 
+    
     public void generateFireCode(StringBuffer stream)
                 throws IllegalActionException {
         CodeStream tmpStream = new CodeStream(this);
