@@ -482,3 +482,96 @@ test RecordToken-11.0 {test hashCode} {
     list [$r1 hashCode] [$r2 hashCode] [$r3 hashCode]
 } {8 8 14}
 
+######################################################################
+####
+# 
+test RecordToken-12.1 {Test multiply} {
+    # first record is {name="foo", value=1, extra1=2}
+    set l1 [java::new {String[]} {3} {{name} {value} {extra1}}]
+
+    set nt1 [java::new {ptolemy.data.StringToken String} foo]
+    set vt1 [java::new {ptolemy.data.IntToken int} 1]
+    set et1 [java::new {ptolemy.data.IntToken int} 2]
+    set v1 [java::new {ptolemy.data.Token[]} 3 [list $nt1 $vt1 $et1]]
+
+    set r1 [java::new {ptolemy.data.RecordToken} $l1 $v1]
+
+    # second record is {name="bar", extra2=8.5, value=5.5}
+    set l2 [java::new {String[]} {3} {{name} {extra2} {value}}]
+
+    set nt2 [java::new {ptolemy.data.StringToken String} bar]
+    set et2 [java::new {ptolemy.data.DoubleToken double} 8.5]
+    set vt2 [java::new {ptolemy.data.DoubleToken double} 5.5]
+    set v2 [java::new {ptolemy.data.Token[]} 3 [list $nt2 $et2 $vt2]]
+
+    set r2 [java::new {ptolemy.data.RecordToken} $l2 $v2]
+
+    catch {[$r1 multiply $r2] toString} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: multiply operation not supported between ptolemy.data.RecordToken '{extra1=2, name="foo", value=1}' and ptolemy.data.RecordToken '{extra2=8.5, name="bar", value=5.5}'
+Because:
+multiply operation not supported between ptolemy.data.StringToken '"foo"' and ptolemy.data.StringToken '"bar"'}}
+
+######################################################################
+####
+# 
+test RecordToken-12.2 {Test multiply} {
+    # first record is {name=2.5, value=1, extra1=2}
+    set l1 [java::new {String[]} {3} {{name} {value} {extra1}}]
+
+    set nt1 [java::new {ptolemy.data.DoubleToken double} 2.5]
+    set vt1 [java::new {ptolemy.data.IntToken int} 1]
+    set et1 [java::new {ptolemy.data.IntToken int} 2]
+    set v1 [java::new {ptolemy.data.Token[]} 3 [list $nt1 $vt1 $et1]]
+
+    set r1 [java::new {ptolemy.data.RecordToken} $l1 $v1]
+
+    # second record is {name=4, extra2=8.5, value=5.5}
+    set l2 [java::new {String[]} {3} {{name} {extra2} {value}}]
+
+    set nt2 [java::new {ptolemy.data.IntToken int} 4]
+    set et2 [java::new {ptolemy.data.DoubleToken double} 8.5]
+    set vt2 [java::new {ptolemy.data.DoubleToken double} 5.5]
+    set v2 [java::new {ptolemy.data.Token[]} 3 [list $nt2 $et2 $vt2]]
+
+    set r2 [java::new {ptolemy.data.RecordToken} $l2 $v2]
+
+    [$r1 multiply $r2] toString
+} {{extra1=2, extra2=8.5, name=10.0, value=5.5}}
+
+######################################################################
+####
+# 
+test RecordToken-12.3 {Test multiply, reverse the order} {
+    [$r2 multiply $r1] toString
+} {{extra1=2, extra2=8.5, name=10.0, value=5.5}}
+
+######################################################################
+####
+# 
+test RecordToken-12.4 {Test multiplying with empty record} {
+    # first record is empty
+    set l [java::new {String[]} {0} {}]
+    set v [java::new {ptolemy.data.Token[]} {0} {}]
+    set r [java::new {ptolemy.data.RecordToken} $l $v]
+
+    # second record is {name="foo", value=1, extra1=2}
+    set l1 [java::new {String[]} {3} {{name} {value} {extra1}}]
+
+    set nt1 [java::new {ptolemy.data.StringToken String} foo]
+    set vt1 [java::new {ptolemy.data.IntToken int} 1]
+    set et1 [java::new {ptolemy.data.IntToken int} 2]
+    set v1 [java::new {ptolemy.data.Token[]} 3 [list $nt1 $vt1 $et1]]
+
+    set r1 [java::new {ptolemy.data.RecordToken} $l1 $v1]
+
+    [$r multiply $r1] toString
+} {{extra1=2, name="foo", value=1}}
+
+######################################################################
+####
+# 
+test RecordToken-12.5 {Test multiplying with empty record, reverse order} {
+    [$r1 multiply $r] toString
+} {{extra1=2, name="foo", value=1}}
+

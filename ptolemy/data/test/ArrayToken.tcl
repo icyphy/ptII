@@ -115,6 +115,14 @@ test ArrayToken-2.3 {test divide} {
     list [$tadd toString] [$tadd2 toString]
 } {{{2.0, 2.0, 0.5}} {{0, 0, 0}}}
 
+test ArrayToken-2.4 {test modulo} {
+    set t1 [java::new {ptolemy.data.ArrayToken String} "{-1, 1, 5}"]
+    set t2 [java::new {ptolemy.data.ArrayToken String} "{3.0, 3.0, -3.0}"]
+    set t3 [java::new {ptolemy.data.IntToken String} "5"]
+    set tadd [$t1 modulo $t2]
+    set tadd2 [$t1 elementModulo $t3]
+    list [$tadd toString] [$tadd2 toString]
+} {{{-1.0, 1.0, 2.0}} {{-1, 1, 0}}}
 
 ######################################################################
 ####
