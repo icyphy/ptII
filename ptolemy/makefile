@@ -37,11 +37,11 @@ ME =		ptolemy
 # Note that data.expr uses moml
 # PTCOPERNICUS_DIR is set to copernicus by configure in $PTII/mk/ptII.mk
 # if the Soot package was found.
-# PTMATLAB_DIR is set to matlab by configure in $PTII/mk/ptII.mk
-# if libeng.def is found.
+# PTCAL_DIR is set to call by configure in $PTII/mk/ptII.mk
+# if $PTII/lib/ptCal.jar was found
 DIRS = util kernel plot graph moml data actor gui math media	\
 	$(PTCOPERNICUS_DIR) \
-	$(PTMATLAB_DIR)	domains vergil hsif apps configs
+	$(PTMATLAB_DIR)	domains vergil hsif apps $(PTCAL_DIR) configs
 
 # Root of Ptolemy II directory
 ROOT =		..
