@@ -34,7 +34,7 @@ ME =		ptolemy/domains/de/demo
 # Root of the Java directory
 ROOT =		../../../..
 
-DIRS =		HierarchicalModel Inspection ModalModel \
+DIRS =		Inspection ModalModel \
 		TimingParadox SmartSender VariableDelay
 
 CLASSPATH =	$(ROOT)
@@ -50,7 +50,6 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	HierarchicalModel/HierarchicalModel.jar \
 	Inspection/Inspection.jar \
 	ModalModel/ModalModel.jar \
 	SmartSender/SmartSender.jar \
