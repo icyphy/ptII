@@ -54,3 +54,8 @@ if {![info exist PTII]} {
 if {[string compare test [info procs test]] == 1} then {
     source [file join $PTII util testsuite testDefs.tcl]
 } {}
+
+# Load up the test definitions.
+if {[string compare lcompare [info procs lcompare]] == 1} then {
+    source [file join $PTII util testsuite lcompare.tcl]
+} {}
