@@ -618,7 +618,6 @@ public final class Manager extends NamedObj implements Runnable {
     ////                         private variables                 ////
 
     private static final class ExecutionEventType {
-        private String _name;
 
         private ExecutionEventType(String name) {this._name = name;}
 
@@ -638,6 +637,8 @@ public final class Manager extends NamedObj implements Runnable {
         new ExecutionEventType("Iteration Started");
 
         public String toString() {return _name;}
+
+        private String _name;
     }
 
     // The toplevel CompositeActor that contains this Manager
