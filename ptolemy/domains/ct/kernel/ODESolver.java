@@ -314,7 +314,10 @@ public abstract class ODESolver extends NamedObj {
         }
     }
 
-    /** Reset the round counter to 0.
+    /** Reset the round counter to 0. This method is called when either the
+     *  fixed-point solution of states has been found or the current integration
+     *  fails to find the fixed-point solution within the maimum number of 
+     *  rounds.
      */
     protected void _resetRoundCount() {
         _roundCount = 0;

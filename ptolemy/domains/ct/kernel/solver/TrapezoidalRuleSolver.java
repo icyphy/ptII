@@ -40,7 +40,12 @@ import ptolemy.kernel.util.Workspace;
 //// TrapezoidalRuleSolver
 /**
    This is a second order variable step size ODE solver that uses the
-   trapezoidal rule algorithm. For an ODE
+   trapezoidal rule algorithm. 
+   <p>
+   NOTE: still under development.
+   <p>
+   
+   For an ODE
    <pre>
    x' = f(x, t)
    x(0) = x0
@@ -104,7 +109,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
     ////                         public methods                    ////
 
     /** Fire dynamic actors. Advance the model time to the current model time
-     *  plus the current step size.
+     *  plus the current step size. 
      *  @throws IllegalActionException If thrown in the super class or the
      *  model time can not be set.
      */
@@ -136,12 +141,16 @@ public class TrapezoidalRuleSolver extends ODESolver {
         }
     }
 
-    /** Fire state transition actors. Increment the round count.
+    /** Fire state transition actors. Increment the round count. If the states
+     *  have converged, reset the round count.
      *  @throws IllegalActionException If thrown in the super class.
      */
     public void fireStateTransitionActors() throws IllegalActionException {
         super.fireStateTransitionActors();
         _incrementRoundCount();
+        if (_isConverged()) {
+            _resetRoundCount();
+        }
     }
 
     /** Return 0 to indicate that this solver needs no
@@ -285,13 +294,14 @@ public class TrapezoidalRuleSolver extends ODESolver {
 
     /** Return true if the resolved states have converged. Return false if 
      *  states have not converged but the number of iterations reaches the 
-     *  <i>maxIterations</i> number. 
+     *  <i>maxIterations</i> number. Mean while, the round count is reset.
      *  @return True if the resolved states have converged.
      *  @exception IllegalActionException Not thrown in this class.
      */
     public boolean resolveStates() throws IllegalActionException {
         CTDirector dir = (CTDirector)getContainer();
         if (_getRoundCount() > dir.getMaxIterations()) {
+            _resetRoundCount();
             return false;
         }
         return super.resolveStates();

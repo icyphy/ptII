@@ -125,13 +125,15 @@ public class ExplicitRK23Solver extends ODESolver {
 
     /** Fire state transition actors. Increment the round count. 
      *  If the current round is the third round, set converged flag to 
-     *  true indicating a fixed-point states have been reached.
+     *  true indicating a fixed-point states have been reached. Reset
+     *  the round count if the current round is the last one.
      *  @throws IllegalActionException If thrown in the super class.
      */
     public void fireStateTransitionActors() throws IllegalActionException {
         super.fireStateTransitionActors();
         _incrementRoundCount();
         if (_getRoundCount() == _timeInc.length) {
+            _resetRoundCount();
             _setConverged(true);
         }
     }

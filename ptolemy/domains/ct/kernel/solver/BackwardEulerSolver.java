@@ -95,12 +95,16 @@ public class BackwardEulerSolver extends FixedStepSolver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Fire state transition actors. Increment the round count.
+    /** Fire state transition actors. Increment the round count. If the states
+     *  converged, reset the round count.
      *  @throws IllegalActionException If thrown in the super class.
      */
     public void fireStateTransitionActors() throws IllegalActionException {
         super.fireStateTransitionActors();
         _incrementRoundCount();
+        if (_isConverged()) {
+            _resetRoundCount();
+        }
     }
 
     /** Fire the integrator to resolve states. Vote true for convergence if 
@@ -134,10 +138,10 @@ public class BackwardEulerSolver extends FixedStepSolver {
             tentativeState = tentativeState + f*(dir.getCurrentStepSize());
             double error = 
                 Math.abs(tentativeState-integrator.getTentativeState());
-            if ( !(error < dir.getValueResolution())) {
-                _voteForConverged(false);
-            } else {
+            if (error < dir.getValueResolution()) {
                 integrator.setTentativeDerivative(f);
+            } else {
+                _voteForConverged(false);
             }
         }
         integrator.setTentativeState(tentativeState);
@@ -147,13 +151,14 @@ public class BackwardEulerSolver extends FixedStepSolver {
 
     /** Return true if the resolved states have converged. Return false if 
      *  states have not converged but the number of iterations reaches the 
-     *  <i>maxIterations</i> number. 
+     *  <i>maxIterations</i> number. Meanwhile, the round count is reset.
      *  @return True if the resolved states have converged.
      *  @exception IllegalActionException Not thrown in this class.
      */
     public boolean resolveStates() throws IllegalActionException {
         CTDirector dir = (CTDirector)getContainer();
         if (_getRoundCount() > dir.getMaxIterations()) {
+            _resetRoundCount();
             return false;
         }
         return super.resolveStates();
