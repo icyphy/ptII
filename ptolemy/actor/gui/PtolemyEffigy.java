@@ -317,6 +317,14 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                         container, container.uniqueName("effigy"));
 
                 MoMLParser parser = new MoMLParser();
+
+                // Make sure that the MoMLParser._modified flag is reset
+                // If we don't call reset here, then the second time
+                // the code generator is run, we will be prompted to
+                // save the model because the first time we ran
+                // the code generator the model was marked as modified.
+                parser.reset();
+
                 NamedObj toplevel = null;
                 try {
                     try {
