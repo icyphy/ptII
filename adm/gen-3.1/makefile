@@ -808,7 +808,7 @@ remote1doccheck:
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
-	(cd $(REMOTE1PTIIDIST)/doc; rm -rf doccheck \
+	(cd $(REMOTE1PTIIDIST)/doc; rm -rf doccheck; \
 		PTII=$(REMOTE1PTIIDIST) $(MAKE) -k doccheck)
 
 # Build jnlp installers
