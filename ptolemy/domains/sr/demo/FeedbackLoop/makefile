@@ -1,9 +1,10 @@
-# Makefile for PtolemyII SR demos
+# Makefile for Ptolemy II SR Feedback Loop demo
+#
+# @Authors: Christopher Brooks (makefile only)
 #
 # @Version: $Id$
-# @Author: Christopher Hylands (makefile only)
 #
-# @Copyright (c) 1998-2004 The Regents of the University of California.
+# @Copyright (c) 2004 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -28,48 +29,60 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/sr/demo
+ME =		ptolemy/domains/sr/demo/FeedbackLoop
 
-DIRS = 		FeedbackLook ReflexGame TokenRing
+# Root of the Java directory
+ROOT =		../../../../..
 
-# Root of Ptolemy II directory
-ROOT =		../../../..
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =	demo
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
+PTPACKAGE =	FeedbackLoop
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	FeedbackLook/FeedbackLoop.jar \
-	ReflexGame/ReflexGame.jar \
-	TokenRing/TokenRing.jar
+JSRCS =
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
+	FeedbackLoop.htm \
+	FeedbackLoop.xml \
+	FeedbackLoopVergil.htm
+
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = 	$(DIRS) \
-	index.htm
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	doc
+OPTIONAL_FILES =
 
-all: jclass
+JCLASS = $(JSRCS:%.java=%.class)
+
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
+all: jclass #$(PTCLASSJAR)
 	@echo "To run all the demos, run 'make demo'"
 
-install: jclass jars
 
-demo: subdemo
+install: all
+
+demo: demo_ptolemy demo_vergil demo_applet
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" FeedbackLoop.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" FeedbackLoop.xml
+
+demo_applet:
+	appletviewer FeedbackLoop.htm
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-
-
