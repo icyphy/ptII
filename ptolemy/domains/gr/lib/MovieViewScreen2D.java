@@ -46,6 +46,7 @@ import ptolemy.domains.gr.kernel.GRUtilities2D;
 import ptolemy.domains.gr.kernel.Scene2DToken;
 import ptolemy.domains.gr.kernel.ViewScreenInterface;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.attributes.FileAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -84,13 +85,14 @@ import java.io.*;
 
 /** 
 A sink actor that renders a two-dimensional scene into a display screen, and
-saves it as a movie using JMF.
+saves it as a movie using Apple's Quicktime for Java.
 
 @author Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 1.0
 */
-public class MovieViewScreen2D extends ViewScreen2D implements StdQTConstants, Errors {
+public class MovieViewScreen2D extends ViewScreen2D
+    implements StdQTConstants, Errors {
 
     /** Construct a ViewScreen2D in the given container with the given name.
      *  If the container argument is null, a NullPointerException will
@@ -108,12 +110,31 @@ public class MovieViewScreen2D extends ViewScreen2D implements StdQTConstants, E
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
+        fileName = new FileAttribute(this, "fileName");
+        fileName.setExpression("System.out");
+
+        frameRate = new Parameter(this, "frameRate");
+        frameRate.setTypeEquals(BaseType.INT);
+        frameRate.setExpression("30");
+
     }
 
 
     ///////////////////////////////////////////////////////////////////
     ////                     Ports and Parameters                  ////
 
+    /** The file name to write.  This is a string with
+     *  any form accepted by FileAttribute.  The default value is
+     *  "System.out".
+     *  @see FileAttribute
+     */
+    public FileAttribute fileName;
+    
+    /** The frame rate of the resulting video sequence, in frames per
+     *  second.  The default is 30 frames per second.  The type is
+     *  integer, which must be positive.
+     */
+    public Parameter frameRate;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -122,13 +143,31 @@ public class MovieViewScreen2D extends ViewScreen2D implements StdQTConstants, E
      */
     public void fire() throws IllegalActionException {
         super.fire();
-
-        // Render the canvas into an image.
-        BufferedImage image = 
-            new BufferedImage(400, 400, BufferedImage.TYPE_INT_RGB);
-        Graphics2D graphics = (Graphics2D)image.getGraphics();
-        getCanvas().paint(graphics);
-        _images.add(image);
+        _frameNumber ++;
+        try {
+            // Paint the frame.
+            _imageDrawer.redraw(null);
+            
+            // Compress it.
+            CompressedFrameInfo info = _videoSequence.compressFrame (_gw, 
+                    _videoSize, 
+                    codecFlagUpdatePrevious, 
+                    _compressedFrame);
+            boolean isKeyFrame = info.getSimilarity() == 0;
+            System.out.println ("f#:" + _frameNumber + ",kf=" + isKeyFrame + ",sim=" + info.getSimilarity());
+            
+            ImageDescription desc = _videoSequence.getDescription();
+            
+            // Add it to the video stream.
+            _videoMedia.addSample (_imageHandle, 
+                    0, // dataOffset,
+                    info.getDataSize(),
+                    600/_frameRateValue, // frameDuration, in 1/600ths of a second.
+                    desc,
+                    1, // one sample
+                    (isKeyFrame ? 0 : mediaSampleNotSync)); // no flags
+        } catch (Exception ex) {
+        }
     }
 
     /** Initialize the execution.  Create the MovieViewScreen2D frame if 
@@ -138,38 +177,25 @@ public class MovieViewScreen2D extends ViewScreen2D implements StdQTConstants, E
     public void initialize() throws IllegalActionException {
 
         super.initialize();
-        _images.clear();
-
-    }
-
-    /** Wrapup an execution
-     */
-    public void wrapup() throws IllegalActionException {
-        super.wrapup();
-        _doIt();
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    protected void _doIt() {
-         
+        _frameNumber = 0;
+        _frameWidth = _getHorizontalResolution();
+        _frameHeight = _getVerticalResolution();
         try {
             QTSession.open();
    
             Frame frame = new Frame("foo");
             QTCanvas canv = new QTCanvas (QTCanvas.kInitialSize, 0.5F, 0.5F);
             frame.add ("Center", canv);
-            painter = new Painter();
-            qid = new QTImageDrawer (painter, 
-                    new Dimension (kWidth, kHeight), Redrawable.kMultiFrame);
-            qid.setRedrawing(true);
+            Painter painter = new Painter();
+            _imageDrawer = new QTImageDrawer (painter, 
+                    new Dimension (_frameWidth, _frameHeight), Redrawable.kMultiFrame);
+            _imageDrawer.setRedrawing(true);
 
-            canv.setClient (qid, true);
+            canv.setClient (_imageDrawer, true);
 	
             frame.pack();
-            QTFile f = new QTFile("c:/foo.mov");
-            Movie theMovie = Movie.createMovieFile (f,
+            _file = new QTFile(fileName.asFile());
+            _movie = Movie.createMovieFile (_file,
                     kMoviePlayer, 
                     createMovieFileDeleteCurFile | createMovieFileDontCreateResFile);
 
@@ -180,121 +206,107 @@ public class MovieViewScreen2D extends ViewScreen2D implements StdQTConstants, E
             int kNoVolume	= 0;
             int kVidTimeScale = 600;
             
-            Track vidTrack = theMovie.addTrack (kWidth, kHeight, kNoVolume);
-            VideoMedia vidMedia = new VideoMedia (vidTrack, kVidTimeScale);  
+            _videoTrack = _movie.addTrack (_frameWidth, _frameHeight, kNoVolume);
+            _videoMedia = new VideoMedia (_videoTrack, kVidTimeScale);  
             
-            vidMedia.beginEdits();
-            addVideoSample (vidMedia);
-            vidMedia.endEdits();
+            _videoMedia.beginEdits();
+ 
+            _videoSize = new QDRect (_frameWidth, _frameHeight);
+            _gw = new QDGraphics (_videoSize);
+            int size = QTImage.getMaxCompressionSize (_gw, 
+                    _videoSize, 
+                    _gw.getPixMap().getPixelSize(),
+                    codecNormalQuality, 
+                    kAnimationCodecType, 
+                    CodecComponent.anyCodec);
+            _imageHandle = new QTHandle (size, true);
+            _imageHandle.lock();
+            _compressedFrame = RawEncodedImage.fromQTHandle(_imageHandle);
+            
+            _frameRateValue = ((IntToken)frameRate.getToken()).intValue();
+            _videoSequence = new CSequence (_gw,
+                    _videoSize, 
+                    _gw.getPixMap().getPixelSize(),
+                    kAnimationCodecType, 
+                    CodecComponent.bestFidelityCodec,
+                    codecNormalQuality, 
+                    codecNormalQuality, 
+                    _frameRateValue,	//1 key frame every second
+                    null, //cTab,
+                    0);
+            ImageDescription desc = _videoSequence.getDescription();
+            
+            _imageDrawer.setRedrawing(true);
+            
+            //redraw first...
+            _imageDrawer.redraw(null);
+            
+            _imageDrawer.setGWorld (_gw);
+            _imageDrawer.setDisplayBounds (_videoSize);
+        } catch (Exception ex) {
+            // FIXME
+        }
+    }
+
+    /** Wrapup an execution.  This method completes capture of the
+     * video sequence and writes it to the output file.
+     */
+    public void wrapup() throws IllegalActionException {
+        super.wrapup();
+        try {
+            _videoMedia.endEdits();
             
             int kTrackStart	= 0;
             int kMediaTime 	= 0;
             int kMediaRate	= 1;
-            vidTrack.insertMedia (kTrackStart, kMediaTime,
-                    vidMedia.getDuration(), kMediaRate);
-
- //            System.out.println ("Doing Audio Track");
-//             addAudioTrack( theMovie );
-
-            //
-            // save movie to file
-            //
-            OpenMovieFile outStream = OpenMovieFile.asWrite (f); 
-            theMovie.addResource(outStream, movieInDataForkResID, f.getName());
+            _videoTrack.insertMedia (kTrackStart, kMediaTime,
+                    _videoMedia.getDuration(), kMediaRate);
+                        
+            // Save movie to file.
+            OpenMovieFile outStream = OpenMovieFile.asWrite (_file); 
+            _movie.addResource(outStream, movieInDataForkResID, _file.getName());
             outStream.close();
             System.out.println ("Finished movie");
         }
-        catch (Exception qte) {
-            qte.printStackTrace(); 
+        catch (Exception ex) {
+            ex.printStackTrace(); 
         }
         QTSession.close();
     }
 
-    private void addVideoSample( VideoMedia vidMedia ) throws QTException {
-        QDRect rect = new QDRect (kWidth, kHeight);
-        QDGraphics gw = new QDGraphics (rect);
-        int size = QTImage.getMaxCompressionSize (gw, 
-                rect, 
-                gw.getPixMap().getPixelSize(),
-                codecNormalQuality, 
-                kAnimationCodecType, 
-                CodecComponent.anyCodec);
-        QTHandle imageHandle = new QTHandle (size, true);
-        imageHandle.lock();
-        RawEncodedImage compressedImage = RawEncodedImage.fromQTHandle(imageHandle);
-        CSequence seq = new CSequence (gw,
-                rect, 
-                gw.getPixMap().getPixelSize(),
-                kAnimationCodecType, 
-                CodecComponent.bestFidelityCodec,
-                codecNormalQuality, 
-                codecNormalQuality, 
-                numFrames,	//1 key frame
-                null, //cTab,
-                0);
-        ImageDescription desc = seq.getDescription();
-
-        qid.setRedrawing(true);
-
-        //redraw first...
-      	painter.setCurrentFrame (1);
-        qid.redraw(null);
-
-        qid.setGWorld (gw);
-        qid.setDisplayBounds (rect);
-			
-        for (int curSample = 0; curSample < numFrames; curSample++) {
-            painter.setCurrentFrame (curSample);
-        
-            qid.redraw(null);
-            CompressedFrameInfo info = seq.compressFrame (gw, 
-                    rect, 
-                    codecFlagUpdatePrevious, 
-                    compressedImage);
-            boolean isKeyFrame = info.getSimilarity() == 0;
-            System.out.println ("f#:" + curSample + ",kf=" + isKeyFrame + ",sim=" + info.getSimilarity());
-            vidMedia.addSample (imageHandle, 
-                    0, // dataOffset,
-                    info.getDataSize(),
-                    60, // frameDuration, 60/600 = 1/10 of a second, desired time per frame	
-                    desc,
-                    1, // one sample
-                    (isKeyFrame ? 0 : mediaSampleNotSync)); // no flags
-        }
-		
- 	//print out ImageDescription for the last video media data ->
- 	//this has a sample count of 1 because we add each "frame" as an individual media sample
-        System.out.println (desc);
-
- 	//redraw after finishing...
-    }
-
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner class                       ////
+    
     private class Painter implements Paintable {
-        private int _frame;
-	private Rectangle[] ret = new Rectangle[1];
-
-	public void setCurrentFrame (int frame) {
-            _frame = frame;
-        }
+        private Rectangle[] ret = new Rectangle[1];
+        
 	public void newSizeNotified (QTImageDrawer drawer, Dimension d) {
-            ret[0] = new Rectangle (kWidth, kHeight);
+            ret[0] = new Rectangle (_frameWidth, _frameHeight);
         }
-	public Rectangle[] paint (Graphics g) {
-            g.drawImage((Image)_images.get(_frame),0,0,null);
-            ret[0] = new Rectangle (kWidth, kHeight);
+        public Rectangle[] paint (Graphics g) {
+            getCanvas().paint(g);
+
+            ret[0] = new Rectangle (_frameWidth, _frameHeight);
             return ret;
    	}
     }
 
-    /** A list of BufferedImages.
-     */
-    private List _images = new LinkedList();
-    private Painter painter;
-    private QTImageDrawer qid;
-    private static final int numFrames = 10;
-    private int kWidth = 400;
-    private int kHeight = 400;
-    private File soundFile;
+    ///////////////////////////////////////////////////////////////////
+    ////                         private members                   ////
 
+    private Movie _movie;
+    private QTImageDrawer _imageDrawer;
+    private QTHandle _imageHandle;
+    private QTFile _file;
+    private QDGraphics _gw;
+    private QDRect _videoSize;
+    private CSequence _videoSequence;
+    private RawEncodedImage _compressedFrame;
+    private VideoMedia _videoMedia;
+    private Track _videoTrack;
+    private int _frameWidth = 400;
+    private int _frameHeight = 400;
+    private int _frameNumber;
+    private int _frameRateValue;
 }
 

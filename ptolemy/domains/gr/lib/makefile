@@ -39,7 +39,7 @@ DIRS =
 # Root of the Java directory
 ROOT =		../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)c:/j2sdk1.4.1_02/jre/lib/ext/QTJava.zip
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -78,6 +78,7 @@ JSRCS = \
 	Torus3D.java \
 	KeyInput3D.java \
 	MouseInput3D.java \
+	MovieViewScreen2D.java \
 	ViewScreen.java \
 	ViewScreen2D.java
 

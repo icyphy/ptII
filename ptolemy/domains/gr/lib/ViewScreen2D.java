@@ -64,11 +64,10 @@ import javax.swing.JFrame;
 /** 
 A sink actor that renders a two-dimensional scene into a display screen.
 
-@author Steve Neuendorffer
+@author Steve Neuendorffer, Ismael M. Sarmiento
 @version $Id$
 @since Ptolemy II 1.0
 */
-//Modified by Ismael M. Sarmiento to center origin.
 public class ViewScreen2D extends GRActor2D
     implements Placeable, ViewScreenInterface {
 
@@ -176,7 +175,6 @@ public class ViewScreen2D extends GRActor2D
         // done correctly, despite the fact that all of the transform
         // calls on figures are happening outside of the swing thread.
         
-        //updateFigures();
         _canvas.repaint();
     }
 
@@ -258,33 +256,7 @@ public class ViewScreen2D extends GRActor2D
      *  @exception IllegalActionException Always thrown for this base class.
      */
     protected void _addChild(Figure figure) throws IllegalActionException {
-        centerFigure(figure);
         _layer.add(figure);
-    }
-    
-    /** Return a bounding rectangle which centers the figure.
-     * @param figure The figure to be centered.
-     * @return
-     */
-    protected void centerFigure(Figure figure){
-        /*Rectangle2D boundingRectangle = figure.getBounds();
-            
-        ((RectangularShape)(figure).getShape()).setFrame(
-            new Rectangle2D.Double(
-                boundingRectangle.getWidth()/-2.0 + boundingRectangle.getX(),
-                boundingRectangle.getHeight()/-2.0 - boundingRectangle.getY(),
-                boundingRectangle.getWidth(),
-                boundingRectangle.getHeight()));*/
-    }
-    
-    protected void updateFigures()
-    {
-        Figure figure;
-        Iterator figures = _layer.figures();
-        while(figures.hasNext())
-        {
-           centerFigure((Figure)figures.next());
-        }
     }
 
     /** Create the view screen component.  If place() was called with
@@ -308,7 +280,7 @@ public class ViewScreen2D extends GRActor2D
             _frame = new JFrame("ViewScreen2D");
             _frame.show();
             _frame.validate();
-            _frame.setSize(horizontalDimension+50,verticalDimension);
+            //  _frame.setSize(horizontalDimension+50,verticalDimension);
             _container = _frame.getContentPane();    
         }
         // Set the frame to be visible.
@@ -325,9 +297,15 @@ public class ViewScreen2D extends GRActor2D
         _canvas = new JCanvas(pane);
        
         _container.add("Center", _canvas);
-        _canvas.setSize(new Dimension(horizontalDimension,
+        _canvas.setMinimumSize(new Dimension(horizontalDimension,
                                 verticalDimension));
-                                
+        _canvas.setMaximumSize(new Dimension(horizontalDimension,
+                                verticalDimension));
+        _canvas.setPreferredSize(new Dimension(horizontalDimension,
+                                verticalDimension));
+        if(_frame != null) {
+            _frame.pack();
+        }
         pane.translate(_container.getWidth()/2, _container.getHeight()/2);
     }
 
@@ -345,23 +323,23 @@ public class ViewScreen2D extends GRActor2D
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    private int _getHorizontalResolution() throws IllegalActionException {
+    protected int _getHorizontalResolution() throws IllegalActionException {
         return ((IntToken) horizontalResolution.getToken()).intValue();
     }
 
-    private int _getVerticalResolution() throws IllegalActionException {
+    protected int _getVerticalResolution() throws IllegalActionException {
         return ((IntToken) verticalResolution.getToken()).intValue();
     }
 
-    private boolean _isRotatable() throws IllegalActionException  {
+    protected boolean _isRotatable() throws IllegalActionException  {
         return ((BooleanToken) rotatable.getToken()).booleanValue();
     }
 
-    private boolean _isScalable() throws IllegalActionException  {
+    protected boolean _isScalable() throws IllegalActionException  {
         return ((BooleanToken) scalable.getToken()).booleanValue();
     }
 
-    private boolean _isTranslatable() throws IllegalActionException  {
+    protected boolean _isTranslatable() throws IllegalActionException  {
         return ((BooleanToken) translatable.getToken()).booleanValue();
     }
 
