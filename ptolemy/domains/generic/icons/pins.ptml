@@ -4,9 +4,7 @@
 <!DOCTYPE iconlibrary  PUBLIC "ptml.dtd" "http://ptolemy.eecs.berkeley.edu/ptml.dtd">
 
 <iconlibrary name="Pins" version="1.0">
-<header>
     <description>I/O Pins</description>
-</header>
 
 <icon name="Out">
     <entitytype name="Out" type="port" ports="1"/>

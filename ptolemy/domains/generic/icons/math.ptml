@@ -4,9 +4,7 @@
 <!DOCTYPE iconlibrary  PUBLIC "ptml.dtd" "http://ptolemy.eecs.berkeley.edu/ptml.dtd">
 
 <iconlibrary name="Math" version="1.0">
-<header>
     <description>Generic math icons</description>
-</header>
 
 
 <icon name="Add">
@@ -23,13 +21,20 @@
     </port>
 
     <port name="input-2" input="true" type="string">
-	<graphic format="tcl">
+	<graphic>
 	<tclscript>
 	    -coords {50 100}
             -direction s
             -style arrowin
             -tags input
 	</tclscript>
+	<xmlgraphic>
+	    <line color=red>
+	    ...
+	</xmlgraphic>
+
+	<image file="foo.jpeg">
+
 	</graphic>
     </port>
 

@@ -4,9 +4,7 @@
 <!DOCTYPE iconlibrary  PUBLIC "ptml.dtd" "http://ptolemy.eecs.berkeley.edu/ptml.dtd">
 
 <iconlibrary name="Sources" version="1.0">
-<header>
     <description>Generic source icons</description>
-</header>
 
 <icon name="Const">
     <entitytype name="Const" ports="1"/>
@@ -29,6 +27,14 @@
         line 30 30 80 30 -width 1 -fill black
     </tclscript>
     </graphic>
+
+    <xmlgraphic>
+        <polygon coords="30 30 30 80 80 80 80 30" fill="red" outline=""/>
+        <line coords="10 80 80 80" width="2" fill="black"/>
+        <line coords="30 80 30 30" width="2" fill="black"/>
+        <line coords="30 30 80 30" width="2" fill="black"/>
+    </xmlgraphic>
+
 </icon>
 
 <icon name="Clock">
@@ -53,8 +59,18 @@
 	line 80 30 80 80 -fill blue
     </tclscript>
     </graphic>
+
+    <xmlgraphic>
+	<line coords="10 20 10 90" width="2" />
+	<line coords="10 80 90 80" width="2" />
+	<line coords="20 30 20 80" fill="blue" width="2" />
+	<line coords="40 30 40 80" fill="blue" width="2" />
+	<line coords="60 30 60 80" fill="blue" width="2" />
+	<line coords="80 30 80 80" fill="blue" width="2" />
+    </xmlgraphic>
 </icon>
 
+<!--
 <icon name="Poisson">
     <entitytype name="Poisson" ports="1"/>
 
@@ -138,6 +154,8 @@
     </tclscript>
     </graphic>
 </icon>
+
+-->
 
 </iconlibrary>
 

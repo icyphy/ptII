@@ -4,10 +4,7 @@
 <!DOCTYPE iconlibrary  PUBLIC "ptml.dtd" "http://ptolemy.eecs.berkeley.edu/ptml.dtd">
 
 <iconlibrary name="Filters" version="1.0">
-<header>
     <description>Generic filter icons</description>
-</header>
-
 
 
 <icon name="FIRfilter">
