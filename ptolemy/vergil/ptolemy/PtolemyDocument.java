@@ -109,7 +109,6 @@ public class PtolemyDocument extends AbstractDocument
 	GraphPane graphPane = jgraph.getGraphPane();
 	GraphController controller =
 	    (GraphController)graphPane.getGraphController();
-	GraphModel graphModel = controller.getGraphModel();
 	SelectionModel model = controller.getSelectionModel();
 	Object selection[] = model.getSelectionAsArray();
 	PtolemyTransferable transferable = new PtolemyTransferable();
@@ -135,7 +134,7 @@ public class PtolemyDocument extends AbstractDocument
 		    } catch (CloneNotSupportedException ex) {
 			throw new RuntimeException(ex.getMessage());
 		    }
-		}  
+		} 
 	    }
 	}
 	c.setContents(transferable, this);
@@ -147,6 +146,9 @@ public class PtolemyDocument extends AbstractDocument
      */
     public void cut (Clipboard c) {
 	System.out.println("cut");
+	// First copy everyrhing onto the clipboard.
+	copy(c);
+
 	/*
 	JGraph jgraph = getView();
 	GraphPane graphPane = jgraph.getGraphPane();
@@ -238,13 +240,14 @@ public class PtolemyDocument extends AbstractDocument
      * for copying the data.
      */
     public void paste (Clipboard c) {
-	/*	System.out.println("paste");
+	System.out.println("paste");
 	Transferable transferable = c.getContents(this);
 	JGraph jgraph = getView();
 	GraphPane graphPane = jgraph.getGraphPane();
 	GraphController controller =
 	    (GraphController)graphPane.getGraphController();
-	GraphModel model = controller.getGraphModel();
+	MutableGraphModel model = controller.getGraphModel();
+	Workspace workspace = ((NamedObj) model.getRoot()).workspace();
 	if(transferable == null) 
 	    return;
 	try {
@@ -256,16 +259,16 @@ public class PtolemyDocument extends AbstractDocument
 		System.out.println("object = " + object.toString());
 	        if(object instanceof ComponentEntity) {
 		    try {
-			ComponentEntity clone = 
-			    (ComponentEntity)object.clone();
+			ComponentEntity clone = (ComponentEntity)
+			    object.clone(workspace);
 			System.out.println("clone = " + clone);
 			// FIXME the names that this creates are ugly.
 			String name = _model.uniqueName(object.getName());
 			clone.setName(name);
 			clone.setContainer(_model);
 			Icon icon = (Icon)clone.getAttribute("_icon");
-			impl.addNode(icon, controller.getGraph());
-			controller.drawNode(node);
+			model.addNode(icon, model.getRoot());
+			controller.drawNode(icon);
 		    } catch (CloneNotSupportedException ex) {
 			throw new RuntimeException(ex.getMessage());
 		    } catch (IllegalActionException ex) {
@@ -280,8 +283,8 @@ public class PtolemyDocument extends AbstractDocument
 			System.out.println("clone = " + clone);
 			clone.setContainer(_model);
 			Icon icon = (Icon)clone.getAttribute("_icon");
-			Node node = impl.createCompositeNode(icon);
-			impl.addNode(node, controller.getGraph());
+			
+			model.addNode(node, controller.getGraph());
 			controller.drawNode(node);
 		    } catch (CloneNotSupportedException ex) {
 			throw new RuntimeException(ex.getMessage());
@@ -290,13 +293,13 @@ public class PtolemyDocument extends AbstractDocument
 		    } catch (NameDuplicationException ex) {
  			throw new RuntimeException(ex.getMessage());
 		    }
-		    }
+		    }*/
 	    }
 	} catch (UnsupportedFlavorException ex) {
 	    System.out.println("no flavor");
 	} catch (IOException ex) {
 	    System.out.println("io error");
-	}*/
+	}
     }
 
     /** Print the document to a printer, represented by the specified graphics
