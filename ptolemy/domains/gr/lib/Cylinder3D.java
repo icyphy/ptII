@@ -1,4 +1,4 @@
-/* A GR Shape consisting of a cylinder with a circular base
+/* A GR Shape consisting of a cylinder with a circular base.
 
 Copyright (c) 1998-2004 The Regents of the University of California.
 All rights reserved.
@@ -27,24 +27,29 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.gr.lib;
 
+import java.net.URL;
+
 import javax.media.j3d.Node;
 
 import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 import com.sun.j3d.utils.geometry.Cylinder;
+import com.sun.j3d.utils.geometry.Primitive;
 
 //////////////////////////////////////////////////////////////////////////
 //// Cylinder3D
 
 /** This actor contains the geometry and appearance specifications for a GR
-    cylinder.  The output port is used to connect this actor to the Java3D scene
-    graph. This actor will only have meaning in the GR domain.
+    cylinder.  The output port is used to connect this actor to the Java3D
+    scene graph. This actor will only have meaning in the GR domain.
 
-    @author C. Fong, Adam Cataldo
+    @author C. Fong, Adam Cataldo, Edward A. Lee
     @version $Id$
     @since Ptolemy II 1.0
     @Pt.ProposedRating Red (chf)
@@ -66,93 +71,102 @@ public class Cylinder3D extends GRShadedShape {
         super(container, name);
         radius = new Parameter(this, "radius", new DoubleToken(0.5));
         height = new Parameter(this, "height", new DoubleToken(0.7));
+        
+        height.moveToFirst();
+        radius.moveToFirst();
+        
+        circleDivisions = new Parameter(this, "circleDivisions");
+        circleDivisions.setExpression("roundToInt(radius * 60)");
+        circleDivisions.setTypeEquals(BaseType.INT);
+
+        sideDivisions = new Parameter(this, "sideDivisions");
+        sideDivisions.setExpression("1");
+        sideDivisions.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The radius of the cylinder
-     *  This parameter should contain a DoubleToken.
-     *  The default value of this parameter is the 0.5
+    /** The number of divisions in the circles forming the ends of the
+     *  cylinder. This is an integer with
+     *  default value "roundToInt(radius * 60)". This parameter
+     *  determines the resolution of the cylinder, which is approximated
+     *  as a surface composed of rectangular facets. Increasing this
+     *  value makes the surface smoother, but also increases the cost
+     *  of rendering.
      */
-    public Parameter radius;
+    public Parameter circleDivisions;
 
-    /** The height of the cylinder
-     *  This parameter should contain a DoubleToken.
-     *  The default value of this parameter is the 0.7
+    /** The height of the cylinder. This is a double with
+     *  default 0.7.
      */
     public Parameter height;
 
+    /** The number of divisions on the side of the cone.
+     *  This is an integer with default value "1". This parameter
+     *  probably only needs to change when the <i>wire</i> option
+     *  is set to true.
+     */
+    public Parameter sideDivisions;
+
+    /** The radius of the cylinder. This is a double with
+     *  default 0.5.
+     */
+    public Parameter radius;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Create the shape and appearance of the encapsulated cylinder
-     *  @exception IllegalActionException If the value of some parameters can't
-     *   be obtained
+    /** Create the shape and appearance of the encapsulated cylinder.
+     *  @exception IllegalActionException If the value of some
+     *   parameter can't be obtained.
      */
     protected void _createModel() throws IllegalActionException {
         super._createModel();
 
-        int xDivisions;
-        int yDivisions;
-
-        // These next few lines determine xDivisions and yDivisions
-        //  which determine the resolution along the radius and height
-        //  respectively.
-        //
-        //  Originally this method used 30 xDivisions and 10 yDivisions
-        //  regardless of the cylinder's size.  This now scales up the number
-        //  of divisions if the cylinder is bigger than the default size.
-        //
-        //  It still, however, keeps this resolution for smaller cylinders, so
-        //  old models won't lose resolution if they have small cylinders.
         double currentRadius = ((DoubleToken)radius.getToken()).doubleValue();
         double currentHeight = ((DoubleToken)height.getToken()).doubleValue();
 
-        if (currentRadius > 0.5) {
-            xDivisions = 30 * (int)(currentRadius / 0.5);
-        } else {
-            xDivisions = 30;
+        int primitiveFlags = Primitive.GENERATE_NORMALS;
+        URL textureURL = texture.asURL();
+        if (textureURL != null) {
+            primitiveFlags = primitiveFlags
+                    | Primitive.GENERATE_TEXTURE_COORDS;
         }
 
-        if (currentHeight > 0.7) {
-            yDivisions = 10 * (int)(currentHeight / 0.7);
-        } else {
-            yDivisions = 10;
-        }
-
+        int circleDivisionsValue
+                = ((IntToken)circleDivisions.getToken()).intValue();
+        int sideDivisionsValue
+                = ((IntToken)circleDivisions.getToken()).intValue();
         _containedNode = new Cylinder((float) _getRadius(),
-                (float) _getHeight(), Cylinder.GENERATE_NORMALS, xDivisions,
-                yDivisions, _appearance);
+                (float) _getHeight(), primitiveFlags, circleDivisionsValue,
+                sideDivisionsValue, _appearance);
     }
 
-    /** Return the encapsulated Java3D node of this 3D actor. The encapsulated
-     *  node for this actor is a Java3D Cylinder.
-     *
-     *  @return the Java3D Cylinder
+    /** Return the encapsulated Java3D node of this 3D actor.
+     *  The encapsulated node for this actor is a Java3D Cylinder.
+     *  @return The Java3D Cylinder.
      */
     protected Node _getNodeObject() {
         return (Node) _containedNode;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Return the value of the height parameter
-     *  @return the height of the cylinder
-     *  @exception IllegalActionException If the value of some parameters can't
-     *   be obtained
+    /** Return the value of the height parameter.
+     *  @return The height of the cylinder.
+     *  @exception IllegalActionException If the parameter cannot
+     *   be obtained (e.g. the expression doesn't parse).
      */
     private double _getHeight() throws IllegalActionException  {
         return ((DoubleToken) height.getToken()).doubleValue();
     }
 
-    /** Return the value of the radius parameter
-     *  @return the radius of the cylinder
-     *  @exception IllegalActionException If the value of some parameters can't
-     *   be obtained
+    /** Return the value of the radius parameter.
+     *  @return The radius of the cylinder.
+     *  @exception IllegalActionException If the parameter cannot
+     *   be obtained (e.g. the expression doesn't parse).
      */
     private double _getRadius() throws IllegalActionException {
         return ((DoubleToken) radius.getToken()).doubleValue();

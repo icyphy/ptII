@@ -92,10 +92,11 @@ abstract public class GRActor3D extends GRActor {
     abstract protected Node _getNodeObject();
 
     /** Set the view screen that this actor is connected to.
-     *  @exception RuntimeException If the given actor is not a
+     *  @exception IllegalActionException If the given actor is not a
      *  ViewScreen2D.
      */
-    protected void _setViewScreen(GRActor actor) {
+    protected void _setViewScreen(GRActor actor)
+            throws IllegalActionException {
         if (actor instanceof ViewScreen) {
             _viewScreen = (ViewScreen)actor;
         } else {

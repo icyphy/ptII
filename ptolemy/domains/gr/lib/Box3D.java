@@ -27,6 +27,8 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.gr.lib;
 
+import java.net.URL;
+
 import javax.media.j3d.Node;
 
 import ptolemy.data.DoubleToken;
@@ -38,6 +40,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 
 import com.sun.j3d.utils.geometry.Box;
+import com.sun.j3d.utils.geometry.Primitive;
 
 //////////////////////////////////////////////////////////////////////////
 //// Box3D
@@ -116,8 +119,15 @@ public class Box3D extends GRShadedShape {
      */
     protected void _createModel() throws IllegalActionException {
         super._createModel();
+        
+        int primitiveFlags = Primitive.GENERATE_NORMALS;
+        URL textureURL = texture.asURL();
+        if (textureURL != null) {
+            primitiveFlags = primitiveFlags | Primitive.GENERATE_TEXTURE_COORDS;
+        }
+
         _containedNode = new Box((float)_getLength(), (float) _getHeight(),
-                (float) _getWidth(), Box.GENERATE_NORMALS, _appearance);
+                (float) _getWidth(), primitiveFlags, _appearance);
     }
 
     /** Return the encapsulated Java3D node of this 3D actor. The encapsulated

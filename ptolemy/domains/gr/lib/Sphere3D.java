@@ -1,4 +1,4 @@
-/* A GR Shape consisting of a sphere
+/* A GR Shape consisting of a sphere.
 
 Copyright (c) 1998-2004 The Regents of the University of California.
 All rights reserved.
@@ -28,6 +28,8 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.gr.lib;
 
+import java.net.URL;
+
 import javax.media.j3d.Node;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
@@ -42,6 +44,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+import com.sun.j3d.utils.geometry.Primitive;
 import com.sun.j3d.utils.geometry.Sphere;
 
 //////////////////////////////////////////////////////////////////////////
@@ -123,9 +126,16 @@ public class Sphere3D extends GRShadedShape {
      */
     protected void _createModel() throws IllegalActionException {
         super._createModel();
+        
+        int primitiveFlags = Primitive.GENERATE_NORMALS;
+        URL textureURL = texture.asURL();
+        if (textureURL != null) {
+            primitiveFlags = primitiveFlags | Primitive.GENERATE_TEXTURE_COORDS;
+        }
+
         int divisionsValue = ((IntToken)divisions.getToken()).intValue();
         _containedNode = new Sphere(1.0f,
-                Sphere.GENERATE_NORMALS,
+                primitiveFlags,
                 divisionsValue,
                 _appearance);
         _scaler = new TransformGroup();

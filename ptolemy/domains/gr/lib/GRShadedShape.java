@@ -27,11 +27,15 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.gr.lib;
 
+import java.net.URL;
+
 import javax.media.j3d.Appearance;
 import javax.media.j3d.ColoringAttributes;
 import javax.media.j3d.LineAttributes;
 import javax.media.j3d.Material;
 import javax.media.j3d.PolygonAttributes;
+import javax.media.j3d.Texture;
+import javax.media.j3d.TextureAttributes;
 import javax.media.j3d.TransparencyAttributes;
 import javax.vecmath.Color3f;
 
@@ -39,13 +43,17 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.gr.kernel.GRActor;
 import ptolemy.domains.gr.kernel.GRActor3D;
 import ptolemy.domains.gr.kernel.SceneGraphToken;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
+import com.sun.j3d.utils.image.TextureLoader;
 
 //////////////////////////////////////////////////////////////////////////
 //// GRShadedShape
@@ -106,6 +114,8 @@ abstract public class GRShadedShape extends GRActor3D {
 
         specularColor = new ColorAttribute(this, "specularColor");
         specularColor.setExpression("{1.0, 1.0, 1.0, 1.0}");
+        
+        texture = new FileParameter(this, "texture");
 
         shininess = new Parameter(this,"shininess");
         shininess.setExpression("1.0");
@@ -161,6 +171,11 @@ abstract public class GRShadedShape extends GRActor3D {
      *  illumination is reflected white.
      */
     public ColorAttribute specularColor;
+    
+    /** Texture URL. FIXME.
+     * 
+     */
+    public FileParameter texture;
     
     /** The transparency, where 0.0 means opaque (the default) and 1.0
      *  means fully transparent. The type is double. 
@@ -259,7 +274,6 @@ abstract public class GRShadedShape extends GRActor3D {
                 PolygonAttributes.CULL_NONE,
                 0.0f);
         _appearance.setPolygonAttributes(polygonAttributes);
-
         
         // Turn on antialiasing.
         // FIXME: Doesn't seem to work.
@@ -279,6 +293,32 @@ abstract public class GRShadedShape extends GRActor3D {
 
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         sceneGraphOut.send(0, new SceneGraphToken(_getNodeObject()));
+    }
+
+    /** Override the base class to set the texture, if one is specified,
+     *  now that the view screen is known.
+     *  @exception IllegalActionException If the given actor is not a
+     *   ViewScreen2D or if an invalid texture is specified.
+     */
+    protected void _setViewScreen(GRActor actor)
+            throws IllegalActionException {
+        super._setViewScreen(actor);
+        URL textureURL = texture.asURL();
+        if (textureURL != null) {
+            TextureLoader loader;
+            loader = new TextureLoader(textureURL, _viewScreen.getCanvas());
+            Texture loadedTexture = loader.getTexture();
+            
+            if (loadedTexture != null) {
+                
+                TextureAttributes attributes = new TextureAttributes();
+                attributes.setTextureMode(TextureAttributes.MODULATE);
+                _appearance.setTextureAttributes(attributes);
+
+                _appearance.setTexture(loadedTexture);
+            }
+        }
+
     }
 
     ///////////////////////////////////////////////////////////////////

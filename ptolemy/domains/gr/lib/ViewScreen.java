@@ -151,52 +151,51 @@ public class ViewScreen extends GRActor3D
      */
     public ColorAttribute backgroundColor;
 
-    /** The horizontal resolution of the display screen
-     *  This parameter should contain a IntToken.
-     *  The default value of this parameter is the IntToken 400
+    /** The width in pixels of the display screen.
+     *  The larger of the vertical or horizontal size will
+     *  correspond by default to one unit of distance, so this
+     *  parameter determines the horizontal resolution as well as
+     *  the size of the display.
+     *  This is an int with default 400.
      */
     public Parameter horizontalResolution;
 
-    /*  Boolean variable that determines whether screen update is done
-     *   once per iteration
-     *  This parameter should contain a BooleanToken
-     *  The default value of this parameter is BooleanToken false
+    /** Boolean variable that determines whether screen update is done
+     *  once per iteration. This is a boolean with default false.
      */
     public Parameter iterationSynchronized;
 
-    /** Boolean variable that determines whether the user is allowed to
-     *   rotate the model
-     *  This parameter should contain a BooleanToken
-     *  The default value of this parameter is BooleanToken true
+    /** Boolean variable that determines whether the user can
+     *  rotate the model with the mouse.  This is a boolean with
+     *  default true.
      */
     public Parameter rotatable;
 
-    /** Boolean variable that determines whether the user is allowed to
-     *   scale the model
-     *  This parameter should contain a BooleanToken
-     *  The default value of this parameter is BooleanToken false
+    /** Boolean variable that determines whether the user can
+     *  move the point of view along the z axis using the mouse.
+     *  This is a boolean with default false.
      */
     public Parameter scalable;
 
     /** Boolean variable that determines whether or not axes are shown.
-     *  This parameter should contain a BooleanToken
-     *  The default value of this parameter is BooleanToken false
+     *  This parameter is a boolean with default false.
      */
     public Parameter showAxes;
 
-    /** Boolean variable that determines whether the user is allowed to
-     *   translate the model
-     *  This parameter should contain a BooleanToken
-     *  The default value of this parameter is BooleanToken false
+    /** Boolean variable that determines whether the user can
+     *  translate the model with the mouse.
+     *  This is a boolean with default false.
      */
     public Parameter translatable;
 
-    /** The vertical resolution of the display screen
-     *  This parameter should contain a IntToken.
-     *  The default value of this parameter is IntToken 400
+    /** The height in pixels of the display screen.
+     *  The larger of the vertical or horizontal size will
+     *  correspond by default to one unit of distance, so this
+     *  parameter determines the horizontal resolution as well as
+     *  the size of the display.
+     *  This is an integer with default 400.
      */
     public Parameter verticalResolution;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

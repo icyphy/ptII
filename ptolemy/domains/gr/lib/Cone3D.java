@@ -27,6 +27,8 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.gr.lib;
 
+import java.net.URL;
+
 import javax.media.j3d.Node;
 
 import ptolemy.data.DoubleToken;
@@ -38,6 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 import com.sun.j3d.utils.geometry.Cone;
+import com.sun.j3d.utils.geometry.Primitive;
 
 //////////////////////////////////////////////////////////////////////////
 ////Cone3D
@@ -74,13 +77,17 @@ public class Cone3D extends GRShadedShape {
         height = new Parameter(this, "height");
         height.setExpression("0.7");
         height.setTypeEquals(BaseType.DOUBLE);
-        
-        divisions = new Parameter(this, "divisions");
-        divisions.setExpression("roundToInt(radius * 60)");
-        divisions.setTypeEquals(BaseType.INT);
-        
+                
         height.moveToFirst();
         radius.moveToFirst();
+        
+        circleDivisions = new Parameter(this, "circleDivisions");
+        circleDivisions.setExpression("roundToInt(radius * 60)");
+        circleDivisions.setTypeEquals(BaseType.INT);
+
+        sideDivisions = new Parameter(this, "sideDivisions");
+        sideDivisions.setExpression("1");
+        sideDivisions.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -94,11 +101,18 @@ public class Cone3D extends GRShadedShape {
      *  value makes the surface smoother, but also increases the cost
      *  of rendering.
      */
-    public Parameter divisions;
-
+    public Parameter circleDivisions;
+    
     /** The height of the cone. This is a double that defaults to 0.5.
      */
     public Parameter height;
+
+    /** The number of divisions on the side of the cone.
+     *  This is an integer with default value "1". This parameter
+     *  probably only needs to change when the <i>wire</i> option
+     *  is set to true.
+     */
+    public Parameter sideDivisions;
 
     /** The radius of the base of the cone. This is a double that
      *  defaults to 0.7.
@@ -125,27 +139,38 @@ public class Cone3D extends GRShadedShape {
      */
     protected void _createModel() throws IllegalActionException {
         super._createModel();
-        // NOTE: The "1" here is the number of "y divisions".
-        // I can't see any reason why this would need to be anything
-        // other than 1, so it's not a parameter.
-        int divisionsValue = ((IntToken)divisions.getToken()).intValue();
+
+        int primitiveFlags = Primitive.GENERATE_NORMALS;
+        URL textureURL = texture.asURL();
+        if (textureURL != null) {
+            primitiveFlags = primitiveFlags | Primitive.GENERATE_TEXTURE_COORDS;
+        }
+
+        int circleDivisionsValue
+                = ((IntToken)circleDivisions.getToken()).intValue();
+        int sideDivisionsValue
+                = ((IntToken)circleDivisions.getToken()).intValue();
         _containedNode = new Cone((float)_getRadius(), (float) _getHeight(),
-                Cone.GENERATE_NORMALS, divisionsValue, 1, _appearance);
+                primitiveFlags, circleDivisionsValue,
+                sideDivisionsValue, _appearance);
     }
 
-    /**  Return the value of the height parameter
-     *  @return the height of the cone
-     *  @exception IllegalActionException If the value of some parameters can't
-     *   be obtained
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Return the value of the height parameter.
+     *  @return The height of the cone.
+     *  @exception IllegalActionException If the parameter cannot
+     *   be obtained (e.g. the expression doesn't parse).
      */
     private double _getHeight() throws IllegalActionException  {
         return ((DoubleToken) height.getToken()).doubleValue();
     }
 
-    /**  Return the value of the radius parameter
-     *  @return the radius of the base of the cone
-     *  @exception IllegalActionException If the value of some parameters can't
-     *   be obtained
+    /** Return the value of the radius parameter.
+     *  @return The radius of the base of the cone.
+     *  @exception IllegalActionException If the parameter cannot
+     *   be obtained (e.g. the expression doesn't parse).
      */
     private double _getRadius() throws IllegalActionException {
         return ((DoubleToken) radius.getToken()).doubleValue();
