@@ -38,5 +38,14 @@
 </configure>
 </entity>
 
+<entity name="state" class="ptolemy.vergil.toolbox.XMLIcon">
+<configure>
+<![CDATA[
+	<xmlgraphic>
+	<ellipse coords="0 0 40 40" fill="orange"/>
+	</xmlgraphic>
+]]>
+</configure>
+</entity>
 </class>
 
