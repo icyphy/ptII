@@ -885,7 +885,7 @@ fi
 PTCOPERNICUS_DIR=
 
 # Directory that contains the soot jar files
-SOOT_DIR='${PTII}/vendors/soot/1.2.2'
+SOOT_DIR='${PTII}/lib'
 
 # Soot needs to find java.lang.Object	
 # Use {} here instead of () because bin/ptinvoke uses JAVA_SYSTEM_JAR
@@ -902,13 +902,13 @@ SOOT_CLASSES='${SOOT_DIR}/sootclasses.jar${CLASSPATHSEPARATOR}${SOOT_DIR}/jasmin
 if test ! -d "$PTII/ptolemy/copernicus"; then
     AC_MSG_RESULT([$PTII/ptolemy/copernicus is not present,
 	so we need not find the Soot - a Java Optimization Framework.])
-    SOOT_DIR='${PTII}/vendors/soot/1.2.2'
+    SOOT_DIR='${PTII}/lib'
 else
     AC_MSG_CHECKING([for soot directory])
     AC_ARG_WITH(soot, [  --with-soot=DIR       use SOOT from DIR,
-                          defaults to \$PTII/vendors/soot/1.2.2],
+                          defaults to \$PTII/lib],
 	SOOT_DIR=$withval,
-	SOOT_DIR=$PTII/vendors/soot/1.2.2)
+	SOOT_DIR=$PTII/lib)
 
     if test -d "$SOOT_DIR"; then
 	AC_MSG_RESULT([$SOOT_DIR])
@@ -933,7 +933,7 @@ else
     You need not download Soot unless you plan on using code generation
     The Soot SDK can be downloaded from http://www.sable.mcgill.ca/soot/'])
 	# Note that we don't substitute in the ${PTII} or $(SOOT_DIR) here
-	SOOT_DIR='${PTII}/vendors/soot/1.2.2'
+	SOOT_DIR='${PTII}/lib'
     else
 	# Set to copernicus and used in
 	# $PTII/ptolemy/makefile if soot was found
