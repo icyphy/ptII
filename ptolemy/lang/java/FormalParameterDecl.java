@@ -1,4 +1,8 @@
-/* Copyright (c) 1998-2000 The Regents of the University of California.
+/* 
+A declaration of a formal parameter of a method, constructor, or catch clause.
+Code and comments adopted from the Titanium project.
+
+Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -33,6 +37,11 @@ package ptolemy.lang.java;
 import ptolemy.lang.TreeNode;
 import ptolemy.lang.java.nodetypes.*;
 
+/** A declaration of a formal parameter of a method, constructor, or catch clause.
+ *  Code and comments adopted from the Titanium project.
+ *
+ *  @author Jeff Tsay
+ */
 public class FormalParameterDecl extends TypedDecl {
     public FormalParameterDecl(String name, TypeNode type, int modifiers, TreeNode source) {
         super(name, JavaDecl.CG_FORMAL, type, modifiers);

@@ -45,7 +45,7 @@ import ptolemy.lang.java.nodetypes.*;
  *  
  *  Code and comments taken from the Titanium project.
  * 
- *  @author ctsay@eecs.berkeley.edu
+ *  @author Jeff Tsay
  */
 public class ResolveFieldVisitor extends ReplacementJavaVisitor 
        implements JavaStaticSemanticConstants {

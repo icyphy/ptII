@@ -114,7 +114,6 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
     public void loadSource() {
         if (_source == null) {
            _source = AbsentTreeNode.instance;
-           // ApplicationUtility.assert(!allshouldbeloaded);
 
            String fileName = fullName(File.separatorChar);
            File file = _pickLibrary(_container).openSource(fileName);

@@ -46,7 +46,7 @@ public class Modifier implements JavaStaticSemanticConstants {
   public static final void checkClassModifiers(final int modifiers) {
     if ((modifiers &
         ~(PUBLIC_MOD | PROTECTED_MOD | PRIVATE_MOD | FINAL_MOD |
-          ABSTRACT_MOD | STRICTFP_MOD)) != 0) {
+          ABSTRACT_MOD | STATIC_MOD | STRICTFP_MOD)) != 0) {
        throw new RuntimeException("Illegal class modifier: " +
         toString(modifiers));       
     }
@@ -55,7 +55,7 @@ public class Modifier implements JavaStaticSemanticConstants {
   public static final void checkInterfaceModifiers(final int modifiers) {
     if ((modifiers &
         ~(PUBLIC_MOD | PROTECTED_MOD | PRIVATE_MOD | FINAL_MOD |
-          ABSTRACT_MOD | STRICTFP_MOD)) != 0) {
+          ABSTRACT_MOD | STATIC_MOD | STRICTFP_MOD)) != 0) {
        throw new RuntimeException("Illegal interface modifier: " +
         toString(modifiers));
     }

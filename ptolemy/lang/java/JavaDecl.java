@@ -40,14 +40,15 @@ import ptolemy.lang.java.nodetypes.*;
  *  for certain types of JavaDecl.  Attempts to access nonsensical members
  *  will cause runtime errors.
 
- *  By convention, a JavaDecl member named "getFoo" will return the "foo"
- *  attribute when called with no parameters, and set the "foo"
- *  attribute when called with one parameter.  Thus, decl.getType() is
- *  the type of the entity referred to by decl (a JavaDecl, presumably),
- *  and decl.setFoo(aType) sets the type attribute of decl to aType.
- *  Also, if member "foo" is not valid for all JavaDecls, there is a member
- *  "hasFoo()" that returns true or false depending on whether object
- *  on which it is called has a class for which "foo" may be called.
+ *  By convention, a JavaDecl member named "getFoo()" will return the "foo"
+ *  attribute when called with no parameters, and the member "setFoo()"
+ *  will set the "foo" attribute when called with one parameter.  
+ *  Thus, decl.getType() is the type of the entity referred to by decl 
+ *  (a JavaDecl, presumably), and decl.setFoo(aType) sets the type attribute 
+ *  of decl to aType. Also, if member "foo" is not valid for all JavaDecls, 
+ *  there is a member "hasFoo()" that returns true or false depending on whether 
+ *  object on which it is called has a class for which "getFoo" and 
+ *  "setFoo()" may be called.
  *
  *  Objects of type JavaDecl should not be allocated; the class is intended
  *  as a base class for others.
@@ -64,7 +65,7 @@ import ptolemy.lang.java.nodetypes.*;
  *     larger declared entity, which is their container.  Members are
  *     contained in classes and interfaces, which are themselves contained
  *     in packages, which are in turn contained in other packages. However,
- *     inner classes have no container.
+ *     inner classes have their outer classes as their container. (CHECK THIS)
  *
  *     Outer-level packages have as their container the special Decl
  *     StaticResolution.SYSTEM_PACKAGE

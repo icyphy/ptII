@@ -39,6 +39,10 @@ import java.util.Iterator;
 import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
 
+/** A JavaVisitor that regenerates Java code from the abstract syntax tree.
+ * 
+ *  @author Jeff Tsay
+ */
 public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemanticConstants {
     public JavaCodeGenerator() {
         super(TM_CHILDREN_FIRST);
@@ -596,7 +600,7 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
         String enclosingInstance = (String)
          node.childReturnValueAt(node.CHILD_INDEX_ENCLOSINGINSTANCE);
 
-        if (!enclosingInstance.equals("this")) {
+        if (!(enclosingInstance.equals("") || enclosingInstance.equals("this"))) {
            sb.append(enclosingInstance + '.');
         }
 

@@ -122,7 +122,9 @@ public class SkeletonVisitor extends JavaVisitor implements JavaStaticSemanticCo
     }
 
     public Object visitConstructorDeclNode(ConstructorDeclNode node, LinkedList args) {       
-        node.setConstructorCall(new SuperConstructorCallNode(new LinkedList()));
+        // constructor calls must not call private methods or access private variables
+        // in the arguments to super() or this()
+        
         node.setBody(new BlockNode(new LinkedList()));
         return node;
     }
@@ -170,7 +172,7 @@ public class SkeletonVisitor extends JavaVisitor implements JavaStaticSemanticCo
         }
 
         if (node == CharTypeNode.instance) {
-           return new CharLitNode("'\\0'");
+           return new CharLitNode("\\0");
         }
 
         if (node == ShortTypeNode.instance) {

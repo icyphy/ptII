@@ -1,4 +1,8 @@
-/* Copyright (c) 1998-2000  The Regents of the University of California.
+/* A declaration of a Java package.
+
+Code and comments adopted from the Titanium project.
+
+Copyright (c) 1998-2000  The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -34,6 +38,10 @@ import java.io.File;
 
 import ptolemy.lang.*;
 
+/** A declaration of a Java package. Code and comments adopted from the Titanium project.
+ *
+ *  @author Jeff Tsay
+ */
 public class PackageDecl extends JavaDecl implements JavaStaticSemanticConstants {
     public PackageDecl(String name, JavaDecl container) {
         super(name, CG_PACKAGE);

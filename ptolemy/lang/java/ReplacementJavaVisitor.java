@@ -44,13 +44,6 @@ import ptolemy.lang.java.nodetypes.*;
  *  Therefore, the default behavior is to set the children to the list of 
  *  replacements, and return the same node. 
  *
- *  The _lazy flag can be retrieved from the compile unit node, and used to
- *  determine if only lazy resolution is required.
- *  _isSkippable() can then be called with a modified node to determine
- *  if it can be skipped, in the case of fields, methods, constructors,
- *  and inner classes of a class or interface. Also, by default static
- *  and instance initializers are skipped during lazy resolution.
- *
  *  @author ctsay@eecs.berkeley.edu
  */
 public abstract class ReplacementJavaVisitor extends JavaVisitor {

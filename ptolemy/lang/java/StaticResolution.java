@@ -317,26 +317,11 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     }
     */
     
-    /** Parse the file, doing no static resolution whatsoever. */
-    public static CompileUnitNode parse(String filename) {
-        JavaParser p = new JavaParser();
-
-        try {
-          p.init(filename);
-        } catch (Exception e) {
-          ApplicationUtility.error("error opening " + filename + " : " + e);
-        }
-
-        p.yyparse();
-
-        return p.getAST();
-    }
-
     /** Load the source file with the given filename. The filename may be
      *  relative or absolute. If primary is true, do full resolution of the 
      *  source. Otherwise do partial resolution only.
      */ 
-    public static CompileUnitNode load(String filename, int pass) {
+    public static CompileUnitNode load(String filename, int pass) {    
         return load(new File(filename), pass);
     }
 
@@ -356,24 +341,23 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     public static CompileUnitNode loadCanonical(String filename, int pass) {        
         System.out.println(">loading " + filename);
   
-        CompileUnitNode loadedAST = null;
-    
-        loadedAST = (CompileUnitNode) allPass0ResolvedMap.get(filename);           
+        String noExtensionName = StringManip.partBeforeLast(filename, '.');
+        
+        CompileUnitNode loadedAST = 
+         (CompileUnitNode) allPass0ResolvedMap.get(noExtensionName);           
                                   
         if (loadedAST == null) {
-           loadedAST = parse(filename);
+           loadedAST = JavaParserManip.parseCanonical(filename, false);
            
            if (loadedAST == null) {
               ApplicationUtility.error("Couldn't load " + filename);
            }
-
-           loadedAST.setProperty(IDENT_KEY, filename);                                 
         }         
         return load(loadedAST, pass);                          
     }
         
-    /** Load a CompileUnitNode that has just been parsed. Fully resolve the
-     *  node if primary is true, otherwise just partially resolve it.
+    /** Load a CompileUnitNode that has been parsed. 
+     *
      */
     public static CompileUnitNode load(CompileUnitNode node, int pass) {                                                                        
         switch (pass) {
@@ -416,14 +400,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         if (filename != null) {
            allPass0ResolvedMap.put(filename, node);
         }            
-                
-        //node.accept(new ResolveClassVisitor(), null);
-        //node.accept(new ResolveInheritanceVisitor(), null);
-        
-        //if (filename != null) {
-        //   partiallyResolvedMap.put(filename, node);
-        //}            
-        
+                        
         return node;
     }
 
@@ -472,6 +449,8 @@ public class StaticResolution implements JavaStaticSemanticConstants {
               return pass2ResolvedNode;
            }                            
         }
+        
+        System.out.println("pass 2 on " + filename);
                 
         node.accept(new ResolveNameVisitor(), null);     
         node.accept(new ResolveFieldVisitor(), null);                               
@@ -479,11 +458,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         if (filename != null) {
            allPass2ResolvedMap.put(filename, node);              
         }                             
-          
-        //if (filename != null) {
-        //   fullyResolvedMap.put(filename, node);              
-        //}                   
-        
+                  
         return node;
     }
     
@@ -512,7 +487,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         pass0ResolvedList.clear();                    
     }
         
-    public static final void importPackage(Environ env, NameNode name) {
+    public static final PackageDecl importPackage(Environ env, NameNode name) {
         resolveAName(name, SYSTEM_PACKAGE.getEnviron(), null, null,
          CG_PACKAGE);
 
@@ -528,6 +503,8 @@ public class StaticResolution implements JavaStaticSemanticConstants {
               env.add(type); // conflicts appear on use only
            }
         }
+        
+        return decl;
     }
 
     protected static final ClassDecl _requireClass(Environ env, String name) {
@@ -552,6 +529,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
     public static final PackageDecl SYSTEM_PACKAGE;
     public static final PackageDecl UNNAMED_PACKAGE;
+    public static final PackageDecl JAVA_LANG_PACKAGE;
 
     public static final ClassDecl OBJECT_DECL;
     public static final ClassDecl STRING_DECL;
@@ -567,25 +545,21 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     public static final ClassDecl  ARRAY_CLASS_DECL;
     public static final FieldDecl  ARRAY_LENGTH_DECL;
     public static final MethodDecl ARRAY_CLONE_DECL;
-        
+                
     /** A List containing values of CompileUnitNodes that have only been parsed
      *  and have undergone package resolution, but not including nodes that
-     *  have undergone later stages of static resolution.
+     *  have undergone later stages of static resolution, indexed by the 
+     *  canonical filename of the source file.
      */
     public static final List pass0ResolvedList = new LinkedList();
 
     /** A Map containing values of CompileUnitNodes that have only been parsed
      *  and have undergone package resolution, including nodes that
-     *  have undergone later stages of static resolution.
+     *  have undergone later stages of static resolution, indexed by the 
+     *  canonical filename of the source file.
      */
     public static final Map allPass0ResolvedMap = new HashMap();
-                         
-    /** A Map containing values of CompileUnitNodes that have been partially 
-     *  resolved (including those that are also fully resolved), indexed by the 
-     *  absolute pathname of the source file.
-     */
-    //public static final Map partiallyResolvedMap = new HashMap();
-   
+                            
     /** A Map containing values of CompileUnitNodes that have undergone
      *  and have undergone package, class and inheritance resolution, 
      *  including nodes that have undergone later stages of static 
@@ -594,7 +568,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     public static final Map allPass1ResolvedMap = new HashMap();
       
     /** A Map containing values of all CompileUnitNodes that have undergone
-     *  name and field resolution, indexed by the absolute pathname of the 
+     *  name and field resolution, indexed by the canonical filename of the 
      *  source file.
      */
     public static final Map allPass2ResolvedMap = new HashMap();
@@ -608,7 +582,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         Environ env = new Environ();        
 
         NameNode javaLangName = (NameNode) makeNameNode("java.lang");
-        importPackage(env, javaLangName);
+        JAVA_LANG_PACKAGE = importPackage(env, javaLangName);
 
         OBJECT_DECL = _requireClass(env, "Object");
         OBJECT_TYPE = OBJECT_DECL.getDefType();

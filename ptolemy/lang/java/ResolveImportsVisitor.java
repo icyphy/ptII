@@ -50,6 +50,7 @@ public class ResolveImportsVisitor extends JavaVisitor
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
         _compileUnit = node; 
         _fileEnv = (Environ) node.getDefinedProperty(ENVIRON_KEY); // file environment
+        _importEnv = _fileEnv.parent().parent();        
 
         // initialize importedPackages property
         if (!node.hasProperty(IMPORTED_PACKAGES_KEY)) {        
@@ -74,7 +75,7 @@ public class ResolveImportsVisitor extends JavaVisitor
        
         StaticResolution.resolveAName(name,
          (Environ) StaticResolution.SYSTEM_PACKAGE.getEnviron(), null, null, 
-         JavaDecl.CG_USERTYPE);
+         CG_USERTYPE);
 
         JavaDecl old = (JavaDecl) _fileEnv.lookupProper(name.getIdent());
         JavaDecl current = (JavaDecl) name.getProperty(DECL_KEY);
@@ -86,8 +87,7 @@ public class ResolveImportsVisitor extends JavaVisitor
            }
   	    }
 	     
-        // add to the import environment, which is 2 levels above the file environment
-        _fileEnv.parent().parent().add((ClassDecl) name.getDefinedProperty(DECL_KEY));
+        _importEnv.add((ClassDecl) name.getDefinedProperty(DECL_KEY));
 
         return null;
     }
@@ -97,8 +97,7 @@ public class ResolveImportsVisitor extends JavaVisitor
         NameNode name = node.getName();
         
         StaticResolution.resolveAName(name,
-         StaticResolution.SYSTEM_PACKAGE.getEnviron(), null,  null, 
-         JavaDecl.CG_PACKAGE);
+         StaticResolution.SYSTEM_PACKAGE.getEnviron(), null,  null, CG_PACKAGE);
 
         PackageDecl decl = (PackageDecl) name.getDefinedProperty(DECL_KEY);
 
@@ -127,8 +126,6 @@ public class ResolveImportsVisitor extends JavaVisitor
 
         _importedPackages.add(importedPackage);
 
-        Environ importEnv = _fileEnv.parent().parent();
-
         Environ pkgEnv = importedPackage.getEnviron();
 
         Iterator envItr = pkgEnv.allProperDecls();
@@ -136,9 +133,9 @@ public class ResolveImportsVisitor extends JavaVisitor
         while (envItr.hasNext()) {
            JavaDecl type = (JavaDecl) envItr.next();
 
-           if (type.category != JavaDecl.CG_PACKAGE) {
+           if (type.category != CG_PACKAGE) {
               ApplicationUtility.trace("importOnDemand: adding " + type.toString());
-              importEnv.add(type); // conflicts appear on use only
+              _importEnv.add(type); // conflicts appear on use only
            }
         }
 
@@ -152,7 +149,7 @@ public class ResolveImportsVisitor extends JavaVisitor
 
         StaticResolution.resolveAName(name, 
          StaticResolution.SYSTEM_PACKAGE.getEnviron(), null, null,
-         JavaDecl.CG_PACKAGE);
+         CG_PACKAGE);
 
         _importOnDemand((PackageDecl) name.getDefinedProperty(DECL_KEY));
     }
@@ -163,6 +160,9 @@ public class ResolveImportsVisitor extends JavaVisitor
     
     /** The file environment. */
     protected Environ _fileEnv = null;
+    
+    /** The import environment. */
+    protected Environ _importEnv = null;
 
     /** The Collection of imported packages for this compile unit. */    
     protected Collection _importedPackages = null;
