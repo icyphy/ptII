@@ -35,6 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj; // For javadoc
 import ptolemy.kernel.util.NamedList;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
@@ -243,7 +244,7 @@ public class CompositeEntity extends ComponentEntity {
             } catch (KernelException ex) {
                 throw new CloneNotSupportedException(
                         "Failed to clone a CompositeEntity: " +
-                        ex.getMessage());
+                        KernelException.stackTraceToString(ex));
             }
 
             // Clone the links of the ports of the cloned entities.
@@ -938,7 +939,7 @@ public class CompositeEntity extends ComponentEntity {
      *  by the contained entities and relations.
      *  Errors that are triggered by this validation are handled by calling
      *  handleError().
-     *  @see NamedObj#handleError()
+     *  @see NamedObj#handleError(NamedObj context, IllegalActionException exception)
      */
     public void validateSettables() throws IllegalActionException {
         super.validateSettables();
