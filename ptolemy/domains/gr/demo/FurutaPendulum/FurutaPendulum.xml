@@ -60,6 +60,74 @@
     </property>
     <property name="n" class="ptolemy.data.expr.Parameter" value="0.5">
     </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The Furuta pendulum has a motor controlling the angle of an arm,
+from which a free-swinging pendulum hangs.
+The objective is to swing the pendulum up and then balance it.
+
+</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="251.5, 407.0">
+        </property>
+    </property>
+    <property name="_generator" class="ptolemy.copernicus.gui.GeneratorTableauAttribute">
+        <property name="codeGenerator" class="ptolemy.kernel.util.StringAttribute" value="applet">
+            <doc name="tooltip">Type of code generator to run.</doc>
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="sootDeep" class="ptolemy.kernel.util.StringAttribute" value="deep">
+                </property>
+                <property name="sootApplet" class="ptolemy.kernel.util.StringAttribute" value="applet">
+                </property>
+                <property name="sootC" class="ptolemy.kernel.util.StringAttribute" value="c">
+                </property>
+                <property name="sootJHDL" class="ptolemy.kernel.util.StringAttribute" value="jhdl">
+                </property>
+                <property name="sootShallow" class="ptolemy.kernel.util.StringAttribute" value="shallow">
+                </property>
+            </property>
+        </property>
+        <property name="show" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
+            <doc name="tooltip">Show generated code.</doc>
+        </property>
+        <property name="compile" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
+            <doc name="tooltip">Compile generated code.</doc>
+        </property>
+        <property name="run" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
+            <doc name="tooltip">Execute generated code.</doc>
+        </property>
+        <property name="directory" class="ptolemy.kernel.util.StringAttribute" value="d:\tmp\ptII\ptolemy\domains\gr\demo">
+            <doc name="tooltip">Directory into which to put generated code.</doc>
+        </property>
+        <property name="compileOptions" class="ptolemy.kernel.util.StringAttribute" value="-classpath &quot;d:\tmp\ptII;.&quot;">
+            <doc name="tooltip">Options to pass to the compiler.</doc>
+        </property>
+        <property name="runOptions" class="ptolemy.kernel.util.StringAttribute" value="-classpath &quot;d:\tmp\ptII;.&quot;">
+            <doc name="tooltip">Options to use when executing the code.</doc>
+        </property>
+        <property name="packageName" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.gr.demo">
+            <doc name="tooltip">Package name for the generated classes.</doc>
+        </property>
+    </property>
     <entity name="FurutaPendulum" class="ptolemy.domains.ct.lib.DifferentialSystem">
         <property name="stateVariableNames" class="ptolemy.data.expr.Parameter" value="{&quot;x1&quot;, &quot;x2&quot;, &quot;x3&quot;, &quot;x4&quot;}">
         </property>
@@ -439,8 +507,7 @@
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>u</title>
@@ -449,8 +516,7 @@
 <xRange min="0.0" max="0.11500000000000003"/>
 <yRange min="-0.5" max="0.0"/>
 </plot>?>
-        </configure>
-    </entity>
+                </configure>    </entity>
     <entity name="ZOH1" class="ptolemy.domains.ct.lib.ZeroOrderHold">
         <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -1076,6 +1142,8 @@
                 <entity name="Scale" class="ptolemy.actor.lib.Scale">
                     <property name="factor" class="ptolemy.data.expr.Parameter" value="-1">
                     </property>
+                    <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
                     <property name="_location" class="ptolemy.moml.Location" value="467.0, 329.0">
                     </property>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -1595,6 +1663,8 @@
                 <entity name="Scale" class="ptolemy.actor.lib.Scale">
                     <property name="factor" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
+                    <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
                     <property name="_location" class="ptolemy.moml.Location" value="523.0, 165.0">
                     </property>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -1606,6 +1676,8 @@
                 </entity>
                 <entity name="k" class="ptolemy.actor.lib.Scale">
                     <property name="factor" class="ptolemy.data.expr.Parameter" value="k">
+                    </property>
+                    <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="317.0, 130.0">
                     </property>
@@ -1934,6 +2006,8 @@
                 <entity name="Scale" class="ptolemy.actor.lib.Scale">
                     <property name="factor" class="ptolemy.data.expr.Parameter" value="-1">
                     </property>
+                    <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
                     <property name="_location" class="ptolemy.moml.Location" value="486.0, 328.0">
                     </property>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -2248,8 +2322,7 @@
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>E+mode</title>
@@ -2258,8 +2331,7 @@
 <xRange min="0.0" max="0.11500000000000003"/>
 <yRange min="-2.0" max="0.0"/>
 </plot>?>
-        </configure>
-    </entity>
+                </configure>    </entity>
     <entity name="PeriodicSampler2" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="h">
         </property>
