@@ -1,0 +1,72 @@
+<!-- $Id$-->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>Communication Link - Physical Level</TITLE>
+</HEAD>
+<BODY>
+
+<H1>Communication Link - Physical Level</H1>
+
+The following plot shows the eye diagram for a received waveform
+for a baseband channel with additive Gaussian noise.
+<P>
+ <!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+<center>
+<!-- The HTML below is for the Java Plugin.  The first
+     section is for IE, the second is for Netscape
+ -->
+<OBJECT classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93"
+    WIDTH = 450
+    HEIGHT = 400
+    NAME = "Eye"
+    codebase="http://java.sun.com/products/plugin/1.2.2/jinstall-1_2_2-win.cab#Version=1,2,2,0">
+<PARAM NAME = CODE VALUE = ptolemy.actor.gui.MoMLApplet>
+<PARAM NAME = CODEBASE VALUE = ../../../../..>
+<PARAM NAME=ARCHIVE VALUE="
+	ptolemy/ptsupport.jar,
+	ptolemy/domains/sdf/sdf.jar">
+<PARAM NAME = NAME VALUE = "MoML" >
+<PARAM NAME = "type" VALUE="application/x-java-applet;version=1.2.2">
+<PARAM NAME = "background" VALUE="#faf0e6">
+<PARAM NAME = "controls" VALUE="buttons, topParameters">
+<PARAM NAME = "model" VALUE = "Eye.xml">
+<COMMENT>
+<EMBED type="application/x-java-applet;version=1.2.2"
+ code="ptolemy.actor.gui.MoMLApplet"
+ codebase=../../../../..
+ archive="
+	ptolemy/ptsupport.jar,
+	ptolemy/domains/sdf/sdf.jar"
+ NAME = "MoML"
+ WIDTH = 450
+ HEIGHT = 400
+ background="#faf0e6"
+ controls="buttons, topParameters"
+ model="Eye.xml"
+ pluginspage="http://java.sun.com/products/plugin/1.2.2/plugin-install.html">
+</COMMENT>
+<NOEMBED>
+<a href="Eye.xml">MoML specification for this model.</a>
+</NOEMBED>
+</EMBED>
+</OBJECT>
+</CENTER>
+
+The default parameters model:
+<P>
+<UL>
+<LI> Additive Gaussian noise with standard deviation 0.1.
+<LI> 100 % excess bandwidth square-root raised-cosine pulse.
+<LI> Matched filter in the receiver.
+</UL>
+<P>
+The <a href="EyeVergil.htm">block diagram</a>
+for the model was constructed using the Ptolemy II schematic editor
+called Vergil.
+</p>
+<p></p>
+</BODY>
+</HTML>
