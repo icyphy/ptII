@@ -76,6 +76,11 @@ user interface is highly preliminary, and its limitations
 are discussed in
 the <a href="#userInterfaceLimitations">User Interface Limitations</a>
 section.
+
+<li> Code generation can fail if there are spaces in <CODE>$PTII</CODE>.
+The problem is that the Soot option parser users StringTokenizer,
+which does not work will with pathnames that have spaces.
+
 <li> The limitations for the individual code generators are 
 discussed below:
   <ul>
