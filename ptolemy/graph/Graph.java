@@ -286,7 +286,7 @@ public class Graph {
     // done with _nodeObject.indexOf(), but Hashtable is faster.
     private Hashtable _nodeIdTable;
 
-    // Translation from nodeId to node.
+    // Translation from node Id to node.
     // This vector is indexed by node ID. The entries are the Objects
     // representing the graph nodes with the corresponding node IDs.
     private Vector _nodeObject;
