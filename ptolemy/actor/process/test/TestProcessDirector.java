@@ -85,6 +85,7 @@ public class TestProcessDirector extends ProcessDirector {
     public TestProcessDirector(CompositeActor container, String name)
             throws IllegalActionException {
         super(container, name);
+	_name = name;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -97,45 +98,84 @@ public class TestProcessDirector extends ProcessDirector {
      *  @exception IllegalActionException If a derived class throws it.
      */
     public void fire() throws IllegalActionException {
-	Workspace workspace = workspace();
-        synchronized (this) {
-            String name = ((Nameable)this).getName();
-            // System.out.println(name+": calling fire()");
-            if( _debugging ) _debug( name+": calling fire()");
-            while( !_areActorsDeadlocked() && !_areActorsStopped() ) {
-                if( _debugging ) _debug( name+": actors waiting for deadlock or stop");
-		workspace.wait(this);
-            }
-            if( _debugging ) _debug( name+": actors deadlocked or stopped");
-            
-            stopInputBranchController();
-            
-            if( _debugging ) _debug( name+": attempt to stop input branch controller");
-            
-            if( _isOutputControllerBlocked() ) {
-                _debug( name+": output branch controller blocked before wait loop");
-            }
-            if( _isInputControllerBlocked() ) {
-                _debug( name+": input branch controller blocked before wait loop");
-            }
-            
-            while( !_isInputControllerBlocked() && !_isOutputControllerBlocked() ) {
-                workspace.wait(this);
-            }
-            
-            if( _debugging ) _debug( name+": input and output controller blocked");
-            
-            if( _areActorsDeadlocked() || _areActorsStopped() ) {
-                if( _isInputControllerBlocked() ) {
-                    registerBlockedBranchReceivers();
+        Workspace workspace = workspace();
+        boolean continueFireMethod = true;
+        synchronized(this) {
+            while( continueFireMethod ) {
+                continueFireMethod = false;
+		if( _debugging ) _debug(_name+": beginning fire() cycle");
+                while( !_areActorsDeadlocked() && !_areActorsStopped() ) {
+                    workspace.wait(this);
                 }
-                _debug( name+": _notDone = false");
-                _notDone = false;
-            } else {
-                _debug( name+": _notDone = true");
-                _notDone = true;
+		if( _debugging ) _debug(_name+": actors deadlocked or stopped");
+
+		// We know it will be external read deadlocked
+		// by virtue of the test.
+                
+		// Since this is an external read block
+		// we might as well wait to see what
+		// happens. Either the input will block
+		// or the input will not block and the
+		// actors will no longer be deadlocked.
+		while( _areActorsDeadlocked() && !_isInputControllerBlocked() ) {
+		    // JFIXME: Possible deadlock in call to 
+		    // _isInputControllerBlocked(); obtaining
+		    // lock on BranchController in addition
+		    // to this
+		    if( _debugging ) _debug(_name+": actors deadlocked; waiting for input to block");
+		    workspace.wait(this);
+		}
+		if( _debugging ) _debug(_name+": deadlocked or input controller stopped");
+
+		while( _areActorsDeadlocked() && _isInputControllerBlocked() ) {
+		    // Reaching this point means that both the
+		    // actors and the input have blocked. 
+		    // However, it is possible that the input
+		    // could awaken resulting in an end to the
+		    // external read block
+		    if( _debugging ) _debug(_name+": actors deadlocked and input controller stopped");
+		    CompositeActor container = (CompositeActor)getContainer();
+		    if( container.getContainer() != null ) {
+			Director execDir = ((Actor)container).getDirector();
+			if( execDir instanceof ProcessDirector ) {
+			    // Since the higher level actor is a process
+			    // let's register a block and wait.
+		            if( _debugging ) _debug(_name+": registering blocked branches to executive director");
+			    ((ProcessDirector)execDir).registerBlockedBranchReceivers();
+		            if( _debugging ) _debug(_name+": just registered blockeed branches to executive director; now waiting");
+			    workspace.wait(this);
+			} else {
+			    // Since the higher level actor is not a 
+			    // process, let's end this iteration and
+			    // request another iteration. Recall that
+			    // calling stopInputBranchController()
+			    // is a blocking call that when finished
+			    // will guarantee that the (input) branches
+			    // will not restart during this iteration.
+			    stopInputBranchController();
+
+			    if( _areActorsDeadlocked() ) {
+				_notDone = false;
+				return;
+			    } else if( !_areActorsDeadlocked() ) {
+				// It is possible that prior to
+				// stopping the branch controller
+				// a token stuck that caused the
+				// deadlocked actors to awaken.
+				continueFireMethod = true;
+			    }
+			}
+		    } else {
+			_notDone = false;
+			return;
+		    }
+		}
+		if( !_areActorsDeadlocked() || !_isInputControllerBlocked() ) {
+		    // Reaching this point means that the
+		    // fire method should continue
+		    continueFireMethod = true;
+		}
             }
-            
         }
     }
 
@@ -225,5 +265,7 @@ public class TestProcessDirector extends ProcessDirector {
     private LinkedList _blockedRcvrList = new LinkedList();
     
     private int _actorsBlocked = 0;
+
+    private String _name = null;
 
 }
