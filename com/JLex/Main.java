@@ -4212,7 +4212,7 @@ class CUtility
                 return (char) (c - 'A' + 10);
             }
 
-        CError.impos("Bad hexidecimal digit" + c);
+        CError.impos("Bad hexadecimal digit" + c);
         return 0;
     }
 
