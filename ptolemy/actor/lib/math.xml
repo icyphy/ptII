@@ -8,33 +8,18 @@
   <doc>Arithmetic and mathematical functions</doc>
 
   <entity name="AbsoluteValue" class="ptolemy.actor.lib.AbsoluteValue">
-    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-      <configure>generic.transformer</configure>
-    </rendition>
   </entity>
  
   <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-       <configure>generic.transformer</configure>
-    </rendition>
   </entity>
 
   <entity name="Average" class="ptolemy.actor.lib.Average">
-    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-      <configure>generic.transformer</configure>
-    </rendition>
   </entity>
 
   <entity name="Expression" class="ptolemy.actor.lib.Expression">
-    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-      <configure>generic.transformer</configure>
-    </rendition>
   </entity>
   
   <entity name="MathFunction" class="ptolemy.actor.lib.MathFunction">
-    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-      <configure>generic.transformer</configure>
-    </rendition>
     <property name="function">
         <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
             <property name="exp" value="exp"
@@ -55,45 +40,24 @@
 
 
   <entity name="Maximum" class="ptolemy.actor.lib.Maximum">
-    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-      <configure>generic.transformer</configure>
-    </rendition>
   </entity>
 
   <entity name="Minimum" class="ptolemy.actor.lib.Minimum">
-    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-      <configure>generic.transformer</configure>
-    </rendition>
   </entity>
 
   <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
-    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-       <configure>generic.transformer</configure>
-    </rendition>
   </entity>
 
   <entity name="Quantizer" class="ptolemy.actor.lib.Quantizer">
-    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-      <configure>generic.transformer</configure>
-    </rendition>
   </entity>
   
   <entity name="Scale" class="ptolemy.actor.lib.Scale">
-    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-      <configure>generic.transformer</configure>
-    </rendition>
   </entity>
 
   <entity name="SquareRoot" class="ptolemy.actor.lib.SquareRoot">
-    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-      <configure>generic.transformer</configure>
-    </rendition>
   </entity>
 
   <entity name="TrigFunction" class="ptolemy.actor.lib.TrigFunction">
-    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-      <configure>generic.transformer</configure>
-    </rendition>
     <property name="function">
         <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
             <property name="acos" value="acos"

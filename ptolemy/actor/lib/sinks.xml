@@ -8,81 +8,42 @@
 <doc>Domain-polymorphic sinks</doc>
 
 <entity name="Discard" class="ptolemy.actor.lib.Discard">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.sink</configure>
-</rendition>
 </entity>
 
 <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.sink</configure>
-</rendition>
 </entity>
 
 <entity name="HistogramPlotter" class="ptolemy.actor.lib.gui.HistogramPlotter">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.sink</configure>
-</rendition>
 </entity>
 
 <entity name="MatrixViewer" class="ptolemy.actor.lib.gui.MatrixViewer">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.sink</configure>
-</rendition>
 </entity>
 
 <entity name="MatrixVisualizer" class="ptolemy.actor.lib.gui.MatrixVisualizer">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.sink</configure>
-</rendition>
 </entity>
 
 <entity name="Recorder" class="ptolemy.actor.lib.Recorder">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.sink</configure>
-</rendition>
 </entity>
 
 <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.sink</configure>
-</rendition>
 </entity>
 
 <entity name="SequenceScope" class="ptolemy.actor.lib.gui.SequenceScope">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.sink</configure>
-</rendition>
 </entity>
 
 <entity name="Test" class="ptolemy.actor.lib.Test">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.sink</configure>
-</rendition>
 </entity>
 
 <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.sink</configure>
-</rendition>
 </entity>
 
 <entity name="TimedScope" class="ptolemy.actor.lib.gui.TimedScope">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.sink</configure>
-</rendition>
 </entity>
 
 <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.sink</configure>
-</rendition>
 </entity>
 
 <entity name="XYScope" class="ptolemy.actor.lib.gui.XYScope">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.sink</configure>
-</rendition>
 </entity>
 
       </group>

@@ -8,82 +8,43 @@
 <doc>Domain-polymorphic sources</doc>
 
 <entity name="Bernoulli" class="ptolemy.actor.lib.Bernoulli">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.source</configure>
-</rendition>
 <doc>Create a sequence of bernoulli random variables</doc>
 </entity>
 
 <entity name="Clock" class="ptolemy.actor.lib.Clock">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.source</configure>
-</rendition>
 <doc>Create a generalized square wave</doc>
 </entity>
 
 <entity name="Const" class="ptolemy.actor.lib.Const">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.source</configure>
-</rendition>
 <doc>Create a constant sequence</doc>
 </entity>
 
 <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.source</configure>
-</rendition>
 </entity>
 
 <entity name="DiscreteRandomSource"
         class="ptolemy.actor.lib.DiscreteRandomSource">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.source</configure>
-</rendition>
 </entity>
 
 <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.source</configure>
-</rendition>
 <doc>Create a sequence of gaussian random variables</doc>
 </entity>
 
 <entity name="Interpolator" class="ptolemy.actor.lib.Interpolator">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.source</configure>
-</rendition>
 </entity>
 
 <entity name="Poisson" class="ptolemy.actor.lib.Poisson">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.source</configure>
-</rendition>
 </entity>
 
 <entity name="Pulse" class="ptolemy.actor.lib.Pulse">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.source</configure>
-</rendition>
 </entity>
 
 <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-<rendition class="ptolemy.vergil.toolbox.XMLIcon">
-<configure>
-<![CDATA[
-	<xmlgraphic>
-	<rectangle coords="0 0 60 40" fill="white"/>
-	<polygon coords="10 30 50 10 50 30" fill="blue"/>
-	</xmlgraphic>
-]]>
-</configure>
-</rendition>
+
 <doc>Create a sequence of tokens with increasing value</doc>
 </entity>
 
 <entity name="VariableClock" class="ptolemy.actor.lib.VariableClock">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.source</configure>
-</rendition>
 <doc>Create a sequence of tokens with increasing value</doc>
 </entity>
 
@@ -93,3 +54,12 @@
 </entity>
 
 
+<!--
+<property name="iconDescription" class="ptolemy.kernel.util.ProcessedString">
+<configure><?graphml
+	<xmlgraphic>
+	<rectangle coords="0 0 60 40" fill="white"/>
+	<polygon coords="10 30 50 10 50 30" fill="blue"/>
+	</xmlgraphic>?>
+</configure>
+</property>-->

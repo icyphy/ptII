@@ -8,35 +8,20 @@
   <doc>Signal processing actors</doc>
 
   <entity name="DB" class="ptolemy.actor.lib.DB">
-    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-      <configure>generic.transformer</configure>
-    </rendition>
   </entity>
 
 <entity name="FIR" class="ptolemy.domains.sdf.lib.FIR">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.transformer</configure>
-</rendition>
 <doc>FIR filter</doc>
 </entity>
 
 <entity name="IIR" class="ptolemy.actor.lib.IIR">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.transformer</configure>
-</rendition>
 <doc>IIR filter</doc>
 </entity>
 
 <entity name="LineCoder" class="ptolemy.domains.sdf.lib.LineCoder">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.transformer</configure>
-</rendition>
 </entity>
 
 <entity name="RaisedCosine" class="ptolemy.domains.sdf.lib.RaisedCosine">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.transformer</configure>
-</rendition>
 </entity>
         <!-- NOTE: javasound actors only work under jdk1.3. -->
         <input source="javasound/index.xml"/>
@@ -47,3 +32,5 @@
     ?>
   </configure>
 </entity>
+
+

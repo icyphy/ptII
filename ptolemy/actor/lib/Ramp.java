@@ -75,6 +75,17 @@ public class Ramp extends SequenceSource {
 	// set the type constraints.
 	output.setTypeAtLeast(init);
 	output.setTypeAtLeast(step);
+
+	ProcessedString icon;
+	icon = (ProcessedString)getAttribute("iconDescription");
+	if(icon == null) {
+	    icon = new NonpersistentProcessedString(this, "iconDescription");
+	}
+	icon.setInstruction("graphml");
+	icon.setString("<xmlgraphic>\n" + 
+		"<rectangle coords=\"0 0 60 40\" fill=\"white\"/>\n" +
+		"<polygon coords=\"10 30 50 10 50 30\" fill=\"blue\"/>\n" + 
+		"</xmlgraphic>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

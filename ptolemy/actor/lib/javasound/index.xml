@@ -8,18 +8,15 @@
   <doc>Audio actors</doc>
 
 <entity name="AudioSource" class="ptolemy.actor.lib.javasound.AudioSource">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.source</configure>
-</rendition>
 </entity>
 
 <entity name="AudioSink" class="ptolemy.actor.lib.javasound.AudioSink">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.sink</configure>
-</rendition>
 </entity>
 
       </group>
     ?>
   </configure>
 </entity>
+
+
+

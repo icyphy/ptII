@@ -8,83 +8,47 @@
 <doc>Conversion actors</doc>
 
 <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.transformer</configure>
-</rendition>
 </entity>
 
 <entity name="BitsToInt" class="ptolemy.domains.sdf.lib.BitsToInt">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.transformer</configure>
-</rendition>
 </entity>
 
   <entity name="ComplexToPolar"
           class="ptolemy.actor.lib.conversions.ComplexToPolar">
-    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-      <configure>generic.transformer</configure>
-    </rendition>
   </entity>
 
   <entity name="ComplexToReal"
           class="ptolemy.actor.lib.conversions.ComplexToReal">
-    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-      <configure>generic.transformer</configure>
-    </rendition>
   </entity>
  
   <entity name="DoubleToFix"
           class="ptolemy.actor.lib.conversions.DoubleToFix">
-    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-      <configure>generic.transformer</configure>
-    </rendition>
   </entity>
 
   <entity name="FixToDouble"
           class="ptolemy.actor.lib.conversions.FixToDouble">
-    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-      <configure>generic.transformer</configure>
-    </rendition>
   </entity>
 
 <entity name="IntToBits" class="ptolemy.domains.sdf.lib.IntToBits">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.transformer</configure>
-</rendition>
 </entity>
 
   <entity name="PolarToComplex"
           class="ptolemy.actor.lib.conversions.PolarToComplex">
-    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-      <configure>generic.transformer</configure>
-    </rendition>
   </entity>
 
   <entity name="PolarToRectangular"
           class="ptolemy.actor.lib.conversions.PolarToRectangular">
-    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-      <configure>generic.transformer</configure>
-    </rendition>
   </entity>
 
   <entity name="RealToComplex"
           class="ptolemy.actor.lib.conversions.RealToComplex">
-    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-      <configure>generic.transformer</configure>
-    </rendition>
   </entity>
   
   <entity name="RectangularToPolar"
           class="ptolemy.actor.lib.conversions.RectangularToPolar">
-    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-      <configure>generic.transformer</configure>
-    </rendition>
   </entity>
   
   <entity name="Round" class="ptolemy.actor.lib.conversions.Round">
-    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-      <configure>generic.transformer</configure>
-    </rendition>
     <property name="function">
         <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
             <property name="ceil" value="ceil"
@@ -101,9 +65,6 @@
 
 
 <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.transformer</configure>
-</rendition>
 </entity>
 
       </group>
