@@ -69,13 +69,13 @@ public class PNRamp extends AtomicActor {
      */
     public void fire() throws IllegalActionException {
 	while(_seed <= 100) {
-        //while(true) {
-	    IntToken data = new IntToken(_seed);
+            //while(true) {
+            IntToken data = new IntToken(_seed);
 	    _output.broadcast(data);
 	    _seed++;
 	    //System.out.println("Ramp printed "+_seed);
         }
-        System.out.println("seed is : "+_seed);
+        //System.out.println("seed is : "+_seed);
         _notdone = false;
     }
 
