@@ -168,7 +168,7 @@ test InvalidStateException-8.1 {Create a InvalidStateException with a \
 	    [$dir elements] \
 	    "Detail Message"]
     list [$pe getMessage]
-} {{.n3, .n2, .n1, : Detail Message}}
+} {{.n3, .n2, .n1: Detail Message}}
 
 
 ######################################################################
@@ -213,7 +213,7 @@ test InvalidStateException-10.1 {Create a InvalidStateException with a \
 	    java.util.Enumeration java.lang.String} \
 	    [$ll elements] [java::null]]
     list [$pe getMessage]
-} {{.NamedObj 1, .NamedObj 2, .NamedObj 3, : }}
+} {{.NamedObj 1, .NamedObj 2, .NamedObj 3: }}
 
 test InvalidStateException-10.2 {Create a InvalidStateException with a \
 	Enumeration of NamedObjs and a detail message} {
@@ -228,7 +228,7 @@ test InvalidStateException-10.2 {Create a InvalidStateException with a \
 	    java.util.Enumeration java.lang.String} \
 	    [$ll elements] "Detail Message"]
     list [$pe getMessage]
-} {{.NamedObj 1, .NamedObj 2, .NamedObj 3, : Detail Message}}
+} {{.NamedObj 1, .NamedObj 2, .NamedObj 3: Detail Message}}
 
 test InvalidStateException-10.3 {Create a InvalidStateException with a \
 	Enumeration of NamedObjs and Obj,  and a detail message} {
@@ -243,4 +243,4 @@ test InvalidStateException-10.3 {Create a InvalidStateException with a \
 	    java.util.Enumeration java.lang.String} \
 	    [$ll elements] "Detail Message"]
     list [$pe getMessage]
-} {{.NamedObj 1, <Object of class java.lang.Object>, .NamedObj 3, : Detail Message}}
+} {{.NamedObj 1, <Object of class java.lang.Object>, .NamedObj 3: Detail Message}}

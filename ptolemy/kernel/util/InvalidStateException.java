@@ -119,6 +119,7 @@ public class InvalidStateException extends RuntimeException {
             }
             prefix += name + ", ";
         }
+        prefix = prefix.substring(0, prefix.length()-2);
         prefix += ": ";
         _setMessage(prefix);
         if (detail != null) {
