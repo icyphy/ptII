@@ -610,6 +610,7 @@ public class FSMActor extends CompositeEntity
     public void preinitialize() throws IllegalActionException {
         _stopRequested = false;
         _reachedFinalState = false;
+        _newIteration = true;
         _createReceivers();
         _hdfArrays = new Hashtable();
         
@@ -687,8 +688,9 @@ public class FSMActor extends CompositeEntity
      *  @param firings The number of firings that the modal model
      *  has fired in the current iteration. 
      */
-    public void setFiringsSoFar(int firings) {
-        _firingsSoFar = firings;
+    public void setNewIteration(boolean newIteration) {
+        //_firingsSoFar = firings;
+        _newIteration = newIteration;
     }
 
     /** Request that execution of the current iteration stop as soon
@@ -1215,14 +1217,14 @@ public class FSMActor extends CompositeEntity
             if (_debug_info) {
                 System.out.println(port.getFullName() + " port rate = " + portRate);
             }
-            if (_firingsSoFar == 0 && channel == 0) {
+            if (_newIteration && channel == 0) {
                 //Token[][] a_of_p = new Token[width][portRate * _firingsPerIteration];
                 //_hdfArrays.put(port, a_of_p);
                 // List l_of_p = new LinkedList[width];
                 List l_of_p = new LinkedList();
                 _hdfArrays.put(port, l_of_p);
             }
-            int index = portRate * _firingsSoFar;
+            //int index = portRate * _firingsSoFar;
             // Update the value variable if there is/are token(s) in the channel.
             // FIXME: What if there are not enough tokens?
             // In HDF(SDF) this shouldn't happen.
@@ -1541,7 +1543,13 @@ public class FSMActor extends CompositeEntity
     // Firing counts for HDF/SDF. 
     // For other domains, _firingsPerScheduleIteration will always be 1
     // and _firingsSoFar will always be 0.
-    private int _firingsSoFar = 0;
+    
+    // A flag indicating whether this is at the beginning
+    // of one iteration (firing). Normally it is set to true.
+    // It is only set to false in HDF. 
+    private boolean _newIteration = true;
+    
+    //private int _firingsSoFar = 0;
     //private int _firingsPerIteration = 1;
     
     // Hashtable to save an array of tokens for each port.
