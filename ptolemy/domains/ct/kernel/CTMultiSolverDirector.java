@@ -921,9 +921,9 @@ public class CTMultiSolverDirector extends CTDirector {
             // reason.
             // 2. Because the modal model produces nothing when an enabled
             // transition is found in this sub-iteration, the output from the
-            // enabled transition can be caught by the poltters (such as
-            // the TimedPlotter) that only change the display at its postfire()
-            // method.
+            // enabled transition can be caught by the actors (such as
+            // the TimedPlotter) that only perform computations at their 
+            // postfire() method.
             _propagateResolvedStates();
         }
 
