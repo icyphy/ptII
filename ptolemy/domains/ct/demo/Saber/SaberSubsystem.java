@@ -226,7 +226,7 @@ public class SaberSubsystem extends TypedAtomicActor
             DoubleToken d = (DoubleToken)_outpvalue.get(p);
             p.broadcast(d);
             _debug(getFullName() + " port " + p.getName() +
-                    " output token" + d.stringValue());
+                    " output token" + d);
         }
     }
 
@@ -248,7 +248,7 @@ public class SaberSubsystem extends TypedAtomicActor
             Parameter pparam = (Parameter)getAttribute(p.getName() +
                     "ToolVar");
             String ppstr = ((StringToken)pparam.getToken()).stringValue();
-            String indata = ((DoubleToken)p.get(0)).stringValue();
+            String indata = ((DoubleToken)p.get(0)).toString();
             _ps.println("alter /"+ ppstr +" = " + indata);
 
         }
