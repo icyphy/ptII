@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (liuj@eecs.berkeley.edu)
+@ProposedRating Yellow (liuj@eecs.berkeley.edu)
 */
 package ptolemy.actor;
 
@@ -188,7 +188,6 @@ public class StaticSchedulingDirector extends Director{
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Private variables should not have doc comments, they should
-    // have regular C++ comments.
+    // The scheduler.
     private Scheduler _scheduler;
 }

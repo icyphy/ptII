@@ -24,14 +24,14 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (liuj@eecs.berkeley.edu)
+@ProposedRating Yellow (liuj@eecs.berkeley.edu)
 */
 
 package ptolemy.actor;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-import ptolemy.kernel.mutation.*;
+import ptolemy.kernel.event.*;
 
 import java.util.Enumeration;
 import collections.LinkedList;
@@ -55,18 +55,17 @@ _schedule() method to reconstruct it. _schedule() is the place the
 scheduling algorithm lives, and is ready to be override by the derived
 classes.
 <p>
-Scheduler implements the MutationListener interface, and register itself
-as a MutationListener to the host director.  When a mutation occurs,
+Scheduler implements the TopologyListener interface, and register itself
+as a TopologyListener to the host director.  When a mutation occurs,
 the director will inform all the mutation listeners (including the
-scheduler), and the scheduler will in
-validate the current schedule.
+scheduler), and the scheduler will invalidate the current schedule.
 
 FIXME: This class uses LinkedList in the collections package. Change it
 to Java collection when update to JDK1.2
 @author Jie Liu
 @version $Id$
 */
-public class Scheduler extends NamedObj implements MutationListener{
+public class Scheduler extends NamedObj implements TopologyListener{
     /** Construct a scheduler with no container(director)
      *  in the default workspace, the name of the scheduler is
      *  "Basic Scheduler".
@@ -94,35 +93,7 @@ public class Scheduler extends NamedObj implements MutationListener{
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Notify the scheduler that an entity has been added to a composite.
-     *  This will invalidate the current schedule.
-     *
-     *  @param composite The container of the entity.
-     *  @param entity The actor being added to the composite.
-     */
-    public void addEntity(CompositeEntity composite, Entity entity) {
-        setValid(false);
-    }
 
-    /** Notify the scheduler that a port has been added to an entity.
-     *  This will invalidate the current schedule.
-     *
-     *  @param entity The entity getting a new port.
-     *  @param port The new port.
-     */
-    public void addPort(Entity entity, Port port) {
-        setValid(false);
-    }
-
-    /** Notify the scheduler that a relation has been added to a composite.
-     *  This will invalidate the current schedule.
-     *
-     *  @param composite The container getting a new relation.
-     *  @param relation The new relation.
-     */
-    public void addRelation(CompositeEntity composite, Relation relation) {
-        setValid(false);
-    }
 
     /** Clone the scheduler into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
@@ -148,10 +119,24 @@ public class Scheduler extends NamedObj implements MutationListener{
      *  FIXME: Implementation needed.
      */
 
-    /** Notify the scheduler that mutation is complete. Do nothing in the
-     *  base class.
+    /** Response for that an entity has been added to a composite.
+     *  This will invalidate the current schedule.
+     *
+     *  @param event The mutation event
      */
-    public void done() {}
+    public void entityAdded (TopologyEvent event) {
+        setValid(false);
+    }
+
+    /** Responce for that an entity has been removed from a composite.
+     * The <b>compositeEntity</b> and <b>entity</b> fields of the
+     * passed event will be valid.
+     *
+     * @param event The mutation event
+     */
+    public void entityRemoved (TopologyEvent event) {
+        setValid(false);
+    }
 
     /** Return the container, which is the StaticSchedulingDirector
      *  for which this is the scheduler.
@@ -162,44 +147,64 @@ public class Scheduler extends NamedObj implements MutationListener{
         return _container;
     }
 
-    /** Notify the scheduler that a port has been linked to a relation.
-     *  This will invalidate the current schedule.
+    /** Responce for that a port has been added to an entity.
+     * The <b>entity</b> and <b>port</b> fields of the
+     * passed event will be valid.
      *
-     *  @param relation The relation being linked.
-     *  @param port The port being linked.
+     * @param event The mutation event
      */
-    public void link(Relation relation, Port port) {
+    public void portAdded (TopologyEvent event) {
         setValid(false);
     }
 
-    /** Notify the scheduler that an entity has been removed from
-     *  a composite.
-     *  This will invalidate the current schedule.
+    /** Responce for that a port has been linked to a relation.
+     * The <b>relation</b> and <b>port</b> fields of the
+     * passed event will be valid.
      *
-     *  @param composite The container of the entity.
-     *  @param entity The entity being removed.
+      * @param event The mutation event
      */
-    public void removeEntity(CompositeEntity composite, Entity entity){
+    public void portLinked (TopologyEvent event){
         setValid(false);
     }
 
-    /** Notify the scheduler that a port has been removed from a entity.
-     *  This will invalidate the current schedule.
+
+    /** Responce for that a port has been removed from a entity.
+     * The <b>entity</b> and <b>port</b> fields of the
+     * passed event will be valid.
      *
-     *  @param entity The container of the port.
-     *  @param port The port being removed.
+     * @param event The mutation event
      */
-    public void removePort(Entity entity, Port port){
+    public void portRemoved (TopologyEvent event){
         setValid(false);
     }
 
-    /** Notify the scheduler that a relation has been removed from a composite.
-     *  This will invalidate the current schedule.
+    /** Responce for that a port has been unlinked from a relation.
+     * The <b>relation</b> and <b>port</b> fields of the
+     * passed event will be valid.
      *
-     *  @param entity The container of the relation.
-     *  @param port The relation being removed.
+     * @param event The mutation event
      */
-    public void removeRelation(CompositeEntity entity, Relation relation) {
+    public void portUnlinked (TopologyEvent event){
+        setValid(false);
+    }
+
+    /** Responce for that a relation has been added to a composite.
+     * The <b>compositeEntity</b> and <b>relation</b> fields of the
+     * passed event will be valid.
+     *
+     * @param event The mutation event
+    */
+    public void relationAdded (TopologyEvent event){
+        setValid(false);
+    }
+
+    /** Responce for that a relation has been removed from a composite.
+     * The <b>compositeEntity</b> and <b>relation</b> fields of the
+     * passed event will be valid.
+     *
+     * @param event The mutation event
+     */
+    public void relationRemoved (TopologyEvent event){
         setValid(false);
     }
 
@@ -262,15 +267,6 @@ public class Scheduler extends NamedObj implements MutationListener{
         _valid = valid;
     }
 
-    /** Notify the scheduler that a port has been unlinked from a relation.
-     *  This will invalidate the current schedule.
-     *
-     *  @param relation The relation being unlinked.
-     *  @param port The port being unlinked.
-     */
-    public void unlink(Relation relation, Port port) {
-        setValid(false);
-    }
 
     /** Return true if the current schedule is valid.
      *@return true if the current schedule is valid.
@@ -292,7 +288,7 @@ public class Scheduler extends NamedObj implements MutationListener{
         _container = dir;
         if (dir != null) {
             workspace().remove(this);
-            dir.addMutationListener(this);
+            dir.addTopologyListener(this);
         }
     }
 
