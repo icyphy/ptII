@@ -161,6 +161,14 @@ public class NonStrictTest extends Sink {
         }
     }
 
+    /** Call super.fire() and reset _postFireCompletedOK to false.
+     *  @exception IllegalActionException If thrown by the baseclass.
+     */
+    public void fire() throws IllegalActionException {
+        super.fire();
+        _postFireCompletedOK = false; 
+    }
+
     /** Override the base class to set the iteration counter to zero.
      *  @exception IllegalActionException If the base class throws it or
      *  if we are running under the test suite and the trainingMode
@@ -172,6 +180,7 @@ public class NonStrictTest extends Sink {
         _numberOfInputTokensSeen = 0;
         _iteration = 0;
         _trainingTokens = null;
+        _postFireCompletedOK = false; 
         if (((BooleanToken)trainingMode.getToken()).booleanValue()) {
             if (isRunningNightlyBuild()) {
                 throw new IllegalActionException(this,
@@ -253,6 +262,7 @@ public class NonStrictTest extends Sink {
 
         }
         _iteration++;
+        _postFireCompletedOK = true; 
         return true;
     }
 
@@ -263,6 +273,17 @@ public class NonStrictTest extends Sink {
         super.wrapup();
         boolean training = ((BooleanToken)trainingMode.getToken())
             .booleanValue();
+        if (!training
+                && _postFireCompletedOK
+                && ((ArrayToken)(correctValues.getToken())).length() > 0
+                && _numberOfInputTokensSeen == 0) {
+            throw new IllegalActionException(this,
+                    "Test failed to produce "
+                    + ((ArrayToken)(correctValues.getToken())).length()
+                    + " tokens as expected in the correctValues parameter, "
+                    + "only " + _numberOfInputTokensSeen + " were produced.");
+        }
+
         // Note that wrapup() might get called by the manager before
         // we have any data...
         if (training && _trainingTokens != null &&
@@ -326,4 +347,14 @@ public class NonStrictTest extends Sink {
 
     /** List to store tokens for training mode. */
     protected List _trainingTokens;
+
+    /** Set to true if postfire() returned ok.  This variable is set
+     *  to false each time we call fire().  If this variable is true,
+     *  then in wrapup() we check the number of tokens we have seen
+     *  against the number of tokens in the <i>correctValues</i> Parameter.
+     *  If this variable is false, then either fire() or postfire()
+     *  failed to successfully complete, so we do not check the token
+     *  count in wrapup().
+     */
+    protected boolean _postFireCompletedOK = false; 
 }

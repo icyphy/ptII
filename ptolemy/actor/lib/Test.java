@@ -145,6 +145,7 @@ public class Test extends NonStrictTest {
      *   or if its value does not match the required value.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         int width = input.getWidth();
 
         // If we are in training mode, read the inputs and at to the
@@ -251,9 +252,12 @@ public class Test extends NonStrictTest {
     }
 
     /** Override the base class to do nothing and return true.
+     *  The protected variable _postFireCompletedOK is always set to
+     *  true.
      *  @return True.
      */
     public boolean postfire() {
+        _postFireCompletedOK = true; 
         return true;
     }
 }
