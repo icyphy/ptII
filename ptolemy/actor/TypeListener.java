@@ -1,5 +1,5 @@
 /* An interface implemented by objects that are interested in being kept
-   informed about changes in the types of ports.
+   informed about type changes in a Typeable object.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -25,8 +25,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (yuhong@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+@ProposedRating Green (yuhong@eecs.berkeley.edu)
+@AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor;
@@ -35,10 +35,10 @@ package ptolemy.actor;
 //// TypeListener
 /**
 An interface implemented by objects that are interested in being kept
-informed about changes in the types of ports.
-The listeners register their interest in TypedIOPort through the
-addTypeListener() method, and are informed of the changes by receiving
-instances of TypeEvent in the typeChanged() method.
+informed about type changes in a Typeable object.
+If the Typeable object is a TypedIOPort, the listeners register their
+interest through the addTypeListener() method, and are informed of the
+changes by receiving instances of TypeEvent in the typeChanged() method.
 
 @author Yuhong Xiong
 @version $Id$
@@ -52,7 +52,7 @@ public interface TypeListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** React to the fact that the type of a port is changed.
+    /** React to the fact that the type of a Typeable is changed.
      *  @param event The type change event.
      */
     public void typeChanged(TypeEvent event);
