@@ -1,6 +1,7 @@
-/* An up-down counter.
+/* Transmit the input of the composite wireless channel to the model
+inside the channel.
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -45,14 +46,13 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// ChannelInput
 /**
-This Actor transmit the input of the composite wireless channel to
-the model inside the channel.
+Transmit the input of the composite wireless channel to the model
+inside the channel.
 
 @author Yang Zhao
-@version $$
+@version $Id$
 @since Ptolemy II 3.0
 */
-
 public class ChannelInput extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.

@@ -1,6 +1,6 @@
 /* Interface for actors.
 
- Copyright (c) 1997-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -45,7 +45,7 @@ FIXME: It might be preferred to use "WirelessChannel" for this and change
 WirelessChannel to AtomicWirelessChannel. I decided to use this name so that
 I need to change fewer classes at this stage...
 @author Yang
-@version $Id $
+@version $Id$
 @since Ptolemy II 3.1
 */
 public interface WirelessMedia {
@@ -58,11 +58,11 @@ public interface WirelessMedia {
 
     public List listeningOutputPorts() throws IllegalActionException;
 
-    public List sendingOutputPorts() throws IllegalActionException;
-
     public List sendingInputPorts() throws IllegalActionException;
 
-    public void transmit(Token token, WirelessIOPort port, RecordToken properties)
-                throws IllegalActionException;
+    public List sendingOutputPorts() throws IllegalActionException;
 
+    public void transmit(Token token, WirelessIOPort port,
+            RecordToken properties)
+                throws IllegalActionException;
 }

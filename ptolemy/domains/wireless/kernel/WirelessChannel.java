@@ -223,7 +223,8 @@ public class WirelessChannel extends TypedAtomicActor
                 if (port instanceof WirelessIOPort) {
                     WirelessIOPort castPort = (WirelessIOPort)port;
                     if (castPort.isOutput()) {
-                        String channelName = castPort.insideChannel.stringValue();
+                        String channelName =
+                            castPort.insideChannel.stringValue();
                         if (channelName.equals(getName())) {
                             result.add(port);
                         }
@@ -265,7 +266,8 @@ public class WirelessChannel extends TypedAtomicActor
                 if (port instanceof WirelessIOPort) {
                     WirelessIOPort castPort = (WirelessIOPort)port;
                     if (castPort.isInput()) {
-                        String channelName = castPort.insideChannel.stringValue();
+                        String channelName =
+                            castPort.insideChannel.stringValue();
                         if (channelName.equals(getName())) {
                             result.add(port);
                         }
@@ -343,7 +345,8 @@ public class WirelessChannel extends TypedAtomicActor
      *   for a port, or if a type conflict occurs, or the director is not
      *   a WirelessDirector.
      */
-    public void transmit(Token token, WirelessIOPort port, RecordToken properties)
+    public void transmit(Token token, WirelessIOPort port,
+            RecordToken properties)
             throws IllegalActionException {
         try {
             workspace().getReadAccess();

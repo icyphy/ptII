@@ -72,6 +72,24 @@ public class ModelTopology {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return the distance between two ports.  This is a convenience
+     *  method provided to make it easier to write subclasses that
+     *  limit transmission range using position information.
+     *  @param port1 The first port.
+     *  @param port2 The second port.
+     *  @return The distance between the two ports.
+     *  @exception IllegalActionException If the distance
+     *   cannot be determined.
+     */
+    public static double distanceBetween(WirelessIOPort port1,
+            WirelessIOPort port2)
+            throws IllegalActionException {
+        double[] p1 = locationOf(port1);
+        double[] p2 = locationOf(port2);
+        return Math.sqrt((p1[0] - p2[0])*(p1[0] - p2[0])
+                + (p1[1] - p2[1])*(p1[1] - p2[1]));
+    }
+
     /** Return a list of input ports that can potentially receive data
      *  from this channel.  This includes input ports contained by
      *  entities contained by the container of this channel that
@@ -79,7 +97,8 @@ public class ModelTopology {
      *  of this channel. This method gets read access on the workspace.
      *  Note: This class doesn't try to deal with read access to the workspace,
      *  the caller should be.
-     *  @param container The composite entity that contains the wireless channel.
+     *  @param container The composite entity that contains the
+     *   wireless channel.
      *  @param theChannelName The name of the wireless channel.
      *  @return A new list of input ports of class WirelessIOPort
      *   using this channel.
@@ -116,14 +135,16 @@ public class ModelTopology {
      *  the container of this channel that
      *  have their <i>insideChannel</i> parameter set to the name
      *  of this channel. This method gets read access on the workspace.
-     *  @param container The composite entity that contains the wireless channel.
+     *  @param container The composite entity that contains the
+     *   wireless channel.
      *  @param theChannelName The name of the wireless channel.
      *  @return The list of output ports of class WirelessIOPort
      *   using this channel.
      *  @exception IllegalActionException If a port is encountered
      *   whose <i>insideChannel</i> parameter cannot be evaluated.
      */
-    public static List listeningOutputPorts(CompositeEntity container, String theChannelName)
+    public static List listeningOutputPorts(CompositeEntity container,
+            String theChannelName)
             throws IllegalActionException {
         List result = new LinkedList();
         Iterator ports = container.portList().iterator();
@@ -132,7 +153,8 @@ public class ModelTopology {
                 if (port instanceof WirelessIOPort) {
                     WirelessIOPort castPort = (WirelessIOPort)port;
                     if (castPort.isOutput()) {
-                        String channelName = castPort.insideChannel.stringValue();
+                        String channelName =
+                            castPort.insideChannel.stringValue();
                         if (channelName.equals(theChannelName)) {
                             result.add(port);
                         }
@@ -140,96 +162,6 @@ public class ModelTopology {
                 }
             }
             return result;
-    }
-
-    /** Return a list of output ports that can potentially send data
-     *  to this channel.  This includes output ports contained by
-     *  entities contained by the container of this channel that
-     *  have their <i>outsideChannel</i> parameter set to the name
-     *  of this channel. This method gets read access on the workspace.
-     *  @param container The composite entity that contains the wireless channel.
-     *  @param theChannelName The name of the wireless channel.
-     *  @return A new list of input ports of class WirelessIOPort
-     *   using this channel.
-     *  @exception IllegalActionException If a port is encountered
-     *   whose <i>outsideChannel</i> parameter cannot be evaluated.
-     */
-    public static List sendingOutputPorts(CompositeEntity container,
-            String theChannelName) throws IllegalActionException {
-        List result = new LinkedList();
-        Iterator entities = container.entityList().iterator();
-            while (entities.hasNext()) {
-                Entity entity = (Entity)entities.next();
-                Iterator ports = entity.portList().iterator();
-                while (ports.hasNext()) {
-                    Port port = (Port)ports.next();
-                    if (port instanceof WirelessIOPort) {
-                        WirelessIOPort castPort = (WirelessIOPort)port;
-                        if (castPort.isOutput()) {
-                            String channelName
-                                    = castPort.outsideChannel.stringValue();
-                            if (channelName.equals(theChannelName)) {
-                                result.add(port);
-                            }
-                        }
-                    }
-                }
-            }
-            return result;
-    }
-
-    /** Return a list of input ports that can potentially send data
-     *  to this channel.  This includes input ports contained by
-     *  the container of this channel that
-     *  have their <i>insideChannel</i> parameter set to the name
-     *  of this channel. This method gets read access on the workspace.
-     *  @param container The composite entity that contains the wireless channel.
-     *  @param theChannelName The name of the wireless channel.
-     *  @return The list of output ports of class WirelessIOPort
-     *   using this channel.
-     *  @exception IllegalActionException If a port is encountered
-     *   whose <i>insideChannel</i> parameter cannot be evaluated.
-     */
-    public static List sendingInputPorts(CompositeEntity container,
-            String theChannelName) throws IllegalActionException {
-        List result = new LinkedList();
-        Iterator ports = container.portList().iterator();
-            while (ports.hasNext()) {
-                Port port = (Port)ports.next();
-                if (port instanceof WirelessIOPort) {
-                    WirelessIOPort castPort = (WirelessIOPort)port;
-                    if (castPort.isInput()) {
-                        String channelName = castPort.insideChannel.stringValue();
-                        if (channelName.equals(theChannelName)) {
-                            result.add(port);
-                        }
-                    }
-                }
-            }
-            return result;
-    }
-
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Return the distance between two ports.  This is a convenience
-     *  method provided to make it easier to write subclasses that
-     *  limit transmission range using position information.
-     *  @param port1 The first port.
-     *  @param port2 The second port.
-     *  @return The distance between the two ports.
-     *  @exception IllegalActionException If the distance
-     *   cannot be determined.
-     */
-    public static double distanceBetween(
-            WirelessIOPort port1, WirelessIOPort port2)
-            throws IllegalActionException {
-        double[] p1 = locationOf(port1);
-        double[] p2 = locationOf(port2);
-        return Math.sqrt((p1[0] - p2[0])*(p1[0] - p2[0])
-                + (p1[1] - p2[1])*(p1[1] - p2[1]));
     }
 
     /** Return the location of the given port. If the container of the
@@ -265,9 +197,75 @@ public class ModelTopology {
         return location.getLocation();
     }
 
+    /** Return a list of input ports that can potentially send data
+     *  to this channel.  This includes input ports contained by
+     *  the container of this channel that
+     *  have their <i>insideChannel</i> parameter set to the name
+     *  of this channel. This method gets read access on the workspace.
+     *  @param container The composite entity that contains the
+     *   wireless channel.
+     *  @param theChannelName The name of the wireless channel.
+     *  @return The list of output ports of class WirelessIOPort
+     *   using this channel.
+     *  @exception IllegalActionException If a port is encountered
+     *   whose <i>insideChannel</i> parameter cannot be evaluated.
+     */
+    public static List sendingInputPorts(CompositeEntity container,
+            String theChannelName) throws IllegalActionException {
+        List result = new LinkedList();
+        Iterator ports = container.portList().iterator();
+            while (ports.hasNext()) {
+                Port port = (Port)ports.next();
+                if (port instanceof WirelessIOPort) {
+                    WirelessIOPort castPort = (WirelessIOPort)port;
+                    if (castPort.isInput()) {
+                        String channelName =
+                            castPort.insideChannel.stringValue();
+                        if (channelName.equals(theChannelName)) {
+                            result.add(port);
+                        }
+                    }
+                }
+            }
+            return result;
+    }
 
-
-
+    /** Return a list of output ports that can potentially send data
+     *  to this channel.  This includes output ports contained by
+     *  entities contained by the container of this channel that
+     *  have their <i>outsideChannel</i> parameter set to the name
+     *  of this channel. This method gets read access on the workspace.
+     *  @param container The composite entity that contains the
+     *   wireless channel.
+     *  @param theChannelName The name of the wireless channel.
+     *  @return A new list of input ports of class WirelessIOPort
+     *   using this channel.
+     *  @exception IllegalActionException If a port is encountered
+     *   whose <i>outsideChannel</i> parameter cannot be evaluated.
+     */
+    public static List sendingOutputPorts(CompositeEntity container,
+            String theChannelName) throws IllegalActionException {
+        List result = new LinkedList();
+        Iterator entities = container.entityList().iterator();
+            while (entities.hasNext()) {
+                Entity entity = (Entity)entities.next();
+                Iterator ports = entity.portList().iterator();
+                while (ports.hasNext()) {
+                    Port port = (Port)ports.next();
+                    if (port instanceof WirelessIOPort) {
+                        WirelessIOPort castPort = (WirelessIOPort)port;
+                        if (castPort.isOutput()) {
+                            String channelName
+                                    = castPort.outsideChannel.stringValue();
+                            if (channelName.equals(theChannelName)) {
+                                result.add(port);
+                            }
+                        }
+                    }
+                }
+            }
+            return result;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

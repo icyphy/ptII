@@ -96,55 +96,6 @@ public class CompositeWirelessChannel extends TypedCompositeActor
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
-    /** Transmit the specified token from the specified port with the
-     *  specified properties. This method call the put() method of
-     *  the contained ChannelInput actor to transfer the token to the
-     *  inside model.
-     *  @param token The token to transmit, or null to clear all
-     *   receivers that are in range.
-     *  @param port The port from which this is being transmitted.
-     *  @param properties The transmit properties (ignored in this base class).
-     *  @exception IllegalActionException If a location cannot be evaluated
-     *   for a port, or if a type conflict occurs.
-     */
-    public void transmit(Token token, WirelessIOPort port, RecordToken properties)
-            throws IllegalActionException {
-        try {
-            workspace().getReadAccess();
-            if (_debugging) {
-                _debug("----\nTransmitting from port: " + port.getFullName());
-                _debug("Token value: " + token.toString());
-            }
-            channelInput.put(token, port, properties);
-        } finally {
-            workspace().doneReading();
-        }
-    }
-
-     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    // create the ChannelInput and ChannelOutput actor.
-    private void _init()
-            throws IllegalActionException, NameDuplicationException {
-
-        try {
-        channelInput = new ChannelInput(this, "ChannelInput");
-        channelOutput = new ChannelOutput(this, "ChannelOutput");
-        } catch (NameDuplicationException ex) {
-            throw new InternalErrorException("NameDuplication");
-        } catch (IllegalActionException ex) {
-            throw new InternalErrorException("IllegalAction:"+
-                    ex.getMessage());
-        }
-        // The base class identifies the class name as TypedCompositeActor
-        // irrespective of the actual class name.  We override that here.
-        getMoMLInfo().className = "ptolemy.domains.wireless.kernel.CompositeWirelessChannel";
-
-
-    }
-
     /* (non-Javadoc)
      * @see ptolemy.domains.wireless.kernel.WirelessMedia#listeningInputPorts()
      */
@@ -152,7 +103,8 @@ public class CompositeWirelessChannel extends TypedCompositeActor
         try {
             workspace().getReadAccess();
             CompositeEntity container = (CompositeEntity)getContainer();
-            return ModelTopology.listeningInputPorts(container, this.getName());
+            return ModelTopology.listeningInputPorts(container,
+                    this.getName());
         } finally {
             workspace().doneReading();
         }
@@ -165,20 +117,8 @@ public class CompositeWirelessChannel extends TypedCompositeActor
         try {
             workspace().getReadAccess();
             CompositeEntity container = (CompositeEntity)getContainer();
-            return ModelTopology.listeningOutputPorts(container, this.getName());
-        } finally {
-            workspace().doneReading();
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.domains.wireless.kernel.WirelessMedia#sendingOutputPorts()
-     */
-    public List sendingOutputPorts() throws IllegalActionException {
-        try {
-            workspace().getReadAccess();
-            CompositeEntity container = (CompositeEntity)getContainer();
-            return ModelTopology.sendingOutputPorts(container, this.getName());
+            return ModelTopology.listeningOutputPorts(container,
+                    this.getName());
         } finally {
             workspace().doneReading();
         }
@@ -197,4 +137,64 @@ public class CompositeWirelessChannel extends TypedCompositeActor
         }
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.domains.wireless.kernel.WirelessMedia#sendingOutputPorts()
+     */
+    public List sendingOutputPorts() throws IllegalActionException {
+        try {
+            workspace().getReadAccess();
+            CompositeEntity container = (CompositeEntity)getContainer();
+            return ModelTopology.sendingOutputPorts(container, this.getName());
+        } finally {
+            workspace().doneReading();
+        }
+    }
+
+    /** Transmit the specified token from the specified port with the
+     *  specified properties. This method call the put() method of
+     *  the contained ChannelInput actor to transfer the token to the
+     *  inside model.
+     *  @param token The token to transmit, or null to clear all
+     *   receivers that are in range.
+     *  @param port The port from which this is being transmitted.
+     *  @param properties The transmit properties (ignored in this base class).
+     *  @exception IllegalActionException If a location cannot be evaluated
+     *   for a port, or if a type conflict occurs.
+     */
+    public void transmit(Token token, WirelessIOPort port,
+            RecordToken properties)
+            throws IllegalActionException {
+        try {
+            workspace().getReadAccess();
+            if (_debugging) {
+                _debug("----\nTransmitting from port: " + port.getFullName());
+                _debug("Token value: " + token.toString());
+            }
+            channelInput.put(token, port, properties);
+        } finally {
+            workspace().doneReading();
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    // create the ChannelInput and ChannelOutput actor.
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
+
+        try {
+        channelInput = new ChannelInput(this, "ChannelInput");
+        channelOutput = new ChannelOutput(this, "ChannelOutput");
+        } catch (NameDuplicationException ex) {
+            throw new InternalErrorException("NameDuplication");
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException("IllegalAction:"+
+                    ex.getMessage());
+        }
+        // The base class identifies the class name as TypedCompositeActor
+        // irrespective of the actual class name.  We override that here.
+        getMoMLInfo().className =
+            "ptolemy.domains.wireless.kernel.CompositeWirelessChannel";
+    }
 }

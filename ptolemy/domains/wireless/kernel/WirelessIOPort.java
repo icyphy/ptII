@@ -1,6 +1,6 @@
 /* A port for sending and receiving in the wireless domain.
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -126,12 +126,14 @@ public class WirelessIOPort
         outsideChannel = new StringParameter(this, "outsideChannel");
         outsideChannel.setExpression("");
 
-        outsideTransmitProperties = new Parameter(this, "outsideTransmitProperties");
+        outsideTransmitProperties =
+            new Parameter(this, "outsideTransmitProperties");
 
         insideChannel = new StringParameter(this, "insideChannel");
         insideChannel.setExpression("");
 
-        insideTransmitProperties = new Parameter(this, "insideTransmitProperties");
+        insideTransmitProperties =
+            new Parameter(this, "insideTransmitProperties");
 
         // Since the channel parameters affect connectivity, we should
         // treat changes to their values as changes to the topology.
@@ -212,7 +214,8 @@ public class WirelessIOPort
         WirelessMedia channel = getOutsideChannel();
         if (channel != null) {
             if (_debugging) {
-                _debug("broadcast to wireless channel " + channel.getName() + ": " + token);
+                _debug("broadcast to wireless channel " + channel.getName()
+                        + ": " + token);
             }
             channel.transmit(token, this,
                     (RecordToken)outsideTransmitProperties.getToken());
@@ -303,51 +306,6 @@ public class WirelessIOPort
         if (getInsideChannel() != null) {
             _insideReceivers = new Receiver[1][1];
             _insideReceivers[0][0] = _newInsideReceiver();
-        }
-    }
-
-    /** Override the base class to always return true if there is
-     *  a wireless channel, and otherwise, defer to the base class.
-     *  For wireless channels, if a particular receiver does not have
-     *  room, the channel treats it as if it were not in range.
-     *  @param channelIndex The channel index.
-     *  @return True if there is room for a token in the channel.
-     *  @exception IllegalActionException If the receivers do not support
-     *   this query, if this is not an output port, or if the channel index
-     *   is out of range.
-     */
-    public boolean hasRoom(int channelIndex) throws IllegalActionException {
-        WirelessMedia channel = getOutsideChannel();
-        if (channel != null) {
-            if (_debugging) {
-                _debug("hasRoom on channel " + channelIndex + " returns true.");
-            }
-            return true;
-        } else {
-            return super.hasRoom(channelIndex);
-        }
-    }
-
-    /** Override the base class to always return true if there is
-     *  a wireless channel, and otherwise, defer to the base class.
-     *  For wireless channels, if a particular receiver does not have
-     *  room, the channel treats it as if it were not in range.
-     *  @param channelIndex The channel index.
-     *  @return True if there is room for a token in the channel.
-     *  @exception IllegalActionException If the receivers do not support
-     *   this query, if this is not an output port, or if the channel index
-     *   is out of range.
-     */
-    public boolean hasRoomInside(int channelIndex)
-            throws IllegalActionException {
-        WirelessMedia channel = getInsideChannel();
-        if (channel != null) {
-            if (_debugging) {
-                _debug("hasRoomInside on channel " + channelIndex + " returns true.");
-            }
-            return true;
-        } else {
-            return super.hasRoomInside(channelIndex);
         }
     }
 
@@ -524,6 +482,53 @@ public class WirelessIOPort
         }
     }
 
+    /** Override the base class to always return true if there is
+     *  a wireless channel, and otherwise, defer to the base class.
+     *  For wireless channels, if a particular receiver does not have
+     *  room, the channel treats it as if it were not in range.
+     *  @param channelIndex The channel index.
+     *  @return True if there is room for a token in the channel.
+     *  @exception IllegalActionException If the receivers do not support
+     *   this query, if this is not an output port, or if the channel index
+     *   is out of range.
+     */
+    public boolean hasRoom(int channelIndex) throws IllegalActionException {
+        WirelessMedia channel = getOutsideChannel();
+        if (channel != null) {
+            if (_debugging) {
+                _debug("hasRoom on channel " + channelIndex
+                        + " returns true.");
+            }
+            return true;
+        } else {
+            return super.hasRoom(channelIndex);
+        }
+    }
+
+    /** Override the base class to always return true if there is
+     *  a wireless channel, and otherwise, defer to the base class.
+     *  For wireless channels, if a particular receiver does not have
+     *  room, the channel treats it as if it were not in range.
+     *  @param channelIndex The channel index.
+     *  @return True if there is room for a token in the channel.
+     *  @exception IllegalActionException If the receivers do not support
+     *   this query, if this is not an output port, or if the channel index
+     *   is out of range.
+     */
+    public boolean hasRoomInside(int channelIndex)
+            throws IllegalActionException {
+        WirelessMedia channel = getInsideChannel();
+        if (channel != null) {
+            if (_debugging) {
+                _debug("hasRoomInside on channel " + channelIndex
+                        + " returns true.");
+            }
+            return true;
+        } else {
+            return super.hasRoomInside(channelIndex);
+        }
+    }
+
     /** Return a list of the ports that can potentially accept data from
      *  this port when it sends on the inside.  If there is an inside
      *  channel, then this includes input ports that use that channel
@@ -641,7 +646,8 @@ public class WirelessIOPort
         WirelessMedia channel = getOutsideChannel();
         if (channel != null) {
             if (_debugging) {
-                _debug("send to wireless channel " + channel.getName() + ": " + token);
+                _debug("send to wireless channel " + channel.getName()
+                        + ": " + token);
             }
             _checkType(token);
             channel.transmit(token, this,
@@ -739,7 +745,8 @@ public class WirelessIOPort
         WirelessMedia channel = getInsideChannel();
         if (channel != null) {
             if (_debugging) {
-                _debug("send inside to wireless channel " + channel.getName() + ": " + token);
+                _debug("send inside to wireless channel " + channel.getName()
+                        + ": " + token);
             }
             _checkType(token);
             channel.transmit(token, this,

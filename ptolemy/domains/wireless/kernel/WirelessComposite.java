@@ -1,6 +1,6 @@
 /* An aggregation of actors for use in the wireless domain.
 
- Copyright (c) 1997-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -76,7 +76,8 @@ public class WirelessComposite extends TypedCompositeActor {
         // that is exported does not depend on the presence of the
         // derived class Java definition. Thus, we force the class name
         // here to be WirelessComposite.
-        getMoMLInfo().className = "ptolemy.domains.wireless.kernel.WirelessComposite";
+        getMoMLInfo().className =
+            "ptolemy.domains.wireless.kernel.WirelessComposite";
 
         _attachText("_iconDescription", "<svg>\n" +
                 "<ellipse cx=\"0\" cy=\"0\" " +

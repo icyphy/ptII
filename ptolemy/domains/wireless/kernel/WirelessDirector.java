@@ -198,8 +198,10 @@ public class WirelessDirector extends DEDirector {
                     throw new IllegalActionException(this,
                     "Invalid range: " + range.getExpression());
                 }
-                double low = ((DoubleToken)lowHigh.getElement(0)).doubleValue();
-                double high = ((DoubleToken)lowHigh.getElement(1)).doubleValue();
+                double low =
+                    ((DoubleToken)lowHigh.getElement(0)).doubleValue();
+                double high =
+                    ((DoubleToken)lowHigh.getElement(1)).doubleValue();
                 if (high < low) {
                     throw new IllegalActionException(this,
                     "Invalid range: " + range.getExpression());
