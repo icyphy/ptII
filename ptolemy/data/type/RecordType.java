@@ -324,8 +324,8 @@ public class RecordType extends StructuredType {
     // needed.
     public void setUser(Object user)
             throws IllegalActionException {
-        throw new IllegalActionException("RecordType.setUser: " +
-                    "This method should not be called.");
+//        throw new IllegalActionException("RecordType.setUser: " +
+//                    "This method should not be called.");
     }
 
     /** Return the string representation of this type. The format is
