@@ -40,6 +40,7 @@ import ptolemy.actor.Actor;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.BasicGraphController;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 import diva.gui.toolbox.JContextMenu;
@@ -93,24 +94,33 @@ public class BreakpointDialogFactory implements MenuItemFactory {
 
         Action action = new AbstractAction(name) {
                 public void actionPerformed(ActionEvent e) {
-                    // Create a dialog for configuring the object.  First,
-                    // identify the top parent frame.  Normally, this is a
-                    // Frame, but just in case, we check.  If it isn't a
-                    // Frame, then the set breakpoints dialog will not
-                    // have the appropriate parent, and will disappear
-                    // when put in the background.
-                    Component parent = menu.getInvoker();
-                    while (parent.getParent() != null) {
-                        parent = parent.getParent();
-                    }
-                    if (parent instanceof Frame) {
-                        new BreakpointConfigurerDialog((Frame)parent,
-                                (Entity)target,
-                                _graphController);
-                    } else {
-                        new BreakpointConfigurerDialog(null,
-                                (Entity)target,
-                                _graphController);
+                    try {
+                        // Create a dialog for configuring the object.  First,
+                        // identify the top parent frame.  Normally, this is a
+                        // Frame, but just in case, we check.  If it isn't a
+                        // Frame, then the set breakpoints dialog will not
+                        // have the appropriate parent, and will disappear
+                        // when put in the background.
+                        Component parent = menu.getInvoker();
+                        while (parent.getParent() != null) {
+                            parent = parent.getParent();
+                        }
+
+                        if (parent instanceof Frame) {
+                            new BreakpointConfigurerDialog((Frame)parent,
+                                    (Entity)target,
+                                    _graphController);
+                        } else {
+                            new BreakpointConfigurerDialog(null,
+                                    (Entity)target,
+                                    _graphController);
+                        }
+                    } catch (Throwable throwable) {
+                        // If we don't have a SDFDirector, then the error
+                        // message will appear on stderr instead of in a 
+                        // dialog unless we catch the error here.
+                        MessageHandler.error("Failed to create Breakpoint "
+                                + "dialog.", throwable); 
                     }
                 }
             };
