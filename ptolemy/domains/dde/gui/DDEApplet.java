@@ -69,7 +69,6 @@ public class DDEApplet extends PtolemyApplet {
      *  that which is returned from java.applet.Applet.getParameter(). 
      * @return String The value of the specified applet parameter;
      *  returns null if the specified parameter does not exist.
-     */
     public String getSingleParameter(String name) {
 	String params[][] = getParameterInfo();
 
@@ -84,11 +83,13 @@ public class DDEApplet extends PtolemyApplet {
 	}
 	return null;
     }
+     */
 
     /** Describe the applet parameters.
      *  @return An array describing the applet parameters.
      */
     public String[][] getParameterInfo() {
+        /*
 	if( _params == null ) {
 	    String newinfo[][] = {
 		{"stopTime", "", "when to stop"},
@@ -97,6 +98,12 @@ public class DDEApplet extends PtolemyApplet {
             _params = _concatStringArrays(super.getParameterInfo(), newinfo);
 	}
         return _params;
+        */
+	String newinfo[][] = {
+	    {"stopTime", "", "when to stop"},
+	    {"defaultStopTime", "100.0", "default value for when to stop"}
+	};
+        return _concatStringArrays(super.getParameterInfo(), newinfo);
     }
 
     /** Initialize the applet. After calling the base class init() method,
@@ -107,6 +114,7 @@ public class DDEApplet extends PtolemyApplet {
      *  the user for the stop time.
      */
     public void init() {
+        /*
         super.init();
 
         // Instantiate the director and process the 
@@ -128,12 +136,34 @@ public class DDEApplet extends PtolemyApplet {
             report("Error in setting the director's " 
 		    + "stopTime parameter\n", ex);
         }
+        */
+        super.init();
+
+        // Process the stopTime parameter.
+        double stopTime = 100.0;
+        try {
+            String stopSpec = getParameter("stopTime");
+            if (stopSpec != null) {
+                stopTime = (new Double(stopSpec)).doubleValue();
+                _stopTimeGiven = true;
+            }
+        } catch (Exception ex) {
+            report("Warning: stop time parameter failed: ", ex);
+        }
+
+        try {
+            // Initialization
+            _director = new DDEDirector(_toplevel, "DDEDirector");
+	    _director.stopTime.setToken( new DoubleToken(stopTime) );
+            // _director.setStopTime(stopTime);
+        } catch (Exception ex) {
+            report("Failed to setup director:\n", ex);
+        }
     }
 
     /** Set the value of the name applet parameter to the specified
      *  value. If the name applet parameter does not exist, do 
      *  nothing.
-     */
     public void setSingleParameter(String name, String value) {
 	String params[][] = getParameterInfo();
 	if( params == null ) {
@@ -152,6 +182,7 @@ public class DDEApplet extends PtolemyApplet {
 
 	_params = newParams;
     }
+     */
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -179,7 +210,8 @@ public class DDEApplet extends PtolemyApplet {
 
             // Process the default iterations parameter.
             String defaultStopSpec = 
-		    getSingleParameter("defaultStopTime");
+		    getParameter("defaultStopTime");
+            	    // getSingleParameter("defaultStopTime");
             if (defaultStopSpec == null) {
                 defaultStopSpec = "100.0";
             }
@@ -199,16 +231,13 @@ public class DDEApplet extends PtolemyApplet {
     protected double _getStopTime() {
 	double result = -5.0;
 
-	if( _director == null ) {
-	    return result;
-	} else {
-	    Parameter dirStopTime = 
-		    (Parameter)_director.getAttribute("stopTime");
-	    try {
-	        result = ((DoubleToken)dirStopTime.getToken()).doubleValue();
-	    } catch( IllegalActionException e ) {
-		throw new InternalErrorException( e.toString() );
-	    }
+	if( _director != null ) {
+            try {
+            	result = 
+                        ((DoubleToken)_director.stopTime.getToken()).doubleValue();
+            } catch (IllegalActionException ex) {
+                report("Error in stop time:\n", ex);
+            }
 	}
 
 	if( _stopTimeBox != null ) {
@@ -227,9 +256,7 @@ public class DDEApplet extends PtolemyApplet {
      * @exception IllegalActionException Not thrown in this base class.
      */
     protected void _go() throws IllegalActionException {
-	Parameter dirStopTime = 
-	        (Parameter)_director.getAttribute("stopTime");
-	dirStopTime.setToken( new DoubleToken(_getStopTime()) );
+	_director.stopTime.setToken( new DoubleToken(_getStopTime()) );
         super._go();
     }
 
@@ -256,8 +283,8 @@ public class DDEApplet extends PtolemyApplet {
 
     /** The applet parameters associated with this applet. These
      *  parameters are returned by getParameterInfo().
-     */
     private String[][] _params;
+     */
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
