@@ -38,6 +38,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.ScopeExtender;
@@ -284,49 +285,13 @@ public class Expression extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                       private methods                     ////
 
-    // Find the variable with the given name in the scope of
-    // this actor, and return it.  If there is no such
-    // variable, then return null.
-    private Variable _findVariable(String name) {
-        NamedObj container = (NamedObj)this;
-        while (container != null) {
-            Variable result = _searchIn(container, name);
-            if (result != null) {
-                return result;
-            } else {
-                container = (NamedObj)container.getContainer();
-            }
-        }
-        return null;
-    }
-
-    // Search in the container for an attribute with the given name.
-    // Search recursively in any instance of ScopeExtender in the
-    // container.
-    private Variable _searchIn(NamedObj container, String name) {
-        Attribute result = container.getAttribute(name);
-        if (result != null && result instanceof Variable) {
-            return (Variable)result;
-        }
-        Iterator extenders =
-            container.attributeList(ScopeExtender.class).iterator();
-        while (extenders.hasNext()) {
-            ScopeExtender extender = (ScopeExtender)extenders.next();
-            result = extender.getAttribute(name);
-            if (result != null && result instanceof Variable) {
-                return (Variable)result;
-            }
-        }
-        return null;
-    }
-
     // Add a constraint to the type output port of this object.
     private void _setOutputTypeConstraint() {
         // NOTE: uncomment this line to add better type constraints.
-        output.setTypeAtLeast(new OutputTypeFunction());
+        output.setTypeAtLeast(new VariableScope());//new OutputTypeFunction());
     }
 
-    private class VariableScope implements ParserScope {
+    private class VariableScope extends ModelScope implements InequalityTerm {
 
         /** Look up and return the attribute with the specified name in the
          *  scope. Return null if such an attribute does not exist.
@@ -344,7 +309,7 @@ public class Expression extends TypedAtomicActor {
                 return token;
             }
 
-            Variable result = _findVariable(name);
+            Variable result = getScopedVariable(null, Expression.this, name);
             if (result != null) {
                 return result.getToken();
             }
@@ -369,7 +334,7 @@ public class Expression extends TypedAtomicActor {
                 return port.getType();
             }
 
-            Variable result = _findVariable(name);
+            Variable result = getScopedVariable(null, Expression.this, name);
             if (result != null) {
                 return result.getType();
             }
@@ -382,13 +347,13 @@ public class Expression extends TypedAtomicActor {
         public NamedList variableList() {
             return null;
         }
-    }
+//     }
 
-    // This class implements a monotonic function of the type of
-    // the output port.
-    // The function value is determined by type inference on the
-    // expression, in the scope of this Expression actor.
-    private class OutputTypeFunction implements InequalityTerm {
+//     // This class implements a monotonic function of the type of
+//     // the output port.
+//     // The function value is determined by type inference on the
+//     // expression, in the scope of this Expression actor.
+//     private class OutputTypeFunction implements InequalityTerm {
 
         ///////////////////////////////////////////////////////////////
         ////                       public inner methods            ////
@@ -463,7 +428,8 @@ public class Expression extends TypedAtomicActor {
                         termList.add(port.getTypeTerm());
                         continue;
                     }
-                    Variable result = _findVariable(name);
+                    Variable result = getScopedVariable(
+                            null, Expression.this, name);
                     if (result != null && result.getTypeTerm().isSettable()) {
                         termList.add(result.getTypeTerm());
                         continue;
