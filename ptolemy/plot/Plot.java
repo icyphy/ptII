@@ -298,8 +298,21 @@ public class Plot extends PlotBox {
 	throws CmdLineArgException
 	{
         int i = 0, j, argsread;
-	int width = 400;      // Default width of the graph
-	int height = 400;     // Default height of the graph
+	int width;      // Default width of the graph
+	int height;     // Default height of the graph
+
+	// If this is a component, then getParameter might fail.  
+	try {
+	    width = Integer.valueOf(getParameter("width")).intValue();
+	} catch (NullPointerException e) {
+	    width = 400;
+	}
+
+	try {
+	    height = Integer.valueOf(getParameter("height")).intValue();
+	} catch (NullPointerException e) {
+	    height = 400;
+	}
 
         String arg;
 	String unsupportedOptions[] = {
