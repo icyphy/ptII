@@ -953,6 +953,82 @@ else
 fi 
 
 #--------------------------------------------------------------------
+#       We use Eclipse for parsing java backtracking.
+#       Eclipse is an integrated development environment, see
+#	http://www.eclipse.org
+#       See if there was a command-line option for where JRefactory interface
+#       is
+#       If not, look for for $PTII/lib/jrefactory
+#--------------------------------------------------------------------
+
+# PTBACKTRACK_DIR is set to backtrack and used in
+# $PTII/ptolemy/makefile if Eclipse was found and the jar files were found
+PTBACKTRACK_DIR=
+
+# Jar files used by ptolemy/backtrack
+PTBACKTRACK_JARS=
+
+# We only need to look for Eclipse if $PTII/ptolemy/backtrack exists
+if test ! -d "$PTII/ptolemy/backtrack"; then
+    AC_MSG_RESULT([$PTII/ptolemy/backtrack is not present,
+    so we need not find Eclipse.])
+else
+    AC_MSG_CHECKING([for Eclipse installation])
+    AC_ARG_WITH(jrefactory_jar, [  --with-eclipse=ECLIPSE_DIR     use Eclipse from ECLIPSE_DIR,
+                          defaults to \$PTII/lib/jrefactory.jar],
+	ECLIPSE_DIR=$withval,
+	ECLIPSE_DIR=c:/Program\ Files/Eclipse)
+
+    if test -d "$ECLIPSE_DIR"; then
+	AC_MSG_RESULT([$ECLIPSE_DIR])
+	AC_MSG_CHECKING([for jars used by backtracking])
+	jars="jdtcore.jar osgi.jar resources.jar runtime.jar" 
+	eclipsejarpath=
+	for jar in $jars
+	do
+	    echo $ECHO_N "$jar "
+	    jarpath=`find "$ECLIPSE_DIR/plugins" -name $jar | head -1`
+   	    if test -f "$jarpath"; then
+  	        eclipsejarpath="$eclipsejarpath$CLASSPATHSEPARATOR$jarpath"
+		# FIXME: we should not be adding to ECLIPSE_CLASSPATHENTRY_LIBS
+		# unless we are sure that we can find all the jars
+		ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+                <classpathentry kind=\"lib\" path=\"$jarpath\"/>"
+ 	    else   
+		AC_MSG_WARN([Failed to find $jar in $ECLIPSE_DIR: $jarpath])
+	        eclipsejarpath=
+		break
+	    fi
+	done	
+	if test ! -z "$eclipsejarpath"; then 
+	    AC_MSG_RESULT([ok])
+	    # Set to backtrack and used in
+	    # $PTII/ptolemy/make if jrefactory.jar was found
+	    PTBACKTRACK_DIR=backtrack
+   	    # PTBACKTRACK_PACKAGES is used in ptII/doc/makefile
+	    PTBACKTRACK_PACKAGES=ptolemy.backtrack.ast
+	    PTBACKTRACK_JARS=$eclipsejarpath
+        fi
+    fi	
+    if test "$PTBACKTRACK_DIR" = ""; then
+        AC_MSG_WARN([Failed to find Eclipse
+    perhaps the Eclipse is not installed?
+    You need not download Eclipse unless you
+    plan on using the backtracking facility in ptolemy.backtrack
+    Eclipse may be downloaded from
+    http://www.eclipse.org/])
+	PTBACKTRACK_JARS=
+    fi
+fi
+
+if test -z "$PTBACKTRACK_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/backtrack/|ptolemy/backtrack/ast/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$PTBACKTRACK_JARS\"/>"
+fi 
+
+#--------------------------------------------------------------------
 #       Garbage Collector (GC)
 #       The C code generator can use the Boehm Garbage Collector
 #       See http://www.hpl.hp.com/personal/Hans_Boehm/gc/
@@ -1410,61 +1486,6 @@ if test -z "$PTJOYSTICK_DIR"; then
 else
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
     <classpathentry kind=\"lib\" path=\"$JOYSTICK_JAR\"/>"
-fi 
-
-
-#--------------------------------------------------------------------
-#       The JRefactory is used for AST analysis and backtracking
-#	http://jrefactory.sourceforge.net/
-#       See if there was a command-line option for where JRefactory interface
-#       is
-#       If not, look for for $PTII/lib/jrefactory
-#--------------------------------------------------------------------
-
-# PTBACKTRACK_DIR is set to backtrack and used in
-# $PTII/ptolemy/makefile if jrefactory.jar was found
-PTBACKTRACK_DIR=
-
-# JRefactory Jar file
-JREFACTORY_JAR='${PTII}/lib/jrefactory.jar'
-
-# We only need to look for jrefactory if $PTII/ptolemy/backtrack exists
-if test ! -d "$PTII/ptolemy/backtrack"; then
-    AC_MSG_RESULT([$PTII/ptolemy/backtrack is not present,
-    so we need not find the JRefactory interface.])
-else
-    AC_MSG_CHECKING([for JRefactory jar file])
-    AC_ARG_WITH(jrefactory_jar, [  --with-jrefactory-jar=JARFILE       use JREFACTORY from JARFILE,
-                          defaults to \$PTII/lib/jrefactory.jar],
-	JREFACTORY_JAR=$withval,
-	JREFACTORY_JAR=$PTII/lib/jrefactory.jar)
-
-    if test -f "$JREFACTORY_JAR"; then
-	AC_MSG_RESULT([$JREFACTORY_JAR])
-	# Set to backtrack and used in
-	# $PTII/ptolemy/make if jrefactory.jar was found
-	PTBACKTRACK_DIR=backtrack
-        # PTBACKTRACK_PACKAGES is used in ptII/doc/makefile
-	PTBACKTRACK_PACKAGES=ptolemy.backtrack.ast
-    fi	
-
-    if test "$PTBACKTRACK_DIR" = ""; then
-        AC_MSG_WARN([Failed to find $JREFACTORY_JAR
-    perhaps the JRefactory is not installed?
-    You need not download the JRefactory unless you
-    plan on the backtracking facility in ptolemy.backtrack
-    JRefactory may be downloaded from
-    http://jrefactory.sourceforge.net/])
-	# Note that we don't substitute in the ${PTII} here
-	JREFACTORY_JAR='${PTII}/lib/jrefactory.jar'
-    fi
-fi
-
-if test -z "$PTBACKTRACK_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/backtrack/|ptolemy/backtrack/ast/"
-else
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-    <classpathentry kind=\"lib\" path=\"$JREFACTORY_JAR\"/>"
 fi 
 
 #--------------------------------------------------------------------
@@ -2784,6 +2805,9 @@ AC_SUBST(COMMAPI_DIR)
 # If Commapi is present, then set to yes, otherwise set to no
 AC_SUBST(COMMAPI_PRESENT)
 
+# Location of Eclipse, which is used by ptolemy/backtracking
+AC_SUBST(ECLIPSE_DIR)
+
 # Directory that contains gc.h, used in copernicus/c
 AC_SUBST(GC_INCLUDE_DIR)
 
@@ -2845,10 +2869,6 @@ AC_SUBST(JTCLSH)
 # jtree binary
 AC_SUBST(JTREE)
 
-# Jar file that contains JRefactory interface,
-# see http://jrefactory.sourceforge.net/
-AC_SUBST(JREFACTORY_JAR)
-
 # JDK Version determined by running confTest.class and getting java.version
 AC_SUBST(JVERSION)
 
@@ -2890,10 +2910,13 @@ AC_SUBST(MATLAB_LIBDIR)
 # in $PTII/bin/ptinvoke.in
 AC_SUBST(PSDF_DIR)
 
-# Set to backtrack if jrefactory.jar was found
+# Set to backtrack if Eclipse was found
 AC_SUBST(PTBACKTRACK_DIR)
 
-# Ptolemy II packages that use the JRefactory facilty
+# Eclipse jar files used by ptolemy/backtrack 
+AC_SUBST(PTBACKTRACK_JARS)
+
+# Ptolemy II packages that use Eclipse
 # PTBACKTRACK_PACKAGES is used in ptII/doc/makefile
 AC_SUBST(PTBACKTRACK_PACKAGES)
 
