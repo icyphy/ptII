@@ -162,6 +162,7 @@ HYVISUALPACKAGES = \
 			ptolemy.actor.lib.io \
 			ptolemy.actor.lib.logic \
 			ptolemy.actor.lib.python \
+			ptolemy.actor.lib.security \
 			ptolemy.actor.lib.string \
 			ptolemy.actor.parameters \
 			ptolemy.domains.ct.kernel \
@@ -171,7 +172,6 @@ HYVISUALPACKAGES = \
 			ptolemy.domains.fsm.kernel \
 			ptolemy.domains.sdf.kernel \
 			ptolemy.domains.sdf.lib \
-			ptolemy.domains.sdf.lib.security \
 			ptolemy.domains.sdf.lib.vq \
 			ptolemy.media.javasound \
 			ptolemy.vergil.fsm.modal
@@ -216,6 +216,7 @@ ALLPACKAGES =		$(COMMPACKAGES) \
 			ptolemy.plot.compat \
 			ptolemy.kernel \
 			ptolemy.kernel.attributes \
+			ptolemy.kernel.undo \
 			ptolemy.kernel.util \
 			ptolemy.actor \
 			ptolemy.actor.gui \
@@ -341,6 +342,7 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/plot/plotml/*.java \
 			../ptolemy/kernel/*.java \
 			../ptolemy/kernel/attributes/*.java \
+			../ptolemy/kernel/undo/*.java \
 			../ptolemy/kernel/util/*.java \
 			../ptolemy/actor/*.java \
 			../ptolemy/actor/gui/*.java \
@@ -354,6 +356,7 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/actor/lib/gui/*.java \
 			../ptolemy/actor/lib/logic/*.java \
 			../ptolemy/actor/lib/python/*.java \
+			../ptolemy/actor/lib/security/*.java \
 			../ptolemy/actor/lib/string/*.java \
 			../ptolemy/actor/parameters/*.java \
 			../ptolemy/actor/process/*.java \
@@ -377,7 +380,6 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/domains/petrinet/kernel/*.java \
 			../ptolemy/domains/sdf/kernel/*.java \
 			../ptolemy/domains/sdf/lib/*.java \
-			../ptolemy/domains/sdf/lib/security/*.java \
 			../ptolemy/domains/sdf/lib/vq/*.java \
 			../ptolemy/domains/sr/kernel/*.java \
 			../ptolemy/domains/sr/lib/*.java \
