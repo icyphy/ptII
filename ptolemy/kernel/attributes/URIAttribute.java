@@ -143,15 +143,11 @@ public class URIAttribute extends SingletonAttribute {
      *  @exception IllegalArgumentException If the URI is not absolute.
      */
     public URL getURL() throws MalformedURLException {
-        // Warning, this method used to calls java.net.URI.toURL(), which has
+        // Warning, this method used to call java.net.URI.toURL(), which has
         // a bug with jar urls. If we have a jar url, (for example
         // jar:file:/C:/foo.jar!/intro.htm) then the java.net.URI toURL()
      	// method will return a URL like jar:, which is missing the file: part
         // This causes problems with Web Start.
-        // Instead of:
-        //   URL pageURL = effigy.uri.getURL());
-        // Try calling:
-        //   URL pageURL = new URL(effigy.uri.getURI().toString());
         //
         // BTW - Here is how to replicate the problem with
         // java.net.URI.toURL() in ptjacl:
