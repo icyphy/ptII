@@ -46,8 +46,9 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = 
-		
+PTCLASSALLJARS = \
+		kernel/kernel.jar 
+
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Files or directories that are present, but that 'make checkjunk'
