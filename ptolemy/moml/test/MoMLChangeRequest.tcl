@@ -1065,7 +1065,7 @@ test MoMLChangeRequest-9.5 {test propagation from inner subclass} {
 	[$icipD getExpression] \
 	[$iicpD getExpression] \
 	[$iiipD getExpression] \
-} {4 5 6 6 4 5 6 6 4 5 6 3 4 5 6 6}
+} {4 5 6 5 4 5 6 5 4 5 6 3 4 5 6 5}
 
 test MoMLChangeRequest-9.6 {test propagation from deeper inner subclass} {
     set context [java::cast ptolemy.actor.CompositeActor [$toplevel getEntity "cD.iAB.cABC"]]
@@ -1091,7 +1091,7 @@ test MoMLChangeRequest-9.6 {test propagation from deeper inner subclass} {
 	[$icipD getExpression] \
 	[$iicpD getExpression] \
 	[$iiipD getExpression] \
-} {4 5 6 6 4 5 7 7 4 5 6 3 4 5 7 7}
+} {4 5 6 5 4 5 7 5 4 5 6 3 4 5 7 5}
 
 test MoMLChangeRequest-9.7 {test shadowing on deeper inner subclass} {
     set context [java::cast ptolemy.actor.CompositeActor [$toplevel getEntity "cD.cAB.cABC"]]
@@ -1117,7 +1117,7 @@ test MoMLChangeRequest-9.7 {test shadowing on deeper inner subclass} {
 	[$icipD getExpression] \
 	[$iicpD getExpression] \
 	[$iiipD getExpression] \
-} {4 5 6 6 8 8 7 7 4 5 6 3 8 8 8 8}
+} {4 5 6 5 8 5 7 5 4 5 6 3 8 5 7 5}
 
 ######################################################################
 ####
@@ -1154,6 +1154,8 @@ test MoMLChangeRequest-10.4 {test export MoML with parameter values} {
     set export [$toplevel getEntity "cA.iAB.iABC"]
     $export exportMoML
 } {<entity name="iABC" class="cABC">
+    <property name="p" class="ptolemy.data.expr.Parameter" value="5">
+    </property>
 </entity>
 }
 
@@ -1170,6 +1172,8 @@ test MoMLChangeRequest-10.6 {test export MoML with parameter values} {
     set export [$toplevel getEntity "cD.cAB.iABC"]
     $export exportMoML
 } {<entity name="iABC" class="cABC">
+    <property name="p" class="ptolemy.data.expr.Parameter" value="5">
+    </property>
 </entity>
 }
 
@@ -1186,6 +1190,8 @@ test MoMLChangeRequest-10.8 {test export MoML with parameter values} {
     set export [$toplevel getEntity "cD.iAB.iABC"]
     $export exportMoML
 } {<entity name="iABC" class="cABC">
+    <property name="p" class="ptolemy.data.expr.Parameter" value="5">
+    </property>
 </entity>
 }
 
@@ -1238,6 +1244,8 @@ test MoMLChangeRequest-10.14 {test export MoML with parameter values} {
     set export [$toplevel getEntity "iD.cAB.iABC"]
     $export exportMoML
 } {<entity name="iABC" class="cABC">
+    <property name="p" class="ptolemy.data.expr.Parameter" value="5">
+    </property>
 </entity>
 }
 
@@ -1245,7 +1253,7 @@ test MoMLChangeRequest-10.15 {test export MoML with parameter values} {
     set export [$toplevel getEntity "iD.iAB.cABC"]
     $export exportMoML
 } {<class name="cABC" extends="ptolemy.actor.CompositeActor">
-    <property name="p" class="ptolemy.data.expr.Parameter" value="8">
+    <property name="p" class="ptolemy.data.expr.Parameter" value="7">
     </property>
 </class>
 }
@@ -1254,6 +1262,8 @@ test MoMLChangeRequest-10.16 {test export MoML with parameter values} {
     set export [$toplevel getEntity "iD.iAB.iABC"]
     $export exportMoML
 } {<entity name="iABC" class="cABC">
+    <property name="p" class="ptolemy.data.expr.Parameter" value="5">
+    </property>
 </entity>
 }
 
@@ -1296,8 +1306,6 @@ test MoMLChangeRequest-11.2.1 {test paste with inherited and overridden values} 
     set export [$toplevel getEntity "cA.iABcopy.iABC"]
     $export exportMoML
 } {<entity name="iABC" class="cABC">
-    <property name="p" class="ptolemy.data.expr.Parameter" value="6">
-    </property>
 </entity>
 }
 
@@ -1322,7 +1330,7 @@ test MoMLChangeRequest-12.0 {Check baseline values before deletion} {
 	[$icipD getExpression] \
 	[$iicpD getExpression] \
 	[$iiipD getExpression] \
-} {4 5 6 6 8 8 7 7 4 5 6 3 8 8 8 8}
+} {4 5 6 5 8 5 7 5 4 5 6 3 8 5 7 5}
 
 test MoMLChangeRequest-12.1 {first check propagation of deletion} {
     set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
@@ -1394,4 +1402,4 @@ test MoMLChangeRequest-12.2 {then check undo} {
 	[$icipD getExpression] \
 	[$iicpD getExpression] \
 	[$iiipD getExpression] \
-} {4 5 6 6 8 8 7 7 4 5 6 3 8 8 8 8}
+} {4 5 6 5 8 5 7 5 4 5 6 3 8 5 7 5}

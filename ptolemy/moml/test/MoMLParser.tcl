@@ -391,7 +391,7 @@ test MoMLParser-1.5 {test with an actor} {
 set moml "$classheader
 <class name=\"top\" extends=\"ptolemy.actor.TypedCompositeActor\">
     <entity name=\"a\" class=\"ptolemy.actor.lib.Ramp\">
-        <property name=\"init\" value=\"0\" class=\"ptolemy.data.expr.Parameter\">
+        <property name=\"init\" class=\"ptolemy.data.expr.Parameter\" value=\"0\">
         </property>
     </entity>
 </class>
@@ -401,7 +401,7 @@ test MoMLParser-1.6 {test with a pre-existing parameter given, with class} {
     $parser reset
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
-} $result
+} $moml
 
 ######################################################################
 ####
@@ -3334,7 +3334,7 @@ test MoMLParser-21.1 {Order of heritage list.} {
     set toplevel [java::cast ptolemy.actor.CompositeActor \
             [$parser parse $baseModel]]
     set ramp [$toplevel getEntity Ramp]
-    set derivedList [$ramp getHeritageList]
+    set derivedList [$ramp getDerivedList]
     listToFullNames $derivedList
 } {.top.SubclassOfRamp .top.InstanceOfSubclassOfRamp .top.InstanceOfRamp}
 
@@ -3460,7 +3460,7 @@ test MoMLParser-22.1 {Order of heritage list.} {
     set toplevel [java::cast ptolemy.actor.CompositeActor \
             [$parser parse $baseModel]]
     set port [$toplevel getPort Ramp.output]
-    set derivedList [$port getHeritageList]
+    set derivedList [$port getDerivedList]
     listToFullNames $derivedList
 } {.top.SubclassOfRamp.output .top.InstanceOfSubclassOfRamp.output .top.InstanceOfRamp.output}
 
