@@ -274,10 +274,12 @@ public class TMDirector extends Director {
         while (!_interruptQueue.isEmpty()) {
             DEEvent interruptEvent = (DEEvent)_interruptQueue.get();
             double timeStamp = interruptEvent.timeStamp();
-            if (timeStamp < getCurrentTime()) {
+            if ((timeStamp + 1e-10) < getCurrentTime()) {
                 // This should never happen.
                 throw new IllegalActionException(this,
-                        "external input in the past.");
+                        "external input in the past: " 
+                        + "input time stamp is " + timeStamp 
+                        + "current time in TM is " + getCurrentTime());
             } else if (timeStamp == getCurrentTime()) {
                 _interruptQueue.take();
                 Actor actor = interruptEvent.actor();
@@ -376,6 +378,8 @@ public class TMDirector extends Director {
                         // Start a new task.
                         // Now the behavior depend on whether the
                         // execution is preemptive.
+                         _preemptive = 
+                           ((BooleanToken)preemptive.getToken()).booleanValue();
                         if (!_preemptive) {
                             event = (TMEvent)_eventQueue.take();
                             event.startProcessing();
@@ -405,9 +409,11 @@ public class TMDirector extends Director {
             // Check the finish processing time.
             double finishTime = getCurrentTime() +
                 event.processingTime();
+            if(_debugging) _debug("finishing time = " + finishTime);
             if ( finishTime < _nextIterationTime) {
                 _nextIterationTime = finishTime;
             }
+            
         }
         if (_isEmbedded() && _nextIterationTime < Double.MAX_VALUE) {
             _requestFiringAt(_nextIterationTime);
@@ -527,6 +533,37 @@ public class TMDirector extends Director {
                 }
             }
         }
+
+        // check the interupt queue:
+        while (!_interruptQueue.isEmpty()) {
+            DEEvent interruptEvent = (DEEvent)_interruptQueue.get();
+            double timeStamp = interruptEvent.timeStamp();
+            if ((timeStamp + 1e-10) < _outsideTime) {
+                // This should never happen.
+                throw new IllegalActionException(this,
+                        "external input in the past: " 
+                        + "input time stamp is " + timeStamp 
+                        + "current time in TM is " + getCurrentTime());
+            } else if (Math.abs(timeStamp - _outsideTime) < 1e-10) {
+                _interruptQueue.take();
+                Actor actor = interruptEvent.actor();
+                if (actor != null) {
+                    if (actor.prefire()) {
+                        actor.fire();
+                        if (!actor.postfire()) {
+                            _disableActor(actor);
+                        }
+                    }
+                }
+            } else {
+                // All interrupts are in the future.
+                // Get the time for the next interrupt.
+                // It will be used for finding the next iteration time.
+                break;
+            }
+        }
+        
+
         if (!_eventQueue.isEmpty()) {
             TMEvent event = (TMEvent)_eventQueue.get();
             if (event.hasStarted()) {
