@@ -32,6 +32,7 @@ package ptolemy.domains.sdf.demo.Butterfly;
 
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.gui.Placeable;
 import ptolemy.data.IntToken;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.util.IllegalActionException;
@@ -43,6 +44,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// ButterflyApplication
@@ -73,15 +75,27 @@ public class ButterflyApplication extends JFrame {
         });
 
         Workspace workspace = new Workspace("workspace");
-        TypedCompositeActor toplevel = new TypedCompositeActor(workspace);
+        //TypedCompositeActor toplevel = new TypedCompositeActor(workspace);
+	Butterfly toplevel = new Butterfly(workspace);
         toplevel.setName("toplevel");
-        SDFDirector director = new SDFDirector(toplevel, "director");
+	
+        SDFDirector director = (SDFDirector) toplevel.getDirector();
+
         Manager manager = new Manager(workspace, "manager");
         toplevel.setManager(manager);
 
+	// Put placeable objects in a reasonable place.
+	// Note that this code will not look inside
+	// opaque entities.
+	for(Iterator i = toplevel.deepEntityList().iterator();
+	    i.hasNext();) {
+	    Object o = i.next();
+	    if(o instanceof Placeable) {
+		((Placeable) o).place(getContentPane());
+	    }
+	}
+
         try {
-	    Butterfly butterfly = new Butterfly(toplevel, "butterfly",
-                    getContentPane());
 	    director.iterations.setToken(new IntToken(1200));
 	    // Map to the screen.
 	    show();
@@ -89,16 +103,13 @@ public class ButterflyApplication extends JFrame {
         } catch (Exception exception) {
             System.err.println("Error constructing model: " + exception);
         }
-
-
     }
 
     /** Create a new window with the Butterfly plot in it and map it
-	to the screen.
-    */
+     *	to the screen.
+     */
     public static void main(String arg[])
             throws IllegalActionException , NameDuplicationException {
-
         ButterflyApplication butterflyApplication = new ButterflyApplication();
     }
 }

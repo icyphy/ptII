@@ -70,15 +70,26 @@ all: jclass $(PTCLASSJAR)
 	@echo "To run all the demos, run 'make demo'"
 	@echo "To run the applet only, run 'make demo_applet'"
 	@echo "To run the application only, run 'make demo_application'"
+
 install: all
 
-demo: demo_applet demo_application
+# Run the demo in all its different formats
+demo: demo_applet demo_application demo_CompositeActorApplication demo_ptolemy
 
 demo_applet: $(PTCLASSJAR)
 	CLASSPATH=$(CLASSPATH) appletviewer Butterfly.htm
 
 demo_application: $(PTCLASSJAR)
-	CLASSPATH="$(CLASSPATH)" "$(JAVA)" ptolemy.domains.sdf.demo.Butterfly.ButterflyApplication
+	CLASSPATH="$(CLASSPATH)" \
+	 "$(JAVA)" ptolemy.domains.sdf.demo.Butterfly.ButterflyApplication
+
+demo_CompositeActorApplication: $(PTCLASSJAR)
+	CLASSPATH="$(CLASSPATH)" \
+	 "$(JAVA)" ptolemy.actor.gui.CompositeActorApplication \
+		-class ptolemy.domains.sdf.demo.Butterfly.Butterfly 
+
+demo_ptolemy:
+	$(PTII)/bin/ptolemy Butterfly.xml
 
 depend:
 	@echo "no dependencies in this directory"

@@ -30,9 +30,14 @@
 
 package ptolemy.domains.sdf.demo.Butterfly;
 
+import ptolemy.actor.Manager;
+import ptolemy.actor.gui.Placeable;
+import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.domains.sdf.gui.SDFApplet;
 
 import java.awt.BorderLayout;
+import java.awt.BorderLayout;
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// ButterflyApplet
@@ -51,9 +56,20 @@ public class ButterflyApplet extends SDFApplet {
     public void init() {
         super.init();
         try {
-	    // Pass in the panel so that we can pass it to the plotter.
-	    Butterfly butterfly =
-		new Butterfly(_toplevel, "butterfly", getContentPane());
+	    Butterfly butterfly = new Butterfly(_workspace);
+	    butterfly.setContainer(_toplevel);
+
+	    // Put placeable objects that we created in the
+	    // constructor in a reasonable place.
+	    // Note that this code will not look inside
+	    // opaque entities.
+	    for(Iterator i = butterfly.entityList().iterator();
+		i.hasNext();) {
+		Object o = i.next();
+		if(o instanceof Placeable) {
+		    ((Placeable) o).place(getContentPane());
+		}
+	    }
         } catch (Exception ex) {
             report("Error constructing model.", ex);
         }

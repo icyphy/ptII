@@ -42,11 +42,17 @@ import ptolemy.actor.lib.conversions.PolarToRectangular;
 import ptolemy.actor.lib.gui.XYPlotter;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
+import ptolemy.plot.Plot;
+import ptolemy.plot.PlotFrame;
 
-import java.awt.Container;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Butterfly
@@ -63,9 +69,11 @@ public class Butterfly extends TypedCompositeActor {
 
     /** Create the Butterfly model
      */
-    public Butterfly(CompositeEntity container, String name, Container panel)
-            throws IllegalActionException, NameDuplicationException {
-	super(container, name);
+    public Butterfly(Workspace workspace)
+	throws IllegalActionException, NameDuplicationException {
+	super(workspace);
+
+	setDirector(new SDFDirector(this, "director"));
 
 	Scale scale1 = new Scale(this,"scale1");
 	scale1.factor.setToken(new DoubleToken(4.0));
@@ -106,7 +114,8 @@ public class Butterfly extends TypedCompositeActor {
 	cos2.output.setTypeEquals(BaseType.DOUBLE);
 
 	XYPlotter xyPlotter = new XYPlotter(this, "xyPlotter");
-	xyPlotter.place(panel);
+	xyPlotter.plot = new Plot();
+	PlotFrame frame = new PlotFrame(getFullName(), xyPlotter.plot);
 
         // Make the plot transparent so that the background shows through.
 	xyPlotter.plot.setOpaque(false);
@@ -146,5 +155,23 @@ public class Butterfly extends TypedCompositeActor {
 
 	connect(polarToRect1.x, xyPlotter.inputX);
 	connect(polarToRect1.y, xyPlotter.inputY);
+	
+	// If Butterfly.xml does not exist, then create it.
+	// FIXME: This will print a warning message 
+	// when run under an applet.
+	// The point of this demo is to have the same
+	// model as an applet, application, CompositeActorApplication
+	// and .xml file
+	try {
+	    File momlFile = new File("Butterfly.xml");
+	    if (!momlFile.exists()) {
+		System.out.println("Dumping out MoML");
+		FileWriter momlFileWriter = new FileWriter(momlFile);
+		momlFileWriter.write(exportMoML());
+		momlFileWriter.close();
+	    }
+	} catch (Exception e) {
+		System.err.println("Failed to export MoML: "+ e);
+	}
     }
 }
