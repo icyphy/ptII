@@ -25,16 +25,13 @@
                                         COPYRIGHTENDKEY
 @ProposedRating Red (nsmyth@eecs.berkeley.edu)
 @AcceptedRating Red (neuendor@eecs.berkeley.edu)
-// Review base URL stuff.
 */
 
 package ptolemy.moml;
 
 import ptolemy.kernel.util.ChangeRequest;
-import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 
-import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 
