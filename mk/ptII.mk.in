@@ -122,7 +122,7 @@ JINI_DIR =	@JINI_DIR@
 # lib/ directory of the Jini distribution
 JINI_LIB =	$(JINI_DIR)/lib
 
-JINI_JARS =     $(JINI_LIB)/jini-core.jar$(CLASSPATHSEPARATOR)$(JINI_LIB)/jini-jspaces.jar$(CLASSPATHSEPARATOR)
+JINI_JARS =     $(JINI_LIB)/jini-core.jar\$(CLASSPATHSEPARATOR)$(JINI_LIB)/jini-jspaces.jar\$(CLASSPATHSEPARATOR)
 
 # JavaCC is the Java Compiler Compiler which is used by ptolemy.data.expr
 # The default location is $(PTII)/vendors/sun/JavaCC
