@@ -1122,6 +1122,11 @@ public class NamedObj implements
     public boolean handleModelError(NamedObj context,
             IllegalActionException exception)
             throws IllegalActionException {
+        // FIXME: This code fails horribly when one forgets to add a
+        // BasicModelErrorHandler at the toplevel of the model.  In
+        // reality, this code should do what BasicModelErrorHandler
+        // does and throw an exception when anything falls off the top
+        // of the model.
         if (_modelErrorHandler != null) {
             if (_modelErrorHandler.handleModelError(context, exception)) {
                 return true;
