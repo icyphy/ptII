@@ -79,7 +79,7 @@ public class State extends ComponentEntity {
      *  @exception NameDuplicationException If the name coincides with
      *   that of an entity already in the container.
      */
-    public State(FSMActor container, String name)
+    public State(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         incomingPort = new ComponentPort(this, "incomingPort");
@@ -172,7 +172,7 @@ public class State extends ComponentEntity {
             workspace().getReadAccess();
             String name = refinementName.getExpression();
             if (name != null && name != "") {
-                FSMActor cont = (FSMActor)getContainer();
+                Nameable cont = getContainer();
                 TypedCompositeActor contContainer =
                     (TypedCompositeActor)cont.getContainer();
                 _refinement = (TypedActor)contContainer.getEntity(name);
@@ -213,28 +213,6 @@ public class State extends ComponentEntity {
             _updateTransitionLists();
         }
         return _preemptiveTransitionList;
-    }
-
-    /** Override the base class to ensure that the proposed container
-     *  is an instance of FSMActor or null. If it is, call the base
-     *  class setContainer() method. A null argument will remove this
-     *  state from its container.
-     *  @param container The proposed container.
-     *  @exception IllegalActionException If this state and the container
-     *   are not in the same workspace, or if the argument is not an
-     *   instance of FSMActor or null.
-     *  @exception NameDuplicationException If the container already has
-     *   an entity with the name of this state.
-     */
-    public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
-        if (!(container instanceof FSMActor) &&
-                (container != null)) {
-            throw new IllegalActionException(container, this,
-                    "State can only be contained by instances of " +
-                    "FSMActor.");
-        }
-        super.setContainer(container);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -44,6 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.gui.CancelException;
 import ptolemy.gui.MessageHandler;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
@@ -57,6 +58,7 @@ import ptolemy.actor.gui.RunTableau;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.style.EditableChoiceStyle;
 import ptolemy.moml.EntityLibrary;
+import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.Locatable;
 import ptolemy.moml.Location;
 import ptolemy.moml.MoMLParser;
@@ -212,40 +214,42 @@ public abstract class GraphFrame extends PtolemyFrame
 	_graphPanner.setBorder(BorderFactory.createEtchedBorder());
         _graphPanner.setViewport(_graphScrollPane.getViewport());
 
-	// Create the library of actors.
-        // FIXME: How do we make this topLibrary persistent?
-        Workspace workspace = entity.workspace();
-        _topLibrary = new CompositeEntity(workspace);
+	// Create the library of actors, or use the one in the entity,
+        // if there is one.
+        // FIXME: How do we make changes to the library persistent?
+        boolean gotLibrary = false;
         try {
-            _topLibrary.setName("topLibrary");
-            // Put a marker in so that this is recognized as a library.
-            new Attribute(_topLibrary, "_library");
+            LibraryAttribute libraryAttribute = (LibraryAttribute)
+                    entity.getAttribute("_library", LibraryAttribute.class);
+            if (libraryAttribute != null) {
+                // The model contains a library.
+                _topLibrary = libraryAttribute.getLibrary();
+                gotLibrary = true;
+            }
         } catch (Exception ex) {
-            throw new InternalErrorException(
-                    "Library configuration failed: " + ex);
+            try {
+                MessageHandler.warning("Invalid library in the model.", ex);
+            } catch (CancelException e) {}
         }
-        if (false) {
-            // The model contains a library.
-            // FIXME
-        } else {
+        if (!gotLibrary) {
             // The model does not contain a library.
             // See if there is a default library in the configuration.
-            if (tableau != null) {
-                NamedObj toplevel = tableau.toplevel();
-                if (toplevel instanceof CompositeEntity) {
-                    // Put a clone of all libraries in the library panel.
-                    Iterator libraries = ((CompositeEntity)toplevel)
-                        .entityList(EntityLibrary.class).iterator();
-                    while (libraries.hasNext()) {
-                        EntityLibrary lib = (EntityLibrary)libraries.next();
-                        try {
-                            EntityLibrary clone =
-                                (EntityLibrary)lib.clone(workspace);
-                            clone.setContainer(_topLibrary);
-                        } catch (Exception ex) {
-                            throw new InternalErrorException(
-                                    "Failed to add library to top library! " + ex);
-                        }
+            Configuration configuration = getConfiguration();
+            if (configuration != null) {
+                _topLibrary = (CompositeEntity)
+                        configuration.getEntity("library");
+                if (_topLibrary == null) {
+                    // Create an empty library by default.
+                    Workspace workspace = entity.workspace();
+                    _topLibrary = new CompositeEntity(workspace);
+                    try {
+                        _topLibrary.setName("topLibrary");
+                        // Put a marker in so that this is
+                        // recognized as a library.
+                        new Attribute(_topLibrary, "_libraryMarker");
+                    } catch (Exception ex) {
+                        throw new InternalErrorException(
+                                "Library configuration failed: " + ex);
                     }
                 }
             }

@@ -51,7 +51,7 @@ import javax.swing.tree.TreePath;
 A tree model for the Vergil library panel.  This is a tree model that
 shows entities, ports, relations, and visible attributes.  Attributes
 that are not marked visible are not shown. A composite entity that contains
-an attribute with name "_library" is treated as a sublibrary.
+an attribute with name "_libraryMarker" is treated as a sublibrary.
 A composite entity without such an attribute is treated as an atomic entity.
 This is designed for use with JTree, which renders the hierarchy.
 
@@ -147,10 +147,10 @@ public class VisibleTreeModel extends EntityTreeModel {
         NamedObj obj = (NamedObj)object;
 
         // If the object is an instance of CompositeEntity, but does not
-        // contain an attribute named "_library", then treat it as an
+        // contain an attribute named "_libraryMarker", then treat it as an
         // atomic entity.
         if (obj instanceof CompositeEntity) {
-            Attribute marker = obj.getAttribute("_library");
+            Attribute marker = obj.getAttribute("_libraryMarker");
             if (marker == null) {
                 return true;
             }

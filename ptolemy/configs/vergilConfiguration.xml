@@ -15,7 +15,15 @@
       <entity name="blank" class="ptolemy.actor.TypedCompositeActor"/>
     </entity>
     <entity name="FSM Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
-      <entity name="blank" class="ptolemy.domains.fsm.kernel.FSMActor"/>
+      <entity name="blank" class="ptolemy.domains.fsm.kernel.FSMActor">
+        <property name="_library" class="ptolemy.moml.LibraryAttribute">
+          <configure>
+            <entity name="state library" class="ptolemy.kernel.CompositeEntity">
+              <entity name="state" class="ptolemy.domains.fsm.kernel.State"/>
+            </entity>
+          </configure>
+        </property>
+      </entity>
     </entity>
     <entity name="HTML Viewer" class="ptolemy.actor.gui.HTMLEffigyFactory"/>
     <entity name="Text Editor" class="ptolemy.actor.gui.TextEffigy$Factory"/>
@@ -46,103 +54,110 @@
     <!-- FIXME: text editor, plot data tableau, etc. -->
   </entity>
 
-  <!-- Default utilities library. -->
-  <class name="utilities" extends="ptolemy.moml.EntityLibrary">
-    <configure>
-      <?moml
-        <group>
-  <!-- Blank composite actor. -->
-  <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor"/> 
-  <entity name="fsm actor" class="ptolemy.domains.fsm.kernel.FSMActor"/> 
-        </group>
-      ?>
-    </configure>
-  </class>
+  <!-- Main default library -->
+  <entity name="library" class="ptolemy.kernel.CompositeEntity">
 
-  <!-- Default director library. -->
-  <class name="director library" extends="ptolemy.moml.EntityLibrary">
-    <configure>
-      <?moml
-        <group>
+    <!-- Marker so that tree view expands the library. -->
+    <property name="_libraryMarker" class="ptolemy.kernel.util.SingletonAttribute"/>
 
-    <doc>default director library</doc>
-    <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector"/>
-    <property name="DT" class="ptolemy.domains.dt.kernel.DTDirector"/>
-    <property name="PN" class="ptolemy.domains.pn.kernel.PNDirector"/>
-    <property name="DE" class="ptolemy.domains.de.kernel.DEDirector"/>
-    <property name="CSP" class="ptolemy.domains.csp.kernel.CSPDirector"/>
-    <property name="DDE" class="ptolemy.domains.dde.kernel.DDEDirector"/>
-    <property name="CT" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
-       <property name="ODESolver">
-          <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-             <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;"/>
-             <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;"/>
+    <!-- Default utilities library. -->
+    <class name="utilities" extends="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+    <!-- Blank composite actor. -->
+    <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor"/> 
+    <entity name="fsm actor" class="ptolemy.domains.fsm.kernel.FSMActor"/> 
+          </group>
+        ?>
+      </configure>
+    </class>
+
+    <!-- Default director library. -->
+    <class name="director library" extends="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+
+      <doc>default director library</doc>
+      <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector"/>
+      <property name="DT" class="ptolemy.domains.dt.kernel.DTDirector"/>
+      <property name="PN" class="ptolemy.domains.pn.kernel.PNDirector"/>
+      <property name="DE" class="ptolemy.domains.de.kernel.DEDirector"/>
+      <property name="CSP" class="ptolemy.domains.csp.kernel.CSPDirector"/>
+      <property name="DDE" class="ptolemy.domains.dde.kernel.DDEDirector"/>
+      <property name="CT" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
+         <property name="ODESolver">
+            <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
+               <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;"/>
+               <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;"/>
 	     <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;"/>
 	  </property>
-       </property>
-       <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
-          <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-             <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;"/>
+         </property>
+         <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
+            <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
+               <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;"/>
 	     <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;"/>
 	     <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;"/>
 	  </property>
-       </property>
-    </property>
-    <property name="CTEmbedded" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
-       <property name="ODESolver">
-          <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-             <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;"/>
-             <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;"/>
+         </property>
+      </property>
+      <property name="CTEmbedded" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
+         <property name="ODESolver">
+            <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
+               <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;"/>
+               <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;"/>
 	     <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;"/>
 	  </property>
-       </property>
-       <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
-          <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-             <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;"/>
+         </property>
+         <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
+            <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
+               <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;"/>
 	     <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;"/>
 	     <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;"/>
 	  </property>
-       </property>
-    </property>
-    <property name="Giotto" class="ptolemy.domains.giotto.kernel.GiottoDirector"/>
-    <property name="RTP" class="ptolemy.domains.rtp.kernel.RTPDirector"/>
+         </property>
+      </property>
+      <property name="Giotto" class="ptolemy.domains.giotto.kernel.GiottoDirector"/>
+      <property name="RTP" class="ptolemy.domains.rtp.kernel.RTPDirector"/>
 
-        </group>
-      ?>
-    </configure>
-  </class>
+          </group>
+        ?>
+      </configure>
+    </class>
 
-  <!-- Default entity library to appear in the library browser. -->
-  <class name="actor library" extends="ptolemy.moml.EntityLibrary">
-    <configure>
-      <?moml
-        <group>
-          <doc>default entity library</doc>
-          <input source="../actor/lib/sources.xml"/>
-          <input source="../actor/lib/sinks.xml"/>
-          <input source="../actor/lib/math.xml"/>
-          <input source="../actor/lib/flowcontrol.xml"/>
-          <input source="../actor/lib/logic/logic.xml"/>
-          <input source="../actor/lib/conversions/conversions.xml"/>
-          <input source="../actor/lib/signalprocessing.xml"/>
-          <input source="../domains/sdf/lib/sdfentities.xml"/>
-          <input source="../domains/ct/lib/ctentities.xml"/>
-          <input source="../domains/de/lib/deentities.xml"/>
-        </group>
-      ?>
-    </configure>
-  </class>
+    <!-- Default entity library to appear in the library browser. -->
+    <class name="actor library" extends="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+            <doc>default entity library</doc>
+            <input source="../actor/lib/sources.xml"/>
+            <input source="../actor/lib/sinks.xml"/>
+            <input source="../actor/lib/math.xml"/>
+            <input source="../actor/lib/flowcontrol.xml"/>
+            <input source="../actor/lib/logic/logic.xml"/>
+            <input source="../actor/lib/conversions/conversions.xml"/>
+            <input source="../actor/lib/signalprocessing.xml"/>
+            <input source="../domains/sdf/lib/sdfentities.xml"/>
+            <input source="../domains/ct/lib/ctentities.xml"/>
+            <input source="../domains/de/lib/deentities.xml"/>
+          </group>
+        ?>
+      </configure>
+    </class>
 
-  <!-- The graphics package is in a sublibrary because it may not be present. -->
-  <!-- It depends on the 3D graphics package of Java being present. -->
-  <class name="Graphics" extends="ptolemy.moml.EntityLibrary">
-    <configure>
-      <?moml
-        <group>
-          <property name="GR" class="ptolemy.domains.gr.kernel.GRDirector"/>
-          <input source="../domains/gr/lib/grentities.xml"/>
-        </group>
-      ?>
-    </configure>
-  </class>
+    <!-- The graphics package is in a sublibrary because it may not be present. -->
+    <!-- It depends on the 3D graphics package of Java being present. -->
+    <class name="Graphics" extends="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+            <property name="GR" class="ptolemy.domains.gr.kernel.GRDirector"/>
+            <input source="../domains/gr/lib/grentities.xml"/>
+          </group>
+        ?>
+      </configure>
+    </class>
+  </entity>
 </entity>

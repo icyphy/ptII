@@ -686,6 +686,33 @@ public class NamedObj implements Nameable, Debuggable,
         }
     }
 
+    /** Get the attribute with the given name and class. If an attribute
+     *  is found that has the specified name, but the class does not match,
+     *  then throw an IllegalActionException.  The name may be compound,
+     *  with fields separated by periods, in which case the attribute
+     *  returned is contained by a (deeply) contained attribute.
+     *  This method is read-synchronized on the workspace.
+     *  @param name The name of the desired attribute.
+     *  @param attributeClass The class of the desired attribute.
+     *  @return The requested attribute if it is found, null otherwise.
+     *  @exception IllegalActionException If an attribute is found with
+     *   the specified name that is not an instance of the specified class.
+     */
+    public Attribute getAttribute(String name, Class attributeClass)
+            throws IllegalActionException {
+        Attribute attribute = getAttribute(name);
+        if (attribute != null) {
+            if (!attributeClass.isInstance(attribute)) {
+                throw new IllegalActionException(attribute,
+                "Expected attribute of class "
+                + attributeClass.getName()
+                + " but got attribute of class "
+                + attribute.getClass().getName());
+            }
+        }
+        return attribute;
+    }
+
     /** Return an enumeration of the attributes attached to this object.
      *  This method is read-synchronized on the workspace.
      *  @deprecated Use attributeList() instead.

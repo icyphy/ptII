@@ -97,6 +97,7 @@ public class MessageHandler {
     /** Set the message handler instance that is used by the static
      *  methods in this class.  If the given handler is null, then 
      *  do nothing.
+     *  @param handler The message handler.
      */
     public static void setMessageHandler(MessageHandler handler) {
         if(handler != null) {

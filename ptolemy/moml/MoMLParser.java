@@ -503,9 +503,8 @@ public class MoMLParser extends HandlerBase {
         // Add a parser attribute to the toplevel to indicate a parser
         // responsible for handling changes, unless there already is a
         // parser, in which case we just set the parser.
-        // FIXME: Should we check the class rather than casting?
-        ParserAttribute parserAttribute =
-            (ParserAttribute)_toplevel.getAttribute("_parser");
+        ParserAttribute parserAttribute = (ParserAttribute)
+                _toplevel.getAttribute("_parser", ParserAttribute.class);
         if (parserAttribute == null) {
             parserAttribute = new ParserAttribute(_toplevel, "_parser");
         }

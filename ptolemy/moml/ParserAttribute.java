@@ -42,12 +42,15 @@ This attribute represents a MoML parser.
 If it is present in an entity that is the context for a MoMLChangeRequest,
 then that change request will use it to parse the changes.
 It is not a persistent attribute (exportMoML() writes nothing).
+It is a singleton, meaning that if it is inserted into a container
+that already contains a singleton attribute with the same name,
+then it will replace the previous attribute.
 
 @see MoMLChangeRequest
 @author  Edward A. Lee
 @version $Id$
 */
-public class ParserAttribute extends Attribute {
+public class ParserAttribute extends SingletonAttribute {
 
     /** Construct an attribute with the specified container and name.
      *  @param container The container.

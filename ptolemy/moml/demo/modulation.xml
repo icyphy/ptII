@@ -20,7 +20,6 @@ by a higher frequency one (the carrier).</doc>
         </property>
     </property>
     <entity name="carrier" class="ptolemy.actor.lib.Sinewave">
-        <doc>This composite actor generates a sine wave.</doc>
         <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="2*PI">
             <doc>The sampling frequency, in the same units as the frequency.</doc>
         </property>
@@ -30,11 +29,11 @@ by a higher frequency one (the carrier).</doc>
         <property name="phase" class="ptolemy.data.expr.Parameter" value="0.0">
             <doc>The phase, in radians.</doc>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="215.0, 250.0">
+        <doc>This composite actor generates a sine wave.</doc>
+        <property name="_location" class="ptolemy.moml.Location" value="118.0, 204.0">
         </property>
     </entity>
     <entity name="signal" class="ptolemy.actor.lib.Sinewave">
-        <doc>This composite actor generates a sine wave.</doc>
         <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="2*PI">
             <doc>The sampling frequency, in the same units as the frequency.</doc>
         </property>
@@ -44,11 +43,12 @@ by a higher frequency one (the carrier).</doc>
         <property name="phase" class="ptolemy.data.expr.Parameter" value="0.0">
             <doc>The phase, in radians.</doc>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="143.0, 135.0">
+        <doc>This composite actor generates a sine wave.</doc>
+        <property name="_location" class="ptolemy.moml.Location" value="46.0, 89.0">
         </property>
     </entity>
     <entity name="mult" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.moml.Location" value="347.0, 196.0">
+        <property name="_location" class="ptolemy.moml.Location" value="250.0, 150.0">
         </property>
         <port name="multiply" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -71,29 +71,17 @@ by a higher frequency one (the carrier).</doc>
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="479.99998474121094, 135.0">
+        <property name="_location" class="ptolemy.moml.Location" value="382.99998474121094, 89.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>Modulated Waveform Example</title>
-<xLabel>sample count</xLabel>
-<yLabel>amplitude</yLabel>
-<xRange min="1.0" max="100.0"/>
-<yRange min="-1.0" max="1.0"/>
-<noGrid/>
-</plot>?>
-        </configure>
     </entity>
     <relation name="r1" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="r2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="279.0, 141.0">
+        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="182.0, 95.0">
         </vertex>
     </relation>
     <relation name="r3" class="ptolemy.actor.TypedIORelation">
