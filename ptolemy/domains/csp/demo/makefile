@@ -51,6 +51,7 @@ JSRCS = \
 	PauseTest.java \
 	ThreeActor.java \
 	TimeTest.java \
+	CSPPrimeExample.java
 
 
 
