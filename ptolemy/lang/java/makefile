@@ -31,7 +31,7 @@
 
 ME =		ptolemy/lang/java
 
-DIRS =		extended nodetypes test
+DIRS =		extended nodetypes tree test 
 
 # Root of the Java directory
 ROOT =		../../..
