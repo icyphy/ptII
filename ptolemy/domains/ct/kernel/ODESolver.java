@@ -43,7 +43,7 @@ import ptolemy.kernel.util.Workspace;
    {@link #fireDynamicActors} and {@link #fireStateTransitionActors}.
    CT directors call these methods to resolve the initial states in a future 
    time in the continuous phase of exeution of a complete iteration. See 
-   {@link CTDirector} for explanation of initial states and phases of 
+   {@link CTMultiSolverDirector} for explanation of initial states and phases of 
    executions. The process of resolving the initial states in a future time 
    is also known as an integration. A complete integration is composed of one 
    or more rounds of executions. One round of execution consists of calling 

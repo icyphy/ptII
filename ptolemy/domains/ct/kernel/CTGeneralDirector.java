@@ -75,10 +75,16 @@ public interface CTGeneralDirector {
     /** Return the ODE solver for normal integration.
      *  @return The ODE solver for normal integration.
      */
-    public ODESolver getODESolver();
+    public ODESolver getNormalODESolver();
 
-    /** Return true if the current execution phase is a discrete one.
-     *  @return true if the current execution phase is a discrete one.
+    /** Implementations of this method should return
+     *  true if there is an event at current time.
+     *  @return True if there is an event at current time.
+     */
+    public boolean hasCurrentEvent();
+
+    /** Return true if the current phase execution is a discrete one.
+     *  @return true if the current phase execution is a discrete one.
      */
     public boolean isDiscretePhase();
 }

@@ -165,7 +165,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         if (isDiscretePhase()) {
             _setCurrentODESolver(getBreakpointSolver());
         } else {
-            _setCurrentODESolver(getODESolver());
+            _setCurrentODESolver(getNormalODESolver());
         }
         
         if (executionPhase 

@@ -70,12 +70,6 @@ public interface CTTransparentDirector extends CTGeneralDirector {
     public void goToMarkedState() throws IllegalActionException ;
 
     /** Implementations of this method should return
-     *  true if there is an event at current time.
-     *  @return True if there is an event at current time.
-     */
-    public boolean hasCurrentEvent();
-
-    /** Implementations of this method should return
      *  true if the all output actors declare the
      *  current integration step is accurate.
      *  @return True if the current step is accurate.

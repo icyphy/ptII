@@ -549,20 +549,6 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         setModelTime(_knownGoodTime);
     }
 
-    /** Set the end time for this iteration. If the argument is
-     *  earlier than the current time, then an InvalidStateException
-     *  will be thrown.
-     *  @param time The fire end time.
-     */
-    protected void _setIterationEndTime(Time time) {
-        if (time.compareTo(getModelTime()) < 0) {
-            throw new InvalidStateException(this,
-                    " Iteration end time" + time + " is earlier than" +
-                    " the current time." + getModelTime());
-        }
-        super._setIterationEndTime(time);
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 

@@ -75,7 +75,7 @@ import ptolemy.kernel.util.Workspace;
    iteration to support roll back. The _setIterationBeginTime() method is just 
    designed for this purpose. It is called in the prefire() method of each 
    iteration to store the beginning time, and the getIterationBeginTime() 
-   returns the lastly stored time. 
+   returns the lastest stored time. 
    <P>
    This base class maintains a list of parameters that may be used by
    ODE solvers and actors. These parameters are: <Br>
@@ -112,18 +112,15 @@ import ptolemy.kernel.util.Workspace;
    reached.
    Default value is 1e-6.
    <P>
-   FIXME: rewrite the following comments.
-   This director also maintains a breakpoint table to record all
-   predictable breakpoints that are greater than or equal to the current time.
-   The breakpoints are sorted in their chronological order.
-   Breakpoints at the same time (controlled by the time resolution parameter)
-   are considered to be one. A breakpoint can be inserted into the table by
-   calling the fireAt() method. The fireAt method may be requested
-   by the director, which inserts the start time and stop time of the
-   execution. In this case, the first parameter actor is null. The fireAt
-   method may also be requested by the actors and the requested firing time
-   will be inserted into the breakpoint table.
-   <p>
+   This director maintains a breakpoint table to record all predictable 
+   breakpoints that are greater than or equal to 
+   the current time. The breakpoints are sorted in their chronological order.
+   Breakpoints at the same time are considered to be identical, and the 
+   breakpoint table does not contain duplicate time points. A breakpoint can 
+   be inserted into the table by calling the fireAt() method. The fireAt method 
+   may be requested by the director, which inserts the start time of the
+   execution. The fireAt method may also be requested by actors and the 
+   requested firing time will be inserted into the breakpoint table.
 
    @author Jie Liu, Haiyang Zheng
    @version $Id$
@@ -164,7 +161,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
         try {
             setScheduler(new CTScheduler(container.workspace()));
         } catch(IllegalActionException e) {
-            // Should never occur.
+            // This should never occur.
             throw new InternalErrorException(this.getFullName() +
                     "Error setting a CTScheduler.");
         } catch (NameDuplicationException ex) {
@@ -187,7 +184,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
         try {
             setScheduler(new CTScheduler(workspace));
         } catch(IllegalActionException e) {
-            // Should never occur.
+            // This should never occur.
             throw new InternalErrorException(this.getFullName() +
                     "Error setting a CTScheduler.");
         } catch (NameDuplicationException ex) {
@@ -199,8 +196,8 @@ public abstract class CTDirector extends StaticSchedulingDirector
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** ODE solving error tolerance, only effective in variable step
-     *  size methods.
+    /** Error tolerance for local truncation error control, only effective 
+     *  in variable step size methods.
      *  The default value is 1e-4, and the type is double.
      */
     public Parameter errorTolerance;
@@ -210,7 +207,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
      */
     public Parameter initStepSize;
 
-    /** The maximum number of iterations in looking for a fixed-point.
+    /** The maximum number of iterations in looking for a fixed point.
      *  The default value is 20, and the type is int.
      */
     public Parameter maxIterations;
@@ -230,8 +227,8 @@ public abstract class CTDirector extends StaticSchedulingDirector
      */
     public Parameter startTime;
 
-    /** Stop time of the simulation. The default value is Infinity, and
-     *  the type is double.
+    /** Stop time of the simulation. The default value is Infinity, 
+     *  and the type is double.
      */
     public Parameter stopTime;
 
@@ -240,7 +237,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
      */
     public Parameter synchronizeToRealTime;
 
-    /** Value resolution in looking for a fixed-point.
+    /** Value resolution in looking for a fixed-point state resolution.
      *  The default value is 1e-6, and the type is double.
      */
     public Parameter valueResolution;
@@ -288,7 +285,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
             if (value < 0.0) {
                 throw new IllegalActionException(this,
                         "Cannot set a negative step size.");
-            }
+            } 
             _minStepSize = value;
         } else if (attribute == maxStepSize) {
             double value = ((DoubleToken)maxStepSize.getToken()).doubleValue();
@@ -332,44 +329,21 @@ public abstract class CTDirector extends StaticSchedulingDirector
      */
     public abstract boolean canBeTopLevelDirector();
 
-    /** Override the fire method of the super class. This method is
+    /** Override the fire() method of the super class. This method is
      *  abstract in this abstract base class. The derived classes need to
      *  override this method for comcrete implementation.
      */
     public abstract void fire() throws IllegalActionException;
 
     /** Handle firing requests from the contained actors.
-     *  If the specified time is earlier than the current time, throw
-     *  an exception. Otherwise, insert the specified time into the
-     *  breakpoint table.
-     *  <p>
-     *  From this director's point of view, it is irrelevant
-     *  which actor requests the breakpoint. All actors will be
-     *  executed at every breakpoint.
-     *  <p>
-     *  The way we use to find the fixed point is based on the SR
-     *  semantics. To be specific, starting from <i>unknown</i>, the directors
-     *  resolve the value of each signal as either <i>absent</i> or
-     *  <i>present</i>. This design is simple but firing all actors at each
-     *  breakpoint may cause overhead.
-     *  <p>
-     *  We could have used a smarter event queue like the one that the DE
-     *  director uses, where not all actors are executed at each
-     *  breakpoint (event). However, that will increase the complexity of this
-     *  class. We assume that CT models do not have many DE actors inside.
-     *  If the discrete part of the model is complicated with a lot of DE
-     *  actors, we would suggest to use an opaque DE composite actor with a
-     *  DE director in charge of the execution of those DE actors.
-     *  <p>
-     *  If the actor is null, it indicates the time for the start or
-     *  the stop of an execution. Otherwise, it is the actor that
-     *  requests the firing.
+     *  If the specified time is earlier than the current time, or the 
+     *  breakpoint table is null, throw an exception. Otherwise, insert 
+     *  the specified time into the breakpoint table.
 
-     *  @param actor The actor that requested the firing or null that
-     *  indicates the time of the start or stop of an execution.
+     *  @param actor The actor that requests the firing.
      *  @param time The requested firing time.
      *  @exception IllegalActionException If the time is earlier than
-     *  the current time.
+     *  the current time, or the breakpont table is null.
      */
     public void fireAt(Actor actor, Time time)
             throws IllegalActionException{
@@ -380,33 +354,30 @@ public abstract class CTDirector extends StaticSchedulingDirector
                     "Requested fire time: " + time + " is earlier than" +
                     " the current time." + currentTime );
         }
-
-        // Construct a breakpoint table if necessary
-        if (_breakPoints == null) {
-            _breakPoints = new TotallyOrderedSet(new GeneralComparator());
+        // check the validity of breakpoint table
+        if (_breakpoints == null) {
+            throw new IllegalActionException(
+                    "Breakpoint table can not be null!");
         }
-
-        // Debug information
         if (_debugging) {
             String name = ((Nameable)actor).getName();
             _debug("----> " + name + " requests refiring at " + time);
         }
-
-        // insert a new breakpoint into the breakpoints table.
-        _breakPoints.insert(time);
+        // insert a new breakpoint into the breakpoint table.
+        _breakpoints.insert(time);
     }
 
-    /** Return the breakpoint table. If the breakpoint table has never
-     *  been created, then return null.
+    /** Return the breakpoint table. The result can be null if the breakpoint 
+     *  table has never been created.
      *  @return The breakpoint table.
      */
     public final TotallyOrderedSet getBreakPoints() {
         // This method is final for performance reason.
-        return _breakPoints;
+        return _breakpoints;
     }
 
-    /** Return the current ODE solver.
-     *  @return The current ODE solver.
+    /** Return the current ODE solver used to resolve states by the director.
+     *  @return The current ODE solver used to resolve states by the director.
      */
     public final ODESolver getCurrentODESolver() {
         // This method is final for performance reason.
@@ -414,7 +385,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
     }
 
     /** Return the current integration step size.
-     *  @return The current step size.
+     *  @return The current integration step size.
      *  @see #setCurrentStepSize
      */
     public double getCurrentStepSize() {
@@ -429,11 +400,6 @@ public abstract class CTDirector extends StaticSchedulingDirector
         // This method is final for performance reason.
         return _errorTolerance;
     }
-
-    /** Return the enclosing CT general director of this director.
-     *  @return The enclosing CT general director of this director.
-     */
-    public abstract CTGeneralDirector getEnclosingCTGeneralDirector();
 
     /** Get the current execution phase of this director.
      *  @return The current execution phase of this director.
@@ -499,15 +465,14 @@ public abstract class CTDirector extends StaticSchedulingDirector
         return _minStepSize;
     }
 
-    /** Return the current iteration begin time plus the current
-     *  step size.
+    /** Return the current iteration begin time plus the current step size.
      *  @return The iteration begin time plus the current step size.
      */
     public Time getModelNextIterationTime() {
         return getIterationBeginTime().add(getCurrentStepSize());
     }
 
-    /** Return the start time parameter value.
+    /** Return the start time.
      *  @return the start time.
      */
     public final Time getModelStartTime() {
@@ -523,21 +488,17 @@ public abstract class CTDirector extends StaticSchedulingDirector
         return _stopTime;
     }
 
-    /** Return the current iteration begin time plus the current
-     *  step size.
+    /** Return the current iteration begin time plus the current step size.
      *  @return The iteration begin time plus the current step size.
+     *  @deprecated As of Ptolemy II 4.1, replaced by 
+     *  {@link #getModelNextIterationTime}
      */
     public double getNextIterationTime() {
         return getModelNextIterationTime().getDoubleValue();
     }
 
-    /** Return the ODE solver for normal integration.
-     *  @return The ODE solver for normal integration.
-     */
-    public abstract ODESolver getODESolver();
-
     /** Return the suggested next step size. The suggested step size is
-     *  the minimum step size that the step-size-control actors suggested
+     *  the minimum step size that all the step-size-control actors suggested
      *  at the end of last integration step. It is the prediction
      *  of the new step size.
      *  @return The suggested next step size.
@@ -565,7 +526,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  this method records the current system time as the "real" starting
      *  time of the execution. This starting time is used when the
      *  execution is synchronized to real time. This method also resets
-     *  the protected variables.
+     *  the protected variables of this director.
      *
      *  @exception IllegalActionException If the super class throws it.
      */
@@ -581,17 +542,17 @@ public abstract class CTDirector extends StaticSchedulingDirector
         super.initialize();
     }
 
-    /** Return true if this is the discrete phase execution.
-     *  @return True if this is the discrete phase execution.
+    /** Return true if this is the discrete phase of execution.
+     *  @return True if this is the discrete phase of execution.
      */
     public boolean isDiscretePhase() {
         return _discretePhase;
     }
 
     /** Return true if the actor has been prefired in the current iteration.
-     *  @param actor The actor about which we are asking.
-     *  @see #setPrefireComplete(Actor)
+     *  @param actor The actor about which we are querying.
      *  @return True if the actor has been prefired.
+     *  @see #setPrefireComplete(Actor)
      */
     public boolean isPrefireComplete(Actor actor) {
         return _prefiredActors.contains(actor);
@@ -609,7 +570,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  if the stop() method has not been called and all the actors return
      *  true at postfire, return true.
      *  @return True if the Director wants to be fired again in the future.
-     *  @exception IllegalActionException If refiring can not be requested.
+     *  @exception IllegalActionException If refiring can not be granted.
      */
     public boolean postfire() throws IllegalActionException {
         if (!_isTopLevel() && (getBreakPoints().size() > 0)) {
@@ -617,12 +578,12 @@ public abstract class CTDirector extends StaticSchedulingDirector
             CompositeActor container = (CompositeActor)getContainer();
             container.getExecutiveDirector().fireAt(container, time);
         }
-        if (_debugging) {
-            _debug("Postfire returns " +
-                    (_postfireReturns && !_stopRequested)
+        boolean postfireReturns = _postfireReturns && !_stopRequested;
+        if (_debugging && _verbose) {
+            _debug("Postfire returns " + postfireReturns
                     + " at: " + getModelTime());
         }
-        return _postfireReturns && !_stopRequested;
+        return postfireReturns;
     }
 
     /** Clear the set of actors that have been prefired.
@@ -636,25 +597,26 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  Return true if all the prefire() methods return true and stop()
      *  is not called. Otherwise, return false.  Note that prefire()
      *  is called on all actors even if one returns false.
-     *  @return True if all dynamic actors return true from their prefire
-     *  method and stop() is called.
+     *  @return True if all dynamic actors return true from their prefire()
+     *  methods and stop() is called.
      *  @exception IllegalActionException If scheduler throws it, or dynamic
      *  actors throw it in their prefire method, or they can not be prefired.
      */
     public boolean prefireDynamicActors() throws IllegalActionException {
 
-        // FIXME: can we treat dynamic actors also as waveform generators?
-        // This is crucial to implemet delta function.
+        // NOTE: We will also treat dynamic actors as waveform generators.
+        // This is crucial to implemet dirac function.
+
+        _setExecutionPhase(CTExecutionPhase.PREFIRING_DYNAMIC_ACTORS_PHASE);
 
         CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
         boolean result = true;
         Iterator actors = schedule.get(
                 CTSchedule.DYNAMIC_ACTORS).actorIterator();
 
-        _setExecutionPhase(CTExecutionPhase.PREFIRING_DYNAMIC_ACTORS_PHASE);
         while (actors.hasNext() && !_stopRequested) {
             Actor actor = (Actor)actors.next();
-            if (_debugging) {
+            if (_debugging && _verbose) {
                 _debug("Prefire dynamic actor: " + ((Nameable)actor).getName());
             }
             boolean ready = true;
@@ -672,7 +634,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
                         + "all times.\n "
                         + "Does the actor only operate on sequence of tokens?");
             }
-            if (_debugging) {
+            if (_debugging && _verbose) {
                 _debug("Prefire of " + ((Nameable)actor).getName()
                         + " returns " + ready);
             }
@@ -688,7 +650,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
             schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
         while (integrators.hasNext() && !_stopRequested) {
             CTDynamicActor dynamic = (CTDynamicActor)integrators.next();
-            if (_debugging) {
+            if (_debugging && _verbose) {
                 _debug("Emit tentative state " + ((Nameable)dynamic).getName());
             }
             dynamic.emitTentativeOutputs();
@@ -700,7 +662,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
     }
 
     /** Preinitialize the model for an execution. This method is called only
-     *  once for each execution. If this director does not have a container
+     *  once for each simulation. If this director does not have a container
      *  and a scheduler, or the director does not fit in this level of
      *  hierarchy, an IllegalActionException will be thrown. The schedule is
      *  invalidated, statistical variables and the breakpoint table are cleared,
@@ -720,7 +682,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
         }
 
         // Verify that this director resides in an approriate level
-        // of the hierarchy.
+        // of hierarchy.
         Nameable nameable = getContainer();
         if (!(nameable instanceof CompositeActor)) {
             throw new IllegalActionException(this,
@@ -745,8 +707,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
             throw new IllegalActionException( this, "has no scheduler.");
         }
 
-        // Force a reconstructition of the schedule.
-        // invalidate schedule
+        // Invalidate schedule and force a reconstructition of the schedule.
         scheduler.setValid(false);
 
         // Initialize the local variables except the time objects.
@@ -755,26 +716,27 @@ public abstract class CTDirector extends StaticSchedulingDirector
         super.preinitialize();
 
         // Time objects can only initialized at the end of this method after
-        // the time scale and time resolutioin are set.
-        // NOTE: Time resolution is provided by the super class (Director)
-        // with the preinitialize method. So, this method must be called
+        // the time scale and time resolutioin are evaluated.
+        // NOTE: Time resolution is provided by the preinitialize() method in 
+        // the super class (Director). So, this method must be called
         // after the super.preinitialize() is called.
-        // NOTE: _timeBase is not initialized here but in initialize method
-        // instead in order to provide more accurate real-time information.
+        // NOTE: _timeBase is not initialized here but in the initialize() 
+        // method instead in order to provide more accurate real-time 
+        // information.
         _startTime = new Time(this, _startTimeValue);
         _stopTime = new Time(this, _stopTimeValue);
         _iterationBeginTime = _startTime;
         _iterationEndTime = _stopTime;
     }
 
-    /** Set the current step size. The current step size is used during an
-     *  iteration and must not be changed in the middle of an iteration.
+    /** Set the current step size. Only CT directors can call this method. 
+     *  Solvers and actors must not call this method.
      *  @param stepSize The step size to be set.
      *  @see #getCurrentStepSize
      */
     public void setCurrentStepSize(double stepSize) {
         if (_debugging) {
-            _debug("----- Setting current step size to " + stepSize);
+            _debug("----- Setting the current step size to " + stepSize);
         }
         _currentStepSize = stepSize;
     }
@@ -862,7 +824,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  @return a new ODE solver.
      *  @exception IllegalActionException If the solver can not be created.
      */
-    protected ODESolver _instantiateODESolver(String className)
+    protected final ODESolver _instantiateODESolver(String className)
             throws IllegalActionException {
         ODESolver newSolver;
         if (_debugging) {
@@ -886,14 +848,12 @@ public abstract class CTDirector extends StaticSchedulingDirector
     }
 
     /** Set the current ODE solver to be the given ODE solver.
-     *  Derived classes may throw an exception if the argument
-     *  cannot serve as the current ODE solver
      *  @param solver The solver to set.
      *  @exception  IllegalActionException Not thrown in this base class.
      *  It may be thrown by the derived classes if the solver is not
      *  appropriate.
      */
-    protected void _setCurrentODESolver(ODESolver solver)
+    protected final void _setCurrentODESolver(ODESolver solver)
             throws IllegalActionException {
         _currentSolver = solver;
     }
@@ -902,7 +862,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  set can be returned by the isDiscretePhase() method.
      *  @param discrete True if this is the discrete phase.
      */
-    protected void _setDiscretePhase(boolean discrete) {
+    protected final void _setDiscretePhase(boolean discrete) {
         _discretePhase = discrete;
     }
 
@@ -919,18 +879,24 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  with another step size.
      *  @param time The iteration begin time.
      */
-    protected void _setIterationBeginTime(Time time) {
+    protected final void _setIterationBeginTime(Time time) {
         _iterationBeginTime = time;
     }
 
     /** Set the iteration end time. The iteration end time is
-     *  the stop time for one integration step. This variable is used
-     *  to ensure an iteration ends at an expected time without introducing
-     *  small difference (as small as time resolution) via numerical
-     *  computation of solver.
+     *  the stop time for the current integration. This variable is used
+     *  to ensure an iteration ends at an expected time.
+     *  <p>
+     *  If the argument is earlier than the current time, then an 
+     *  InvalidStateException will be thrown.
      *  @param time The iteration end time.
      */
-    protected void _setIterationEndTime(Time time) {
+    protected final void _setIterationEndTime(Time time) {
+        if (time.compareTo(getModelTime()) < 0) {
+            throw new InvalidStateException(this,
+                    " Iteration end time" + time + " is earlier than" +
+                    " the current time." + getModelTime());
+        }
         _iterationEndTime = time;
     }
 
@@ -950,7 +916,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
      */
     protected boolean _firstIteration = false;
 
-    /** This flag will be set to false if any actor returns false to
+    /** This flag will be set to false if any actor returns false from
      *  its postfire().
      */
     protected boolean _postfireReturns = true;
@@ -993,7 +959,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
        if (breakpoints != null) {
            breakpoints.clear();
        } else {
-           _breakPoints = new TotallyOrderedSet(new GeneralComparator());
+           _breakpoints = new TotallyOrderedSet(new GeneralComparator());
        }
     }
 
@@ -1003,10 +969,10 @@ public abstract class CTDirector extends StaticSchedulingDirector
     // Indicate whether this is a breakpoint iteration.
     private boolean _breakpointIteration = false;
     // A table for breakpoints.
-    private TotallyOrderedSet _breakPoints;
+    private TotallyOrderedSet _breakpoints;
 
     // NOTE: all the following private variables are initialized
-    // in the _initializeLocalVariables() method before usage.
+    // in the _initializeLocalVariables() method before their usage.
     // Current ODE solver.
     private ODESolver _currentSolver = null;
     // Simulation step sizes.
