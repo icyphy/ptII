@@ -48,7 +48,7 @@ FIXME: document this.
 
 FIXME: How to stop a model???
 
-@see ptolemy.domains.sdf.kernel.RTPReceiver
+@see ptolemy.domains.rtp.kernel.RTPReceiver
 
 @author  Jie Liu
 @version $Id$

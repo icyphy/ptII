@@ -78,7 +78,7 @@ for external rate parameters also means that some hierarchical models that
 would be ruled out by the SDF checks are allowed.
 
 
-@see ptolemy.domains.sdf.kernel.PSDFScheduler
+@see ptolemy.domains.psdf.kernel.PSDFScheduler
 
 @author Steve Neuendorffer
 @version $Id$
