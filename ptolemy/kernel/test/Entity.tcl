@@ -302,7 +302,7 @@ test Entity-9.0 {Test description} {
     $p1 link $r1
     $p2 link $r1
     $w description 31
-} {pt.kernel.util.Workspace {W} elements {
+} {pt.kernel.util.Workspace {W} directory {
     pt.kernel.Entity {W.E1} ports {
         pt.kernel.Port {W.E1.P1} links {
             pt.kernel.Relation {W.R1}

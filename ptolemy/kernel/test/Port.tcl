@@ -372,11 +372,11 @@ test Port-11.1 {Move Port in and out of the workspace} {
     $p1 setName P1
     set p2 [java::new pt.kernel.Port $e1 P2]
     set p3 [java::new pt.kernel.Port $e1 P3]
-    set r1 [enumToFullNames [$w elements]]
+    set r1 [enumToFullNames [$w directory]]
     set r2 [enumToFullNames [$e1 getPorts]]
     $p2 setContainer [java::null]
     $p3 setContainer [java::null]
-    set r3 [enumToFullNames [$w elements]]
+    set r3 [enumToFullNames [$w directory]]
     set r4 [enumToFullNames [$e1 getPorts]]
     list $r1 $r2 $r3 $r4
 } {{.E1 .P1} {.E1.P2 .E1.P3} {.E1 .P1} {}}
@@ -416,7 +416,7 @@ test Port-12.4 {Test description on workspace} {
     # NOTE: Builds on previous example.
     # Test that links show inside an entity.
     $w description 15
-} {pt.kernel.util.Workspace {} elements {
+} {pt.kernel.util.Workspace {} directory {
     pt.kernel.Entity {.E1} ports {
         pt.kernel.Port {.E1.P1} links {
             pt.kernel.Relation {.R1}

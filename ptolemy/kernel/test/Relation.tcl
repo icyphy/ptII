@@ -214,7 +214,7 @@ test Relation-13.3 {Test description} {
 test Relation-13.3 {Test description on workspace} {
     # NOTE: Builds on previous example.
     $w description 15
-} {pt.kernel.util.Workspace {} elements {
+} {pt.kernel.util.Workspace {} directory {
     pt.kernel.Entity {.E1} ports {
         pt.kernel.Port {.E1.P1} links {
             pt.kernel.Relation {.R1}
