@@ -30,52 +30,40 @@
 
 package ptolemy.schematic.util;
 
-import java.util.Enumeration;
-import collections.CircularList;
-
 //////////////////////////////////////////////////////////////////////////
 //// SchematicLink
 /**
 
-A SchematicLink represents a relation in a Ptolemy II schematic.
-
-<!-- schematic relations will be parsed into class SchemticRelation -->
-<!ELEMENT relation (link)*>
-<!ATTLIST relation
-name ID #REQUIRED>
-<!ELEMENT link EMPTY>
-<!ATTLIST link
-name CDATA #REQUIRED>
+A SchematicLink represents a connection between two SchematicTerminals. 
+This link 
 
 
 @author Steve Neuendorffer, John Reekie
 @version $Id$
 */
-public class SchematicLink extends PTMLObject {
+public class SchematicLink extends Object {
 
     /**
-     * Create a new SchematicLink object with the name "link".
+     * Create a new SchematicLink object connecting the two ports.
      */
-    public SchematicLink () {
-        this("link");
+    public SchematicLink (SchematicTerminal to, SchematicTerminal from) {
+        super();
+	_to = to;
+	_from = from;
     }
 
     /**
-     * Create a new SchematicLink object with the given name.
-     * The ports associated with this object are created
+     * Return the terminal that this link connects from.
      */
-    public SchematicLink (String name) {
-        super(name);
-	_to = new SchematicTerminal("to_port");
-	_from = new SchematicTerminal("from_port");
-    }
-
-    public SchematicTerminal getTo() {
-	return _to;
-    }
-
     public SchematicTerminal getFrom() {
 	return _from;
+    }
+
+    /**
+     * Return the terminal that this link connects to.
+     */
+    public SchematicTerminal getTo() {
+	return _to;
     }
 
     /** 
@@ -97,15 +85,22 @@ public class SchematicLink extends PTMLObject {
     /** 
      * Return a string representation of the link
      */
-    protected String _description(int indent) {
+    /*    protected String _description(int indent) {
         String result = super._description(indent);
         result +=  _getIndentPrefix(indent) + "to\n" + 
             _to._description(indent + 1); 
 	result +=  _getIndentPrefix(indent) + "from\n" + 
             _from._description(indent + 1);
         return result;
+        }*/
+    public String toString() {
+        String s = getClass().getName();
+        s += " {" + getFrom().getFullName();
+        s += "->" + getTo().getFullName();
+        s += "}";
+        return s;
     }
-    
+
     SchematicTerminal _to;
     SchematicTerminal _from;
     

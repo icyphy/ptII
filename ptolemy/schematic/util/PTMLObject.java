@@ -69,11 +69,24 @@ public class PTMLObject extends Object implements Nameable {
     /**
      * Add a new Parameter to the object.  The Parameter will be 
      * added at the end of the current parameters.
+     *  @exception IllegalActionException If the parameter has no name.
+     *  @exception NameDuplicationException If the name of the parameter
+     *  coincides with the name of another parameter
+     *  contained in this object.
      *
      */
-    public void addParameter (SchematicParameter t) {
-        if(_parameters == null) _parameters = new CircularList();
-        _parameters.insertLast(t);
+    public void addParameter (SchematicParameter t)
+        throws IllegalActionException, NameDuplicationException {
+        if(_parameters == null) {            
+            // This is rather convoluted, since we don't want to
+            // save the NamedList if the append is just going to throw
+            // an exception.
+            NamedList newparameters = new NamedList();
+            newparameters.append(t);
+            _parameters = newparameters;
+        } else {
+            _parameters.append(t);
+        }
     }
 
     /**
@@ -214,7 +227,7 @@ public class PTMLObject extends Object implements Nameable {
             throw new IllegalActionException(t, this, "removeParameter:" +
                     "Parameter not found in Object.");
         }
-        _parameters.removeOneOf(t);
+        _parameters.remove(t);
     }
 
    /** Specify the container, adding the entity to the list
@@ -333,6 +346,6 @@ public class PTMLObject extends Object implements Nameable {
     private String _documentation;
     private Nameable _container;
     private String _name;
-    private CircularList _parameters;
+    private NamedList _parameters;
 }
 

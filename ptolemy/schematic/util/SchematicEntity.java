@@ -32,8 +32,7 @@ package ptolemy.schematic.util;
 
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
-import collections.CircularList;
-import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.*;
 
  //////////////////////////////////////////////////////////////////////////
 //// SchematicEntity
@@ -60,17 +59,14 @@ public class SchematicEntity extends PTMLTemplateObject {
     /**
      * Create a new SchematicEntity object with the given attributes and an
      * unspecified entitytype.
-     *
-     * @param attributes a CircularList from a String specifying the name of
-     * an attribute to a String specifying the attribute's value.
      */
     public SchematicEntity (String name, EntityTemplate et) {
         super(name, et);
 	_terminalstyle = et.getTerminalStyle();
         _x = 0;
         _y = 0;
-        _ports = new CircularList();
-        _terminals = new CircularList();
+        _ports = new NamedList();
+        _terminals = new NamedList();
  	//setIcon(DEFAULTICONNAME);
     }
 
@@ -78,28 +74,28 @@ public class SchematicEntity extends PTMLTemplateObject {
      * Add a new port to the schematic. The port name must be unique
      * within this schematic.
      *
-     * @throw IllegalActionException if a port with the same name as
-     * the new port is already contained in this Schematic.
+     *  @exception IllegalActionException If the port has no name.
+     *  @exception NameDuplicationException If the name of the port
+     *  coincides with the name of another port 
+     *  contained in this entity.
      */
-    public void addPort (SchematicPort port) throws IllegalActionException {
-        if(containsPort(port))
-            throw new IllegalActionException("Port with name " + 
-		 port.getName() + " already exists.");
-        _ports.insertLast(port);
+    public void addPort (SchematicPort port) 
+            throws IllegalActionException, NameDuplicationException {
+        _ports.append(port);
     }
 
     /**
      * Add a new port to the schematic. The port name must be unique
      * within this schematic.
      *
-     * @throw IllegalActionException if a port with the same name as
-     * the new port is already contained in this Schematic.
+     *  @exception IllegalActionException If the terminal has no name.
+     *  @exception NameDuplicationException If the name of the terminal
+     *  coincides with the name of another terminal 
+     *  contained in this entity.
      */
-    public void addPort (SchematicTerminal port) throws IllegalActionException {
-        if(containsTerminal(port))
-            throw new IllegalActionException("Terminal with name " + 
-		 port.getName() + " already exists.");
-        _ports.insertLast(port);
+    public void addTerminal (SchematicTerminal terminal) 
+            throws IllegalActionException, NameDuplicationException {
+        _terminals.append(terminal);
     }
 
     /**
@@ -169,7 +165,7 @@ public class SchematicEntity extends PTMLTemplateObject {
      */
     public void removePort (SchematicPort port) throws IllegalActionException {
         try {
-	    _ports.removeOneOf(port);
+	    _ports.remove(port);
 	}
         catch (NoSuchElementException e) {
             throw new IllegalActionException("Entity does not contain a " +
@@ -183,7 +179,7 @@ public class SchematicEntity extends PTMLTemplateObject {
      */
     public void removeTerminal (SchematicTerminal port) throws IllegalActionException {
         try {
-	    _ports.removeOneOf(port);
+	    _ports.remove(port);
 	}
         catch (NoSuchElementException e) {
             throw new IllegalActionException("Entity does not contain a " +
@@ -253,8 +249,8 @@ public class SchematicEntity extends PTMLTemplateObject {
 
     public static final String DEFAULTICONNAME = "default";
     private TerminalStyle _terminalstyle;
-    private CircularList _ports;
-    private CircularList _terminals;
+    private NamedList _ports;
+    private NamedList _terminals;
     private double _x;
     private double _y;
 }

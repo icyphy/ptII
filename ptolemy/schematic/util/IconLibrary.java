@@ -61,29 +61,43 @@ public class IconLibrary extends PTMLObject {
      */
     public IconLibrary(String name) {
         super(name);
-        _sublibraries = (CircularList) new CircularList();
-        _icons = (CircularList) new CircularList();
+        _sublibraries = (NamedList) new NamedList();
+        _icons = (NamedList) new NamedList();
    }
 
     /**
      * Add an Icon to this library
+     *  @exception IllegalActionException If the icon has no name.
+     *  @exception NameDuplicationException If the name of the icon
+     *  coincides with the name of another icon contained in this library.
      */
-    public void addIcon(Icon i) {
-        _icons.insertLast(i);
+    public void addIcon(Icon i)
+        throws IllegalActionException, NameDuplicationException {
+        _icons.append(i);
     }
 
     /**
      * Add a sublibrary to this library.
+     *  @exception IllegalActionException If the sublibrary has no name.
+     *  @exception NameDuplicationException If the name of the sublibrary
+     *  coincides with the name of another sublibrary
+     *  contained in this library.
      */
-    public void addSubLibrary(IconLibrary library) {
-        _sublibraries.insertLast(library);
+    public void addSubLibrary(IconLibrary library)
+        throws IllegalActionException, NameDuplicationException {
+        _sublibraries.append(library);
     }
 
     /**
-     * Add a sublibrary to this library.
-     */
-    public void addTerminalStyle(TerminalStyle style) {
-        _terminalstyles.insertLast(style);
+     * Add a terminal style to this library.
+     *  @exception IllegalActionException If the terminal style has no name.
+     *  @exception NameDuplicationException If the name of the terminal style
+     *  coincides with the name of another terminal style
+     *  contained in this library.
+      */
+    public void addTerminalStyle(TerminalStyle style)
+        throws IllegalActionException, NameDuplicationException {
+        _terminalstyles.append(style);
     }
 
     /**
@@ -101,7 +115,7 @@ public class IconLibrary extends PTMLObject {
     }
 
     /**
-     * Test if the library contains the sublibrary
+     * Test if the library contains the terminal style
      */
     public boolean containsTerminalStyle(TerminalStyle style) {
         return _terminalstyles.includes(style);
@@ -123,7 +137,7 @@ public class IconLibrary extends PTMLObject {
     }
 
     /** 
-     * return the URL of the given sublibrary.
+     * Return the URL of the given sublibrary.
      */
     public IconLibrary getSubLibrary(String name) 
         throws IllegalActionException {
@@ -140,7 +154,7 @@ public class IconLibrary extends PTMLObject {
     }
 
     /**
-     * Get the TerminalStyle that is stored in this IconLibrary with the given name
+     * Get the terminal style in this IconLibrary with the given name.
      */
     public TerminalStyle getTerminalStyle(String name) 
         throws IllegalActionException {
@@ -173,21 +187,21 @@ public class IconLibrary extends PTMLObject {
      * Remove an icon from this IconLibrary
      */
     public void removeIcon(Icon icon) {
-        _sublibraries.removeOneOf(icon);
+        _sublibraries.remove(icon);
     }
 
     /**
      * Remove a sublibrary from this IconLibrary
      */
     public void removeSubLibrary(IconLibrary lib) {
-        _sublibraries.removeOneOf(lib);
+        _sublibraries.remove(lib);
     }
 
     /**
-     * Remove a sublibrary from this IconLibrary
+     * Remove a terminal style from this IconLibrary
      */
     public void removeTerminalStyle(TerminalStyle style) {
-        _terminalstyles.removeOneOf(style);
+        _terminalstyles.remove(style);
     }
 
     /** Set the string that represents the version of this library.
@@ -235,7 +249,7 @@ public class IconLibrary extends PTMLObject {
         return str + "})";
     }
 
-    private CircularList _icons;
-    private CircularList _sublibraries;
-    private CircularList _terminalstyles;
+    private NamedList _icons;
+    private NamedList _sublibraries;
+    private NamedList _terminalstyles;
 }

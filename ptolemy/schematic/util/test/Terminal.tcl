@@ -93,4 +93,4 @@ test Terminal-3.7 {toString} {
     $e1 setX 1.1
     $e1 setY 2.4
     $e1 toString
-} {TestTerminal((1.1, 2.4), Input, Output, Multi)}
+} {TestTerminal((1.1, 2.4))}

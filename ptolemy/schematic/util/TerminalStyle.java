@@ -66,18 +66,19 @@ public class TerminalStyle extends PTMLObject {
      */
     public TerminalStyle (String name) {
         super(name);
-        _terminals = (CircularList) new CircularList();
+        _terminals = (NamedList) new NamedList();
     }
 
     /**
      * Add a new Terminal to the TerminalStyle.  The Terminal will be 
      * added at the end of the current terminals.
-     *
+     * @exception NameDuplicationException If an object with the same name as
+     * terminal already exists in the terminal style.
      */
     public void addTerminal (Terminal t) 
-            throws IllegalActionException {
-        _terminals.insertLast(t);
-        }
+            throws NameDuplicationException, IllegalActionException {
+        _terminals.append(t);
+    }
 
     /**
      * Test if this TerminalStyle contains the given Terminal.
@@ -102,7 +103,7 @@ public class TerminalStyle extends PTMLObject {
     public void removeTerminal (Terminal t)
             throws IllegalActionException {
         try {
-            _terminals.removeOneOf(t);
+            _terminals.remove(t);
         }
         catch (NoSuchElementException e) {
             throw new IllegalActionException("removeTerminal:" +
@@ -123,7 +124,7 @@ public class TerminalStyle extends PTMLObject {
         return str + ")";
     }
 
-    private CircularList _terminals;
+    private NamedList _terminals;
 
 }
 

@@ -32,8 +32,7 @@ package ptolemy.schematic.util;
 
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
-import collections.CircularList;
-import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// EntityTemplate
@@ -58,15 +57,12 @@ public class EntityTemplate extends PTMLObject {
     /**
      * Create a new EntityTemplate object with the given attributes and an
      * unspecified entitytype.
-     *
-     * @param attributes a CircularList from a String specifying the name of
-     * an attribute to a String specifying the attribute's value.
      */
     public EntityTemplate (String name) {
         super(name);
 	_icon = null;
 	_terminalstyle = null;
-        _ports = (CircularList) new CircularList();
+        _ports = (NamedList) new NamedList();
 	//setIcon(DEFAULTICONNAME);
     }
 
@@ -74,14 +70,13 @@ public class EntityTemplate extends PTMLObject {
      * Add a new port to the template. The port name must be unique within this
      * entity template.
      *
-     * @throw IllegalActionException if a port with the same name as
-     * the new port is already contained in this EntityTemplate.
+     *  @exception IllegalActionException If the port has no name.
+     *  @exception NameDuplicationException If the name of the port
+     *  coincides with the name of another port contained in this template.
      */
-    public void addPort (EntityPort port) throws IllegalActionException {
-        if(containsPort(port))
-            throw new IllegalActionException("Port with name " + 
-		 port.getName() + " already exists.");
-        _ports.insertLast(port);
+    public void addPort (EntityPort port) 
+            throws IllegalActionException, NameDuplicationException {
+        _ports.append(port);
     }
 
     /**
@@ -138,7 +133,7 @@ public class EntityTemplate extends PTMLObject {
      */
     public void removePort (EntityPort port) throws IllegalActionException {
         try {
-	    _ports.removeOneOf(port);
+	    _ports.remove(port);
 	}
         catch (NoSuchElementException e) {
             throw new IllegalActionException("Entity does not contain a " +
@@ -166,7 +161,7 @@ public class EntityTemplate extends PTMLObject {
     }
 
     public static final String DEFAULTICONNAME = "default";
-    private CircularList _ports;
+    private NamedList _ports;
     private Icon _icon;
     private TerminalStyle _terminalstyle;
 }

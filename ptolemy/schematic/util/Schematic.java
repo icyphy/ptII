@@ -32,8 +32,7 @@ package ptolemy.schematic.util;
 
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
-import collections.CircularList;
-import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// Schematic
@@ -70,31 +69,40 @@ public class Schematic extends PTMLObject {
     /**
      * Add a new entity to this schematic. The name
      * of the entity must be unique in this schematic.
+     *  @exception IllegalActionException If the entity has no name.
+     *  @exception NameDuplicationException If the name of the entity
+     *  coincides with the name of another entity 
+     *  contained in this schematic.
      */
-    public void addEntity (SchematicEntity entity) {
-        _entities.insertLast(entity);
+    public void addEntity (SchematicEntity entity) 
+            throws IllegalActionException, NameDuplicationException {
+        _entities.append(entity);
     }
 
     /**
      * Add a new port to the schematic. The port name must be unique
      * within this schematic.
-     *
-     * @throw IllegalActionException if a port with the same name as
-     * the new port is already contained in this Schematic.
+     *  @exception IllegalActionException If the port has no name.
+     *  @exception NameDuplicationException If the name of the port
+     *  coincides with the name of another port 
+     *  contained in this schematic.
      */
-    public void addPort (SchematicPort port) throws IllegalActionException {
-        if(containsPort(port))
-            throw new IllegalActionException("Port with name " + 
-		 port.getName() + " already exists.");
-        _ports.insertLast(port);
+    public void addPort (SchematicPort port) 
+            throws IllegalActionException, NameDuplicationException {
+        _ports.append(port);
     }
 
    /**
      * Add a new relation to this schematic. The name
      * of the relation must be unique in this schematic.
+     *  @exception IllegalActionException If the relation has no name.
+     *  @exception NameDuplicationException If the name of the relation
+     *  coincides with the name of another relation 
+     *  contained in this schematic.
      */
-    public void addRelation (SchematicRelation relation) {
-        _relations.insertLast(relation);
+    public void addRelation (SchematicRelation relation) 
+            throws IllegalActionException, NameDuplicationException {
+        _relations.append(relation);
     }
 
     /**
@@ -178,7 +186,7 @@ public class Schematic extends PTMLObject {
      * in this schematic.
      */
     public void removeEntity(SchematicEntity entity) {
- 	_entities.removeOneOf(entity);
+ 	_entities.remove(entity);
     }
 
     /**
@@ -187,7 +195,7 @@ public class Schematic extends PTMLObject {
      */
     public void removePort (SchematicPort port) throws IllegalActionException {
         try {
-	    _ports.removeOneOf(port);
+	    _ports.remove(port);
 	}
         catch (NoSuchElementException e) {
             throw new IllegalActionException("Entity does not contain a " +
@@ -201,7 +209,7 @@ public class Schematic extends PTMLObject {
      * in this schematic.
      */
     public void removeRelation(SchematicRelation relation) {
-        _relations.removeOneOf(relation);
+        _relations.remove(relation);
     }
 
     /**
@@ -232,8 +240,8 @@ public class Schematic extends PTMLObject {
 	return str;
     }
 
-    private CircularList _entities;
-    private CircularList _ports;
-    private CircularList _relations;
+    private NamedList _entities;
+    private NamedList _ports;
+    private NamedList _relations;
 }
 

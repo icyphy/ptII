@@ -46,7 +46,35 @@ if {[string compare test [info procs test]] == 1} then {
 # It would be nice if the tests would work in a vanilla itkwish binary.
 # Check for necessary classes and adjust the auto_path accordingly.
 #
+# we have to change _testEnums here, because the normal _testEnums only handles
+# NamedObj's
 
+proc _testEnums {enummethod args} {
+    set results {}
+    foreach objecttoenum $args {
+        if {$objecttoenum == [java::null]} {
+            lappend results [java::null]
+        } else {
+            set lresults {}
+            for {set enum [$objecttoenum $enummethod]} \
+                    {$enum != [java::null] && \
+                    [$enum hasMoreElements] == 1} \
+                    {} {
+                set enumelement [$enum nextElement]
+                if [ java::instanceof $enumelement ptolemy.schematic.util.PTMLObject] {
+                         set enumelement \
+                                 [java::cast ptolemy.schematic.util.PTMLObject \
+                                 $enumelement]
+                    lappend lresults [$enumelement getName]
+                } else {
+                    lappend lresults $enumElement
+                }
+            }
+            lappend results $lresults
+        }
+    }
+    return $results
+}
 ######################################################################
 ####
 #
@@ -71,12 +99,10 @@ test TerminalStyle-2.2 {setDocumenation, isDocumentation tests} {
 #
 test TerminalStyle-3.1 {addTerminal} {
     set t1 [java::new ptolemy.schematic.util.Terminal Terminal1]
-    $t1 setInput 1
     set t2 [java::new ptolemy.schematic.util.Terminal Terminal2]
-    $t2 setOutput 1    
     $e0 addTerminal $t1
     $e0 toString
-} {TerminalStyle(Terminal1((0.0, 0.0), Input))}
+} {TerminalStyle(Terminal1((0.0, 0.0)))}
 
 test TerminalStyle-3.2 {containsTerminal} {
     list [$e0 containsTerminal $t1] [$e0 containsTerminal $t2]
@@ -90,5 +116,5 @@ test TerminalStyle-3.3 {terminals} {
 test TerminalStyle-3.4 {removeTerminal} {
     $e0 removeTerminal $t1
     $e0 toString
-} {TerminalStyle(Terminal2((0.0, 0.0), Output))}
+} {TerminalStyle(Terminal2((0.0, 0.0)))}
 

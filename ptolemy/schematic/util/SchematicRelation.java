@@ -31,6 +31,7 @@
 package ptolemy.schematic.util;
 
 import java.util.Enumeration;
+import ptolemy.kernel.util.*;
 import collections.CircularList;
 
 //////////////////////////////////////////////////////////////////////////
@@ -70,7 +71,7 @@ public class SchematicRelation extends PTMLObject {
     public SchematicRelation (String name) {
         super(name);
         _links = (CircularList) new CircularList();
-	_ports = (CircularList) new CircularList();
+	_ports = (NamedList) new NamedList();
 	setWidth(1);
     }
 
@@ -83,9 +84,14 @@ public class SchematicRelation extends PTMLObject {
 
     /**
      * Add a new port to this relation. 
+     *  @exception IllegalActionException If the port has no name.
+     *  @exception NameDuplicationException If the name of the port
+     *  coincides with the name of another port 
+     *  contained in this relation.
      */
-    public void addSchematicPort (SchematicPort port) {
-        _ports.insertLast(port);
+    public void addSchematicPort (SchematicPort port) 
+        throws IllegalActionException, NameDuplicationException {
+        _ports.append(port);
     }
 
     /**
@@ -138,7 +144,7 @@ public class SchematicRelation extends PTMLObject {
      * Remove the given link from this relation.
      */
     public void removeSchematicPort(SchematicPort port) {
-        _ports.removeOneOf(port);
+        _ports.remove(port);
     }
 
     /**
@@ -171,6 +177,6 @@ public class SchematicRelation extends PTMLObject {
 
     int _width;
     CircularList _links;
-    CircularList _ports;
+    NamedList _ports;
 }
 

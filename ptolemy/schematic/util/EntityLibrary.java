@@ -61,22 +61,31 @@ public class EntityLibrary extends PTMLObject {
      */
     public EntityLibrary(String name) {
         super(name);
-        _sublibraries = (CircularList) new CircularList();
-        _entities = (CircularList) new CircularList();
+        _sublibraries = (NamedList) new NamedList();
+        _entities = (NamedList) new NamedList();
    }
 
     /**
      * Add an Entity to this library
+     *  @exception IllegalActionException If the entity has no name.
+     *  @exception NameDuplicationException If the name of the entity
+     *  coincides with the name of another entity contained in this library.
      */
-    public void addEntity(EntityTemplate e) {
-        _entities.insertLast(e);
+    public void addEntity(EntityTemplate e)
+        throws IllegalActionException, NameDuplicationException {
+        _entities.append(e);
     }
 
     /**
      * Add a sublibrary to this library.
+     *  @exception IllegalActionException If the sublibrary has no name.
+     *  @exception NameDuplicationException If the name of the sublibrary
+     *  coincides with the name of another sublibrary
+     *  contained in this library.
      */
-    public void addSubLibrary(EntityLibrary library) {
-        _sublibraries.insertLast(library);
+    public void addSubLibrary(EntityLibrary library)
+        throws IllegalActionException, NameDuplicationException {
+        _sublibraries.append(library);
     }
 
     /**
@@ -130,14 +139,14 @@ public class EntityLibrary extends PTMLObject {
      * Remove an Entity from this EntityLibrary
      */
     public void removeEntity(EntityTemplate entity) {
-        _sublibraries.removeOneOf(entity);
+        _sublibraries.remove(entity);
     }
 
     /**
      * Remove a sublibrary from this EntityLibrary
      */
     public void removeSubLibrary(EntityLibrary lib) {
-        _sublibraries.removeOneOf(lib);
+        _sublibraries.remove(lib);
     }
 
     /** Set the string that represents the version of this library.
@@ -175,7 +184,7 @@ public class EntityLibrary extends PTMLObject {
         return str + "})";
     }
 
-    private CircularList _sublibraries;
-    private CircularList _entities;
+    private NamedList _sublibraries;
+    private NamedList _entities;
 }
 
