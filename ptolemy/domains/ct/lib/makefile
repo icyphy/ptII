@@ -50,6 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	CTAdd.java \
 	CTAdd2.java \
+	CTButtonEvent.java \
 	CTConst.java \
 	CTGain.java \
 	CTIntegrator.java \
