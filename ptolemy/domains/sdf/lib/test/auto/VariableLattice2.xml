@@ -1,0 +1,97 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="VariableLattice2" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 663]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, -4]">
+    </property>
+    <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="67.0, 35.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -2, 1032, 772}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 331.5}">
+    </property>
+    <entity name="VariableLattice" class="ptolemy.domains.sdf.lib.VariableLattice">
+        <property name="reflectionCoefficients" class="ptolemy.data.expr.Parameter" value="{0.5, 0.5}">
+        </property>
+        <property name="blockSize" class="ptolemy.data.expr.Parameter" value="7">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 320.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="7">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="7">
+            </property>
+        </port>
+    </entity>
+    <entity name="Pulse" class="ptolemy.actor.lib.Pulse">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0, 1}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{{0.804534, -0.820577, 0.521934, -0.205}, {0.5, 0.5}}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="135.0, 330.0">
+        </property>
+    </entity>
+    <entity name="Pulse4" class="ptolemy.actor.lib.Pulse">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3, 4, 5, 6}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0, 0, 0, 0, 0, 0}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 260.0">
+        </property>
+    </entity>
+    <entity name="FileWriter" class="ptolemy.actor.lib.FileWriter">
+        <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
+        </property>
+        <doc>Write out tokens to a file or stdout</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="475.0, 320.0">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0,-2.0,1.91,-.91,.205,0.0,0.0,1.0,-.25,-.5,0.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-5">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="445.0, 235.0">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="375.0, 320.0">
+        </vertex>
+    </relation>
+    <link port="VariableLattice.input" relation="relation5"/>
+    <link port="VariableLattice.output" relation="relation2"/>
+    <link port="VariableLattice.newCoefficients" relation="relation"/>
+    <link port="Pulse.output" relation="relation"/>
+    <link port="Pulse4.output" relation="relation5"/>
+    <link port="FileWriter.input" relation="relation2"/>
+    <link port="Test.input" relation="relation2"/>
+</entity>
