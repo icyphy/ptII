@@ -247,7 +247,7 @@ public abstract class MatrixToken extends Token {
     /** Create an array of tokens of the given length.  The first
      *  token in the sequence will have value start and each succeeding
      *  token will have the value created by adding the given increment
-     *  to the preceeding token.
+     *  to the preceding token.
      *  @param start The value of the first element of the returned array.
      *  @param increment The difference between elements in the array.
      *  @param length The size of the array to create, which must not be
