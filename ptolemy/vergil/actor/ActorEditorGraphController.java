@@ -228,11 +228,11 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
 //         ((CompositeInteractor)_relationController.getNodeInteractor())
 //             .addInteractor(_linkCreator2);
 
-//         LinkCreator linkCreator2 = new LinkCreator();
-//         linkCreator2.setMouseFilter(
-//                 new MouseFilter(InputEvent.BUTTON1_MASK,0));
-//         ((CompositeInteractor)_entityPortController.getNodeInteractor())
-//             .addInteractor(linkCreator2);
+        LinkCreator linkCreator2 = new LinkCreator();
+        linkCreator2.setMouseFilter(
+                new MouseFilter(InputEvent.BUTTON1_MASK,0));
+        ((CompositeInteractor)_entityPortController.getNodeInteractor())
+            .addInteractor(linkCreator2);
     }
 
     /** Initialize interactions for the specified controller.  This
