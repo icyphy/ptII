@@ -1169,7 +1169,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                 // If the type is not a token, then skip it.
                 if (!PtolemyUtilities.isConcreteTokenType(localType) ||
                         unsafeLocalSet.contains(local)) {
-                    if (debug) System.out.println("skipping: unsafe or not concrete");
+                    if (debug) System.out.println("skipping: unsafe or not concrete token");
                     continue;
                 }
 
