@@ -192,14 +192,18 @@ public class EntityController extends LocatableNodeController {
 		// If there is no figure, then ignore this port.  This may
 		// happen if the port hasn't been rendered yet.
 		if(portFigure == null) continue;
-		Rectangle2D portBounds =
-		    portFigure.getBounds();
+                Rectangle2D portBounds =
+		    portFigure.getShape().getBounds2D();
 		BoundsSite site =
 		    new BoundsSite(figure.getBackgroundFigure(), 0,
                             direction,
                             100.0 * number / (count+1));
-		CanvasUtilities.translateTo(portFigure,
-                        site.getX(), site.getY());
+                // Note that we don't use CanvasUtilities.translateTo because
+                // we want to only get the bounds of the background of the 
+                // port figure.
+                portFigure.translate(
+                        site.getX() - portBounds.getCenterX(), 
+                        site.getY() - portBounds.getCenterY());
 	    }
 	}
     }
