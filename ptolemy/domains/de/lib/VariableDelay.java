@@ -72,6 +72,8 @@ public class VariableDelay extends DETransformer {
         delay = new PortParameter(this, "delay");
         delay.setExpression("1.0");
         delay.setTypeEquals(BaseType.DOUBLE);
+        
+        output.setTypeSameAs(input);
 
         _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"0\" y=\"0\" "
@@ -100,6 +102,7 @@ public class VariableDelay extends DETransformer {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         VariableDelay newObject = (VariableDelay)super.clone(workspace);
+        newObject.output.setTypeSameAs(newObject.input);
         return newObject;
     }
 
