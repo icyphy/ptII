@@ -211,19 +211,22 @@ test PtParser-6.0 {Construct a Parser, test use of params passed in a namedlist}
     set parser [java::new pt.data.parser.PtParser]
     set e [java::new {pt.kernel.Entity String} parent]
     set tok1 [java::new  {pt.data.DoubleToken double} 4.5]
-    set tok2 [java::new  {pt.data.IntToken int} 7]
-    set tok3 [java::new  {pt.data.StringToken String} { hello world }]
-    set param1 [java::new {pt.data.Param NamedObj String Token} $e id1 $tok1]
-    set param2 [java::new {pt.data.Param NamedObj String Token} $e id1 $tok2]
-    set param3 [java::new {pt.data.Param NamedObj String Token} $e id1 $tok3]
+    set tok2 [java::new  {pt.data.DoubleToken double} 2.45]
+    set tok3 [java::new  {pt.data.IntToken int} 9]
+    set tok4 [java::new  {pt.data.StringToken String} { hello world }]
+    set param1 [java::new {pt.data.Param pt.kernel.NamedObj String pt.data.Token} $e id1 $tok1]
+    set param2 [java::new {pt.data.Param pt.kernel.NamedObj String pt.data.Token} $e id2 $tok2]
+    set param3 [java::new {pt.data.Param pt.kernel.NamedObj String pt.data.Token} $e id3 $tok3]
+    set param4 [java::new {pt.data.Param pt.kernel.NamedObj String pt.data.Token} $e id4 $tok4]
 
-    $e {addParam Param} $param1
-    $e {addParam Param} $param2
-    $e {addParam Param} $param3
+    $e {addParam pt.data.Param} $param1
+    $e {addParam pt.data.Param} $param2
+    $e {addParam pt.data.Param} $param3
+    $e {addParam pt.data.Param} $param4
 
     set nl [$param1 getScope]
 
-    set r1 [ $parser {parseExpression String NamedList Param} "id1 + id2 + id3" $nl $param1]
-    set c1 [$r getClass]
-    list  [$c1 getName ] [$r1 toString] 
-} {pt.data.StringToken  {11.5 hello world }}
+    set r1 [ $parser {parseExpression String pt.kernel.NamedList pt.data.Param} "id2 + id3 + id4\n" $nl $param1]
+    set c1 [$r1 getClass]
+    list [$c1 getName ] [$r1 toString] 
+} {pt.data.StringToken {11.45 hello world }}
