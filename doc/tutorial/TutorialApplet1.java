@@ -13,7 +13,7 @@ public class TutorialApplet1 extends TypedCompositeActor {
 	throws IllegalActionException, NameDuplicationException {
 	super(workspace);
 
-	// Create the director
+	// Create the director.
 	DEDirector director = new DEDirector(this, "director");
 	setDirector(director);
 	director.stopTime.setExpression("10.0");

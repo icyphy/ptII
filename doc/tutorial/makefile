@@ -69,6 +69,7 @@ EXTRA_SRCS =	$(JSRCS) \
 	TutorialApplet1.htm \
 	TutorialApplet2.htm \
 	TutorialApplet3.htm \
+	TutorialApplet4.htm \
 	index.htm
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -88,11 +89,11 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass
 install: jclass jars
 
-
 demo: all
 	appletviewer TutorialApplet1.htm
 	appletviewer TutorialApplet2.htm
 	appletviewer TutorialApplet3.htm
+	appletviewer TutorialApplet4.htm
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
