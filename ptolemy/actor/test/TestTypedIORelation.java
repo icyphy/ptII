@@ -45,23 +45,8 @@ Class for testing TypedIORelation
 */
 public class TestTypedIORelation extends TypedIORelation {
 
-    /** Construct a relation with the given name contained by the specified
-     *  entity. The container argument must not be null, or a
-     *  NullPointerException will be thrown.  This relation will use the
-     *  workspace of the container for synchronization and version counts.
-     *  If the name argument is null, then the name is set to the empty string.
-     *  This constructor write-synchronizes on the workspace.
-     *
-     *  @param container The container.
-     *  @param name The name of the relation.
-     *  @exception IllegalActionException If the container is incompatible
-     *   with this relation.
-     *  @exception NameDuplicationException If the name coincides with
-     *   a relation already in the container.
-     */
-    public TestTypedIORelation(TypedCompositeActor container, String name)
-            throws IllegalActionException, NameDuplicationException {
-        super(container, name);
+    public TestTypedIORelation() {
+        super();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -73,7 +58,7 @@ public class TestTypedIORelation extends TypedIORelation {
      *  @exception IllegalActionException If the port is not an
      *   TypedIOPort.
      */
-    protected void checkPort (Port port) throws IllegalActionException {
+    public void checkPort (Port port) throws IllegalActionException {
         _checkPort(port);
     }
 }
