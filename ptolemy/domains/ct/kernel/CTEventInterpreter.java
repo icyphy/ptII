@@ -49,4 +49,8 @@ public interface CTEventInterpreter extends Actor{
      */
     public void consumeCurrentEvents();
 
+    /** FIXME: Consider a method that tells if there's unconsumed event 
+     *  at current time.
+     */
+
 }

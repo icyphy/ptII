@@ -49,4 +49,8 @@ public interface CTEventGenerator extends Actor{
      */
     public void emitCurrentEvents();
 
+    /** Return true if there is an event at the current time.
+     */
+    public boolean hasCurrentEvent();
+
 }

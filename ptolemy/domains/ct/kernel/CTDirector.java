@@ -308,6 +308,10 @@ public abstract class CTDirector extends StaticSchedulingDirector
                     "Requested an Fire time that is earlier than" +
                     " the current time.");
         }
+        if ((actor != null) && (time == getCurrentTime())) {
+            // Try fuzzy time.
+            actor.fire();
+        }
         _breakPoints.insert(new Double(time));
     }
 

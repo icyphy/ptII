@@ -108,6 +108,14 @@ public class CTSingleSolverDirector extends CTDirector {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
+    /** Return the fire begin time, which is the value set by 
+     *  setFireBeginTime().
+     *  @return Fire begin time.
+     */
+    public double getFireBeginTime() {
+        return _fireBeginTime;
+    }
+
     /**  Fire the system for one iteration. One iteration is defined as
      *   simulating the system at one time point, which includes
      *   resolving states and producing outputs. For the first iteration
@@ -127,19 +135,6 @@ public class CTSingleSolverDirector extends CTDirector {
      *  @exception IllegalActionException If thrown by the ODE solver.
      */
     public void fire() throws IllegalActionException {
-        //event phase:
-        CTScheduler sched = (CTScheduler)getScheduler();
-        Enumeration evgens = sched.eventGenerators();
-        while(evgens.hasMoreElements()) {
-            CTEventGenerator evg = (CTEventGenerator) evgens.nextElement();
-            evg.emitCurrentEvents();
-        }
-        // fire all the discrete actors?
-        Enumeration evints = sched.eventInterpreters();
-        while(evints.hasMoreElements()) {
-            CTEventInterpreter evg = (CTEventInterpreter) evints.nextElement();
-            evg.consumeCurrentEvents();
-        }
         // If this is the first fire, the states are not resolved.
         if (_first) {
             _first = false;
@@ -147,6 +142,8 @@ public class CTSingleSolverDirector extends CTDirector {
             updateStates();
             return;
         }
+        //event phase:
+        _eventPhaseExecution();
         _setFireBeginTime(getCurrentTime());
         //Refine step size
         setCurrentStepSize(getSuggestedNextStepSize());
@@ -155,56 +152,7 @@ public class CTSingleSolverDirector extends CTDirector {
             System.out.println("execute the system from "+
                     getCurrentTime() +" step size" + getCurrentStepSize());
         }
-        // prefire all the actors.       
-        if(_prefireSystem()) {
-            ODESolver solver = getCurrentODESolver();
-            while (true) {
-                while (true) { 
-                    if (solver.resolveStates()) {
-                        if(VERBOSE) {
-                            System.out.println("state resolved.");
-                        }
-                        // ask if this step is acceptable
-                        if (!_isStateAcceptable()) {
-                            setCurrentTime(_getFireBeginTime());
-                            setCurrentStepSize(_refinedStepWRTState());
-                            if(VERBOSE) {
-                                System.out.println("execute the system from "+
-                                        getCurrentTime() +" step size" + 
-                                        getCurrentStepSize());
-                            }
-                            if(STAT) {
-                                NFAIL++;
-                            }
-                        } else {
-                            break;
-                        }
-                    } else { // resolve state failed, e.g. in implicit methods.
-                        if(getCurrentStepSize() < 0.5*getMinStepSize()) {
-                            throw new IllegalActionException(this,
-                                    "Cannot resolve new states even using "+
-                                    "the minimum step size, at time "+
-                                    getCurrentTime());
-                        }
-                        setCurrentTime(_getFireBeginTime());
-                        setCurrentStepSize(0.5*getCurrentStepSize());
-                    }
-                }
-                produceOutput();
-                if (!_isOutputAcceptable()) {
-                    System.out.println("Output not satisfied.");
-                    setCurrentTime(_getFireBeginTime());
-                    setCurrentStepSize(_refinedStepWRTOutput());
-                    if(STAT) {
-                        NFAIL++;
-                    }
-                }else {
-                    break;
-                }
-            }
-            setSuggestedNextStepSize(_predictNextStepSize());
-            updateStates(); // call postfire on all actors
-        }
+        _fireOneIteration();
     }
 
     /** Initialization for the entire system. This
@@ -249,38 +197,8 @@ public class CTSingleSolverDirector extends CTDirector {
             throw new IllegalActionException( this,
             "does not have a scheduler.");
         }
-        if(STAT) {
-            NSTEP=0;
-            NFUNC=0;
-            NFAIL=0;
-        }
-        if(VERBOSE) {
-            System.out.println("updating parameters");
-        }
-        updateParameters();
-        // Instantiate ODE solver
-        if(VERBOSE) {
-            System.out.println("instantiating ODE solver"+_solverclass);
-        }
-        if(_defaultSolver == null) {
-            _defaultSolver = _instantiateODESolver(_solverclass);
-        }
-        // set time
-        setCurrentTime(getStartTime());
-        setSuggestedNextStepSize(getInitialStepSize());
-        setCurrentODESolver(_defaultSolver);
-        TotallyOrderedSet bps = getBreakPoints();
-        if(bps != null) {
-            bps.clear();
-        }
-        fireAt(null, getCurrentTime());
-        fireAt(null, getStopTime());
         sch.setValid(false);
-        _first = true;
-        if (VERBOSE) {
-            System.out.println("Director.super initialize.");
-        }
-        super.initialize();
+        _initialize();
     }
 
     /** Return false if simulation stop time is reached.
@@ -419,6 +337,24 @@ public class CTSingleSolverDirector extends CTDirector {
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
+    /** Process discrete events in the system. All the event generators
+     *  will produce events, and event interpreters will consume events.
+     */
+    protected void _eventPhaseExecution() throws IllegalActionException {
+        CTScheduler sched = (CTScheduler)getScheduler();
+        Enumeration evgens = sched.eventGenerators();
+        while(evgens.hasMoreElements()) {
+            CTEventGenerator evg = (CTEventGenerator) evgens.nextElement();
+            evg.emitCurrentEvents();
+        }
+        // fire all the discrete actors?
+        Enumeration evints = sched.eventInterpreters();
+        while(evints.hasMoreElements()) {
+            CTEventInterpreter evg = (CTEventInterpreter) evints.nextElement();
+            evg.consumeCurrentEvents();
+        }
+    }
+
     /** Return true if the prefire() methods of all the actors in the system
      *  return true.
      *  @return True if the prefire() methods of all actors returns true.
@@ -447,6 +383,7 @@ public class CTSingleSolverDirector extends CTDirector {
         double bp;
         TotallyOrderedSet breakPoints = getBreakPoints();
         double tnow = getCurrentTime();
+        _setIsBPIteration(false);
         // If now is a break point, remove the break point from table;
         if(breakPoints != null) {
             while (!breakPoints.isEmpty()) {
@@ -470,12 +407,97 @@ public class CTSingleSolverDirector extends CTDirector {
         }
     }
 
-    /** Return the fire begin time, which is the value set by 
-     *  setFireBeginTime().
-     *  @return Fire begin time.
+    /** Fire one iteration. Return directly if any actors return false
+     *  in their prefire() method. The the time is advanced by the 
+     *  current step size.
      */
-    protected double _getFireBeginTime() {
-        return _fireBeginTime;
+    protected void _fireOneIteration() throws IllegalActionException {        
+        // prefire all the actors.       
+        if(_prefireSystem()) {
+            ODESolver solver = getCurrentODESolver();
+            while (true) {
+                while (true) { 
+                    if (solver.resolveStates()) {
+                        if(VERBOSE) {
+                            System.out.println("state resolved.");
+                        }
+                        // ask if this step is acceptable
+                        if (!_isStateAcceptable()) {
+                            setCurrentTime(getFireBeginTime());
+                            setCurrentStepSize(_refinedStepWRTState());
+                            if(VERBOSE) {
+                                System.out.println("execute the system from "+
+                                        getCurrentTime() +" step size" + 
+                                        getCurrentStepSize());
+                            }
+                            if(STAT) {
+                                NFAIL++;
+                            }
+                        } else {
+                            break;
+                        }
+                    } else { // resolve state failed, e.g. in implicit methods.
+                        if(getCurrentStepSize() < 0.5*getMinStepSize()) {
+                            throw new IllegalActionException(this,
+                                    "Cannot resolve new states even using "+
+                                    "the minimum step size, at time "+
+                                    getCurrentTime());
+                        }
+                        setCurrentTime(getFireBeginTime());
+                        setCurrentStepSize(0.5*getCurrentStepSize());
+                    }
+                }
+                produceOutput();
+                if (!_isOutputAcceptable()) {
+                    System.out.println("Output not satisfied.");
+                    setCurrentTime(getFireBeginTime());
+                    setCurrentStepSize(_refinedStepWRTOutput());
+                    if(STAT) {
+                        NFAIL++;
+                    }
+                }else {
+                    break;
+                }
+            }
+            setSuggestedNextStepSize(_predictNextStepSize());
+            updateStates(); // call postfire on all actors
+        }
+    }
+
+    /** Real initialize method.
+     */
+    protected void _initialize() throws IllegalActionException {
+        if(STAT) {
+            NSTEP=0;
+            NFUNC=0;
+            NFAIL=0;
+        }
+        if(VERBOSE) {
+            System.out.println("updating parameters");
+        }
+        updateParameters();
+        // Instantiate ODE solver
+        if(VERBOSE) {
+            System.out.println("instantiating ODE solver"+_solverclass);
+        }
+        if(_defaultSolver == null) {
+            _defaultSolver = _instantiateODESolver(_solverclass);
+        }
+        // set time
+        setCurrentTime(getStartTime());
+        setSuggestedNextStepSize(getInitialStepSize());
+        setCurrentODESolver(_defaultSolver);
+        TotallyOrderedSet bps = getBreakPoints();
+        if(bps != null) {
+            bps.clear();
+        }
+        fireAt(null, getCurrentTime());
+        fireAt(null, getStopTime());
+        _first = true;
+        if (VERBOSE) {
+            System.out.println("Director.super initialize.");
+        }
+        super.initialize();
     }
 
     /** Return true if the newly resolved state is acceptable.

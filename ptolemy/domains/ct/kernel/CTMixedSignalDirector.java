@@ -131,12 +131,15 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
         return _fireEndTime;
     }
 
-    /** Return the minimum of all the refined step size returned
-     *  from event detectors.
-     *  @return the minimum refined step size.
+    /** Return the time of the outside domain. If this is the top level
+     *  return the current time.
+     *  @return The outside current time.
      */
-    public double getRefineStepSize() {
-        return _refineStepSize;
+    public double getOutsideTime() {
+        if(_isTopLevel()) {
+            return getCurrentTime();
+        }
+        return _outsideTime;
     }
 
     /** Execute the directed (sub)system to the fire end time.
@@ -153,133 +156,48 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
      *       or the prefire(), fire(), or postfire() methods of an actor.
      */
     public void fire() throws IllegalActionException {
-        CompositeActor ca = (CompositeActor) getContainer();
-        double timeAcc = getTimeResolution();
-        boolean knownGood = false;
-        boolean endOfFire = false;
+        if(_isTopLevel()) {
+            super.fire();
+            return;
+        }
         if (_first) {
             _first = false;
             produceOutput();
+            updateStates();
             //return;
         }
-        updateStates();
-        if(!_isTopLevel()) {
-            if(_emitEvent) {
-                Director exe = ca.getExecutiveDirector();
-                exe.fireAt(ca, exe.getCurrentTime());
-                _emitEvent = false;
-                return;
-            }
-            _emitEvent = true;
+        CompositeActor ca = (CompositeActor) getContainer();
+        Director exe = ca.getExecutiveDirector(); // it may be null.
+        double timeAcc = getTimeResolution();
+        if (_isEventPhase()) {
+            _eventPhaseExecution();
+            exe.fireAt(ca, exe.getCurrentTime());
+            _setEventPhase(false);
+            return;
         }
-        while(!endOfFire) {
-            if(!_isTopLevel()) {
-                if(knownGood) {
-                    _markStates();
-                    knownGood = false;
-                }
+        // Not event phase.
+        while(true) {
+            // Just after a breakpoint iteration. This is the known
+            // good state.
+            if(isBPIteration()) { 
+                _markStates();
             }
-            //Refine step size and set ODE Solvers.
-            setCurrentODESolver(getDefaultSolver());
+            _setFireBeginTime(getCurrentTime());
+            //Refine step size
             setCurrentStepSize(getSuggestedNextStepSize());
-            double tnow = getCurrentTime();
-            double bp;
-            TotallyOrderedSet breakPoints = getBreakPoints();
-            // clear break points in the past.
-            if(breakPoints != null) {
-                while(!breakPoints.isEmpty()) {
-                    bp = ((Double)breakPoints.first()).doubleValue();
-                    if (bp < (getCurrentTime()-timeAcc/2.0)) {
-                        breakPoints.removeFirst();
-                    } else {
-                        break;
-                    }
-                }
-            }
-
-            //choose ODE solver
-            // If now is a break point, remove the break point from table;
-            if((breakPoints != null) && !breakPoints.isEmpty()) {
-                bp = ((Double)breakPoints.first()).doubleValue();
-                if(DEBUG) {
-                    System.out.println("Next break point " + bp);
-                }
-                if(Math.abs(bp-_outsideTime) < timeAcc) {
-                    knownGood = true;
-                    // The result of this iteration should be saved.
-                }
-                if(Math.abs(bp-tnow) < timeAcc) {
-                    // break point now!
-                    breakPoints.removeFirst();
-                    setCurrentTime(bp);
-                    setCurrentODESolver(getBreakpointSolver());
-                    setCurrentStepSize(getMinStepSize());
-                    if(DEBUG) {
-                        System.out.println("Change to BP solver with stepsize"
-                        + getCurrentStepSize());
-                    }
-                }
-                //adjust step size;
-                while(!breakPoints.isEmpty()) {
-                    bp = ((Double)breakPoints.first()).doubleValue();
-                    if(Math.abs(bp-tnow) < timeAcc) {
-                        setCurrentTime(bp);
-                        breakPoints.removeFirst();
-                    } else {
-                        double iterEndTime = tnow+getCurrentStepSize();
-                        if (iterEndTime > bp) {
-                            setCurrentStepSize(bp-tnow);
-                        }
-                        break;
-                    }
-                }
-            }
+            _processBreakpoints();
             if(DEBUG) {
                 System.out.println("Resolved stepsize: "+getCurrentStepSize());
             }
-
-            // prefire all the actors.
-            boolean ready = true;
-            Enumeration actors = ca.deepGetEntities();
-            while(actors.hasMoreElements()) {
-                Actor a = (Actor) actors.nextElement();
-                ready = ready && a.prefire();
-            }
-            if(ready) {
-                // while(true) {
-                //    getCurrentODESolver().proceedOneStep();
-                    //_detectEvent();
-                    //if(_hasMissedEvent()) {
-                    //   setCurrentTime(getCurrentTime()-getCurrentStepSize());
-                    //    setCurrentStepSize(getRefineStepSize());
-                    //} else {
-                    //    break;
-                    //}
-                //}
-                produceOutput();
-            }
-            // one iteration finished.
-            // exit condition.
-            if(_isTopLevel()) {
-                endOfFire = true;
-            } else {
-                Director exe = ca.getExecutiveDirector();
-                if(DEBUG) {
-                    System.out.println("Checking FireEndTime"+
-                            getFireEndTime());
-                }
-                // If this is the stop time, request a refire.
-                if(Math.abs(getCurrentTime()-getFireEndTime()) < timeAcc) {
-                    exe.fireAt(ca, getCurrentTime());
-                    if(DEBUG) {
-                        System.out.println("Ask for refire at " +
-                            getCurrentTime());
-                    }
-                    endOfFire = true;
-                } else {
-                    updateStates();
-                }
-            }
+            _fireOneIteration();
+            if (_stopByEvent()) {
+                exe.fireAt(ca, getCurrentTime());
+                _setEventPhase(true);
+                return;
+            } else if (getCurrentTime()>=getFireEndTime()) {
+                exe.fireAt(ca, getCurrentTime());
+                return;
+            } 
         }
     }
 
@@ -321,6 +239,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
             throw new IllegalActionException( this,
             "does not have a scheduler.");
         }
+        sch.setValid(false);
         _first = true;
         if(!_isTopLevel()) {
             // clear the parameters and make sure the outside domain
@@ -338,12 +257,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
         if (VERBOSE) {
             System.out.println("Director.super initialize.");
         }
-        super.initialize();
-        // update parameter is called in _initialize. But if this is 
-        // not a top-level director, the parameter should already be
-        // processed by the code above. So the updateParameters() in
-        // _initialize() will do nothing.
-        //_initialize();
+        _initialize();
     }
 
     /** If this is a top-level director, returns true if the current time
@@ -435,15 +349,18 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
                     NROLL ++;
                 }
                 _rollback();
+                _setFireEndTime(_outsideTime);
+                _catchUp();
             }
             if (_outsideTime > getCurrentTime()) {
                 throw new IllegalActionException(this, exe,
                         " time collapse.");
             } 
             runlength = Math.min(runlength, _runAheadLength);
-            setFireEndTime(_outsideTime + runlength);
-            fireAt(null,_outsideTime);
-            fireAt(null,getFireEndTime());
+            _setFireEndTime(_outsideTime + runlength);
+            // fireAt(null, _outsideTime);
+            // fireAt(null, getFireEndTime());
+            // Now it's guranteed that the current time is the outside time.
             if(DEBUG) {
                 System.out.println("Fire end time="+getFireEndTime());
             }
@@ -451,21 +368,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
         return true;
     }
 
-    /** Set the stop time for this iteration. 
-     *  For a director that is not at the top-level, set the fire end time
-     *  to be the current time  will result 
-     *  in that the local director
-     *  release the control to the executive director.
-     *  @param The fire end time.
-     */
-    public void setFireEndTime(double time ) {
-        if(time < getCurrentTime()) {
-            throw new InvalidStateException(this,
-                " Fire end time should be greater than or equal to" +
-                " the current time.");
-        }
-        _fireEndTime = time;
-    }
+
 
     /** Update the given parameter. If the parameter name is MaxRunAheadLength,
      *  update it. Otherwise pass it to the super class.
@@ -487,6 +390,12 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
 
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
+
+    /** Return true if the current phase of fire is event phase.
+     */
+    protected boolean _isEventPhase() {
+        return _eventPhase;
+    }
 
     /**Return true if this is a top-level director. A syntax sugar.
      */
@@ -531,6 +440,22 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
         setCurrentTime(_knownGoodTime);
     }
 
+    /** Catch up the simulation from a knowGood point to the outside
+     *  current time. There's should be no breakpoints of any kind
+     *  in this process. If the current time is greater than or equal
+     *  to the outside time, then do nothing.
+     */
+    protected void _catchUp() throws IllegalActionException {
+        if (getCurrentTime() >= getOutsideTime()) {
+            return;
+        }
+        // Don't need to consider breakpoint.
+        _setFireBeginTime(getCurrentTime());
+        while(getCurrentTime() < getOutsideTime()) {
+            _fireOneIteration();
+        }
+    }
+
     /** Mark the current state as the known good state. Call the
      *  markStates() method on all CTStatefulActors. Save the current time
      *  as the "known good" time.
@@ -547,6 +472,62 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
             mem.markState();
         }
         _knownGoodTime = getCurrentTime();
+    }
+
+    /** Set the stop time for this iteration. 
+     *  For a director that is not at the top-level, set the fire end time
+     *  to be the current time  will result 
+     *  in that the local director
+     *  release the control to the executive director.
+     *  @param The fire end time.
+     */
+    protected void _setFireEndTime(double time ) {
+        if(time < getCurrentTime()) {
+            throw new InvalidStateException(this,
+                " Fire end time should be greater than or equal to" +
+                " the current time.");
+        }
+        _fireEndTime = time;
+    }
+
+    /** Return true if the current fire phase need to stop due to
+     *  the occurrence of events (expected or unexpected).
+     */
+    protected boolean _stopByEvent() {
+        // expected events
+        double bp;
+        TotallyOrderedSet breakPoints = getBreakPoints();
+        double tnow = getCurrentTime();
+        if(breakPoints != null) {
+            while (!breakPoints.isEmpty()) {
+                bp = ((Double)breakPoints.first()).doubleValue();
+                if(bp < (tnow-getTimeResolution())) {
+                    // break point in the past or at now.
+                    breakPoints.removeFirst();
+                } else if(Math.abs(bp-tnow) < getTimeResolution()){
+                    // break point now!
+                    return true;
+                } else {
+                    break;
+                }
+            }
+        }
+        // detected events
+        CTScheduler sched = (CTScheduler)getScheduler();
+        Enumeration evgens = sched.eventGenerators();
+        while(evgens.hasMoreElements()) {
+            CTEventGenerator evg = (CTEventGenerator) evgens.nextElement();
+            if(evg.hasCurrentEvent()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** True argument sets the phase to be event phase.
+     */
+    protected void _setEventPhase(boolean eph) {
+        _eventPhase = eph;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -596,12 +577,9 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
     // variable of runaheadlength
     private double _runAheadLength;
 
-    // refined step size for event detection.
-    private double _refineStepSize;
-
     // the end time of a fire.
     private double _fireEndTime;
 
     // whether in the emit event phase;
-    private boolean _emitEvent = false;
+    private boolean _eventPhase = false;
 }
