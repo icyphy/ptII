@@ -75,7 +75,7 @@ import ptolemy.copernicus.kernel.SootUtilities;
 public interface PortInliner {
     /** Initialize the inliner.  This method will be called by the
      * InlinePortTransformer prior to any of the other methods being
-     * called.  It gives the Port inliner the opporutunity to create
+     * called.  It gives the Port inliner the opportunity to create
      * storage buffers that should only be created once.
      */
     public void initialize();
