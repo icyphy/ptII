@@ -50,7 +50,8 @@ MISC_FILES =	$(DIRS) design img
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES =	codeDoc
 
-ALLJSRCS = 		ptolemy.plot \
+ALLJSRCS = 		collections \
+			ptolemy.plot \
 			ptolemy.kernel \
 			ptolemy.kernel.event \
 			ptolemy.kernel.util \
@@ -84,7 +85,8 @@ ALLJSRCS = 		ptolemy.plot \
 all: suball codeDoc/tree.html
 docs: codeDoc/tree.html
 javadocs: codeDoc/tree.html
-codeDoc/tree.html: 	../ptolemy/plot/*.java \
+codeDoc/tree.html: 	../collections/*.java \
+			../ptolemy/plot/*.java \
 			../ptolemy/kernel/*.java \
 			../ptolemy/kernel/event/*.java \
 			../ptolemy/kernel/util/*.java \
