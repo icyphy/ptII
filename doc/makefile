@@ -78,7 +78,7 @@ VERGIL_DOCS = \
 # want make checkjunk to barf on them.
 MISC_FILES =	\
 	$(DIRS) \
-	$(VERGILDOCS) \
+	$(VERGIL_DOCS) \
 	img \
 	tutorial
 
