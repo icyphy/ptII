@@ -7484,7 +7484,7 @@ final class JavaLexBitSet implements Cloneable {
 
     /**
      * Compares this object against the specified object.
-     * @param obj the object to commpare with
+     * @param obj the object to compare with
      * @return true if the objects are the same; false otherwise.
      */
     public boolean equals(Object obj) {
