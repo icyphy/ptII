@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-1999 The Regents of the University of California.
+# @Copyright (c) 2000 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -78,6 +78,7 @@ JSRCS = \
 JSIMPLE_TESTS = \
 	ASTReflect.tcl \
 	FindExtraImportsVisitor.tcl \
+	JavaCodeGenerator.tcl \
 	SearchPath.tcl
 
 
