@@ -222,13 +222,15 @@ public class Plot extends PlotBox {
             x = Math.log(x)*_LOG10SCALE;
         }
         if (_ylog) {
-            if (y <= 0.0) {
+            if (y <= 0.0 || yLowEB <= 0.0 || yHighEB <= 0.0) {
                 System.err.println("Can't plot non-positive Y values "+
                         "when the logarithmic Y axis value is specified: " +
                         y);
                 return;
             }
             y = Math.log(y)*_LOG10SCALE;
+            yLowEB = Math.log(yLowEB)*_LOG10SCALE;
+            yHighEB = Math.log(yHighEB)*_LOG10SCALE;
         }
         _addPoint(_graphics, dataset, x, y,
                 yLowEB, yHighEB, connected, true);
