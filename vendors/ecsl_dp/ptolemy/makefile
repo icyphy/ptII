@@ -124,7 +124,71 @@ etc_controlECSL.xml: ../XML2ECSL/bin/etc_control.xml
 	../XML2ECSL/bin/Xml2Ecsl_d $< $@
 
 
+TARGETPATH = $(ME)/cg
+cg/cruiseControlECSL:
+	$(PTII)/bin/copernicus -codeGenerator shallow \
+		-outputDirectory $(PTII)/$(TARGETPATH) \
+		-targetPath $(TARGETPATH) \
+		cruisecontrolECSL.moml
 
+run_cg:
+	$(JAVA) \
+	-classpath "$(PTII)/$(TARGETPATH)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
+        "-Dptolemy.ptII.dir=c:/cxh/ptII" \
+        "ptolemy.actor.gui.CompositeActorApplication" \
+        "-class" \
+        "cruiseControlECSL.CGcruiseControlECSL"
+
+# The place where treeshake scripts are.
+TREESHAKE=$(ROOT)/util/testsuite/treeshake
+
+cruiseControl.jar:
+	"$(TREESHAKE)" "$(JAR)" cruiseControl.jar \
+		-main ptolemy.actor.gui.CompositeActorApplication \
+		"$(JAVA)" \
+			-classpath "$(PTII)/$(TARGETPATH)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
+
+
+			ptolemy.actor.gui.PtExecuteApplication \
+		        "-class" \
+		        "cruiseControlECSL.CGcruiseControlECSL"
+
+
+cruiseControl.jar:
+	"$(TREESHAKE)" "$(JAR)" cruiseControl.jar \
+		-main ptolemy.actor.gui.MoMLSimpleApplication \
+		"$(JAVA)" \
+			-classpath "$(PTII)/$(TARGETPATH)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
+			ptolemy.actor.gui.MoMLSimpleApplication \
+			cruiseControlECSL.moml
+
+
+run_treeshake: cruiseControl.jar
+	$(JAVA) \
+			-classpath "$(PTII)/$(TARGETPATH)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
+			ptolemy.actor.gui.PtExecuteApplication \
+		-class cruiseControlECSL.CGcruiseControlECSL
+
+# Rules to run gcj, the GNU Java -> Native compiler                            
+# This code is very experimental, and not likely to work                       
+GCJ_DIR =       /usr/local
+
+# The GNU C/Java compiler                                                      
+GCJ =           gcj
+GCJ_LIBDIR =    $(GCJ_DIR)/lib
+
+GCJ_JAR = /usr/local/share/java/libgcj-3.3.2.jar
+
+# GCJ Options, see http://gcc.gnu.org/onlinedocs/                              
+# If there is no -g or -O option, then the default is -g1                      
+#GCJ_FLAGS =    -static                                                        
+#GCJ_FLAGS =    -pg -g0 -O3 -fno-bounds-check --classpath=$(GCJ_JAR)           
+GCJ_FLAGS =     -g -O3 -fno-bounds-check --classpath=$(GCJ_JAR)
+
+gcj:
+	"$(GCJ)" $(GCJ_FLAGS) \
+		--main=ptolemy.actor.gui.CompositeActorApplication \
+		-o cruiseControl_gcj cruiseControl.jar
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
