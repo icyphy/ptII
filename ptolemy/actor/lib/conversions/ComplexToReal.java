@@ -115,8 +115,8 @@ public class ComplexToReal extends TypedAtomicActor {
         DoubleToken realPart = new DoubleToken (complexNumber.real);
         DoubleToken imagPart = new DoubleToken (complexNumber.imag);
 
-        realOutput.broadcast(realPart);
-        imagOutput.broadcast(imagPart);
+        realOutput.send(0, realPart);
+        imagOutput.send(0, imagPart);
     }
 }
 

@@ -1,5 +1,4 @@
-/* An actor that convert an input stream containing DoubleToken types
-into a stream of FixToken Types.
+/* Actor that converts a DoubleToken into a FixToken.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -30,6 +29,8 @@ into a stream of FixToken Types.
 
 package ptolemy.actor.lib.conversions;
 
+import ptolemy.math.Quantizer;
+import ptolemy.math.Precision;
 import ptolemy.actor.*;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.kernel.util.*;
@@ -40,7 +41,7 @@ import ptolemy.data.expr.Parameter;
 //////////////////////////////////////////////////////////////////////////
 //// DoubleToFix
 /**
-Read a token and converts it to a FixToken with a given precision.
+Read a DoubleToken and converts it to a FixToken with a given precision.
 
 @author Bart Kienhuis 
 @version $Id$
@@ -66,12 +67,11 @@ public class DoubleToFix extends Transformer {
 	precision = new Parameter(this, "precision", new StringToken("(2.1)"));
         precision.setTypeEquals(BaseType.STRING);
    
-	mode = new Parameter(this, "mode", new StringToken("Saturate"));
+	mode = new Parameter(this, "mode", new StringToken("Round"));
         mode.setTypeEquals(BaseType.STRING);
 
         attributeChanged( precision );
-        attributeChanged( mode );            
-
+        attributeChanged( mode );
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -86,22 +86,17 @@ public class DoubleToFix extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-   /** If the argument is the precision parameter, check that it is
-     *  positive.
-     *  @exception IllegalActionException If the meanTime value is
-     *   not positive.
+    /** Notification that an attribute has changed.          
+        @exception IllegalActionException If the expression of the
+        attribute cannot be parsed or cannot be evaluated.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == precision) {
-            System.out.println(" ---- Attribute Changed For Precision");
-            _precision = ((StringToken)precision.getToken()).toString();
-	    System.out.println(" ---- Precision: " + _precision );
+            _precision = new Precision(precision.getToken().toString());
 	} else {
 	    if (attribute == mode) {
-		System.out.println(" ---- Attribute Changed For Mode");
 		_mode = ((StringToken)mode.getToken()).toString();
-		System.out.println(" ---- Mode: " + _mode );
 	    } else {
 		super.attributeChanged(attribute);
 	    }
@@ -115,11 +110,14 @@ public class DoubleToFix extends Transformer {
      */
 
     public void fire() throws IllegalActionException {
+        FixToken result = null;
 	if (input.hasToken(0)) {
     	    DoubleToken in = (DoubleToken)input.get(0);
-	    FixToken result = new FixToken(_precision, in.doubleValue(), 
-                    _mode );    
-	    // result.print();
+            if ( _mode == "Round" ) { 
+                result = new FixToken( Quantizer.round(in.doubleValue(), _precision) );
+            } else {
+                result = new FixToken( Quantizer.truncate(in.doubleValue(), _precision) );
+            }
             output.send(0, result);
         }
     }
@@ -127,6 +125,9 @@ public class DoubleToFix extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private String _precision = null;
+    // The precision of the FixToken.
+    private Precision _precision = null;
+
+    // The mode of Quantization.
     private String _mode = null;
 }

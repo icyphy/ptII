@@ -1,5 +1,4 @@
-/* An actor that convert an input stream containing FixToken types
-into a stream of DoubleToken Types.
+/* Actor that converts a FixToken into a DoubleToken.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -36,11 +35,12 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
+import ptolemy.math.Precision;
 
 //////////////////////////////////////////////////////////////////////////
 //// FixToDouble
-/**
-Read a token and converts it to a FixToken with a given precision.
+/** Read a FixToken and converts it to a DoubleToken. Before the
+conversion takes place, the user can set the precision of the FixToken.
 
 @author Bart Kienhuis 
 @version $Id$
@@ -62,30 +62,48 @@ public class FixToDouble extends Transformer {
         input.setTypeEquals(BaseType.FIX);
         output.setTypeEquals(BaseType.DOUBLE);
 
+        // Set the Parameter
 	precision = new Parameter(this, "precision", new StringToken(""));
-        precision.setTypeEquals(BaseType.STRING);
+        precision.setTypeEquals(BaseType.STRING);              
+       
+        // FIXME
+        // initialize the parameter
+        // attributeChanged(precision);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The name of the file to write to. This parameter contains
-     *  a StringToken.
+    // FIXME: take precision into account.
+    /** Precision of the FixPoint that is converted into a double.
      */
     public Parameter precision;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read at most one token from each input and convert the Token
-     *  value in a FixToken with a given precision.  
-     *
+    /** Notification that an attribute has changed.          
+        @exception IllegalActionException If the expression of the
+        attribute cannot be parsed or cannot be evaluated.
+     */
+    public void attributeChanged(Attribute attribute) 
+            throws IllegalActionException {
+        if (attribute == precision) {
+            _precision = new Precision( 
+                    ((StringToken) precision.getToken()).toString() );
+        } else {
+                super.attributeChanged(attribute);
+        }        
+    }
+
+
+    /** Read at most one token from each input and convert the FixToken
+     *  into a DoubleToken. The user has the option to change the
+     *  precision of the FixToken before it is converted into the
+     *  double token.
      * @exception IllegalActionException If there is no director.  
      */
-
     public void fire() throws IllegalActionException {
-	String _precision = ((StringToken) precision.getToken()).toString();
-	// System.out.println(" F->D PRECISION: " + _precision);
 	if (input.hasToken(0)) {
     	    FixToken in = (FixToken)input.get(0);
 	    DoubleToken result = new DoubleToken(in.doubleValue());    
@@ -93,4 +111,8 @@ public class FixToDouble extends Transformer {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private members                   ////
+
+    private Precision _precision = null;
 }
