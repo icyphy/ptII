@@ -40,6 +40,7 @@ package MyPackageName;
    @author yourname
    @version $Id$
    @see classname (refer to relevant classes, but not the base class)
+   @since Ptolemy II x.x
 */
 
 public class ClassName {
