@@ -453,8 +453,4 @@ public class CompositeActorApplication {
 
     // List of parameter values seen on the command line.
     private List _parameterValues = new LinkedList();
-
-    // The previous state of the manager, to avoid reporting it if it hasn't
-    // changed.
-    private Manager.State _previousState;
 }

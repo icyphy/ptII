@@ -233,6 +233,5 @@ public class ExternalTextEffigy extends TextEffigy {
     ////                         private members                   ////
 
     private String _pathName;
-    private String _bufferName;
     private boolean _useContainerMoML;
 }
