@@ -514,7 +514,7 @@ public class Variable extends Attribute implements Typeable {
     /** Remove the items in the enumeration from the scope of this variable.
      *  Any item in the enumeration that is not an instance of Variable
      *  is ignored.  Also, variables that are in the scope because they
-     *  are contained by the container of this variables (or its containter)
+     *  are contained by the container of this variables (or its container)
      *  cannot be removed.  An attempt to do so will be ignored.
      *  Note also that if any of the removed variables are shadowing
      *  another variable with the same name, the shadowed variable <i>does
@@ -532,7 +532,7 @@ public class Variable extends Attribute implements Typeable {
 
     /** Remove the argument from the scope of this variable.
      *  Also, variables that are in the scope because they
-     *  are contained by the container of this variables (or its containter)
+     *  are contained by the container of this variables (or its container)
      *  cannot be removed.  An attempt to do so will be ignored.
      *  Note also that if the removed variables is shadowing
      *  another variable with the same name, the shadowed variable <i>does
