@@ -340,10 +340,9 @@ test CTScheduler-2.6 {event generators and event interpreters} {
 	.CA.D2
 	.CA.A3
 	.CA.A4
-	.CA.EG
-	.CA.EI
 	.CA.SSC
 	.CA.A5
+	.CA.EG
     }
     discreteActors {
     }
@@ -371,11 +370,10 @@ test CTScheduler-2.6 {event generators and event interpreters} {
 	.CA.A2
     }
     outputActors {
-	.CA.EI
-	.CA.SSC
 	.CA.A3
-	.CA.EG
+	.CA.SSC
 	.CA.A5
+	.CA.EG
     }
 }
 }}
@@ -425,12 +423,11 @@ test CTScheduler-2.7 {contained in a composite actor} {
 	.CA.D2
 	.CA.A3
 	.CA.A4
-	.CA.EG
-	.CA.ED
 	.CA.A6S
-	.CA.EI
 	.CA.SSC
 	.CA.A5
+	.CA.EG
+	.CA.ED
     }
     discreteActors {
     }
@@ -462,13 +459,12 @@ test CTScheduler-2.7 {contained in a composite actor} {
 	.CA.A2
     }
     outputActors {
-	.CA.EI
-	.CA.SSC
 	.CA.A3
+	.CA.A6S
+	.CA.SSC
+	.CA.A5
 	.CA.EG
 	.CA.ED
-	.CA.A6S
-	.CA.A5
     }
 }
 }}
@@ -499,12 +495,11 @@ test CTScheduler-2.8 {get the schedule again} {
 	.CA.D2
 	.CA.A3
 	.CA.A4
-	.CA.EG
-	.CA.ED
 	.CA.A6S
-	.CA.EI
 	.CA.SSC
 	.CA.A5
+	.CA.EG
+	.CA.ED
     }
     discreteActors {
     }
@@ -536,14 +531,13 @@ test CTScheduler-2.8 {get the schedule again} {
 	.CA.A2
     }
     outputActors {
-	.CA.EI
-	.CA.SSC
 	.CA.A8
 	.CA.A3
+	.CA.A6S
+	.CA.SSC
+	.CA.A5
 	.CA.EG
 	.CA.ED
-	.CA.A6S
-	.CA.A5
     }
 }
 }}
