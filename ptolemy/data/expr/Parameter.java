@@ -31,12 +31,11 @@
 
 package ptolemy.data.expr;
 
-import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.Token;
 import ptolemy.data.TypeLattice;
 import collections.LinkedList;
-import java.util.*;
+import java.util.Enumeration;
 import ptolemy.graph.CPO;
 
 //////////////////////////////////////////////////////////////////////////
