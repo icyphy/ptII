@@ -296,16 +296,13 @@ public class IconEditorPane extends JCanvas {
      */
     public void addXMLIcon(XMLIcon my_icon) {
         // First get an enumeration over all the elements in the icon.
-        Enumeration enum = my_icon.graphicElements();
+        Iterator i = my_icon.paintedList().paintedObjects.iterator();
 
 	// And as long as the icon has more elements...
-	while(enum.hasMoreElements()) {
-	    // Get the next graphic element.
-	    GraphicElement graphic =(GraphicElement) enum.nextElement();
-	    
-	    // Create a new figure represented by this graphic element.
+	while(i.hasNext()) {
+            // Create a new figure represented by this graphic element.
 	    VersatileFigure figure = 
-		new VersatileFigure(graphic.getPaintedObject());
+		new VersatileFigure((PaintedObject)i.next());
 	
 	    addFigure(figure);
 	}
@@ -318,17 +315,7 @@ public class IconEditorPane extends JCanvas {
     public void clear() {
         _m.clearSelection();
 	_layer.clear();
-	Enumeration enum = _icon.graphicElements();
-	while(enum.hasMoreElements()) {
-	    GraphicElement element =(GraphicElement) enum.nextElement();
-	    try {
-	        _icon.removeGraphicElement(element);
-	    }
-	    catch(IllegalActionException ex) {
-	        System.out.println 
-		   ("Illegal Action Exception\n " + ex.toString());
-	    }
-	}
+        _icon.paintedList().paintedObjects.clear();
     }
 
     /** Copy the currently selected item onto the clipboard.

@@ -50,8 +50,6 @@ JSRCS =
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
 	EditorIcon.tcl \
-	LibraryIcon.tcl \
-	PatternIcon.tcl \
 	XMLIcon.tcl
 
 # Graphical Java tests that use Tcl.

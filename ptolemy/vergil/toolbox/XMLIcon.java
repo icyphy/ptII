@@ -40,6 +40,7 @@ import java.io.*;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.*;
 import diva.util.xml.*;
+import diva.util.java2d.PaintedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// XMLIcon
@@ -65,23 +66,8 @@ public class XMLIcon extends EditorIcon {
     public XMLIcon(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        _graphics = (LinkedList) new LinkedList();
-    }
-
-    /**
-     * Add a new graphic element to the icon.
-     */
-    public void addGraphicElement(GraphicElement g)
-            throws IllegalActionException {
-        _graphics.add(g);
-    }
-
-    /**
-     * Test if this icon contains a graphic in the
-     * given format.
-     */
-    public boolean containsGraphicElement(GraphicElement g) {
-        return _graphics.contains(g);
+        _paintedList = null;
+        _description = null;
     }
 
     /**
@@ -89,77 +75,53 @@ public class XMLIcon extends EditorIcon {
      * will be painted with each graphic element that this icon contains.
      */
     public Figure createBackgroundFigure() {
-	// FIXME what happens if the description changes?
-	NamedObj container = (NamedObj)getContainer();
-	ProcessedString description =
-	    (ProcessedString)container.getAttribute("iconDescription");
-	if(description == null) {
-	    return _createDefaultBackgroundFigure();
-	}
-	
-	// Check to see that we got the right instruction
-	if(!description.getInstruction().equals("graphml"))
-	    return _createDefaultBackgroundFigure();
-	try {
-	    _update(null, description.getString());
-	} catch (Exception ex) {
-	    ex.printStackTrace();
-	    return _createDefaultBackgroundFigure();
-	}
-	
-        Enumeration graphics = graphicElements();
-        PaintedFigure figure = new PaintedFigure();
-        while(graphics.hasMoreElements()) {
-            GraphicElement element = (GraphicElement) graphics.nextElement();
-            figure.add(element.getPaintedObject());
+        // Get the description
+        // The following code is slightly inefficient because it always adds
+        // and removes a listener.  However, the overhead is small compared
+        // to the other overhead involved here, so I'm going to keep the code
+        // simple.
+        NamedObj container = (NamedObj)getContainer();
+        if(_description != null) {
+            // FIXME  This listener should set _paintedList to null.
+            //        _description.removeValueListener(_updateListener);
         }
-        return figure;
+        ProcessedString description =
+            (ProcessedString)container.getAttribute("iconDescription");
+        if(_description != description) {
+            _description = description;
+            try {
+                _updatePaintedList();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                _paintedList = null;
+            }
+        }
+        if(_description != null) {
+            // FIXME
+            // _description.addValueListener(_updateListener);
+        }
+            
+        if(_paintedList == null) {
+       	    return _createDefaultBackgroundFigure();
+        } else {
+            return new PaintedFigure(_paintedList);
+        }
     }
 
     /**
-     * Return an unmodifiable list over the graphic elements
+     * Return the painted list
      * contained by this icon.
      */
-    public List graphicElementList() {
-        return Collections.unmodifiableList(_graphics);
-    }
-
-    /**
-     * Return an enumeration over the graphic elements
-     * contained by this icon.
-     *
-     * @return Enumeration of GraphicElements.
-     * @deprecate
-     */
-    public Enumeration graphicElements() {
-        return Collections.enumeration(_graphics);
-    }
-
-    /**
-     * Remove a graphic element from the icon. Throw an exception if
-     * the graphic element is not contained in this icon
-     */
-    public void removeGraphicElement(GraphicElement g)
-            throws IllegalActionException {
-        try {
-            _graphics.remove(g);
-        }
-        catch (NoSuchElementException e) {
-            throw new IllegalActionException("removeGraphicElement:" +
-                    "GraphicElement not found in icon.");
-        }
+    public PaintedList paintedList() {
+        return _paintedList;
     }
 
     /**
      * Return a string this representing Icon.
      */
     public String toString() {
-        Enumeration els = graphicElements();
         String str = super.toString() + "(";
-        while(els.hasMoreElements()) {
-            GraphicElement g = (GraphicElement) els.nextElement();
-            str += "\n...." + g.toString();
-        }
+       
         return str + ")";
     }
 
@@ -182,12 +144,7 @@ public class XMLIcon extends EditorIcon {
         else
             result += super._description(detail, indent, 1);
 	result += " graphics {\n";
-	Enumeration graphicElements = graphicElements();
-        while (graphicElements.hasMoreElements()) {
-            GraphicElement p = (GraphicElement) graphicElements.nextElement();
-            result +=  _getIndentPrefix(indent + 1) + p.toString() + "\n";
-        }
-
+	result += "FIXME";
         result += _getIndentPrefix(indent) + "}";
         if (bracket == 2) result += "}";
 
@@ -206,48 +163,28 @@ public class XMLIcon extends EditorIcon {
      *  @exception Exception If the stream cannot be read or its syntax
      *   is incorrect.
      */
-    private void _update(URL base, String text) throws Exception {
-        _graphics.clear();
-	
-	Reader in = new StringReader(text);
-	XmlDocument document = new XmlDocument(base);
+    private void _updatePaintedList() throws Exception {
+        // create a new list because the PaintedList we had before
+        // was used to create some PaintedFigures already.
+        // FIXME: test for 'svg' processing instruction
+        if(_description == null) {
+            _paintedList = null;
+            return;
+        }
+        String text = _description.getString();
+   	Reader in = new StringReader(text);
+        // FIXME: Do we need a base here?
+	XmlDocument document = new XmlDocument((URL)null);
 	XmlReader reader = new XmlReader();
 	reader.parse(document, in);
 	XmlElement root = document.getRoot();
-	
-	Iterator graphics = root.elements();
-	while(graphics.hasNext()) {
-	    XmlElement graphic = (XmlElement)graphics.next();
-	    GraphicElement g = _createGraphicElement(graphic);
-	    addGraphicElement(g);
-	}
+      	
+        _paintedList = SVGParser.createPaintedList(root);
     }
 
-    // Create a new graphic element from the given XML element.
-    private GraphicElement _createGraphicElement(XmlElement e)
-            throws IllegalActionException {
+    // The list of painted objects contained in this icon.
+    private PaintedList _paintedList;
 
-        String name = e.getType();
-        GraphicElement element = new GraphicElement(name);
-        Iterator children = e.elements();
-        while(children.hasNext()) {
-            XmlElement child = (XmlElement)children.next();
-            System.out.println("Unrecognized element type = " +
-                    child.getType() + " found in " +
-                    element.getClass().getName());
-        }
-
-        Iterator attributes = e.attributeNames();
-        while(attributes.hasNext()) {
-            String n = (String) attributes.next();
-            String v = e.getAttribute(n);
-            element.setAttribute(n, v);
-        }
-
-        element.setLabel(e.getPCData());
-        return element;
-    }
-
-    // The list of graphic elements contained in this icon.
-    private List _graphics;
+    // The description of this icon in XML.
+    private ProcessedString _description;
 }

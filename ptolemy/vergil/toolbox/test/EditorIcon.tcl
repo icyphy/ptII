@@ -48,44 +48,17 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-set header {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">}
-
-#----------------------------------------------------------------------
-set moml_1 "$header
-<class name=\"generic\" extends=\"ptolemy.actor.TypedCompositeActor\">
-</class>
-"
 
 test EditorIcon-1.1 {parse and dump an EditorIcon} {
-    set parser [java::new ptolemy.moml.MoMLParser]
-    set toplevel [$parser parse $moml_1]
+    set toplevel [java::new ptolemy.kernel.CompositeEntity]
+    set icon [java::new ptolemy.vergil.toolbox.EditorIcon $toplevel _icon]
     $toplevel exportMoML
-} $moml_1
-
-test EditorIcon-1.2  {test getLocation when not parsed} {
-    set icon [java::cast ptolemy.vergil.toolbox.EditorIcon [$toplevel getAttribute _icon]]
-    java::isnull [$icon getLocation]
-} {1}
-
-#----------------------------------------------------------------------
-set moml_2 "$header
-<class name=\"generic\" extends=\"ptolemy.actor.TypedCompositeActor\">
-</class>
-"
-
-test EditorIcon-2.1 {parse and dump an EditorIcon} {
-    set parser [java::new ptolemy.moml.MoMLParser]
-    set toplevel [$parser parse $moml_2]
-    $toplevel exportMoML
-} $moml_2
-
-test EditorIcon-2.2  {test getLocation when parsed} {
-    set icon [java::cast ptolemy.vergil.toolbox.EditorIcon [$toplevel getAttribute _icon]]
-    set location [$icon getLocation]
-    jdkPrintArray $location
-} {144.0 93.0}
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="" class="ptolemy.kernel.CompositeEntity">
+</model>
+}
 
 test EditorIcon-2.3 {test createIcon when parsed} {
     java::isnull [$icon createIcon]

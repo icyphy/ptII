@@ -48,48 +48,40 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-set header {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">}
 
 #----------------------------------------------------------------------
-set moml_1 "$header
-<class name=\"generic\" extends=\"ptolemy.actor.TypedCompositeActor\">
+set moml_1 {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<class name="generic" extends="ptolemy.actor.TypedCompositeActor">
+<property name="iconDescription" class="ptolemy.kernel.util.ProcessedString">
+<configure><?svg
+<!--<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20001102//EN" 
+  "http://www.w3.org/TR/2000/CR-SVG-20001102/DTD/svg-20001102.dtd">-->
+<svg>
+  <rect x="0" y="0" width="20" height="20" style="fill:blue;stroke:green;stroke-width:30"/>
+  <circle cx="0" cy="0" r="20" style="fill:blue;stroke:green;stroke-width:30"/>
+  <ellipse cx="0" cy="0" rx="20" ry="30" style="fill:blue;stroke:green;stroke-width:30"/>
+  <polygon points="10,30 50,10 50,30" style="fill:blue;stroke:green;stroke-width:30"/>
+  <polyline points="10,30 50,10 50,30" style="stroke:green;stroke-width:30"/>
+  <line x1="10" y1="20" x2="30" y2="40" style="stroke:green;stroke-width:30"/>
+</svg> ?>
+</configure>
+</property>   
 </class>
-"
+}
 
 test XMLIcon-1.1 {parse and dump an XMLIcon} {
     set parser [java::new ptolemy.moml.MoMLParser]
     set toplevel [$parser parse $moml_1]
+    set icon [java::new ptolemy.vergil.toolbox.XMLIcon $toplevel _icon]
     $toplevel exportMoML
-} $moml_1
-
-test XMLIcon-1.2  {test getLocation when not parsed} {
-    set icon [java::cast ptolemy.vergil.toolbox.XMLIcon [$toplevel getAttribute _icon]]
-    java::isnull [$icon getLocation]
-} {1}
-
-#----------------------------------------------------------------------
-set moml_2 "$header
-<class name=\"generic\" extends=\"ptolemy.actor.TypedCompositeActor\">
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<class name="generic" extends="ptolemy.actor.TypedCompositeActor">
 </class>
-"
-
-test XMLIcon-2.1 {parse and dump an XMLIcon} {
-    set parser [java::new ptolemy.moml.MoMLParser]
-    set toplevel [$parser parse $moml_2]
-    $toplevel exportMoML
-} $moml_2
-
-test XMLIcon-2.2  {test getLocation when parsed} {
-    set icon [java::cast ptolemy.vergil.toolbox.XMLIcon [$toplevel getAttribute _icon]]
-    set location [$icon getLocation]
-    jdkPrintArray $location
-} {144.0 93.0}
-
-test XMLIcon-2.3 {test createIcon when parsed} {
-    java::isnull [$icon createIcon]
-} {0}
+}
 
 test XMLIcon-2.4 {test createBackgroundFigure when parsed} {
     java::isnull [$icon createBackgroundFigure]
@@ -98,40 +90,3 @@ test XMLIcon-2.4 {test createBackgroundFigure when parsed} {
 test XMLIcon-2.5 {test createFigure when parsed} {
     java::isnull [$icon createFigure]
 } {0}
-
-test XMLIcon-2.6 {test contained graphics} {
-    $icon toString
-} {(ptolemy.vergil.toolbox.XMLIcon, Location = (144.0, 93.0))(
-....{ptolemy.vergil.toolbox.GraphicElement {rectangle} attributes { {coords=0 0 60 40} {fill=white}} label {}}
-....{ptolemy.vergil.toolbox.GraphicElement {polygon} attributes { {coords=10 10 50 20 10 30} {fill=blue}} label {}})}
-
-#----------------------------------------------------------------------
-test XMLIcon-3.1 {test graphics list} {
-    set container [java::new ptolemy.kernel.util.NamedObj]
-    set icon [java::new ptolemy.vergil.toolbox.XMLIcon $container "icon"]
-    $icon toString
-} {(ptolemy.vergil.toolbox.XMLIcon, null)()}
-
-test XMLIcon-3.2 {test graphics list} {
-    set el1 [java::new ptolemy.vergil.toolbox.GraphicElement "rectangle"]
-    $icon addGraphicElement $el1
-    set str1 [$icon toString]
-    
-    set el2 [java::new ptolemy.vergil.toolbox.GraphicElement "ellipse"]
-    $icon addGraphicElement $el2
-    set str2 [$icon toString]
-
-    $icon removeGraphicElement $el1
-    set str3 [$icon toString]
-
-    list $str1 $str2 $str3
-} {{(ptolemy.vergil.toolbox.XMLIcon, null)(
-....{ptolemy.vergil.toolbox.GraphicElement {rectangle} attributes {} label {}})} {(ptolemy.vergil.toolbox.XMLIcon, null)(
-....{ptolemy.vergil.toolbox.GraphicElement {rectangle} attributes {} label {}}
-....{ptolemy.vergil.toolbox.GraphicElement {ellipse} attributes {} label {}})} {(ptolemy.vergil.toolbox.XMLIcon, null)(
-....{ptolemy.vergil.toolbox.GraphicElement {ellipse} attributes {} label {}})}}
-
-test XMLIcon-3.3 {test graphics list} {
-    set elementList [$icon graphicElementList]
-    list [$icon containsGraphicElement $el1] [$icon containsGraphicElement $el2] [$elementList size] [[$elementList get 0] equals $el2]
-} {0 1 1 1}

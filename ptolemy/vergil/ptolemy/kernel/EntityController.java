@@ -223,7 +223,8 @@ public class EntityController extends LocatableNodeController {
 	    NamedObj object = (NamedObj) location.getContainer();
 
 	    // FIXME: may want to use another type of icon
-	    // FIXME: this code is the same as in PtolemyTreeCellRenderer.
+	    // FIXME: this code is the same as in PtolemyTreeCellRenderer and
+            // AttributeController.
 	    EditorIcon icon;
 		try {
 		    icon = (EditorIcon)object.getAttribute("_icon");

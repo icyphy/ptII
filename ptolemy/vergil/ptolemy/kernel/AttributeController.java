@@ -117,15 +117,22 @@ public class AttributeController extends LocatableNodeController {
 	    Location location = (Location)n;
 	    NamedObj object = (NamedObj) location.getContainer();
 
-            Figure figure = new CompositeFigure(new BasicRectangle(0, 0, 60, 40, 
-					       java.awt.Color.white, 1));
-	    // FIXME get XML from the Icon description.
-	    
-	    /*
-	    EditorIcon icon = (EditorIcon)n;
-	    figure = icon.createFigure();
-	    */
+	    // FIXME: may want to use another type of icon
+	    // FIXME: this code is the same as in PtolemyTreeCellRenderer and
+            // EntityController.
+	    EditorIcon icon;
+		try {
+		    icon = (EditorIcon)object.getAttribute("_icon");
+		if(icon == null) {
+		    icon = new XMLIcon(object, "_icon");
+		}
+	    } catch (KernelException ex) {
+		throw new InternalErrorException("could not create icon " +
+						 "in " + object + " even " + 
+						 "though one did not exist");
+	    }
 
+	    Figure figure = icon.createFigure();
             figure.setToolTipText(object.getName());
 	    return figure;
 	}
