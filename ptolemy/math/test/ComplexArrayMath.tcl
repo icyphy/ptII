@@ -52,6 +52,8 @@ set c2 [java::new ptolemy.math.Complex 3.0 -4.0]
 set c3 [java::new ptolemy.math.Complex -4.9 -6.0]
 set c4 [java::new ptolemy.math.Complex -7.0 8.0]
 set c5 [java::new ptolemy.math.Complex -0.25 0.4]
+set c6 [java::new ptolemy.math.Complex -6.0 -6.0]
+set c7 [java::new ptolemy.math.Complex 6.0 6.0]
 
 # Complex array of length 0
 set ca0 [java::new {ptolemy.math.Complex[]} 0]
@@ -152,51 +154,11 @@ test ComplexArrayMath-4.5 {append(Complex[] array1, int idx1,
 } {}
 
 ####################################################################
-test DoubleArrayMath-4.8.1 {areMagnitudesWithin true} {
-    # Within 0.0001
-    set r1 [java::call ptolemy.math.ComplexArrayMath areMagnitudesWithin \
-	    $ca1 $ca1 0.0001]
-    set r2 [java::call ptolemy.math.ComplexArrayMath areMagnitudesWithin \
-	    $ca1 $ca3 0.0001]
-    set r3 [java::call ptolemy.math.ComplexArrayMath areMagnitudesWithin \
-	    $ca1 $ca3 14.1]
-    set r4 [java::call ptolemy.math.ComplexArrayMath areMagnitudesWithin \
-	    $ca1 $ca3 14.2]
-    list $r1 $r2 $r3 $r4
-
-} {1 0 0 1}
-
-####################################################################
 test DoubleArrayMath-4.8.2 {within with unequally sized arrays} {
     catch {set br [java::call ptolemy.math.ComplexArrayMath \
-	    {areMagnitudesWithin} $ca1 $ca5 0.002]} errMsg
+	    {within ptolemy.math.Complex[] ptolemy.math.Complex[] double} $ca1 $ca5 0.002]} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: ptolemy.math.ComplexArrayMath.areMagnitudesWithin() : input arrays must have the same length, but the first array has length 4 and the second array has length 5.}}
-
-
-
-####################################################################
-test DoubleArrayMath-4.9.1 {arePartsWithin true} {
-    # Within 0.0001
-    set r1 [java::call ptolemy.math.ComplexArrayMath arePartsWithin \
-	    $ca1 $ca1 0.0001]
-    set r2 [java::call ptolemy.math.ComplexArrayMath arePartsWithin \
-	    $ca1 $ca3 0.0001]
-    set r3 [java::call ptolemy.math.ComplexArrayMath arePartsWithin \
-	    $ca1 $ca3 14.1]
-    set r4 [java::call ptolemy.math.ComplexArrayMath arePartsWithin \
-	    $ca1 $ca3 14.2]
-    list $r1 $r2 $r3 $r4
-
-} {1 0 1 1}
-
-####################################################################
-test DoubleArrayMath-4.9.2 {within with unequally sized arrays} {
-    catch {set br [java::call ptolemy.math.ComplexArrayMath \
-	    {arePartsWithin} $ca1 $ca5 0.002]} errMsg
-    list $errMsg
-} {{java.lang.IllegalArgumentException: ptolemy.math.ComplexArrayMath.arePartsWithin() : input arrays must have the same length, but the first array has length 4 and the second array has length 5.}}
-
+} {{java.lang.IllegalArgumentException: ptolemy.math.ComplexArrayMath.within() : input arrays must have the same length, but the first array has length 4 and the second array has length 5.}}
 
 ####################################################################
 test ComplexArrayMath-3.1 {conjugate empty argument} {
@@ -407,8 +369,15 @@ test ComplexArrayMath-15.1 {_nonZeroLength with null arg} {
 
 
 ####################################################################
-test ComplexArrayMath-15.1 {_nonZeroLength with 0 length array} {
+test ComplexArrayMath-15.2 {_nonZeroLength with 0 length array} {
     catch {java::call ptolemy.math.test.TestComplexArrayMath testNonZeroLength $ca0 "anotherTest"} errMsg
     list $errMsg
 
 } {{java.lang.IllegalArgumentException: ptolemy.math.anotherTest() : input array has length 0.}}
+
+####################################################################
+test ComplexArrayMath-16.1 {limit} {
+
+    set res [java::call ptolemy.math.ComplexArrayMath limit $ca1 $c6 $c7]
+    jdkPrintArray $res
+} {{1.0 + 2.0i} {3.0 - 4.0i} {-4.9 - 6.0i} {-6.0 + 6.0i}}

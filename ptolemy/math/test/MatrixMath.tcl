@@ -1001,11 +1001,10 @@ testInt identity $types 2_2 3
 ####
 #  FIXED (FIXME): *ArrayMath Test out: xxx[] limit(xxx[], int int)
 
-# FIXED (FIXME): Missing: Complex[] limit(Complex[], Complex, Complex)
+# FIXED (FIXME): Missing: Complex[] limit(Complex[], Complex, Complex), Added to 
+#                         ComplexArrayMath.tcl
 
 set types [list \
-	[list Complex ptolemy.math.Complex complex \
-	{{2.0 - 2.0i 1.0 + 1.0i 0.0 + 0.0i 0.0 + 0.0i}}] \
 	[list Double double double {{2.0 0.0 1.0 0.0}}] \
 	[list Float float float {{2.0 0.0 1.0 0.0}}] \
 	[list Integer int int {{2 0 1 0}}] \

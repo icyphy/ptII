@@ -349,47 +349,6 @@ test ComplexMatrixMath-5.1.9 {absValues} {
     epsilonDiff $stmp {{{4.9 - 6.0i 1.0 + 2.0i 3.0 - 4.0i} {0.25 + 0.4i 7.0 + 8.0i 3.0 - 4.0i}}}
 } {}
 
-####################################################################
-test ComplexMatrixMath-5.2.0 {ifless} {
-    set mr [java::call ptolemy.math.ComplexMatrixMath \
-	    ifless $c1 $c2]
-    epsilonDiff $mr 0 
-} {}
-
-####################################################################
-test ComplexMatrixMath-5.2.1 {ifless} {
-    set mr [java::call ptolemy.math.ComplexMatrixMath \
-	    ifless $c0 $c1]
-    epsilonDiff $mr 1
-} {}
-
-####################################################################
-test ComplexMatrixMath-5.3.0 {ifgreater} {
-    set mr [java::call ptolemy.math.ComplexMatrixMath \
-	    ifgreater $c2 $c3]
-    epsilonDiff $mr 1
-} {}
-
-####################################################################
-test ComplexMatrixMath-5.3.1 {ifgreater} {
-    set mr [java::call ptolemy.math.ComplexMatrixMath \
-	    ifgreater $c0 $c1]
-    epsilonDiff $mr 0
-} {}
-
-####################################################################
-test ComplexMatrixMath-5.4.1 {arePartsWithin} {
-    set mr [java::call ptolemy.math.ComplexMatrixMath \
-	    arePartsWithin $m3 $m33 10.0]
-    epsilonDiff $mr 0
-} {}
-
-####################################################################
-test ComplexMatrixMath-5.4.2 {arePartsWithin} {
-    set mr [java::call ptolemy.math.ComplexMatrixMath \
-	    arePartsWithin $m3 $m33 15.0]
-    epsilonDiff $mr 1
-} {}
 
 ####################################################################
 test ComplexMatrixMath-5.4.2 {within} {
@@ -399,8 +358,8 @@ test ComplexMatrixMath-5.4.2 {within} {
 } {}
 
 ####################################################################
-test ComplexMatrixMath-5.4.2 {within} {
+test ComplexMatrixMath-5.4.3 {within} {
     set mr [java::call ptolemy.math.ComplexMatrixMath \
 	    within $m3 $m33 $c7]
-    epsilonDiff $mr 1
+    epsilonDiff $mr 0
 } {}
