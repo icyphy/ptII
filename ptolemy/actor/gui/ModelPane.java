@@ -226,6 +226,8 @@ public class ModelPane extends JPanel implements CloseListener {
         if (root != null && (_show & BUTTONS) != 0) {
             root.setDefaultButton(_goButton);
             _goButton.setMnemonic(KeyEvent.VK_G);
+            _pauseButton.setMnemonic(KeyEvent.VK_P);
+            _resumeButton.setMnemonic(KeyEvent.VK_R);
             _stopButton.setMnemonic(KeyEvent.VK_S);
         }
     }
@@ -459,7 +461,6 @@ public class ModelPane extends JPanel implements CloseListener {
     // The query box for the director parameters.
     private Configurer _directorQuery;
 
-
     // The go button.
     private JButton _goButton;
 
@@ -525,6 +526,16 @@ public class ModelPane extends JPanel implements CloseListener {
                     MessageHandler.message("Exported MoML to standard out.");
                 }
                 break;
+            case KeyEvent.VK_P:
+                if (_control) {
+                    pauseRun();
+                }
+                break;
+            case KeyEvent.VK_R:
+                if (_control) {
+                    resumeRun();
+                }
+                break;
             case KeyEvent.VK_S:
                 if (_control) {
                     stopRun();
@@ -561,7 +572,9 @@ public class ModelPane extends JPanel implements CloseListener {
         + "  Control-G: Start a run.\n"
         + "  Control-H: Display help.\n"
         + "  Control-M: Export MoML to standard out.\n"
+        + "  Control-P: Pause a run.\n"
+        + "  Control-R: Resume a run.\n"
         + "  Control-S: Stop a run.\n"
-        + "  ?: Display help.\n";
+        + "  Control-?: Display help.\n";
     }
 }

@@ -43,7 +43,6 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.PtolemyThread;
 import ptolemy.kernel.util.Workspace;
 
-
 import java.util.Collections;
 import java.util.List;
 import java.util.LinkedList;
@@ -458,7 +457,6 @@ public class Manager extends NamedObj implements Runnable {
             if (_debugging) _debug("Prefire container.");
             if (_container.prefire()) {
                 // Invoke initialize on actors that have been added.
-
                 if (_debugging) _debug("Fire model.");
                 _container.fire();
                 if (_debugging) _debug("Postfire model.");
@@ -598,6 +596,19 @@ public class Manager extends NamedObj implements Runnable {
      *  suspended.
      */
     public void resume() {
+
+        // Notify all threads waiting to know whether resume() has
+        // been called (threads that called waitForResume()).
+        //
+        // Works with DebugController to resume execution after a
+        // breakpoint.
+        synchronized(_resumeNotify) {
+            if (_resumeNotifyWaiting) {
+                _resumeNotify.notifyAll();
+                _resumeNotifyWaiting = false;
+            }
+        }
+            
         // Avoid the case when the director is not actually paused causing the 
         // swing thread to block.
         if (_state == PAUSED) {
@@ -714,6 +725,42 @@ public class Manager extends NamedObj implements Runnable {
 	    + "%)";
     }
 
+    /** The thread that calls this method will wait until resume() has
+     *  been called.
+     *
+     *  Note: This method will block.  Do not call this method from
+     *  the same thread that will call resume().
+     *
+     *  FIXME: Added by celaine.  Review this.  Works with
+     *  DebugController to resume execution after a breakpoint.
+     */
+    public void waitForResume(String breakpointMessage) {
+        try {
+            synchronized(_resumeNotify) {
+                // State of execution before synchronizing on resume().
+                State savedState = getState();
+
+                // Set the new state to show that execution is paused
+                // on a breakpoint.
+                //_setState(PAUSED_ON_BREAKPOINT);
+                _setState(new State("pausing on breakpoint: "
+                                  + breakpointMessage
+                                  + ".  Select Resume to continue."));
+                
+                _resumeNotifyWaiting = true;
+
+                // Wait until resume() is called.
+                _resumeNotify.wait();
+
+                // resume() has been called, so reset the state of the
+                // execution.
+                _setState(savedState);
+            }
+        } catch (InterruptedException error) {
+            throw new InternalErrorException("Interrupted while trying to "
+                    + "wait for resume() method to be called.");
+        }
+    }
 
     /** Wrap up the model by invoking the wrapup method of the toplevel
      *  composite actor.  The state of the manager will be set to
@@ -885,6 +932,12 @@ public class Manager extends NamedObj implements Runnable {
 
     // Flag indicating that pause() has been called.
     private boolean _pauseRequested = false;
+
+    // Synchronization object for resume().
+    private Object _resumeNotify = new Object();
+
+    // Flag for waiting on resume();
+    private boolean _resumeNotifyWaiting = false;
 
     // The state of the execution.
     private State _state = IDLE;

@@ -31,6 +31,8 @@ package ptolemy.vergil.debugger;
 
 import diva.canvas.Figure;
 
+import ptolemy.actor.Actor;
+import ptolemy.actor.Manager;
 import ptolemy.actor.Executable;
 import ptolemy.actor.FiringEvent;
 import ptolemy.kernel.util.DebugEvent;
@@ -68,6 +70,12 @@ public class DebugController extends TransientSingletonConfigurableAttribute
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Clear the set of actors that are being debugged.
+     */
+    public void clear() {
+        _toDebug.clear();
+    }
+    
     /** Respond to debug events of type FiringEvent by highlighting
      *  the actor that we are breaking on.
      *  @param debugEvent The debug event.
@@ -82,6 +90,7 @@ public class DebugController extends TransientSingletonConfigurableAttribute
             FiringEvent event = (FiringEvent) debugEvent;
             
             NamedObj objToHighlight = (NamedObj)event.getActor();
+
             if (_toDebug.containsKey(objToHighlight)) {
                 // The actor associated with this firing event is in
                 // the set of actors to be debugged.
@@ -110,57 +119,18 @@ public class DebugController extends TransientSingletonConfigurableAttribute
                         // the firing events, highlight the actor and
                         // wait for keyboard input.
                         if (debugProfile.isListening(event.getType())) {
-                            System.out.println("DebugController: "
-                                + event.getActor().toString()
-                                + event.getType().getName());
-                            render(figure);
+                            String message =
+                                new String(objToHighlight.getName()
+                                        + " "
+                                        + event.getType().getName());
+                            Manager manager =
+                                ((Actor)objToHighlight).getManager();
+                            render(figure, manager, message);
                         }
                     }
                 }
             }
         }
-    }
-
-    /** Ignore string messages.
-     */
-    public void message(String string) {
-    }
-
-    /** Add an actor to the set of actors that are being debugged.
-     *  @param actor The actor to debug.
-     *  @param profile The breakpoint configuration for this actor.
-     */
-    public void setDebug(Executable actor, DebugProfile profile) {
-        _toDebug.put(actor, profile);
-    }
-
-    /** Remove an actor from the set of actors that are being debugged.
-     *  @param actor The actor to remove.
-     */
-    public void unsetDebug(Executable actor) {
-        // delete the debug profile from the hashtable
-        _toDebug.remove(actor);
-    }
-
-    /** Get the profile for an actor that is being debugged.
-     *  @param actor The actor for which to retrieve the profile.
-     *  @return The profile for the actor.
-     */
-    public DebugProfile getDebug(Executable actor) {
-        return (DebugProfile)_toDebug.get(actor);
-    }
-
-    /** Clear the set of actors that are being debugged.
-     */
-    public void clear() {
-        _toDebug.clear();
-    }
-    
-    /** Enable/disable debugging on the set of actors.
-     *  @param enabled True if debugging should be enabled.
-     */
-    public void setEnabled(boolean enabled) {
-        // FIXME: not implemented yet
     }
 
     /** Determine whether debugging is enabled on the set of actors.
@@ -171,14 +141,58 @@ public class DebugController extends TransientSingletonConfigurableAttribute
         return false;
     }
 
+    /** Get the profile for an actor that is being debugged.
+     *  @param actor The actor for which to retrieve the profile.
+     *  @return The profile for the actor.
+     */
+    public DebugProfile getDebug(Executable actor) {
+        return (DebugProfile)_toDebug.get(actor);
+    }
+
+    /** Ignore string messages.
+     */
+    public void message(String string) {
+    }
+    
+    /** Add an actor to the set of actors that are being debugged.
+     *  @param actor The actor to debug.
+     *  @param profile The breakpoint configuration for this actor.
+     */
+    public void setDebug(Executable actor, DebugProfile profile) {
+        _toDebug.put(actor, profile);
+    }
+
+    /** Enable/disable debugging on the set of actors.
+     *  @param enabled True if debugging should be enabled.
+     */
+    public void setEnabled(boolean enabled) {
+        // FIXME: not implemented yet
+    }
+
+    /** Remove an actor from the set of actors that are being debugged.
+     *  @param actor The actor to remove.
+     */
+    public void unsetDebug(Executable actor) {
+        // delete the debug profile from the hashtable
+        _toDebug.remove(actor);
+    }
+
+    // FIXME: temp function to print thread info
+    public static void printThread(String str) {
+        System.out.println(Thread.currentThread().getName()
+                + ": "
+                + str);
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /** Highlight the actor.
      *  @param figure The figure that we are highlighting.
+     *  @param manager The manager for the figure.
      *  @see ptolemy.vergil.kernel.DebugRenderer
      */
-    private void render(Figure figure) {
+    private void render(Figure figure, Manager manager, String message) {
         // FIXME: is this still correct? do we need to save _debugRenderer
         if (_debugRenderer == null) {
             _debugRenderer = new DebugRenderer();
@@ -187,18 +201,11 @@ public class DebugController extends TransientSingletonConfigurableAttribute
         _debugRenderer.renderSelected(figure);
         Figure debugRendered = figure;
 
-        // Wait for user keyboard input.
-        // FIXME: this should actually be the "resume" button.
-        BufferedReader console = new BufferedReader(
-                new InputStreamReader(System.in));
-        try {
-            console.readLine();
-            if (debugRendered != null) {
-                // Unhighlight the actor after receiving keyboard input.
-                _debugRenderer.renderDeselected(debugRendered);
-            }
-        } catch (IOException e) {
-            //do nothing
+        // Wait for user to select Resume.
+        manager.waitForResume(message);
+        if (debugRendered != null) {
+            // Unhighlight the actor after resuming execution.
+            _debugRenderer.renderDeselected(debugRendered);
         }
 
         // FIXME: for some reason the small view in Vergil still shows
