@@ -816,9 +816,15 @@ public class PlotBox extends JPanel implements Printable {
             // We need to load the image from a file relative to the class
             // location.  Use the resource locator of the class.
             URL img = getClass().getResource("images/reset.gif");
-            ImageIcon resetIcon = new ImageIcon(img);
-            _resetButton = new JButton(resetIcon);
-            _resetButton.setBorderPainted(false);
+            if (img != null) {
+                ImageIcon resetIcon = new ImageIcon(img);
+                _resetButton = new JButton(resetIcon);
+                _resetButton.setBorderPainted(false);
+            } else {
+                // Backup in case something goes wrong with the
+                // class loader.
+                _resetButton = new JButton("R");
+            }
             _resetButton.setPreferredSize(new Dimension(20,20));
             _resetButton.setToolTipText(
                     "Reset X and Y ranges to their original values");
@@ -831,12 +837,18 @@ public class PlotBox extends JPanel implements Printable {
             // We need to load the image from a file relative to the class
             // location.  Use the resource locator of the class.
             URL img = getClass().getResource("images/format.gif");
-            ImageIcon formatIcon = new ImageIcon(img);
-            _formatButton = new JButton(formatIcon);
-            _formatButton.setBorderPainted(false);
+            if (img != null) {
+                ImageIcon formatIcon = new ImageIcon(img);
+                _formatButton = new JButton(formatIcon);
+                _formatButton.setBorderPainted(false);
+            } else {
+                // Backup in case something goes wrong with the
+                // class loader.
+                _formatButton = new JButton("S");
+            }
             _formatButton.setPreferredSize(new Dimension(20,20));
             _formatButton.setToolTipText(
-                    "Change the appearance of the plot");
+                    "Set the plot format");
             _formatButton.addActionListener(new ButtonListener());
             add(_formatButton);
         }
@@ -846,9 +858,15 @@ public class PlotBox extends JPanel implements Printable {
             // We need to load the image from a file relative to the class
             // location.  Use the resource locator of the class.
             URL img = getClass().getResource("images/fill.gif");
-            ImageIcon fillIcon = new ImageIcon(img);
-            _fillButton = new JButton(fillIcon);
-            _fillButton.setBorderPainted(false);
+            if (img != null) {
+                ImageIcon fillIcon = new ImageIcon(img);
+                _fillButton = new JButton(fillIcon);
+                _fillButton.setBorderPainted(false);
+            } else {
+                // Backup in case something goes wrong with the
+                // class loader.
+                _fillButton = new JButton("F");
+            }
             _fillButton.setPreferredSize(new Dimension(20,20));
             _fillButton.setToolTipText(
                     "Rescale the plot to fit the data");
