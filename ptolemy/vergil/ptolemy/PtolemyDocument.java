@@ -299,57 +299,27 @@ public class PtolemyDocument extends AbstractDocument
 	if(transferable == null) 
 	    return;
 	try {
-	    Iterator objects = (Iterator)
-		transferable.getTransferData(PtolemyTransferable.namedObjFlavor);
-	    System.out.println("pasting");
-	    while(objects.hasNext()) {
-		NamedObj object = (NamedObj)objects.next();
-		System.out.println("object = " + object.toString());
-	        if(object instanceof ComponentEntity) {
-		    try {
-			ComponentEntity clone = (ComponentEntity)
-			    object.clone(workspace);
-			System.out.println("clone = " + clone);
-			// FIXME the names that this creates are ugly.
-			String name = _model.uniqueName(object.getName());
-			clone.setName(name);
-			clone.setContainer(_model);
-			Icon icon = (Icon)clone.getAttribute("_icon");
-			model.addNode(this, icon, model.getRoot());
-		    } catch (CloneNotSupportedException ex) {
-			throw new RuntimeException(ex.getMessage());
-		    } catch (IllegalActionException ex) {
-			throw new RuntimeException(ex.getMessage());
-		    } catch (NameDuplicationException ex) {
-			throw new RuntimeException(ex.getMessage());
-		    }
-		} /*else if(object instanceof ComponentRelation) {
-		    try {
-			ComponentRelation clone = 
-			    (ComponentRelation)object.clone();
-			System.out.println("clone = " + clone);
-			String name = _model.uniqueName(object.getName());
-			clone.setName(name);
-			clone.setContainer(_model);
-			Vertex vertex = (V
-			Icon icon = (Icon)clone.getAttribute("_icon");
-			
-			model.addNode(node, controller.getGraph());
-			controller.drawNode(node);
-		    } catch (CloneNotSupportedException ex) {
-			throw new RuntimeException(ex.getMessage());
-		    } catch (IllegalActionException ex) {
-			throw new RuntimeException(ex.getMessage());
-		    } catch (NameDuplicationException ex) {
- 			throw new RuntimeException(ex.getMessage());
-		    }
-		    }*/
-	    }
+	    String string = (String)
+		transferable.getTransferData(DataFlavor.stringFlavor);
+	    System.out.println("string = " + string);
+	    NamedObj context = (NamedObj)model.getRoot();
+	    MoMLParser parser = new MoMLParser(workspace);
+	    parser.setContext(context);
+	    parser.parse(string);
 	} catch (UnsupportedFlavorException ex) {
-	    System.out.println("no flavor");
+	    System.out.println("Transferable object didn't " + 
+			       "support stringFlavor: " +
+			       ex.getMessage());
 	} catch (IOException ex) {
-	    System.out.println("io error");
-	}
+	    System.out.println("IOException when pasting: " + 
+			       ex.getMessage());
+	} catch (Exception ex) {
+	    ex.printStackTrace();
+	    throw new RuntimeException(ex.getMessage());
+	} 
+	model.dispatchGraphEvent(new GraphEvent(this, 
+						GraphEvent.STRUCTURE_CHANGED,
+						model.getRoot()));
     }
 
     /** Print the document to a printer, represented by the specified graphics
