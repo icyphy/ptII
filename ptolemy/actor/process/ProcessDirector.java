@@ -209,6 +209,10 @@ public class ProcessDirector extends Director {
 	    Iterator outports = container.outputPortList().iterator();
             createBranchController(outports);
 	}
+        
+        _inputControllerIsBlocked = _inputBranchController.isBlocked();
+        _outputControllerIsBlocked = _outputBranchController.isBlocked();
+        
     }
 
     /** Perform domain-specific initialization on the specified actor, if any.
@@ -689,28 +693,61 @@ public class ProcessDirector extends Director {
     /** 
      */
     protected synchronized void _controllerBlocked(BranchController cntlr) {
+        /*
         if( cntlr.isBlocked() ) {
+            // Determine which controller
+            // Set appropriate flag
             notifyAll();
         }
+        */
+        
+        if( cntlr == _inputBranchController ) {
+            _inputControllerIsBlocked = cntlr.isBlocked();
+        }
+        if( cntlr == _outputBranchController ) {
+            _outputControllerIsBlocked = cntlr.isBlocked();
+        }
+        notifyAll();
     }
 
     /** 
      */
     protected synchronized void _controllerUnBlocked(BranchController cntlr) {
+        /*
         if( !cntlr.isBlocked() ) {
             notifyAll();
         }
+        */
+        if( cntlr == _inputBranchController ) {
+            _inputControllerIsBlocked = cntlr.isBlocked();
+        }
+        if( cntlr == _outputBranchController ) {
+            _outputControllerIsBlocked = cntlr.isBlocked();
+        }
+        notifyAll();
     }
 
     /** JFIXME: This method can lead to deadlock
      */
     protected synchronized boolean _isInputControllerBlocked() {
-        return _inputBranchController.isBlocked(); 
+        return _inputControllerIsBlocked;
     }
         
     /** 
      */
-    public synchronized void registerBlockedBranchReceivers() {
+    public synchronized boolean registerBlockedBranchReceiversWithExecutive() {
+    	Director execDir = ((Actor)getContainer()).getExecutiveDirector();
+        if( execDir == this ) {
+            return false;
+        } else if( !(execDir instanceof ProcessDirector) ) {
+            if(_debugging) _debug(_name+": Blocked branch registration didn't work; director not ProcessDirector");
+            return false;
+        } else if( !_inputBranchController.hasBranches() ) {
+            return false;
+        }
+    
+	if( _debugging ) _debug(_name+": registering blocked branches to executive director");
+        
         if( _inputBranchController.isBlocked() ) {
             Iterator branches = 
                     _inputBranchController.getEngagedBranchList().iterator();
@@ -721,30 +758,37 @@ public class ProcessDirector extends Director {
                 branch = (Branch) branches.next();
                 rcvr = branch.getProdReceiver();
                 if( !rcvr.isReadBlocked() ) {
-                    // Throw Exception???
+                    // FIXME: Throw Exception???
                 } else {
                     blockedRcvrs.add(rcvr);
                 }
             }
             
             if( blockedRcvrs.size() > 0 ) { 
+                if(_debugging) _debug(_name+": ProcessDirector blocking due to branches");
+                ((ProcessDirector)execDir)._actorBlocked(blockedRcvrs);
+                /*
                 Director dir = ((Actor)getContainer()).getDirector();
                 if( dir instanceof ProcessDirector ) {
+                    if(_debugging) _debug(_name+": ProcessDirector blocking due to branches");
                     ProcessDirector pDir = (ProcessDirector)dir;
                     pDir._actorBlocked(blockedRcvrs);
                 } else {
+                    if(_debugging) _debug(_name+": Blocked branch registration didn't work; director not ProcessDirector");
                     // FIXME: Do something; Set _notDone = false???
                 }
-                
-                
+                */
+                notifyAll();
+                return true;
             }
         }
+        return false;
     }
 
     /** 
      */
     protected synchronized boolean _isOutputControllerBlocked() {
-        return _outputBranchController.isBlocked(); 
+        return _outputControllerIsBlocked;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -771,9 +815,11 @@ public class ProcessDirector extends Director {
     private int _actorsStopped = 0;
     
     // The Branch Controllers of this director
-    private LinkedList _branchControllers = new LinkedList();
     private BranchController _inputBranchController;
     private BranchController _outputBranchController;
+    
+    private boolean _inputControllerIsBlocked = true;
+    private boolean _outputControllerIsBlocked = true;
     
     
     private String _name = null;
