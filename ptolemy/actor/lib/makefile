@@ -53,8 +53,8 @@ ME =		ptolemy/actor/lib
 
 DIRS = 		conversions gui logic hoc image javasound net io \
 		test comm $(PTJAI_DIR) \
-		$(PTJMF_DIR) $(PTJOYSTICK_DIR) $(PTJSPACES_DIR) \
-		$(PTJYTHON_DIR) $(PTJXTA_DIR)
+		$(PTJMF_DIR) $(PTJOYSTICK_DIR) \
+		$(PTJYTHON_DIR) $(PTJXTA_DIR) #$(PTJSPACES_DIR)
 
 # Root of the Java directory
 ROOT =		../../..
