@@ -49,6 +49,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+		data/data.jar \
 		saveasjava/saveasjava.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
