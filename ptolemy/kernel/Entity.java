@@ -279,7 +279,7 @@ public class Entity extends NamedObj {
         if (portcontainer == null) {
             // If we are half-way through a remove, then the port is still
             // on the port list.  Otherwise, this is an error.
-            if (_portList.getIndexOf(port) >= 0) {
+            if (_portList.includes(port)) {
                 _portList.remove(port);
                 return;
             } else {
@@ -288,7 +288,7 @@ public class Entity extends NamedObj {
             }
         }
         if (portcontainer != this) {
-            if (_portList.getIndexOf(port) >= 0) {
+            if (_portList.includes(port)) {
                 // Changing owners, initiated by Port.setContainer()
                 _portList.remove(port);
                return;                
