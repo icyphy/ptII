@@ -677,21 +677,21 @@ public class Pxgraph extends Frame {
 	//_printButton.setVisible(vis);
 	//_htmlButton.setVisible(vis);
 	//_aboutButton.setVisible(vis);
-	if (vis) {
-	    _exitButton.hide(); // FIXME: hide() is
-	    // deprecated in JDK1.1, but we need to compile under
-	    // 1.0.2 for netscape3.x compatibilty.
-	    _printButton.hide(); // FIXME: hide() deprecated, but . . .
-	    _htmlButton.hide(); // FIXME: hide() deprecated, but . . .
-	    _aboutButton.hide(); // FIXME: hide() deprecated, but . . .
-	} else {
-	    _exitButton.show(); // FIXME: show() is
-	    // deprecated in JDK1.1, but we need to compile under
-	    // 1.0.2 for netscape3.x compatibilty.
-	    _printButton.show(); // FIXME: show() deprecated, but . . .
-	    _htmlButton.show(); // FIXME: hide() deprecated, but . . .
-	    _aboutButton.show(); // FIXME: show() deprecated, but . . .
-	}
+ 	if (vis) {
+ 	    _exitButton.show(); // FIXME: show() is
+ 	    // deprecated in JDK1.1, but we need to compile under
+ 	    // 1.0.2 for netscape3.x compatibilty.
+ 	    _printButton.show(); // FIXME: show() deprecated, but . . .
+ 	    _htmlButton.show(); // FIXME: show() deprecated, but . . .
+ 	    _aboutButton.show(); // FIXME: show() deprecated, but . . .
+ 	} else {
+ 	    _exitButton.hide(); // FIXME: hide() is
+ 	    // deprecated in JDK1.1, but we need to compile under
+ 	    // 1.0.2 for netscape3.x compatibilty.
+ 	    _printButton.hide(); // FIXME: hide() deprecated, but . . .
+ 	    _htmlButton.hide(); // FIXME: hide() deprecated, but . . .
+ 	    _aboutButton.hide(); // FIXME: hide() deprecated, but . . .
+ 	}
     }
 
     /* Create buttons.
@@ -833,35 +833,28 @@ public class Pxgraph extends Frame {
 	Properties newprops= new Properties();
 	newprops.put("awt.print.destination", "file");
 	newprops.put("awt.print.fileName", "/tmp/t.ps");
-	if (_debug > 7) System.out.println("Pxgraph: before getPrintJob");
-	PrintJob printjob = getToolkit().getPrintJob(this,
-						     getTitle(),newprops);
-	if (_debug > 7) System.out.println("Pxgraph: printjob = "+printjob);
-	if (printjob != null) {          
-	    Graphics printgraphics = printjob.getGraphics();
-	    if (printgraphics != null) {
-		// Make the buttons invisible
-		_setButtonsVisibility(false);
-		_plotApplet._setButtonsVisibility(false);
+ 	PrintJob printjob = getToolkit().getPrintJob(this,
+ 						     getTitle(),newprops);
+ 	if (printjob != null) {          
+ 	    Graphics printgraphics = printjob.getGraphics();
+ 	    if (printgraphics != null) {
+ 		// Make the buttons invisible
+ 		_setButtonsVisibility(false);
+ 		_plotApplet._setButtonsVisibility(false);
 
-		// Print
-		if (_debug > 7)
-		    System.out.println("Pxgraph: before printComponents");
-		printComponents(printgraphics);
-		if (_debug > 7)
-		    System.out.println("Pxgraph: before printAll");
+  		// Print
+  		printComponents(printgraphics);
+ 		printAll(printgraphics);
 
-		printAll(printgraphics);
-		if (_debug > 7)
-		    System.out.println("Pxgraph: before printgr.dispose");
+ 		printgraphics.dispose();
+ 		printjob.end();
 
-		printgraphics.dispose();
-
-		// Make the buttons visible, reset the graphics.
-		_plotApplet._setButtonsVisibility(true);
-		_setButtonsVisibility(true);
-	    }
-	    printjob.end();
+ 		// Make the buttons visible, reset the graphics.
+ 		_plotApplet._setButtonsVisibility(true);
+ 		_setButtonsVisibility(true);
+ 	    } else {
+ 		printjob.end();
+ 	    }
 	}
     }
 

@@ -1263,11 +1263,11 @@ public class PlotBox extends Applet {
     protected void _setButtonsVisibility(boolean vis) {
 	// _fillButton.setVisible(vis);
 	if (vis) {
-	    _fillButton.hide(); // FIXME: hide() is
-	    // deprecated in JDK1.1, but we need to compile under
-	// 1.0.2 for netscape3.x compatibilty.
-	} else {
 	    _fillButton.show(); // FIXME: show() is
+	    // deprecated in JDK1.1, but we need to compile under
+	    // 1.0.2 for netscape3.x compatibilty.
+	} else {
+	    _fillButton.hide(); // FIXME: hide() is
 	    // deprecated in JDK1.1, but we need to compile under
 	    // 1.0.2 for netscape3.x compatibilty.
 	}
