@@ -40,24 +40,24 @@ public class DTDebug {
     }
     
     
-    public void println(Object obj) {
+    public static final void println(Object obj) {
         if (_debugOn) {
             System.out.println(obj.toString());
         }
     }
-    public void print(Object obj) {
+    public static final void print(Object obj) {
         if (_debugOn) {
             System.out.print(obj.toString());
         }
     }
     
-    public void prompt(String str) {
+    public static final void prompt(String str) {
         if (_debugOn) {
             JOptionPane.showMessageDialog(null,str,"MessageDialog",JOptionPane.ERROR_MESSAGE);
         }
     }
     
-    public void printStackTrace() {
+    public static final void printStackTrace() {
         if (_debugOn) {
             try {
 		        throw new Exception("printStackTrace()");
@@ -67,5 +67,5 @@ public class DTDebug {
 		}
     }
  
-    private boolean _debugOn = false;
+    private static boolean _debugOn = false;
 }
