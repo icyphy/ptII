@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu) 
+@ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -66,7 +66,7 @@ public class SetIconAction extends FigureAction {
     /** Determine the target Ptolemy II object and prompt the user
      *  for a new icon.   The icon file extension should be
      *  gif, svg or xml.
-     *  
+     *
      *  @param e The event.
      */
     public void actionPerformed(ActionEvent e) {
@@ -115,14 +115,14 @@ public class SetIconAction extends FigureAction {
                         "<group>\n<property name=\"_imagePath\" " +
                         "class=\"ptolemy.kernel.util.StringAttribute\" " +
                         "value=\"" + file.getCanonicalPath() + "\"/>\n" +
-                        "<property name=\"_iconDescription\"" + 
+                        "<property name=\"_iconDescription\"" +
                         " class=\"ptolemy.kernel.util.SingletonConfigurableAttribute\"" +
                         ">\n <configure> ");
 
                 if (extension.equalsIgnoreCase("svg")
                      || extension.equalsIgnoreCase("xml")) {
                     // read in the svg from a file
-                    BufferedReader reader = new BufferedReader( 
+                    BufferedReader reader = new BufferedReader(
                             new FileReader( file ) );
 
                    String temp = new String();
@@ -130,24 +130,24 @@ public class SetIconAction extends FigureAction {
                        moml.append(temp);
                    }
                    moml.append( " </configure>\n</property>\n</group> " );
-                   ChangeRequest request = new MoMLChangeRequest(           
+                   ChangeRequest request = new MoMLChangeRequest(
                            object,
                            object,
                            moml.toString(),
                            null
                            );
-                   object.requestChange(request);   
+                   object.requestChange(request);
                 }
                 else
                 {// insert the gif into svg markup
-                   moml.append ( 
+                   moml.append (
                            "<svg>\n<rect x=\"0\" y=\"0\" width=\"60\" height=\"40\" style=\"fill:white\"></rect>" +
                            "<image x=\"0\" y=\"0\" width=\"60\" height=\"40\" xlink:href=\"file:" +
                            file.getCanonicalPath() +
                            "\"></image>\n</svg>\n" +
                            " </configure>\n</property>\n</group>");
 
-                   ChangeRequest request = new MoMLChangeRequest(           
+                   ChangeRequest request = new MoMLChangeRequest(
                            object,
                            object,
                            moml.toString(),
@@ -165,8 +165,8 @@ public class SetIconAction extends FigureAction {
      *  is the characters after the final period ('.'), if any.
      *  If there file name does not contain a period, then return null.
      *  @param fileOrDirectory The file or directory.
-     *  @return the extension.   
-     */   
+     *  @return the extension.
+     */
     public static String getExtension(File fileOrDirectory) {
         String fileOrDirectoryName = fileOrDirectory.getName();
         int dotIndex = fileOrDirectoryName.lastIndexOf('.');
@@ -187,7 +187,7 @@ public class SetIconAction extends FigureAction {
 
     /** Display gif, svg, or xml files */
     class ImageFileFilter extends FileFilter {
-    
+
         /** Accept all directories and all gif, svg, or xml files.
          *  @param file The file to be checked.
          *  @return true if the file is a directory, or if
@@ -210,7 +210,7 @@ public class SetIconAction extends FigureAction {
             }
             return false;
         }
-    
+
         /**  The description of this filter */
         public String getDescription() {
             return "Supported Image Formats (gif, svg, xml)";

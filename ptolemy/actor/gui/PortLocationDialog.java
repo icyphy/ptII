@@ -58,8 +58,8 @@ not return until the user dismisses the dialog.
 @author Mason Holding
 @version $Id$
 */
-public 
-class PortLocationDialog extends ComponentDialog implements ChangeListener 
+public
+class PortLocationDialog extends ComponentDialog implements ChangeListener
 {
 
     /** Construct a dialog with the specified owner and target.
