@@ -38,42 +38,43 @@ import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ProcessThread
-/**
-Thread class acting as a process for process oriented domains.
-<P>
-In process oriented domains, each actor acts as a separate process and
-its execution is not centrally controlled by the director. Each process
-runs concurrently with other processes and is responsible for calling
-its execution methods.
-<P>
-This class provides the mechanism to implement the above.
-An instance of this class can be created by passing an actor as an
-argument to the constructor. This class runs as a separate thread on
-being started and calls the execution methods on the actor, repeatedly.
-In specific, it calls the prefire(), fire() and postfire() methods
-of the actor. Before termination, this calls the wrapup() method of
-the actor.
-<P>
-If an actor returns false in its postfire() methods, the
-actor is never fired again and the thread or process would terminate
-after calling wrapup() on the actor.
-<P>
-The initialize() method of the actor is not called from this class. It
-should be called before starting this thread.
-<P>
-In process oriented domains, the director needs to keep a count of the
-number of active processes in the system. This is used for detection of
-deadlocks, termination, and possibly some other reasons. For this two
-methods, _increaseActiveCount() and _decreaseActiveCount(), are defined
-in the ProcessDirector. _increaseActiveCount() is called on the director
-from the constructor of this class and the _decreaseActiveCount() method
-is called at the end of the run() method, i.e. before the thread terminates.
-<P>
 
-@author Mudit Goel, Neil Smyth, John S. Davis II
-@version $Id$
-@since Ptolemy II 0.2
-*/
+/**
+ Thread class acting as a process for process oriented domains.
+ <P>
+ In process oriented domains, each actor acts as a separate process and
+ its execution is not centrally controlled by the director. Each process
+ runs concurrently with other processes and is responsible for calling
+ its execution methods.
+ <P>
+ This class provides the mechanism to implement the above.
+ An instance of this class can be created by passing an actor as an
+ argument to the constructor. This class runs as a separate thread on
+ being started and calls the execution methods on the actor, repeatedly.
+ In specific, it calls the prefire(), fire() and postfire() methods
+ of the actor. Before termination, this calls the wrapup() method of
+ the actor.
+ <P>
+ If an actor returns false in its postfire() methods, the
+ actor is never fired again and the thread or process would terminate
+ after calling wrapup() on the actor.
+ <P>
+ The initialize() method of the actor is not called from this class. It
+ should be called before starting this thread.
+ <P>
+ In process oriented domains, the director needs to keep a count of the
+ number of active processes in the system. This is used for detection of
+ deadlocks, termination, and possibly some other reasons. For this two
+ methods, _increaseActiveCount() and _decreaseActiveCount(), are defined
+ in the ProcessDirector. _increaseActiveCount() is called on the director
+ from the constructor of this class and the _decreaseActiveCount() method
+ is called at the end of the run() method, i.e. before the thread terminates.
+ <P>
+
+ @author Mudit Goel, Neil Smyth, John S. Davis II
+ @version $Id$
+ @since Ptolemy II 0.2
+ */
 public class ProcessThread extends PtolemyThread {
 
     /** Construct a thread to be used for the execution of the
@@ -88,7 +89,7 @@ public class ProcessThread extends PtolemyThread {
         _actor = actor;
         _director = director;
         _manager = ((CompositeActor)
-                ((NamedObj)actor).getContainer()).getManager();
+                ((NamedObj) actor).getContainer()).getManager();
 
         // This method is called here and not in the run() method as the
         // count should be incremented before any thread is started
@@ -99,8 +100,8 @@ public class ProcessThread extends PtolemyThread {
         _director._increaseActiveCount();
 
         if (_actor instanceof NamedObj) {
-            _name = ((NamedObj)_actor).getFullName();
-            addDebugListener((NamedObj)_actor);
+            _name = ((NamedObj) _actor).getFullName();
+            addDebugListener((NamedObj) _actor);
         } else {
             _name = "Unnamed";
         }
@@ -136,26 +137,28 @@ public class ProcessThread extends PtolemyThread {
     public void run() {
         _debug("-- Starting thread.");
         Workspace workspace = _director.workspace();
-	boolean iterate = true;
-	try {
+        boolean iterate = true;
+        Throwable throwedWhenIterate = null;
+        Throwable throwedWhenWrapup = null;
+        try {
             // Initialize the actor.
             _actor.initialize();
 
             // While postfire() returns true and stop() is not called.
-	    while (iterate) {
+            while (iterate) {
 
                 // NOTE: Possible race condition... actor.stop()
                 // might be called before we get to this.
                 // This will cause postfire() on the actor
                 // to return false, which will stop its execution.
-                if(_threadStopRequested) {
+                if (_threadStopRequested) {
                     // And wait until the flag has been cleared.
                     _debug("-- Thread pause requested. Get lock on director.");
-                    synchronized(_director) {
+                    synchronized (_director) {
                         // Tell the director we're stopped (necessary
                         // for deadlock detection).
                         _director._actorHasStopped();
-                        while(_threadStopRequested && !_director.isStopRequested()) {
+                        while (_threadStopRequested && !_director.isStopRequested()) {
                             _debug("-- Thread waiting for canceled pause request.");
                             workspace.wait(_director);
                         }
@@ -176,19 +179,59 @@ public class ProcessThread extends PtolemyThread {
 
                 // container is checked for null to detect the
                 // deletion of the actor from the topology.
-                if ( ((Entity)_actor).getContainer() != null ) {
-                    if (_actor.prefire()){
+                if (((Entity) _actor).getContainer() != null) {
+                    if (_actor.prefire()) {
                         _actor.fire();
                         iterate = _actor.postfire();
                     }
                 }
             }
-        } catch (TerminateProcessException t) {
+        } catch (Throwable t) {
+            throwedWhenIterate = t;
+        } finally {
+            try {
+                wrapup();
+            } catch (IllegalActionException e) {
+                throwedWhenWrapup = e;
+            } finally {
+                // let the director know that this thread stopped
+                _director._decreaseActiveCount();
+                _debug("-- Thread stopped.");
+                boolean rethrow = false;
+                if (throwedWhenIterate instanceof TerminateProcessException) {
+                    // Process was terminated.
+                    _debug("-- Blocked Receiver call threw TerminateProcessException.");
+                } else if (throwedWhenIterate instanceof IllegalActionException) {
+                    _debug("-- Exception: " + throwedWhenIterate);
+                    _manager.notifyListenersOfException(
+                            (IllegalActionException)throwedWhenIterate);
+                } else if (throwedWhenIterate != null) {
+                    rethrow = true;
+                }
+                if (throwedWhenWrapup instanceof IllegalActionException) {
+                    _debug("-- Exception: " + throwedWhenWrapup);
+                    _manager.notifyListenersOfException(
+                            (IllegalActionException)throwedWhenWrapup);
+                } else if (throwedWhenWrapup != null) {
+                    // must be a runtime exception
+                    throw (RuntimeException)throwedWhenWrapup;
+                } else if (rethrow) {
+                    throw (RuntimeException)throwedWhenIterate;
+                }
+            }
+        }
+        /*
+        catch (TerminateProcessException t) {
             // Process was terminated.
             _debug("-- Blocked Receiver call threw TerminateProcessException.");
         } catch (IllegalActionException e) {
             _debug("-- Exception: " + e);
+            System.out.println(_name + " encountered exception");
             _manager.notifyListenersOfException(e);
+            System.out.println(_name + " notified exception");
+        } catch (Throwable t) {
+            System.out.println("caught throwable " + t);
+            t.printStackTrace();
         } finally {
             try {
                 wrapup();
@@ -196,10 +239,11 @@ public class ProcessThread extends PtolemyThread {
                 _debug("-- Exception: " + e);
                 _manager.notifyListenersOfException(e);
             } finally {
+                System.out.println(_name + " going to stop");
                 _director._decreaseActiveCount();
                 _debug("-- Thread stopped.");
             }
-        }
+        }*/
     }
 
     /** Request that execution of the actor controlled by this
@@ -232,7 +276,6 @@ public class ProcessThread extends PtolemyThread {
     private Manager _manager;
     private boolean _threadStopRequested = false;
     private boolean _preparingToWrapup = false;
-
 
     private String _name;
 }

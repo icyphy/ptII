@@ -419,6 +419,16 @@ public class ProcessDirector extends Director {
             //If all process domain receivers do the same, then this
             //is not needed.
             (new NotifyThread(receiversList)).start();
+
+            // wait until all process threads stop
+            synchronized (this) {
+                while (_activeActorCount > 0)
+                    try {
+                        wait();
+                    } catch (InterruptedException ex) {
+                        // ignore, wait until all process threads stop
+                    }
+            }
         }
     }
 
