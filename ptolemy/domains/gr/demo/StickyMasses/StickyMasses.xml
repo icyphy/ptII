@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="StickyMasses" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="position1" class="ptolemy.data.expr.Parameter" value="0.0">
     </property>
@@ -2191,7 +2191,7 @@ uses the GR domain to render the results</text></svg></configure>
         <link port="Expression.input" relation="relation"/>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
@@ -2218,9 +2218,8 @@ uses the GR domain to render the results</text></svg></configure>
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.1" max="120.39999999999742"/>
-<yRange min="0.004999998383500017" max="2.4995888175592333"/>
-<default marks="dots"/>
+<xRange min="0.0" max="100.0"/>
+<yRange min="0.0" max="2.5"/>
 </plot>?>
         </configure>
     </entity>
