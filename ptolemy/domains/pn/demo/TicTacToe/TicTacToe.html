@@ -10,19 +10,49 @@
 </CENTER>
 
 <H3>TicTacToe:</H3>
-<P>
-<BR>&nbsp;
-<BR>&nbsp;
-<CENTER>
-<P><APPLET name="TTTApplet.class"
-   bgcolor=#FAF0E6
-   code=ptolemy.domains.pn.demo.TicTacToe.TTTApplet.class
-   codebase=../../../..
-   archive = "ptolemy/domains/pn/demo/pndemo.jar, ptolemy/domains/pn/pn.jar, ptolemy/ptsupport.jar,"
-   width=500 height=300>
-<param name="background" value="#faf0e6">
-<BR>
-<BR></APPLET></CENTER>
+ <!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+<center>
+<!-- The HTML below is for the Java Plugin.  The first 
+     section is for IE, the second is for Netscape
+ -->
+<OBJECT classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93"
+ WIDTH=500 HEIGHT=300
+ NAME="TTTApplet"
+ codebase="http://java.sun.com/products/plugin/1.2/jinstall-12-win32.cab#Version=1,2,0,0">
+<PARAM NAME=CODE VALUE=ptolemy.domains.pn.demo.TicTacToe.TTTApplet.class>
+<PARAM NAME=CODEBASE VALUE=../../../../..>
+<PARAM NAME=ARCHIVE VALUE="
+	ptolemy/domains/pn/demo/TicTacToe/TicTacToe.jar,
+	ptolemy/ptsupport.jar,
+	ptolemy/domains/pn/pn.jar"
+<PARAM NAME=NAME VALUE=""TTTApplet">
+<PARAM NAME="type" VALUE="application/x-java-applet;version=1.2">
+<PARAM NAME="background" VALUE="#faf0e6">
+<COMMENT>
+<EMBED type="application/x-java-applet;version=1.2"
+ code=ptolemy.domains.pn.demo.TicTacToe.TTTApplet
+ codebase=../../../../..
+ archive="
+	ptolemy/domains/pn/demo/TicTacToe/TicTacToe.jar,
+	ptolemy/ptsupport.jar,
+	ptolemy/domains/pn/pn.jar"
+
+ java_CODE=ptolemy.domains.pn.demo.TicTacToe.TTTApplet
+ java_CODEBASE=../../../../..
+ java_ARCHIVE="
+	ptolemy/domains/pn/demo/TicTacToe/TicTacToe.jar,
+	ptolemy/ptsupport.jar,
+	ptolemy/domains/pn/pn.jar"
+ NAME="TTTApplet"
+ WIDTH=500 HEIGHT=300
+ background="#faf0e6"
+ pluginspage="http://java.sun.com/products/plugin/1.2/plugin-install.html">
+<NOEMBED></COMMENT>
+<I>If you were able to run applets, you would have a demo here.</I>
+</NOEMBED></EMBED>
+</OBJECT>
+</center>
 
 <P>This applet is implemented by
 <TT><A HREF="TTTApplet.java">TTTApplet.java</A></TT>.
