@@ -135,7 +135,7 @@ public class Display extends Sink implements Placeable {
     public Parameter rowsDisplayed;
 
     /** The text area in which the data will be displayed. */
-    public JTextArea textArea;
+    public transient JTextArea textArea;
 
     /** The title to put on top. */
     public StringAttribute title;
@@ -151,16 +151,22 @@ public class Display extends Sink implements Placeable {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == _windowProperties && _frame != null) {
-            _windowProperties.setProperties(_frame);
-        } else if (attribute == rowsDisplayed) {
+        // NOTE: Do not react to changes in _windowProperties.
+        // Those properties are only used when originally opening a window.
+        if (attribute == rowsDisplayed) {
             int numRows = ((IntToken)rowsDisplayed.getToken()).intValue();
             if (numRows <= 0) {
                 throw new IllegalActionException(this,
                         "rowsDisplayed: requires a positive value.");
             }
-            if (textArea != null) {
-                textArea.setRows(numRows);
+            if (numRows != _previousNumRows) {
+                _previousNumRows = numRows;
+                if (textArea != null) {
+                    textArea.setRows(numRows);
+                    if (_frame != null) {
+                        _frame.pack();
+                    }
+                }
             }
         } else if (attribute == columnsDisplayed) {
             int numColumns =
@@ -169,8 +175,14 @@ public class Display extends Sink implements Placeable {
                 throw new IllegalActionException(this,
                         "columnsDisplayed: requires a positive value.");
             }
-            if (textArea != null) {
-                textArea.setColumns(numColumns);
+            if (numColumns != _previousNumColumns) {
+                _previousNumColumns = numColumns;
+                if (textArea != null) {
+                    textArea.setColumns(numColumns);
+                    if (_frame != null) {
+                        _frame.pack();
+                    }
+                }
             }
         }
     }
@@ -193,17 +205,29 @@ public class Display extends Sink implements Placeable {
      *  previously existing text area. If a graphical container has
      *  not been specified, place the text area into its own frame.
      *  Otherwise, place it in the specified container.
-     *  @exception IllegalActionException If the parent class throws it.
+     *  @exception IllegalActionException If the parent class throws it,
+     *   or if the numRows or numColumns parameters are incorrect.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
         if (textArea == null) {
-            place(_container);
+            // No container has been specified for display.
+            // Place the text area in its own frame.
+            _frame = new DisplayWindow(getFullName());
+            textArea = _frame.text;
+            int numRows =
+                    ((IntToken)rowsDisplayed.getToken()).intValue();
+            textArea.setRows(numRows);
+            int numColumns =
+                    ((IntToken)columnsDisplayed.getToken()).intValue();
+            textArea.setColumns(numColumns);
+            _windowProperties.setProperties(_frame);
         } else {
             // Erase previous text.
             textArea.setText(null);
         }
-        if (_frame != null) {
+        if (_frame != null && !_frame.isVisible()) {
+            _frame.pack();
             _frame.setVisible(true);
         }
         /*
@@ -229,32 +253,35 @@ public class Display extends Sink implements Placeable {
      *  The background of the text area is set equal to that of the container
      *  (unless it is null).
      *
-     *  @param container The container into which to place the text area.
+     *  @param container The container into which to place the text area, or
+     *   null to specify that there is no current container.
      */
     public void place(Container container) {
         _container = container;
-        if (_container == null) {
-            // Place the text area in its own frame.
-            _frame = new TextEditor(getFullName());
-            textArea = _frame.text;
-	    // Defer making this visible until after size has been set.
-        } else {
-            textArea = new JTextArea();
-            JScrollPane scrollPane = new JScrollPane(textArea);
-            // java.awt.Component.setBackground(color) says that
-            // if the color "parameter is null then this component
-            // will inherit the  background color of its parent."
-            scrollPane.setBackground(null);
-            scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
-            scrollPane.setViewportBorder(new LineBorder(Color.black));
 
-            _container.add(scrollPane);
-            textArea.setBackground(Color.white);
-            String titleSpec = title.getExpression();
-            if (!titleSpec.trim().equals("")) {
-                scrollPane.setBorder(
-                        BorderFactory.createTitledBorder(titleSpec));
-            }
+        if (_container == null) {
+            // Reset everything.
+            if (_frame != null) _frame.dispose();
+            _frame = null;
+            _scrollPane = null;
+            textArea = null;
+            return;
+        }
+        textArea = new JTextArea();
+        _scrollPane = new JScrollPane(textArea);
+        // java.awt.Component.setBackground(color) says that
+        // if the color "parameter is null then this component
+        // will inherit the  background color of its parent."
+        _scrollPane.setBackground(null);
+        _scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
+        _scrollPane.setViewportBorder(new LineBorder(Color.black));
+        
+        _container.add(_scrollPane);
+        textArea.setBackground(Color.white);
+        String titleSpec = title.getExpression();
+        if (!titleSpec.trim().equals("")) {
+            _scrollPane.setBorder(
+                    BorderFactory.createTitledBorder(titleSpec));
         }
         try {
             int numRows =
@@ -272,11 +299,6 @@ public class Display extends Sink implements Placeable {
         } catch (IllegalActionException ex) {
             // Ignore, and use default number of rows.
         }
-        if (_container == null) {
-            _windowProperties.setProperties(_frame);
-            _frame.pack();
-	    _frame.setVisible(true);
-        }
         // Make sure the text is not editable.
         textArea.setEditable(false);
     }
@@ -291,6 +313,8 @@ public class Display extends Sink implements Placeable {
         for (int i = 0; i < width; i++) {
             if (input.hasToken(i)) {
                 Token token = input.get(i);
+                // If the window has been deleted, read the rest of the inputs.
+                if (textArea == null) continue;
                 String value = token.toString();
                 // If the value is a pure string, strip the quotation marks.
                 if ((value.length() > 1) && value.startsWith("\"") &&
@@ -318,7 +342,9 @@ public class Display extends Sink implements Placeable {
                 }
             }
         }
-        textArea.append("\n");
+        if (textArea != null) {
+            textArea.append("\n");
+        }
         return super.postfire();
     }
 
@@ -337,8 +363,9 @@ public class Display extends Sink implements Placeable {
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
+        Nameable previousContainer = getContainer();
         super.setContainer(container);
-        if (container == null) {
+        if (container != previousContainer) {
             _remove();
         }
     }
@@ -372,8 +399,8 @@ public class Display extends Sink implements Placeable {
         SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     if (textArea != null) {
-                        if (_container != null) {
-                            _container.remove(textArea);
+                        if (_container != null && _scrollPane != null) {
+                            _container.remove(_scrollPane);
                             _container.invalidate();
                             _container.repaint();
                         } else if (_frame != null) {
@@ -387,15 +414,53 @@ public class Display extends Sink implements Placeable {
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
+    // The container for the text display, if there is one.
     private Container _container;
 
     // The frame into which to put the text widget, if any.
     private TextEditor _frame;
 
-    // Flag indicating that the place() method has been called at least once.
-    private boolean _placeCalled = false;
+    // Record of previous columns.
+    private int _previousNumColumns = 0;
 
-    /** A specification for the window properties of the frame.
-     */
+    // Record of previous rows.
+    private int _previousNumRows = 0;
+
+    // The scroll pane.
+    private JScrollPane _scrollPane;
+
+    // A specification for the window properties of the frame.
     private WindowPropertiesAttribute _windowProperties;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** Version of TextEditor that removes its association with the
+     *  Display upon closing, and also records the size of the display.
+     */
+    private class DisplayWindow extends TextEditor {
+
+        /** Construct an empty text editor with the specified title.
+         *  After constructing this, it is necessary
+         *  to call setVisible(true) to make the frame appear.
+         *  @param title The title to put in the title bar.
+         */
+        public DisplayWindow(String title) {
+            super(title);
+        }
+
+        /** Close the window.  This overrides the base class to remove
+         *  the association with the Display and to record window properties.
+         *  @return True.
+         */
+        protected boolean _close() {
+            // Record the window properties before closing.
+            if (_frame != null) {
+                _windowProperties.setProperties(_frame);
+            }
+            super._close();
+            place(null);
+            return true;
+        }
+    }
 }

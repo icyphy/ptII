@@ -77,8 +77,7 @@ public class MatrixViewer extends Sink implements Placeable {
      *   actor with this name.
      */
     public MatrixViewer(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException
-    {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setMultiport(false);
         input.setTypeEquals(BaseType.MATRIX);
@@ -314,8 +313,7 @@ public class MatrixViewer extends Sink implements Placeable {
             @return The object stored in the matrix at the specified location.
         */
         public Object getValueAt(int row, int column) {
-            return (Object) (_matrix.getElementAsToken(row, column)).
-                toString();
+            return (Object) (_matrix.getElementAsToken(row, column)).toString();
         }
 
         /** Get column names of the Matrix.
@@ -327,7 +325,5 @@ public class MatrixViewer extends Sink implements Placeable {
 
         /** The Matrix for which a Table Model is created. */
         private MatrixToken _matrix = null;
-
     }
-
 }

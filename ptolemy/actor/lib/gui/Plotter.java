@@ -34,6 +34,7 @@ import ptolemy.actor.AtomicActor;
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.gui.Placeable;
+import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
@@ -45,6 +46,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.*;
 import ptolemy.plot.Plot;
+import ptolemy.plot.PlotBox;
 import ptolemy.plot.PlotFrame;
 import ptolemy.plot.plotml.PlotMLParser;
 
@@ -111,6 +113,8 @@ public class Plotter extends TypedAtomicActor
         _windowProperties = new WindowPropertiesAttribute(
                 this, "_windowProperties");
 
+        _plotSize = new SizeAttribute(this, "_plotSize");
+
 	_attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"-20\" y=\"-20\" "
                 + "width=\"40\" height=\"40\" "
@@ -164,9 +168,9 @@ public class Plotter extends TypedAtomicActor
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == _windowProperties && _frame != null) {
-            _windowProperties.setProperties(_frame);
-        } else if (attribute == legend) {
+        // NOTE: Do not react to changes in _windowProperties.
+        // Those properties are only used when originally opening a window.
+        if (attribute == legend) {
             if (plot != null) {
                 plot.clearLegends();
                 String value = legend.getExpression();
@@ -268,10 +272,11 @@ public class Plotter extends TypedAtomicActor
     /** Return the text string that represents the current configuration of
      *  this object.  Note that any configuration that was previously
      *  specified using the source attribute need not be returned here.
+     *  This returns a null string if there is no associated plot.
      */
     public String getText() {
         if (plot == null) {
-            // FIXME
+            // NOTE: Is this the right thing to do?
             return "";
         } else {
             // NOTE: Cannot include xml spec in the header because processing
@@ -303,28 +308,45 @@ public class Plotter extends TypedAtomicActor
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        if (plot == null || !_placeCalled) {
-            place(_container);
+        if (plot == null) {
+            // Create a new plot and frame.
+            plot = new Plot();
+            plot.setTitle(getName());
+            plot.setButtons(true);
+            _frame = new PlotterPlotFrame(getFullName(), plot);
+            _windowProperties.setProperties(_frame);
+            _implementDeferredConfigurations();
+
+            // The SizeAttribute property is used to specify the size
+            // of the Plot component. Unfortunately, with Swing's
+            // mysterious and undocumented handling of component sizes,
+            // there appears to be no way to control the size of the
+            // Plot from the size of the Frame, which is specified
+            // by the WindowPropertiesAttribute.
+            if (_plotSize != null) {
+                _plotSize.setSize(plot);
+            }
+        } else {
+            int width = plot.getNumDataSets();
+            int offset = ((IntToken)startingDataset.getToken()).intValue();
+            for (int i = width - 1; i >= 0; i--) {
+                plot.clear(i + offset);
+            }
+            plot.repaint();
         }
-        if (_frame != null) {
+        if (_frame != null && !_frame.isVisible()) {
+            _frame.pack();
 	    _frame.setVisible(true);
         }
-        int width = plot.getNumDataSets();
-        int offset = ((IntToken)startingDataset.getToken()).intValue();
-        for (int i = width - 1; i >= 0; i--) {
-            plot.clear(i + offset);
-        }
-        plot.repaint();
     }
 
     /** Specify the container into which this plot should be placed.
      *  This method needs to be called before the first call to initialize().
      *  Otherwise, the plot will be placed in its own frame.
-     *  The plot is also placed in its own frame if this method
-     *  is called with a null argument.  The size of the plot,
-     *  unfortunately, cannot be effectively determined from the size
-     *  of the container because the container may not yet be laid out
-     *  (its size will be zero).  Thus, you will have to explicitly
+     *  The size of the plot, unfortunately, cannot be effectively
+     *  determined from the size of the container because the
+     *  container may not yet be laid out (its size will be zero).
+     *  Thus, you will have to explicitly
      *  set the size of the plot by calling plot.setSize().
      *  The background of the plot is set equal to that of the container
      *  (unless it is null).
@@ -333,65 +355,38 @@ public class Plotter extends TypedAtomicActor
      *  then the configurations that it specified have been deferred. Those
      *  configurations are performed at this time.
      *
-     *  @param container The container into which to place the plot.
+     *  @param container The container into which to place the plot, or
+     *   null to specify that 
      */
     public void place(Container container) {
         _container = container;
-        _placeCalled = true;
         // NOTE: This actor always shows the plot buttons, even if
         // the plot is in a separate frame.  They are very useful.
         if (_container == null) {
-            // Create a new plot and frame.
-            plot = new Plot();
-            plot.setTitle(getName());
+            // Dissociate with any container.
+            if (_frame != null) _frame.dispose();
+            _frame = null;
+            plot = null;
+            return;
+        }
+        if (_container instanceof Plot) {
+            plot = (Plot)_container;
             plot.setButtons(true);
-            _frame = new PlotFrame(getFullName(), plot);
-            _windowProperties.setProperties(_frame);
-	    _frame.setVisible(true);
         } else {
-            if (_container instanceof Plot) {
-                plot = (Plot)_container;
-                plot.setButtons(true);
-            } else {
-                if (plot == null) {
-                    plot = new Plot();
-                    plot.setTitle(getName());
-                }
-                plot.setButtons(true);
-                _container.add(plot);
-		// java.awt.Component.setBackground(color) says that
-		// if the color "parameter is null then this component
-		// will inherit the  background color of its parent."
-                //plot.setBackground(_container.getBackground());
-		plot.setBackground(null);
+            if (plot == null) {
+                plot = new Plot();
+                plot.setTitle(getName());
             }
+            plot.setButtons(true);
+            _container.add(plot);
+            // java.awt.Component.setBackground(color) says that
+            // if the color "parameter is null then this component
+            // will inherit the  background color of its parent."
+            //plot.setBackground(_container.getBackground());
+            plot.setBackground(null);
         }
         // If configurations have been deferred, implement them now.
-        if (_configureSources != null) {
-            Iterator sources = _configureSources.iterator();
-            Iterator texts = _configureTexts.iterator();
-            Iterator bases = _configureBases.iterator();
-            while (sources.hasNext()) {
-                URL base = (URL)bases.next();
-                String source = (String)sources.next();
-                String text = (String)texts.next();
-                try {
-                    configure(base, source, text);
-                } catch (Exception ex) {
-                    getManager().notifyListenersOfException(ex);
-                }
-            }
-            _configureSources = null;
-            _configureTexts = null;
-            _configureBases = null;
-        }
-        // Configure the new plot with legends, if appropriate.
-        try {
-            attributeChanged(legend);
-        } catch (IllegalActionException ex) {
-            // Safe to ignore because user would
-            // have already been alerted.
-        }
+        _implementDeferredConfigurations();
     }
 
     /** Clear the plot, if there is one.  Notice that unlike
@@ -416,8 +411,9 @@ public class Plotter extends TypedAtomicActor
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
+        Nameable previousContainer = getContainer();
         super.setContainer(container);
-        if (container == null) {
+        if (container != previousContainer) {
             _remove();
         }
     }
@@ -455,6 +451,9 @@ public class Plotter extends TypedAtomicActor
         // is up to date.
         if (_frame != null) {
             _windowProperties.recordProperties(_frame);
+        }
+        if (plot != null) {
+            _plotSize.recordSize(plot);
         }
         super._exportMoMLContents(output, depth);
         // NOTE: Cannot include xml spec in the header because processing
@@ -509,12 +508,46 @@ public class Plotter extends TypedAtomicActor
     /** Container into which this plot should be placed */
     protected Container _container;
 
+    /** A specification of the size of the plot if it's in its own window. */
+    protected SizeAttribute _plotSize;
+
     /** A specification for the window properties of the frame.
      */
     protected WindowPropertiesAttribute _windowProperties;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    /** If configurations have been deferred, implement them now.
+     *  Also, configure the plot legends, if appropriate.
+     */
+    private void _implementDeferredConfigurations() {
+        if (_configureSources != null) {
+            Iterator sources = _configureSources.iterator();
+            Iterator texts = _configureTexts.iterator();
+            Iterator bases = _configureBases.iterator();
+            while (sources.hasNext()) {
+                URL base = (URL)bases.next();
+                String source = (String)sources.next();
+                String text = (String)texts.next();
+                try {
+                    configure(base, source, text);
+                } catch (Exception ex) {
+                    getManager().notifyListenersOfException(ex);
+                }
+            }
+            _configureSources = null;
+            _configureTexts = null;
+            _configureBases = null;
+        }
+        // Configure the new plot with legends, if appropriate.
+        try {
+            attributeChanged(legend);
+        } catch (IllegalActionException ex) {
+            // Safe to ignore because user would
+            // have already been alerted.
+        }
+    }
 
     /** Remove the plot from the current container, if there is one.
      */
@@ -545,6 +578,38 @@ public class Plotter extends TypedAtomicActor
     private List _configureSources = null;
     private List _configureTexts = null;
 
-    // Flag indicating that the place() method has been called at least once.
-    private boolean _placeCalled = false;
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** Version of Plot class that removes its association with the
+     *  plot upon closing, and also records the size of the plot window.
+     */
+    private class PlotterPlotFrame extends PlotFrame {
+
+        /** Construct a plot frame with the specified title and the specified
+         *  instance of PlotBox.  After constructing this, it is necessary
+         *  to call setVisible(true) to make the plot appear.
+         *  @param title The title to put on the window.
+         *  @param plotArg the plot object to put in the frame,
+         *   or null to createan instance of Plot.
+         */
+        public PlotterPlotFrame(String title, PlotBox plotArg) {
+            super(title, plotArg);
+        }
+
+        /** Close the window.  This overrides the base class to remove
+         *  the association with the Display and to record window properties.
+         */
+        protected void _close() {
+            // Record the window properties before closing.
+            if (_frame != null) {
+                _windowProperties.setProperties(_frame);
+            }
+            if (Plotter.this.plot != null) {
+                _plotSize.recordSize(Plotter.this.plot);
+            }
+            super._close();
+            place(null);
+        }
+    }
 }
