@@ -29,24 +29,21 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 
 package ptolemy.actor.lib.javasound;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
-import ptolemy.data.Token;
-import ptolemy.data.*;
+
+import ptolemy.actor.lib.Sink;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.actor.*;
-import ptolemy.actor.lib.*;
-import java.awt.*;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
+import ptolemy.media.javasound.SoundWriter;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
-import java.util.Enumeration;
+import java.io.IOException;
 
-import ptolemy.media.javasound.*;
+
 
 ///////////////////////////////////////////////////////////
 //// AudioWriter
@@ -120,7 +117,6 @@ public class AudioWriter extends Sink {
     public AudioWriter(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	if(_debugging) _debug("AudioWriter: Constructor invoked");
         input.setTypeEquals(BaseType.DOUBLE);
 
 	pathName = new StringAttribute(this, "pathName");
@@ -188,8 +184,6 @@ public class AudioWriter extends Sink {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-	if(_debugging) _debug("AudioWriter: attributeChanged() invoked on: " +
-                attribute.getName());
 	if (attribute == channels) {
 	    _channels =
                 ((IntToken)channels.getToken()).intValue();
@@ -225,7 +219,6 @@ public class AudioWriter extends Sink {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-	if(_debugging) _debug("AudioWriter: initialize(): invoked");
 	// Initialize/Reinitialize audio resources.
 	_initializeWriter();
 	_safeToInitialize = true;
@@ -253,7 +246,6 @@ public class AudioWriter extends Sink {
      *   writing the audio sample(s) to the specified file.
      */
     public int iterate(int count) throws IllegalActionException {
-	if(_debugging) _debug("iterate(count) with count = " + count);
 	for (int j = 0; j < _channels; j++) {
 	    if (input.hasToken(j, count)) {
 		// NOTE: inArray[j].length may be > count, in which case
@@ -331,7 +323,6 @@ public class AudioWriter extends Sink {
      */
     public void wrapup() throws IllegalActionException {
 	super.wrapup();
-	if(_debugging) _debug("AudioWriter: wrapup(): invoked");
 	// Close any open sound files.
 	if (_soundWriter != null) {
             try {
@@ -359,7 +350,6 @@ public class AudioWriter extends Sink {
      */
     private synchronized void _initializeWriter()
             throws IllegalActionException {
-	if(_debugging) _debug("AudioWriter: _initializeWriter() invoked.");
 	// Close any open sound files. Free
 	// up audio system resources.
 	if (_soundWriter != null) {
@@ -378,7 +368,6 @@ public class AudioWriter extends Sink {
 	}
 	String pathNameString = pathName.getExpression();
 	// Write audio data to a file.
-	if(_debugging) _debug("AudioWriter: initialize(): write to file");
 	int sampleRateInt = ((IntToken)sampleRate.getToken()).intValue();
 	int bitsPerSampleInt =
 	    ((IntToken)bitsPerSample.getToken()).intValue();

@@ -31,24 +31,21 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.javasound;
 
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.Token;
-import ptolemy.data.*;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.actor.*;
-import ptolemy.actor.lib.*;
-import java.awt.*;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
+import ptolemy.media.javasound.SoundWriter;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
-import java.util.Enumeration;
-
-import ptolemy.media.javasound.*;
+import java.io.IOException;
 
 ///////////////////////////////////////////////////////////
 //// AudioWriteBuffer
@@ -111,6 +108,7 @@ allowed to write files. The .java.policy file may be modified
 to grant applets more privileges.
 <p>
 Note: Requires Java 2 v1.3.0 or later.
+<p>FIXME: this should extend AudioWriter
 @author  Brian K. Vogel
 @version  $Id$
 */
@@ -285,29 +283,17 @@ public class AudioWriteBuffer extends TypedAtomicActor {
      *  <i>pathName</i> parameter on wrapup.
      */
     public void fire () throws IllegalActionException {
-	 if (_debug_info) {
-	     System.out.println("*****************************");
-	     System.out.println(getName() + " : fire() invoked.");
-	 }
 	if (address.hasToken(0) && data.hasToken(0)) {
 	    int addressValue = ((IntToken)address.get(0)).intValue();
 	    if (addressValue < 0) {
 		// invalid index, so write nothing.
 		// still need to consume the data token, however.
 		data.get(0);
-		if (_debug_info) {
-		    System.out.println(getName() + "addressValue < 0");
-		    System.out.println("addressValue = " + addressValue);
-		}
 	    } else if (addressValue > (_audioBuffer.length - 1)) {
 		// invalid index. exceeds buffer length, so
 		// do nothing.
 		// still need to consume the data token, however.
 		data.get(0);
-		if (_debug_info) {
-		    System.out.println(getName() + "addressValue > (_audioBuffer.length - 1)");
-		    System.out.println("addressValue = " + addressValue);
-		}
 	    } else {
 		// Read one token from the data port and write the
 		// token to the specified address in the buffer.
@@ -315,49 +301,30 @@ public class AudioWriteBuffer extends TypedAtomicActor {
 		    ((DoubleToken)data.get(0)).doubleValue();
 		boolean overwriteMode = 
 		    ((BooleanToken)overwrite.getToken()).booleanValue();
-		if (_debug_info) {
-		    //System.out.println(getName() + " : Writing " +
-		    //	       "to buffer at address = " +
-		    //	       addressValue + " , and data = " +
-		    //	       sampleValue);
-		}
 		if (overwriteMode == true) {
 		    // Overwrite the element at the specified
 		    // address.
 		    _audioBuffer[addressValue] = sampleValue;
 		} else {
-		    if (_debug_info) {
-			
-			System.out.println(getName() + " : overwriteMode " +
-					   " = false.");
-			System.out.println("index = " + addressValue);
-			System.out.println(getName() + " : old " +
-			  "element value = " + _audioBuffer[addressValue]);
-			System.out.println(getName() + " sample = " +
-					   sampleValue);
-		    }
 		    // Add the data value to the element at the
 		    // specified address.
 		    _audioBuffer[addressValue] += sampleValue;
-		    if (_debug_info) {
-			System.out.println(getName() + " : overwriteMode " +
-					   " = false.");
-			System.out.println(getName() + " : new " +
-			  "element value = " + _audioBuffer[addressValue]);
-		    }
 		}
 	    }
 	} else if (address.hasToken(0)) {
-	    System.out.println(getName() + "WARNING: address port does not have a token!");
+	    System.out.println(getName()
+			       + "WARNING: address port does not have a token!");
 	} else if (data.hasToken(0)) {
-	    System.out.println(getName() + "WARNING: data port does not have a token!");
+	    System.out.println(getName()
+			       + "WARNING: data port does not have a token!");
 	} else {
-	    System.out.println(getName() + "WARNING: niether data port has a token!");
+	    System.out.println(getName()
+			       + "WARNING: neither data port has a token!");
 	}
     }
 
     /** Return true.
-     *  @exception IllegalActionException Not thrown.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
 	return true;

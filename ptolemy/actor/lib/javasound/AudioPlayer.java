@@ -29,24 +29,21 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 
 package ptolemy.actor.lib.javasound;
+
+import ptolemy.actor.lib.Sink;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.data.Token;
-import ptolemy.data.*;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.actor.*;
-import ptolemy.actor.lib.*;
-import java.awt.*;
+import ptolemy.media.javasound.LiveSound;
+import ptolemy.media.javasound.LiveSoundEvent;
+import ptolemy.media.javasound.LiveSoundListener;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
-import java.util.Enumeration;
+import java.io.IOException;
 
-import ptolemy.media.javasound.*;
 
 /////////////////////////////////////////////////////////
 //// AudioPlayer
@@ -120,7 +117,6 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
     public AudioPlayer(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	if(_debugging) _debug("AudioPlayer: Constructor invoked");
         input.setTypeEquals(BaseType.DOUBLE);
 
 
@@ -138,12 +134,6 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
 	// Hard code the the fraction of of the buffer to put data
 	// at a time = 1/putFactor.
 	_curElement = 0;
-	// The size of the array in samples per channel to give
-	// to LiveSound.putSamples().
-	if (_debugInfo) {
-	    System.out.println("AudioPlayer: constructor: _putSampleSize = "
-                    + _putSampleSize);
-	}
 	// The size of the array (in samples per channel) to pass
 	// to LiveSound.putSamples().
 	_putSampleSize = 128;
@@ -189,8 +179,6 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-	if(_debugging) _debug("AudioPlayer: attributeChanged() invoked on: " +
-                attribute.getName());
 	try {
 	    if (attribute == channels) {
 		// FIXME: It probably doesn't make sense to allow
@@ -199,9 +187,10 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
 		    ((IntToken)channels.getToken()).intValue();
 		if (_channels < 1) {
 		    throw new IllegalActionException(this,
-                            "Attempt to set channels parameter to an illegal " +
-                            "value of: " +  _channels + " . The value must be a " +
-                            "positive integer.");
+                            "Attempt to set channels parameter to an illegal "
+                            + "value of: " +  _channels
+			    + " . The value must be a "
+                            + "positive integer.");
 		}
 		// Check if we need to reallocate.
 		if ((_inArray == null) || (_channels != _inArray.length)) {
@@ -209,10 +198,6 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
 		}
 		if ((_audioPutArray == null) || (_channels != _audioPutArray.length)) {
 		    _audioPutArray = new double[_channels][];
-		}
-		if (_debugInfo) {
-		    System.out.println("AudioPlayer: attributeChanged() "
-                            + "_putSampleSize = " + _putSampleSize);
 		}
 		for (int i = 0; i < _channels; i++) {
 		    _audioPutArray[i] = new double[_putSampleSize];
@@ -259,7 +244,6 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-	if(_debugging) _debug("AudioPlayer: initialize(): invoked");
 	// Initialize/Reinitialize audio resources.
 	try {
 	    _initializePlayback();
@@ -291,12 +275,6 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
      *   cannot be written to the audio output device.
      */
     public int iterate(int count) throws IllegalActionException {
-	if (_debugInfo) {
-	    System.out.println("AudioPlayer: iterate() top: " +
-                    "LiveSound.getTransferSize() = " +
-                    LiveSound.getTransferSize());
-	}
-	if(_debugging) _debug("iterate(count) with count = " + count);
 	for (int j = 0; j < _channels; j++) {
 	    if (input.hasToken(j, count)) {
 		// NOTE: inArray[j].length may be > count, in which case
@@ -351,13 +329,6 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
 		// Get the current value of this actor's sampleRate parameter.
 		int thisActorSampleRate =
 		    ((IntToken)sampleRate.getToken()).intValue();
-		if (_debugInfo) {
-		    System.out.println("AudioPlayer: liveSoundChanged() invoked");
-		    System.out.println("AudioPlayer: liveSoundChanged() " +
-                            "activeSampleRate = " + activeSampleRate +
-                            ", thisActorSampleRate = " +
-                            thisActorSampleRate);
-		}
 		// Only set the sampleRate parameter if it is different from
 		// the new sample rate.
 		if (activeSampleRate != thisActorSampleRate) {
@@ -434,7 +405,6 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
      */
     public void wrapup() throws IllegalActionException {
 	super.wrapup();
-	if(_debugging) _debug("AudioPlayer: wrapup(): invoked");
 	// Stop playback. Close any open sound files. Free
 	// up audio system resources.
 	if (LiveSound.isPlaybackActive()) {
@@ -464,7 +434,6 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
      */
     private synchronized void _initializePlayback()
             throws IllegalActionException, IOException {
-	if(_debugging) _debug("AudioPlayer: _initializePlayback() invoked.");
 	// Stop playback. Close any open sound files. Free
 	// up audio system resources.
 	if (LiveSound.isPlaybackActive()) {
@@ -473,10 +442,6 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
                     "another actor currently has access to the audio " +
                     "playback resource. Only one AudioPlayer actor may " +
                     "be used at a time.");
-	}
-	if (_debugInfo) {
-	    System.out.println("AudioPlayer: _initializePlayback() "
-                    + "_putSampleSize = " + _putSampleSize);
 	}
 	for (int i = 0; i < _channels; i++) {
             _audioPutArray[i] = new double[_putSampleSize];
@@ -521,6 +486,4 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
     // at a time = 1/putFactor.
     private int _putFactor;
     private boolean _safeToInitialize = false;
-    //private boolean _debugInfo = true;
-    private boolean _debugInfo = false;
 }

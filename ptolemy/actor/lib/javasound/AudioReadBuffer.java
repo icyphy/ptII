@@ -31,22 +31,24 @@
 
 package ptolemy.actor.lib.javasound;
 
-import ptolemy.actor.*;
-import ptolemy.actor.lib.*;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
+//import ptolemy.actor.*;
+import ptolemy.actor.lib.Transformer;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.graph.Inequality;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
+import ptolemy.media.javasound.SoundReader;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
-import javax.sound.sampled.*;
+import java.io.IOException;
+//import java.net.*;
+//import java.util.*;
+//import javax.sound.sampled.*;
 
-import ptolemy.media.javasound.*;
+
 
 /////////////////////////////////////////////////////////////////
 //// AudioReadBuffer
@@ -99,6 +101,7 @@ resources in applets. Applets are only allowed access to files
 specified by a URL and located on the machine from which the
 applet is loaded. The .java.policy file may be modified to grant
 applets more privileges.
+<p>FIXME: This actor should extend AudioReadBuffer?
 <p>
 Note: Requires Java 2 v1.3.0 or later.
 @author Brian K. Vogel
@@ -155,8 +158,6 @@ public class AudioReadBuffer extends Transformer {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-	if(_debugging) _debug("AudioReadBuffer: attributeChanged() invoked on: " +
-                attribute.getName());
 	if (attribute == sourceURL) {
 	    if (_safeToInitialize == true) {
 		try {
@@ -190,7 +191,6 @@ public class AudioReadBuffer extends Transformer {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-	if(_debugging) _debug("AudioReadBuffer: initialize(): invoked");
 	try {
 	    _initializeReader();
 	} catch (IOException ex) {
@@ -255,7 +255,6 @@ public class AudioReadBuffer extends Transformer {
      *   problem closing the file.
      */
     public void wrapup() throws IllegalActionException {
-	if(_debugging) _debug("AudioReadBuffer: wrapup(): invoked");
 	// Stop capturing audio.
 	if (_soundReader != null) {
 	    try {

@@ -31,22 +31,20 @@
 
 package ptolemy.actor.lib.javasound;
 
-import ptolemy.actor.*;
-import ptolemy.actor.lib.*;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
+import ptolemy.actor.lib.Source;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.graph.Inequality;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
+import ptolemy.media.javasound.LiveSound;
+import ptolemy.media.javasound.LiveSoundEvent;
+import ptolemy.media.javasound.LiveSoundListener;
 
-import java.io.*;
-import java.net.*;
-import java.util.Enumeration;
-import javax.sound.sampled.*;
-
-import ptolemy.media.javasound.*;
+import java.io.IOException;
 
 /////////////////////////////////////////////////////////////////
 //// AudioCapture
@@ -103,7 +101,7 @@ Therefore, the actor will not run in an applet by default. The
 privileges.
 <p>
 Note: Requires Java 2 v1.3.0 or later.
-@author Brian K. Vogel
+@author Brian K. Vogel, Christopher Hylands
 @version $Id$
 @see ptolemy.media.javasound.LiveSound
 @see AudioPlayer
@@ -180,19 +178,16 @@ public class AudioCapture extends Source implements LiveSoundListener {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-	if (_debugInfo) {
-	    System.out.println("AudioCapture: attributeChanged() invoked on: " +
-                    attribute.getName());
-	}
 	try {
 	    if (attribute == channels) {
 		_channels =
 		    ((IntToken)channels.getToken()).intValue();
 		if (_channels < 1) {
 		    throw new IllegalActionException(this,
-                            "Attempt to set channels parameter to an illegal " +
-                            "value of: " +  _channels + " . The value must be a " +
-                            "positive integer.");
+                            "Attempt to set channels parameter to an illegal "
+                            + "value of: " +  _channels
+			    + " . The value must be a "
+                            + "positive integer.");
 		}
 		// Only set the channels if it is different than
 		// the currently active channels.
@@ -236,9 +231,6 @@ public class AudioCapture extends Source implements LiveSoundListener {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-	if (_debugInfo) {
-	    System.out.println("AudioCapture: initialize(): invoked");
-	}
         try {
             _initializeCapture();
         } catch (IOException ex) {
@@ -275,10 +267,7 @@ public class AudioCapture extends Source implements LiveSoundListener {
     public int iterate(int count) throws IllegalActionException {
 	// Note: If audio is read from file and file channels < parameter
 	// channels then exception thrown.
-	if (_debugInfo) {
-	    System.out.println("AudioCapture: iterate(): invoked with count = " +
-                    count);
-	}
+
 	// Check if we need to reallocate the output token array.
 	if (count > _audioSendArray.length) {
 	    _audioSendArray = new DoubleToken[count];
@@ -358,13 +347,6 @@ public class AudioCapture extends Source implements LiveSoundListener {
 		// Get the current value of this actor's sampleRate parameter.
 		int thisActorSampleRate =
 		    ((IntToken)sampleRate.getToken()).intValue();
-		if (_debugInfo) {
-		    System.out.println("AudioCapture: liveSoundChanged() invoked");
-		    System.out.println("AudioCapture: liveSoundChanged() " +
-                            "activeSampleRate = " + activeSampleRate +
-                            ", thisActorSampleRate = " +
-                            thisActorSampleRate);
-		}
 		// Only set the sampleRate parameter if it is different from
 		// the new sample rate.
 		if (activeSampleRate != thisActorSampleRate) {
@@ -436,9 +418,6 @@ public class AudioCapture extends Source implements LiveSoundListener {
      *  in the capturing process.
      */
     public void wrapup() throws IllegalActionException {
-	if (_debugInfo) {
-	    System.out.println("AudioCapture: wrapup(): invoked");
-	}
 	// Stop capturing audio.
 	if (LiveSound.isCaptureActive()) {
 	    try {
@@ -465,9 +444,6 @@ public class AudioCapture extends Source implements LiveSoundListener {
      */
     private synchronized void _initializeCapture()
             throws IllegalActionException, IOException {
-	if (_debugInfo) {
-	    System.out.println("AudioCapture: _initializeCapture() invoked.");
-	}
 	if (LiveSound.isCaptureActive()) {
 	    throw new IllegalActionException(this,
                     "This actor cannot start audio capture because " +
@@ -531,6 +507,4 @@ public class AudioCapture extends Source implements LiveSoundListener {
     // at a time = 1/getFactor.
     private int _getFactor;
     private boolean _safeToInitialize = false;
-    //private boolean _debugInfo = true;
-    private boolean _debugInfo = false;
 }
