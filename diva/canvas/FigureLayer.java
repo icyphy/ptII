@@ -72,13 +72,17 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
      */
     private boolean _enabled = true;
 
+    /** The figure that the pointer is currently over.
+     */
+    private Figure _pointerOver = null;
+
     /** The figure that has currently grabbed the pointer.
      */
     private Figure _pointerGrabber = null;
 
-    /** The figure that the pointer is currently over.
+    /** The last layer event processed by this layer.
      */
-    private Figure _pointerOver = null;
+    private LayerEvent _lastLayerEvent = null;
 
     /** Create a new figure layer that is not in a pane. The layer will
      * not be displayed, and its coordinate transformation will be
@@ -255,7 +259,12 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
      *  @return The figure the mouse is currently over.
      */
     public Figure getCurrentFigure() {
-        return _pointerOver;
+        LayerEvent e = _lastLayerEvent;
+        if(e != null && e.getID() != MouseEvent.MOUSE_EXITED) {
+            return getFigure(e);
+        } else {
+            return null;
+        }
     }
 
     /** Get the internal z-list. Clients must <i>not</i> modify
@@ -324,7 +333,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
         String tip = null;
 
         // Scan up the tree try to dispatch the event
-        Figure f = _pointerOver;
+        Figure f = getFigure(e);
         while (f != null) {
             tip = f.getToolTipText();
             if (tip != null) break;
@@ -594,6 +603,19 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
         }
     }
 
+    /** Return the figure pointed to by the given LayerEvent.  If
+     * there is no figure, then return null.
+     */
+    protected final Figure getFigure(LayerEvent e) {
+        // Get the figure that the mouse hit, if any
+        double wh = _pickHalo * 2;
+        Rectangle2D region = new Rectangle2D.Double (
+                e.getLayerX() - _pickHalo,
+                e.getLayerY() - _pickHalo,
+                wh, wh);
+        return pick(region);
+    }
+   
     /** Process a layer event. The behaviour of this method depends on
      * the action type. If it is MOUSE_PRESSED, then it recurses
      * down the figure tree searching for the top-most figure under
@@ -619,22 +641,14 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
      * us to identify the input device?
      */
     protected void processLayerEvent(LayerEvent e) {
-        double wh;
-        Rectangle2D region;
         Figure f;
-
         int id = e.getID();
+        _lastLayerEvent = e;
         e.setLayerSource(this);
 
         switch(id) {
         case MouseEvent.MOUSE_PRESSED:
-            // Get the figure that the mouse hit, if any
-            wh = _pickHalo * 2;
-            region = new Rectangle2D.Double (
-                    e.getLayerX() - _pickHalo,
-                    e.getLayerY() - _pickHalo,
-                    wh, wh);
-            f = pick(region);
+            f = getFigure(e);
 
             // If there's a figure, grab the pointer and process the event
             if (f != null) {
@@ -690,12 +704,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
             //
         case MouseEvent.MOUSE_CLICKED:
             // Get the figure that the mouse hit, if any
-            wh = _pickHalo * 2;
-            region = new Rectangle2D.Double (
-                    e.getLayerX() - _pickHalo,
-                    e.getLayerY() - _pickHalo,
-                    wh, wh);
-            f = pick(region);
+            f = getFigure(e);
 
             // If there's no figure, we're done
             if (f == null) {
@@ -730,28 +739,19 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
      */
     protected void processLayerMotionEvent(LayerEvent e) {
         int id = e.getID();
+        _lastLayerEvent = e;
         e.setLayerSource(this);
 
         if (id == MouseEvent.MOUSE_EXITED) {
             dispatchMotionEventUpTree(_pointerOver, e);
             _pointerOver = null;
         } else if (id == MouseEvent.MOUSE_ENTERED) {
-            // Get the figure that the mouse hit, if any
-            double wh = _pickHalo * 2;
-            Rectangle2D region = new Rectangle2D.Double (
-                    e.getLayerX() - _pickHalo,
-                    e.getLayerY() - _pickHalo,
-                    wh, wh);
-            _pointerOver = pick(region);
+            // Get the figure that the mouse hit, if any.
+            _pointerOver = getFigure(e);
             dispatchMotionEventUpTree(_pointerOver, e);
         } else if (id == MouseEvent.MOUSE_MOVED) {
-            // Get the figure that the mouse hit, if any
-            double wh = _pickHalo * 2;
-            Rectangle2D region = new Rectangle2D.Double (
-                    e.getLayerX() - _pickHalo,
-                    e.getLayerY() - _pickHalo,
-                    wh, wh);
-            Figure figure = pick(region);
+            // Get the figure that the mouse hit, if any.
+            Figure figure = getFigure(e);
             if (figure != _pointerOver) {
                 LayerEvent event;
                 event = new LayerEvent(e,
