@@ -407,9 +407,9 @@ public class ASTReflect {
 	if(pathname.lastIndexOf('.') != -1) {
 	    // Strip out anything after the last '.', such as .java
 	    classname =
-		new StringBuffer(StringManip.rawFilename(StringManip.partBeforeLast(pathname, '.')));
+		new StringBuffer(StringManip.baseFilename(StringManip.partBeforeLast(pathname, '.')));
 	} else {
-	    classname =	new StringBuffer(StringManip.rawFilename(pathname));
+	    classname =	new StringBuffer(StringManip.baseFilename(pathname));
 	}
 
 	// restOfPath contains the directories that we add one by one.
@@ -433,7 +433,7 @@ public class ASTReflect {
 	    // we pull off directories.
 	    restOfPath = StringManip.partBeforeLast(restOfPath,
 						    File.separatorChar);
-	    classname.insert(0, StringManip.rawFilename(restOfPath) + ".");
+	    classname.insert(0, StringManip.baseFilename(restOfPath) + ".");
 	}
 	
     }

@@ -91,9 +91,10 @@ public class JavaParserManip implements JavaStaticSemanticConstants {
 	if (javaFile.length() == 0) {
 	    Class myClass = ASTReflect.pathnameToClass(filename);
 	    if (myClass != null) {
-		ApplicationUtility.trace("JavaParserManip: Calling " +
+		System.out.println("JavaParserManip: Calling " +
 					 "ASTCompileUnitNode on " + 
-					 myClass.getName());
+					 myClass.getName() + " " +
+                        filename);
 		loadedAST = ASTReflect.ASTCompileUnitNode(myClass);
 	    }
 	} else {
@@ -101,7 +102,7 @@ public class JavaParserManip implements JavaStaticSemanticConstants {
 
 	    ApplicationUtility.trace("JavaParserManip: Calling " +
 				     "JavaParser.init() " + 
-				     StringManip.rawFilename(filename));
+				     StringManip.baseFilename(filename));
 
 	    try {
 		p.init(filename);

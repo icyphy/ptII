@@ -139,7 +139,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
                 Environ pkgEnv = pkgDecl.getEnviron();
 
-                String className = StringManip.rawFilename(noExtensionFilename);
+                String className = StringManip.baseFilename(noExtensionFilename);
 
                 ClassDecl classDecl =
 		    (ClassDecl) pkgEnv.lookupProper(className,
@@ -394,12 +394,30 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 	    resolveFieldVisitor.resolveCall(environIter, methodArgs);
     }
 
+    
     /** Load the source file with the given filename. The filename may be
-     *  relative or absolute. If primary is true, do full resolution of the
-     *  source. Otherwise do partial resolution only.
+     *  relative or absolute.
      */
     public static CompileUnitNode load(String filename, int pass) {
         return load(new File(filename), pass);
+    }
+
+    /** Load the class by name.  The classname does not have a
+     *  .class or .java suffix.  The classname should include
+     *  the package name, for example "java.lang.Object"
+     */
+    public static CompileUnitNode loadClass(String className, int pass) {
+        CompileUnitNode loadedAST =
+            (CompileUnitNode) allPass0ResolvedMap.get(className);
+
+        if (loadedAST == null) {
+            loadedAST = JavaParserManip.parseCanonical(filename, false);
+
+            if (loadedAST == null) {
+                ApplicationUtility.error("Couldn't load " + filename);
+            }
+        }
+        return load(loadedAST, pass);
     }
 
     public static CompileUnitNode load(File file, int pass) {
@@ -758,6 +776,10 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         return load(loadedAST, pass);
     }
 
+
+    // Load classes into the environment.
+    // This method is only called a few times to bootstrap the JDK system
+    // classes like Object
     private static final ClassDecl _requireClass(Environ env, String name) {
 	ClassDecl classDecl = null;
 	System.out.println("StaticResolution._requireClass() " + name);
@@ -807,6 +829,10 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 		}
 		env.add(classDecl);
 	    }
+            // No need to call loadSource(), we have already loaded
+            // the class declarations via reflection.   Note that
+            // method bodies are not available under reflection.
+            return classDecl;
         } else {
 	    if ((decl.category & (CG_CLASS | CG_INTERFACE)) == 0) {
 		ApplicationUtility.error("fatal error: " + decl.getName() +
@@ -815,7 +841,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 	    classDecl = (ClassDecl) decl;
 	}
 	System.out.println("StaticResolution._requireClass() loadSource()");
-	classDecl.loadSource();
+        classDecl.loadSource();
 	System.out.println("\nStaticResolution._requireClass() -- leaving");
         return classDecl;
     }
