@@ -79,5 +79,5 @@ public class Message extends Frame {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private TextArea _txtarea;
+    private transient TextArea _txtarea;
 }
