@@ -15,6 +15,8 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 331.5}">
     </property>
     <property name="DDF Director" class="ptolemy.domains.ddf.kernel.DDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 105.0]">
         </property>
     </property>
@@ -23,7 +25,7 @@
         </property>
     </entity>
     <entity name="Pulse" class="ptolemy.actor.lib.Pulse">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0,1,2,3,4,5,6,7,8}">
         </property>
@@ -35,7 +37,7 @@
         </property>
     </entity>
     <entity name="1:Pulse" class="ptolemy.actor.lib.Pulse">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0,1,2,3,4,5,6,7,8}">
         </property>
@@ -241,7 +243,7 @@ to another. Then delete this annotation.</text>
             </port>
             <port name="control" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 305.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 305.0]">
                 </property>
             </port>
             <port name="true" class="ptolemy.domains.fsm.modal.RefinementPort">
@@ -255,7 +257,7 @@ to another. Then delete this annotation.</text>
                 </property>
             </port>
             <entity name="Discard" class="ptolemy.actor.lib.Discard">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{200.0, 305.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 305.0]">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -270,36 +272,44 @@ to another. Then delete this annotation.</text>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{115, 90}">
                 </property>
             </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+            </property>
             <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 210.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 225.0]">
                 </property>
             </port>
             <port name="control" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[125.546875, 288.875]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{130.0, 290.0}">
                 </property>
             </port>
             <port name="true" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[423.0546875, 189.828125]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 225.0]">
                 </property>
             </port>
             <port name="false" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 270.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 290.0]">
                 </property>
             </port>
-            <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 230.0]">
+            <entity name="Discard" class="ptolemy.actor.lib.Discard">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 290.0]">
                 </property>
             </entity>
-            <entity name="Discard" class="ptolemy.actor.lib.Discard">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{200, 290}">
+            <entity name="Discard2" class="ptolemy.actor.lib.Discard">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 175.0]">
                 </property>
             </entity>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="{260.0, 195.0}">
+                <vertex name="vertex1" value="[260.0, 225.0]">
                 </vertex>
             </relation>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -307,8 +317,8 @@ to another. Then delete this annotation.</text>
             <link port="input" relation="relation2"/>
             <link port="control" relation="relation"/>
             <link port="true" relation="relation2"/>
-            <link port="Display.input" relation="relation2"/>
             <link port="Discard.input" relation="relation"/>
+            <link port="Discard2.input" relation="relation2"/>
         </entity>
         <entity name="false2" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -327,7 +337,7 @@ to another. Then delete this annotation.</text>
             </property>
             <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[94.453125, 241.125]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 240.0]">
                 </property>
             </port>
             <port name="control" class="ptolemy.domains.fsm.modal.RefinementPort">
@@ -342,19 +352,19 @@ to another. Then delete this annotation.</text>
             </port>
             <port name="false" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[441.9453125, 320.171875]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{445.0, 320.0}">
                 </property>
             </port>
-            <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{290, 225}">
-                </property>
-            </entity>
             <entity name="Discard" class="ptolemy.actor.lib.Discard">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 320.0]">
                 </property>
             </entity>
+            <entity name="Discard2" class="ptolemy.actor.lib.Discard">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 175.0]">
+                </property>
+            </entity>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="{250.0, 250.0}">
+                <vertex name="vertex1" value="[250.0, 240.0]">
                 </vertex>
             </relation>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -362,8 +372,8 @@ to another. Then delete this annotation.</text>
             <link port="input" relation="relation2"/>
             <link port="control" relation="relation"/>
             <link port="false" relation="relation2"/>
-            <link port="Display.input" relation="relation2"/>
             <link port="Discard.input" relation="relation"/>
+            <link port="Discard2.input" relation="relation2"/>
         </entity>
         <relation name="inputRelation" class="ptolemy.actor.TypedIORelation">
         </relation>
