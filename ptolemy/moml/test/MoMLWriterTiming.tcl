@@ -118,3 +118,5 @@ test MoMLWriterTiming-1.1 {Try the DSP only configuration} {
 test MoMLWriterTiming-1.2 {Try the Ptiny only configuration} {
     compareMoMLWriter "ptolemy/configs/vergilConfigurationPtiny.xml"
     list 0
+} {}
+
