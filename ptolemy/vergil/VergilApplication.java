@@ -119,21 +119,21 @@ public class VergilApplication extends MoMLApplication {
      *  @param args The command-line arguments.
      */
     public static void main(final String args[]) {
-	// FIXME: Java superstition dictates that if you want something
+	// NOTE: Java superstition dictates that if you want something
 	// to work, you should invoke it in event thread.  Otherwise,
 	// weird things happens at the user interface level.  This
         // seems to prevent occasional errors rending HTML under Web Start.
 	try {
-	    SwingUtilities.invokeLater(new Runnable() {
-		    public void run() {
-			try {
-			    new VergilApplication(args);
-			} catch (Exception ex) {
-			    MessageHandler.error("Command failed", ex);
-			    System.exit(0);
-			}
-		    }
- 		});
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    try {
+                        new VergilApplication(args);
+                    } catch (Exception ex) {
+                        MessageHandler.error("Command failed", ex);
+                        System.exit(0);
+                    }
+                }
+            });
         } catch (Error ex2) {
             MessageHandler.error("Command failed" + ex2.toString());
             System.exit(0);
@@ -321,10 +321,11 @@ public class VergilApplication extends MoMLApplication {
     protected void _parseArgs(final String args[]) throws Exception {
         _commandTemplate = "vergil [ options ] [file ...]";
 
-//         // FIXME: Java superstition dictates that if you want something
+//         // NOTE: Java superstition dictates that if you want something
 //         // to work, you should invoke it in event thread.  Otherwise,
 //         // weird things happens at the user interface level.  This
 //         // seems to prevent occasional errors rending HTML.
+//         // This is now done in main().
 //         SwingUtilities.invokeLater(new Runnable() {
 //                 public void run() {
 //                     try {
