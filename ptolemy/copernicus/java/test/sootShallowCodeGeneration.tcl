@@ -77,6 +77,11 @@ proc sootShallowCodeGeneration {modelPath} {
 		'$modelName', yet the file is called '$model'"
     }
 
+    if {"$modelName" == ""} {
+	puts stderr "WARNING: model name was empty, defaulting to file name"
+	set modelName $model
+    }
+
     if {[string range $modelPath 0 2] == "../"} {
 	# Ugh.  Strip off the first ../ because we are cd'ing up one level.
 	set modelPath [string range $modelPath 3 end]
