@@ -382,7 +382,7 @@ public class BasePNDirector extends ProcessDirector {
 	        smallestCapacityQueue.setCapacity(
 			smallestCapacityQueue.getCapacity()*2);
             }
-	    _informOfWriteUnblock(smallestCapacityQueue);
+	    _actorUnBlocked(smallestCapacityQueue);
 	    smallestCapacityQueue.setWritePending(false);
             synchronized(smallestCapacityQueue) {
                 smallestCapacityQueue.notifyAll();
@@ -429,8 +429,14 @@ public class BasePNDirector extends ProcessDirector {
      *  of the process blocking on a read. If either of them is detected,
      *  then notify the directing thread of the same.
      */
-    protected synchronized void _actorReadBlocked(boolean internal) {
-	_readBlockCount++;
+    protected synchronized void _actorBlocked(ProcessReceiver rcvr) {
+        if( rcvr.isReadBlocked() ) {
+	    _readBlockCount++;
+        } 
+        if( rcvr.isWriteBlocked() ) {
+	    _writeblockedQueues.add(rcvr);
+	    _writeBlockCount++;
+        }
 	if (_isDeadlocked()) {
 	    notifyAll();
 	}
@@ -442,21 +448,14 @@ public class BasePNDirector extends ProcessDirector {
      *  the process listeners that the relevant process has resumed its
      *  execution.
      */
-    protected synchronized void _informOfReadUnblock
-    (PNQueueReceiver receiver, boolean internal) {
-	_readBlockCount--;
-        /*
-        if (!_processlisteners.isEmpty()) {
-            Actor actor = receiver.getReadBlockedActor();
-            PNProcessEvent event = new PNProcessEvent(actor,
-                    PNProcessEvent.PROCESS_RUNNING);
-            Iterator enum = _processlisteners.iterator();
-            while (enum.hasNext()) {
-                PNProcessListener lis = (PNProcessListener)enum.next();
-                lis.processStateChanged(event);
-            }
+    protected synchronized void _actorUnBlocked(PNQueueReceiver rcvr) {
+        if( rcvr.isReadBlocked() ) {
+	    _readBlockCount--;
         }
-        */
+        if( rcvr.isWriteBlocked() ) {
+	    _writeBlockCount--;
+	    _writeblockedQueues.remove(rcvr);
+        }
 	return;
     }
 
@@ -469,12 +468,12 @@ public class BasePNDirector extends ProcessDirector {
      *  thread of the same.
      *  @param receiver The receiver to which the blocking process was trying
      *  to write.
-     */
     protected synchronized void _actorWriteBlocked(PNQueueReceiver receiver) {
 	_writeblockedQueues.add(receiver);
         _actorWriteBlocked();
 	return;
     }
+     */
 
     /** Increment by 1 the count of processes blocked while writing to a
      *  receiver and inform all the process listeners that the relevant process
@@ -484,7 +483,6 @@ public class BasePNDirector extends ProcessDirector {
      *  thread of the same.
      *  @param receiver The receiver to which the blocking process was trying
      *  to write.
-     */
     protected synchronized void _actorWriteBlocked() {
 	_writeBlockCount++;
 	if (_isDeadlocked()) {
@@ -492,6 +490,7 @@ public class BasePNDirector extends ProcessDirector {
 	}
 	return;
     }
+     */
 
     /** Decrease by 1 the count of processes blocked on a write to a receiver.
      *  Inform all the process listeners that the relevant process has resumed
@@ -499,12 +498,12 @@ public class BasePNDirector extends ProcessDirector {
      *
      *  @param receiver The receiver to which the blocked process was trying
      *  to write.
-     */
-    protected synchronized void _informOfWriteUnblock(PNQueueReceiver queue) {
+    protected synchronized void _actorWriteUnBlocked(PNQueueReceiver queue) {
 	_writeBlockCount--;
 	_writeblockedQueues.remove(queue);
 	return;
     }
+     */
 
     /** Return true if a real or artificial deadlock is detected.
      *  If derived classes introduce any

@@ -75,6 +75,7 @@ process has been received.
 @see ptolemy.actor.QueueReceiver
 */
 public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
+
     /** Construct an empty receiver with no container
      */
     public PNQueueReceiver() {
@@ -116,9 +117,9 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         Token result = null;
         synchronized (this) {
             while (!_terminate && !super.hasToken()) {
-                director._actorReadBlocked(true);
-                _readpending = true;
-                while (_readpending && !_terminate) {
+                _readBlocked = true;
+                director._actorBlocked(this);
+                while (_readBlocked && !_terminate) {
                     workspace.wait(this);
                 }
             }
@@ -127,9 +128,9 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
             } else {
                 result = super.get();
                 //Check if pending write to the Queue;
-                if (_writepending) {
-                    director._informOfWriteUnblock(this);
-                    _writepending = false;
+                if (_writeBlocked) {
+                    director._actorUnBlocked(this);
+                    _writeBlocked = false;
                     notifyAll(); // Wake up threads waiting on a write;
                 }
             }
@@ -244,10 +245,10 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         Token result = null;
         synchronized (this) {
             while (!_terminate && !super.hasToken()) {
-                director._actorReadBlocked(true);
-                _readpending = true;
+                _readBlocked = true;
+                director._actorBlocked(this);
 		// _otherBranch = branch;
-                while (_readpending && !_terminate) {
+                while (_readBlocked && !_terminate) {
                     workspace.wait(this);
                 }
             }
@@ -256,10 +257,10 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
             } else {
                 result = super.get();
                 //Check if pending write to the Queue;
-                if (_writepending) {
-		    _otherBranch.registerRcvrUnBlocked();
+                if (_writeBlocked) {
+		    _otherBranch.registerRcvrUnBlocked(this);
 		    _otherBranch = null;
-                    _writepending = false;
+                    _writeBlocked = false;
 		    // Wake up threads waiting on a write;
                     notifyAll(); 
                 }
@@ -279,10 +280,10 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         Token result = null;
         synchronized (this) {
             while (!_terminate && !super.hasToken()) {
-                branch.registerRcvrBlocked();
+                branch.registerRcvrBlocked(this);
 		_otherBranch = branch;
-                _readpending = true;
-                while (_readpending && !_terminate) {
+                _readBlocked = true;
+                while (_readBlocked && !_terminate) {
                     workspace.wait(this);
                 }
             }
@@ -291,10 +292,10 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
             } else {
                 result = super.get();
                 //Check if pending write to the Queue;
-                if (_writepending) {
-		    _otherBranch.registerRcvrUnBlocked();
+                if (_writeBlocked) {
+		    _otherBranch.registerRcvrUnBlocked(this);
 		    _otherBranch = null;
-                    _writepending = false;
+                    _writeBlocked = false;
 		    // Wake up threads waiting on a write;
                     notifyAll(); 
                 }
@@ -314,10 +315,10 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         Token result = null;
         synchronized (this) {
             while (!_terminate && !super.hasToken()) {
-                branch.registerRcvrBlocked();
+                branch.registerRcvrBlocked(this);
 		_otherBranch = branch;
-                _readpending = true;
-                while (_readpending && !_terminate) {
+                _readBlocked = true;
+                while (_readBlocked && !_terminate) {
                     workspace.wait(this);
                 }
             }
@@ -326,9 +327,9 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
             } else {
                 result = super.get();
                 //Check if pending write to the Queue;
-                if (_writepending) {
-                    director._informOfWriteUnblock(this);
-                    _writepending = false;
+                if (_writeBlocked) {
+                    director._actorUnBlocked(this);
+                    _writeBlocked = false;
 		    // Wake up threads waiting on a write;
                     notifyAll(); 
                 }
@@ -337,22 +338,22 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         }
     }
 
-    /** Return a true or false to indicate whether there is a read pending
+    /** Return a true or false to indicate whether there is a read block
      *  on this receiver or not, respectively.
-     *  @return a boolean indicating whether a read is pending on this
+     *  @return a boolean indicating whether a read is blocked on this
      *  receiver or not.
      */
-    public synchronized boolean isReadPending() {
-	return _readpending;
+    public synchronized boolean isReadBlocked() {
+	return _readBlocked;
     }
 
-    /** Return a true or false to indicate whether there is a write pending
+    /** Return a true or false to indicate whether there is a write block
      *  on this receiver or not.
-     *  @return A boolean indicating whether a write is pending on this
+     *  @return A boolean indicating whether a write is blocked  on this
      *  receiver or not.
      */
-    public synchronized boolean isWritePending() {
-	return _writepending;
+    public synchronized boolean isWriteBlocked() {
+	return _writeBlocked;
     }
 
     /** Put a token on the queue contained in this receiver.
@@ -392,10 +393,10 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
             ((Actor)(getContainer().getContainer())).getDirector();
         synchronized(this) {
             if (!super.hasRoom()) {
-                _writepending = true;
-                director._actorWriteBlocked(this);
+                _writeBlocked = true;
+                director._actorBlocked(this);
                 while (!_terminate && !super.hasRoom()) {
-                    while(_writepending) {
+                    while(_writeBlocked) {
                         workspace.wait(this);
                     }
                 }
@@ -406,9 +407,9 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                 //token can be put in the queue;
                 super.put(token);
                 //Check if pending write to the Queue;
-                if (_readpending) {
-                    director._informOfReadUnblock(this, true);
-                    _readpending = false;
+                if (_readBlocked) {
+                    director._actorUnBlocked(this);
+                    _readBlocked = false;
                     notifyAll();
                     //Wake up all threads waiting on a write to this receiver;
                 }
@@ -420,8 +421,8 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      */
     public void reset() {
 	super.reset();
-	_readpending = false;
-	_writepending = false;
+	_readBlocked = false;
+	_writeBlocked = false;
 	_terminate = false;
 	_boundaryDetector.reset();
     }
@@ -432,7 +433,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  read, false otherwise.
      */
     public synchronized void setReadPending(boolean readpending) {
-	_readpending = readpending;
+	_readBlocked = readpending;
     }
 
     /** Set a state flag indicating that there is a process blocked
@@ -441,7 +442,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  a write, false otherwise.
      */
     public synchronized void setWritePending(boolean writepending) {
-	_writepending = writepending;
+	_writeBlocked = writepending;
     }
 
     /** Set a flag in the receiver to indicate the onset of termination.
@@ -457,8 +458,8 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private boolean _readpending = false;
-    private boolean _writepending = false;
+    private boolean _readBlocked = false;
+    private boolean _writeBlocked = false;
     private boolean _terminate = false;
 
     private Branch _otherBranch = null;

@@ -97,7 +97,7 @@ test PNQueueReceiver-3.2 {Check hasRoom} {
 #
 test PNQueueReceiver-3.3 {Test the setting of the blocking flags} {
     $rec setReadPending true
-    list [$rec isReadPending] [$rec isWritePending]
+    list [$rec isReadBlocked] [$rec isWriteBlocked]
 } {1 0}
 
 ######################################################################
@@ -105,7 +105,7 @@ test PNQueueReceiver-3.3 {Test the setting of the blocking flags} {
 #
 test PNQueueReceiver-3.4 {Test the setting of the blocking flags} {
     $rec setWritePending true
-    list [$rec isReadPending] [$rec isWritePending]
+    list [$rec isReadBlocked] [$rec isWriteBlocked]
 } {1 1}
 
 
@@ -152,8 +152,8 @@ test PNQueueReceiver-4.3 {Test for reset} {
     $rec reset
     set elem [$rec elements]
     set ans1 [$elem hasMoreElements]
-    set ans2 [$rec isReadPending]
-    set ans3 [$rec isWritePending]
+    set ans2 [$rec isReadBlocked]
+    set ans3 [$rec isWriteBlocked]
     list $ans1 $ans2 $ans3
 } {0 0 0}
 
