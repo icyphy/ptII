@@ -52,15 +52,8 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	actor.corba.CorbaActor
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = 
-	
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	util
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
@@ -94,7 +87,6 @@ MISC_FILES =	$(DIRS) lib
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = 
-	
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -55,13 +55,13 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	actor.corba
+PTPACKAGE = 	corba
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
+PTCLASSJAR = 
 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = 
-	
+PTCLASSALLJARS =  \
+	util/util.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
@@ -74,12 +74,11 @@ EXTRA_SRCS =	$(JSRCS) \
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS) lib
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = 
-	
+OPTIONAL_FILES = 	
 
 JCLASS = $(JSRCS:%.java=%.class)
 
