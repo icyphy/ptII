@@ -1545,13 +1545,16 @@ void insertComments( src_in, dst_in)
     for (; *src!='\0'; src++) {	
 	*dst++ = *src;
 	if (*src == NEWLINE) {
+	    if (*(src+1) == '\r') {
+		*dst++ = *(++src);
+	    }
 	    *dst++ = ' '; *dst++ = ' '; *dst++ = ' '; *dst++ = ' ';
 	    *dst++ = ' '; *dst++ = ' '; *dst++ = ' '; *dst++ = ' ';
 	    *dst++ = '/';
 	    *dst++ = '/';
-
 	}
     }
+    *dst++ = '\0';	
 }
 
 void convertConstCharToString( src_in)
