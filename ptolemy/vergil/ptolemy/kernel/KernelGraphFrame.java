@@ -89,6 +89,7 @@ public class KernelGraphFrame extends GraphFrame {
     protected GraphPane _createGraphPane() {
 	_controller = new EditorGraphController();
         _controller.setConfiguration(getConfiguration());
+        _controller.setFrame(this);
 	final PtolemyGraphModel graphModel = new PtolemyGraphModel(getModel());
 	return new GraphPane(_controller, graphModel);
     }

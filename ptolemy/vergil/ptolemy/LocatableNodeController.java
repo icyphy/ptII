@@ -35,6 +35,7 @@ import diva.canvas.Figure;
 import diva.canvas.toolbox.BasicRectangle;
 import diva.graph.BasicNodeController;
 import diva.graph.GraphController;
+import diva.graph.GraphViewEvent;
 import diva.graph.NodeInteractor;
 
 import java.awt.Color;

@@ -45,6 +45,7 @@ import diva.gui.toolbox.MenuCreator;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.Location;
+import ptolemy.vergil.ptolemy.GraphFrame;
 import ptolemy.vergil.toolbox.EditParametersFactory;
 import ptolemy.vergil.toolbox.PtolemyMenuFactory;
 
@@ -88,6 +89,15 @@ public abstract class PtolemyGraphController extends AbstractGraphController {
 	return _configuration;
     }
 
+    /** Get the graph frame, or null if there is none.  This is used by
+     *  some of the controllers to mark the modified bit of the frame
+     *  and to update any dependents.
+     *  @return The graph frame, or null if there is none.
+     */
+    public GraphFrame getFrame() {
+        return _frame;
+    }
+
     /** Return the node controller appropriate for the given object.
      *  In this base class, the method checks to see whether the object
      *  is an instance of Location and contains a NodeControllerFactory
@@ -128,6 +138,14 @@ public abstract class PtolemyGraphController extends AbstractGraphController {
         _configuration = configuration;
     }
 
+    /** Set the graph frame.  This is used by some of the controllers
+     *  to mark the modified bit of the frame and to update any dependents.
+     *  @param frame The graph frame, or null if there is none.
+     */
+    public void setFrame(GraphFrame frame) {
+        _frame = frame;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -161,6 +179,9 @@ public abstract class PtolemyGraphController extends AbstractGraphController {
 
     // The configuration.
     private Configuration _configuration;
+
+    // The graph frame, if there is one.
+    private GraphFrame _frame;
 
     ///////////////////////////////////////////////////////////////////
     ////                          inner classes                    ////

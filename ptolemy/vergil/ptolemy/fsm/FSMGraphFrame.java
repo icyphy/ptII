@@ -74,6 +74,7 @@ public class FSMGraphFrame extends GraphFrame {
     protected GraphPane _createGraphPane() {
 	_controller = new FSMGraphController();
         _controller.setConfiguration(getConfiguration());
+        _controller.setFrame(this);
 	final FSMGraphModel graphModel = new FSMGraphModel(getModel());
 	return new GraphPane(_controller, graphModel);
     }

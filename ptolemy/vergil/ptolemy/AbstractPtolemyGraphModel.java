@@ -305,7 +305,8 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
 	    // Ignore anything that comes from this graph model.
 	    // the other methods take care of issuing the graph event in
 	    // that case.
-            if(change.getSource() == AbstractPtolemyGraphModel.this) {
+            if(change != null
+                    && change.getSource() == AbstractPtolemyGraphModel.this) {
                 return;
             }
 
@@ -327,7 +328,9 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
          */
         public void changeFailed(ChangeRequest change, Exception exception) {
             // Report it if it has not been reported.
-            if (!change.isErrorReported()) {
+            if (change == null) {
+                MessageHandler.error("Change failed", exception);
+            } else if (!change.isErrorReported()) {
                 change.setErrorReported(true);
                 MessageHandler.error("Change failed", exception);
             }

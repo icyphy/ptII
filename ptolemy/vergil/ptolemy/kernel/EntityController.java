@@ -56,6 +56,7 @@ import diva.graph.layout.IncrLayoutAdapter;
 import diva.util.Filter;
 
 import java.awt.Font;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.event.ActionEvent;
 import java.util.Iterator;
@@ -239,7 +240,6 @@ public class EntityController extends AttributeController {
                 if (port.getAttribute("_showName") != null) {
                     LabelFigure label = null;
                     if (port.isOutput() && port.isInput()) {
-                        // FIXME: Rotate the label?
                         // The 1.0 argument is the padding.
                         label = new LabelFigure(
                                 port.getName(),
@@ -248,7 +248,11 @@ public class EntityController extends AttributeController {
                                 SwingConstants.NORTH_WEST);
                         // Shift the label right so it doesn't
                         // collide with ports.
-                        label.translateTo(x, y + 5);
+                        label.translateTo(x, y - 5);
+                        // Rotate the label.
+                        AffineTransform rotate = AffineTransform
+                                .getRotateInstance(Math.PI/2.0, x, y + 5);
+                        label.transform(rotate);
                     } else if (port.isOutput()) {
                         // The 1.0 argument is the padding.
                         label = new LabelFigure(

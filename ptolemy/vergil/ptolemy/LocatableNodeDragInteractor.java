@@ -52,6 +52,8 @@ import javax.swing.SwingConstants;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.gui.MessageHandler;
 import ptolemy.vergil.toolbox.SnapConstraint;
+// FIXME: Dependency on subpackage shouldn't be here.
+import ptolemy.vergil.ptolemy.kernel.PtolemyGraphController;
 
 //////////////////////////////////////////////////////////////////////////
 //// LocatableNodeDragInteractor
@@ -73,8 +75,10 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
 	_controller = controller;
 
         Point2D origin = new Point(0,0);
-        appendConstraint(new QuadrantConstraint(
-                origin, SwingConstants.SOUTH_EAST));
+        // NOTE: The quadrant constraint is not needed anymore with
+        // new zoom capability.
+        // appendConstraint(new QuadrantConstraint(
+        //        origin, SwingConstants.SOUTH_EAST));
         // NOTE: I don't know why the following is needed anymore,
         // but if it isn't here, dragging causes things to move random
         // amounts.  Beats me... EAL
@@ -83,6 +87,21 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** When the mouse is released after dragging, mark the frame modified
+     *  and update the panner.
+     *  @param e The release event.
+     */
+    public void mouseReleased(LayerEvent e) {
+        PtolemyGraphController graphController
+                = (PtolemyGraphController)_controller.getController();
+        GraphFrame frame = graphController.getFrame();
+        if (frame != null) {
+            // NOTE: Use changeExecuted rather than directly calling
+            // setModified() so that the panner is also updated.
+            frame.changeExecuted(null);
+        }
+    }
 
     /** Drag all selected nodes and move any attached edges.
      *  Update the locatable nodes with the current location.

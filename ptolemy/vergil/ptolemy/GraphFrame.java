@@ -34,6 +34,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
@@ -43,6 +44,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
@@ -52,6 +54,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -60,6 +63,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
@@ -72,11 +76,12 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
 import diva.canvas.CanvasUtilities;
+import diva.canvas.JCanvas;
 import diva.canvas.Figure;
 import diva.canvas.Site;
+import diva.canvas.ZList;
 import diva.canvas.connector.FixedNormalSite;
 import diva.canvas.connector.Terminal;
-import diva.canvas.interactor.Interactor;
 import diva.canvas.interactor.SelectionModel;
 import diva.graph.GraphController;
 import diva.graph.GraphEvent;
@@ -84,7 +89,6 @@ import diva.graph.GraphModel;
 import diva.graph.GraphPane;
 import diva.graph.GraphUtilities;
 import diva.graph.JGraph;
-import diva.graph.NodeInteractor;
 import diva.graph.basic.BasicGraphModel;
 import diva.graph.basic.BasicLayoutTarget;
 import diva.graph.layout.LayoutTarget;
@@ -173,8 +177,8 @@ public abstract class GraphFrame extends PtolemyFrame
 	_jgraph.setBackground(BACKGROUND_COLOR);
 
 	// Set the default size.
-	_jgraph.setPreferredSize(new Dimension(600, 450));
-	_jgraph.setSize(600, 450);
+	_jgraph.setPreferredSize(new Dimension(1200, 900));
+	_jgraph.setSize(1200, 900);
 
 	// wrap the graph editor in a scroll pane.
 	_graphScrollPane = new JScrollPane(_jgraph);
@@ -182,6 +186,8 @@ public abstract class GraphFrame extends PtolemyFrame
                 _graphScrollPane.VERTICAL_SCROLLBAR_NEVER);
 	_graphScrollPane.setHorizontalScrollBarPolicy(
                 _graphScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+	_graphScrollPane.setPreferredSize(new Dimension(600, 450));
+	_graphScrollPane.setSize(600, 450);
 
         // Set the size and location.
         // Note that the location is of the frame, while the size
@@ -213,7 +219,8 @@ public abstract class GraphFrame extends PtolemyFrame
 	_graphPanner.setPreferredSize(new Dimension(200, 150));
 	_graphPanner.setMaximumSize(new Dimension(200, 150));
 	_graphPanner.setSize(200, 150);
-	_graphPanner.setBorder(BorderFactory.createEtchedBorder());
+        // NOTE: Border causes all kinds of problems!
+	// _graphPanner.setBorder(BorderFactory.createEtchedBorder());
         _graphPanner.setViewport(_graphScrollPane.getViewport());
 
 	// Create the library of actors, or use the one in the entity,
@@ -294,6 +301,11 @@ public abstract class GraphFrame extends PtolemyFrame
 	_toolbar = new JToolBar();
 	getContentPane().add(_toolbar, BorderLayout.NORTH);
 
+       	diva.gui.GUIUtilities.addToolBarButton(_toolbar, _zoomInAction);
+       	diva.gui.GUIUtilities.addToolBarButton(_toolbar, _zoomResetAction);
+       	diva.gui.GUIUtilities.addToolBarButton(_toolbar, _zoomFitAction);
+       	diva.gui.GUIUtilities.addToolBarButton(_toolbar, _zoomOutAction);
+
 	_cutAction = new CutAction();
 	_copyAction = new CopyAction();
 	_pasteAction = new PasteAction();
@@ -313,6 +325,7 @@ public abstract class GraphFrame extends PtolemyFrame
      */
     public void changeExecuted(ChangeRequest change) {
         setModified(true);
+        _graphPanner.repaint();
     }
 
     /** React to the fact that a change has triggered an error by
@@ -323,7 +336,9 @@ public abstract class GraphFrame extends PtolemyFrame
      */
     public void changeFailed(ChangeRequest change, Exception exception) {
         // Do not report if it has already been reported.
-        if (!change.isErrorReported()) {
+        if (change == null) {
+            MessageHandler.error("Change failed", exception);
+        } else if (!change.isErrorReported()) {
             change.setErrorReported(true);
             MessageHandler.error("Change failed", exception);
         }
@@ -497,6 +512,7 @@ public abstract class GraphFrame extends PtolemyFrame
         // Perform the layout and repaint
 	layout.layout(model.getRoot());
         _jgraph.repaint();
+        _graphPanner.repaint();
     }
 
     /** Do nothing.
@@ -552,22 +568,50 @@ public abstract class GraphFrame extends PtolemyFrame
         } else return NO_SUCH_PAGE;
     }
 
+    /** Zoom in or out to magnify by the specified factor, from the current
+     *  magnification.
+     *  @param factor The magnification factor (relative to 1.0).
+     */
+    public void zoom(double factor) {
+        JCanvas canvas = _jgraph.getGraphPane().getCanvas();
+        AffineTransform current = 
+                canvas.getCanvasPane().getTransformContext().getTransform();
+        current.scale(factor, factor);
+        canvas.getCanvasPane().setTransform(current);
+        _graphPanner.repaint();
+    }
+
+    /** Zoom to fit the current figures.
+     */
+    public void zoomFit() {
+	GraphPane pane = _jgraph.getGraphPane();
+        ZList list = pane.getForegroundLayer().getFigures();
+        Rectangle2D bounds = list.getBounds();
+        if (list.getFigureCount() == 0) {
+            // Empty diagram.
+            return;
+        }
+        Rectangle size = _graphScrollPane.getViewport().getViewRect();
+        AffineTransform newTransform =
+                CanvasUtilities.computeFitTransform(bounds, size);
+        JCanvas canvas = pane.getCanvas();
+        canvas.getCanvasPane().setTransform(newTransform);
+        _graphPanner.repaint();
+    }
+
+    /** Set zoom to the nominal.
+     */
+    public void zoomReset() {
+        JCanvas canvas = _jgraph.getGraphPane().getCanvas();
+        AffineTransform current = 
+                canvas.getCanvasPane().getTransformContext().getTransform();
+        current.setToIdentity();
+        canvas.getCanvasPane().setTransform(current);
+        _graphPanner.repaint();
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-    /** Add the second specified interactor to the first interactor
-     *  in such a way that it gets mouse events before the drag interactor
-     *  associated with the first interactor.
-     *  @param interactor The node interactor.
-     *  @param doubleClickInteractor The interactor to add.
-     */
-    protected void _addDoubleClickInteractor(NodeInteractor interactor,
-            Interactor doubleClickInteractor) {
-        interactor.addInteractor(doubleClickInteractor);
-        // NOTE: This dance is so that the
-        // doubleclickinteractor gets the events before the drag interactor.
-        interactor.setDragInteractor(interactor.getDragInteractor());
-    }
 
     /** Create the menus that are used by this frame.
      */
@@ -583,6 +627,23 @@ public abstract class GraphFrame extends PtolemyFrame
 	diva.gui.GUIUtilities.addMenuItem(_editMenu, _copyAction);
 	diva.gui.GUIUtilities.addHotKey(_jgraph, _pasteAction);
 	diva.gui.GUIUtilities.addMenuItem(_editMenu, _pasteAction);
+
+        // May be null if there are not multiple views in the configuration.
+        if (_viewMenu == null) {
+            _viewMenu = new JMenu("View");
+            _viewMenu.setMnemonic(KeyEvent.VK_V);
+            _menubar.add(_viewMenu);
+        } else {
+            _viewMenu.addSeparator();
+        }
+	diva.gui.GUIUtilities.addHotKey(_jgraph, _zoomInAction);
+	diva.gui.GUIUtilities.addMenuItem(_viewMenu, _zoomInAction);
+	diva.gui.GUIUtilities.addHotKey(_jgraph, _zoomResetAction);
+	diva.gui.GUIUtilities.addMenuItem(_viewMenu, _zoomResetAction);
+	diva.gui.GUIUtilities.addHotKey(_jgraph, _zoomFitAction);
+	diva.gui.GUIUtilities.addMenuItem(_viewMenu, _zoomFitAction);
+	diva.gui.GUIUtilities.addHotKey(_jgraph, _zoomOutAction);
+	diva.gui.GUIUtilities.addMenuItem(_viewMenu, _zoomOutAction);
 
        	_graphMenu = new JMenu("Graph");
         _graphMenu.setMnemonic(KeyEvent.VK_G);
@@ -685,6 +746,18 @@ public abstract class GraphFrame extends PtolemyFrame
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    /** Action for zooming in. */
+    private Action _zoomInAction = new ZoomInAction();
+
+    /** Action for zoom reset. */
+    private Action _zoomResetAction = new ZoomResetAction();
+
+    /** Action for zoom fitting. */
+    private Action _zoomFitAction = new ZoomFitAction();
+
+    /** Action for zooming out. */
+    private Action _zoomOutAction = new ZoomOutAction();
 
     // NOTE: should be somewhere else?
     // Default background color is a light grey.
@@ -1164,4 +1237,137 @@ public abstract class GraphFrame extends PtolemyFrame
 	}
     }
 
+    ///////////////////////////////////////////////////////////////
+    //// ZoomInAction
+
+    // An action to zoom in.
+    public class ZoomInAction extends AbstractAction {
+	public ZoomInAction() {
+	    super("Zoom In");
+            // Load the image by using the absolute path to the gif.
+	    // Using a relative location should work, but it does not.
+            // Use the resource locator of the class.
+	    // For more information, see
+	    // jdk1.3/docs/guide/resources/resources.html
+            URL img = getClass().getResource(
+                    "/ptolemy/vergil/ptolemy/img/zoomin.gif");
+            if (img != null) {
+                ImageIcon icon = new ImageIcon(img);
+                putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
+            }
+	    putValue("tooltip", "Zoom in");
+            // NOTE: The following assumes that the + key is the same
+            // as the = key.  Unfortunately, the VK_PLUS key event doesn't
+            // work, so we have to do it this way.
+	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
+                    KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS,
+                            java.awt.Event.CTRL_MASK
+                            | java.awt.Event.SHIFT_MASK));
+	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+                    new Integer(KeyEvent.VK_Z));
+	}
+
+	public void actionPerformed(ActionEvent e) {
+            zoom(1.25);
+	}
+    }
+
+    ///////////////////////////////////////////////////////////////
+    //// ZoomResetAction
+
+    // An action to reset zoom.
+    public class ZoomResetAction extends AbstractAction {
+	public ZoomResetAction() {
+	    super("Zoom Reset");
+            // Load the image by using the absolute path to the gif.
+	    // Using a relative location should work, but it does not.
+            // Use the resource locator of the class.
+	    // For more information, see
+	    // jdk1.3/docs/guide/resources/resources.html
+            URL img = getClass().getResource(
+                    "/ptolemy/vergil/ptolemy/img/zoomreset.gif");
+            if (img != null) {
+                ImageIcon icon = new ImageIcon(img);
+                putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
+            }
+	    putValue("tooltip", "Zoom reset");
+            // NOTE: The following assumes that the + key is the same
+            // as the = key.  Unfortunately, the VK_PLUS key event doesn't
+            // work, so we have to do it this way.
+	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
+                    KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS,
+                            java.awt.Event.CTRL_MASK));
+	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+                    new Integer(KeyEvent.VK_M));
+	}
+
+	public void actionPerformed(ActionEvent e) {
+            zoomReset();
+	}
+    }
+
+    ///////////////////////////////////////////////////////////////
+    //// ZoomFitAction
+
+    // An action to zoom in.
+    public class ZoomFitAction extends AbstractAction {
+	public ZoomFitAction() {
+	    super("Zoom Fit");
+            // Load the image by using the absolute path to the gif.
+	    // Using a relative location should work, but it does not.
+            // Use the resource locator of the class.
+	    // For more information, see
+	    // jdk1.3/docs/guide/resources/resources.html
+            URL img = getClass().getResource(
+                    "/ptolemy/vergil/ptolemy/img/zoomfit.gif");
+            if (img != null) {
+                ImageIcon icon = new ImageIcon(img);
+                putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
+            }
+	    putValue("tooltip", "Zoom fit");
+            // NOTE: The following assumes that the + key is the same
+            // as the = key.  Unfortunately, the VK_PLUS key event doesn't
+            // work, so we have to do it this way.
+	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
+                    KeyStroke.getKeyStroke(KeyEvent.VK_F,
+                            java.awt.Event.CTRL_MASK));
+	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+                    new Integer(KeyEvent.VK_F));
+	}
+
+	public void actionPerformed(ActionEvent e) {
+            zoomFit();
+	}
+    }
+
+    ///////////////////////////////////////////////////////////////
+    //// ZoomOutAction
+
+    // An action to zoom out.
+    public class ZoomOutAction extends AbstractAction {
+	public ZoomOutAction() {
+	    super("Zoom Out");
+            // Load the image by using the absolute path to the gif.
+	    // Using a relative location should work, but it does not.
+            // Use the resource locator of the class.
+	    // For more information, see
+	    // jdk1.3/docs/guide/resources/resources.html
+            URL img = getClass().getResource(
+                    "/ptolemy/vergil/ptolemy/img/zoomout.gif");
+            if (img != null) {
+                ImageIcon icon = new ImageIcon(img);
+                putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
+            }
+	    putValue("tooltip", "Zoom out");
+	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
+                    KeyStroke.getKeyStroke(KeyEvent.VK_MINUS,
+                            java.awt.Event.CTRL_MASK));
+	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+                    new Integer(KeyEvent.VK_U));
+	}
+
+	public void actionPerformed(ActionEvent e) {
+            zoom(1.0/1.25);
+	}
+    }
 }
