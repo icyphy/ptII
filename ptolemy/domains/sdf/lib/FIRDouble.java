@@ -59,7 +59,6 @@ computation.
 */
 
 public class FIRDouble extends FIR {
-    // FIXME: support mutations.
     // FIXME: use past sample support.
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -80,6 +79,26 @@ public class FIRDouble extends FIR {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Set a flag that causes recalculation of various local variables 
+     *  that are used in execution on the next invocation of fire().
+     *  @param attribute The attribute that changed.
+     */
+    public void attributeChanged(Attribute attribute)
+             throws IllegalActionException {
+        if (attribute == taps) {
+            ArrayToken tapsToken = (ArrayToken)(taps.getToken());
+            _taps = new double[tapsToken.length()];
+            for (int i = 0; i < _taps.length; i++) {
+                _taps[i] = 
+                    ((DoubleToken)tapsToken.getElement(i)).doubleValue();
+            }    
+            _reinitializeNeeded = true;
+            // note that we do NOT call the super class.
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
+
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters. The new
      *  actor will have the same parameter values as the old.
@@ -94,10 +113,16 @@ public class FIRDouble extends FIR {
         return newObject;
     }
 
+    // FIXME: State update should occur in postfire.
+
     /** Consume the inputs and produce the outputs of the FIR filter.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void fire() throws IllegalActionException {
+     
+        // If an attribute has changed since the last fire(), or if
+        // this is the first fire(), then renitialize.
+        if (_reinitializeNeeded) _reinitialize();
 
         // phase keeps track of which phase of the filter coefficients
         // are used. Starting phase depends on the _decPhase value.
@@ -108,10 +133,12 @@ public class FIRDouble extends FIR {
 
         // Interpolate once for each input consumed
         for (int inC = 1; inC <= _dec; inC++) {
+
             // Produce however many outputs are required
             // for each input consumed
             while (phase < _interp) {
                 double out = 0.0;
+
                 // Compute the inner product.
                 for (int i = 0; i < _phaseLength; i++) {
                     int tapsIndex = i * _interp + phase;
@@ -128,25 +155,30 @@ public class FIRDouble extends FIR {
         }
     }
 
-    /** Set up the consumption and production constants.
-     *  @exception IllegalActionException If the parameters are out of range.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
-        ArrayToken tapsToken = (ArrayToken)(taps.getToken());
-        _taps = new double[tapsToken.length()];
-        for (int i = 0; i < _taps.length; i++) {
-            _taps[i] = ((DoubleToken)tapsToken.getElement(i)).doubleValue();
+    // Reinitialize local variables in response to changes in attributes.
+    private void _reinitialize() throws IllegalActionException {
+        if (_decPhase >= _dec) {
+            throw new IllegalActionException(this,
+                    "Invalid decimationPhase: " + _decPhase
+                    + ". Must be less than decimation: " + _dec + ".");
         }
+
         _phaseLength = (int)(_taps.length / _interp);
         if ((_taps.length % _interp) != 0) _phaseLength++;
 
         // Create new data array and initialize index into it.
-        int datalength = _taps.length/_interp;
-        if (_taps.length%_interp != 0) datalength++;
-        _data = new double[datalength];
-        _mostRecent = datalength;
+        // Avoid losing the data if possible.
+        if (_data == null || _data.length != _phaseLength) {
+            _data = new double[_phaseLength];
+            for(int i = 0; i < _phaseLength; i++ ) {
+                _data[i] = 0;
+            }
+            _mostRecent = _phaseLength;
+        }
+        _reinitializeNeeded = false;
     }
 
     /** Override the supper class method so that the type constraints there
