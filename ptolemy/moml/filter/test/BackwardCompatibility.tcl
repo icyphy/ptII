@@ -517,7 +517,7 @@ test BackwardCompatibility-7.2 {Expression: Property Class Change} {
         </port>
     </entity>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.data.expr.StringAttribute" value="cos(slow) + cos(fast)">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="cos(slow) + cos(fast)">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="202.0, 191.0">
         </property>
