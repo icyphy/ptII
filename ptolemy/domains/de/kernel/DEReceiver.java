@@ -44,12 +44,12 @@ import ptolemy.kernel.util.InternalErrorException;
 //// DEReceiver
 
 /** An implementation of the ptolemy.actor.Receiver interface for the
-    DE domain. 
+    DE domain.
     <p>
     The put() method stores the given token in this receiver and posts a
     trigger event to the director. The director is responsible to dequeue that
-    trigger event and invoke the actor that contains this receiver. 
-    The get() method returns the first available token from the receiver. 
+    trigger event and invoke the actor that contains this receiver.
+    The get() method returns the first available token from the receiver.
     <p>
     Before firing an actor, the director is expected to put at least one
     token into at least one of the receivers contained by the actor.
@@ -88,9 +88,9 @@ public class DEReceiver extends AbstractReceiver {
 
     /** Get the first token from the receiver. The token returned is one that
      *  was put in the receiver with a timestamp equal to or earlier than
-     *  the current time. If there is no token, throw an exception. If this 
-     *  receiver contains more than one event, the oldest event is removed 
-     *  first. In other words, this receiver has a FIFO behavior.  
+     *  the current time. If there is no token, throw an exception. If this
+     *  receiver contains more than one event, the oldest event is removed
+     *  first. In other words, this receiver has a FIFO behavior.
      *  <p>
      *  This method is synchronized since the actor may not
      *  execute in the same thread as the director.
@@ -124,7 +124,7 @@ public class DEReceiver extends AbstractReceiver {
         return true;
     }
 
-    /** Return true if there is at least one token available to the 
+    /** Return true if there is at least one token available to the
      *  get() method.
      *  @return True if there are more tokens.
      */
@@ -142,10 +142,10 @@ public class DEReceiver extends AbstractReceiver {
     }
 
     /** Put a token into this receiver and post a trigger event to the director.
-     *  The director will be responsible to dequeue the trigger event at 
+     *  The director will be responsible to dequeue the trigger event at
      *  the correct timestamp and microstep and invoke the corresponding actor
-     *  whose input port contains this receiver. This receiver may contain 
-     *  more than one events. This method is synchronized since the actor 
+     *  whose input port contains this receiver. This receiver may contain
+     *  more than one events. This method is synchronized since the actor
      *  may not execute in the same thread as the director.
      *  @param token The token to be put.
      */

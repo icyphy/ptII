@@ -40,12 +40,12 @@ import ptolemy.kernel.util.InvalidStateException;
 //// DECQEventQueue
 
 /**
-   A calendar queue implementation of the DE event queue. 
-   This queue stores DE events in the order of their time stamps, 
-   microsteps and depths of their destination actors. See {@link DEEventQueue} 
+   A calendar queue implementation of the DE event queue.
+   This queue stores DE events in the order of their time stamps,
+   microsteps and depths of their destination actors. See {@link DEEventQueue}
    for more explanation of the order of DE events.
    <P>
-   Its complexity is theoretically O(1) for both enqueue and dequeue 
+   Its complexity is theoretically O(1) for both enqueue and dequeue
    operations, assuming a reasonable distribution of time stamps. See
    {@link ptolemy.actor.util.CalendarQueue}.
 
@@ -57,26 +57,26 @@ import ptolemy.kernel.util.InvalidStateException;
 */
 public class DECQEventQueue implements DEEventQueue {
 
-    /** Construct an empty event queue.  
+    /** Construct an empty event queue.
      *  @param director The director that contains this event queue.
      */
     public DECQEventQueue(Director director) {
         _director = director;
-        // Construct a calendar queue _cQueue with its default parameters: 
+        // Construct a calendar queue _cQueue with its default parameters:
         // minBinCount is 2, binCountFactor is 2,and isAdaptive is true.
         _cQueue = new CalendarQueue(new DECQComparator());
     }
 
-    /** Construct an empty event queue with the specified parameters. 
+    /** Construct an empty event queue with the specified parameters.
      *  @param director The director that contains this event queue.
      *  @param minBinCount The minimum number of bins.
      *  @param binCountFactor The factor when changing the bin count.
      *  @param isAdaptive If the queue changes its number of bins at run time.
      */
-    public DECQEventQueue(Director director, int minBinCount, 
+    public DECQEventQueue(Director director, int minBinCount,
         int binCountFactor, boolean isAdaptive) {
         _director = director;
-        // Construct a calendar queue _cQueue with the given parameters. 
+        // Construct a calendar queue _cQueue with the given parameters.
         _cQueue = new CalendarQueue(new DECQComparator(),
                 minBinCount, binCountFactor);
         _cQueue.setAdaptive(isAdaptive);
@@ -142,8 +142,8 @@ public class DECQEventQueue implements DEEventQueue {
     public void removeDebugListener(DebugListener listener) {
         _cQueue.removeDebugListener(listener);
     }
-    
-    /** Return the size of the event queue.  
+
+    /** Return the size of the event queue.
      *  @return The size of the event queue.
      */
     public synchronized final int size() {
@@ -166,14 +166,14 @@ public class DECQEventQueue implements DEEventQueue {
     // An implementation of the CQComparator interface for use with
     // calendar queue that compares two DEEvents according to their
     // time stamps, microstep, and depth in that order.
-    
+
     // One DE event is said to be earlier than another, if it has
     // a smaller time stamp, or when the time stamps are identical,
     // it has a smaller microstep, or when both time stamps and
     // microsteps are identical, it has a smaller depth.
 
     // The default binWidth is 1.0, and the default zeroReference is 0.0.
-    
+
     private class DECQComparator implements CQComparator {
 
         /** Compare two arguments for order. Return a negative integer,
@@ -194,9 +194,9 @@ public class DECQEventQueue implements DEEventQueue {
             return((DEEvent)object1).compareTo((DEEvent)object2);
         }
 
-        /** Given a DE event, return the virtual index of the bin that 
-         *  should contain this event. If the argument is not an instance 
-         *  of DEEvent, then a ClassCastException will be thrown.  
+        /** Given a DE event, return the virtual index of the bin that
+         *  should contain this event. If the argument is not an instance
+         *  of DEEvent, then a ClassCastException will be thrown.
          *  @param event The event.
          *  @return The index of the virtual bin containing the event.
          *  @exception ClassCastException If the argument is not
@@ -215,7 +215,7 @@ public class DECQEventQueue implements DEEventQueue {
             }
         }
 
-        /** Given an array of DE events, set an appropriate bin width. 
+        /** Given an array of DE events, set an appropriate bin width.
          *  This method assumes that no two DE events have the same time stamp,
          *  microstep, and depth. This method also assumes that the events
          *  are sorted in a time-increasing order. {@link DEEventQueue}.
@@ -234,7 +234,7 @@ public class DECQEventQueue implements DEEventQueue {
         public void setBinWidth(Object[] entryArray) {
 
             if ( entryArray == null || entryArray.length < 2) {
-                _zeroReference = 
+                _zeroReference =
                     new DEEvent((Actor)null, new Time(_director, 0.0), 0, 0);
                 return;
             }
@@ -260,8 +260,8 @@ public class DECQEventQueue implements DEEventQueue {
                 return;
             }
             effectiveAverage /= (double)effectiveSamples;
-            _binWidth = 
-                new DEEvent((Actor)null, new Time(_director, 3.0 * effectiveAverage), 
+            _binWidth =
+                new DEEvent((Actor)null, new Time(_director, 3.0 * effectiveAverage),
                 0, 0);
         }
 
@@ -279,7 +279,7 @@ public class DECQEventQueue implements DEEventQueue {
         ////                         private members                   ////
 
         // The bin width.
-        private DEEvent _binWidth 
+        private DEEvent _binWidth
             = new DEEvent((Actor)null, new Time(_director, 1.0), 0, 0);
 
         // The zero reference.
@@ -295,5 +295,5 @@ public class DECQEventQueue implements DEEventQueue {
     private CalendarQueue _cQueue;
     // The director that contains this event queue.
     private Director _director;
-    
+
 }

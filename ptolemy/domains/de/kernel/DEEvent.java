@@ -39,29 +39,29 @@ import ptolemy.kernel.util.NamedObj;
 /**
    This class defines the structure of events in the DE domain.
    Conceptually, a DE event is a trigger that contains a tag and a reference to
-   its destination actor. The purpose of a DE event is to schedule its 
-   destination actor to fire at the timestamp and microstep specified by 
-   its tag.   
+   its destination actor. The purpose of a DE event is to schedule its
+   destination actor to fire at the timestamp and microstep specified by
+   its tag.
    <p>
    A tag is a tuple of a timestamp and a microstep. The timestamp is the model
    time when the event exists. The microstep defines the order of a sequence
-   of (simultaneous) events that exist at the same model time. 
+   of (simultaneous) events that exist at the same model time.
    <p>
-   A DE event is associated with a destination, which is either an actor or 
-   an IO port of an actor. A DE event, whose destination is an actor, is 
-   called a <i>pure</i> event. A pure event does not have a desitination IO 
-   port. A DE event, whose destination is an IO port, is called a <i>trigger</i> 
-   event. Apprently, a trigger event has a destination actor. 
-   <p> 
-   A DE event also has a depth, which is the topology information of its 
+   A DE event is associated with a destination, which is either an actor or
+   an IO port of an actor. A DE event, whose destination is an actor, is
+   called a <i>pure</i> event. A pure event does not have a desitination IO
+   port. A DE event, whose destination is an IO port, is called a <i>trigger</i>
+   event. Apprently, a trigger event has a destination actor.
+   <p>
+   A DE event also has a depth, which is the topology information of its
    destinations. For a pure event, the depth is that of its destination actor.
-   For a trigger event, the depth is about its destination IO port. A larger 
-   value of depth indicates a lower priority when simulator processes events 
-   with the same tag. 
+   For a trigger event, the depth is about its destination IO port. A larger
+   value of depth indicates a lower priority when simulator processes events
+   with the same tag.
    <p>
-   Two DE events can be compared to see which one happens first. The order 
-   is defined by the relationship between their time stamps, microsteps, and 
-   depths. See {@link DEEventQueue} for more details. DE events can be compared 
+   Two DE events can be compared to see which one happens first. The order
+   is defined by the relationship between their time stamps, microsteps, and
+   depths. See {@link DEEventQueue} for more details. DE events can be compared
    by using the compareTo method.
    <p>
    @author Lukito Muliadi, Edward A. Lee, Haiyang Zheng
@@ -72,7 +72,7 @@ import ptolemy.kernel.util.NamedObj;
 */
 public final class DEEvent implements Comparable {
 
-    /** Construct a pure event with the specified destination actor, 
+    /** Construct a pure event with the specified destination actor,
      *  timestamp, microstep, and depth.
      *  @param actor The destination actor
      *  @param timeStamp The time when the event occurs.
@@ -86,8 +86,8 @@ public final class DEEvent implements Comparable {
         _microstep = microstep;
         _depth = depth;
     }
-    
-    /** Construct a trigger event with the specified destination IO port, 
+
+    /** Construct a trigger event with the specified destination IO port,
      *  timestamp, microstep, and depth.
      *  @param ioPort The destination IO port.
      *  @param timeStamp The time when the event occurs.
@@ -101,8 +101,8 @@ public final class DEEvent implements Comparable {
         _microstep = microstep;
         _depth = depth;
     }
-    
-    /** Return the destination actor for this event. 
+
+    /** Return the destination actor for this event.
      *  @return The destination actor.
      */
     public final Actor actor() {
@@ -123,17 +123,17 @@ public final class DEEvent implements Comparable {
         return compareTo((DEEvent)event);
     }
 
-    /** Compare the tag and depth of this event with those of the argument 
-     *  event for an order. Return -1, 0, or 1 if this event happens 
+    /** Compare the tag and depth of this event with those of the argument
+     *  event for an order. Return -1, 0, or 1 if this event happens
      *  earlier than, the same time as, or later than the argument event.
      *  <p>
-     *  Their time stamps are compared first. If the two timestamps are not 
-     *  the same, their order defines the events' order. Otherwise, the 
-     *  microsteps of events are compared for an order, where the smaller 
+     *  Their time stamps are compared first. If the two timestamps are not
+     *  the same, their order defines the events' order. Otherwise, the
+     *  microsteps of events are compared for an order, where the smaller
      *  microstep, the earlier the event. If the events have the same microstep,
-     *  their depths are compared. The smaller depth, the earlier the event. 
+     *  their depths are compared. The smaller depth, the earlier the event.
      *  If the two events have the same tags and depths, they happen at the
-     *  same time. 
+     *  same time.
      *
      *  @param event The event to compare against.
      *  @return -1, 0, or 1, depends on the order of the events.
@@ -157,8 +157,8 @@ public final class DEEvent implements Comparable {
         }
     }
 
-    /** Return the depth of this event. For a pure event, it is the depth of 
-     *  the destination actor in the topological sort. For a trigger event, it 
+    /** Return the depth of this event. For a pure event, it is the depth of
+     *  the destination actor in the topological sort. For a trigger event, it
      *  is the depth of the destination IO port.
      *  @return The depth of this event.
      */
@@ -166,7 +166,7 @@ public final class DEEvent implements Comparable {
         return _depth;
     }
 
-    /** Return true if this event has the same tag with the argument DE event.  
+    /** Return true if this event has the same tag with the argument DE event.
      *  @param event The DE event to compare against.
      *  @return Ture if this event has the same tag with the specified one.
      */
@@ -213,12 +213,12 @@ public final class DEEvent implements Comparable {
      */
     public String toString() {
         if (_ioPort != null) {
-            return "DEEvent(time= " + _timestamp + ", microstep= " + _microstep 
-                + ", dest= " + ((NamedObj)_actor).getFullName() + "." 
+            return "DEEvent(time= " + _timestamp + ", microstep= " + _microstep
+                + ", dest= " + ((NamedObj)_actor).getFullName() + "."
                 + _ioPort.getName() + ").";
         } else {
-            return "DEEvent(time= " + _timestamp + ", microstep= " + _microstep 
-                + ", dest= " + ((NamedObj)_actor).getFullName() + ")" 
+            return "DEEvent(time= " + _timestamp + ", microstep= " + _microstep
+                + ", dest= " + ((NamedObj)_actor).getFullName() + ")"
                 + " -- A PURE EVENT.";
         }
     }
@@ -252,4 +252,3 @@ public final class DEEvent implements Comparable {
 
     // The timestamp of the event.
     private Time _timestamp;
-}
