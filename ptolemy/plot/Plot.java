@@ -432,8 +432,8 @@ public class Plot extends PlotBox {
      *  @deprecated
      */
     public void parseFile(String filespec, URL documentBase) {
-        _firstinset = true;
-        _sawfirstdataset = false;
+        _firstInSet = true;
+        _sawFirstDataSet = false;
         super.parseFile(filespec, documentBase);
     }
 
@@ -445,8 +445,8 @@ public class Plot extends PlotBox {
      */
     public synchronized void read(InputStream in) throws IOException {
         super.read(in);
-        _firstinset = true;
-        _sawfirstdataset = false;
+        _firstInSet = true;
+        _sawFirstDataSet = false;
     }
 
     /** Create a sample plot.  This is not actually done immediately
@@ -537,8 +537,8 @@ public class Plot extends PlotBox {
      *  @param offset The offset per data set.
      */
     public synchronized void setBars(double width, double offset) {
-        _barwidth = width;
-        _baroffset = offset;
+        barWidth = width;
+        _barOffset = offset;
         _bars = true;
     }
 
@@ -685,7 +685,7 @@ public class Plot extends PlotBox {
      *  @param on If true, then merge datasets.
      */
     public void setReuseDatasets(boolean on) {
-        _reusedatasets = on;
+        _reuseDatasets = on;
     }
 
     /** Calling this method with a positive argument sets the
@@ -785,7 +785,7 @@ public class Plot extends PlotBox {
     public synchronized void writeFormat(PrintWriter output) {
         super.writeFormat(output);
 
-        if (_reusedatasets) output.println("<reuseDatasets/>");
+        if (_reuseDatasets) output.println("<reuseDatasets/>");
 
         StringBuffer defaults = new StringBuffer();
 
@@ -814,8 +814,8 @@ public class Plot extends PlotBox {
         }
 
         if (_bars) output.println(
-                "<barGraph width=\"" + _barwidth
-                + "\" offset=\"" + _baroffset + "\"/>");
+                "<barGraph width=\"" + barWidth
+                + "\" offset=\"" + _barOffset + "\"/>");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -868,10 +868,10 @@ public class Plot extends PlotBox {
         }
         if (ypos <= _lry && xpos <= _lrx && xpos >= _ulx) {
             // left x position of bar.
-            int barlx = (int)(xpos - _barwidth * _xscale/2 +
-                    dataset * _baroffset * _xscale);
+            int barlx = (int)(xpos - barWidth * _xscale/2 +
+                    dataset * _barOffset * _xscale);
             // right x position of bar
-            int barrx = (int)(barlx + _barwidth * _xscale);
+            int barrx = (int)(barlx + barWidth * _xscale);
             if (barlx < _ulx) barlx = _ulx;
             if (barrx > _lrx) barrx = _lrx;
             // Make sure that a bar is always at least one pixel wide.
@@ -1245,7 +1245,7 @@ public class Plot extends PlotBox {
                 // If we have seen a dataset directive, then apply the
                 // request to the current dataset only.
                 String style = (line.substring(6)).trim();
-                if (_sawfirstdataset) {
+                if (_sawFirstDataSet) {
                     setMarksStyle(style, _currentdataset);
                 } else {
                     setMarksStyle(style);
@@ -1262,11 +1262,11 @@ public class Plot extends PlotBox {
                 }
                 return true;
             } else if (lcLine.startsWith("dataset:")) {
-                if (_reusedatasets && lcLine.length() > 0) {
+                if (_reuseDatasets && lcLine.length() > 0) {
                     String tlegend = (line.substring(8)).trim();
                     _currentdataset = -1;
                     int i;
-                    for ( i = 0; i <= _maxdataset; i++) {
+                    for ( i = 0; i <= _maxDataset; i++) {
                         if (getLegend(i).compareTo(tlegend) == 0) {
                             _currentdataset = i;
                         }
@@ -1274,13 +1274,13 @@ public class Plot extends PlotBox {
                     if (_currentdataset != -1) {
                         return true;
                     } else {
-                        _currentdataset = _maxdataset;
+                        _currentdataset = _maxDataset;
                     }
                 }
 
                 // new data set
-                _firstinset = true;
-                _sawfirstdataset = true;
+                _firstInSet = true;
+                _sawFirstDataSet = true;
                 _currentdataset++;
                 if (lcLine.length() > 0) {
                     String legend = (line.substring(8)).trim();
@@ -1288,7 +1288,7 @@ public class Plot extends PlotBox {
                         addLegend(_currentdataset, legend);
                     }
                 }
-                _maxdataset = _currentdataset;
+                _maxDataset = _currentdataset;
                 return true;
             } else if (lcLine.startsWith("lines:")) {
                 if (lcLine.indexOf("off", 6) >= 0) {
@@ -1301,7 +1301,7 @@ public class Plot extends PlotBox {
                 // If we have not yet seen a dataset, then this is interpreted
                 // as the global default.  Otherwise, it is assumed to apply
                 // only to the current dataset.
-                if (_sawfirstdataset) {
+                if (_sawFirstDataSet) {
                     if (lcLine.indexOf("off", 9) >= 0) {
                         setImpulses(false, _currentdataset);
                     } else {
@@ -1331,7 +1331,7 @@ public class Plot extends PlotBox {
                     }
                     try {
                         Double bwidth = new Double(barwidth);
-                        double boffset = _baroffset;
+                        double boffset = _barOffset;
                         if (baroffset != null) {
                             boffset = (new Double(baroffset)).
                                 doubleValue();
@@ -1459,9 +1459,9 @@ public class Plot extends PlotBox {
 
         // NOTE: NumSets is obsolete, so we don't write it.
 
-        if (_reusedatasets) output.println("ReuseDatasets: on");
+        if (_reuseDatasets) output.println("ReuseDatasets: on");
         if (!_connected) output.println("Lines: off");
-        if (_bars) output.println("Bars: " + _barwidth + ", " + _baroffset);
+        if (_bars) output.println("Bars: " + barWidth + ", " + _barOffset);
 
         // Write the defaults for formats that can be controlled by dataset
         if (_impulses) output.println("Impulses: on");
@@ -1539,25 +1539,25 @@ public class Plot extends PlotBox {
     /* Add a legend if necessary, return the value of the connected flag.
      */
     private boolean _addLegendIfNecessary(boolean connected) {
-        if ((! _sawfirstdataset  || _currentdataset < 0) &&
-                ! _reusedatasets) {
+        if ((! _sawFirstDataSet  || _currentdataset < 0) &&
+                ! _reuseDatasets) {
             // We did not set a DataSet line, but
             // we did get called with -<digit> args and
 	    // we did not see reusedatasets: yes
-            _sawfirstdataset = true;
+            _sawFirstDataSet = true;
             _currentdataset++;
         }
-        if (! _sawfirstdataset && getLegend(_currentdataset) == null) {
+        if (! _sawFirstDataSet && getLegend(_currentdataset) == null) {
             // We did not see a "DataSet" string yet,
             // nor did we call addLegend().
-            _firstinset = true;
-            _sawfirstdataset = true;
+            _firstInSet = true;
+            _sawFirstDataSet = true;
             addLegend(_currentdataset,
                     new String("Set "+ _currentdataset));
         }
-        if (_firstinset && ! _reusedatasets) {
+        if (_firstInSet && ! _reuseDatasets) {
             connected = false;
-            _firstinset = false;
+            _firstInSet = false;
         }
         return connected;
     }
@@ -1762,9 +1762,9 @@ public class Plot extends PlotBox {
         _points = new Vector();
         _prevx = new Vector();
         _prevy = new Vector();
-        _maxdataset = -1;
-        _firstinset = true;
-        _sawfirstdataset = false;
+        _maxDataset = -1;
+        _firstInSet = true;
+        _sawFirstDataSet = false;
         _xyInvalid = true;
         _filename = null;
 
@@ -1776,11 +1776,11 @@ public class Plot extends PlotBox {
             _pointsPersistence = 0;
             _xPersistence = 0;
             _bars = false;
-            _barwidth = 0.5;
-            _baroffset = 0.05;
+            barWidth = 0.5;
+            _barOffset = 0.05;
             _connected = true;
             _impulses = false;
-            _reusedatasets = false;
+            _reuseDatasets = false;
         }
     }
 
@@ -2035,10 +2035,10 @@ public class Plot extends PlotBox {
     private boolean _bars = false;
 
     /** @serial Width of a bar in x axis units. */
-    private double _barwidth = 0.5;
+    private double barWidth = 0.5;
 
     /** @serial Offset per dataset in x axis units. */
-    private double _baroffset = 0.05;
+    private double _barOffset = 0.05;
 
     /** @serial True if the points are connected. */
     private boolean _connected = true;
@@ -2047,16 +2047,16 @@ public class Plot extends PlotBox {
     private boolean _impulses = false;
 
     /** @serial The highest data set used. */
-    private int _maxdataset = -1;
+    private int _maxDataset = -1;
 
     /** @serial True if we saw 'reusedatasets: on' in the file. */
-    private boolean _reusedatasets = false;
+    private boolean _reuseDatasets = false;
 
     /** @serial Is this the first datapoint in a set? */
-    private boolean _firstinset = true;
+    private boolean _firstInSet = true;
 
     /** @serial Have we seen a DataSet line in the current data file? */
-    private boolean _sawfirstdataset = false;
+    private boolean _sawFirstDataSet = false;
 
     /** @serial Give the radius of a point for efficiency. */
     private int _radius = 3;
