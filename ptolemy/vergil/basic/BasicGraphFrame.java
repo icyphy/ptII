@@ -58,6 +58,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -114,6 +115,7 @@ import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.toolbox.MenuItemFactory;
+import ptolemy.vergil.toolbox.MoveAction;
 import ptolemy.vergil.tree.EntityTreeModel;
 import ptolemy.vergil.tree.PTree;
 import ptolemy.vergil.tree.PTreeMenuCreator;
@@ -387,6 +389,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         _cutAction = new CutAction();
         _copyAction = new CopyAction();
         _pasteAction = new PasteAction();
+        
+        _moveToBackAction = new MoveToBackAction();
+        _moveToFrontAction = new MoveToFrontAction();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -434,87 +439,38 @@ public abstract class BasicGraphFrame extends PtolemyFrame
      *  and place them on the clipboard in MoML format.
      */
     public void copy() {
-        Clipboard clipboard =
-            java.awt.Toolkit.getDefaultToolkit().getSystemClipboard();
-        GraphPane graphPane = _jgraph.getGraphPane();
-        GraphController controller =
-            (GraphController)graphPane.getGraphController();
-        SelectionModel model = controller.getSelectionModel();
-        GraphModel graphModel = controller.getGraphModel();
-        Object selection[] = model.getSelectionAsArray();
-        // A set, because some objects may represent the same
-        // ptolemy object.
-        HashSet namedObjSet = new HashSet();
-        HashSet nodeSet = new HashSet();
-        // First get all the nodes.
-        for (int i = 0; i < selection.length; i++) {
-            if (selection[i] instanceof Figure) {
-                Object userObject = ((Figure)selection[i]).getUserObject();
-                if (graphModel.isNode(userObject)) {
-                    nodeSet.add(userObject);
-                    NamedObj actual =
-                        (NamedObj)graphModel.getSemanticObject(userObject);
-                    namedObjSet.add(actual);
-                }
-            }
-        }
-        for (int i = 0; i < selection.length; i++) {
-            if (selection[i] instanceof Figure) {
-                Object userObject = ((Figure)selection[i]).getUserObject();
-                if (graphModel.isEdge(userObject)) {
-                    // Check to see if the head and tail are both being
-                    // copied.  Only if so, do we actually take the edge.
-                    Object head = graphModel.getHead(userObject);
-                    Object tail = graphModel.getTail(userObject);
-                    boolean headOK = nodeSet.contains(head);
-                    boolean tailOK = nodeSet.contains(tail);
-                    Iterator objects = nodeSet.iterator();
-                    while (!(headOK && tailOK) && objects.hasNext()) {
-                        Object object = objects.next();
-                        if (!headOK && GraphUtilities.isContainedNode(head,
-                                    object, graphModel)) {
-                            headOK = true;
-                        }
-                        if (!tailOK && GraphUtilities.isContainedNode(tail,
-                                    object, graphModel)) {
-                            tailOK = true;
-                        }
-                    }
-                    if (headOK && tailOK) {
-                        NamedObj actual =
-                            (NamedObj)graphModel.getSemanticObject(userObject);
-                        namedObjSet.add(actual);
-                    }
-                }
-            }
-        }
+        HashSet namedObjSet = _getSelectionSet();
         StringWriter buffer = new StringWriter();
         try {
-            Iterator elements = namedObjSet.iterator();
+            CompositeEntity container
+                    = (CompositeEntity)_getGraphModel().getRoot();
+            // NOTE: The order in the model must be respected.
+            Iterator elements
+                    = container.sortContainedObjects(namedObjSet).iterator();
             while (elements.hasNext()) {
                 NamedObj element = (NamedObj)elements.next();
                 // first level to avoid obnoxiousness with
                 // toplevel translations.
                 element.exportMoML(buffer, 0);
             }
-            NamedObj container = (NamedObj)graphModel.getRoot();
             if (container instanceof CompositeEntity) {
                 buffer.write(((CompositeEntity)container)
                         .exportLinks(1, namedObjSet));
             }
 
+            Clipboard clipboard
+                   = java.awt.Toolkit.getDefaultToolkit().getSystemClipboard();
             // The code below does not use a PtolemyTransferable,
             // to work around
             // a bug in the JDK that should be fixed as of jdk1.3.1.  The bug
             // is that cut and paste through the system clipboard to native
             // applications doesn't work unless you use string selection.
-            clipboard.setContents(new StringSelection(buffer.toString()),
+            clipboard.setContents(
+                    new StringSelection(buffer.toString()),
                     this);
-        }
-        catch (Exception ex) {
+        } catch (IOException ex) {
             MessageHandler.error("Copy failed", ex);
         }
-
     }
 
     /** Create a typed composite actor that contains the selected actors
@@ -523,9 +479,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
      *  of deep connectivities.
      */
     public void createHierarchy() {
-        GraphPane graphPane = _jgraph.getGraphPane();
-        GraphController controller =
-            (GraphController)graphPane.getGraphController();
+        GraphController controller = _getGraphController();
         SelectionModel model = controller.getSelectionModel();
         GraphModel graphModel = controller.getGraphModel();
         Object selection[] = model.getSelectionAsArray();
@@ -824,9 +778,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         // Now a delete is handled by generating MoML to carry out the delete
         // and handing that MoML to the parser
 
-        GraphPane graphPane = _jgraph.getGraphPane();
-        GraphController controller
-            = (GraphController)graphPane.getGraphController();
+        GraphController controller = _getGraphController();
         SelectionModel model = controller.getSelectionModel();
 
         AbstractBasicGraphModel graphModel
@@ -979,12 +931,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame
     /** Layout the graph view.
      */
     public void layoutGraph() {
-        GraphController controller =
-            _jgraph.getGraphPane().getGraphController();
+        GraphController controller = _getGraphController();
+        AbstractBasicGraphModel model = _getGraphModel();
         LayoutTarget target = new PtolemyLayoutTarget(controller);
-        //GraphModel model = controller.getGraphModel();
-        AbstractBasicGraphModel model =
-            (AbstractBasicGraphModel)controller.getGraphModel();
         PtolemyLayout layout = new PtolemyLayout(target);
         layout.setOrientation(LevelLayout.HORIZONTAL);
         layout.setRandomizedPlacement(false);
@@ -1044,13 +993,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame
      *  the current model by issuing a change request.
      */
     public void paste() {
-        Clipboard clipboard =
-            java.awt.Toolkit.getDefaultToolkit().getSystemClipboard();
+        Clipboard clipboard
+                = java.awt.Toolkit.getDefaultToolkit().getSystemClipboard();
         Transferable transferable = clipboard.getContents(this);
-        GraphPane graphPane = _jgraph.getGraphPane();
-        GraphController controller =
-            (GraphController)graphPane.getGraphController();
-        GraphModel model = controller.getGraphModel();
+        GraphModel model = _getGraphModel();
         if (transferable == null) return;
         try {
             NamedObj container = (NamedObj)model.getRoot();
@@ -1094,10 +1040,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
     /** Redo the last undone change on the model
      */
     public void redo() {
-        GraphPane graphPane = _jgraph.getGraphPane();
-        GraphController controller =
-            (GraphController)graphPane.getGraphController();
-        GraphModel model = controller.getGraphModel();
+        GraphModel model = _getGraphModel();
         try {
             NamedObj toplevel = (NamedObj)model.getRoot();
             RedoChangeRequest change =
@@ -1239,10 +1182,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
     /** Undo the last undoable change on the model
      */
     public void undo() {
-        GraphPane graphPane = _jgraph.getGraphPane();
-        GraphController controller =
-            (GraphController)graphPane.getGraphController();
-        GraphModel model = controller.getGraphModel();
+        GraphModel model = _getGraphModel();
         try {
             NamedObj toplevel = (NamedObj)model.getRoot();
             UndoChangeRequest change =
@@ -1338,6 +1278,13 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         GUIUtilities.addHotKey(_jgraph, _pasteAction);
         GUIUtilities.addMenuItem(_editMenu, _pasteAction);
 
+        _editMenu.addSeparator();
+        
+        GUIUtilities.addHotKey(_jgraph, _moveToBackAction);
+        GUIUtilities.addMenuItem(_editMenu, _moveToBackAction);
+        GUIUtilities.addHotKey(_jgraph, _moveToFrontAction);
+        GUIUtilities.addMenuItem(_editMenu, _moveToFrontAction);
+
         // Hot key for configure (edit parameters).
         GUIUtilities.addHotKey(_jgraph, BasicGraphController._configureAction);
 
@@ -1359,6 +1306,27 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         GUIUtilities.addMenuItem(_viewMenu, _zoomOutAction);
     }
 
+    /** Return true if any element of the specified list is implied.
+     *  An element is implied if its getDerivedLevel() method returns
+     *  anything smaller than Integer.MAX_VALUE.
+     *  @param elements A list of instances of NamedObj.
+     *  @return True if any element in the list is implied.
+     *  @see NamedObj#getDerivedLevel()
+     */
+    protected boolean _checkForImplied(List elements) {
+        Iterator elementIterator = elements.iterator();
+        while (elementIterator.hasNext()) {
+            NamedObj element = (NamedObj)elementIterator.next();
+            if (element.getDerivedLevel() < Integer.MAX_VALUE) {
+                MessageHandler.error("Cannot change the position of "
+                        + element.getFullName()
+                        + " because the position is set by the class.");
+                return true;
+            }
+        }
+        return false;
+    }
+
     /** Override the base class to remove the listeners we have
      *  created when the frame closes.  Specifically,
      *  remove our panner-updating listener from the entity.
@@ -1369,10 +1337,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         boolean result = super._close();
         if (result) {
             getModel().removeChangeListener(this);
-            GraphModel gm = _jgraph.getGraphPane().getGraphModel();
-            if (gm instanceof AbstractBasicGraphModel) {
-                ((AbstractBasicGraphModel)gm).removeListeners();
-            }
+            AbstractBasicGraphModel graphModel = _getGraphModel();
+            graphModel.removeListeners();
         }
         return result;
     }
@@ -1430,6 +1396,84 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         // jdk1.2.2 where inner classes cannot access protected
         // static members.
         return _directory;
+    }
+
+    /** Return the graph controller associated with this frame.
+     *  @return The graph controller associated with this frame.
+     */
+    protected GraphController _getGraphController() {
+        GraphPane graphPane = _jgraph.getGraphPane();
+        return (GraphController)graphPane.getGraphController();
+    }
+
+    /** Return the graph model associated with this frame.
+     *  @return The graph model associated with this frame.
+     */
+    protected AbstractBasicGraphModel _getGraphModel() {
+        GraphController controller = _getGraphController();
+        return (AbstractBasicGraphModel)controller.getGraphModel();
+    }
+
+    /** Return a set of instances of NamedObj representing the objects
+     *  that are currently selected.  This set has no particular order
+     *  to it. If you need the selection objects in proper order, as
+     *  defined by the container, then call sortContainedObjects()
+     *  on the container to sort the result.
+     *  @return The set of selected objects.
+     */
+    protected HashSet _getSelectionSet() {
+        GraphController controller = _getGraphController();
+        GraphModel graphModel = controller.getGraphModel();
+        SelectionModel model = controller.getSelectionModel();
+        Object selection[] = model.getSelectionAsArray();
+        // A set, because some objects may represent the same
+        // ptolemy object.
+        HashSet namedObjSet = new HashSet();
+        HashSet nodeSet = new HashSet();
+        // First get all the nodes.
+        for (int i = 0; i < selection.length; i++) {
+            if (selection[i] instanceof Figure) {
+                Object userObject = ((Figure)selection[i]).getUserObject();
+                if (graphModel.isNode(userObject)) {
+                    nodeSet.add(userObject);
+                    NamedObj actual =
+                        (NamedObj)graphModel.getSemanticObject(userObject);
+                    namedObjSet.add(actual);
+                }
+            }
+        }
+        for (int i = 0; i < selection.length; i++) {
+            if (selection[i] instanceof Figure) {
+                Object userObject = ((Figure)selection[i]).getUserObject();
+                if (graphModel.isEdge(userObject)) {
+                    // Check to see if the head and tail are both being
+                    // copied.  Only if so, do we actually take the edge.
+                    Object head = graphModel.getHead(userObject);
+                    Object tail = graphModel.getTail(userObject);
+                    boolean headOK = nodeSet.contains(head);
+                    boolean tailOK = nodeSet.contains(tail);
+                    Iterator objects = nodeSet.iterator();
+                    while (!(headOK && tailOK) && objects.hasNext()) {
+                        Object object = objects.next();
+                        if (!headOK && GraphUtilities.isContainedNode(head,
+                                    object, graphModel)) {
+                            headOK = true;
+                        }
+                        if (!tailOK && GraphUtilities.isContainedNode(tail,
+                                    object, graphModel)) {
+                            tailOK = true;
+                        }
+                    }
+                    if (headOK && tailOK) {
+                        // Add the relation.
+                        NamedObj actual =
+                            (NamedObj)graphModel.getSemanticObject(userObject);
+                        namedObjSet.add(actual);
+                    }
+                }
+            }
+        }
+        return namedObjSet;
     }
 
     /** Set the directory that was last accessed by this window.
@@ -1558,6 +1602,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame
     /** The library scroll pane. */
     protected JScrollPane _libraryScrollPane;
 
+    /** Action to move to the back. */
+    protected MoveToBackAction _moveToBackAction;
+
+    /** Action to move to the front. */
+    protected MoveToFrontAction _moveToFrontAction;
+    
     /** The library display panel. */
     protected JPanel _palettePane;
     
@@ -1575,18 +1625,15 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
+    
     /** Delete the currently selected objects from this document without
      *  undo
      */
     private void _deleteWithoutUndo() {
         // FIXME: This is the old delete() method, before undo was added.
         // createHierarch() calls this method.
-        GraphPane graphPane = _jgraph.getGraphPane();
-        GraphController controller =
-            (GraphController)graphPane.getGraphController();
-        AbstractBasicGraphModel graphModel =
-            (AbstractBasicGraphModel)controller.getGraphModel();
+        GraphController controller = _getGraphController();
+        AbstractBasicGraphModel graphModel = _getGraphModel();
         // Note that we turn off event dispatching so that each individual
         // removal does not trigger graph redrawing.
         try {
@@ -1723,6 +1770,84 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             } catch (Exception ex) {
                 MessageHandler.error("Execution Failed", ex);
             }
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //// MoveToBackAction
+
+    /** Action to move the current selection to the back (which corresponds
+     *  to first in the ordered list).
+     */
+    private class MoveToBackAction extends AbstractAction {
+        public MoveToBackAction() {
+            super("Send to Back");
+            putValue("tooltip", "Send to back of like objects");
+            putValue(GUIUtilities.ACCELERATOR_KEY,
+                    KeyStroke.getKeyStroke(KeyEvent.VK_B,
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+            putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_B));
+        }
+        public void actionPerformed(ActionEvent e) {
+            final NamedObj container = (NamedObj)_getGraphModel().getRoot();
+            
+            // Get the selection objects.
+            // NOTE: The order in the model must be respected.
+            HashSet namedObjSet = _getSelectionSet();
+            final List elements = container.sortContainedObjects(namedObjSet);
+            
+            // Return if any is a derived object.
+            if (_checkForImplied(elements)) {
+                return;
+            }
+            
+            // Issue a change request, since this requires write access.
+            ChangeRequest request
+                    = new ChangeRequest(container, "Send to back") {
+                protected void _execute() throws IllegalActionException {
+                    MoveAction.move(elements, MoveAction.TO_FIRST, container);
+                }
+            };
+            container.requestChange(request);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //// MoveToFrontAction
+
+    /** Action to move the current selection to the back (which corresponds
+     *  to first in the ordered list).
+     */
+    private class MoveToFrontAction extends AbstractAction {
+        public MoveToFrontAction() {
+            super("Bring to Front");
+            putValue("tooltip", "Bring to front of like objects");
+            putValue(GUIUtilities.ACCELERATOR_KEY,
+                    KeyStroke.getKeyStroke(KeyEvent.VK_F,
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+            putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_F));
+        }
+        public void actionPerformed(ActionEvent e) {
+            final NamedObj container = (NamedObj)_getGraphModel().getRoot();
+            
+            // Get the selection objects.
+            // NOTE: The order in the model must be respected.
+            HashSet namedObjSet = _getSelectionSet();
+            final List elements = container.sortContainedObjects(namedObjSet);
+            
+            // Return if any is a derived object.
+            if (_checkForImplied(elements)) {
+                return;
+            }
+            
+            // Issue a change request, since this requires write access.
+            ChangeRequest request
+                    = new ChangeRequest(container, "Bring to front") {
+                protected void _execute() throws IllegalActionException {
+                    MoveAction.move(elements, MoveAction.TO_LAST, container);
+                }
+            };
+            container.requestChange(request);
         }
     }
 

@@ -29,12 +29,17 @@ COPYRIGHTENDKEY
 package ptolemy.vergil.toolbox;
 
 import java.awt.event.ActionEvent;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
 
 import ptolemy.kernel.undo.UndoAction;
 import ptolemy.kernel.undo.UndoStackAttribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
 //// MoveAction
@@ -89,56 +94,121 @@ public class MoveAction extends FigureAction {
         super.actionPerformed(event);
         final NamedObj target = getTarget();
         if (target == null) return;
+        if (target.getDerivedLevel() < Integer.MAX_VALUE) {
+            MessageHandler.error("Cannot change the position of "
+                    + target.getFullName()
+                    + " because the position is set by the class.");
+            return;
+        }
         ChangeRequest request = new ChangeRequest(target, "Move towards last") {
             protected void _execute() throws IllegalActionException {
-                _doAction(target);
+                // Static method takes a list, so we construct a
+                // list with one element.
+                LinkedList targets = new LinkedList();
+                targets.add(target);
+                move(targets, _type, target);
             }
         };
         target.requestChange(request);
     }
     
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Perform the move. This is factored out as a separate method so
-     *  that it can be called in the redo action.
-     *  @param target The object to move.
+    /** Move the objects in the specified list up or down in the list
+     *  of similar objects in their container, as specified by the move type.
+     *  If the type is TO_FIRST or UP, then
+     *  the objects in the specified list are processed in reverse order,
+     *  under the assumption that they will already be sorted into the order
+     *  in which they appear in the list of similar objects in their container.
+     *  This is factored out as a separate static method so
+     *  that it can be called in the redo action and so that it can be
+     *  used elsewhere.  The context is what is used to register an
+     *  undo action. It should be a common container, or if there is
+     *  only one target, then the target itself.
+     *  @param targets The list of objects to move.
+     *  @param type One of DOWN, TO_FIRST, TO_LAST, and UP.
+     *  @param context The context.
      */
-    private void _doAction(final NamedObj target) {
-        int index;
-        if (_type == DOWN) {
-            index = target.moveDown();
-        } else if (_type == TO_FIRST) {
-            index = target.moveToFirst();
-        } else if (_type == TO_LAST) {
-            index = target.moveToLast();
+    public static void move(
+            final List targets,
+            final MoveType type,
+            final NamedObj context) {
+        final int[] priorIndexes = new int[targets.size()];
+        boolean movedOne = false;
+        if (type == TO_FIRST || type == UP) {
+            // Traverse the list in reverse order.
+            ListIterator targetIterator = targets.listIterator(targets.size());
+            for (int i = targets.size() - 1; i >= 0; i--) {
+                NamedObj target = (NamedObj)targetIterator.previous();
+                if (type == DOWN) {
+                    priorIndexes[i] = target.moveDown();
+                } else if (type == TO_FIRST) {
+                    priorIndexes[i] = target.moveToFirst();
+                } else if (type == TO_LAST) {
+                    priorIndexes[i] = target.moveToLast();
+                } else {
+                    priorIndexes[i] = target.moveUp();
+                }
+                if (priorIndexes[i] >= 0) {
+                    movedOne = true;
+                }
+            }
         } else {
-            index = target.moveUp();
+            // Traverse the list in forward order.
+            Iterator targetIterator = targets.iterator();
+            for (int i = 0; i < targets.size(); i++) {
+                NamedObj target;
+                target = (NamedObj)targetIterator.next();
+                if (type == DOWN) {
+                    priorIndexes[i] = target.moveDown();
+                } else if (type == TO_FIRST) {
+                    priorIndexes[i] = target.moveToFirst();
+                } else if (type == TO_LAST) {
+                    priorIndexes[i] = target.moveToLast();
+                } else {
+                    priorIndexes[i] = target.moveUp();
+                }
+                if (priorIndexes[i] >= 0) {
+                    movedOne = true;
+                }
+            }
         }
-        final int priorIndex = index;
         
-        if (priorIndex < 0) {
+        if (!movedOne) {
             // Do not generate any undo action if no move happened.
             return;
         }
 
         UndoAction undoAction = new UndoAction() {
             public void execute() {
-                target.moveToIndex(priorIndex);
-                        
+                // Undo has to reverse the order of the do.
+                if (type == TO_FIRST || type == UP) {
+                    // Traverse the list in forward order.
+                    Iterator targetIterator = targets.iterator();
+                    for (int i = 0; i < targets.size(); i++) {
+                        NamedObj target = (NamedObj)targetIterator.next();
+                        target.moveToIndex(priorIndexes[i]);
+                    }
+                } else {
+                    // Traverse the list in reverse order.
+                    ListIterator targetIterator
+                            = targets.listIterator(targets.size());
+                    for (int i = targets.size() - 1; i >= 0; i--) {
+                        NamedObj target = (NamedObj)targetIterator.previous();
+                        target.moveToIndex(priorIndexes[i]);
+                    }
+                }
                 // Create redo action.
                 UndoAction redoAction = new UndoAction() {
                     public void execute() {
-                        _doAction(target);
+                        move(targets, type, context);
                     }
                 };
                 UndoStackAttribute undoInfo
-                        = UndoStackAttribute.getUndoInfo(target);
+                        = UndoStackAttribute.getUndoInfo(context);
                 undoInfo.push(redoAction);
             }
         };
         UndoStackAttribute undoInfo
-                = UndoStackAttribute.getUndoInfo(target);
+                = UndoStackAttribute.getUndoInfo(context);
         undoInfo.push(undoAction);
     }
 

@@ -76,16 +76,21 @@ public class AttributeController extends IconController {
                     new MenuActionFactory(new GetDocumentationAction()));
             _menuFactory.addMenuItemFactory(
                     new MenuActionFactory(
-                    new MoveAction("Move to first", MoveAction.TO_FIRST)));
+                    new MoveAction("Move to first (back)",
+                    MoveAction.TO_FIRST)));
+            /* The following doesn't work, and seems confusing anyway.
             _menuFactory.addMenuItemFactory(
                     new MenuActionFactory(
                     new MoveAction("Move towards first", MoveAction.UP)));
+            */
             _menuFactory.addMenuItemFactory(
                     new MenuActionFactory(
-                    new MoveAction("Move to last", MoveAction.TO_LAST)));
+                    new MoveAction("Move to last (front)", MoveAction.TO_LAST)));
+            /* The following doesn't work, and seems confusing anyway.
             _menuFactory.addMenuItemFactory(
                     new MenuActionFactory(
                     new MoveAction("Move towards last", MoveAction.DOWN)));
+            */
         }
     }
 
