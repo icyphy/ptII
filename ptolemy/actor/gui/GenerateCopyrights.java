@@ -211,6 +211,24 @@ public class GenerateCopyrights {
         }
     }
 
+    // Truncate a jarURL so that the very long jar:file:...! is
+    // converted to $PTII.  If the string does not start with jar:file
+    // or if it startes with jar:file but does not contain a !, then
+    // it is returned unchanged.  This method is used to truncate
+    // the very long paths that we might see under Web Start.
+    private static String _canonicalizeURLToPTII(String path) {
+        if (!path.startsWith("jar:file")) {
+            return path;
+        } else {
+            int index = path.lastIndexOf("!");
+            if (index == -1) {
+                return path;
+            } else {
+                return "$PTII" + path.substring(index + 1, path.length());
+            }
+        }
+    }
+
     // Look for the localURL, and if we cannot find it, refer
     // to the url on the website that corresponds with this version of
     // Ptolemy II
@@ -242,23 +260,4 @@ public class GenerateCopyrights {
                 + majorVersion + "/" + localURL;
         }
     }
-
-    // Truncate a jarURL so that the very long jar:file:...! is
-    // converted to $PTII.  If the string does not start with jar:file
-    // or if it startes with jar:file but does not contain a !, then
-    // it is returned unchanged.  This method is used to truncate
-    // the very long paths that we might see under Web Start.
-    private static String _canonicalizeURLToPTII(String path) {
-        if (!path.startsWith("jar:file")) {
-            return path;
-        } else {
-            int index = path.lastIndexOf("!");
-            if (index == -1) {
-                return path;
-            } else {
-                return "$PTII" + path.substring(index + 1, path.length());
-            }
-        }
-    }
-    
 }
