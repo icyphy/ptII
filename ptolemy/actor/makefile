@@ -77,6 +77,7 @@ JSRCS = \
 	NoTokenException.java \
 	QueueReceiver.java \
 	Receiver.java \
+	StateReceiver.java \
 	StreamExecutionListener.java \
 	TimedActor.java \
 	TimedDirector.java \
