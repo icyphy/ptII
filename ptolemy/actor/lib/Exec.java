@@ -356,6 +356,8 @@ public class Exec extends TypedAtomicActor {
     // Execute a command, set _process to point to the subprocess
     // and set up _errorGobbler and _outputGobbler to read data.
     private void _exec() throws IllegalActionException {
+        // FIXME: Exec, KeyStoreActor, JTextAreaExec have duplicate code.
+
         // This is a private method because fire() was getting too long.
         try {
             _stopFireRequested = false;

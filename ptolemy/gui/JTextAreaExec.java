@@ -249,6 +249,7 @@ public class JTextAreaExec extends JPanel {
     // the command being run and the output.  Update the progress bar
     // and the status bar.
     private Object _executeCommands() {
+        // FIXME: Exec, KeyStoreActor, JTextAreaExec have duplicate code
         try {
             Runtime runtime = Runtime.getRuntime();
             try {
