@@ -9,6 +9,8 @@
         </property>
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
         </property>
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -28,7 +30,7 @@
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="&quot;a&quot;">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 215.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 215.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -57,30 +59,40 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="IterateOverArray" class="ptolemy.actor.hoc.IterateOverArray">
+    <entity name="IterateOverArray2" class="ptolemy.actor.hoc.IterateOverArray">
         <doc>Iterate a contained actor over input arrays</doc>
         <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 225.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 215.0">
         </property>
         <property name="function" class="ptolemy.data.expr.Parameter" value="equals">
             <property name="_stringMode" class="ptolemy.kernel.util.Attribute">
             </property>
+            <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
+                <property name="equals" class="ptolemy.kernel.util.StringAttribute" value="equals">
+                </property>
+                <property name="startsWith" class="ptolemy.kernel.util.StringAttribute" value="startsWith">
+                </property>
+                <property name="endsWith" class="ptolemy.kernel.util.StringAttribute" value="endsWith">
+                </property>
+                <property name="contains" class="ptolemy.kernel.util.StringAttribute" value="contains">
+                </property>
+            </property>
         </property>
         <property name="ignoreCase" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="firstString" class="ptolemy.actor.parameters.PortParameter">
+        <property name="firstString" class="ptolemy.actor.hoc.IterateOverArray$IteratePortParameter">
             <property name="_stringMode" class="ptolemy.kernel.util.Attribute">
             </property>
         </property>
-        <property name="secondString" class="ptolemy.actor.parameters.PortParameter">
+        <property name="secondString" class="ptolemy.actor.hoc.IterateOverArray$IteratePortParameter" value="aaa">
             <property name="_stringMode" class="ptolemy.kernel.util.Attribute">
             </property>
         </property>
-        <port name="firstString" class="ptolemy.actor.parameters.ParameterPort">
+        <port name="firstString" class="ptolemy.actor.hoc.IterateOverArray$IterateParameterPort">
             <property name="input"/>
         </port>
-        <port name="secondString" class="ptolemy.actor.parameters.ParameterPort">
+        <port name="secondString" class="ptolemy.actor.hoc.IterateOverArray$IterateParameterPort">
             <property name="input"/>
         </port>
         <port name="output" class="ptolemy.actor.hoc.IterateOverArray$IteratePort">
@@ -102,7 +114,7 @@
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 310.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 225.0">
             </property>
             <port name="firstString" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
@@ -114,17 +126,36 @@
                 <property name="output"/>
             </port>
         </entity>
-        <relation name="insideRelation1" class="ptolemy.actor.TypedIORelation">
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <link port="output" relation="insideRelation1"/>
-        <link port="StringCompare.output" relation="insideRelation1"/>
+        <link port="output" relation="relation"/>
+        <link port="StringCompare.output" relation="relation"/>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
+    <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
+        <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="10">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 175.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="arrayLength" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="Ramp.output" relation="relation"/>
-    <link port="Display.input" relation="relation2"/>
-    <link port="IterateOverArray.firstString" relation="relation"/>
-    <link port="IterateOverArray.output" relation="relation2"/>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Ramp.output" relation="relation2"/>
+    <link port="Display.input" relation="relation3"/>
+    <link port="IterateOverArray2.firstString" relation="relation"/>
+    <link port="IterateOverArray2.output" relation="relation3"/>
+    <link port="SequenceToArray.input" relation="relation2"/>
+    <link port="SequenceToArray.output" relation="relation"/>
 </entity>

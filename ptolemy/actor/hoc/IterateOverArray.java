@@ -44,12 +44,14 @@ import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.QueueReceiver;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
@@ -61,17 +63,22 @@ import ptolemy.graph.CPO;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.DropListener;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// IterateOverArray
@@ -94,7 +101,10 @@ produced on the outputs of this actor.
 Normally, this actor is expected to contain only a single actor,
 which can, of course, be a composite actor. To make it easier to
 use, it reacts to a "drop" of an actor on it by replicating the
-ports and parameters of that actor.
+ports and parameters of that actor. Moreover, when you interactively
+add ports or change the properties of ports of this actor
+(whether a port is an input or output, for example), then the
+same changes are mirrored in the contained actor.
 <p>
 A special variable named "iterationCount" can be used in
 any expression setting the value of a parameter of this actor
@@ -111,6 +121,10 @@ operate on input arrays.  It is inspired by the higher-order
 functions of functional languages, but unlike those, the
 contained actor need not be functional. That is, it can have
 state.
+<p>
+FIXME: When dropping a contained object onto this actor, or
+when adding or removing ports, undo does not work properly
+to reverse the changes.
 
 @author Edward A. Lee, Steve Neuendorffer
 @version $Id$
@@ -167,12 +181,6 @@ public class IterateOverArray extends TypedCompositeActor
      *  the reaction occurs after the drop has been completed.
      */
     public void dropped() {
-                
-        // FIXME: When an actor is dropped into this actor, it
-        // apparently gets rendered double, leaving the old figure
-        // as debris in the graph.
-        
-        // FIXME: Undo doesn't work to reverse the effects of the drop.
 
         // NOTE: It would be nice if we could react to the added entity
         // in _addEntity(), but it has not been fully constructed, and
@@ -280,20 +288,57 @@ public class IterateOverArray extends TypedCompositeActor
                             command.append(attribute.getName());
                             command.append("\" class=\"");
                             if (attribute instanceof PortParameter) {
-                                command.append("ptolemy.actor.parameters.PortParameter");
+                                command.append(
+                                "ptolemy.actor.hoc.IterateOverArray$IteratePortParameter");
                             } else {
                                 command.append("ptolemy.data.expr.Parameter");
                             }
                             command.append("\" value=\"");
-                            command.append(attribute.getExpression());
-                            command.append("\">");
+                            // NOTE: In theory, this shouldn't be necessary...
                             if (attribute.isStringMode()) {
+                                command.append(StringUtilities.escapeForXML(
+                                        ((StringToken)attribute.getToken()).stringValue()));
+                            } else {
+                                command.append(StringUtilities.escapeForXML(
+                                        attribute.getExpression()));
+                            }
+                            command.append("\">");
+                            
+                            // Replicate contained attributes, which may be
+                            // styles.
+                            Iterator containedAttributes
+                                    = attribute.attributeList().iterator();
+                            boolean foundStringMode = false;
+                            while (containedAttributes.hasNext()) {
+                                Attribute containedAttribute
+                                        = (Attribute)containedAttributes.next();
+                                command.append(containedAttribute.exportMoML());
+                                if (containedAttribute.getName().equals("_stringMode")) {
+                                    foundStringMode = true;
+                                }
+                            }
+                            if (!foundStringMode && attribute.isStringMode()) {
                                 command.append("<property name=\"_stringMode\" "
                                 + "class=\"ptolemy.kernel.util.Attribute\"/>");
                             }
-                            command.append("</property>\n");
-                            // FIXME: For the above, if the original Parameter has
+                            
+                            // If the original Parameter has hardwired
                             // choices, then we should create a choice attribute here.
+                            String[] choices = attribute.getChoices();
+                            if (choices != null && choices.length > 0) {
+                                command.append("<property name=\"");
+                                command.append(attribute.uniqueName("style"));
+                                command.append("\" class=\"ptolemy.actor.gui.style.EditableChoiceStyle\">");
+                                for (int i = 0; i < choices.length; i++) {
+                                    command.append("<property name=\"");
+                                    command.append(choices[i]);
+                                    command.append("\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"");
+                                    command.append(choices[i]);
+                                    command.append("\"/>");
+                                }
+                                command.append("</property>\n");
+                            }
+                            command.append("</property>\n");
 
                             // Set the attribute on the inside to reflect
                             // the one on the outside.  This is a little
@@ -312,10 +357,16 @@ public class IterateOverArray extends TypedCompositeActor
                             command.append("\"/></entity>\n");
                         }
                     }
+                    // Remove all inside relations. This will have the
+                    // side effect of removing connections on the inside.
+                    Iterator relations = relationList().iterator();
+                    while(relations.hasNext()) {
+                        command.append("<deleteRelation name=\"");
+                        command.append(((NamedObj)relations.next()).getName());
+                        command.append("\"/>\n");
+                    }
 
                     // Add commands to delete ports.
-                    // FIXME: How to deal with ports that are added later?
-                    // Perhaps ports should be added on the outside.
                     Iterator ports = portList().iterator();
                     while (ports.hasNext()) {
                         Port port = (Port)ports.next();
@@ -332,15 +383,6 @@ public class IterateOverArray extends TypedCompositeActor
                             command.append("\"/>\n");
                         }
                     }
-                    
-                    // Remove all inside relations. This will have the
-                    // side effect of removing connections on the inside.
-                    Iterator relations = relationList().iterator();
-                    while(relations.hasNext()) {
-                        command.append("<deleteRelation name=\"");
-                        command.append(((NamedObj)relations.next()).getName());
-                        command.append("\"/>\n");
-                    }
 
                     // Set up the inside connections.
                     int count = 1;
@@ -354,8 +396,10 @@ public class IterateOverArray extends TypedCompositeActor
                         
                         // If there isn't already a port with this name,
                         // the MoML parser will create one.
-                        // Do not specify a class so that
-                        // the MoMLParser uses newPort() to create it.
+                        // Do not specify a class so that the MoMLParser
+                        // uses newPort() to create it; newPort() will
+                        // take care of the connections with the inside
+                        // port.
                         command.append("<port name=\"");
                         command.append(name);
                         command.append("\">");
@@ -381,22 +425,27 @@ public class IterateOverArray extends TypedCompositeActor
                         // deleted. Thus, we need to recreate them.
                         // Presumably, there are no inside relations now, so
                         // we can use any suitable names.
-                        String relationName = "insideRelation" + count++;
-                        command.append("<relation name=\"");
-                        command.append(relationName);
-                        command.append("\"/>\n");
+                        // NOTE: This is only needed if the port already exists.
+                        // If the port gets created by newPort(), then newPort()
+                        // will take care of setting of the connections.
+                        if (getPort(name) != null) {
+                            String relationName = "insideRelation" + count++;
+                            command.append("<relation name=\"");
+                            command.append(relationName);
+                            command.append("\"/>\n");
                         
-                        command.append("<link port=\"");
-                        command.append(name);
-                        command.append("\" relation=\"");
-                        command.append(relationName);
-                        command.append("\"/>\n");
+                            command.append("<link port=\"");
+                            command.append(name);
+                            command.append("\" relation=\"");
+                            command.append(relationName);
+                            command.append("\"/>\n");
 
-                        command.append("<link port=\"");
-                        command.append(insidePort.getName(IterateOverArray.this));
-                        command.append("\" relation=\"");
-                        command.append(relationName);
-                        command.append("\"/>\n");
+                            command.append("<link port=\"");
+                            command.append(insidePort.getName(IterateOverArray.this));
+                            command.append("\" relation=\"");
+                            command.append(relationName);
+                            command.append("\"/>\n");
+                        }
                     }
                     
                     command.append("</entity>\n</group>\n");
@@ -417,12 +466,26 @@ public class IterateOverArray extends TypedCompositeActor
         requestChange(request);        
     }
 
-    /** Override the base class to return a specialized port.
+    /** Override the base class to return a specialized port and to
+     *  create a port on the inside model, if there is one.
      */
     public Port newPort(String name) throws NameDuplicationException {
         try {
             workspace().getWriteAccess();
             IteratePort port = new IteratePort(this, name);
+            // Create and connect a matching inside port on contained entities.
+            Iterator entities = entityList().iterator();
+            while(entities.hasNext()) {
+                Entity insideEntity = (Entity)entities.next();
+                Port insidePort = insideEntity.getPort(name);
+                if (insidePort == null) {
+                    insidePort = insideEntity.newPort(name);
+                }
+                port.associatePort(insidePort);
+                Relation relation = newRelation(uniqueName("relation"));
+                insidePort.link(relation);
+                port.link(relation);
+            }
             return port;
         } catch (IllegalActionException ex) {
             // This exception should not occur, so we throw a runtime
@@ -515,6 +578,39 @@ public class IterateOverArray extends TypedCompositeActor
         return result;
     }
 
+    /** Override the base class to remove the associated port and the
+     *  link to it, if there is one.
+     *  @param port The port being removed from this entity.
+     */
+    protected void _removePort(Port port) {
+        super._removePort(port);
+        // FIXME: Will undo work for this?  Should this be done as a change request?
+        
+        // The cast is safe because all my ports are instances of IOPort.
+        Iterator relations = ((IOPort)port).insideRelationList().iterator();
+        while(relations.hasNext()) {
+            ComponentRelation relation = (ComponentRelation)relations.next();
+            try {
+                relation.setContainer(null);
+            } catch (KernelException ex) {
+                throw new InternalErrorException(ex);
+            }
+        }
+        
+        Iterator entities = entityList().iterator();
+        while(entities.hasNext()) {
+            Entity insideEntity = (Entity)entities.next();
+            Port insidePort = insideEntity.getPort(port.getName());
+            if (insidePort != null) {
+                try {
+                    insidePort.setContainer(null);
+                } catch (KernelException ex) {
+                    throw new InternalErrorException(ex);
+                }
+            }
+        }      
+    }
+
     /** Return the type constraints on all connections starting from the
      *  specified source port to all the ports in a group of destination
      *  ports. This overrides the base class to ensure that if the source
@@ -582,6 +678,32 @@ public class IterateOverArray extends TypedCompositeActor
                 }
             }
         }
+        // If we have a parameter port, then add constraints relating the
+        // type to that of the associated parameter.  But only do this
+        // if the port belongs to me and is connected on the outside.
+        if (sourcePort.getContainer().equals(this)
+                && sourcePort instanceof IterateParameterPort
+                && sourcePort.sourcePortList().size() > 0) {
+                    
+            Type sourcePortType = sourcePort.getType();
+            if (!(sourcePortType instanceof ArrayType)) {
+                throw new InternalErrorException(
+                "Source port was expected to be an array type: "
+                + sourcePort.getFullName()
+                + ", but it had type: "
+                + sourcePortType);
+            }
+                                
+            PortParameter parameter
+                    = ((IterateParameterPort)sourcePort).getParameter();
+            if (parameter != null) {
+                InequalityTerm elementTerm
+                        = ((ArrayType)sourcePortType).getElementTypeTerm();
+                Inequality ineq
+                        = new Inequality(elementTerm, parameter.getTypeTerm());
+                result.add(ineq);
+            }
+        }
         return result;
     }
 
@@ -635,6 +757,16 @@ public class IterateOverArray extends TypedCompositeActor
                     .deepEntityList().iterator();
             _postfireReturns = true;
             while (actors.hasNext() && !_stopRequested) {
+                
+                // Initialize all instances of IteratePortParameter.
+                Iterator parameters = attributeList(
+                        IteratePortParameter.class).iterator();
+                while (parameters.hasNext()) {
+                    IteratePortParameter parameter
+                            = (IteratePortParameter)parameters.next();
+                    parameter.setFirstCurrentValue();
+                }
+
                 Actor actor = (Actor)actors.next();
                 int result = Actor.COMPLETED;
                 int iterationCount = 0;
@@ -666,6 +798,17 @@ public class IterateOverArray extends TypedCompositeActor
                             }
                         }
                     }
+                    // Step all instances of IteratePortParameter.
+                    parameters = attributeList(
+                            IteratePortParameter.class).iterator();
+                    while (parameters.hasNext()) {
+                        IteratePortParameter parameter
+                                = (IteratePortParameter)parameters.next();
+                        if (parameter.stepCurrentValue()) {
+                            outOfData = false;
+                        }
+                    }
+
                     if (outOfData) {
                         if (_debugging) {
                             _debug("No more input data for: "
@@ -815,6 +958,92 @@ public class IterateOverArray extends TypedCompositeActor
     }
     
     ///////////////////////////////////////////////////////////////////
+    //// IterateParameterPort
+    
+    /** This specialized subclass of ParameterPort creates as its associated
+     *  port the specialized Iterate ParameterPort in order to establish the
+     *  appropriate type constraints.
+     */
+    private static class IterateParameterPort extends ParameterPort {
+        
+        /** Construct a port with the given name contained by the specified
+         *  entity.
+         *  @param container The container.
+         *  @param name The name of the parameter.
+         *  @exception IllegalActionException If the parameter is not of an
+         *   acceptable class for the container.
+         *  @exception NameDuplicationException If the name coincides with
+         *   a parameter already in the container.
+         */
+        public IterateParameterPort(ComponentEntity container, String name)
+                throws IllegalActionException, NameDuplicationException {
+            super(container, name);
+        }
+
+        /** Override the base class to convert the token to the element
+         *  type rather than to the type of the port. Note that normally
+         *  a parameter port is not connected on the inside, so this won't
+         *  have any destinations.  Nonetheless, just in case it is, we
+         *  handle it properly.
+         *  @param channelIndex The index of the channel, from 0 to width-1
+         *  @param token The token to send
+         *  @exception NoRoomException If there is no room in the receiver.
+         *  @exception IllegalActionException Not thrown in this class.
+         */
+        public void sendInside(int channelIndex, Token token)
+                throws IllegalActionException, NoRoomException {
+            Receiver[][] farReceivers;
+            if (_debugging) {
+                _debug("send inside to channel " + channelIndex + ": " + token);
+            }
+            try {
+                try {
+                    _workspace.getReadAccess();
+                    ArrayType type = (ArrayType)getType();
+                    int compare = TypeLattice.compare(token.getType(),
+                            type.getElementType());
+                    if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
+                        throw new IllegalActionException(
+                                "Run-time type checking failed. Token type: "
+                                + token.getType().toString() + ", port: "
+                                + getFullName() + ", port type: "
+                                + getType().toString());
+                    }
+
+                    // Note that the getRemoteReceivers() method doesn't throw
+                    // any non-runtime exception.
+                    farReceivers = deepGetReceivers();
+                    if (farReceivers == null ||
+                            farReceivers[channelIndex] == null) return;
+                } finally {
+                    _workspace.doneReading();
+                }
+                for (int j = 0; j < farReceivers[channelIndex].length; j++) {
+                    TypedIOPort port =
+                        (TypedIOPort)farReceivers[channelIndex][j].getContainer();
+                    Token newToken = port.convert(token);
+                    farReceivers[channelIndex][j].put(newToken);
+                }
+            } catch (ArrayIndexOutOfBoundsException ex) {
+                // NOTE: This may occur if the channel index is out of range.
+                // This is allowed, just do nothing.
+            }
+        }
+
+        /** Set the type constraints between the protected member _parameter
+         *  and this port.  This is a protected method so that subclasses
+         *  can define different type constraints.  It is assured that when
+         *  this is called, _parameter is non-null.  However, use caution,
+         *  since this method may be called during construction of this
+         *  port, and hence the port may not be fully constructed. 
+         */
+        protected void _setTypeConstraints() {
+            // The parameter should be the element type of the port,
+            // but we can't set that up here, so we do nothing.
+        }
+    }
+    
+    ///////////////////////////////////////////////////////////////////
     //// IteratePort
     
     /** This is a specialized port for handling type conversions between
@@ -847,6 +1076,15 @@ public class IterateOverArray extends TypedCompositeActor
             // Consequently, these ports have to be persistent, and this
             // constructor and class have to be public.
             // setPersistent(false);
+        }
+        
+        /** Specify an associated inside port.  Once this is specified,
+         *  then any changes made to this port (its name, whether it
+         *  is an input or output, and whether it is a multiport) are
+         *  mirrored in the associated port.
+         */
+        public void associatePort(Port port) {
+            _associatedPort = port;
         }
         
         /** Override the base class to convert the token to the element
@@ -917,5 +1155,196 @@ public class IterateOverArray extends TypedCompositeActor
                 // This is allowed, just do nothing.
             }
         }
+        
+        /** Override the base class to also set the associated port,
+         *  if there is one.
+         */
+        public void setInput(boolean isInput) {
+            super.setInput(isInput);
+            if (_associatedPort instanceof IOPort) {
+                ((IOPort)_associatedPort).setInput(isInput);
+            }
+        }
+
+        /** Override the base class to also set the associated port,
+         *  if there is one.
+         */
+        public void setMultiport(boolean isMultiport) {
+            super.setMultiport(isMultiport);
+            if (_associatedPort instanceof IOPort) {
+                ((IOPort)_associatedPort).setMultiport(isMultiport);
+            }
+        }
+
+        /** Override the base class to also set the associated port,
+         *  if there is one.
+         */
+        public void setName(String name)
+                throws IllegalActionException, NameDuplicationException {
+            super.setName(name);
+            if (_associatedPort != null) {
+                _associatedPort.setName(name);
+            }
+        }
+
+        /** Override the base class to also set the associated port,
+         *  if there is one.
+         */
+        public void setOutput(boolean isOutput) {
+            super.setOutput(isOutput);
+            if (_associatedPort instanceof IOPort) {
+                ((IOPort)_associatedPort).setOutput(isOutput);
+            }
+        }
+
+        // The associated port, if there is one.
+        private Port _associatedPort = null;
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    //// IteratePortParameter
+    
+    /** This specialized subclass of PortParameter creates as its associated
+     *  port the specialized Iterate ParameterPort in order to establish the
+     *  appropriate type constraints.
+     */
+    public static class IteratePortParameter extends PortParameter {
+        
+        // NOTE: This class has to be static because otherwise the
+        // constructor has an extra argument (the first argument,
+        // actually) that is an instance of the enclosing class.
+        // The MoML parser cannot know what the instance of the
+        // enclosing class is, so it would not be able to instantiate
+        // these ports.
+
+        /** Construct a parameter with the given name contained by the specified
+         *  entity. The container argument must not be null, or a
+         *  NullPointerException will be thrown.  This parameter will create
+         *  an associated port in the same container.
+         *  @param container The container.
+         *  @param name The name of the parameter.
+         *  @exception IllegalActionException If the parameter is not of an
+         *   acceptable class for the container.
+         *  @exception NameDuplicationException If the name coincides with
+         *   a parameter already in the container.
+         */
+        public IteratePortParameter(NamedObj container, String name)
+                throws IllegalActionException, NameDuplicationException {
+            super(container, name);
+        }
+                
+        /** Set the current value of this parameter to the first element
+         *  of the specified ArrayToken and notify the container
+         *  and value listeners. This does not change the persistent value
+         *  (returned by getExpression()), but does change the current value
+         *  (returned by getToken()). If the specified token is an empty
+         *  array, then do nothing.
+         *  <p>
+         *  If the type of this variable has been set with
+         *  setTypeEquals(), then convert the specified token into that
+         *  type, if possible, or throw an exception, if not.  If
+         *  setTypeAtMost() has been called, then verify that its type
+         *  constraint is satisfied, and if not, throw an exception.
+         *  Note that you can call this with a null argument regardless
+         *  of type constraints, unless there are other variables that
+         *  depend on its value.
+         *  @param token The new token to be stored in this variable.
+         *  @exception IllegalActionException If the token type is not
+         *   ArrayToken, or if you are attempting
+         *   to set to null a variable that has value dependents, or if the
+         *   container rejects the change.
+         */
+        public void setCurrentValue(ptolemy.data.Token token)
+                throws IllegalActionException {
+            if (_debugging) {
+                _debug("setCurrentValue: " + token);
+            }
+            if (!(token instanceof ArrayToken)) {
+                throw new IllegalActionException(this,
+                "Expected an array token but got: " + token);
+            }
+            _array = (ArrayToken)token;
+            if (_array.length() == 0) {
+                // Empty input array. Nothing to do.
+                return;
+            }
+            Token firstValue = _array.getElement(0);
+            _setTokenAndNotify(firstValue);
+            _count = 1;
+            setUnknown(false);
+        }
+        
+        /** Set the current value to the first element of the most
+         *  recently received array. If there is no array or it is
+         *  empty, then leave the value unchanged.
+         *  @return True if a value is set.
+         *  @exception IllegalActionException If the token type is not
+         *   compatible with constraints, or if you are attempting
+         *   to set to null a variable that has value dependents, or if the
+         *   container rejects the change.
+         */
+        public boolean setFirstCurrentValue()
+                throws IllegalActionException {
+            _count = 0;
+            return stepCurrentValue();
+        }
+        
+        /** Step to the next element of the most recently received array,
+         *  making that element the current value. If there are no more
+         *  available elements, then leave the value unchanged.
+         *  @return True if a value is set.
+         *  @exception IllegalActionException If the token type is not
+         *   compatible with constraints, or if you are attempting
+         *   to set to null a variable that has value dependents, or if the
+         *   container rejects the change.
+         */
+        public boolean stepCurrentValue()
+                throws IllegalActionException {
+            if (_array != null && _array.length() > _count) {
+                Token nextValue = _array.getElement(_count);
+                _count++;
+                if (_debugging) {
+                    _debug("currentValue: " + nextValue);
+                }
+                _setTokenAndNotify(nextValue);
+                setUnknown(false);
+                return true;
+            }
+            return false;
+        }
+        
+        /** If the specified container is of type TypedActor, then create an
+         *  associated instance of IterateParameterPort and set the protected variable
+         *  _port equal to that port.
+         *  @param container The container for the port.
+         *  @param name The name for the port.
+         *  @throws IllegalActionException If the port cannot be contained by
+         *   specified container.
+         *  @throws NameDuplicationException If a name collision occurs.
+         */
+        protected void _createParameterPort(NamedObj container, String name)
+                throws IllegalActionException, NameDuplicationException {
+            if (container instanceof TypedActor) {
+                // If we get to here, we know the container is a ComponentEntity,
+                // so the cast is safe.
+                _port = new IterateParameterPort((ComponentEntity)container, name);
+                // NOTE: The following two statements are not necessary, since
+                // the port will discover this parameter when it's setContainer()
+                // method is called.  Moreover, doing this again is not a good
+                // idea, since the setTypeSameAs() method will just add an
+                // extra (redundant) set of constraints.  This will cause
+                // the clone tests to fail, since cloning does not produce
+                // the extra set of constraints.
+                // _port._parameter = this;
+                // _port.setTypeSameAs(this);
+            }
+        }
+        
+        // The most recently received array token.
+        private ArrayToken _array = null;
+        
+        // The count into the array of the next token to read.
+        private int _count = 0;
+    }
+
 }
