@@ -214,7 +214,7 @@ public class ThalesGraphFrame extends BasicGraphFrame {
             String actionCommand = target.getActionCommand();
             try {
                 if (actionCommand.equals("Generate C Interface")) {
-		    if (!JNIUtilities.generateJNI(getModel())) {
+                    if (!JNIUtilities.generateJNI(getModel())) {
                         MessageHandler.error("No JNIActor to interface to!");
                     }
                 }

@@ -197,10 +197,10 @@ public class JNIUtilities {
     /** Instances of this class cannot be created.
      */
     private JNIUtilities() {
-	// We could try to have non static fields for the parameter values
-	// but that would make things tricky since we want to have
-	// a method that takes a model which will generate JNI
-	// code for all the GenericJNIActors in a model.
+        // We could try to have non static fields for the parameter values
+        // but that would make things tricky since we want to have
+        // a method that takes a model which will generate JNI
+        // code for all the GenericJNIActors in a model.
     }
 
     /** Given a model, generate JNI files for all GenericJNIActors.
@@ -210,23 +210,23 @@ public class JNIUtilities {
      *  @exception If there was a problem creating the JNI files.
      */
     public static boolean generateJNI(CompositeEntity model)
-	throws Exception {
-	boolean success = false;
-	if (model instanceof Actor) {
-	    List actorsList = model.allAtomicEntityList();
+        throws Exception {
+        boolean success = false;
+        if (model instanceof Actor) {
+            List actorsList = model.allAtomicEntityList();
 
-	    Iterator actors = actorsList.iterator();
-	    while (actors.hasNext()) {
-		Object actor = actors.next();
-		
-		if (actor instanceof GenericJNIActor) {
-		    JNIUtilities.generateJNI(model,
-					     (GenericJNIActor) actor);
-		}
-	    }
-	    success = true;
-	}
-	return success;
+            Iterator actors = actorsList.iterator();
+            while (actors.hasNext()) {
+                Object actor = actors.next();
+                
+                if (actor instanceof GenericJNIActor) {
+                    JNIUtilities.generateJNI(model,
+                                             (GenericJNIActor) actor);
+                }
+            }
+            success = true;
+        }
+        return success;
     }
 
     /** Generate JNI files for one actor in a model
@@ -234,7 +234,7 @@ public class JNIUtilities {
     public static void generateJNI(CompositeEntity model,
             GenericJNIActor actor)
             throws Exception {
-	System.out.println("Generating JNI for " + actor.getName());
+        System.out.println("Generating JNI for " + actor.getName());
 
         // V‰rification qu'il y a un return, place le return en void sinon
         if (actor.getArgumentReturn() == null) {
@@ -257,8 +257,8 @@ public class JNIUtilities {
         String nativeLibrary = _getNativeLibrary(actor);
 
         // Rename the actor.
-	String newName = nativeLibrary + "I"
-			  + nativeFunction;
+        String newName = nativeLibrary + "I"
+                          + nativeFunction;
 
         // About the renaming, Edward wrote:
         //
@@ -279,23 +279,23 @@ public class JNIUtilities {
         // with such characters.
 
 
-	if (!actor.getName().startsWith(newName)) {
-	    // If the name of the actor does not already start with
-	    // the new name, then set the name.
-	    // This would be the case if we had a model that had
-	    // multiple GenericJNIActors in it and we had already
-	    // created the JNI files for those actors.
-	    try {
-		actor.setName(newName);
-	    } catch (NameDuplicationException ex) {
-		throw new IllegalActionException(actor, ex, 
-						 "Unable to rename GenericJNIActor '"
-						 + actor.getName()
-						 + "' to '"    
-						 + newName
-						 + "': \n"
-						 + "An JNI Actor already exists!\n");
-	    }
+        if (!actor.getName().startsWith(newName)) {
+            // If the name of the actor does not already start with
+            // the new name, then set the name.
+            // This would be the case if we had a model that had
+            // multiple GenericJNIActors in it and we had already
+            // created the JNI files for those actors.
+            try {
+                actor.setName(newName);
+            } catch (NameDuplicationException ex) {
+                throw new IllegalActionException(actor, ex, 
+                                                 "Unable to rename GenericJNIActor '"
+                                                 + actor.getName()
+                                                 + "' to '"    
+                                                 + newName
+                                                 + "': \n"
+                                                 + "An JNI Actor already exists!\n");
+            }
         }
 
         //render the graph within its controller
@@ -305,9 +305,9 @@ public class JNIUtilities {
         //actor.notifyAll();
 
         String interNativeLibrary = _getInterNativeLibrary(actor);
-	String destinationDirectory =
-	    System.getProperty("user.dir") + "/jni/"
-	    + nativeLibrary;
+        String destinationDirectory =
+            System.getProperty("user.dir") + "/jni/"
+            + nativeLibrary;
 
 
         //Cr‰ation du fichier Java
@@ -324,9 +324,9 @@ public class JNIUtilities {
         //Cr‰ation du fichier C
         _exportCInterfaceFile(actor, destinationDirectory);
         _exportDSP(actor, destinationDirectory);
-	_exportMakefile(actor, destinationDirectory);
+        _exportMakefile(actor, destinationDirectory);
 
-	List execCommands = new LinkedList();
+        List execCommands = new LinkedList();
 
         // Create the .class file.
         execCommands.add("javac -classpath \"" 
@@ -360,8 +360,8 @@ public class JNIUtilities {
      *  @param destinationDirectory Directory to create the file in.
      */
     protected static File _exportJavaInterfaceFile(GenericJNIActor actor,
-						   String destinationDirectory)
-	throws IllegalActionException, IOException {
+                                                   String destinationDirectory)
+        throws IllegalActionException, IOException {
         StringBuffer results = new StringBuffer();
 
 
@@ -390,36 +390,36 @@ public class JNIUtilities {
             returnJType2 = "";
         } else {
             returnJType2 = returnJType;
-	}
+        }
 
         results.append("package jni."
-		       + nativeLibrary
-		       + ";\n"
-		       + "\n\n\n"
-		       + "/* The class that interface the native function call\n"
-		       + " * @author autogenerated file - by V. Arnould.TRT\n"
-		       + " */\n"
-		       + "public class Jni"
-		       + actor.getName()
-		       + " { \n\n"
-		       + _indent1 + "/* The default constructor\n"
-		       + _indent1 + " * @author autogenerated - by V. Arnould.TRT\n"
-		       + _indent1 + " */\n"
-		       + _indent1 + "public Jni"
-		       + actor.getName()
-		       + "(){}\n\n"
-		       + _indent1 + "/* The loading of the native library\n"
-		       + _indent1 + " */\n"
-		       + _indent1 + "static {\n"
-		       + _indent2 + "System.loadLibrary(\"Jni"
-		       + interNativeLibrary
-		       + "\");\n"
-		       + _indent1 + "}\n\n"
-		       + _indent1 + "public native "
-		       + returnJType
-		       + " "
-		       + interNativeFunction
-		       + "("
+                       + nativeLibrary
+                       + ";\n"
+                       + "\n\n\n"
+                       + "/* The class that interface the native function call\n"
+                       + " * @author autogenerated file - by V. Arnould.TRT\n"
+                       + " */\n"
+                       + "public class Jni"
+                       + actor.getName()
+                       + " { \n\n"
+                       + _indent1 + "/* The default constructor\n"
+                       + _indent1 + " * @author autogenerated - by V. Arnould.TRT\n"
+                       + _indent1 + " */\n"
+                       + _indent1 + "public Jni"
+                       + actor.getName()
+                       + "(){}\n\n"
+                       + _indent1 + "/* The loading of the native library\n"
+                       + _indent1 + " */\n"
+                       + _indent1 + "static {\n"
+                       + _indent2 + "System.loadLibrary(\"Jni"
+                       + interNativeLibrary
+                       + "\");\n"
+                       + _indent1 + "}\n\n"
+                       + _indent1 + "public native "
+                       + returnJType
+                       + " "
+                       + interNativeFunction
+                       + "("
             + _getArgumentsInWithJType(actor, ",")
             + _virgule(
                     _getArgumentsInWithJType(actor, ","),
@@ -429,7 +429,7 @@ public class JNIUtilities {
                     _getArgumentsInWithJType(actor, ",")+
                     _getArgumentsInOutWithJType(actor, ","),
                     _getArgumentsOutWithJType(actor, ","))
-		       + "/*foo*/"		       
+                       + "/*foo*/"                       
             + _getArgumentsOutWithJType(actor, ",")
             + ") throws SecurityException;\n\n"
             + _indent1 + "/** Send the result of the native library.\n"
@@ -455,11 +455,11 @@ public class JNIUtilities {
             String name = ((Argument) arguments.next()).getName();
             results.append( _indent1 + "_" + name + " = " + name + ";\n");
         }
-	results.append("\n"
-		       + _indent1 + "}\n\n");
+        results.append("\n"
+                       + _indent1 + "}\n\n");
         results.append(
             _indent1 + "/** Call the native function in the native library.\n"
-	    + _indent1 + " *  This method is called by the GenericJNIActor on fire()\n"
+            + _indent1 + " *  This method is called by the GenericJNIActor on fire()\n"
             + _indent1 + " *  @author autogenerated - by V. Arnould.TRT\n"
             + _indent1 + " */\n"
             + _indent1 + " public "
@@ -493,7 +493,7 @@ public class JNIUtilities {
 
                 results.append(_indent2 + "return"
                     + " _" + argRet.getName() + ";\n" + _indent1 + "}\n");
-	} else {
+        } else {
                 results.append( interNativeFunction
                     + "("
                     + _getArgumentsIn(actor, ",")
@@ -505,10 +505,10 @@ public class JNIUtilities {
                     + _getArgumentsOut(actor, ",")
                     + ");"
                     + "\n }\n");
-	}
+        }
 
         results.append("\n" 
-		       + _indent1 + "///////////// public fields\n" + "\n");
+                       + _indent1 + "///////////// public fields\n" + "\n");
 
         //out
         arguments = _getArgumentsOut(actor).iterator();
@@ -543,8 +543,8 @@ public class JNIUtilities {
         try {
             dir.mkdirs();
         } catch (NullPointerException ex) {
-	    throw new IllegalActionException(null, ex, "No directory '"
-					 + dir + "'");
+            throw new IllegalActionException(null, ex, "No directory '"
+                                         + dir + "'");
         }
 
         File javaFile =
@@ -553,9 +553,9 @@ public class JNIUtilities {
                     + actor.getName()
                     + ".java");
 
-	FileWriter writer = new FileWriter(javaFile);
-	writer.write(results.toString());
-	writer.close();
+        FileWriter writer = new FileWriter(javaFile);
+        writer.write(results.toString());
+        writer.close();
 
         return javaFile;
     }
@@ -565,12 +565,12 @@ public class JNIUtilities {
      *  @param destinationDirectory Directory to create the file in.
      */
     protected static File _exportCInterfaceFile(GenericJNIActor actor,
-						String destinationDirectory)
-	throws IllegalActionException, IOException {
+                                                String destinationDirectory)
+        throws IllegalActionException, IOException {
         StringBuffer results = new StringBuffer();
 
         String libraryDirectory = _getLibraryDirectory(actor);
-	String nativeFunction = _getNativeFunction(actor);
+        String nativeFunction = _getNativeFunction(actor);
         String nativeLibrary = _getNativeLibrary(actor);
 
         String interNativeLibrary = _getInterNativeLibrary(actor);
@@ -601,11 +601,11 @@ public class JNIUtilities {
             returnJType2 = "";
         } else {
             returnJType2 = returnType + " ";
-	}
+        }
         results.append("#include \"jni.h\" \n"
             // le fichier entete de la librairie existante
-	    // Don't use io stream it results in compile time errors under
-	    // gcc with cygwin
+            // Don't use io stream it results in compile time errors under
+            // gcc with cygwin
             +"/* #include <iostream> */\n"
             + "#include \"" + System.getProperty("user.dir")
             + "/" + libraryDirectory + "/"
@@ -648,7 +648,7 @@ public class JNIUtilities {
             + interNativeFunction
             + "(\nJNIEnv *env, jobject jobj "
             + _virgule(_getArgumentsInWithJNIType(actor, ",")) 
-	    + _getArgumentsInWithJNIType(actor, ",")
+            + _getArgumentsInWithJNIType(actor, ",")
             + _virgule(_getArgumentsInWithJNIType(actor, ","),
                     _getArgumentsInOutWithCType(actor, ","))
             + _getArgumentsInOutWithJNIType(actor, ",")
@@ -663,14 +663,14 @@ public class JNIUtilities {
         while (arguments.hasNext()) {
             Argument argument = (Argument) arguments.next();
             results.append(argument.getJNIType() + " "
-			    + argument.getName() + ";\n");
+                            + argument.getName() + ";\n");
         }
 
-	results.append("\n"
-		       + _indent1 + "// structure en sortie de la fonction C\n"
-		       + _indent1 + "//target_location_struct *target_location = "
-		       + "new target_location_struct;\n\n"
-		       + _indent1 + "// appel de la librairie existante\n\n");
+        results.append("\n"
+                       + _indent1 + "// structure en sortie de la fonction C\n"
+                       + _indent1 + "//target_location_struct *target_location = "
+                       + "new target_location_struct;\n\n"
+                       + _indent1 + "// appel de la librairie existante\n\n");
 
         //For the array inout and in
         arguments = _getArgumentsInOut(actor).iterator();
@@ -696,9 +696,9 @@ public class JNIUtilities {
             if (typ.endsWith("[]")) {
                     typ = typ.substring(0, typ.length()-2);
                     results.append( _indent1 + "j" + typ  + "Array *"
-			+ arg.getName() + "_1 =" +
+                        + arg.getName() + "_1 =" +
                         "(j" + typ + "Array*)env->Get"
-			+ typ.substring(0, 1).toUpperCase()
+                        + typ.substring(0, 1).toUpperCase()
                         + typ.substring(1, typ.length())  + "ArrayElements("
                         + arg.getName() + ",JNI_FALSE);\n"
                         + "//if ((long *)in_1 == (long *)0 || (long *)inout_1 == (long *)0)n" +
@@ -711,24 +711,24 @@ public class JNIUtilities {
 
         //if they is a return
         if (!returnJNIType.equals("void")) {
-	    results.append(_indent1 + returnJNIType
-			   + " _" + returnName
-			   + " = (" + returnJNIType + ")");
-	}
+            results.append(_indent1 + returnJNIType
+                           + " _" + returnName
+                           + " = (" + returnJNIType + ")");
+        }
 
         //native function call
 
-	results.append(
-		       nativeFunction
-		       + "("
-		       + _getArgumentsWithCTypeCast(actor, true, false, false, ",")
-		       + _virgule(_getArgumentsInWithCType(actor, ","),
-				  _getArgumentsInOut(actor, ","))
-		       + _getArgumentsWithCTypeCast(actor, true, true, false, ",")
-		       + _virgule(_getArgumentsInOutWithCType(actor, ","),
-				  _getArgumentsOut(actor, ","))
-		       + _getArgumentsWithCTypeCast(actor, false, true, false, ",")
-		       + ");\n\n");
+        results.append(
+                       nativeFunction
+                       + "("
+                       + _getArgumentsWithCTypeCast(actor, true, false, false, ",")
+                       + _virgule(_getArgumentsInWithCType(actor, ","),
+                                  _getArgumentsInOut(actor, ","))
+                       + _getArgumentsWithCTypeCast(actor, true, true, false, ",")
+                       + _virgule(_getArgumentsInOutWithCType(actor, ","),
+                                  _getArgumentsOut(actor, ","))
+                       + _getArgumentsWithCTypeCast(actor, false, true, false, ",")
+                       + ");\n\n");
 
         //Release memory in native side
         //for in
@@ -741,7 +741,7 @@ public class JNIUtilities {
                     results.append( "env->Release"+ typ.substring(0, 1).toUpperCase() +
                         typ.substring(1, typ.length())  + "ArrayElements(" +
                         arg.getName() + ",(" + arg.getC2TypeHack() + ")" + arg.getName() + "_1,0);\n");
-	    }
+            }
         }
         //for inout
         arguments = _getArgumentsInOut(actor).iterator();
@@ -751,27 +751,27 @@ public class JNIUtilities {
             if (typ.endsWith("[]")) {
                     typ = typ.substring(0, typ.length()-2);
                     results.append("env->Release"
-				   + typ.substring(0, 1).toUpperCase()
-				   + typ.substring(1, typ.length())
-				   + "ArrayElements("
-				   + arg.getName() + ",(" + arg.getC2TypeHack()
-				   + ")" + arg.getName() + "_1,0);\n");
-	    }
+                                   + typ.substring(0, 1).toUpperCase()
+                                   + typ.substring(1, typ.length())
+                                   + "ArrayElements("
+                                   + arg.getName() + ",(" + arg.getC2TypeHack()
+                                   + ")" + arg.getName() + "_1,0);\n");
+            }
         }
 
         if (!returnJNIType.equals("void")) {
             results.append( _indent1 + "if (_" + returnName + " == 0) {\n"
-			    + _indent2 + "//std::cout << \"warning : return = "
-			    + "0\" << std::endl;\n"
-			    + _indent1 + "}\n");
+                            + _indent2 + "//std::cout << \"warning : return = "
+                            + "0\" << std::endl;\n"
+                            + _indent1 + "}\n");
         }
 
         if (!(_getArgumentsOut(actor, "").equals("")
                     && _getArgumentsInOut(actor, "").equals(""))) {
-	    results.append(_indent1 + "// envoi des sorties dans l'environnement JAVA / PTOLEMY II\n"
+            results.append(_indent1 + "// envoi des sorties dans l'environnement JAVA / PTOLEMY II\n"
                 + _indent1 + "jclass cls = env->GetObjectClass(jobj);\n"
                 + _indent1 + "jmethodID mid = env->GetMethodID(cls, "
-			   + "\"sendResults\", \""
+                           + "\"sendResults\", \""
                 + _signatureSendResults(actor)
                 + "\");\n"
                 + _indent1 + "if (mid == 0) {\n"
@@ -780,9 +780,9 @@ public class JNIUtilities {
 
             if (!returnJNIType.equals("void")) {
                 results.append(_indent2 + "return _" + returnName + ";\n}\n");
-	    } else {
+            } else {
                 results.append(_indent2 + "return;\n}\n");
-	    }
+            }
             results.append(_indent1 + "env->CallVoidMethod(jobj,mid," + _getArgumentsOut(actor, ",")
                 //warning : ici on suppose qu'il y a toujours au - 1 argument Out !! TBFix
                 +_virgule( _getArgumentsOut(actor, ","), _getArgumentsInOut(actor, ","))
@@ -814,7 +814,7 @@ public class JNIUtilities {
             results.append(_indent1 + "return _" + returnName + ";\n}\n");
         } else {
             results.append(_indent1 + "return;\n}\n");
-	}
+        }
 
         //exporting the file
         File cFile =
@@ -822,10 +822,10 @@ public class JNIUtilities {
                     + "/jni"
                     + actor.getName()
                     + ".cpp");
-	FileWriter writer = new FileWriter(cFile);
-	writer.write(results.toString());
-	writer.close();
-	return cFile;
+        FileWriter writer = new FileWriter(cFile);
+        writer.write(results.toString());
+        writer.close();
+        return cFile;
     }
 
     /** Export the Visual Studio project.
@@ -833,8 +833,8 @@ public class JNIUtilities {
      *  @param destinationDirectory Directory to create the file in.
      */
     protected static void _exportDSP(GenericJNIActor actor,
-				     String destinationDirectory)
-	throws IllegalActionException, IOException {
+                                     String destinationDirectory)
+        throws IllegalActionException, IOException {
         StringBuffer results = new StringBuffer();
 
         String libraryDirectory = _getLibraryDirectory(actor);
@@ -1025,9 +1025,9 @@ public class JNIUtilities {
                     + "/Jni"
                     + interNativeLibrary
                     + ".dsp");
-	FileWriter writer = new FileWriter(dspFile);
-	writer.write(results.toString());
-	writer.close();
+        FileWriter writer = new FileWriter(dspFile);
+        writer.write(results.toString());
+        writer.close();
     }
 
 
@@ -1036,52 +1036,52 @@ public class JNIUtilities {
      *  @param destinationDirectory Directory to create the file in.
      */
     protected static void _exportMakefile(GenericJNIActor actor,
-					  String destinationDirectory)
-	throws IllegalActionException, IOException {
+                                          String destinationDirectory)
+        throws IllegalActionException, IOException {
         StringBuffer results = new StringBuffer();
 
         String libraryDirectory = _getLibraryDirectory(actor);
         String nativeLibrary = _getNativeLibrary(actor);
 
         String interNativeLibrary = _getInterNativeLibrary( actor);
-	String libraryPath = libraryDirectory;
-	if (libraryPath.equals("\"\"")) {
-	    libraryPath = ".";
-	}
+        String libraryPath = libraryDirectory;
+        if (libraryPath.equals("\"\"")) {
+            libraryPath = ".";
+        }
         //FIXME: this is a HACK, libraryPath should not be set like this
         libraryPath = "../..";
         results
-	    .append("# Makefile automatically generated for JNI\n"
-		    + "ROOT =\t\t" 
-		    + StringUtilities.getProperty("ptolemy.ptII.dir") + "\n\n"
+            .append("# Makefile automatically generated for JNI\n"
+                    + "ROOT =\t\t" 
+                    + StringUtilities.getProperty("ptolemy.ptII.dir") + "\n\n"
                     + "# Get configuration info\n"
-		    + "CONFIG =\t$(ROOT)/mk/ptII.mk\n" 
-		    + "include $(CONFIG)\n\n"
+                    + "CONFIG =\t$(ROOT)/mk/ptII.mk\n" 
+                    + "include $(CONFIG)\n\n"
                     + "SHAREDLIBRARY ="
-		    + "$(PTJNI_SHAREDLIBRARY_PREFIX)Jni"
+                    + "$(PTJNI_SHAREDLIBRARY_PREFIX)Jni"
                     + interNativeLibrary
-		    + ".$(PTJNI_SHAREDLIBRARY_SUFFIX)\n"
-		    + "$(SHAREDLIBRARY):\n"
-		    + "\t\"$(PTCC)\" \\\n"
-		    + "\t\t\"-I$(PTJAVA_DIR)/include\" \\\n"
-		    + "\t\t\"-I$(PTJAVA_DIR)/include/$(PTJNI_ARCHITECTURE)\" \\\n"
-		    + "\t\t-fno-exceptions \\\n"
+                    + ".$(PTJNI_SHAREDLIBRARY_SUFFIX)\n"
+                    + "$(SHAREDLIBRARY):\n"
+                    + "\t\"$(PTCC)\" \\\n"
+                    + "\t\t\"-I$(PTJAVA_DIR)/include\" \\\n"
+                    + "\t\t\"-I$(PTJAVA_DIR)/include/$(PTJNI_ARCHITECTURE)\" \\\n"
+                    + "\t\t-fno-exceptions \\\n"
                     + "\t\t-shared $(PTJNI_SHAREDLIBRARY_CFLAG) \\\n"
-		    + "\t\t-L" + libraryPath + " -l" + nativeLibrary + " \\\n"
-		    + "\t\t -o $@ \\\n"
-		    + "\t\tjni" + actor.getName() + ".cpp\n\n"
+                    + "\t\t-L" + libraryPath + " -l" + nativeLibrary + " \\\n"
+                    + "\t\t -o $@ \\\n"
+                    + "\t\tjni" + actor.getName() + ".cpp\n\n"
                     + "# Get the rest of the rules\n"
-		    + "include $(ROOT)/mk/ptcommon.mk\n"
-		    );
+                    + "include $(ROOT)/mk/ptcommon.mk\n"
+                    );
 
         File makeFile =
             new File(destinationDirectory
                     + "/Jni"
                     + interNativeLibrary
                     + ".mk");
-	FileWriter writer = new FileWriter(makeFile);
-	writer.write(results.toString());
-	writer.close();
+        FileWriter writer = new FileWriter(makeFile);
+        writer.write(results.toString());
+        writer.close();
     }
 
     /** Get the args belonging to this entity.
@@ -1115,16 +1115,16 @@ public class JNIUtilities {
             boolean isOutput,
             boolean isReturn,
             String separator) {
-	StringBuffer returnValue = new StringBuffer();
+        StringBuffer returnValue = new StringBuffer();
         Iterator arguments =
-	    _getArguments(actor, isInput, isOutput, isReturn).iterator();
+            _getArguments(actor, isInput, isOutput, isReturn).iterator();
         while (arguments.hasNext()) {
             Argument argument = (Argument) arguments.next();
             if (argument != null) {
                 if (returnValue.length() > 0) {
                     returnValue.append(separator);
-		}
-		returnValue.append(argument.getName());
+                }
+                returnValue.append(argument.getName());
             }
         }
         return returnValue.toString();
@@ -1139,17 +1139,17 @@ public class JNIUtilities {
             boolean isOutput,
             boolean isReturn,
             String separator) {
-	StringBuffer returnValue = new StringBuffer();
+        StringBuffer returnValue = new StringBuffer();
         Iterator arguments =
-	    _getArguments(actor, isInput, isOutput, isReturn).iterator();
+            _getArguments(actor, isInput, isOutput, isReturn).iterator();
         while (arguments.hasNext()) {
             Argument argument = (Argument) arguments.next();
             if (argument != null) {
                 if (returnValue.length() > 0) {
                     returnValue.append(separator);
-		}
-		returnValue.append(argument.getCType() + " "
-				   + argument.getName());
+                }
+                returnValue.append(argument.getCType() + " "
+                                   + argument.getName());
             }
         }
         return returnValue.toString();
@@ -1164,21 +1164,21 @@ public class JNIUtilities {
             boolean isOutput,
             boolean isReturn,
             String separator) {
-	StringBuffer returnValue = new StringBuffer();
+        StringBuffer returnValue = new StringBuffer();
         Iterator arguments =
-	    _getArguments(actor, isInput, isOutput, isReturn).iterator();
+            _getArguments(actor, isInput, isOutput, isReturn).iterator();
         while (arguments.hasNext()) {
             Argument argument = (Argument) arguments.next();
             String add = "";
             if (argument.getJType().endsWith("[]")) {
-		add = "_1";
-	    }
+                add = "_1";
+            }
             if (argument != null) {
                 if (returnValue.length() > 0) {
                     returnValue.append(separator);
-		}
-		returnValue.append(" (" + argument.getC2Type() + ")"
-				   + argument.getName() + add);
+                }
+                returnValue.append(" (" + argument.getC2Type() + ")"
+                                   + argument.getName() + add);
             }
         }
         return returnValue.toString();
@@ -1193,16 +1193,16 @@ public class JNIUtilities {
             boolean isOutput,
             boolean isReturn,
             String separator) {
-	StringBuffer returnValue = new StringBuffer();
+        StringBuffer returnValue = new StringBuffer();
         Iterator arguments =
-	    _getArguments(actor, isInput, isOutput, isReturn).iterator();
+            _getArguments(actor, isInput, isOutput, isReturn).iterator();
         while (arguments.hasNext()) {
             Argument argument = (Argument) arguments.next();
-	    if (returnValue.length() > 0) {
-		returnValue.append(separator);
-	    }
-	    returnValue.append(argument.getJType() + " "
-			       + argument.getName());
+            if (returnValue.length() > 0) {
+                returnValue.append(separator);
+            }
+            returnValue.append(argument.getJType() + " "
+                               + argument.getName());
         }
         return returnValue.toString();
     }
@@ -1217,17 +1217,17 @@ public class JNIUtilities {
             boolean isOutput,
             boolean isReturn,
             String separator) {
-	StringBuffer returnValue = new StringBuffer();
+        StringBuffer returnValue = new StringBuffer();
         Iterator arguments =
-	    _getArguments(actor, isInput, isOutput, isReturn).iterator();
+            _getArguments(actor, isInput, isOutput, isReturn).iterator();
         while (arguments.hasNext()) {
             Argument argument = (Argument) arguments.next();
-	    if (returnValue.length() > 0) {
-		returnValue.append(separator);
-	    }
-	    returnValue.append(argument.getJNIType() + " "
-			       + argument.getName());
-	}
+            if (returnValue.length() > 0) {
+                returnValue.append(separator);
+            }
+            returnValue.append(argument.getJNIType() + " "
+                               + argument.getName());
+        }
         return returnValue.toString();
     }
 
@@ -1242,7 +1242,7 @@ public class JNIUtilities {
      *  @return a vector of inout arguments.
      */
     protected static String _getArgumentsInOut(GenericJNIActor actor,
-					  String separator) {
+                                          String separator) {
         return _getArguments(actor, true, true, false, separator);
     }
 
@@ -1331,7 +1331,7 @@ public class JNIUtilities {
      *  @return the name of the out arguments, excluding the in arguments.
      */
     protected static String _getArgumentsIn(GenericJNIActor actor,
-				       String separator) {
+                                       String separator) {
         return _getArguments(actor, true, false, false, separator);
     }
 
@@ -1370,7 +1370,7 @@ public class JNIUtilities {
      *  @return the JNI type of the return argument.
      */
     protected static String _getArgumentsReturnWithJNIType(GenericJNIActor
-							   actor) {
+                                                           actor) {
         return _getArgumentsWithJNIType(actor, false, false, true, "");
     }
 
@@ -1405,11 +1405,11 @@ public class JNIUtilities {
         StringBuffer returnValue = new StringBuffer();
         if (typ.endsWith("[]")) {
             returnValue.append("[");
-	}
+        }
 
         if (typ.equals("boolean") || typ.startsWith("boolean")) {
             returnValue.append("Z");
-	} else if (typ.equals("byte") || typ.startsWith("byte")) {
+        } else if (typ.equals("byte") || typ.startsWith("byte")) {
             returnValue.append("B");
         } else if (typ.equals("char") || typ.startsWith("char")) {
             returnValue.append("C");
@@ -1425,59 +1425,59 @@ public class JNIUtilities {
             returnValue.append("D");
         } else if (typ.equals("Object") || typ.startsWith("Object")) {
             returnValue.append("L");
-	}
+        }
 
-	return returnValue.toString();
+        return returnValue.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private method                    ////
 
     public static String _getInterNativeFunction(GenericJNIActor actor) 
-	throws IllegalActionException {
-	//return "jni" + _getNativeFunction(actor);
-	return "jni" + actor.getName();
+        throws IllegalActionException {
+        //return "jni" + _getNativeFunction(actor);
+        return "jni" + actor.getName();
     }
 
     public static String _getInterNativeLibrary(GenericJNIActor actor)
-	throws IllegalActionException {
-	//return "jni" + _getNativeLibrary(actor);
-	return "jni" + actor.getName();
+        throws IllegalActionException {
+        //return "jni" + _getNativeLibrary(actor);
+        return "jni" + actor.getName();
     }
 
     // Return the value of the libraryDirectory argument with the double
     // quotes stripped off.
     private static String _getLibraryDirectory(GenericJNIActor actor)
-	throws IllegalActionException {
-	String libraryDirectory = (((StringToken) ((Parameter) actor
-				.getAttribute("libraryDirectory"))
-				    .getToken())
-				   .toString());
-	return libraryDirectory.substring(1, libraryDirectory.length() - 1);
+        throws IllegalActionException {
+        String libraryDirectory = (((StringToken) ((Parameter) actor
+                                .getAttribute("libraryDirectory"))
+                                    .getToken())
+                                   .toString());
+        return libraryDirectory.substring(1, libraryDirectory.length() - 1);
     }
 
     // Return the value of the nativeFunction argument with the double
     // quotes stripped off.
     private static String _getNativeFunction(GenericJNIActor actor)
-	throws IllegalActionException {
-	String nativeFunction =
-	    (((StringToken) ((Parameter) actor
+        throws IllegalActionException {
+        String nativeFunction =
+            (((StringToken) ((Parameter) actor
                         .getAttribute("nativeFunction"))
                         .getToken())
                         .toString());
-	return nativeFunction.substring(1, nativeFunction.length() - 1);
+        return nativeFunction.substring(1, nativeFunction.length() - 1);
     }
 
     // Return the value of the nativeLibrary argument with the double
     // quotes stripped off.
     public static String _getNativeLibrary(GenericJNIActor actor)
-	throws IllegalActionException {
-	String nativeLibrary =
-	    (((StringToken) ((Parameter) actor
+        throws IllegalActionException {
+        String nativeLibrary =
+            (((StringToken) ((Parameter) actor
                         .getAttribute("nativeLibrary"))
                         .getToken())
                         .toString());
-	return nativeLibrary.substring(1, nativeLibrary.length() - 1);
+        return nativeLibrary.substring(1, nativeLibrary.length() - 1);
     }
 
     /** Test the given string to know if a comma is needed
