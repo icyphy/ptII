@@ -64,6 +64,6 @@ public abstract class PtolemyGraphics extends Graphics {
         // but not in JDK1.1.
         throw new RuntimeException(
                 "Sorry, drawString(java.text.AttributedCharacterIterator, " +
-                "int , int) is not implemented in EPSGrapics");
+                "int , int) is not implemented in EPSGraphics");
     }
 }
