@@ -58,8 +58,8 @@ table. (as was mentioned in the previous paragraph)
 public class PtolemyThread extends Thread {
 
     /** Construct a new PtolemyThread object. This constructor has the
-     *  same effect as PtolemyThread(null, null, <i>gname</i>), where
-     *  <i>gname</i> is a newly generated name. Automatically generated
+     *  same effect as PtolemyThread(null, null, <i>generatedName</i>), where
+     *  <i>generatedName</i> is a newly generated name. Automatically generated
      *  names are of the form "Thread-"+n, where n is an integer.
      */
     public PtolemyThread() {
@@ -67,8 +67,8 @@ public class PtolemyThread extends Thread {
     }
 
     /** Construct a new PtolemyThread object. This constructor has the same
-     *  effect as PtolemyThread(null, target, <i>gname</i>), where
-     *  <i>gname</i> is a newly generated name. Automatically generated
+     *  effect as PtolemyThread(null, target, <i>generatedName</i>), where
+     *  <i>generatedName</i> is a newly generated name. Automatically generated
      *  names are of the form "Thread-"+n, where n is an integer.
      *  @param target The object whose run method is called.
      */
@@ -95,9 +95,10 @@ public class PtolemyThread extends Thread {
     }
 
     /** Construct a new PtolemyThread object. This constructor has the
-     *  same effect as PtolemyThread(group, target, gname), where gname is a
-     *  newly generated name. Automatically generated names are of
-     *  the form "Thread-"+n, where n is an integer.
+     *  same effect as PtolemyThread(group, target, generatedName),
+     *  where generatedName is a newly generated name. Automatically
+     *  generated names are of the form "Thread-"+n, where n is an
+     *  integer.
      *  @param group The thread group
      *  @param target The object whose run method is called.
      */
