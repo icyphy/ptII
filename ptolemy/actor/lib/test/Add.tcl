@@ -60,7 +60,7 @@ test Add-1.1 {use default value} {
     $e0 setManager $manager
 
     #create ramp
-    set ramp [java::new ptolemy.actor.lib.Ramp $e0 Ramp]
+    set ramp [java::new ptolemy.actor.lib.Ramp $e0 Ramp 0 1]
     set rampOut [java::cast ptolemy.actor.TypedIOPort [$ramp getPort Output]]
 
     #create const
