@@ -227,7 +227,7 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow} \
           set args [java::new {String[]} 5 \
   	    [list \
   	    $modelPath \
-		 "-codeGenerator" {"applet"} \
+		 "-codeGenerator" "applet" \
 		 "-run" "false"] ]
 	java::new ptolemy.copernicus.kernel.Copernicus $args
 	return "Times Interp/Deep ms $modelPath 1 \
@@ -372,9 +372,9 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow} \
 
 
       if { ${codeGenType} == "Deep" } {
-	  set codeGenerator {"java"}
+	  set codeGenerator "java"
       } else {
-	 set codeGenerator {"shallow"}
+	 set codeGenerator "shallow"
       }
       set args [java::new {String[]} 5 \
   	      [list \

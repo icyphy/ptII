@@ -66,10 +66,10 @@ test Applet-1.2 {Create an applet for a graphical demo that uses diva.jar in a d
 	[list \
 	    [file join $relativePathToPTII ptolemy domains fsm demo \
 		MultipleRuns MultipleRuns.xml] \
-	    "-ptIIUserDirectory" {"/tmp/ptapplet"} \
+	    "-ptIIUserDirectory" "/tmp/ptapplet" \
 	    "-targetPath" "modelName" \
 	    "-targetPackage" "modelName" \
-	    "-codeGenerator" {"applet"} \
+	    "-codeGenerator" "applet" \
 	    "-run" "false"] ]
     java::new ptolemy.copernicus.kernel.Copernicus $args	
     list {}
