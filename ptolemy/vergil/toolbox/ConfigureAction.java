@@ -39,6 +39,7 @@ import javax.swing.KeyStroke;
 import ptolemy.actor.gui.EditParametersDialog;
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.MessageHandler;
 import diva.gui.GUIUtilities;
 
 //////////////////////////////////////////////////////////////////////////
@@ -77,16 +78,24 @@ public class ConfigureAction extends FigureAction {
      *  @param e The event.
      */
     public void actionPerformed(ActionEvent e) {
-        // Determine which entity was selected for the look inside action.
-        super.actionPerformed(e);
+        try {
+            // Determine which entity was selected for the look inside action.
+            super.actionPerformed(e);
 
-        NamedObj target = getTarget();
-        if (target == null) return;
+            NamedObj target = getTarget();
+            if (target == null) return;
 
-        // Create a dialog for configuring the object.
-        // First, identify the top parent frame.
-        Frame parent = getFrame();
-        openDialog(parent, target);
+            // Create a dialog for configuring the object.
+            // First, identify the top parent frame.
+            Frame parent = getFrame();
+            openDialog(parent, target);
+        } catch (Throwable throwable) {
+            // Giotto code generator on giotto/demo/Hierarchy/Hierarchy.xml
+            // was throwing an exception here that was not being displayed
+            // in the UI.
+            MessageHandler.error("Failed to open a dialog to edit the target.",
+                    throwable);
+        }
     }
 
     /** Open an edit parameters dialog.  This is a modal dialog, so
