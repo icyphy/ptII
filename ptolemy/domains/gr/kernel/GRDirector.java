@@ -50,6 +50,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -324,20 +325,32 @@ public class GRDirector extends StaticSchedulingDirector {
         _iteration = 0;
 
 
-        // Get the ViewScreen:
+        // Get the ViewScreen.
+        ViewScreenInterface viewScreen = null;
         TypedCompositeActor container = (TypedCompositeActor) getContainer();
-        List viewScreens = container.entityList(ViewScreenInterface.class);
-        if (viewScreens.size() != 1) {
-            throw new IllegalActionException(this,
-                    "GR model does not contain exactly one view screen.");
+        Iterator actors = container.deepEntityList().iterator();
+        while (actors.hasNext()) {
+        	Object actor = actors.next();
+            if (actor instanceof ViewScreenInterface) {
+                if (viewScreen != null) {
+                    throw new IllegalActionException(this,
+                    "GR model cannot contain more than one view screen.");
+                }
+                viewScreen = (ViewScreenInterface)actor;
+            }
         }
-        ViewScreenInterface viewScreen =
-            (ViewScreenInterface) viewScreens.get(0);
+        if (viewScreen == null) {
+            throw new IllegalActionException(this,
+                    "GR model does not contain a view screen.");
+        }
+
         // Set the view screen for all the actors.
-        for (Iterator actors = container.entityList(GRActor.class).iterator();
-             actors.hasNext();) {
-            GRActor actor = (GRActor) actors.next();
-            actor._setViewScreen((GRActor)viewScreen);
+        actors = container.deepEntityList().iterator();
+        while(actors.hasNext()) {
+            NamedObj actor = (NamedObj)actors.next();
+            if (actor instanceof GRActor) {
+            	((GRActor)actor)._setViewScreen((GRActor)viewScreen);
+            }
         }
     }
 
