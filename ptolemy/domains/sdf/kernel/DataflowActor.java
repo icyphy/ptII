@@ -51,26 +51,71 @@ it will produce or consume on any of its ports during its next firing.
 */
 interface DataflowActor {
 
-
     /** Get the number of tokens that are produced or consumed 
      *  on the designated port of this Actor.   
      *
-     *  @throw IllegalActionException if port is not contained in this actor.
-     *  @return The number of tokens produced on the port.
-     */
-    public int getTokenProductionRate(IOPort p) 
-        throws IllegalActionException;
-
-
-    /** Get the number of tokens that are produced or consumed 
-     *  on the designated port of this Actor.   
-     *
-     *  @throw IllegalActionException if port is not contained in this actor.
+     *  @throw IllegalActionException if port is not contained in this actor,
+     *  or is not an input port.
      *  @return The number of tokens consumed on the port.
      */
     public int getTokenConsumptionRate(IOPort p) 
         throws IllegalActionException;
 
+
+    /** Get the number of tokens that are produced or consumed 
+     *  on the designated port of this Actor.   
+     *
+     *  @throw IllegalActionException if port is not contained in this actor.
+     *  or is not an output port.
+     *  @return The number of tokens produced on the port.
+     */
+    public int getTokenProductionRate(IOPort p) 
+        throws IllegalActionException;
+
+    /** Set the number of tokens that are produced or consumed 
+     *  on the designated port of this Actor.   This will generally
+     *  be called in an AtomicActor to define it's behavior.   It may also
+     *  be called in an opaque CompositeActor to place a non-dataflow domain
+     *  inside of a dataflow domain.  (In this case the CompositeActor cannot
+     *  determine the rate by scheduling the contained domain, and it must be
+     *  explicitly declared.)
+     *
+     *  @throw IllegalActionException if port is not contained in this actor,
+     *  or is not an input port.
+     *  @return The number of tokens consumed on the port.
+     */
+            /*
+    public void setTokenConsumptionRate(IOPort p, int count) 
+        throws IllegalActionException;
+        */
+
+    /** Set the number of tokens that are produced or consumed 
+     *  on the designated port of this Actor.  This will generally
+     *  be called in an AtomicActor to define it's behavior.   It may also
+     *  be called in an opaque CompositeActor to place a non-dataflow domain
+     *  inside of a dataflow domain.  (In this case the CompositeActor cannot
+     *  determine the rate by scheduling the contained domain, and it must be
+     *  explicitly declared.) 
+     *
+     *  @throw IllegalActionException if port is not contained in this actor,
+     *  or is not an output port.
+     *  @return The number of tokens produced on the port.
+     */
+            /*    public void setTokenProductionRate(IOPort p, int count) 
+        throws IllegalActionException;
+        */
+            /* public int getTokenConsumptionDelay(IOPort p)
+            throws IllegalActionException;
+
+    public int getTokenProductionDelay(IOPort p)
+            throws IllegalActionException;
+
+    public void setTokenConsumptionDelay(IOPort p, int count)
+            throws IllegalActionException;
+
+    public void setTokenProductionDelay(IOPort p, int count)
+            throws IllegalActionException;
+            */
 }
 
 
