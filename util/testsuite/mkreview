@@ -49,7 +49,7 @@ if [ "$release" = "5.8" ]; then
     echo "----------------------------------------"
     echo "----------------------------------------"
     echo "$0: WARNING: on the Ptolemy cluster, mkreview does not yet"
-    echo "work under Solaris 8.  Try running it on a Solaris 2.5.1
+    echo "work under Solaris 8.  Try running it on a Solaris 2.5.1"
     echo "machine like andrews."
     echo "----------------------------------------"
     echo "----------------------------------------"
