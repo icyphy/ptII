@@ -46,8 +46,8 @@ ROOT =		../..
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
-#JAVAHOME =   $(LATEST_JAVAHOME)
-DIRS = 		util test # doc
+
+DIRS = 		util test # doc lib
 
 CLASSPATH = ../..
 
@@ -99,16 +99,13 @@ EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS) doc
+MISC_FILES =	$(DIRS) doc lib
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES =	#codeDoc
 
 JCLASS = $(JSRCS:%.java=%.class)
-
-# Needed for compiling under Cygwin on NT
-LIB = dummylib
 
 all: jclass
 install: jclass javadocs $(JARFILE)
