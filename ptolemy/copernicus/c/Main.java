@@ -84,7 +84,7 @@ public class Main extends KernelMain {
      */
     public void addTransforms() {
 
-	super.addTransforms();
+	    super.addTransforms();
 
         // Set up a watch dog timer to exit after a certain amount of time.
         // For example, to time out after 5 minutes, or 300000 ms:
@@ -135,34 +135,34 @@ public class Main extends KernelMain {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-/** Call soot.Main.main(), which does command line argument
- *  processing and then starts the transformation.  This method
- *  should be called after calling initialize() and addTransforms().
- *
- *  @param args Soot command line arguments to be passed
- *  to soot.Main.main().
- */
-public void generateCode(String [] args) {
-    // This is rather ugly.  The moml Class is not a Java class, so
-    // soot won't recognize it.  However, if we give soot nothing, then
-    // it won't run.  Note that later we will call setLibraryClass() on
-    // this class so that we don't actually generate code for it.
-    args[0] = "java.lang.Object";
-
-    // Rather than calling soot.Main.main() here directly, which
-    // spawns a separate thread, we run this in the same thread
-    //soot.Main.main(args);
-    soot.Main.setReservedNames();
-    soot.Main.setCmdLineArgs(args);
-    soot.Main main = new soot.Main();
-    soot.ConsoleCompilationListener consoleCompilationListener =
-            new soot.ConsoleCompilationListener();
-    soot.Main.addCompilationListener(consoleCompilationListener);
-    // main.run(false);
-    main.run();
-}
-
-
+    /** Call soot.Main.main(), which does command line argument
+     *  processing and then starts the transformation.  This method
+     *  should be called after calling initialize() and addTransforms().
+     *
+     *  @param args Soot command line arguments to be passed
+     *  to soot.Main.main().
+     */
+    public void generateCode(String [] args) {
+        // This is rather ugly.  The moml Class is not a Java class, so
+        // soot won't recognize it.  However, if we give soot nothing, then
+        // it won't run.  Note that later we will call setLibraryClass() on
+        // this class so that we don't actually generate code for it.
+        args[0] = "java.lang.Object";
+    
+        // Rather than calling soot.Main.main() here directly, which
+        // spawns a separate thread, we run this in the same thread
+        //soot.Main.main(args);
+        soot.Main.setReservedNames();
+        soot.Main.setCmdLineArgs(args);
+        soot.Main main = new soot.Main();
+        soot.ConsoleCompilationListener consoleCompilationListener =
+                new soot.ConsoleCompilationListener();
+        soot.Main.addCompilationListener(consoleCompilationListener);
+        // main.run(false);
+        main.run();
+    }
+    
+    
     /** Read in a MoML model, generate .class files for use with C
      *  @exception IllegalActionException If the model cannot be parsed.
      *  @exception NameDuplicationException If the name of the
