@@ -48,9 +48,6 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
-	PNAlternate.java \
-	PNInterleave.java \
-	PNRedirect.java \
 	PNAdder.java \
 	PNAudioSource.java \
 	PNAudioPacker.java \
