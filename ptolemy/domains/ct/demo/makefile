@@ -42,7 +42,9 @@ include $(CONFIG)
 
 CLASSPATH = ../../../..
 
-TCL_SRCS =
+TCL_SRCS = \
+	Exponential.tcl \
+	Ramp.tcl
 
 
 JSRCS = \
