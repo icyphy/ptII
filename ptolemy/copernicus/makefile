@@ -47,9 +47,15 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	copernicus
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTCLASSJAR =
 
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	c/c.jar \
+	kernel/kernel.jar \
+	java/java.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS =
 
 EXTRA_SRCS =	$(JSRCS) \

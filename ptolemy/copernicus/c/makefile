@@ -42,6 +42,10 @@ CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+# Used to build jar files
+PTPACKAGE = 	c
+PTCLASSJAR = 	$(PTPACKAGE).jar
+
 # Test directory
 DIRS =		test
 

@@ -40,6 +40,10 @@ CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(ROOT)/vendors/soot/1.2.2/soot/classes
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+# Used to build jar files
+PTPACKAGE = 	java
+PTCLASSJAR = 	$(PTPACKAGE).jar
+
 DIRS =		test
 
 # Keep this list alphabetized.
