@@ -10,6 +10,15 @@
 <li> The major change is that the classes were moved from
 the <CODE>ptplot</CODE> package to the <CODE>pt.plot</CODE> package.
 
+<li> <CODE>PlotBox</CODE> now has a <CODE>drawPlot(boolean clearfirst)</CODE>
+method, which does not take a Graphics argument like the preexisting
+<CODE>drawPlot(Graphics graphics, boolean clearfirst)</CODE>.  The
+new <CODE>drawPlot()</CODE> makes it easier to use the Plot class without
+subclassing it.
+
+<li> <CODE>PlotApplication.java</CODE> was moved to a new directory
+called <CODE>pt/apps</CODE>.
+
 </menu>
 
 <H2>The changes between ptplot1.3 and ptplot1.3p1</H2>
