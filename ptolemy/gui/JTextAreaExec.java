@@ -247,19 +247,35 @@ public class JTextAreaExec extends JPanel {
 			throw new InterruptedException();
 		    }
 
-		    final String command = (String)commands.next();
-		    appendJTextArea("Executing: " + command);
+                    // Preprocess by removing lines that begin with '#'
+                    // and converting substrings that begin and end
+                    // with double quotes into one array element.
+		    final String [] commandTokens =
+                        GUIStringUtilities
+                        .tokenizeForExec((String)commands.next());
+                    
+                    appendJTextArea("About to execute:\n");
+                    StringBuffer statusCommand = new StringBuffer();
+                    for (int i = 0; i < commandTokens.length; i++) {
+                        appendJTextArea("	" + commandTokens[i]);
 
-		    // Print only the first 50 chars of the command
-		    if (command.length() < 50) {
-			_statusBar.setText("Executing: " + command);
-		    } else {
-			_statusBar.setText("Executing: "
-                                + command.substring(0,50)
-                                + " . . .");
-		    }
+                        // Accumulate the first 50 chars for use in
+                        // the status buffer.
+                        if (statusCommand.length() < 50) {
+                            if (statusCommand.length() > 0) {
+                                statusCommand.append(" ");
+                            }
+                            statusCommand.append(commandTokens[i]);
+                        }
+                    }
 
-                    _process = runtime.exec(command);
+                    if (statusCommand.length() >= 50) {
+                        statusCommand.append(" . . .");
+                    }
+                    _statusBar.setText("Executing: "
+                            + statusCommand.toString());
+
+                    _process = runtime.exec(commandTokens);
 
 		    // Set up a Thread to read in any error messages
 		    _StreamReaderThread errorGobbler = new
