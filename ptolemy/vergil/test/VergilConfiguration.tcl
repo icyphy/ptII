@@ -76,7 +76,7 @@ proc expandConfiguration {configuration} {
     $inputFileNamesToSkip add "/apps/apps.xml"
     $inputFileNamesToSkip add "/apps/superb/superb.xml"
     $inputFileNamesToSkip add "/attributes/decorative.xml"
-    $inputFileNamesToSkip add "/cgc.xml"
+    $inputFileNamesToSkip add "/codegen.xml"
     $inputFileNamesToSkip add "/configs/ellipse.xml"
     $inputFileNamesToSkip add "/gr.xml"
     $inputFileNamesToSkip add "/chic/chic.xml"
