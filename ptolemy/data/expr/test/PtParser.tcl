@@ -165,7 +165,7 @@ test PtParser-2.7 {Construct a Parser, try integer format specifiers} {
     set res5  [ $root evaluateParseTree ]
 
     list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] [$res5 toString]
-} {29 29 29 29 11}
+} {29 29 29 29 11ub}
 
 ######################################################################
 ####
@@ -284,7 +284,7 @@ test PtParser-4.3 {Construct a Parser,test shift operators} {
     set res4  [ $root4 evaluateParseTree ]
    
     list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString]  
-} {8 -2 9223372036854775806 1}
+} {8 -2 9223372036854775806 1ub}
 
 ######################################################################
 ####
