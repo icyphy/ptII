@@ -53,6 +53,7 @@
 # 20) Warn if the class comment has * on each line.
 # 21) Warn if printStackTrace() or fillInStackTrace() are used
 # 22) Warn if setTypeAtLeast is present, but clone is not defined
+# 23) Check that the methods are alphabetical
 
 # Determine if we are on windows
 windows=no
@@ -365,5 +366,28 @@ do
 		echo "$results"
             fi		
 	fi    
+        # 23) Check that the methods are alphabetical
+	# This is important because the javadoc output follows
+	# the order of the methods in the file.
+	accesses="public protected private"
+	for access in $accesses
+        do
+	  # Once we see the string 'inner class' we stop checking
+	  awk '{print $0; if ($0 ~ /inner class/) { exit}}' $file |  
+	  egrep "^    $access" | grep -v = | grep '[a-zA-Z](' | 
+	        sed 's/.* \([_A-Za-z0-9]*(\).*/\1/'  > /tmp/chkjava.a
+	  awk '{print $0; if ($0 ~ /inner class/) { exit}}' $file |  
+	  egrep "^    $access" | grep -v = | grep '[a-zA-Z](' | 
+	        sed 's/.* \([_A-Za-z0-9]*(\).*/\1/' | sort > /tmp/chkjava.b
+	  diff /tmp/chkjava.a /tmp/chkjava.b > /dev/null
+	  retval=$?
+          if [ $retval != 0 ]; then
+	     echo "$file: $access methods are not in alphabetical order"
+	     echo "methods are:"
+	     cat /tmp/chkjava.a
+	     echo "methods should be:"
+	     diff /tmp/chkjava.a /tmp/chkjava.b
+          fi
+        done
 done
 
