@@ -56,10 +56,12 @@ JSIMPLE_TESTS = \
 	MoMLChangeRequest.tcl \
 	MoMLParser.tcl \
 	StreamErrorHandler.tcl \
-	MoMLWriter.tcl \
-	MoMLWriterTiming.tcl \
 	URLAttribute.tcl \
 	Vertex.tcl
+
+# Don't included these right now
+#	MoMLWriter.tcl \
+#	MoMLWriterTiming.tcl \
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
