@@ -1,6 +1,6 @@
 /* Huffman Coder.
 
-Copyright (c) 2003-2004 The Regents of the University of California.
+Copyright (c) 2004 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -46,11 +46,11 @@ import ptolemy.kernel.util.NameDuplicationException;
    Its base class HuffmanBasic.java generates the code book.
    The HuffmanCoder actor simply encode the input into the corresponding 
    booleans in the code book.
-   @see HuffmanBasic.java
+   @see HuffmanBasic
     
    @author Rachel Zhou
    @version $Id$
-   @since Ptolemy II 3.0
+   @since Ptolemy II 4.1
    @Pt.ProposedRating Red (zhouye)
    @Pt.AcceptedRating Red (cxh)
 */
@@ -119,11 +119,12 @@ public class HuffmanCoder extends HuffmanBasic {
      */
     private void _sendBooleans(String codeword)
         throws IllegalActionException {
-        for(int i=0; i < codeword.length(); i ++) {
-            if (codeword.charAt(i) == '1')
+        for (int i = 0; i < codeword.length(); i ++) {
+            if (codeword.charAt(i) == '1') {
                 output.send(0, new BooleanToken(true));
-            else
+            } else {
                 output.send(0, new BooleanToken(false));
+            }
         }
     }
 
