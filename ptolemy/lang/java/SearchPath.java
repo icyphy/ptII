@@ -156,16 +156,16 @@ public class SearchPath extends Vector {
      * qualified class name.
      */
     public static Set ptolemyCoreClasses() {
-        // Create a HashSet with a size of 373
-        // The number of .class files in the Ptolemy core is 186
+        // Create a HashSet with a size of 421
+        // The number of .class files in the Ptolemy core is 219
         // Determine the number of .class files in the Ptolemy core with:
-        // find . -name "*.class" -print | egrep 'ptolemy/kernel|ptolemy/actor/util|ptolemy/actor/sched|ptolemy/data|ptolemy/graph|ptolemy/math' | grep -v test | wc
+        // find . -name "*.class" -print | egrep 'ptolemy/kernel|ptolemy/actor/util|ptolemy/actor/sched|ptolemy/data|ptolemy/graph|ptolemy/math' | grep -v vergil grep -v test | wc
         // The Collections tutorial suggests a prime number slightly
         // larger than twice the size of the Set.
         // Note that we have a test in the test suite that will warn
         // us if the number of classes is too large and we need to adjust
         // the size of the HashSet.
-        Set classSet = new HashSet(373);
+        Set classSet = new HashSet(421);
 
         // Array of names of packages that are in the Ptolemy core.
         // We don't parse java files in these packages, we use
