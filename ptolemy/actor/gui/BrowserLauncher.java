@@ -104,7 +104,7 @@ public class BrowserLauncher {
 
     /** Launch the browser on the first argument.  If there is
      *  no first argument, then open http://ptolemy.eecs.berkeley.edu
-     * 
+     *
      *  <p> For example, to open the user's default browser on foo.html:
      *  <pre>
      *  java -classpath $PTII ptolemy.actor.gui.BrowserLauncher foo.html
@@ -128,20 +128,20 @@ public class BrowserLauncher {
             System.exit(0);
         }
     }
-      
+
     /**
      * Attempts to open the default web browser to the given URL.
-     *  
+     *
      * <p> We use the following strategy to find URLs that may be inside
      * jar files:
      * <br> If the string does not start with "http": see if it is a
-     * file.  
-     * <br> If the file cannot be found, look it up in the classpath.  
+     * file.
+     * <br> If the file cannot be found, look it up in the classpath.
      * <br> If the file can be found in the classpath then use the
      * found file instead of the given URL.
      * <br>If the file cannot be found in the classpath, then pass the
      * original given URL to the browser.
-     * 
+     *
      * @param url The URL to open
      * @exception IOException If the web browser could not be located or
      * does not run
@@ -152,7 +152,7 @@ public class BrowserLauncher {
                     + errorMessage);
 	}
 
-        if (!url.startsWith("http:")) { 
+        if (!url.startsWith("http:")) {
             // If the url does not start with http:, then look it up
             // as a regular file and then possibly in the classpath.
             File urlFile = null;
@@ -183,12 +183,12 @@ public class BrowserLauncher {
                             // inside Web Start and we should get the
                             // resource, write it to a temporary file
                             // and pass that value to the browser
-                        
+
                             // Save the jar file as a temporary file
                             // in the default platform dependent
                             // directory with the same suffix as that
                             // of the jar URL
-                            
+
                             // FIXME: we should probably cache this
                             // copy somehow.
                             String old = url;
@@ -346,7 +346,7 @@ public class BrowserLauncher {
 				  + exitCode + "."
 				  + "\n url was: " + url
 				  + "\n browser was: " + browser);
-	} 
+	}
     }
 
     /** Set to true if we copied a file out of a jar file so that

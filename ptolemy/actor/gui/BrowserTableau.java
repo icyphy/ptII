@@ -77,7 +77,7 @@ public class BrowserTableau extends Tableau {
         super.setEditable(flag);
     }
 
-    /** Make this tableau visible by calling 
+    /** Make this tableau visible by calling
      *	{@link BrowserLauncher#openURL(String)}
      *  with URL from the effigy.  Most browsers are smart enough
      *  so that if the browser is already displaying the URL, then
@@ -118,7 +118,7 @@ public class BrowserTableau extends Tableau {
                     temporaryURL = JNLPUtilities.saveJarURLInClassPath(url);
                 } catch (Exception ex) {
                     // We print out the error and move on.
-                    // Eventually, this could be logged as a warning. 
+                    // Eventually, this could be logged as a warning.
                     System.out.println("Failed to save '" + url + ": " + ex);
                 }
 

@@ -425,7 +425,7 @@ public class Configuration extends CompositeEntity {
 		    // then add . after that.  So
 		    // file:/c:/foo.xml#bar.bif is ok, but
 		    // file:/c:/foo.xml#bar#bif is not
-		    // If the title does not contain a legitimate 
+		    // If the title does not contain a legitimate
 		    // way to reference the submodel, then the user
 		    // is likely to look at the title and use the wrong
 		    // value if they xml edit files by hand. (cxh-4/02)

@@ -89,7 +89,7 @@ public class Configurer extends JPanel implements CloseListener {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         _object = object;
-       
+
         NamedObj parent = MoMLChangeRequest.getDeferredToParent(object);
         // If there is no deferred to parent, just use the object itself.
         if (parent == null) {
@@ -175,7 +175,7 @@ public class Configurer extends JPanel implements CloseListener {
                             _parent,       // context
                             _restoreMoML, // MoML code
                             null);        // base
-                    _object.requestChange(request);        
+                    _object.requestChange(request);
                 }
             });
     }

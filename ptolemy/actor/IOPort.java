@@ -87,7 +87,7 @@ to relations outside. If it is not specified, then a link is an
 outside link.
 <p>
 The port has a <i>width</i>, which by default is constrained to
-be either zero or one. 
+be either zero or one.
 The width is the sum of the widths of the linked relations.
 A port with a width greater than one behaves as a bus interface,
 so if the width is <i>w</i>, then the port can simultaneously
@@ -786,7 +786,7 @@ public class IOPort extends ComponentPort {
 
     /** Get a token from the specified inside channel of this port.
      *  This method is usually called on the output port of a
-     *  composite actor. 
+     *  composite actor.
      *
      *  <p>If the channel has a group with more than one receiver
      *  (something that is possible if this is a transparent port),
@@ -971,7 +971,7 @@ public class IOPort extends ComponentPort {
     public Receiver[][] getReceivers() {
         try {
             _workspace.getReadAccess();
-            if (!isInput()) { 
+            if (!isInput()) {
                 return _EMPTY_RECEIVER_ARRAY;
             }
             if (isOpaque()) {
