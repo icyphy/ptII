@@ -495,7 +495,7 @@ test SDFScheduler-8.7 {input Multiport with no connections - disconnected graph}
     set sched1 {}
     catch {set sched1 [_getSchedule $toplevel $scheduler]} s1
     list $sched1 $s1
-} {{Consumer1 Consumer2} {}} {Currently, this is treated as a disconnected graph.  It might be nice to make it fire the disconnected actor once per iteration}
+} {{} {ptolemy.actor.sched.NotSchedulableException: SDF scheduler found disconnected actors: .Toplevel.Consumer2 }}
 
 test SDFScheduler-8.11 {output Multiport, Multirate Scheduling tests} {
     set manager [java::new ptolemy.actor.Manager $w Manager]
