@@ -191,7 +191,6 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      */
     public boolean postfire() throws IllegalActionException {
         FSMActor ctrl = getController();
-        // Actor ref = ctrl.currentState().getRefinement();
         Iterator refinements = _enabledRefinements.iterator();
         while (refinements.hasNext()) {
             Actor refinement = (Actor)refinements.next();

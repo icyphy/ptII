@@ -40,20 +40,22 @@ import ptolemy.actor.TypedCompositeActor;
 import java.util.List;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.StringTokenizer;
 
 //////////////////////////////////////////////////////////////////////////
 //// State
 /**
 A State has two ports: one for linking incoming transitions, the other for
 outgoing transitions. When the FSMActor containing a state is the mode
-controller of a modal model, the state can be refined by a TypedActor. The
-refinement must have the same container as the FSMActor. During execution
-of a modal model, only the mode controller and the refinement of the current
-state of the mode controller react to input to the modal model and produce
+controller of a modal model, the state can be refined by one or more
+instances of TypedActor. The refinements must have the same container
+as the FSMActor. During execution of a modal model, only the mode
+controller and the refinements of the current state of the mode
+controller react to input to the modal model and produce
 output. The outgoing transitions from a state are either preemptive or
 non-preemptive. When a modal model is fired, if a preemptive transition
-from the current state of the mode controller is chosen, the refinement of
-the current state is not fired. Otherwise the refinement is fired before
+from the current state of the mode controller is chosen, the refinements of
+the current state are not fired. Otherwise the refinements are fired before
 choosing a non-preemptive transition.
 
 @author Xiaojun Liu
@@ -102,12 +104,15 @@ public class State extends ComponentEntity {
      */
     public ComponentPort outgoingPort = null;
 
-    /** Attribute specifying the name of the refinement. The refinement
-     *  must be a TypedActor and have the same container as the FSMActor
-     *  containing this state, otherwise an exception will be thrown
-     *  when getRefinement() is called. This attribute has a null
-     *  expression or a null string as expression when the state is not
-     *  refined.
+    /** Attribute specifying one or more names of refinements. The
+     *  refinements must be instances of TypedActor and have the same
+     *  container as the FSMActor containing this state, otherwise 
+     *  an exception will be thrown when getRefinement() is called.
+     *  Usually, the refinement is a single name. However, if a
+     *  comma-separated list of names is provided, then all the specified
+     *  refinements will be executed.
+     *  This attribute has a null expression or a null string as
+     *  expression when the state is not refined.
      */
     public StringAttribute refinementName = null;
 
@@ -155,34 +160,54 @@ public class State extends ComponentEntity {
         return newObject;
     }
 
-    /** Return the refinement of this state. The name of the refinement
-     *  is specified by the <i>refinementName</i> attribute. The refinement
-     *  must be a TypedActor and have the same container as the FSMActor
-     *  containing this state, otherwise an exception is thrown.
+    /** Return the refinements of this state. The names of the refinements
+     *  are specified by the <i>refinementName</i> attribute. The refinements
+     *  must be instances of TypedActor and have the same container as
+     *  the FSMActor containing this state, otherwise an exception is thrown.
+     *  This method can also return null if there is no refinement.
      *  This method is read-synchronized on the workspace.
-     *  @return The refinement of this state.
+     *  @return The refinements of this state, or null if there are none.
      *  @exception IllegalActionException If the specified refinement
-     *   cannot be found.
+     *   cannot be found, or if a comma-separated list is malformed.
      */
-    public TypedActor getRefinement() throws IllegalActionException {
+    public TypedActor[] getRefinement() throws IllegalActionException {
         if (_refinementVersion == workspace().getVersion()) {
             return _refinement;
         }
         try {
             workspace().getReadAccess();
-            String name = refinementName.getExpression();
-            if (name != null && !name.trim().equals("")) {
-                Nameable cont = getContainer();
-                TypedCompositeActor contContainer =
-                    (TypedCompositeActor)cont.getContainer();
-                _refinement = (TypedActor)contContainer.getEntity(name);
-                if (_refinement == null) {
+            String names = refinementName.getExpression();
+            if (names == null || names.trim().equals("")) {
+                _refinementVersion = workspace().getVersion();
+                _refinement = null;
+                return null;
+            }
+            StringTokenizer tokenizer = new StringTokenizer(names, ",");
+            int size = tokenizer.countTokens();
+            if (size <= 0) {
+                _refinementVersion = workspace().getVersion();
+                _refinement = null;
+                return null;
+            }
+            _refinement = new TypedActor[size];
+            Nameable container = getContainer();
+            TypedCompositeActor containerContainer =
+                    (TypedCompositeActor)container.getContainer();
+            int index = 0;
+            while(tokenizer.hasMoreTokens()) {
+                String name = tokenizer.nextToken().trim();
+                if (name.equals("")) {
+                    throw new IllegalActionException(this,
+                    "Malformed list of refinements: " + names);
+                }
+                TypedActor element =
+                        (TypedActor)containerContainer.getEntity(name);
+                if (element == null) {
                     throw new IllegalActionException(this, "Cannot find "
                             + "refinement with name \"" + name
-                            + "\" in " + contContainer.getFullName());
+                            + "\" in " + containerContainer.getFullName());
                 }
-            } else {
-                _refinement = null;
+                _refinement[index++] = element;
             }
             _refinementVersion = workspace().getVersion();
             return _refinement;
@@ -250,7 +275,7 @@ public class State extends ComponentEntity {
     private List _preemptiveTransitionList = new LinkedList();
 
     // Cached reference to the refinement of this state.
-    private TypedActor _refinement = null;
+    private TypedActor[] _refinement = null;
 
     // Version of the cached reference to the refinement.
     private long _refinementVersion = -1;

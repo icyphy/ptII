@@ -200,6 +200,18 @@ public class FSMDirector extends Director {
      */
     public void fire() throws IllegalActionException {
         if(_debugging) _debug(getName(), " fire.");
+        if (_firstFire) {
+            Actor[] actors = getController().currentState().getRefinement();
+            _enabledRefinements = new LinkedList();
+            if (actors != null) {
+                for (int i = 0; i < actors.length; ++i) {
+                    if (actors[i].prefire()) {
+                        _enabledRefinements.add(actors[i]);
+                    }
+                }
+            }
+            _firstFire = false;
+        }
         FSMActor ctrl = getController();
         ctrl._setInputVariables();
         if(_debugging) _debug(getName(), " find FSMActor " + ctrl.getName());
@@ -209,14 +221,7 @@ public class FSMDirector extends Director {
         if (tr != null) {
             return;
         }
-	//if (_fireRefinement) {
-	//    TypedActor ref = st.getRefinement();
-        //    if(_debugging) _debug(getName(), " fire refinement",
-        //            ((ptolemy.kernel.util.NamedObj)ref).getName());
-        //    ref.fire();
-        //    ctrl._setInputsFromRefinement();
-        //}
-	Iterator actors = _enabledActors.iterator();
+	Iterator actors = _enabledRefinements.iterator();
 	while (actors.hasNext()) {
 	    TypedActor actor = (TypedActor)actors.next();
             if(_debugging) _debug(getName(), " fire refinement",
@@ -306,27 +311,17 @@ public class FSMDirector extends Director {
      *  @return The time of the next iteration.
      */
     public double getNextIterationTime() {
-/*      try {
-            Actor ref = getController().currentState().getRefinement();
-            if (ref != null && ref.getDirector() != this) {
-                // The refinement has a local director.
-                return ref.getDirector().getNextIterationTime();
-            }
-        } catch (IllegalActionException ex) {
-            // No mode controller, return that given by the superclass.
-        }
-*/
         try {
 	    double result = Double.MAX_VALUE;
             Actor[] actors = getController().currentState().getRefinement();
-	    if (actors.length == 0) {
+	    if (actors == null || actors.length == 0) {
 		return super.getNextIterationTime();
 	    }
-	    for (int i = 0; i < result.length; ++i) {
+	    for (int i = 0; i < actors.length; ++i) {
 		if (actors[i].getDirector() != this) {
                     // The refinement has a local director.
                     result = Math.min(result,
-                            ref.getDirector().getNextIterationTime());
+                            actors[i].getDirector().getNextIterationTime());
 		}
             }
 	    return result;
@@ -360,19 +355,7 @@ public class FSMDirector extends Director {
 	            ((CompositeActor)container).getExecutiveDirector();
 	}
         boolean result = true;
-/*      if (_fireRefinement) {
-            result = ctrl.currentState().getRefinement().postfire();
-
-            if (executiveDirector != null) {
-                // Not at the top level, ignore the return value from
-                // the current refinement.
-                result = true;
-            }
-            // Otherwise, 'and' the refinement.postfire()
-            // with controller.postfire()
-        }
-*/
-	Iterator actors = _enabledActors.iterator();
+	Iterator actors = _enabledRefinements.iterator();
 	while (actors.hasNext()) {
 	    TypedActor actor = (TypedActor)actors.next();
 	    actor.postfire();
@@ -399,14 +382,17 @@ public class FSMDirector extends Director {
         super.prefire();
 
         FSMActor ctrl = getController();
-        Actor[] actors = ctrl.currentState().getRefinement();
+        /*Actor[] actors = ctrl.currentState().getRefinement();
 
-	_enabledActors = new LinkedList();
-	for (int i = 0; i < actors.length; ++i) {
-	    if (actors[i].prefire()) {
-		_enabledActors.addLast(actors[i]);
-	    }
-	}
+	_enabledRefinements = new LinkedList();
+        if (actors != null) {
+            for (int i = 0; i < actors.length; ++i) {
+                if (actors[i].prefire()) {
+                    _enabledRefinements.add(actors[i]);
+                }
+            }
+        }*/
+        _firstFire = true;
 
         return getController().prefire();
     }
@@ -500,7 +486,10 @@ public class FSMDirector extends Director {
     protected Map _currentLocalReceiverMap = null;
 
     // The list of enabled actors that refines the current state.
-    protected List _enabledActors;
+    protected List _enabledRefinements;
+
+    // Flag that is set to true for the first fire in an iteration.
+    protected boolean _firstFire;
 
     // True if the refinement of the current state of the mode controller
     // is ready to fire in an iteration.
@@ -552,11 +541,13 @@ public class FSMDirector extends Director {
                             if (cont == ctrl) {
 				rlist.add(r);
 			    } else {
-				for (int i = 0; i < actors.length; ++i) {
-				    if (cont == actors[i]) {
-					rlist.add(r);
-					break;
-				    }
+                                if (actors != null) {
+                                    for (int k = 0; k < actors.length; ++k) {
+                                        if (cont == actors[k]) {
+                                            rlist.add(r);
+                                            break;
+                                        }
+                                    }
 				}
                             }
                         }
