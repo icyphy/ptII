@@ -402,7 +402,7 @@ public class ComponentPort extends Port {
      *  @param relation
      *  @exception IllegalActionException Incompatible relation.
      */	
-    public void _checkRelation(Relation relation) 
+    protected void _checkRelation(Relation relation) 
             throws IllegalActionException {
         if (!(relation instanceof ComponentRelation)) {
             throw new IllegalActionException(this,
@@ -415,7 +415,7 @@ public class ComponentPort extends Port {
      *  This method is synchronized on the workspace.
      *  @param entity A container.
      */	
-    public boolean _outside(Nameable entity) {
+    protected boolean _outside(Nameable entity) {
         synchronized(workspace()) {
             Nameable portcontainer = getContainer();
             while (entity != null) {
