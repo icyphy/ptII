@@ -383,7 +383,8 @@ public class MoMLWriter extends Writer {
                         try {
                             Constructor[] constructors =
                                 theClass.getConstructors();
-                            possibleConstructors.append("Constructors for "
+                            possibleConstructors.append(
+                                    "Constructors found for "
                                     + theClass + ":\n");
                             for(int i = 0; i < constructors.length; i++) {
                                 Constructor constructor = constructors[i];
