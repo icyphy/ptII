@@ -77,7 +77,7 @@ public class PortConfigurerDialog extends ComponentDialog
         _owner = owner;
         _target = target;
         if (buttonPressed().equals("Add")) {
-            _openAddDialog(null, "", "", "ptolemy.actor.TypedIOPort");
+            _openAddDialog(null, "", "", "");
             _target.removeChangeListener(this);
         } else if (buttonPressed().equals("Remove")) {
             // Create a new dialog to remove a port then open a new
@@ -204,12 +204,17 @@ public class PortConfigurerDialog extends ComponentDialog
         // A blank property name is interpreted as a cancel.
         String newName = _query.stringValue("name");
 
+        String classMoml = "";
+        String classSpec = _query.stringValue("class");
+        if (!classSpec.trim().equals("")) {
+            classMoml = " class=\"" + classSpec + "\"";
+        }
         if (dialog.buttonPressed().equals("OK") && !newName.equals("")) {
             String moml = "<port name=\""
                 + newName
-                + "\" class=\""
-                + _query.stringValue("class")
-                + "\"/>";
+                + "\""
+                + classMoml
+                + "/>";
             _target.addChangeListener(this);
             _target.requestChange(new MoMLChangeRequest(this, _target, moml));
         }
