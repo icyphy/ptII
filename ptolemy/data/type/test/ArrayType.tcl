@@ -52,10 +52,24 @@ if {[string compare test [info procs test]] == 1} then {
 # 
 test ArrayType-1.0 {Create a (NaT)array} {
     set nat [java::field ptolemy.data.type.BaseType NAT]
-    set arrayT [java::new ptolemy.data.type.ArrayType $nat]
+    set natArrayTypeMaster [java::new ptolemy.data.type.ArrayType $nat]
 
-    set clone [java::cast ptolemy.data.type.ArrayType [$arrayT clone]]
+    set natArrayType [java::cast ptolemy.data.type.ArrayType \
+                                                [$natArrayTypeMaster clone]]
 
-    list [$arrayT toString] [$clone toString]
+    list [$natArrayTypeMaster toString] [$natArrayType toString]
 } {(NaT)array (NaT)array}
+
+######################################################################
+####
+# 
+test ArrayType-1.1 {Create a (string)array} {
+    set str [java::field ptolemy.data.type.BaseType STRING]
+    set strArrayTypeMaster [java::new ptolemy.data.type.ArrayType $str]
+
+    set strArrayType [java::cast ptolemy.data.type.ArrayType \
+                                                 [$strArrayTypeMaster clone]]
+
+    list [$strArrayType toString] [$strArrayTypeMaster toString]
+} {(string)array (string)array}
 
