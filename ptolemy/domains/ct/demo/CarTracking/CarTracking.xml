@@ -93,7 +93,7 @@ minded) control law results in a rather jerky ride.</text></svg></configure>
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 25, 815, 703}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 0, 815, 703}, maximized=false}">
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -355,17 +355,23 @@ model is running.</text></svg></configure>
     <entity name="following car" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 165.0">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[948, 450]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[802, 450]">
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[58, 230]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-5, 90, 1163, 568}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 89, 1017, 568}, maximized=false}">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{474.0, 225.0}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{401.0, 225.0}">
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This controller is a discrete controller in the&#10;sense that it operates on discrete signals only.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 255.0]">
+            </property>
         </property>
         <port name="subscribe" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -394,7 +400,7 @@ model is running.</text></svg></configure>
         <entity name="fault detector" class="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 120.0">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[940, 665]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[794, 432]">
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[108, 175]">
             </property>
@@ -404,15 +410,21 @@ model is running.</text></svg></configure>
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-65, -7, 1155, 783}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 63, 1009, 550}, maximized=false}">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{470.0, 332.5}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{397.0, 216.0}">
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that the first output from this detector is always &#10;&quot;true&quot;, because the sample delay actors have a default &#10;value as 0.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 355.0]">
+                </property>
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 125.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 145.0]">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -445,7 +457,7 @@ model is running.</text></svg></configure>
             <entity name="compPosition" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="p2 + (t2-t1)*s2">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="445.0, 165.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 185.0]">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -487,13 +499,13 @@ model is running.</text></svg></configure>
                 </property>
                 <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0.8">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="570.0, 49.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 65.0]">
                 </property>
             </entity>
             <entity name="compuSpeed" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="s2 + (t2-t1)* (a2 - miu * s2)">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 380.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 320.0]">
                 </property>
                 <property name="miu" class="ptolemy.data.expr.Parameter" value="0.5">
                 </property>
@@ -535,7 +547,7 @@ model is running.</text></svg></configure>
                 </property>
                 <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0.8">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="570.0, 125.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 145.0]">
                 </property>
             </entity>
             <entity name="nand" class="ptolemy.actor.lib.logic.LogicFunction">
@@ -555,7 +567,7 @@ model is running.</text></svg></configure>
                         </property>
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="675.0, 90.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 105.0]">
                 </property>
             </entity>
             <entity name="Display" class="ptolemy.actor.lib.gui.Display">
@@ -563,9 +575,9 @@ model is running.</text></svg></configure>
                 </property>
                 <property name="title" class="ptolemy.kernel.util.StringAttribute" value="fault">
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={367, 321, 307, 125}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={367, 321, 290, 125}, maximized=false}">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="764.2429504394531, 225.25301361083984">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[735.0, 220.0]">
                 </property>
             </entity>
             <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
@@ -585,7 +597,7 @@ model is running.</text></svg></configure>
                 </property>
             </entity>
             <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="[515.0, 165.0]">
+                <vertex name="vertex1" value="[520.0, 75.0]">
                 </vertex>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -601,7 +613,7 @@ model is running.</text></svg></configure>
                 </vertex>
             </relation>
             <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="[595.0, 225.0]">
+                <vertex name="vertex1" value="[625.0, 265.0]">
                 </vertex>
             </relation>
             <relation name="relation13" class="ptolemy.actor.TypedIORelation">
@@ -609,7 +621,7 @@ model is running.</text></svg></configure>
             <relation name="relation15" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="720.0, 165.5">
+                <vertex name="vertex1" value="[680.0, 165.0]">
                 </vertex>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -629,7 +641,7 @@ model is running.</text></svg></configure>
             <relation name="relation11" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="65.0, 125.0">
+                <vertex name="vertex1" value="[60.0, 145.0]">
                 </vertex>
             </relation>
             <link port="input" relation="relation17"/>
@@ -1073,9 +1085,9 @@ model is running.</text></svg></configure>
         <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={475, 484, 508, 355}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={475, 484, 487, 328}, maximized=false}">
             </property>
-            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[479, 273]">
             </property>
             <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -1091,7 +1103,7 @@ model is running.</text></svg></configure>
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="100.0"/>
-<yRange min="0.0" max="1.9999990228615299"/>
+<yRange min="0.0" max="2.0"/>
 </plot>?>
             </configure>
         </entity>
@@ -1150,7 +1162,7 @@ model is running.</text></svg></configure>
     <entity name="communication channel" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 155.0">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[929, 406]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[695, 406]">
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[66, 96]">
         </property>
@@ -1169,27 +1181,27 @@ model is running.</text></svg></configure>
             </property>
             <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 50.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 105.0]">
             </property>
         </property>
         <property name="fault" class="ptolemy.data.expr.Parameter" value="fault">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-60, 122, 1144, 524}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={15, 109, 910, 524}, maximized=false}">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{464.5, 203.0}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{380.4947127525252, 192.6113083964647}">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 275.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 275.0]">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="780.0, 290.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[693.67578125, 280.0]">
             </property>
         </port>
         <entity name="TimedDelay" class="ptolemy.domains.de.lib.TimedDelay">
@@ -1201,7 +1213,7 @@ model is running.</text></svg></configure>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 213.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 213.5]">
             </property>
         </entity>
         <entity name="Select" class="ptolemy.actor.lib.Select">
@@ -1211,7 +1223,7 @@ model is running.</text></svg></configure>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, 280.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[608.67578125, 280.0]">
             </property>
         </entity>
         <entity name="Switch" class="ptolemy.actor.lib.Switch">
@@ -1221,7 +1233,7 @@ model is running.</text></svg></configure>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 280.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 280.0]">
             </property>
         </entity>
         <entity name="1:Gaussian" class="ptolemy.actor.lib.Gaussian">
@@ -1234,7 +1246,7 @@ model is running.</text></svg></configure>
             </property>
         </entity>
         <entity name="RecordAssembler2" class="ptolemy.actor.lib.RecordAssembler">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 140.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 140.0]">
             </property>
             <port name="position" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -1288,7 +1300,7 @@ model is running.</text></svg></configure>
             <property name="value" class="ptolemy.data.expr.Parameter" value="fault">
             </property>
             <doc>Create a constant sequence</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 335.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 335.0]">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -1298,7 +1310,7 @@ model is running.</text></svg></configure>
             </property>
         </entity>
         <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="205.0, 335.0">
+            <vertex name="vertex1" value="[240.0, 335.0]">
             </vertex>
         </relation>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
@@ -1322,7 +1334,7 @@ model is running.</text></svg></configure>
         <relation name="relation21" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation23" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="100.0, 275.0">
+            <vertex name="vertex1" value="[135.0, 275.0]">
             </vertex>
         </relation>
         <link port="input" relation="relation23"/>
@@ -1385,9 +1397,9 @@ model is running.</text></svg></configure>
         <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={469, 6, 508, 355}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={469, 6, 487, 328}, maximized=false}">
             </property>
-            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[479, 273]">
             </property>
             <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
             </property>

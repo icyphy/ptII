@@ -47,9 +47,9 @@
                 </property>
             </property>
         </property>
-        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
-        </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 35.0">
         </property>
@@ -78,7 +78,7 @@ of following the LeadingPlatoon.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="15.0, 245.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={232, 253, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={68, 16, 815, 518}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -87,17 +87,23 @@ of following the LeadingPlatoon.</text></svg></configure>
     <entity name="MeasureDistance" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 135.0">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[516, 316]">
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
         </property>
         <property name="initialDistance" class="ptolemy.data.expr.Parameter" value="initialDistance">
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 731, 468}, maximized=false}">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{258.0, 158.0}">
+        </property>
         <port name="dist" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 180.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 180.0]">
             </property>
         </port>
         <port name="velFollower" class="ptolemy.actor.TypedIOPort">
@@ -115,7 +121,7 @@ of following the LeadingPlatoon.</text></svg></configure>
         <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialDistance">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="325.0, 150.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 180.0]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -129,7 +135,7 @@ of following the LeadingPlatoon.</text></svg></configure>
             </port>
         </entity>
         <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 150.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 180.0]">
             </property>
             <port name="minus" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -552,7 +558,7 @@ of following the LeadingPlatoon.</text></svg></configure>
         </port>
         <port name="velFollower" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="514.0, 135.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 180.0]">
             </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
             </property>
@@ -560,13 +566,19 @@ of following the LeadingPlatoon.</text></svg></configure>
         <entity name="Velocity" class="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="364.0, 110.0">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[446, 312]">
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
             </property>
             <property name="vMax" class="ptolemy.data.expr.Parameter" value="30.0">
             </property>
             <property name="vMin" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={111, 139, 661, 430}, maximized=false}">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{274.8383838383838, 174.4507575757576}">
             </property>
             <port name="acc" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -579,13 +591,13 @@ of following the LeadingPlatoon.</text></svg></configure>
                 <property name="output"/>
                 <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="520.0, 175.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 175.0]">
                 </property>
             </port>
             <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="vInit">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 175.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 175.0]">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -603,7 +615,7 @@ of following the LeadingPlatoon.</text></svg></configure>
                 </property>
                 <property name="top" class="ptolemy.data.expr.Parameter" value="vMax">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 175.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 175.0]">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -620,10 +632,6 @@ of following the LeadingPlatoon.</text></svg></configure>
             <link port="Limiter.output" relation="relation2"/>
         </entity>
         <entity name="controller" class="ptolemy.domains.fsm.modal.ModalModel">
-            <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
-                <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
-                </property>
-            </property>
             <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="209.0, 110.0">
@@ -657,6 +665,12 @@ of following the LeadingPlatoon.</text></svg></configure>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                 </property>
                 <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
+                </property>
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                </property>
+                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+                </property>
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
                 </property>
                 <port name="vel" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="input"/>
@@ -696,11 +710,11 @@ of following the LeadingPlatoon.</text></svg></configure>
                     </property>
                 </entity>
                 <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
-                    <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(dist_isPresent &amp;&amp; otherVel_isPresent &amp;&amp; vel_isPresent) &amp;&amp; (dist - lambdaV*vel &lt;= elow2 +epsE + lambdaP) &amp;&amp; (lambdaV*vel - dist &lt;= -elow2 - lambdaP)">
+                    <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(dist - lambdaV*vel &lt;= elow2 +epsE + lambdaP) &amp;&amp; (lambdaV*vel - dist &lt;= -elow2 - lambdaP)">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                     </property>
-                    <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.06752878469505426">
+                    <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.06752878469505419">
                     </property>
                     <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
@@ -708,7 +722,7 @@ of following the LeadingPlatoon.</text></svg></configure>
                     </property>
                 </relation>
                 <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
-                    <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(dist_isPresent &amp;&amp; otherVel_isPresent &amp;&amp; vel_isPresent) &amp;&amp; (dist - lambdaV * vel &lt;= eup1+lambdaP) &amp;&amp; (lambdaV*vel - dist &lt;= epsE - eup1 - lambdaP)">
+                    <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(dist - lambdaV * vel &lt;= eup1+lambdaP) &amp;&amp; (lambdaV*vel - dist &lt;= epsE - eup1 - lambdaP)">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                     </property>
@@ -1178,6 +1192,10 @@ of following the LeadingPlatoon.</text></svg></configure>
     <entity name="Velocities" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 356, 508, 355}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="480.0, 190.0">
@@ -1190,7 +1208,7 @@ of following the LeadingPlatoon.</text></svg></configure>
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="25.0"/>
-<yRange min="16.818306837552157" max="30.0"/>
+<yRange min="16.817008441138878" max="30.0"/>
 </plot>?>
         </configure>
     </entity>
@@ -1288,6 +1306,10 @@ of following the LeadingPlatoon.</text></svg></configure>
         <link port="ContinuousSinewave.output" relation="relation2"/>
     </entity>
     <entity name="Distance" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={518, 356, 508, 355}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 45.0]">
         </property>
         <configure>
@@ -1298,7 +1320,7 @@ of following the LeadingPlatoon.</text></svg></configure>
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="25.0"/>
-<yRange min="29.440623214787557" max="100.0"/>
+<yRange min="29.440233214058463" max="100.0"/>
 </plot>?>
         </configure>
     </entity>
