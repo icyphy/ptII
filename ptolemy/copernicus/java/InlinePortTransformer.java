@@ -184,7 +184,7 @@ public class InlinePortTransformer extends SceneTransformer {
                             arrayType,
                             Modifier.PUBLIC | Modifier.STATIC);
                     modelClass.addField(field);
-                    // System.out.println("creating field = " + field);
+                    if(debug) System.out.println("creating field = " + field);
                     
                     // Tag the field with the type.
                     field.addTag(new TypeTag(type));
@@ -963,7 +963,7 @@ public class InlinePortTransformer extends SceneTransformer {
                 SootField arrayField = 
                     ModelTransformer.getModelClass().getFieldByName(
                             getBufferFieldName(relation,
-                                    channel, port.getType()));
+                                    i, port.getType()));
                                                         
                 // load the buffer array.
                 body.getUnits().insertBefore(
@@ -985,8 +985,6 @@ public class InlinePortTransformer extends SceneTransformer {
                                     indexLocal, indexArrayLocal, 
                                     channelValue, bufferSizeValue),
                             stmt);
-                    // blow away the send.
-                    body.getUnits().remove(stmt);
                 } else {
                     // We must send an array of tokens.
                     body.getUnits().insertBefore(
@@ -1021,8 +1019,6 @@ public class InlinePortTransformer extends SceneTransformer {
                                             channelValue, bufferSizeValue),
                                     stmt);
                         }
-                        // blow away the send.
-                        body.getUnits().remove(stmt);
                     } else {
                         // we don't know the size beforehand,
                         // so build a loop into the code.
@@ -1095,12 +1091,12 @@ public class InlinePortTransformer extends SceneTransformer {
                                                 channelValue),
                                         indexLocal),
                                 stmt);
-                        // blow away the send.
-                        body.getUnits().remove(stmt);
                     }
                 }
             }
         }
+        // blow away the send.
+        body.getUnits().remove(stmt);
     }
 
     /** Replace the get invocation in the given box
@@ -1146,7 +1142,8 @@ public class InlinePortTransformer extends SceneTransformer {
                     indexLocal, indexArrayLocal, channelValue,
                     bufferSizeValue), stmt);
                                            
-            // We may be calling get without setting the return value to anything.
+            // We may be calling get without setting the return value
+            // to anything.
             if(stmt instanceof DefinitionStmt) {
                 // Replace the get() with an array read.
                 box.setValue(Jimple.v().newArrayRef(bufferLocal,
@@ -1161,14 +1158,16 @@ public class InlinePortTransformer extends SceneTransformer {
                     Jimple.v().newAssignStmt(
                             returnArrayLocal, 
                             Jimple.v().newNewArrayExpr(
-                                    PtolemyUtilities.tokenType, expr.getArg(1))),
+                                    PtolemyUtilities.tokenType,
+                                    expr.getArg(1))),
                     stmt);
             Value countValue = expr.getArg(1);
               
             // If the count is specified statically
             // FIXME: constant loop unroller should take care of this.
             if(Evaluator.isValueConstantValued(countValue)) {
-                int argCount = ((IntConstant)Evaluator.getConstantValueOf(countValue)).value;
+                int argCount = ((IntConstant)
+                        Evaluator.getConstantValueOf(countValue)).value;
                 for(int k = 0; k < argCount; k++) {
                     // Get the value.
                     body.getUnits().insertBefore(
@@ -1346,8 +1345,6 @@ public class InlinePortTransformer extends SceneTransformer {
                                 indexLocal, indexArrayLocal, 
                                 channelValue, bufferSizeValue),
                         stmt);
-                // blow away the send.
-                body.getUnits().remove(stmt);
             } else {
                 Local sendArrayLocal = (Local) expr.getArg(1);
                 /*                Jimple.v().newLocal("sendArray", 
@@ -1394,8 +1391,6 @@ public class InlinePortTransformer extends SceneTransformer {
                                         channelValue, bufferSizeValue),
                                 stmt);
                     }
-                    // blow away the send.
-                    body.getUnits().remove(stmt);
                 } else {
                     // we don't know the size beforehand,
                     // so build a loop into the code.
@@ -1466,11 +1461,12 @@ public class InlinePortTransformer extends SceneTransformer {
                                         indexLocal),
                                 stmt);
                     }
-                    // blow away the send.
-                    body.getUnits().remove(stmt);
                 }
             }
         }
+        // blow away the send.
+        body.getUnits().remove(stmt);
+
     }
 
     private CompositeActor _model;
