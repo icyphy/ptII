@@ -109,6 +109,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.vergil.toolbox.GraphicElement;
 import ptolemy.vergil.toolbox.XMLIcon;
 
+// FIXME this should be an application that uses documents.
+
 //////////////////////////////////////////////////////////////////////////
 //// IconEditor
 /**
@@ -314,9 +316,11 @@ public class IconEditor {
 	_outlineComboBox.setToolTipText 
 	   ("Choose a color to be the outline color of the selected shape(s)");
 	_outlineComboBox.addActionListener(outlineAction);
+	_outlinePaint = _colors[_outlineComboBox.getSelectedIndex()];
 	_fillComboBox.setToolTipText 
 	   ("Choose a color to be the fill color of the selected shape(s)");
 	_fillComboBox.addActionListener(fillAction);
+	_fillPaint = _colors[_fillComboBox.getSelectedIndex()];
 	_thicknessComboBox.setToolTipText 
 	   ("Choose a thickness for the outline(s) of the selected shape(s)");
 	_thicknessComboBox.addActionListener(thicknessAction);
@@ -394,7 +398,7 @@ public class IconEditor {
     private float _outlineThickness = 3.0f;
 
     // Blue and Gold(Go Bears!)
-    private Paint _strokePaint = new Color(255, 213, 20);
+    private Paint _outlinePaint = new Color(255, 213, 20);
     private Paint _fillPaint = new Color(0, 0, 170);
 
     // Here is the figure kept in memory for the "cut" or 
@@ -460,7 +464,7 @@ public class IconEditor {
 	    VersatileFigure figure = new VersatileFigure 
 	    (new PaintedShape(new Rectangle2D.Double
 				  (8.0, 10.0, 20.0, 20.0), 
-				   _outlineThickness, _strokePaint));
+				   _outlineThickness, _outlinePaint));
 
 	    // This figure begins with a fill color that is 
 	    // currently selected.
@@ -477,7 +481,7 @@ public class IconEditor {
 	    VersatileFigure figure = new VersatileFigure 
 	       (new PaintedShape(new Line2D.Double
 				  (45.0, 10.0, 65.0, 30.0), 
-				   _outlineThickness, _strokePaint)); 
+				   _outlineThickness, _outlinePaint)); 
 	    figure.setFillPaint(_fillPaint);
 	    _editorPane.addFigure(figure);
     	}
@@ -489,7 +493,7 @@ public class IconEditor {
 	    VersatileFigure figure = new VersatileFigure 
 	       (new PaintedShape(new QuadCurve2D.Double
 				  (77.0, 10.0, 87.0, 20.0, 97.0, 30.0), 
-				   _outlineThickness, _strokePaint));
+				   _outlineThickness, _outlinePaint));
 
 	    figure.setFillPaint(_fillPaint);
 	    _editorPane.addFigure(figure);
@@ -503,7 +507,7 @@ public class IconEditor {
 	       (new PaintedShape(new CubicCurve2D.Double
 				  (110.0, 10.0, 117.0, 17.0, 
 				    123.0, 23.0, 130.0, 30.0),
-				   _outlineThickness, _strokePaint));
+				   _outlineThickness, _outlinePaint));
 
 	    figure.setFillPaint(_fillPaint);
 	    _editorPane.addFigure(figure);
@@ -516,7 +520,7 @@ public class IconEditor {
 	    VersatileFigure figure = new VersatileFigure 
 	    (new PaintedShape(new Ellipse2D.Double
 				  (148.0, 10.0, 20.0, 20.0), 
-				   _outlineThickness, _strokePaint));
+				   _outlineThickness, _outlinePaint));
 
 	    figure.setFillPaint(_fillPaint);
 	    _editorPane.addFigure(figure);
@@ -529,7 +533,7 @@ public class IconEditor {
 	    VersatileFigure figure = new VersatileFigure 
 	       (new PaintedShape(new Ellipse2D.Double
 				  (183.0, 10.0, 20.0, 30.0), 
-				   _outlineThickness, _strokePaint));
+				   _outlineThickness, _outlinePaint));
 	    figure.setFillPaint(_fillPaint);
 	    _editorPane.addFigure(figure);
 	}
@@ -547,7 +551,8 @@ public class IconEditor {
 		     _colorChooser, okAction, cancelAction);
 		_dialog.setVisible(true);
 	    } else {
-	        _editorPane.setFillPaint(_colors[selection]);
+		_fillPaint = _colors[selection];
+	        _editorPane.setFillPaint(_fillPaint);
 	    }
 	}
     };
@@ -564,7 +569,8 @@ public class IconEditor {
 		 _colorChooser, okAction, cancelAction);
 		_dialog.setVisible(true);
 	    } else {
-	        _editorPane.setOutlinePaint(_colors[selection]);
+		_outlinePaint = _colors[selection];
+	        _editorPane.setOutlinePaint(_outlinePaint);
 	    }
 	}
     };
@@ -574,7 +580,9 @@ public class IconEditor {
         public void actionPerformed(ActionEvent e) {
 	    float oldWidth = _editorPane.getThickness();
 	    if(oldWidth != 0.0 && oldWidth > 1.0) {
-		_editorPane.setThickness(oldWidth - 1.0f);
+		_outlineThickness = oldWidth - 1.0f;
+		_editorPane.setThickness(_outlineThickness);
+		
 	    }
 	}
     };
@@ -584,7 +592,8 @@ public class IconEditor {
         public void actionPerformed(ActionEvent e) {
 	    float oldWidth = _editorPane.getThickness();
 	    if(oldWidth != 0.0) {
-		_editorPane.setThickness(oldWidth + 1.0f);
+		_outlineThickness = oldWidth + 1.0f;
+		_editorPane.setThickness(_outlineThickness);
 	    }
 	}
     };
@@ -598,7 +607,7 @@ public class IconEditor {
 		_editorPane.setFillPaint(thisColor);
 		// FIXME	_fillComboBox.setSelectedIndex(-1);
 	    } else {
-	        _strokePaint = thisColor;
+	        _outlinePaint = thisColor;
 		_editorPane.setFillPaint(thisColor);
 	    }
     	}
@@ -614,7 +623,6 @@ public class IconEditor {
     // The cut operation grabs the system clipboard, then puts 
     // the currently selected item onto the clipboard, and removes 
     // the currently selected item from the canvas.
-
     Action cutAction = new AbstractAction("Cut") {
         public void actionPerformed(ActionEvent e) {
 	    Clipboard c = _editorPane.getToolkit().getSystemClipboard();
@@ -625,7 +633,6 @@ public class IconEditor {
     // When you click copy in the edit menu of the menubar.
     // The copy operation grabs the system clipboard, then puts
     // the currently selected item onto the clipboard.
-
     Action copyAction = new AbstractAction("Copy") {
         public void actionPerformed(ActionEvent e) {
 	    Clipboard c = _editorPane.getToolkit().getSystemClipboard();
@@ -638,7 +645,6 @@ public class IconEditor {
     // current data object on the clipboard, makes a copy of it, 
     // and adds it to the figure layer of the canvas.
     // If something goes wrong, the machine should beep.
-
     Action pasteAction = new AbstractAction("Paste") {
         public void actionPerformed(ActionEvent e) {
 	    Clipboard c = _editorPane.getToolkit().getSystemClipboard();
@@ -674,7 +680,7 @@ public class IconEditor {
     Action saveIconAction = new AbstractAction("Save") {
         public void actionPerformed(ActionEvent e) {
 	    System.out.println("Save");
-	    // FIXME
+	    // FIXME 
 	}
     };
 
@@ -730,22 +736,27 @@ public class IconEditor {
 	    int chosenThickness = _thicknessComboBox.getSelectedIndex();
 	    switch(chosenThickness) {
 	    case 0:
-	        _editorPane.setThickness(1.0f);
-		break;
+	    _editorPane.setThickness(1.0f);
+	    _outlineThickness = 1.0f;
+	    break;
 	    case 1:
-	        _editorPane.setThickness(3.0f);
-		break;
+	    _editorPane.setThickness(3.0f);
+	    _outlineThickness = 3.0f;
+	    break;
 	    case 2:
-	        _editorPane.setThickness(6.0f);
-		break;
+	    _editorPane.setThickness(6.0f);
+	    _outlineThickness = 6.0f;
+	    break;
 	    case 3:
-		_editorPane.setThickness(10.0f);
-		break;
+	    _editorPane.setThickness(10.0f);
+	    _outlineThickness = 10.0f;
+	    break;
 	    case 4:
-		_editorPane.setThickness(14.0f);
-		break;
+	    _editorPane.setThickness(14.0f);
+	    _outlineThickness = 14.0f;
+	    break;
 	    default:
-	        break;
+	    break;
 	    }
 	}
     };

@@ -542,7 +542,7 @@ public class IconEditorPane extends JCanvas {
 	Iterator iter = _m.getSelection();
 	if(iter.hasNext()) {
 	    while(iter.hasNext()) {
-	        VersatileFigure v =(VersatileFigure) iter.next();
+	        VersatileFigure v = (VersatileFigure)iter.next();
 		v.setLineWidth(newThickness);
 	    }
 	} else {
