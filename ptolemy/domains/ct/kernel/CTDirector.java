@@ -142,6 +142,9 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             // Should never occur.
             throw new InternalErrorException(this.getFullName() +
                     "Error setting a CTScheduler.");
+        } catch (NameDuplicationException ex) {
+            throw new InternalErrorException("There is alreeady a scheduler" +
+                    " with name " + this.getFullName());
         }
     }
 
