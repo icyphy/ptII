@@ -351,6 +351,19 @@ it tries to execute it.
 and select the Text editor, then hit OK.
 </ol>
 
+ <p>Also, if you check in a <CODE>.tcl</CODE> file with the wrong association, then it will be checked in in binary mode (<CODE>-kb</CODE>), and
+under Solaris, you will get strange test failures.
+ <p>To fix this, first set up your File Association Preferences
+as per the above.
+ <p>To fix the file under Solaris:
+<pre>
+cvs admin -kv Foo.tcl
+dos2unix Foo.tcl tmp.tcl
+mv tmp.tcl Foo.tcl
+cvs commit -m "Got rid of binary chars" Foo.tcl
+</pre>
+
+
 <hr>
 <h1><a name="UsingEclipse">Using Eclipse</a></h1>
 <h2><a name="RunningEclipse">Running Eclipse</a></h2>
