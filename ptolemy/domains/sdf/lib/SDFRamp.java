@@ -71,7 +71,7 @@ public class SDFRamp extends SDFAtomicActor {
         int tokens = getTokenProductionRate(outputport);
         for(i=0;i<tokens;i++) {
             Token message=new IntToken(value);
-            value=value+1;            
+            value=value+1;
             outputport.send(0,message);
         }
     }

@@ -33,31 +33,34 @@ import ptolemy.actor.*;
 import java.util.Enumeration;
 import ptolemy.domains.sdf.kernel.*;
 
-/* Just below this comment is a javadoc class comment.   Javadoc is a 
+/* Just below this comment is a javadoc class comment.   Javadoc is a
  * program that automagically creates nicely formatted HTML documentation
  * from comments.  @version is a tag that tells javadoc what the version of
  * this file is.  The funky string between the dollar signs are automatically
  * added to the file by CVS.  CVS is a versioning control system which allows
  * multiple people in the group to edit copies of this file, and merge the
- * changes back into a central master file.  This class extends the 
+ * changes back into a central master file.  This class extends the
  * SDFAtomicActor class (in other words, it includes everything that
  * SDFAtomicActor does, along with whatever methods and data are derived here).
- */ 
+ */
 /**
- * This actor copies one token from its input to its output when fired. 
+ * This actor copies one token from its input to its output when fired.
  *
+ * @author Steve Neuendorffer
  * @version $Id$
+ * @proposedrating red (neuendor@eecs.berkeley.edu)
+ * @acceptedrating red (neuendor@eecs.berkeley.edu)
  */
 public class SDFDelay extends SDFAtomicActor {
     /*
-     * Object constructor. This creates an object of class SDFDelay.  
+     * Object constructor. This creates an object of class SDFDelay.
      * The object will have a name given by the 'name' argument and will
-     * be contained within the composite actor given by the 'container' 
-     * argument.   This method throws two exceptions, which are error 
-     * conditions that the method (or one of the methods it calls) has 
+     * be contained within the composite actor given by the 'container'
+     * argument.   This method throws two exceptions, which are error
+     * conditions that the method (or one of the methods it calls) has
      * detected (notice the @exception tag).
      */
-    /** 
+    /**
      * Create an SDFDelay actor in the given container with the given name.
      * This actor copies one token from the input port named "input" to the
      * output port named "output" when fired.
@@ -66,15 +69,15 @@ public class SDFDelay extends SDFAtomicActor {
      */
     public SDFDelay(CompositeActor container, String name)
         throws IllegalActionException, NameDuplicationException {
-        /* This starts out by calling SDFAtomicActor's constructor.  
-         * allows us to add some extra code specific to this actor, in 
+        /* This starts out by calling SDFAtomicActor's constructor.
+         * allows us to add some extra code specific to this actor, in
          * addition to the regular initializer in SDFAtomicActor.
          */
-        super(container,name);
-        /* This construct is called a "try-catch block".  It is used to 
+        super(container, name);
+        /* This construct is called a "try-catch block".  It is used to
          * detect exceptions that occured during the execution of some
          * other code.  In this case, we detect IllegalActionException and
-         * print a reasonable error message.  This is convenient under 
+         * print a reasonable error message.  This is convenient under
          * some environments which can destroy the debugging information from
          * java
          */
@@ -85,7 +88,7 @@ public class SDFDelay extends SDFAtomicActor {
             inputport.setInput(true);
             /* Set the Consumption rate on the port.  A good way to think of
              * this is that you are making a contract with the Ptolemy system.
-             * If you always consume one token from this port when fired, 
+             * If you always consume one token from this port when fired,
              * then Ptolemy will always guarauntee that there will be a token
              * ready when you are fired.
              */
@@ -120,7 +123,7 @@ public class SDFDelay extends SDFAtomicActor {
      *  @exception IllegalActionException If firing is not permitted.
      */
     public void fire() throws IllegalActionException {
-        /* First we declare a variable that is a Token that can carry 
+        /* First we declare a variable that is a Token that can carry
          * integer data (ptolemy.data.IntToken).
          */
         IntToken message;
@@ -134,8 +137,8 @@ public class SDFDelay extends SDFAtomicActor {
         IOPort outputport = (IOPort)getPort("output");
 
         /* now that we have the port, we can get a token from it.
-         * The argument to get is known as the channel.  The channel must be 
-         * zero, since there can only be one IORelation connected to this 
+         * The argument to get is known as the channel.  The channel must be
+         * zero, since there can only be one IORelation connected to this
          * inputport.  Multiple channels are useful with Multiports, which
          * allow more than one relation to be connected to a port.
          */
@@ -146,17 +149,17 @@ public class SDFDelay extends SDFAtomicActor {
          */
         System.out.print("Delay - ");
 
-        /* IntToken.intValue returns the value stored in an IntToken as an 
+        /* IntToken.intValue returns the value stored in an IntToken as an
          * integer.
          */
         System.out.println(message.intValue());
-        
+
         /* After looking at the token, pass it along to the next actor
          */
-        outputport.send(0,message);
+        outputport.send(0, message);
     }
 
-    /* Initialization is the first step in executing a model.   This happens 
+    /* Initialization is the first step in executing a model.   This happens
      * prior to any actual execution.   This actor doesn't need to do any
      * initialization, other than what has already occurred in the constructor
      */
@@ -171,9 +174,9 @@ public class SDFDelay extends SDFAtomicActor {
         return;
     }
 
-    /* Postfire is the last step in an iteration.   This actor returns 
-     * true, since it places no limit on how execution may proceed.   In 
-     * practice this method can be used to define a stopping condition, 
+    /* Postfire is the last step in an iteration.   This actor returns
+     * true, since it places no limit on how execution may proceed.   In
+     * practice this method can be used to define a stopping condition,
      * where execution will stop once some condition has been met.
      */
     /** This method should be invoked once per iteration, after the last
@@ -190,10 +193,10 @@ public class SDFDelay extends SDFAtomicActor {
         return true;
     }
 
-    /* Prefire is the first step in every iteration.  This method returns 
+    /* Prefire is the first step in every iteration.  This method returns
      * true if the actor can perform useful work by being fired.   For
      * example, an actor could return false if it was waiting for a certain
-     * amount of data for a calculation, but that amount of data was not 
+     * amount of data for a calculation, but that amount of data was not
      * yet present.  Most actors under SDF will just return true, since they
      * have made a contract with the SDF domain to be fired when enough data
      * is present.
@@ -213,12 +216,12 @@ public class SDFDelay extends SDFAtomicActor {
     }
 
     /* When this method is called, the actor must do everything in its power
-     * to immediately stop whatever it is doing.   This is primarily 
-     * called under 
-     * two circumstances.  The first is a user initiated break, such as 
-     * via CTRL-C.  The second is if an error occurs during wrapup() that 
+     * to immediately stop whatever it is doing.   This is primarily
+     * called under
+     * two circumstances.  The first is a user initiated break, such as
+     * via CTRL-C.  The second is if an error occurs during wrapup() that
      * cannot be recovered from.
-     */ 
+     */
     /** This method is invoked to immediately terminate any execution
      *  within an actor.
      */

@@ -57,7 +57,7 @@ public class SDFConsumer extends SDFAtomicActor {
     public void fire() throws IllegalActionException {
         int tokens = getTokenConsumptionRate(inputport);
         int i;
-        for(i = 0; i < tokens; i++) 
+        for(i = 0; i < tokens; i++)
             inputport.get(0);
     }
 
