@@ -23,8 +23,11 @@ emulate the U.C. Berkeley developer setup.
 
 <h2><a name="ParallelTrees">Parallel Trees</a></h2>
 
-Currently, the CVS Repository for the Ptolemy II tree is on 
-<CODE>gigascale.eecs.berkeley.edu</CODE>.
+Currently, the CVS Repository for the Ptolemy II tree is on
+<CODE>gigascale.eecs.berkeley.edu</CODE>.  Access to the Ptolemy CVS
+Repository is by invitation only.  We consider software releases a
+form of publication, so we would like to be sure our software is
+of suitable quality.
 
 Instructions for setting up your parallel tree can be found at
 <a href="http://www.gigascale.org/ptexternal/"><CODE>http://www.gigascale.org/ptexternal/</CODE></a>
@@ -113,7 +116,8 @@ Ptolemy II uses various external packages such as Corba, javacomm and kvm.
 Not all users will have these packages installed, so the 
 build and runtime environment needs to allow users to build
 with and without the external packages and to have the external
-packages in different locations
+packages in different locations.  External packages are usually installed in 
+<CODE>ptII/vendors</CODE>, which we do not distribute.
 
 <h3>Build-time considerations</h3>
 
