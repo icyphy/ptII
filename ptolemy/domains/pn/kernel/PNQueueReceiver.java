@@ -121,7 +121,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         synchronized (this) {
             while (!_terminate && !super.hasToken()) {
                 //System.out.println(getContainer().getFullName()+" Reading block");
-                director._readBlock();
+                director._informOfReadBlock();
                 //System.out.println("After the readblocking.. I am "+getContainer().getFullName());
                 _readpending = true;
                 while (_readpending && !_terminate) {
@@ -138,7 +138,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                 //Check if pending write to the Queue;
                 if (_writepending) {
                     //System.out.println(getContainer().getFullName()+" being unblocked");
-                    director._writeUnblock(this);
+                    director._informOfWriteUnblock(this);
                     _writepending = false;
                     notifyAll(); //Wake up threads waiting on a write;
                 }
@@ -210,7 +210,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
             if (!super.hasRoom()) {
                 _writepending = true;
                 //System.out.println(getContainer().getFullName()+" being writeblocked");
-                director._writeBlock(this);
+                director._informOfWriteBlock(this);
                 while (!_terminate && !super.hasRoom()) {
                     //System.out.println(getContainer().getFullName()+" waiting on write");
                     while(_writepending) {
@@ -225,7 +225,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                 super.put(token);
                 //Check if pending write to the Queue;
                 if (_readpending) {
-                    director._readUnblock();
+                    director._informOfReadUnblock();
                     _readpending = false;
                     notifyAll();
                     //Wake up all threads waiting on a write to this receiver;
