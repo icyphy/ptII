@@ -161,6 +161,11 @@ public interface Receiver {
     public void putArray(Token[] tokenArray, int numberOfTokens)
             throws NoRoomException;
 
+    /** Set the receiver to contain no tokens.
+     *  @exception NoRoomException If there is no room in the receiver.
+     */
+    public void setAbsent() throws NoRoomException;
+
     /** Set the container.
      *  @param port The container.
      *  @exception IllegalActionException If the container is not of

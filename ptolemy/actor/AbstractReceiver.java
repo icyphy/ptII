@@ -238,6 +238,15 @@ public abstract class AbstractReceiver implements Receiver {
 	}
     }
 
+    /** Set the receiver to contain no tokens.
+     *  <p>
+     *  In this base class, do nothing.  Receivers that require some action
+     *  to be performed must override this method.
+     *  @exception NoRoomException If there is no room in the receiver.
+     */
+    public void setAbsent() throws NoRoomException {
+    }
+
     /** Set the container.
      *  @param port The container.
      *  @exception IllegalActionException If the container is not of

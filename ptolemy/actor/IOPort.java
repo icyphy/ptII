@@ -29,7 +29,7 @@
 Review vectorized methods.
 Review broadcast/get/send/hasRoom/hasToken.
 Review setInput/setOutput/setMultiport.
-Review isKnown.
+Review isKnown/sendAbsent.
 */
 
 package ptolemy.actor;
@@ -1546,6 +1546,51 @@ public class IOPort extends ComponentPort {
             for (int j = 0; j < farReceivers[channelIndex].length; j++) {
                 farReceivers[channelIndex][j].
                     putArray(tokenArray, vectorLength);
+            }
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            // NOTE: This may occur if the port is not an output port.
+            // Ignore...
+        }
+    }
+
+    /** Set all receivers connected to the specified channel to have no 
+     *  tokens.  Receivers that do not support this action will do nothing.
+     *  If the port is not connected to anything, or receivers have not been
+     *  created in the remote port, or the channel index is out of
+     *  range, or the port is not an output port,
+     *  then just silently return.  This behavior makes it
+     *  easy to leave output ports unconnected when you are not interested
+     *  in the output.  The action is accomplished
+     *  by calling the setAbsent() method of the remote receivers.
+     *  If the port is not connected to anything, or receivers have not been
+     *  created in the remote port, then just return.
+     *  <p>
+     *  Some of this method is read-synchronized on the workspace.
+     *  Since it is possible for a thread to block while executing setAbsent,
+     *  it is important that the thread does not hold read access on
+     *  the workspace when it is blocked. Thus this method releases
+     *  read access on the workspace before calling put.
+     *
+     *  @param channelIndex The index of the channel, from 0 to width-1
+     *  @exception NoRoomException If there is no room in the receiver.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void sendAbsent(int channelIndex)
+            throws IllegalActionException, NoRoomException {
+        Receiver[][] farReceivers;
+        try {
+            try {
+                _workspace.getReadAccess();
+                // Note that the getRemoteReceivers() method doesn't throw
+                // any non-runtime exception.
+                farReceivers = getRemoteReceivers();
+                if (farReceivers == null ||
+                        farReceivers[channelIndex] == null) return;
+            } finally {
+                _workspace.doneReading();
+            }
+            for (int j = 0; j < farReceivers[channelIndex].length; j++) {
+                farReceivers[channelIndex][j].setAbsent();
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
             // NOTE: This may occur if the port is not an output port.
