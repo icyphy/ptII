@@ -249,11 +249,14 @@ public class FIR extends SDFTransformer {
         // are used. Starting phase depends on the _decPhase value.
         int phase = _dec - _decPhase - 1;
 
-        // Interpolate once for each input consumed
+        // Transfer _dec inputs to _data[]
         for (int inC = 1; inC <= _dec; inC++) {
-
             if (--_mostRecent < 0) _mostRecent = _data.length - 1;
             _data[_mostRecent] = input.get(0);
+        }
+
+        // Interpolate once for each input consumed
+        for (int inC = 1; inC <= _dec; inC++) {
 
             // Produce however many outputs are required
             // for each input consumed
@@ -266,6 +269,7 @@ public class FIR extends SDFTransformer {
 
                     int dataIndex =
                         (_mostRecent + _dec - inC + i)%(_data.length);
+
                     if (tapsIndex < _taps.length) {
                         _tapItem = _taps[tapsIndex];
                         _dataItem = _data[dataIndex];
@@ -329,7 +333,8 @@ public class FIR extends SDFTransformer {
         // Avoid losing the data if possible.
         // FIXME: data is thrown away if the filter length increases.  This
         // is not necessary.
-        if (_data == null || _data.length != _phaseLength) {
+        int length = (int)Math.max(_phaseLength, _dec);
+        if (_data == null || _data.length != length) {
             _data = new Token[_phaseLength];
             for(int i = 0; i < _phaseLength; i++ ) {
                 _data[i] = _zero;
