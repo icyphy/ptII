@@ -716,7 +716,7 @@ public class CalendarQueue {
     private boolean _resizeEnabled = true;
 
     // _cqComparator: Comparator to determine how entries are put into bins.
-    private CQComparator _cqComparator;
+    /* private */ CQComparator _cqComparator;
 
     // _entryComparator: Comparator implementation for SortedLinkedList
     private EntryComparator _entryComparator;
