@@ -81,7 +81,7 @@ manifest=$PTII/treeshake_manifest$$.txt
 touch $manifest
 
 # If the -main argument was not present, try to find a class
-if [ "$mainClass" == "" ]; then
+if [ "$mainClass" = "" ]; then
     # Find the class that includes main()
     # This is a bit of a hack, we look for a command line argument that
     # starts with "ptolemy."
@@ -96,7 +96,7 @@ if [ "$mainClass" == "" ]; then
     done
 fi
 
-if [ "$mainClass" == "" ]; then
+if [ "$mainClass" = "" ]; then
     echo "Main-class: $mainClass" > $manifest
 fi
 
