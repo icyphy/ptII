@@ -312,6 +312,20 @@ test CTScheduler-2.8 {transparent arithmetic actor} {
 	 [enumToFullNames [$sch outputSchedule]]
 } {{.CA.A1 .CA.A2 .CA.A3 .CA.A4 .CA.EG .CA.EI .CA.SSC .CA.A5 .CA.A6S .CA.A7S .CA.ED .CA.A8} {.CA.Dyn .CA.D2 .CA.D3} {.CA.EG .CA.ED} .CA.EI {.CA.A6S .CA.A7S} {} .CA.SSC {.CA.D2 .CA.D3 .CA.Dyn} {.CA.A1 .CA.A4 .CA.A7S .CA.A2} {.CA.EG .CA.SSC .CA.EI .CA.A3 .CA.A5 .CA.A6S .CA.ED .CA.A8}}
 
+test CTScheduler-2.8 {get the schedule again} {
+    #Note: use above set up.
+    list [enumToFullNames [$sch arithmaticActors]] \
+	 [enumToFullNames [$sch dynamicActors]] \
+	 [enumToFullNames [$sch eventGenerators]] \
+	 [enumToFullNames [$sch eventInterpreters]] \
+	 [enumToFullNames [$sch statefulActors]] \
+	 [enumToFullNames [$sch stateTransitionSSCActors]] \
+	 [enumToFullNames [$sch outputSSCActors]] \
+	 [enumToFullNames [$sch dynamicActorSchedule]] \
+	 [enumToFullNames [$sch stateTransitionSchedule]] \
+	 [enumToFullNames [$sch outputSchedule]]
+} {{.CA.A1 .CA.A2 .CA.A3 .CA.A4 .CA.EG .CA.EI .CA.SSC .CA.A5 .CA.A6S .CA.A7S .CA.ED .CA.A8} {.CA.Dyn .CA.D2 .CA.D3} {.CA.EG .CA.ED} .CA.EI {.CA.A6S .CA.A7S} {} .CA.SSC {.CA.D2 .CA.D3 .CA.Dyn} {.CA.A1 .CA.A4 .CA.A7S .CA.A2} {.CA.EG .CA.SSC .CA.EI .CA.A3 .CA.A5 .CA.A6S .CA.ED .CA.A8}}
+
 ######################################################################
 ####
 #

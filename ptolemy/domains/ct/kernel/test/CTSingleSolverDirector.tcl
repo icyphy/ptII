@@ -207,5 +207,5 @@ test CTSingleSolverDirector-3.1 {access empty breakpoint table} {
     #Note: use above set up.
     $bptable removeFirst
     set nextone [$bptable first]
-    list $nextone
-} { }
+    list [expr {$nextone == [java::null]}]
+} {1}
