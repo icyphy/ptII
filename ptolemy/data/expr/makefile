@@ -50,7 +50,7 @@ include $(CONFIG)
 
 DIRS = 		test 
 
-CLASSPATH = ../../..
+CLASSPATH = ../../..:/users/ptdesign/vendors/sun/JavaCC/JavaCC.zip
 
 # Used to build zip files
 TYPACKAGE = 	pt.data.parser
