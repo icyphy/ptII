@@ -109,8 +109,8 @@ public class ProcessDirector extends Director {
      *  This method should be called only when an active thread that was
      *  registered using increaseActiveCount() is terminated.
      */
-    //FIXME: If _threadList is not being destroyed then remove current thread 
-    //from it.
+    // FIXME: If _threadList is not being destroyed then remove current thread
+    // from it.
     public synchronized void decreaseActiveCount() {
 	_actorsActive--;
 	_checkForDeadlock();
@@ -122,7 +122,7 @@ public class ProcessDirector extends Director {
     }
 
 
-    /** This normally waits till the detection of a deadlock. 
+    /** This normally waits till the detection of a deadlock.
      *  In the base class this waits for all process threads to terminate.
      * @exception IllegalActionException If a derived class throws it.
      */
@@ -306,7 +306,7 @@ public class ProcessDirector extends Director {
         (new NotifyThread(_pausedReceivers)).start();
 
         _pausedReceivers.clear();
-        _actorsPaused= 0;
+        _actorsPaused = 0;
         _pauseRequested = false;
     }
 
@@ -398,7 +398,7 @@ public class ProcessDirector extends Director {
     // In the base class implementation it returns true only if there are
     // no active processes.
     protected synchronized void _checkForDeadlock() {
-        if (_actorsActive ==0) {
+        if (_actorsActive == 0) {
             _deadlock = true;
             notifyAll();
         }
@@ -414,9 +414,9 @@ public class ProcessDirector extends Director {
     }
 
 
-    // Handle deadlock. In the base class implementation this returns true 
-    // on detection of a deadlock. 
-    // @returns true for termination.
+    // Handle deadlock. In the base class implementation this returns true
+    // on detection of a deadlock.
+    // @return true for termination.
     // @exception IllegalActionException If a derived class throws it.
     protected boolean _handleDeadlock()
 	    throws IllegalActionException {
