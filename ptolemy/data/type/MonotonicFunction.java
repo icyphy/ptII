@@ -89,6 +89,17 @@ public abstract class MonotonicFunction implements InequalityTerm {
      */
     public abstract InequalityTerm[] getVariables();
     
+    /** Return an additional string describing the current value
+     *  of this function.  Subclasses may override this method to 
+     *  give additional information in the toString() method.   This
+     *  method may return null, indicating that no additional information is
+     *  desired.
+     *  @return null.
+     */
+    public String getVerboseString() {
+        return null;
+    }
+ 
     /** Throw an Exception. This method cannot be called on a
      *  monotonic function term.
      *  @exception IllegalActionException Always thrown.
@@ -126,12 +137,18 @@ public abstract class MonotonicFunction implements InequalityTerm {
      *  @return A description of this term.
      */
     public final String toString() {
+        String string = getVerboseString();
+        if(string == null) {
+            string = "";
+        } else {
+            string = ", " + string;
+        }
         try {
             return "(" + getClass().getName() + 
-                ", " + getValue() + ")";
+                ", " + getValue() + string + ")";
         } catch (IllegalActionException ex) {
             return "(" + getClass().getName() + 
-                ", INVALID)";
+                ", INVALID" + string + ")";
         }
     }
 }
