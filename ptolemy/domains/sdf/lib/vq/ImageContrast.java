@@ -42,16 +42,25 @@ import ptolemy.domains.sdf.kernel.*;
 //////////////////////////////////////////////////////////////////////////
 //// ImageContrast
 /**
-This actor change the contrast of an image. i.e.
+This actor changes the contrast of an image. i.e.
 if the input image has a lot of pixels with the same or similar color,
-we can evenly distribute the color of the image with this actor using the
-Gray Scale Equalization.
+This actor uses gray scale equalization to redistribute the value of each 
+pixel between 0 and 255.
 
 @author Michael Leung
 @version $Id$
 */
 
 public final class ImageContrast extends SDFAtomicActor {
+ 
+    /** Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
     public ImageContrast(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
 
@@ -60,15 +69,46 @@ public final class ImageContrast extends SDFAtomicActor {
 	new Parameter(this, "XFramesize", new IntToken("176"));
         new Parameter(this, "YFramesize", new IntToken("144"));
 
-        SDFIOPort outputport = (SDFIOPort) newPort("outcontrast");
-        outputport.setOutput(true);
-        outputport.setTokenProductionRate(1);
-        outputport.setTypeEquals(IntMatrixToken.class);
+        output = (SDFIOPort) newPort("output");
+        output.setOutput(true);
+        output.setTokenProductionRate(1);
+        output.setTypeEquals(IntMatrixToken.class);
 
-        SDFIOPort inputport = (SDFIOPort) newPort("incontrast");
-        inputport.setInput(true);
-        inputport.setTokenConsumptionRate(1);
-        inputport.setTypeEquals(IntMatrixToken.class);
+        input = (SDFIOPort) newPort("input");
+        input.setInput(true);
+        input.setTokenConsumptionRate(1);
+        input.setTypeEquals(IntMatrixToken.class);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** The input port. */
+    public SDFIOPort input;
+
+    /** The output port. */
+    public SDFIOPort output;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then creates new ports and parameters.  The new
+     *  actor will have the same parameter values as the old.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     */
+    public Object clone(Workspace ws) {
+        try {
+            ImageContrast newobj = (ImageContrast)(super.clone(ws));
+            newobj.input = (SDFIOPort)newobj.getPort("input");
+            newobj.output = (SDFIOPort)newobj.getPort("output");
+	    return newobj;
+        } catch (CloneNotSupportedException ex) {
+            // Errors should not occur here...
+            throw new InternalErrorException(
+                    "Clone failed: " + ex.getMessage());
+        }
     }
 
     /** Initialize the actor.
@@ -120,10 +160,7 @@ public final class ImageContrast extends SDFAtomicActor {
         int i, j;
         int colorHistogram[] = new int[256] ;
 
-        SDFIOPort outputport = (SDFIOPort) getPort("outcontrast");
-        SDFIOPort inputport = (SDFIOPort) getPort("incontrast");
-
-        message = (IntMatrixToken) inputport.get(0);
+        IntMatrixToken message = (IntMatrixToken) input.get(0);
         frame = message.intArray();
 
         // Construct a color distribution histogram for the input image:
@@ -166,11 +203,9 @@ public final class ImageContrast extends SDFAtomicActor {
             }
 
         message = new IntMatrixToken(frame, yframesize, xframesize);
-        outputport.send(0, message);
+        output.send(0, message);
 
     }
-
-    IntMatrixToken message;
 
     private int part[];
     private int frame[];

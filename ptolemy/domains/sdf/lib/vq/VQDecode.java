@@ -54,15 +54,16 @@ public final class VQDecode extends SDFAtomicActor {
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
-        SDFIOPort inputport = (SDFIOPort) newPort("index");
-        inputport.setInput(true);
-        inputport.setTokenConsumptionRate(3168);
-        inputport.setTypeEquals(IntToken.class);
 
-        SDFIOPort outputport = (SDFIOPort) newPort("imagepart");
-        outputport.setOutput(true);
-        outputport.setTokenProductionRate(3168);
-        outputport.setTypeEquals(IntMatrixToken.class);
+        input = (SDFIOPort) newPort("input");
+        input.setInput(true);
+        input.setTokenConsumptionRate(3168);
+        input.setTypeEquals(IntToken.class);
+
+        output = (SDFIOPort) newPort("output");
+        output.setOutput(true);
+        output.setTokenProductionRate(3168);
+        output.setTypeEquals(IntMatrixToken.class);
 
         Parameter p = new Parameter(this, "Codebook",
                 new StringToken("ptolemy/domains/sdf" +
@@ -72,6 +73,39 @@ public final class VQDecode extends SDFAtomicActor {
         new Parameter(this, "XPartitionSize", new IntToken("4"));
         new Parameter(this, "YPartitionSize", new IntToken("2"));
 
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** The input port. */
+    public SDFIOPort input;
+
+    /** The output port. */
+    public SDFIOPort output;
+
+    // FIXME: Check that the above comment is correct.
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then creates new ports and parameters.  The new
+     *  actor will have the same parameter values as the old.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     */
+    public Object clone(Workspace ws) {
+        try {
+            VQDecode newobj = (VQDecode)(super.clone(ws));
+            newobj.input = (SDFIOPort)newobj.getPort("input");
+            newobj.output = (SDFIOPort)newobj.getPort("output");
+            return newobj;
+        } catch (CloneNotSupportedException ex) {
+            // Errors should not occur here...
+            throw new InternalErrorException(
+                    "Clone failed: " + ex.getMessage());
+        }
     }
 
     /**
@@ -86,7 +120,7 @@ public final class VQDecode extends SDFAtomicActor {
         int numpartitions =
             _xframesize * _yframesize / _xpartsize / _ypartsize;
 
-        ((SDFIOPort) getPort("index")).getArray(0, _codewords);
+        input.getArray(0, _codewords);
 
         for(j = 0; j < numpartitions; j++) {
             System.arraycopy(_codebook[2][_codewords[j].intValue()], 0,
@@ -95,7 +129,7 @@ public final class VQDecode extends SDFAtomicActor {
             _partitions[j] = new IntMatrixToken(_part, _ypartsize, _xpartsize);
         }
 
-        ((SDFIOPort) getPort("imagepart")).sendArray(0, _partitions);
+        output.sendArray(0, _partitions);
     }
 
     public void initialize() throws IllegalActionException {

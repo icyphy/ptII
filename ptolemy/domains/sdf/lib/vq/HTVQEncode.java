@@ -78,16 +78,16 @@ public final class HTVQEncode extends SDFAtomicActor {
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
-        SDFIOPort outputport = (SDFIOPort) newPort("index");
+        
+	output = (SDFIOPort) newPort("output");
+        output.setOutput(true);
+        output.setTokenProductionRate(3168);
+        output.setTypeEquals(IntToken.class);
 
-        outputport.setOutput(true);
-        outputport.setTokenProductionRate(3168);
-        outputport.setTypeEquals(IntToken.class);
-
-        SDFIOPort inputport = (SDFIOPort) newPort("imagepart");
-        inputport.setInput(true);
-        inputport.setTokenConsumptionRate(3168);
-        inputport.setTypeEquals(IntMatrixToken.class);
+        input = (SDFIOPort) newPort("input");
+        input.setInput(true);
+        input.setTokenConsumptionRate(3168);
+        input.setTypeEquals(IntMatrixToken.class);
 
         Parameter p = new Parameter(this, "Codebook",
                 new StringToken("ptolemy/domains/sdf" +
@@ -96,6 +96,36 @@ public final class HTVQEncode extends SDFAtomicActor {
         new Parameter(this, "YFramesize", new IntToken("144"));
         new Parameter(this, "XPartitionSize", new IntToken("4"));
         new Parameter(this, "YPartitionSize", new IntToken("2"));
+    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** The input port. */
+    public SDFIOPort input;
+    
+    /** The output port. */
+    public SDFIOPort output;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then creates new ports and parameters.  The new
+     *  actor will have the same parameter values as the old.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     */
+    public Object clone(Workspace ws) {
+        try {
+            HTVQEncode newobj = (HTVQEncode)(super.clone(ws));
+            newobj.input = (SDFIOPort)newobj.getPort("input");
+            newobj.output = (SDFIOPort)newobj.getPort("output");
+            return newobj;
+        } catch (CloneNotSupportedException ex) {
+            // Errors should not occur here...
+            throw new InternalErrorException(
+                    "Clone failed: " + ex.getMessage());
+        }
     }
 
     /**
@@ -110,14 +140,14 @@ public final class HTVQEncode extends SDFAtomicActor {
             _xframesize * _yframesize / _xpartsize / _ypartsize;
 
         int j;
-        ((SDFIOPort) getPort("imagepart")).getArray(0, _tokens);
+        input.getArray(0, _tokens);
 
         for(j = 0; j < numpartitions; j++) {
             _codewords[j] = new IntToken(
                     _encode(_tokens[j].intArray(), _xpartsize * _ypartsize));
 	}
 
-        ((SDFIOPort) getPort("index")).sendArray(0, _codewords);
+        output.sendArray(0, _codewords);
     }
 
     /**

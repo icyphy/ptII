@@ -61,20 +61,29 @@ public final class ImagePartition extends SDFAtomicActor {
         new Parameter(this, "XPartitionSize", new IntToken("4"));
         new Parameter(this, "YPartitionSize", new IntToken("2"));
 
-        partition = (SDFIOPort) newPort("partition");
-        partition.setOutput(true);
-        partition.setTokenProductionRate(3168);
-        partition.setTypeEquals(IntMatrixToken.class);
+        output = (SDFIOPort) newPort("output");
+        output.setOutput(true);
+        output.setTokenProductionRate(3168);
+        output.setTypeEquals(IntMatrixToken.class);
 
-        image = (SDFIOPort) newPort("image");
-        image.setInput(true);
-        image.setTokenConsumptionRate(1);
-        image.setTypeEquals(IntMatrixToken.class);
+        input = (SDFIOPort) newPort("input");
+        input.setInput(true);
+        input.setTokenConsumptionRate(1);
+        input.setTypeEquals(IntMatrixToken.class);
 
     }
 
-    public SDFIOPort partition;
-    public SDFIOPort image;
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** The input port. */
+    public SDFIOPort input;
+
+    /** The output port. */
+    public SDFIOPort output;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.  The new
@@ -85,8 +94,8 @@ public final class ImagePartition extends SDFAtomicActor {
     public Object clone(Workspace ws) {
         try {
             ImagePartition newobj = (ImagePartition)(super.clone(ws));
-            newobj.image = (SDFIOPort)newobj.getPort("image");
-            newobj.partition = (SDFIOPort)newobj.getPort("partition");
+            newobj.input = (SDFIOPort)newobj.getPort("input");
+            newobj.output = (SDFIOPort)newobj.getPort("output");
             return newobj;
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
@@ -128,7 +137,7 @@ public final class ImagePartition extends SDFAtomicActor {
 	int x, y;
         int a;
 
-        message = (IntMatrixToken) image.get(0);
+        message = (IntMatrixToken) input.get(0);
         frame = message.intArray();
 
         for(j = 0, a = 0 ; j < yframesize; j += ypartsize)
@@ -139,7 +148,7 @@ public final class ImagePartition extends SDFAtomicActor {
                 partitions[a] = new IntMatrixToken(part, ypartsize, xpartsize);
             }
 
-        partition.sendArray(0, partitions);
+        output.sendArray(0, partitions);
     }
 
     private IntMatrixToken message;

@@ -47,15 +47,24 @@ import ptolemy.domains.sdf.kernel.*;
 */
 
 public final class ImageSequence extends SDFAtomicActor {
+ 
+    /** Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
     public ImageSequence(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
 
-        SDFIOPort outputport = (SDFIOPort) newPort("image");
-        outputport.setOutput(true);
-        outputport.setTokenProductionRate(1);
-        outputport.setTypeEquals(IntMatrixToken.class);
+        output = (SDFIOPort) newPort("output");
+        output.setOutput(true);
+        output.setTokenProductionRate(1);
+        output.setTypeEquals(IntMatrixToken.class);
 
         Parameter p = new Parameter(this, "imageURLTemplate",
                 new StringToken("ptolemy/domains/sdf/lib/vq" +
@@ -64,6 +73,33 @@ public final class ImageSequence extends SDFAtomicActor {
         new Parameter(this, "YImageSize", new IntToken("144"));
         new Parameter(this, "Start Frame", new IntToken("0"));
         new Parameter(this, "End Frame", new IntToken("29"));
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** The output port. */
+    public SDFIOPort output;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then creates new ports and parameters.  The new
+     *  actor will have the same parameter values as the old.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     */
+    public Object clone(Workspace ws) {
+        try {
+            ImageSequence newobj = (ImageSequence)(super.clone(ws));
+            newobj.output = (SDFIOPort)newobj.getPort("output");
+            return newobj;
+        } catch (CloneNotSupportedException ex) {
+            // Errors should not occur here...
+            throw new InternalErrorException(
+                    "Clone failed: " + ex.getMessage());
+        }
     }
 
     public void initialize() throws IllegalActionException {
@@ -152,7 +188,6 @@ public final class ImageSequence extends SDFAtomicActor {
             }
         }
         framenumber = 0;
-        port_image = (IOPort) getPort("image");
     }
 
     public void setBaseURL(URL baseurl) {
@@ -162,7 +197,6 @@ public final class ImageSequence extends SDFAtomicActor {
     public void fire() throws IllegalActionException {
         int i, j, n;
 
-        System.out.println("frame " + framenumber);
         // This is necessary to convert from bytes to ints
         for(i = 0, n = 0; i < ysize; i++) {
             for(j = 0; j < xsize; j++, n++)
@@ -170,7 +204,7 @@ public final class ImageSequence extends SDFAtomicActor {
         }
 
         IntMatrixToken message = new IntMatrixToken(frame, ysize, xsize);
-        port_image.send(0, message);
+        output.send(0, message);
 
         framenumber++;
         if(framenumber >= numframes) framenumber = 0;
@@ -200,6 +234,4 @@ public final class ImageSequence extends SDFAtomicActor {
     int numframes;
     int framenumber;
     URL _baseurl;
-    IOPort port_image;
-
 }

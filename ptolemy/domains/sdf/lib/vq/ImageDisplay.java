@@ -45,7 +45,7 @@ import ptolemy.media.Picture;
 //////////////////////////////////////////////////////////////////////////
 //// ImageDisplay
 /**
-This class displays an image on the screen using the ptolemy.media.Picture
+Display an image on the screen using the ptolemy.media.Picture
 class.  For a sequence of images that are all the same size, this class
 will continually update the picture with new data.   If the size of the
 input image changes, then a new Picture object is created.  This class
@@ -57,14 +57,23 @@ input image contains greyscale pixel intensities between 0 and 255 (inclusive).
 */
 
 public final class ImageDisplay extends SDFAtomicActor {
+    /** Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
     public ImageDisplay(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
-        SDFIOPort inputport = (SDFIOPort) newPort("image");
-        inputport.setInput(true);
-        inputport.setTokenConsumptionRate(1);
-        inputport.setTypeEquals(IntMatrixToken.class);
+        
+	input = (SDFIOPort) newPort("input");
+        input.setInput(true);
+        input.setTokenConsumptionRate(1);
+        input.setTypeEquals(IntMatrixToken.class);
 
         _oldxsize = 0;
         _oldysize = 0;
@@ -72,7 +81,14 @@ public final class ImageDisplay extends SDFAtomicActor {
         _panel = null;
     }
 
-    public IOPort image;
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** The input port. */
+    public SDFIOPort input;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.  The new
@@ -83,7 +99,7 @@ public final class ImageDisplay extends SDFAtomicActor {
     public Object clone(Workspace ws) {
         try {
             ImageDisplay newobj = (ImageDisplay)(super.clone(ws));
-            newobj.image = (SDFIOPort)newobj.getPort("image");
+            newobj.input = (SDFIOPort)newobj.getPort("input");
             return newobj;
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
@@ -91,7 +107,6 @@ public final class ImageDisplay extends SDFAtomicActor {
                     "Clone failed: " + ex.getMessage());
         }
     }
-
 
     /**
      * Initialize this actor.
@@ -102,7 +117,6 @@ public final class ImageDisplay extends SDFAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
 
-        image = (IOPort) getPort("image");
         _oldxsize = 0;
         _oldysize = 0;
         if(_panel == null) {
@@ -127,7 +141,7 @@ public final class ImageDisplay extends SDFAtomicActor {
      */
     public void fire() throws IllegalActionException {
         IntMatrixToken message = (IntMatrixToken)
-            image.get(0);
+            input.get(0);
         int frame[][] = message.intMatrix();
         int xsize = message.getColumnCount();
         int ysize = message.getRowCount();
@@ -170,9 +184,6 @@ public final class ImageDisplay extends SDFAtomicActor {
 
             System.out.println("new buffer");
         }
-
-        //              System.out.println("xsize = "+xsize);
-        //System.out.println("ysize = "+ysize);
 
         // convert the B/W image to a packed RGB image
         int i, j, index = 0;
