@@ -31,6 +31,7 @@
 package ptolemy.actor.gui;
 
 import ptolemy.gui.MessageHandler;
+import ptolemy.gui.Top;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -108,6 +109,7 @@ public class HTMLViewer extends TableauFrame
      *  This method opens the hyperlink URL in a new window, using
      *  the configuration.  This means that hyperlinks can reference
      *  any file that the configuration can open, including MoML files.
+     *  It is assumed this is called in the AWT event thread.
      *  @param event The hyperlink event.
      */
     public void hyperlinkUpdate(HyperlinkEvent event) {
@@ -273,15 +275,22 @@ public class HTMLViewer extends TableauFrame
 
     /** Override the base class to set the size of the scroll pane.
      *  Regrettably, this is necessary because swing packers ignore
-     *  the specified size of a container.
+     *  the specified size of a container. If this is not called in
+     *  the AWT event thread, then execution is deferred and executed
+     *  in that thread.
      *  @param width The width of the scroll pane.
      *  @param height The height of the scroll pane.
      */
-    public void setSize(int width, int height) {
-        // FIXME: As usual with Swing, the following has no effect :-(
-        _scroller.setPreferredSize(new Dimension(width, height));
-        _scroller.setSize(new Dimension(width, height));
-        super.setSize(width, height);
+    public void setSize(final int width, final int height) {
+        Runnable doSet = new Runnable() {
+            public void run() {
+                // FIXME: As usual with Swing, the following has no effect :-(
+                _scroller.setPreferredSize(new Dimension(width, height));
+                _scroller.setSize(new Dimension(width, height));
+                HTMLViewer.super.setSize(width, height);
+            }
+        };
+        Top.deferIfNecessary(doSet);
     }
 
     ///////////////////////////////////////////////////////////////////
