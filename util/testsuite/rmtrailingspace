@@ -56,10 +56,11 @@ do
 done
 shift `expr $OPTIND - 1`
 
+TMPFILE=/tmp/rmtrailingspace.tmp.$$
+
 doit() {
-    
-	sed -e 's/[ 	]*$//g'  < $file > /tmp/fix-files.tmp
-	diff $file /tmp/fix-files.tmp
+	sed -e 's/[ 	]*$//g'  < $file > $TMPFILE
+	diff $file $TMPFILE
 }
 
 EGREPMATCH="[ 	]+$"
@@ -102,7 +103,7 @@ do
 				continue
 			else
 				doit
-				cp /tmp/fix-files.tmp  $file
+				cp $TMPFILE  $file
 				$SCCS delget -y"$LOGMESSAGE" $file
 				/users/ptdesign/adm/bin/sccsadmin $file
     				#grep Copyright $file
@@ -112,3 +113,5 @@ do
 	   echo "	No difference, so no checkout"
 	fi
 done
+
+rm -f $TMPFILE
