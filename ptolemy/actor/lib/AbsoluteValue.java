@@ -72,7 +72,6 @@ public class AbsoluteValue extends Transformer {
         super(container, name);
 
 	output.setTypeAtLeast(new FunctionTerm(input));
-	output.setTypeAtMost(BaseType.SCALAR);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -89,7 +88,6 @@ public class AbsoluteValue extends Transformer {
 	    throws CloneNotSupportedException {
         AbsoluteValue newObject = (AbsoluteValue)super.clone(workspace);
 	newObject.output.setTypeAtLeast(new FunctionTerm(newObject.input));
-	newObject.output.setTypeAtMost(BaseType.SCALAR);
         return newObject;
     }
 
@@ -147,7 +145,13 @@ public class AbsoluteValue extends Transformer {
 	 */
 	public Object getValue() {
 	    Type inputType = _port.getType();
-	    return inputType == BaseType.COMPLEX ? BaseType.DOUBLE : inputType;
+	    if (inputType == BaseType.COMPLEX) {
+	        return BaseType.DOUBLE;
+	    } else if (inputType == BaseType.COMPLEX_MATRIX) {
+	        return BaseType.INT_MATRIX;
+	    } else {
+	        return inputType;
+	    }
         }
 
         /** Return a one element array containing the InequalityTerm
