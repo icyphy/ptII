@@ -75,6 +75,7 @@ EXTRA_SRCS = \
 	ptinvoke.in \
 	ptjacl.in \
 	startjini \
+	mkjnlp \
 	$(BAT_FILES)
 
 # Sources that may or may not be present, but if they are present, we don't
