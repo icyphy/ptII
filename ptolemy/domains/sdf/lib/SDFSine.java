@@ -50,7 +50,9 @@ consumed and produced by the input and output ports, respectively,
 on each call to fire(). The parameter values are reread on each
 call to fire(), and therefore are updated every <i>rate</i> tokens.
  The input and output types
-are DoubleToken. The actor implements the function:
+are DoubleToken. The type is constrained to DoubleToken instead of just
+at least IntToken because it would not be useful to take sin(integer).
+ The actor implements the function:
 <br><i>
 output = amplitude*sin(omega*input+phase)
 </i><br>
