@@ -1,3 +1,33 @@
+/* An actor that scales the input 3D shape
+
+ Copyright (c) 1998-2000 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+                                        PT_COPYRIGHT_VERSION_2
+                                        COPYRIGHTENDKEY
+
+@ProposedRating Red (chf@eecs.berkeley.edu)
+@AcceptedRating Red (chf@eecs.berkeley.edu)
+*/
+
 package ptolemy.domains.dd3d.lib;
 
 import ptolemy.kernel.util.*;
@@ -6,22 +36,35 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.actor.*;
 import ptolemy.domains.dd3d.kernel.*;
-import ptolemy.domains.dt.kernel.DTDebug;
 
-
-import java.applet.Applet;
-import java.awt.BorderLayout;
-import java.awt.event.*;
-import java.awt.GraphicsConfiguration;
-import com.sun.j3d.utils.applet.MainFrame;
-import com.sun.j3d.utils.geometry.ColorCube;
-import com.sun.j3d.utils.universe.*;
 import javax.media.j3d.*;
 import javax.vecmath.*;
 
+//////////////////////////////////////////////////////////////////////////
+//// Scale3D
 
+/** Conceptually, this actor takes 3D geometry in its input and produces a scaled
+version in its output. In reality, this actor encapsulates a Java3D TransformGroup
+which is converted into a node in the resulting Java3D scene graph. This actor will
+only have meaning in the DD3D domain. Scaling can be done uniformly or non-uniformly.
+Uniform scaling scales the input geometry equally in all directions. Uniform scaling 
+is done through modification of the <i>scaleFactor</i> parameter. Non-uniform scaling
+involves preferential scaling of the input geometry in a specified Cartesian axis. 
+Non-uniform scaling is done through modification of the <i>xScale<i>, <i>yScale<i/>,
+and <i>zScale<i/> parameters. 
+
+@author C. Fong
+*/
 public class Scale3D extends Transform {
 
+    /** Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
     public Scale3D(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -32,31 +75,66 @@ public class Scale3D extends Transform {
   	    zScale = new Parameter(this, "zScale", new DoubleToken(1.0));
     }
     
-    public TypedIOPort input;
-    public TypedIOPort output;
-    public Parameter scaleFactor;
     
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** The scale factor.
+     *  This parameter should contain a DoubleToken.
+     *  The default value of this parameter is the DoubleToken 1.0
+     */
+    public Parameter scaleFactor;
    
+    /** The scale factor in the Cartesian x-axis.
+     *  This parameter should contain a DoubleToken.
+     *  The default value of this parameter is the DoubleToken 1.0
+     */
     public Parameter xScale;
+    
+    /** The scale factor in the Cartesian y-axis.
+     *  This parameter should contain a DoubleToken.
+     *  The default value of this parameter is the DoubleToken 1.0
+     */
     public Parameter yScale;
+    
+    /** The scale factor in the Cartesian z-axis.
+     *  This parameter should contain a DoubleToken.
+     *  The default value of this parameter is the DoubleToken 1.0
+     */
     public Parameter zScale;
     
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
     
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the type constraints.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class has
+     *   an attribute that cannot be cloned.
+     */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Scale3D newobj = (Scale3D) super.clone(workspace);
-        newobj.input  = (TypedIOPort) newobj.getPort("input");
-        newobj.output = (TypedIOPort) newobj.getPort("output");
+        newobj.scaleFactor = (Parameter)newobj.getAttribute("scaleFactor");
+        newobj.xScale = (Parameter)newobj.getAttribute("xScale");
+        newobj.yScale = (Parameter)newobj.getAttribute("yScale");
+  	    newobj.zScale = (Parameter)newobj.getAttribute("zScale");
         return newobj;
     }
-    
+
+    /**
+     */    
     public void initialize() throws IllegalActionException {
         super.initialize();
         Transform3D scaleTransform = new Transform3D();
-        //scaleTransform.setScale(_getScale());
         scaleTransform.setScale(new Vector3d(_getScaleX(),_getScaleY(),_getScaleZ()));        
-        obj.setTransform(scaleTransform);
+        transformNode.setTransform(scaleTransform);
     }
   
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     private double _getScaleX() throws IllegalActionException {
         double factor = ((DoubleToken) scaleFactor.getToken()).doubleValue();
         double xFactor = ((DoubleToken) xScale.getToken()).doubleValue();
@@ -74,6 +152,4 @@ public class Scale3D extends Transform {
         double zFactor = ((DoubleToken) zScale.getToken()).doubleValue();
         return factor * zFactor;
     }
-    
-    
 }
