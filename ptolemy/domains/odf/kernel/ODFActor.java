@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (davisj@eecs.berkeley.edu)
+@ProposedRating Yellow (davisj@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 */
@@ -54,9 +54,9 @@ that is communicated solely for the purpose of advancing the local
 notion of time of the actor that receives the NullToken.
 <P>
 The ODF model of computation supports typed, polymorphic actors and
-does not require this base class for implementation. Nevertheless,
-this class provides useful syntactic conveniences for developing ODF
-models.
+does not require this base class for implementation; this class is
+purely optional. Nevertheless, this class provides useful syntactic 
+conveniences for developing ODF models.
 
 @author John S. Davis II
 @version $Id$
@@ -110,15 +110,6 @@ public class ODFActor extends TypedAtomicActor {
 	    _currentTime = timeKeeper.getCurrentTime();
 	}
 
-	/*
-	if( _timeKeeper != null ) {
-	    _currentTime = _timeKeeper.getCurrentTime();
-	}
-	if( thread instanceof ODFThread ) {
-	    _currentTime = ((ODFThread)thread).getCurrentTime();
-            return _currentTime;
-	}
-	*/
 	return _currentTime;
     }
 
@@ -133,14 +124,14 @@ public class ODFActor extends TypedAtomicActor {
     }
 
     /** Return a non-NullToken from the receiver that has the minimum,
-     *  non-negative rcvrTime of all receivers contained by this actor.
-     *  If there exists a set of multiple receivers that share a common
-     *  minimum rcvrTime, then return the token contained by the highest
-     *  priority receiver within this set. If this actor contains no
-     *  receivers then return null. This method may block as it calls
-     *  several blocking methods. 
+     *  non-negative receiver time of all receivers contained by this 
+     *  actor. If there exists a set of multiple receivers that share 
+     *  a common minimum receiver time, then return the token contained 
+     *  by the highest priority receiver within this set. If this actor 
+     *  contains no receivers then return null. This method may block 
+     *  as it calls several blocking methods. 
      * @return Return a non-NullToken that has the minimum, nonnegative
-     *  rcvrTime of all receivers contained by this actor.
+     *  receiver time of all receivers contained by this actor.
      */
     public Token getNextToken() throws IllegalActionException {
         Token token = _getNextInput();
@@ -151,41 +142,6 @@ public class ODFActor extends TypedAtomicActor {
 	}
         return token;
     }
-
-    /** Return the TimeKeeper of this actor. If this actor does 
-     *  not contain any receivers, then return null.
-     * @return TimeKeeper The TimeKeeper of this actor.
-    public TimeKeeper getTimeKeeper() {
-	return _timeKeeper;
-    }
-     */
-
-    /** Set the TimeKeeper of this actor to be equivalent to the 
-     *  TimeKeeper of the receivers that this actor contains. If
-     *  this actor contains no receivers, then set the TimeKeeper 
-     *  to be null.
-     * @exception IllegalActionException If there is an error 
-     *  while retrieving the receivers contained by this actor.
-    public void initialize() throws IllegalActionException {
-	Enumeration enum = inputPorts();
-	ODFReceiver rcvr = null;
-	boolean rcvrSet = false;
-
-	while( enum.hasMoreElements() && !rcvrSet ) {
-	    TypedIOPort port = (TypedIOPort)enum.nextElement();
-	    Receiver[][] rcvrs = port.getReceivers();
-            for (int i = 0; i < rcvrs.length; i++) {
-                for (int j = 0; j < rcvrs[i].length; j++) {
-		    rcvr = (ODFReceiver)rcvrs[i][j];
-		    if( rcvr != null && !rcvrSet ) {
-	                _timeKeeper = rcvr.getReceivingTimeKeeper();
-			rcvrSet = true; 
-		    }
-		}
-	    }
-	}
-    }
-     */
 
     /** Prepare to cease iterations of this actor. Notify actors which
      *  are connected downstream of this actor's cessation. Return false
@@ -201,18 +157,18 @@ public class ODFActor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                        private methods                    ////
 
-    /** Return a token from the receiver that has the minimum rcvrTime
-     *  of all receivers contained by this actor. The returned token
+    /** Return a token from the receiver that has the minimum receiver 
+     *  time of all receivers contained by this actor. The returned token
      *  will have the lowest time stamp of all pending tokens for this
      *  actor. If there exists a set of multiple receivers that share
-     *  a common minimum rcvrTime, then return the token contained by
-     *  the highest priority receiver within this set. If this actor
+     *  a common minimum receiver time, then return the token contained 
+     *  by the highest priority receiver within this set. If this actor
      *  contains no receivers then return null.
      * @return The token with the smallest time stamp of all tokens
      *  contained by this actor. If multiple tokens share the smallest
      *  time stamp this token will come from the highest priority
-     *  receiver that has the minimum rcvrTime. If all receivers have
-     *  expired then throw a TerminateProcessException.
+     *  receiver that has the minimum receiver time. If all receivers 
+     *  have expired then throw a TerminateProcessException.
      * @see ptolemy.domains.odf.kernel.TimedQueueReceiver
      * @see ptolemy.domains.odf.kernel.ODFReceiver
      * @see ptolemy.domains.odf.kernel.ODFThread
@@ -222,7 +178,6 @@ public class ODFActor extends TypedAtomicActor {
 	if( thread instanceof ODFThread ) {
 	    TimeKeeper timeKeeper = ((ODFThread)thread).getTimeKeeper();
         ODFReceiver lowestRcvr = timeKeeper.getFirstRcvr();
-        // ODFReceiver lowestRcvr = getTimeKeeper().getFirstRcvr();
 	if( lowestRcvr.hasToken() ) {
 	    _lastPort = (TypedIOPort)lowestRcvr.getContainer();
 	    return lowestRcvr.get();
@@ -241,8 +196,6 @@ public class ODFActor extends TypedAtomicActor {
 
     private double _currentTime = 0.0;
 
-    // private TimeKeeper _timeKeeper = null;
-    
     private TypedIOPort _lastPort = null;
 
 }
