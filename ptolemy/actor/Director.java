@@ -578,10 +578,12 @@ public class Director extends NamedObj implements Executable {
      * processing the mutation requests can be obtained with the
      * _newActors() method.
      *
+     *  @exception IllegalActionException If any of the pending requests have
+     *   already been implemented.
      *  @exception TopologyChangeFailedException If any of the requests fails.
      */
     protected void _processTopologyRequests()
-            throws TopologyChangeFailedException {
+            throws IllegalActionException, TopologyChangeFailedException {
         if (_queuedTopologyRequests == null) {
             return;
         }
@@ -607,13 +609,13 @@ public class Director extends NamedObj implements Executable {
             while (events.hasMoreElements()) {
                 TopologyEvent e = (TopologyEvent) events.nextElement();
                 if (e.getID() == TopologyEvent.ENTITY_ADDED) {
-                    if (e.componentEntity instanceof Actor &&
-                            !_newActors.includes(e.entity)) {
-                        _newActors.insertLast(e.componentEntity);
+                    if (e.getComponentEntity() instanceof Actor &&
+                            !_newActors.includes(e.getEntity())) {
+                        _newActors.insertLast(e.getComponentEntity());
                     }
                 } else if (e.getID() == TopologyEvent.ENTITY_REMOVED) {
                     // Why on earth would you want do do this???
-                    _newActors.removeOneOf(e.componentEntity);
+                    _newActors.removeOneOf(e.getComponentEntity());
                 }
             }
 
