@@ -194,14 +194,17 @@ public class URLDirectoryReader extends URLReader {
      *  URL
      */
     private String [] _list(String source) throws IllegalActionException {
-	try {
-	    // First try to handle source as a URL and parse the
-	    // html results returned.
-	    return _listFileOrURL(source);
-	} catch (Exception ex) {
-	    // If parsing the html failed, try accessing the file
-	    // using File.list().
+	if (source.startsWith("file:")) { 
 	    return _listFile(source);
+	} else {
+	    try {
+		return _listFileOrURL(source);
+	    } catch (Exception ex) {
+		throw new IllegalActionException("Could not open '" + source
+						 + ": " 
+						 + KernelException
+						 .stackTraceToString(ex));
+						 }
 	}
     }
 
@@ -221,7 +224,16 @@ public class URLDirectoryReader extends URLReader {
 		// First, try opening the source as a file.
 		File file = new File(sourceURL.getFile());
 		if (file.isDirectory()) { 
-		    return file.list();
+		    String [] shortFiles = file.list();
+		    String [] longFiles = new String[shortFiles.length];
+		    if (!source.endsWith("/")) {
+			// FIXME: is this platform dependent?
+			source += "/";
+		    }
+		    for (int i = 0; i < shortFiles.length; i++) {
+			longFiles[i] = source + shortFiles[i];
+		    } 
+		    return longFiles;
 		} else if (file.isFile()) {
 		    return new String[] {file.toString()};
 		} else {
