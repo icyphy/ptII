@@ -298,6 +298,16 @@ the Environment tab of the System control panel
  <p>The PTII value should be set using back slashes so that javac
 gets the right path if you've installed Cygwin in a location
 other than <CODE>C:\</CODE> such as <CODE>C:\Cygwin</CODE>.
+
+<BLOCKQUOTE>
+If you have installed Cygwin in c:/cygwin, and your Ptolemy II installation
+is in a directory outside of the c:/cygwin tree, then Cygwin may
+change your PTII variable to include "/cygdrive/c".  This
+will cause problems with non-Cygwin tools like javac that do
+not understand /cygdrive/c
+</BLOCKQUOTE>
+
+
  <p>An example PTII value would be:
 <pre>
 c:\users\yourname\ptII
