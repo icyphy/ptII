@@ -50,13 +50,17 @@ public interface Receiver {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Get a token from the object */
+    /** Get a token from the object
+     * @exception NoSuchItemException Thrown by derived classes.
+     */
     public Token get() throws NoSuchItemException;
 
     /** Return the container (IOPort) of the object.*/
     public Nameable getContainer();
 
-    /** Put a token into the object */
+    /** Put a token into the object
+     * @exception TokenHolderFullException Thrown by derived classes.
+     */
     public void put(Token t) throws TokenHolderFullException;
 
 }
