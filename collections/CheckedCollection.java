@@ -101,7 +101,7 @@ public class CheckedCollection implements UpdatableCollection  {
     }
 
     /**
-     * Call at the beginnning of any checked method requiring
+     * Call at the beginning of any checked method requiring
      * use of prev clone
      **/
 
