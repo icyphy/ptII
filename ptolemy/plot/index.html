@@ -15,8 +15,10 @@
 <i>Edward A. Lee</i>
 <br>
 <i>Christopher Hylands</i> <p>
-<b>Contributors</b> <br>
+<b>Contributors</b>
+<br>
 <i>Lukito Muliadi</i>
+<br>
 <i>William Wu</i>
 </table>
  <hr>
@@ -76,13 +78,20 @@ plots are supported by the <a href="PlotLive.java">PlotLive</a> class.
 This class is abstract; a derived class must be created to generate
 the data to plot (or collect it from some other application).  <p>
 
- <p><a href="apps/PlotApplication.java"><CODE>apps/PlotApplication.java</CODE></a>
-is a simple sample Ptplot application.
+ <p><a href="demo/TwoPlotExample.java">TwoPlotExample</CODE></a>
+is a very simple sample Ptplot application.
 
  <p>A more complex application is implemented by the
-<a href="Pxgraph.java">Pxgraph</a> class.  The <CODE>Pxgraph</CODE> class
+<a href="PlotApplication.java">PlotApplication</a> class.
+The PlotApplication class
 includes support for printing and generating HTML for use with the
-<CODE>Plot</CODE> applet.
+Plot applet.  The <a href="ptplot"><CODE>ptplot</CODE></a>
+shell script starts up PlotApplication from a Unix
+shell prompt.
+
+ <p>Backward compatibility with the C <CODE>pxgraph</CODE> program
+is provided by the 
+<a href="Pxgraph.java">Pxgraph</a> class.
 
  <P><A NAME="xgraph">This</A> code owes a heavy debt to David
 Harrison, the original author of <CODE>xgraph</CODE>, which runs under
