@@ -169,7 +169,7 @@ public class GraphEditor extends AbstractApplication {
         GraphController controller = 
 	    jgraph.getGraphPane().getGraphController();
         
-	CompositeEntity entity = (CompositeEntity) d.getSheet(0).getModel();
+	CompositeEntity entity = (CompositeEntity) ((GraphDocument)d).getGraph();
 	GraphImpl impl = controller.getGraphImpl();
 	Graph graph = impl.createGraph(entity);
 	
@@ -444,13 +444,13 @@ public class GraphEditor extends AbstractApplication {
 
         action = new AbstractAction ("Execute System") {
             public void actionPerformed(ActionEvent e) {
-                Document d = getCurrentDocument();
+                GraphDocument d = (GraphDocument)getCurrentDocument();
                 if (d == null) {
                     return;
                 } 
                 try {
 		    CompositeActor toplevel = 
-		    (CompositeActor) d.getCurrentSheet().getModel();
+		    (CompositeActor) d.getGraph();
 
                     // FIXME set the Director.  This is a hack, but it's the 
                     // Simplest hack.
@@ -645,7 +645,7 @@ public class GraphEditor extends AbstractApplication {
 
     /** Show an error that occurred in this class.
      */
-    private void showError(String op, Exception e) {
+    public void showError(String op, Exception e) {
         // Show the stack trace in a scrollable text area.
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);

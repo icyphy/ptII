@@ -41,10 +41,10 @@ import diva.graph.toolbox.GraphWriter;
 
 import diva.gui.AbstractDocument;
 import diva.gui.Application;
-import diva.gui.BasicSheet;
+import diva.gui.BasicPage;
 import diva.gui.Document;
 import diva.gui.DocumentFactory;
-import diva.gui.Sheet;
+import diva.gui.Page;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -66,7 +66,8 @@ public class GraphDocument extends AbstractDocument {
     static int _globalCount = 0;
     int _localID = _globalCount++;
     // What the hell... public String getTitle() { return "Graph" + _localID; }
-    
+    CompositeEntity _graph;
+
     /** Construct a graph document that is owned by the given
      *  application
      */
@@ -81,8 +82,12 @@ public class GraphDocument extends AbstractDocument {
         // Do nothing
     }
 
+    public CompositeEntity getGraph() {
+	return _graph;
+    }
+
     /** Open the document from its current file.  If successful, add a
-     * new Sheet to the document containing the model parsed from the
+     * new Page to the document containing the model parsed from the
      * current file.
      *
      * @throws Exception  If there is no file, or if the I/O operation failed.
@@ -110,8 +115,9 @@ public class GraphDocument extends AbstractDocument {
 	// CompositeEntity toplevel = new CompositeEntity();
         // FIXME populate
 
-        Sheet s = new BasicSheet(this, "main", toplevel);
-        addSheet(s);
+        //Page s = new BasicPage(this, "main", toplevel);
+        //addPage(s);
+	setGraph(toplevel);
     }
 
     /** Save the document to the current file.
@@ -136,7 +142,7 @@ public class GraphDocument extends AbstractDocument {
         //        String filename = file.getName();
         //FileOutputStream fout = new FileOutputStream(filename);
         //DataOutputStream out = new DataOutputStream(fout);
-        //GraphModel model = (GraphModel) getSheet(0).getModel();
+        //GraphModel model = (GraphModel) getPage(0).getModel();
         //new GraphWriter().write(model, out);
     }
 
@@ -150,6 +156,10 @@ public class GraphDocument extends AbstractDocument {
                 "GraphDocument " + getTitle() + ": save to URL not supported");
     }
 
+    public void setGraph(CompositeEntity toplevel) {
+	_graph = toplevel; 
+    }
+
     /** Print information about the graph document
      */
     public String toString () {
@@ -158,7 +168,7 @@ public class GraphDocument extends AbstractDocument {
             + "title = " + getTitle()
             + ", file = " + getFile()
             + ", url = " + getURL()
-            + "]\n" + ((CompositeEntity)getCurrentSheet().getModel()).description();
+            + "]\n" + _graph.description();
     }
  
     /** GraphDocument.Factory is a factory for graph documents.  We
@@ -173,7 +183,7 @@ public class GraphDocument extends AbstractDocument {
             //
             TypedCompositeActor toplevel = new TypedCompositeActor();
 
-            d.addSheet(new BasicSheet(d, "New graph", toplevel));
+            d.setGraph(toplevel);
             return d;
         }
 
