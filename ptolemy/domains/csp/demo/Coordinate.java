@@ -49,7 +49,7 @@ public class Coordinate {
     /**
      * Returns a string representation of the Coordinate in the form "(X, Y)".
      *
-     * @returns a string representation of the Coordinates.
+     * @return a string representation of the Coordinates.
      */
     public String toString() {
         return "(" + X + ", " + Y + ")";
