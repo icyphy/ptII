@@ -876,7 +876,10 @@ public class CompositeActor extends CompositeEntity implements Actor {
             if (!isOpaque()) {
                 return;
             }
-            getDirector().stop();
+            Director director = getDirector();
+            if (director != null) {
+                director.stop();
+            }
         } finally {
             _workspace.doneReading();
         }
