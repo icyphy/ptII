@@ -94,11 +94,11 @@ public class PlotLiveDemo extends PlotLive {
         System.runFinalizersOnExit(true);
         JFrame frame = new JFrame("PlotLiveDemo");
         frame.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent event) {
-                plotLiveDemo.stop();
-                System.exit(0);
-            }
-        });
+                public void windowClosing(WindowEvent event) {
+                    plotLiveDemo.stop();
+                    System.exit(0);
+                }
+            });
         frame.getContentPane().add("Center", plotLiveDemo);
         frame.show();
         plotLiveDemo.setButtons(true);
