@@ -38,23 +38,23 @@ public abstract class _CorbaActorImplBase extends org.omg.CORBA.DynamicImplement
      }
     // DSI Dispatch call
     public void invoke(org.omg.CORBA.ServerRequest r) {
-       switch (((java.lang.Integer) _methods.get(r.op_name())).intValue()) {
+       switch (((java.lang.Integer) _methods.get(r.operation())).intValue()) {
            case 0: // ptolemy.domains.ct.demo.Corba.util.CorbaActor.fire
               {
               org.omg.CORBA.NVList _list = _orb().create_list(0);
-              r.params(_list);
+              r.arguments(_list);
               try {
                             this.fire();
               }
               catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException e0) {
                             org.omg.CORBA.Any _except = _orb().create_any();
                             ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper.insert(_except, e0);
-                            r.except(_except);
+                            r.set_exception(_except);
                             return;
               }
               org.omg.CORBA.Any __return = _orb().create_any();
               __return.type(_orb().get_primitive_tc(org.omg.CORBA.TCKind.tk_void));
-              r.result(__return);
+              r.set_result(__return);
               }
               break;
            case 1: // ptolemy.domains.ct.demo.Corba.util.CorbaActor.getParameter
@@ -63,7 +63,7 @@ public abstract class _CorbaActorImplBase extends org.omg.CORBA.DynamicImplement
               org.omg.CORBA.Any _paramName = _orb().create_any();
               _paramName.type(org.omg.CORBA.ORB.init().get_primitive_tc(org.omg.CORBA.TCKind.tk_string));
               _list.add_value("paramName", _paramName, org.omg.CORBA.ARG_IN.value);
-              r.params(_list);
+              r.arguments(_list);
               String paramName;
               paramName = _paramName.extract_string();
               String ___result;
@@ -73,36 +73,36 @@ public abstract class _CorbaActorImplBase extends org.omg.CORBA.DynamicImplement
               catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException e0) {
                             org.omg.CORBA.Any _except = _orb().create_any();
                             ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper.insert(_except, e0);
-                            r.except(_except);
+                            r.set_exception(_except);
                             return;
               }
               catch (ptolemy.domains.ct.demo.Corba.util.CorbaUnknownParamException e1) {
                             org.omg.CORBA.Any _except = _orb().create_any();
                             ptolemy.domains.ct.demo.Corba.util.CorbaUnknownParamExceptionHelper.insert(_except, e1);
-                            r.except(_except);
+                            r.set_exception(_except);
                             return;
               }
               org.omg.CORBA.Any __result = _orb().create_any();
               __result.insert_string(___result);
-              r.result(__result);
+              r.set_result(__result);
               }
               break;
            case 2: // ptolemy.domains.ct.demo.Corba.util.CorbaActor.initialize
               {
               org.omg.CORBA.NVList _list = _orb().create_list(0);
-              r.params(_list);
+              r.arguments(_list);
               try {
                             this.initialize();
               }
               catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException e0) {
                             org.omg.CORBA.Any _except = _orb().create_any();
                             ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper.insert(_except, e0);
-                            r.except(_except);
+                            r.set_exception(_except);
                             return;
               }
               org.omg.CORBA.Any __return = _orb().create_any();
               __return.type(_orb().get_primitive_tc(org.omg.CORBA.TCKind.tk_void));
-              r.result(__return);
+              r.set_result(__return);
               }
               break;
            case 3: // ptolemy.domains.ct.demo.Corba.util.CorbaActor.hasData
@@ -114,7 +114,7 @@ public abstract class _CorbaActorImplBase extends org.omg.CORBA.DynamicImplement
               org.omg.CORBA.Any _portIndex = _orb().create_any();
               _portIndex.type(org.omg.CORBA.ORB.init().get_primitive_tc(org.omg.CORBA.TCKind.tk_short));
               _list.add_value("portIndex", _portIndex, org.omg.CORBA.ARG_IN.value);
-              r.params(_list);
+              r.arguments(_list);
               String portName;
               portName = _portName.extract_string();
               short portIndex;
@@ -126,24 +126,24 @@ public abstract class _CorbaActorImplBase extends org.omg.CORBA.DynamicImplement
               catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException e0) {
                             org.omg.CORBA.Any _except = _orb().create_any();
                             ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper.insert(_except, e0);
-                            r.except(_except);
+                            r.set_exception(_except);
                             return;
               }
               catch (ptolemy.domains.ct.demo.Corba.util.CorbaIndexOutofBoundException e1) {
                             org.omg.CORBA.Any _except = _orb().create_any();
                             ptolemy.domains.ct.demo.Corba.util.CorbaIndexOutofBoundExceptionHelper.insert(_except, e1);
-                            r.except(_except);
+                            r.set_exception(_except);
                             return;
               }
               catch (ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortException e2) {
                             org.omg.CORBA.Any _except = _orb().create_any();
                             ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortExceptionHelper.insert(_except, e2);
-                            r.except(_except);
+                            r.set_exception(_except);
                             return;
               }
               org.omg.CORBA.Any __result = _orb().create_any();
               __result.insert_boolean(___result);
-              r.result(__result);
+              r.set_result(__result);
               }
               break;
            case 4: // ptolemy.domains.ct.demo.Corba.util.CorbaActor.hasParameter
@@ -152,14 +152,14 @@ public abstract class _CorbaActorImplBase extends org.omg.CORBA.DynamicImplement
               org.omg.CORBA.Any _paramName = _orb().create_any();
               _paramName.type(org.omg.CORBA.ORB.init().get_primitive_tc(org.omg.CORBA.TCKind.tk_string));
               _list.add_value("paramName", _paramName, org.omg.CORBA.ARG_IN.value);
-              r.params(_list);
+              r.arguments(_list);
               String paramName;
               paramName = _paramName.extract_string();
               boolean ___result;
                             ___result = this.hasParameter(paramName);
               org.omg.CORBA.Any __result = _orb().create_any();
               __result.insert_boolean(___result);
-              r.result(__result);
+              r.set_result(__result);
               }
               break;
            case 5: // ptolemy.domains.ct.demo.Corba.util.CorbaActor.hasPort
@@ -177,7 +177,7 @@ public abstract class _CorbaActorImplBase extends org.omg.CORBA.DynamicImplement
               org.omg.CORBA.Any _isMultiport = _orb().create_any();
               _isMultiport.type(org.omg.CORBA.ORB.init().get_primitive_tc(org.omg.CORBA.TCKind.tk_boolean));
               _list.add_value("isMultiport", _isMultiport, org.omg.CORBA.ARG_IN.value);
-              r.params(_list);
+              r.arguments(_list);
               String portName;
               portName = _portName.extract_string();
               boolean isInput;
@@ -190,7 +190,7 @@ public abstract class _CorbaActorImplBase extends org.omg.CORBA.DynamicImplement
                             ___result = this.hasPort(portName, isInput, isOutput, isMultiport);
               org.omg.CORBA.Any __result = _orb().create_any();
               __result.insert_boolean(___result);
-              r.result(__result);
+              r.set_result(__result);
               }
               break;
            case 6: // ptolemy.domains.ct.demo.Corba.util.CorbaActor.setPortWidth
@@ -202,7 +202,7 @@ public abstract class _CorbaActorImplBase extends org.omg.CORBA.DynamicImplement
               org.omg.CORBA.Any _width = _orb().create_any();
               _width.type(org.omg.CORBA.ORB.init().get_primitive_tc(org.omg.CORBA.TCKind.tk_short));
               _list.add_value("width", _width, org.omg.CORBA.ARG_IN.value);
-              r.params(_list);
+              r.arguments(_list);
               String portName;
               portName = _portName.extract_string();
               short width;
@@ -213,24 +213,24 @@ public abstract class _CorbaActorImplBase extends org.omg.CORBA.DynamicImplement
               catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException e0) {
                             org.omg.CORBA.Any _except = _orb().create_any();
                             ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper.insert(_except, e0);
-                            r.except(_except);
+                            r.set_exception(_except);
                             return;
               }
               catch (ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortException e1) {
                             org.omg.CORBA.Any _except = _orb().create_any();
                             ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortExceptionHelper.insert(_except, e1);
-                            r.except(_except);
+                            r.set_exception(_except);
                             return;
               }
               org.omg.CORBA.Any __return = _orb().create_any();
               __return.type(_orb().get_primitive_tc(org.omg.CORBA.TCKind.tk_void));
-              r.result(__return);
+              r.set_result(__return);
               }
               break;
            case 7: // ptolemy.domains.ct.demo.Corba.util.CorbaActor.postfire
               {
               org.omg.CORBA.NVList _list = _orb().create_list(0);
-              r.params(_list);
+              r.arguments(_list);
               boolean ___result;
               try {
                             ___result = this.postfire();
@@ -238,18 +238,18 @@ public abstract class _CorbaActorImplBase extends org.omg.CORBA.DynamicImplement
               catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException e0) {
                             org.omg.CORBA.Any _except = _orb().create_any();
                             ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper.insert(_except, e0);
-                            r.except(_except);
+                            r.set_exception(_except);
                             return;
               }
               org.omg.CORBA.Any __result = _orb().create_any();
               __result.insert_boolean(___result);
-              r.result(__result);
+              r.set_result(__result);
               }
               break;
            case 8: // ptolemy.domains.ct.demo.Corba.util.CorbaActor.prefire
               {
               org.omg.CORBA.NVList _list = _orb().create_list(0);
-              r.params(_list);
+              r.arguments(_list);
               boolean ___result;
               try {
                             ___result = this.prefire();
@@ -257,12 +257,12 @@ public abstract class _CorbaActorImplBase extends org.omg.CORBA.DynamicImplement
               catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException e0) {
                             org.omg.CORBA.Any _except = _orb().create_any();
                             ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper.insert(_except, e0);
-                            r.except(_except);
+                            r.set_exception(_except);
                             return;
               }
               org.omg.CORBA.Any __result = _orb().create_any();
               __result.insert_boolean(___result);
-              r.result(__result);
+              r.set_result(__result);
               }
               break;
            case 9: // ptolemy.domains.ct.demo.Corba.util.CorbaActor.setParameter
@@ -274,7 +274,7 @@ public abstract class _CorbaActorImplBase extends org.omg.CORBA.DynamicImplement
               org.omg.CORBA.Any _paramValue = _orb().create_any();
               _paramValue.type(org.omg.CORBA.ORB.init().get_primitive_tc(org.omg.CORBA.TCKind.tk_string));
               _list.add_value("paramValue", _paramValue, org.omg.CORBA.ARG_IN.value);
-              r.params(_list);
+              r.arguments(_list);
               String paramName;
               paramName = _paramName.extract_string();
               String paramValue;
@@ -285,60 +285,60 @@ public abstract class _CorbaActorImplBase extends org.omg.CORBA.DynamicImplement
               catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException e0) {
                             org.omg.CORBA.Any _except = _orb().create_any();
                             ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper.insert(_except, e0);
-                            r.except(_except);
+                            r.set_exception(_except);
                             return;
               }
               catch (ptolemy.domains.ct.demo.Corba.util.CorbaUnknownParamException e1) {
                             org.omg.CORBA.Any _except = _orb().create_any();
                             ptolemy.domains.ct.demo.Corba.util.CorbaUnknownParamExceptionHelper.insert(_except, e1);
-                            r.except(_except);
+                            r.set_exception(_except);
                             return;
               }
               catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalValueException e2) {
                             org.omg.CORBA.Any _except = _orb().create_any();
                             ptolemy.domains.ct.demo.Corba.util.CorbaIllegalValueExceptionHelper.insert(_except, e2);
-                            r.except(_except);
+                            r.set_exception(_except);
                             return;
               }
               org.omg.CORBA.Any __return = _orb().create_any();
               __return.type(_orb().get_primitive_tc(org.omg.CORBA.TCKind.tk_void));
-              r.result(__return);
+              r.set_result(__return);
               }
               break;
            case 10: // ptolemy.domains.ct.demo.Corba.util.CorbaActor.stopFire
               {
               org.omg.CORBA.NVList _list = _orb().create_list(0);
-              r.params(_list);
+              r.arguments(_list);
               try {
                             this.stopFire();
               }
               catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException e0) {
                             org.omg.CORBA.Any _except = _orb().create_any();
                             ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper.insert(_except, e0);
-                            r.except(_except);
+                            r.set_exception(_except);
                             return;
               }
               org.omg.CORBA.Any __return = _orb().create_any();
               __return.type(_orb().get_primitive_tc(org.omg.CORBA.TCKind.tk_void));
-              r.result(__return);
+              r.set_result(__return);
               }
               break;
            case 11: // ptolemy.domains.ct.demo.Corba.util.CorbaActor.terminate
               {
               org.omg.CORBA.NVList _list = _orb().create_list(0);
-              r.params(_list);
+              r.arguments(_list);
               try {
                             this.terminate();
               }
               catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException e0) {
                             org.omg.CORBA.Any _except = _orb().create_any();
                             ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper.insert(_except, e0);
-                            r.except(_except);
+                            r.set_exception(_except);
                             return;
               }
               org.omg.CORBA.Any __return = _orb().create_any();
               __return.type(_orb().get_primitive_tc(org.omg.CORBA.TCKind.tk_void));
-              r.result(__return);
+              r.set_result(__return);
               }
               break;
            case 12: // ptolemy.domains.ct.demo.Corba.util.CorbaActor.transferInput
@@ -353,7 +353,7 @@ public abstract class _CorbaActorImplBase extends org.omg.CORBA.DynamicImplement
               org.omg.CORBA.Any _tokenValue = _orb().create_any();
               _tokenValue.type(org.omg.CORBA.ORB.init().get_primitive_tc(org.omg.CORBA.TCKind.tk_string));
               _list.add_value("tokenValue", _tokenValue, org.omg.CORBA.ARG_IN.value);
-              r.params(_list);
+              r.arguments(_list);
               String portName;
               portName = _portName.extract_string();
               short portIndex;
@@ -366,30 +366,30 @@ public abstract class _CorbaActorImplBase extends org.omg.CORBA.DynamicImplement
               catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException e0) {
                             org.omg.CORBA.Any _except = _orb().create_any();
                             ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper.insert(_except, e0);
-                            r.except(_except);
+                            r.set_exception(_except);
                             return;
               }
               catch (ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortException e1) {
                             org.omg.CORBA.Any _except = _orb().create_any();
                             ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortExceptionHelper.insert(_except, e1);
-                            r.except(_except);
+                            r.set_exception(_except);
                             return;
               }
               catch (ptolemy.domains.ct.demo.Corba.util.CorbaIndexOutofBoundException e2) {
                             org.omg.CORBA.Any _except = _orb().create_any();
                             ptolemy.domains.ct.demo.Corba.util.CorbaIndexOutofBoundExceptionHelper.insert(_except, e2);
-                            r.except(_except);
+                            r.set_exception(_except);
                             return;
               }
               catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalValueException e3) {
                             org.omg.CORBA.Any _except = _orb().create_any();
                             ptolemy.domains.ct.demo.Corba.util.CorbaIllegalValueExceptionHelper.insert(_except, e3);
-                            r.except(_except);
+                            r.set_exception(_except);
                             return;
               }
               org.omg.CORBA.Any __return = _orb().create_any();
               __return.type(_orb().get_primitive_tc(org.omg.CORBA.TCKind.tk_void));
-              r.result(__return);
+              r.set_result(__return);
               }
               break;
            case 13: // ptolemy.domains.ct.demo.Corba.util.CorbaActor.transferOutput
@@ -401,7 +401,7 @@ public abstract class _CorbaActorImplBase extends org.omg.CORBA.DynamicImplement
               org.omg.CORBA.Any _portIndex = _orb().create_any();
               _portIndex.type(org.omg.CORBA.ORB.init().get_primitive_tc(org.omg.CORBA.TCKind.tk_short));
               _list.add_value("portIndex", _portIndex, org.omg.CORBA.ARG_IN.value);
-              r.params(_list);
+              r.arguments(_list);
               String portName;
               portName = _portName.extract_string();
               short portIndex;
@@ -413,42 +413,42 @@ public abstract class _CorbaActorImplBase extends org.omg.CORBA.DynamicImplement
               catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException e0) {
                             org.omg.CORBA.Any _except = _orb().create_any();
                             ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper.insert(_except, e0);
-                            r.except(_except);
+                            r.set_exception(_except);
                             return;
               }
               catch (ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortException e1) {
                             org.omg.CORBA.Any _except = _orb().create_any();
                             ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortExceptionHelper.insert(_except, e1);
-                            r.except(_except);
+                            r.set_exception(_except);
                             return;
               }
               catch (ptolemy.domains.ct.demo.Corba.util.CorbaIndexOutofBoundException e2) {
                             org.omg.CORBA.Any _except = _orb().create_any();
                             ptolemy.domains.ct.demo.Corba.util.CorbaIndexOutofBoundExceptionHelper.insert(_except, e2);
-                            r.except(_except);
+                            r.set_exception(_except);
                             return;
               }
               org.omg.CORBA.Any __result = _orb().create_any();
               __result.insert_string(___result);
-              r.result(__result);
+              r.set_result(__result);
               }
               break;
            case 14: // ptolemy.domains.ct.demo.Corba.util.CorbaActor.wrapup
               {
               org.omg.CORBA.NVList _list = _orb().create_list(0);
-              r.params(_list);
+              r.arguments(_list);
               try {
                             this.wrapup();
               }
               catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException e0) {
                             org.omg.CORBA.Any _except = _orb().create_any();
                             ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper.insert(_except, e0);
-                            r.except(_except);
+                            r.set_exception(_except);
                             return;
               }
               org.omg.CORBA.Any __return = _orb().create_any();
               __return.type(_orb().get_primitive_tc(org.omg.CORBA.TCKind.tk_void));
-              r.result(__return);
+              r.set_result(__return);
               }
               break;
             default:
