@@ -96,6 +96,8 @@ public class JAIPNGWriter extends JAIWriter {
 
         bitDepth = new Parameter(this, "bitDepth", new IntToken(8));
 
+        fileName.setExpression("file.png");
+
         setGamma = new Parameter(this, "setGamma");
         setGamma.setTypeEquals(BaseType.BOOLEAN);
         setGamma.setToken(BooleanToken.FALSE);
@@ -158,15 +160,9 @@ public class JAIPNGWriter extends JAIWriter {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == fileName) {
-            _file = fileName.asFile();
-            if (_file != null) {
-                _fileRoot = _file.toString();
-            }
-        } else if (attribute == confirmOverwrite) {
-            _confirmOverwriteValue =
-                ((BooleanToken)confirmOverwrite.getToken()).booleanValue();
-        } else if (attribute == adam7Interlacing) {
+        // We use attributeChanged here to avoid code duplication
+        // in postfire().
+        if (attribute == adam7Interlacing) {
             _adam7Interlacing =
                 ((BooleanToken)adam7Interlacing.getToken()).booleanValue();
         } else if (attribute == setGamma) {
@@ -195,13 +191,20 @@ public class JAIPNGWriter extends JAIWriter {
      *  @exception IllegalActionException If the file cannot be opened
      *  or created, if the user refuses to overwrite an existing file,
      *  of if the image in unable to be encoded.
+     *  @return True if the execution can continue.
      */
     public boolean postfire() throws IllegalActionException {
+        // This class is different from most classes derived from
+        // JAIWriter in that it reads the input in the derived class
+        // and changes the output format depending on the input.
+        // This makes the parent class less clean.
         if (input.hasToken(0)) {
             _jaiImageToken = (JAIImageToken) input.get(0);
             _alreadyReadImageToken = true;
-            _imageEncoderName = "PNG";
             _image = _jaiImageToken.getValue();
+
+            _imageEncoderName = "PNG";
+
             PNGEncodeParam parameters =
                 PNGEncodeParam.getDefaultEncodeParam(_image);
             if (parameters instanceof PNGEncodeParam.Gray) {

@@ -87,6 +87,9 @@ public class JAIBMPWriter extends JAIWriter {
     public JAIBMPWriter(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
+        fileName.setExpression("file.bmp");
+
         storeTopDown = new Parameter(this, "storeTopDown");
         storeTopDown.setTypeEquals(BaseType.BOOLEAN);
         storeTopDown.setToken(BooleanToken.FALSE);
@@ -104,7 +107,7 @@ public class JAIBMPWriter extends JAIWriter {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-   /** Read an input JAIImageToken and write it to the file.
+   /**  Read an input JAIImageToken and write it to the file.
      *  If the file does not exist then create it.  If the file
      *  already exists, then query the user for overwrite.
      *  @exception IllegalActionException If the file cannot be opened

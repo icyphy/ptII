@@ -90,6 +90,8 @@ public class JAIJPEGWriter extends JAIWriter {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
+        fileName.setExpression("file.jpg");
+
         quality = new IntRangeParameter(this, "quality");
 
         restartInterval

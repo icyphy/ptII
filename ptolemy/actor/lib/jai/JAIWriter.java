@@ -141,16 +141,14 @@ public abstract class JAIWriter extends Sink {
                 _image = _jaiImageToken.getValue();
             }
 
+            File file = fileName.asFile();
+            String fileRoot = file.toString();
 
-            boolean confirmOverwriteValue
-                = ((BooleanToken)confirmOverwrite.getToken()).booleanValue();
-            _file = fileName.asFile();
-            _fileRoot = _file.toString();
-
-            if (_file.exists()) {
-                if (confirmOverwriteValue) {
+            if (file.exists()) {
+                if (((BooleanToken)confirmOverwrite
+                            .getToken()).booleanValue()) {
                     if (!MessageHandler.yesNoQuestion(
-                                "OK to overwrite " + _file + "?")) {
+                                "OK to overwrite " + file + "?")) {
                         throw new IllegalActionException(this,
                                 "Please select another file name.");
                     }
@@ -161,10 +159,10 @@ public abstract class JAIWriter extends Sink {
 
             try {
                 try {
-                    stream = new FileOutputStream(_fileRoot);
+                    stream = new FileOutputStream(fileRoot);
                 } catch (FileNotFoundException ex) {
                     throw new IllegalActionException(this, ex, 
-                            "Could not create stream '" + _fileRoot + "'");
+                            "Could not create stream '" + fileRoot + "'");
                 }
             
                 ImageEncoder encoder = ImageCodec.createImageEncoder(
@@ -173,7 +171,7 @@ public abstract class JAIWriter extends Sink {
                     throw new IllegalActionException(this,
                             "Could not create encoder for \""
                             + _imageEncoderName + "\", to \""
-                            + _fileRoot
+                            + fileRoot
                             + "\". Perhaps the encoder name is wrong?"
                             + "encoder was: " + _imageEncodeParam);
                 }
@@ -189,7 +187,7 @@ public abstract class JAIWriter extends Sink {
                         stream.close();
                     } catch (Throwable throwable) {
                         System.out.println("Ignoring failure to close stream "
-                                + "on " + _fileRoot);
+                                + "on " + fileRoot);
                         throwable.printStackTrace();
                     }
                 }
@@ -233,13 +231,4 @@ public abstract class JAIWriter extends Sink {
      *  @see #_alreadyReadImageToken
      */
     protected JAIImageToken _jaiImageToken;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** The File to be saved to. */
-    private File _file;
-
-    /** The above file as a String. */
-    private String _fileRoot;
 }

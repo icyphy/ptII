@@ -70,7 +70,7 @@ import com.sun.media.jai.codec.TIFFEncodeParam;
    exists, then this actor will ask for confirmation before overwriting.
 
    @see FileParameter
-   @author James Yeh
+   @author James Yeh, Christopher Hylands Brooks
    @version $Id$
    @since Ptolemy II 3.0
 */
@@ -88,6 +88,9 @@ public class JAITIFFWriter extends JAIWriter {
     public JAITIFFWriter(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
+        fileName.setExpression("file.tiff");
+
         writeTiled = new Parameter(this, "writeTiled");
         writeTiled.setTypeEquals(BaseType.BOOLEAN);
         writeTiled.setToken(BooleanToken.FALSE);
