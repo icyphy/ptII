@@ -36,6 +36,8 @@ import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.math.Precision;
+import ptolemy.math.Quantizer;
+import ptolemy.math.FixPoint;
 
 //////////////////////////////////////////////////////////////////////////
 //// FixToDouble
@@ -148,8 +150,10 @@ public class FixToDouble extends Transformer {
     	    FixToken in = (FixToken)input.get(0);
             // Scale the FixToken to specific precision. If rounding
             // occurs, select which overflow mode to use.
-            FixToken scaled = in.scaleToPrecision( _precision, _overflow );
-	    DoubleToken result = new DoubleToken( scaled.convertToDouble() );
+            FixPoint value = in.fixValue();
+            FixPoint newvalue = Quantizer.round(value, 
+                    _precision, _overflow);
+	    DoubleToken result = new DoubleToken( newvalue.doubleValue());
             output.send(0, result);
         }
     }
