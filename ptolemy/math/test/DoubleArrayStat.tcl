@@ -331,3 +331,4 @@ test DoubleArrayStat-6.1.1 {autoCorrelation} {
 test DoubleArrayStat-6.1.2 {autoCorrelationAt without startlag and endlag} {
     set v1 [java::call ptolemy.math.DoubleArrayStat autoCorrelationAt $p1 4 0]
     list $v1 
+} {0.38}
