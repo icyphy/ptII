@@ -30,14 +30,15 @@
 # 						COPYRIGHTENDKEY
 # 
 
-if [ $# -lt 3 ]; then 
-    echo "Usage: mkjnlp jnlpfile mainjar otherjars . . ."
+if [ $# -lt 4 ]; then 
+    echo "Usage: mkjnlp jnlpfile number_of_jars_to_load_eagerly mainjar otherjars . . ."
     exit 5
 fi
 
 jnlpfile=$1
-mainjar=$2
-shift; shift
+eagerjars=$2
+mainjar=$3
+shift; shift; shift
 tmpfile=/tmp/mkjnlp.$$
 
 otherjars="$@"
@@ -85,7 +86,13 @@ awk '{
 	    if (jars[n] == mainjar) {
 		printf("\n\t\tmain=%ctrue%c", 34, 34)
 	    } else {
-		printf("\n\t\tdownload=%clazy%c", 34, 34)
+	        if (n <= eagerjars) {
+		    # Load the eagerjars number of jars eagerly.
+		    printf("\n\t\tdownload=%ceager%c", 34, 34)
+		} else {
+		    # Load everything else lazily
+		    printf("\n\t\tdownload=%clazy%c", 34, 34)
+		}
 	    }
 	    printf("/>\n")
 	    printf("\t<package name=%c%s.*%c\n\t\tpart=%c%s%c recursive=%ctrue%c/>\n", 34, package, 34, 34, part, 34, 34, 34)
@@ -100,7 +107,8 @@ awk '{
 	    }
 	}
     }
-}' mainjar=$mainjar \
+}' eagerjars=$eagerjars \
+    mainjar=$mainjar \
     otherjars="$otherjars" \
     otherjarssizes="$otherjarssizes" \
     $jnlpfile > $tmpfile

@@ -40,6 +40,13 @@
 #	doc/codeDoc.jar
 DOC_CODEDOC_JAR =
 
+# Web Start can load jars either eagerly or lazily.
+# This makefile variable gets passed to $PTII/bin/mkjnlp and determines
+# the number of jars that are loaded eagerly.  Of course, for this to
+# work, the jars you want to load eagerly need to be at the front of the
+# list.  In general, large jars such as diva.jar and ptsupport.jar
+# should be loaded eagerly.
+NUMBER_OF_JARS_TO_LOAD_EAGERLY = 8
 # Jar files that will appear in all Ptolemy II JNLP files.
 CORE_JNLP_JARS = \
 	doc/docConfig.jar \
@@ -51,6 +58,7 @@ CORE_JNLP_JARS = \
 	ptolemy/actor/lib/javasound/javasound.jar \
 	ptolemy/media/javasound/javasound.jar \
 	$(DOC_CODEDOC_JAR)
+
 
 #######
 # DSP - The smallest runtime
@@ -172,8 +180,9 @@ vergilDSP.jnlp: vergilDSP.jnlp.in
 		-e 's%@PTVERSION@%$(PTVERSION)%' \
 			$< > $@
 	@echo "# Adding jar files to $@"
-	-chmod a+x $(MKJNLP)
+	-chmod a+x "$(MKJNLP)"
 	"$(MKJNLP)" $@ \
+		$(NUMBER_OF_JARS_TO_LOAD_EAGERLY) \
 		$(DSP_MAIN_JAR) \
 		$(DSP_JNLP_JARS)
 	@echo "# Updating JNLP-INF/APPLICATION.JNLP with $@"
@@ -194,8 +203,9 @@ vergilPtiny.jnlp: vergilPtiny.jnlp.in
 		-e 's%@PTVERSION@%$(PTVERSION)%' \
 			$< > $@
 	@echo "# Adding jar files to $@"
-	-chmod a+x $(MKJNLP)
+	-chmod a+x "$(MKJNLP)"
 	"$(MKJNLP)" $@ \
+		$(NUMBER_OF_JARS_TO_LOAD_EAGERLY) \
 		$(PTINY_MAIN_JAR) \
 		$(PTINY_JNLP_JARS)
 	@echo "# Updating JNLP-INF/APPLICATION.JNLP with $@"
@@ -217,8 +227,9 @@ vergil.jnlp: vergil.jnlp.in
 		-e 's%@PTVERSION@%$(PTVERSION)%' \
 			$< > $@
 	@echo "# Adding jar files to $@"
-	-chmod a+x $(MKJNLP)
+	-chmod a+x "$(MKJNLP)"
 	"$(MKJNLP)" $@ \
+		$(NUMBER_OF_JARS_TO_LOAD_EAGERLY) \
 		$(FULL_MAIN_JAR) \
 		$(FULL_JNLP_JARS)
 	@echo "# Updating JNLP-INF/APPLICATION.JNLP with $@"
