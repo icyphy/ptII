@@ -1302,8 +1302,8 @@ public class MoMLParser extends HandlerBase {
         } catch (InvocationTargetException ex) {
             // NOTE: While debugging, we print a stack trace here.
             // This is because XmlException loses it.
-            System.err.println("******** original error:");
-            ex.printStackTrace();
+            // System.err.println("******** original error:");
+            // ex.printStackTrace();
 
             // A constructor or method invoked via reflection has
             // triggered an exception.
@@ -1329,9 +1329,8 @@ public class MoMLParser extends HandlerBase {
 
                 // NOTE: While debugging, we print a stack trace here.
                 // This is because XmlException loses it.
-                // FIXME: Printing stack trace temporarily.
-                System.err.println("******** original error:");
-                ex.printStackTrace();
+                // System.err.println("******** original error:");
+                // ex.printStackTrace();
 
                 throw new XmlException(msg,
                         _currentExternalEntity(),
