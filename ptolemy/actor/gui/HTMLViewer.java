@@ -121,6 +121,13 @@ public class HTMLViewer extends TableauFrame
             if (ref != null) {
                 useBrowser = ref.equals("in_browser");
             }
+
+            // Suggested mailto: extension from Paul Lieverse
+            String prot = newUrl.getProtocol();
+            if (prot != null) {
+                useBrowser |= prot.equals("mailto");
+            }
+
             if (!useBrowser && event instanceof HTMLFrameHyperlinkEvent) {
                 // For some bizarre reason, when a link is within a frame,
                 // it needs to be handled differently than if its not in
