@@ -93,7 +93,13 @@ do
 done
 
 echo "   Printing using enscript . . ."
-enscript -Gp - $shortfiles > $reviewdir/javafiles.ps
+#enscript -Gp - $shortfiles > $reviewdir/javafiles.ps
+
+# Line numbers
+enscript -C -Gp - $shortfiles > $reviewdir/javafiles.ps
+
+# Pretty print + line numbers
+#enscript -E -C -Gp - $shortfiles > $reviewdir/javafiles.ps
 
 echo "   Converting to 2up using psnup . . ."
 cd $reviewdir
