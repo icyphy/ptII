@@ -245,7 +245,7 @@ test KernelException-7.3 {Create a KernelException with an unamed NamedObj \
     set n1 [java::new pt.kernel.util.NamedObj]
     set n2 [java::new pt.kernel.util.NamedObj "NamedObj 2"]
     set pe [java::new pt.kernel.util.KernelException $n1 $n2 "Detail Message"]
-    list [$pe getMessage]
+    list [$pe getLocalizedMessage]
 } {{. and .NamedObj 2: Detail Message}}
 
 ######################################################################
@@ -258,4 +258,5 @@ test KernelException-7.4 {Create a KernelException with a named NamedObj \
     set pe [java::new pt.kernel.util.KernelException $n1 $n2 "Detail Message"]
     list [$pe getMessage]
 } {{.NamedObj 1 and .NamedObj 2: Detail Message}}
+
 

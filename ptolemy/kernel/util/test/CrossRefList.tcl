@@ -311,4 +311,4 @@ test CrossRefList-5.3 {link CrossRefList to itself} {
 
     catch {$c1 link $c1} errmsg
     list $errmsg
-} {{pt.kernel.util.IllegalActionException: illegal link-back}}
+} {{pt.kernel.util.IllegalActionException: CrossRefLink.link: Illegal self-link.}}

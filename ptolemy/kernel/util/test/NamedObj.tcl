@@ -185,7 +185,7 @@ test NamedObj-6.2 {Test description} {
 }
  pt.kernel.util.NamedObj {foo.car} attributes {
 }
- pt.kernel.util.Workspace {foo} elements {
+ pt.kernel.util.Workspace {foo} directory {
     pt.kernel.util.NamedObj {foo.} attributes {
     }
     pt.kernel.util.NamedObj {foo.car} attributes {
