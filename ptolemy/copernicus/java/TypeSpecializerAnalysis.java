@@ -82,6 +82,10 @@ that we want to make more specific, but that don't directly depend on
 the the types of a port.  This transformation enables the token unboxing
 performed by the TokenToNativeTransformer
 
+<p> Note that this analysis assumes very little flow of control...  Or
+at least that the types of each variable along each path are the
+same...  as such, it works very badly if there are any instanceof
+checks, along with some other program constructs.
 */
 public class TypeSpecializerAnalysis {
 
@@ -98,15 +102,37 @@ public class TypeSpecializerAnalysis {
 
         _collectConstraints(_debug);
 
-        boolean succeeded = _solver.solveLeast();
-
+        boolean succeeded;
+        try {
+            succeeded = _solver.solveLeast();
+        } catch (RuntimeException ex) {
+            System.out.println("Type Assignment:");
+            Iterator variables = _solver.variables();
+            while (variables.hasNext()) {
+                System.out.println("InequalityTerm: "
+                        + variables.next().toString());
+            }
+            throw ex;
+        }
         if (_debug) {
             System.out.println("Type Assignment:");
             Iterator variables = _solver.variables();
             while (variables.hasNext()) {
-                System.out.println("Inequality: "
+                System.out.println("InequalityTerm: "
                         + variables.next().toString());
             }
+        }
+        if(succeeded) {
+            if(_debug) System.out.println("solution FOUND!");
+        } else {
+           System.out.println("Unsatisfied Inequalities:");
+            Iterator inequalities = _solver.unsatisfiedInequalities();
+            while (inequalities.hasNext()) {
+                System.out.println("Inequality: "
+                        + inequalities.next().toString());
+            }
+          
+            //       throw new RuntimeException("NO Type solution found!");
         }
     }
 
@@ -115,18 +141,25 @@ public class TypeSpecializerAnalysis {
         return _getUpdateType(local, type);
     }
 
+    public Type getSpecializedSootType(NewArrayExpr expr) {
+        Type type = expr.getBaseType();
+        return _getUpdateType(expr, type);
+    }
+
     public Type getSpecializedSootType(SootField field) {
         Type type = field.getType();
         return _getUpdateType(field, type);
     }
 
     public ptolemy.data.type.Type getSpecializedType(Local local) {
-        //   Type type = local.getType();
         return _getTokenType(local);
     }
 
+    public ptolemy.data.type.Type getSpecializedType(NewArrayExpr expr) {
+        return _getTokenType(expr);
+    }
+
     public ptolemy.data.type.Type getSpecializedType(SootField field) {
-        // Type type = field.getType();
         return _getTokenType(field);
     }
 
@@ -293,128 +326,7 @@ public class TypeSpecializerAnalysis {
         }
 
     }
-    /*
-      private static Map _updateTypes(boolean debug,
-      SootClass theClass, Map objectToInequalityTerm) {
-      if (debug) System.out.println("updateing types for " + theClass);
-      Map map = new HashMap();
-
-      // Loop through all the methods and update types of locals.
-      // Note that unlike the types of fields, the types of locals
-      // are not stored in the bytecode, hence we don't have to insert
-      // casts to please the bytecode verifier.   On the other hand,
-      // this information will be lost once we actually write to bytecode.
-      // We are updating it because further passes of code generation
-      // use this information (for example, when converting
-      // token types (like IntToken) to native types (like int).
-      for (Iterator methods = theClass.getMethods().iterator();
-      methods.hasNext();) {
-      SootMethod method = (SootMethod)methods.next();
-      if (debug) System.out.println("updating types for " + method);
-      Body body = method.retrieveActiveBody();
-      for (Iterator locals = body.getLocals().iterator();
-      locals.hasNext();) {
-      Local local = (Local)locals.next();
-      Type type = local.getType();
-      // Things that aren't token types are ignored.
-      Type newType = _getUpdateType(debug, local, type, objectToInequalityTerm);
-      if (newType != null) {
-      if (debug) System.out.println("local = " + local);
-      local.setType(newType);
-      map.put(local, _getTokenType(objectToInequalityTerm, local));
-      }
-      }
-      for (Iterator boxes = body.getUseBoxes().iterator();
-      boxes.hasNext();) {
-      ValueBox box = (ValueBox)boxes.next();
-      if (box.getValue() instanceof NewArrayExpr) {
-      NewArrayExpr newArrayExpr = (NewArrayExpr)box.getValue();
-      if (debug) System.out.println("newArrayExpr = " + newArrayExpr);
-
-      Type type = newArrayExpr.getBaseType();
-      // Things that aren't token types are ignored.
-      Type newType = _getUpdateType(debug, newArrayExpr, type, objectToInequalityTerm);
-      if (newType != null) {
-      if (debug) System.out.println("updating newArrayExpr = " + newArrayExpr);
-
-      newArrayExpr.setBaseType(newType);
-      map.put(newArrayExpr, _getTokenType(objectToInequalityTerm, newArrayExpr));
-      }
-      }
-      }
-      }
-
-      // Loop through all the methods and insert casts whenever we
-      // have a field store that has changed type to please the bytecode
-      // verifier.
-      for (Iterator methods = theClass.getMethods().iterator();
-      methods.hasNext();) {
-      SootMethod method = (SootMethod)methods.next();
-      Body body = method.retrieveActiveBody();
-      for (Iterator units = body.getUnits().snapshotIterator();
-      units.hasNext();) {
-      Unit unit = (Unit) units.next();
-      // Ignore anything that isn't an assignment.
-      if (!(unit instanceof AssignStmt)) {
-      continue;
-      }
-      AssignStmt assignStmt = (AssignStmt)unit;
-      // Ignore anything that isn't an assignment to a field.
-      if (!(assignStmt.getLeftOp() instanceof FieldRef)) {
-      continue;
-      }
-      FieldRef ref = (FieldRef)((AssignStmt)assignStmt).getLeftOp();
-      SootField field = ref.getField();
-      Type type = field.getType();
-      // Things that aren't token types are ignored.
-      // Things that are already the same type are ignored.
-      Type newType = _getUpdateType(debug, field, type, objectToInequalityTerm);
-      if (newType != null && !newType.equals(type)) {
-      Local tempLocal = Jimple.v().newLocal("fieldUpdateLocal", newType);
-      body.getLocals().add(tempLocal);
-      body.getUnits().insertBefore(
-      Jimple.v().newAssignStmt(tempLocal,
-      Jimple.v().newCastExpr(
-      assignStmt.getRightOp(),
-      newType)),
-      unit);
-      assignStmt.setRightOp(tempLocal);
-      }
-      }
-      }
-
-      // Loop through all the fields and update the types.
-      for (Iterator fields = theClass.getFields().iterator();
-      fields.hasNext();) {
-      SootField field = (SootField)fields.next();
-      if (debug) System.out.println("updating types for " + field);
-      Type type = field.getType();
-      // Things that aren't token types are ignored.
-      Type newType = _getUpdateType(debug, field, type, objectToInequalityTerm);
-      if (newType != null) {
-      field.setType(newType);
-      map.put(field, _getTokenType(objectToInequalityTerm, field));
-      }
-      }
-
-      // FIXME: Loop through all the fields in the main class and update the types.
-      for (Iterator fields = ModelTransformer.getModelClass().getFields().iterator();
-      fields.hasNext();) {
-      SootField field = (SootField)fields.next();
-      if (debug) System.out.println("updating types for " + field);
-      Type type = field.getType();
-      // Things that aren't token types are ignored.
-      Type newType = _getUpdateType(debug, field, type, objectToInequalityTerm);
-      if (newType != null) {
-      field.setType(newType);
-      map.put(field, _getTokenType(objectToInequalityTerm, field));
-      }
-      }
-
-      return map;
-      }
-    */
-
+  
     // Given an object (which must be either a local, or a field) of
     // the given type, look into the given map and retrieve the
     // inequality term for the object.  retrieve the resolved type,
@@ -872,6 +784,7 @@ public class TypeSpecializerAnalysis {
         }
 
         public void setValue(Object e) throws IllegalActionException {
+            //   System.out.println("setting value of " + toString() + " to " + e);
 	    if (!_declaredType.isSubstitutionInstance((ptolemy.data.type.Type)e)) {
 	    	throw new RuntimeException("VariableTerm.setValue: "
 		        + "Cannot update the type of " + this + " to the "
@@ -881,7 +794,7 @@ public class TypeSpecializerAnalysis {
 	    }
 
 	    if (_declaredType == ptolemy.data.type.BaseType.UNKNOWN) {
-		_currentType = (ptolemy.data.type.Type)e;
+		_currentType = (ptolemy.data.type.Type)e;//((ptolemy.data.type.Type)e).clone();
 	    } else {
 		// _declaredType is a StructuredType
 		((ptolemy.data.type.StructuredType)_currentType).updateType((ptolemy.data.type.StructuredType)e);
@@ -889,7 +802,8 @@ public class TypeSpecializerAnalysis {
         }
 
         public String toString() {
-            return "{VariableTerm: value = " + _currentType + ", associated object = " +
+            return "{VariableTerm: value = " + _currentType + ", depth = " + 
+                PtolemyUtilities.getTypeDepth(_currentType) + ", associated object = " +
 		_object + "}";
         }
 

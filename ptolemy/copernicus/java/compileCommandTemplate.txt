@@ -20,7 +20,7 @@
  -p wjtp.iat targetPackage:@targetPackage@
  -p wjtp.ipt targetPackage:@targetPackage@
  -p wjtp.itt targetPackage:@targetPackage@
- -p wjtp.ttn disabled,debug,targetPackage:@targetPackage@
+ -p wjtp.ttn debug,targetPackage:@targetPackage@
  -p wjtp.ts targetPackage:@targetPackage@
  -p wjtp.noe targetPackage:@targetPackage@
  -p wjtp.nee targetPackage:@targetPackage@

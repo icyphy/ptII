@@ -155,35 +155,6 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot2", ClassWriter.v()));
 
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.ls",
-                        new TransformerAdapter(LocalSplitter.v())));
-
-        // While we still have references to ports, use the
-        // resolved types of the ports and run a typing
-        // algorithm to specialize the types of domain
-        // polymorphic actors.  After this step, no
-        // uninstantiable types should remain.
-        //  Scene.v().getPack("wjtp").add(new Transform("wjtp.ts",
-        //        TypeSpecializer.v(_toplevel)));
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.tie",
-                        new TransformerAdapter(
-                                TokenInstanceofEliminator.v())));
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.ta",
-                        new TransformerAdapter(TypeAssigner.v())));
-
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.cp",
-                        new TransformerAdapter(CopyPropagator.v())));
-
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.snapshot3", JimpleWriter.v()));
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.snapshot3", ClassWriter.v()));
-
-
         // Set about removing reference to attributes and parameters.
         // Anywhere where a method is called on an attribute or
         // parameter, replace the method call with the return value
@@ -197,11 +168,6 @@ public class Main extends KernelMain {
                 new Transform("wjtp.iat",
                         InlineParameterTransformer.v(_toplevel)));
 
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.snapshot4", JimpleWriter.v()));
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.snapshot4", ClassWriter.v()));
-
         // Anywhere we have a method call on a token that can be
         // statically evaluated (usually, these will have been
         // created by inlining parameters), inline those calls.
@@ -212,7 +178,41 @@ public class Main extends KernelMain {
                 new Transform("wjtp.itt",
                         InlineTokenTransformer.v(_toplevel)));
 
-        // Set about removing references to ports.
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.snapshot3", JimpleWriter.v()));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.snapshot3", ClassWriter.v()));
+
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.ls",
+                        new TransformerAdapter(LocalSplitter.v())));
+
+        // While we still have references to ports, use the
+        // resolved types of the ports and run a typing
+        // algorithm to specialize the types of domain
+        // polymorphic actors.  After this step, no
+        // uninstantiable types should remain.
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.tie",
+                        new TransformerAdapter(
+                                TokenInstanceofEliminator.v())));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.ta",
+                        new TransformerAdapter(TypeAssigner.v())));
+
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.cp",
+                        new TransformerAdapter(CopyPropagator.v())));
+
+        _addStandardOptimizations(Scene.v().getPack("wjtp"));
+
+
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.snapshot4", JimpleWriter.v()));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.snapshot4", ClassWriter.v()));
+        
+         // Set about removing references to ports.
         // Anywhere where a method is called on a port, replace the
         // method call with an inlined version of the method.
         // Currently this only deals with SDF, and turns
@@ -244,15 +244,15 @@ public class Main extends KernelMain {
         // Scene.v().getPack("wjtp").add(new Transform("wjtp.si",
         //        StaticInliner.v()));
 
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.snapshot5", JimpleWriter.v()));
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.snapshot5", ClassWriter.v()));
+         Scene.v().getPack("wjtp").add(
+                 new Transform("wjtp.snapshot5", JimpleWriter.v()));
+         Scene.v().getPack("wjtp").add(
+                 new Transform("wjtp.snapshot5", ClassWriter.v()));
 
         // Unroll loops with constant loop bounds.
         //Scene.v().getPack("jtp").add(new Transform("jtp.clu",
         //        ConstantLoopUnroller.v()));
-
+        
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
 
         Scene.v().getPack("wjtp").add(
@@ -267,6 +267,18 @@ public class Main extends KernelMain {
                 new Transform("wjtp.cie",
                         new TransformerAdapter(
                                 CastAndInstanceofEliminator.v())));
+
+        _addStandardOptimizations(Scene.v().getPack("wjtp"));
+
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.ts",
+                        TypeSpecializer.v(_toplevel)));
+
+ 
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.tie",
+                        new TransformerAdapter(
+                                TokenInstanceofEliminator.v())));
 
         // Some cleanup.
         // Remove object creations that are now dead (i.e. aren't used
@@ -341,11 +353,11 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot6", ClassWriter.v()));
  
-        //Scene.v().getPack("wjtp").add(new Transform("wjtp.ts",
-        //         TypeSpecializer.v(_toplevel)));
-        //        Scene.v().getPack("wjtp").add(
-        //        new Transform("wjtp.ttn",
-        //                TokenToNativeTransformer.v(_toplevel)));
+     //    Scene.v().getPack("wjtp").add(new Transform("wjtp.ts",
+//                                               TypeSpecializer.v(_toplevel)));
+    //     Scene.v().getPack("wjtp").add(
+//                 new Transform("wjtp.ttn",
+//                         TokenToNativeTransformer.v(_toplevel)));
 
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.finalSnapshot",
