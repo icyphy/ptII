@@ -59,7 +59,6 @@ JSRCS = \
 	Entity.java \
 	Executive.java \
 	FIFORelation.java \
-	#FIXME: Galaxy.java \
 	GenericPort.java \
 	GraphElement.java \
 	GraphException.java \
@@ -87,7 +86,6 @@ JSRCS = \
 	PortList.java \
 	PtolemyException.java \
 	Relation.java \
-	#FIXME: Star.java \
 	StatusArray.java \
 	Tag.java \
 	TagInterface.java \
@@ -96,9 +94,11 @@ JSRCS = \
 	TimedHasValue.java \
 	TimedNoValue.java \
 	ThreadedEntity.java \
-	#FIXME: Universe.java \
 	Value.java \
 	ValueInterface.java
+	#FIXME: Galaxy.java \
+	#FIXME: Star.java \
+	#FIXME: Universe.java \
 
 EXTRA_SRCS =	$(JSRCS)
 
