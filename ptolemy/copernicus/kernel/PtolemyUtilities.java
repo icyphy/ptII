@@ -643,12 +643,12 @@ public class PtolemyUtilities {
      *  given object return that value, methods that set information
      *  are removed and methods that are non-sensical in generated
      *  code throw an exception.
-     *  @param body The body in which the invoke occured.
-     *  @param unit The unit in which the invoke occured.
+     *  @param body The body in which the invoke occurred.
+     *  @param unit The unit in which the invoke occurred.
      *  @param box The value box containing the invoke expression.
      *  @param typeable A reference to an object that has the same
      *  resolve type as the typeable object that the invoke would have
-     *  occured on, has the code actually been executed.
+     *  occurred on, has the code actually been executed.
      */
     public static void inlineNamedObjMethods(JimpleBody body,
             Unit unit, ValueBox box, InstanceInvokeExpr expr,
@@ -665,12 +665,12 @@ public class PtolemyUtilities {
      *  will be replace with code that returns the resolved type as a
      *  constant, methods that add type constraints are removed, and
      *  other methods that return a value are changed to throw exceptions.
-     *  @param body The body in which the invoke occured.
-     *  @param unit The unit in which the invoke occured.
+     *  @param body The body in which the invoke occurred.
+     *  @param unit The unit in which the invoke occurred.
      *  @param box The value box containing the invoke expression.
      *  @param typeable A reference to an object that has the same
      *  resolve type as the typeable object that the invoke would have
-     *  occured on, has the code actually been executed.
+     *  occurred on, has the code actually been executed.
      */
     public static void inlineTypeableMethods(JimpleBody body,
             Unit unit, ValueBox box, InstanceInvokeExpr expr,
