@@ -113,16 +113,15 @@ public class VergilApplication extends MoMLApplication {
      */
     protected Configuration _createEmptyConfiguration() throws Exception {
         Configuration configuration = _createDefaultConfiguration();
-	/* 
-	   // FIXME: This code is Dog slow for some reason.
+	
+	// FIXME: This code is Dog slow for some reason.
 	URL inurl = specToURL("ptolemy/configs/vergilWelcomeWindow.xml");
         _parser.reset();
         _parser.setContext(configuration);
         _parser.parse(inurl, inurl.openStream());
 	Effigy doc = (Effigy)configuration.getEntity("directory.doc");
         doc.identifier.setExpression(inurl.toExternalForm());
-	*/
-        return configuration;
+	return configuration;
     }
 
     /** Parse the command-line arguments. This overrides the base class
