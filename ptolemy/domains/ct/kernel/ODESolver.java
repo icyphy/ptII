@@ -42,19 +42,17 @@ import ptolemy.kernel.util.Workspace;
    step. This method does not consider any breakpoints. In general,
    resolveState() will resolve the integrators' new states.
    Step size control (including error control) is performed by the
-   director, but solvers may provide support for it.
-   How the states are resolved and how the errors are controlled are
-   solver dependent.  Derived classes
-   may implement these methods according to individual ODE
-   solving algorithms.
+   director, but solvers may provide support for it. How the states are 
+   resolved and how the errors are controlled are solver dependent.  
+   Derived classes may implement these methods according to individual 
+   ODE solving algorithms.
    <P>
-   The behavior of integrators also changes
-   when changing the ODE solver, so this class provides some methods
-   for the integrators too, including the fire() method and the step size
-   control related methods. Here we use the strategy and delegation design
-   patterns. CTBaseIntegrator delegated its corresponding
-   methods to this class. And subclasses of this class provide concrete
-   implementations of these methods.
+   The behavior of integrators also changes when changing the ODE solver, 
+   so this class provides some methods for the integrators too, including the 
+   fire() method and the step size control related methods. Here we use the 
+   strategy and delegation design patterns. CTBaseIntegrator delegated its 
+   corresponding methods to this class. And subclasses of this class provide 
+   concrete implementations of these methods.
    <P>
    An integer called "round" is used to indicate the number of firing rounds
    within one iteration. For some integration methods, (i.e. the so called
@@ -62,21 +60,22 @@ import ptolemy.kernel.util.Workspace;
    For some others (i.e. implicit methods), the round could be an arbitrary
    positive integer.
    <P>
-   A round counter is a counter
-   for the number of fire() rounds in one iteration to help the actors that
-   may behave differently under different rounds. The round can be got by
-   the getRound() method. The incrementRound() method will increase the
-   counter by one, and resetRound() will always reset the counter to 0.
+   A round counter is a counter for the number of fire() called in one 
+   iteration. It helps the actors to decide how to behave under different 
+   rounds. The round can be got by the getRound() method. The incrementRound() 
+   method will increase the counter by one, and resetRound() will always 
+   reset the counter to 0.
    <P>
    Conceptually, ODE solvers do not maintain simulation parameters,
    like step sizes and error tolerance.
    They get these parameters from the director. So the same set of parameters
    are shared by all the solvers in a simulation.
-   @author Jie Liu
+   
+   @author Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (liuj)
-   @Pt.AcceptedRating Green (yuhong)
+   @Pt.ProposedRating Yellow (hyzheng)
+   @Pt.AcceptedRating Red (hyzheng)
 */
 public abstract class ODESolver extends NamedObj {
 
@@ -114,17 +113,27 @@ public abstract class ODESolver extends NamedObj {
         super(workspace, name);
     }
 
-    public abstract void fireDynamicActors() throws IllegalActionException;
-    public abstract void fireStateTransitionActors() throws IllegalActionException;
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Fire dynamic actors. In this class, this method is abstract. 
+     *  Derived classes need to implement the details.
+     *  @exception IllegalActionException Now thrown in this class.
+     */
+    public abstract void fireDynamicActors() throws IllegalActionException;
+
+    /** Fire state transition actors. In this class, this method is abstract. 
+     *  Derived classes need to implement the details.
+     *  @exception IllegalActionException Now thrown in this class.
+     */
+    public abstract void fireStateTransitionActors() 
+        throws IllegalActionException;
 
     /** Return the director that contains this solver.
      *  @return the director that contains this solver.
      */
     public final NamedObj getContainer() {
-        return _container;
+        return _director;
     }
 
     /** Return the number of history information needed by this solver.
@@ -145,7 +154,6 @@ public abstract class ODESolver extends NamedObj {
     public abstract int getIntegratorAuxVariableCount();
 
     /** Return the round counter record.
-     *
      *  @return The round of firing the state transition schedule.
      */
     public int getRoundCount() {
@@ -153,18 +161,16 @@ public abstract class ODESolver extends NamedObj {
     }
 
     /** Increase the round counter by one. In general, the round counter
-     *  will be increased
-     *  for each round the state transition schedule is fired.
+     *  will be increased for each round the state transition schedule is fired.
      */
     public void incrementRoundCount() {
-        _roundCount ++ ;
+        _roundCount++;
     }
 
     /** The fire() method of integrators is delegated to this method.
-     *
+     *  Derived classes need to implement the details.
      *  @param integrator The integrator of that calls this method.
-     *  @exception IllegalActionException Not thrown in this base class.
-     *  May be needed by the derived class.
+     *  @exception IllegalActionException Not thrown in this abstract class.
      */
     public abstract void integratorFire(CTBaseIntegrator integrator)
             throws  IllegalActionException;
@@ -172,6 +178,7 @@ public abstract class ODESolver extends NamedObj {
     /** The isThisStepAccurate() method of integrators is delegated to
      *  this method. It returns true if the current integration step
      *  is accurate from the argument integrator's point of view.
+     *  Derived classes need to implement the details.
      *  @param integrator The integrator of that calls this method.
      *  @return True if the integrator finds the step accurate.
      */
@@ -180,15 +187,16 @@ public abstract class ODESolver extends NamedObj {
 
     /** The predictedStepSize() method of the integrator is delegated
      *  to this method.
+     *  Derived classes need to implement the details.
      *  @param integrator The integrator of that calls this method.
      *  @return The suggested next step by the given integrator.
      */
     public abstract double integratorPredictedStepSize(
             CTBaseIntegrator integrator);
 
-    /** Return true if all integrators agree that the fixed-point
-     *  iteration has converged. 
-     *  @return True if all the votes are true.
+    /** Return true if all integrators agree that the current iteration has 
+     *  converged to a fixed point. 
+     *  @return True if the current iteration has converged to a fixed point.
      */
     public boolean isConverged() {
         return _isConverged;
@@ -199,60 +207,63 @@ public abstract class ODESolver extends NamedObj {
     public void resetRoundCount() {
         _roundCount = 0;
     }
+    
     /** Return true if the state of the system is resolved successfully.
      *  Different solvers may implement it differently. Implementations
      *  of this method will fire STATE_TRANSITION_ACTORS and
      *  DYNAMIC actors. When states are resolved, the current time was
      *  increased by the amout of the used step size.
-     *
-     * @exception IllegalActionException Thrown in derived classes if
-     * the exception is thrown by * one of the execution methods of some
-     * actors.
+     *  @exception IllegalActionException Thrown in derived classes if
+     *  the exception is thrown by one of the execution methods of some
+     *  actors.
+     *  @return True If states of the system is resolved sucessfully. 
      */
     public abstract boolean resolveStates() throws IllegalActionException;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Make this solver to be the solver of the given Director. This method
-     *  should not be called directly. The solvers will be instantiated
-     *  by the director according to the parameters.
-     *
-     *  @param dir The CT director
+    /** Make this solver the solver of the given Director. This method
+     *  should only be called by CT directors, when they instantiate solvers 
+     *  according to the ODESolver parameters.
+     *  @param dir The CT director that contains this solver.
      */
     protected void _makeSolverOf(CTDirector dir) {
-        _container = dir;
+        _director = dir;
+        // FIXME: why we need the following?
         if (dir != null) {
             workspace().remove(this);
         }
     }
 
-    /** If the specified actor has not be prefired() in the current
-     *  iteration, then prefire() it.
-     *  @param actor The actor to prefire().
-     *  @exception IllegalActionException If the actor returns false.
+    /** If the specified actor has not be prefired in the current
+     *  iteration, then prefire it.
+     *  @param actor The actor to be prefired.
+     *  @exception IllegalActionException If the actor returns false from the
+     *  prefire method.
      */
     protected void _prefireIfNecessary(Actor actor)
             throws IllegalActionException {
         CTDirector dir = (CTDirector)getContainer();
         if (!dir.isPrefireComplete(actor)) {
-            _debug(getFullName()
-                    + " is prefiring: "
-                    + ((Nameable)actor).getName());
-            dir.setPrefireComplete(actor);
+            if (_debugging) {
+                _debug(getFullName()
+                        + " is prefiring: "
+                        + ((Nameable)actor).getName());
+            }
             if (!actor.prefire()) {
                 throw new IllegalActionException((Nameable)actor,
                         "Expected prefire() to return true!\n"
                         + "Perhaps a continuous input is being driven by a "
                         + "discrete output?");
             }
+            dir.setPrefireComplete(actor);
         }
     }
 
-    /** Set a flag to indicate that all the integrators agree that the
-     *  fixed point has been reached.
-     *  Set the convergence flag. Integrators may call this method
-     *  to change the convergence.
+    /** Set a flag to indicate whether the fixed-point iteration has been 
+     *  reached. Integrators and CT director may call this method to 
+     *  change the convergence.
      *  @param converged The flag setting.
      */
     protected void _setConverged(boolean converged) {
@@ -263,10 +274,9 @@ public abstract class ODESolver extends NamedObj {
     ////                         private variables                 ////
 
     // The CT director that contains this solver.
-    private CTDirector _container = null;
-    // The flad indicating whether the states converged.
+    private CTDirector _director = null;
+    // The flag indicating whether the fixed-point iteration has been reached.
     private boolean _isConverged = false;
     // The round counter.
-    private int _roundCount = 0;
-   
+    private int _roundCount = 0;   
 }

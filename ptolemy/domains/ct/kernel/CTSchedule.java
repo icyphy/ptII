@@ -42,6 +42,7 @@ import ptolemy.kernel.util.NamedObj;
    array of LinkedList. The array always has length X, consisting of the
    following entries in that order (in a type-safe enumeration),
    <pre>
+   CONTINUOUS_ACTORS
    DISCRETE_ACTORS
    DYNAMIC_ACTORS
    EVENT_GENERATORS
@@ -52,19 +53,18 @@ import ptolemy.kernel.util.NamedObj;
    STATE_STEP_SIZE_CONTROL_ACTORS
    WAVEFORM_GENERATORS
    </pre>
-   Each entry is a Schedule. Actors
-   in the schedule are ordered according to the order they should be
-   executed.
+   Each entry is a Schedule. Actors in the schedule are ordered according 
+   to the order they should be executed.
    <P>
-   A typical use of the schedule is to get one of the subschedules.
+   A typical use of this schedule is to get one of the subschedules.
    For example, to schedule the CT execution and get the iterator for
-   dynamic actor schedule,
-   (assume we have a CTScheduler called scheduler) do:
+   dynamic actor schedule, (assume we have a CTScheduler called scheduler) do:
    <pre>
    CTSchedule schedule = scheduler.getSchedule();
    Iterator dynamicActorIterator =
-   schedule.get(CTSchedule.DYNAMIC_ACTOR_SCHEDULE).actorIterator();
+       schedule.get(CTSchedule.DYNAMIC_ACTOR_SCHEDULE).actorIterator();
    </pre>
+   
    @author  Jie Liu
    @version $Id$
    @since Ptolemy II 2.0
@@ -82,20 +82,21 @@ public class CTSchedule extends Schedule {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
+    /** Index for actors in the continuous part of the system, unordered.
+     */
+    public final static int CONTINUOUS_ACTORS = 0;
+
     /** Index for actors in the discrete part of the system,
      *  topologically ordered.
      */
-    public final static int DISCRETE_ACTORS = 0;
-
-    /** Index for actors in the continuous part of the system, unordered.
-     */
-    public final static int CONTINUOUS_ACTORS = 1;
+    public final static int DISCRETE_ACTORS = 1;
 
     /** Index for dynamic actor schedule.
      */
     public final static int DYNAMIC_ACTORS = 2;
 
-    /** Index for actors implement the CTEventGenerator interface.
+    /** Index for the schedule of actors that implement 
+     *  the CTEventGenerator interface.
      */
     public final static int EVENT_GENERATORS = 3;
 
@@ -103,8 +104,8 @@ public class CTSchedule extends Schedule {
      */
     public final static int OUTPUT_ACTORS = 4;
 
-    /** Index for actors that are in the output map and implement the
-     *  CTStepSizeControlActor.
+    /** Index for the schedule of actors that are in the output map and 
+     *  implement the CTStepSizeControlActor.
      */
     public final static int OUTPUT_STEP_SIZE_CONTROL_ACTORS = 5;
 
@@ -112,16 +113,18 @@ public class CTSchedule extends Schedule {
      */
     public final static int STATE_TRANSITION_ACTORS = 6;
 
-    /** Index for actors that implement the CTStatefulActor interface.
+    /** Index for the schedule of actors that implement the 
+     *  CTStatefulActor interface.
      */
     public final static int STATEFUL_ACTORS = 7;
 
-    /** Index for actors that are in the state transition map and
-     *  implement the CTStepSizeControlActor interface.
+    /** Index for the schedule of actors that are in the state transition map 
+     *  and implement the CTStepSizeControlActor interface.
      */
     public final static int STATE_STEP_SIZE_CONTROL_ACTORS = 8;
 
-    /** Index for actors that implement the CTWaveformGenerator interface.
+    /** Index for the schedule of actors that implement 
+     *  the CTWaveformGenerator interface.
      */
     public final static int WAVEFORM_GENERATORS = 9;
 

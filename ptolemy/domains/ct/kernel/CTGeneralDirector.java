@@ -34,10 +34,8 @@ import ptolemy.actor.util.Time;
 //// CTGeneralDirector
 /**
    Interface for CT directors. This interface defines the methods for lower 
-   level CT directors to access information of the top level CT director.    
+   level CT directors to access information of the upper level CT director.    
 
-   @see CTDirector
-   @see CTTransparentDirector
    @author  Haiyang Zheng
    @version $Id$
    @since Ptolemy II 4.1
@@ -52,7 +50,7 @@ public interface CTGeneralDirector {
     ////                         public methods                    ////
 
     /** Return the current step size used by the solver.
-     *  @return The current step size.
+     *  @return The current step size used by the solver.
      */
     public double getCurrentStepSize();
 
@@ -66,17 +64,17 @@ public interface CTGeneralDirector {
     public CTGeneralDirector getEnclosingCTGeneralDirector();
 
     /** Return the current execution phase.
-     * @return The the current execution phase.
+     *  @return The the current execution phase.
      */
     public CTExecutionPhase getExecutionPhase();
     
     /** Return the current time the current iteration starts.
-     * @return The time the current iteration starts.
+     *  @return The time the current iteration starts.
      */
     public Time getIterationBeginTime();
     
     /** Return the ODE solver.
-     *  @return The default ODE solver associated with this director.
+     *  @return The ODE solver used by this director.
      */
     public ODESolver getODESolver();
     

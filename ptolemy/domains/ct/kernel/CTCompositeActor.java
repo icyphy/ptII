@@ -1,4 +1,4 @@
-/* Composite Actor in the CT domain.
+/* A composite actor specially designed for the CT domain.
 
 Copyright (c) 1998-2004 The Regents of the University of California.
 All rights reserved.
@@ -38,44 +38,46 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// CTCompositeActor
 /**
-   Composite actor in the CT domain. This class is derived from
-   TypedCompositeActor and implements the CTStepSizeControlActor interface.
-   Normally, in the CT domain, opaque composite actors are not fired
-   in every iteration. They are only fired in discrete iterations,
-   when there is a possibility of events. Actors that implement
-   the CTStepSizeControlActor interface, however, such as this one,
-   are fired in every iteration.
+   A composite actor specially designed for the CT domain. This class  
+   extends TypedCompositeActor and implements the following interfaces: 
+   CTDynamicActor, CTEventGenerator, CTStatefulActor, CTStepSizeControlActor, 
+   CTWaveformGenerator. 
+   <p>
+   In the CT domain, normal opaque composite actors are not fired
+   in every iteration. They are only fired in the discrete phase of execution,
+   when they have trigger events. However, CTCompositeActors are fired 
+   in every iteration.
    <p>
    The key task of this actor is to implement step-size control methods.
-   If the director of this composite actor is an instance of
-   CTTransparentDirector, then the CTStepSizeControlActor calls
-   will be delegated to its local director. Otherwise, they return
-   default values.
+   If the local director of this actor is an instance of CTTransparentDirector,
+   then any step-size control methods called on this actor will be delegated
+   to the local director. If the local director is not a CTTransparentDirector,  
+   the implementations of the step-size control methods do not affect 
+   the current step size. 
    <P>
    This composite actor should be used when a CT subsystem needs to transfer
    its step size control information to the outer domain. Typical usage
-   includes CT inside CT or CT inside FSM inside CT.  If you construct
-   a modal model, then by default, refinements of the modes are actors
-   like this one that implement the CTStepSizeControlActor interface.
+   includes CT inside CT or CT inside FSM inside CT. 
 
    @author  Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (liuj)
-   @Pt.AcceptedRating Yellow (chf)
-   @see CTStepSizeControlActor
+   @Pt.ProposedRating Yellow (hyzheng)
+   @Pt.AcceptedRating Red (hyzheng)
+   @see ptolemy.domains.ct.kernel.CTDynamicActor
+   @see ptolemy.domains.ct.kernel.CTEventGenerator
+   @see ptolemy.domains.ct.kernel.CTStatefulActor
+   @see ptolemy.domains.ct.kernel.CTStepSizeControlActor
+   @see ptolemy.domains.ct.kernel.CTWaveformGenerator
    @see CTTransparentDirector
 */
 public class CTCompositeActor extends TypedCompositeActor
-    implements CTEventGenerator, CTStatefulActor, 
-    CTStepSizeControlActor, CTWaveformGenerator, CTDynamicActor {
+    implements CTDynamicActor, CTEventGenerator, CTStatefulActor, 
+    CTStepSizeControlActor, CTWaveformGenerator {
 
-    /** Construct a CTCompositeActor in the default workspace with no container
-     *  and an empty string as its name. Add the actor to the workspace
-     *  directory.
-     *  The director should be set before attempting to execute it.
-     *  The container should be set before sending data to it.
-     *  Increment the version number of the workspace.
+    /** Construct a CTCompositeActor in the default workspace with 
+     *  no container and an empty string as its name. Add the actor 
+     *  to the workspace directory.
      */
     public CTCompositeActor() {
         super();
@@ -85,15 +87,12 @@ public class CTCompositeActor extends TypedCompositeActor
     }
 
     /** Create an CTCompositeActor with a name and a container.
-     *  The container argument must not be null, or a
-     *  NullPointerException will be thrown.  This actor will use the
-     *  workspace of the container for synchronization and version counts.
-     *  If the name argument is null, then the name is set to the empty string.
-     *  Increment the version of the workspace.
-     *  This actor will have no
-     *  local director initially, and its executive director will be simply
-     *  the director of the container.
-     *  The director should be set before attempting to execute it.
+     *  The container argument must not be null, or a NullPointerException 
+     *  will be thrown. This actor will use the workspace of the container 
+     *  for synchronization and version counts. If the name argument is null, 
+     *  then the name is set to the empty string. Increment the version of the 
+     *  workspace. This actor will have no local director initially, and its 
+     *  executive director will be simply the director of the container.
      *
      *  @param container The container actor.
      *  @param name The name of this actor.
@@ -111,13 +110,9 @@ public class CTCompositeActor extends TypedCompositeActor
     }
 
     /** Construct a CTCompositeActor in the specified workspace with no
-     *  container
-     *  and an empty string as a name. You can then change the name with
-     *  setName(). If the workspace argument is null, then use the default
-     *  workspace.
-     *  The director should be set before attempting to execute it.
-     *  The container should be set before sending data to it.
-     *  Increment the version number of the workspace.
+     *  container and an empty string as a name. If the workspace argument is 
+     *  null, then use the default workspace. Increment the version number of 
+     *  the workspace.
      *  @param workspace The workspace that will list the actor.
      */
     public CTCompositeActor(Workspace workspace) {
@@ -127,8 +122,12 @@ public class CTCompositeActor extends TypedCompositeActor
         setClassName("ptolemy.domains.ct.kernel.CTCompositeActor");
     }
 
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.CTDynamicActor#emitTentativeOutputs()
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Call the emitTentativeOutputs method of the local director if the local
+     *  director is an instance of CTTransparentDirector. Otherwise, do nothing.
+     *  @throws IllegalActionException If tentative states can not be emitted.
      */
     public void emitTentativeOutputs() throws IllegalActionException {
         Director dir = getDirector();
@@ -137,9 +136,8 @@ public class CTCompositeActor extends TypedCompositeActor
         }
     }
 
-    /** Implementations of this method should go to the marked state.
-     *  If there's no marked state, throws
-     *  an exception.
+    /** Call the goToMarkedState method of the local director if the local
+     *  director is an instance of CTTransparentDirector. Otherwise, do nothing.
      *  @exception IllegalActionException If there were no marked state.
      */
     public void goToMarkedState() throws IllegalActionException {
@@ -149,10 +147,7 @@ public class CTCompositeActor extends TypedCompositeActor
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** This method is delegated to the local director if the local
+    /** Call the hasCurrentEvent method of the local director if the local
      *  director is an instance of CTTransparentDirector. Otherwise,
      *  return false, indicating that this composite actor does not
      *  have an event at the current time.
@@ -166,8 +161,10 @@ public class CTCompositeActor extends TypedCompositeActor
         return false;
     }
 
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.CTStepSizeControlActor#isOutputAccurate()
+    /** Call the isOutputAccurate method of the local director if the local
+     *  director is an instance of CTTransparentDirector. Otherwise, return
+     *  true, which indicates the current step size is accurate w.r.t. outputs.
+     *  @return True if the current step size is accurate w.r.t. outputs.
      */
     public boolean isOutputAccurate() {
         Director dir = getDirector();
@@ -177,8 +174,10 @@ public class CTCompositeActor extends TypedCompositeActor
         return true;
     }
 
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.CTStepSizeControlActor#isStateAccurate()
+    /** Call the isStateAccurate method of the local director if the local
+     *  director is an instance of CTTransparentDirector. Otherwise, return
+     *  true, which indicates the current step size is accurate w.r.t. states.
+     *  @return True if the current step size is accurate w.r.t. states.
      */
     public boolean isStateAccurate() {
         Director dir = getDirector();
@@ -188,18 +187,16 @@ public class CTCompositeActor extends TypedCompositeActor
         return true;
     }
 
-    /** This method is delegated to the local director if the local
-     *  director is an instance of CTTransparentDirector. Otherwise,
-     *  return true, indicating that this composite actor does not
-     *  perform step size control.
-     *  @return True if this step is accurate.
+    /** Return true if the current step size if true w.r.t. both states and 
+     *  outputs.
+     *  @return True if this step is accurate w.r.t. both states and outputs.
      */
     public boolean isThisStepAccurate() {
         return isStateAccurate() && isOutputAccurate();
     }
 
-    /** Implementations of this method should mark the current state
-     *  of the actor.
+    /** Call the markState method of the local director if the local
+     *  director is an instance of CTTransparentDirector. Otherwise, do nothing.
      */
     public void markState() {
         Director dir = getDirector();
@@ -208,9 +205,9 @@ public class CTCompositeActor extends TypedCompositeActor
         }
     }
 
-    /** This method is delegated to the local director if the local
-     *  director is an instance of CTTransparentDirector. Otherwise,
-     *  return java.lang.Double.MAX_VALUE.
+    /** Call the predictedStepSize method of the local director if the local
+     *  director is an instance of CTTransparentDirector. Otherwise, return
+     *  java.lang.Double.MAX_VALUE.
      *  @return The predicted step size.
      */
     public double predictedStepSize() {
@@ -221,9 +218,9 @@ public class CTCompositeActor extends TypedCompositeActor
         return java.lang.Double.MAX_VALUE;
     }
 
-    /** This method is delegated to the local director if the local
-     *  director is an instance of CTTransparentDirector. Otherwise,
-     *  return the current step size of the executive director.
+    /** Call the refinedStepSize method of the local director if the local
+     *  director is an instance of CTTransparentDirector. Otherwise, return
+     *  the current step size of the executive director.
      *  @return The refined step size.
      */
     public double refinedStepSize() {
@@ -233,30 +230,4 @@ public class CTCompositeActor extends TypedCompositeActor
         }
         return ((CTDirector)getExecutiveDirector()).getCurrentStepSize();
     }
-
-
-    /** Create a new IOPort with the specified name. This port is
-     *  created with a parameter <i>signalType</i> with default value
-     *  <i>CONTINUOUS</i>
-     *  The container of the port is set to this actor.
-     *
-     *  @param name The name for the new port.
-     *  @return The new port.
-     *  @exception NameDuplicationException If the actor already has a port
-     *   with the specified name.
-
-     public Port newPort(String name)
-     throws NameDuplicationException {
-     Port newPort = super.newPort(name);
-     try {
-     Parameter type = new Parameter(newPort, "signalType",
-     new StringToken("CONTINUOUS"));
-     } catch (IllegalActionException ex) {
-     // This should never occur.
-     throw new InternalErrorException("Fail to add parameter signalType"
-     + " to new Port " + newPort.getFullName());
-     }
-     return newPort;
-     }
-    */
 }

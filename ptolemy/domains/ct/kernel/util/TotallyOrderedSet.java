@@ -1,4 +1,4 @@
-/* Totally ordered set
+/* An object of this class is a totally ordered set.
 
 Copyright (c) 1998-2004 The Regents of the University of California.
 All rights reserved.
@@ -38,9 +38,13 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// TotallyOrderedSet
 /**
-   Totally ordered set with no repeated elements.
-
-   A repeated element is an element that the comparator returns 0 for.
+   An object of this class is a totally ordered set with an increasing order. 
+   The order between any two elements in the set can be checked by calling the 
+   compare method of a comparator associated with this object. An element, a, 
+   in this set is said to preceed another one, b, if compare(a, b) returns -1.
+   <p>
+   The set does not containt repeated elements, which means comparing any two
+   elements in this set never returns 0.
 
    @author  Jie Liu
    @version $Id$
@@ -51,11 +55,11 @@ import java.util.List;
 
 public class TotallyOrderedSet {
 
-    /** Construct the set with the given comparator.
-     * @param comparator The Comparator to compare elements.  Note that
-     * the comparator cannot be changed after this TotallyOrderedSet
-     * is instantiated.
-     * @see java.util.Comparator
+    /** Construct a set with the given comparator.
+     *  @param comparator The Comparator to compare elements.  Note that
+     *  the comparator cannot be changed after this TotallyOrderedSet
+     *  is constructed.
+     *  @see java.util.Comparator
      */
     public TotallyOrderedSet(Comparator comparator) {
         _comparator = comparator;
@@ -65,8 +69,7 @@ public class TotallyOrderedSet {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the index-th element. If the index is out of range
-     *  a NoSuchElementException will be thrown.
+    /** Return the element with the given index. 
      *  @param index The index of the element to return.
      *  @return The requested element.
      */
@@ -74,7 +77,7 @@ public class TotallyOrderedSet {
         return _set.get(index);
     }
 
-    /** Clear the set. Remove all elements.
+    /** Clear the set by removing all elements.
      */
     public void clear() {
         _set.clear();
@@ -82,12 +85,10 @@ public class TotallyOrderedSet {
 
     /** Return true if the given element is contained in this set.
      *  The equivalence relation is defined by the comparator.
-     *  If the type of given element
-     *  is uncomparable by the comparator, then a ClassCastException
-     *  will be thrown.
-     *  @param object The object to search for.
-     *  @return True If the elements is contained according to the
-     *        comparator.
+     *  If the type of given element is not comparable by the comparator, 
+     *  then a ClassCastException will be thrown.
+     *  @param object The object to check for containment.
+     *  @return True If the elements is contained in this set.
      */
     public boolean contains(Object object) {
         boolean result = false;
@@ -113,7 +114,7 @@ public class TotallyOrderedSet {
         return  _set;
     }
 
-    /** Return an Enumeration of all the elements.
+    /** Return an enumeration of all the elements.
      *  @return The enumeration of all the elements.
      *  @deprecated Use elementList() instead.
      */
@@ -121,7 +122,7 @@ public class TotallyOrderedSet {
         return  Collections.enumeration(_set);
     }
 
-    /** Return the first element, ie. the <i>"smallest"</i> element.
+    /** Return the first element, ie. the <i>smallest</i> element.
      *  If the set is empty, then return null.
      *  @return The smallest element.
      */
@@ -141,6 +142,7 @@ public class TotallyOrderedSet {
 
     /** Return the index of the given object. Return -1 if the object
      *  is not in the set.
+     *  @param obj The objec to get index for.
      *  @return The index.
      */
     public int indexOf(Object obj) {
@@ -148,12 +150,10 @@ public class TotallyOrderedSet {
     }
 
     /** Insert the given element, keeping the set sorted. If the set
-     *  contains an element "equals" to the given element,
-     *  then do nothing.
+     *  contains an element "equals" the given element, then do nothing.
      *  The equivalence relation is defined by the comparator.
-     *  If the type of given element
-     *  is uncomparable by the comparator, then a ClassCastException
-     *  will be thrown.
+     *  If the type of given element is not comparable, then a 
+     *  ClassCastException will be thrown.
      *  @param obj The element to be inserted.
      */
     public void insert(Object obj) {
@@ -202,22 +202,17 @@ public class TotallyOrderedSet {
         }
     }
 
-    /** Remove and return the index-th element.
-     *  Thrown an exception if the set is empty.
+    /** Remove and return the element with the given index.
      *  @param index The index of the element.
      *  @return The removed element.
-     *  @exception NoSuchElementException If the specified index is
-     *        out of range.
      */
     public Object removeAt(int index) {
         return _set.remove(index);
     }
 
-    /** Remove and return the first element, ie. the <i>"smallest"</i>
-     *  element in the set.. Thrown an exception
-     *  if the set is empty.
+    /** Remove and return the first element, ie. the <i>smallest</i>
+     *  element in the set. 
      *  @return The removed element.
-     *  @exception NoSuchElementException If the set is empty.
      */
     public Object removeFirst() {
         return _set.removeFirst();
@@ -230,7 +225,7 @@ public class TotallyOrderedSet {
         return _set.size();
     }
 
-    /** Return the first element, ie. the <i>"smallest"</i> element and
+    /** Return the first element, ie. the <i>smallest</i> element and
      *  remove it from the set.
      *  @return The smallest element.
      *  @deprecated Use removeFirst() instead.
@@ -239,10 +234,10 @@ public class TotallyOrderedSet {
         return _set.removeFirst();
     }
 
-    /** Return a String that consists of the contents of the elements
+    /** Return a string that consists of the contents of the elements
      *  in the set. The elements are represented by there toString()
      *  value. This method is for test purpose.
-     *  @return The String description of the set.
+     *  @return The string description of the set.
      */
     public String toString() {
         String result = new String();

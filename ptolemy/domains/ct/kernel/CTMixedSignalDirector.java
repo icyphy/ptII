@@ -55,21 +55,21 @@ import ptolemy.kernel.util.Workspace;
    a top-level director and an inside director that is contained by
    a composite actor in an event-based domain. If it is a top-level
    director, it acts exactly like a CTMultiSolverDirector. If it is
-   embedded in another event-based domain, it will run ahead of the global
+   embedded in an event-based domain, it will run ahead of the global
    time and prepare to roll back if necessary.
    <P>
-   This class has an extra parameter as compare to the CTMultiSolverDirector,
-   which is the maximum run ahead of time length (<code>runAheadLength</code>).
-   The default value is 1.0.
+   This director has an extra parameter compared to the CTMultiSolverDirector,
+   the maximum run ahead of time length (<code>runAheadLength</code>).
+   Its default value is 1.0.
    <P>
    The running ahead of time is achieved by the following mechanism.<br>
    <UL>
-   <LI> At the initialize stage of the execution, the director will request
-   a fire at the global current time.
+   <LI> At the initialize stage of an execution, the director requests
+   a firing at the global current time.
    <LI> At each prefire stage of the execution, the fire end time is computed
    based on the current time of the executive director, t1, the next iteration
    time of the executive director, t2, and the value of the parameter
-   <code>runAheadLength</code>, t3. The fire end time is t1+min(t2, t3)
+   <code>runAheadLength</code>, t3. The fire end time is t1 + min(t2, t3)
    <LI> At the prefire stage, the local current time is compared with the
    current time of the executive director. If the local time is later than
    the executive director time, then the directed system will rollback to a
@@ -138,7 +138,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *  a parameter of the director, then the corresponding private copy of the
      *  parameter value will be updated.
      *  @param attribute The changed attribute.
-     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception IllegalActionException If the runAhendLength does not have
+     *  a valid token, or the superclass throws it.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -187,36 +188,29 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             return;
         }
         
-        CompositeActor container = (CompositeActor) getContainer();
-        Director exe = container.getExecutiveDirector();
-        
         _discretePhaseExecution();
-        
-        // FIXME: this can be easily wrapped into the super class.
         // Mark states and prepare for roll back.
         _markStates();
         // Guarantee to stop at the iteration end time.
         _setIterationBeginTime(getModelTime());
         // FIXME: the following statement may not be necessary.
-        fireAt(null, getIterationEndTime());
+        fireAt((CompositeActor)getContainer(), getIterationEndTime());
 
         _continuousPhaseExecution();
     }
 
-    /** First initialize the execution as in CTMultiSolverDirector.
-     *  If this director is not at the top-level, also
-     *  request to fire at the current time from the executive director.
+    /** Initialize the execution. If this director is not at the top level, 
+     *  ask the executive director to fire the container of this director 
+     *  at the current model time.
      *  @see CTMultiSolverDirector#initialize()
-     *  @exception IllegalActionException If this director has no container or
-     *       no scheduler, or thrown by a contained actor.
+     *  @exception IllegalActionException If thrown by the initialize method
+     *  of super class, or the quest for refiring can not be accepted.
      */
     public void initialize() throws IllegalActionException {
-        if (_debugging) _debug(getFullName() + " initialize.");
         super.initialize();
         _mutationVersion = -1;
         if (!_isTopLevel()) {
-            TypedCompositeActor container
-                = (TypedCompositeActor)getContainer();
+            TypedCompositeActor container = (TypedCompositeActor)getContainer();
             Director exe = container.getExecutiveDirector();
             exe.fireAt(container, getModelTime());
         }
@@ -225,12 +219,13 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
     /** If this is a top-level director, behave exactly as a
      *  CTMultiSolverDirector, otherwise always return true.
      *  @return True if this is not a top-level director or the simulation
-     *     is not finished.
-     *  @exception IllegalActionException Not thrown in this base class.
+     *  is not finished.
+     *  @exception IllegalActionException If thrown in the postfire method
+     *  in the super class.
      */
     public boolean postfire() throws IllegalActionException {
-        // FIXME: how to inform the upper level about the next scheduled 
-        // firing? 
+        // FIXME: how to inform the upper level when the next scheduled 
+        // firing will be? 
         if (!_isTopLevel()) {
             _secondPrefire = false;
         }
@@ -238,9 +233,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
     }
 
     /** Always returns true, indicating that the (sub)system is always ready
-     *  for one iteration. The schedule is recomputed if there are mutations
-     *  that occurred after last iteration. Note that mutations can only
-     *  occur between iterations in the CT domain.
+     *  for one iteration.
      *  <P>
      *  If this is not a top-level director, some additional work is done
      *  to synchronize time with the executive director. In particular,
@@ -248,24 +241,20 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *  of the executive director, say t0.
      *  If t == t0, do nothing. <BR>
      *  If t > t0, then rollback to the "known good" time (which should be
-     *  less than the outside time) and catch up
-     *  to the outside time. <BR>
+     *  less than the outside time) and catch up with the outside time. <BR>
      *  If t < t0, then throw an exception because the CT subsystem
      *  should always run ahead of time. <BR>
      *  <P>
-     *  The iteration end time is computed. If this is a
-     *  top-level director, the iteration end time is the (local) current
-     *  time plus the (local) current step size.
-     *  If this director is not a top-level director, the time is
+     *  If this director is not a top-level director, the iteration end time is
      *  resolved from the current time of the outside domains, say t1,
      *  the next iteration time of the outside domain, say t2, and
      *  the runAheadLength parameter of this director, say t3.
-     *  The iteration end time is set
-     *  to be <code>t1 + min(t2, t3)</code>. The iteration end time may be
-     *  further refined by the fire() method due to event detection.
-     *  In particular, when the first event is detected, say at t4,
-     *  then the iteration end time is set to t4.
-     *  @return true Always
+     *  The iteration end time is set to be <code>t5 = t1 + min(t2, t3)</code>. 
+     *  The iteration end time may be further refined in the fire() method 
+     *  due to possible event generated during the iteration. 
+     *  In particular, when the first event is detected, say at t5 and t5 < t4,
+     *  then the iteration ends at t5.
+     *  @return true Always.
      *  @exception IllegalActionException If the local time is
      *       less than the current time of the executive director,
      *       or thrown by a directed actor.
@@ -275,60 +264,57 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             _debug(getName(), " prefire: ");
         }
         if (!_isTopLevel()) {
-            // synchronize time.
+            // synchronize the local time with the outside time.
             CompositeActor container = (CompositeActor) getContainer();
-            // ca should have beed checked in _isTopLevel()
-            Director exe = container.getExecutiveDirector();
-            _outsideTime = exe.getModelTime();
+            Director executiveDirector = container.getExecutiveDirector();
+            _outsideTime = executiveDirector.getModelTime();
+            Time localTime = getModelTime();
             double timeResolution = getTimeResolution();
-            Time nextIterationTime = exe.getModelNextIterationTime();
+            Time outsideNextIterationTime = 
+                executiveDirector.getModelNextIterationTime();
 
-            if (_debugging) _debug("Outside time is " + _outsideTime,
-                    "\nNext iteration time is " + nextIterationTime,
-                    "\nCurrent local time is " + getModelTime());
+            if (_debugging) {
+                _debug("The current time of outside model is " + _outsideTime,
+                    "\n its next iteration time is " + outsideNextIterationTime,
+                    "\nThe current time of this director is " + localTime);
+            }
 
             // Now, check the next iteration time.
-            if (nextIterationTime.compareTo(_outsideTime) < 0) {
-                throw new InvalidStateException(this, "Outside domain"
+            if (outsideNextIterationTime.compareTo(_outsideTime) < 0) {
+                // FIXME: This seems redundant. The outside director should 
+                // guarantee that this never happen.
+                throw new IllegalActionException(this, "Outside domain"
                         + " time is going backward."
                         + " Current outside time = " + _outsideTime
                         + ", but the next iteration time = "
-                        + nextIterationTime);
+                        + outsideNextIterationTime);
             }
 
-            // If the outside time and the next iteration time are so close
-            // that the difference is less than the time resolution, then
-            // we simply omit this firing and refire at the next iteration
-            //time.
             // If outside next iteration time is equal to the outside
             // time, then request for a zero delay refire.
-            // Notice that DE will post this zero delay refire to be the
-            // last one with the same time stamp. So we expect that
-            // next time we wake up, the next iteration time is not
-            // the same as the current time.
-            // But there exists an additional subtlety, which is that
-            // we can have more than two CT composite actors in DE.
-            // So we need to check that after the second time we wake
-            // up at the same outside time, we should proceed anyway.
-
-            // FIXME: need to double check stop time.
-            if (nextIterationTime.equals(_outsideTime) 
+            // FIXME: we need to support integration with zero step size.
+            // FIXME: the following "if" block does not make sense to me...
+            if (outsideNextIterationTime.equals(_outsideTime) 
                 && (_secondPrefire == false)) {
-                exe.fireAt(container, nextIterationTime);
+                executiveDirector.fireAt(container, outsideNextIterationTime);
                 _secondPrefire = true;
                 return false;
             }
 
-            // Ideally, the outside time should equal to the current
-            // local time. If the outside time is less than the local
-            // time, then rollback is needed. If the outside time
-            // is greater than the local time, we will complain.
-            if (_outsideTime.equals(getModelTime())) {
+            // Ideally, the outside time should equal the local time. 
+            // If the outside time is less than the local time, then rollback 
+            // is needed. If the outside time is greater than the local time, 
+            // an exception will be thrown.
+            if (_outsideTime.equals(localTime)) {
                 // We are woke up as we requested.
-                // Roundup the current time to the outside time
-                if (_debugging) _debug("Outside time is the current time.",
-                        " So we check whether there are outputs.");
-                setModelTime(_outsideTime);
+                if (_debugging) {
+                    _debug("The outside time is equal to the local time. " +
+                            "Check whether there are outputs.");
+                }
+                // FIXME: The following code is not necessary. A correct
+                // implementation of CT director should have already transfered
+                // events to outside when the container of the director fires. 
+                
                 // Process local discrete events and emit outputs
                 // if there are any. If there are any outputs emitted,
                 // request for a zero delay refire and return false.
@@ -338,70 +324,79 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                     Iterator outports = container.outputPortList().iterator();
                     while (outports.hasNext()) {
                         IOPort p = (IOPort)outports.next();
-                        if (exe.transferOutputs(p)) {
+                        if (executiveDirector.transferOutputs(p)) {
                             hasOutput = true;
                         }
                     }
                     _hasDiscreteEvents = false;
                     if (hasOutput) {
-                        if (_debugging) _debug(getName(),
+                        if (_debugging) {
+                            _debug(getName(),
                                 " produces output to the outside domain.",
                                 " Requesting zero delay refiring",
                                 " Prefire() returns false.");
-                        exe.fireAt(container, _outsideTime);
+                        }
+                        executiveDirector.fireAt(container, _outsideTime);
                         return false;
                     }
                 }
-            } else if (_outsideTime.compareTo(getModelTime()) > 0) {
-                throw new InvalidStateException(this, exe,
-                        "Outside time is later than the CT time. " +
-                        "This should never happen in mixed-signal modeling");
-            } else if (_outsideTime.compareTo(getModelTime()) < 0) {
-
+            } else if (_outsideTime.compareTo(localTime) > 0) {
+                throw new IllegalActionException(this, executiveDirector,
+                        "Outside time is later than the local time. " +
+                        "This should never happen.");
+            } else if (_outsideTime.compareTo(localTime) < 0) {
                 // Outside time less than the local time. Rollback!
-                if (_debugging) _debug(getName() + " rollback from: " +
-                        getModelTime() + " to: " +_knownGoodTime +
+                if (_debugging) {
+                    _debug(getName() + " rollback from: " +
+                        localTime + " to: " +_knownGoodTime +
                         "due to outside time " +_outsideTime );
-                _rollback();
-                // Set a catch-up destination time.
-                fireAt(null, _outsideTime);
-                _catchUp();
-                if (_debugging) _debug("After catch up, the current time is "
-                        + getModelTime());
+                }
+                // The local time is set backwards to a known good time.
+                _rollback();  
+                // Set a catch-up destination time by registering the 
+                // outside time as a breakpoint.
+                fireAt(container, _outsideTime);
+                // The local time is set to the outside time.
+                _catchUp(); 
+                
+                if (_debugging) {
+                    _debug("After catch up, the current time is " + localTime);
+                }
             }
 
-            // Now, we have outside time equals to the curren time,
-            // and there are no discrete events. So we consider
-            // how far we should run ahead of the outside time.
-
-
-            // Now, either this the second time that we wake up,
-            // or we have a none zero run-ahead-time.
+            // Now, we have outside time equals the curren time.
             double aheadLength 
-                = nextIterationTime.subtract(_outsideTime).getDoubleValue();
-            if (_debugging) _debug(getName(),
-                    " current time = " + getModelTime(),
+                = outsideNextIterationTime.subtract(_outsideTime).
+                    getDoubleValue();
+            if (_debugging) {
+                _debug(getName(),
+                    " local time = " + localTime,
                     " Outside Time = " + _outsideTime,
-                    " NextIterationTime = " + nextIterationTime +
+                    " NextIterationTime = " + outsideNextIterationTime +
                     " Inferred run length = " + aheadLength);
+            }
 
             if (aheadLength < timeResolution ) {
-                // We should use the runAheadLength parameter.
-                _setIterationEndTime(_outsideTime.add(_runAheadLength));
-                if (_debugging) _debug( "Outside next iteration length",
-                        " is zero. We proceed any way with length "
-                        + _runAheadLength);
+                // This is a zero step size iteration.
+                _setIterationEndTime(_outsideTime);
+                if (_debugging) {
+                    _debug( "This is an iteration with the step size as 0.");
+                }
             } else if (aheadLength < _runAheadLength) {
-                _setIterationEndTime(nextIterationTime);
+                _setIterationEndTime(outsideNextIterationTime);
             } else {
                 // aheadLength > _runAheadLength parameter.
                 _setIterationEndTime(_outsideTime.add(_runAheadLength));
             }
             // Now it is safe to execute the continuous part.
-            if (_debugging) _debug(getName(), "Iteration end time = " +
-                    getIterationEndTime(), "End of Prefire");
+            if (_debugging) {
+                _debug(getName(), "Iteration end time = " +
+                    getIterationEndTime(), " <-- end of prefire.");
+            }
+            return true;
+        } else {
+            return super.prefire();
         }
-        return true;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -416,65 +411,69 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      */
     protected void _catchUp() throws IllegalActionException {
         Time outsideTime = _getOutsideTime();
-        if (getModelTime().compareTo(outsideTime) >= 0) {
+        Time localTime = getModelTime();
+        if (localTime.compareTo(outsideTime) >= 0) {
             return;
         }
-        _setIterationBeginTime(getModelTime());
-        while (getModelTime().equals(outsideTime)) {
+        _setIterationBeginTime(localTime);
+        while (!localTime.equals(outsideTime)) {
             setCurrentStepSize(getSuggestedNextStepSize());
             _processBreakpoints();
             if (_debugging) { 
                 _debug("Catch up: ending..." +
-                    (getModelTime().add(getCurrentStepSize())));
+                    (localTime.add(getCurrentStepSize())));
             }
-            _fireOneIteration();
-            if (_debugging) _debug("Catch up one step: current time is"
-                    + getModelTime());
+            _resolveInitialStates();
+            if (_debugging) {
+                _debug("Catch up one step: current time is" + localTime);
+            }
         }
-        setModelTime(outsideTime);
-        if (_debugging)
-            _debug(getFullName() + " Catch up time" + getModelTime());
+        if (_debugging) {
+            _debug(getFullName() + " Catch up time" + localTime);
+        }
     }
 
-    /** Call the super class method. After that, check wether any events
+    /** Call the super class method. After that, check whether any events
      *  are produced at the end of this iteration. If so, ask the upper 
      *  level to schedule a firing to react the events generated as this 
      *  level. 
      */
-    protected void _fireOneIteration() throws IllegalActionException {
-        super._fireOneIteration();
+    protected void _resolveInitialStates() throws IllegalActionException {
+        super._resolveInitialStates();
         if (_isTopLevel()) {
             return;
         }
+        // FIXME: why do we need the followings?
         // Check whether the iteration is interrupted by event.
-        // If so, ask the upper level to schedule a firing to react
+        // If so, ask the upper level to schedule a firing to react to the
         // events generated at this level.
-        Time refiringTime;
+        Time localTime = getModelTime();
         CompositeActor container = (CompositeActor) getContainer();
-        Director exe = container.getExecutiveDirector();
+        Director executiveDirector = container.getExecutiveDirector();
         if (_isStoppedByEvent()) {
             if (_debugging) {
                 _debug("Fire stopped by event."
-                        + " at " + getModelTime()
-                        + "; request refire at "
-                        + getModelTime()
+                        + " at " + localTime
+                        + "; request refiring at "
+                        + localTime
                         + "; set Event phase to TRUE");
             }
             _hasDiscreteEvents = true;
             //hold Outputs;
-            refiringTime = getModelTime();
-        } else if (getModelTime().equals(getIterationEndTime())) {
+        } else if (localTime.equals(getIterationEndTime())) {
             if (_debugging) {
                 _debug("Fire stopped normally."
-                        + " at " + getModelTime()
-                        + "; request refire at "
+                        + " at " + localTime
+                        + "; request refiring at "
                         + getIterationEndTime()
                         + "; set Event phase to FALSE");
             }
             _hasDiscreteEvents = false;
-            refiringTime = getIterationEndTime();
         }
-        exe.fireAt(container, getModelTime());
+        // FIXME: why do we need to refire the container? 
+        // should this go to the postfire method? 
+        // This is related to the FIXME in the psotfire method.
+        executiveDirector.fireAt(container, localTime);
         return;
     }
     
@@ -512,17 +511,19 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         // predictable breakpoints
         Time breakpoint;
         TotallyOrderedSet table = getBreakPoints();
-        Time now = getModelTime();
+        Time localTime = getModelTime();
         if (table != null) {
             while (!table.isEmpty()) {
                 breakpoint = (Time)table.first();
-                if (breakpoint.compareTo(now) < 0) {
+                if (breakpoint.compareTo(localTime) < 0) {
                     // The breakpoints in the past.
                     // This should not happen. 
                     throw new InternalErrorException("The breakpoint " +
                             breakpoint + " is in the past.");
-                } else if (breakpoint.equals(now) &&
+                } else if (breakpoint.equals(localTime) &&
                         breakpoint.compareTo(getIterationEndTime()) < 0) {
+                    // FIXME: why the breakpoint needs to be smaller than
+                    // the iteration ending time?
                     // break point now! stopped by event
                     return true;
                 } else {
@@ -543,10 +544,11 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         return false;
     }
 
-    /**Return true if this is a top-level director. This is a syntactic sugar.
-     * @return True if this director is at the top-level.
+    /**Return true if this is a top-level director. 
+     * @return True if this director is at the top level.
      */
     protected final boolean _isTopLevel() {
+        // This is a syntactic sugar.
         long version = workspace().getVersion();
         if (version == _mutationVersion) {
             return _isTop;
@@ -562,8 +564,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             _mutationVersion = version;
         } finally {
             workspace().doneReading();
-            return _isTop;
         }
+        return _isTop;
     }
 
     /** Mark the current state as the known good state. Call the
@@ -589,7 +591,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *  current time of the director is set to the time of the "known
      *  good" state.
      *  @exception IllegalActionException If thrown by the goToMarkedState()
-     *       method of an actor.
+     *  method of an actor, or the schedule does not exist.
      */
     protected void _rollback() throws IllegalActionException{
         CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
@@ -597,23 +599,23 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                 CTSchedule.STATEFUL_ACTORS).actorIterator();
         while (actors.hasNext()) {
             CTStatefulActor actor = (CTStatefulActor)actors.next();
-            if (_debugging) _debug("Restore State..."+
-                    ((Nameable)actor).getName());
+            if (_debugging) {
+                _debug("Restore State..." + ((Nameable)actor).getName());
+            }
             actor.goToMarkedState();
         }
-        // the overridden setCurrentTime method defined in the super class
         setModelTime(_knownGoodTime);
     }
 
     /** Set the end time for this iteration. If the argument is
-     *  less than the current time, then an InvalidStateException
+     *  earlier than the current time, then an InvalidStateException
      *  will be thrown.
      *  @param time The fire end time.
      */
     protected void _setIterationEndTime(Time time) {
         if (time.compareTo(getModelTime()) < 0) {
             throw new InvalidStateException(this,
-                    " Iteration end time" + time + " is less than" +
+                    " Iteration end time" + time + " is earlier than" +
                     " the current time." + getModelTime());
         }
         super._setIterationEndTime(time);
@@ -624,12 +626,13 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
 
     /** The number of rollbacks. Used for statistics.
      */
+    // FIXME: not used anywhere.
     protected int _Nroll = 0;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Return the time of the outside domain. If this is the top level
+    /** Return the time of the outside domain. If this is the top-level
      *  director return the current time.
      *  @return The outside current time.
      */
@@ -643,20 +646,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The held output tokens. It maps receivers to the tokens they
-    // contains.
-    // private HashMap _heldTokens = new HashMap();
-
     // Indicate whether there are pending discrete events.
     private boolean _hasDiscreteEvents;
-
-    // Indicate whether this is the second time that prefire has been
-    // called in a row.
-    private boolean _secondPrefire = false;
-
-    // The version of mutation. If this version is not the workspace
-    // version then every thing related to mutation need to be updated.
-    private long _mutationVersion = -1;
 
     // Indicate if this is the top level director.
     private boolean _isTop;
@@ -664,9 +655,17 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
     // The time for the "known good" state.
     private Time _knownGoodTime;
 
+    // The version of mutation. If this version is not the workspace
+    // version then every thing related to mutation need to be updated.
+    private long _mutationVersion = -1;
+
     // The current outside time.
     private Time _outsideTime;
 
     // The local variable of the run ahead length parameter.
     private double _runAheadLength;
+
+    // Indicate whether this is the second time that prefire has been
+    // called in a row.
+    private boolean _secondPrefire = false;
 }

@@ -30,7 +30,6 @@ package ptolemy.domains.ct.lib;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Transformer;
-import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
@@ -97,6 +96,10 @@ public class LevelCrossingDetector extends Transformer
         level = new Parameter(this, "level", new DoubleToken(0.0));
         level.setTypeEquals(BaseType.DOUBLE);
 
+        initialState = new Parameter(this, "initialState", 
+                new DoubleToken(Double.NEGATIVE_INFINITY));
+        initialState.setTypeEquals(BaseType.DOUBLE);
+
         defaultEventValue = new Parameter(this, "defaultEventValue",
                 new DoubleToken(0.0));
         output.setTypeAtLeast(defaultEventValue);
@@ -125,6 +128,13 @@ public class LevelCrossingDetector extends Transformer
      *  it contains a DoubleToken of 1e-4.
      */
     public Parameter errorTolerance;
+
+    /** The parameter that specifies the initial state of this actor.
+     *  This initial state is used to check level crossing at the first 
+     *  firing of this actor.
+     *  By default, it contains a DoubleToken of value negative infinity.
+     */
+    public Parameter initialState;
 
     /** The parameter that specifies the level threshold. By default, it
      *  contains a DoubleToken of value 0.0. Note, a change of this
@@ -161,7 +171,7 @@ public class LevelCrossingDetector extends Transformer
             }
             _errorTolerance = tolerance;
         } else if (attribute == level) {
-            _levelChanged = true;
+            _level = ((DoubleToken)level.getToken()).doubleValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -195,8 +205,7 @@ public class LevelCrossingDetector extends Transformer
      *  @exception IllegalActionException If no token is available.
      */
     public void fire() throws IllegalActionException {
-        CTDirector director = (CTDirector)getDirector();
-
+        super.fire();
         //consume the input.
         _thisTrigger = ((DoubleToken) trigger.get(0)).doubleValue();
         if (_debugging) {
@@ -215,6 +224,7 @@ public class LevelCrossingDetector extends Transformer
         // we only detect when the possible events can happen and 
         // choose the earliest one to schedule a discrete phase 
         // execution.
+        CTDirector director = (CTDirector)getDirector();
         if (director.isDiscretePhase()) {
             if (_debugging && _verbose) {
                 _debug("This is a discrete phase execution.");
@@ -225,7 +235,7 @@ public class LevelCrossingDetector extends Transformer
             // time.
             if (((_lastTrigger - _level) * (_thisTrigger - _level) < 0.0) 
                 || hasCurrentEvent()) {
-                // Emit event.
+                // Emit an event.
                 if (((BooleanToken)useEventValue.getToken()).booleanValue()) {
                     output.send(0, defaultEventValue.getToken());
                     if (_debugging) {
@@ -239,10 +249,10 @@ public class LevelCrossingDetector extends Transformer
                             + _level);
                     }
                 }
-                _eventNow = true;
+                _eventNow = false;
+                _eventMissed = false;
             }
         }
-        super.fire();
     }
 
     /** Return true if there is an event at the current time.
@@ -257,74 +267,46 @@ public class LevelCrossingDetector extends Transformer
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _first = true;
         _eventMissed = false;
-        _enabled = true;
         _eventNow = false;
-        _timeLastTriggerArrived = getDirector().getModelTime();
-        _timeThisTriggerArrived = getDirector().getModelTime();
-        _lastTrigger = 0.0;
+        _lastTrigger = ((DoubleToken)initialState.getToken()).doubleValue();
         _thisTrigger = 0.0;
-        if (_levelChanged) {
-            _level = ((DoubleToken)level.getToken()).doubleValue();
-            _levelChanged = false;
-        } else {
-            _level = 0.0;
-        }
-        if (_debugging) {
-            _debug("Initialization finished.");
-        }
+        _level = 0.0;
     }
 
     /** Return true if there is no event detected during the current step size.
      *  @return true if there is no event detected in the current iteration.
      */
     public boolean isOutputAccurate() {
-        if (_first) {
-            if (_debugging) {
-                _debug("It is the first iteration, the step size is "
-                         + "assumed to be accurate.");
-            }
-            _first = false;
-            _eventNow = false;
-            return true;
-        }
-
         if (_debugging && _verbose) {
             _debug("The last trigger is " + _lastTrigger);
             _debug("The current trigger is " + _thisTrigger);
         }
-
         // If the level is crossed and the current trigger is very close
         // to the level, the current step size is accurate. Otherwise,
         // the current step size is too big.
         if ((_lastTrigger - _level) * (_thisTrigger - _level) < 0.0) {
             // Preinitialize method ensures the cast to be safe.
             CTDirector director = (CTDirector)getDirector();
-            double minimalStepSize = director.getTimeResolution();
-            if ((director.getCurrentStepSize() == minimalStepSize) 
-                || (Math.abs(_thisTrigger - _level) < _errorTolerance)) {
+            if (Math.abs(_thisTrigger - _level) < _errorTolerance) {
                 // The current time is when the event happens.
                 if (_debugging)
                     _debug("Event is detected at "
                             + getDirector().getModelTime());
                 _eventNow = true;
                 _eventMissed = false;
-                return true;
             } else {
-                _eventMissed = true;
                 _eventNow = false;
-                return false;
+                _eventMissed = true;
             }
         } else if (_thisTrigger == _level) {
             _eventNow = true;
             _eventMissed = false;
-            return true;
         } else {
-            _eventMissed = false;
             _eventNow = false;
-            return true;
+            _eventMissed = false;
         }
+        return !_eventMissed;
     }
 
     /** Always return true because this actor is not involved 
@@ -360,18 +342,7 @@ public class LevelCrossingDetector extends Transformer
      */
     public boolean postfire() throws IllegalActionException {
         _lastTrigger = _thisTrigger;
-        CTDirector director = (CTDirector) getDirector();
-        if (director.isDiscretePhase() && hasCurrentEvent()) {
-            // discrete events are generated; schedule another
-            // discrete phase execution at the current time
-            // such that other discrete actors react to the events.
-            director.fireAt(this, director.getModelTime());
-            _eventNow = false;
-        }
-        if (_debugging) {
-            _debug("Called postfire()");
-        }
-        return true;
+        return super.postfire();
     }
 
     /** Return the maximum Double, since this actor does not predict
@@ -380,21 +351,6 @@ public class LevelCrossingDetector extends Transformer
      */
     public double predictedStepSize() {
         return java.lang.Double.MAX_VALUE;
-    }
-
-    /** If the level has changed during the last iteration, update
-     *  the parameter value. Note that only after the calling of this
-     *  method, would the new value of level be used for detection.
-     *  @return Same as that in the super class.
-     *  @exception IllegalActionException If the getToken() method
-     *  of the level parameter throws it.
-     */
-    public boolean prefire() throws IllegalActionException {
-        if (_levelChanged) {
-            _level = ((DoubleToken)level.getToken()).doubleValue();
-            _levelChanged = false;
-        }
-        return super.prefire();
     }
 
     /** Make sure the actor runs inside a CT domain.
@@ -415,27 +371,28 @@ public class LevelCrossingDetector extends Transformer
      */
     public double refinedStepSize() {
         CTDirector dir = (CTDirector)getDirector();
+        double refinedStep = dir.getCurrentStepSize();
         if (_eventMissed) {
             // The refined step size is a linear interpolation.
-            _refineStep = (Math.abs(_lastTrigger - _level)
-                    *dir.getCurrentStepSize())
-                /Math.abs(_thisTrigger-_lastTrigger);
-            double minimalStepSize = getDirector().getTimeResolution();
-            if (_refineStep < minimalStepSize) {
-                _refineStep = minimalStepSize;
+            refinedStep = (Math.abs(_lastTrigger - _level)
+                * dir.getCurrentStepSize())
+                / Math.abs(_thisTrigger-_lastTrigger);
+            if (_debugging) {
+                _debug(getFullName() +
+                    " Event Missed: refined step at" +  refinedStep);
             }
-            if (_debugging) _debug(getFullName() +
-                    " Event Missed: refined step at" +  _refineStep);
-            return _refineStep;
         }
-        return ((CTDirector)getDirector()).getCurrentStepSize();
+        return refinedStep;
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected variables               ////
 
-    // flag indicating if the event detection is enabled for this step
-    private boolean _enabled;
+    // the level crossing threshold.
+    protected double _level;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // Parameter, the error tolerance, local copy
     private double _errorTolerance;
@@ -446,26 +403,8 @@ public class LevelCrossingDetector extends Transformer
     // flag indicating if there is an event at the current time.
     private boolean _eventNow = false;
 
-    // flag indicating if this is the first iteration in the execution,
-    private boolean _first = true;
-
     // last trigger input.
     private double _lastTrigger;
-
-    // the level crossing threshold.
-    protected double _level;
-
-    // Indicating whether the 'level' value has changed.
-    private boolean _levelChanged;
-
-    // refined step size.
-    private double _refineStep;
-    
-    // the time last trigger arrived.
-    private Time _timeLastTriggerArrived;
-
-    // the time this trigger arrived.
-    private Time _timeThisTriggerArrived;
 
     // this trigger input.
     private double _thisTrigger;

@@ -115,6 +115,8 @@ public class Integrator extends CTBaseIntegrator {
         super(container, name);
         new Parameter(input, "signalType",
                 new StringToken("CONTINUOUS"));
+//        new Parameter(discreteInput, "signalType",
+//                new StringToken("DISCRETE"));
         new Parameter(output, "signalType",
                 new StringToken("CONTINUOUS"));
         _attachText("_iconDescription", "<svg>\n" +

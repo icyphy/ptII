@@ -136,7 +136,8 @@ public class CTPeriodicSampler extends Transformer implements CTEventGenerator {
     public void fire() throws IllegalActionException {
         CTDirector director = (CTDirector)getDirector();
         if ((director.getExecutionPhase() == 
-            CTExecutionPhase.GENERATINGEVENTS_PHASE) && hasCurrentEvent()) {
+                CTExecutionPhase.GENERATING_EVENTS_PHASE) 
+            && hasCurrentEvent()) {
             for (int i = 0;i < Math.min(input.getWidth(), output.getWidth());
                  i++) {
                 if (input.hasToken(i)) {
@@ -189,7 +190,7 @@ public class CTPeriodicSampler extends Transformer implements CTEventGenerator {
     public boolean postfire() throws IllegalActionException {
         CTDirector director = (CTDirector)getDirector();
         if ((director.getExecutionPhase() == 
-            CTExecutionPhase.GENERATINGEVENTS_PHASE) && hasCurrentEvent()) {
+            CTExecutionPhase.GENERATING_EVENTS_PHASE) && hasCurrentEvent()) {
             // register for the next event.
             _nextSamplingTime = _nextSamplingTime.add(_samplePeriod);
             if (_debugging)

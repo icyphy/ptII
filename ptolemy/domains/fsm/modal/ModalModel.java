@@ -343,6 +343,9 @@ public class ModalModel extends CTCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+    /** The FSM controller. */
+    protected FSMActor _controller;
+
     /** Class names of directors compatible with this
      * ModalModel. Derived classes should override this if they desire
      * additional or different directors. */
@@ -441,9 +444,6 @@ public class ModalModel extends CTCompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** The FSM controller. */
-    private FSMActor _controller;
 
     // A flag indicating the director has been changed to HDFFSMDirector
     // by the user. This prevents setting the HDFFSMActor flag before

@@ -143,8 +143,9 @@ public class ExplicitRK23Solver extends ODESolver {
     }
 
 
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.ODESolver#fireOneRound()
+    /** Fire one round to resolve the states of the system.
+     *  @throws IllegalActionException If the model does not contain a director
+     *  or a scheduler.
      */
     public void fireOneRound() throws IllegalActionException {
         _debug(getFullName() + ": firing one round to resolve states.");

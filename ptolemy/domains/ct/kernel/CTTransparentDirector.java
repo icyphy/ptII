@@ -54,7 +54,7 @@ public interface CTTransparentDirector extends CTGeneralDirector {
 
     /** Implementations of this method should emit the tentative outputs.
      *  @exception IllegalActionException If the data transfer is not
-     *       completed.
+     *  completed.
      */
     public void emitTentativeOutputs()  throws IllegalActionException;
 

@@ -21,8 +21,6 @@
         </property>
         <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
         </property>
-        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
-        </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
@@ -47,16 +45,18 @@
         </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
+        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 260.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={46, 40, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1179, 154, 815, 518}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8184666538781">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{328.5464527027027, 189.1076858108108}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{328.5464527027026, 189.1076858108108}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A continuous clock generates a piecewise continuous signal. Each time&#10;a discontinuity happens, a discrete phase execution is reqested to perform.&#10;In such a discrete phase execution, the clock fires twice: once happens at &#10;t_minus and the other happens at t_plus, where the output value only changes&#10;at the t_plus phase. Therefore, two outputs are produced at the time &#10;when a discontinuity happens.&#10;&#10;NOTE: since a continuous clock also generates outputs during the continuous &#10;phase execution, the nonstricttest actor actually sees three values. One is &#10;from the continuous output, the other two are from the discrete outputs.&#10;&#10;">
@@ -67,7 +67,7 @@
     <property name="ModelID" class="ptolemy.vergil.kernel.attributes.IDAttribute">
         <property name="created" class="ptolemy.kernel.util.StringAttribute" value="Sep 1, 2004 1:21:08 PM">
         </property>
-        <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="Sep 1, 2004 1:30:38 PM">
+        <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="Jan 27, 2005 9:22:25 PM">
         </property>
         <property name="author" class="ptolemy.kernel.util.StringAttribute" value="hyzheng">
         </property>
@@ -83,23 +83,26 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 350.0]">
         </property>
     </entity>
-    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}">
+    <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
+        <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.5">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 350.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 1, 0, 0}">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 350.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 350.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[260.0, 350.0]">
-        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="ContinuousClock.output" relation="relation"/>
-    <link port="NonStrictTest.input" relation="relation"/>
+    <link port="PeriodicSampler.input" relation="relation"/>
+    <link port="PeriodicSampler.output" relation="relation2"/>
+    <link port="NonStrictTest.input" relation="relation2"/>
 </entity>

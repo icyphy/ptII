@@ -167,11 +167,11 @@ public class OutputActionsAttribute
                             = destination.getReceivers();
                         if (channel != null) {
                             destination.send(channel.intValue(), token);
-                            if (isInput) {
-                                // If the destination is both input and output, 
-                                // also send the tokens to local receivers.
-                                localReceivers[channel.intValue()][0].put(token);
-                            }
+//                            if (isInput) {
+//                                // If the destination is both input and output, 
+//                                // also send the tokens to local receivers.
+//                                localReceivers[channel.intValue()][0].put(token);
+//                            }
                             if (_debugging) {
                                 _debug(getFullName()+ " port: "
                                         + destination.getName() + " channel: "
@@ -180,13 +180,13 @@ public class OutputActionsAttribute
                             }
                         } else {
                             destination.broadcast(token);
-                            if (isInput) {
-                                // If the destination is both input and output, 
-                                // also send the tokens to local receivers.
-                                for(int i = 0; i < localReceivers.length; i++) {
-                                    localReceivers[i][0].put(token);
-                                }
-                            }
+//                            if (isInput) {
+//                                // If the destination is both input and output, 
+//                                // also send the tokens to local receivers.
+//                                for(int i = 0; i < localReceivers.length; i++) {
+//                                    localReceivers[i][0].put(token);
+//                                }
+//                            }
                             if (_debugging) {
                                 _debug(getFullName() + " port: "
                                         + destination.getName()

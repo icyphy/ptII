@@ -1,4 +1,4 @@
-/* Compare two comparable objects.
+/* A class that compares two comparable objects.
 
 Copyright (c) 1998-2004 The Regents of the University of California.
 All rights reserved.
@@ -30,9 +30,12 @@ package ptolemy.domains.ct.kernel.util;
 import java.util.Comparator;
 
 //////////////////////////////////////////////////////////////////////////
-//// PreciseComparator
+//// GeneralComparator
 /**
-   Compare two Comparable objects.
+   This class compares two comparable objects, object_1 and object_2, 
+   by calling <i>compare(object_1, object_2)</i>. This method returns 
+   -1, 0, or 1 if object_1 is less than, equal to, or bigger than object_2. 
+   
    @author Haiyang Zheng
    @version $Id$
    @since Ptolemy II 4.1

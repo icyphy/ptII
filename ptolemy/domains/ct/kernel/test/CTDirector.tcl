@@ -171,7 +171,7 @@ test CTDirector-2.2 {set Parameters by expression} {
 	    [$dir getSuggestedNextStepSize] \
 	    [$dir getTimeResolution] \
 	    [$dir getValueResolution]
-} {.System.DIR.CT_Backward_Euler_Solver 0.1 0.0 10.0 0.5 0.4 10 0.3 0.2 10.1 100.0 0.1 1e-11 0.1}
+} {.System.DIR.CT_Backward_Euler_Solver 0.5 0.0 10.0 0.5 0.4 10 0.3 0.2 10.5 100.0 0.5 1e-11 0.1}
 
 ######################################################################
 ####  Test set parameters, same as above, but uses setToken
@@ -231,7 +231,7 @@ test CTDirector-2.2a {set Parameters} {
     $param setToken $token
 
     $dir preinitialize
-    $dir prefire
+    $dir initialize
     list [[$dir getCurrentODESolver] getFullName] \
 	    [$dir getCurrentStepSize] \
 	    [$dir getCurrentTime] \
@@ -246,7 +246,7 @@ test CTDirector-2.2a {set Parameters} {
 	    [$dir getSuggestedNextStepSize] \
 	    [$dir getTimeResolution] \
 	    [$dir getValueResolution]
-} {.System.DIR.CT_Backward_Euler_Solver 0.1 10.0 10.0 0.5 0.4 10 0.3 0.2 10.1 100.0 0.1 1e-11 0.1}
+} {.System.DIR.CT_Backward_Euler_Solver 0.5 10.0 10.0 0.5 0.4 10 0.3 0.2 10.5 100.0 0.3 1e-11 0.1}
 
 
 test CTDirector-2.3 {sets and gets} {

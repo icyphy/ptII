@@ -850,7 +850,7 @@ public class FSMActor extends CompositeEntity
      *  @exception IllegalActionException If there is more than one
      *   transition enabled.
      */
-    protected Transition _checkTransition(List transitionList)
+    public Transition _checkTransition(List transitionList)
             throws IllegalActionException {
         Transition result = null;
         Iterator transitionRelations = transitionList.iterator();
@@ -880,7 +880,7 @@ public class FSMActor extends CompositeEntity
      *  @exception IllegalActionException If there is more than one
      *   transition enabled.
      */
-    protected Transition _chooseTransition(List transitionList)
+    public Transition _chooseTransition(List transitionList)
             throws IllegalActionException {
         Transition result = _checkTransition(transitionList);
 
@@ -991,7 +991,7 @@ public class FSMActor extends CompositeEntity
      *  @exception IllegalActionException If a shadow variable cannot take
      *   the token read from its corresponding channel (should not occur).
      */
-    protected void _readInputs() throws IllegalActionException {
+    public void _readInputs() throws IllegalActionException {
         Iterator inPorts = inputPortList().iterator();
         while (inPorts.hasNext() && !_stopRequested) {
             IOPort p = (IOPort)inPorts.next();
@@ -1094,7 +1094,7 @@ public class FSMActor extends CompositeEntity
      *  @exception IllegalActionException If a value variable cannot take
      *   the token read from its corresponding channel.
      */
-    protected void _readOutputsFromRefinement()
+    public void _readOutputsFromRefinement()
             throws IllegalActionException {
         Iterator inPorts = inputPortList().iterator();
         while (inPorts.hasNext() && !_stopRequested) {

@@ -482,6 +482,7 @@ public class Transition extends ComponentRelation {
             Token token = _parseTreeEvaluator.evaluateParseTree(
                     _guardParseTree, fsmActor.getPortScope());
             if (token == null) {
+                // FIXME: when could this happen??
                 return false;
             }
             //FIXME: deal with continuous variables and discrete variables

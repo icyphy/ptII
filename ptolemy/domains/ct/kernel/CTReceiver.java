@@ -41,7 +41,7 @@ import ptolemy.kernel.util.InvalidStateException;
 //////////////////////////////////////////////////////////////////////////
 //// CTReceiver
 /**
-   The receiver for the continuous time (mixed-signal) domain. The receiver
+   The receiver for the continuous-time and mixed-signal domain. The receiver
    can be of one of the two types: CONTINUOUS and DISCRETE. Conceptually,
    a CONTINUOUS CTReceiver contains a sample of a continuous signal at a
    particular time (defined by the CTDirector). Thus, there is one and
@@ -54,12 +54,12 @@ import ptolemy.kernel.util.InvalidStateException;
    As a consequence, hasRoom() method always returns true.
    <P>
    The behavior of the get() method depends on the type of the receiver.
-   If it is CONTINUOUS, then get() only reads the value. Consecutive get()
-   will return the same token if no put() has been called. For a CONTINUOUS
-   CTReceiver, hasToken() will always return true after the first put()
-   has been called. For a DISCRETE
+   If it is CONTINUOUS, then get() only reads the value. Consecutive calls on
+   the get method will return the same token if the put method has not been 
+   called. For a CONTINUOUS CTReceiver, hasToken() will always return true 
+   after the first put() has been called. For a DISCRETE
    CTReceiver, get() will return and destroy the token, thus the token
-   can only be processed once. After the consumption, the hasToken()
+   can only be retrived once. Therefore after the consumption, the hasToken()
    method will return false, until a token is put into this receiver.
 
    @author  Jie Liu
@@ -90,15 +90,15 @@ public class CTReceiver extends Mailbox {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** Signal type: continuous */
+    /** Signal type: CONTINUOUS. */
     public static SignalType CONTINUOUS = new SignalType() {
             public String toString() {return "CONTINUOUS";}};
 
-    /** Signal type: discrete */
+    /** Signal type: DISCRETE. */
     public static SignalType DISCRETE = new SignalType() {
             public String toString() {return "DISCRETE";}};
 
-    /** Signal type: unknown */
+    /** Signal type: UNKNOWN. */
     public static SignalType UNKNOWN = new SignalType() {
             public String toString() {return "UNKNOWN";}};
 
@@ -106,8 +106,8 @@ public class CTReceiver extends Mailbox {
     ////                    public inner classes                   ////
 
     /** Inner class used for the static enumeration of indicators of
-     *  signal types.  Instances of this class cannot be constructed outside
-     *  the enclosing interface because its constructor is private.
+     *  signal types. Instances of this class cannot be constructed outside
+     *  the enclosing interface because its constructor is protected.
      */
     public static class SignalType implements Serializable {
 
@@ -159,7 +159,7 @@ public class CTReceiver extends Mailbox {
     }
 
 
-    /** Return true, since the new token will override the old one.
+    /** Return true, since the new token will overwrite the old one.
      *  @return True.
      */
     public boolean hasRoom() {
@@ -169,16 +169,13 @@ public class CTReceiver extends Mailbox {
     /** Put a token into this receiver. If the argument is null,
      *  then this receiver will not contain any token after this method
      *  returns. If the receiver already has a token, then the new token
-     *  will override the old token, and the old
-     *  token will be lost.
+     *  will overwrite the old token, and the old token will be lost.
      *
      *  @param token The token to be put into this receiver.
      *  @exception NoRoomException Not thrown in this base class.
      */
     public void put(Token token) throws NoRoomException{
-        // Remove any previous token.
-        _token = null;
-        super.put(token);
+        _token = token;
     }
 
     /** Set the signal type of this receiver. This method must be called
@@ -192,5 +189,4 @@ public class CTReceiver extends Mailbox {
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
     private SignalType _type;
-
 }

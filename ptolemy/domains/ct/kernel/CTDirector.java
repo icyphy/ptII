@@ -55,13 +55,12 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// CTDirector
 /**
-   This is the abstract base class for directors in the CT domain.
-   <P>
-   A CTDirector has a CTScheduler which provides the schedules for firing
+   This is the abstract base class for directors in the CT domain. A CTDirector 
+   has a CTScheduler which provides the schedules for firing
    the actors in different phases of execution in one iteration.
    <P>
-   A CTDirector may have more than one ODE solvers. In each iteration, one
-   of the ODE solvers is taking charge of solving the ODEs. This solver
+   A CTDirector may have more than one ODE solvers. In each phase of execution,
+   one ODE solver takes charge of solving the behavior of a model. This solver
    is called the <I>current ODE solver</I>.
    <P>
    The continuous time (CT) domain is a timed domain. There is a global
@@ -69,7 +68,7 @@ import ptolemy.kernel.util.Workspace;
    by the director. The method getModelTime() returns the current
    notion of time. Time can be set by the setModelTime() method, but this
    method should not the called by the actors. Time can only be set
-   by directors or their ODE solvers.
+   by directors or their ODE solvers. (FIXME: should not include ODE solvers.)
    <P>
    This base class maintains a list of parameters that may be used by
    ODE solvers and actors. These parameters are: <Br>
@@ -83,11 +82,11 @@ import ptolemy.kernel.util.Workspace;
    <LI> <code>initStepSize</code>: The suggested integration step size
    by the user. This will be the step size for fixed step
    size ODE solvers if there is no breakpoint. However, it is just
-   a hint otherwise. Default value is 0.1
+   a hint. Default value is 0.1
    <LI> <code>minStepSize</code>: The minimum step
-   size that the user wants to use in the simulation. Default value is 1e-5.
+   size that users want to use in the simulation. Default value is 1e-5.
    <LI> <code>maxStepSize</code>: The maximum step
-   size the user wants to use in the simulation. Usually used to control
+   size that users want to use in the simulation. Usually used to control
    the simulation speed. Default value is 1.0.
    <LI> <code>maxIterations</code>:
    Used only in implicit ODE solvers. This is the maximum number of
@@ -98,7 +97,7 @@ import ptolemy.kernel.util.Workspace;
    in variable step size ODE solvers. If the local truncation error
    at some step size control actors are greater than this tolerance, then the
    integration step is considered to have failed, and should be restarted with
-   a reduced step size. Default value 1e-4.
+   a reduced step size. Default value is 1e-4.
    <LI> <code>valueResolution</code>:
    This is used to control the convergence of fixed point iterations.
    If in two successive iterations the differences of the state variables
@@ -106,6 +105,7 @@ import ptolemy.kernel.util.Workspace;
    reached.
    Default value is 1e-6.
    <P>
+   FIXME: rewrite the following comments.
    This director also maintains a breakpoint table to record all
    predictable breakpoints that are greater than or equal to the current time.
    The breakpoints are sorted in their chronological order.
@@ -118,7 +118,6 @@ import ptolemy.kernel.util.Workspace;
    will be inserted into the breakpoint table.
    <p>
 
-   @see ptolemy.actor.Director
    @author Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
@@ -139,12 +138,11 @@ public abstract class CTDirector extends StaticSchedulingDirector
     }
 
     /** Construct a director in the given container with the given name.
-     *  The container argument must not be null, or a
-     *  NullPointerException will be thrown.
+     *  The container argument must not be null, or a NullPointerException 
+     *  will be thrown.
      *  If the name argument is null, then the name is set to the
-     *  empty string.
-     *  All the parameters take their default values. A CTScheduler
-     *  is created.
+     *  empty string. All the parameters take their default values. 
+     *  A CTScheduler is created.
      *  @param container The container.
      *  @param name Name of this director.
      *  @exception IllegalActionException If the director is not compatible
@@ -247,12 +245,14 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  matches a parameter of the director, then the corresponding
      *  local copy of the parameter value will be updated.
      *  @param attribute The changed parameter.
-     *  @exception IllegalActionException If the parameter set is not valid.
+     *  @exception IllegalActionException If the new parameter value 
+     *  is not valid.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (_debugging) _debug("Updating CTDirector parameter: ",
-                attribute.getName());
+        if (_debugging) {
+            _debug("Updating CTDirector parameter: ", attribute.getName());
+        }
         if (attribute == startTime) {
             double startTimeValue = 
                 ((DoubleToken)startTime.getToken()).doubleValue();
@@ -262,8 +262,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
                 ((DoubleToken)stopTime.getToken()).doubleValue();
             _stopTimeValue = stopTimeValue;
         } else if (attribute == initStepSize) {
-            double value = ((DoubleToken)initStepSize.getToken()).
-                doubleValue();
+            double value = ((DoubleToken)initStepSize.getToken()).doubleValue();
             if (value < 0.0) {
                 throw new IllegalActionException(this,
                         "Cannot set a negative step size.");
@@ -313,27 +312,32 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
     /** Return true if the director can be an inside director, i.e.
      *  a director of an opaque composite actor not at the top level.
-     *  Derived class should override this to show whether it can
-     *  serve as an inside director.
+     *  This method is abstract in this class and derived classes need to
+     *  override this to show whether it can serve as an inside director.
+     *  @return True if this director can be an inside director.
      */
     public abstract boolean canBeInsideDirector();
 
     /** Return true if the director can be a top-level director.
-     *  Derived class should override this to show whether it can
-     *  serve as a top-level director.
+     *  This method is abstract in this class and derived classes need to
+     *  override this to show whether it can serve as a top-level director.
+     *  @return True if this director can be a top-level director.
      */
     public abstract boolean canBeTopLevelDirector();
 
-    /** Override the fire method of the super class. In this abstract
-     *  base class, nothing is performed. 
+    /** Override the fire method of the super class. This method is
+     *  abstract in this abstract base class. The derived classes need to
+     *  override this method for comcrete implementation. 
      */
     public abstract void fire() throws IllegalActionException; 
     
-    /** Handle the firing request from the contained actors.
+    /** Handle firing requests from the contained actors.
      *  If the specified time is earlier than the current time, throw
      *  an exception. Otherwise, insert the specified time into the
      *  breakpoint table. 
      *  <p>
+     *  FIXME: if we have a smarter event queue like the DE one,
+     *  not all actors need to be executed at each breakpoint (event).
      *  From this director's point of view, it is irrelevant
      *  which actor requests the breakpoint. All actors will be
      *  executed at every breakpoint. 
@@ -343,16 +347,15 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  requests the firing.
 
      *  @param actor The actor that requested the firing or null that
-     *    indicates the time of the start or stop of an execution.
+     *  indicates the time of the start or stop of an execution.
      *  @param time The requested firing time.
      *  @exception IllegalActionException If the time is earlier than
-     *   the current time.
+     *  the current time.
      */
     public void fireAt(Actor actor, Time time)
             throws IllegalActionException{
-        Time currentTime = getModelTime();
-
         // Check if the request time is earlier than the current time.
+        Time currentTime = getModelTime();
         if (time.compareTo(currentTime) < 0 ) {
             throw new IllegalActionException((Nameable)actor,
                     "Requested fire time: " + time + " is earlier than" +
@@ -370,9 +373,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
             if (actor != null) {
                 name = ((Nameable)actor).getName();
             }
-            _debug("     ----> " + name
-                    + " requests refire at "
-                    + time);
+            _debug("     ----> " + name + " requests refiring at " + time);
         }
         
         // insert a new breakpoint into the breakpoints table.
@@ -380,19 +381,19 @@ public abstract class CTDirector extends StaticSchedulingDirector
     }
 
     /** Return the breakpoint table. If the breakpoint table has never
-     *  been created, then return null. This method is final
-     *  for performance reason.
+     *  been created, then return null. 
      *  @return The breakpoint table.
      */
     public final TotallyOrderedSet getBreakPoints() {
+        // This method is final for performance reason.
         return _breakPoints;
     }
 
-    /** Return the current ODE solver. This method is final
-     *  for performance reason.
+    /** Return the current ODE solver. 
      *  @return The current ODE solver.
      */
     public final ODESolver getCurrentODESolver() {
+        // This method is final for performance reason.
         return _currentSolver;
     }
 
@@ -405,11 +406,11 @@ public abstract class CTDirector extends StaticSchedulingDirector
     }
 
     /** Return the local truncation error tolerance, used by
-     *  variable step size solvers. This method is final
-     *  for performance reason.
+     *  variable step size solvers. 
      *  @return The local truncation error tolerance.
      */
     public final double getErrorTolerance() {
+        // This method is final for performance reason.
         return _errorTolerance;
     }
 
@@ -417,7 +418,6 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  this base class, null is always returned. Subclasses of this
      *  class, {@link ptolemy.domains.ct.kernel.CTEmbeddedDirector},
      *  may override this method.
-     *
      *  @return Null as the enclosing CT general director of this director.
      */
     public CTGeneralDirector getEnclosingCTGeneralDirector() {
@@ -428,8 +428,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  @return The current execution phase of this director.
      */
     public CTExecutionPhase getExecutionPhase() {
-        CTGeneralDirector executiveDirector = 
-            getEnclosingCTGeneralDirector();
+        CTGeneralDirector executiveDirector = getEnclosingCTGeneralDirector();
         if (executiveDirector != null) {
             return getEnclosingCTGeneralDirector().getExecutionPhase();
         } else {
@@ -437,11 +436,11 @@ public abstract class CTDirector extends StaticSchedulingDirector
         }
     }
 
-    /** Return the initial step size. This method is final
-     *  for performance reason.
+    /** Return the initial step size. 
      *  @return The initial step size.
      */
     public final double getInitialStepSize() {
+        // This method is final for performance reason.
         return _initStepSize;
     }
 
@@ -459,33 +458,33 @@ public abstract class CTDirector extends StaticSchedulingDirector
         return _iterationEndTime;
     }
 
-    /** Return the maximum number of iterations in fixed point
+    /** Return the maximum number of iterations in a fixed point
      *  calculation. If the iteration has exceeded this number
      *  and the fixed point is still not found, then the algorithm
-     *  is considered to have failed. This method is final
-     *  for performance reason.
+     *  is considered to have failed. 
      *  @return The maximum number of iterations when calculating
      *  fixed points.
      */
     public final int getMaxIterations() {
+        // This method is final for performance reason.
         return _maxIterations;
     }
 
     /** Return the maximum step size used in variable step size
-     *  ODE solvers. This method is final
-     *  for performance reason.
+     *  ODE solvers. 
      *  @return The maximum step size.
      */
     public final double getMaxStepSize() {
+        // This method is final for performance reason.
         return _maxStepSize;
     }
 
     /** Return the minimum step size used in variable step size
-     *  ODE solvers. This method is final
-     *  for performance reason.
+     *  ODE solvers. 
      *  @return The minimum step size.
      */
     public final double getMinStepSize() {
+        // This method is final for performance reason.
         return _minStepSize;
     }
 
@@ -497,19 +496,19 @@ public abstract class CTDirector extends StaticSchedulingDirector
         return getIterationBeginTime().add(getCurrentStepSize());
     }
 
-    /** Return the start time parameter value. This method is final
-     *  for performance reason.
+    /** Return the start time parameter value. 
      *  @return the start time.
      */
     public final Time getModelStartTime() {
+        // This method is final for performance reason.
         return _startTime;
     }
 
-    /** Return the stop time. This method is final
-     *  for performance reason.
+    /** Return the stop time. 
      *  @return the stop time.
      */
     public final Time getModelStopTime() {
+        // This method is final for performance reason.
         return _stopTime;
     }
 
@@ -529,23 +528,23 @@ public abstract class CTDirector extends StaticSchedulingDirector
     /** Return the suggested next step size. The suggested step size is
      *  the minimum step size that the step-size-control actors suggested
      *  at the end of last integration step. It is the prediction
-     *  of the new step size. This method is final
-     *  for performance reason.
+     *  of the new step size. 
      *  @return The suggested next step size.
      */
     public final double getSuggestedNextStepSize() {
+        // This method is final for performance reason.
         return _suggestedNextStepSize;
     }
 
     /** Return the value resolution, used for testing if an implicit method
      *  has reached the fixed point. Two values that are differed less than
-     *  this accuracy are considered identical in the fixed point
-     *  calculation. This method is final
-     *  for performance reason.
+     *  this accuracy are considered identical in the fixed-point
+     *  calculation. 
      *
      *  @return The value resolution for finding fixed point.
      */
     public final double getValueResolution() {
+        // This method is final for performance reason.
         return _valueResolution;
     }
 
@@ -559,24 +558,15 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  @exception IllegalActionException If the super class throws it.
      */
     public void initialize() throws IllegalActionException {
-        // Reset the _postFireReturns to true.
+        // Reset _firstIteration to true.
+        _firstIteration = true;
+        // Reset _postFireReturns to true.
         _postfireReturns = true;
         // Record starting point of the real time (the computer system time)
         // in case the director is synchronized to the real time.
         _timeBase = System.currentTimeMillis();
         // set current time and initialize actors.
         super.initialize();
-    }
-
-    /** Return true if this is the first iteration after a breakpoint.
-     *  In a breakpoint iteration, the ODE solver is the breakpoint
-     *  ODE solver, and the step size is zero or the minimum step size.
-     *  This method is final for performance reason.
-     *  @return True if this is a breakpoint iteration.
-     */
-    public final boolean isBreakpointIteration() {
-        // FIXME: is thie method necessary?
-        return _breakpointIteration;
     }
 
     /** Return true if this is the discrete phase execution.
@@ -602,13 +592,12 @@ public abstract class CTDirector extends StaticSchedulingDirector
         return new CTReceiver();
     }
 
-    /** If this director is not at top level, request a refiring at
-     *  the first breakpoint. 
-     *  Otherwise, if the stop() method has not been called and all the
-     *  actors return true at postfire, return true. 
-     *  @return True if the Director wants to be fired again in the
-     *  future.
-     *  @exception IllegalActionException Not thrown in this base class.
+    /** If this director is not at the top level and the breakpoints table 
+     *  is not empty, request a refiring at the first breakpoint. Otherwise, 
+     *  if the stop() method has not been called and all the actors return 
+     *  true at postfire, return true. 
+     *  @return True if the Director wants to be fired again in the future.
+     *  @exception IllegalActionException If refiring can not be requested.
      */
     public boolean postfire() throws IllegalActionException {
         if (!_isTopLevel() && (getBreakPoints().size() > 0)) {
@@ -617,8 +606,9 @@ public abstract class CTDirector extends StaticSchedulingDirector
             container.getExecutiveDirector().fireAt(container, time);
         }
         if (_debugging) {
-            _debug("Postfire returns " + (_postfireReturns && !_stopRequested) 
-                + " at: " + getModelTime());
+            _debug("Postfire returns " + 
+                    (_postfireReturns && !_stopRequested) 
+                    + " at: " + getModelTime());
         }
         return _postfireReturns && !_stopRequested;
     }
@@ -629,26 +619,26 @@ public abstract class CTDirector extends StaticSchedulingDirector
         _prefiredActors.clear();
     }
 
-    /** Prepare for an execution.
-     *  If this director does not have a container and a scheduler,
-     *  or the director does not fit this level of hierarchy,
-     *  an IllegalActionException will be thrown.
-     *  
-     *  Invalidate the schedule. Clear statistical variables.
-     *  Clear the break point table.
-     *  
-     *  Preinitialize all actors.
-     *  Time does not have a meaning yet. So actors should not
+    /** Preinitialize the model for an execution. This method is called only
+     *  once for each execution. If this director does not have a container 
+     *  and a scheduler, or the director does not fit this level of hierarchy,
+     *  an IllegalActionException will be thrown. Invalidate the schedule. 
+     *  Clear statistical variables. Clear the breakpoint table. Preinitialize 
+     *  all actors. 
+     *  <p>
+     *  Note, however, time does not have a meaning yet. So actors must not
      *  use a notion of time at the preinitialize stage.
      *
-     *  @exception IllegalActionException If the director has no
-     *  container, the director does not fit this level of hierarchy,
+     *  @exception IllegalActionException If this director has no
+     *  container, or this director does not fit this level of hierarchy,
      *  or there is no scheduler.
      */
     public void preinitialize() throws IllegalActionException {
-        if (_debugging) _debug(getFullName(), "preinitializing.");
+        if (_debugging) {
+            _debug(getFullName(), "preinitializing.");
+        }
 
-        // Verify the correct director resides in an approriate level
+        // Verify that this director resides in an approriate level
         // of the hierarchy.
         Nameable nameable = getContainer();
         if (!(nameable instanceof CompositeActor)) {
@@ -671,10 +661,10 @@ public abstract class CTDirector extends StaticSchedulingDirector
         // Construct a scheduler.
         CTScheduler scheduler = (CTScheduler)getScheduler();
         if (scheduler == null) {
-            throw new IllegalActionException( this,
-                    "has no scheduler.");
+            throw new IllegalActionException( this, "has no scheduler.");
         }
-        // NOTE: Force to reconstruct a CT schedule.
+        
+        // Force a reconstructition of the schedule.
         // invalidate schedule
         scheduler.setValid(false);
 
@@ -683,16 +673,13 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
         super.preinitialize();
 
-        // Time objects can only initialized in the end after 
-        // the time scale and time resolutioin is set.
-        // NOTE: This has to be called in the preinitialize method because
-        // time objects (_startTime and _stopTime) need the director
-        // to provide a time resolution. 
+        // Time objects can only initialized at the end of this method after 
+        // the time scale and time resolutioin are set.
         // NOTE: Time resolution is provided by the super class (Director)
         // with the preinitialize method. So, this method must be called 
         // after the super.preinitialize() is called.
         // NOTE: _timeBase is not initialized here but in initialize method
-        // instead to provide more accurate real time information.
+        // instead in order to provide more accurate real-time information.
         _startTime = new Time(this, _startTimeValue);
         _stopTime = new Time(this, _stopTimeValue);
         _iterationBeginTime = _startTime;
@@ -700,7 +687,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
     }
 
     /** Set the current step size. The current step size is used during an 
-     *  iteration and should NOT be changed in the middle of an iteration.
+     *  iteration and must not be changed in the middle of an iteration.
      *  @param stepSize The step size to be set.
      */
     public void setCurrentStepSize(double stepSize) {
@@ -713,15 +700,15 @@ public abstract class CTDirector extends StaticSchedulingDirector
     /** Mark the specified actor as having been prefired in the current
      *  iteration.
      *  @see #isPrefireComplete(Actor)
-     *  @param actor The actor about which we are asking.
+     *  @param actor The actor to be marked.
      */
     public void setPrefireComplete(Actor actor) {
         _prefiredActors.add(actor);
     }
 
-    /** Set the suggested next step size. If the argument is
-     *  large than the maximum step size, then set the
-     *  suggested next step size to the maximum step size.
+    /** Set the suggested next step size. If the argument is larger than 
+     *  the maximum step size, then set the suggested next step size to 
+     *  the maximum step size.
      *  @param stepsize The suggested next step size.
      */
     public void setSuggestedNextStepSize(double stepsize) {
@@ -778,16 +765,16 @@ public abstract class CTDirector extends StaticSchedulingDirector
             synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
         } catch (IllegalActionException e) {
             //Should never happens. The parameters are always compatible.
-            throw new InternalErrorException("Parameter creation error.");
+            throw new InternalErrorException("Parameter creation error: " + e);
         } catch (NameDuplicationException ex) {
-            throw new InvalidStateException(this,
-                    "Parameter name duplication.");
+            throw new InvalidStateException(this, 
+                    "Parameter name duplication: " + ex);
         }
     }
 
     /** Instantiate an ODESolver from its classname. Given the solver's full
      *  class name, this method will try to instantiate it by looking
-     *  for the java class.
+     *  for the corresponding java class.
      *  @param className The solver's full class name.
      *  @return a new ODE solver.
      *  @exception IllegalActionException If the solver can not be created.
@@ -795,55 +782,33 @@ public abstract class CTDirector extends StaticSchedulingDirector
     protected ODESolver _instantiateODESolver(String className)
             throws IllegalActionException {
         ODESolver newSolver;
-        if (_debugging) _debug("instantiating solver..." + className);
+        if (_debugging) {
+            _debug("instantiating solver..." + className);
+        }
         try {
             Class solver = Class.forName(className);
             newSolver = (ODESolver)solver.newInstance();
         } catch(ClassNotFoundException e) {
             throw new IllegalActionException(this, "ODESolver: "+
-                    className + " not found.");
+                    className + " is not found.");
         } catch(InstantiationException e) {
             throw new IllegalActionException(this, "ODESolver: "+
                     className + " instantiation failed.");
         } catch(IllegalAccessException e) {
             throw new IllegalActionException(this, "ODESolver: "+
-                    className + " not accessible.");
+                    className + " is not accessible.");
         }
         newSolver._makeSolverOf(this);
         return newSolver;
     }
 
-    /** Set to indicate that this is an iteration just after a breakpoint.
-     *  A CTDirector, after finding out that a breakpoint has happened at
-     *  the current time, should call this method with a true argument.
-     *  In the next iteration, a new solver may be used to resolve states.
-     *
-     *  @param breakpoint True if this is a breakpoint iteration.
-     */
-    protected void _setBreakpointIteration(boolean breakpoint) {
-        // FIXME: this method is misleading...
-        // A better name is CreateIterationStates...
-        
-        // FIXME: This method may not be necessary since it is basically
-        // wrapped by _setDiscretePhase ..
-        if (_debugging) {
-            if (breakpoint) {
-                _debug("     << Creating the starting states for continuous " +
-                    "phase execution ...");
-            } else {
-                _debug("     The starting states were created. >>");
-            }
-        }
-        _breakpointIteration = breakpoint;
-    }
-
-    /** Set the current ODE Solver to be the argument.
-     *  Derived class may throw an exception if the argument
+    /** Set the current ODE solver to be the given ODE solver.
+     *  Derived classes may throw an exception if the argument
      *  cannot serve as the current ODE solver
      *  @param solver The solver to set.
      *  @exception  IllegalActionException Not thrown in this base class.
-     *     It may be thrown by the derived classes if the solver is not
-     *     appropriate.
+     *  It may be thrown by the derived classes if the solver is not
+     *  appropriate.
      */
     protected void _setCurrentODESolver(ODESolver solver)
             throws IllegalActionException {
@@ -851,7 +816,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
     }
 
     /** Set the current phase of execution as a discrete phase. The value
-     *  set will be returned by the isDiscretePhase() method.
+     *  set can be returned by the isDiscretePhase() method.
      *  @param discrete True if this is the discrete phase.
      */
     protected void _setDiscretePhase(boolean discrete) {
@@ -898,6 +863,11 @@ public abstract class CTDirector extends StaticSchedulingDirector
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+    /** A boolean value indicating whether the current iteration is the first
+     *  iteration of a simulation.
+     */
+    protected boolean _firstIteration = false;
+    
     /** This flag will be set to false if any actor returns false to
      *  its postfire().
      */
@@ -910,27 +880,25 @@ public abstract class CTDirector extends StaticSchedulingDirector
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // Initialize the local variables of the CTDirector. This is called in
+    // Initialize the local variables of this CTDirector. This is called in
     // the preinitialize method.
-    // NOTE: Time objects are not initialized. They are initialized at
+    // NOTE: Time objects are not initialized here. They are initialized at
     // the end of the preinitialize method of this director.
     private void _initializeLocalVariables() throws IllegalActionException {
+       _errorTolerance = ((DoubleToken)errorTolerance.getToken()).doubleValue();
+       _initStepSize = ((DoubleToken)initStepSize.getToken()).doubleValue();
+       _maxIterations = ((IntToken)maxIterations.getToken()).intValue();
+       _maxStepSize = ((DoubleToken)maxStepSize.getToken()).doubleValue();
+       _minStepSize = ((DoubleToken)minStepSize.getToken()).doubleValue();
+       _valueResolution = 
+           ((DoubleToken)valueResolution.getToken()).doubleValue();
+
        _currentSolver = null;
-
        _prefiredActors = new HashSet();
-
-       _initStepSize = 0.1;
-       _minStepSize = 1e-5;
-       _maxStepSize = 1.0;
        _currentStepSize = _initStepSize;
        _suggestedNextStepSize = _initStepSize;
 
-       _maxIterations = 20;
-       _errorTolerance = 1e-4;
-       _valueResolution = 1e-6;
-
         // A simulation always starts with a discrete phase execution
-       _breakpointIteration = true;
        _discretePhase = true;
        _executionPhase = CTExecutionPhase.UNKNOWN_PHASE; 
 
