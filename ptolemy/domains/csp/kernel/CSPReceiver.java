@@ -147,18 +147,22 @@ public class CSPReceiver implements ProcessReceiver {
         return _container;
     }
 
-    /** True if a get is waiting to rendezvous.
-     *  @return True if a get is waiting to rendezvous.
+    /** Return true. This method returns true in all cases
+     *  to prevent the possibility of busy waiting with 
+     *  polymorphic actors.
+     *  @return True. 
      */
     public synchronized boolean hasRoom() {
-        return _isGetWaiting();
+        return true;
     }
 
-    /** True if a put is waiting to rendezvous.
-     *  @return True if a put is waiting to rendezvous.
+    /** Return true. This method returns true in all cases
+     *  to prevent the possibility of busy waiting with 
+     *  polymorphic actors.
+     *  @return True. 
      */
     public synchronized boolean hasToken() {
-        return _isPutWaiting();
+        return true;
     }
 
     /** Return true if this receiver is connected to the inside of a
