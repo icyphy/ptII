@@ -836,23 +836,27 @@ public class PlotBox extends Applet {
     public boolean parseLine (String line) {
         // Parse commands in the input file, ignoring lines with
         // syntax errors or unrecognized commands.
-        if (line.startsWith("#")) {
+
+	// We convert the line to lower case so that the command
+	// names are case insensitive.
+	String lcLine = new String(line.toLowerCase());
+        if (lcLine.startsWith("#")) {
             // comment character
             return true;
         }
-        if (line.startsWith("TitleText:")) {
+        if (lcLine.startsWith("titletext:")) {
             setTitle((line.substring(10)).trim());
             return true;
         }
-        if (line.startsWith("XLabel:")) {
+        if (lcLine.startsWith("xlabel:")) {
             setXLabel((line.substring(7)).trim());
             return true;
         }
-        if (line.startsWith("YLabel:")) {
+        if (lcLine.startsWith("ylabel:")) {
             setYLabel((line.substring(7)).trim());
             return true;
         }
-        if (line.startsWith("XRange:")) {
+        if (lcLine.startsWith("xrange:")) {
         	int comma = line.indexOf(",", 7);
         	if (comma > 0) {
         	    String min = (line.substring(7,comma)).trim();
@@ -867,7 +871,7 @@ public class PlotBox extends Applet {
         	}
         	return true;
         }
-        if (line.startsWith("YRange:")) {
+        if (lcLine.startsWith("yrange:")) {
         	int comma = line.indexOf(",", 7);
         	if (comma > 0) {
         	    String min = (line.substring(7,comma)).trim();
@@ -882,14 +886,14 @@ public class PlotBox extends Applet {
         	}
         	return true;
         }
-        if (line.startsWith("XTicks:")) {
+        if (lcLine.startsWith("xticks:")) {
             // example:
             // XTicks "label" 0, "label" 1, "label" 3
             boolean cont = true;
             _parsePairs(line.substring(7), true);
         	return true;
         }
-        if (line.startsWith("YTicks:")) {
+        if (lcLine.startsWith("yticks:")) {
             // example:
             // YTicks "label" 0, "label" 1, "label" 3
             boolean cont = true;
@@ -897,16 +901,16 @@ public class PlotBox extends Applet {
         	return true;
         }
         
-        if (line.startsWith("Grid:")) {
-            if (line.indexOf("off",5) >= 0) {
+        if (lcLine.startsWith("grid:")) {
+            if (lcLine.indexOf("off",5) >= 0) {
                 _grid = false;
             } else {
                 _grid = true;
             }
             return true;
         }
-        if (line.startsWith("Color:")) {
-            if (line.indexOf("off",6) >= 0) {
+        if (lcLine.startsWith("color:")) {
+            if (lcLine.indexOf("off",6) >= 0) {
                 _usecolor = false;
             } else {
                 _usecolor = true;
