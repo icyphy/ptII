@@ -120,6 +120,7 @@ OTHER_FILES_TO_BE_JARED = \
 	expressions9.gif \
 	expressionsa.gif \
 	ptIIplanet.gif \
+	ptIIplanetIcon.gif \
 	PtolemyIISmall.gif
 
 EXTRA_SRCS = \
@@ -143,7 +144,6 @@ EXTRA_SRCS = \
 	ptIIbanner3.gif \
 	ptIIexample.gif \
 	ptIIplanet.ico \
-	ptIIplanetIcon.gif \
 	ptolemy32bw.bin \
 	ptolemy32bw.bmp \
 	spacer4.gif \
