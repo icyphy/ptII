@@ -52,11 +52,11 @@ compatible browser or requires a jdk1.2 plugin.
 @author Mudit Goel
 @version $Id$
 */
-
 public class TTTApplet extends PNApplet {
 
-    private TicTacToeDisplay _display;
-    private Panel displayPanel;
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /** Initialize the applet.
      */
     public void init() {
@@ -81,7 +81,7 @@ public class TTTApplet extends PNApplet {
 
     /** Construct the Ptolemy system
      */
-    public void constructPtolemyModel () {
+    public void constructPtolemyModel() {
         try {
 	    _display = new TicTacToeDisplay(_toplevel, "display");
 	    TTTPlayer play = new TTTPlayer(_toplevel, "player");
@@ -115,4 +115,10 @@ public class TTTApplet extends PNApplet {
     public void _stop() {
         _manager.terminate();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private TicTacToeDisplay _display;
+    private Panel displayPanel;
 }
