@@ -197,7 +197,7 @@ on the internet.  An older (and more compact) textual format
 is also supported.  Binary data files are also supported, see
 <A HREF="#binarydata"><B>3.2 How do I plot binary data?</B></A>
 All three formats are demonstrated in the
-<a href="../demo/toc.htm" target="contents">demos</a>.
+<a href="../demo/toc.htm" target="toc">demos</a>.
 <P>
 If you write Java code, the key method for adding data points
 is the addPoint() method of the Plot class.
@@ -279,27 +279,13 @@ The
 has more information about endian issues.
 
 <DT>  <A NAME="appletprinting"><B>3.3 How do I print a plot from a Plot applet?</B></A>
-<DD> Unfortunately, most browsers cannot directly print applets.  There are
-work arounds, but in general, it is hard, and involves security
-violations.
+<DD> The JDK1.3 plugin makes printing easier.  Most applets should
+have a print icon on the uppper right corner that will bring up a printer
+dialog.
+
+
  <p>In an applet, you can copy the plot to the clipboard in Encapsulated PostScript (EPS) format by typing Control-C.
 You can export the plot to standard out in EPS by typing an <CODE>E</CODE>.
-
-
- <p><A HREF="http://www.best.com/~pvdl/javafaq.htm" target="_top"><CODE>http://www.best.com/~pvdl/javafaq.htm</CODE></A> says:
-
-<BLOCKQUOTE>
-4.1.11 How do I print a page with an applet?
-
- <P>A. Browsers are starting to introduce support for this. Until they all
-have it, your best bet is to print a screendump.  Using the browser to
-print the page may leave a blank where the applet is.  Putting print
-support in the applet will print the applet only, not the rest of the
-browser page.
-</BLOCKQUOTE>
-
- <P>For more information about printing, join the JavaSoft Developer
-Connection (it is free) and search for printing.
 
  <P>Note that printing is supported from standalone applications (ptplot,
 pxgraph, and histogram).  These applications can also export encapsulated
