@@ -65,6 +65,18 @@ using MoML. Customized unit systems can be created following these examples.
 
 public class UnitSystem extends ScopeExtendingAttribute {
 
+    // FIXME: these issues should be addressed (cxh 8/02)
+    // 1. The entire notion of a category being indexed into a vector by an
+    // integer is a little strange.  I don't think we have quite the right
+    // storage structure here.  In anycase, it would be good to 
+    // discuss the implementation details in a comment inside the UnitSystem
+    // method
+    //
+    // 2. Having static data makes for somewhat less robust code, especially
+    // when there is no way to reset the static data, which is why I added a
+    // reset() method.  UnitSystem has no way of removing a unit from
+    // the static structures - what do I do if I screw up and add a bad unit?
+
     /** Construct a unit system with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
