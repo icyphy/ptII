@@ -11,7 +11,7 @@
     <property name="CT" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="30">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="30.0">
         </property>
         <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
@@ -56,7 +56,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 38.0">
         </property>
     </property>
-    <property name="preemptive" class="ptolemy.data.expr.Parameter" value="true">
+    <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+        </property>
     </property>
     <property name="priority1" class="ptolemy.data.expr.Parameter" value="2">
     </property>
@@ -84,19 +86,7 @@ preemptive ones can.
         <property name="_hideName" class="ptolemy.data.expr.Parameter">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={28, 0, 962, 597}}">
-    </property>
-    <property name="SchedulePlotter" class="ptolemy.domains.tm.kernel.SchedulePlotter">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_editorFactory" class="ptolemy.domains.tm.kernel.SchedulePlotter$SchedulePlotterEditorFactory">
-        </property>
-    </property>
-    <property name="SchedulePlotter2" class="ptolemy.domains.tm.kernel.SchedulePlotter">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_editorFactory" class="ptolemy.domains.tm.kernel.SchedulePlotter$SchedulePlotterEditorFactory">
-        </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 170, 962, 597}}">
     </property>
     <entity name="Sampler1" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.1">
@@ -286,7 +276,7 @@ preemptive ones can.
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={29, 450, 401, 281}}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[393, 226]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -304,7 +294,7 @@ preemptive ones can.
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="30.0"/>
-<yRange min="-0.10468755018974017" max="0.3093741327821534"/>
+<yRange min="-0.010306145704779841" max="0.2135038161798217"/>
 </plot>?>
         </configure>
     </entity>
@@ -583,8 +573,8 @@ preemptive ones can.
         <property name="TM" class="ptolemy.domains.tm.kernel.TMDirector">
             <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.797693135E308">
             </property>
-            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="preemptive">
+                <property name="style" class="ptolemy.actor.gui.style.LineStyle">
                 </property>
             </property>
             <property name="defaultTaskExecutionTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -708,7 +698,7 @@ preemptive ones can.
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={578, 445, 405, 284}}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[397, 229]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -726,7 +716,7 @@ preemptive ones can.
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="30.0"/>
-<yRange min="0.0" max="0.1284684223206446"/>
+<yRange min="0.0" max="0.13125199705596077"/>
 </plot>?>
         </configure>
     </entity>
