@@ -157,7 +157,7 @@ public class StringReplace extends TypedAtomicActor {
                 throw new IllegalActionException(this, ex,
                         "Failed to compile regular expression \""
                         + patternValue + "\"");
-           }
+            }
         } else {
             super.attributeChanged(attribute);
         }

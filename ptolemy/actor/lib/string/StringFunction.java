@@ -136,7 +136,7 @@ public class StringFunction extends Transformer {
                 _function = _TOLOWERCASE;
             } else {
                 throw new IllegalActionException(this,
-                "Unrecognized function: " + functionName);
+                        "Unrecognized function: " + functionName);
             }
         } else {
             super.attributeChanged(attribute);
