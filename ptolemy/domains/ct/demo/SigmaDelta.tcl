@@ -130,7 +130,7 @@ set firdelay [$fir getAttribute Delay]
 $firdelay setExpression 0.02
 $firdelay parameterChanged [java::null]
 
-set quan [java::new ptolemy.domains.de.lib.TestLevel $sys Quantizer]
+set quan [java::new ptolemy.domains.de.lib.DETestLevel $sys Quantizer]
 set accu [java::new ptolemy.domains.de.lib.DEStatistics $sys Accumulator]
 set clk [java::new ptolemy.domains.de.lib.DEClock $sys ADClock 1 1]
 set deplot [java::new ptolemy.domains.de.lib.DEPlot $sys DEPLOT]
