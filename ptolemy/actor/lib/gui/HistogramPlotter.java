@@ -319,6 +319,7 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
         if (_container == null) {
             // Place the histogram in its own frame.
             histogram = new Histogram();
+            histogram.setTitle(getName());
             _frame = new PlotFrame(getFullName(), histogram);
 	    _frame.setVisible(true);
         } else {
@@ -327,6 +328,7 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
             } else {
                 if (histogram == null) {
                     histogram = new Histogram();
+                    histogram.setTitle(getName());
                     histogram.setButtons(true);
                 }
                 _container.add(histogram);
