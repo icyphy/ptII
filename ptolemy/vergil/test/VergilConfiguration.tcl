@@ -79,7 +79,7 @@ proc expandConfiguration {configuration} {
     $inputFileNamesToSkip add "/lib/interactive.xml"
     $inputFileNamesToSkip add "/jai/jai.xml"
     $inputFileNamesToSkip add "/jmf/jmf.xml"
-    $inputFileNamesToSkip add "/joystick/joystick.xml"
+    $inputFileNamesToSkip add "/joystick/jstick.xml"
     $inputFileNamesToSkip add "/jxta/jxta.xml"
     $inputFileNamesToSkip add "/matlab.xml"
 
