@@ -522,8 +522,7 @@ public class DTDirector extends SDFDirector {
         double timeIncrement = getPeriod();
         
         _requestRefireAt(_formerValidTimeFired + timeIncrement);
-        //return returnValue;
-        return true;
+        return returnValue;
     }
 
           
