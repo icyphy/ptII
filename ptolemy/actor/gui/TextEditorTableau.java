@@ -95,6 +95,8 @@ public class TextEditorTableau extends Tableau {
         frame.text.setRows(40);
         setFrame(frame);
         frame.setTableau(this);
+        // The above will mark the text object modified. Reverse this.
+        frame.setModified(false);
     }
 
     ///////////////////////////////////////////////////////////////////
