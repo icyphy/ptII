@@ -148,8 +148,8 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
             if (debug) rootNode.displayParseTree(" ");
             return rootNode;
         } catch (ParseException x) {
-            str = "parse of " + stringIn + " failed: " + x.getMessage();
-            throw new IllegalArgumentException(str);
+            throw new IllegalArgumentException("parse of " + stringIn +
+                    " failed: " + x.getMessage());
         }
     }
 
@@ -173,8 +173,8 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
             rootNode = start();
             if (debug) rootNode.displayParseTree(" ");
         } catch (ParseException x) {
-            str = "parse of " + stringIn + " failed: " + x.getMessage();
-            throw new IllegalArgumentException(str);
+            throw new IllegalArgumentException("parse of " + stringIn +
+                    " failed: " + x.getMessage());
         }
         return rootNode;
     }
@@ -962,8 +962,9 @@ String tidied, x;
                 Complex value = new Complex(0, imag.doubleValue());
                 jjtn001._ptToken = new ComplexToken(value);
             } catch (NumberFormatException ee) {
-                String str = "Unable to convert token " + token.image;
-                {if (true) throw new ParseException(str + "to a complex number.");}
+                {if (true) throw new ParseException(
+                        "Unable to convert token " + token.image +
+                        " to a complex number.");}
             }
       } finally {
      if (jjtc001) {
@@ -993,8 +994,9 @@ String tidied, x;
                    jjtn002._ptToken = new DoubleToken(value.doubleValue());
                 }
             } catch (NumberFormatException ee) {
-                String str = "Unable to convert token " + token.image;
-                {if (true) throw new ParseException(str + "to an float or double");}
+                {if (true) throw new ParseException(
+                        "Unable to convert token " + token.image +
+                        " to an float or double");}
             }
       } finally {
      if (jjtc002) {
@@ -1022,8 +1024,9 @@ String tidied, x;
                    jjtn003._ptToken = new IntToken(value.intValue());
                 }
             } catch (NumberFormatException ee) {
-                String str = "Unable to convert token " + token.image;
-                {if (true) throw new ParseException(str + "to an integer or long");}
+                {if (true) throw new ParseException(
+                        "Unable to convert token " + token.image +
+                        " to an integer or long");}
             }
       } finally {
      if (jjtc003) {
