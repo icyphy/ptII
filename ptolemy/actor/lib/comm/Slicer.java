@@ -152,9 +152,12 @@ public class Slicer extends Transformer {
         ArrayToken tableToken = (ArrayToken)table.getToken();
         _size = 1 << _wordLength;
         if (tableToken.length() < _size) {
+            /*
             throw new IllegalActionException(this, "Table parameter must " +
                     "have at least " + _size + " entries, but only has " +
                     tableToken.length());
+            */
+            _size = tableToken.length();
         }
         _table = new Complex[_size];
         for (int i = 0; i < _size; i++)
