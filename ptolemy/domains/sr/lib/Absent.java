@@ -32,9 +32,12 @@ package ptolemy.domains.sr.lib;
 
 import ptolemy.actor.lib.Source;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.StringAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// Absent
@@ -60,11 +63,33 @@ public class Absent extends Source {
     public Absent(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        output.setTypeEquals(BaseType.UNKNOWN);
+        outputType = new StringAttribute(this, "outputType");
+        outputType.setExpression("int");
+        attributeChanged(outputType);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Override the base class to change the type of the output port.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the type is not recognized.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == outputType) {
+            String typeName = outputType.getExpression();
+            Type newType = BaseType.forName(typeName);
+            if (newType == null) {
+                throw new IllegalActionException(this,
+                        "Unrecognized type: " + typeName);
+            } else {
+                output.setTypeEquals(newType);
+            }
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
 
     /** Output an absent value by calling the sendAbsent() method of the
      *  output port.
@@ -74,6 +99,15 @@ public class Absent extends Source {
         super.fire();
         output.sendAbsent(0);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** The type for the output port.  This is a string-valued attribute
+     *  that defaults to "FIXME".
+     */
+    public StringAttribute outputType;
+
 }
 
 
