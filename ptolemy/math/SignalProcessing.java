@@ -983,12 +983,36 @@ public final class SignalProcessing {
     // Returns an array with half the size + 1 because of the symmetry
     // of the cosDFT function.
     private static double[] _cosDFT(double[] x, int size, int order) {
-        if (size == 4) {
-           double[] retval = new double[3];
-           retval[0] = x[0] + x[1] + x[2] + x[3];
-           retval[1] = x[0] - x[2];
-           retval[2] = x[0] - x[1] + x[2] - x[3];
-           return retval;
+
+        switch (size) {
+          // Base cases for lower orders
+          case 0:
+          return new double[0];
+       
+          case 1:
+            {
+             double[] retval = new double[1];
+             retval[0] = x[0];
+             return retval;
+            }
+  
+          case 2:
+            {
+             double[] retval = new double[2];
+             retval[0] = x[0] + x[1];
+             retval[1] = x[0] - x[1];
+             return retval;
+            }
+
+          // Optimized base case for higher orders 
+          case 4:
+            {                   
+             double[] retval = new double[3];
+             retval[0] = x[0] + x[1] + x[2] + x[3];
+             retval[1] = x[0] - x[2];
+             retval[2] = x[0] - x[1] + x[2] - x[3];
+             return retval;
+            }
         }
 
         int halfN = size >> 1;
@@ -1026,15 +1050,24 @@ public final class SignalProcessing {
     // Returns an array with half the size because of the symmetry
     // of the sinDFT function.
     private static double[] _sinDFT(double[] x, int size, int order) {
-        if (size == 4) {
-           double[] retval = new double[2];
 
-           // retval[0] = 0.0; // not necessary for Java,
-                               // also not read
+        switch (size) {
+          // Base cases for lower orders
+          case 0:
+          case 1:
+          case 2:
+          return null; // should never be used
+       
+          // Optimized base case for higher orders 
+          case 4:
+            {                   
+             double[] retval = new double[2];
+             // retval[0] = 0.0; // not necessary for Java,
+                                 // also not read
 
-           retval[1] = x[1] - x[3];
+             retval[1] = x[1] - x[3];
 
-           return retval;
+            }
         }
 
         int halfN = size >> 1;
