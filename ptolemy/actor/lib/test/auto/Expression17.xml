@@ -52,8 +52,6 @@
         </port>
         <port name="a1" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute">
-            </property>
         </port>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">

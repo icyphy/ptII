@@ -40,8 +40,6 @@
         </port>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute">
-            </property>
         </port>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
@@ -116,8 +114,6 @@
         </port>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
-            </property>
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
