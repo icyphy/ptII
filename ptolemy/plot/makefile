@@ -232,6 +232,7 @@ COMPLEXCLASSFILES = \
 		$(ME)/HistogramApplet.class \
 		'$(ME)/PlotLive$$StartButtonListener.class' \
 		'$(ME)/PlotLive$$StopButtonListener.class' \
+		'$(ME)/PlotFrame$$EPSFileFilter.class' \
 		'$(ME)/PlotFrame$$FileMenuListener.class' \
 		'$(ME)/PlotFrame$$FormatListener.class' \
 		'$(ME)/PlotFrame$$PLTOrXMLFileFilter.class' \
