@@ -128,49 +128,42 @@ public class SymmetricEncryption extends CipherActor {
      *  port.  All parameters should be the same as the corresponding
      *  decryption actor.  The call for encryption is done in the base class.
      *
-     *  @exception IllegalActionException if thrown by base class.
+     *  @exception IllegalActionException If thrown by base class.
      */
     public void fire() throws IllegalActionException {
 
         keyOut.send(0,
                 _unsignedByteArrayToArrayToken(_keyToBytes(_secretKey)));
-        if (_algParams != null) {
+        if (_algorithmParameters != null) {
             try {
 
                 parameters.send(0, _unsignedByteArrayToArrayToken(
-                        _algParams.getEncoded()));
+                        _algorithmParameters.getEncoded()));
 
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex, "send failed");
             }
         }
 
-        //            if (FIRST_RUN == true) {
-        //                _byteArrayOutputStream = new ByteArrayOutputStream();
-        //                try {
+        //   if (FIRST_RUN == true) {
+        //       _byteArrayOutputStream = new ByteArrayOutputStream();
+        //       try {
+        //  _cipher.init(Cipher.ENCRYPT_MODE, _secretKey, _algorithmParameters);
         //
-        //                    _cipher.init(Cipher.ENCRYPT_MODE, _secretKey, _algParams);
-        //
-        //                } catch (InvalidKeyException e) {
-        //                    // TODO Auto-generated catch block
-        //                    e.printStackTrace();
-        //                } catch (InvalidAlgorithmParameterException e) {
-        //                    // TODO Auto-generated catch block
-        //                    e.printStackTrace();
-        //                }
-        //                _cos = new CipherOutputStream(_byteArrayOutputStream, _cipher);
-        //                FIRST_RUN = false;
-        //            }
+        //       } catch (InvalidKeyException e) {
+        //  // TODO Auto-generated catch block
+        //       } catch (InvalidAlgorithmParameterException e) {
+        //  // TODO Auto-generated catch block
+        //       }
+        //       _cos = new CipherOutputStream(_byteArrayOutputStream,
+        /        _cipher);
+        //       FIRST_RUN = false;
+        //   }
         //        //} catch (NoRoomException e) {
-        //       e.printStackTrace();
         //  } catch (IllegalActionException e) {
-        //    e.printStackTrace();
         //        } catch (IOException e) {
-        //            e.printStackTrace();
         //        } catch (InvalidKeyException e) {
-        //            e.printStackTrace();
         //        } catch (InvalidAlgorithmParameterException e) {
-        //            e.printStackTrace();
         //        }
         //        super.fire();
     }
@@ -190,12 +183,14 @@ public class SymmetricEncryption extends CipherActor {
 
             _cipher.init(Cipher.ENCRYPT_MODE, _secretKey);
 
-            _algParams = _cipher.getParameters();
-            //if (_algParams != null) {
-            //    parameters.send(0, _unsignedByteArrayToArrayToken(_algParams.getEncoded()));
+            _algorithmParameters = _cipher.getParameters();
+            //if (_algorithmParameters != null) {
+            //    parameters.send(0,
+            //       _unsignedByteArrayToArrayToken(_algorithmParameters
+            //       .getEncoded()));
             //}
 
-            FIRST_RUN=true;
+            FIRST_RUN = true;
         } catch (Exception ex) {
             throw new IllegalActionException (this, ex,
                     "Failed to initialize");
@@ -204,7 +199,7 @@ public class SymmetricEncryption extends CipherActor {
 
     /** Sets token production for initialize to one and resolves scheduling.
      *
-     * @exception IllegalActionException if thrown by base class.
+     * @exception IllegalActionException If thrown by base class.
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
@@ -213,48 +208,40 @@ public class SymmetricEncryption extends CipherActor {
         getDirector().invalidateResolvedTypes();
     }
 
-
-
     /** Encrypt the data with the specified key.  Receives the data to be
      *  encrypted as a byte array and returns a byte array.  Also creates
      *  and sends an initialization vector if necessary.
      *
      * @param dataBytes the data to be encrypted.
      * @return byte[] the encrypted data.
-     * @exception IllegalActionException if exception below it thrown.
-     * @exception IOException if error occurs in ByteArrayOutputStream.
-     * @exception InvalideKeyException if key is invalid.
-     * @exception BadPaddingException if padding is bad.
-     * @exception IllegalBockSizeException if illegal block size.
+     * @exception IllegalActionException If error occurs in
+     * ByteArrayOutputStream, if the key is invalid, if the padding is bad
+     * or if the block size is illegal.
      */
     protected byte[] _process(byte[] dataBytes)
             throws IllegalActionException{
-        //      ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        // ByteArrayOutputStream byteArrayOutputStream =
+        /      new ByteArrayOutputStream();
         _byteArrayOutputStream.reset();
-        //        byteArrayInputStream = new ByteArrayInputStream(initialData);
-        //        int length = 0;
-        //        byte [] buffer = new byte [BUFFER_SIZE];
-        //        try {
-        //            while ((length = byteArrayInputStream.read(buffer)) != -1) {
-        //                _cos.write(buffer, 0, length);
-        //            }
-        //            _cos.flush();
-        //        } catch (IOException e) {
-        //            e.printStackTrace();
-        //            throw new IllegalActionException(this.getName()+e.getMessage());
-        //        }
+        // byteArrayInputStream = new ByteArrayInputStream(initialData);
+        // int length = 0;
+        // byte [] buffer = new byte [BUFFER_SIZE];
+        // try {
+        //     while ((length = byteArrayInputStream.read(buffer)) != -1) {
+        //         _cos.write(buffer, 0, length);
+        //     }
+        //     _cos.flush();
+        // } catch (IOException e) {
+        //      throw new IllegalActionException(this, ex);
+        // }
 
         try {
-
             _byteArrayOutputStream.write(_cipher.doFinal(dataBytes));
-
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
                     "Problem processing " + dataBytes.length + " bytes.");
         }
-
         return _byteArrayOutputStream.toByteArray();
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -264,10 +251,7 @@ public class SymmetricEncryption extends CipherActor {
      */
     private SecretKey _secretKey = null;
 
-    //The initilization parameter used in a block ciphering mode.
-    private IvParameterSpec _spec;
-
-    private AlgorithmParameters _algParams;
+    private AlgorithmParameters _algorithmParameters;
 
     private static int BUFFER_SIZE = 8192;
 
