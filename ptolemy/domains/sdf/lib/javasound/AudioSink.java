@@ -1,4 +1,4 @@
-/* An actor that writes input audio data to a sound file and/or plays
+/* An actor that writes input audio data to a sound file or plays
 the audio data.
 
 @Copyright (c) 1998-2000 The Regents of the University of California.
@@ -52,8 +52,8 @@ import ptolemy.domains.sdf.kernel.*;
 //////////////////////////////////////////////////////////////////////////
 //// AudioSink
 /**
-This actor reads in audio data from one input channel and records the
-data to a sound file and/or plays the audio data. The input port is of type
+This actor reads in audio data from the input port and records the
+data to a sound file or plays the audio data. The input port is of type
 DoubleToken. Each DoubleToken read from the input represents one sample
 of the audio data and should be in the range [-1,1]. Single channel
 (mono) and multichannel audio (stereo) are supported. For single
@@ -267,14 +267,13 @@ public class AudioSink extends SDFAtomicActor {
 
 	// For each channel (in both the audio and Ptolemy II sense):
 	for (int j = 0; j < _channels; j++) {
-	    //for (int j = 0; j < 1; j++) {
-	    DoubleToken[] audioTokenArray = new DoubleToken[_consumptionRate];
-	    input.getArray(j, audioTokenArray);
+
+	    input.getArray(j, _audioTokenArray);
        
 	    // For each samples in the current channel:
 	    for (int i = 0; i < _consumptionRate; i++) {
 		// Convert to double[].
-		_audioInDoubleArray[j][i] = audioTokenArray[i].doubleValue();
+		_audioInDoubleArray[j][i] = _audioTokenArray[i].doubleValue();
 	    }
 	}
 	// write out samples to speaker and/or file.
@@ -337,6 +336,10 @@ public class AudioSink extends SDFAtomicActor {
 	// Start audio playback.
 	_soundPlayback.startPlayback();
 	System.out.println("AudioSink: initialize(): return");
+
+	// Allocate arrays for postfire()
+	_audioTokenArray = new DoubleToken[_consumptionRate];
+
     }
 
     /** Set up the input port's consumption rate. For optimization, 
@@ -379,4 +382,6 @@ public class AudioSink extends SDFAtomicActor {
     private int _channels;
 
     private double[][] _audioInDoubleArray;
+
+    private DoubleToken[] _audioTokenArray;
 }

@@ -98,11 +98,6 @@ a sound file, and should be set accordingly:
 <ul>
 <li><i>source</i> should be set to "URL" or "file".
 <li><i>pathName</i> should be set to the name of the file.
-<li><i>channels</i> should be set to desired number of audio 
-channels. The default is 1. Choose 2 only if the sound file
-is known to be stereo. Setting <i>channels</i> to a higher
-value than the number of channels in the sound file will
-result in a NullPointerException being thrown by this actor.
 <li><i>tokenProductionRate</i> may be set to optimize 
 performance. The default value should result in reasonable
 performance.
@@ -231,9 +226,9 @@ public class AudioSource extends SDFAtomicActor {
      *  2 for stereo, etc.
      *  The default vaule is 1 (mono).
      *  <p>
-     *  
+     *  This parameter is automatically set when capturing from
+     *  a sound file.
      */
-    // FIXME: set this automatically when capturing from a file.
     public Parameter channels;
 
     /** Requested size of the internal audio input
@@ -335,7 +330,7 @@ public class AudioSource extends SDFAtomicActor {
 	    
 	    for (int j = 0; j < _channels; j++) {
 
-		_audioTokenArray = new DoubleToken[_productionRate];
+		//_audioTokenArray = new DoubleToken[_productionRate];
 		// Convert to DoubleToken[].
 		for (int i = 0; i < _productionRate; i++) {
 		    _audioTokenArray[i] =
@@ -355,7 +350,7 @@ public class AudioSource extends SDFAtomicActor {
 	    // This generally means
 	    // that the end of the sound file has been reached.
 	    // Output productionRate many zeros.
-	    _audioTokenArray = new DoubleToken[_productionRate];
+	    //_audioTokenArray = new DoubleToken[_productionRate];
 	    // Convert to DoubleToken[].
 	    for (int i = 0; i < _productionRate; i++) {
 		_audioTokenArray[i] = new DoubleToken(0);
@@ -392,7 +387,7 @@ public class AudioSource extends SDFAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-	System.out.println("AudioSource: initialize(): invoked");
+	//System.out.println("AudioSource: initialize(): invoked");
 	    if (((StringToken)source.getToken()).toString() == "URL") {
 		// Load audio from a URL.
 		String theURL = 
@@ -400,6 +395,13 @@ public class AudioSource extends SDFAtomicActor {
 		_soundCapture = new SoundCapture(true,
 						  theURL,
 						  _productionRate);
+		// Start capturing audio.
+		_soundCapture.startCapture();
+
+		// Read the number of audio channels and set
+		// parameter accordingly.
+		_channels = _soundCapture.getChannels();
+		channels.setToken(new IntToken(_channels));
 		
 	    } else if (((StringToken)source.getToken()).toString() == 
 		       "file") {
@@ -409,6 +411,13 @@ public class AudioSource extends SDFAtomicActor {
 		_soundCapture = new SoundCapture(false,
 						  theFileName,
 						  _productionRate);
+		 // Start capturing audio.
+		_soundCapture.startCapture();
+
+		// Read the number of audio channels and set
+		// parameter accordingly.
+		_channels = _soundCapture.getChannels();
+		channels.setToken(new IntToken(_channels));
 	    } else if (((StringToken)source.getToken()).toString() == 
 		       "mic") {
 
@@ -427,14 +436,18 @@ public class AudioSource extends SDFAtomicActor {
 						 channelsInt,
 						 bufferSizeInt,
 						 getSamplesSizeInt);
+		 // Start capturing audio.
+		_soundCapture.startCapture();
 	    } else {
 		throw new IllegalActionException("Parameter " +
 				  source.getFullName() +
 			          " is not set to a valid string.");
 	    }
 
-	    // Start capturing audio.
-	    _soundCapture.startCapture();
+	   
+
+	    // Allocate array for postfire()
+	    _audioTokenArray = new DoubleToken[_productionRate];
     }
 
     /** Stop capturing audio. Free up any system resources involved

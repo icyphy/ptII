@@ -132,12 +132,11 @@ public class AudioSourceSinkDemo extends TypedCompositeActor {
             // Read audio data from a local file.
             //soundSource.source.setToken(new StringToken("file"));
 	    //soundSource.pathName.setToken(new StringToken("22-new.aif"));
-	    //soundSource.channels.setToken(new IntToken(channels));
 	    // *** OR ***
 
 	    // Read audio data from a URL.
 	    //soundSource.source.setToken(new StringToken("URL"));
-	    //soundSource.pathName.setToken(new StringToken("http://209.233.16.71/1-welcome.wav"));	
+	    //soundSource.pathName.setToken(new StringToken("http://some-web-site/1-welcome.wav"));	
 	   
 	    // *** OR ***
 
