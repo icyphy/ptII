@@ -126,8 +126,7 @@ foreach i $configs {
 	    set entity [$iterator next]
 	    if [java::instanceof $entity ptolemy.actor.TypedAtomicActor] {
 		set actor [java::cast ptolemy.actor.TypedAtomicActor $entity]
-		set momlInfo [$actor getMoMLInfo]
-		set className [java::field $momlInfo className]
+		set className [$actor getClassName]
 		if [java::instanceof $entity $className] {
 		    set realActor [java::cast $className $entity]
 		    set fields [java::info fields $realActor]
