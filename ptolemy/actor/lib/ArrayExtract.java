@@ -169,13 +169,13 @@ public class ArrayExtract extends Transformer {
                         outputArray, destinationPositionValue,
                         extractLengthValue);
                 for(int i = destinationPositionValue + extractLengthValue;
-                        i < outputArrayLengthValue; i++) {
+                    i < outputArrayLengthValue; i++) {
                     outputArray[i] = zero;
                 }
                 output.broadcast(new ArrayToken(outputArray));
             } catch (IndexOutOfBoundsException ex) {
                 throw new IllegalActionException(this,
-                "Parameter values out of range for the array supplied.");
+                        "Parameter values out of range for the array supplied.");
             }
         }
     }
