@@ -130,7 +130,7 @@ public class Copernicus {
     public Copernicus(String args[]) throws Exception {
 	NamedObj namedObj = new NamedObj();
 	_generatorAttribute =
-	    new GeneratorAttribute(namedObj, "_helpGeneratorAttribute");
+	    new GeneratorAttribute(namedObj, GENERATOR_NAME);
 	_generatorAttribute.initialize();
 
 	// _parseArgs() will set the modelPath Parameter
@@ -143,7 +143,26 @@ public class Copernicus {
 	if (_verbose) {
 	    System.out.println(_generatorAttribute.toString());
 	}
-	compileAndRun(_generatorAttribute);
+
+        // Save the _generatorAttribute in a temporary file and then
+        // add an attribute to _generatorAttribute that lists the
+        // location of the temporary file.
+        // This is a bit of a hack, but it is necessary if we want
+        // to be able to use the the key/value pairs that are in
+        // _generatorAttribute later in MakefileWriter.
+        // At first glance, it would appear that we could just read
+        // the GeneratorAttribute from the model, but one problem is
+        // that we filter out the GeneratorAttribute in KernelMain.
+        // Another problem is that this class reads in the model and
+        // then modifies the GeneratorAttribute according to the 
+        // values of the command line arguments and other values, but
+        // we never update the model with this data.
+        String generatorAttributeFileName =
+            exportMoMLToTemporaryFile(_generatorAttribute);
+        new Parameter(_generatorAttribute, "_generatorAttributeFileName",
+                new StringToken(generatorAttributeFileName));
+
+        compileAndRun(_generatorAttribute);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -303,6 +322,27 @@ public class Copernicus {
 	return processReturnCode;
     }
 
+    /** Export the MoML of the namedObj argument to a temporary file.
+     *  The file is deleted when the Java virtual machine terminates.
+     *  @param namedObj The NamedObj to export
+     *  @returns The name of the temporary file that was created
+     *  @exception Exception If the temporary file cannot be created.  
+     *  @see java.io.File#createTempFile(java.lang.String, java.lang.String, java.io.File)   
+     */
+    public static String exportMoMLToTemporaryFile(NamedObj namedObj) 
+            throws Exception {
+        File temporaryFile = File.createTempFile("ptCopernicus", ".xml");
+        temporaryFile.deleteOnExit();
+        FileWriter writer = new FileWriter(temporaryFile);
+        String header = "<class name=\"Temp\" extends=\"ptolemy.actor.TypedCompositeActor\">\n";
+        writer.write(header, 0, header.length());
+        namedObj.exportMoML(writer, 1, "_generator");
+        String footer = "</class>\n";
+        writer.write(footer, 0, footer.length());
+        writer.close();
+        return temporaryFile.toString();
+    }
+            
     /** Create a new instance of this application, passing it the
      *  command-line arguments.
      *  @param args The command-line arguments.
@@ -322,6 +362,38 @@ public class Copernicus {
             }
             System.exit(0);
         }
+    }
+
+    /** Given a NamedObj, generate a HashMap containing String key/value
+     *  pairs where each key is a Parameter contained in the namedObj
+     *  argument, and each value is the value of the Parameter.
+     */
+    public static HashMap newMap(NamedObj namedObj)
+            throws IllegalActionException {
+	HashMap substituteMap = new HashMap(); 
+	Iterator attributes = namedObj.attributeList().iterator();
+	while(attributes.hasNext()) {
+	    Attribute attribute = (Attribute)attributes.next();
+	    if (attribute instanceof Variable) {
+		Variable variable = (Variable)attribute;
+                String value = variable.getToken().toString();
+                // Strip out any leading and trailing double quotes 
+                if (value.startsWith("\"") && value.length() >  2) { 
+                    value = value.substring(1, value.length()-1);
+                }
+                substituteMap.put("@" + variable.getName() + "@",
+                        value);
+	    }
+	}
+
+//         System.out.println("The map for " + namedObj +":"); 
+// 	Iterator keys = substituteMap.keySet().iterator();
+// 	while (keys.hasNext()) {
+// 	    String key = (String)keys.next();
+//             System.out.println(key + "\t" + (String)substituteMap.get(key));
+//         }
+
+        return substituteMap;
     }
 
     /** Given a string and a Map containing String key/value pairs,
@@ -358,7 +430,7 @@ public class Copernicus {
      *  in namedObj, search for strings like
      *  <code>@<i>ParameterName</i>@</code> in inputFileName, and 
      *  substitute in the value of the Parameter and return the results.
-     *
+     *    
      *  @param inputFileName  The name of the file to read from.
      *  @param namedObj The NamedObj that contains Parameters to
      *  be searched for in inputFileName.
@@ -368,33 +440,13 @@ public class Copernicus {
 				    NamedObj namedObj)
 	throws FileNotFoundException, IOException {
 
-	Map substituteMap = new HashMap(); 
-	Iterator attributes = namedObj.attributeList().iterator();
-	while(attributes.hasNext()) {
-	    Attribute attribute = (Attribute)attributes.next();
-	    if (attribute instanceof Variable) {
-		Variable variable = (Variable)attribute;
-		try {
-		    String value = variable.getToken().toString();
-		    // Strip out any leading and trailing double quotes 
-		    if (!value.startsWith("\"") || value.length() <= 2) { 
-			substituteMap.put("@" + variable.getName() + "@",
-					  value);
-		    } else {
-			substituteMap.put("@" + variable.getName() + "@",
-					  value.substring(1,
-							  value.length()-1));
-		    }
-
-		} catch (Exception ex) {
-		    throw new IOException("Problem with '" 
-					  + variable.getName() + "': '"
-					  + variable.getExpression() + "': "
-					  + ex);
-		}
-	    }
-	}
-
+        Map substituteMap;
+        try {
+            substituteMap = newMap(namedObj); 
+        } catch (IllegalActionException ex) {
+            throw new IOException("Problem with " 
+                    + namedObj.getName());
+        }
 	URL inputFileURL =
 	    Thread.currentThread().getContextClassLoader()
 	    .getResource(inputFileName);
@@ -455,6 +507,12 @@ public class Copernicus {
 	inputFile.close();
 	outputFile.close();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** The name of the GeneratorAttribute */
+    public static String GENERATOR_NAME = "_generator"; 
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
