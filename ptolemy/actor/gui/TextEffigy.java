@@ -168,14 +168,14 @@ public class TextEffigy extends Effigy {
      */
     public void writeFile(File file) throws IOException {
         if (_doc != null) {
-            java.io.FileWriter fout = new java.io.FileWriter(file);
+            java.io.FileWriter fileWriter = new java.io.FileWriter(file);
             try {
-                fout.write(_doc.getText(0, _doc.getLength()));
+                fileWriter.write(_doc.getText(0, _doc.getLength()));
             } catch (BadLocationException ex) {
                 throw new IOException("Failed to get text from the document: "
                         + ex);
             }
-            fout.close();
+            fileWriter.close();
         }
     }
 

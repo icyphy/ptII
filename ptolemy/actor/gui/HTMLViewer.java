@@ -106,14 +106,15 @@ public class HTMLViewer extends TableauFrame
                 // For some bizarre reason, when a link is within a frame,
                 // it needs to be handled differently than if its not in
                 // a frame.
-                HTMLFrameHyperlinkEvent  evt = (HTMLFrameHyperlinkEvent)event;
-                String target = evt.getTarget();
+                HTMLFrameHyperlinkEvent frameHyperlinkEvent =
+                    (HTMLFrameHyperlinkEvent)event;
+                String target = frameHyperlinkEvent.getTarget();
                 // If the target is "_blank" or "_top", then we want to open
                 // in a new window, so we defer to the below.
                 if (!target.equals("_blank") && !target.equals("_top")) {
                     HTMLDocument doc = (HTMLDocument)pane.getDocument();
                     try {
-                        doc.processHTMLFrameHyperlinkEvent(evt);
+                        doc.processHTMLFrameHyperlinkEvent(frameHyperlinkEvent);
                     } catch (Exception ex) {
                         MessageHandler.error(
                                 "Hyperlink reference failed", ex);
@@ -223,9 +224,9 @@ public class HTMLViewer extends TableauFrame
      *  @exception IOException If the write fails.
      */
     protected void _writeFile(File file) throws IOException {
-        java.io.FileWriter fout = new java.io.FileWriter(file);
-        fout.write(pane.getText());
-        fout.close();
+        java.io.FileWriter fileWriter = new java.io.FileWriter(file);
+        fileWriter.write(pane.getText());
+        fileWriter.close();
     }
 
     ///////////////////////////////////////////////////////////////////

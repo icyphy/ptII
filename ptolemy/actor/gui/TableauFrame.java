@@ -311,7 +311,7 @@ public abstract class TableauFrame extends Top {
                     _viewMenu = new JMenu("View");
                     _viewMenu.setMnemonic(KeyEvent.VK_V);
                     _menubar.add(_viewMenu);
-                    ViewMenuListener vml = new ViewMenuListener();
+                    ViewMenuListener viewMenuListener = new ViewMenuListener();
                     Iterator factories =
                         _factoryContainer.attributeList(TableauFactory.class)
                         .iterator();
@@ -323,7 +323,7 @@ public abstract class TableauFrame extends Top {
                         // The "action command" is available to the listener.
                         item.setActionCommand(name);
                         item.setMnemonic(name.charAt(0));
-                        item.addActionListener(vml);
+                        item.addActionListener(viewMenuListener);
                         _viewMenu.add(item);
                     }
                 }
@@ -486,9 +486,10 @@ public abstract class TableauFrame extends Top {
             // So we use the current directory instead.
             // FIXME: This will probably fail with a security exception in
             // applets.
-            String cwd = System.getProperty("user.dir");
-            if (cwd != null) {
-                fileDialog.setCurrentDirectory(new File(cwd));
+            String currentWorkingDirectory = System.getProperty("user.dir");
+            if (currentWorkingDirectory != null) {
+                fileDialog.setCurrentDirectory(
+                        new File(currentWorkingDirectory));
             }
         }
         int returnVal = fileDialog.showSaveDialog(this);

@@ -102,28 +102,30 @@ public class EditParametersDialog extends ComponentDialog
             // EditParametersDialog.
             // First, create a string array with the names of all the
             // parameters.
-            List attList = _target.attributeList(Settable.class);
+            List attributeList = _target.attributeList(Settable.class);
 
             // Count visible attributes
-            Iterator parameters = attList.iterator();
+            Iterator parameters = attributeList.iterator();
             int count = 0;
             while (parameters.hasNext()) {
-                Settable param = (Settable)parameters.next();
-                if (param.getVisibility() == Settable.FULL) count++;
+                Settable parameter = (Settable)parameters.next();
+                if (parameter.getVisibility() == Settable.FULL) {
+                    count++;
+                }
             }
 
-            String[] attNames = new String[count];
-            Iterator params = attList.iterator();
+            String[] attributeNames = new String[count];
+            parameters = attributeList.iterator();
             int index = 0;
-            while (params.hasNext()) {
-                Settable param = (Settable)params.next();
-                if (param.getVisibility() == Settable.FULL) {
-                    attNames[index++] = ((Attribute)param).getName();
+            while (parameters.hasNext()) {
+                Settable parameter = (Settable)parameters.next();
+                if (parameter.getVisibility() == Settable.FULL) {
+                    attributeNames[index++] = ((Attribute)parameter).getName();
                 }
             }
             Query query = new Query();
             query.addChoice("delete", "Parameter to delete",
-                    attNames, null, false);
+                    attributeNames, null, false);
 
             ComponentDialog dialog = new ComponentDialog(
                     _owner,
@@ -132,11 +134,12 @@ public class EditParametersDialog extends ComponentDialog
                     null);
             // If the OK button was pressed, then queue a mutation
             // to delete the parameter.
-            String delName = query.stringValue("delete");
+            String deleteName = query.stringValue("delete");
 
-            if (dialog.buttonPressed().equals("OK") && !delName.equals("")) {
+            if (dialog.buttonPressed().equals("OK") 
+                    && !deleteName.equals("")) {
                 String moml = "<deleteProperty name=\""
-                    + delName
+                    + deleteName
                     + "\"/>";
                     _target.addChangeListener(this);
                     _target.requestChange(

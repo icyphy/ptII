@@ -86,12 +86,13 @@ public class Configurer extends JPanel implements CloseListener {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         _object = object;
-        Iterator params
+        Iterator parameters
             = object.attributeList(Settable.class).iterator();
-        while (params.hasNext()) {
-            Settable param = (Settable)params.next();
-            if (param.getVisibility() == Settable.FULL) {
-                _originalValues.put(param.getName(), param.getExpression());
+        while (parameters.hasNext()) {
+            Settable parameter = (Settable)parameters.next();
+            if (parameter.getVisibility() == Settable.FULL) {
+                _originalValues.put(parameter.getName(),
+                        parameter.getExpression());
             }
         }
 
@@ -155,14 +156,14 @@ public class Configurer extends JPanel implements CloseListener {
                 Iterator entries = _originalValues.entrySet().iterator();
                 while (entries.hasNext()) {
                     Map.Entry entry = (Map.Entry)entries.next();
-                    Settable param = (Settable)
+                    Settable parameter = (Settable)
                         _object.getAttribute((String)entry.getKey());
                     try {
-                        param.setExpression((String)entry.getValue());
+                        parameter.setExpression((String)entry.getValue());
                         // Force notification of listeners, unless value is
                         // erroneous.
-                        if (param instanceof Variable) {
-                            ((Variable)param).getToken();
+                        if (parameter instanceof Variable) {
+                            ((Variable)parameter).getToken();
                         }
                     } catch (IllegalActionException ex) {}
                 }

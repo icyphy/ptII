@@ -141,11 +141,11 @@ public class RunTableau extends Tableau {
             // been run.
             _debugMenu = new JMenu("Debug");
             _debugMenu.setMnemonic(KeyEvent.VK_D);
-            DebugMenuListener sml = new DebugMenuListener();
+            DebugMenuListener debugMenuListener = new DebugMenuListener();
             // Set the action command and listener for each menu item.
             for(int i = 0; i < debugMenuItems.length; i++) {
                 debugMenuItems[i].setActionCommand(debugMenuItems[i].getText());
-                debugMenuItems[i].addActionListener(sml);
+                debugMenuItems[i].addActionListener(debugMenuListener);
                 _debugMenu.add(debugMenuItems[i]);
             }
             _menubar.add(_debugMenu);

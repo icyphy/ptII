@@ -230,16 +230,16 @@ public class PortConfigurerDialog extends ComponentDialog
         // A blank property name is interpreted as a cancel.
         String newName = _query.stringValue("name");
 
-        String classMoml = "";
+        String classMoML = "";
         String classSpec = _query.stringValue("class");
         if (!classSpec.trim().equals("")) {
-            classMoml = " class=\"" + classSpec + "\"";
+            classMoML = " class=\"" + classSpec + "\"";
         }
         if (dialog.buttonPressed().equals("OK") && !newName.equals("")) {
             String moml = "<port name=\""
                 + newName
                 + "\""
-                    + classMoml
+                    + classMoML
                     + "/>";
                     _target.addChangeListener(this);
                     _target.requestChange(new MoMLChangeRequest(this,

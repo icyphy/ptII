@@ -78,7 +78,7 @@ model can be set on the command line.  The syntax is:
 <pre>
     ptolemy <i>modelFile.xml</i> -<i>parameterName</i> "<i>value</i>"
 </pre>
-where <i>paramname</i> is the name of a parameter relative to the top level
+where <i>parameterName</i> is the name of a parameter relative to the top level
 of a model or the director of a model.  For instance, if foo.xml defines
 a toplevel entity named "x" and x contains an entity named "y" and a parameter
 named "a", and y contains a parameter named "b", then:
@@ -174,7 +174,7 @@ public class MoMLApplication {
      *  This first attempts to do that directly by invoking a URL constructor.
      *  If that fails, then it tries to interpret the spec as a file name
      *  on the local file system.  If that fails, then it tries to interpret
-     *  the spec as a resource accessible to the classloader, which uses
+     *  the spec as a resource accessible to the class loader, which uses
      *  the classpath to find the resource.  If that fails, then it throws
      *  an exception.  The specification can give a file name relative to
      *  current working directory, or the directory in which this application

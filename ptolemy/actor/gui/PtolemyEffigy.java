@@ -155,7 +155,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
      *  @exception IOException If the write fails.
      */
     public void writeFile(File file) throws IOException {
-        java.io.FileWriter fout = new java.io.FileWriter(file);
+        java.io.FileWriter fileWriter = new java.io.FileWriter(file);
         String name = getModel().getName();
 
         String filename = file.getName();
@@ -168,8 +168,9 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
 
         // NOTE: The following cast is safe because of the check
         // in _checkContainer().
-        ((PtolemyEffigy)topEffigy()).getModel().exportMoML(fout, 0, name);
-        fout.close();
+        ((PtolemyEffigy)topEffigy()).getModel().exportMoML(fileWriter,
+                0, name);
+        fileWriter.close();
     }
 
     ///////////////////////////////////////////////////////////////////

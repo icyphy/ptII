@@ -107,8 +107,8 @@ public class PtExecuteApplication extends MoMLApplication
      */
     public static void main(String args[]) {
 	try {
-	    PtExecuteApplication app = new PtExecuteApplication(args);
-            app.runModels();
+	    PtExecuteApplication application = new PtExecuteApplication(args);
+            application.runModels();
         } catch (Exception ex) {
             MessageHandler.error("Command failed", ex);
             System.exit(0);

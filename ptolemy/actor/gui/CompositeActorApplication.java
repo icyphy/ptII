@@ -1,4 +1,4 @@
-/* A Ptolemy application that instantiates classnames given on the command
+/* A Ptolemy application that instantiates class names given on the command
    line.
 
  Copyright (c) 1999-2001 The Regents of the University of California.
@@ -103,10 +103,11 @@ public class CompositeActorApplication {
      *  @param args The command-line arguments.
      */
     public static void main(String args[]) {
-        CompositeActorApplication app = new CompositeActorApplication();
+        CompositeActorApplication application =
+            new CompositeActorApplication();
         try {
-            app.processArgs(args);
-            app.waitForFinish();
+            application.processArgs(args);
+            application.waitForFinish();
         } catch (Exception ex) {
             System.err.println(ex.toString());
             ex.printStackTrace();

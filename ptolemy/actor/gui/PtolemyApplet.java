@@ -165,7 +165,7 @@ public class PtolemyApplet extends BasicJApplet
      */
     public String[][] getParameterInfo() {
         String newInfo[][] = {
-            {"modelClass", "", "Classname for an instance of NamedObj"},
+            {"modelClass", "", "Class name for an instance of NamedObj"},
             {"orientation", "",
              "Orientation: vertical, horizontal, or controls_only"},
             {"controls", "", "List of on-screen controls"},
@@ -444,7 +444,7 @@ public class PtolemyApplet extends BasicJApplet
     ////                         inner classes                     ////
 
     private class GoButtonListener implements ActionListener {
-        public void actionPerformed(ActionEvent evt) {
+        public void actionPerformed(ActionEvent event) {
             try {
                 _go();
             } catch (Exception ex) {
@@ -454,7 +454,7 @@ public class PtolemyApplet extends BasicJApplet
     }
 
     private class StopButtonListener implements ActionListener {
-        public void actionPerformed(ActionEvent evt) {
+        public void actionPerformed(ActionEvent event) {
             _stop();
         }
     }

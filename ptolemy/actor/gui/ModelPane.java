@@ -147,7 +147,7 @@ public class ModelPane extends JPanel implements CloseListener {
                 _buttonPanel.add(_goButton);
                 _buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
                 _goButton.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
+                    public void actionPerformed(ActionEvent event) {
                         startRun();
                     }
                 });
@@ -157,7 +157,7 @@ public class ModelPane extends JPanel implements CloseListener {
                 _buttonPanel.add(_pauseButton);
                 _buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
                 _pauseButton.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
+                    public void actionPerformed(ActionEvent event) {
                         pauseRun();
                     }
                 });
@@ -167,7 +167,7 @@ public class ModelPane extends JPanel implements CloseListener {
                 _buttonPanel.add(_resumeButton);
                 _buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
                 _resumeButton.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
+                    public void actionPerformed(ActionEvent event) {
                         resumeRun();
                     }
                 });
@@ -176,7 +176,7 @@ public class ModelPane extends JPanel implements CloseListener {
                 _stopButton.setToolTipText("Stop executing the model");
                 _buttonPanel.add(_stopButton);
                 _stopButton.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
+                    public void actionPerformed(ActionEvent event) {
                         stopRun();
                     }
                 });
@@ -250,9 +250,9 @@ public class ModelPane extends JPanel implements CloseListener {
      */
     public void setModel(CompositeActor model) {
         _model = model;
-        if (_paramQuery != null) {
-            _controlPanel.remove(_paramQuery);
-            _paramQuery = null;
+        if (_parameterQuery != null) {
+            _controlPanel.remove(_parameterQuery);
+            _parameterQuery = null;
         }
         if (_directorQuery != null) {
             _controlPanel.remove(_directorQuery);
@@ -262,17 +262,17 @@ public class ModelPane extends JPanel implements CloseListener {
             _manager = _model.getManager();
 
             if ((_show & TOP_PARAMETERS) != 0) {
-                List paramList = _model.attributeList(Parameter.class);
-                if (paramList.size() > 0) {
+                List parameterList = _model.attributeList(Parameter.class);
+                if (parameterList.size() > 0) {
                     JLabel pTitle = new JLabel("Model parameters:");
                     // Use a dark blue for the text color.
                     pTitle.setForeground(new Color(0, 0, 128));
                     _controlPanel.add(pTitle);
                     _controlPanel.add(Box.createRigidArea(new Dimension(0, 8)));
-                    _paramQuery = new Configurer(model);
-                    _paramQuery.setAlignmentX(LEFT_ALIGNMENT);
-                    _paramQuery.setBackground(null);
-                    _controlPanel.add(_paramQuery);
+                    _parameterQuery = new Configurer(model);
+                    _parameterQuery.setAlignmentX(LEFT_ALIGNMENT);
+                    _parameterQuery.setBackground(null);
+                    _controlPanel.add(_parameterQuery);
                     if ((_show & DIRECTOR_PARAMETERS) != 0) {
                         _controlPanel.add(Box.createRigidArea(
                                 new Dimension(0, 15)));
@@ -284,8 +284,9 @@ public class ModelPane extends JPanel implements CloseListener {
                 // Director parameters.
                 Director director = _model.getDirector();
                 if (director != null) {
-                    List dirParamList = director.attributeList(Parameter.class);
-                    if (dirParamList.size() > 0) {
+                    List dirParameterList =
+                        director.attributeList(Parameter.class);
+                    if (dirParameterList.size() > 0) {
                         JLabel pTitle = new JLabel("Director parameters:");
                         // Use a dark blue for the text color.
                         pTitle.setForeground(new Color(0, 0, 128));
@@ -307,11 +308,11 @@ public class ModelPane extends JPanel implements CloseListener {
             }
 
             // If there are two queries, make them the same width.
-            if (_paramQuery != null && _directorQuery != null) {
-                Dimension modelSize = _paramQuery.getPreferredSize();
+            if (_parameterQuery != null && _directorQuery != null) {
+                Dimension modelSize = _parameterQuery.getPreferredSize();
                 Dimension directorSize = _directorQuery.getPreferredSize();
                 if (directorSize.width > modelSize.width) {
-                    _paramQuery.setPreferredSize(new Dimension(
+                    _parameterQuery.setPreferredSize(new Dimension(
                             directorSize.width,
                             modelSize.height));
                 } else {
@@ -380,8 +381,8 @@ public class ModelPane extends JPanel implements CloseListener {
         if(_directorQuery != null) {
             _directorQuery.windowClosed(window, button);
         }
-        if(_paramQuery != null) {
-            _paramQuery.windowClosed(window, button);
+        if(_parameterQuery != null) {
+            _parameterQuery.windowClosed(window, button);
         }
     }
 
@@ -471,7 +472,7 @@ public class ModelPane extends JPanel implements CloseListener {
     private CompositeActor _model;
 
     // The query box for the top-level parameters.
-    private Configurer _paramQuery;
+    private Configurer _parameterQuery;
 
     // The stop button.
     private JButton _stopButton;
