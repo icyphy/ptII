@@ -30,6 +30,7 @@
 package ptolemy.domains.sr.kernel;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
@@ -537,7 +538,7 @@ public class SRDirector extends StaticSchedulingDirector {
     /** Initialize the firing of the director by resetting state variables
      *  and resetting all receivers to have unknown status.
      */
-    private void _initFiring() {
+    private void _initFiring() throws IllegalActionException {
         _postfireReturns = false;
         _actorsAllowedToFire = null;
         _actorsFired = null;
@@ -547,6 +548,11 @@ public class SRDirector extends StaticSchedulingDirector {
 
         _lastNumOfActorsAllowedToFire = -1;
         _lastNumOfKnownReceivers = -1;
+
+        CompositeActor container = (CompositeActor) getContainer();
+        Director outsideDirector = container.getExecutiveDirector();
+        if (outsideDirector != null) 
+            setCurrentTime(outsideDirector.getCurrentTime());
 
         //_resetAllReceivers();
         //_currentNumOfKnownReceivers = 0;
