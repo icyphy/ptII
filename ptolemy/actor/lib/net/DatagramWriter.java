@@ -432,6 +432,18 @@ public class DatagramWriter extends TypedAtomicActor {
 	}
     }
 
+    /** Override the setContainer method to ensure that if the actor
+     *  is deleted while the model is running, then any resources it 
+     *  has locked are released.
+     */
+    public void setContainer(CompositeEntity container) 
+            throws IllegalActionException, NameDuplicationException {
+	if (container != getContainer()) {
+            wrapup();
+	}
+	super.setContainer(container);
+    }
+
     /** Wrap up.  Free the socket, allowing the socket number to be reused.
      *  @exception IllegalActionException If the socket was already null.
      */

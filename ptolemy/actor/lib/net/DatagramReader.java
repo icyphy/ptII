@@ -864,7 +864,9 @@ public class DatagramReader extends TypedAtomicActor {
 
     }
 
-    /**
+    /** Override the setContainer method to ensure that if the actor
+     *  is deleted while the model is running, then any resources it 
+     *  has locked are released.
      */
     public void setContainer(CompositeEntity container) 
             throws IllegalActionException, NameDuplicationException {
