@@ -37,7 +37,7 @@ import ptolemy.graph.*;
 //////////////////////////////////////////////////////////////////////////
 //// DataTypeLattice
 /**
-Type hierarchy for token classes. This class implements the CPO interface.
+Type hierarchy for token classes.
 
 @author Yuhong Xiong, Steve Neuendorffer
 @version $Id$
