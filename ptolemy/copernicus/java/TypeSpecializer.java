@@ -118,7 +118,7 @@ public class TypeSpecializer extends SceneTransformer {
 
         Hierarchy h = Scene.v().getActiveHierarchy();
         for (Iterator classes = Scene.v().getApplicationClasses().iterator();
-            classes.hasNext();) {
+             classes.hasNext();) {
             SootClass theClass = (SootClass)classes.next();
 
             specializeTypes(debug, theClass, new HashSet());
@@ -167,7 +167,7 @@ public class TypeSpecializer extends SceneTransformer {
         if (debug) System.out.println("collecting constraints for " + theClass);
         // Loop through all the fields.
         for (Iterator fields = theClass.getFields().iterator();
-            fields.hasNext();) {
+             fields.hasNext();) {
             SootField field = (SootField)fields.next();
             // Ignore things that aren't reference types.
             Type type = field.getType();
@@ -186,7 +186,7 @@ public class TypeSpecializer extends SceneTransformer {
         // FIXME: we also need the fields that we represent from
         //
         for (Iterator fields = ModelTransformer.getModelClass().getFields().iterator();
-            fields.hasNext();) {
+             fields.hasNext();) {
             SootField field = (SootField)fields.next();
             // Ignore things that aren't reference types.
             Type type = field.getType();
@@ -204,7 +204,7 @@ public class TypeSpecializer extends SceneTransformer {
 
         // Loop through all the methods.
         for (Iterator methods = theClass.getMethods().iterator();
-            methods.hasNext();) {
+             methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
             Body body = method.retrieveActiveBody();
             if (debug) System.out.println("collecting constraints for " + method);
@@ -216,7 +216,7 @@ public class TypeSpecializer extends SceneTransformer {
             MustAliasAnalysis aliasAnalysis = new MustAliasAnalysis(unitGraph);
 
             for (Iterator locals = body.getLocals().iterator();
-                locals.hasNext();) {
+                 locals.hasNext();) {
                 Local local = (Local)locals.next();
                 if (unsafeLocals.contains(local)) {
                     continue;
@@ -226,7 +226,7 @@ public class TypeSpecializer extends SceneTransformer {
                 _createInequalityTerm(debug, local, type, objectToInequalityTerm);
             }
             for (Iterator units = body.getUnits().iterator();
-                units.hasNext();) {
+                 units.hasNext();) {
                 Stmt stmt = (Stmt)units.next();
                 if (debug) System.out.println("stmt = " + stmt);
                 if (stmt instanceof AssignStmt) {
@@ -288,12 +288,12 @@ public class TypeSpecializer extends SceneTransformer {
         // use this information (for example, when converting
         // token types (like IntToken) to native types (like int).
         for (Iterator methods = theClass.getMethods().iterator();
-            methods.hasNext();) {
+             methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
             if (debug) System.out.println("updating types for " + method);
             Body body = method.retrieveActiveBody();
             for (Iterator locals = body.getLocals().iterator();
-                locals.hasNext();) {
+                 locals.hasNext();) {
                 Local local = (Local)locals.next();
                 Type type = local.getType();
                 // Things that aren't token types are ignored.
@@ -305,7 +305,7 @@ public class TypeSpecializer extends SceneTransformer {
                 }
             }
             for (Iterator boxes = body.getUseBoxes().iterator();
-                boxes.hasNext();) {
+                 boxes.hasNext();) {
                 ValueBox box = (ValueBox)boxes.next();
                 if (box.getValue() instanceof NewArrayExpr) {
                     NewArrayExpr newArrayExpr = (NewArrayExpr)box.getValue();
@@ -328,11 +328,11 @@ public class TypeSpecializer extends SceneTransformer {
         // have a field store that has changed type to please the bytecode
         // verifier.
         for (Iterator methods = theClass.getMethods().iterator();
-            methods.hasNext();) {
+             methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
             Body body = method.retrieveActiveBody();
             for (Iterator units = body.getUnits().snapshotIterator();
-                units.hasNext();) {
+                 units.hasNext();) {
                 Unit unit = (Unit) units.next();
                 // Ignore anything that isn't an assignment.
                 if (!(unit instanceof AssignStmt)) {
@@ -365,7 +365,7 @@ public class TypeSpecializer extends SceneTransformer {
 
         // Loop through all the fields and update the types.
         for (Iterator fields = theClass.getFields().iterator();
-            fields.hasNext();) {
+             fields.hasNext();) {
             SootField field = (SootField)fields.next();
             if (debug) System.out.println("updating types for " + field);
             Type type = field.getType();
@@ -379,7 +379,7 @@ public class TypeSpecializer extends SceneTransformer {
 
         // FIXME: Loop through all the fields in the main class and update the types.
         for (Iterator fields = ModelTransformer.getModelClass().getFields().iterator();
-            fields.hasNext();) {
+             fields.hasNext();) {
             SootField field = (SootField)fields.next();
             if (debug) System.out.println("updating types for " + field);
             Type type = field.getType();
@@ -510,7 +510,7 @@ public class TypeSpecializer extends SceneTransformer {
                             baseTerm);
                     return baseTerm;
                 } else if (methodName.equals("getElement") ||
-                          methodName.equals("arrayValue")) {
+                        methodName.equals("arrayValue")) {
                     // If we call getElement or arrayValue on an array token, then
                     // the returned type is the element type of the array.
                     ptolemy.data.type.ArrayType arrayType =
@@ -602,7 +602,7 @@ public class TypeSpecializer extends SceneTransformer {
                         new ConstantTerm(parameter.getType(),
                                 parameter);
                     if (methodName.equals("setToken")) {
-                    // The type of the argument must be less than the
+                        // The type of the argument must be less than the
                         // type of the parameter.
                         InequalityTerm firstArgTerm = (InequalityTerm)
                             objectToInequalityTerm.get(
@@ -786,7 +786,7 @@ public class TypeSpecializer extends SceneTransformer {
         public Object getAssociatedObject() { return _object; }
 
         public InequalityTerm[] getVariables() {
-             if (isSettable()) {
+            if (isSettable()) {
 	    	InequalityTerm[] result = new InequalityTerm[1];
 	    	result[0] = this;
 	    	return result;

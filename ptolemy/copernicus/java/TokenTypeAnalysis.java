@@ -123,7 +123,7 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                     "int compare(ptolemy.data.type.Type,ptolemy.data.Token)");
         SootMethod typeTypeCompareMethod =
             PtolemyUtilities.typeLatticeClass.getMethod(
-                 "int compare(ptolemy.data.type.Type,ptolemy.data.type.Type)");
+                    "int compare(ptolemy.data.type.Type,ptolemy.data.type.Type)");
 
         ptolemy.data.type.Type type1;
         ptolemy.data.type.Type type2;
