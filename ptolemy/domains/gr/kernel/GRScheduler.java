@@ -57,22 +57,26 @@ public class GRScheduler extends Scheduler {
 
     /** Construct a scheduler with no container (director)
      *  in the default workspace, the name of the scheduler is
-     *  "Scheduler".
+     *  "GRScheduler".
      */
     public GRScheduler() {
-        super();
+        this(null);
     }
 
     /** Construct a scheduler in the given workspace with the name
-     *  "Scheduler".
-     *  If the workspace argument is null, use the default workspace.
-     *  The scheduler is added to the list of objects in the workspace.
-     *  Increment the version number of the workspace.
+     *  "GRScheduler". If the workspace argument is null, use the default
+     *  workspace. The scheduler is added to the list of objects in the 
+     *  workspace. Increment the version number of the workspace.
      *
      *  @param workspace Object for synchronization and version tracking.
      */
     public GRScheduler(Workspace workspace) {
-        super(workspace);
+        try {
+            setName(_STATIC_NAME);
+        } catch (KernelException ex) {
+            throw new InternalErrorException(
+                    "Internal error when setting name to a GRScheduler");
+        }
     }
 
     /** Construct a scheduler in the given container with the given name.
@@ -105,16 +109,16 @@ public class GRScheduler extends Scheduler {
      *  relation. (equivalent to a non-deterministic merge) 
      *  </ul>
      *
-     * @return An Enumeration of the deeply contained opaque entities
+     * @return A Schedule type of the deeply contained opaque entities
      *  in the firing order.
      * @exception NotScheduleableException If the CompositeActor is not
      *  schedulable.
      */
-    protected Enumeration _schedule() throws NotSchedulableException {
+    protected Schedule _getSchedule() {
        // FIXME: should check whether graph is connected
        // FIXME: should check whether multiple output ports are 
        //        connected to the same broadcast relation.
-       
+
        // Clear the graph
         DirectedAcyclicGraph dag = new DirectedAcyclicGraph();
 
@@ -192,13 +196,21 @@ public class GRScheduler extends Scheduler {
         }
 
 
-        LinkedList result = new LinkedList();
+        Schedule schedule = new Schedule();
         Object[] sorted = dag.topologicalSort();
         for(int counter=0; counter < actorCount ;counter++) {
-            result.addLast(sorted[counter]);
+            Firing firing = new Firing();
+            schedule.add(firing);
+            firing.setActor((Actor) sorted[counter]);
         }
 
         setValid(true);
-        return Collections.enumeration(result);
+        return schedule;
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // The static name of the scheduler
+    private static final String _STATIC_NAME = "GRScheduler";
 }
