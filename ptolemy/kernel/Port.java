@@ -99,7 +99,8 @@ public class Port extends NamedObj {
 	return _relationsList.getLinks();
     }
 
-    /** Link this port with a relation.  If the argument is null,
+    /** Link this port with a relation of the same level.
+     *  If the argument is null,
      *  do nothing. The relation and the entity that contains this
      *  port are required to be at the same level of the hierarchy.
      *  I.e., if the container of this port has a container,
@@ -121,6 +122,41 @@ public class Port extends NamedObj {
             } else {
                 throw new IllegalActionException(this, relation,
                        "Port must have a container to establish a link.");
+            }
+            _relationsList.link( relation._getPortList(this) );
+        }
+    }
+
+    /** Link this port with a relation of any level of the hierarchy.
+     *  If the argument is null,
+     *  do nothing. The relation and the entity that contains this
+     *  port are NOT required to be at the same level of the hierarchy.
+     *  This should be used with caution. It should be avoid in all
+     *  data flow oriented domains.
+     *  @param relation
+     *  @exception IllegalActionException attempts to link with an
+     *  incompatible relation or the port has no container.
+     */	
+    public void CrossLevelLink(Relation relation) 
+            throws IllegalActionException {
+        if (relation != null) {
+            _checkRelation(relation);
+            if (_container == null) {
+                throw new IllegalActionException(this, relation,
+                       "Port must have a container to establish a link.");
+            } else {
+                Entity portContainer = (Entity)_container;
+                Entity relationContainer = (Entity)relation.getContainer();
+                while (portContainer.getContainer() != null) {
+                    portContainer = (Entity) portContainer.getContainer();
+                }
+                while (relationContainer.getContainer() != null) {
+                    relationContainer = (Entity) relationContainer.getContainer();
+                }
+                if (portContainer != relationContainer ) {
+                    throw new IllegalActionException(this, relation,
+                    "Port and relation not in the same workspace.");
+                }  
             }
             _relationsList.link( relation._getPortList(this) );
         }
