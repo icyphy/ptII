@@ -34,7 +34,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptplot;
 
 import java.awt.*;
-import java.applet.Applet;
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -121,7 +120,7 @@ import java.lang.*;
  * @author Edward A. Lee, Christopher Hylands
  * @version $Id$
  */
-public class PlotBox extends Applet {
+public class PlotBox extends Panel {
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
@@ -193,20 +192,28 @@ public class PlotBox extends Applet {
      * If the argument is true, clear the display before redrawing.
      */
     public synchronized void drawPlot(Graphics graphics, boolean clearfirst) {
+        if (_debug > 7) System.out.println("PlotBox: drawPlot"+graphics);
         if (graphics == null) {
             System.out.println("Attempt to draw axes without "+
                     "a Graphics object.");
             return;
         }
-        
+        //        super.paint(graphics);
         // Give other threads a chance, so that hopefully things are
         // up to date.
-        Thread.yield();
+        //        Thread.yield();
             
         // Find the width and height of the total drawing area, and clear it.
         Rectangle drawRect = bounds(); // FIXME: bounds() is deprecated
         // in JDK1.1, but we need to compile under 1.0.2 for
         // netscape3.x compatibility.
+
+        if (_debug > 15) {
+            System.out.println("PlotBox: drawPlot drawRect ="+
+                    drawRect.width+" "+drawRect.height); 
+            graphics.drawRect(0,0,drawRect.width, drawRect.height);
+        }
+
 
         graphics.setPaintMode();
         if (clearfirst) {
@@ -574,6 +581,7 @@ public class PlotBox extends Applet {
      * Rescales so that the data that is currently plotted just fits.
      */
     public synchronized void fillPlot () {
+        if (_debug > 7) System.out.println("PlotBox: fillPlot()");
         fillPlot(_graphics);
     }
 
@@ -668,17 +676,17 @@ public class PlotBox extends Applet {
         return null;
     }
 
-    /** 
-     * Read a parameter as a hexadecimal color value.  If the parameter
-     * is not set, return null.
+    /**
+     * Get the dataurl.
      */
-    public Color getColorParameter(String param) {
-        try {
-            Color col = getColorByName(getParameter(param));
-            return col;
-        } catch (NullPointerException e) {
-            return null;
-        }
+    public String getDataurl () {
+        return _dataurl;
+    }
+
+    /** Get the document base
+     */
+    public URL getDocumentBase () {
+        return _documentBase;
     }
 
     /** 
@@ -694,25 +702,12 @@ public class PlotBox extends Applet {
     }
       
     /**
-     * Return information about parameters.
-     */
-    public String[][] getParameterInfo () {
-        String pinfo[][] = {
-            {"background", "hexcolor value", "background color"},
-            {"foreground", "hexcolor value", "foreground color"},
-            {"dataurl",   "url",     "the URL of the data to plot"},
-            {"pxgraphargs",   "args",    
-             "pxgraph style command line arguments"}
-        };
-        return pinfo;
-    }
-    
-    /**
      * Initialize the applet.  If a dataurl parameter has been specified,
      * read the file given by the URL and parse the commands in it.
      */
     public void init() {
-        super.init();
+        //super.init();
+        if (_debug > 8) System.out.println("PlotBox: init");
                 
         if (_labelfont == null)  
             _labelfont = new Font("Helvetica", Font.PLAIN, 12);
@@ -730,37 +725,25 @@ public class PlotBox extends Applet {
 
         if (_graphics == null) {
             System.out.println("PlotBox::init(): Internal error: " +
-                    "_graphic was null");
+                    "_graphic was null, be sure to call show()\n"+
+                    "before calling init()");
             return;
         }
 
-        // If the foreground applet parameter is set, then get its value
-        // and set the foreground.  If the foreground parameter is not
-        // set, check the _foreground field and set the foreground if
-        // it is not null.
-        Color foreground = getColorParameter("foreground");
-        if (foreground != null) {
-            setForeground(foreground);
-            _foreground = foreground;
-        } else if (_foreground != null) {
+        if (_foreground != null) {
             setForeground(_foreground);
         } else {
             _foreground = Color.black;
         }
 
-        Color background = getColorParameter("background");
-        if (background != null) {
-            setBackground(background);
-            _background = background; 
-        } else if (_background != null) {
+        if (_background != null) {
             setBackground(_background);
         } else {
             _background = Color.white;
         }
         if (_debug > 6)
-            System.out.println("PlotBox: color = "+foreground+" "+_foreground
-                    +" "+background+" "+_background);
-
+            System.out.println("PlotBox: color = "+_foreground+" "+
+                    _background);
 
         // Make a button that auto-scales the plot.
         // NOTE: The button infringes on the title space.
@@ -771,18 +754,9 @@ public class PlotBox extends Applet {
         add(_fillButton);
         validate();
 
-        // Check to see whether a data URL has been given.
-        // Need the catch here because applets used as components have
-        // no parameters. 
-        String dataurl = null;
-        try {
-            dataurl = getParameter("dataurl");
-        } catch (NullPointerException e) {
-            dataurl = _dataurl;
+        if (_dataurl != null) {
+            parseFile(_dataurl,_documentBase);
         }
-
-        if (dataurl == null) dataurl = _dataurl;
-        parseFile(dataurl);
     }
         
     /**
@@ -792,6 +766,7 @@ public class PlotBox extends Applet {
      */
     public boolean mouseDown(Event evt, int x, int y) { // deprecated
         // constrain to be in range
+        if (_debug > 7) System.out.println("PlotBox: mouseDown");
         if (y > _lry) y=_lry;
         if (y < _uly) y=_uly;
         if (x > _lrx) x=_lrx;
@@ -953,8 +928,16 @@ public class PlotBox extends Applet {
      * only the axes.
      */
     public void paint(Graphics graphics) {
-        super.paint(graphics);
+        if (_debug > 7) System.out.println("PlotBox: paint");
+        //super.paint(graphics);
         drawPlot(graphics, true);
+    }
+
+    /**
+     * Syntactic sugar for parseFile(dataurl, documentBase);
+     */ 
+    public void parseFile(String dataurl) {
+       parseFile(dataurl, (URL)null);
     }
 
     /**
@@ -962,22 +945,26 @@ public class PlotBox extends Applet {
      * This code can be called from an application, which means that
      * getDocumentBase() might fail.
      */
-    public void parseFile(String dataurl) {
+    public void parseFile(String dataurl, URL documentBase) {
         DataInputStream in;
-        if (_debug > 2) System.out.println("PlotBox: parseFile("+ dataurl+
-                ") _dataurl = "+_dataurl);
+        if (_debug > 2) System.out.println("PlotBox: parseFile("+ dataurl+" "+
+                documentBase+") _dataurl = "+_dataurl);
         if (dataurl == null || dataurl.length() == 0) {
             // Open up stdin
             in = new DataInputStream(System.in);
         } else {
             try {
                 URL url;
-                try {
-                    url = new URL(getDocumentBase(), dataurl);
-                } catch (NullPointerException e) {
-                    // If we got a NullPointerException, then perhaps
-                    // we are calling this as an application, not as an applet.
+                if (documentBase == null) {
                     url = new URL(_dataurl);
+                } else {
+                    try {
+                        url = new URL(documentBase, dataurl);
+                    } catch (NullPointerException e) {
+                        // If we got a NullPointerException, then perhaps we
+                        // are calling this as an application, not as an applet
+                        url = new URL(_dataurl);
+                    }
                 }
                 in = new DataInputStream(url.openStream());
             } catch (MalformedURLException e) {
@@ -1069,6 +1056,10 @@ public class PlotBox extends Applet {
         _dataurl = dataurl;
     }
 
+    public void setDocumentBase (URL documentBase) {
+        _documentBase = documentBase;
+    }
+
     /**
      * Control whether the grid is drawn.
      */
@@ -1120,6 +1111,7 @@ public class PlotBox extends Applet {
      * arbitrarily spread by 1.
      */
     public void setXRange (double min, double max) {
+        if (_debug > 7) System.out.println("PlotBox: setXRange");
         _setXRange(min,max);
         _xRangeGiven = true;
     }
@@ -1294,7 +1286,7 @@ public class PlotBox extends Applet {
     ////                           protected variables                    ////
     
     // If non-zero, print out debugging messages.
-    protected int _debug = 0;
+    protected int _debug = 9;
     
     // The graphics context to operate in.  Note that printing will call
     // paint with a different graphics object, so we have to pass this
@@ -1599,6 +1591,8 @@ public class PlotBox extends Applet {
     // The URL to be opened.  This variable is not used if we are running
     // as an applet, but applications should call setDataurl().
     private String _dataurl = null;
+
+    private URL _documentBase = null;
 
     // Set to true if we are reading in pxgraph format binary data.
     private boolean _binary = false;

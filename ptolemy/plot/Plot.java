@@ -185,7 +185,6 @@ public class Plot extends PlotBox {
      */
     public synchronized void drawPlot(Graphics graphics,
             boolean clearfirst) {
-        // Draw the axes
         super.drawPlot(graphics, clearfirst);
         // Plot the points
         for (int dataset = 0; dataset < _numsets; dataset++) {
@@ -210,20 +209,18 @@ public class Plot extends PlotBox {
     }
 
     /**
-     * Return a string describing this applet.
-     */
-    public String getAppletInfo() {
-        return "Plot 1.0: A flexible data plotter.\n" +
-            "By: Edward A. Lee, eal@eecs.berkeley.edu and\n " +
-            "Christopher Hylands, cxh@eecs.berkeley.edu\n" +
-            "($Id$)";
-    }
-
-    /**
      * Return the maximum number of datasets
      */
     public int getMaxDataSets() {
         return _MAX_DATASETS;
+    }
+
+    /**
+     * Get the preferred size of this component.
+     */
+    public Dimension getPreferredSize() {
+        if (_debug > 8) System.out.println("Plot: getPreferredSize");
+        return new Dimension(_width, _height);
     }
 
     /**
@@ -232,21 +229,23 @@ public class Plot extends PlotBox {
      * Also, make a button for auto-scaling the plot.
      */
     public synchronized void init() {
+        if (_debug > 8) System.out.println("Plot: init");
+
         setNumSets(_numsets);
         _currentdataset = -1;
 
-        // Check to see if pxgraphargs has been given. 
-        // Need the catch here because applets used as components have
-        // no parameters. 
-        String pxgraphargs = null;
-        try {
-            pxgraphargs = getParameter("pxgraphargs");
-            _parsePxgraphargs(pxgraphargs);
-        } catch (NullPointerException e) {
-        } catch (CmdLineArgException e) {
-            System.out.println("Plot: failed to parse `"+pxgraphargs+
-                    "': " +e);
-        }
+//         // Check to see if pxgraphargs has been given. 
+//         // Need the catch here because applets used as components have
+//         // no parameters. 
+//         String pxgraphargs = null;
+//         try {
+//             pxgraphargs = getParameter("pxgraphargs");
+//             parsePxgraphargs(pxgraphargs);
+//         } catch (NullPointerException e) {
+//         } catch (CmdLineArgException e) {
+//             System.out.println("Plot: failed to parse `"+pxgraphargs+
+//                     "': " +e);
+//         }
 
         super.init();
         if (_dataurls != null ) {
@@ -276,26 +275,12 @@ public class Plot extends PlotBox {
      */ 
     public int parseArgs(String args[]) throws CmdLineArgException {
         int i = 0, j, argsread;
-        int width;         // Default width of the graph.
-        int height;        // Default height of the graph.
+
 
         // If we see both -nl and -bar, assume we do an impulse plot.
         boolean sawbararg = false; // Saw -bar arg.
         boolean sawnlarg = false;  // Saw -nl arg.
         int savedmarks = 0;        // Save _marks in case we have -P -bar -nl.
-
-        // If this is a component, then getParameter might fail.  
-        try {
-            width = Integer.valueOf(getParameter("width")).intValue();
-        } catch (NullPointerException e) {
-            width = 400;
-        }
-
-        try {
-            height = Integer.valueOf(getParameter("height")).intValue();
-        } catch (NullPointerException e) {
-            height = 400;
-        }
 
         String arg;
         String unsupportedOptions[] = {
@@ -494,16 +479,16 @@ public class Plot extends PlotBox {
                     // Process =WxH+X+Y
                     // Process =WxH+X+Y
                     int endofheight;
-                    width = (int)Integer.valueOf(arg.substring(1,
+                    _width = (int)Integer.valueOf(arg.substring(1,
                             arg.indexOf('x'))).intValue();
                     if (arg.indexOf('+') != -1) {
-                        height =
+                        _height =
                             Integer.valueOf(arg.substring(
                                     arg.indexOf('x')+1,
                                     arg.indexOf('+'))).intValue();
                     } else {
                         if (arg.length() > arg.indexOf('x')) {
-                            height =
+                            _height =
                                 Integer.valueOf(arg.substring(
                                         arg.indexOf('x')+1,
                                         arg.length())).intValue();
@@ -525,7 +510,8 @@ public class Plot extends PlotBox {
         // according to the defaults and the values that over rode them
         setDataurl(dataurl); // Set the dataurl in PlotBox
         setTitle(title);
-        resize(width,height);
+        System.out.println("Plot: skipping resize()"+(_width-10)+" "+(_height-10));
+        //resize(_width-10,_height-10);
 
         if (_debug > 0) {
             System.err.println("Plot: dataurl = " + dataurl);
@@ -761,9 +747,9 @@ public class Plot extends PlotBox {
         if (clip) {
             // Rule out impossible cases.
             if (_debug > 20) {
-                System.out.println("bounds: " + _ulx +", "+
+                System.out.println("Plot: _drawLine: bounds: " + _ulx +", "+
                         _uly +", "+ _lrx +", "+ _lry);
-                System.out.println("before: " + startx +", "+
+                System.out.println("Plot: _drawLine:before: " + startx +", "+
                         starty +", "+ endx +", "+ endy);
             }
             if (!((endx <= _ulx && startx <= _ulx) ||
@@ -1357,13 +1343,13 @@ public class Plot extends PlotBox {
 
     /* Split pxgraphargs up into an array and call _parseArgs
      */       
-    private int _parsePxgraphargs(String pxgraphargs) throws CmdLineArgException  {
+    public int parsePxgraphargs(String pxgraphargs) throws CmdLineArgException  {
         // We convert the String to a Stream and then use a StreamTokenizer
         // to parse the arguments into a Vector and then copy
         // the vector into an array of Strings.  We use a Vector
         // so that we can handle an arbitrary number of arguments
         if (_debug > 3) {
-            System.out.println("Plot: _parsePxgraphargs "+pxgraphargs);
+            System.out.println("Plot: parsePxgraphargs "+pxgraphargs);
         }
 
         Vector argvector = new Vector();
@@ -1455,6 +1441,9 @@ public class Plot extends PlotBox {
 
     // Information about the previously plotted point.
     private long _prevx[], _prevy[];
+
+    private int _width = 400, _height = 400;
+
     // Maximum number of _datasets.
     private static final int _MAX_DATASETS = 63;
 
