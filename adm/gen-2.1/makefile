@@ -565,7 +565,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/icon \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/tree \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/fsm/modal \
-	$(REMOTE1PTIIDIST)/ptolemy/vergil \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/parameters \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/comm \
@@ -584,8 +583,9 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/tm \
 	$(REMOTE1PTIIDIST)/ptolemy/gui \
-	$(REMOTE1PTIIDIST)/jni \
 	$(REMOTE1PTIIDIST)/ptolemy/hsif \
+	$(REMOTE1PTIIDIST)/jni \
+	$(REMOTE1PTIIDIST)/ptolemy/vergil \
 	$(REMOTE1PTIIDIST)/ptolemy/configs 
 
 
