@@ -7,6 +7,8 @@
       <group>
   <doc>Wireless/Sensor network library</doc>
   
+  <input source="lib/wirelessentities.xml"/>
+
   <input source="lib/channels.xml"/>
 
   <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">

@@ -71,7 +71,7 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	channels.xml \
-	actors.xml
+	wirelessentities.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
