@@ -134,14 +134,6 @@ public class RLEDiva extends PNApplet implements Runnable {
 	controlPanel.add(_goButton);
 	_goButton.addActionListener(new GoButtonListener());
 	
-// 	Button pause = new Button("Pause");
-// 	controlPanel.add(pause);
-// 	pause.addActionListener(new PauseListener());
-
-// 	Button resume = new Button("Resume");
-// 	controlPanel.add(resume);
-// 	resume.addActionListener(new ResumeListener());
-
 	Button stop = new Button("Stop");
 	controlPanel.add(stop);
 	stop.addActionListener(new StopListener());
@@ -385,14 +377,39 @@ public class RLEDiva extends PNApplet implements Runnable {
      */
     public TraceModel constructTraceModel() {
         TraceModel traceModel = new TraceModel();
-        traceModel.addTrace("ImageReader", new TraceModel.Trace());
-        traceModel.addTrace("Unpacker", new TraceModel.Trace());
-        traceModel.addTrace("Encoder", new TraceModel.Trace());
-        traceModel.addTrace("Decoder", new TraceModel.Trace());
-        traceModel.addTrace("Packer", new TraceModel.Trace());
-        traceModel.addTrace("Sink", new TraceModel.Trace());
-        traceModel.addTrace("InputDisplay", new TraceModel.Trace());
-        traceModel.addTrace("OutputDisplay", new TraceModel.Trace());
+	TraceModel.Trace t;
+
+	t = new TraceModel.Trace();
+	t.setUserObject("ImageReader");
+        traceModel.addTrace("ImageReader", t);
+
+	t = new TraceModel.Trace();
+	t.setUserObject("Unpacker");
+        traceModel.addTrace("Unpacker", t);
+
+	t = new TraceModel.Trace();
+	t.setUserObject("Encoder");
+        traceModel.addTrace("Encoder", t);
+
+	t = new TraceModel.Trace();
+	t.setUserObject("Decoder");
+        traceModel.addTrace("Decoder", t);
+
+	t = new TraceModel.Trace();
+	t.setUserObject("Packer");
+        traceModel.addTrace("Packer", t);
+
+	t = new TraceModel.Trace();
+	t.setUserObject("Sink");
+        traceModel.addTrace("Sink", t);
+
+	t = new TraceModel.Trace();
+	t.setUserObject("InputDisplay");
+        traceModel.addTrace("InputDisplay", t);
+
+	t = new TraceModel.Trace();
+	t.setUserObject("OutputDisplay");
+        traceModel.addTrace("OutputDisplay", t);
         return traceModel;
     }
 
