@@ -328,7 +328,7 @@ public class PlotFrame extends JFrame {
         fileDialog.setDialogTitle("Select a plot file");
 
         // Filter file names.
-	fileDialog.addChoosableFileFilter(new PLTOrXMLFileFilter());
+        fileDialog.addChoosableFileFilter(new PLTOrXMLFileFilter());
 
         if (_directory != null) {
             fileDialog.setCurrentDirectory(_directory);
@@ -413,7 +413,7 @@ public class PlotFrame extends JFrame {
     protected void _saveAs() {
 
         JFileChooser fileDialog = new JFileChooser();
-	fileDialog.addChoosableFileFilter(new PLTOrXMLFileFilter());
+        fileDialog.addChoosableFileFilter(new PLTOrXMLFileFilter());
         fileDialog.setDialogTitle("Save plot as...");
         if (_directory != null) {
             fileDialog.setCurrentDirectory(_directory);
@@ -427,8 +427,8 @@ public class PlotFrame extends JFrame {
             }
         }
 
-	fileDialog.setSelectedFile(new File(fileDialog.getCurrentDirectory(),
-					    "plot.xml"));
+        fileDialog.setSelectedFile(new File(fileDialog.getCurrentDirectory(),
+                                            "plot.xml"));
 
         int returnVal = fileDialog.showSaveDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -445,29 +445,29 @@ public class PlotFrame extends JFrame {
         public void actionPerformed(ActionEvent e) {
             JMenuItem target = (JMenuItem)e.getSource();
             String actionCommand = target.getActionCommand();
-	    try {
-		if (actionCommand.equals("Open")) {
-		    _open();
-		} else if (actionCommand.equals("Save")) {
-		    _save();
-		} else if (actionCommand.equals("SaveAs")) {
-		    _saveAs();
-		} else if (actionCommand.equals("Export")) {
-		    _export();
-		} else if (actionCommand.equals("Print")) {
-		    _print();
-		} else if (actionCommand.equals("Close")) {
-		    _close();
-		}
-	    } catch (Exception exception) {
-		// If we do not catch exceptions here, then they
-		// disappear to stdout, which is bad if we launched
-		// where there is no stdout visible.
+            try {
+                if (actionCommand.equals("Open")) {
+                    _open();
+                } else if (actionCommand.equals("Save")) {
+                    _save();
+                } else if (actionCommand.equals("SaveAs")) {
+                    _saveAs();
+                } else if (actionCommand.equals("Export")) {
+                    _export();
+                } else if (actionCommand.equals("Print")) {
+                    _print();
+                } else if (actionCommand.equals("Close")) {
+                    _close();
+                }
+            } catch (Exception exception) {
+                // If we do not catch exceptions here, then they
+                // disappear to stdout, which is bad if we launched
+                // where there is no stdout visible.
                 JOptionPane.showMessageDialog(null,
                         "File Menu Exception:\n" + exception.toString(),
                         "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
 
-	    }
+            }
             // NOTE: The following should not be needed, but there jdk1.3beta
             // appears to have a bug in swing where repainting doesn't
             // properly occur.
@@ -477,16 +477,16 @@ public class PlotFrame extends JFrame {
 
     class FormatListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-	    try {
-		_editFormat();
-	    } catch (Exception exception) {
-		// If we do not catch exceptions here, then they
-		// disappear to stdout, which is bad if we launched
-		// where there is no stdout visible.
+            try {
+                _editFormat();
+            } catch (Exception exception) {
+                // If we do not catch exceptions here, then they
+                // disappear to stdout, which is bad if we launched
+                // where there is no stdout visible.
                 JOptionPane.showMessageDialog(null,
                         "Format Exception:\n" + exception.toString(),
                         "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
-	    }
+            }
             // NOTE: The following should not be needed, but there jdk1.3beta
             // appears to have a bug in swing where repainting doesn't
             // properly occur.
@@ -498,30 +498,30 @@ public class PlotFrame extends JFrame {
         public void actionPerformed(ActionEvent e) {
             JMenuItem target = (JMenuItem)e.getSource();
             String actionCommand = target.getActionCommand();
-	    try {
-		if (actionCommand.equals("About")) {
-		    _about();
-		} else if (actionCommand.equals("Help")) {
-		    _help();
-		} else if (actionCommand.equals("Fill")) {
-		    plot.fillPlot();
-		} else if (actionCommand.equals("Reset axes")) {
-		    plot.resetAxes();
-		} else if (actionCommand.equals("Clear")) {
-		    plot.clear(false);
-		    plot.repaint();
-		} else if (actionCommand.equals("Sample plot")) {
-		    plot.clear(true);
-		    samplePlot();
-		}
-	    } catch (Exception exception) {
-		// If we do not catch exceptions here, then they
-		// disappear to stdout, which is bad if we launched
-		// where there is no stdout visible.
+            try {
+                if (actionCommand.equals("About")) {
+                    _about();
+                } else if (actionCommand.equals("Help")) {
+                    _help();
+                } else if (actionCommand.equals("Fill")) {
+                    plot.fillPlot();
+                } else if (actionCommand.equals("Reset axes")) {
+                    plot.resetAxes();
+                } else if (actionCommand.equals("Clear")) {
+                    plot.clear(false);
+                    plot.repaint();
+                } else if (actionCommand.equals("Sample plot")) {
+                    plot.clear(true);
+                    samplePlot();
+                }
+            } catch (Exception exception) {
+                // If we do not catch exceptions here, then they
+                // disappear to stdout, which is bad if we launched
+                // where there is no stdout visible.
                 JOptionPane.showMessageDialog(null,
                         "Special Menu Exception:\n" + exception.toString(),
                         "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
-	    }
+            }
             // NOTE: The following should not be needed, but there jdk1.3beta
             // appears to have a bug in swing where repainting doesn't
             // properly occur.
@@ -535,39 +535,39 @@ public class PlotFrame extends JFrame {
     /** Display only .plt and .xml files */
     class PLTOrXMLFileFilter extends FileFilter {
     
-	/** Accept only .plt or .xml files.
-	 *  @param file The file to be checked.
-	 *  @return true if the file is a directory, a .xml or a .moml file.
+        /** Accept only .plt or .xml files.
+         *  @param file The file to be checked.
+         *  @return true if the file is a directory, a .xml or a .moml file.
          */
-	public boolean accept(File fileOrDirectory) {
-	    if (fileOrDirectory.isDirectory()) {
-		return true;
-	    }
+        public boolean accept(File fileOrDirectory) {
+            if (fileOrDirectory.isDirectory()) {
+                return true;
+            }
 
-	    String fileOrDirectoryName = fileOrDirectory.getName();
-	    int dotIndex = fileOrDirectoryName.lastIndexOf('.');
-	    if (dotIndex == -1) {
-		return false;
-	    }
-	    String extension =
-		fileOrDirectoryName
-		.substring(dotIndex);
+            String fileOrDirectoryName = fileOrDirectory.getName();
+            int dotIndex = fileOrDirectoryName.lastIndexOf('.');
+            if (dotIndex == -1) {
+                return false;
+            }
+            String extension =
+                fileOrDirectoryName
+                .substring(dotIndex);
 
-	    if (extension != null) {
-		if (extension.equalsIgnoreCase(".plt")
-		    || extension.equalsIgnoreCase(".xml")) {
+            if (extension != null) {
+                if (extension.equalsIgnoreCase(".plt")
+                    || extension.equalsIgnoreCase(".xml")) {
                     return true;
-		} else {
-		    return false;
-		}
-	    }
-	    return false;
-	}
+                } else {
+                    return false;
+                }
+            }
+            return false;
+        }
     
-	/**  The description of this filter */
-	public String getDescription() {
-	    return ".plt and .xml files";
-	}
+        /**  The description of this filter */
+        public String getDescription() {
+            return ".plt and .xml files";
+        }
     }
 
 }

@@ -113,7 +113,7 @@ public class Render extends PlotBox {
     /** Clear the render object of any image data.
      */
     public synchronized void clearData() {
-	_imageData = new LinkedList();
+        _imageData = new LinkedList();
     }
 
     /** Get the current colormap.
@@ -125,25 +125,25 @@ public class Render extends PlotBox {
     /** Get the x increment.
      */
     public synchronized double getXIncrement() {
-	return _xIncrement;
+        return _xIncrement;
     }
 
     /** Get the x offset.
      */
     public synchronized double getXOffset() {
-	return _xOffset;
+        return _xOffset;
     }
 
     /** Get the y increment.
      */
     public synchronized double getYIncrement() {
-	return _yIncrement;
+        return _yIncrement;
     }
 
     /** Get the y offset.
      */
     public synchronized double getYOffset() {
-	return _yOffset;
+        return _yOffset;
     }
 
     /** Create a sample image.
@@ -210,14 +210,14 @@ public class Render extends PlotBox {
      *  @param xIncrement The increment in units of the x-axis of each stripe.
      */
     public synchronized void setXIncrement(double xIncrement) {
-	_xIncrement = xIncrement;
+        _xIncrement = xIncrement;
     }
 
     /** Set the x offset.
      *  @param xOffset The starting value of the x-axis.
      */
     public synchronized void setXOffset(double xOffset) {
-	_xOffset = xOffset;
+        _xOffset = xOffset;
     }
 
     /** Set the y increment.
@@ -225,14 +225,14 @@ public class Render extends PlotBox {
      *  within each stripe.
      */
     public synchronized void setYIncrement(double yIncrement) {
-	_yIncrement = yIncrement;
+        _yIncrement = yIncrement;
     }
 
     /** Set the y offset.
      *  @param yOffset The starting value of the y-axis.
      */
     public synchronized void setYOffset(double yOffset) {
-	_yOffset = yOffset;
+        _yOffset = yOffset;
     }
 
 
@@ -250,12 +250,12 @@ public class Render extends PlotBox {
         // so that _xscale and _yscale are set.
         super._drawPlot(graphics, clearfirst);
 
-	double x1 = (double)(_ulx + ((double)(_originalXlow - _xMin) * _xscale)
+        double x1 = (double)(_ulx + ((double)(_originalXlow - _xMin) * _xscale)
                 + 1.0);
 
         double width = _xIncrement * _xscale;
 
-	double x2 = x1 + width;
+        double x2 = x1 + width;
 
         ListIterator imageDataIterator = _imageData.listIterator(0);
 
@@ -263,12 +263,12 @@ public class Render extends PlotBox {
 
             int[] currentStripe = (int[])imageDataIterator.next();
             _drawStripe(graphics, currentStripe, x1, (int)x2 - (int)x1);
-	    x1 = x2;
-	    x2 = x1 + width;
+            x1 = x2;
+            x2 = x1 + width;
         }
 
-	// Indicate that the plot is showing.
-	_showing = true;
+        // Indicate that the plot is showing.
+        _showing = true;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -283,29 +283,29 @@ public class Render extends PlotBox {
      *  @param width The proposed width of the patch.
      */
     private int[] _clipXWidth(int x, int width) {
-	int[] returnArray = new int[2];
+        int[] returnArray = new int[2];
 
-	// if the patch extends across the entire width of the plot rectangle
-	if (x < _ulx + 1 && x + width > _lrx - 1) {
-	    returnArray[0] = _ulx + 1;
-	    returnArray[1] = _lrx - _ulx - 1;
-	} // if the patch is on the left border line
-	else if (x < _ulx + 1 && x + width > _ulx + 1) {
-	    returnArray[0] = _ulx + 1;
-	    returnArray[1] = width - (_ulx - x);
-	} // if the patch is within the left and right borders
-	else if (x >= _ulx + 1 && x + width <= _lrx - 1) {
-	    returnArray[0] = x;
-	    returnArray[1] = width;
-	} // if the patch is on the right border
-	else if (x <= _lrx - 1 && x + width > _lrx - 1) {
-	    returnArray[0] = x;
-	    returnArray[1] = _lrx - x;
-	} // if the patch is outside of either the left or right border
-	else {
-	    returnArray[0] = _NOTVISIBLE;
-	}
-	return returnArray;
+        // if the patch extends across the entire width of the plot rectangle
+        if (x < _ulx + 1 && x + width > _lrx - 1) {
+            returnArray[0] = _ulx + 1;
+            returnArray[1] = _lrx - _ulx - 1;
+        } // if the patch is on the left border line
+        else if (x < _ulx + 1 && x + width > _ulx + 1) {
+            returnArray[0] = _ulx + 1;
+            returnArray[1] = width - (_ulx - x);
+        } // if the patch is within the left and right borders
+        else if (x >= _ulx + 1 && x + width <= _lrx - 1) {
+            returnArray[0] = x;
+            returnArray[1] = width;
+        } // if the patch is on the right border
+        else if (x <= _lrx - 1 && x + width > _lrx - 1) {
+            returnArray[0] = x;
+            returnArray[1] = _lrx - x;
+        } // if the patch is outside of either the left or right border
+        else {
+            returnArray[0] = _NOTVISIBLE;
+        }
+        return returnArray;
     }
 
     /** Clip the patch to the visible y-range.
@@ -313,29 +313,29 @@ public class Render extends PlotBox {
      *  @param height The proposed height of the patch.
      */
     private int[] _clipYHeight(int y, int height) {
-	int[] returnArray = new int[2];
+        int[] returnArray = new int[2];
 
-	// if the patch extends across the entire height of the plot rectange
-	if (y < _uly + 1 && y + height > _lry - 1) {
-	    returnArray[0] = _uly + 1;
-	    returnArray[1] = _lry - _uly - 1;
-	} // if the patch is on the top border line
-	else if (y < _uly + 1 && y + height >= _uly + 1) {
-	    returnArray[0] = _uly + 1;
-	    returnArray[1] = height - (_uly - y);
-	} // if the patch is within the top and bottom borders
-	else if (y >= _uly + 1 && y + height <= _lry - 1) {
-	    returnArray[0] = y;
-	    returnArray[1] = height;
-	} // if the patch is on the bottom border
-	else if (y <= _lry - 1 && y + height > _lry - 1) {
-	    returnArray[0] = y;
-	    returnArray[1] = _lry - y;
-	} // if the patch is outside of either the top or bottom border
-	else {
-	    returnArray[0] = _NOTVISIBLE;
-	}
-	return returnArray;
+        // if the patch extends across the entire height of the plot rectange
+        if (y < _uly + 1 && y + height > _lry - 1) {
+            returnArray[0] = _uly + 1;
+            returnArray[1] = _lry - _uly - 1;
+        } // if the patch is on the top border line
+        else if (y < _uly + 1 && y + height >= _uly + 1) {
+            returnArray[0] = _uly + 1;
+            returnArray[1] = height - (_uly - y);
+        } // if the patch is within the top and bottom borders
+        else if (y >= _uly + 1 && y + height <= _lry - 1) {
+            returnArray[0] = y;
+            returnArray[1] = height;
+        } // if the patch is on the bottom border
+        else if (y <= _lry - 1 && y + height > _lry - 1) {
+            returnArray[0] = y;
+            returnArray[1] = _lry - y;
+        } // if the patch is outside of either the top or bottom border
+        else {
+            returnArray[0] = _NOTVISIBLE;
+        }
+        return returnArray;
     }
 
     /** Draw a stripe.
@@ -386,40 +386,40 @@ public class Render extends PlotBox {
     private void _drawPatch(Graphics graphics, int x, int y,
             int width, int height, int colorValue) {
 
-	// The height of the patch must be at least one pixel.
-	if (height < 1){
-	    height = 1;
-	}
+        // The height of the patch must be at least one pixel.
+        if (height < 1){
+            height = 1;
+        }
 
-	// Convert the colorValue into it's r, g, and b.
-	int r = _colormap[0][colorValue];
-	int g = _colormap[1][colorValue];
-	int b = _colormap[2][colorValue];
+        // Convert the colorValue into it's r, g, and b.
+        int r = _colormap[0][colorValue];
+        int g = _colormap[1][colorValue];
+        int b = _colormap[2][colorValue];
 
-	// Set the color.
-	graphics.setColor(new Color(r, g, b));
+        // Set the color.
+        graphics.setColor(new Color(r, g, b));
 
-	// Clip the patch to the visible range.
-	int[] xAndWidth = _clipXWidth(x, width);
-	x = xAndWidth[0];
-	width = xAndWidth[1];
+        // Clip the patch to the visible range.
+        int[] xAndWidth = _clipXWidth(x, width);
+        x = xAndWidth[0];
+        width = xAndWidth[1];
 
-	// If the patch is not visible return without having drawn anything.
-	if (x == _NOTVISIBLE) {
-	    return;
-	}
+        // If the patch is not visible return without having drawn anything.
+        if (x == _NOTVISIBLE) {
+            return;
+        }
 
-	int[] yAndHeight = _clipYHeight(y, height);
-	y = yAndHeight[0];
-	height = yAndHeight[1];
+        int[] yAndHeight = _clipYHeight(y, height);
+        y = yAndHeight[0];
+        height = yAndHeight[1];
 
-	// If the patch is not visible return without having drawn anything.
-	if (y == _NOTVISIBLE) {
-	    return;
-	}
+        // If the patch is not visible return without having drawn anything.
+        if (y == _NOTVISIBLE) {
+            return;
+        }
 
-	// Draw the patch.
-	graphics.fillRect(x, y, width, height);
+        // Draw the patch.
+        graphics.fillRect(x, y, width, height);
     }
 
 
