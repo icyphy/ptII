@@ -34,6 +34,7 @@ import ptolemy.kernel.util.*;
 
 import java.io.*;
 import java.net.URL;
+import java.net.URLConnection;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.Document;
@@ -102,7 +103,8 @@ public class HTMLEffigy extends Effigy {
         }
 
         /** Create a new effigy in the given container by reading the specified
-         *  URL. The extension of the URL must be ".htm" or ".html" or
+         *  URL. The extension of the URL must be ".htm" or ".html", or
+         *  the content type must be "text/html" or "text/rtf". Otherwise,
          *  this returns null.
          *  @param container The container for the effigy.
          *  @param base The base for relative file references, or null if
@@ -118,8 +120,22 @@ public class HTMLEffigy extends Effigy {
                  throws Exception {
             if (in == null) return null;
             String extension = getExtension(in);
+            String protocol = in.getProtocol();
+            // Here, if it has an "http" protocol, we agree to
+            // open it.  The reason is that many main HTML pages are
+            // referenced by a string like "http://ptolemy.eecs.berkeley.edu".
+            // Here, the extension will be "edu" rather than HTML.
+            // Note that this means that if we add effigies for, say,
+            // PDF files or images, their factories should be listed before
+            // this one.
             if (!extension.equals("htm") && !extension.equals("html")) {
-                return null;
+                // The extension doesn't match.  Try the content type.
+                URLConnection connection = in.openConnection();
+                String contentType = connection.getContentType();
+                if (!contentType.startsWith("text/html")
+                        && !contentType.startsWith("text/rtf")) {
+                    return null;
+                }
             }
             // Create a new effigy.
             HTMLEffigy effigy = new HTMLEffigy(container, 

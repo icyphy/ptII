@@ -1,0 +1,275 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="blank" class="ptolemy.actor.TypedCompositeActor">
+    <director name="SDF1" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="500">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+            <location value="50.0, 35.0"/>
+        </rendition>
+    </director>
+    <property name="carrierFrequency" class="ptolemy.data.expr.Parameter" value="200">
+    </property>
+    <property name="signalFrequency" class="ptolemy.data.expr.Parameter" value="20">
+    </property>
+    <property name="noiseStandardDeviation" class="ptolemy.data.expr.Parameter" value="0.05">
+    </property>
+    <entity name="typed composite actor0" class="ptolemy.actor.TypedCompositeActor">
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+            <location value="169.0, 204.0"/>
+        </rendition>
+        <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="8000">
+        </property>
+        <property name="frequency" class="ptolemy.data.expr.Parameter" value="signalFrequency">
+        </property>
+        <property name="phase" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <port name="port0" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="location1" class="ptolemy.moml.Location">
+                <location value="421.0, 200.0"/>
+            </property>
+        </port>
+        <entity name="Ramp1" class="ptolemy.actor.lib.Ramp">
+            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="init" class="ptolemy.data.expr.Parameter" value="phase">
+            </property>
+            <property name="step" class="ptolemy.data.expr.Parameter" value="frequency*2*PI/samplingFrequency">
+            </property>
+            <rendition name="_icon" class="ptolemy.vergil.toolbox.XMLIcon">
+                <location value="175.0, 155.0"/>
+                <configure>
+                <![CDATA[
+                    <xmlgraphic>
+                    <rectangle coords="0 0 60 40" fill="white"/>
+                    <polygon coords="10 30 50 10 50 30" fill="blue"/>
+                    </xmlgraphic>
+                ]]>
+                </configure>
+            </rendition>
+            <doc>Create a sequence of tokens with increasing value</doc>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+        </entity>
+        <entity name="TrigFunction2" class="ptolemy.actor.lib.TrigFunction">
+            <property name="function" class="ptolemy.kernel.util.StringAttribute" value="sin">
+                <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                    <property name="acos" class="ptolemy.kernel.util.StringAttribute" value="acos">
+                    </property>
+                    <property name="asin" class="ptolemy.kernel.util.StringAttribute" value="asin">
+                    </property>
+                    <property name="atan" class="ptolemy.kernel.util.StringAttribute" value="atan">
+                    </property>
+                    <property name="cos" class="ptolemy.kernel.util.StringAttribute" value="cos">
+                    </property>
+                    <property name="sin" class="ptolemy.kernel.util.StringAttribute" value="sin">
+                    </property>
+                    <property name="tan" class="ptolemy.kernel.util.StringAttribute" value="tan">
+                    </property>
+                </property>
+            </property>
+            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+                <location value="293.0, 155.0"/>
+            </rendition>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+        </entity>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port0" relation="relation5"/>
+        <link port="Ramp1.output" relation="relation3"/>
+        <link port="TrigFunction2.input" relation="relation3"/>
+        <link port="TrigFunction2.output" relation="relation5"/>
+    </entity>
+    <entity name="1:typed composite actor0" class="ptolemy.actor.TypedCompositeActor">
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+            <location value="161.0, 124.0"/>
+        </rendition>
+        <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="8000">
+        </property>
+        <property name="frequency" class="ptolemy.data.expr.Parameter" value="carrierFrequency">
+        </property>
+        <property name="phase" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <port name="port0" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="location1" class="ptolemy.moml.Location">
+                <location value="421.0, 200.0"/>
+            </property>
+        </port>
+        <entity name="Ramp1" class="ptolemy.actor.lib.Ramp">
+            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="init" class="ptolemy.data.expr.Parameter" value="phase">
+            </property>
+            <property name="step" class="ptolemy.data.expr.Parameter" value="frequency*2*PI/samplingFrequency">
+            </property>
+            <rendition name="_icon" class="ptolemy.vergil.toolbox.XMLIcon">
+                <location value="175.0, 155.0"/>
+                <configure>
+                <![CDATA[
+                    <xmlgraphic>
+                    <rectangle coords="0 0 60 40" fill="white"/>
+                    <polygon coords="10 30 50 10 50 30" fill="blue"/>
+                    </xmlgraphic>
+                ]]>
+                </configure>
+            </rendition>
+            <doc>Create a sequence of tokens with increasing value</doc>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+        </entity>
+        <entity name="TrigFunction2" class="ptolemy.actor.lib.TrigFunction">
+            <property name="function" class="ptolemy.kernel.util.StringAttribute" value="sin">
+                <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                    <property name="acos" class="ptolemy.kernel.util.StringAttribute" value="acos">
+                    </property>
+                    <property name="asin" class="ptolemy.kernel.util.StringAttribute" value="asin">
+                    </property>
+                    <property name="atan" class="ptolemy.kernel.util.StringAttribute" value="atan">
+                    </property>
+                    <property name="cos" class="ptolemy.kernel.util.StringAttribute" value="cos">
+                    </property>
+                    <property name="sin" class="ptolemy.kernel.util.StringAttribute" value="sin">
+                    </property>
+                    <property name="tan" class="ptolemy.kernel.util.StringAttribute" value="tan">
+                    </property>
+                </property>
+            </property>
+            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+                <location value="293.0, 155.0"/>
+            </rendition>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+        </entity>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port0" relation="relation5"/>
+        <link port="Ramp1.output" relation="relation3"/>
+        <link port="TrigFunction2.input" relation="relation3"/>
+        <link port="TrigFunction2.output" relation="relation5"/>
+    </entity>
+    <entity name="MultiplyDivide2" class="ptolemy.actor.lib.MultiplyDivide">
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location value="286.0, 152.0"/>
+        </rendition>
+        <port name="multiply" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="divide" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="AddSubtract5" class="ptolemy.actor.lib.AddSubtract">
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location value="400.0, 160.0"/>
+        </rendition>
+        <port name="plus" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="minus" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Gaussian6" class="ptolemy.actor.lib.Gaussian">
+        <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="mean" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="standardDeviation" class="ptolemy.data.expr.Parameter" value="noiseStandardDeviation">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location value="256.0, 246.0"/>
+        </rendition>
+        <doc>Create a sequence of gaussian random variables</doc>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="SequencePlotter12" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location value="524.0, 159.0"/>
+        </rendition>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title></title>
+<xRange min="1.0" max="500.0"/>
+<yRange min="-1.0305095444448615" max="1.091922470562122"/>
+</plot>?>
+        </configure>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="typed composite actor0.port0" relation="relation4"/>
+    <link port="1:typed composite actor0.port0" relation="relation3"/>
+    <link port="MultiplyDivide2.multiply" relation="relation3"/>
+    <link port="MultiplyDivide2.multiply" relation="relation4"/>
+    <link port="MultiplyDivide2.output" relation="relation8"/>
+    <link port="AddSubtract5.plus" relation="relation7"/>
+    <link port="AddSubtract5.plus" relation="relation8"/>
+    <link port="AddSubtract5.output" relation="relation13"/>
+    <link port="Gaussian6.output" relation="relation7"/>
+    <link port="SequencePlotter12.input" relation="relation13"/>
+</model>

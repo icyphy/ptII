@@ -47,8 +47,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Enumeration;
 import java.util.Map;
-import javax.swing.*;
 import java.net.URL;
+import javax.swing.*;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
+import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.HTMLFrameHyperlinkEvent;
 
 //////////////////////////////////////////////////////////////////////////
 //// HTMLViewer
@@ -61,13 +65,15 @@ The url that is viewed can be changed by calling the <i>setPage</i> method.
 @version $Id$
 */
 
-public class HTMLViewer extends TableauFrame implements Printable {
+public class HTMLViewer extends TableauFrame
+        implements Printable, HyperlinkListener {
 
     /** Construct a blank viewer.
      */
     public HTMLViewer() {
 	getContentPane().setLayout(new BorderLayout(0, 0));
         pane.setEditable(false);
+        pane.addHyperlinkListener(this);
         _scroller = new JScrollPane(pane);
         // Default, which can be overriden by calling setSize().
         _scroller.setPreferredSize(new Dimension(800, 600));
@@ -82,6 +88,61 @@ public class HTMLViewer extends TableauFrame implements Printable {
      */
     public URL getPage() {
         return pane.getPage();
+    }
+ 
+    /** React to a hyperlink being clicked on in the rendered HTML.
+     *  This method opens the hyperlink URL in a new window, using
+     *  the configuration.  This means that hyperlinks can reference
+     *  any file that the configuration can open, including MoML files.
+     *  @param event The hyperlink event.
+     */
+    public void hyperlinkUpdate(HyperlinkEvent event) {
+        if (event.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+            URL newUrl = event.getURL();
+            if (event instanceof HTMLFrameHyperlinkEvent) {
+                // For some bizarre reason, when a link is within a frame,
+                // it needs to be handled differently than if its not in
+                // a frame.
+                HTMLFrameHyperlinkEvent  evt = (HTMLFrameHyperlinkEvent)event;
+                String target = evt.getTarget();
+                // If the target is "_blank" or "_top", then we want to open
+                // in a new window, so we defer to the below.
+                if (!target.equals("_blank") && !target.equals("_top")) {
+                    HTMLDocument doc = (HTMLDocument)pane.getDocument();
+                    try {
+                        doc.processHTMLFrameHyperlinkEvent(evt);
+                    } catch (Exception ex) {
+                        MessageHandler.error(
+                                "Hyperlink reference failed", ex);
+                    }
+                    return;
+                }
+            }
+            // Attempt to open in a new window.
+            Configuration configuration = getConfiguration();
+            // FIXME: Should detect target="_blank" and open
+            // in a new window, rather than always opening in a new
+            // window.  However, regrettably, there appears to be
+            // no way to access the target unless the event is an
+            // instanceof HTMLFrameHyperlinkEvent, which it is only
+            // if the HTML happens to be in a frame.  Moreover, it would
+            // be tricky to do this because we would have to check that
+            // the content type is "text/html" or "text/rtf", and we
+            // would have to associate our tableau with a new effigy.
+            // Nonetheless, it's perfectly doable if we can get the
+            // target...
+            try {
+                if (configuration != null) {
+                    configuration.openModel(
+                            newUrl, newUrl, newUrl.toExternalForm());
+                } else {
+                    // If there is no configuration, open in the same window.
+                    pane.setPage(newUrl);
+                }
+            } catch (Exception ex) {
+                MessageHandler.error("Hyperlink reference failed", ex);
+            }
+        }
     }
 
 // FIXME: This should be handled in Top...

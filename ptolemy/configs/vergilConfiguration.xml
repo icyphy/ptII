@@ -11,13 +11,14 @@
 
   <!-- Factories for effigies. -->
   <entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
-     <entity name="Graph Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
-       <entity name="blank" class="ptolemy.actor.TypedCompositeActor"/>
-     </entity>
-     <entity name="FSM Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
-       <entity name="blank" class="ptolemy.domains.fsm.kernel.FSMActor"/>
-     </entity>
-     <entity name="Text Editor" class="ptolemy.actor.gui.TextEffigy$Factory"/>
+    <entity name="Graph Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
+      <entity name="blank" class="ptolemy.actor.TypedCompositeActor"/>
+    </entity>
+    <entity name="FSM Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
+      <entity name="blank" class="ptolemy.domains.fsm.kernel.FSMActor"/>
+    </entity>
+    <entity name="HTML Viewer" class="ptolemy.actor.gui.HTMLEffigy$Factory"/>
+    <entity name="Text Editor" class="ptolemy.actor.gui.TextEffigy$Factory"/>
   </entity>
 
   <!-- Factories for tableaux. -->
@@ -31,6 +32,7 @@
       <entity name="Tree View" class="ptolemy.vergil.tree.TreeTableau$Factory"/>
       <entity name="XML view" class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
     </entity>
+    <entity name="HTML Viewer" class="ptolemy.actor.gui.HTMLViewerTableau$Factory"/>
     <entity name="Text Editor" class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
     <!-- FIXME: text editor, plot data tableau, HTML viewer, etc. -->
   </entity>
