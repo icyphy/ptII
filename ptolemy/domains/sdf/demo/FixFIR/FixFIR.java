@@ -162,7 +162,7 @@ public class FixFIR extends SDFApplet implements QueryListener {
 
             _f2d = new FixToDouble(_toplevel, "FixToDouble");
             _f2d.precision.setToken(new StringToken("(2.14)"));
-            _f2d.quantizer.setToken(new IntToken(0));
+            _f2d.overflow.setToken(new IntToken(0));
 
             // Create the Sequence plotter
             _myplot = new SequencePlotter(_toplevel, "plot");
@@ -219,9 +219,9 @@ public class FixFIR extends SDFApplet implements QueryListener {
             _transform.connect( _waveform.output, _mult.multiply );
             _transform.connect( _mult.output,  _fft.input );
             _transform.connect( _fft.output, _ctor.input);
-            _transform.connect( _ctor.realOutput, _rtop.xInput );
-            _transform.connect( _ctor.imagOutput, _rtop.yInput );
-            _transform.connect( _rtop.magnitudeOutput, _rtod.input);
+            _transform.connect( _ctor.real, _rtop.x );
+            _transform.connect( _ctor.imag, _rtop.y );
+            _transform.connect( _rtop.magnitude, _rtod.input);
             _transform.connect( _rtod.output, output_transform );
 
 

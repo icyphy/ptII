@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/moml.dtd">
-
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+ 
   <class name="fft" extends="ptolemy.actor.TypedCompositeActor">
 
   <doc>
@@ -50,19 +50,19 @@
 
  <entity name="ComplexToReal" class="ptolemy.actor.lib.conversions.ComplexToReal">
        <port name="input"></port>
-       <port name="realOutput"></port>
-       <port name="imagOutput"></port>
+	<port name="real"></port>
+       <port name="imag"></port>
  </entity>
 
  <entity name="RecToPolar" class="ptolemy.actor.lib.conversions.RectangularToPolar">
-       <port name="xInput"></port>
-       <port name="yInput"></port>
-       <port name="magnitudeOutput"></port>
-       <port name="angleOutput"></port>
+       <port name="x"></port>
+       <port name="y"></port>
+       <port name="magnitude"></port>
+       <port name="angle"></port>
  </entity>
 
 
- <entity name="dB" class="ptolemy.actor.lib.dB">
+ <entity name="DB" class="ptolemy.actor.lib.DB">
        <port name="input"></port>
        <port name="output"></port>
  </entity>
@@ -87,19 +87,19 @@
  <link port="ComplexToReal.input" relation="r3"/>
 
  <relation name="r4" class="ptolemy.actor.TypedIORelation"></relation>
- <link port="ComplexToReal.realOutput" relation="r4"/>
- <link port="RecToPolar.xInput" relation="r4"/>
+ <link port="ComplexToReal.real" relation="r4"/>
+ <link port="RecToPolar.x" relation="r4"/>
 
  <relation name="r5" class="ptolemy.actor.TypedIORelation"></relation>
- <link port="ComplexToReal.imagOutput" relation="r5"/>
- <link port="RecToPolar.yInput" relation="r5"/>
+ <link port="ComplexToReal.imag" relation="r5"/>
+ <link port="RecToPolar.y" relation="r5"/>
 
  <relation name="r6" class="ptolemy.actor.TypedIORelation"></relation>
- <link port="RecToPolar.magnitudeOutput" relation="r6"/>
- <link port="dB.input" relation="r6"/>
+ <link port="RecToPolar.magnitude" relation="r6"/>
+ <link port="DB.input" relation="r6"/>
 
  <relation name="r7" class="ptolemy.actor.TypedIORelation"></relation>
- <link port="dB.output" relation="r7"/>
+ <link port="DB.output" relation="r7"/>
  <link port="output" relation="r7"/>
 
 </class>

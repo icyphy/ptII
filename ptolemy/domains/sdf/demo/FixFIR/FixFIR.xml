@@ -1,6 +1,6 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/moml.dtd">
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="topLevel" class="ptolemy.actor.TypedCompositeActor">
 
 <doc>
@@ -102,7 +102,7 @@ shows the effects of the use of finite precision.
 
  <entity name="f2d" class="ptolemy.actor.lib.conversions.FixToDouble">
        <property name="precision" value="(2.14)"></property>
-       <property name="quantizer" value="0"></property>
+       <property name="overflow" value="0"></property>
        <port name="input"></port>
        <port name="output"></port>
  </entity>
