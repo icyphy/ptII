@@ -56,5 +56,5 @@ test UParser-1.0 {Test the Parser} {
     set parser [java::new ptolemy.data.unit.UParser]
     set unitExpr [$parser parseUnitExpr "\$a \$b^-1"]
     $unitExpr toString
-  } {UnitExpr(2):[a b^-1]}
+  } {UnitExpr:[a b^-1]}
 
