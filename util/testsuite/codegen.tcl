@@ -86,11 +86,13 @@ proc speedComparison  {xmlFile \
 		[time {exec java -classpath $relativePathToPTII $targetClass} $repeat]
 
     } else {
-	if {$codeGenType == "Applet" || $codeGenType == "Interpreted"} {
+	if {$codeGenType == "Actor" \
+		|| $codeGenType == "Applet"} {
+		|| $codeGenType == "Interpreted"} {
 	    # Can't run applets without a head
 	    # Can't run interpreted code in the nightly build because
 	    # we do not find the JavaScope jar files.
-	    puts "Applet codegen done"
+	    puts "$codeGenType codegen done"
 	} else {
 	    set targetClass $modelName.$modelClass
 
@@ -391,7 +393,11 @@ proc sootCodeGeneration {{PTII} modelPath {codeGenType Shallow} \
 	    if { ${codeGenType} == "Interpreted" } {
 		set codeGenerator "interpreted"
             } else {		
-		set codeGenerator "shallow"
+		if { ${codeGenType} == "Actor" } {
+		    set codeGenerator "actor"
+		} else {
+		    set codeGenerator "shallow"
+		}
 	    }
 	}
 	# -q means do not echo the command being run
@@ -426,7 +432,7 @@ proc sootCodeGeneration {{PTII} modelPath {codeGenType Shallow} \
     # handle it here.
     set command $runCommand
 
-    if { $statsOnly == 1} {
+    if { $statsOnly == 1 || ${codeGenType} == "Actor" } {
 	# Just print the command
 	puts "make MODEL=$modelName SOURCECLASS=$modelPath $command"
 	return "Times Interp/Deep ms $modelName 1 \
