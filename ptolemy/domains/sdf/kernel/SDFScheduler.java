@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
@@ -52,19 +53,14 @@ import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.ChangeRequest;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.util.*;
 import ptolemy.math.Fraction;
 import ptolemy.moml.MoMLChangeRequest;
 
@@ -108,9 +104,9 @@ scheduled by this scheduler, which will, by default, assume
 homogeneous behavior for each actor.  (i.e. each output port produces
 one token for each firing, and each input port consumes one token on
 each firing, and no tokens are created during initialization.)  If
-this is not the case then the parameters <i>tokenConsumptionRate</i>,
-<i>tokenProductionRate</i>, and <i>tokenInitProduction</i> must be set.  The
-SDFIOPort class provides easier access to these parameters.
+this is not the case then parameters named <i>tokenConsumptionRate</i>,
+<i>tokenProductionRate</i>, and <i>tokenInitProduction</i> must be set.
+The SDFIOPort class provides easier access to these parameters.
 <p>
 Note that reconstructing the schedule is expensive, so the schedule is
 locally cached for as long as possible, and mutations under SDF should
@@ -186,7 +182,10 @@ public class SDFScheduler extends Scheduler {
      *  on the given port.  If the port is not an
      *  input port, then return zero.  Otherwise, return the value of
      *  the port's <i>tokenConsumptionRate</i> parameter.   If the parameter
-     *  does not exist, then assume the actor is homogeneous and return one.
+     *  does not exist, then check for a parameter named
+     *  <i>_tokenConsumptionRate</i>, which might have been created
+     *  by an inside SDF model.  If this one also does not exist,
+     *  then assume the actor is homogeneous and return one.
      *  @return The number of tokens the scheduler believes will be consumed
      *  from the given input port during each firing.
      *  @exception IllegalActionException If the tokenConsumptionRate
@@ -197,21 +196,7 @@ public class SDFScheduler extends Scheduler {
         if (!port.isInput()) {
             return 0;
         } else {
-            Parameter parameter =
-                (Parameter)port.getAttribute("tokenConsumptionRate");
-            if (parameter == null) {
-                return 1;
-            } else {
-                Token token = parameter.getToken();
-                if (token instanceof IntToken) {
-                    return ((IntToken)token).intValue();
-                } else {
-                    throw new IllegalActionException("Parameter "
-                            + parameter.getFullName() + " was expected "
-                            + "to contain an IntToken, but instead "
-                            + "contained a " + token.getType() + ".");
-                }
-            }
+            return _getRateVariableValue(port, "tokenConsumptionRate", 1);
         }
     }
 
@@ -231,152 +216,68 @@ public class SDFScheduler extends Scheduler {
         if (!port.isOutput()) {
             return 0;
         } else {
-            Parameter parameter =
-                (Parameter)port.getAttribute("tokenInitProduction");
-            if (parameter == null) {
-                return 0;
-            } else {
-                Token token = parameter.getToken();
-                if (token instanceof IntToken) {
-                    return ((IntToken)token).intValue();
-                } else {
-                    throw new IllegalActionException("Parameter "
-                            + parameter.getFullName() + " was expected "
-                            + "to contain an IntToken, but instead "
-                            + "contained a " + token.getType() + ".");
-                }
-            }
+            return _getRateVariableValue(port, "tokenInitProduction", 0);
         }
     }
 
     /** Get the number of tokens that are produced
      *  on the given port.  If the port is not an
      *  output port, then return zero.  Otherwise, return the value of
-     *  the port's <i>tokenProductionRate</i> parameter.  If the parameter
-     *  does not exist, then assume the actor is homogeneous and return a
-     *  rate of one.
+     *  the port's <i>tokenProductionRate</i> parameter. If the parameter
+     *  does not exist, then check for a parameter named
+     *  <i>_tokenProductionRate</i>, which might have been created
+     *  by an inside SDF model.  If this one also does not exist,
+     *  then assume the actor is homogeneous and return a rate of one.
      *  @return The number of tokens the scheduler believes will be produced
-     *  from the given output port during each firing.
+     *   from the given output port during each firing.
      *  @exception IllegalActionException If the tokenProductionRate
-     *  parameter has an invalid expression.
+     *   parameter has an invalid expression.
      */
     public static int getTokenProductionRate(IOPort port)
             throws IllegalActionException {
         if (!port.isOutput()) {
             return 0;
         } else {
-            Parameter parameter =
-                (Parameter)port.getAttribute("tokenProductionRate");
-            if (parameter == null) {
-                return 1;
-            } else {
-                Token token = parameter.getToken();
-                if (token instanceof IntToken) {
-                    return ((IntToken)token).intValue();
-                } else {
-                    throw new IllegalActionException("Parameter "
-                            + parameter.getFullName() + " was expected "
-                            + "to contain an IntToken, but instead "
-                            + "contained a " + token.getType() + ".");
-                }
-            }
+            return _getRateVariableValue(port, "tokenProductionRate", 1);
         }
     }
 
     /** Set the <i>tokenConsumptionRate</i> parameter of the given port
      *  to the given rate.  If no parameter exists, then create a new one.
-     *  The port is assumed to be an input port.
+     *  The new one is an instance of Variable, so it is not persisent.
+     *  That is, it will not be saved in the MoML file if the model is
+     *  saved. The port is normally an input port, but this is not
+     *  checked.
      *  @exception IllegalActionException If the rate is negative.
      */
     public static void setTokenConsumptionRate(IOPort port, int rate)
             throws IllegalActionException {
-        if (rate < 0) {
-            throw new IllegalActionException(
-                    "The tokenConsumptionRate of the port " + port
-                    + " cannot be set to " + rate
-                    + " which is negative.");
-        }
-        Parameter parameter =
-            (Parameter)port.getAttribute("tokenConsumptionRate");
-        try {
-            if (parameter != null) {
-                parameter.setToken(new IntToken(rate));
-            } else {
-                parameter = new Parameter(port, "tokenConsumptionRate",
-                        new IntToken(rate));
-            }
-        } catch (Exception exception) {
-            // This should never happen.
-            // Might be NameDuplicationException, but we already
-            // know it doesn't exist.
-            // Might be IllegalActionException, but we've already
-            // checked the error conditions
-            throw new InternalErrorException(exception.getMessage());
-        }
+        _setRate(port, "tokenConsumptionRate", rate);
     }
 
     /** Set the <i>tokenInitProduction</i> parameter of the given port to
      *  the given rate.  If no parameter exists, then create a new one.
-     *  The port is assumed to be an output port.
+     *  The new one is an instance of Variable, so it is not persisent.
+     *  That is, it will not be saved in the MoML file if the model is
+     *  saved. The port is normally an input port, but this is not
+     *  checked.
      *  @exception IllegalActionException If the rate is negative.
      */
     public static void setTokenInitProduction(IOPort port, int rate)
             throws IllegalActionException {
-        if (rate < 0) {
-            throw new IllegalActionException(
-                    "The tokenInitProduction of the port " + port
-                    + " cannot be set to " + rate
-                    + " which is negative.");
-        }
-        Parameter parameter =
-            (Parameter)port.getAttribute("tokenInitProduction");
-        try {
-            if (parameter != null) {
-                parameter.setToken(new IntToken(rate));
-            } else {
-                parameter = new Parameter(port, "tokenInitProduction",
-                        new IntToken(rate));
-            }
-        } catch (Exception exception) {
-            // This should never happen.
-            // Might be NameDuplicationException, but we already
-            // know it doesn't exist.
-            // Might be IllegalActionException, but we've already
-            // checked the error conditions
-            throw new InternalErrorException(exception.getMessage());
-        }
+        _setRate(port, "tokenInitProduction", rate);
     }
 
     /** Set the <i>tokenProductionRate</i> parameter of the given port
      *  to the given rate.  If no parameter exists, then create a new one.
-     *  The port is assumed to be an output port.
+     *  The new one is an instance of Variable, so it is transient.
+     *  That is, it will not be exported to MoML files.
+     *  The port is normally an output port, but this is not checked.
      *  @exception IllegalActionException If the rate is negative.
      */
     public static void setTokenProductionRate(IOPort port, int rate)
             throws IllegalActionException {
-        if (rate < 0) {
-            throw new IllegalActionException(
-                    "The tokenProductionRate of the port " + port
-                    + " cannot be set to " + rate
-                    + " which is negative.");
-        }
-        Parameter parameter =
-            (Parameter)port.getAttribute("tokenProductionRate");
-        try {
-            if (parameter != null) {
-                parameter.setToken(new IntToken(rate));
-            } else {
-                parameter = new Parameter(port, "tokenProductionRate",
-                        new IntToken(rate));
-            }
-        } catch (Exception exception) {
-            // This should never happen.
-            // Might be NameDuplicationException, but we already
-            // know it doesn't exist.
-            // Might be IllegalActionException, but we've already
-            // checked the error conditions
-            throw new InternalErrorException(exception.getMessage());
-        }
+        _setRate(port, "tokenProductionRate", rate);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -672,6 +573,62 @@ public class SDFScheduler extends Scheduler {
 	return count;
     }
 
+    /** Find the channel number of the given port that corresponds to the
+     *  given receiver.  If the receiver is not contained within the port,
+     *  throw an InternalErrorException.
+     */
+    // FIXME: Move this functionality to the kernel.
+    private int _getChannel(IOPort port, Receiver receiver)
+            throws IllegalActionException {
+	int width = port.getWidth();
+	Receiver[][] receivers = port.getReceivers();
+	int channel;
+	if (_debugging) {
+            _debug("-- getting channels on port " + port.getFullName());
+            _debug("port width = " + width);
+            _debug("number of channels = " + receivers.length);
+        }
+	for (channel = 0;
+             channel < receivers.length;
+             channel++) {
+            if (_debugging) {
+                _debug("number of receivers in channel " + channel
+                        + " = " + receivers[channel].length);
+            }
+	    for (int destinationIndex = 0;
+                 destinationIndex < receivers[channel].length;
+                 destinationIndex++) {
+		if (receivers[channel][destinationIndex] == receiver) {
+                    if (_debugging) {
+                        _debug("-- returning channel number:" + channel);
+                    }
+                    return channel;
+                }
+            }
+	}
+	// Hmm...  didn't find it yet.  Port might be connected on the inside,
+	// so try the inside relations.
+	receivers = port.getInsideReceivers();
+	for (channel = 0;
+             channel < receivers.length;
+             channel++) {
+            if (_debugging) {
+                _debug("number of inside receivers = "
+                        + receivers[channel].length);
+            }
+	    for (int destinationIndex = 0;
+                 destinationIndex < receivers[channel].length;
+                 destinationIndex++) {
+		if (receivers[channel][destinationIndex] == receiver) {
+                    return channel;
+                }
+            }
+	}
+
+	throw new InternalErrorException("Receiver not found in the port " +
+                port.getFullName());
+    }
+
     /** Return the number of firings associated with the given entity.   The
      *  number of firings is stored in the _firingVector map, indexed
      *  by the entity.
@@ -703,6 +660,40 @@ public class SDFScheduler extends Scheduler {
             throw new NotSchedulableException(port,
                     "Port is neither an input and an output, which is not"
                     + " allowed in SDF.");
+        }
+    }
+
+    /** Get the integer value stored in the Variable with the specified
+     *  name. If there is no such variable, then check for a variable
+     *  with the name preceded by an underscore.  If there is still no
+     *  such variable, then return the specified default.
+     *  @param port The port.
+     *  @param name The name of the variable.
+     *  @param defaultValue The default value of the variable.
+     *  @return A rate.
+     */
+    private static int _getRateVariableValue(
+            Port port, String name, int defaultValue)
+            throws IllegalActionException {
+        Variable parameter = (Variable)port.getAttribute(name);
+        if (parameter == null) {
+            String altName = "_" + name;
+            parameter = (Parameter)port.getAttribute(altName);
+            if (parameter == null) {
+                return defaultValue;
+            }
+        }
+        Token token = parameter.getToken();
+        if (token instanceof IntToken) {
+            return ((IntToken)token).intValue();
+        } else {
+            throw new IllegalActionException("Variable "
+                    + parameter.getFullName()
+                    + " was expected "
+                    + "to contain an IntToken, but instead "
+                    + "contained a "
+                    + token.getType()
+                    + ".");
         }
     }
 
@@ -780,6 +771,30 @@ public class SDFScheduler extends Scheduler {
             }
             externalRates.put(port, new Integer(rate.getNumerator()));
         }
+    }
+
+    /** Search the given list of actors for one that contains at least
+     *  one port that has zero rate.
+     *
+     *  @param actorList The list of all of the actors to search.
+     *  @return An actor that contains at least one zero rate port, or null
+     *  if no actor has a zero rate port.
+     */
+    private ComponentEntity _pickZeroRatePortActor(List actorList)
+            throws IllegalActionException {
+        for (Iterator actors = actorList.iterator();
+             actors.hasNext();) {
+            ComponentEntity actor = (ComponentEntity)actors.next();
+            // Check if this actor has any ports with rate of zero.
+            for (Iterator ports = actor.portList().iterator();
+                 ports.hasNext();) {
+                IOPort port = (IOPort)ports.next();
+                if (_getRate(port) == 0) {
+                    return actor;
+                }
+	    }
+        }
+        return null;
     }
 
     /** Propagate the number of fractional firings decided for this actor
@@ -1442,16 +1457,17 @@ public class SDFScheduler extends Scheduler {
         container.requestChange(request);
     }
 
-    /** Push the rates calculated for this system up to the contained Actor.
+    /** Push the rates calculated for this system up to the contained Actor,
+     *  but only if the ports do not have a set rates.
      *  This allows the container to be properly scheduled if it is
-     *  in a hierarchical system.
+     *  in a hierarchical system and the outside system is SDF.
      *  @param externalRates A map from external port to the rate of that
-     *  port.
+     *   port.
      *  @exception IllegalActionException If any called method throws it.
      *  @exception NotSchedulableException If an external port is both
-     *  an input and an output, or neither an input or an output, or
-     *  connected on the inside to ports that have different
-     *  tokenInitProduction.
+     *   an input and an output, or neither an input or an output, or
+     *   connected on the inside to ports that have different
+     *   tokenInitProduction.
      */
     private void _setContainerRates(Map externalRates)
             throws NotSchedulableException, IllegalActionException {
@@ -1469,12 +1485,17 @@ public class SDFScheduler extends Scheduler {
                         "External port is both an input and an output, "
                         + "which is not allowed in SDF.");
             } else if (port.isInput()) {
-                setTokenConsumptionRate(port, rate.intValue());
+                _setIfNotDefined(port, "tokenConsumptionRate", rate.intValue());
                 if (_debugging) {
-                    _debug("tokenConsumptionRate = " + rate);
+                    _debug("Setting tokenConsumptionRate to "
+                            + rate.intValue());
                 }
             } else if (port.isOutput()) {
-                setTokenProductionRate(port, rate.intValue());
+                _setIfNotDefined(port, "tokenProductionRate", rate.intValue());
+                if (_debugging) {
+                    _debug("Setting tokenProductionRate to "
+                            + rate.intValue());
+                }
                 // Infer init production.
                 // Note that this is a very simple type of inference...  
                 // However, in general, we don't want to try to 
@@ -1496,19 +1517,47 @@ public class SDFScheduler extends Scheduler {
                                     + foundOutputPort + " and "
                                     + connectedPort);
                         }
-                        setTokenInitProduction(port,
+                        _setIfNotDefined(port, "tokenInitProduction", 
                                 getTokenInitProduction(connectedPort));
+                        if (_debugging) {
+                            _debug("Setting tokenInitProduction to "
+                                    + getTokenInitProduction(connectedPort));
+                        }
                         foundOutputPort = connectedPort;
                     }
                 }
                 if (_debugging) {
-                    _debug("tokenProductionRate = " + rate);
                     _debug("tokenInitProduction = " + rate);
                 }
             } else {
                 throw new NotSchedulableException(port,
                         "External port is neither an input and an output, "
                         + "which is not allowed in SDF.");
+            }
+        }
+    }
+
+    /** If the specified Variable does not exist, then create a variable
+     *  with the same name preceded by an underscore and set the value
+     *  of that variable to the specified value.
+     *  @param port The port.
+     *  @param name Name of the variable.
+     *  @param value The value.
+     */
+    private static void _setIfNotDefined(Port port, String name, int value) {
+        Variable rateParameter = (Variable)port.getAttribute(name);
+        if (rateParameter == null) {
+            String altName = "_" + name;
+            rateParameter = (Variable)port.getAttribute(altName);
+            try {
+                if (rateParameter == null) {
+                    // Use Variable, not Parameter so that it's transient.
+                    rateParameter = new Variable(port, altName);
+                }
+                rateParameter.setToken(new IntToken(value));
+            } catch (KernelException ex) {
+                // Should not occur.
+                throw new InternalErrorException(ex.toString());
             }
         }
     }
@@ -1524,6 +1573,33 @@ public class SDFScheduler extends Scheduler {
     private void _setFiringVector(Map newFiringVector) {
         _firingVector = newFiringVector;
         _firingVectorValid = true;
+    }
+
+    /** Set the rate variable with the specified name to the specified
+     *  value.  If it doesn't exist, create it.
+     *  @param port The port.
+     *  @param name The variable name.
+     *  @param rate The rate value.
+     */
+    private static void _setRate(Port port, String name, int rate)
+            throws IllegalActionException {
+        if (rate < 0) {
+            throw new IllegalActionException(
+                    "Negative rate is not allowed: " + rate);
+        }
+        Variable parameter = (Variable)port.getAttribute(name);
+        if (parameter != null) {
+            parameter.setToken(new IntToken(rate));
+        } else {
+            try {
+                // Use Variable rather than Parameter so the
+                // value is transient.
+                parameter = new Variable(port, name, new IntToken(rate));
+            } catch (KernelException exception) {
+                // This should never happen.
+                throw new InternalErrorException(exception.getMessage());
+            }
+        }
     }
 
     /**
@@ -1727,54 +1803,56 @@ public class SDFScheduler extends Scheduler {
                 }
 
                 for (int destinationIndex = 0;
-                     destinationIndex < receivers[sourceChannel].length;
-                     destinationIndex++) {
+                        destinationIndex < receivers[sourceChannel].length;
+                        destinationIndex++) {
                     IOPort connectedPort = (IOPort)
-                        receivers[sourceChannel][destinationIndex].
-                        getContainer();
+                            receivers[sourceChannel][destinationIndex].
+                            getContainer();
                     ComponentEntity connectedActor =
-                        (ComponentEntity) connectedPort.getContainer();
+                            (ComponentEntity) connectedPort.getContainer();
                    
                     // The channel of the destination port that is
                     // connected to sourceChannel.
                     int destinationChannel = _getChannel(connectedPort,
                             receivers[sourceChannel][destinationIndex]);
                     
-                        // Increment the number of waiting tokens.
-                        int[] tokens =
-                            (int[]) waitingTokens.get(connectedPort);
-                        tokens[destinationChannel] += createdTokens;
+                    // Increment the number of waiting tokens.
+                    int[] tokens = (int[]) waitingTokens.get(connectedPort);
+                    tokens[destinationChannel] += createdTokens;
 
-                        // Update the buffer size, if necessary.
-                        // if bufferSize is null, then ignore, since we don't
-                        // care about that relation.
-                        if (bufferSize != null &&
-                                tokens[destinationChannel] >
-                                bufferSize.intValue()) {
-                            bufferSize =
-                                new Integer(tokens[destinationChannel]);
-                        }
-                        if (_debugging) {
-                            _debug("Channel " + destinationChannel + " of " +
-                                    connectedPort.getName());
-                        }
-                        // Only proceed if the connected actor is something we are
-                        // scheduling.  The most notable time when this will not be
-                        // true is when a connection is made to the
-                        // inside of an opaque port.
-                        if (actorList.contains(connectedActor)) {
-                            
-                            // Check and see if the connectedActor can be scheduled
+                    // Update the buffer size, if necessary.
+                    // if bufferSize is null, then ignore, since we don't
+                    // care about that relation.
+                    if (bufferSize != null &&
+                            tokens[destinationChannel] >
+                            bufferSize.intValue()) {
+                        bufferSize = new Integer(tokens[destinationChannel]);
+                    }
+                    if (_debugging) {
+                        _debug("Channel "
+                                + destinationChannel
+                                + " of "
+                                + connectedPort.getName());
+                    }
+                    // Only proceed if the connected actor is
+                    // something we are scheduling.
+                    // The most notable time when this will not be
+                    // true is when a connection is made to the
+                    // inside of an opaque port.
+                    if (actorList.contains(connectedActor)) {
+                        // Check and see whether the connectedActor
+                        // can be scheduled.
                         int inputCount = _countUnfulfilledInputs(
-                                (Actor)connectedActor,
-                                actorList,
-                                waitingTokens);
+                               (Actor)connectedActor,
+                               actorList,
+                               waitingTokens);
                         int firingsRemaining = _getFiringCount(connectedActor);
                         // If so, then add it to the proper list.
                         // Note that the
                         // actor may appear more than once.
                         // This is OK, since we
-                        // remove all of the appearances from the list when the
+                        // remove all of the appearances from
+                        // the list when the
                         // actor is actually scheduled.
                         if ((inputCount < 1) && (firingsRemaining > 0)) {
                             readyToScheduleActorList.addLast(connectedActor);
@@ -1903,88 +1981,7 @@ public class SDFScheduler extends Scheduler {
             }
             throw new NotSchedulableException(string);
         }
-        // }
         return firings;
-    }
-
-    /** Find the channel number of the given port that corresponds to the
-     *  given receiver.  If the receiver is not contained within the port,
-     *  throw an InternalErrorException.
-     */
-    // FIXME: Move this functionality to the kernel.
-    private int _getChannel(IOPort port, Receiver receiver)
-            throws IllegalActionException {
-	int width = port.getWidth();
-	Receiver[][] receivers = port.getReceivers();
-	int channel;
-	if (_debugging) {
-            _debug("-- getting channels on port " + port.getFullName());
-            _debug("port width = " + width);
-            _debug("number of channels = " + receivers.length);
-        }
-	for (channel = 0;
-             channel < receivers.length;
-             channel++) {
-            if (_debugging) {
-                _debug("number of receivers in channel " + channel
-                        + " = " + receivers[channel].length);
-            }
-	    for (int destinationIndex = 0;
-                 destinationIndex < receivers[channel].length;
-                 destinationIndex++) {
-		if (receivers[channel][destinationIndex] == receiver) {
-                    if (_debugging) {
-                        _debug("-- returning channel number:" + channel);
-                    }
-                    return channel;
-                }
-            }
-	}
-	// Hmm...  didn't find it yet.  Port might be connected on the inside,
-	// so try the inside relations.
-	receivers = port.getInsideReceivers();
-	for (channel = 0;
-             channel < receivers.length;
-             channel++) {
-            if (_debugging) {
-                _debug("number of inside receivers = "
-                        + receivers[channel].length);
-            }
-	    for (int destinationIndex = 0;
-                 destinationIndex < receivers[channel].length;
-                 destinationIndex++) {
-		if (receivers[channel][destinationIndex] == receiver) {
-                    return channel;
-                }
-            }
-	}
-
-	throw new InternalErrorException("Receiver not found in the port " +
-                port.getFullName());
-    }
-
-    /** Search the given list of actors for one that contains at least
-     *  one port that has zero rate.
-     *
-     *  @param actorList The list of all of the actors to search.
-     *  @return An actor that contains at least one zero rate port, or null
-     *  if no actor has a zero rate port.
-     */
-    private ComponentEntity _pickZeroRatePortActor(List actorList)
-            throws IllegalActionException {
-        for (Iterator actors = actorList.iterator();
-             actors.hasNext();) {
-            ComponentEntity actor = (ComponentEntity)actors.next();
-            // Check if this actor has any ports with rate of zero.
-            for (Iterator ports = actor.portList().iterator();
-                 ports.hasNext();) {
-                IOPort port = (IOPort)ports.next();
-                if (_getRate(port) == 0) {
-                    return actor;
-                }
-	    }
-        }
-        return null;
     }
 
     ///////////////////////////////////////////////////////////////////
