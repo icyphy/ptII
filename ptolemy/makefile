@@ -3,7 +3,7 @@
 # @Version: $Id$
 # @Author: Christopher Hylands
 #
-# @Copyright (c) 1997 The Regents of the University of California.
+# @Copyright (c) 1997- The Regents of the University of California.
 # All rights reserved.
 # 
 # Permission is hereby granted, without written agreement and without
@@ -29,9 +29,13 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
+# Order matters here.  kernel should be first, then actors, then domains
+# so that when we compile in a directory we should have already compiled
+# any classes in other directories that we depend on.
+#
 # doc directory should be last so we get files from version control before
 # updating the docs
-DIRS = domains kernel pitcl doc
+DIRS = kernel actors domains pitcl doc
 
 # Root of Tycho directory
 ROOT =		../..
