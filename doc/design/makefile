@@ -33,7 +33,7 @@ ME =		doc/design
 
 # Sub directories to run make in.
 # Don't include src directory, since we don't ship it with the release
-DIRS =		#src
+DIRS =		usingVergil #src
 
 # Root of Ptolemy II directory
 ROOT =		../..
