@@ -234,8 +234,8 @@ awk 'BEGIN {
     # FIXME
     map["Goto"] = "ptolemy.actor.lib.Stop"
     map["Ground"] = "ptolemy.actor.lib.Discard"
-    #map["Integrator"] = "ptolemy.domains.ct.lib.Integrator"
-    map["Integrator"] = "vendors.ecsl_dp.ptolemy.IntegratorComposite"
+    map["Integrator"] = "ptolemy.domains.ct.lib.Integrator"
+    #map["Integrator"] = "vendors.ecsl_dp.ptolemy.IntegratorComposite"
     map["Logic"] = "ptolemy.actor.lib.logic.LogicFunction"
     map["Merge"] = "ptolemy.domains.de.lib.Merge"
     # FIXME: should be Minimum or Maximum 
@@ -249,14 +249,16 @@ awk 'BEGIN {
     map["S-Function"] = "ptolemy.matlab.Expression"
     # FIXME
     map["Saturate"] = "ptolemy.actor.lib.Quantizer"
-    map["Scope"] = "ptolemy.actor.lib.gui.TimedPlotter"
+    #map["Scope"] = "ptolemy.actor.lib.gui.TimedPlotter"
+    map["Scope"] = "vendors.ecsl_dp.ptolemy.Scope"
     map["Signum"] = "ptolemy.actor.lib.Quantizer"
     # FIXME: set to Sin
     map["Sin"] = "ptolemy.actor.lib.TrigFunction"
     # FIXME Leave off sampleTime, convert integers to doubles
     map["Step"] = "ptolemy.domains.ct.lib.ContinuousClock"
     #map["Step"] = "vendors.ecsl_dp.ptolemy.Step"
-    map["Sum"] = "ptolemy.actor.lib.Accumulator"
+    #map["Sum"] = "ptolemy.actor.lib.AddSubtract"
+    map["Sum"] = "vendors.ecsl_dp.ptolemy.ECSLSum"
     map["Switch"] = "ptolemy.actor.lib.Switch"
     map["Terminator"] = "ptolemy.actor.lib.Stop"
     # FIXME
@@ -325,6 +327,15 @@ $0 ~ /<entity/ {
        containerCount += 1
        containerStack[containerCount] = name
 
+       # Get the value of the class field
+       class=""
+       nf = split($0, f, "\"")   
+       for (i = 1; i <= nf; i++) {
+           if ( f[i] ~ /class=$/) {
+               class = f[i+1]
+               break;
+           }
+       }
 }
 {
     if ($1 ~ /<OutputPort/ || $1 ~ /<InputPort/ || $1 ~ /<TriggerPort/) {
@@ -418,10 +429,11 @@ $0 ~ /<entity/ {
 $1 ~ /<\/entity>/ {
     container = containerStack[containerCount] 
     containerCount -= 1         
+    indent = substr($0, 0, index($0,"<") - 1)  
+
 
     # We need to add the link statements outside the container.
     # Sometimes, containers are nested, getting the links right is tricky.
-    indent = substr($0, 0, index($0,"<") - 1)  
     for ( link in links) {
        if ( length(links[link]) > 0 \
           &&  substr(link, 0, length(container)) == container ) {
@@ -452,6 +464,17 @@ $1 ~ /<\/entity>/ {
 
 # Parameter
 awk '{
+    if ($1 ~ /<entity/) {
+       # Get the value of the class field
+       class=""
+       nf = split($0, f, "\"")   
+       for (i = 1; i <= nf; i++) {
+           if ( f[i] ~ /class=$/) {
+               class = f[i+1]
+               break;
+           }
+       }
+    }
     if ($1 ~ /<Parameter/) {
        # Get the value of the name field
        name=""
@@ -474,7 +497,13 @@ awk '{
        }
        indent = substr($0, 0, index($0,"<") - 1)  
        # FIXME: do more with types?
-       print indent "<property name=\"" name "\" class=\"ptolemy.data.expr.Parameter\" value=\"" value "\"/>"
+       propertyClass = "ptolemy.data.expr.Parameter"
+       if (class == "vendors.ecsl_dp.ptolemy.ECSLSum") {
+           if (name == "Inputs" || name == "IconShape") {
+               propertyClass = "ptolemy.data.expr.StringParameter"
+           }
+       }
+       print indent "<property name=\"" name "\" class=\"" propertyClass "\" value=\"" value "\"/>"
     } else {
        print $0
     } 
