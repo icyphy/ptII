@@ -391,7 +391,7 @@ the <CODE>Print</CODE> and <CODE>About</CODE> buttons will not work.
 untar the tar file:
 <PRE>
 cd $PTOLEMY/tycho/java
-gzcat /tmp/ptplot1.3.tar.gz | tar -xf
+gzcat /tmp/ptplot1.3p1.tar.gz | tar -xf
 </PRE>
 
 <LI> The <CODE>pxgraph</CODE>shell script reads

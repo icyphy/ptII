@@ -47,7 +47,7 @@ TYPACKAGE_ROOTDIR = $(CLASSPATH)
 TYPACKAGE_DIR = $(TYPACKAGE)
 # If you change JVERSION, modify the version numbers in:
 #    Pxgraph.java, index.html, doc/internals/changes.html
-TYVERSION =	1.3
+TYVERSION =	1.3p1
 TYDIST =	$(TYPACKAGE)$(TYVERSION)
 TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
 JARFILE = 	$(TYPACKAGE).jar
