@@ -352,7 +352,8 @@ fixtmpdist:
 		ptolemy.plot.plotml
 	# Remove files that we don't want to include
 	# GNU Tar under cygwin has problems excluding files
-	rm -rf $(PTTMPME)/adm $(PTTMPME)/*.gz $(PTTMPME)/*.zip
+	rm -rf $(PTTMPME)/adm $(PTTMPME)/*.gz $(PTTMPME)/*.zip \
+		$(PTTMPME)/Projects
 	-find $(PTTMPME) -name CVS -exec rm -rf {} \;
 	@echo "Fixing up doc/download directory"
 	rm -rf $(PTTMPME)/doc/download
@@ -366,10 +367,30 @@ fixtmpdist:
 	echo 'See <a href="http://ptolemy.eecs.berkeley.edu/java/ptplot" target="_top"><code>http://ptolemy.eecs.berkeley.edu/java/ptplot</code></a>' >> $(PTTMPME)/doc/download/index.htm
 	echo "</body>" >> $(PTTMPME)/doc/download/index.htm
 	echo "</html>" >> $(PTTMPME)/doc/download/index.htm
-
+	-chmod -R a+rX $(PTTMPME)
 
 
 ISPMP_PROJECT_DIR= [cC]:\\users\\cxh\\ptII\\adm\\trees\\ptII1.0beta\\ptolemy\\plot
 ISPMP_WINDOWS_SRC= $(ISPMP_PROJECT_DIR)\\adm\\tmp\\$(PTDIST)
 # Run this on doppler with:
-# rm unixPtiny.xml; make PTIIHOME=/home/eecs/cxh/ptII build_ispmp
+# rm unixptplot_ismp.xml; make build_ispmp
+
+WEBSITE=/vol/ptolemy/pt0/ptweb/java/$(PTDIST)
+update_website:
+	rm -rf $(WEBSITE)
+	cat $(PTDIST).tar.gz | (cd /vol/ptolemy/pt0/ptweb/java; \
+		$(GNUTAR) -zxf -) 
+	-cp doc/download/* $(WEBSITE)/ptolemy/plot/doc/download/
+	cp Projects/adm/installshield/ptplot5_1setup.jar \
+		Projects/adm/installshield/ptplot5_1setup.exe \
+		Projects/adm/installshield/applet/ms.cab \
+		Projects/adm/installshield/applet/ns.jar \
+		$(WEBSITE)/ptolemy/plot/doc/download/
+	gzip $(WEBSITE)/ptolemy/plot/doc/download/ptplot5_1setup.jar
+	cp \
+	        $(PTDIST).tar.gz \
+	        $(PTDIST).zip \
+		$(WEBSITE)/ptolemy/plot/
+	(cd $(WEBSITE)/ptolemy/plot/doc/download; \
+		ln -s ../../../../../../ptolemyII/ptII1.0/j2re-1_3_0_01-win.exe  .)
+
