@@ -45,12 +45,16 @@ ME =		ptolemy/actor/lib
 # $PTII/configure looks for Jini and sets PTJSPACES_DIR in
 # $PTII/mk/ptII.mk if it was found.  Otherwise, PTJSPACES_DIR is empty.
 #
+# $PTII/configure looks for Jython and sets PTJYTHON_DIR in
+# $PTII/mk/ptII.mk if it was found.  Otherwise, PTJYTHON_DIR is empty.
+#
 # $PTII/configure looks for JXTA and sets PTJXTA_DIR in
 # $PTII/mk/ptII.mk if it was found.  Otherwise, PTJXTA_DIR is empty.
 
 DIRS = 		conversions gui logic hoc image javasound net io \
 		test comm $(PTJAI_DIR) \
-		$(PTJMF_DIR) $(PTJOYSTICK_DIR) $(PTJSPACES_DIR) $(PTJXTA_DIR)
+		$(PTJMF_DIR) $(PTJOYSTICK_DIR) $(PTJSPACES_DIR) \
+		$(PTJYTHON_DIR) $(PTJXTA_DIR)
 
 # Root of the Java directory
 ROOT =		../../..
