@@ -56,7 +56,7 @@ test GeneratorTableauAttribute-1.1 {create an GTA, clone it} {
 	    [$attribute clone [$model workspace]]]
     $clonedAttribute setContainer $model
     #puts "attribute:\n[$attribute toString]\nclonedAttribute:\n[$clonedAttribute toString]"
-    regsub -all ".top" "[$clonedAttribute toString]" "" clonedAttributeString
+    regsub -all "{.top}" "[$clonedAttribute toString]" "" clonedAttributeString
     if  { [$attribute toString] != $clonedAttributeString} {
 	# diffText is defined in $PTII/util/testsuite/testDefs.tcl
 	puts [diffText [$attribute toString] $clonedAttributeString]]
