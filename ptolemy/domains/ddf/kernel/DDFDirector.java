@@ -1,6 +1,6 @@
 /* Director for the dynamic dataflow model of computation.
 
-Copyright (c) 1998-2004 The Regents of the University of California.
+Copyright (c) 2001-2004 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -104,6 +104,9 @@ import ptolemy.kernel.util.Workspace;
    Based on DDFSimpleSched in Ptolemy Classic, by Edward Lee.
 
    @author Gang Zhou
+   @version $Id$
+   @Pt.ProposedRating Red (cxh)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class DDFDirector extends Director {
 
@@ -554,7 +557,7 @@ public class DDFDirector extends Director {
      *  as itself.
      *  @param actor The actor to be fired.
      *  @return NOT_READY, STOP_ITERATING, or COMPLETED.
-     *  @throws IllegalActionException If any called method throws
+     *  @exception IllegalActionException If any called method throws
      *  IllegalActionException or actor is not ready.
      */
     protected int _fireActor(Actor actor) throws IllegalActionException {
@@ -594,8 +597,10 @@ public class DDFDirector extends Director {
                 // Skip it if the connectedActor to be checked contains
                 // this director.
                 if (getContainer() != connectedActor) {
-                    int[] containerFlags = (int[])_actorsFlags.get(connectedActor);
-                    containerFlags[_enablingStatus] = _actorStatus(connectedActor);
+                    int[] containerFlags =
+                        (int[])_actorsFlags.get(connectedActor);
+                    containerFlags[_enablingStatus] =
+                        _actorStatus(connectedActor);
                 }
             }
         }
@@ -661,7 +666,8 @@ public class DDFDirector extends Director {
                             int channelIndex = 0;
                             foundChannelIndex:
                             for (int m = 0; m < portReceivers.length; m++)
-                                for (int n = 0; n < portReceivers[m].length; n++)
+                                for (int n = 0; n < portReceivers[m].length;
+                                     n++)
                                     if (farReceiver == portReceivers[m][n]) {
                                         channelIndex = m;
                                         break foundChannelIndex;
