@@ -353,6 +353,18 @@ public class NamedObj implements Nameable, Debuggable,
             newobj._workspace = ws;
             newobj._fullNameVersion = -1;
             newobj._changeListeners = new LinkedList();
+            // The new object does not have any other objects deferring
+            // their MoML definitions to it, so we have to reset this.
+            newobj._deferredFrom = null;
+
+            // If the master defers its MoML definition to
+            // another object, then so will the clone.
+            // So we have to add the clone to the list of objects
+            // in the object deferred to.
+            if (_deferTo != null) {
+                _deferTo._deferredFrom.add(newobj);
+            }
+
             Iterator params = attributeList().iterator();
             while (params.hasNext()) {
                 Attribute p = (Attribute)params.next();
