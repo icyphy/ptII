@@ -65,16 +65,16 @@ import ptolemy.kernel.util.NameDuplicationException;
 Sends and receive bytes via the serial port.  The choice of serial port and
 baud rate to use are made by parameters.  If the specified serial port
 is not successfully opened, then another one will automatically be
-chosen if available.  
+chosen if available.
 
 <p>NOTE: If you get the following error on the console:
- Error loading win32com: java.lang.UnsatisfiedLinkError: 
+ Error loading win32com: java.lang.UnsatisfiedLinkError:
  no win32com in java.library.path
 Then you need to copy the win32com.dll file to some additional directory,
 such as c:\jdk1.3\bin.  @see vendors/sun/commapi/PlatformSpecific.html
 
-<p>This actor is designed for use in DE and SDF.  By default, this actor 
-does not block in fire().  When fired, if no data is available on the 
+<p>This actor is designed for use in DE and SDF.  By default, this actor
+does not block in fire().  When fired, if no data is available on the
 serial port, then no token is produced.  However, when using this actor in
 SDF, you may want to experiment with the <i>blocking</i> parameter.
 Setting this true has the actor block in fire() ultil data arrives.
@@ -90,12 +90,12 @@ of the integer.
 <p>This actor is a class which implements SerialPortEventListener.
 This means that when serial events (such as DATA_AVAILABLE) occur,
 this actor's serialEvent() method gets called.  the serialEvent()
-method calls the director's fireAtCurrentTime() method, triggering 
+method calls the director's fireAtCurrentTime() method, triggering
 a call to fire().
 
 <p>By the time fire() executes, there may be several bytes of available
 data.  This is primarily because the UART only signals the software every
-8 bytes or so.  These are packaged by fire() into an array of integers 
+8 bytes or so.  These are packaged by fire() into an array of integers
 (one int per byte) and broadcast.
 
 <p>The fire() method's reading of serial data is also governed by the
@@ -109,7 +109,7 @@ it will not read any data, but if <i>blocking</i> is true it will wait
 until at least <i>threshold</i> bytes are available.
 
 <p>Because the DATA_AVAILABLE event typically occurs every 8 bytes,
-continuous data arriving at 115200 baud can wake up the actor 1440 
+continuous data arriving at 115200 baud can wake up the actor 1440
 times per second!  This is to often to be calling fireAt*() on
 the director of a DE model.  Thus, after the first fireAtCurrentTime()
 call, the serialEvent() callback only notifys the fire() method
@@ -210,12 +210,12 @@ public class SerialComm extends TypedAtomicActor
     public Parameter baudRate;
 
     /** The threshold, default value 1, for reading data from the
-     *  serial port.  Data will not be read until threshold is 
+     *  serial port.  Data will not be read until threshold is
      *  reached or surpassed.
      */
     public Parameter threshold;
 
-    /** The truncation cut.  When reading, older bytes are discarded 
+    /** The truncation cut.  When reading, older bytes are discarded
      *  until <i>truncation</i> or fewer remain.  Caveat: If this
      *  parameter equals 0, than no data is discarded.
      */
@@ -267,14 +267,14 @@ public class SerialComm extends TypedAtomicActor
      *  buffers associated with the serial port.  Actual serial
      *  input and output occur right before or right after fire().
      *  For example, serial output occurs in responce to the .flush()
-     *  call below.  This data written to the serial port out to the 
-     *  serial hardware.  The .flush() method does not wait for the 
-     *  hardware to complete the transmission, as this might take 
+     *  call below.  This data written to the serial port out to the
+     *  serial hardware.  The .flush() method does not wait for the
+     *  hardware to complete the transmission, as this might take
      *  many milliseconds (roughly 1mS for every 10 bytes at 115200
      *  baud).
      *  <p>
-     *  This fire() method checks for either or both of the following 
-     *  conditions.  Data may have been received and is available in 
+     *  This fire() method checks for either or both of the following
+     *  conditions.  Data may have been received and is available in
      *  the serial port.  A Token may have been received by this actor.
      *  If at least 1 byte is available, broadcast it.
      *  If an integer-array token is available, take a byte out
@@ -387,8 +387,8 @@ public class SerialComm extends TypedAtomicActor
 		    _debug("        id.getName()=" + id.getName());
 		    _debug("        id.getPortType()=" + id.getPortType());
 		    _debug("        (id.getPortType() =="
-                        + " CommPortIdentifier.PORT_SERIAL)=" 
-			+ (id.getPortType() == 
+                        + " CommPortIdentifier.PORT_SERIAL)="
+			+ (id.getPortType() ==
                         CommPortIdentifier.PORT_SERIAL));
 		    _debug("    }");
 		}
@@ -400,7 +400,7 @@ public class SerialComm extends TypedAtomicActor
 		    + " for available ports, 'listen' to actor & rerun "
                     + ex);
         }
-	
+
 	/*
 	System.out.println("------");
 	System.out.println(_serialPort.isReceiveThresholdEnabled());
