@@ -135,6 +135,7 @@ CLOCK_CLASSFILES = \
 	ptolemy/actor/Executable.class \
 	ptolemy/actor/IOPort.class \
 	ptolemy/actor/IORelation.class \
+	ptolemy/actor/Manager.class \
 	ptolemy/actor/NoTokenException.class \
 	ptolemy/actor/Receiver.class \
 	ptolemy/actor/TypeConflictException.class \

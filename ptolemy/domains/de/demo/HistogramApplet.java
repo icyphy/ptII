@@ -58,6 +58,16 @@ public class HistogramApplet extends Applet implements Runnable {
      */	
     public void init() {
 
+        // Process the background parameter.
+        Color background = Color.white;
+        try {
+            String colorspec = getParameter("background");
+            if (colorspec != null) {
+                background = Color.decode(colorspec);
+            }
+        } catch (Exception ex) {}
+        setBackground(background);
+
         // Initialization
 
         _cbg = new CheckboxGroup();

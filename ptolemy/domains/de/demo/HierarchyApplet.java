@@ -59,6 +59,16 @@ public class HierarchyApplet extends Applet {
      */	
     public void init() {
 
+        // Process the background parameter.
+        Color background = Color.white;
+        try {
+            String colorspec = getParameter("background");
+            if (colorspec != null) {
+                background = Color.decode(colorspec);
+            }
+        } catch (Exception ex) {}
+        setBackground(background);
+        
         // Initialization
 
         _stopTimeBox = new TextField("10.0", 10);
