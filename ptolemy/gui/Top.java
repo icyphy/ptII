@@ -411,6 +411,16 @@ public abstract class Top extends JFrame {
         }
     }
 
+    /** Get the name of this object, which in this base class is
+     *  either the name of the file that has been associated with this
+     *  object, or the string "Unnamed" is none.
+     *  @return The name.
+     */
+    protected String _getName() {
+        if (_file == null) return "Unnamed";
+        else return _file.getName();
+    }
+
     /** Display the same information given by _about().
      *  Derived classes should override this to give information
      *  about the particular window and its role.
@@ -521,8 +531,7 @@ public abstract class Top extends JFrame {
         int returnVal = fileDialog.showSaveDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             _file = fileDialog.getSelectedFile();
-	    
-            setTitle(_file.getName());
+            setTitle(getName());
             _directory = fileDialog.getCurrentDirectory();
             return _save();
         }
@@ -556,10 +565,8 @@ public abstract class Top extends JFrame {
     private boolean _queryForSave() {
         Object[] options = {"Save", "Discard changes", "Cancel"};
 
-        String query = "Save changes?";
-        if (_file != null) {
-            query = "Save changes to " + _file.getName() + "?";
-        }
+        String query = "Save changes to " + getName() + "?";
+
         // Show the MODAL dialog
         int selected = JOptionPane.showOptionDialog(
                 this,

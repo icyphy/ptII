@@ -328,6 +328,21 @@ public abstract class TableauFrame extends Top {
         }
     }
 
+    /** Get the name of this object, which in this class is the URL
+     *  associated with the effigy, or the string "Unnamed" is none.
+     *  @return The name.
+     */
+    protected String _getName() {
+        Effigy effigy = getEffigy();
+        if (effigy != null) {
+            URL url = effigy.url.getURL();
+            if (url != null) {
+                return url.toExternalForm();
+            }
+        }
+        return "Unnamed";
+    }
+
     /** Read the specified URL.  This delegates to the ModelDirectory
      *  to ensure that the preferred tableau of the model is opened, and
      *  that a model is not opened more than once.
