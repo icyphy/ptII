@@ -256,7 +256,7 @@ public class MoMLApplication {
                 File absoluteFile = file.getAbsoluteFile();
                 try {
                     if (!absoluteFile.exists()) {
-                        throw new IOException("'" + absoluteFile
+                        throw new IOException("File '" + absoluteFile
                                 + "' does not exist." );
                     }
                 } catch (java.security.AccessControlException accessControl) {
@@ -290,9 +290,10 @@ public class MoMLApplication {
 
                     // This works in Web Start, see
                     // http://java.sun.com/products/javawebstart/faq.html#54
+  
                     specURL = Thread.currentThread()
                         .getContextClassLoader().getResource(spec);
-
+                    
                     if (specURL == null) {
                         throw new Exception("getResource(\"" + spec
                                 + "\") returned null.");
@@ -316,11 +317,11 @@ public class MoMLApplication {
                     // have no hope of telling us why Web Start failed.
                     IOException exception =
                         new IOException("File not found: '" + spec
-                                + "'\n caused by:\n" + ex3
-                                + "\n caused by:\n"
+                                + "'\n caused by:\n" + ex
+                                + "\n AND:\n"
                                 + ex2
-                                + "\n caused by:\n"
-                                + ex);
+                                + "\n AND:\n"
+                                + ex3);
                     // IOException does not have a cause argument
                     exception.initCause(ex3);
                     throw exception;
