@@ -549,7 +549,7 @@ public abstract class Top extends JFrame {
                     return false;
                 }
             }
-            setTitle(getName());
+            setTitle(_getName());
             _directory = fileDialog.getCurrentDirectory();
             return _save();
         }
@@ -583,7 +583,7 @@ public abstract class Top extends JFrame {
     private boolean _queryForSave() {
         Object[] options = {"Save", "Discard changes", "Cancel"};
 
-        String query = "Save changes to " + getName() + "?";
+        String query = "Save changes to " + _getName() + "?";
 
         // Show the MODAL dialog
         int selected = JOptionPane.showOptionDialog(
