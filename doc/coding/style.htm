@@ -281,6 +281,19 @@ frames layout makes <CODE>&lt;HR&gt;</CODE> unnecessary.
 Applets should have the same look and feel as other HTML pages.
 
 <menu>
+<li> Applets that are demonstrations should follow these naming guidelines:
+<menu>
+<li> Each individual applet should be in its own directory -
+this make it easier to move applets around, and retire old applets
+
+<li> The directory that contains an applet and the name of the
+<CODE>.htm</CODE> file that runs the applet should have the same base.
+For example, <CODE>ct/demo/SigmaDelta/SigmaDelta.htm</CODE> is
+the <CODE>.htm</CODE> file that runs the CT Sigma Delta Applet.
+
+</menu>
+
+
 <li> All of the essential parts of the applet should be visible
 if the browser is set to fill the screen of an XGA display.
 The essential parts of the demo include the controls and any output
@@ -291,8 +304,53 @@ widgets, such as plots.
 <li> It is best if the applet does not bring up separate windows, all of 
 the activity should occur within the main browser window.
 
+
+<li> All applets should use the <a href="../install.htm#Plugin">JDK1.2
+plugin</a>.  Using the plugin complicates the html for the applet.
+The Java Plugin website includes a converter that converts an html file 
+from a JDK1.1 applet to a JDK1.2 plugin.  The resulting html 
+has two sections, one for Internet Explorer, one for Netscape.
+ <br> The section within <CODE>&lt;Object ... &lt;COMMENT</CODE> is
+for Internet Explorer.
+ <br> The section within <CODE>&lt;EMBED&gt;...&lt;&lt;/EMBED&gt;</CODE>
+is for Netscape.
+<a href="templates/applet.htm"><CODE>$PTII/doc/coding/templates/applet.htm</CODE></a> contains a sample template with the two sections.
+
+<li> Most applets should include the following jar files.  Note that
+since we are using the plugin, the each jar file will need to be mentioned
+twice, once for IE, once for Netscape
+	<dl>
+	<dt> <CODE><I>YourApplet.jar</I></CODE>
+	<dd> A jar file containing all the class files necessary for
+	your applet.  Usually all the classes that are in the
+	demo directory go into this jar file.  If this is the
+	case, then the makefile should set <CODE>PTPACKAGE</CODE>
+	to the name of the demo, and then the install rule should depend 
+	on <CODE>PTCLASSJAR</CODE>:
+<pre>
+PTPACKAGE = 	BusContention
+[...]
+install: jclass $(PTCLASSJAR)
+</pre>
+
+	<dt> <CODE>lib/diva.jar</CODE>
+	<dd> If the applet uses Diva, then this file will need to be included
+
+	<dt> <CODE>ptolemy/ptsupport.jar</CODE>
+	<dd> The jar file that contains class files necessary for
+	all demos.  See
+	<a href="../../ptolemy/makefile"><CODE>$PTII/ptolemy/makefile</CODE></a>
+	for a list of what is in <CODE>ptsupport.jar</CODE>
+
+	<dt> <CODE>ptolemy/domains/<I>domain</I>/<I>domain</I>.jar</CODE>
+	<dd> The jar file that contains the kernel and library for
+	the domain of this applet
+	</dl>
+
 <li> Test your applet under Netscape and Internet Explorer under
 NT and under Netscape under Solaris.
+
+
 </menu>
 
 
