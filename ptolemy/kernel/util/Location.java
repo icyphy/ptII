@@ -339,7 +339,7 @@ public class Location extends SingletonAttribute
     private boolean _expressionSet = false;
 
     // The location.
-    private double[] _location = null;
+    private double[] _location = {0.0, 0.0};
 
     // Listeners for changes in value.
     private List _valueListeners;
