@@ -129,6 +129,9 @@ OPTIONAL_FILES = \
 	'DebugListenerTableau$$DebugListenerFrame.class' \
 	'HTMLEffigy$$Factory.class' \
 	'HTMLViewerTableau$$Factory.class' \
+	'JVMTableau$$1.class' \
+	'JVMTableauFactory$$1.class' \
+	'JVMTableau$$JVMFrame.class' \
 	'ModelFrame$$FileMenuListener.class' \
 	'ModelFrame$$HelpMenuListener.class' \
 	'ModelPane$$1.class' \
