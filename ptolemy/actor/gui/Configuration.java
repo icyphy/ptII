@@ -23,8 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (celaine@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui;
@@ -62,13 +62,50 @@ import javax.swing.SwingUtilities;
 /**
 This is a base class for a composite entity that defines the
 configuration of an application that uses Ptolemy II classes.
-It must contain, at a minimum, an instance of ModelDirectory, called
-"directory", and an instance of EffigyFactory, called "effigyFactory".
+An instance of this class is in charge of the user interface,
+and coordinates multiple views of multiple models. One of its
+functions, for example, is to manage the opening of new models,
+ensuring that an appropriate view is used. It also makes sure that
+if a model is opened that is already open, then existing views are
+shown rather than creating new views.
+<p>
+The applications <i>vergil</i> and <i>moml</i> (at least) use
+configurations defined in MoML files, typically located in
+ptII/ptolemy/configs. The <i>moml</i> application takes as
+command line arguments a list of MoML files, the first of which
+is expected to define an instance of Configuration and its contents.
+That configuration is then used to open subsequent MoML files on the
+command line, and to manage the user interface.
+<p>
+Rather than performing all these functions itself, this class
+is a container for a model directory, effigy factories, and tableau
+factories that actually realize these functions. An application
+is configured by populating an instance of this class with
+a suitable set of these other classes. A minimal configuration
+defined in MoML is shown below:
+<pre>
+&lt;?xml version="1.0" standalone="no"?&gt;
+&lt;!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd"&gt;
+&lt;entity name="configuration" class="ptolemy.actor.gui.Configuration"&gt;
+  &lt;doc&gt;Configuration to run but not edit Ptolemy II models&lt;/doc&gt;
+  &lt;entity name="directory" class="ptolemy.actor.gui.ModelDirectory"/&gt;
+  &lt;entity name="effigyFactory" class="ptolemy.actor.gui.PtolemyEffigy$Factory"/&gt;
+  &lt;property name="tableauFactory" class="ptolemy.actor.gui.RunTableau$Factory"/&gt;
+&lt;/entity&gt;
+</pre>
+<p>
+It must contain, at a minimum, an instance of ModelDirectory, named
+"directory", and an instance of EffigyFactory, named "effigyFactory".
 The openModel() method delegates to the effigy factory the opening of a model.
-It may also contain an instance of TableauFactory, called "tableauFactory".
+It may also contain an instance of TableauFactory, named "tableauFactory".
 A tableau is a visual representation of the model in a top-level window.
-This class uses those instances to manage a collection of models,
-open new models, and create tableaux of those models.
+The above minimal configuration can be used to run Ptolemy II models
+by opening a run panel only.
+<p>
+When the directory becomes empty (all models have been closed),
+it removes itself from the configuration. When this happens, the
+configuration calls System.exit() to exit the application.
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
@@ -85,8 +122,9 @@ public class Configuration extends CompositeEntity {
      *  Add the instance to the workspace directory.
      *  Increment the version number of the workspace.
      *  Note that there is no constructor that takes a container
-     *  as an argument, thus ensuring that a Configuration is always
-     *  a top-level entity.
+     *  as an argument; a Configuration is always
+     *  a top-level entity (this is enforced by the setContainer()
+     *  method).
      *  @param workspace The workspace that will list the entity.
      */
     public Configuration(Workspace workspace) {
@@ -102,6 +140,7 @@ public class Configuration extends CompositeEntity {
      *  to create a tableau, then it removes the effigy from the directory.
      *  This prevents us from having lingering effigies that have no
      *  user interface.
+     *  @param effigy The effigy for which to create a tableau.
      */
     public Tableau createPrimaryTableau(final Effigy effigy) {
         // NOTE: It used to be that the body of this method was
@@ -177,7 +216,7 @@ public class Configuration extends CompositeEntity {
      *  @return The model directory, or null if there isn't one.
      */
     public ModelDirectory getDirectory() {
-        Entity directory = getEntity("directory");
+        Entity directory = getEntity(_DIRECTORY_NAME);
         if (directory instanceof ModelDirectory) {
             return (ModelDirectory)directory;
         }
@@ -188,10 +227,10 @@ public class Configuration extends CompositeEntity {
      *  This searches all instances of PtolemyEffigy deeply contained by
      *  the directory, and returns the first one it encounters
      *  that is an effigy for the specified model.
-     *  @return The effigy for the model, or null if none exists.
+     *  @return The effigy for the model, or null if none is found.
      */
     public PtolemyEffigy getEffigy(NamedObj model) {
-        Entity directory = getEntity("directory");
+        Entity directory = getEntity(_DIRECTORY_NAME);
         if (directory instanceof ModelDirectory) {
             return _findEffigyForModel((ModelDirectory)directory, model);
         } else {
@@ -214,7 +253,7 @@ public class Configuration extends CompositeEntity {
      */
     public Tableau openModel(URL base, URL in, String identifier)
             throws Exception {
-        ModelDirectory directory = (ModelDirectory)getEntity("directory");
+        ModelDirectory directory = (ModelDirectory)getEntity(_DIRECTORY_NAME);
         if (directory == null) {
             throw new InternalErrorException("No model directory!");
         }
@@ -273,10 +312,11 @@ public class Configuration extends CompositeEntity {
     }
 
     /** Open the specified Ptolemy II model. If a model already has
-     *  open tableaux, then put those in the foreground.  Otherwise,
-     *  create a new tableau.
+     *  open tableaux, then put those in the foreground and
+     *  return the first one.  Otherwise, create a new tableau.
      *  @param entity The model.
-     *  @return The tableau that is created, or null if none.
+     *  @return The tableau that is created, or the first one found,
+     *   or null if none is created or found.
      *  @exception IllegalActionException If constructing an effigy or tableau
      *   fails.
      *  @exception NameDuplicationException If a name conflict occurs (this
@@ -388,15 +428,21 @@ public class Configuration extends CompositeEntity {
         }
     }
 
-    /** Find all instance of Tableau deeply contained in the directory
+    /** Find all instances of Tableau deeply contained in the directory
      *  and call show() on them.  If there is no directory, then do nothing.
      */
     public void showAll() {
 	final ModelDirectory directory =
-	    (ModelDirectory)getEntity("directory");
+	    (ModelDirectory)getEntity(_DIRECTORY_NAME);
 	if(directory == null) return;
         _showTableaux(directory);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** The name of the model directory. */
+    static public final String _DIRECTORY_NAME = "directory";
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -413,7 +459,7 @@ public class Configuration extends CompositeEntity {
      */
     protected void _removeEntity(ComponentEntity entity) {
 	super._removeEntity(entity);
-	if (entity.getName().equals("directory")) {
+	if (entity.getName().equals(_DIRECTORY_NAME)) {
             System.exit(0);
         }
     }

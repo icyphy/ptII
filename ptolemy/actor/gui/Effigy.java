@@ -23,8 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red (neuendor@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (celaine@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui;
@@ -48,10 +48,22 @@ import javax.swing.JFrame;
 //////////////////////////////////////////////////////////////////////////
 //// Effigy
 /**
-An effigy represents model data, and is contained in the model directory
-or another effigy.
-An effigy contains all open instances of Tableau associated with the model.
-It also contains a string attribute named "identifier" with a value that
+An effigy represents model metadata, and is contained by the
+model directory or by another effigy. The effigy, for example,
+keeps track of where the model originated (from a URL or file)
+and whether the model has been modified since the URL or file was
+read. In design automation, such information is often called
+"metadata." When we began to design this class, we called it
+ModelModel, because it was a model of a Ptolemy II model.
+However, this name seemed awkward, so we changed it to Effigy.
+We also considered the name Proxy for the class. We rejected that
+name because of the common use of the word "proxy" in distributed
+object-oriented models.
+<p>
+The Effigy class extends CompositeEntity, so an instance of Effigy
+can contain entities.  By convention, an effigy contains all
+open instances of Tableau associated with the model. It also
+contains a string attribute named "identifier" with a value that
 uniquely identifies the model. A typical choice (which depends on
 the configuration) is the canonical URL for a MoML file that
 describes the model.  In the case of an effigy contained by another,
@@ -64,11 +76,10 @@ Contained effigies are associated with the same file, and represent
 structured data within the top-level representation in the file.
 The topEffigy() method returns that top effigy.
 <p>
-NOTE: It might seem more natural for the identifier
-to be the name of the effigy rather than the value of a string attribute.
-But the name cannot have periods in it, and a URL typically does
-have periods in it, and periods are not allowed in the names of
-Ptolemy II objects.
+NOTE: It might seem more natural for the identifier to match the name
+of the effigy rather than recording the identifier in a string attribute.
+But in Ptolemy II, an entity name cannot have periods in it, and a URL
+typically does have periods in it.
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
@@ -77,9 +88,9 @@ Ptolemy II objects.
 */
 public class Effigy extends CompositeEntity {
 
-    /** Create a new proxy in the specified workspace with an empty string
+    /** Create a new effigy in the specified workspace with an empty string
      *  for its name.
-     *  @param workspace The workspace for this proxy.
+     *  @param workspace The workspace for this effigy.
      */
     public Effigy(Workspace workspace) {
 	super(workspace);
@@ -156,7 +167,8 @@ public class Effigy extends CompositeEntity {
 
     /** Close all tableaux contained by this effigy, and by any effigies
      *  it contains.
-     *  @return False if the user cancels on a save query.
+     *  @return False if the user cancels on a save query, and true
+     *   if all tableaux are successfully closed.
      */
     public boolean closeTableaux() {
         Iterator effigies = entityList(Effigy.class).iterator();
@@ -172,21 +184,26 @@ public class Effigy extends CompositeEntity {
         return true;
     }
 
-    /** Get a tableau factory that offers multiple views of this effigy, or
-     *  null if none has been specified.
-     *  This can be used by a contained tableau to set up a View menu.
+    /** Get a tableau factory that offers views of this effigy, or
+     *  null if none has been specified.  The tableau factory can be
+     *  used to create visual renditions of or editors for the
+     *  associated model.  It can be used to find out what sorts of
+     *  views are available for the model.
+     *  @see #setTableauFactory(TableauFactory)
      *  @return A tableau factory offering multiple views.
      */
     public TableauFactory getTableauFactory() {
         return _factory;
     }
 
-    /** Return whether the URL associated with this effigy can be written
-     *  to.  This will be false if either there is no URL associated
+    /** Return whether the model data is modifiable.  In this case,
+     *  this is determined by checking whether
+     *  the URL associated with this effigy can be written
+     *  to.  This will return false if either there is no URL associated
      *  with this effigy, or the URL is not a file, or the file is not
      *  writable or does not exist, or setModifiable() has been called
      *  with a false argument.
-     *  @return False to indicated that the URL is not writable.
+     *  @return False to indicate that the model is not modifiable.
      */
     public boolean isModifiable() {
         if (!_modifiable) return false;
@@ -201,6 +218,7 @@ public class Effigy extends CompositeEntity {
      *  with this data has been modified.  The method is called by
      *  an instance of TableauFrame to determine whether it is safe
      *  to close.
+     *  @see #setModifiable(boolean)
      *  @return True if the data has been modified.
      */
     public boolean isModified() {
@@ -236,11 +254,15 @@ public class Effigy extends CompositeEntity {
         super.setContainer(container);
     }
 
-    /** Specify that the URL associated with this effigy must not be written
-     *  to, irrespective of whether it is writable.
+    /** If the argument is false, the specify that that the model is not
+     *  modifiable, even if the URL associated with this effigy is writable.
+     *  If the argument is true, or if this method is never called,
+     *  then whether the model is modifiable is determined by whether
+     *  the URL can be written to.
      *  Notice that this does not automatically result in any tableaux
      *  that are contained switching to being uneditable.  But it will
      *  prevent them from writing to the URL.
+     *  @see #isModifiable()
      *  @param flag False to prevent writing to the URL.
      */
     public void setModifiable(boolean flag) {
@@ -253,7 +275,7 @@ public class Effigy extends CompositeEntity {
      *  will return true.  This is used by instances of TableauFrame.
      *  This is recorded in the entity returned by topEntity(), which
      *  is the one associated with a file.
-     *  @param modified Indicator of whether the data has been modified.
+     *  @param modified True if the data has been modified.
      */
     public void setModified(boolean modified) {
         topEffigy()._modified = modified;
@@ -295,7 +317,8 @@ public class Effigy extends CompositeEntity {
         return result;
     }
 
-    /** If this effigy is contained by another effigy, then return
+    /** Return the top-level effigy that (deeply) contains this one.
+     *  If this effigy is contained by another effigy, then return
      *  the result of calling this method on that other effigy;
      *  otherwise, return this effigy.
      *  @return The top-level effigy that (deeply) contains this one.

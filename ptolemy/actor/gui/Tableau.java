@@ -65,7 +65,12 @@ make the associated frame visible.  To do that, call show().
 */
 public class Tableau extends CompositeEntity {
 
-    /**
+    /** Construct a tableau in the specified workspace.
+     *  @param workspace The workspace.
+     *  @exception IllegalActionException If an error occurs creating
+     *   the size attribute (should not occur).
+     *  @exception NameDuplicationException If the base class has already
+     *   created an attribute with name "size" (should not occur).
      */
     public Tableau(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
@@ -91,6 +96,9 @@ public class Tableau extends CompositeEntity {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public parameters                 ////
+
+    // FIXME: Recording the size is not sufficient.  We also need to
+    // record whether the window is maximized or not.
 
     /** A specification for the size of the frame.
      */
@@ -129,7 +137,7 @@ public class Tableau extends CompositeEntity {
         return newObject;
     }
 
-    /** Close this tableau visible by calling dispose() on the associated
+    /** Close this tableau by calling dispose() on the associated
      *  frame, or if the associated frame is an instance of TableauFrame,
      *  by calling _close() on it.
      *  @return False if the user cancels on a save query.
@@ -155,11 +163,11 @@ public class Tableau extends CompositeEntity {
     }
 
     /** Return the title of this tableau.  Subclasses can override this to
-     *  provide a better description of themselves.  This base class
-     *  returns the value set by a call to setTitle(), if it has been
-     *  called, or an identifier of the effigy containing this tableau,
-     *  if it has not been called,
-     *  or the string "Unnamed" if there is no such identifier.
+     *  provide a better description of themselves for use in the title.
+     *  This base class returns the value set by a call to setTitle(),
+     *  if it has been called. If not, then it returns an identifier
+     *  of the effigy containing this tableau, or the string "Unnamed"
+     *  if there is no such identifier.
      *  The title is used as the title of the top-level window in
      *  the setFrame() method.
      *  @return The title to put on the window.
@@ -198,9 +206,9 @@ public class Tableau extends CompositeEntity {
      *  If this window is not a master, but after removing it there are
      *  no more windows associated with the model, then also remove it
      *  from the ModelDirectory.
-     *  @param container The container to attach this attribute to..
+     *  @param container The container to attach this attribute to.
      *  @exception IllegalActionException If the proposed container is not
-     *  an instance of ModelDirectory, if this attribute is not of the
+     *   an instance of Effigy, or if this attribute is not of the
      *   expected class for the container, or it has no name,
      *   or the attribute and container are not in the same workspace, or
      *   the proposed container would result in recursive containment.
@@ -249,7 +257,7 @@ public class Tableau extends CompositeEntity {
     }
 
     /** Set the top-level window associated with this tableau.
-     *  @param frame The top-level window associated with the attribute.
+     *  @param frame The top-level window associated with the tableau.
      */
     public void setFrame(JFrame frame) {
         _frame = frame;

@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (celaine@eecs.berkeley.edu)
 
 */
 
@@ -53,10 +53,11 @@ Otherwise, the configuration specifies which tableau is used.
 A configuration contains an instance of this class, and uses it to create
 a tableau for a model represented by an effigy.  This base class assumes
 that it contains other tableau factories. Its createTableau() method defers
-to each contained factory in order until one is capable of creating a
-tableau for the specified effigy.  Subclasses of this class will usually
-be inner classes of a Tableau, and will create the Tableau, or might
-themselves be aggregates of instances of TableauFactory.
+to each contained factory, in the order in which they were added,
+until one is capable of creating a tableau for the specified effigy.
+Subclasses of this class will usually be inner classes of a Tableau,
+and will create the Tableau, or might themselves be aggregates of
+instances of TableauFactory.
 <p>
 When there are multiple distinct TableauFactory classes that are capable
 of providing views on the same effigy, then instances of these
@@ -76,9 +77,9 @@ public class TableauFactory extends Attribute {
      *  @param container The container.
      *  @param name The name.
      *  @exception IllegalActionException If the container is incompatible
-     *   with this entity.
+     *   with this attribute.
      *  @exception NameDuplicationException If the name coincides with
-     *   an entity already in the container.
+     *   an attribute already in the container.
      */
     public TableauFactory(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -88,17 +89,18 @@ public class TableauFactory extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Create a tableau for the specified effigy. The tableau will
+    /** Create a tableau for the specified effigy. The tableau will be
      *  created with a new unique name with the specified effigy as its
      *  container.  If this factory cannot create a tableau
      *  for the given effigy (perhaps because the effigy is not of the
      *  appropriate subclass), then return null.  This base class assumes
      *  that it contains other tableau factories. This method defers
      *  to each contained factory in order until one is capable of creating a
-     *  tableau for the specified effigy.  Subclasses of this class will
+     *  tableau for the specified effigy.  As with all attributes, the order
+     *  is simply the order of creation.  Subclasses of this class will
      *  usually be inner classes of a Tableau, and will create the Tableau.
      *  A subclass that actually creates a tableau is responsible for setting
-     *  the container of the table to the specified effigy, and for naming
+     *  the container of the tableau to the specified effigy, and for naming
      *  the tableau.
      *  Subclasses should not call show() in createTableau(), it is the
      *  responsibility of the caller to check the return value and

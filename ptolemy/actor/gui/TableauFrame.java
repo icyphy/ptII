@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (celaine@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui;
@@ -65,6 +65,8 @@ to the content pane using a line like:
 <pre>
     getContentPane().add(component, BorderLayout.CENTER);
 </pre>
+The base class provides generic features for menubars and toolbars,
+and this class specializes the base class for Ptolemy II.
 
 @author Edward A. Lee
 @version $Id$
