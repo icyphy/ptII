@@ -48,6 +48,13 @@ import javax.swing.SwingUtilities; // for isEventDispatchThread()
 //////////////////////////////////////////////////////////////////////////
 //// PrintThreads
 /** PrintThreads prints all the Threads in the current JVM.
+ This class will work in both applications and applets.
+ When run in an applet, this class attempts to gracefully handle
+ the various security restrictions concerning getting the parent
+ of a ThreadGroup.  
+ The output includes the number of threads and whether the current thread
+ is the Swing Event Dispatch Thread.
+
  @author Christopher Hylands, based on code from Fusion Systems Group
  @version $Id$
  */
@@ -122,6 +129,7 @@ public class PrintThreads {
         for (int i = 0; i < threads.length; i++ ) {
 	    Thread thread = threads[i];
 	    results += toThreadDescription(thread) + lineSeparator;
+	    results += thread.toString() + lineSeparator;
 	}
 	return results;
     }
