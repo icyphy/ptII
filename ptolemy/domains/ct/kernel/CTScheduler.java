@@ -274,7 +274,7 @@ public class CTScheduler extends Scheduler{
             throws NotSchedulableException, IllegalActionException {
         try {
             workspace().getReadAccess();
-            if(!valid()) {
+            if(!isValid()) {
                 schedule();
             }
             _dynamicversion = workspace().getVersion();
@@ -300,7 +300,7 @@ public class CTScheduler extends Scheduler{
             throws IllegalActionException {
         try {
 	    workspace().getReadAccess();
-            if(!valid()) {
+            if(!isValid()) {
                 schedule();
             }
             _dynamicversion = workspace().getVersion();
@@ -325,7 +325,7 @@ public class CTScheduler extends Scheduler{
     public Enumeration outputSSCActors() throws IllegalActionException {
         try {
 	    workspace().getReadAccess();
-            if(!valid()) {
+            if(!isValid()) {
                 schedule();
             }
             _dynamicversion = workspace().getVersion();
@@ -379,37 +379,6 @@ public class CTScheduler extends Scheduler{
         }
     }
 
-    /** Return an enumeration of the actors in the event detection
-     *  path in the topological order.
-     *  This enumeration is locally cached.
-     *  If workspace version equals to the cached version,
-     *  then it returns the cached enumeration.
-     *  Otherwise, it calls _schedule to reconstruct, and save
-     *  the new version.
-     *  This method read-synchronize on the workspace.
-     *  @return An enumeration of the actors in the event detection
-     *  path in the topological order.
-     *  @exception IllegalActionException If the scheduler has no container,
-     *      or the container has no container.
-     *  @exception NotSchedulableException If the system is not schedulable.
-     *  FIXME: Deprecated!
-     *  @deprecated Use eventGeneratingSchedule()
-     *
-    public Enumeration eventGenerationSchedule()
-            throws NotSchedulableException, IllegalActionException {
-        try {
-	    workspace().getReadAccess();
-            if(!valid()) {
-                schedule();
-            }
-            _dynamicversion = workspace().getVersion();
-            return _eventschedule.elements();
-        } finally {
-            workspace().doneReading();
-        }
-    }
-    */
-
     /** Return an enumeration of stateful actors.
      *  This enumeration is locally
      *  cached. If workspace version equals to the cached version,
@@ -450,7 +419,7 @@ public class CTScheduler extends Scheduler{
         throws NotSchedulableException, IllegalActionException  {
         try {
 	    workspace().getReadAccess();
-            if(!valid()) {
+            if(!isValid()) {
                 schedule();
             }
             _dynamicversion = workspace().getVersion();
@@ -497,7 +466,7 @@ public class CTScheduler extends Scheduler{
             throws NotSchedulableException, IllegalActionException {
         try {
 	    workspace().getReadAccess();
-            if(!valid()) {
+            if(!isValid()) {
                 schedule();
             }
             return _transitionschedule.elements();

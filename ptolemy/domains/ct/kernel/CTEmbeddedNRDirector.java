@@ -243,7 +243,7 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
         }
         CompositeActor ca = (CompositeActor) getContainer();
         (Thread.currentThread()).yield();
-        if(!scheduleValid()) {
+        if(!isScheduleValid()) {
             // mutation occurred, redo the schedule;
             CTScheduler scheduler = (CTScheduler)getScheduler();
             if (scheduler == null) {
