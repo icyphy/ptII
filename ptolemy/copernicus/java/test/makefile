@@ -92,55 +92,10 @@ test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 
 depend:
 	@echo "no dependencies in this directory"
+
+# 'make ptjacl' will start up jacl with the proper classpath
 ptjacl:
 	$(JTCLSH)
-
-SOURCECLASS = $(ROOT)/ptolemy/domains/sdf/kernel/test/auto/test7.xml
-SHALLOWTARGETPACKAGE = ptolemy.copernicus.java.test.cg
-SHALLOWTARGETNAME = test7
-SHALLOWTARGETCLASS = $(SHALLOWTARGETPACKAGE).$(SHALLOWTARGETNAME)
-
-JVM_SIZE = -Xmx228m
-
-SOOT_USER_ARGS =
-
-# Useful rule for quickly testing
-demo: compileShallowDemo runShallowDemo disassembleShallowDemo
-# AUXCLASSPATH is used by the code coverage tests in the nightly build
-compileShallowDemo: $(JCLASS)
-	@echo "generate shallow code for $(SOURCEPACKAGE)"
-	$(JAVA) $(JVM_SIZE) \
-	 -classpath "$(CLASSPATH)$(AUXCLASSPATH)" \
-	ptolemy.copernicus.java.Main $(SOURCECLASS) -d "$(ROOT)"  \
-		-p wjtp.at targetPackage:$(SHALLOWTARGETPACKAGE) \
-		-p wjtp.mt targetPackage:$(SHALLOWTARGETPACKAGE) \
-		$(SOOT_USER_ARGS)
-	@echo "Here is that javap output"
-	javap -verbose -l -s \
-		-classpath "$(ROOT)$(AUXCLASSPATH)" \
-		$(SHALLOWTARGETCLASS)
-
-runShallowDemo:
-	@echo "Run the model"
-	$(JAVA) \
-	-Xfuture -classpath "$(CLASSPATH)$(AUXCLASSPATH)" \
-	ptolemy.actor.gui.CompositeActorApplication \
-	-iterations 50 \
-	-class $(SHALLOWTARGETCLASS)
-
-# Run the output through the jad disassembler and then recompile it
-# This can be very useful for debugging
-disassembleShallowDemo:
-	rm -f cg/$(SHALLOWTARGETNAME).jad
-	jad -d cg cg/$(SHALLOWTARGETNAME).class
-	sh ./jad2java cg/$(SHALLOWTARGETNAME).jad \
-		> cg/$(SHALLOWTARGETNAME).java
-	$(JAVAC) -classpath "$(ROOT)$(AUXCLASSPATH) \
-		cg/$(SHALLOWTARGETNAME).java
-	CLASSPATH="$(ROOT)$(AUXCLASSPATH) \
-		/opt/jdk1.3latest/bin/java \
-		ptolemy.actor.gui.CompositeActorApplication \
-		-class ptolemy.copernicus.java.test.cg.$(SHALLOWTARGETNAME)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
