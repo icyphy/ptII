@@ -1,6 +1,6 @@
 #!/bin/sh
 # Fix the copyright date
-#-[Fri Feb 22 09:37:36 2002 by cxh]-
+#-[Tue Jan  7 14:54:55 2003 by cxh]-
 #
 # The way to run this is to use $PTII/adm/bin/ptIIfiles to generate
 # a list of files and then run this script on that over and over
@@ -57,7 +57,7 @@ cd $topdir
 }
 
 doit() {
-    sed -e 's/\(199[0-7]\)-[ ,]/\1-2002 /' \
+    sed -e 's/\(199[0-7]\)-[ ,]/\1-2003 /' \
 	$file > /tmp/fixcopyright.tmp
     diff $file /tmp/fixcopyright.tmp
 }
@@ -67,73 +67,82 @@ LOGMESSAGE="Fixed copyright"
 search $@
 
 doit() {
-    sed 's/Copyright \(\&[^ ]*\) 1998\([ ,]\)/Copyright \1 1998-2002\2/' \
+    sed 's/Copyright \(\&[^ ]*\) 1998\([ ,]\)/Copyright \1 1998-2003\2/' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 EGREPMATCH="Copyright &[^ ]* 1998[ ,]"
-LOGMESSAGE="Changed copyright to 2002"
+LOGMESSAGE="Changed copyright to 2003"
 
 search $@
 
 doit() {
-    sed 's/\(199[0-8]\)-199[0-9]/\1-2002/' \
+    sed 's/\(199[0-8]\)-199[0-9]/\1-2003/' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 EGREPMATCH="199[0-8]-199[0-9]"
-LOGMESSAGE="Changed copyright to 2002"
+LOGMESSAGE="Changed copyright to 2003"
 
 search $@
 
 doit() {
-    sed 's/Copyright (c) \(199[0-9]\)-200[01]/Copyright (c) \1-2002/' \
+    sed 's/Copyright (c) \(199[0-9]\)-200[01]/Copyright (c) \1-2003/' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 EGREPMATCH='Copyright \(c\) 199[0-9]-200[01]'
-LOGMESSAGE="Changed copyright to 2002"
+LOGMESSAGE="Changed copyright to 2003"
 
 search $@
 
 doit() {
-    sed 's/Copyright (c) 2000-2001 /Copyright (c) 2000-2002 /' \
+    sed 's/Copyright (c) 2000-2001 /Copyright (c) 2000-2003 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 EGREPMATCH='Copyright \(c\) 2000-2001 '
-LOGMESSAGE="Changed copyright to 2002"
+LOGMESSAGE="Changed copyright to 2003"
 
 search $@
 
 doit() {
-    sed 's/Copyright (c) 1999 /Copyright (c) 1999-2002 /' \
+    sed 's/Copyright (c) 1999 /Copyright (c) 1999-2003 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 EGREPMATCH="Copyright \(c\) 1999 "
-LOGMESSAGE="Changed copyright to 2002"
+LOGMESSAGE="Changed copyright to 2003"
 
 search $@
 
 doit() {
-    sed 's/Copyright (c) 2000 /Copyright (c) 2000-2002 /' \
+    sed 's/Copyright (c) 2000 /Copyright (c) 2000-2003 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 EGREPMATCH="Copyright \(c\) 2000 "
-LOGMESSAGE="Changed copyright to 2002"
+LOGMESSAGE="Changed copyright to 2003"
 
 search $@
 
 
 doit() {
-    sed 's/Copyright (c) 2001 /Copyright (c) 2001-2002 /' \
+    sed 's/Copyright (c) 2001 /Copyright (c) 2001-2003 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 EGREPMATCH="Copyright \(c\) 2001 "
-LOGMESSAGE="Changed copyright to 2002"
+LOGMESSAGE="Changed copyright to 2003"
+
+
+doit() {
+    sed 's/Copyright (c) 2002 /Copyright (c) 2002-2003 /' \
+	    $file > /tmp/fixcopyright.tmp	
+    diff $file /tmp/fixcopyright.tmp	
+}
+EGREPMATCH="Copyright \(c\) 2002 "
+LOGMESSAGE="Changed copyright to 2003"
 
 search $@
 
