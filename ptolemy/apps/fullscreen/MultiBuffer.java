@@ -86,18 +86,24 @@ public class MultiBuffer {
 					    int numberOfBuffers) {
 	GraphicsEnvironment graphicsEnvironment =
 	    GraphicsEnvironment.getLocalGraphicsEnvironment();
-	device = graphicsEnvironment.getDefaultScreenDevice();
+
+	//device = graphicsEnvironment.getDefaultScreenDevice();
 
 	GraphicsConfiguration gc = device.getDefaultConfiguration();
+	Rectangle graphicsConfigurationBounds =
+		gc.getBounds();
 	Frame mainFrame = new Frame(gc);
 	mainFrame.setUndecorated(true);
 	mainFrame.setIgnoreRepaint(true);
 	mainFrame.enableInputMethods(false);
 	device.setFullScreenWindow(mainFrame);
-	if (device.isDisplayChangeSupported()) {
-	    MultiBuffer.chooseBestDisplayMode(device);
-	}
-	mainFrame.createBufferStrategy(numberOfBuffers);
+	//if (device.isDisplayChangeSupported()) {
+	//    MultiBuffer.chooseBestDisplayMode(device);
+	//}
+	mainFrame.setLocation(graphicsConfigurationBounds.x,
+			      graphicsConfigurationBounds.y);
+
+	//mainFrame.createBufferStrategy(numberOfBuffers);
 
 	return mainFrame;
     }
@@ -160,6 +166,8 @@ public class MultiBuffer {
 		// One tricky aspect is that we do not check for different
 		// refresh rates here, since the refresh rate could be
 		// anything.
+		//System.out.println("MultiBuffer.getBestDisplayMode(): "
+		//		       + displayModeToString(modes[j]));
                 if (bestDisplayModes[i].getWidth() == modes[j].getWidth()
                    && bestDisplayModes[i].getHeight() == modes[j].getHeight()
                    && bestDisplayModes[i].getBitDepth()
@@ -167,7 +175,7 @@ public class MultiBuffer {
 		    ) {
 		    //System.out.println("MultiBuffer.getBestDisplayMode(): "
 		    //		       + "returning: "
-		    //		       + _displayModeToString(modes[j]));
+		    //		       + displayModeToString(modes[j]));
 
 		    // Here, we return the modes[] value, which has
 		    // the refresh rate set.
@@ -200,12 +208,9 @@ public class MultiBuffer {
 	return _BEST_DISPLAY_MODES;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
     // Return a string representation of the DisplayMode.
     // This method is used for debugging.
-    private static String _displayModeToString(DisplayMode mode) {
+    public static String displayModeToString(DisplayMode mode) {
 	return new String( mode.getWidth() + " x "
 			 + mode.getHeight() + ", "
 			 + (mode.getBitDepth()

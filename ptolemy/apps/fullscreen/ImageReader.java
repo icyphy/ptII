@@ -83,7 +83,7 @@ public class ImageReader extends Source {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        // Set the type of the input port.
+        // Set the type of the output port.
         //output.setMultiport(true);
         output.setTypeEquals(BaseType.OBJECT);
 
@@ -132,7 +132,7 @@ public class ImageReader extends Source {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         ImageReader newObject = (ImageReader)super.clone(workspace);
-        newObject.output.setMultiport(true);
+        //newObject.output.setMultiport(true);
         return newObject;
     }
 

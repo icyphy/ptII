@@ -1,0 +1,607 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ImageReaderImageToString" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 450]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 101]">
+    </property>
+    <property name="DT" class="ptolemy.domains.dt.kernel.DTDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="60.0, 27.203125">
+        </property>
+    </property>
+    <entity name="ImageReader" class="ptolemy.apps.fullscreen.ImageReader">
+        <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;../../../../doc/img/PtolemyII.jpg&quot;">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="53.078125, 97.203125">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="1:ImageReader" class="ptolemy.apps.fullscreen.ImageReader">
+        <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;gsrc-logo-400.jpg&quot;">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="178.078125, 32.1875">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="ImageRotate" class="ptolemy.apps.fullscreen.ImageRotate">
+        <property name="rotationInDegrees" class="ptolemy.data.expr.Parameter" value="90">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="215.0859375, 137.203125">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Distributor12" class="ptolemy.actor.lib.Distributor">
+        <property name="_location" class="ptolemy.moml.Location" value="135.0234375, 97.1875">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="6">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="SlideShow" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.moml.Location" value="551.5, 52.1328125">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[34, 53]">
+        </property>
+        <property name="screen" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="location1" class="ptolemy.moml.Location" value="-45.26333178670264, -10.224255916003855">
+            </property>
+        </port>
+        <entity name="2:3:FullScreenImageDisplay" class="ptolemy.apps.fullscreen.FullScreenImageDisplay">
+            <property name="exitFullScreenModeInWrapup" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="467.9453125, 157.1328125">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+            <port name="delayInMillis" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="graphicsDevice" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+        </entity>
+        <entity name="2:Uniform24" class="ptolemy.actor.lib.Uniform">
+            <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="lowerBound" class="ptolemy.data.expr.Parameter" value="500.0">
+            </property>
+            <property name="upperBound" class="ptolemy.data.expr.Parameter" value="2000.0">
+            </property>
+            <doc>Create a sequence of uniformly distributed random numbers</doc>
+            <property name="_location" class="ptolemy.moml.Location" value="210.0, 202.1328125">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+        </entity>
+        <entity name="2:2:4:GraphicsDevices" class="ptolemy.apps.fullscreen.GraphicsDevices">
+            <property name="_location" class="ptolemy.moml.Location" value="236.265625, 302.1328125">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+        </entity>
+        <entity name="2:Round26" class="ptolemy.actor.lib.conversions.Round">
+            <property name="function" class="ptolemy.kernel.util.StringAttribute" value="round">
+                <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                    <property name="ceil" class="ptolemy.kernel.util.StringAttribute" value="ceil">
+                    </property>
+                    <property name="floor" class="ptolemy.kernel.util.StringAttribute" value="floor">
+                    </property>
+                    <property name="round" class="ptolemy.kernel.util.StringAttribute" value="round">
+                    </property>
+                    <property name="truncate" class="ptolemy.kernel.util.StringAttribute" value="truncate">
+                    </property>
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="300.0, 202.1875">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+        </entity>
+        <entity name="2:3:ArrayElement12" class="ptolemy.actor.lib.ArrayElement">
+            <property name="index" class="ptolemy.data.expr.Parameter" value="screen">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="328.0234375, 302.1875">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+        </entity>
+        <relation name="2:relation11" class="ptolemy.actor.TypedIORelation">
+            <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="2:relation7" class="ptolemy.actor.TypedIORelation">
+            <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="2:relation27" class="ptolemy.actor.TypedIORelation">
+            <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="2:relation28" class="ptolemy.actor.TypedIORelation">
+            <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port" relation="relation"/>
+        <link port="2:3:FullScreenImageDisplay.input" relation="relation"/>
+        <link port="2:3:FullScreenImageDisplay.delayInMillis" relation="2:relation28"/>
+        <link port="2:3:FullScreenImageDisplay.graphicsDevice" relation="2:relation7"/>
+        <link port="2:Uniform24.output" relation="2:relation27"/>
+        <link port="2:2:4:GraphicsDevices.output" relation="2:relation11"/>
+        <link port="2:Round26.input" relation="2:relation27"/>
+        <link port="2:Round26.output" relation="2:relation28"/>
+        <link port="2:3:ArrayElement12.input" relation="2:relation11"/>
+        <link port="2:3:ArrayElement12.output" relation="2:relation7"/>
+    </entity>
+    <entity name="1:SlideShow" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.moml.Location" value="544.2890625, 217.1328125">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[34, 53]">
+        </property>
+        <property name="screen" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="location1" class="ptolemy.moml.Location" value="-45.26333178670264, -10.224255916003855">
+            </property>
+        </port>
+        <entity name="2:3:FullScreenImageDisplay" class="ptolemy.apps.fullscreen.FullScreenImageDisplay">
+            <property name="exitFullScreenModeInWrapup" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="467.9453125, 157.1328125">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+            <port name="delayInMillis" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="graphicsDevice" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+        </entity>
+        <entity name="2:Uniform24" class="ptolemy.actor.lib.Uniform">
+            <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="lowerBound" class="ptolemy.data.expr.Parameter" value="500.0">
+            </property>
+            <property name="upperBound" class="ptolemy.data.expr.Parameter" value="2000.0">
+            </property>
+            <doc>Create a sequence of uniformly distributed random numbers</doc>
+            <property name="_location" class="ptolemy.moml.Location" value="210.0, 202.1328125">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+        </entity>
+        <entity name="2:2:4:GraphicsDevices" class="ptolemy.apps.fullscreen.GraphicsDevices">
+            <property name="_location" class="ptolemy.moml.Location" value="236.265625, 302.1328125">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+        </entity>
+        <entity name="2:Round26" class="ptolemy.actor.lib.conversions.Round">
+            <property name="function" class="ptolemy.kernel.util.StringAttribute" value="round">
+                <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                    <property name="ceil" class="ptolemy.kernel.util.StringAttribute" value="ceil">
+                    </property>
+                    <property name="floor" class="ptolemy.kernel.util.StringAttribute" value="floor">
+                    </property>
+                    <property name="round" class="ptolemy.kernel.util.StringAttribute" value="round">
+                    </property>
+                    <property name="truncate" class="ptolemy.kernel.util.StringAttribute" value="truncate">
+                    </property>
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="300.0, 202.1875">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+        </entity>
+        <entity name="2:3:ArrayElement12" class="ptolemy.actor.lib.ArrayElement">
+            <property name="index" class="ptolemy.data.expr.Parameter" value="screen">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="328.0234375, 302.1875">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+        </entity>
+        <relation name="2:relation11" class="ptolemy.actor.TypedIORelation">
+            <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="2:relation7" class="ptolemy.actor.TypedIORelation">
+            <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="2:relation27" class="ptolemy.actor.TypedIORelation">
+            <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="2:relation28" class="ptolemy.actor.TypedIORelation">
+            <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port" relation="relation"/>
+        <link port="2:3:FullScreenImageDisplay.input" relation="relation"/>
+        <link port="2:3:FullScreenImageDisplay.delayInMillis" relation="2:relation28"/>
+        <link port="2:3:FullScreenImageDisplay.graphicsDevice" relation="2:relation7"/>
+        <link port="2:Uniform24.output" relation="2:relation27"/>
+        <link port="2:2:4:GraphicsDevices.output" relation="2:relation11"/>
+        <link port="2:Round26.input" relation="2:relation27"/>
+        <link port="2:Round26.output" relation="2:relation28"/>
+        <link port="2:3:ArrayElement12.input" relation="2:relation11"/>
+        <link port="2:3:ArrayElement12.output" relation="2:relation7"/>
+    </entity>
+    <entity name="2:SlideShow" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.moml.Location" value="549.2890625, 382.1328125">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[34, 53]">
+        </property>
+        <property name="screen" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="location1" class="ptolemy.moml.Location" value="-45.26333178670264, -10.224255916003855">
+            </property>
+        </port>
+        <entity name="2:3:FullScreenImageDisplay" class="ptolemy.apps.fullscreen.FullScreenImageDisplay">
+            <property name="exitFullScreenModeInWrapup" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="467.9453125, 157.1328125">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+            <port name="delayInMillis" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="graphicsDevice" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+        </entity>
+        <entity name="2:Uniform24" class="ptolemy.actor.lib.Uniform">
+            <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="lowerBound" class="ptolemy.data.expr.Parameter" value="500.0">
+            </property>
+            <property name="upperBound" class="ptolemy.data.expr.Parameter" value="2000.0">
+            </property>
+            <doc>Create a sequence of uniformly distributed random numbers</doc>
+            <property name="_location" class="ptolemy.moml.Location" value="210.0, 202.1328125">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+        </entity>
+        <entity name="2:2:4:GraphicsDevices" class="ptolemy.apps.fullscreen.GraphicsDevices">
+            <property name="_location" class="ptolemy.moml.Location" value="236.265625, 302.1328125">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+        </entity>
+        <entity name="2:Round26" class="ptolemy.actor.lib.conversions.Round">
+            <property name="function" class="ptolemy.kernel.util.StringAttribute" value="round">
+                <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                    <property name="ceil" class="ptolemy.kernel.util.StringAttribute" value="ceil">
+                    </property>
+                    <property name="floor" class="ptolemy.kernel.util.StringAttribute" value="floor">
+                    </property>
+                    <property name="round" class="ptolemy.kernel.util.StringAttribute" value="round">
+                    </property>
+                    <property name="truncate" class="ptolemy.kernel.util.StringAttribute" value="truncate">
+                    </property>
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="300.0, 202.1875">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+        </entity>
+        <entity name="2:3:ArrayElement12" class="ptolemy.actor.lib.ArrayElement">
+            <property name="index" class="ptolemy.data.expr.Parameter" value="screen">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="328.0234375, 302.1875">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+        </entity>
+        <relation name="2:relation11" class="ptolemy.actor.TypedIORelation">
+            <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="2:relation7" class="ptolemy.actor.TypedIORelation">
+            <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="2:relation27" class="ptolemy.actor.TypedIORelation">
+            <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="2:relation28" class="ptolemy.actor.TypedIORelation">
+            <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port" relation="relation"/>
+        <link port="2:3:FullScreenImageDisplay.input" relation="relation"/>
+        <link port="2:3:FullScreenImageDisplay.delayInMillis" relation="2:relation28"/>
+        <link port="2:3:FullScreenImageDisplay.graphicsDevice" relation="2:relation7"/>
+        <link port="2:Uniform24.output" relation="2:relation27"/>
+        <link port="2:2:4:GraphicsDevices.output" relation="2:relation11"/>
+        <link port="2:Round26.input" relation="2:relation27"/>
+        <link port="2:Round26.output" relation="2:relation28"/>
+        <link port="2:3:ArrayElement12.input" relation="2:relation11"/>
+        <link port="2:3:ArrayElement12.output" relation="2:relation7"/>
+    </entity>
+    <entity name="3:1:ImageReader" class="ptolemy.apps.fullscreen.ImageReader">
+        <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;gsrc-logo-400.jpg&quot;">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="403.078125, 152.1875">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="4:1:ImageReader" class="ptolemy.apps.fullscreen.ImageReader">
+        <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;gsrc-logo-400.jpg&quot;">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="423.078125, 337.1875">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="5:ImageReader" class="ptolemy.apps.fullscreen.ImageReader">
+        <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;../../../../doc/img/PtolemyII.jpg&quot;">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="58.078125, 252.203125">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="5:ImageRotate" class="ptolemy.apps.fullscreen.ImageRotate">
+        <property name="rotationInDegrees" class="ptolemy.data.expr.Parameter" value="180">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="215.0859375, 282.203125">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="6:ImageReader" class="ptolemy.apps.fullscreen.ImageReader">
+        <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;../../../../doc/img/PtolemyII.jpg&quot;">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="63.078125, 367.1875">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="6:ImageRotate" class="ptolemy.apps.fullscreen.ImageRotate">
+        <property name="rotationInDegrees" class="ptolemy.data.expr.Parameter" value="270">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="245.0859375, 412.1875">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+    </relation>
+    <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation22" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation23" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation24" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+    </relation>
+    <relation name="relation25" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+    </relation>
+    <relation name="relation26" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+    </relation>
+    <relation name="relation27" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+    </relation>
+    <relation name="relation29" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+    </relation>
+    <relation name="relation30" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation31" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+    </relation>
+    <relation name="relation32" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation33" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+    </relation>
+    <link port="ImageReader.output" relation="relation"/>
+    <link port="1:ImageReader.output" relation="relation23"/>
+    <link port="ImageRotate.input" relation="relation20"/>
+    <link port="ImageRotate.output" relation="relation26"/>
+    <link port="Distributor12.input" relation="relation"/>
+    <link port="Distributor12.output" relation="relation20"/>
+    <link port="Distributor12.output" relation="relation19"/>
+    <link port="Distributor12.output" relation="relation19"/>
+    <link port="Distributor12.output" relation="relation24"/>
+    <link port="Distributor12.output" relation="relation27"/>
+    <link port="Distributor12.output" relation="relation33"/>
+    <link port="SlideShow.port" relation="relation23"/>
+    <link port="SlideShow.port" relation="relation26"/>
+    <link port="SlideShow.port" relation="relation27"/>
+    <link port="1:SlideShow.port" relation="relation24"/>
+    <link port="1:SlideShow.port" relation="relation25"/>
+    <link port="1:SlideShow.port" relation="relation29"/>
+    <link port="2:SlideShow.port" relation="relation22"/>
+    <link port="2:SlideShow.port" relation="relation31"/>
+    <link port="2:SlideShow.port" relation="relation33"/>
+    <link port="3:1:ImageReader.output" relation="relation25"/>
+    <link port="4:1:ImageReader.output" relation="relation22"/>
+    <link port="5:ImageReader.output" relation="relation30"/>
+    <link port="5:ImageRotate.input" relation="relation30"/>
+    <link port="5:ImageRotate.output" relation="relation29"/>
+    <link port="6:ImageReader.output" relation="relation32"/>
+    <link port="6:ImageRotate.input" relation="relation32"/>
+    <link port="6:ImageRotate.output" relation="relation31"/>
+</entity>

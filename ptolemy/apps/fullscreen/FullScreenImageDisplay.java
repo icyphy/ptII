@@ -187,6 +187,9 @@ public class FullScreenImageDisplay extends Sink {
     public boolean prefire() throws IllegalActionException {
 	_graphicsDeviceValue =
 	    (GraphicsDevice)((ObjectToken)graphicsDevice.get(0)).getValue();
+	System.out.println("FullScreenImageDisplay.prefire(): "
+			   + _graphicsDeviceValue);
+
 	if (!_inFullScreenMode) {
 	    _frame = MultiBuffer.enterFullScreenMode(_graphicsDeviceValue,
 						     input.getWidth());

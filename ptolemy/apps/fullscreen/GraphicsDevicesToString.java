@@ -83,13 +83,18 @@ public class GraphicsDevicesToString extends Transformer {
      *  @exception IllegalActionException If there is no director.  */
     public void fire() throws IllegalActionException {
         int width = input.getWidth();
+	StringBuffer description = new StringBuffer();
         for (int i = 0; i < width; i++) {
             if (input.hasToken(i)) {
 		Token[] inputArray = ((ArrayToken)input.get(0)).arrayValue();
 
+		System.out.println("GraphicsDevicesToString.fire(): "
+				   + "width: " + width + " token length:"
+				   + inputArray.length);
+
 		for( int graphicsDeviceCount = 0;
 		     graphicsDeviceCount < inputArray.length;
-		     graphicsDeviceCount ++) {
+		     graphicsDeviceCount++) {
 
 		    GraphicsDevice graphicsDevice =
 			(GraphicsDevice)
@@ -108,12 +113,14 @@ public class GraphicsDevicesToString extends Transformer {
 			graphicsDeviceType = "TYPE_IMAGE_BUFFER";
 			break;
 		    }
-		    String description = new String("GraphicsDevice: "
-						    + graphicsDeviceType);
-		    Token out = new StringToken(description);
-		    output.broadcast(out);
+		    description.append("GraphicsDevice: "
+				       + graphicsDeviceCount
+				       + " "
+				       + graphicsDeviceType + "\n");
 		}
             }
         }
+	Token out = new StringToken(description.toString());
+	output.broadcast(out);
     }
 }

@@ -67,6 +67,7 @@ public class GraphicsDevices extends Source {
         super(container, name);
 
         // Set the type of the output port.
+        //output.setMultiport(true);
         output.setTypeEquals(new ArrayType(BaseType.OBJECT));
     }
 
@@ -81,6 +82,8 @@ public class GraphicsDevices extends Source {
         Token array[] = new Token[graphicsDevices.length];
 	for(int i = 0; i < graphicsDevices.length; i++) {
 	    array[i] = new ObjectToken(graphicsDevices[i]);
+	    System.out.println("GraphicsDevices.fire(): " + i
+			       + graphicsDevices[i]);
 	}
 	output.send(0, new ArrayToken(array));
     }

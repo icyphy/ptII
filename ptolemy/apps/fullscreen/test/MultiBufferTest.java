@@ -38,6 +38,9 @@ import java.awt.Color;
 import java.awt.DisplayMode;	// JDK1.4
 import java.awt.Frame;
 import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
@@ -82,19 +85,74 @@ public class MultiBufferTest {
 	// Amount of time to delay in milliseconds. 
 	double delay = 1000.0;
 
+	GraphicsEnvironment graphicsEnvironment =
+	    GraphicsEnvironment.getLocalGraphicsEnvironment();
+	GraphicsDevice graphicsDevices[] =
+	    graphicsEnvironment.getScreenDevices();
+	GraphicsDevice device =
+	    graphicsDevices[graphicsDevices.length - 1];
+	System.out.println("Device: " + device);
+
+
         try {
-	    Frame mainFrame = MultiBuffer.enterFullScreenMode(numberOfBuffers);
+	    Frame mainFrame = MultiBuffer.enterFullScreenMode(device,
+	    						      numberOfBuffers);
+	    /*
+	    GraphicsConfiguration graphicsConfiguration =
+		device.getDefaultConfiguration();
+	    System.out.println("GraphicsConfiguration: "
+			       + graphicsConfiguration);
+	    System.out.println("  ColorModel: "
+			       + graphicsConfiguration.getColorModel());
+	    Rectangle graphicsConfigurationBounds =
+		graphicsConfiguration.getBounds();
+	    System.out.println("  Bounds: "
+			       + graphicsConfigurationBounds);
+
+	    Frame mainFrame = new Frame(graphicsConfiguration);
+	    mainFrame.setUndecorated(true);
+	    mainFrame.setIgnoreRepaint(true);
+	    mainFrame.enableInputMethods(false);
+	    device.setFullScreenWindow(mainFrame);
+
+	    if (device.isDisplayChangeSupported()) {
+		//MultiBuffer.chooseBestDisplayMode(device);
+		DisplayMode best = MultiBuffer.getBestDisplayMode(device);
+		if (best != null) {
+		    System.out.println("Best DisplayMode: "
+				       + MultiBuffer.displayModeToString(best));
+		    device.setDisplayMode(best);
+		}
+	    }
+	    //mainFrame.createBufferStrategy(numberOfBuffers);
+	    */
+
 	    Rectangle bounds = mainFrame.getBounds();
-	    BufferStrategy bufferStrategy = mainFrame.getBufferStrategy();
+	    System.out.println("Bounds: " + bounds.x + " " + bounds.y + " "
+			       + bounds.width + " " + bounds.height);
+
+	    //mainFrame.setLocation(graphicsConfigurationBounds.x,
+	    //			  graphicsConfigurationBounds.y);
+
+
+	    //BufferStrategy bufferStrategy = mainFrame.getBufferStrategy();
 
 	    for (int i = 0; i < numberOfBuffers; i++) {
-		Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
+		//Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
+		Graphics2D g = (Graphics2D) mainFrame.getGraphics();
 		System.out.println("buffer: " + i);
-		if (!bufferStrategy.contentsLost()) {
+		//if (!bufferStrategy.contentsLost()) {
+		  if(true) {
 
 		    g.setColor(_COLORS[i]);
-		    g.fillRect(0,0,bounds.width, bounds.height);
+		    System.out.println("after setColor");
+		    //g.fillRect(0,0,bounds.width, bounds.height);
+		    System.out.println("Bounds: before fillRectangle"
+				       + bounds.x + " " + bounds.y + " "
+				       + bounds.width + " " + bounds.height);
 
+		    g.fillRect(bounds.x, bounds.y,
+			       bounds.width*2, bounds.height);
 		    String imageName =  ptIIDirectoryProperty
 			+ "/" + _IMAGES[i];
 		    System.out.println("Reading in " + imageName);
@@ -111,12 +169,10 @@ public class MultiBufferTest {
 		    }
 			
 		    int maximumDimension = bounds.width;
-		    /*
-		      if (originalImage.getHeight(null)
+		    if (originalImage.getHeight(null)
 		      > originalImage.getWidth(null)) {
 		      maximumDimension = bounds.height;
 		      }
-		    */
 		    // Assume landscape instead of portrait orientation.
 		    BufferedImage scaledImage = (BufferedImage)
 			Transform.scale((Image)originalImage,
@@ -137,13 +193,23 @@ public class MultiBufferTest {
 			yOffset = (bounds.height - height)/2;
 		    }
 			    
+		    System.out.println("About to drawImage");
 		    g.drawImage(scaledImage, xOffset, yOffset,
-				width, height,
-				_COLORS[i],
-				originalImageIcon.getImageObserver());
-		    bufferStrategy.show();
+		    		width, height,
+		    		_COLORS[i],
+		    		originalImageIcon.getImageObserver());
+		    /*g.drawImage(originalImage, 
+				bounds.x, bounds.y,
+			        bounds.width, bounds.height,
+		    		_COLORS[i],
+		    		originalImageIcon.getImageObserver());
+		    */
+		    System.out.println("About to show");
+		    //bufferStrategy.show();
+		    mainFrame.show();
+		    //System.out.println("About to dispose");
 		    g.dispose();
-		}
+	        }
 		try {
 		    Thread.sleep((int)delay);
 		} catch (InterruptedException e) {}
@@ -151,7 +217,8 @@ public class MultiBufferTest {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-	    MultiBuffer.exitFullScreenMode();
+	    //MultiBuffer.exitFullScreenMode();
+	    device.setFullScreenWindow(null);
         }
     }
     
@@ -193,10 +260,10 @@ public class MultiBufferTest {
     };
     private static boolean[] _ROTATE = new boolean [] {
 	false,
-	true,
 	false,
 	false,
 	false,
-	true,
+	false,
+	false
     };
 }
