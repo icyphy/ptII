@@ -2252,11 +2252,13 @@ changequote([, ])dnl
 		    AC_MSG_CHECKING([for gcc])
 		    AC_PATH_PROG(PTCC, gcc)
 		    if test "${PTCC:-none}" != "none"; then
+		        PTMATLAB_CC=$PTCC
 		        PTMATLAB_DIR=matlab
 	            else    
 			AC_MSG_WARN([Failed to find gcc])
 			AC_PATH_PROG(PTCC, cc)
 			if test "${PTCC:-none}" != "none"; then
+		            PTMATLAB_CC=$PTCC
 			    PTMATLAB_DIR=matlab
 			else	
 			    AC_MSG_WARN([Failed to find gcc or cc, so we will
