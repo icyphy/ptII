@@ -532,7 +532,7 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
         </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute">
+        <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Current in units of Amps">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="720.0, 495.0">
         </property>
@@ -558,21 +558,21 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="335.0, 375.0">
+        <vertex name="vertex1" value="335.0, 375.0">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="455.0, 445.0">
+        <vertex name="vertex1" value="455.0, 445.0">
         </vertex>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="605.0, 595.0">
+        <vertex name="vertex1" value="605.0, 595.0">
         </vertex>
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="565.0, 435.0">
+        <vertex name="vertex1" value="565.0, 435.0">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
