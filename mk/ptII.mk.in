@@ -134,6 +134,11 @@ PTJACL_JFLAG =  @PTJACL_JFLAG@
 # make and avoid problems
 JTCLSH =	CLASSPATH=$(CLASSPATH)$(AUXCLASSPATH)\$(CLASSPATHSEPARATOR)$(PTJACL_JAR) @JTCLSH@
 
+# Location of the diva.jar file.  Diva is (among other things) a graph
+# visualization tool used by some of the demos.  For more information, see
+# http://www-cad.eecs.berkeley.edu/diva/
+DIVA_JAR = $(PTII)/lib/diva.jar
+
 # Commands used to install scripts and data
 INSTALL =		$(PTII)/config/install-sh -c
 INSTALL_PROGRAM =	${INSTALL}
