@@ -216,9 +216,10 @@ public class ContinuousClock extends Clock {
         // its components. So, the following code does not get called.
 
         int cycleLimit  = ((IntToken)numberOfCycles.getToken()).intValue();
-        if (cycleLimit > 0
-                && currentTime
-                >= _tentativeStartTime + cycleLimit * periodValue) {
+        double stopTime = Utilities.round(
+                            _tentativeStartTime + cycleLimit * periodValue, 
+                            getDirector().getTimeResolution());
+        if (cycleLimit > 0 && currentTime >= stopTime) {
             _tentativeCurrentValue = defaultValue.getToken();
         }
 

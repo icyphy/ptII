@@ -336,9 +336,7 @@ public class Clock extends TimedSource {
                 double stopTime = Utilities.round(
                     _tentativeStartTime + cycleLimit * periodValue, 
                     getDirector().getTimeResolution());
-                if (cycleLimit > 0
-                        && currentTime
-                        >= _tentativeStartTime + cycleLimit * periodValue) {
+                if (cycleLimit > 0 && currentTime >= stopTime) {
                     _tentativeCurrentValue = _tentativeCurrentValue.zero();
                 }
         
