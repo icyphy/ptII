@@ -1150,7 +1150,8 @@ public class PlotBox extends JPanel implements Printable {
             output.println("<!DOCTYPE plot SYSTEM \"" + dtd + "\">");
         }
         output.println("<plot>");
-        output.println("<!-- Ptolemy plot, version 3.1, PlotML format. -->");
+        output.println("<!-- Ptolemy plot, version " + PTPLOT_RELEASE
+                + " , PlotML format. -->");
         writeFormat(output);
         writeData(output);
         output.println("</plot>");
@@ -1255,7 +1256,7 @@ public class PlotBox extends JPanel implements Printable {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    public static final String PTPLOT_RELEASE = "4.1";
+    public static final String PTPLOT_RELEASE = "5.1";
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
