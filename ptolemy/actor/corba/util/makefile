@@ -75,7 +75,6 @@ JSRCS = \
 	CorbaUnknownPortException.java \
 	CorbaUnknownPortExceptionHelper.java \
 	CorbaUnknownPortExceptionHolder.java \
-	_CorbaActorImplBase.java \
 	_CorbaActorStub.java
 
 EXTRA_SRCS =	$(JSRCS)
