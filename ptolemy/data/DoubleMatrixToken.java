@@ -92,7 +92,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *  to the type of the specified token, without loss of 
      *  information. The type of the returned token is one of the
      *  above two types that allows lossless conversion from the other.
-     *  If the specified token is a matrix, its demension must be the
+     *  If the specified token is a matrix, its dimension must be the
      *  same as this token.
      *  @param t The token to add to this token.
      *  @return A new token.

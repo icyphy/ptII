@@ -35,7 +35,7 @@ import ptolemy.graph.CPO;
 //// ObjectToken
 /**
 A token that contains a reference to an arbitrary object.
-Note that when this token constructred, the object passed to the constructor
+Note that when this token constructed, the object passed to the constructor
 is not cloned. Thus, care must be exercised to ensure that actors do
 not modify that object in a nondeterministic way, unless such nondeterminism
 is acceptable.

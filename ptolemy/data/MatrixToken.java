@@ -117,7 +117,7 @@ public abstract class MatrixToken extends Token {
 	throw new IllegalActionException(str);
     }
 
-    /** Return the number of columns of the containt matrix.
+    /** Return the number of columns of the contained matrix.
      *  In this base class, we just throw an exception.
      *  @return An integer.
      *  @exception IllegalActionException If this method is not
@@ -130,7 +130,7 @@ public abstract class MatrixToken extends Token {
 	throw new IllegalActionException(str);
     }
 
-    /** Return the number of rows of the containted matrix.
+    /** Return the number of rows of the contained matrix.
      *  In this base class, we just throw an exception.
      *  @return An integer.
      *  @exception IllegalActionException If this method is not
