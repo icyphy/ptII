@@ -34,7 +34,7 @@ import ptolemy.data.*;
 import java.util.Enumeration;
 import ptolemy.actor.util.*;
 
-//////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 //// DEFIFOQueue
 /**
 Implements a first-in first-out (FIFO) queue with finite or infinite length.
@@ -195,7 +195,8 @@ public class DEFIFOQueue extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private ptolemy.actor.util.FIFOQueue _queue = new ptolemy.actor.util.FIFOQueue();
+    private ptolemy.actor.util.FIFOQueue _queue =
+                    new ptolemy.actor.util.FIFOQueue();
     private int _numDemandsPending = 0;
     private int _capacity;
     private boolean _consolidateDemands = true;
