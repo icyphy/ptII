@@ -64,8 +64,8 @@ an integer vector of form [1, 0].
 The default indexes matrix is [0, 1].
 Thus, the default output sequence will be 1, 0, 0, ...
 <p>
-The type of the output can be any token type. The type is inferred
-from the type of the <i>values</i> parameter.
+The type of the output can be any token type. This type is inferred
+from the element type of the <i>values</i> parameter.
 <p>
 NOTE: A reset input for this actor would be useful.  This would reset
 the iterations count, to cause the pulse to emerge again.  Also,
@@ -208,7 +208,7 @@ public class Pulse extends SequenceSource {
             newobj.attributeChanged(newobj.indexes);
             newobj.values = (Parameter)newobj.getAttribute("values");
             newobj.attributeChanged(newobj.values);
-            // set the type constraints.
+            // set the type constraints
 	    ArrayType valuesArrayType = (ArrayType)newobj.values.getType();
 	    InequalityTerm elemTerm = valuesArrayType.getElementTypeTerm();
 	    newobj.output.setTypeAtLeast(elemTerm);

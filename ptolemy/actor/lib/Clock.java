@@ -97,9 +97,8 @@ parameter.  Changes between levels occur at times
 <i>P</i> is the period, and <i>o<sub>i </sub></i> is an entry
 in the <i>offsets</i> vector.
 <p>
-The type of the output is the same as the element type of the ArrayToken
-contained in the <i>values</i> parameter. This type is inferred from the
-type of the <i>values</i> parameter.
+The type of the output can be any token type. This type is inferred from the
+element type of the <i>values</i> parameter.
 <p>
 This actor is a timed source, the untimed version is Pulse.
 

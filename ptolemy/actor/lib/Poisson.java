@@ -57,13 +57,10 @@ The mean time between events is given by the <i>meanTime</i> parameter.
 An <i>event</i> is defined to be the transition to a new output value.
 The default mean time is 1.0.
 <p>
-The <i>values</i> parameter must contain a row vector
-(a 1 by <i>N</i> matrix), or an
+The <i>values</i> parameter must contain an ArrayToken, or an
 exception will be thrown when it is set.
-By default it
-contains an IntMatrix with value [1, 0] (one row,
-two columns, with values 1 and 0). Thus, the default output
-value is always 1 or 0.
+By default the elements of the array are IntTokens with values 1 and 0,
+Thus, the default output value is always 1 or 0.
 <p>
 In the initialize() method and in each invocation of the fire() method,
 the actor uses the fireAt() method of the director to request
@@ -80,9 +77,8 @@ constant waveform,
 where the time of each sample is the time of the firing that
 produced it.
 <p>
-The type of the output can be any token type that has a corresponding
-matrix token type.  The type is inferred from the type of the
-<i>values</i> parameter.
+The type of the output can be any token type.  This type is inferred from
+the element type of the <i>values</i> parameter.
 
 @author Edward A. Lee
 @version $Id$
@@ -105,9 +101,19 @@ public class Poisson extends TimedSource {
         meanTime = new Parameter(this, "meanTime", new DoubleToken(1.0));
         meanTime.setTypeEquals(BaseType.DOUBLE);
 
-        int defaultValues[][] = {{1, 0}};
-        IntMatrixToken defaultValueToken = new IntMatrixToken(defaultValues);
+	// set the values parameter
+	IntToken[] defaultValues = new IntToken[2];
+	defaultValues[0] = new IntToken(1);
+	defaultValues[1] = new IntToken(0);
+	ArrayToken defaultValueToken = new ArrayToken(defaultValues);
         values = new Parameter(this, "values", defaultValueToken);
+	values.setTypeEquals(new ArrayType(BaseType.NAT));
+
+	// set type constraint
+	ArrayType valuesArrayType = (ArrayType)values.getType();
+	InequalityTerm elemTerm = valuesArrayType.getElementTypeTerm();
+	output.setTypeAtLeast(elemTerm);
+
         // Call this so that we don't have to copy its code here...
         attributeChanged(values);
     }
@@ -143,24 +149,21 @@ public class Poisson extends TimedSource {
                 + mean);
             }
         } else if (attribute == values) {
-            MatrixToken val = (MatrixToken)(values.getToken());
-            _length = val.getColumnCount();
+            ArrayToken val = (ArrayToken)(values.getToken());
+            _length = val.length();
         } else {
             super.attributeChanged(attribute);
         }
     }
 
     /** If the parameter being changed is <i>values</i>,
-     *  notify the director that type resolution may be invalid,
-     *  and update the type constraints on the output.
+     *  notify the director that type resolution may be invalid.
      *  This will cause type resolution to be redone when it is next needed.
      *  It is assumed that type changes in the parameters are implemented
      *  by the director's change request mechanism, so they are implemented
      *  when it is safe to redo type resolution.
      *  If there is no director, then do nothing.
-     *  @exception IllegalActionException If the new values array has no
-     *   elements in it, or if it is not a MatrixToken, or if the parent
-     *   class throws it.
+     *  @exception IllegalActionException If the parent class throws it.
      */
     public void attributeTypeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -189,6 +192,10 @@ public class Poisson extends TimedSource {
             newobj.meanTime = (Parameter)newobj.getAttribute("meanTime");
             newobj.values = (Parameter)newobj.getAttribute("values");
             newobj.attributeChanged(values);
+	    // set the type constraints
+	    ArrayType valuesArrayType = (ArrayType)newobj.values.getType();
+	    InequalityTerm elemTerm = valuesArrayType.getElementTypeTerm();
+	    newobj.output.setTypeAtLeast(elemTerm);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex.getMessage());
         }
@@ -218,6 +225,7 @@ public class Poisson extends TimedSource {
             }
             _boundaryCrossed = true;
         }
+
         output.send(0, _getValue(_tentativeCurrentOutputIndex));
     }
 
@@ -251,45 +259,18 @@ public class Poisson extends TimedSource {
         return super.postfire();
     }
 
-    /** Return the type constraints of this actor. The constraints are the
-     *  ones imposed by the super class, plus the constraint that the type
-     *  of the output port must be no less than the element type of the
-     *  values parameter.
-     *  @return an Enumeration of Inequality.
-     */
-    public Enumeration typeConstraints() {
-
-	try {
-	    // Set up the constraint that the output type must be no less than
-	    // the element type of the values parameter. This constraint is
-	    // regenerated every time since the element type may change.
-            Type elemType = _getValue(0).getType();
-	    TypeConstant elemTerm = new TypeConstant(elemType);
-	    Inequality ineq = new Inequality(elemTerm, output.getTypeTerm());
-
-	    LinkedList result = new LinkedList();
-	    result.insertLast(ineq);
-	    result.appendElements(super.typeConstraints());
-
-	    return result.elements();
-	} catch (IllegalActionException ex) {
-	    throw new InternalErrorException("Clock.typeConstraints(): " +
-		"Cannot get element of the values parameter.");
-	}
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /* Get the specified value, checking the form of the values parameter.
      */
     private Token _getValue(int index) throws IllegalActionException {
-        MatrixToken val = (MatrixToken)(values.getToken());
-        if (val == null || val.getRowCount() != 1 || index >= _length) {
+        ArrayToken val = (ArrayToken)(values.getToken());
+        if (val == null || index >= _length) {
             throw new IllegalActionException(this,
             "Index out of range of the values parameter.");
         }
-        return val.getElementAsToken(0,index);
+        return val.getElement(index);
     }
 
     ///////////////////////////////////////////////////////////////////
