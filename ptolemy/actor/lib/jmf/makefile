@@ -55,7 +55,8 @@ JSRCS = \
 	VideoCamera.java
 
 OTHER_FILES_TO_BE_JARED = \
-	jmf.xml
+	jmf.xml \
+	jmf-copyright.htm
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
