@@ -313,7 +313,13 @@ public class IOPort extends ComponentPort {
      *  token returned by these calls.
      *  Normally this method is not used on transparent ports.
      *  If there is no token to return, then throw an exception.
-     *  This method is read-synchronized on the workspace.
+     * 
+     *  Some of this method is read-synchronized on the workspace.
+     *  Since it is possible for a thread to block while executing a get,
+     *  it is important that the thread does not hold read access on
+     *  the workspace when it is blocked. Thus this method releases
+     *  read access on the workspace before calling get.
+     *
      *
      *  @exception NoSuchItemException If there is no token, or the
      *   port is not an input port, or the channel index is out of range.
@@ -322,6 +328,7 @@ public class IOPort extends ComponentPort {
      */
     public Token get(int channelindex)
             throws NoSuchItemException, IllegalActionException {
+        Receiver[][] localRec;
         try {
             workspace().getReadAccess();
             if (!isInput()) {
@@ -333,23 +340,23 @@ public class IOPort extends ComponentPort {
                 throw new NoSuchItemException(this,
                         "get: channel index is out of range.");
             }
-            Receiver[][] fr = getReceivers();
-            if (fr[channelindex] == null) {
+            localRec = getReceivers();
+            if (localRec[channelindex] == null) {
                 throw new NoSuchItemException(this,
                         "get: no receiver at index: " + channelindex + ".");
             }
-            Token tt = null;
-            for (int j = 0; j < fr[channelindex].length; j++) {
-                Token ttt = fr[channelindex][j].get();
-                if (tt == null) tt = ttt;
-            }
-            if (tt == null) {
-                throw new NoSuchItemException(this, "get: No token to return.");
-            }
-            return tt;
         } finally {
             workspace().doneReading();
         }
+        Token tt = null;
+        for (int j = 0; j < localRec[channelindex].length; j++) {
+            Token ttt = localRec[channelindex][j].get();
+            if (tt == null) tt = ttt;
+        }
+        if (tt == null) {
+            throw new NoSuchItemException(this, "get: No token to return.");
+        }
+        return tt;
     }
 
     /** If the port is an opaque output port, return the receivers that
@@ -507,7 +514,7 @@ public class IOPort extends ComponentPort {
     public Receiver[][] getReceivers(IORelation relation)
             throws IllegalActionException {
         try {
-            workspace().getWriteAccess();
+            workspace().getReadAccess();
             // Allow inside relations also to support opaque,
             // non-atomic entities.
             if (!isLinked(relation) && !isInsideLinked(relation)) {
@@ -595,7 +602,7 @@ public class IOPort extends ComponentPort {
                 return result;
             }
         } finally {
-            workspace().doneWriting();
+            workspace().doneReading();
         }
     }
 
@@ -931,7 +938,12 @@ public class IOPort extends ComponentPort {
      *  while subsequent ones get a clone.  If there are no receivers,
      *  then do nothing. The transfer is accomplished by calling the put()
      *  method of the remote receivers.
-     *  This method is read-synchronized on the workspace.
+     * 
+     *  Some of this method is read-synchronized on the workspace.
+     *  Since it is possible for a thread to block while executing a put,
+     *  it is important that the thread does not hold read access on
+     *  the workspace when it is blocked. Thus this method releases
+     *  read access on the workspace before calling put.
      *
      *  @param channelindex The index of the channel, from 0 to width-1
      *  @param token The token to send
@@ -942,6 +954,7 @@ public class IOPort extends ComponentPort {
      */
     public void send(int channelindex, Token token)
             throws CloneNotSupportedException, IllegalActionException {
+        Receiver[][] farRec;
         try {
             workspace().getReadAccess();
             if (!isOutput()) {
@@ -952,19 +965,19 @@ public class IOPort extends ComponentPort {
                 throw new IllegalActionException(this,
                         "send: channel index is out of range.");
             }
-            Receiver[][] fr = getRemoteReceivers();
-            if (fr == null || fr[channelindex] == null) return;
-            boolean first = true;
-            for (int j = 0; j < fr[channelindex].length; j++) {
-                if (first) {
-                    fr[channelindex][j].put(token);
-                    first = false;
-                } else {
-                    fr[channelindex][j].put((Token)(token.clone()));
-                }
-            }
+            farRec = getRemoteReceivers();
+            if (farRec == null || farRec[channelindex] == null) return;
         } finally {
             workspace().doneReading();
+        }
+        boolean first = true;
+        for (int j = 0; j < farRec[channelindex].length; j++) {
+            if (first) {
+                farRec[channelindex][j].put(token);
+                first = false;
+            } else {
+                farRec[channelindex][j].put((Token)(token.clone()));
+            }
         }
     }
 
