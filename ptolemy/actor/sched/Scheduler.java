@@ -113,7 +113,7 @@ public class Scheduler extends NamedObj implements TopologyListener{
      *
      *  @param event The mutation event
      */
-    public void entityAdded (TopologyEvent event) {
+    public void entityAdded(TopologyEvent event) {
         setValid(false);
     }
 
@@ -122,7 +122,7 @@ public class Scheduler extends NamedObj implements TopologyListener{
      *
      * @param event The mutation event
      */
-    public void entityRemoved (TopologyEvent event) {
+    public void entityRemoved(TopologyEvent event) {
         setValid(false);
     }
 
@@ -135,12 +135,12 @@ public class Scheduler extends NamedObj implements TopologyListener{
         return _container;
     }
 
-    /** Invalidate the current schedule since a port has been added 
+    /** Invalidate the current schedule since a port has been added
      *  to an entity.
      *
      * @param event The mutation event
      */
-    public void portAdded (TopologyEvent event) {
+    public void portAdded(TopologyEvent event) {
         setValid(false);
     }
 
@@ -149,7 +149,7 @@ public class Scheduler extends NamedObj implements TopologyListener{
      *
      * @param event The mutation event
      */
-    public void portLinked (TopologyEvent event){
+    public void portLinked(TopologyEvent event) {
         setValid(false);
     }
 
@@ -158,7 +158,7 @@ public class Scheduler extends NamedObj implements TopologyListener{
      *
      * @param event The mutation event
      */
-    public void portRemoved (TopologyEvent event){
+    public void portRemoved(TopologyEvent event) {
         setValid(false);
     }
 
@@ -167,7 +167,7 @@ public class Scheduler extends NamedObj implements TopologyListener{
      *
      * @param event The mutation event
      */
-    public void portUnlinked (TopologyEvent event){
+    public void portUnlinked(TopologyEvent event) {
         setValid(false);
     }
 
@@ -176,7 +176,7 @@ public class Scheduler extends NamedObj implements TopologyListener{
      *
      * @param event The mutation event
      */
-    public void relationAdded (TopologyEvent event){
+    public void relationAdded(TopologyEvent event) {
         setValid(false);
     }
 
@@ -185,7 +185,7 @@ public class Scheduler extends NamedObj implements TopologyListener{
      *
      * @param event The mutation event
      */
-    public void relationRemoved (TopologyEvent event){
+    public void relationRemoved(TopologyEvent event) {
         setValid(false);
     }
 
@@ -200,7 +200,7 @@ public class Scheduler extends NamedObj implements TopologyListener{
      *
      * @return An Enumeration returned by _schedule() method.
      * @exception IllegalActionException If the scheduler has no container
-     *  (director), or the container has no container (CompositeActor).
+     * (director), or the container has no container (CompositeActor).
      * @exception NotSchedulableException If the _schedule() method
      *  throws it. Not thrown in this base class, but may be needed
      *  by the derived schedulers.
@@ -262,7 +262,7 @@ public class Scheduler extends NamedObj implements TopologyListener{
      *  setScheduler() method of the StaticSchedulingDirector class
      *  (or a derived class).
      */
-    protected void _makeSchedulerOf (StaticSchedulingDirector dir) {
+    protected void _makeSchedulerOf(StaticSchedulingDirector dir) {
         _container = dir;
         if (dir != null) {
             workspace().remove(this);
