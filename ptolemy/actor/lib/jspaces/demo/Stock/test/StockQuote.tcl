@@ -106,6 +106,6 @@ test StockQuote-3.1 {Use a bogus ticker} {
     $symbol setExpression {"foobar"}
     catch {[$e0 getManager] execute} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .top.stock:
+} {{ptolemy.kernel.util.IllegalActionException: Object name: .top.stock:
 StockQuote.fire: bad ticker: foobar}}
 
