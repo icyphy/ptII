@@ -37,6 +37,7 @@ import java.awt.event.*;
 import java.io.*;
 import java.net.URL;
 import java.util.StringTokenizer;
+import java.util.Vector;
 
 // TO DO:
 //   - Add a mechanism for combining two plots into one
@@ -247,15 +248,24 @@ public class PlotFrame extends Frame {
         double[] originalYRange = plot.getYRange();
         wideQuery.addLine("yrange", "Y Range",
                 "" + originalYRange[0] + ", " + originalYRange[1]);
+        String[] marks = {"none", "points", "dots", "various"};
+        String originalMarks = "none";
+        if (plot instanceof Plot) {
+            originalMarks = ((Plot)plot).getMarksStyle();
+            wideQuery.addRadioButtons("marks", "Marks", marks, originalMarks);
+        }
 
         // FIXME: Do XTicks and YTicks
-
-        // Populate the narrow query.
         boolean originalGrid = plot.getGrid();
         narrowQuery.addCheckBox("grid", "Grid", originalGrid);
-        boolean originalStems = ((Plot)plot).getImpulses();
+        boolean originalStems = false;
+        boolean[][] originalConnected = null;
         if (plot instanceof Plot) {
+            originalStems = ((Plot)plot).getImpulses();
             narrowQuery.addCheckBox("stems", "Stems", originalStems);
+            originalConnected = _getConnected();
+            narrowQuery.addCheckBox("connected", "Connect",
+                    ((Plot)plot).getConnected());
         }
         boolean originalColor = plot.getColor();
         narrowQuery.addCheckBox("color", "Use Color", originalColor);
@@ -277,6 +287,8 @@ public class PlotFrame extends Frame {
                     plot.read("XRange: " + wideQuery.stringValue("xrange"));
                 } else if (name.equals("yrange")) {
                     plot.read("YRange: " + wideQuery.stringValue("yrange"));
+                } else if (name.equals("marks")) {
+                    ((Plot)plot).setMarksStyle(wideQuery.stringValue("marks"));
                 }
                 plot.repaint();
             }
@@ -295,6 +307,8 @@ public class PlotFrame extends Frame {
                     plot.setXLog(narrowQuery.booleanValue("xlog"));
                 } else if (name.equals("ylog")) {
                     plot.setYLog(narrowQuery.booleanValue("ylog"));
+                } else if (name.equals("connected")) {
+                    _setConnected(narrowQuery.booleanValue("connected"));
                 }
                 plot.repaint();
             }
@@ -318,7 +332,9 @@ public class PlotFrame extends Frame {
             plot.setYLog(originalYLog);
             if (plot instanceof Plot) {
                 Plot cplot = (Plot)plot;
+                cplot.setMarksStyle(originalMarks);
                 cplot.setImpulses(originalStems);
+                _restoreConnected(originalConnected);
             }
         } else {
             // Apply current values.
@@ -333,7 +349,9 @@ public class PlotFrame extends Frame {
             plot.setYLog(narrowQuery.booleanValue("ylog"));
             if (plot instanceof Plot) {
                 Plot cplot = (Plot)plot;
+                cplot.setMarksStyle(wideQuery.stringValue("marks"));
                 cplot.setImpulses(narrowQuery.booleanValue("stems"));
+                _setConnected(narrowQuery.booleanValue("connected"));
             }
         }
         plot.repaint();
@@ -488,6 +506,65 @@ public class PlotFrame extends Frame {
         if (_filename == null) return;
         _directory = filedialog.getDirectory();
         _save();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    // Get the current connected state of all the point in the
+    // plot.  NOTE: This method reaches into the protected members of
+    // the Plot class, taking advantage of the fact that this class is
+    // in the same package.
+    private boolean[][] _getConnected() {
+        Vector points = ((Plot)plot)._points;
+        boolean[][] result = new boolean[points.size()][];
+        for (int dataset = 0; dataset < points.size(); dataset++) {
+            Vector pts = (Vector)points.elementAt(dataset);
+            result[dataset] = new boolean[pts.size()];
+            for (int i = 0; i < pts.size(); i++) {
+                PlotPoint pt = (PlotPoint)pts.elementAt(i);
+                result[dataset][i] = pt.connected;
+            }
+        }
+        return result;
+    }
+
+    // Set the current connected state of all the point in the
+    // plot.  NOTE: This method reaches into the protected members of
+    // the Plot class, taking advantage of the fact that this class is
+    // in the same package.
+    private void _setConnected(boolean value) {
+        Vector points = ((Plot)plot)._points;
+        // Make sure the default matches.
+        ((Plot)plot).setConnected(value);
+        boolean[][] result = new boolean[points.size()][];
+        for (int dataset = 0; dataset < points.size(); dataset++) {
+            Vector pts = (Vector)points.elementAt(dataset);
+            result[dataset] = new boolean[pts.size()];
+            boolean first = true;
+            for (int i = 0; i < pts.size(); i++) {
+                PlotPoint pt = (PlotPoint)pts.elementAt(i);
+                pt.connected = value && !first;
+                first = false;
+            }
+        }
+    }
+
+    // Set the current connected state of all the point in the
+    // plot.  NOTE: This method reaches into the protected members of
+    // the plot class, taking advantage of the fact that this class is
+    // in the same package.
+    private void _restoreConnected(boolean[][] original) {
+        Vector points = ((Plot)plot)._points;
+        boolean[][] result = new boolean[points.size()][];
+        for (int dataset = 0; dataset < points.size(); dataset++) {
+            Vector pts = (Vector)points.elementAt(dataset);
+            result[dataset] = new boolean[pts.size()];
+            for (int i = 0; i < pts.size(); i++) {
+                PlotPoint pt = (PlotPoint)pts.elementAt(i);
+                pt.connected = original[dataset][i];
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

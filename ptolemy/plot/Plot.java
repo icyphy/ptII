@@ -401,6 +401,17 @@ public class Plot extends PlotBox {
         super.fillPlot();
     }
 
+    /** Return whether the default is to connect
+     *  subsequent points with a line.  If the result is false, then
+     *  points are not connected.  When points are by default
+     *  connected, individual points can be not connected by giving the
+     *  appropriate argument to addPoint().  Also, a different default
+     *  can be set for each dataset, overriding this global default.
+     */
+    public boolean getConnected() {
+        return _connected;
+    }
+
     /** Return whether a line will be drawn from any
      *  plotted point down to the x axis.
      *  A plot with such lines is also known as a stem plot.
@@ -408,6 +419,24 @@ public class Plot extends PlotBox {
      */
     public boolean getImpulses() {
         return _impulses;
+    }
+
+    /** Get the marks style, which is one of
+     *  "none", "points", "dots", or "various".
+     *  @return A string specifying the style for points.
+     */
+    public String getMarksStyle() {
+        // NOTE: If the number of marks increases, we will need to do
+        // something better here...
+        if (_marks == 0) {
+            return "none";
+        } else if (_marks == 1) {
+            return "points";
+        } else if (_marks == 2) {
+            return "dots";
+        } else {
+            return "various";
+        }
     }
 
     /** Return the maximum number of data sets.
@@ -520,7 +549,7 @@ public class Plot extends PlotBox {
      *  points are not connected.  When points are by default
      *  connected, individual points can be not connected by giving the
      *  appropriate argument to addPoint().  Also, a different default
-     *  can be set for each dataset.
+     *  can be set for each dataset, overriding this global default.
      */
     public void setConnected(boolean on) {
         _connected = on;
@@ -1298,10 +1327,13 @@ public class Plot extends PlotBox {
         switch(_marks) {
         case 1:
             defaults.append(" marks=\"points\"");
+            break;
         case 2:
             defaults.append(" marks=\"dots\"");
+            break;
         case 3:
             defaults.append(" marks=\"various\"");
+            break;
         }
 
         // Write the defaults for formats that can be controlled by dataset

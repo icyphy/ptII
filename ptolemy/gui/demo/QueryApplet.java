@@ -77,6 +77,8 @@ public class QueryApplet extends BasicJApplet implements QueryListener {
         _query.addSlider("slider2", "Slider 2", 50);
         String[] choices = {"a", "b", "c"};
         _query.addChoice("choice", "Choice", choices, "b");
+        String[] options = {"mayonaise", "mustard", "both", "none"};
+        _query.addRadioButtons("radio", "Choose one", options, "none");
         _query.addQueryListener(this);
         _query.setBackground(_getBackground());
     }

@@ -54,6 +54,10 @@ public class Query extends JPanel {
      */
     public Query() {
         _grid = new GridBagLayout();
+        _constraints = new GridBagConstraints();
+        _constraints.fill = GridBagConstraints.HORIZONTAL;
+        _constraints.weightx = 1.0;
+        _constraints.anchor = GridBagConstraints.NORTHWEST;
         setLayout(_grid);
         // It's not clear whether the following has any real significance...
         setOpaque(true);
@@ -65,13 +69,14 @@ public class Query extends JPanel {
     /** Create an on-off check box.
      *  @param name The name used to identify the entry (when calling get).
      *  @param label The label to attach to the entry.
-     *  @param defaultValue Default value (true for on).
+     *  @param defaultValue The default value.
      */
     public void addCheckBox(String name, String label, boolean defaultValue) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
         JRadioButton checkbox = new JRadioButton();
         checkbox.setBackground(_background);
+        checkbox.setOpaque(false);
         checkbox.setSelected(defaultValue);
         _addPair(lbl, checkbox);
         _entries.put(name, checkbox);
@@ -149,6 +154,46 @@ public class Query extends JPanel {
         _listeners.insertLast(listener);
     }
 
+    /** Create a bank of radio buttons.
+     *  @param name The name used to identify the entry (when calling get).
+     *  @param label The label to attach to the entry.
+     *  @param values The list of possible choices.
+     *  @param defaultValue Default value.
+     */
+    public void addRadioButtons(String name, String label,
+            String[] values, String defaultValue) {
+        JLabel lbl = new JLabel(label + ": ");
+        lbl.setBackground(_background);
+        FlowLayout flow = new FlowLayout();
+        flow.setAlignment(FlowLayout.LEFT);
+        Panel buttonPanel = new Panel(flow);
+        ButtonGroup group = new ButtonGroup();
+        QueryItemListener listener = new QueryItemListener(name);
+
+        // Regrettably, ButtonGroup provides no method to find out
+        // which button is selected, so we have to go through a
+        // song and dance here...
+        JRadioButton[] buttons = new JRadioButton[values.length];
+        for (int i = 0; i < values.length; i++) {
+            JRadioButton checkbox = new JRadioButton(values[i]);
+            buttons[i] = checkbox;
+            checkbox.setBackground(_background);
+            // The following (essentially) undocumented method does nothing...
+            // checkbox.setContentAreaFilled(true);
+            checkbox.setOpaque(false);
+            if (values[i].equals(defaultValue)) {
+                checkbox.setSelected(true);
+            }
+            group.add(checkbox);
+            buttonPanel.add(checkbox);
+            // Add the listener last so that there is no notification
+            // of the first value.
+            checkbox.addItemListener(listener);
+        }
+        _addPair(lbl, buttonPanel);
+        _entries.put(name, buttons);
+    }
+
     /** FIXME: Create a slider with the specified name, label, and default 
      *  value.
      *  @param name The name used to identify the slider.
@@ -198,7 +243,7 @@ public class Query extends JPanel {
         Object result = _entries.get(name);
         if(result == null) {
             throw new NoSuchElementException("No item named \"" +
-            name + " \" in the query box.");
+            name + "\" in the query box.");
         }
         if (result instanceof JRadioButton) {
             return ((JRadioButton)result).isSelected();
@@ -244,7 +289,8 @@ public class Query extends JPanel {
     /** Get the current value in the entry with the given name
      *  and return as an integer.  If the entry is not a line,
      *  choice, or slider, then throw an exception.
-     *  If it is a choice, then return the index of the selected choice.
+     *  If it is a choice or radio button, then return the
+     *  index of the selected item.
      *  @return The value currently in the entry as an integer.
      *  @exception NoSuchElementException If there is no item with the
      *   specified name.  Note that this is a runtime exception, so it
@@ -270,6 +316,18 @@ public class Query extends JPanel {
             return (new Integer(((JSlider)result).getValue())).intValue();
         } else if (result instanceof JComboBox) {
             return ((JComboBox)result).getSelectedIndex();
+        } else if (result instanceof JRadioButton[]) {
+            // Regrettably, ButtonGroup gives no way to determine
+            // which button is selected, so we have to search...
+            JRadioButton[] buttons = (JRadioButton[])result;
+            for (int i = 0; i < buttons.length; i++) {
+                if (buttons[i].isSelected()) {
+                    return i;
+                }
+            }
+            // In theory, we shouldn't get here, but the compiler
+            // is unhappy without a return.
+            return -1;
         } else {
             throw new IllegalArgumentException("Item named \"" +
             name + "\" is not a text line or slider, and hence "
@@ -365,6 +423,18 @@ public class Query extends JPanel {
             return (new Integer(((JSlider)result).getValue())).toString();
         } else if (result instanceof JComboBox) {
             return (String)(((JComboBox)result).getSelectedItem());
+        } else if (result instanceof JRadioButton[]) {
+            // Regrettably, ButtonGroup gives no way to determine
+            // which button is selected, so we have to search...
+            JRadioButton[] buttons = (JRadioButton[])result;
+            for (int i = 0; i < buttons.length; i++) {
+                if (buttons[i].isSelected()) {
+                    return buttons[i].getText();
+                }
+            }
+            // In theory, we shouldn't get here, but the compiler
+            // is unhappy without a return.
+            return "";
         } else {
             throw new IllegalArgumentException("Query class cannot generate"
             + " a string representation for entries of type "
@@ -388,14 +458,11 @@ public class Query extends JPanel {
         // Surely there is a better layout manager in swing...
         // Note that Box and BoxLayout do not work because they do not
         // support gridded layout.
-        GridBagConstraints constraints = new GridBagConstraints();
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.weightx = 1.0;
-        constraints.weighty = 1.0;
-        _grid.setConstraints(label, constraints);
+        _constraints.gridwidth = 1;
+        _grid.setConstraints(label, _constraints);
         add(label);
-        constraints.gridwidth = GridBagConstraints.REMAINDER;
-        _grid.setConstraints(widget, constraints);
+        _constraints.gridwidth = GridBagConstraints.REMAINDER;
+        _grid.setConstraints(widget, _constraints);
         add(widget);
     }
 
@@ -409,6 +476,9 @@ public class Query extends JPanel {
 
     /** Layout control. */
     protected GridBagLayout _grid;
+
+    /** Standard constraints for use with _grid. */
+    protected GridBagConstraints _constraints;
 
     /** List of registered listeners. */
     protected LinkedList _listeners;

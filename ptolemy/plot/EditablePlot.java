@@ -149,36 +149,6 @@ public class EditablePlot extends Plot {
         _editListeners.removeElement(listener);
     }
 
-    /** Create a sample plot.
-     */
-    public void samplePlot() {
-        // Create a sample plot.
-        clear(true);
-
-        setTitle("Sample editable plot");
-        setYRange(-1, 1);
-        setXRange(0, 100);
-        setMarksStyle("none");
-        setConnected(false);
-        setImpulses(true);
-
-        addLegend(0, "first");
-        boolean first = true;
-        for (int i = 0; i <= 100; i++) {
-            addPoint(0, (double)i, 0.0, !first);
-            first = false;
-        }
-
-        addLegend(1, "second");
-        first = true;
-        for (int i = 0; i <= 100; i++) {
-            addPoint(1, (double)i, 0.0, !first);
-            first = false;
-        }
-
-        repaint();
-    }
-
     /** Specify which dataset is editable. By default, if this method is
      *  not called, dataset number zero is editable.  If you call this
      *  method with a negative number, then no dataset will be editable.
