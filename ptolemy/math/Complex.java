@@ -566,9 +566,9 @@ public class Complex implements Cloneable, Serializable {
         double differenceSquared = subtract(z).magnitudeSquared();
         double distanceSquared = distance*distance;
         if (differenceSquared > distanceSquared) {
-        	return false;
+            return false;
         } else {
-        	return true;
+            return true;
         }
     }
 

@@ -55,15 +55,15 @@ public class TestWorkspace3 extends TestWorkspaceBase {
         Workspace workspace = new Workspace();
         List actions = new LinkedList();
         AccessAction action =
-                new AccessAction(workspace, 0, 'R', 1000, null, _record, "A1");
+            new AccessAction(workspace, 0, 'R', 1000, null, _record, "A1");
         actions.add(action);
         action =
-                new AccessAction(workspace, 0, 'W', 1000, null, _record, "A2");
+            new AccessAction(workspace, 0, 'W', 1000, null, _record, "A2");
         actions.add(action);
         _accessThreads.add(new AccessThread("T1", actions, this));
         actions = new LinkedList();
         action =
-                new AccessAction(workspace, 500, 'R', 1000, null, _record, "A3");
+            new AccessAction(workspace, 500, 'R', 1000, null, _record, "A3");
         actions.add(action);
         _accessThreads.add(new AccessThread("T2", actions, this));
         _testTime = 6000; // ms

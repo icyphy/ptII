@@ -57,21 +57,21 @@ public class TestWorkspace5 extends TestWorkspaceBase {
         Workspace workspace = new Workspace();
         List actions = new LinkedList();
         AccessAction action =
-                new AccessAction(workspace, 0, 'R', 1000, null, _record, "A0");
+            new AccessAction(workspace, 0, 'R', 1000, null, _record, "A0");
         actions.add(action);
         _accessThreads.add(new AccessThread("T1", actions, this));
         actions = new LinkedList();
         action =
-                new AccessAction(workspace, 500, 'W', 500, null, _record, "A2");
+            new AccessAction(workspace, 500, 'W', 500, null, _record, "A2");
         actions.add(action);
         action =
-                new AccessAction(workspace, 0, 'W', 0, null, _record, "A3");
+            new AccessAction(workspace, 0, 'W', 0, null, _record, "A3");
         actions.add(action);
         _thread = new AccessThread("T2", actions, this);
         _accessThreads.add(_thread);
         actions = new LinkedList();
         action =
-                new AccessAction(workspace, 2200, 'R', 100, null, _record, "A1");
+            new AccessAction(workspace, 2200, 'R', 100, null, _record, "A1");
         actions.add(action);
         _accessThreads.add(new AccessThread("T3", actions, this));
         _testTime = 5000; // ms
@@ -79,16 +79,16 @@ public class TestWorkspace5 extends TestWorkspaceBase {
 
     public void runTest() {
         (new Thread() {
-            public void run() {
-                try {
-                    sleep(1000);
-                } catch (InterruptedException e) {
-                    // ignore
+                public void run() {
+                    try {
+                        sleep(1000);
+                    } catch (InterruptedException e) {
+                        // ignore
+                    }
+                    // interrupt T2 while it is waiting for read access
+                    _thread.interrupt();
                 }
-                // interrupt T2 while it is waiting for read access
-                _thread.interrupt();
-            }
-        }).start();
+            }).start();
         super.runTest();
     }
 

@@ -53,42 +53,42 @@ public class AccessAction {
             Thread.sleep(_sleepBefore);
         }
         switch (_action) {
-            case 'R':
-                synchronized (_workspace) {
-                    try {
-                        _workspace.getReadAccess();
-                        _record.add(_name + " got read access");
-                    } catch (InternalErrorException ex) {
-                        _failed = true;
-                        _record.add(_name + " failed to get read access");
-                    }
+        case 'R':
+            synchronized (_workspace) {
+                try {
+                    _workspace.getReadAccess();
+                    _record.add(_name + " got read access");
+                } catch (InternalErrorException ex) {
+                    _failed = true;
+                    _record.add(_name + " failed to get read access");
                 }
-                break;
-            case 'W':
-                synchronized (_workspace) {
-                    try {
-                        _workspace.getWriteAccess();
-                        _record.add(_name + " got write access");
-                    } catch (InternalErrorException ex) {
-                        _failed = true;
-                        _record.add(_name + " failed to get write access");
-                    }
+            }
+            break;
+        case 'W':
+            synchronized (_workspace) {
+                try {
+                    _workspace.getWriteAccess();
+                    _record.add(_name + " got write access");
+                } catch (InternalErrorException ex) {
+                    _failed = true;
+                    _record.add(_name + " failed to get write access");
                 }
-                break;
-            case 'U':
-                //synchronized (_workspace) {
-                    try {
-                        _record.add(_name + " entered waiting on lock");
-                        _workspace.wait(_lock);
-                        _record.add(_name + " woke up from waiting");
-                    } catch (InterruptedException ex) {
-                        _record.add(_name + " interrupted while waiting");
-                    }
-                //}
-                break;
-            default:
-                // no-op
-                break;
+            }
+            break;
+        case 'U':
+            //synchronized (_workspace) {
+            try {
+                _record.add(_name + " entered waiting on lock");
+                _workspace.wait(_lock);
+                _record.add(_name + " woke up from waiting");
+            } catch (InterruptedException ex) {
+                _record.add(_name + " interrupted while waiting");
+            }
+            //}
+            break;
+        default:
+            // no-op
+            break;
         }
         if (_sleepAfter > 0) {
             Thread.sleep(_sleepAfter);
@@ -100,35 +100,35 @@ public class AccessAction {
             Thread.sleep(_sleepAfter);
         }
         switch (_action) {
-            case 'R':
-                synchronized (_workspace) {
-                    _workspace.doneReading();
-                    if (_failed) {
-                        _record.add(_name
-                                + " handled failure in getting read access");
-                    } else {
-                        _record.add(_name + " released read access");
-                    }
+        case 'R':
+            synchronized (_workspace) {
+                _workspace.doneReading();
+                if (_failed) {
+                    _record.add(_name
+                            + " handled failure in getting read access");
+                } else {
+                    _record.add(_name + " released read access");
                 }
-                break;
-            case 'W':
-                synchronized (_workspace) {
-                    _workspace.doneWriting();
-                    if (_failed) {
-                        _record.add(_name
-                                + " handled failure in getting write access");
-                    } else {
-                        _record.add(_name + " released write access");
-                    }
+            }
+            break;
+        case 'W':
+            synchronized (_workspace) {
+                _workspace.doneWriting();
+                if (_failed) {
+                    _record.add(_name
+                            + " handled failure in getting write access");
+                } else {
+                    _record.add(_name + " released write access");
                 }
-                break;
-            case 'U':
-                //_workspace.wait(_lock);
-                // no-op
-                break;
-            default:
-                // no-op
-                break;
+            }
+            break;
+        case 'U':
+            //_workspace.wait(_lock);
+            // no-op
+            break;
+        default:
+            // no-op
+            break;
         }
         if (_sleepBefore > 0) {
             Thread.sleep(_sleepBefore);

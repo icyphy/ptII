@@ -800,18 +800,18 @@ public class FloatMatrixMath {
         return returnValue;
     }
 
-	/** Return the sum of the elements of a matrix.
-	 *  @return The sum of the elements of the matrix.
-	 */
-	public static final float sum(final float[][] matrix) {
-		float sum = 0.0f;
-		for (int i = 0; i < matrix.length; i++) {
-			for (int j = 0; j < matrix[i].length; j++) {
-				sum += matrix[i][j];
-			}
-		}
-		return sum;
-	}
+    /** Return the sum of the elements of a matrix.
+     *  @return The sum of the elements of the matrix.
+     */
+    public static final float sum(final float[][] matrix) {
+        float sum = 0.0f;
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                sum += matrix[i][j];
+            }
+        }
+        return sum;
+    }
 	
     /** Return a new matrix that is formed by converting the floats
      *  in the argument matrix to complex numbers. Each complex number
@@ -990,16 +990,16 @@ public class FloatMatrixMath {
         return returnValue;
     }
 
-	/** Return true if the elements of the two matrices differ by no more
-	 *  than the specified distance. If <i>distance</i> is negative, return false.
-	 *  @param matrix1 The first matrix.
-	 *  @param matrix2 The second matrix.
-	 *  @param distance The distance to use for comparison.
-	 *  @return True if the elements of the two matrices are within the
-	 *   specified distance.
-	 *  @exception IllegalArgumentException If the matrices do not have the same dimension.
-	 * 	 This is a run-time exception, so it need not be declared explicitly.
-	 */
+    /** Return true if the elements of the two matrices differ by no more
+     *  than the specified distance. If <i>distance</i> is negative, return false.
+     *  @param matrix1 The first matrix.
+     *  @param matrix2 The second matrix.
+     *  @param distance The distance to use for comparison.
+     *  @return True if the elements of the two matrices are within the
+     *   specified distance.
+     *  @exception IllegalArgumentException If the matrices do not have the same dimension.
+     * 	 This is a run-time exception, so it need not be declared explicitly.
+     */
     public static final boolean within(final float[][] matrix1,
             final float[][] matrix2, float distance) {
         int rows = _rows(matrix1);
@@ -1010,24 +1010,24 @@ public class FloatMatrixMath {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 if (matrix1[i][j] > matrix2[i][j] + distance ||
-                    matrix1[i][j] < matrix2[i][j] - distance)
+                        matrix1[i][j] < matrix2[i][j] - distance)
                     return false;
             }
         }
         return true;
     }
 
-	/** Return true if the elements of the two matrices differ by no more
-	 *  than the specified distances. If any element of <i>errorMatrix</i> is
+    /** Return true if the elements of the two matrices differ by no more
+     *  than the specified distances. If any element of <i>errorMatrix</i> is
      *  negative, return false.
-	 *  @param matrix1 The first matrix.
-	 *  @param matrix2 The second matrix.
-	 *  @param errorMatrix The distance to use for comparison.
-	 *  @return True if the elements of the two matrices are within the
-	 *   specified distance.
-	 *  @exception IllegalArgumentException If the matrices do not have the same dimension.
-	 * 	 This is a run-time exception, so it need not be declared explicitly.
-	 */
+     *  @param matrix1 The first matrix.
+     *  @param matrix2 The second matrix.
+     *  @param errorMatrix The distance to use for comparison.
+     *  @return True if the elements of the two matrices are within the
+     *   specified distance.
+     *  @exception IllegalArgumentException If the matrices do not have the same dimension.
+     * 	 This is a run-time exception, so it need not be declared explicitly.
+     */
     public static final boolean within(final float[][] matrix1,
             final float[][] matrix2, final float[][] errorMatrix) {
         int rows = _rows(matrix1);
@@ -1039,7 +1039,7 @@ public class FloatMatrixMath {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 if (matrix1[i][j] > matrix2[i][j] + errorMatrix[i][j] ||
-                    matrix1[i][j] < matrix2[i][j] - errorMatrix[i][j])
+                        matrix1[i][j] < matrix2[i][j] - errorMatrix[i][j])
                     return false;
             }
         }

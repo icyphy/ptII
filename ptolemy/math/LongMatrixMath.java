@@ -343,25 +343,25 @@ public class LongMatrixMath {
     }
 
 
-	/** Return a new matrix that is constructed by placing the
-	 *  elements of the input array on the diagonal of the square
-	 *  matrix, starting from the top left corner down to the bottom
-	 *  right corner. All other elements are zero. The size of of the
-	 *  matrix is n x n, where n is the length of the input array.
-	 */
-	public static final long[][] diag(final long[] array) {
-		int n = array.length;
+    /** Return a new matrix that is constructed by placing the
+     *  elements of the input array on the diagonal of the square
+     *  matrix, starting from the top left corner down to the bottom
+     *  right corner. All other elements are zero. The size of of the
+     *  matrix is n x n, where n is the length of the input array.
+     */
+    public static final long[][] diag(final long[] array) {
+        int n = array.length;
 
-		long[][] returnValue = new long[n][n];
+        long[][] returnValue = new long[n][n];
 
-		// Assume the matrix is zero-filled.
+        // Assume the matrix is zero-filled.
 
-		for (int i = 0; i < n; i++) {
-			returnValue[i][i] = array[i];
-		}
+        for (int i = 0; i < n; i++) {
+            returnValue[i][i] = array[i];
+        }
 
-		return returnValue;
-	}
+        return returnValue;
+    }
 	
     /** Return a new matrix that is constructed from the argument by
      *  dividing the second argument to every element.
@@ -771,18 +771,18 @@ public class LongMatrixMath {
         return returnValue;
     }
     
-	/** Return the sum of the elements of a matrix.
-	 *  @return The sum of the elements of the matrix.
-	 */
-	public static final long sum(final long[][] matrix) {
-		long sum = 0L;
-		for (int i = 0; i < matrix.length; i++) {
-			for (int j = 0; j < matrix[i].length; j++) {
-				sum += matrix[i][j];
-			}
-		}
-		return sum;
-	}
+    /** Return the sum of the elements of a matrix.
+     *  @return The sum of the elements of the matrix.
+     */
+    public static final long sum(final long[][] matrix) {
+        long sum = 0L;
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                sum += matrix[i][j];
+            }
+        }
+        return sum;
+    }
 
     /** Return a new matrix that is formed by converting the long values
      *  in the argument matrix to complex numbers. Each complex number
@@ -957,17 +957,17 @@ public class LongMatrixMath {
         return returnValue;
     }
 
-	/** Return true if the elements of the two matrices differ by no more
-	 *  than the specified distance. If <i>distance</i> is negative, return
+    /** Return true if the elements of the two matrices differ by no more
+     *  than the specified distance. If <i>distance</i> is negative, return
      *  false.
-	 *  @param matrix1 The first matrix.
-	 *  @param matrix2 The second matrix.
-	 *  @param distance The distance to use for comparison.
-	 *  @return True if the elements of the two matrices are within the
-	 *   specified distance.
-	 *  @exception IllegalArgumentException If the matrices do not have the same dimension.
-	 * 	 This is a run-time exception, so it need not be declared explicitly.
-	 */
+     *  @param matrix1 The first matrix.
+     *  @param matrix2 The second matrix.
+     *  @param distance The distance to use for comparison.
+     *  @return True if the elements of the two matrices are within the
+     *   specified distance.
+     *  @exception IllegalArgumentException If the matrices do not have the same dimension.
+     * 	 This is a run-time exception, so it need not be declared explicitly.
+     */
     public static final boolean within(final long[][] matrix1,
             final long[][] matrix2, long distance) {
         int rows = _rows(matrix1);
@@ -978,7 +978,7 @@ public class LongMatrixMath {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 if (matrix1[i][j] > matrix2[i][j] + distance ||
-                    matrix1[i][j] < matrix2[i][j] - distance) {
+                        matrix1[i][j] < matrix2[i][j] - distance) {
                     return false;
                 }
             }
@@ -986,17 +986,17 @@ public class LongMatrixMath {
         return true;
     }
 
-	/** Return true if the elements of the two matrices differ by no more
-	 *  than the specified distances. If any element of <i>errorMatrix</i> is
+    /** Return true if the elements of the two matrices differ by no more
+     *  than the specified distances. If any element of <i>errorMatrix</i> is
      *  negative, return false.
-	 *  @param matrix1 The first matrix.
-	 *  @param matrix2 The second matrix.
-	 *  @param errorMatrix The distance to use for comparison.
-	 *  @return True if the elements of the two matrices are within the
-	 *   specified distance.
-	 *  @exception IllegalArgumentException If the matrices do not have the same dimension.
-	 * 	 This is a run-time exception, so it need not be declared explicitly.
-	 */
+     *  @param matrix1 The first matrix.
+     *  @param matrix2 The second matrix.
+     *  @param errorMatrix The distance to use for comparison.
+     *  @return True if the elements of the two matrices are within the
+     *   specified distance.
+     *  @exception IllegalArgumentException If the matrices do not have the same dimension.
+     * 	 This is a run-time exception, so it need not be declared explicitly.
+     */
     public static final boolean within(final long[][] matrix1,
             final long[][] matrix2, final long[][] errorMatrix) {
         int rows = _rows(matrix1);
@@ -1008,7 +1008,7 @@ public class LongMatrixMath {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 if (matrix1[i][j] > matrix2[i][j] + errorMatrix[i][j] ||
-                    matrix1[i][j] < matrix2[i][j] - errorMatrix[i][j]) {
+                        matrix1[i][j] < matrix2[i][j] - errorMatrix[i][j]) {
                     return false;
                 }
             }

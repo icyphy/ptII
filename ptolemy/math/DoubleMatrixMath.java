@@ -833,18 +833,18 @@ public class DoubleMatrixMath {
         return returnValue;
     }
 
-	/** Return the sum of the elements of a matrix.
-	 *  @return The sum of the elements of the matrix.
-	 */
-	public static final double sum(final double[][] matrix) {
-		double sum = 0.0;
-		for (int i = 0; i < matrix.length; i++) {
-			for (int j = 0; j < matrix[i].length; j++) {
-				sum += matrix[i][j];
-			}
-		}
-		return sum;
-	}
+    /** Return the sum of the elements of a matrix.
+     *  @return The sum of the elements of the matrix.
+     */
+    public static final double sum(final double[][] matrix) {
+        double sum = 0.0;
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                sum += matrix[i][j];
+            }
+        }
+        return sum;
+    }
 
     /** Return a new matrix that is formed by converting the doubles
      *  in the argument matrix to complex numbers. Each complex number
@@ -1039,26 +1039,26 @@ public class DoubleMatrixMath {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 if (matrix1[i][j] > matrix2[i][j] + distance ||
-                    matrix1[i][j] < matrix2[i][j] - distance)
+                        matrix1[i][j] < matrix2[i][j] - distance)
                     return false;
             }
         }
         return true;
     }
 
-	/** Return true if the elements of the two matrices differ by no more
-	 *  than the specified distances. The specified distances must all
-	 *  be non-negative. If any element of <i>errorMatrix</i> is negative,
+    /** Return true if the elements of the two matrices differ by no more
+     *  than the specified distances. The specified distances must all
+     *  be non-negative. If any element of <i>errorMatrix</i> is negative,
      *  return false.
-	 *  @param matrix1 The first matrix.
-	 *  @param matrix2 The second matrix.
-	 *  @param errorMatrix The distance to use for comparison.
-         *  Note that if errorMatrix contains an element that is negative,
-         *  then this method will return false.
-	 *  @return True if the elements of the two matrices are within the
-	 *   specified distance.
-	 *  @exception IllegalArgumentException If the matrices do not have the same dimension.
-	 * 	 This is a run-time exception, so it need not be declared explicitly.
+     *  @param matrix1 The first matrix.
+     *  @param matrix2 The second matrix.
+     *  @param errorMatrix The distance to use for comparison.
+     *  Note that if errorMatrix contains an element that is negative,
+     *  then this method will return false.
+     *  @return True if the elements of the two matrices are within the
+     *   specified distance.
+     *  @exception IllegalArgumentException If the matrices do not have the same dimension.
+     * 	 This is a run-time exception, so it need not be declared explicitly.
      */
     public static final boolean within(final double[][] matrix1,
             final double[][] matrix2, final double[][] errorMatrix) {
@@ -1071,7 +1071,7 @@ public class DoubleMatrixMath {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 if (matrix1[i][j] > matrix2[i][j] + errorMatrix[i][j] ||
-                    matrix1[i][j] < matrix2[i][j] - errorMatrix[i][j]) {
+                        matrix1[i][j] < matrix2[i][j] - errorMatrix[i][j]) {
                     return false;
                 }
             }
@@ -1079,8 +1079,8 @@ public class DoubleMatrixMath {
         return true;
     }
 
-	/////////////////////////////////////////////////////////////////////////
-	////                      protected methods                          ////
+    /////////////////////////////////////////////////////////////////////////
+    ////                      protected methods                          ////
 
     /** Check that the two matrix arguments are of the same dimension.
      *  If they are not, an IllegalArgumentException is thrown.

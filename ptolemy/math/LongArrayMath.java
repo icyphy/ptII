@@ -766,7 +766,7 @@ public class LongArrayMath {
 
         for (int i = 0; i < length; i++) {
             if (array1[i] > array2[i] + maxError ||
-                array1[i] < array2[i] - maxError) {
+                    array1[i] < array2[i] - maxError) {
                 return false;
             }
         }
@@ -795,7 +795,7 @@ public class LongArrayMath {
 
         for (int i = 0; i < length; i++) {
             if (array1[i] > array2[i] + maxError[i] ||
-                array1[i] < array2[i] - maxError[i]) {
+                    array1[i] < array2[i] - maxError[i]) {
                 return false;
             }
         }
