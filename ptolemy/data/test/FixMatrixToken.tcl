@@ -51,7 +51,7 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 # 
 test FixMatrixToken-1.1 {Create a non-empty instance from a String} {
-    set p [java::new {ptolemy.data.FixMatrixToken String} "\[fix(1.0,8,4), fix(2.0,8,4); fix(3.5,8,4), fix(4.5,8,4)\]"]
+    set p [java::new {ptolemy.data.FixMatrixToken String} "fix(\[1.0, 2.0; 3.5, 4.5\], 8, 4)"]
     $p toString
-} {[fix(1.0,8,4), fix(2.0,8,4); fix(3.5,8,4), fix(4.5,8.4)]}
+} {[fix(1.0,8,4), fix(2.0,8,4); fix(3.5,8,4), fix(4.5,8,4)]}
 
