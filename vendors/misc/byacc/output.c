@@ -1037,7 +1037,7 @@ char **symnam, *s;
 
     if (!rflag) ++outline;
     if (jflag) { /*rwj*/
-      fprintf(output_file, "final static String yyrule[] = read_string_table(\"yyrule.tbl\", NRULES - 2);\n");
+        // fprintf(output_file, "final static String yyrule[] = read_string_table(\"yyrule.tbl\", NRULES - 2);\n");
       table_file = fopen("yyrule.tbl", "w");
     } else {
       fprintf(output_file, "char *yyrule[] = {\n");

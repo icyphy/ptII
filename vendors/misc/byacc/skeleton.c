@@ -455,6 +455,8 @@ char *jbody[] =
     "  yychar = -1;          //impossible char forces a read",
     "  yystate=0;            //initial state",
     "  state_push(yystate);  //save it",
+    "  if (yydebug)",
+    "     final static String yyrule = read_string_table(\"yyrule.tbl\", NRULES - 2);",
     "  while (true) //until parsing is done, either correctly, or w/error",
     "    {",
     "    doaction=true;",
