@@ -219,7 +219,6 @@ AC_MSG_RESULT(['$CLASSPATHSEPARATOR'])
 
 case "`uname -s`" in
     CYGWIN_NT-*)
-	AC_MSG_CHECKING([for the proper the cmd command])
 	AC_PATH_PROG(CMD_PATH, cmd)
 	if test -x "$CMD_PATH"; then 
 		AC_MSG_RESULT([$CMD_PATH])
