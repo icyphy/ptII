@@ -38,6 +38,7 @@ import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.actor.gui.TableauFactory;
 import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.actor.lib.Expression;
+import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.copernicus.gui.GeneratorTableauAttribute;
 import ptolemy.copernicus.kernel.EntitySootClass;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
@@ -351,7 +352,7 @@ public class ModelTransformer extends SceneTransformer {
      *  class is assumed to be associated with the given context.
      *  Ports whose full names are already in createdSet are not
      *  created.  The given createdSet is updated with the full names
-     *  of all the created attributes.
+     *  of all the created ports.
      *  @param body The body to generate code in.
      *  @param context The named object corresponding to the class in which
      *  code is being generated.
@@ -378,7 +379,11 @@ public class ModelTransformer extends SceneTransformer {
              ports.hasNext();) {
             Port port = (Port)ports.next();
             //   System.out.println("ModelTransformer: port: " + port);
-
+            // Ignore PortParameters...
+            if(port instanceof ParameterPort) {
+                continue;
+            }
+                   
             String className = port.getClass().getName();
             String portName = port.getName(context);
             String fieldName = getFieldNameForPort(port, context);
@@ -674,7 +679,11 @@ public class ModelTransformer extends SceneTransformer {
      *  given entity.
      */
     public static String getFieldNameForPort(Port port, NamedObj context) {
-        return StringUtilities.sanitizeName(port.getName(context));
+        if(port instanceof ParameterPort) {
+            return StringUtilities.sanitizeName(port.getName(context)+"Port");
+        } else {
+            return StringUtilities.sanitizeName(port.getName(context));
+        }
     }
 
     /** Return the name of the field that is created for the
@@ -978,7 +987,7 @@ public class ModelTransformer extends SceneTransformer {
             HashSet createdSet, Map options) {
 
         _ports(body, containerLocal, container,
-                thisLocal, composite, modelClass, createdSet);
+                thisLocal, composite, modelClass, createdSet, true);
         _entities(body, containerLocal, container,
                 thisLocal, composite, modelClass, createdSet, options);
 
@@ -1037,7 +1046,7 @@ public class ModelTransformer extends SceneTransformer {
                         RefType.v(className), entityFieldName);
 
                 _ports(body, thisLocal, composite,
-                        local, entity, modelClass, createdSet);
+                        local, entity, modelClass, createdSet, false);
             } else {
                 //  System.out.println("Creating new!");
 
@@ -1058,7 +1067,7 @@ public class ModelTransformer extends SceneTransformer {
                         RefType.v(className), entityFieldName);
 
                 _ports(body, containerLocal, container,
-                        local, entity, modelClass, createdSet);
+                        local, entity, modelClass, createdSet, false);
                 //   }
             }
 
@@ -1069,7 +1078,8 @@ public class ModelTransformer extends SceneTransformer {
     // Create and set external ports.
     private static void _ports(JimpleBody body, Local containerLocal,
             Entity container, Local entityLocal,
-            Entity entity, EntitySootClass modelClass, HashSet createdSet) {
+            Entity entity, EntitySootClass modelClass, HashSet createdSet,
+            boolean createFieldsInClass) {
         Entity classObject = (Entity)_findDeferredInstance(entity);
 
         // This local is used to store the return from the getPort
@@ -1167,7 +1177,8 @@ public class ModelTransformer extends SceneTransformer {
             }
 
             _portLocalMap.put(port, portLocal);
-            if (!modelClass.declaresFieldByName(fieldName)) {
+            if (createFieldsInClass &&
+                    !modelClass.declaresFieldByName(fieldName)) {
                 SootUtilities.createAndSetFieldFromLocal(body,
                         portLocal, modelClass, portType, fieldName);
             }
@@ -1285,9 +1296,9 @@ public class ModelTransformer extends SceneTransformer {
                         thisLocal, relation.getName());
             _relationLocalMap.put(relation, local);
 
-            SootUtilities.createAndSetFieldFromLocal(body,
-                    local, modelClass, PtolemyUtilities.relationType,
-                    fieldName);
+//             SootUtilities.createAndSetFieldFromLocal(body,
+//                     local, modelClass, PtolemyUtilities.relationType,
+//                     fieldName);
         }
     }
 
@@ -1537,12 +1548,18 @@ public class ModelTransformer extends SceneTransformer {
             Chain units = body.getUnits();
             Local thisLocal = body.getThisLocal();
 
+            // Create a new class for each actor in the model.
             _createActorsIn(entity, tempCreatedSet,
                     "modelTransformer", _constAnalysis, options);
 
+            // Create code in the model class to instantiate all
+            // attributes of the model.
             createAttributes(body, entity, thisLocal,
                     entity, thisLocal, entityInstanceClass, tempCreatedSet);
 
+            // Create code in the model class to instantiate all
+            // actors, ports and relations, and connect the relations
+            // to the ports.
             _composite(body,
                     thisLocal, entity, thisLocal, entity,
                     entityInstanceClass, tempCreatedSet, options);

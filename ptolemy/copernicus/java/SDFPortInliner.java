@@ -1468,7 +1468,7 @@ public class SDFPortInliner implements PortInliner {
                             Jimple.v().newNewArrayExpr(
                                     ArrayType.v(tokenType, 1),
                                     IntConstant.v(
-                                            port.getWidth()))),
+                                            port.getWidthInside()))),
                     insertPoint);
             // Set the field to point to the new array.
             body.getUnits().insertBefore(
@@ -1614,7 +1614,7 @@ public class SDFPortInliner implements PortInliner {
             for (Iterator relations = relationList.iterator();
                  !found && relations.hasNext();) {
                 TypedIORelation relation = (TypedIORelation)relations.next();
-
+           
                 for (int i = 0;
                      !found && i < relation.getWidth();
                      i++, channel++) {

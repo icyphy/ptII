@@ -1799,7 +1799,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
                         insertPoint);
 
 
-                for (int i = 0; i < port.getWidth(); i++) {
+                for (int i = 0; i < port.getWidthInside(); i++) {
                     // The list of initializer instructions.
                     List initializerList = new LinkedList();
                     initializerList.add(

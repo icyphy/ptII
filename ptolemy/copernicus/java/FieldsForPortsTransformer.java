@@ -30,6 +30,7 @@
 package ptolemy.copernicus.java;
 
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.domains.fsm.kernel.FSMActor;
@@ -52,6 +53,7 @@ import soot.Type;
 import soot.Unit;
 import soot.Value;
 import soot.ValueBox;
+import soot.jimple.AssignStmt;
 import soot.jimple.CastExpr;
 import soot.jimple.DefinitionStmt;
 import soot.jimple.FieldRef;
@@ -147,6 +149,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
                 if (!unit.containsInvokeExpr()) {
                     continue;
                 }
+                
                 ValueBox box = (ValueBox)unit.getInvokeExprBox();
                 Value value = box.getValue();
                 if (value instanceof InstanceInvokeExpr) {
@@ -172,8 +175,11 @@ public class FieldsForPortsTransformer extends SceneTransformer {
                             Local baseLocal = (Local)r.getBase();
                             Value newFieldRef = _createPortField(
                                     baseLocal, name, unit, localDefs);
-
-                            box.setValue(newFieldRef);
+                            if(unit instanceof AssignStmt) {
+                                box.setValue(newFieldRef);
+                            } else {
+                                body.getUnits().remove(unit);
+                            }
                         } else {
                             String string = "Port cannot be " +
                                 "statically determined";
@@ -277,9 +283,13 @@ public class FieldsForPortsTransformer extends SceneTransformer {
         for (Iterator ports = object.portList().iterator();
              ports.hasNext();) {
             Port port = (Port)ports.next();
-
+            
+            // Skip over ParameterPorts
+            if(port instanceof ParameterPort) {
+                continue;
+            }
             String fieldName =
-                StringUtilities.sanitizeName(port.getName(container));
+                ModelTransformer.getFieldNameForPort(port, container);
             SootField field;
             if (!theClass.declaresFieldByName(fieldName)) {
                 throw new RuntimeException("Class " + theClass

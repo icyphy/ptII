@@ -41,6 +41,7 @@ import soot.jimple.toolkits.invoke.MethodCallGraph;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// UnreachableMethodRemover
@@ -95,12 +96,20 @@ public class UnreachableMethodRemover extends SceneTransformer {
 
         // Temporary hack to deal with interfaces...  assume that methods of
         // interfaces are automatically reachable.
-        HashSet interfaceMethodSet= new HashSet();
+        HashSet forcedReachableMethodSet = new HashSet();
         // Loop over all the classes...
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
              i.hasNext();) {
             SootClass theClass = (SootClass)i.next();
 
+            // If we are in actor mode, then assert that all the methods
+            // of the toplevel class are reachable.
+            SootClass modelClass = ModelTransformer.getModelClass();
+            if(false && theClass.equals(modelClass)) { // FIXME
+                Set methodSignatureSet = _getMethodSignatureSet(theClass);
+                forcedReachableMethodSet.addAll(methodSignatureSet);
+            }
+            
             // Assume that any method that is part of an interface that this
             // object implements, is reachable.
             for (Iterator interfaces = theClass.getInterfaces().iterator();
@@ -111,25 +120,15 @@ public class UnreachableMethodRemover extends SceneTransformer {
                         "ptolemy.graph.InequalityTerm")) {
                     continue;
                 }
-                for (Iterator methods =
-                         theInterface.getMethods().snapshotIterator();
-                     methods.hasNext();) {
-                    SootMethod method = (SootMethod)methods.next();
-                    SootMethod aMethod = theClass.getMethod(
-                            method.getSubSignature());
-                    if (aMethod != null) {
-                        System.out.println("Assuming interface method " +
-                                aMethod + " is reachable");
-                        interfaceMethodSet.add(aMethod);
-                    }
-                }
+                Set methodSignatureSet = _getMethodSignatureSet(theInterface);
+                forcedReachableMethodSet.addAll(methodSignatureSet);
             }
-        }
+        }       
 
         // Construct the graph of methods that are directly reachable
         // from any method.
-        MethodCallGraph methodCallGraph =
-            (MethodCallGraph)invokeGraph.newMethodGraph(interfaceMethodSet);
+        MethodCallGraph methodCallGraph = (MethodCallGraph)
+            invokeGraph.newMethodGraph(forcedReachableMethodSet);
 
         // Compute the transitive closure of the method call graph,
         // starting from main(), finalize(), etc..
@@ -153,6 +152,25 @@ public class UnreachableMethodRemover extends SceneTransformer {
                 }
             }
         }
+    }
+
+    // Return a set of strings containing all the signatures of
+    // methods in the cgiven class.
+    private Set _getMethodSignatureSet(SootClass theClass) {
+        Set methodSignatureSet = new HashSet();
+        for (Iterator methods =
+                 theClass.getMethods().snapshotIterator();
+             methods.hasNext();) {
+            SootMethod method = (SootMethod)methods.next();
+            SootMethod aMethod = theClass.getMethod(
+                    method.getSubSignature());
+            if (aMethod != null) {
+                System.out.println("Assuming method " +
+                        aMethod + " is reachable");
+                methodSignatureSet.add(aMethod);
+            }
+        }
+        return methodSignatureSet;
     }
 
     private static UnreachableMethodRemover instance =

@@ -135,10 +135,12 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
         _units.insertBefore(Jimple.v().newAssignStmt(
                 tokenLocal, Jimple.v().newNewExpr(
-                        RefType.v(PtolemyUtilities.arrayTokenClass))), _insertPoint);
+                        RefType.v(PtolemyUtilities.arrayTokenClass))), 
+                _insertPoint);
         _units.insertBefore(Jimple.v().newInvokeStmt(
                 Jimple.v().newSpecialInvokeExpr(tokenLocal,
-                        PtolemyUtilities.arrayTokenConstructor, local)), _insertPoint);
+                        PtolemyUtilities.arrayTokenConstructor, local)),
+                _insertPoint);
 
         _nodeToLocal.put(node, tokenLocal);
     }

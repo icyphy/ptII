@@ -352,12 +352,13 @@ public class InlinePortTransformer extends SceneTransformer {
                             continue;
                         }
 
-                        if (port instanceof Typeable) {
-                            PtolemyUtilities.inlineTypeableMethods(body,
-                                    stmt, box, r, (Typeable)port);
+                        // If we do this, then we have to get rid of
+                        // the ports.
+//                         if (port instanceof Typeable) {
+//                             PtolemyUtilities.inlineTypeableMethods(body,
+//                                     stmt, box, r, (Typeable)port);
 
-                        }
-
+//                         }
 
                         // Inline namedObj methods on the attribute.
                         if (r.getMethod().getSubSignature().equals(
@@ -377,12 +378,12 @@ public class InlinePortTransformer extends SceneTransformer {
                                         methodName.equals("hasRoom") ||
                                         methodName.equals("get") ||
                                         methodName.equals("put"))) {
-                                // NOTE: broadcast is legal on a zero
-                                // width port.
-
-                                // If we try to get on a port with
-                                // zero width, then throw a runtime
-                                // exception.
+                            // NOTE: broadcast is legal on a zero
+                            // width port.
+                            
+                            // If we try to get on a port with
+                            // zero width, then throw a runtime
+                            // exception.
                             Local local = SootUtilities.createRuntimeException(body, stmt,
                                     methodName + "() called on a port with zero width: " +
                                     port.getFullName() + "!");
@@ -581,12 +582,15 @@ public class InlinePortTransformer extends SceneTransformer {
                             continue;
                         }
 
-                        if (port instanceof Typeable) {
-                            PtolemyUtilities.inlineTypeableMethods(body,
-                                    stmt, box, r, (Typeable)port);
+                        /** Don't do this for inside connections, to
+                         * allow for properly defined ports of
+                         * toplevel composites.
+                         */
+                     //    if (port instanceof Typeable) {
+//                             PtolemyUtilities.inlineTypeableMethods(body,
+//                                     stmt, box, r, (Typeable)port);
 
-                        }
-
+//                         }
 
                         // Inline namedObj methods on the attribute.
                         if (r.getMethod().getSubSignature().equals(
