@@ -157,7 +157,7 @@ Berkeley, CA 94706</property>
                         </property>
                         <property name="timeout">120</property>
                         <property name="JVMResolution">1</property>
-                        <property name="bundledJVMSource"/>
+                        <property name="bundledJVMSource">C:\Program Files\InstallShield\ISMPP40\jvms\win32\sun_win32_13.jvm</property>
                         <property name="bundledJVMArguments"/>
                     </extendedProperty>
                     <property name="JVMId">jvm</property>
