@@ -98,7 +98,7 @@ public class VergilApplication extends MDIApplication {
 		}
 		else {
 		    return GUIUtilities.getFileExtension(file).
-                    toLowerCase().equals("xml");
+                        toLowerCase().equals("xml");
 		}
 	    }
 	    public String getDescription() {
@@ -150,7 +150,7 @@ public class VergilApplication extends MDIApplication {
     public JComponent createView(Document d) {
         //FIXME
 	GraphPane pane = new GraphPane(new EditorGraphController(),
-				       new VergilGraphImpl());
+                new VergilGraphImpl());
 	JGraph jgraph = new JGraph(pane);
 	new EditorDropTarget(jgraph);
         GraphController controller =
@@ -168,8 +168,8 @@ public class VergilApplication extends MDIApplication {
 
 	ActionListener deletionListener = new DeletionListener();
         jgraph.registerKeyboardAction(deletionListener, "Delete",
-	    KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
-	    JComponent.WHEN_IN_FOCUSED_WINDOW);
+                KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
+                JComponent.WHEN_IN_FOCUSED_WINDOW);
         jgraph.setRequestFocusEnabled(true);
         jgraph.addMouseListener(new MouseFocusMover());
         return jgraph;
@@ -194,8 +194,8 @@ public class VergilApplication extends MDIApplication {
 		    Object userObject =
                         ((Figure)selection[i]).getUserObject();
 		    if(userObject instanceof Edge) {
-                       model.removeSelection(selection[i]);
-		       Edge edge = (Edge) userObject;
+                        model.removeSelection(selection[i]);
+                        Edge edge = (Edge) userObject;
                         controller.removeEdge(edge);
 		    }
                 }
@@ -204,7 +204,7 @@ public class VergilApplication extends MDIApplication {
 		if(selection[i] instanceof Figure) {
 		    Object userObject =
                         ((Figure)selection[i]).getUserObject();
-		   if(userObject instanceof Node) {
+                    if(userObject instanceof Node) {
                         model.removeSelection(selection[i]);
 			Node node = (Node) userObject;
 			controller.removeNode(node);
@@ -385,7 +385,7 @@ public class VergilApplication extends MDIApplication {
                 }
                 try {
 		    CompositeActor toplevel =
-		    (CompositeActor) d.getGraph();
+                        (CompositeActor) d.getGraph();
 
                     // FIXME there is alot of code in here that is similar
                     // to code in MoMLApplet and MoMLApplication.  I think
@@ -396,8 +396,8 @@ public class VergilApplication extends MDIApplication {
                         ptolemy.domains.sdf.kernel.SDFDirector director =
                             new ptolemy.domains.sdf.kernel.SDFDirector(
                                     toplevel.workspace());
-		    //		    _entityLibrary.getEntity(
-		    //	(String)_directorComboBox.getSelectedItem());
+                        //		    _entityLibrary.getEntity(
+                        //	(String)_directorComboBox.getSelectedItem());
                         toplevel.setDirector(director);
                         director.iterations.setExpression("25");
                     }
@@ -452,7 +452,7 @@ public class VergilApplication extends MDIApplication {
 			}
 		    };
 		    javax.swing.Timer timer =
-		    new javax.swing.Timer(200, packer);
+                        new javax.swing.Timer(200, packer);
 		    timer.setRepeats(false);
 		    timer.start();
                 } catch (Exception ex) {

@@ -103,7 +103,7 @@ public class VergilDocument extends AbstractDocument {
 	MoMLParser parser = new MoMLParser();
 	CompositeEntity toplevel =
 	    (CompositeEntity) parser.parse(schematicURL,
-					   new FileInputStream(getFile()));
+                    new FileInputStream(getFile()));
 	setGraph(toplevel);
     }
 

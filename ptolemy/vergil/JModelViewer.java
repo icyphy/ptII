@@ -53,7 +53,7 @@ public class JModelViewer extends JGraph {
     public JModelViewer(CompositeEntity entity) {
         super();
 	GraphPane pane = new GraphPane(new ViewerGraphController(),
-				       new VergilGraphImpl());
+                new VergilGraphImpl());
         setGraphPane(pane);
         GraphController controller =
 	    pane.getGraphController();
