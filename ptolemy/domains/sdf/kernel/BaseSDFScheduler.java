@@ -397,13 +397,30 @@ public abstract class BaseSDFScheduler extends Scheduler {
                 Iterator relations = container.relationList().iterator();
                 while (relations.hasNext()) {
                     Relation relation = (Relation)relations.next();
-                    int bufferSize =
-                        ((Integer)minimumBufferSizes.get(relation)).intValue();
-                    _setOrCreate(relation, "bufferSize", bufferSize);
-                    if (_debugging) {
-                        _debug("Adding bufferSize parameter to "
-                                + relation.getName() +
-                                " with value " + bufferSize);
+                    Object bufferSizeObject = 
+                            minimumBufferSizes.get(relation);
+                    if (bufferSizeObject instanceof Integer) {
+                        int bufferSize = ((Integer)bufferSizeObject).intValue();
+                        _setOrCreate(relation, "bufferSize", bufferSize);
+                        if (_debugging) {
+                            _debug("Adding bufferSize parameter to "
+                                    + relation.getName() +
+                                    " with value " + bufferSize);
+                        }
+                    } else if (bufferSizeObject instanceof String) {
+                        String bufferSizeExpression = (String)bufferSizeObject; 
+                        _setOrCreate(relation, "bufferSize", 
+                                bufferSizeExpression);
+                        if (_debugging) {
+                            _debug("Adding bufferSize parameter to "
+                                    + relation.getName() +
+                                    " with expression " + bufferSizeExpression);
+                        }
+                    } else {
+                        throw new InternalErrorException("Invalid value found "
+                                + "in buffer size map.\nValue is of type "
+                                + bufferSizeObject.getClass().getName() 
+                                + ".\nIt should be of type Integer or String.\n"                                );
                     }
                 }
             }
