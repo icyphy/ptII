@@ -46,7 +46,7 @@ not sufficient.
 @author Lukito Muliadi, Edward A. Lee
 @version $Id$
 @see ptolemy.actor.util.CalendarQueue
-@see collections.Comparator
+@see java.util.Comparator
 */
 
 public interface CQComparator extends Comparator {
