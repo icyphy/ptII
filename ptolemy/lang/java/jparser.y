@@ -146,7 +146,7 @@ import ptolemy.lang.*;
 %type<obj> ArgumentListOpt ArgumentList
 %type<obj> DimExprs ElementInitializers
 
-%type<obj> FieldAccess
+%type<obj> FieldAccess 
 
 %type<obj> Type ReferenceType PrimitiveType ClassOrInterfaceType ArrayType
 %type<obj> Void SuperOpt
@@ -242,9 +242,9 @@ ReferenceType :
 
 PrimitiveType :
 	  BOOLEAN
-		{ $$ = BoolTypeNode.instance; }
+	    { $$ = BoolTypeNode.instance; }
 	| CHAR
-		{ $$ = CharTypeNode.instance; }
+	    { $$ = CharTypeNode.instance; }
 	| BYTE
 		{ $$ = ByteTypeNode.instance; }
 	| SHORT
@@ -403,9 +403,15 @@ FieldDeclaration :
 		{ $$ = cons($1); }
      /* NEW : Java 1.1 : D.1.3 : Instance initializers */
    | InstanceInitializer
-       { $$ = cons($1); } 
-     /* NEW : Java 1.1 : D.1.1 : Inner classes */
-   | ClassDeclaration
+       { $$ = cons($1); }
+     /*  NEW : Java 1.1 : D.1.1 : Inner classes
+      *  It's ambiguous whether or not there is a semicolon following
+      *  the declaration.
+      *  Also, apparently inner interfaces are allowed too.
+      */
+   | TypeDeclaration
+       { $$ = cons($1); }
+   | TypeDeclaration ';'
        { $$ = cons($1); }
 	;
 
@@ -611,7 +617,7 @@ ConstructorDeclaration :
 	| FieldModifiersOpt IDENTIFIER '(' ParameterListOpt ')'  ThrowsOpt
    '{' BlockStatementsOpt '}'
 	    {
-       Modifier.checkConstructorModifiers($1);
+         Modifier.checkConstructorModifiers($1);
 	      $$ = new ConstructorDeclNode($1, $2, (LinkedList) $4, (LinkedList) $6,
 					    new SuperConstructorCallNode(new LinkedList()),
 					    new BlockNode((LinkedList) $8));
@@ -681,12 +687,18 @@ InterfaceMemberDeclarationsOpt :
 		{ $$ = new LinkedList(); }
 	| InterfaceMemberDeclaration InterfaceMemberDeclarationsOpt
 		{ $$ = appendLists((LinkedList) $1, (LinkedList) $2); }
+
+
 	;
 
 InterfaceMemberDeclaration :
 	  ConstantFieldDeclaration
 	| MethodSignatureDeclaration
 		{ $$ = cons($1); }
+   | TypeDeclaration
+       { $$ = cons($1); }
+   | TypeDeclaration ';'
+       { $$ = cons($1); }
 	;
 
 ConstantFieldDeclaration :
@@ -784,7 +796,8 @@ BlockStatement :
 
 /* Section 8.2 */
 
-// is there some way to get rid of this repetition of code??
+// is there some way to get rid of this repetition of code?? use of FinalOpt
+// results in ambiguity.
 LocalVariableDeclarationStatement :
      FINAL Type VariableDeclarators ';'
      {
@@ -1008,6 +1021,10 @@ PrimaryExpression :
 	  Name			%prec ')'
 		{ $$ = new ObjectNode((NameNode) $1); }
 	| NotJustName
+   | Name '.' CLASS
+       { $$ = new TypeClassAccessNode(new TypeNameNode((NameNode) $1)); }
+   | Name '.' THIS
+       { $$ = new OuterClassAccessNode(new TypeNameNode((NameNode) $1)); }
 	;
 
 NotJustName :
@@ -1029,6 +1046,13 @@ ComplexPrimary :
 	| FieldAccess
 		{ $$ = $1; }
 	| MethodCall
+     /* NEW : Java 1.1 : D.7.3 : type class access */
+   | PrimitiveType '.' CLASS
+       { $$ = new TypeClassAccessNode((TypeNode) $1); }
+   | Void '.' CLASS
+       { $$ = new TypeClassAccessNode((TypeNode) $1); }
+   | ArrayType '.' CLASS
+       { $$ = new TypeClassAccessNode((TypeNode) $1); }
 	;
 /* Note: The fifth production above is redundant, but helps resolve a  */
 /* LALR(1) lookahead conflict arising in cases like "(T) + x" (Do we reduce  */
@@ -1046,11 +1070,27 @@ SimpleName :
 	  	{ $$ = new NameNode(AbsentTreeNode.instance, $1); }
 	;
 
+/*
 QualifiedName :
 	  Name '.' IDENTIFIER
 		{ $$ = new NameNode((NameNode) $1, $3); }
+   | Name '.' CLASS
+       {
+         // We need to convert the ObjectNode into a TypeClassAccessNode later
+         $$ = new NameNode((NameNode) $1, "<class>");
+       }
+   | Name '.' THIS
+       {
+         // We need to convert the ObjectNode into a OuterClassAccessNode later
+         $$ = new NameNode((NameNode) $1, "<this>");
+       }
 	;
+*/
 
+QualifiedName :
+	  Name '.' IDENTIFIER
+		{ $$ = new NameNode((NameNode) $1, $3); }
+   ;
 
 /* Section 9.5 */
 
@@ -1065,7 +1105,7 @@ ArrayAccess :
 /* Section 9.6 */
 
 FieldAccess :
-/* The following never matches Name '.' IDENTIFIER */
+     /* The following never matches Name '.' IDENTIFIER */
 	  PrimaryExpression '.' SimpleName
 		{ $$ = new ObjectFieldAccessNode((TreeNode) $1, (NameNode) $3); }
 	| SUPER '.' SimpleName
@@ -1080,7 +1120,7 @@ MethodCall :
    { $$ = new MethodCallNode((NameNode) $1, (LinkedList) $3); }
 	| FieldAccess '(' ArgumentListOpt ')'
 		{ $$ = new MethodCallNode((TreeNode) $1, (LinkedList) $3); }
-/* Redundant production to handle Name '(' ... ')'. */
+     /* Redundant production to handle Name '(' ... ')'. */
 	| Name '.' IDENTIFIER '(' ArgumentListOpt ')'
 		{ $$ = new MethodCallNode(new NameNode((NameNode) $1, $3), (LinkedList) $5); }
 	;
@@ -1104,9 +1144,13 @@ ArgumentList :
 AllocationExpression :
 	  NEW ClassOrInterfaceType '(' ArgumentListOpt ')'
 		{ $$ = new AllocateNode((TypeNode) $2, (LinkedList) $4); }
+     /* NEW: Java 1.1 : D.2.1 Anonymous Classes */
+   | NEW ClassOrInterfaceType '(' ArgumentListOpt ')' ClassBody
+       { $$ = new AllocateAnonymousClassNode((TypeNode) $2,
+         (LinkedList) $4, (LinkedList) $6); }
 	| NEW ClassOrInterfaceType DimExprs DimsOpt
 		{ $$ = new AllocateArrayNode((TypeNode) $2, (LinkedList) $3, $4); }
-        | NEW PrimitiveType DimExprs DimsOpt
+   | NEW PrimitiveType DimExprs DimsOpt
 		{ $$ = new AllocateArrayNode((TypeNode) $2, (LinkedList) $3, $4); }
 	;
 

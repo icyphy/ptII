@@ -10,7 +10,8 @@ import ptolemy.lang.*;
 %%
 
 %integer
-
+%full
+%line
 %notunix
 
 %{
@@ -26,7 +27,8 @@ OCT=[0-7]
 Letter=[a-zA-Z_]
 AlphaNum=({Letter}|{DEC})
 
-LiteralChar=(\\([btnfr\"'\\]|{OCT}{OCT}{OCT}?|[0-3]{OCT}{OCT}{OCT})|[^'\"\n])
+UnicodeChar=(\\u+{HEX}{HEX}{HEX}{HEX})
+LiteralChar=(\\([btnfr\"'\\]|{OCT}{OCT}?|[0-3]{OCT}{OCT})|[^'\"\n]|{UnicodeChar})
 
 C_StyleComment=("/*"([^*]|"*"+[^*/])*"*"+"/")
 CPlusPlusStyleComment=("//".*[\n\r])
@@ -177,7 +179,7 @@ CPlusPlusStyleComment=("//".*[\n\r])
      }
 		}
 
-[-=><!~?:+*/&|\^%]   { System.out.println("got " + yytext()); return yytext().charAt(0); }
+["-=><!~?:+*/&|^%"]   { System.out.println("got " + yytext()); return yytext().charAt(0); }
 
 "&&"		{ return parser.CAND; }
 "||"		{ return parser.COR; }
@@ -203,6 +205,7 @@ CPlusPlusStyleComment=("//".*[\n\r])
 "--"		{ return parser.MINUSMINUS; }
 
 .	{
-      throw new RuntimeException("Unmatched input : " + yytext());
+      throw new RuntimeException("Lexical error : Line " + (1 + yyline) +
+"Unmatched input : " + yytext());
 		}
 

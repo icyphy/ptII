@@ -44,7 +44,7 @@ public class SearchPath extends Vector {
     if (envar != null) {
 
        //String envalue = System.getProperty(envar, fallbacks);
-       String envalue = ".;c:\\users\\ctsay\\ptII";
+       String envalue = ".;c:\\users\\ctsay\\ptII;c:\\users\\ctsay\\javasrc";
        //String envalue = System.getenv(envar);
 
        ApplicationUtility.trace("envalue = " + envalue);
@@ -110,7 +110,7 @@ public class SearchPath extends Vector {
       if (end == -1) {
          _addPath(paths.substring(begin));
       } else {
-         _addPath(paths.substring(begin, end - begin));
+         _addPath(paths.substring(begin, end));
          begin = end + 1;
       }
     } while (end > -1);

@@ -44,6 +44,7 @@ import ptolemy.lang.TreeNode;
 </nheader>
 
 NamedNode I <none> m NameNode getName m m void setName NameNode name m
+ModifiedNode I <none> m int getModifiers m m void setModifiers int modifiers m
 
 NameNode C TreeNode k 0 TreeNode qualifier String ident k
 TypeNode A TreeNode c 0 c
@@ -101,6 +102,7 @@ DeclaratorNode C TreeNode i NamedNode i k 0 int dims NameNode name TreeNode init
 
 PackageNode C TreeNode i NamedNode i k 0 NameNode name k
 NullTypeNode S TypeNode
+OuterClassAccessNode C ExprNode k 0 TypeNameNode name k
 
 // Declarations
 
@@ -109,23 +111,23 @@ ImportNode C TreeNode i NamedNode i k 0 NameNode name k
 ImportOnDemandNode C TreeNode i NamedNode i k 0 NameNode name k
 
 // may not work for anonymous classes
-ClassDeclNode C ReferenceTypeNode i NamedNode i k 0 int modifiers NameNode name TreeNode superClass LinkedList interfaces LinkedList members k
+ClassDeclNode C ReferenceTypeNode i NamedNode ModifiedNode i k 0 int modifiers NameNode name TreeNode superClass LinkedList interfaces LinkedList members k
 
-FieldDeclNode C TreeNode i NamedNode i k 0 int modifiers TypeNode dtype NameNode name TreeNode initExpr k
-VarDeclNode C TreeNode i NamedNode i k 0 int modifiers TypeNode dtype NameNode name TreeNode initExpr k
+FieldDeclNode C TreeNode i NamedNode ModifiedNode i k 0 int modifiers TypeNode dtype NameNode name TreeNode initExpr k
+VarDeclNode C TreeNode i NamedNode ModifiedNode i k 0 int modifiers TypeNode dtype NameNode name TreeNode initExpr k
 
 // body may be absent
-MethodDeclNode C TreeNode i NamedNode i k 0 int modifiers LinkedList params TypeNode returnType NameNode name LinkedList throwsList TreeNode body k
+MethodDeclNode C TreeNode i NamedNode ModifiedNode i k 0 int modifiers LinkedList params TypeNode returnType NameNode name LinkedList throwsList TreeNode body k
 
 // TreeNode constructorCall should be more specific -- maybe make a ConstructorCall superclass of ThisCCN and SuperCCN
-ConstructorDeclNode C TreeNode k 0 int modifiers String ident LinkedList params LinkedList throwsList TreeNode constructorCall BlockNode body k
+ConstructorDeclNode C TreeNode i ModifiedNode i k 0 int modifiers String ident LinkedList params LinkedList throwsList TreeNode constructorCall BlockNode body k
 
 ThisConstructorCallNode C TreeNode k 0 LinkedList args k
 StaticInitNode C TreeNode k 0 BlockNode block k
 InstanceInitNode C TreeNode k 0 BlockNode block k
-InterfaceDeclNode C TreeNode i NamedNode i k 0 int modifiers NameNode name LinkedList interfaces LinkedList members k
+InterfaceDeclNode C TreeNode i NamedNode ModifiedNode i k 0 int modifiers NameNode name LinkedList interfaces LinkedList members k
 ArrayInitNode C ExprNode k 0 LinkedList initializers k
-ParameterNode C TreeNode i NamedNode i k 0 int modifiers TypeNode dtype NameNode name k
+ParameterNode C TreeNode i NamedNode ModifiedNode i k 0 int modifiers TypeNode dtype NameNode name k
 SuperConstructorCallNode C TreeNode k 0 LinkedList args k
 BlockNode C StatementNode k 0 LinkedList stmts k
 EmptyStmtNode C StatementNode c 0 c
@@ -165,9 +167,11 @@ ObjectFieldAccessNode C FieldAccessNode i NamedNode i k 0 TreeNode object NameNo
 SuperFieldAccessNode C FieldAccessNode i NamedNode i k 0 NameNode name k
 TypeFieldAccessNode C FieldAccessNode i NamedNode i k 0 TypeNode fType NameNode name k
 ThisFieldAccessNode C FieldAccessNode i NamedNode i k 0 TreeNode theClass NameNode name boolean local k
+TypeClassAccessNode C ExprNode k 0 TypeNode fType k 
 MethodCallNode C ExprNode k 0 TreeNode method LinkedList args k
 AllocateNode C ExprNode k 0 TypeNode dtype LinkedList args k
 AllocateArrayNode C ExprNode k 0 TypeNode dtype LinkedList dimExprs int dims k
+AllocateAnonymousClassNode C ExprNode k 0 TypeNode superType LinkedList superArgs LinkedList members k
 PostIncrNode C IncrDecrNode c 1 ExprNode expr c
 PostDecrNode C IncrDecrNode c 1 ExprNode expr c
 UnaryPlusNode C UnaryArithNode c 1 ExprNode expr c

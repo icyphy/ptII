@@ -148,7 +148,7 @@ public abstract class TreeNode extends PropertyMap {
   public void traverseChildren(IVisitor v, LinkedList args) {
     LinkedList retList = TNLManip.traverseList(v, this, args, _childList);
 
-    setProperty("childReturnValues", (Object) retList);
+    setProperty("childReturnValues", retList);
   }
 
   public Object getChild(int index) {
@@ -159,7 +159,11 @@ public abstract class TreeNode extends PropertyMap {
     _childList.set(index, child);
   }
 
-  public LinkedList children() { return _childList; }
+  public LinkedList children() { return _childList; } // change this name
+
+  public void setChildren(LinkedList childList) {
+    _childList = childList;
+  }
 
   protected Object acceptHere(IVisitor v, LinkedList visitorArgs) {
     Class myClass = getClass();
