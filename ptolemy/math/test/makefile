@@ -46,7 +46,9 @@ JSRCS = \
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
+	ArrayMath.tcl \
 	Complex.tcl \
+	ExtendedMath.tcl \
 	SignalProcessing.tcl
 
 # Graphical Java tests that use Tcl.
