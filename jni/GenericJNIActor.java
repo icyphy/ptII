@@ -459,38 +459,38 @@ public class GenericJNIActor extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
 
         //getting the in/inout parameters
-        Iterator arguments = argumentsList().iterator();
+	Iterator ports = this.portList().iterator();
         Vector args = new Vector();
-        while (arguments.hasNext()) {
-            TypedIOPort port = (TypedIOPort) arguments.next();
-            if (port.isInput() && port.hasToken(0) &&
-                    !(port.isOutput()&&!port.isInput())) {
-                Token tok = (Token) port.get(0);
+        while (ports.hasNext()) {
+	    Object object = ports.next();
+	    TypedIOPort port = (TypedIOPort) ports.next();
+	    if (port.isInput() && port.hasToken(0) &&
+		!(port.isOutput()&&!port.isInput())) {
+		Token tok = (Token) port.get(0);
 
-                String typ = (String) _methods[_methodIndex]
-                    .getParameterTypes()[args.size()].toString();
-                if (typ.equals("boolean")) {
-                    args.add(new Boolean((boolean)
-                                     ((BooleanToken) tok).booleanValue()));
-                } else if (typ.equals("int")) {
-                    args.add(new Integer((int)((IntToken) tok).intValue()));
-                } else if (typ.equals("double")) {
-                    args.add(new Double((double)((DoubleToken) tok)
-                            .doubleValue()));
-                } else if (typ.equals("class [I")) {
-                    int siz = ((ArrayToken) tok).arrayValue().length;
-                    int[] tab = new int[siz];
-                    for (int j = 0; j < siz; j++)
-                        tab[j] = (int) ((IntToken) (((ArrayToken) tok)
-                                                .arrayValue()[j]))
-                            .intValue();
-                    //(int[])((ArrayToken)tok).arrayValue();
-                    args.add((Object)tab);
-                } else {
-                    System.out.println("The intype is not convertible "
-                            + "with Ptolemy II types.");
-                }
-
+		String typ = (String) _methods[_methodIndex]
+		    .getParameterTypes()[args.size()].toString();
+		if (typ.equals("boolean")) {
+		    args.add(new Boolean((boolean)
+					 ((BooleanToken) tok).booleanValue()));
+		} else if (typ.equals("int")) {
+		    args.add(new Integer((int)((IntToken) tok).intValue()));
+		} else if (typ.equals("double")) {
+		    args.add(new Double((double)((DoubleToken) tok)
+					.doubleValue()));
+		} else if (typ.equals("class [I")) {
+		    int siz = ((ArrayToken) tok).arrayValue().length;
+		    int[] tab = new int[siz];
+		    for (int j = 0; j < siz; j++)
+			tab[j] = (int) ((IntToken) (((ArrayToken) tok)
+						    .arrayValue()[j]))
+			    .intValue();
+		    //(int[])((ArrayToken)tok).arrayValue();
+		    args.add((Object)tab);
+		} else {
+		    System.out.println("The intype is not convertible "
+				       + "with Ptolemy II types.");
+		}
             }
         }
         //tBFixed : the out parameter is not in by definition
@@ -533,18 +533,37 @@ public class GenericJNIActor extends TypedAtomicActor {
                         error);
             }
         } catch (Exception ex) {
-            MessageHandler.error("Class cannot be instantiated: ",
-                    ex);
+	    throw new IllegalActionException(this, ex,
+					     "Class cannot be instantiated");
         }
 
         try {
             ret = _methods[_methodIndex].invoke(obj, args.toArray());
-        } catch (Exception ex) {
-            MessageHandler.error("Native operation call failed : ",
-                    ex);
+        } catch (Throwable ex) {
+	    StringBuffer argumentsDescription = new StringBuffer("");
+	    try {
+		if (args.size() >= 1 ) { 
+		    argumentsDescription.append(args.elementAt(0)
+						.toString());
+		    for (int i = 1; i < args.size(); i++) {
+			argumentsDescription.append(", "
+						    + args.elementAt(i)
+						    .toString());
+		    }
+		}
+	    } catch (Exception ex2) {
+		// Ignore
+	    }
+	    throw new IllegalActionException(this, ex,
+					     "Native operation call failed."
+					     + "Failed to invoke '" + obj
+					     + "' with " + args.size()
+					     + " arg(s) "
+					     + argumentsDescription.toString()
+					     );
         }
 
-        arguments = argumentsList().iterator();
+        Iterator arguments = argumentsList().iterator();
         while (arguments.hasNext()) {
             TypedIOPort port = (TypedIOPort) arguments.next();
             //if the argument is return
