@@ -58,6 +58,7 @@ JSRCS = \
 MISC_FILES =	$(DIRS) \
 	Counter1.xml \
 	Counter2.xml \
+	ExpressionTest.xml \
 	MatlabExpression.xml \
 	mFileTest.m \
 	mFileTest.xml
