@@ -198,7 +198,7 @@ public class PropertyClassChanges implements MoMLFilter {
             new StringBuffer(getClass().getName()
                     + ": Update any actor port class names\n"
                     + "that have been renamed.\n"
-                    + "Below are the actors that are affected, along"
+                    + "Below are the actors that are affected, along "
                     + "with the port name\nand the new classname:"
                              );
         Iterator actors = _actorsWithPropertyClassChanges.keySet().iterator();
