@@ -27,7 +27,7 @@
 
 package ptolemy.math.filter;
 
-import ptolemy.math.Complex;
+import ptolemy.math.*;
 import collections.*;
 //////////////////////////////////////////////////////////////////////////
 //// DigitalFilter
@@ -69,15 +69,9 @@ public abstract class DigitalFilter extends Filter{
     */
     public abstract Complex[] getPoles();
 
-    
     public abstract void addPoleZero(Complex pole, Complex zero, boolean conj);
 
-    public abstract Complex [] getFrequencyResponse();
 
-    public int getFreqStep(){
-        return NUMSTEP;
-    }
- 
     /** Take as parameter a conjugate pair of pole locations and 
      * incorporate them into the current transfer function of the
      * filter.  This method should be overwritten in the derived classes.
@@ -236,7 +230,7 @@ public abstract class DigitalFilter extends Filter{
         } else{ 
             iternum = filter.order/2 + 1;
         }
-        System.out.println("filter.order = " + filter.order);
+        
         int k;
         k = 0;
         double gain = 1.0;
@@ -251,9 +245,10 @@ public abstract class DigitalFilter extends Filter{
         for (int i = 0; i < zFactors.length; i++) {
             zFactors[i] = new RealZFactor();
         }
-        System.out.println("iternum = " + iternum);
+        
 
         for (int iter = 0; iter < iternum; iter++){
+            
             // transformation 
             gain *= _bilinear(sFactors[iter], zFactors[iter], fs);
         }
@@ -262,15 +257,16 @@ public abstract class DigitalFilter extends Filter{
         designedFilter.clearFactors();
         
         // add the gain of DigitalFilter 
-        designedFilter.addFactor(new RealZFactor(new double[] {1,0,0}, 
-        new double[] {1,0,0}, gain));
+        designedFilter.addFactor(new RealZFactor(new double[] {1}, 
+        new double[] {1}, gain));
         System.out.println("gain = " + gain);
-
+        
         // put in the transformed z factors
+               
         for (int i = 0; i < zFactors.length; i++) {
             designedFilter.addFactor(zFactors[i]);
         }
-        System.out.println("here?");
+       
         return designedFilter;
     }
 
@@ -278,9 +274,9 @@ public abstract class DigitalFilter extends Filter{
     /**
      * Bilinear transformates of a given bi-quad, in sFactor,  
      * 
-     * from:  a2+a1*s+a0*s^2            to:     c0*z^-2+c1*z^-1+z
+     * from:  a0+a1*s+a2*s^2            to:     c0*z^-2+c1*z^-1+z
      *       ----------------, sFactor       G* -----------------, zFactor
-     *        b2+b1*s+b0*s^2                    d0*z^-2+d1*z^-1+z
+     *        b0+b1*s+b2*s^2                    d0*z^-2+d1*z^-1+z
      * 
      * Derivation of c1, c0, d1, d0, and gain can be found by 
      * substitude s=2*fs*(z-1)/(z+1) into s-domain factor.
@@ -305,30 +301,35 @@ public abstract class DigitalFilter extends Filter{
         double b1;
         double b2;
         
-        if (snum.length == 3 & snum.length == 3) {
-            a0 = snum[0]; 
+        if (snum.length == 3) {
+            a2 = snum[0]; 
             a1 = snum[1]; 
-            a2 = snum[2]; 
-            b0 = sden[0]; 
-            b1 = sden[1]; 
-            b2 = sden[2]; 
+            a0 = snum[2]; 
         }
         else if (snum.length == 2 & snum.length == 2) {
-            a0 = 0;
+            a2 = 0;
             a1 = snum[0];
-            a2 = snum[1];
-            b0 = 0;
-            b1 = snum[0];
-            b2 = snum[1];
+            a0 = snum[1];
         } else {
-            a0 = 0;
+            a2 = 0;
             a1 = 0;
-            a2 = snum[0];
-            b0 = 0;
-            b1 = 0;
-            b2 = snum[0];
+            a0 = snum[0];
         }
         
+        if (sden.length == 3) {
+            b2 = sden[0];
+            b1 = sden[1];
+            b0 = sden[2];
+        } else if (sden.length == 2) {
+            b2 = 0;
+            b1 = sden[0];
+            b0 = sden[1];
+        } else {
+            b2 = 0;
+            b1 = 0;
+            b0 = sden[0];
+        }
+
         double gain;
         System.out.println("translate these to bilinear: "+a0+" "+a1+" "+a2+
                 "/"+b0+" "+b1+" "+b2);
@@ -358,6 +359,9 @@ public abstract class DigitalFilter extends Filter{
         zden[1] = d1;
         zden[0] = 1.0;
         
+        System.out.println("znum = "+1.0+" "+c1+" "+c0);
+        System.out.println("zden = "+1.0+" "+d1+" "+d0);
+
         zFactor.setNumerator(znum);
         zFactor.setDenominator(zden);
         
@@ -365,20 +369,19 @@ public abstract class DigitalFilter extends Filter{
     }  
     
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         private variables                 ////
 
-    protected boolean _transferFnValid;
-    protected LinkedList _factors;
-    protected int _numberOfFactors;
-    protected boolean _polesZeroesValid;
-
-    protected Complex[] _freqResponse;   
-    protected boolean _freqImpulseValid; 
-    protected Complex[] _poles;
-    protected Complex[] _zeroes;
+    // Private variables should not have doc comments, they should
+    // have regular C++ comments.
+    private LinkedList _factors;
+    private int _numberOfFactors;
+    private boolean _poleZeroesValid;
     
-    protected final double DELTA = 0.01;
-    protected final int NUMSTEP = 150;
+    private Complex[] _poles;
+    private Complex[] _zeroes;
+    
+    private final double DELTA = 0.01;
 }
+
 
 

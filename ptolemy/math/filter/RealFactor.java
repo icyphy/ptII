@@ -30,8 +30,7 @@ package ptolemy.math.filter;
 
 import java.util.Vector;
 import java.util.NoSuchElementException;
-import ptolemy.math.Complex;
- 
+import ptolemy.math.*; 
 //////////////////////////////////////////////////////////////////////////
 //// RealFactor
 /** 
@@ -47,7 +46,7 @@ import ptolemy.math.Complex;
 
 <p> 
 @author  David Teng(davteng@hkn.eecs.berkeley.edu)
-@version %W%	%G%
+@version %W%	%G%
 */
 
 public abstract class RealFactor extends Factor{
@@ -104,6 +103,8 @@ public abstract class RealFactor extends Factor{
      * @return array of Complex poles
      */	
     public Complex[] getPoles(){
+        if (_singlePole == null){ System.out.println("single pole null");}
+if (_conjugatePole == null){ System.out.println("conjugate pole null");}
         return _streamlineComplex(_singlePole, _conjugatePole);
     }
 
@@ -334,17 +335,19 @@ System.out.println("moving the zero to Real: "+real+" Imag: "+imag);
     // @return array of all complex numbers
     private Complex [] _streamlineComplex(Complex[] single, 
                                           ConjugateComplex[] conj){
-
-        int length = single.length + 2*conj.length; 
+        
+        int length = single.length + 2*conj.length;
         Complex [] allComplex = new Complex[length];
 
         int ind;
         for (ind=0;ind<single.length;ind++){
             allComplex[ind] = single[ind];
+        
         }
                 
         for (int i=0;i<conj.length;i++){
             ConjugateComplex conjcomplex = conj[i];
+            
             allComplex[ind++] = conjcomplex.getValue();
             allComplex[ind++] = conjcomplex.getConjValue();
         }

@@ -27,9 +27,8 @@
 
 package ptolemy.math.filter;
 
-import ptolemy.math.Complex;
 import collections.*;
-
+import ptolemy.math.*;
 //////////////////////////////////////////////////////////////////////////
 //// RealAnalogFilter
 /** 
@@ -50,8 +49,6 @@ public class RealAnalogFilter extends AnalogFilter {
     public RealAnalogFilter() {
         _factors = new LinkedList();
         addFactor(new RealSFactor());
-        _zeroes = new Complex[0];
-        _poles = new Complex[0];
         _updatePolesZeroes();
         _updateTransferFn();
     }
@@ -361,6 +358,7 @@ public class RealAnalogFilter extends AnalogFilter {
                 for (int i = 0; i < polyTemp.length; i++) {
                     denom[i] = polyTemp[i].real;
                 }
+                System.out.println("in RAF, denom.length = " + denom.length);
             }
             RealSFactor newFactor = new RealSFactor(numer, denom, 1);
             addFactor(newFactor);

@@ -30,8 +30,7 @@ package ptolemy.math.filter;
 
 import java.util.Vector;
 import java.util.NoSuchElementException;
-import ptolemy.math.Complex;
- 
+import ptolemy.math.*;
 //////////////////////////////////////////////////////////////////////////
 //// RealFactor
 /** 
@@ -212,72 +211,64 @@ public class RealZFactor extends RealFactor{
          Vector singlezero = new Vector();
          Vector conjpole = new Vector();
          Vector conjzero = new Vector();
-
          if (_numerator.length == 1) {
              // single scalar value, no pole/zero produced
          
          } else if (_numerator.length == 2) {
              // case a + bz^-1
-             if (_numerator[0] < TINY) {
-                 // case a = 0
-                 // produce a pole at origin, and zero at infinity 
-                 pole = new Complex(0.0);
-                 zero = new Complex(Double.POSITIVE_INFINITY);
-             } else {
-                 // case a != 0
-                 // produce a pole at origin, and zero at -b/a 
-                 pole = new Complex(0.0);
-                 zero = new Complex(-_numerator[1]/_numerator[0]);
+             Complex[] roots = new Complex[2];
+             double a = _numerator[0];
+             double b = _numerator[1];
+             boolean conjugate = MathWizard.realquadraticRoots(0.0,a,b,roots);
+             if (roots[0] != null) {
+                 pole = new Complex(0);
+                 singlepole.addElement(pole);
+                 singlezero.addElement(roots[0]);
              }
-             singlepole.addElement(pole);
-             singlezero.addElement(zero);
          } else if (_numerator.length == 3){
              // case a + bz^-1 + cz^-2
-             if (_numerator[0] < TINY) {
-                 // case a = 0
-                 // produce two single poles at origin, and a zero 
-                 // at infinity, and a zero at -c/b
-                 pole = new Complex(0.0); 
-                 zero = new Complex(Double.POSITIVE_INFINITY);
-                 singlepole.addElement(pole);
-                 singlezero.addElement(zero);
-                 pole = new Complex(0.0);
-                 zero = new Complex(-_numerator[2]/_numerator[1]);
-                 singlepole.addElement(pole);
-                 singlezero.addElement(zero);
+             // solve this numerator use quadratic eq produce 
+             // two zero.  Since quadratic function solves positive power 
+             // polynomial, thus the "c" in numerator will be "a" in the 
+             // quadratic equation, and "a" in the numerator will be "c" 
+             // in the quadratic equation. 
+             double a = _numerator[0];   
+             double b = _numerator[1];   
+             double c = _numerator[2]; 
+             Complex [] roots = new Complex[2]; 
+              
+             boolean conjugate = 
+                 MathWizard.realquadraticRoots(a, b, c, roots); 
+             
+             if (conjugate){
+                 // produce two complex conjugate zeroes, and two
+                 // conjugate poles at infinity.
+                 ConjugateComplex conjz = new ConjugateComplex(roots[0]);
+                 conjzero.addElement(conjz);
+                 ConjugateComplex conjp = 
+                     new ConjugateComplex(
+                             new Complex(0));
+                 
+                  conjpole.addElement(conjp);
              } else {
-                 // case a != 0, solve this numerator use quadratic eq produce 
-                 // two zero.  Since quadratic function solves positive power 
-                 // polynomial, thus the "c" in numerator will be "a" in the 
-                 // quadratic equation, and "a" in the numerator will be "c" 
-                 // in the quadratic equation. 
-                 double a = _numerator[0];   
-                 double b = _numerator[1];   
-                 double c = _numerator[2]; 
- 
-                 Complex [] roots = new Complex[2]; 
-                
-                 boolean conjugate = MathWizard.realquadraticRoots(a, b, c, roots); 
- 
-                 if (conjugate){
-                     // produce two complex conjugate zeroes, and two
-                     // conjugate poles at origin.
-                     ConjugateComplex conjz = new ConjugateComplex(roots[0]);
-                     conjzero.addElement(conjz);
-                     ConjugateComplex conjp = new ConjugateComplex(new Complex(0.0));
-                      
-                     conjpole.addElement(conjp);
-                 } else {
-                     // produce two single real zeroes, and two single
-                     // poles at origin
-                     pole = new Complex(0.0);
-                     singlepole.addElement(pole);
-                     singlezero.addElement(roots[0]);
-                     pole = new Complex(0.0);
-                     singlepole.addElement(pole);
-                     singlezero.addElement(roots[1]);
-                 }
-             }
+                  if (roots[0] == null && roots[1] == null) {
+                  
+                  } else if (roots[1] == null) {
+                      pole = new Complex(0);
+                      singlepole.addElement(pole);
+                      singlezero.addElement(roots[0]);
+                  }
+                  else {
+                      // produce two single real zeroes, and two single
+                      // poles at infinity
+                            
+                      pole = new Complex(0);
+                      singlepole.addElement(pole);
+                      singlezero.addElement(roots[0]);
+                      singlepole.addElement(pole);
+                      singlezero.addElement(roots[1]);
+                  }
+              }
          } else {
             String str = new String("Only order less than or equal to 2 can be factored ");
             throw new IllegalArgumentException(str);
@@ -288,64 +279,57 @@ public class RealZFactor extends RealFactor{
          
          } else if (_denominator.length == 2) {
              // case a + bz^-1
-             if (_denominator[0] < TINY) {
-                 // case a = 0
-                 // produce a zero at origin, and pole at infinity 
-                 zero = new Complex(0.0);
-                 pole = new Complex(Double.POSITIVE_INFINITY);
-             } else {
-                 // case a != 0
-                 // produce a zero at origin, and pole at -b/a 
-                 zero = new Complex(0.0);
-                 pole = new Complex(-_denominator[1]/_denominator[0]);
+             Complex[] roots = new Complex[2];
+             double a = _denominator[0];
+             double b = _denominator[1];
+             boolean conjugate = MathWizard.realquadraticRoots(0.0,a,b,roots);
+             if (roots[0] != null) {
+                 zero = new Complex(0);
+                 singlezero.addElement(zero);
+                 singlepole.addElement(roots[0]);
              }
-             singlepole.addElement(pole);
-             singlezero.addElement(zero);
          } else if (_denominator.length == 3){
              // case a + bz^-1 + cz^-2
-             if (_denominator[0] < TINY) {
-                 // case a = 0
-                 // produce two single zeroes at origin, and a pole 
-                 // at infinity, and a pole at -c/b
-                 zero = new Complex(0.0); 
-                 pole = new Complex(Double.POSITIVE_INFINITY);
-                 singlepole.addElement(pole);
-                 singlezero.addElement(zero);
-                 zero = new Complex(0.0);
-                 pole = new Complex(-_denominator[2]/_denominator[1]);
-                 singlepole.addElement(pole);
-                 singlezero.addElement(zero);
-             } else {
-                 // case a != 0, solve this denomerator use quadratic eq produce 
-                 // two zero.  Since quadratic function solves positive power 
-                 // polynomial, thus the "c" in numerator will be "a" in the 
-                 // quadratic equation, and "a" in the denomerator will be "c" 
-                 // in the quadratic equation. 
-                 double a = _denominator[0];   
-                 double b = _denominator[1];   
-                 double c = _denominator[2]; 
- 
-                 Complex [] roots = new Complex[2]; 
+             // solve this denomerator use quadratic eq produce 
+             // two zero.  Since quadratic function solves positive power 
+             // polynomial, thus the "c" in numerator will be "a" in the 
+             // quadratic equation, and "a" in the denomerator will be "c" 
+             // in the quadratic equation. 
+
+             double a = _denominator[0];   
+             double b = _denominator[1];   
+             double c = _denominator[2]; 
+             Complex [] roots = new Complex[2]; 
+             
+             boolean conjugate = 
+                 MathWizard.realquadraticRoots(a, b, c, roots); 
+             
+             if (conjugate){
+                 // produce two complex conjugate poles, and two
+                 // conjugate zeroes at infinity.
+                 ConjugateComplex conjp = new ConjugateComplex(roots[0]);
+                 ConjugateComplex conjz = 
+                     new ConjugateComplex(new Complex(0));
                  
-                 boolean conjugate = MathWizard.realquadraticRoots(a, b, c, roots); 
- 
-                 if (conjugate){
-                     // produce two complex conjugate poles, and two
-                     // conjugate zeroes at origin.
-                     ConjugateComplex conjp = new ConjugateComplex(roots[0]);
-                     conjpole.addElement(conjp);
-                     ConjugateComplex conjz = new ConjugateComplex(new Complex(0.0));
-                      
-                     conjzero.addElement(conjz);
-                 } else {
-                     // produce two single real poles, and two single
-                     // zeroes at origin
-                     zero = new Complex(0.0);
+                 conjzero.addElement(conjz);
+                 conjpole.addElement(conjp);
+             } else {
+                 if (roots[0] == null && roots[1] == null) {
+                     
+                 } else if (roots[1] == null) {
+                     zero = new Complex(0);
                      singlezero.addElement(zero);
                      singlepole.addElement(roots[0]);
-                     zero = new Complex(0.0);
+                 }
+                 else {
+                     // produce two single real zeroes, and two single
+                     // poles at infinity
+                     zero = new Complex(0);
+                     singlezero.addElement(zero);
+                     singlepole.addElement(roots[0]);
                      singlezero.addElement(zero);
                      singlepole.addElement(roots[1]);
+                     
                  }
              }
          } else {

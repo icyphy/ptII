@@ -272,41 +272,82 @@ public final class MathWizard {
     public static boolean realquadraticRoots(double a, double b, 
                                            double c, Complex [] roots)
                  throws IllegalArgumentException {
-
-        double discrim = b*b-4.0*a*c;
-        boolean conjugate;
-
+                
         if ((roots == null) || (roots.length < 2)){ 
             String str = new String("Parameter roots must be an array of two Complex");
             throw new IllegalArgumentException(str); 
         }
-
-        if (discrim < -TINY) {
-            // two complex conjugate roots 
-            roots[0] = new Complex(-b/(2*a), Math.pow(-discrim, 0.5)/(2*a));
-            roots[1] = new Complex(-b/(2*a), -Math.pow(-discrim, 0.5)/(2*a));
-            conjugate = true;            
-        } else if ((discrim >= -TINY) && (discrim <= TINY)){
-            // two equal real roots 
-            roots[0] = new Complex(-b/(2*a)); 
-            roots[1] = new Complex(-b/(2*a));
-            conjugate = true;            
-        } else { 
+        
+        double absOfA = Math.abs(a);
+        double absOfB = Math.abs(b);
+        double absOfC = Math.abs(c);
+        
+        boolean conjugate = false;
+        
+        if (absOfA > TINY & absOfB > TINY & absOfC > TINY) {
+            double discrim = b*b-4.0*a*c;
+            
+            if (discrim < -TINY) {
+                // two complex conjugate roots 
+                roots[0] = new Complex(-b/(2*a), 
+                      Math.pow(-discrim, 0.5)/(2*a));
+                roots[1] = new Complex(-b/(2*a), 
+                      -Math.pow(-discrim, 0.5)/(2*a));
+                conjugate = true;            
+            } else if ((discrim >= -TINY) && (discrim <= TINY)){
+                // two equal real roots 
+                roots[0] = new Complex(-b/(2*a)); 
+                roots[1] = new Complex(-b/(2*a));
+                conjugate = true;            
+            } else { 
             // Adapted from "Numerical Recipes in C: The Art of Scientific Computing" 
             // (ISBN 0-521-43108-5)
             // pgs 183-84
-
+            
             // two unequal real roots 
             double q= -0.5*(b+ExtendedMath.sgn(b)*Math.sqrt(discrim));
             roots[0] = new Complex(q/a);
             roots[1] = new Complex(c/q);
             conjugate = false;            
+            }
+        } else if (absOfA < TINY & absOfB > TINY & absOfC > TINY) {
+            roots[0] = new Complex(-c/b);
+            roots[1] = null;
+            conjugate = false;
+        } else if (absOfA < TINY & absOfB < TINY & absOfC > TINY) {
+            roots[0] = null;
+            roots[1] = null;
+            conjugate = false;
+        } else if (absOfA < TINY & absOfB < TINY & absOfC < TINY) {
+            roots[0] = null;
+            roots[0] = null;
+            conjugate = false;
+        } else if (absOfA > TINY & absOfB < TINY & absOfC > TINY) {
+            if (c < 0) {
+                roots[0] = new Complex(Math.pow(-c/a, 0.5));
+                roots[1] = new Complex(-Math.pow(-c/a, 0.5));
+                conjugate = false;
+            } else {
+                roots[0] = new Complex(0,Math.pow(c/a, 0.5));
+                roots[1] = new Complex(0,-Math.pow(c/a, 0.5));
+                conjugate = true;
+            }            
+        } else if (absOfA < TINY & absOfB > TINY & absOfC < TINY) {
+            roots[0] = new Complex(0);
+            roots[1] = null;
+            conjugate = false;
+        } else if (absOfA > TINY & absOfB < TINY & absOfC < TINY) {
+            roots[0] = new Complex(0);
+            roots[1] = new Complex(0);
+            conjugate = true;
+        } else if (absOfA > TINY & absOfB > TINY & absOfC < TINY) {
+            roots[0] = new Complex(0);
+            roots[1] = new Complex(-b/a);
+            conjugate = false;
         }
         return conjugate;
-
     }
-
-    
+        
     /**
      *  array copying.  Return a new double array that is a copy of the 
      *  the one in argument.

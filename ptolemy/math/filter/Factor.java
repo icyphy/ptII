@@ -28,7 +28,7 @@
 
 package ptolemy.math.filter;
 
-import ptolemy.math.Complex;
+import ptolemy.math.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// Factor

@@ -128,7 +128,7 @@ public abstract class AnalogFilter extends Filter {
             stopEdgeGain = gain[1];
 
             if (_debug > 0) {
-                //System.out.println("lowpass or bandstop stopb : "+stopef+
+                //System.out.println("LOWPASS or bandstop stopb : "+stopef+
                 // " stopg: "+stopg+" passb: "+passef+ "passg: "+passg);
             }
         } else if ((filttype == Filter.HIGHPASS) || 
@@ -159,7 +159,7 @@ public abstract class AnalogFilter extends Filter {
             return null;
         }
 
-        // design the lowpass prototype 
+        // design the LOWPASS prototype 
         if (appmethod == Filter.BUTTERWORTH){
 
             // design a analog lowpass unit fc butterworth prototype filter
@@ -176,7 +176,6 @@ public abstract class AnalogFilter extends Filter {
                    _designChebychev1(passEdgeGain, stopEdgeGain,
                            aPassEdgeFreq, aStopEdgeFreq, epsilon);
         } else if (appmethod == Filter.CHEBYSHEV2) {
-            
             epsilon = Math.sqrt(1.0/(passEdgeGain*passEdgeGain)-1);
             
             aFilter = _designChebychev2(passEdgeGain, stopEdgeGain,
@@ -188,67 +187,11 @@ public abstract class AnalogFilter extends Filter {
         }
             
         // transform prototype to desired filter type, then back digital domain
-
         if (filttype == Filter.LOWPASS){
-            System.out.println("before low pass");
-            Complex[] poles = aFilter.getPoles();
-            Complex[] zeroes = aFilter.getZeroes();
-            for (int i = 0; i<poles.length; i++){
-                System.out.println(
-                        "poles are = " + poles[i].real+" and "+poles[i].imag);
-            }
-            for (int i = 0; i<zeroes.length; i++){
-                System.out.println(
-                        "zeroes are = " + zeroes[i].real+" and "+zeroes[i].imag);
-            }
-             RealSFactor[] factors = aFilter.getFactors();
-        double[] numerator;
-        double[] denominator;
-        for (int i = 0; i < aFilter.getNumberOfFactors(); i++) {
-            numerator = factors[i].getNumerator();
-            denominator = factors[i].getDenominator();
-            System.out.println("factor " + i);
-            for (int j = 0; j < numerator.length; j++) {
-                System.out.println("numerator = " + 
-                        numerator[j]);
-            }
-            for (int k = 0; k < numerator.length; k++) {
-                System.out.println("denominator = " + denominator[k]);
-            }
-        }
+                    
         // transfer from unit lowpass to spec lowpass
                _toLowPass(aFilter);
-        System.out.println("after low pass");
-         poles = aFilter.getPoles();
-            zeroes = aFilter.getZeroes();
-            for (int i = 0; i<poles.length; i++){
-                System.out.println(
-                        "poles are = " + poles[i].real+" and "+poles[i].imag);
-            }
-            for (int i = 0; i<zeroes.length; i++){
-                System.out.println(
-                        "zeroes are = " + zeroes[i].real+" and "+zeroes[i].imag);
-            }
-             factors = aFilter.getFactors();
-             for (int i = 0; i < aFilter.getNumberOfFactors(); i++) {
-                 numerator = factors[i].getNumerator();
-                 denominator = factors[i].getDenominator();
-                 System.out.println("factor " + i);
-                 for (int j = 0; j < numerator.length; j++) {
-                     System.out.println("numerator = " + 
-                             numerator[j]);
-                 }
-                 for (int k = 0; k < numerator.length; k++) {
-                     System.out.println("denominator = " + denominator[k]);
-                 }
-                 
-                 if (mapmethod == Filter.BILINEAR){
-                     
-                 } else { 
-                     System.out.println("Only Bilinear is supported"); 
-                     return null;
-                 }
-             }
+            
         } else if (filttype == Filter.HIGHPASS){
             
             if (mapmethod == Filter.BILINEAR){
@@ -359,7 +302,7 @@ public abstract class AnalogFilter extends Filter {
      *  polynomials with s/fc (fc = analog cutoff freq).  So changed values of 
      *  numerator/denominator quadratic coeffients: 
      *
-     *    a0 + a1*s + a2*s^2 -> a1 = a1/fc, a2 = a2/(fc*fc). 
+     *    a2 + a1*s + a0*s^2 -> a1 = a1/fc, a0 = a0/(fc*fc). 
      * 
      *  Result is still in the same RealAnalogFilter object.
      *  
@@ -386,34 +329,35 @@ public abstract class AnalogFilter extends Filter {
             if (squadnum.length == 3) {
                 
                 // transform numerator coef 
-                n0 = squadnum[0];
+                n2 = squadnum[2];
                 n1 = squadnum[1]/filter.analogfc;
-                n2 = squadnum[2]/(filter.analogfc*filter.analogfc);
-                
-                // transform denominator coef   
-                d0 = squadden[0];
-                d1 = squadden[1]/filter.analogfc;
-                d2 = squadden[2]/(filter.analogfc*filter.analogfc);
-            }
-            else if (squadnum.length == 2) {
-                n0 = squadnum[0];
-                n1 = squadnum[1]/filter.analogfc;
-                n2 = 0;
-
-                d0 = squadden[0];
-                d1 = squadden[1]/filter.analogfc;
-                d2 = 0;
-            }
-            else {
-                n0 = squadnum[0];
+                n0 = squadnum[0]/(filter.analogfc*filter.analogfc);
+            } else if (squadnum.length == 2) {
+                n2 = squadnum[1];
+                n1 = squadnum[0]/filter.analogfc;
+                n0 = 0;
+            } else {
+                n2 = squadnum[0];
                 n1 = 0;
-                n2 = 0;
-                
-                d0 = squadden[0];
-                d1 = 0;
-                d2 = 0;
+                n0 = 0;
             }
             
+            if (squadden.length == 3) {
+                // transform denominator coef   
+                d2 = squadden[2];
+                d1 = squadden[1]/filter.analogfc;
+                d0 = squadden[0]/(filter.analogfc*filter.analogfc);
+            } else if (squadden.length == 2) {
+                d2 = squadden[1];
+                d1 = squadden[0]/filter.analogfc;
+                d0 = 0;
+            } else {
+                d2 = squadden[0];
+                d1 = 0;
+                d0 = 0;
+            }
+                
+                
             // update the changes
             theFactors[i].setNumerator(new double[] {n0, n1, n2});
             theFactors[i].setDenominator(new double[] {d0, d1, d2});
@@ -785,7 +729,7 @@ public abstract class AnalogFilter extends Filter {
 
           }
           
-          double [] numercoeff = {1.0, 0.0, 0.0};
+          double [] numercoeff = {0.0, 0.0, 1.0};
           
           for (int ind=0;ind<quadterm;ind++){
               
@@ -801,11 +745,11 @@ public abstract class AnalogFilter extends Filter {
               // if pole's imaginary equal to zero then it's the single pole
               // at -1.0+j0.0 
               if ((pole.imag > -0.00001) && (pole.imag < 0.00001)){
-                  double [] denomcoeff = {1.0, 1.0, 0.0};
+                  double [] denomcoeff = {0.0, 1.0, 1.0};
                   newFactors[ind].setDenominator(denomcoeff);     
               } else {
                   // conjugate pair of complex poles form zeroes for this term
-                  double [] denomcoeff = { pole.mag(), (-2)*(pole.real), 1.0 };
+                  double [] denomcoeff = { 1.0, (-2)*(pole.real), pole.mag()};
                   System.out.println("denominator: "+ pole.mag()+" "+(-2)*(pole.real)+" 1.0");
                   newFactors[ind].setDenominator(denomcoeff);     
               }
@@ -993,7 +937,7 @@ public abstract class AnalogFilter extends Filter {
             designedFilter.addPoleZero(new Complex(sigma,omega), 
                     new Complex(Double.POSITIVE_INFINITY), true);
         }
-        System.out.println("N = " + N);
+        
         if ((int)Math.IEEEremainder(N,2) != 0) {
             mu = (2*N-1)*Math.PI/(2*order);
             sigma = -(sinhPhi*Math.sin(mu))*cutoffFreq;
@@ -1004,17 +948,7 @@ public abstract class AnalogFilter extends Filter {
         designedFilter.analogfc = cutoffFreq;
         
         System.out.println("right after design Cheby1");
-        Complex[] poles = designedFilter.getPoles();
-            Complex[] zeroes = designedFilter.getZeroes();
-            for (int i = 0; i<poles.length; i++){
-                System.out.println(
-                        "poles are = " + poles[i].real+" and "+poles[i].imag);
-            }
-            for (int i = 0; i<zeroes.length; i++){
-                System.out.println(
-                        "zeroes are = " + zeroes[i].real+" and "+zeroes[i].imag);
-            }
-             RealSFactor[] factors = designedFilter.getFactors();
+        RealSFactor[] factors = designedFilter.getFactors();
         double[] numerator;
         double[] denominator;
         for (int i = 0; i < designedFilter.getNumberOfFactors(); i++) {
@@ -1029,6 +963,17 @@ public abstract class AnalogFilter extends Filter {
                 System.out.println("denominator = " + denominator[k]);
             }
         }
+        Complex[] poles = designedFilter.getPoles();
+            Complex[] zeroes = designedFilter.getZeroes();
+            for (int i = 0; i<poles.length; i++){
+                System.out.println(
+                        "poles are = " + poles[i].real+" and "+poles[i].imag);
+            }
+            for (int i = 0; i<zeroes.length; i++){
+                System.out.println(
+                        "zeroes are = " + zeroes[i].real+" and "+zeroes[i].imag);
+            }
+             
         return designedFilter;
     }
 
@@ -1062,8 +1007,7 @@ public abstract class AnalogFilter extends Filter {
         designedFilter.clearFactors();
         int N = (int)Math.ceil((double)order/2);
         System.out.println("N = " + N);
-        System.out.println("remainder = " + Math.IEEEremainder(N,2));
-        
+                
         for (int i = 1; i <= (N - (int)Math.IEEEremainder(N, 2)); i++) {
             mu = (2*i-1)*Math.PI/(2*order);
             sigma = -(sinhPhi*Math.sin(mu))*cutoffFreq;
@@ -1076,8 +1020,9 @@ public abstract class AnalogFilter extends Filter {
             System.out.println("beta = " + beta);
             designedFilter.addPoleZero(new Complex(alpha,beta), 
                     new Complex(0,(stopbandRippleFreq/Math.cos(mu))), true);
+            System.out.println(stopbandRippleFreq/Math.cos(mu));
         }
-        System.out.println("N = " + N);
+        
         if ((int)Math.IEEEremainder(N,2) != 0) {
             mu = (2*N-1)*Math.PI/(2*order);
             sigma = -(sinhPhi*Math.sin(mu))*cutoffFreq;
@@ -1086,7 +1031,7 @@ public abstract class AnalogFilter extends Filter {
                 (sigma*sigma + omega*omega);
             System.out.println("alpha = " + alpha);
             designedFilter.addPoleZero(new Complex(alpha,0), 
-                    new Complex(stopbandRippleFreq/Math.cos(mu), 0), false);
+                    new Complex(Double.POSITIVE_INFINITY), false);
         }
         
         designedFilter.analogfc = cutoffFreq;
