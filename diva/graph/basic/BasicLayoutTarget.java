@@ -66,7 +66,7 @@ public class BasicLayoutTarget implements LayoutTarget {
     private double _layoutPercentage = .8;
 
     /**
-     * Construce a new layout target that operates
+     * Construct a new layout target that operates
      * in the given pane.
      */
     public BasicLayoutTarget(GraphController controller) {
