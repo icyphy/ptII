@@ -34,6 +34,7 @@ import java.util.List;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
+import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.util.MessageHandler;
@@ -83,13 +84,18 @@ public class FunctionDependencyOfModalModel
         LinkedList entities = new LinkedList();
 
         try {
-            Actor[] actors = ((ModalModel) getContainer()).getController()
-                .currentState().getRefinement();
-
-            if (actors != null) {
+            FSMActor controller = 
+                (FSMActor) ((ModalModel) getContainer()).getController();
+            Actor[] actors = controller.currentState().getRefinement();
+            // If the modal model has no refinements, the modal model is
+            // basically an FSM actor. We use the function dependency of
+            // the controller instead.
+            if (actors != null && actors.length > 0) {
                 for (int i = 0; i < actors.length; ++i) {
                     entities.add(actors[i]);
                 }
+            } else {
+                entities.add(controller);
             }
         } catch (IllegalActionException e) {
             MessageHandler.error("Invalid refinements.", e);
