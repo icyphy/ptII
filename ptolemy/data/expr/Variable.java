@@ -752,6 +752,8 @@ public class Variable extends Attribute implements Typeable, Settable {
             _currentExpression = null;
             _destroyParseTree();
         }
+
+        setUnknown(false);
     }
 
     /** Constrain the type of this variable to be equal to or

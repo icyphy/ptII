@@ -25,8 +25,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Green (johnr@eecs.berkeley.edu)
+@ProposedRating Red (pwhitake@eecs.berkeley.edu)
+@AcceptedRating Red (pwhitake@eecs.berkeley.edu)
 */
 
 package ptolemy.data.expr;
