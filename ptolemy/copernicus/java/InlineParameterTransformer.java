@@ -167,26 +167,25 @@ public class InlineParameterTransformer extends SceneTransformer {
                     while(boxes.hasNext()) {
                         ValueBox box = (ValueBox)boxes.next();
                         Value value = box.getValue();
-                        if(value instanceof InstanceInvokeExpr) {
+                        if(false) {//value instanceof NewExpr) {
+                            // FIXME: do something about bogus parameter creations.
+                            SootClass theClass = ((RefType)((NewExpr)value).getType()).getSootClass();
+                            if(SootUtilities.derivesFrom(theClass, 
+                                    PtolemyUtilities.attributeClass)) {
+                                // Remove the object and anything that uses it.
+                                body.getUnits().remove(unit);
+                                if(unit instanceof DefinitionStmt) {
+                                    DefinitionStmt stmt = (DefinitionStmt)unit;
+                                    Iterator uses = localUses.getUsesOf(unit).iterator();
+                                    while(uses.hasNext()) {
+                                        body.getUnits().remove(uses.next());
+                                    }
+                                }
+                            }
+                        } else if(value instanceof InstanceInvokeExpr) {
                             InstanceInvokeExpr r = (InstanceInvokeExpr)value;
                             //      System.out.println("invoking = " + r.getMethod());
-                          
-                                                        
-                            if(false) {//r.getMethod().equals(getAttributeMethod)) {
-                                // inline calls to getAttribute(arg) when arg is a string
-                                // that can be statically evaluated.
-                                Value nameValue = r.getArg(0);
-                                //System.out.println("attribute name =" + nameValue);
-                                if(Evaluator.isValueConstantValued(nameValue)) {
-                                    StringConstant nameConstant = 
-                                        (StringConstant)
-                                        Evaluator.getConstantValueOf(nameValue);
-                                    String name = nameConstant.value;
-                                    box.setValue(Jimple.v().newStaticFieldRef(
-                                            _findAttributeField(entityClass, 
-                                                    name)));
-                                }
-                            } else if(r.getBase().getType() instanceof RefType) {
+                            if(r.getBase().getType() instanceof RefType) {
                                 RefType type = (RefType)r.getBase().getType();
 
                                 //System.out.println("baseType = " + type);
@@ -209,7 +208,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                                     // if we are invoking a method on a variable class, then
                                     // attempt to get the constant value of the variable.
                                     Attribute attribute =
-                                        getAttributeValue((Local)r.getBase(), unit, localDefs);
+                                        getAttributeValue((Local)r.getBase(), unit, localDefs, localUses);
                                   
                                     // If the base is not constant, then obviously there is nothing we can do
                                     if(attribute == null) {
@@ -346,14 +345,14 @@ public class InlineParameterTransformer extends SceneTransformer {
      *  then return it, otherwise return null.
      */ 
     public static Attribute getAttributeValue(Local local, 
-            Unit location, LocalDefs localDefs) {
+            Unit location, LocalDefs localDefs, LocalUses localUses) {
         List definitionList = localDefs.getDefsOfAt(local, location);
         if(definitionList.size() == 1) {
             DefinitionStmt stmt = (DefinitionStmt)definitionList.get(0);
             Value value = (Value)stmt.getRightOp();
             if(value instanceof CastExpr) {
                 return getAttributeValue( 
-                        (Local)((CastExpr)value).getOp(), stmt, localDefs);
+                        (Local)((CastExpr)value).getOp(), stmt, localDefs, localUses);
             } else if(value instanceof FieldRef) {
                 SootField field = ((FieldRef)value).getField();
                 ValueTag tag = (ValueTag)field.getTag("_CGValue");
@@ -361,6 +360,25 @@ public class InlineParameterTransformer extends SceneTransformer {
                     return null;
                 } else {
                     return (Attribute)tag.getObject();
+                }
+            } else if(value instanceof NewExpr) {
+                // If we get to an object creation, then try
+                // to figure out where the variable is stored into a field.
+                Iterator pairs = localUses.getUsesOf(stmt).iterator();
+                while(pairs.hasNext()) {
+                    UnitValueBoxPair pair = (UnitValueBoxPair)pairs.next();
+                    if(pair.getUnit() instanceof DefinitionStmt) {
+                        DefinitionStmt useStmt = (DefinitionStmt)pair.getUnit();
+                        if(useStmt.getLeftOp() instanceof FieldRef) {
+                             SootField field = ((FieldRef)useStmt.getLeftOp()).getField();
+                             ValueTag tag = (ValueTag)field.getTag("_CGValue");
+                             if(tag == null) {
+                                 return null;
+                             } else {
+                                 return (Attribute)tag.getObject();
+                             }
+                        }
+                    }
                 }
             } else {
                 System.out.println("unknown value = " + value);

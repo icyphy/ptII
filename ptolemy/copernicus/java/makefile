@@ -47,6 +47,7 @@ JSRCS = \
 	CommandLineTransformer.java \
 	EntitySootClass.java \
 	FieldsForAttributesTransformer.java \
+	FieldLoadOptimizer.java \
 	FieldOptimizationTransformer.java \
 	InlineDirectorTransformer.java \
 	InlineParameterTransformer.java \
@@ -99,7 +100,7 @@ JVM_SIZE = -Xmx132m
 
 # Soot command line arguments for the user.  To list all the arguments, use
 # make SOOT_USER_ARGS=-h
-SOOT_USER_ARGS =
+SOOT_USER_ARGS = -O
 
 compileShallowDemo: $(JCLASS)
 	@echo "generate shallow code for $(SOURCEPACKAGE)"

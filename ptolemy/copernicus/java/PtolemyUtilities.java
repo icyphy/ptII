@@ -255,9 +255,6 @@ public class PtolemyUtilities {
         Local attributeLocal = base;
         // Make sure we have a local of type attribute to pass 
         // to attributeChanged
-        Type attributeType = RefType.v("ptolemy.kernel.util.Attribute");
-        SootMethod attributeChangedMethod = Scene.v().getMethod(
-                "<ptolemy.kernel.util.NamedObj: void attributeChanged(ptolemy.kernel.util.Attribute)>");
         if(base.getType() != attributeType) {
             attributeLocal = Jimple.v().newLocal("attributeLocal",
                     attributeType);
@@ -268,7 +265,7 @@ public class PtolemyUtilities {
                                     attributeType)),
                     insertPoint);
         } 
-        
+       
         Stmt stmt = Jimple.v().newInvokeStmt(
                 Jimple.v().newVirtualInvokeExpr(body.getThisLocal(),
                         attributeChangedMethod, attributeLocal));
@@ -412,6 +409,12 @@ public class PtolemyUtilities {
     // Soot Type representing the ptolemy.actor.TypedAtomicActor class.
     public static Type actorType;
 
+    // Soot Method representing NamedObj.attributeChanged().
+    public static SootMethod attributeChangedMethod;
+
+    // Soot class representing the ptolemy.kernel.util.Attribute class.
+    public static SootClass attributeClass;
+
     // Soot Type representing the ptolemy.kernel.util.Settable class.
     public static Type attributeType;
 
@@ -445,7 +448,10 @@ public class PtolemyUtilities {
         getAttributeMethod = namedObjClass.getMethod(
                 "ptolemy.kernel.util.Attribute "
                 + "getAttribute(java.lang.String)");
-        SootClass attributeClass =
+        attributeChangedMethod = namedObjClass.getMethod(
+                "void attributeChanged(ptolemy.kernel.util.Attribute)");
+
+        attributeClass =
             Scene.v().loadClassAndSupport("ptolemy.kernel.util.Attribute");
         attributeType = RefType.v(attributeClass);
 

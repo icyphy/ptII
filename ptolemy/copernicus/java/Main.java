@@ -32,6 +32,7 @@ package ptolemy.copernicus.java;
 import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.ActorTransformer;
 import ptolemy.copernicus.kernel.KernelMain;
+import ptolemy.copernicus.kernel.ImprovedConstantPropagatorAndFolder;
 import ptolemy.copernicus.kernel.ImprovedDeadAssignmentEliminator;
 import ptolemy.copernicus.kernel.TransformerAdapter;
 import ptolemy.kernel.util.IllegalActionException;
@@ -113,17 +114,13 @@ public class Main extends KernelMain {
 
         // When we fold classes, we create extra locals.  These optimizations
         // will remove them.  Unfortunately, -O creates bogus code?
-        Scene.v().getPack("jtp").add(new Transform("jtp.cpaf",
-                ConstantPropagatorAndFolder.v()));
-        Scene.v().getPack("jtp").add(new Transform("jtp.cbf",
-                ConditionalBranchFolder.v()));
-        Scene.v().getPack("jtp").add(new Transform("jtp.uce",
-                UnreachableCodeEliminator.v()));
-        Scene.v().getPack("jtp").add(new Transform("jtp.cp",
-                CopyPropagator.v()));
-        Scene.v().getPack("jtp").add(new Transform("jtp.dae",
+         Scene.v().getPack("jop").add(new Transform("jtp.cpaf",
+                ImprovedConstantPropagatorAndFolder.v()));
+         Scene.v().getPack("jop").add(new Transform("jtp.dae",
                 ImprovedDeadAssignmentEliminator.v()));
-        //  Scene.v().getPack("jtp").add(new Transform("wjtp.clu",
+         //Scene.v().getPack("jop").add(new Transform("jtp.dae",
+         //       FieldLoadOptimizer.v()));
+         //  Scene.v().getPack("jtxp").add(new Transform("wjtp.clu",
         //        ConstantLoopUnroller.v()));
 
     }

@@ -243,12 +243,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                 object.attributeList().iterator();
             attributes.hasNext();) {
             Attribute attribute = (Attribute)attributes.next();
-            if(attribute instanceof ptolemy.moml.Location) {
-                // ignore locations.
-                // FIXME: this is a bit of a hack?
-                continue;
-            }
-            
+                    
             String fieldName =
                 SootUtilities.sanitizeName(attribute.getName(container));
             SootField field;
