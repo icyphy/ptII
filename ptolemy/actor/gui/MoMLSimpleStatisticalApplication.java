@@ -340,7 +340,7 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
     };
 
     /** The form of the command line. */
-    protected String _commandTemplate = "moml [ options ] [file ...]";
+    protected String _commandTemplate = "java -classpath $PTII ptolemy.actor.gui.MoMLSimpleStatisticalApplication [ options ] [file ...]";
 
     /** The parser used to construct the configuration. */
     protected MoMLParser _parser;
