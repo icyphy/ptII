@@ -30,6 +30,7 @@
 
 package ptolemy.vergil.ptolemy.fsm;
 
+import diva.canvas.Figure;
 import diva.canvas.interactor.Interactor;
 import diva.canvas.interactor.SelectionDragger;
 import diva.canvas.interactor.SelectionInteractor;
@@ -38,10 +39,14 @@ import diva.graph.EdgeController;
 import diva.graph.NodeController;
 
 import ptolemy.actor.gui.Configuration;
+import ptolemy.domains.fsm.kernel.State;
+import ptolemy.domains.fsm.kernel.StateEvent;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.DebugEvent;
 import ptolemy.moml.Location;
+import ptolemy.vergil.ptolemy.kernel.AnimationRenderer;
 import ptolemy.vergil.ptolemy.kernel.AttributeController;
 import ptolemy.vergil.ptolemy.kernel.PortController;
 import ptolemy.vergil.ptolemy.kernel.PtolemyNodeController;
@@ -70,6 +75,35 @@ public class FSMViewerController extends PtolemyGraphController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** React to an event by highlighting the new state.
+     *  @param state The debug event.
+     */
+    public void event(DebugEvent event) {
+        if (event instanceof StateEvent) {
+            State state = ((StateEvent)event).getState();
+            if (state != null) {
+                Object location = state.getAttribute("_location");
+                if (location != null) {
+                    Figure figure = getFigure(location);
+                    if (figure != null) {
+                        if (_animationRenderer == null) {
+                            _animationRenderer = new AnimationRenderer();
+                        }
+                        if (_animated != figure) {
+                            // Deselect previous one.
+                            if (_animated != null) {
+                                _animationRenderer.renderDeselected(
+                                        _animated);
+                            }
+                            _animationRenderer.renderSelected(figure);
+                            _animated = figure;
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     /** Return the node controller appropriate for the given node.
      */

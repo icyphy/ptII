@@ -48,6 +48,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	AnimationRenderer.java \
 	AttributeController.java \
 	EditorGraphController.java \
 	EntityController.java \

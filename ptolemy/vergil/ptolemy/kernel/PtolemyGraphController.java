@@ -38,6 +38,7 @@ import javax.swing.JMenu;
 import javax.swing.JToolBar;
 
 import diva.canvas.Figure;
+import diva.canvas.interactor.SelectionRenderer;
 import diva.graph.AbstractGraphController;
 import diva.graph.GraphController;
 import diva.graph.GraphException;
@@ -51,6 +52,8 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.DebugEvent;
+import ptolemy.kernel.util.DebugListener;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.Location;
 import ptolemy.moml.MoMLChangeRequest;
@@ -74,7 +77,8 @@ to add commands to the menu or toolbar of the frame it is controlling.
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
 */
-public abstract class PtolemyGraphController extends AbstractGraphController {
+public abstract class PtolemyGraphController extends AbstractGraphController
+        implements DebugListener {
 
     /** Create a new basic controller.
      */
@@ -91,6 +95,21 @@ public abstract class PtolemyGraphController extends AbstractGraphController {
      *  @param toolbar The toolbar to add to, or null if none.
      */
     public void addToMenuAndToolbar(JMenu menu, JToolBar toolbar) {
+    }
+
+    /** Clear any animation highlight that might currently be active.
+     */
+    public void clearAnimation() {
+        // Deselect previous one.
+        if (_animated != null && _animationRenderer != null) {
+            _animationRenderer.renderDeselected(_animated);
+        }
+    }
+
+    /** React to an event.  This base class does nothing.
+     *  @param state The debug event.
+     */
+    public void event(DebugEvent event) {
     }
 
     /** Return the configuration that has been specified by setConfiguration(),
@@ -141,6 +160,12 @@ public abstract class PtolemyGraphController extends AbstractGraphController {
             }
         }
         return null;
+    }
+
+    /** React to a debug message.  This base class does nothing.
+     *  @param state The debug event.
+     */
+    public void message(String message) {
     }
 
     /** Set the configuration.  This is used by some of the controllers
@@ -203,6 +228,12 @@ public abstract class PtolemyGraphController extends AbstractGraphController {
 
     ///////////////////////////////////////////////////////////////////
     ////                        protected variables                ////
+
+    /** Currently animated state, if any. */
+    protected Figure _animated;
+
+    /** Renderer for animation. */
+    protected SelectionRenderer _animationRenderer;
 
     /** The interactor for creating context sensitive menus on the
      *  graph itself.

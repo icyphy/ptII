@@ -49,11 +49,9 @@ import diva.canvas.event.LayerEvent;
 import diva.canvas.event.MouseFilter;
 import diva.canvas.interactor.AbstractInteractor;
 import diva.canvas.interactor.ActionInteractor;
-import diva.canvas.interactor.BasicSelectionRenderer;
 import diva.canvas.interactor.CompositeInteractor;
 import diva.canvas.interactor.GrabHandle;
 import diva.canvas.interactor.Interactor;
-import diva.canvas.interactor.SelectionRenderer;
 import diva.graph.GraphException;
 import diva.graph.GraphPane;
 import diva.graph.NodeRenderer;
@@ -63,12 +61,9 @@ import ptolemy.actor.gui.Configuration;
 import ptolemy.gui.MessageHandler;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.State;
-import ptolemy.domains.fsm.kernel.StateEvent;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.ChangeRequest;
-import ptolemy.kernel.util.DebugEvent;
-import ptolemy.kernel.util.DebugListener;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
@@ -95,8 +90,7 @@ control-clicking and dragging from one state to another.
 
 @version $Id$
  */
-public class FSMGraphController extends FSMViewerController
-        implements DebugListener {
+public class FSMGraphController extends FSMViewerController {
 
     /** Create a new basic controller with default
      *  terminal and edge interactors.
@@ -137,52 +131,6 @@ public class FSMGraphController extends FSMViewerController
         menu.addSeparator();
 	diva.gui.GUIUtilities.addMenuItem(menu, _newStateAction);
         diva.gui.GUIUtilities.addToolBarButton(toolbar, _newStateAction);
-    }
-
-    /** Clear any animation highlight that might currently be active.
-     */
-    public void clearAnimation() {
-        // Deselect previous one.
-        if (_animatedState != null) {
-            _animationRenderer.renderDeselected(_animatedState);
-        }
-    }
-
-    /** React to an event.  If the event is an instance of StateEvent,
-     *  then print out the name of the new state.
-     *  @param state The debug event.
-     */
-    public void event(DebugEvent event) {
-        if (event instanceof StateEvent) {
-            State state = ((StateEvent)event).getState();
-            if (state != null) {
-                Object location = state.getAttribute("_location");
-                if (location != null) {
-                    Figure figure = getFigure(location);
-                    if (figure != null) {
-                        if (_animationRenderer == null) {
-                            _animationRenderer = new BasicSelectionRenderer();
-                        }
-                        if (_animatedState != figure) {
-                            // Deselect previous one.
-                            if (_animatedState != null) {
-                                _animationRenderer.renderDeselected(
-                                        _animatedState);
-                            }
-                            _animationRenderer.renderSelected(figure);
-                            _animatedState = figure;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    /** React to a debug message.  Since this listener is only interested
-     *  in debug events of class StateEvent, this method does nothing.
-     *  @param state The debug event.
-     */
-    public void message(String message) {
     }
 
     /** Set the configuration.  The configuration is used when
@@ -261,12 +209,6 @@ public class FSMGraphController extends FSMViewerController
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** Currently animated state, if any. */
-    private Figure _animatedState;
-
-    /** Renderer for animation. */
-    private SelectionRenderer _animationRenderer;
 
     /** The interactor that interactively creates edges. */
     private LinkCreator _linkCreator;

@@ -32,6 +32,7 @@ package ptolemy.vergil.ptolemy.kernel;
 
 import java.util.List;
 
+import diva.canvas.Figure;
 import diva.canvas.interactor.Interactor;
 import diva.canvas.interactor.SelectionDragger;
 import diva.canvas.interactor.SelectionInteractor;
@@ -39,13 +40,17 @@ import diva.graph.EdgeController;
 import diva.graph.GraphPane;
 import diva.graph.NodeController;
 
+import ptolemy.actor.Actor;
+import ptolemy.actor.FiringEvent;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.DebugEvent;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.Location;
 import ptolemy.moml.Vertex;
+import ptolemy.vergil.ptolemy.AbstractPtolemyGraphModel;
 
 //////////////////////////////////////////////////////////////////////////
 //// ViewerGraphController
@@ -78,6 +83,54 @@ public class ViewerGraphController extends PtolemyGraphController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** React to an event by highlighting the actor being iterated.
+     *  This effectively animates the execution.
+     *  @param state The debug event.
+     */
+    public void event(DebugEvent event) {
+        if (event instanceof FiringEvent) {
+            Actor actor = ((FiringEvent)event).getActor();
+            if (actor instanceof NamedObj) {
+                NamedObj objToHighlight = (NamedObj)actor;
+
+                // If the object is not contained by the associated
+                // composite, then find an object above it in the hierarchy
+                // that is.
+                AbstractPtolemyGraphModel graphModel =
+                        (AbstractPtolemyGraphModel)getGraphModel();
+                NamedObj toplevel = graphModel.getPtolemyModel();
+                while (objToHighlight != null
+                        && objToHighlight.getContainer() != toplevel) {
+                    objToHighlight = (NamedObj)objToHighlight.getContainer();
+                }
+                if (objToHighlight == null) {
+                    return;
+                }
+                Object location = objToHighlight.getAttribute("_location");
+                if (location != null) {
+                    Figure figure = getFigure(location);
+                    if (figure != null) {
+                        if (_animationRenderer == null) {
+                            _animationRenderer = new AnimationRenderer();
+                        }
+                        FiringEvent.FiringEventType type
+                               = ((FiringEvent)event).getType();
+                        if (type == FiringEvent.BEFORE_ITERATE
+                                || type == FiringEvent.BEFORE_FIRE) {
+                            _animationRenderer.renderSelected(figure);
+                            _animated = figure;
+                        } else if (type == FiringEvent.AFTER_ITERATE
+                                || type == FiringEvent.AFTER_POSTFIRE) {
+                            if (_animated != null) {
+                                _animationRenderer.renderDeselected(_animated);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     /** Return the edge controller appropriate for the given node,
      *  which in this case is the same link controller returned by

@@ -175,12 +175,16 @@ public class FSMGraphFrame extends GraphFrame {
                             new DebugListenerTableau(textEffigy,
                             textEffigy.uniqueName("debugListener"));
                     tableau.setDebuggable(getModel());
-                } else if (actionCommand.equals("Animate")) {
+                } else if (actionCommand.equals("Animate")
+                        && _listeningTo == null)) {
                     // To support animation.
-                    getModel().addDebugListener(_controller);
+                    _listeningTo = getModel();
+                    _listeningTo.addDebugListener(_controller);
                 } else if (actionCommand.equals("Stop Animating")) {
-                    getModel().removeDebugListener(_controller);
+                        && _listeningTo != null)) {
+                    _listeningTo.removeDebugListener(_controller);
                     _controller.clearAnimation();
+                    _listeningTo = null;
                 }
             } catch (KernelException ex) {
                 try {
@@ -189,5 +193,6 @@ public class FSMGraphFrame extends GraphFrame {
                 } catch (CancelException exception) {}
             }
         }
+        private NamedObj _listeningTo;
     }
 }
