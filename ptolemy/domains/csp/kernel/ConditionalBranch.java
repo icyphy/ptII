@@ -38,23 +38,23 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// ConditionalBranch
 /**
-Base class of both conditional communication classes (send and receive). 
-For rendezvous, the receiver is the key synchronization point. 
-Conditional branches are designed to be used once. Upon instantiation, 
+Base class of both conditional communication classes (send and receive).
+For rendezvous, the receiver is the key synchronization point.
+Conditional branches are designed to be used once. Upon instantiation,
 they are given the port and the channel they are trying to rendezvous with.
-The port and the channel together define the CSPReceiver with which to 
-rendezvous. The CSPActor, that contains this conditional branch, is 
+The port and the channel together define the CSPReceiver with which to
+rendezvous. The CSPActor, that contains this conditional branch, is
 assumed to be the container of the port argument.
-It is also given the identification number of the branch according 
+It is also given the identification number of the branch according
 to the parent.
 <p>
 A conditional branch is created to perform a single conditional communication.
-The information it contains in its private members is immutable and 
+The information it contains in its private members is immutable and
 fixed upon creation.
 <p>
 FIXME: does this class want/need to have a notion of workspace?
-FIXME: a bit strange to only use the constructor arguments to set internal 
-fields! 
+FIXME: a bit strange to only use the constructor arguments to set internal
+fields!
 
 @author  Neil Smyth
 @version $Id$
@@ -63,12 +63,12 @@ fields!
 
 public abstract class ConditionalBranch {
 
-    /** Create a conditional branch. 
+    /** Create a conditional branch.
      *  @param port The IOPort to try and rendezvous with.
      *   that this branch will try to rendezvous with.
      *  @param branch The identification number assigned to this branch
-     *   upon creation by the CSPActor. 
-     *  @exception IllegalActionException thrown if the channel has more 
+     *   upon creation by the CSPActor.
+     *  @exception IllegalActionException thrown if the channel has more
      *   than one receiver or if the receiver is not of type CSPReceiver.
      */
     public ConditionalBranch(IOPort port, int branch)
@@ -82,10 +82,10 @@ public abstract class ConditionalBranch {
         _parent = (CSPActor)tmp;
         _branchNumber = branch;
     }
-    
+
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
-    
+
     /** Returns the identification number of this branch(according to its
      *  parent).
      *  @return The identification number of this branch.
@@ -93,31 +93,31 @@ public abstract class ConditionalBranch {
     public int getBranchNumber() {
         return _branchNumber;
     }
-    
+
     /** Return the CSPActor that created this branch.
      *  @return The CSPActor that created this branch.
      */
     public CSPActor getParent() {
         return _parent;
     }
-    
+
     /** Return the CSPReceiver this branch is trying to rendezvous with.
      *  @return The CSPReceiver this branch is trying to rendezvous with.
      */
     public CSPReceiver getReceiver() {
         return _receiver;
     }
-    
-    /** Boolean indicating if this branch is still alive. If it is false, it 
-     *  indicates another conditional branch was able to rendezvous before 
-     *  this branch. The branch should stop trying to rendezvous with 
+
+    /** Boolean indicating if this branch is still alive. If it is false, it
+     *  indicates another conditional branch was able to rendezvous before
+     *  this branch. The branch should stop trying to rendezvous with
      *  its receiver and terminate
      *  @return boolean indicating if this branch is still alive(needed).
      */
     public boolean isAlive() {
         return _alive;
     }
-    
+
     /** Set whether this branch is still alive.
      *  FIXME: this method is only ever called with a false value, perhaps
      *  should modify method to public void finishUp ??
@@ -130,25 +130,25 @@ public abstract class ConditionalBranch {
 
     ////////////////////////////////////////////////////////////////////////
     ////                         protected variables                    ////
-    
+
     // The receiver this thread is trying to rendezvous with. It is immutable.
     protected CSPReceiver _receiver;
-    
+
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
-    
-    // Has another branch successfully rendezvoused? 
+
+    // Has another branch successfully rendezvoused?
     private boolean _alive = true;
-    
-    // The parent this thread is trying to perform a conditional 
+
+    // The parent this thread is trying to perform a conditional
     // rendezvous for.
     private CSPActor _parent;
-    
+
     // The identification number of this branch (according to its parent)
     private int _branchNumber;
 }
-	  
-	       
-	 
 
-	    
+
+
+
+

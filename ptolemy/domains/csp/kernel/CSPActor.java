@@ -40,33 +40,33 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// CSPActor
 /**
-This class is the base class of all atomic actors supporting the 
-communicating sequential processes(CSP) model of computation. 
+This class is the base class of all atomic actors supporting the
+communicating sequential processes(CSP) model of computation.
 <p>
-In CSP the thread for each actor gets created in the initialize method, 
-and started in the fire method. However before the Thread can be started, 
-it is necessary to ensure that all the input ports have CSPReceivers 
-placed in them. This is achieved by calling getReceivers(), on all input 
+In CSP the thread for each actor gets created in the initialize method,
+and started in the fire method. However before the Thread can be started,
+it is necessary to ensure that all the input ports have CSPReceivers
+placed in them. This is achieved by calling getReceivers(), on all input
 ports contained by this actor, in the prefire method.
 <p>
-This class also provides the methods for controlling which branch of a 
-conditional rendezvous construct gets followed. It controls the branches 
-performing the conditional rendezvous in three steps. First it starts them. 
-Then it waits for one branch to succeed, after which it wakes up and 
-terminates the remaining branches. When the last conditional branch 
+This class also provides the methods for controlling which branch of a
+conditional rendezvous construct gets followed. It controls the branches
+performing the conditional rendezvous in three steps. First it starts them.
+Then it waits for one branch to succeed, after which it wakes up and
+terminates the remaining branches. When the last conditional branch
 thread has finished it allows the actor thread to continue.
 <p>
-FIXME: In the fire method, if the actor thread has already been started, 
-and the actor has simply reached the end of an iteration, then re-invoking 
-the fire method should wake up the actor and allow it to continue. 
+FIXME: In the fire method, if the actor thread has already been started,
+and the actor has simply reached the end of an iteration, then re-invoking
+the fire method should wake up the actor and allow it to continue.
 For now I have not worried about multiple iteration.
 <p>
-FIXME: What is an iteration? Options: when all actors are blocked or 
-stopped, and there are mutations to perform. Also could allow an actor 
-construct such as waitForNextIteration() which would halt the current 
+FIXME: What is an iteration? Options: when all actors are blocked or
+stopped, and there are mutations to perform. Also could allow an actor
+construct such as waitForNextIteration() which would halt the current
 thread until a new iteration is started.
 <p>
-FIXME: should a bunch of the methods in this class be protected? In 
+FIXME: should a bunch of the methods in this class be protected? In
 Particular, actorBlocked, actor Stopped etc?
 
 @author Neil Smyth
@@ -74,7 +74,7 @@ Particular, actorBlocked, actor Stopped etc?
 */
 
 public class CSPActor extends AtomicActor implements Runnable {
-  
+
     /** Construct a CSPActor in the default workspace with an empty string
      *  as its name.
      *  The object is added to the workspace directory.
@@ -83,7 +83,7 @@ public class CSPActor extends AtomicActor implements Runnable {
     public CSPActor() {
         super();
     }
-    
+
     /** Construct a CSPActor in the specified workspace with an empty
      *  string as a name. You can then change the name with setName().
      *  If the workspace argument is null, then use the default workspace.
@@ -95,51 +95,51 @@ public class CSPActor extends AtomicActor implements Runnable {
     public CSPActor(Workspace workspace) {
         super(workspace);
     }
-    
+
     /** Construct a CSPActor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
      *  NullPointerException will be thrown.
-     * 
+     *
      *  @param container The CompositeActor that contains this actor.
      *  @param name the actor's name.
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException Name coincides with
      *   an entity already in the container.
-     */	
-    public CSPActor(CSPCompositeActor container, String name) 
+     */
+    public CSPActor(CSPCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
                 super(container, name);
     }
-    
+
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
-    
-    /** Called by ConditionalSend and ConditionalReceive to check if 
+
+    /** Called by ConditionalSend and ConditionalReceive to check if
      *  the calling branch is the first branch to be ready to rendezvous.
      *  If it is, it sets a private variable to its branch ID so that
      *  subsequent calls to this method by other branches know that they
      *  are not first.
-     *  @param branchNumber The ID assigned to the calling branch 
+     *  @param branchNumber The ID assigned to the calling branch
      *   upon creation.
-     *  @return Boolean indicating whether or not the calling branch is the 
+     *  @return Boolean indicating whether or not the calling branch is the
      *   first branch to try to rendezvous.
      */
     public boolean amIFirst(int branchNumber) {
         synchronized(_getInternalLock()) {
             if ((_branchTrying == -1) || (_branchTrying == branchNumber)) {
-                //System.out.println(getName() + ": branch " + branchNumber + " got here first"); 
+                //System.out.println(getName() + ": branch " + branchNumber + " got here first");
                 // store branchNumber
                 _branchTrying = branchNumber;
                 return true;
             }
-            return false; 
+            return false;
         }
     }
 
     /** Called by a conditional branch just before it dies.
-     *  @param branchNumber The ID assigned to the calling branch 
+     *  @param branchNumber The ID assigned to the calling branch
      *   upon creation.
      */
     public void branchFailed(int branchNumber) {
@@ -148,23 +148,23 @@ public class CSPActor extends AtomicActor implements Runnable {
             _successfulBranch = -1;
         }
         synchronized(_getInternalLock()) {
-            _branchesActive--; 
+            _branchesActive--;
             //System.out.println(getName() + ": branch failed: " + branchNumber);
             if (_branchesActive == 0) {
                 //System.out.println(getName() + ": Last branch finished, waking up chooseBranch");
-                _getInternalLock().notifyAll(); 
+                _getInternalLock().notifyAll();
             }
         }
     }
-    
+
     /** Called by a conditional branch after a successful rendezvous. It
-     *  wakes up chooseBranch which then proceeds to terminate the 
+     *  wakes up chooseBranch which then proceeds to terminate the
      *  remaining branches.
-     *  @param branchNumber The ID assigned to the calling branch 
+     *  @param branchNumber The ID assigned to the calling branch
      *   upon creation.
      */
     public void branchSucceeded(int branchNumber) {
-        synchronized(_getInternalLock() ) {      
+        synchronized(_getInternalLock() ) {
             if (_branchTrying != branchNumber) {
                 System.out.println("Error: trying not equal to success");
             }
@@ -172,16 +172,16 @@ public class CSPActor extends AtomicActor implements Runnable {
             _branchesActive--;
             // wakes up chooseBranch() which wakes up parent thread
             //System.out.println(getName() + ": branch succeeded: " + branchNumber + ", waking up chooseBranch");
-            _getInternalLock().notifyAll(); 
+            _getInternalLock().notifyAll();
         }
     }
-  
+
     /** Called by ConditionalReceive after a successful rendezvous. It
-     *  wakes up chooseBranch which then proceeds to terminate the 
+     *  wakes up chooseBranch which then proceeds to terminate the
      *  remaining branches.
      *  @param branch The ID assigned to the calling branch upon creation.
      *  @param result The result of the rendezvous.
-     */ 
+     */
     public void branchSucceeded(int branch, Token result) {
         synchronized(_getInternalLock() ) {
             _token = result;
@@ -189,7 +189,7 @@ public class CSPActor extends AtomicActor implements Runnable {
         }
     }
 
-    /** The heart of the conditional rendezvous mechanism. It fires up 
+    /** The heart of the conditional rendezvous mechanism. It fires up
      *  the conditional branches passed in as a parameter, waits for one
      *  to succeed, and then terminates the remining branches.
      *  It returns after all the threads for the conditional branches
@@ -202,7 +202,7 @@ public class CSPActor extends AtomicActor implements Runnable {
             synchronized(_getInternalLock()) {
                 // reset the state that controls the conditional branches
                 _resetConditionalState();
-                
+
                 //start the branches
                 int priority = Thread.currentThread().getPriority() -1;
                 _branchesActive = 0;
@@ -218,35 +218,35 @@ public class CSPActor extends AtomicActor implements Runnable {
                 if (_branchesActive == 0) {
                     System.out.println("No branches to create, returning");
                 }
-                
+
                 // wait for a branch to succeed
                 while ((_successfulBranch == -1) && (_branchesActive > 0)) {
                     // FIXME: is it possible to have -1 active Branches?
                     _getInternalLock().wait();
                 }
-                                
+
                 // Now terminate non-successful branches
                 for (int i = 0; i<branches.length; i++) {
-                    // if a branch is null, indicates boolean 
+                    // if a branch is null, indicates boolean
                     // preceding communication was false.
                     if ( (i!= _successfulBranch) && (branches[i] != null) ) {
-                        // to terminate a branch, need to set flag, acquire 
-                        // lock on receiver & wake it up 
-                        Receiver rec = branches[i].getReceiver();	  
+                        // to terminate a branch, need to set flag, acquire
+                        // lock on receiver & wake it up
+                        Receiver rec = branches[i].getReceiver();
                         synchronized(rec) {
                             branches[i].setAlive(false);
                             rec.notifyAll();
-                        }	  
+                        }
                     }
                 }
-                
-                // when there are no more active branches, branchFailed should 
+
+                // when there are no more active branches, branchFailed should
                 // issue a notifyAll on the internalLock
-                while (_branchesActive != 0) {  
+                while (_branchesActive != 0) {
                     _getInternalLock().wait();
                 }
                 // counter indicating # active branches, should be zero
-                if (_branchesActive != 0) { 
+                if (_branchesActive != 0) {
                     System.out.println("Error: exiting chooseBranch while still active branches!");
                 }
             }
@@ -260,7 +260,7 @@ public class CSPActor extends AtomicActor implements Runnable {
         }
         return _successfulBranch;
     }
-    
+
     /** Clone this actor into the specified workspace. The new actor is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -285,7 +285,7 @@ public class CSPActor extends AtomicActor implements Runnable {
 	return newobj;
     }
 
-    /** Start the thread this actor is to be run is. In CSP this is all the 
+    /** Start the thread this actor is to be run is. In CSP this is all the
      *  fire method does.
      *  <p>
      *  FIXME: needs to change to reflect iterations.
@@ -294,20 +294,20 @@ public class CSPActor extends AtomicActor implements Runnable {
         _myThread.start();
         System.out.println("Started thread for actor: " + getName());
     }
-    
-    /** The token returned by a successful ConditionalReceive is stored in 
+
+    /** The token returned by a successful ConditionalReceive is stored in
      *  the CSPActor.
      *  @return The Token from the last successful conditional receive.
      */
     public Token getToken() {
         return _token;
     }
-    
+
 
     /** In CSP, the initialize method creates the thread to run the actor in.
      *  The thread is started in the fire method.
-     *  FIXME: I've added a hack here so that all the ports have getReceivers 
-     *  called on them before the threads are started. This is to make 
+     *  FIXME: I've added a hack here so that all the ports have getReceivers
+     *  called on them before the threads are started. This is to make
      *  sure all the receivers are created _before_ the simulation is started.
      *  @return CloneNotSupportedException Not thrown here?
      */
@@ -317,19 +317,19 @@ public class CSPActor extends AtomicActor implements Runnable {
         System.out.println("Created thread for " + getName() + ", not started");
         director.actorStarted();
     }
-    
-    /** Return true if it successfully performs any mutations and creates 
-     *  any necessary new receivers in all input ports. 
-     *  In CSP, the CSPReceivers in every 
+
+    /** Return true if it successfully performs any mutations and creates
+     *  any necessary new receivers in all input ports.
+     *  In CSP, the CSPReceivers in every
      *  input port need to be created before any of the actor threads are
      *  started(in the fire() method). This is because creating receivers
-     *  requires a write access on the workspace which would lead to 
+     *  requires a write access on the workspace which would lead to
      *  deadlock. New receivers may also need to be created after mutations.
-     *  
-     *  FIXME: should this method simply return false(as it currently does) 
-     *  or should it pass the exception on up?   
+     *
+     *  FIXME: should this method simply return false(as it currently does)
+     *  or should it pass the exception on up?
      *  @return True if the actor is ready for firing, false otherwise.
-     *  @exception IllegalActionException Thrown if could not create all 
+     *  @exception IllegalActionException Thrown if could not create all
      *   the receivers, due to fact no director has been set.
      */
     public boolean prefire() throws IllegalActionException {
@@ -339,7 +339,7 @@ public class CSPActor extends AtomicActor implements Runnable {
                 IOPort inport = (IOPort)inputports.nextElement();
                 inport.getReceivers();
                 System.out.println("Created receivers in: "+ inport.getName());
-            } 
+            }
         } catch (IllegalActionException ex) {
             System.out.println("Could not create all receivers in " + getName());
             return false;
@@ -350,8 +350,8 @@ public class CSPActor extends AtomicActor implements Runnable {
     /** Release the calling branches status as the first branch to
      *  try to rendezvous. The branch was obviously not able to complete
      *  the rendezvous because the other side of the rendezvous was also
-     *  conditional and the other side could not claim the status of 
-     *  being the first branch. Thus allow another branch the chance 
+     *  conditional and the other side could not claim the status of
+     *  being the first branch. Thus allow another branch the chance
      *  to proceed with a rendezvous.
      *  @param branchNumber The ID assigned to the branch upon creation.
      */
@@ -365,13 +365,13 @@ public class CSPActor extends AtomicActor implements Runnable {
         }
         System.out.println("Error: branch releasing first without possessing it! :" + _branchTrying + " & " + branchNumber);
     }
-    
-    /** Wrap the code from derived actors so that do not have to duplicate 
-     *  the code to catch the TerminateProcessException and to notify the 
+
+    /** Wrap the code from derived actors so that do not have to duplicate
+     *  the code to catch the TerminateProcessException and to notify the
      *  director that the process has stopped.
      *  It calls the protected method _run in the derived class.
-     *  Note: by using a hook method we ensure that the director gets 
-     *  notified whenever an actor stops, and also allows us to uniformly 
+     *  Note: by using a hook method we ensure that the director gets
+     *  notified whenever an actor stops, and also allows us to uniformly
      *  handle the way TerminateProcessExceptions are dealt with.
      */
     public void run() {
@@ -387,7 +387,7 @@ public class CSPActor extends AtomicActor implements Runnable {
             ((CSPDirector)getDirector()).actorStopped();
         }
     }
-    
+
     /** Override the base class to ensure that the proposed container
      *  is an instance of CSPCompositeActor or null. If it is, call the
      *  base class setContainer() method. A null argument will remove
@@ -411,13 +411,13 @@ public class CSPActor extends AtomicActor implements Runnable {
         super.setContainer(container);
     }
 
-    /** Called by CSPDirector when the simulation is terminated. This method 
+    /** Called by CSPDirector when the simulation is terminated. This method
      *  sets a flag in all receivers that the simulation has terminated. It
-     *  then issues a notifyAll on each receiver so that a 
-     *  TerminateProcessException can be thrown to any processes 
+     *  then issues a notifyAll on each receiver so that a
+     *  TerminateProcessException can be thrown to any processes
      *  waiting to rendezvous.
      *  FIXME: should this method be terminated on anything?
-     *  @exception IllegalActionException Thrown if there is no Director, 
+     *  @exception IllegalActionException Thrown if there is no Director,
      *   and hence no receivers to mark as terminated.
      */
     public void terminate() throws IllegalActionException {
@@ -432,7 +432,7 @@ public class CSPActor extends AtomicActor implements Runnable {
                         System.out.println(str + "on CSP input channel");
                     }
                     CSPReceiver rec = (CSPReceiver)receivers[i][0];
-                                        
+
                     rec.setSimulationTerminated();
                     synchronized(rec) {
                         rec.notifyAll();
@@ -441,31 +441,31 @@ public class CSPActor extends AtomicActor implements Runnable {
             }
         }
     }
-    
+
     public void wrapup() {
         String str = "thread for " + getName() + " is alive? : ";
         System.out.println(str + _myThread.isAlive());
     }
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
-    
-    /** Do nothing in this base class. It should be overridden by 
+
+    /** Do nothing in this base class. It should be overridden by
      *  derived classes to do the actor specific work.
      */
     protected void _run() {
         System.out.println("_run() method in CSPActor should be overridden in derived classes!");
     }
-    
+
     ////////////////////////////////////////////////////////////////////////
     ////                         private methods                        ////
-    
-    /* Internal lock used to for controlling conditional rendezvous 
+
+    /* Internal lock used to for controlling conditional rendezvous
      * constructs.
      */
     private Object _getInternalLock() {
         return _internalLock;
     }
-    
+
     /* Resets the internal state controlling the execution of a conditional
      * branching construct (CIF or CDO). It is only called by chooseBranch
      * so that it starts with a consistent state each time.
@@ -478,32 +478,32 @@ public class CSPActor extends AtomicActor implements Runnable {
             _branchesActive = 0;
         }
     }
-    
+
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
-    
-    // Contains the ID of the branch currently trying to rendezvous. It 
+
+    // Contains the ID of the branch currently trying to rendezvous. It
     // is -1 if no branch is currently trying.
     private int _branchTrying = -1;
-    
+
     // Contains the umber of conditional branches that are still alive.
     private int _branchesActive = 0;
-    
+
     // This lock is only used internally by the actor. It is used to
-    // avoid having to synchronize on the actor itself. The chooseBranch 
-    // method waits on it so it knows when a branch has succeeded and when 
+    // avoid having to synchronize on the actor itself. The chooseBranch
+    // method waits on it so it knows when a branch has succeeded and when
     // the last branch it created has died.
     private Object _internalLock = new Object();
-    
+
     // Flag indicating the simulation has been terminated
     // private boolean _simulationTerminated = false;
-    
+
     // Contains the ID of the branch that successfully rendezvoused.
     private int _successfulBranch = -1;
-    
+
     // Stores the result of a successful conditional receive.
-    private Token _token; 
-    
+    private Token _token;
+
     // Thread this actor is to be run in.
     private Thread _myThread;
 }
