@@ -96,7 +96,7 @@ public class DoubleToFix extends Transformer {
     	    DoubleToken in = (DoubleToken)input.get(0);
 	    FixToken result = new FixToken(_precision, in.doubleValue() );    
 	    result.setRoundingMode( _mode );
-            output.broadcast(result);
+            output.send(0, result);
         }
     }
 
