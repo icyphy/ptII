@@ -229,6 +229,19 @@ public class DomainLibrary extends XMLElement{
         setAttribute("version",s);
     }
 
+    /**
+     * Take an arbitrary XMLElement and figure out what type it is, then
+     * figure out what semantic meaning that has within this XMLElement.
+     * This is primarily used by the parser to keep the semantic structures
+     * within an XMLElement consistant with the childElements.
+     */
+    void applySemanticsToChild(XMLElement e) {
+        if(e instanceof Domain) {
+            // if it's a Domain, then just add it to the list of domains.
+            _domains.putAt(
+                    ((Domain) e).getName(), e);
+        }
+    }
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////

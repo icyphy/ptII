@@ -221,7 +221,7 @@ public class Domain extends XMLElement {
          } else if(e.getElementType().equals("director")) {
             // if it's a director, add to list of directors
             _directors.putAt(e.getAttribute("name"), e);
-         } else if(e.getElementType().equals("description", e)) {
+         } else if(e.getElementType().equals("description")) {
              removeChildElement(_description);
              _description = e;
          }
