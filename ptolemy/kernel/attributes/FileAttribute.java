@@ -74,13 +74,37 @@ The following special file names are understood:
 Note, however, that these file names cannot be converted to URLs
 using the asURL() method.
 <p>
-A file name can also contain the string "$PTII", which refers to
-the home directory of the Ptolemy II installation, or the string
-"$CWD", which refers the current working directory, or "$HOME",
-which refers to the user's home directory.  These values are
-obtained from the Java properties <i>ptolemy.ptII.dir</i>,
-<i>user.dir</i>, and <i>user.home</i>, respectively.  These
-properties are normally set when a Ptolemy II application starts.
+A file name can also contain the following strings that start
+with "$", which get substituted
+with the appropriate values
+<table>
+ <tr>
+  <th>String</th>
+  <th>Description</th>
+  <th>Property</th>
+ </tr>
+ <tr>
+  <tr><code>$CWD</code></tr>
+  <tr>The current working directory</tr>
+  <tr><code>user.dir</code></tr>
+ </tr>
+ <tr>
+  <tr><code>$HOME</code></tr>
+  <tr>The user's home directory</tr>
+  <tr><code>user.home</code></tr>
+ </tr>
+ <tr>
+  <tr><code>$PTII</code></tr>
+  <tr>The home directory of the Ptolemy II installation</tr>
+  <tr><code>ptolemy.ptII.dir</code></tr>
+ </tr>
+ <tr>
+  <tr><code>$TMP</code></tr>
+  <tr>The temporary directory</tr>
+  <tr><code>java.io.tmpdir</code></tr>
+ </tr>
+</table>
+The above properties are normally set when a Ptolemy II application starts.
 <p>
 If a file name begins with the string "$CLASSPATH", followed by either
 "/" or "\", then when the file
@@ -394,27 +418,33 @@ public class FileAttribute extends StringAttribute {
     ////                         private methods                   ////
 
     /** Return a string that is the current value of this attribute
-     *  with the strings "$PTII", "$CWD" and "$HOME" replaced by their
+     *  with the strings "$CWD, "$HOME", "$PTII" and "$TMP" replaced by their
      *  respective values.
      *  @param string The string in which to do the substitution.
      *  @return A new string.
      */
     private static String _substituteSpecialStrings(String string) {
         String result = string;
-        if (result.indexOf("$PTII") >= 0) {
+        // Keep these alphabetized.
+        if (result.indexOf("$CWD") >= 0) {
             result = StringUtilities.substitute(result,
-                    "$PTII",
-                    StringUtilities.getProperty("ptolemy.ptII.dir"));
+                    "$CWD",
+                    StringUtilities.getProperty("user.dir"));
         }
         if (result.indexOf("$HOME") >= 0) {
             result = StringUtilities.substitute(result,
                     "$HOME",
                     StringUtilities.getProperty("user.home"));
         }
-        if (result.indexOf("$CWD") >= 0) {
+        if (result.indexOf("$PTII") >= 0) {
             result = StringUtilities.substitute(result,
-                    "$CWD",
-                    StringUtilities.getProperty("user.dir"));
+                    "$PTII",
+                    StringUtilities.getProperty("ptolemy.ptII.dir"));
+        }
+        if (result.indexOf("$TMP") >= 0) {
+            result = StringUtilities.substitute(result,
+                    "$TMP",
+                    StringUtilities.getProperty("java.io.tmpdir"));
         }
         return result;
     }
