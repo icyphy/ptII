@@ -44,16 +44,15 @@ include $(CONFIG)
 CLASSPATH = ../..
 
 JSRCS = \
-	AliasPair.java \
 	Entity.java \
 	FlowStar.java \
 	Galaxy.java \
 	GenericPort.java \
 	GenericPortForTcl.java \
+	GraphElement.java \
 	IntParam.java \
 	MultiPort.java \
 	NamedObj.java \
-	Node.java \
 	ObservableParameter.java \
 	Param.java \
 	Parameter.java \
