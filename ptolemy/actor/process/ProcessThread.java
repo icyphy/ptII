@@ -23,6 +23,10 @@
  
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
+@ProposedRating Red (nsmyth@eecs.berkeley.edu)
+@AcceptedRating none
+
 */
 
 package ptolemy.actor;
