@@ -36,7 +36,6 @@ import ptolemy.kernel.util.*;
 import ptolemy.kernel.event.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
-import ptolemy.domains.odf.kernel.*;
 
 import java.util.Enumeration;
 import collections.LinkedList;
@@ -190,14 +189,6 @@ public class ProcessDirector extends Director {
             while (allActors.hasMoreElements()) {
                 Actor actor = (Actor)allActors.nextElement();
                 ProcessThread pnt = _getProcessThread(actor, this);
-		/*
-		if( pnt instanceof ODFThread ) {
-		    System.out.println("ODFThread!!!!!");
-		} else if( pnt instanceof ProcessThread ) {
-		    System.out.println("ProcessThread!!!!!");
-		}
-		*/
-                // ProcessThread pnt = new ProcessThread(actor, this);
                 _threadList.insertFirst(pnt);
 		_newthreads.insertFirst(pnt);
                 actor.createReceivers();
