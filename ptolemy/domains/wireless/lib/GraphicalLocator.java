@@ -95,7 +95,9 @@ public class GraphicalLocator extends Locator {
 
         // Create the green antenna shape.
         PolygonAttribute  antenna = new PolygonAttribute(node_icon, "antenna2");
-        antenna.vertices.setToken("{0, -5, -5, -15, 5, -15, 0, -5, 0, 15}");        
+        antenna.vertices.setToken("{0, -5, -5, -15, 5, -15, 0, -5, 0, 15}");  
+        antenna.width.setToken("10");
+        antenna.height.setToken("30");
         // Set the color to green.
         antenna.fillColor.setToken("{0.0, 1.0, 0.0, 1.0}");
         
