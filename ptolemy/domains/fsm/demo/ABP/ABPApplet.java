@@ -684,7 +684,7 @@ public class ABPApplet extends DEApplet implements QueryListener {
     ////                         public variables                  ////
 
     public static final boolean DEBUG = true;
-    public static final String TIME_OUT = "2.5";
+    public static final String TIME_OUT = "5.0";
     public static final String RESET = "-1.0";
 
     ///////////////////////////////////////////////////////////////////
