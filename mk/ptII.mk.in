@@ -172,8 +172,7 @@ JDOCBREAKITERATOR = @JDOCBREAKITERATOR@
 JDOCMEMORY =	-J-Xmx132m
 
 # Allow @Pt.AcceptedRating and @Pt.ProposedRating tags.
-# Diva uses @rating
-JDOCTAG = 	-tag rating -tag Pt.AcceptedRating -tag Pt.ProposedRating
+JDOCTAG = 	-tag Pt.AcceptedRating -tag Pt.ProposedRating
 
 # Javadoc taglet
 JDOCTAGLET =	-tagletpath $PTII -taglet doc.doclets.RatingTaglet
