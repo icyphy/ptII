@@ -269,7 +269,10 @@ public class HeaderFileGenerator extends CodeGenerator {
         headerCode.append("\n");
 
         // Return an appropriate concatenation of the code strings.
-        return (headerCode.append(bodyCode.append(footerCode))).toString();
+        return headerCode.toString()
+                + bodyCode.toString()
+                + footerCode.toString();
+
     }
 
     ///////////////////////////////////////////////////////////////////

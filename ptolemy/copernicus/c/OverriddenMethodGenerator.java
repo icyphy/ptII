@@ -444,12 +444,7 @@ public class OverriddenMethodGenerator {
      *  indentation level.
      */
     private static String _indent(int level) {
-        StringBuffer indent = new StringBuffer();
-        int i;
-        for (i = 0; i < level; i++) {
-            indent.append("    ");
-        }
-        return indent.toString();
+        return Utilities.indent(level);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -94,9 +94,8 @@ public abstract class CodeGenerator {
      *  @return The generated comment.
      */
     protected final String _comment(String text) {
-        return("/* " + text + " */\n");
+        return Utilities.comment(text);
     }
-
 
     /** Generate code for typedef declaring array instances
      * @param void
@@ -231,13 +230,8 @@ public abstract class CodeGenerator {
      *  indentation level.
      */
     protected String _indent(int level) {
-        StringBuffer indent = new StringBuffer();
-        int i;
-        for (i = 0; i < level; i++) {
-            indent.append("    ");
-        }
-        return indent.toString();
-    }
+        return Utilities.indent(level);
+     }
 
     /** Remove a class from the list of required types (types whose associated
      *  include files must be imported) if the class exists in the list.
@@ -288,11 +282,13 @@ public abstract class CodeGenerator {
     // Code generation context information.
     protected Context _context;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                  private variables                        ////
-
     // Mapping from classes that the current class depends on to their
     // include file names.
-    private HashMap _requiredTypeMap = new HashMap();
+    protected HashMap _requiredTypeMap = new HashMap();
+
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                  private variables                        ////
 
 }

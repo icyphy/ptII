@@ -44,8 +44,7 @@ import soot.ArrayType;
 import soot.RefType;
 
 
-/**
-    A class that handles generation and management of native methods. It
+/** A class that handles generation and management of native methods. It
     uses stub files.  A "stub" file for a native method contains an
     appropriate definition and returns data of the appropriate type, but
     does not encapsulate any functionality. It is there to allow the code
@@ -59,14 +58,14 @@ import soot.RefType;
     The native method code is stored in a directory (nativeLib). However,
     this does not contain any body code for the methods. The body codes for
     methods are stored in the directory nativeBodyLib. If a method's body
-    code exists in nativeBodyLib, then its code in nativeLib will just have
-    a #include for the file containing the body code. If the method's body
-    code does not exist in nativeBodyLib, then its code in nativeLib will
-    be a stub.
+    code exists in nativeBodyLib, then its code in nativeLib will just
+    have a #include for the file containing the body code. If the method's
+    body code does not exist in nativeBodyLib, then its code in nativeLib
+    will be a stub.
 
-    @author Ankush Varma @version $Id: NativeMethodGenerator.java,v 1.2
-    2002/06/25 11:40:06 shuvra Exp $
- */
+    @author Ankush Varma
+    @version $Id$
+*/
 public class NativeMethodGenerator {
 
      /** The location of the native library methods.
@@ -252,12 +251,7 @@ public class NativeMethodGenerator {
      *  indentation level.
      */
     private static String _indent(int level) {
-        StringBuffer indent = new StringBuffer();
-        int i;
-        for (i = 0; i < level; i++) {
-            indent.append("    ");
-        }
-        return indent.toString();
+        return Utilities.indent(level);
     }
 
 

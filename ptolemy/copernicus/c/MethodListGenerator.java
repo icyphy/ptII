@@ -1,7 +1,4 @@
 /*
-
-FIXME: Methods/fields are not in aphabetical order.
-
 A class that extracts ordered lists of method declarations
 with an ordering convention that facilitates translation
 of methods into function pointers (e.g., for C code generation).
@@ -113,34 +110,7 @@ public class MethodListGenerator {
      *  @return  The SootMethod coresponding to its actual implementation.
      */
      public static SootMethod getActualMethod(SootMethod method) {
-
-        try {
-            SootClass source = method.getDeclaringClass();
-            Class javaClass = Class.forName(source.getName());
-            Class params[] = new Class[method.getParameterCount()];
-            for (int i = 0; i < method.getParameterCount(); i++) {
-                params[i] = Class.forName(method.getParameterType(i)
-                        .toString());
-            }
-            Method javaMethod = javaClass.getMethod(method
-                    .getName(), params);
-
-            javaClass = javaMethod.getDeclaringClass();
-
-            SootClass actualClass = Scene.v().getSootClass(javaClass
-                    .getName());
-
-            SootMethod actualMethod =actualClass.getMethod(method
-                    .getSubSignature());
-            return actualMethod;
-        }
-        // FIXME: Narrow down this exception.
-        // Do not resolve the method if there is a problem while reflecting
-        // it.
-        catch (Exception e) {
-                return method;
-        }
-
+         return method;
      }
 
 

@@ -49,6 +49,7 @@ import soot.jimple.internal.*;
     #_pop()}).
 
    @author Shuvra S. Bhattacharyya, Ankush Varma
+   @version $Id$
    @since Ptolemy II 2.0
 */
 public class CSwitch implements JimpleValueSwitch, StmtSwitch {
@@ -1238,11 +1239,15 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
             return "";
         }
         else {
+            int dimensions;
             // Determine the name of the run-time variable that
             // represents the array element class.
             String elementClass;
             String elementSizeType = "void*";
-            int emptyDimensions = 0;
+
+            // The number of dimensions is always 1, unless the element is
+            // an array.
+            dimensions = 1;
 
             if (elementType instanceof RefType) {
                 elementClass = CNames.typeNameOf(elementType);
@@ -1250,7 +1255,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
             else if (elementType instanceof ArrayType) {
                 BaseType baseType = ((ArrayType)elementType).baseType;
                 elementClass = CNames.typeNameOf(baseType);
-                emptyDimensions = ((ArrayType)elementType).numDimensions;
+                dimensions = ((ArrayType)elementType).numDimensions;
             }
             else {
                 // If its a primitive type.
@@ -1266,7 +1271,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
             return CNames.arrayAllocateFunction + "((PCCG_CLASS_PTR)"
                     + " malloc(sizeof(" + elementClass + "))"
                     + ", sizeof(" + elementSizeType + "), "
-                    + dimensionsToFill + ", " + emptyDimensions
+                    + dimensions + ", " + dimensionsToFill
                     + ", " + sizeCode
                     + ")";
         }
@@ -1377,11 +1382,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
      *  @return A String containg 4 spaces for every level of indentation.
      */
     protected String _indent() {
-        StringBuffer code = new StringBuffer();
-        for (int i = 0; i< indentLevel; i++) {
-            code.append("    "); // 4 spaces.
-        }
-        return code.toString();
+        return Utilities.indent(indentLevel);
     }
 
     /** Retrieve and remove the code at the top of the code stack.

@@ -117,7 +117,9 @@ public class InterfaceFileGenerator extends CodeGenerator {
                         +";\n");
 
         // Return an appropriate concatenation of the code strings.
-        return (headerCode.append(bodyCode.append(footerCode))).toString();
+        return headerCode.toString()
+                + bodyCode.toString()
+                + footerCode.toString();
     }
 
     /** Return the appropriate suffix for the interface header files.
