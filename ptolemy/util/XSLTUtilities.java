@@ -41,6 +41,7 @@ import java.io.OutputStream;
 import java.io.StreamTokenizer;
 import java.io.StringReader;
 import java.net.URL;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
@@ -61,7 +62,7 @@ A collection of utilities for manipulating strings using XSLT
 These utilities do not depend on any other ptolemy.* packages.
 
 
-@author Christopher Hylands
+@author Christopher Hylands, Haiyang Zheng
 @version $Id$
 @since Ptolemy II 2.1
 */
@@ -78,6 +79,7 @@ public class XSLTUtilities {
     /** Parse a document.
      * @param filename The file name of the xml file to be read in
      * @return the parsed document.
+     * @exception Thrown if there is a problem with the transformation.
      */
     public static Document parse(String filename) throws Exception {
         DocumentBuilderFactory factory
@@ -91,6 +93,7 @@ public class XSLTUtilities {
      * @param inputDocument The Document to be transformed
      * @param transformFileName The file name of the xsl file to be used
      * @return a transformed document
+     * @exception Thrown if there is a problem with the transformation.
      */
     public static Document transform(Document inputDocument,
             String transformFileName) throws Exception {
@@ -103,18 +106,43 @@ public class XSLTUtilities {
         return (Document)result.getNode();
     }
 
-    public static void transform
-                (String xsltFileName, String sourceFileName, String outputFileName)
-                throws Exception {
-        OutputStream os = new FileOutputStream(outputFileName);
+    /** Transform a document 
+     * @param inputDocument The Document to be transformed
+     * @param transformFileNames A list of Strings naming the
+     * xsl files to be applied sequentially
+     * @return a transformed document
+     * @exception Thrown if there is a problem with the transformation.
+     */
+    public static Document transform(Document inputDocument,
+            List transformFileNames) throws Exception {
+        Iterator fileNames = transformFileNames.iterator();
+        while (fileNames.hasNext()) {
+            String fileName = (String) fileNames.next();
+            inputDocument = transform(inputDocument, fileName);
+        }
+        return inputDocument;
+    }
+
+    /** Transform a document.
+     * @param xsltFileName The name of the xsl file to be used.
+     * @param sourceFileName The name of the file to be read in and
+     * transformed.
+     * @param resultFileName The name of the file to be generated.
+     * @exception Thrown if there is a problem with the transformation.
+     */
+    public static void transform (String xsltFileName,
+				  String sourceFileName,
+				  String resultFileName) throws Exception {
+        OutputStream resultStream = new FileOutputStream(resultFileName);
         StreamSource source = new StreamSource(sourceFileName);
-        StreamResult result = new StreamResult(os);
-        TransformerFactory tf = TransformerFactory.newInstance();
-        Transformer t =
-                tf.newTransformer(new StreamSource(xsltFileName));
-        t.setOutputProperty("indent", "yes");
-        t.transform(source, result);
-        os.flush();
-        os.close();
+        StreamResult result = new StreamResult(resultStream);
+        TransformerFactory transformerFactory =
+	    TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory
+	    .newTransformer(new StreamSource(xsltFileName));
+        transformer.setOutputProperty("indent", "yes");
+        transformer.transform(source, result);
+        resultStream.flush();
+        resultStream.close();
     }
 }
