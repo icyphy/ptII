@@ -40,7 +40,7 @@ include $(CONFIG)
 CLASSPATH = ../../../../..
 
 TCL_SRCS = \
-	testDefs.tcl 
+	testDefs.tcl
 
 
 JSRCS =

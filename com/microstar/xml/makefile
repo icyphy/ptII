@@ -36,7 +36,7 @@
 # doc directory should be last so we get files from version control before
 # updating the docs
 #DIRS = kernel actors domains pitcl doc graph data
-# filter is not yet ready 
+# filter is not yet ready
 DIRS = demo
 
 # Root of Ptolemy II directory
@@ -64,7 +64,7 @@ EXTRA_SRCS = \
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS) doc 
+MISC_FILES =	$(DIRS) doc
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

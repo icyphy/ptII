@@ -36,7 +36,7 @@
 # doc directory should be last so we get files from version control before
 # updating the docs
 #DIRS = kernel actors domains pitcl doc graph data
-# filter is not yet ready 
+# filter is not yet ready
 DIRS =
 
 # Root of Ptolemy II directory
@@ -55,7 +55,7 @@ JSRCS = \
 	StreamDemo.java \
 	TimerDemo.java \
 	XmlApp.java \
-	XmlApplet.java 
+	XmlApplet.java
 
 # We don't have SAX
 #	SAXDriver.java
