@@ -30,10 +30,8 @@
 
 package ptolemy.actor.gui;
 
-// Ptolemy imports.
 import ptolemy.gui.MessageHandler;
 
-// Java imports.
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -44,6 +42,7 @@ import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.io.IOException;
 import java.io.File;
+import java.io.FileWriter;
 import java.net.URL;
 import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
@@ -104,11 +103,35 @@ public class HTMLViewer extends TableauFrame
      */
     public void hyperlinkUpdate(HyperlinkEvent event) {
         if (event.getEventType() == HyperlinkEvent.EventType.ENTERED) {
-            report(event.getURL().toString());
+            if (event != null && event.getURL() != null) {
+                // If the link was 'about:copyright', then getURL returns null
+                report(event.getURL().toString());
+            }
         } else if (event.getEventType() == HyperlinkEvent.EventType.EXITED) {
             report("");
         } else if (event.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-            URL newUrl = event.getURL();
+            URL newURL = event.getURL();            
+
+            if (event.getDescription().equals("about:copyright")) {
+                // Note that if we have a link that is
+                // <a href="about:copyright">about:copyright</a>
+                // then event.getURL() will return null, so we have
+                // to use getDescription()
+                try {
+                    // Generate a copyright page in a temporary file
+                    File temporaryFile = File.createTempFile(
+                            "ptcopyright", "htm");
+                    temporaryFile.deleteOnExit();
+
+                    FileWriter fileWriter = new FileWriter(temporaryFile);
+                    String copyright = GenerateCopyrights.generateHTML();
+                    fileWriter.write(copyright, 0 , copyright.length());
+                    fileWriter.close();
+                    newURL = temporaryFile.toURL();
+                } catch (IOException ex) {
+                    new RuntimeException("Can't get copyrights", ex);
+                }
+            }
 
             // NOTE: It would be nice to use target="_browser" or some
             // such, but this doesn't work. Targets aren't
@@ -117,14 +140,16 @@ public class HTMLViewer extends TableauFrame
             // use the "userInfo" part of the URL,
             // defined at http://www.ncsa.uiuc.edu/demoweb/url-primer.html
             boolean useBrowser = false;
-            String ref = newUrl.getRef();
-            if (ref != null) {
-                useBrowser = ref.equals("in_browser");
+            if (newURL != null) {
+                String ref = newURL.getRef();
+                if (ref != null) {
+                    useBrowser = ref.equals("in_browser");
+                }
             }
 
-            // Suggested mailto: extension from Paul Lieverse
-            String protocol = newUrl.getProtocol();
+            String protocol = newURL.getProtocol();
             if (protocol != null) {
+                // Suggested mailto: extension from Paul Lieverse
                 useBrowser |= protocol.equals("mailto");
             }
 
@@ -156,8 +181,8 @@ public class HTMLViewer extends TableauFrame
                 // If the URL is the same as the one we are currently in,
                 // then we are dealing with a link within the same file,
                 // so we want to stay in the same window.
-                if (newUrl.getFile().equals(getPage().getFile())) {
-                    pane.setPage(newUrl);
+                if (newURL.getFile().equals(getPage().getFile())) {
+                    pane.setPage(newURL);
                 } else {
                     // Attempt to open in a new window.
                     Configuration configuration = getConfiguration();
@@ -175,18 +200,18 @@ public class HTMLViewer extends TableauFrame
                     if (configuration != null) {
                         if (useBrowser && BrowserEffigy.staticFactory != null) {
                             configuration.openModel(
-                                    newUrl,
-                                    newUrl,
-                                    newUrl.toExternalForm(),
+                                    newURL,
+                                    newURL,
+                                    newURL.toExternalForm(),
                                     BrowserEffigy.staticFactory);
                         } else {
                             configuration.openModel(
-                                    newUrl, newUrl, newUrl.toExternalForm());
+                                    newURL, newURL, newURL.toExternalForm());
                         }
                     } else {
                         // If there is no configuration,
                         // open in the same window.
-                        pane.setPage(newUrl);
+                        pane.setPage(newURL);
                     }
                 }
             } catch (Exception ex) {
