@@ -1,5 +1,4 @@
-/* An attribute for specifying that a parameter is edited with a
-File Chooser
+/* A style for parameters that can be specified using a FileChooser.
 
  Copyright (c) 2001-2002 The Regents of the University of California.
  All rights reserved.
@@ -25,30 +24,25 @@ File Chooser
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui.style;
 
 import ptolemy.actor.gui.PtolemyQuery;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// FileChooserStyle
 /**
 This attribute annotates user settable attributes to specify
-an arbitrary type-in line style for configuring the containing attribute.
-This style can be used with any Settable attribute.
+that the value of the parameter can be optionally given using a
+FileChooser.
 
 @see ptolemy.actor.gui.EditorPaneFactory
-@see ParameterEditorStyle
-@author Steve Neuendorffer
+@see FileChooser
+@author Steve Neuendorffer and Edward A. Lee
 @version $Id$
 @since Ptolemy II 2.0
 */
@@ -93,10 +87,11 @@ public class FileChooserStyle extends ParameterEditorStyle {
 
     /** Return true if this style is acceptable for the given parameter.
      *  @param param The attribute that this annotates.
-     *  @return True.
+     *  @return True if the argument is a StringAttribute, false otherwise.
      */
     public boolean acceptable(Settable param) {
-	return true;
+        if (!(param instanceof StringAttribute)) return false;
+        else return true;
     }
 
     /** Create a new type-in line
@@ -109,9 +104,9 @@ public class FileChooserStyle extends ParameterEditorStyle {
     public void addEntry(PtolemyQuery query) {
         Settable container = (Settable)getContainer();
         String name = container.getName();
-        String defaultValue = "";
+        String defaultValue = container.getExpression();
         defaultValue = container.getExpression();
-        query.addFileChooser(name, name, defaultValue);
+        query.addFileChooser(name, name, defaultValue, defaultValue);
         query.attachParameter(container, name);
     }
 }
