@@ -46,7 +46,7 @@ if {[string compare test [info procs test]] == 1} then {
 # It would be nice if the tests would work in a vanilla itkwish binary.
 # Check for necessary classes and adjust the auto_path accordingly.
 #
-set manager [java::new ptolemy.actor.Manager]
+
 
 ######################################################################
 ####
@@ -79,6 +79,7 @@ test TimedPNDirector-4.1 {Test _makeDirectorOf} {
     # NOTE: Uses the setup above
     set e0 [java::new ptolemy.actor.CompositeActor $w]
     $e0 setName E0
+    set manager [java::new ptolemy.actor.Manager $w "manager"]
     $e0 setManager $manager
     $e0 setDirector $d3
     list [$d3 getFullName] [$d4 getFullName] [enumToFullNames [$w directory]]
