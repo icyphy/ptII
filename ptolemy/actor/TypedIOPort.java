@@ -643,6 +643,14 @@ public class TypedIOPort extends IOPort implements Typeable {
                     + "the value of a type constant.");
         }
 
+        /** Override the base class to give a description of the port
+         *  and its type.
+         *  @return A description of the port and its type.
+         */
+        public String toString() {
+            return "(" + _port.toString() + ", " + getType() + ")";
+        }
+
         ///////////////////////////////////////////////////////////////
         ////                       private inner variable          ////
 
