@@ -98,7 +98,7 @@ depend:
 demo: deepDemo
 deepDemo: compileDeepDemo runDeepDemo
 
-TARGETPATH =	ptolemy/copernicus/java/cg/shallow
+TARGETPATH =	ptolemy/copernicus/java/cg
 
 JADTARGETPACKAGE =	ptolemy.copernicus.java.cg.jad
 JADTARGETPATH =		$(ROOT)/ptolemy/copernicus/java/cg/jad
@@ -144,6 +144,26 @@ compileDeepDemo: $(JCLASS)
 		$(SOOT_USER_ARGS)
 #	@echo "Here is that javap output"
 #	javap -verbose -l -s -classpath $(ROOT) $(TARGETCLASS)
+
+# Jad is a Java disassembler
+JAD=jad
+
+JADTARGETCLASS=CG$(MODEL)
+JADTARGET=$(ROOT)/$(TARGETPATH)/
+
+# Generate a .java file from a class file and recompile it
+recompileDeepDemo:
+	@echo "Convert .class file back to .java file, compile it, run it"
+	$(JAD) -o -d $(JADTARGETPATH) $(JADTARGET)/$(JADTARGETCLASS)
+	sed 's/$(TARGETPACKAGE)/$(JADTARGETPACKAGE)/' \
+		$(JADTARGETPATH)/$(JADTARGETCLASS).jad > \
+		$(JADTARGETPATH)/$(JADTARGETCLASS).jad2
+	sh ../shallow/test/jad2java $(JADTARGETPATH)/$(JADTARGETCLASS).jad2 \
+		> $(JADTARGETPATH)/$(JADTARGETCLASS).java
+	$(JAVAC) -classpath $(ROOT) $(JADTARGETPATH)/$(JADTARGETCLASS).java
+	$(JAVA) -Xfuture -classpath "$(ROOT)" \
+		ptolemy.actor.gui.CompositeActorApplication \
+		-class $(JADTARGETPACKAGE).$(JADTARGETCLASS)
 
 runDeepDemo:
 	@echo "Run the deep model"
