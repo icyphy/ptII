@@ -51,7 +51,7 @@ of your JDK.
 HOME <P>Another fix is to set the <CODE>JAVAHOME</CODE> variable
 to point to your JDK and rerun pxgraph:
 <PRE>
-cxh@carson 41% setenv JAVAHOME /optolemy/jdk1.1.4
+cxh@carson 41% setenv JAVAHOME /opt/jdk1.1.4
 cxh@carson 42% pxgraph -help
 Usage: pxgraph [ options ] [=WxH+X+Y] [file ...]
  options that take values as second args:
@@ -82,7 +82,7 @@ you are running.
 carson [10] sh -x /users/ptdesign/bin.sol2.5/pxgraph -help
 PTDEFAULT=/users/ptdesign
 TYDEFAULT=/users/ptdesign/tycho
-JAVADEFAULT=/optolemy/jdk1.1.4
+JAVADEFAULT=/opt/jdk1.1.4
 + [ -z /users/cxh/ptbuild ]
 + [ -z  ]
 + [ /users/cxh/ptbuild -a -f /users/cxh/ptbuild/tycho/bin/ptarch ]
@@ -92,13 +92,13 @@ windows=no
 + uname
 + [ SunOS = CYGWIN32/NT ]
 + [ -z  ]
-+ [ -d /optolemy/jdk1.1.4 ]
-JAVAHOME=/optolemy/jdk1.1.4
++ [ -d /opt/jdk1.1.4 ]
+JAVAHOME=/opt/jdk1.1.4
 + export JAVAHOME
-+ [ -z /optolemy/jdk1.1.4 ]
-+ [ ! -r /optolemy/jdk1.1.4/lib/classes.zip ]
++ [ -z /opt/jdk1.1.4 ]
++ [ ! -r /opt/jdk1.1.4/lib/classes.zip ]
 + [ no = yes ]
-+ /optolemy/jdk1.1.4/bin/java -classpath /users/cxh/ptbuild/tycho/java:/optolemy/jdk1.1.4/lib/classes.zip ptolemy.plot.Pxgraph -help
++ /opt/jdk1.1.4/bin/java -classpath /users/cxh/ptbuild/tycho/java:/opt/jdk1.1.4/lib/classes.zip ptolemy.plot.Pxgraph -help
 Can't find class ptolemy.plot.Pxgraph
 carson [11]
 </PRE>
@@ -106,7 +106,7 @@ carson [11]
 In the output below, the key line is the line towards that bottom that
 runs the <CODE>java</CODE> interpreter:
 <PRE>
-+ /optolemy/jdk1.1.4/bin/java -classpath /users/cxh/ptbuild/tycho/java:/optolemy/jdk1.1.4/lib/classes.zip ptolemy.plot.Pxgraph -help
++ /opt/jdk1.1.4/bin/java -classpath /users/cxh/ptbuild/tycho/java:/opt/jdk1.1.4/lib/classes.zip ptolemy.plot.Pxgraph -help
 </PRE>
 In the pxgraph script, the first element in the <CODE>-classpath</CODE>
 argument should point lead to the <CODE>ptplot.zip</CODE> file.
@@ -143,7 +143,7 @@ directory, you
 would set your classpath to <CODE>/usr/local/java</CODE>
  <P>The following two examples show two ways to set your classpath.
 <PRE>
-cxh@carson 32% setenv CLASSPATH ..:/optolemy/jdk1.1.4/lib/classes.zip
+cxh@carson 32% setenv CLASSPATH ..:/opt/jdk1.1.4/lib/classes.zip
 cxh@carson 33% java ptolemy.plot.Pxgraph -help
 Usage: pxgraph [ options ] [=WxH+X+Y] [file ...]
  options that take values as second args:
@@ -152,7 +152,7 @@ Usage: pxgraph [ options ] [=WxH+X+Y] [file ...]
 
 <PRE>
 cxh@carson 34% unsetenv CLASSPATH
-cxh@carson 35% java -classpath ..:/optolemy/jdk1.1.4/lib/classes.zip ptplot.Pxgraph -help
+cxh@carson 35% java -classpath ..:/opt/jdk1.1.4/lib/classes.zip ptplot.Pxgraph -help
 Usage: pxgraph [ options ] [=WxH+X+Y] [file ...]
  options that take values as second args:
  -bd &lt;color&gt; (Unsupported)
@@ -162,7 +162,7 @@ file, rather than including the directory that the <CODE>ptplot</CODE>
 directory resides in:
 <PRE>
 cxh@carson 36% unsetenv CLASSPATH
-cxh@carson 57% java -classpath ptplot.zip:/optolemy/jdk1.1.4/lib/classes.zip ptplot.Pxgraph -help
+cxh@carson 57% java -classpath ptplot.zip:/opt/jdk1.1.4/lib/classes.zip ptplot.Pxgraph -help
 Usage: pxgraph [ options ] [=WxH+X+Y] [file ...]
  options that take values as second args:
  -bd &lt;color&gt; (Unsupported)
