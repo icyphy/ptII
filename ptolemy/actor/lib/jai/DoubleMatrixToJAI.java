@@ -70,7 +70,7 @@ together.
 to whichever non-floating data type is chosen.
 
 @see JAIBandCombine
-@see JAIDataConverter
+@see JAIDataConvert
 @see JAIToDoubleMatrix
 @author James Yeh
 @version $Id$
