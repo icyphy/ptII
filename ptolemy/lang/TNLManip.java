@@ -52,26 +52,26 @@ public class TNLManip {
     public static final ArrayList cloneList(List list) {
         Iterator itr = list.iterator();
         ArrayList retval = new ArrayList(list.size());
-        
+
         while (itr.hasNext()) {
            Object obj = itr.next();
-           
+
            if (obj instanceof TreeNode) {
               retval.add(((TreeNode) obj).clone());
            } else if (obj instanceof List) {
               retval.add(cloneList((List) obj));
            } else {
               throw new RuntimeException("unknown object in list : " + obj.getClass());
-           }       
+           }
         }
         return retval;
     }
 
-    /** Have each member of the list accept the argument visitor. Each member 
+    /** Have each member of the list accept the argument visitor. Each member
      *  of the argument list should be a child list. Return a list
-     *  of the return values from each visitation. If a node in the list  
+     *  of the return values from each visitation. If a node in the list
      *  returns null, set the corresponding value in the return list to
-     *  NullValue.instance.     
+     *  NullValue.instance.
      */
     public static final ArrayList traverseList(IVisitor v, TreeNode parent,
      LinkedList args, List childList) {
@@ -105,15 +105,15 @@ public class TNLManip {
 
        return retList;
     }
-    
+
     /** Create a LinkedList with one element. If obj is null, the element in
      *  the LinkedList should be NullValue.instance. This method
      *  may be used to create a list from any object.
      */
     public static final LinkedList cons(Object obj) {
-       return cons(obj, new LinkedList());        
+       return cons(obj, new LinkedList());
     }
-    
+
     public static final LinkedList cons(Object obj, LinkedList list) {
        if (obj == null) {
           list.addFirst(NullValue.instance);
@@ -123,7 +123,7 @@ public class TNLManip {
        return list;
     }
 
-    /** Convert an array of objects into a LinkedList with elements in the same 
+    /** Convert an array of objects into a LinkedList with elements in the same
      *  order as in the array. If an array element is null, the corresponding
      *  element in the LinkedList will be NullValue.instance. This method
      *  may be used for lists of any objects.
@@ -139,35 +139,35 @@ public class TNLManip {
            }
        }
        return retval;
-    } 
+    }
 
     /** Return a string representation of the list. This method simply calls
      *  toString(list, "")
-     */ 
+     */
     public static final String toString(List list) {
        return toString(list, "");
     }
 
     /** Return a string representation of the list. The string representation
      *  is indented by the argument string.
-     */ 
+     */
     public static final String toString(List list, String indent) {
        if (list.isEmpty()) {
           return "<empty list>\n";
        }
-       
-       String nextIndent = indent + " "; 
+
+       String nextIndent = indent + " ";
 
        StringBuffer sb = new StringBuffer();
-             
+
        sb.append("list\n");
 
        Iterator itr = list.iterator();
 
        while (itr.hasNext()) {
-          
-          sb.append(nextIndent); 
-          
+
+          sb.append(nextIndent);
+
           Object child = itr.next();
 
           if (child instanceof TreeNode) {
@@ -180,8 +180,8 @@ public class TNLManip {
           }
        }
 
-       sb.append(indent); 
-       
+       sb.append(indent);
+
        sb.append("END list\n");
 
        return sb.toString();

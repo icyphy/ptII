@@ -47,8 +47,8 @@ public class TrackedPropertyMap extends PropertyMap {
     public TrackedPropertyMap() {
         super();
     }
-    
-    
+
+
     /** Add the visitor with the argument class object to the set of visitors
      *  that have visited this object.
      */
@@ -61,7 +61,7 @@ public class TrackedPropertyMap extends PropertyMap {
         _visitedBySet.clear();
     }
 
-    /** Remove the visitor with the argument class object from the set of 
+    /** Remove the visitor with the argument class object from the set of
      *  visitors that have visited this object.
      */
     public boolean removeVisitor(Class c) {
@@ -71,19 +71,18 @@ public class TrackedPropertyMap extends PropertyMap {
     /** Return true iff this object was visited by a visitor with the
      *  argument class object.
      */
-    public boolean wasVisitedBy(Class c) {    
+    public boolean wasVisitedBy(Class c) {
         return _visitedBySet.contains(c);
     }
 
     /** Return an iterator over the class objects of the visitors that have
      *  visited this object.
-     */    
+     */
     public Iterator visitorIterator() {
         return _visitedBySet.iterator();
     }
 
-    /** A set of classs objects of the visitors that have visited this 
+    /** A set of classs objects of the visitors that have visited this
      *  object. The initial capacity is set to 1 to conserve memory.
      */
     protected HashSet _visitedBySet = new HashSet(1);
-}

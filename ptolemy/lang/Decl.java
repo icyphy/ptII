@@ -37,24 +37,24 @@ package ptolemy.lang;
 /**
  *  A Decl encapsulates information about a declaration of some entity.
  *  There is a unique Decl for each Decl in the compilation.
- *  </p>   
- *  <p> 
+ *  </p>
+ *  <p>
  *  The class Decl and its subclasses declare attributes, most of which make
  *  sense only for certain types of Decl.  Attempts to access nonsensical
  *  attributes will cause runtime errors.
- *  </p>   
- *  <p> 
+ *  </p>
+ *  <p>
  *  By convention, a Decl member named "getFoo" will return the "foo"
  *  attribute when called with no parameters, and a member "setFoo" will
- *  set the "foo" attribute when called with one parameter.  
+ *  set the "foo" attribute when called with one parameter.
  *  Also, if member "foo" is not valid for all Decls, there is a member
  *  "hasFoo()" that returns true or false depending on whether object
  *  on which it is called has a class for which "foo" may be called.
- *  </p>   
+ *  </p>
  *  <p>
  *  Objects of type Decl should not be allocated; the class is intended
  *  as a base class for others.
- *  </p>   
+ *  </p>
  *  <p>
  *   ATTRIBUTE name
  *     All Decls have a name, of type String.  These are
@@ -62,10 +62,10 @@ package ptolemy.lang;
  *     The names of two Decls are considered the same iff they are the
  *     same pointer, ignoring contents: names that are different pointers
  *     to strings containing the same characters are considered distinct.
- *  </p>   
- *  <p> 
+ *  </p>
+ *  <p>
  *  This class and comments were converted from Decl in the Titanium project.
- *  </p>    
+ *  </p>
  *
  *  @author ctsay@eecs.berkeley.edu
  */
@@ -75,8 +75,8 @@ public class Decl extends TrackedPropertyMap {
     _name = name;
     category = category0;
   }
-  
-  /** Override Object.equals() so that equality is defined as having the same name 
+
+  /** Override Object.equals() so that equality is defined as having the same name
    *  and category. If the object being compared against is not a Decl, throw a
    *  RuntimeException.
    */
@@ -88,11 +88,11 @@ public class Decl extends TrackedPropertyMap {
     if (!(o instanceof Decl)) {
        throw new RuntimeException("cannot compare a Decl with a non-Decl");
     }
-        
+
     Decl d = (Decl) o;
-    return matches(d.getName(), d.category);                   
+    return matches(d.getName(), d.category);
   }
-  
+
   public final boolean matches(String name, int mask) {
     if ((category & mask) != 0) {
        return (name.equals(ANY_NAME) || name.equals(_name));

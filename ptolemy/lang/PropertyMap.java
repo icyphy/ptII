@@ -1,4 +1,4 @@
-/* 
+/*
 A subclass on which to base objects that have properties.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
@@ -51,24 +51,24 @@ public class PropertyMap implements Cloneable {
 
     public PropertyMap() {}
 
-    /** Make a deep copy of the property map, so that the two instances can have 
-     *  different values for the same property. 
+    /** Make a deep copy of the property map, so that the two instances can have
+     *  different values for the same property.
      */
-    public Object clone() {    
+    public Object clone() {
         PropertyMap pm = null;
         // There's no reason that clone() should fail, so just catch the
-        // theoretical exception.        
+        // theoretical exception.
         try {
           pm = (PropertyMap) super.clone();
         } catch (CloneNotSupportedException e) {
           throw new RuntimeException("clone not supported on PropertyNode");
         }
-        
+
         // make a shallow copy of keys and values
         pm._propertyMap = (HashMap) _propertyMap.clone();
         return pm;
-    }    
-        
+    }
+
 
     /** Define a property. Return false if the property is already defined. */
     public boolean defineProperty(Integer property) {
@@ -89,13 +89,13 @@ public class PropertyMap implements Cloneable {
     public Object getProperty(Integer property) {
       return _propertyMap.get(property);
     }
-    
+
     /** Set a property. Throw a RuntimeException if the property in not defined. */
     public Object setDefinedProperty(Integer property, Object obj) {
         if (obj == null) {
            obj = NullValue.instance;
         }
-  
+
         Object retval = _propertyMap.put(property, obj);
 
         if (retval == null) {
@@ -108,7 +108,7 @@ public class PropertyMap implements Cloneable {
     public Set keySet() {
         return _propertyMap.keySet();
     }
-   
+
     /** Set a property. The property may or may not have been defined already. */
     public Object setProperty(Integer property, Object obj) {
         if (obj == null) {
@@ -134,29 +134,29 @@ public class PropertyMap implements Cloneable {
         return _propertyMap.values();
     }
 
-   
+
     ///////////////////////////////////////////////////////////////////
     ////                       public variables                    ////
-  
+
     // reserved properties
-    
+
     /** The key that retrieves the List of return values of the child
-     *  nodes, after accept() is called on all of them by 
+     *  nodes, after accept() is called on all of them by
      *  TNLManip.traverseList().
      */
-    public static final Integer CHILD_RETURN_VALUES_KEY = new Integer(-2); 
-    
-    /** The key that retrieves indicating a numbering. */  
+    public static final Integer CHILD_RETURN_VALUES_KEY = new Integer(-2);
+
+    /** The key that retrieves indicating a numbering. */
     public static final Integer NUMBER_KEY = new Integer(-1);
 
-    // 0 is reserved for a dummy value for the interrogator    
+    // 0 is reserved for a dummy value for the interrogator
 
     ///////////////////////////////////////////////////////////////////
     ////                      protected variables                  ////
 
-    /** A map from properties (instances of Integer) to values 
+    /** A map from properties (instances of Integer) to values
      *  (instances of Objects). The initial capacity is set to 2 to
-     *  conserve memory. 
+     *  conserve memory.
      */
-    protected HashMap _propertyMap = new HashMap(2); 
+    protected HashMap _propertyMap = new HashMap(2);
 }

@@ -63,7 +63,7 @@ public abstract class TreeNode extends TrackedPropertyMap
      *  added to the child list later.
      */
     public TreeNode(int numChildren) {
-        _childList = new ArrayList(numChildren);        
+        _childList = new ArrayList(numChildren);
     }
 
     /** Accept a visitor, giving the visitor a list of zero arguments. */
@@ -111,10 +111,10 @@ public abstract class TreeNode extends TrackedPropertyMap
           default:
           throw new RuntimeException("Unknown traversal method for visitor");
         } // end switch
-      
+
         return retval;
     }
-    
+
     /** Return the list of all direct children of this node. */
     public ArrayList children() { return _childList; } // change this name
 
@@ -137,7 +137,7 @@ public abstract class TreeNode extends TrackedPropertyMap
         return null;
     }
 
-    /** Return the class ID number, which is unique for each sub-type. */    
+    /** Return the class ID number, which is unique for each sub-type. */
     public abstract int classID();
 
     /** Return a clone of this node, cloning all children of the node. */
@@ -146,11 +146,11 @@ public abstract class TreeNode extends TrackedPropertyMap
         if (isSingleton()) {
            return this;
         }
-        
+
         TreeNode copy = (TreeNode) super.clone();
-            
+
         copy._childList = TNLManip.cloneList(_childList);
-        
+
         return copy;
     }
 
@@ -159,8 +159,8 @@ public abstract class TreeNode extends TrackedPropertyMap
         return _childList.get(0);
     }
 
-    /** Return true iff this subclass of TreeNode is a singleton, i.e. there 
-     *  exists only one object of the subclass. This method needs to be 
+    /** Return true iff this subclass of TreeNode is a singleton, i.e. there
+     *  exists only one object of the subclass. This method needs to be
      *  overridden by  singleton classes.
      */
     public boolean isSingleton() { return false; }
@@ -174,22 +174,22 @@ public abstract class TreeNode extends TrackedPropertyMap
      *  return values in the CHILD_RETURN_VALUES_KEY property of the node.
      */
     public void traverseChildren(IVisitor v, LinkedList args) {
-        setProperty(CHILD_RETURN_VALUES_KEY, 
+        setProperty(CHILD_RETURN_VALUES_KEY,
          TNLManip.traverseList(v, this, args, _childList));
     }
-    
+
     public void setChildren(ArrayList childList) {
         _childList = childList;
     }
 
     /** Return a String representation of this node.
      *  Call the toString() method of all child nodes.
-     */  
+     */
     public String toString() {
         return toString("");
     }
 
-    /** Return a String representation of this node, indented by ident. 
+    /** Return a String representation of this node, indented by ident.
      *  Call the toString() method of all child nodes.
      */
     public String toString(String indent) {
@@ -200,44 +200,44 @@ public abstract class TreeNode extends TrackedPropertyMap
         String className = StringManip.unqualifiedPart(c.getName());
 
         sb.append(className);
-      
+
         // If the number property is defined, print the number.
         if (hasProperty(NUMBER_KEY)) {
            sb.append(" (" + getDefinedProperty(NUMBER_KEY) + ')');
         }
-           
+
         Method[] methodArr = c.getMethods();
-          
-        String nextIndent = indent + " ";        
-      
+
+        String nextIndent = indent + " ";
+
         int matchingMethods = 0;
 
         for (int i = 0; i < methodArr.length; i++) {
             Method method = methodArr[i];
 
             String methodName = method.getName();
-          
+
             if (methodName.startsWith("get") &&
                 (method.getParameterTypes().length == 0) &&
                 !methodName.equals("getClass")) {
-              
-               matchingMethods++; 
+
+               matchingMethods++;
                if (matchingMethods == 1) {
-                  sb.append('\n'); 
-               } 
-              
+                  sb.append('\n');
+               }
+
                String methodLabel = methodName.substring(3);
-          
-               String totalIndent = nextIndent + 
+
+               String totalIndent = nextIndent +
                 _makeSpaceString(methodLabel.length()) + "  ";
-                       
+
                sb.append(nextIndent + methodLabel + ": ");
 
                Object retval = null;
                try {
                   retval = method.invoke(this, null);
                } catch (Exception e) {
-                  throw new RuntimeException("Error invoking method " + 
+                  throw new RuntimeException("Error invoking method " +
                    methodName);
                }
 
@@ -249,26 +249,26 @@ public abstract class TreeNode extends TrackedPropertyMap
                } else {
                   sb.append(retval.toString() + '\n');
                }
-             
+
             } // if (methodName.startsWith("get") ...
-        } // for 
-                      
+        } // for
+
         if (matchingMethods < 1) {
            sb.append(" (leaf)"); // Node has no children
         } else {
-           sb.append(indent + "END " + className);           
-        }      
-      
+           sb.append(indent + "END " + className);
+        }
+
         sb.append('\n');
 
         return sb.toString();
     }
 
-    /** Accept a visitor at this node only. This method uses reflection and 
-     *  therefore suffers a performance penalty. This method should be 
+    /** Accept a visitor at this node only. This method uses reflection and
+     *  therefore suffers a performance penalty. This method should be
      *  overridden in concrete subclasses of TreeNode for better performance.
      */
-    protected Object _acceptHere(IVisitor v, LinkedList visitArgs) {      
+    protected Object _acceptHere(IVisitor v, LinkedList visitArgs) {
         if (_myClass == null) {
            _myClass = getClass();
 
@@ -280,7 +280,7 @@ public abstract class TreeNode extends TrackedPropertyMap
            _visitParamTypes[1] = _linkedListClass;
 
            _visitArgs[0] = this;
-        } 
+        }
 
         Method method;
         Class visitorClass = v.getClass();
@@ -306,34 +306,34 @@ public abstract class TreeNode extends TrackedPropertyMap
         }
         return null;
     }
-  
+
     // protected methods
-  
-    /** Return a String of spaces, the number of which is specified by the 
-     *  argument. 
+
+    /** Return a String of spaces, the number of which is specified by the
+     *  argument.
      */
     protected static String _makeSpaceString(int spaces) {
         StringBuffer sb = new StringBuffer();
-    
+
         for (int i = 0; i < spaces; i++) {
             sb.append(' ');
         }
-  
+
         return sb.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                          public variables                 ////
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                        protected variables                ////
 
-    protected Class  _myClass = null;    
+    protected Class  _myClass = null;
     protected ArrayList _childList;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     private String _visitMethodName = null;
     private final Class[] _visitParamTypes = new Class[2];
     private final Object[] _visitArgs = new Object[2];

@@ -51,16 +51,16 @@ public class Environ {
     public Environ() {
         this(null, new LinkedList());
     }
- 
+
     /** Constuct an environment nested inside the parent argument, without its own
-     *  proper Decl's. 
+     *  proper Decl's.
      */
     public Environ(Environ parent) {
         this(parent, new LinkedList());
     }
 
     /** Constuct an environment nested inside the parent argument, with the given
-     *  List of Decl's in this environment itself. 
+     *  List of Decl's in this environment itself.
      */
     public Environ(Environ parent, List declList) {
         _parent = parent;
@@ -94,7 +94,7 @@ public class Environ {
     public Decl lookup(String name, boolean[] more) {
         return lookup(name, Decl.CG_ANY, more, false);
     }
-  
+
     public Decl lookup(String name, int mask, boolean[] more) {
         return lookup(name, mask, more, false);
     }
@@ -117,7 +117,7 @@ public class Environ {
 
     public Decl lookup(String name, int mask, boolean[] more, boolean proper) {
         EnvironIter itr = lookupFirst(name, mask, proper);
- 
+
         if (itr.hasNext()) {
            Decl retval = (Decl) itr.next();
            more[0] = itr.hasNext();
@@ -130,7 +130,7 @@ public class Environ {
     public EnvironIter lookupFirst(String name) {
         return lookupFirst(name, Decl.CG_ANY, false);
     }
- 
+
     public EnvironIter lookupFirst(String name, int mask) {
         return lookupFirst(name, mask, false);
     }
@@ -178,14 +178,14 @@ public class Environ {
         return moreThanOne(name, mask, false);
     }
 
-    /** Return true if there is more than one matching Decl in this Environ, and 
+    /** Return true if there is more than one matching Decl in this Environ, and
      *  if proper is true, in the enclosing Environs.
      */
     public boolean moreThanOne(String name, int mask, boolean proper) {
         boolean[] more = new boolean[1];
 
         lookup(name, mask, more, proper);
-  
+
         return more[0];
     }
 
@@ -207,7 +207,7 @@ public class Environ {
         }
 
         retval.append("] ");
-  
+
         if (_parent != null) {
            retval.append("has parent\n");
 

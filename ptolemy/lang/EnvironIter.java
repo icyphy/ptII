@@ -100,10 +100,10 @@ public class EnvironIter implements Iterator {
          if (_nextEnviron == null) {
            // ApplicationUtility.trace("EnvironIter : no more elements " +
            //  "looking for " + _name);
- 
+
             throw new NoSuchElementException("No more elements in EnvironIter.");
          }
- 
+
          //ApplicationUtility.trace("EnvironIter : going to next environment " +
          // "looking for " + _name);
 
@@ -124,13 +124,13 @@ public class EnvironIter implements Iterator {
 
     /** Return true if there is more than one matching Decl that can be reached. */
     public boolean moreThanOne() {
-  
+
       // ApplicationUtility.trace("EnvironIter: moreThanOne for " + _name);
       if (_declIter == null) {
          // empty list
-         return false;     
+         return false;
       }
-      
+
       Decl lastMatch = null;
       int movesAfterMatch = 0;
       int matches = 0;
@@ -144,14 +144,14 @@ public class EnvironIter implements Iterator {
            matches++;
            lastMatch = d;
         }
-        
+
         if (matches > 0) {
            movesAfterMatch++;
         }
       }
-  
+
       if (matches >= 1) {
-      
+
          // rewind back to first matching Decl
          for (; movesAfterMatch > 0; movesAfterMatch--) {
              _declIter.previous();
@@ -162,47 +162,47 @@ public class EnvironIter implements Iterator {
              _name);
             return true;
          }
-         
+
          if (_nextEnviron == null) {
             // just one match
             return false;
          }
-         
+
          EnvironIter nextEnvironIter = _nextEnviron.lookupFirst(_name, _mask);
-         
+
          while (nextEnvironIter.hasNext()) {
             Decl nextMatch = nextEnvironIter.nextDecl();
-            
+
             // make sure we don't have a reference to the last found match
             if (lastMatch != nextMatch) {
                return true;
             }
-         }            
-         
-         return false;          
- 
+         }
+
+         return false;
+
       } else {
          // matches == 0
          // don't bother to move the iterator back, since there are no matches
-       
+
          if (_nextEnviron == null) {
             //ApplicationUtility.trace("EnvironIter: moreThanOne = false for " +
             // _name);
             return false;
          }
-         
+
          // move on to the next environment, discarding last environment
-         
+
          _declIter = _nextEnviron.allProperDecls();
          _nextEnviron = _nextEnviron.parent();
-         
-         // try again on this modified EnvironIter         
+
+         // try again on this modified EnvironIter
          return moreThanOne();
       }
     }
-  
-  
-    /** Throw a RuntimeException, because we do not support the optional remove() 
+
+
+    /** Throw a RuntimeException, because we do not support the optional remove()
      *  method of the Iterator interface.
      */
     public void remove() {

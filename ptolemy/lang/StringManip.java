@@ -19,7 +19,7 @@ public class StringManip {
     public static final String partAfterLast(String str, char c) {
         return str.substring(str.lastIndexOf(c) + 1);
     }
-    
+
     /** Return the substring that precedes the last occurence of the
      *  argument character in the argument string. If the
      *  character does not occur, return the whole string.
@@ -27,5 +27,4 @@ public class StringManip {
     public static final String partBeforeLast(String str, char c) {
         return str.substring(0, str.lastIndexOf(c));
     }
-    
-}
+
