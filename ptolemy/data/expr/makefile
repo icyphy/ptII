@@ -101,18 +101,19 @@ JCLASS = $(JSRCS:%.java=%.class) $(OPTIONAL_JSRCS:%.java=%.class)
 # Needed for compiling under Cygwin on NT
 LIB = dummylib
 
-all: PtParser $(JCLASS) 
-install: PTParser javadocs $(JARFILE)
+all: PtParser.jjt $(JCLASS) 
+install: PtParser.jjt javadocs $(JARFILE)
 docs: javadocs
 
 depend:
 	@echo "no dependencies in this directory"
 
-PtParser :  PtParser.jjt
-	rm -f PtParser.jj
+PtParser.jjt : 
+	
 	CLASSPATH=$(CLASSPATH) $(JJTREE) PtParser.jjt
 	CLASSPATH=$(CLASSPATH) $(JAVACC) PtParser.jj
-	# CLASSPATH=$(CLASSPATH) $(JAVAC) *.java
+	rm -f PtParser.jj
+	
 
 # Get the rest of the rules
 include $(ROOT)/mk/tycommon.mk
