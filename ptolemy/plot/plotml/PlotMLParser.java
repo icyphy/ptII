@@ -47,7 +47,7 @@ support the subset that applies to the Plot class.
 It ignores unrecognized elements in the DTD.
 The class contains an instance of the Microstar &AElig;lfred XML
 parser and implements callback methods to interpret the parsed XML.
-The way to use this class is to contruct it with a reference to
+The way to use this class is to construct it with a reference to
 a Plot object and then call its parse() method.
 
 @author Edward A. Lee
@@ -55,7 +55,7 @@ a Plot object and then call its parse() method.
 */
 public class PlotMLParser extends PlotBoxMLParser {
 
-    /** Contruct an parser to parse commands for the specified plot object.
+    /** Construct an parser to parse commands for the specified plot object.
      *  @param plot The plot object to which to apply the commands.
      */
     public PlotMLParser(Plot plot) {
