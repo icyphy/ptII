@@ -1,4 +1,4 @@
-# Makefile for Java Ptolemy concurrent functional classes
+# Makefile for Ptolemy Corba utilities
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -28,16 +28,6 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-
-# This directory contains classes used for dataflow and pn channels that
-# should _not_ go into the kernel so that we can keep the kernel free
-# of the notion of dataflow.  These classes are concurrent functional
-# classes:
-#  FIFOQueue
-#  Star
-#  Galaxy
-#  Universe
-# Note that none of these classes would be relevant to FSMs, for example.
 
 ME =		ptolemy/actor/corba/util
 
