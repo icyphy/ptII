@@ -41,7 +41,7 @@
         <xsl:call-template name="composite">
             <xsl:with-param name="name" select="@name"/>
             <xsl:with-param name="class" select="'ptolemy.actor.TypedCompositeActor'"/>
-            <xsl:with-param name="type" select="'PN'"/>
+            <xsl:with-param name="type" select="'CT'"/>
         </xsl:call-template>
 
         <!-- Modal Models -->
@@ -199,7 +199,7 @@
     <xsl:element name="property">
         <!-- attributes of entity -->
         <xsl:attribute name="name">CT Director</xsl:attribute>
-        <xsl:attribute name="class">ptolemy.domains.ct.kernel.CTMixedDirector</xsl:attribute>
+        <xsl:attribute name="class">ptolemy.domains.ct.kernel.CTMixedSignalDirector</xsl:attribute>
     </xsl:element>
 </xsl:template>
 
@@ -709,7 +709,7 @@
             <xsl:attribute name="class">ptolemy.actor.lib.Expression</xsl:attribute>
             <xsl:element name="property">
                 <xsl:attribute name="name">expression</xsl:attribute>
-                <xsl:attribute name="class">ptolemy.data.expr.Parameter</xsl:attribute>
+                <!--xsl:attribute name="class">ptolemy.data.expr.Parameter</xsl:attribute-->
                 <xsl:attribute name="value"><xsl:call-template name="Expr"/></xsl:attribute>
             </xsl:element>
             <xsl:element name="port">
