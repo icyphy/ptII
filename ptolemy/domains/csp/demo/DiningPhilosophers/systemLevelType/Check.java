@@ -267,12 +267,12 @@ System.out.println(all.exportMoML());
             // compute the index of the philosopher on the right
             int rightIndex = (index + 1) % _numberOfPhilosophers;
 
-            nameMap.put("p", "c" + rightIndex + "pl");
-            nameMap.put("pR", "c" + rightIndex + "plR");
+            nameMap.put("p", "p" + rightIndex + "pl");
+            nameMap.put("pR", "p" + rightIndex + "plR");
 
-            nameMap.put("iGW", "c" + rightIndex + "iGWl");
-            nameMap.put("iGWT", "c" + rightIndex + "iGWlT");
-            nameMap.put("iGWF", "c" + rightIndex + "iGWlF");
+            nameMap.put("iGW", "p" + rightIndex + "iGWl");
+            nameMap.put("iGWT", "p" + rightIndex + "iGWlT");
+            nameMap.put("iGWF", "p" + rightIndex + "iGWlF");
 
             nameMap.put("g", "c" + index + "gr");
             nameMap.put("gR", "c" + index + "grR");
