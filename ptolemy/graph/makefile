@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/graph
+ME =		ptolemy/newgraph
 
 DIRS = 		test demo
 
@@ -46,7 +46,7 @@ include $(CONFIG)
 JDOCFLAGS = 	-author -version -public
 
 # Used to build jar files
-PTPACKAGE = 	graph
+PTPACKAGE = 	newgraph
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
