@@ -82,6 +82,7 @@ public class ExpressionApplet extends SDFApplet {
             _query.setTextWidth(30);
             _query.addLine("expr", "Expression", "cos(slow) + cos(fast)");
             _query.addQueryListener(new ParameterListener());
+            _query.setBackground(_getBackground());
 
             // Create a "Go" button.
             Panel runcontrols = new Panel();
