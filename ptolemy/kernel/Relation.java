@@ -33,8 +33,6 @@ package pt.kernel;
 A Relation is an arc in a hierarchical graph.
 @author John S. Davis, II
 @version $Id$
-@see classname
-@see full-classname
 */
 public class Relation extends NamedObj {
     /** Constructor
