@@ -1,6 +1,6 @@
 /* This creates an example implementing Sieve of Eratosthenes
 
- Copyright (c) 1998 The Regents of the University of California.
+ Copyright (c)  The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -27,13 +27,14 @@
 
 package ptolemy.domains.pn.demo;
 import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
 import ptolemy.data.*;
-import ptolemy.actors.*;
+import ptolemy.actor.*;
 import ptolemy.domains.pn.kernel.*;
-import ptolemy.domains.pn.actors.*;
+import ptolemy.domains.pn.lib.*;
 import java.util.Enumeration;
 
-import gui.DynamicGraphView;
+//import gui.DynamicGraphView;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNPrimeExample
@@ -48,35 +49,44 @@ public class PNPrimeExample {
     public static void main(String args[]) throws 
             IllegalStateException, IllegalActionException, 
             NameDuplicationException {
-        PNCompositeActor myUniverse = new PNCompositeActor();
+        CompositeActor myUniverse = new CompositeActor();
         myUniverse.setName("Prime_example");
-        myUniverse.setCycles(Integer.parseInt(args[0]));
+	PNDirector exec = new PNDirector("exec");
+	myUniverse.setExecutiveDirector(exec);
+	PNDirector local = new PNDirector("Local");
+	myUniverse.setDirector(local);
+        //myUniverse.setCycles(Integer.parseInt(args[0]));
         PNRamp ramp = new PNRamp(myUniverse, "ramp");
-        ramp.setInitState(2);
+        ramp.setParam("Initial Value", "2");
         PNSieve sieve = new PNSieve(myUniverse, "2_sieve");
-        sieve.setInitState(2);
-        PNInPort portin = (PNInPort)sieve.getPort("input");
-        PNOutPort portout = (PNOutPort)ramp.getPort("output");
+        sieve.setParam("prime", "2");
+        IOPort portin = (IOPort)sieve.getPort("input");
+        IOPort portout = (IOPort)ramp.getPort("output");
         myUniverse.connect(portin, portout, "2_queue");
 
-        PNPlot plot = new PNPlot(myUniverse, "plotter");
-        portout = (PNOutPort)sieve.getPort("output");
-        portin = (PNInPort)plot.getPort("input");
-        myUniverse.connect(portin, portout, "plot_queue");
+	PNSink sink = new PNSink(myUniverse, "sink");
+	portout = (IOPort)sieve.getPort("output");
+        portin = (IOPort)sink.getPort("input");
+	myUniverse.connect(portin, portout, "plot_queue");
+
+        //PNPlot plot = new PNPlot(myUniverse, "plotter");
+        //portout = (PNOutPort)sieve.getPort("output");
+        //portin = (PNInPort)plot.getPort("input");
+        //myUniverse.connect(portin, portout, "plot_queue");
         //portin.getQueue(portout).setCapacity(1);
 
-        //System.out.println(myUniverse.description(ptolemy.kernel.Nameable.LIST_PRETTYPRINT));
+        //System.out.println(myUniverse.description(pt.kernel.Nameable.LIST_PRETTYPRINT));
 
-        DynamicGraphView view = DynamicGraphView.makeView(
-                "Sieve of Eratosthenes", 800, 600);
+        //DynamicGraphView view = DynamicGraphView.makeView(
+	//       "Sieve of Eratosthenes", 800, 600);
 
-        view.loadPtolemyGraph(myUniverse);
+        //view.loadPtolemyGraph(myUniverse);
 
         // DebugMutationListener d = new DebugMutationListener();
         // myUniverse.getDirector().addMutationListener(d);
-        myUniverse.getDirector().addMutationListener(view);
+        //myUniverse.getDirector().addMutationListener(view);
 
-        myUniverse.start();
+        exec.go(-1);
         System.out.println("Bye World\n");
         return;
     }

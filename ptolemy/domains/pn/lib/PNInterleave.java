@@ -45,10 +45,12 @@ between it's inputs and directing them to the output.
 public class PNInterleave extends AtomicActor{
 
     /** Constructor Adds ports to the star
-     * @param myExecutive is the executive responsible for the simulation
-     * @exception NameDuplicationException indicates that an attempt to add
-     *  two ports with the same name has been made or a star with an 
-     *  identical name already exists.
+     *  @param container This is the compositeActor containing this actor
+     *  @param name This is the name of this actor.
+     *  @exception NameDuplicationException This indicates that an actor 
+     *  with an identical name already exists in the container.
+     *  @exception IllegalActionException This can be thrown by one of the 
+     *  called methods.
      */ 
     public PNInterleave(CompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException {
@@ -56,47 +58,25 @@ public class PNInterleave extends AtomicActor{
         _input = new IOPort(this, "input", true, false);
         _input.makeMultiport(true);
         _output = new IOPort(this, "output", false, true);
-	_output.makeMultiport(false);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** This reads tokens from each of it's inputs in a circular fashion and
+    /** This reads tokens from each of its inputs in a circular fashion and
      *  redirects them each to the output 
+     *  @exception IllegalActionException This can be thrown by a called 
+     *  method
      */	
-    //FIXME: THis code shoudl change when the new kernel is in place
     public void fire() throws IllegalActionException {
         Token data;
-        //int i;
-        //setCycles(((PNCompositeActor)getContainer()).getCycles());
-        //try {
-	//for (i=0; _noOfCycles < 0 || i < _noOfCycles; i++) {
 	while (true) {
 	    int width = _input.getWidth();
 	    for (int i=0; i<width; i++) {
-		//Enumeration relations = _input.linkedRelations();
-		//while (relations.hasMoreElements()) {
-		//IORelation relation = (IORelation)relations.nextElement();
-		//data = readFrom(_input, relation);
-		System.out.println("Trying to get token from");
 		data = _input.get(i);
-		System.out.println("Read "+data.stringValue()+" from "+_input.getName());
 		_output.broadcast(data);
-		System.out.println("Interleaving broadcasting "+data.stringValue());
-		// for (int j=0; j<data.length; j++) {
-		//                         writeTo(_output, data[j]);
-		//                         System.out.println(this.getName()+" writes "+((IntToken)data[j]).intValue()+" to "+_output.getName());
-		//                     }
 	    }
 	}
-	//((PNDirector)getDirector()).processStopped();
-	//} catch(NoSuchItemException e) {
-	//System.out.println("Terminating "+ this.getName());
-	//return;
-	//}
-	//System.out.println("Terminating "+ this.getName());
-	//return;
     }
     
     ///////////////////////////////////////////////////////////////////

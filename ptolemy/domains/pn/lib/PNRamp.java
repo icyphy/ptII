@@ -28,18 +28,18 @@
 package ptolemy.domains.pn.lib;
 import ptolemy.domains.pn.kernel.*;
 import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.actor.*;
-//import java.util.NoSuchElementException;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNRamp
 /** 
 
 @author Mudit Goel
-@version $Id$
+@version $Id$ 
 */
-public class PNRamp extends PNActor {
+public class PNRamp extends AtomicActor {
     
     /** Constructor Adds ports to the star
      * @param initValue is the initial token that the star puts in the stream
@@ -47,47 +47,33 @@ public class PNRamp extends PNActor {
      *  two ports with the same name has been made
      */
     public PNRamp(CompositeActor container, String name)
-            throws NameDuplicationException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        _output = newOutPort(this, "output");
+        _output = new IOPort(this, "output", false, true);
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
-    public void setInitState(int seed) {
-        _seed = seed;
+    public void setParam(String name, String valueString) 
+	    throws IllegalActionException {
+	if (name.equals("Initial Value")) {
+	    IntToken token = new IntToken(valueString);
+	    _seed = token.getValue();
+	} else {
+	    throw new IllegalActionException(this,name+" param does not exist");
+	}
     }
     
     /** Writes successive integers to the output
      */
-    public void run() {
-        int i;
-        IntToken data;
-        setCycles(((PNCompositeActor)getContainer()).getCycles());
-        try {
-            for (i=0; _noOfCycles < 0 || i < _noOfCycles; i++) {
-                data = new IntToken(_seed);
-                writeTo(_output, data);
-                _seed++;
-            }
-            System.out.println("Terminating at al "+this.getName());
-            ((PNDirector)getDirector()).processStopped();
-        } catch (NoSuchItemException e) {
-	    System.out.println("Terminating "+this.getName());
-            return;
-        }
-    }
-    
-    public void setParam(String name, double value) 
-            throws IllegalActionException {
-        System.out.println(name + ": " + value);
-
-        if (name.equals("seed")) {
-            _seed = (int) value;
-        } else {
-            throw new IllegalActionException("Unknown parameter: " + name);
-        }
+    public void fire() throws IllegalActionException {
+	while(true) {
+	    IntToken data = new IntToken(_seed);
+	    _output.broadcast(data);
+	    _seed++;
+	    //System.out.println("Ramp printed "+_seed);
+	}
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -96,6 +82,6 @@ public class PNRamp extends PNActor {
     /* This is the initial value that the star puts in the stream */
     private int _seed;
     /* Output port */
-    private PNOutPort _output;
+    private IOPort _output;
 }
 

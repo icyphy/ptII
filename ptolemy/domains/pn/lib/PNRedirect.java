@@ -53,9 +53,7 @@ public class PNRedirect extends AtomicActor{
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _input = new IOPort(this, "input", true, false);
-	//_input.makeMultiport(false);
         _output = new IOPort(this, "output", false, true);
-	//_output.makeMultiport(false);
     }
     
  
@@ -67,46 +65,29 @@ public class PNRedirect extends AtomicActor{
     public void fire() throws IllegalActionException {
         int i;
         Token data;
-        //try {
-	//writeTo(_output, _initValue);
 	System.out.println(this.getName()+" writes *before* "+_initValue.stringValue()+" to "+_output.getName());
 	_output.broadcast(_initValue);
 	System.out.println(this.getName()+" writes "+_initValue.stringValue()+" to "+_output.getName());
 	while (true) {
-	    //for(i=0; _noOfCycles < 0 || i < _noOfCycles; i++) {
-	    //Enumeration relations = _input.linkedRelations();
-	    //while (relations.hasMoreElements()) {
-	    //IORelation relation = (IORelation)relations.nextElement();
-	    //data = readFrom(_input, relation);
 	    data = _input.get(0);
-	    //writeTo(_output, data[0]);
 	    _output.broadcast(data);
 	    System.out.println(this.getName()+" writes "+data.stringValue()+" to "+_output.getName());
-	    //}
 	}
-	//((PNDirector)getDirector()).processStopped();
-	//} catch (NoSuchItemException e) {
-	//System.out.println("Terminating "+this.getName());
-	//return;
-        //}
     }
 
+    /** Sets the Initial Value parameter to the value specified
+     *  @param name This is the name of the parameter recognised by the actor
+     *  @param valueString This is the value to be assigned to the parameter
+     *  @throws IllegalActionException If the parameter is not recognised
+     */
     public void setParam(String name, String valueString) 
 	    throws IllegalActionException {
 	if (name.equals("Initial Value")) {
 	    _initValue = new IntToken(valueString);
 	} else {
-	    throw new IllegalActionException(this,valueString+" param does not exist");
+	    throw new IllegalActionException(this,name+" param does not exist");
 	}
     }
-
-    /** Initializes a token to be written to the output 
-     * @param initValue is the initial token that the star puts in the stream
-     */
-//     public void setInitState(int initvalue) {
-//         _initValue = new IntToken(initvalue);
-//     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

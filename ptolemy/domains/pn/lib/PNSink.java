@@ -28,6 +28,7 @@
 package ptolemy.domains.pn.lib;
 import ptolemy.domains.pn.kernel.*;
 import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.actor.*;
 import java.util.Enumeration;
@@ -39,7 +40,7 @@ import java.util.Enumeration;
 @author Mudit Goel
 @version $Id$
 */
-public class PNSink extends PNActor{
+public class PNSink extends AtomicActor{
     
     /** Constructor Adds ports to the star
      * @param initValue is the initial token that the star puts in the stream
@@ -47,9 +48,9 @@ public class PNSink extends PNActor{
      *  two ports with the same name has been made
      */
     public PNSink(CompositeActor container, String name)
-            throws NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _input = newInPort(this, "input");
+        _input = new IOPort(this, "input", true, false);
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -57,32 +58,18 @@ public class PNSink extends PNActor{
     
     /** Writes successive integers to the output
      */
-    public void run() {
-        int i;
-        Token[] data;
-        try {
-            for (i=0; _noOfCycles < 0 || i < _noOfCycles; i++) {
-                //Enumeration outports = _input.deepConnectedOutputPorts();
-                //while (outports.hasMoreElements()) {
-                //PNOutPort outport = (PNOutPort)outports.nextElement();
-                Enumeration relations = _input.linkedRelations();
-                while (relations.hasMoreElements()) {
-                    IORelation relation = (IORelation)relations.nextElement();
-                    data = readFrom(_input, relation);
-                }
-            }
-            // System.out.println("Terminating at al "+this.getName());
-            ((PNDirector)getDirector()).processStopped();
-        } catch (NoSuchItemException e) {
-	    // System.out.println("Terminating "+this.getName());
-            return;
-        }
+    public void fire() throws IllegalActionException {
+        IntToken data;
+	while (true) {
+	    data = (IntToken)_input.get(0);
+	    System.out.println("Sink discarded "+data.getValue());
+	}
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
     /* Input port */
-    private PNInPort _input;
+    private IOPort _input;
 }
 

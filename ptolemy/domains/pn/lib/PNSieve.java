@@ -28,6 +28,8 @@
 package ptolemy.domains.pn.lib;
 import ptolemy.domains.pn.kernel.*;
 import ptolemy.kernel.*;
+import ptolemy.kernel.mutation.*;
+import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
 import java.util.Enumeration;
@@ -36,86 +38,63 @@ import java.util.Enumeration;
 //// PNSieve
 /** 
 @author Mudit Goel
-@version $Id$
+@version $Id$ 
 */
-public class PNSieve extends PNActor {
+public class PNSieve extends AtomicActor {
     
     /** Constructor  Adds port   
      * @exception NameDuplicationException is thrown if more than one port 
      *  with the same name is added to the star
      */
     public PNSieve(CompositeActor container, String name)
-            throws NameDuplicationException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        _input = newInPort(this, "input");
-        //_output = null;
-        _output = newOutPort(this, "output");
+        _input = new IOPort(this, "input", true, false);
+        _output = new IOPort(this, "output", false, true);
     }
     
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
-    /** Initializes the Star. Should be called before execution
-     * @param prime is the prime for this sieve
-     */	
-    public void setInitState(int prime) {
-        _prime = prime;
-        System.out.println("Next Prime is "+ _prime);
-    }
-    
     /** Reads one Token from it's input port and writes this token to 
      *  it's output ports. Needs to read one token for every output
      *  port. 
      */
-    public void run() {
-        Token[] data;
+    public void fire() throws IllegalActionException {
+        Token data;
         boolean islargestprime = true;
-        try {
-            writeTo(_output, new IntToken(_prime));
-            for (int i=0; _noOfCycles < 0 || i < _noOfCycles; i++) {
-                Enumeration relations = _input.linkedRelations();
-                while (relations.hasMoreElements()) {
-                    IORelation rel = (IORelation)relations.nextElement();
-                    data = readFrom(_input, rel);
-                    if (((IntToken)data[0]).intValue()%_prime != 0) {
-                        // is it the next prime? 
-                        if (islargestprime) {
-
-                            // yes - make the mutation for it 
-                            Mutation m = makeMutation(((IntToken)data[0]).intValue());
-
-                            PNDirector director = (PNDirector)getDirector();
-
-                            // Queue the new mutation
-                            director.queueMutation(m);
-                            islargestprime = false;
-
-                            // In PN, we should process the mutations NOW
-                            director.processPendingMutations();
-
-                            // In PN, we notify the director so that it
-                            // schedules the new actor threads
-                            director.startNewActors();
-
-                        } 
-                        else {
-                            writeTo(_output, data[0]);
-                        }
-                    }
-                }
-            }
-            ((PNDirector)getDirector()).processStopped();
-        } catch (NoSuchItemException e) {
-            System.out.println("Terminating "+ this.getName());
-            return;
-        } 
+	while (true) {
+	    //System.out.println("Sieve getting data");
+	    data = _input.get(0);
+	    //System.out.println("Sieve gotten data");
+	    if (((IntToken)data).getValue()%_prime != 0) {
+		// is it the next prime? 
+		if (islargestprime) {
+		    //System.out.println("Making mutations");
+		    // yes - make the mutation for it 
+		    Mutation m = makeMutation(((IntToken)data).getValue());
+		    PNDirector director = (PNDirector)getDirector();
+		    // Queue the new mutation
+		    director.queueMutation(m);
+		    //System.out.println("Queued mutation");
+		    islargestprime = false;
+		    
+		} 
+		else {
+		    _output.broadcast(data);
+		    //System.out.println("broadcasting data "+data.stringValue());
+		}
+	    }
+	}
     }
     
-    public void setParam(String name, double value)
+    public void setParam(String name, String valueString)
             throws IllegalActionException {
         if (name.equals("prime")) {
-            _prime = (int) value;
+	    IntToken token = new IntToken(valueString);
+            _prime = token.getValue();
+	    System.out.println("New prime discovered. "+valueString);
         } else {
             throw new IllegalActionException("Unknown parameter: " + name);
         }
@@ -129,32 +108,37 @@ public class PNSieve extends PNActor {
             PNSieve newSieve = null;
             Relation newRelation = null;
             Relation relation = null;
-            PNInPort input = null;
-            PNOutPort output = null;
-            PNOutPort outport = null;
+            IOPort input = null;
+            IOPort output = null;
+            IOPort outport = null;
             
             // Create the mutation
             public void perform() {
                 try {
+		    //System.out.println("In perform");
                     CompositeActor container = (CompositeActor)PNSieve.this.getContainer();
-
-                    newSieve = new PNSieve(container, value + "_sieve");
-                    newSieve.setInitState(value);
-                    
+		    //System.out.println(Integer.toString(value));
+		    //System.out.println("proceeding");
+                    newSieve = new PNSieve(container, Integer.toString(value) + "_sieve");
+		    System.out.println("Created new seive");
+                    newSieve.setParam("prime", Integer.toString(value));
+                    //System.out.println("Created new seive and set param");
                     //Disconnecting the plotter and attaching it to the output
                     //of the new Sieve
                     Enumeration relations = _output.linkedRelations();
-                    relation = (Relation)relations.nextElement();
-                    //Disconnected
-                    _output.unlink(relation);
-                    //Connect PLotter again
-                    outport = (PNOutPort)newSieve.getPort("output");
-                    outport.link(relation);
-
-                    //Connect newsieve
-                    input = (PNInPort)newSieve.getPort("input");
-                    //_output = new PNOutPort(PNSieve.this, "output");
-                    newRelation = container.connect(input, _output, value+"_queue");
+		    if (relations.hasMoreElements()) {
+			relation = (Relation)relations.nextElement();
+			//Disconnected
+			_output.unlink(relation);
+			//Connect PLotter again
+			outport = (IOPort)newSieve.getPort("output");
+			outport.link(relation);
+			//Connect newsieve
+		    }
+		    input = (IOPort)newSieve.getPort("input");
+		    //_output = new PNOutPort(PNSieve.this, "output");
+		    newRelation = container.connect(input, _output, value+"_queue");
+		    //}
                 } catch (NameDuplicationException e) {
                     System.err.println("Exception: " + e.toString());
                     //This should never be thrown
@@ -166,14 +150,17 @@ public class PNSieve extends PNActor {
             // Inform a listener about the mutation
             public void update(MutationListener listener) {
                 CompositeActor container = (CompositeActor)PNSieve.this.getContainer();
-                listener.unlink(relation, _output);
-                listener.addEntity(container, newSieve);
-                listener.link(relation, outport);
-                listener.addRelation(container, newRelation);
-                listener.link(newRelation, input);
-                listener.link(newRelation, _output);
-                listener.done();
-            }
+		if (relation != null) {
+		    listener.unlink(relation, _output);
+		    listener.addEntity(container, newSieve);
+		    listener.link(relation, outport);
+		    listener.addRelation(container, newRelation);
+		}
+		listener.link(newRelation, input);
+		listener.link(newRelation, _output);
+		listener.done();
+		//}
+	    }
         };
 
         return m;
@@ -183,9 +170,9 @@ public class PNSieve extends PNActor {
     ////                         private variables                 ////
     
     /* The input port */
-    private PNInPort _input;
+    private IOPort _input;
     /* The output port */
-    private PNOutPort _output;
+    private IOPort _output;
     private int _prime;
 }
 
