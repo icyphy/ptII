@@ -43,6 +43,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.CompositeEntity;
 
 //////////////////////////////////////////////////////////////////////////
 //// PeriodicTrigger
@@ -54,7 +55,7 @@ This actor produces a ramp at 2Hz.
 */
 public class PeriodicTrigger extends TypedAtomicActor {
 
-    public PeriodicTrigger(TypedCompositeActor container, String name)
+    public PeriodicTrigger(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
