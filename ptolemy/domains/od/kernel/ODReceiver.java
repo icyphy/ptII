@@ -34,6 +34,7 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.actor.*;
+import ptolemy.actor.process.*;
 import ptolemy.actor.util.*;
 
 import java.util.NoSuchElementException;
