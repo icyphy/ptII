@@ -39,6 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// CheckBoxStyle
@@ -64,6 +65,16 @@ public class CheckBoxStyle extends ParameterEditorStyle {
      */
     public CheckBoxStyle() {
 	super();
+    }
+
+    /** Construct an attribute in the given workspace with an empty string
+     *  as its name.
+     *  The object is added to the directory of the workspace.
+     *  Increment the version number of the workspace.
+     */
+    public CheckBoxStyle(Workspace workspace) {
+        // This constructor is needed for Shallow codegen to work.
+	super(workspace);
     }
 
     /** Construct an attribute with the specified container and name.
