@@ -93,7 +93,3 @@ depend:
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-
-test: Test.class
-	CLASSPATH="$(CLASSPATH)$(AUXCLASSPATH)" $(JAVA) $(JFLAGS) ptolemy.schematic.Test
-
