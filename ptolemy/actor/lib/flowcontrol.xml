@@ -28,7 +28,6 @@
   <entity name="Switch" class="ptolemy.actor.lib.Switch"/>
   <entity name="Synchronizer" class="ptolemy.actor.lib.Synchronizer"/>
   <entity name="ThrowException" class="ptolemy.actor.lib.ThrowException"/>
-  <entity name="TokenMultiplexor" class="ptolemy.actor.lib.TokenMultiplexor"/>
   <entity name="VectorAssembler" class="ptolemy.actor.lib.VectorAssembler"/>
   <entity name="VectorDisassembler" class="ptolemy.actor.lib.VectorDisassembler"/>
       </group>
