@@ -104,7 +104,7 @@ public class ForwardEulerSolver extends FixedStepSolver {
         }
         double f = ((DoubleToken)integrator.input.get(0)).doubleValue();
         double tentativeState =
-            integrator.getState() + f*(dir.getCurrentStepSize());
+            integrator.getState() + f * (dir.getCurrentStepSize());
 
         integrator.setTentativeState(tentativeState);
         integrator.setTentativeDerivative(f);
@@ -116,5 +116,5 @@ public class ForwardEulerSolver extends FixedStepSolver {
     ////                         private variables                 ////
 
     // static name.
-    private static final String _DEFAULT_NAME="CT_Forward_Euler_Solver" ;
+    private static final String _DEFAULT_NAME = "CT_Forward_Euler_Solver";
 }
