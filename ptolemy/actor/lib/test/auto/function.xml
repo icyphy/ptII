@@ -81,13 +81,13 @@
         </port>
     </entity>
     <entity name="TypeTest" class="ptolemy.actor.lib.TypeTest">
-        <property name="parameterTypes" class="ptolemy.data.expr.Parameter" value="{Const={value=&quot;(int) -&gt; int&quot;}, Ramp={firingCountLimit=&quot;int&quot;, init=&quot;int&quot;, step=&quot;int&quot;}}">
+        <property name="parameterTypes" class="ptolemy.data.expr.Parameter" value="{Const={value=&quot;function(a0:int) int&quot;}, Ramp={firingCountLimit=&quot;int&quot;, init=&quot;int&quot;, step=&quot;int&quot;}}">
         </property>
-        <property name="portTypes" class="ptolemy.data.expr.Parameter" value="{Const={output=&quot;(int) -&gt; int&quot;, trigger=&quot;unknown&quot;}, Expression={f=&quot;(int) -&gt; int&quot;, output=&quot;int&quot;, x=&quot;int&quot;}, Ramp={output=&quot;int&quot;, step=&quot;int&quot;, trigger=&quot;unknown&quot;}}">
+        <property name="portTypes" class="ptolemy.data.expr.Parameter" value="{Const={output=&quot;function(a0:int) int&quot;, trigger=&quot;unknown&quot;}, Expression={f=&quot;function(a0:int) int&quot;, output=&quot;int&quot;, x=&quot;int&quot;}, Ramp={output=&quot;int&quot;, step=&quot;int&quot;, trigger=&quot;unknown&quot;}}">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 180.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 180.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
