@@ -63,6 +63,7 @@ PTAUXALLJARS = \
 		data/data.jar \
 		gui/gui.jar \
 		graph/graph.jar \
+		hsif/hsif.jar \
 		kernel/kernel.jar \
 		math/math.jar \
 		media/media.jar \
