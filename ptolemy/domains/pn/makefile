@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/pn
 
-DIRS =		kernel lib gui demo test
+DIRS =		kernel gui demo test
 
 # Root of Ptolemy II directory
 ROOT =		../../..
