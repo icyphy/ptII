@@ -30,100 +30,125 @@
 
 package ptolemy.actor.lib.io;
 
-import ptolemy.actor.Actor;
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.kernel.CompositeEntity;
+import ptolemy.actor.*;
+import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-import ptolemy.data.IntToken;
+import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.domains.sdf.kernel.SDFIOPort;
+import ptolemy.actor.lib.*;
 
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketException;
+import java.io.*;
+import java.net.*;
+import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// DatagramReceiver
 /**
-This actor creates a separate thread which stalls, awaiting reception
-of a datagram packet.  That thread calls the director's fireAt method
-each time it receives a packet.  The resulting firing broadcasts the
-packet's 'from' address out into the Ptolemy model.  The data and
-'from' port info. are discarded.
+This actor creates a separate thread which stalls, awaiting reception of a 
+datagram packet.  That thread calls the director's fireAt (or eventually 
+fireAtCurrentTime) method each time it receives a packet, unless it has 
+to discard one to make room.  In that case, the new packet and 
+the packet(s) already queued within the actor may be reordered, but no 
+additional fireAt call is made because the number of packets awaiting 
+broadcast has not changed.
+<p>
+The fire() method assumes data is present to be broadcast.  When it copies
+the data from the packet buffer in preparation for broadcast, it 
+decrements the count of queued packets.
+<p>
+The part of the fire method that copies data from the packet buffer or 
+parses it in place (if that's what the Ptolemy parser does) is
+synchronized so that it cannot execute concurrently with the thread's code
+for reordering the buffers and choosing whether and how to reorder them 
+(since such choice may depend on the number of queued packets).
 
-<p>This actor has a parameter 'port' for the local port number assigned
-to its socket.
+There are two buffers for packet reception.  
 
-<p>The bash command netstat -an is very useful in seeing current port
-allocations!
+When fired, the actor broadcasts the packet's data but discards the 'from' 
+address and port information
 
-<p>Initially, the local port number is set to -1 to indicate no port at all.
+This actor has a parameter 'port' for the local port number assigned to its 
+socket.
 
-@author Winthrop Williams, Joern Janneck, Xiaojun Liu, Edward A. Lee
+Bash command netstat -an is very useful in seeing current port allocations!
+
+Initially, the local port number is set to -1 to indicate no port at all.
+
+@author Winthrop Williams, Yorn, Xiojun, Edward Lee
 (Based on TiltSensor actor writen by Chamberlain Fong, Xiaojun Liu, Edward Lee)
 @version $Id$
 */
-
 public class DatagramReceiver extends TypedAtomicActor {
-    //FIXME: extend Source instead of TypedAtomicActor
 
     public DatagramReceiver(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
-        super(container, name);
+        super(container,name);
 
         output = new TypedIOPort(this, "output");
         output.setOutput(true);
-        port = new Parameter(this, "port");
-        port.setTypeEquals(BaseType.INT);
-        port.setToken(new IntToken(-1));
+        localPort = new Parameter(this, "localPort");
+        localPort.setTypeEquals(BaseType.INT);
+        localPort.setToken(new IntToken(-1));
+        overwrite = new Parameter(this, "overwrite");
+        overwrite.setToken(new BooleanToken(true));
+        overwrite.setTypeEquals(BaseType.BOOLEAN);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
     /** This port outputs the data in the packet.
-     *  FIXME: what is the type of the port?
      */
     public TypedIOPort output;
 
     /** The local port number for this actor's socket.
-     *  FIXME: what is the type?  Int?  What is the default value?
      */
-    public Parameter port;
+    public Parameter localPort;
+
+    /** Boolean directive in case datagrams pile up.
+     */
+    public Parameter overwrite;
+
+    /** Parameter directing whether to use the Ptolemy parser 
+     * to interpret the datagram contents or whether to copy 
+     * the raw data to an output data type (or use 'serialize'?)
+     */
+    //public Parameter ...;
 
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
 
-    /** FIXME: Match Ramp.attributeChanged() comment
-     * If the parameter changed is <i>port</i>, then if the model
+    /** If the parameter changed is <i>localPort</i>, then if the model
      * is running (as evedenced by socket != null) then interrupt
      * thread & close socket, and then and reopen with new port number
      * & restart thread (even if same as old port number).  Thread is
-     * not reinstantiated, just restarted on the new socket.
-     * FIXME: @param?  @exception?
+     * not reinstanciated, just restarted on the new socket.
+     * <p>
+     * If parameter is overwrite, simply copy boolean to _overwrite.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == port) {
+        if (attribute == overwrite) {
+            _overwrite = ((BooleanToken)(localPort.getToken())).booleanValue();
+        }
+        if (attribute == localPort) {
             if ( socket != null ) {
 
                 _listenerThread.interrupt();
 
-                System.out.println("Current port number is " +
+                if(_debugging) _debug("Current port number is " +
                         socket.getLocalPort());
                 socket.close();
 
-                int portNum = ((IntToken)(port.getToken())).intValue();
-                System.out.println("New port number is " + portNum);
+                int portNum = ((IntToken)(localPort.getToken())).intValue();
+                if(_debugging) _debug("New port number is " + portNum);
                 try {
-                    System.out.println("Try creating socket " + portNum);
+                    if(_debugging) _debug("Try creating socket " + portNum);
                     socket = new DatagramSocket(portNum);
-                    System.out.println("A socket is created!!");
+                    if(_debugging) _debug("A socket is created!!");
                 }
                 catch (SocketException ex) {
                     /* ignore */
@@ -139,48 +164,64 @@ public class DatagramReceiver extends TypedAtomicActor {
         }
     }
 
-    /** Broadcasts the return address of the packet received over the Ethernet.
-     *  FIXME: @exception tag?
+    /** Uses the Ptolemy parser to interpret the datagram 
+     * received as a printable representation of some data.
+     * Broadcasts the resulting token.
      */
     public void fire() throws IllegalActionException {
-        System.out.println("Actor is fired");
+        if(_debugging) _debug("Actor is fired");
 
-        InetAddress __address = ___packet.getAddress();
         // this line stalls when __ vs ___
+        //InetAddress __address = ___packet.getAddress();
+        //String _address = __address.getHostAddress();
 
-        String _address = __address.getHostAddress();
-	_evalVar.setExpression(_dataStr);
-	output.broadcast(_evalVar.getToken());
+        // NOTE: Avoid executing concurrently with thread's run()'s sync block.
+        synchronized(this) {
+            // Get the data out of the packet as a string of data's length
+            _length = _broadcastPacket.getLength();
+            _dataStr = new String(_broadcastPacket.getData(), 0, _length);
+            packetsAlreadyAwaitingFire--;
+        }
+
+        // Parse this data string to a Ptolemy II data object
+        _evalVar.setExpression(_dataStr);
+        output.broadcast(_evalVar.getToken());
     }
 
     /** Preinitialize
-     * FIXME: What does this do?
-     *  FIXME: @exception tag?
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 
-	Variable var = (Variable)getAttribute("_evalVar");
-	if (var == null) {
-            try {
-	    	var = new Variable(this, "_evalVar");
-            } catch(NameDuplicationException ex) {
-	        // ignore
-            }
-	}
-	_evalVar = var;
+        _overwrite = ((BooleanToken)(localPort.getToken())).booleanValue();
 
-        int portNum = ((IntToken)(port.getToken())).intValue();
+        Variable var = (Variable)getAttribute("_evalVar");
+        if (var == null) {
+            try {
+                var = new Variable(this, "_evalVar");
+            } catch(NameDuplicationException ex) {
+                if(_debugging) _debug("Name _evalVar already taken");
+            }
+        }
+        _evalVar = var;
+
+        System.out.println("Checkpoint  1");
+
+        int portNum = ((IntToken)(localPort.getToken())).intValue();
         if (portNum == -1) {
-            System.out.println("Can't run with port = -1");
-            throw new IllegalActionException("Cannot run w/ port == -1");
-            // *** sysout works but IAE does nothing
+            if(_debugging) _debug("Can't run with port=-1");
+            throw new IllegalActionException("Cannot run w/ port=-1");
+            // *** sysout (now _debug) works but IAE does nothing
             // *** (in presence of wrapup exception anyway)
         }
+
+        System.out.println("Checkpoint  2");
+
         try {
-            System.out.println("PI Try to create socket for Wport " + portNum);
+            if(_debugging) _debug(
+                    "PI Try to create socket for Wport " + portNum);
             socket = new DatagramSocket(portNum);
-            System.out.println("PI socket created!!");
+            if(_debugging) _debug("PI socket created!!");
         }
         catch (SocketException ex) {
             /* ignore */
@@ -188,14 +229,15 @@ public class DatagramReceiver extends TypedAtomicActor {
             throw new InternalErrorException("PI can't create socket");
         }
 
+        System.out.println("Checkpoint  3");
+
         _listenerThread = new ListenerThread(this);
         _listenerThread.start();
-        System.out.println("PI thread created & started");
+        if(_debugging) _debug("PI thread created & started");
     }
 
 
     /** Wrap up
-     *  FIXME: @exception tag?
      */
     public void wrapup() throws IllegalActionException {
         if (_listenerThread != null) {
@@ -213,31 +255,23 @@ public class DatagramReceiver extends TypedAtomicActor {
         }
     }
 
+
+//       1         2         3         4         5         6         7         8
+//3456789_123456789_123456789_123456789_123456789_123456789_123456789_123456789_
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // FIXME: private variables need comments
     // Variables used
-    private DatagramPacket __packet;
-    // FIXME: why two underscores?  Consider a different name
-    private DatagramPacket ___packet;
+    private DatagramPacket _receivePacket = new DatagramPacket(new byte[440],0,440);
+    private DatagramPacket _broadcastPacket = new DatagramPacket(new byte[440],0,440);
+    private int packetsAlreadyAwaitingFire;
+    private boolean _overwrite;
     private DatagramSocket socket;
     private ListenerThread _listenerThread;
     private Variable _evalVar;
     private String _dataStr;
-
-
-    // Variables maybe or maybe not used
-    private byte _data;
     private int _length;
-    private String _address;
-    // FIXME: why two underscores?  Consider a different name
-    private InetAddress __address;
-    private int _port;
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner class                       ////
 
     private class ListenerThread extends Thread {
         /** Create a new thread to listen for packets at the socket
@@ -247,85 +281,76 @@ public class DatagramReceiver extends TypedAtomicActor {
             thisThreadsActor = _thisThreadsActor;
         }
 
-        // FIXME:  Why is this initialized to this value?
-
         public void run() {
-            byte _buf[] = {'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E'};
-            int _offset = 0;
             while (true) {
-                if (_offset == 0) {
-                    _offset = 200;
-                } else {
-                    _offset = 0;
-                }
-                __packet = new DatagramPacket(_buf, 0, 200);
+
                 try {
-                    System.out.println("attempt socket.receive");
-                    socket.receive(__packet);
-                    System.out.println("receive unblocked!");
-                    ___packet = __packet;
-                    _length = __packet.getLength();
-                    _dataStr = new String(__packet.getData(), 0, _length);
+                    if(_debugging) _debug("attempt socket.receive");
+                    // NOTE: The following call may block.
+                    socket.receive(_receivePacket);
+                    if(_debugging) _debug("receive unblocked!");
                 } catch (IOException ex) {
-                    System.out.println("IOException in thread.");
+                    if(_debugging) _debug("receive IOException in thread.");
+                    throw new InternalErrorException(
+                            "socket.receive IO exception");
                 }
 
-                /*
-                } catch (Exception ex) {
-                    getManager().notifyListenersOfException(ex);
-                } finally {
-                    System.out.println("Thread Terminating :)");
-                }
-                */
+                // NOTE: Avoid executing concurrently with actor's fire().
+                synchronized(thisThreadsActor) {
 
-                try {
-                    getDirector().fireAt(thisThreadsActor,
-                            getDirector().getCurrentTime() + 0.0);
-                } catch (IllegalActionException ex) {
-                    System.out.println("Illegal Act. Ex. in thread!!");
-                } catch (NullPointerException ex) {
-                    System.out.println("Oh no! Null pointer exception!!");
-                    // NPE had been due to not copyingin thisThreadsActor.
+                    // There are 2 datagram packet buffers.
+
+                    // If no data is already in the actor awaiting fire, 
+                    // then swap the buffers, increment the awaiting count, 
+                    // and call fireAt() ( or fireAtCurrentTime() ).
+
+                    // Else, data is already waiting.  I this case look 
+                    // to the overwrite parameter for guidance.  
+                    // If overwrite it true, then go ahead and swap anyway
+                    // but do not increment the count or call fireAt()
+                    // again.
+
+                    // If data is waiting AND overwrite is false, then 
+                    // don't prepare to call socket.receive again.
+                    // Instead, exit the synchronized section, then block
+                    // awaiting a call to fire and entry of its synched
+                    // section.  When it exits its synched section, then
+                    // enter a synched section here which swaps buffers,
+                    // increments the count, and calls fireAt().  Then 
+                    // go back around finally to the socket.receive call.
+
+                    if(packetsAlreadyAwaitingFire == 0 || _overwrite) {
+                        // Swap the memory areas the packet pointers ref.
+                        DatagramPacket tmp = _broadcastPacket;
+                        _broadcastPacket = _receivePacket;
+                        _receivePacket = tmp;
+                    }
+
+                    if(packetsAlreadyAwaitingFire == 0) {
+                        // Increment count & call fireAt()
+                        packetsAlreadyAwaitingFire++;
+                        try {
+                            getDirector().fireAt(thisThreadsActor,
+                                    getDirector().getCurrentTime());
+                        } catch (IllegalActionException ex) {
+                            if(_debugging) _debug("IAE 0!!");
+                        } catch (NullPointerException ex) {
+                            if(_debugging) _debug("Null ptr 0!!");
+                            // Null ptr had been due to not 
+                            // copying in thisThreadsActor.
+                        }
+                    }
+
+                    // FIXME Need not be separate if, could be else of || above.
+                    if(packetsAlreadyAwaitingFire != 0 && !_overwrite) {
+                        // FIXME I don't know how to await next exit by 
+                        // fire() from its synchronized section.  So I'll 
+                        // just overwrite the most recent packet by doing
+                        // nothing and just calling socket.receive again.
+                        if(_debugging) _debug("Overwriting latest packet.");
+                    }
                 }
+
             }
         }
 
