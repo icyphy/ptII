@@ -355,3 +355,15 @@ test Parameter-13.1 {Test exportMoML} {
     </property>
 </model>
 }
+
+test Parameter-13.2 {Test exportMoML} {
+    $a1 setExpression {"Test String"}
+    $a exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
+<model name="A" class="ptolemy.kernel.util.NamedObj">
+    <property name="A1" class="ptolemy.data.expr.Parameter" value="&quot;Test String&quot;">
+    </property>
+</model>
+}

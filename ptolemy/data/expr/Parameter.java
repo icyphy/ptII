@@ -31,6 +31,7 @@
 
 package ptolemy.data.expr;
 import ptolemy.kernel.util.*;
+import ptolemy.moml.MoMLUtilities;
 
 import java.io.Writer;
 import java.io.IOException;
@@ -143,7 +144,12 @@ public class Parameter extends Variable {
      *  @throws IOException If an I/O error occurs.
      */
     public void exportMoML(Writer output, int depth) throws IOException {
-        String valueTerm = " value=\"" + stringRepresentation() + "\"";
+        String value = stringRepresentation();
+        String valueTerm = "";
+        if(value != null && !value.equals("")) {
+            valueTerm = " value=\"" + MoMLUtilities.escapeAttribute(stringRepresentation()) + "\"";
+        }
+        
         output.write(_getIndentPrefix(depth)
                + "<"
                + getMoMLElementName()
