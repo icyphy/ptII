@@ -29,15 +29,6 @@
 
 package ptolemy.gui;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-
-
 //////////////////////////////////////////////////////////////////////////
 //// MessageHandler
 /**
