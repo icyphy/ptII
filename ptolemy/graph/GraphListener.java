@@ -32,18 +32,18 @@ are recomputed only when necessary.
 package ptolemy.graph;
 
 /** A class for tracking changes to a graph so that graph properties can be
- *  recomputed only when necessary. Any given computation
- *  for the graph (e.g., computation of the transitive closure of a directed
- *  graph) can have a graph listener associated with it. If the
- *  <code>registerComputation()</code> method is invoked each time the
- *  computation is performed, and results of the computation are cached,
- *  then the <code>obsolete()</code> method can be used to determine
- *  whether any changes to the graph have occured since the time
- *  the cached value was computed.
- *
- * @author Shuvra S. Bhattacharyya
- * @version $Id$
- */
+recomputed only when necessary. Any given computation
+for the graph (e.g., computation of the transitive closure of a directed
+graph) can have a graph listener associated with it. If the
+<code>registerComputation()</code> method is invoked each time the
+computation is performed, and results of the computation are cached,
+then the <code>obsolete()</code> method can be used to determine
+whether any changes to the graph have occured since the time
+the cached value was computed.
+
+@author Shuvra S. Bhattacharyya
+@version $Id$
+*/
 public class GraphListener {
 
     /** Construct a new graph listener associated with a given graph, and

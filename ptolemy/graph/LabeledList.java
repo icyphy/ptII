@@ -90,7 +90,7 @@ public class LabeledList implements List {
      *  prior to insertion of the element.
      *  @param element The element to insert.
      *  @return True unconditionally (assuming an exception does not occur).
-     *  @exception IllegalArgumentException if the specified element is null,
+     *  @exception IllegalArgumentException If the specified element is null,
      *  or if it already exists in the list.
      */
     public boolean add(Object element) {
@@ -108,21 +108,21 @@ public class LabeledList implements List {
     }
 
     /*  Unsupported method of the list interface.
-     *  @throws UnsupportedOperationException unconditionally.
+     *  @exception UnsupportedOperationException Always thrown.
      */
     public void add(int index, Object element) {
         throw new UnsupportedOperationException();
     }
 
     /*  Unsupported method of the list interface.
-     *  @throws UnsupportedOperationException unconditionally.
+     *  @exception UnsupportedOperationException Always thrown.
      */
     public boolean addAll(Collection collection) {
         throw new UnsupportedOperationException();
     }
 
     /*  Unsupported method of the list interface.
-     *  @throws UnsupportedOperationException unconditionally.
+     *  @exception UnsupportedOperationException Always thrown.
      */
     public boolean addAll(int index, Collection collection) {
         throw new UnsupportedOperationException();
@@ -173,7 +173,7 @@ public class LabeledList implements List {
     /** Return the element that has a specified label.
      *  @param label The label.
      *  @return The element.
-     *  @exception IndexOutOfBoundsException if there is no element that
+     *  @exception IndexOutOfBoundsException If there is no element that
      *  has the specified label.
      */
     public Object get(int label) {
@@ -304,7 +304,7 @@ public class LabeledList implements List {
      * by one. All other element labels will remain unchanged.
      * @param element The specified label.
      * @return The element that is removed.
-     * @exception IndexOutOfBoundsException if there is no element with
+     * @exception IndexOutOfBoundsException If there is no element with
      * the specified label.
      */
     public Object remove(int label) {
@@ -316,21 +316,21 @@ public class LabeledList implements List {
     }
 
     /*  Unsupported method of the list interface.
-     *  @throws UnsupportedOperationException unconditionally.
+     *  @exception UnsupportedOperationException Always thrown.
      */
     public boolean removeAll(Collection c) {
         throw new UnsupportedOperationException();
     }
 
     /*  Unsupported method of the list interface.
-     *  @throws UnsupportedOperationException unconditionally.
+     *  @exception UnsupportedOperationException Always thrown.
      */
     public boolean retainAll(Collection c) {
         throw new UnsupportedOperationException();
     }
 
     /*  Unsupported method of the list interface.
-     *  @throws UnsupportedOperationException unconditionally.
+     *  @exception UnsupportedOperationException Always thrown.
      */
     public Object set(int index, Object element)  {
         throw new UnsupportedOperationException();
@@ -344,7 +344,7 @@ public class LabeledList implements List {
     }
 
     /*  Unsupported method of the list interface.
-     *  @throws UnsupportedOperationException unconditionally.
+     *  @exception UnsupportedOperationException Always thrown.
      */
     public List subList(int fromIndex, int toIndex) {
         // FIXME: this is not an optional operation, it must be supported.

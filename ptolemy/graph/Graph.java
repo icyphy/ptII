@@ -205,7 +205,6 @@ public class Graph {
      */
     public Collection addEdge(Object weight1, Object weight2,
             Object newEdgeWeight) {
-        // FIXME: Rename this method to addEdges.
         return _addEdges(weight1, weight2, true, newEdgeWeight);
     }
 
@@ -221,7 +220,6 @@ public class Graph {
      *  added (i.e., if no nodes x1, x2 satisfy the above condition).
      */
     public Collection addEdge(Object weight1, Object weight2) {
-        // FIXME: Rename this method to addEdges.
         return _addEdges(weight1, weight2, false, null);
     }
 

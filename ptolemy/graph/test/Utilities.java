@@ -35,10 +35,10 @@ import java.util.Iterator;
 //// Utilities
 /**
 Utilties for testing graphs.
-This class provides utilities, in the form of static methods, for testing 
+This class provides utilities, in the form of static methods, for testing
 graphs.
 
-@author Shuvra S. Bhattacharyya 
+@author Shuvra S. Bhattacharyya
 @version $Id$
 */
 
@@ -59,11 +59,11 @@ public class Utilities {
      *  representation for a collection regardless of the order in which
      *  elements are inserted and removed.
      *  @param collection The collection.
-     *  @param recursive True if elements of the collection that are themselves 
-     *  collections should be recursively converted to sorted strings. 
+     *  @param recursive True if elements of the collection that are themselves
+     *  collections should be recursively converted to sorted strings.
      *  @return The string representation.
      */
-    public static String toSortedString(Collection collection, 
+    public static String toSortedString(Collection collection,
             boolean recursive) {
         ArrayList result = new ArrayList(collection.size());
         Iterator elements = collection.iterator();
@@ -76,8 +76,8 @@ public class Utilities {
                 elementString = element.toString();
             }
             int i;
-            for (i = 0; (i < result.size()) && 
-                    (((String)result.get(i)).compareTo(elementString) < 0); 
+            for (i = 0; (i < result.size()) &&
+                    (((String)result.get(i)).compareTo(elementString) < 0);
                     i++);
             result.add(i, elementString);
         }
