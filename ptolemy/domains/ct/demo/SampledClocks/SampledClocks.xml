@@ -79,7 +79,7 @@ Period: 0.5</text></svg></configure>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model demostrates that the sampled clock
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model demonstrates that the sampled clock
 signals are different. The sampled continuous
 clock signal has some delay compared with the
 sampled discrete clock signal. The delay is the
@@ -182,6 +182,8 @@ design.
         <property name="values" class="ptolemy.data.expr.Parameter" value="{0, 1}">
         </property>
         <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 280.0">
         </property>
