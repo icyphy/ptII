@@ -114,11 +114,13 @@ public class CommandLineTransformer extends SceneTransformer {
     }
 
     public String getDefaultOptions() {
-        return "iterations:" + _iterationsDefault;
+        return "iterations:" + _iterationsDefault
+            + "template:" + _commandLineTemplateDefault;
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " iterations targetPackage";
+        return super.getDeclaredOptions()
+            + " iterations targetPackage template ";
     }
 
     protected void internalTransform(String phaseName, Map options) {
@@ -133,14 +135,19 @@ public class CommandLineTransformer extends SceneTransformer {
         */
         // SootClass applicationClass = Scene.v().loadClassAndSupport(
         //        "ptolemy.actor.gui.CompositeActorApplication");
+        String commandLineTemplate = Options.getString(options, "template");
+        if (commandLineTemplate.equals("")) {
+            commandLineTemplate = _commandLineTemplateDefault;
+        }
         SootClass applicationClass = Scene.v().loadClassAndSupport(
-                "ptolemy.copernicus.java.CommandLineTemplate");
+                commandLineTemplate);
         applicationClass.setLibraryClass();
 
         SootClass modelClass = ModelTransformer.getModelClass();
 
         SootClass mainClass = SootUtilities.copyClass(applicationClass,
                 Options.getString(options, "targetPackage") + ".Main");
+
         mainClass.setApplicationClass();
 
         // Tell the rest of soot that this is the interesting main method.
@@ -204,12 +211,37 @@ public class CommandLineTransformer extends SceneTransformer {
                     insertPoint);
         }
 
-        // unroll places where the list of models is used.
-        LinkedList modelList = new LinkedList();
-        modelList.add(modelField);
-        SootField modelsField = mainClass.getFieldByName("_models");
-        SootUtilities.unrollIteratorInstances(mainClass,
-                modelsField, modelList);
+
+        try {
+            // unroll places where the list of models is used.
+
+            // We put this in a try block so that we can exclude it
+            // if necessary
+            LinkedList modelList = new LinkedList();
+            modelList.add(modelField);
+            SootField modelsField = mainClass.getFieldByName("_models");
+
+            if (modelsField != null) {
+                SootUtilities.unrollIteratorInstances(mainClass,
+                        modelsField, modelList);
+            }
+        } catch (RuntimeException ex) {
+            System.out.println("Warning: did not find _models field: " + ex);
+            for (Iterator methods = mainClass.getMethods().iterator();
+                 methods.hasNext();) {
+                SootMethod method = (SootMethod)methods.next();
+                JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+                System.out.println("clt: " + method + " " + body);
+            }
+            /*
+            SootUtilities.createAndSetFieldFromLocal(
+                    body,
+                    modelField,
+                    mainClass,
+                    modelField.getType(),
+                    "_model");
+             */
+        }
 
         // Find calls to Manager.startRun() and replace it with
         // iteration code.
@@ -355,6 +387,13 @@ public class CommandLineTransformer extends SceneTransformer {
     /** Default value for the iterations command line parameter
      */
     protected int _iterationsDefault = 50;
+
+    /** Default value for the class name that is used as the command
+     *  line template.  The initial default value is 
+     *  "ptolemy.copernicus.java.CommandLineTemplate");
+     */   
+    protected String _commandLineTemplateDefault = 
+    "ptolemy.copernicus.java.CommandLineTemplate";
 
     private String _getFinalName(String dottedName) {
         // Take the entity and it's class name and munge them into a
