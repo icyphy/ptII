@@ -372,7 +372,7 @@ test PtParser-8.1 {Test bitwise operators} {
     set p1 [java::new ptolemy.data.expr.PtParser]
     set root1 [ $p1 {generateParseTree String} "5 & 2"]
     set root2 [ $p1 {generateParseTree String} "5 | 2"]
-    set root3 [ $p1 {generateParseTree String} "5 ^ 4"]
+    set root3 [ $p1 {generateParseTree String} "5 # 4"]
     set root4 [ $p1 {generateParseTree String} "~5"]
 
     set res1  [ $root1 evaluateParseTree ]
