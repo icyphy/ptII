@@ -1294,7 +1294,7 @@ if test ! -d "$PTII/ptolemy/apps/tini"; then
     echo "$ac_t""$PTII/ptolemy/apps/tini is not present, so we need not
 find the Dallas Semiconductor tini" 1>&6
     TINI_DIR='$(PTII)/vendors/dalsemi/tini'
-    TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar'
+    TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar$(CLASSPATHSEPARATOR)$(TINI_DIR)/bin/tini.jar'
 else
     echo $ac_n "checking for tini directory""... $ac_c" 1>&6
 echo "configure:1301: checking for tini directory" >&5
@@ -1312,7 +1312,15 @@ fi
         echo $ac_n "checking for \$TINI_DIR/bin/tiniclasses.jar""... $ac_c" 1>&6
 echo "configure:1314: checking for \$TINI_DIR/bin/tiniclasses.jar" >&5
 	if test -f "$TINI_DIR/bin/tiniclasses.jar"; then
-	    TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar'
+	    echo "$ac_t""$TINI_DIR/bin/tiniclasses.jar" 1>&6
+	    echo $ac_n "checking for \$TINI_DIR/bin/tini.jar""... $ac_c" 1>&6
+echo "configure:1318: checking for \$TINI_DIR/bin/tini.jar" >&5
+  	    if test -f "$TINI_DIR/bin/tini.jar"; then
+                echo "$ac_t""$TINI_DIR/bin/tini.jar" 1>&6
+	        TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar$(CLASSPATHSEPARATOR)$(TINI_DIR)/bin/tini.jar'
+	    else	
+	        TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar'
+            fi
 	    echo "$ac_t""$TINI_CLASSES" 1>&6
         else
 	    TINI_CLASSES=no
@@ -1320,21 +1328,28 @@ echo "configure:1314: checking for \$TINI_DIR/bin/tiniclasses.jar" >&5
     else    
 	echo "$ac_t""Not found in $TINI_DIR" 1>&6
 	echo $ac_n "checking for tini directory in /tini""... $ac_c" 1>&6
-echo "configure:1324: checking for tini directory in /tini" >&5
+echo "configure:1332: checking for tini directory in /tini" >&5
 	# Likely place for tini under windows
 	TINI_DIR=/tini
         if test -d "$TINI_DIR"; then
 	    echo "$ac_t""$TINI_DIR" 1>&6
             echo $ac_n "checking for \$TINI_DIR/bin/tiniclasses.jar""... $ac_c" 1>&6
-echo "configure:1330: checking for \$TINI_DIR/bin/tiniclasses.jar" >&5
+echo "configure:1338: checking for \$TINI_DIR/bin/tiniclasses.jar" >&5
 	    if test -f "$TINI_DIR/bin/tiniclasses.jar"; then
-	        TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar'
-	        echo "$ac_t""$TINI_CLASSES" 1>&6
-            else
-	        TINI_CLASSES=no
+	        echo "$ac_t""$TINI_DIR/bin/tiniclasses.jar" 1>&6
+	        echo $ac_n "checking for \$TINI_DIR/bin/tini.jar""... $ac_c" 1>&6
+echo "configure:1342: checking for \$TINI_DIR/bin/tini.jar" >&5
+	        if test -f "$TINI_DIR/bin/tini.jar"; then
+	            echo "$ac_t""$TINI_DIR/bin/tini.jar" 1>&6
+	            TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar$(CLASSPATHSEPARATOR)$(TINI_DIR)/bin/tini.jar'
+	        else	
+	            TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar'
+	        fi 
             fi
-        else 
-		TINI_CLASSES=no
+	    echo "$ac_t""$TINI_CLASSES" 1>&6
+        else
+	    TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar$(CLASSPATHSEPARATOR)$(TINI_DIR)/bin/tini.jar'
+	    echo "$ac_t""$TINI_CLASSES" 1>&6
         fi
 
     fi
@@ -1346,7 +1361,7 @@ echo "configure:1330: checking for \$TINI_DIR/bin/tiniclasses.jar" >&5
    The Tini SDK can be downloaded from http://www.ibutton.com'" 1>&2
 	# Note that we don't substitute in the $(PTII) or $(TINI_DIR) here
 	TINI_DIR='$(PTII)/vendors/dalsemi/tini'
-   	TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar'
+   	TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar$(CLASSPATHSEPARATOR)$(TINI_DIR)/bin/tini.jar'
     else 
 	# Set to tini and used in 
 	# $PTII/ptolemy/apps/makefile if tini was found
@@ -1375,7 +1390,7 @@ find the PalmOS waba" 1>&6
     WABA_CLASSES='$(WABA_DIR)/classes'
 else
     echo $ac_n "checking for waba directory""... $ac_c" 1>&6
-echo "configure:1379: checking for waba directory" >&5
+echo "configure:1394: checking for waba directory" >&5
     # Check whether --with-waba or --without-waba was given.
 if test "${with_waba+set}" = set; then
   withval="$with_waba"
@@ -1388,7 +1403,7 @@ fi
     if test -d "$WABA_DIR"; then
 	echo "$ac_t""$WABA_DIR" 1>&6
         echo $ac_n "checking for \$WABA_DIR/classes""... $ac_c" 1>&6
-echo "configure:1392: checking for \$WABA_DIR/classes" >&5
+echo "configure:1407: checking for \$WABA_DIR/classes" >&5
 	if test -d "$WABA_DIR/classes"; then
 	    WABA_CLASSES='$(WABA_DIR)/classes'
 	    echo "$ac_t""$WABA_CLASSES" 1>&6
@@ -1398,13 +1413,13 @@ echo "configure:1392: checking for \$WABA_DIR/classes" >&5
     else    
 	echo "$ac_t""Not found in $WABA_DIR" 1>&6
 	echo $ac_n "checking for waba directory in /waba""... $ac_c" 1>&6
-echo "configure:1402: checking for waba directory in /waba" >&5
+echo "configure:1417: checking for waba directory in /waba" >&5
 	# Likely place for waba under windows
 	WABA_DIR=/waba/wabasdk
         if test -d "$WABA_DIR"; then
 	    echo "$ac_t""$WABA_DIR" 1>&6
             echo $ac_n "checking for \$WABA_DIR/classes""... $ac_c" 1>&6
-echo "configure:1408: checking for \$WABA_DIR/classes" >&5
+echo "configure:1423: checking for \$WABA_DIR/classes" >&5
 	    if test -d "$WABA_DIR/classes"; then
 	        WABA_CLASSES='$(WABA_DIR)/classes'
 	        echo "$ac_t""$WABA_CLASSES" 1>&6
