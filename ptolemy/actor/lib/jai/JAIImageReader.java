@@ -91,6 +91,15 @@ public class JAIImageReader extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Output a JAIImageToken containing the image
+     *  @exception IllegalActionException If there is no director.
+     */
+    
+    public void fire() throws IllegalActionException {
+        super.fire();
+        output.send(0, new JAIImageToken(_outputtedImage));
+    }
+    
     /** An attempt is made at loading the file.  If this is successful,
      *  then at time 0.0, request firing.
      *  @exception IllegalActionException If the filename is null, if
@@ -117,17 +126,6 @@ public class JAIImageReader extends Source {
         } else {
             throw new IllegalActionException(this, "No director.");
         }
-    }
-
-    /** If the current time is 0.0, then produce a JAIImageToken
-     *  containing the image.
-     *  @exception IllegalActionException If there is no director.
-     */
-    public boolean postfire() throws IllegalActionException {
-        if (getDirector().getCurrentTime() == 0.0) {
-            output.send(0, new JAIImageToken(_outputtedImage));
-        }
-        return super.postfire();
     }
 
     ///////////////////////////////////////////////////////////////////
