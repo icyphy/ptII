@@ -130,7 +130,7 @@ public class SchematicElement extends XMLElement {
         setAttribute("name", s);
     }
 
-    private HashedMap parameters;
+    protected HashedMap parameters;
 
 }
 
