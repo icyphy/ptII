@@ -159,43 +159,4 @@ public class Timer extends TimedDelay {
         }
     }
 
-    /** If the token read in the most recent fire() invocation was
-     *  nonnegative, then produce an output with a time stamp in
-     *  the future.  The time delay is equal to the value of the
-     *  input.  If there was no input token, or if its value is
-     *  negative, then no output is produced.
-     *  @exception IllegalActionException If there is no director.
-     */
-    public boolean postfire() throws IllegalActionException {
-        Time currentTime = getDirector().getModelTime();
-        Time delayToTime = currentTime.add(_delay);
-        // Remove the token that is scheduled to be sent 
-        // at the current time.
-        if (_delayedTokens.size() > 0 && 
-            _currentOutput != null) {
-            _delayedTokens.remove(new Double(currentTime.getDoubleValue()));
-        }
-        // Store the not handled token that is scheduled to 
-        // be sent in future.
-        if (_currentInput != null && _delay >= 0) {
-            _delayedTokens.put(new Double(delayToTime.getDoubleValue()), 
-                value.getToken());
-            getDirector().fireAt(this, delayToTime);
-        }
-        return super.postfire();
-    }
-
-    /** Override the base class to declare that the <i>output</i>
-     *  does not depend on the <i>input</i> in a firing.
-     */
-    public void pruneDependencies() {
-        super.pruneDependencies();
-        removeDependency(input, output);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // Current input.
-    private Token _currentInput;
 }

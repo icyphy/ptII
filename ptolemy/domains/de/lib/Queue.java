@@ -46,7 +46,8 @@ import ptolemy.kernel.util.Workspace;
    queue is output.  If there is no element in the queue when a
    token is received on the <i>trigger</i> port, then no output is
    produced.  The inputs can be of any token type, and the output
-   is constrained to be of a type at least that of the input.
+   is constrained to be of a type at least that of the input. There is no
+   constraint on the size of queue.
    <p>
 
    @author Steve Neuendorffer
@@ -111,7 +112,8 @@ public class Queue extends DETransformer {
      *  emit the most recent token from the <i>input</i> port. If there
      *  has been no input token, or there is no token on the <i>trigger</i>
      *  port, emit nothing.
-     *  @exception IllegalActionException If there is no director.
+     *  @exception IllegalActionException If getting tokens from input and
+     *  trigger ports or sending token to output throws it.
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
@@ -154,7 +156,7 @@ public class Queue extends DETransformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected variables               ////
 
-    private FIFOQueue _queue;
+    protected FIFOQueue _queue;
 }

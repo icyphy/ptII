@@ -1,4 +1,4 @@
-/* Measure the time between input events.
+/* Measure the time interval between input events.
 
 Copyright (c) 1998-2004 The Regents of the University of California.
 All rights reserved.
@@ -38,7 +38,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// TimeGap
 /**
-   This actor measures the time between arrivals of successive input tokens.
+   This actor measures the time interval between arrivals of successive 
+   input tokens.
    Beginning with the second input arrival, the measurement is produced
    at the output.  The output is always a DoubleToken.
    @see WaitingTime
@@ -97,7 +98,7 @@ public class TimeGap extends DETransformer {
         return super.postfire();
     }
 
-    /** Set the previous event time to -1.
+    /** Set the previous event time to negative infinity.
      */
     public void initialize() throws IllegalActionException {
         _previousTime = Time.NEGATIVE_INFINITY;

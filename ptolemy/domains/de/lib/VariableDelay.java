@@ -39,7 +39,7 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// VariableDelay
 /**
-   This actor extends from the ptolemy.domains.de.lib.TimedDelay actor.
+   This actor extends from the TimedDelay actor.
    It works in a similar way as the TimedDelay actor except that the 
    amount of time delayed is specified by an incoming token through 
    the delay port parameter.
@@ -133,7 +133,8 @@ public class VariableDelay extends TimedDelay {
     ///////////////////////////////////////////////////////////////////
     ////                       protected method                    ////
 
-    // Initialize the value for parameter.
+    /** Initialize the value for parameter.
+     */
     protected void _init() 
         throws NameDuplicationException, IllegalActionException  {
         delay = new PortParameter(this, "delay");

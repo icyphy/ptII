@@ -30,7 +30,6 @@ package ptolemy.domains.de.lib;
 
 import java.util.List;
 
-import ptolemy.actor.lib.Transformer;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.graph.Inequality;
@@ -64,7 +63,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (eal)
    @Pt.AcceptedRating Red (cxh)
 */
-public class Previous extends Transformer {
+public class Previous extends DETransformer {
 
     /** Construct an actor with the specified container and name.
      *  @param container The composite actor to contain this one.
@@ -95,7 +94,8 @@ public class Previous extends Transformer {
 
     /** If there is a previous token, then produce it on the output,
      *  and then read the input and record it for the next firing.
-     *  @exception IllegalActionException If there is no director.
+     *  @exception IllegalActionException If getting token from input or
+     *  sending token to output throws it.
      */
     public void fire() throws IllegalActionException {
         super.fire();
@@ -108,7 +108,8 @@ public class Previous extends Transformer {
     }
 
     /** Initialize so that the initial token will be produced.
-     *  @exception IllegalActionException If there is no director.
+     *  @exception IllegalActionException If the super class throws it
+     *  or can not get a valid token from the initializeValue parameter. 
      */
     public void initialize() throws IllegalActionException {
         super.initialize();

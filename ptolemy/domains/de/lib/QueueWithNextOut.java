@@ -56,13 +56,13 @@ import ptolemy.kernel.util.Workspace;
    the queue.  This output, also, is constrained to be at least that of
    <i>input</i> <p>
 
-   @author Winthrop Williams (based closely on Queue by Steve Neuendorffer)
+   @author Winthrop Williams, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 2.0
    @Pt.ProposedRating Yellow (winthrop)
    @Pt.AcceptedRating Yellow (winthrop)
 */
-public class QueueWithNextOut extends DETransformer {
+public class QueueWithNextOut extends Queue {
     //FIXME: make this consistent with the queue from ptolemy classic
 
     /** Construct an actor with the given container and name.
@@ -76,23 +76,13 @@ public class QueueWithNextOut extends DETransformer {
     public QueueWithNextOut(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        output.setTypeAtLeast(input);
         nextOut = new TypedIOPort(this, "nextOut");
         nextOut.setTypeAtLeast(input);
         nextOut.setOutput(true);
-        trigger = new TypedIOPort(this, "trigger", true, false);
-        // Leave type undeclared.
-        _queue = new FIFOQueue();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
-    /** The trigger port, which has undeclared type. If this port
-     *  receives a token, then the oldest token in the queue
-     *  will be emitted on the <i>output</i> port.
-     */
-    public TypedIOPort trigger;
 
     /** The nextOut port, which has type Token.  Gives a preview
      *  of the next token that will come out of the queue.  Produces
@@ -102,22 +92,6 @@ public class QueueWithNextOut extends DETransformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the ports.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class has
-     *   has an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        QueueWithNextOut newObject = (QueueWithNextOut)super.clone(workspace);
-        newObject._queue = new FIFOQueue();
-        newObject.output.setTypeAtLeast(newObject.input);
-        newObject.nextOut.setTypeAtLeast(newObject.input);
-        return newObject;
-    }
 
     /** If there is a token in the <i>trigger</i> port, emit on the
      *  <i>output</i> port the most recent token from the <i>input</i>
@@ -151,34 +125,4 @@ public class QueueWithNextOut extends DETransformer {
             }
         }
     }
-
-    /** If neither the <i>input</i> port nor the <i>trigger</i> port
-     *  has input, return false, indicating that this actor does not
-     *  want to fire.  This has the effect of leaving input values in
-     *  the input ports, if there are any.
-     *  @exception IllegalActionException If there is no director.
-     */
-    public boolean prefire() throws IllegalActionException {
-        // If the trigger input is not connected, never fire.
-        boolean hasInput = false;
-        boolean hasTrigger = false;
-        if (input.getWidth() > 0)
-            hasInput = (input.hasToken(0));
-        if (trigger.getWidth() > 0)
-            hasTrigger = (trigger.hasToken(0));
-        return hasInput || hasTrigger;
-    }
-
-    /** Clear the cached input tokens.
-     *  @exception IllegalActionException If there is no director.
-     */
-    public void preinitialize() throws IllegalActionException {
-        _queue.clear();
-        super.preinitialize();
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    private FIFOQueue _queue;
 }

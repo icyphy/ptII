@@ -151,11 +151,12 @@ public class TimedDelay extends DETransformer {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         TimedDelay newObject = (TimedDelay)super.clone(workspace);
+        newObject.output.setTypeSameAs(newObject.input);
         return newObject;
     }
 
-    /** Read one token from the input and send one or more outputs
-     *  which are scheduled to produce at the current time. 
+    /** Read one token from the input and send one output
+     *  which is scheduled to produce at the current time. 
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
@@ -166,6 +167,9 @@ public class TimedDelay extends DETransformer {
             _currentInput = null;
         }
         // produce output
+        // NOTE: the delay may be zero. however, if there is some other event 
+        // scheduled to produce at current time before the current iteration, 
+        // the current input is delayed to the next firing to produce.
         Time currentTime = getDirector().getModelTime();
         _currentOutput = null;
         if (_delayedTokens.size() > 0) {
@@ -173,10 +177,6 @@ public class TimedDelay extends DETransformer {
                 new Double(currentTime.getDoubleValue()));
             if (_currentOutput != null) {
                 output.send(0, _currentOutput);
-                // FIXME: is it too early to return? what if the delay is 0
-                // and the _currentInput != null?? 
-                // This may be an issue in TimedDelay where Delay changes on
-                // the fly. It also appears in VariableDelay.. 
                 return;
             } else {
                 // no tokens to be produced at the current time.
@@ -189,7 +189,6 @@ public class TimedDelay extends DETransformer {
     }
 
     /** Initialize the states of this actor.
-     *
      *  @exception IllegalActionException If a derived class throws it.
      */
     public void initialize() throws IllegalActionException {
@@ -234,7 +233,8 @@ public class TimedDelay extends DETransformer {
     ///////////////////////////////////////////////////////////////////
     ////                       protected method                    ////
 
-    // Initialize the value for parameter.
+    /** Initialize the delay parameter.
+     */
     protected void _init() 
         throws NameDuplicationException, IllegalActionException  {
         delay = new Parameter(this, "delay", new DoubleToken(1.0));
@@ -245,17 +245,19 @@ public class TimedDelay extends DETransformer {
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
 
-    // FIXME: comments.
-    // The amount of delay.
+    /** The amount of delay.
+     */ 
     protected double _delay;
 
-    // A hash map to store the delayed tokens.
+    /** A hash map to store the delayed tokens.
+    */
     protected HashMap _delayedTokens;
 
-    // Current input.
-    // FIXME: this private variable is not necessary.
+    /** Current input.
+     */
     protected Token _currentInput;
     
-    // Current output.
+    /** Current output.
+     */
     protected Token _currentOutput;    
 }
