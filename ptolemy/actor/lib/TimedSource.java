@@ -145,7 +145,8 @@ public class TimedSource extends Source implements TimedActor {
             }
             //changed by yang.
             //director.fireAt(this, time);
-            director.fireAt(this, director.getCurrentTime() + time);
+            _stopTime = director.getCurrentTime()+ time;
+            director.fireAt(this, _stopTime);
             _executing = true;
         }
     }
@@ -159,7 +160,7 @@ public class TimedSource extends Source implements TimedActor {
      */
     public boolean postfire() throws IllegalActionException {
         double time = ((DoubleToken)stopTime.getToken()).doubleValue();
-        if (time > 0.0 && getDirector().getCurrentTime() >= time) {
+        if (time > 0.0 && getDirector().getCurrentTime() >= _stopTime) {
             return false;
         }
         return true;
@@ -180,4 +181,6 @@ public class TimedSource extends Source implements TimedActor {
 
     // Flag indicating that the model is running.
     private boolean _executing = false;
+    
+    private double _stopTime = 0.0;
 }
