@@ -233,6 +233,26 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                 replaceTokenFields(entityClass, depth,
                         unsafeLocalSet, debug);
             }
+            for (Iterator classes = classList.iterator();
+                 classes.hasNext();) {
+                SootClass entityClass = (SootClass)classes.next();
+                
+                // This will allow us to get a better type inference below.
+                for (Iterator methods = entityClass.getMethods().iterator();
+                     methods.hasNext();) {
+                    SootMethod method = (SootMethod)methods.next();
+                    if (debug) System.out.println("method = " + method);
+                    
+                    JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+                    
+                    LocalSplitter.v().transform(
+                            body, _phaseName + ".ls");
+                    // We may have locals with the same name.  Rename them.
+                    LocalNameStandardizer.v().transform(
+                            body, _phaseName + ".lns");
+                }
+            }
+            
             depth--;
         }
     }
@@ -1035,6 +1055,12 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
             //                     body.getFirstNonIdentityStmt());
 
 
+            // Hack to force the element type of an array.
+            ptolemy.data.type.Type elementType = null;
+            if (fieldTokenType instanceof ptolemy.data.type.ArrayType) {
+                elementType = ((ptolemy.data.type.ArrayType)fieldTokenType).
+                    getElementType();
+            }
             Map tokenFieldToReplacementField = new HashMap();
             entityFieldToTokenFieldToReplacementField.put(field,
                     tokenFieldToReplacementField);
@@ -1053,6 +1079,13 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                             replacementType, field.getModifiers());
                 tokenFieldToReplacementField.put(tokenField, replacementField);
                 entityClass.addField(replacementField);
+
+                // Hack for type of array type.
+                if(elementType != null && 
+                        tokenField.getName().equals("_value")) {
+                    System.err.println("replacmentField = " + replacementField);
+                    replacementField.addTag(new TypeTag(elementType));
+                }
             }
         }
     }
@@ -1179,6 +1212,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                     // Handle java.lang.arraycopy
                     InvokeExpr r = (InvokeExpr)((InvokeStmt)unit).getInvokeExpr();
                     if (r.getMethod().equals(PtolemyUtilities.arraycopyMethod)) {
+                        if (debug) System.out.println("handling as array copy");
                         Local toLocal = (Local)r.getArg(0);
                         Local fromLocal = (Local)r.getArg(2);
                         Map toFieldToReplacementLocal =
@@ -1187,6 +1221,8 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                             (Map) localToFieldToLocal.get(fromLocal);
                         if (toFieldToReplacementLocal != null &&
                                 fromFieldToReplacementLocal != null) {
+                            if(debug) System.out.println("toFieldToReplacementLocal = " + toFieldToReplacementLocal);
+                            if(debug) System.out.println("fromFieldToReplacementLocal = " + fromFieldToReplacementLocal);
                             for (Iterator tokenFields = toFieldToReplacementLocal.keySet().iterator();
                                  tokenFields.hasNext();) {
                                 SootField tokenField = (SootField)tokenFields.next();
@@ -1251,7 +1287,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                     } else if (stmt.getLeftOp() instanceof InstanceFieldRef) {
                         // Replace references to fields of tokens.
                         // FIXME: assign to all aliases as well.
-                        if (debug) System.out.println("is Instance FieldRef");
+                        if (debug) System.out.println("is assignment to Instance FieldRef");
                         InstanceFieldRef r = (InstanceFieldRef)stmt.getLeftOp();
                         SootField field = r.getField();
                         if (r.getBase().getType() instanceof RefType) {
@@ -1274,7 +1310,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                         }
                     } else if (stmt.getRightOp() instanceof InstanceFieldRef) {
                         // Replace references to fields of tokens.
-                        if (debug) System.out.println("is Instance FieldRef");
+                        if (debug) System.out.println("is assignment from Instance FieldRef");
                         InstanceFieldRef r = (InstanceFieldRef)stmt.getRightOp();
                         SootField field = r.getField();
                         if (r.getBase().getType() instanceof RefType) {
@@ -1289,6 +1325,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                                 Local baseLocal = (Local)r.getBase();
                                 Local instanceLocal = _getInstanceLocal(body, baseLocal,
                                         field, localToFieldToLocal, debug);
+                                if (debug) System.out.println("instanceLocal = " + instanceLocal);
                                 if (instanceLocal != null) {
                                     stmt.getRightOpBox().setValue(instanceLocal);
                                     doneSomething = true;
@@ -1532,6 +1569,8 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                             Map fieldToReplacementLocal =
                                 (Map) localToFieldToLocal.get(stmt.getRightOp());
 
+                            if(debug) System.out.println("fieldToReplacementArrayLocal = " + fieldToReplacementArrayLocal);
+                            if(debug) System.out.println("fieldToReplacementLocal = " + fieldToReplacementLocal);
                             if (fieldToReplacementLocal != null &&
                                     fieldToReplacementArrayLocal != null) {
                                 doneSomething = true;
@@ -1613,7 +1652,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                                 stmt.getRightOp() instanceof NewArrayExpr) {
                             if (debug) System.out.println("handling as new array object");
                             NewArrayExpr newExpr = (NewArrayExpr)stmt.getRightOp();
-                            // We have an assignment from one local token to another.
+                            // We have an assignment to a local from a new array.
                             Map map = (Map)localToFieldToLocal.get(stmt.getLeftOp());
                             if (map != null) {
                                 doneSomething = true;
@@ -1633,9 +1672,10 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                                 for (Iterator tokenFields = map.keySet().iterator();
                                      tokenFields.hasNext();) {
                                     SootField tokenField = (SootField)tokenFields.next();
+                                    if (debug) System.out.println("tokenField = " + tokenField);
                                     Local replacementLocal = (Local)
                                         map.get(tokenField);
-
+                                    
                                     Type replacementType =
                                         SootUtilities.createIsomorphicType(newExpr.getBaseType(),
                                                 tokenField.getType());
@@ -1786,7 +1826,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                         }
                     }
                 }
-                if (debug) System.out.println("New unit = " + unit);
+                //       if (debug) System.out.println("New unit = " + unit);
             }
         }
     }

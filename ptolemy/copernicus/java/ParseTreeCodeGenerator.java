@@ -27,6 +27,8 @@
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 */
+
+
 package ptolemy.copernicus.java;
 
 import java.lang.reflect.Method;
@@ -58,6 +60,7 @@ import ptolemy.data.expr.CachedMethod;
 import ptolemy.data.expr.ParseTreeTypeInference;
 import ptolemy.data.expr.PtParserConstants;
 import ptolemy.data.expr.Token;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.type.RecordType;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -72,6 +75,7 @@ import soot.RefType;
 import soot.SootClass;
 import soot.SootMethod;
 import soot.Type;
+import soot.Unit;
 import soot.jimple.Constant;
 import soot.jimple.IntConstant;
 import soot.jimple.Jimple;
@@ -104,7 +108,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         return generateCode(node, body, insertPoint, scope);
     }
     public Local generateCode(ASTPtRootNode node, JimpleBody body,
-            Stmt insertPoint, CodeGenerationScope scope)
+            Unit insertPoint, CodeGenerationScope scope)
             throws IllegalActionException {
         ParseTreeTypeInference typeInference = new ParseTreeTypeInference();
         typeInference.inferTypes(node, scope);
@@ -1172,7 +1176,8 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
                 _insertPoint);
 
         // Take the result and turn it back into a BooleanToken
-        Local resultLocal = PtolemyUtilities.addTokenLocalBefore(_body, _insertPoint, "token",
+        Local resultLocal = PtolemyUtilities.addTokenLocalBefore(
+                _body, _insertPoint, "token",
                 PtolemyUtilities.booleanTokenClass,
                 PtolemyUtilities.booleanTokenConstructor,
                 conditionLocal);
@@ -1197,17 +1202,65 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
             args.add(local);
             args.add(IntConstant.v(node.getRowCount()));
             args.add(IntConstant.v(node.getColumnCount()));
-            _units.insertBefore(
-                    Jimple.v().newAssignStmt(
-                            resultLocal,
-                            Jimple.v().newStaticInvokeExpr(
-                                    PtolemyUtilities.matrixTokenCreateMethod,
-                                    args)), _insertPoint);
+            ptolemy.data.type.Type type = node.getType();
+            if (type == BaseType.UNKNOWN) {
+                throw new IllegalActionException("Cannot resolve type for "
+                        + "matrix construction.");
+            } else if (type == BaseType.BOOLEAN_MATRIX) {
+                _createMatrix(resultLocal, 
+                        PtolemyUtilities.booleanMatrixTokenClass,
+                        PtolemyUtilities.booleanMatrixTokenArrayConstructor,
+                        args);
+            } else if (type == BaseType.INT_MATRIX) {
+                _createMatrix(resultLocal, 
+                        PtolemyUtilities.intMatrixTokenClass,
+                        PtolemyUtilities.intMatrixTokenArrayConstructor,
+                        args);
+            } else if (type == BaseType.LONG_MATRIX) {
+            } else if (type == BaseType.DOUBLE_MATRIX) {
+         
+            } else if (type == BaseType.COMPLEX_MATRIX) {
+         
+            } else if (type == BaseType.FIX_MATRIX) {
+                
+            } else {
+                throw new IllegalActionException("Unrecognized type " + type +
+                        " for matrix creation.");
+            }
+
+                    // This would be ideal, but it uses leastUpperBound(array), which is hard to handle. 
+                    //             _units.insertBefore(
+                    //                     Jimple.v().newAssignStmt(
+                    //                             resultLocal,
+                    //                             Jimple.v().newStaticInvokeExpr(
+                    //                                     PtolemyUtilities.matrixTokenCreateMethod,
+                    //                                     args)), _insertPoint);
         } else {
             throw new IllegalActionException(
                     "unimplemented case");
         }
         _nodeToLocal.put(node, resultLocal);
+    }
+    
+    private void _createMatrix(Local resultLocal, 
+            SootClass matrixClass,
+            SootMethod matrixArrayConstructor,
+            List args) {
+        _units.insertBefore(
+                Jimple.v().newAssignStmt(
+                        resultLocal,
+                        Jimple.v().newNewExpr(
+                                RefType.v(matrixClass))),
+                _insertPoint);
+        
+        _units.insertBefore(
+                Jimple.v().newInvokeStmt(
+                        Jimple.v().newSpecialInvokeExpr(
+                                resultLocal,
+                                matrixArrayConstructor,
+                                args)),
+                _insertPoint);
+        return;
     }
 
     public void visitMethodCallNode(ASTPtMethodCallNode node)
@@ -2026,5 +2079,5 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
     protected JimpleBody _body;
     protected Chain _units;
     protected CodeGenerationScope _scope;
-    protected Stmt _insertPoint;
+    protected Unit _insertPoint;
 }

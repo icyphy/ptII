@@ -52,6 +52,7 @@ import ptolemy.domains.fsm.kernel.HSDirector;
 import ptolemy.domains.giotto.kernel.GiottoDirector;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
+import ptolemy.domains.sdf.kernel.SDFUtilities;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.*;
 import ptolemy.util.StringUtilities;
@@ -913,7 +914,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
             for (Iterator ports = model.outputPortList().iterator();
                  ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
-                int rate = SDFScheduler.getTokenProductionRate(port);
+                int rate = SDFUtilities.getTokenProductionRate(port);
                
                 String fieldName = ModelTransformer.getFieldNameForPort(
                         port, model);
@@ -1345,7 +1346,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
             for (Iterator ports = model.outputPortList().iterator();
                  ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
-                int rate = SDFScheduler.getTokenProductionRate(port);
+                int rate = SDFUtilities.getTokenProductionRate(port);
                 
                 String fieldName = ModelTransformer.getFieldNameForPort(
                         port, model);
@@ -1689,7 +1690,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                  ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
                 int rate;
-                rate = SDFScheduler.getTokenConsumptionRate(port);
+                rate = SDFUtilities.getTokenConsumptionRate(port);
                
                 String fieldName = ModelTransformer.getFieldNameForPort(
                         port, model);
@@ -1885,7 +1886,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                  ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
                 int rate;
-                rate = SDFScheduler.getTokenProductionRate(port);
+                rate = SDFUtilities.getTokenProductionRate(port);
                
                 String fieldName = ModelTransformer.getFieldNameForPort(
                         port, model);

@@ -129,7 +129,8 @@ public class Main extends KernelMain {
                    "outDir:" + _outputDirectory + "/jimple1");
            addTransform(pack, "wjtp.lur1",
                    LibraryUsageReporter.v(),
-                   "outFile:" + _outputDirectory + "/jimple1/jarClassList.txt");
+                   "outFile:" + _outputDirectory + 
+                   "/jimple1/jarClassList.txt");
        }
 
        addTransform(pack, "wjtp.ib1", InvocationBinder.v());
@@ -361,10 +362,10 @@ public class Main extends KernelMain {
        }
        
        addTransform(pack, "wjtp.ttn",
-               TokenToNativeTransformer.v(toplevel));
-
-       addStandardOptimizations(pack, 4);
+               TokenToNativeTransformer.v(toplevel));//, "debug:true level:2");
        
+       addStandardOptimizations(pack, 4);
+              
        addTransform(pack, "wjtp.ufr",
                UnusedFieldRemover.v());
        
@@ -422,8 +423,8 @@ public class Main extends KernelMain {
         Pack pack = PackManager.v().getPack("wjtp");
  
        // Convert to grimp.
-       addTransform(pack, "wjtp.gt",
-               GrimpTransformer.v());
+        addTransform(pack, "wjtp.gt",
+                GrimpTransformer.v());
        // This snapshot should be last...
        addTransform(pack, "wjtp.finalSnapshotJimple",
                JimpleWriter.v(),

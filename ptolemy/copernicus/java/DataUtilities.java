@@ -29,34 +29,29 @@
 
 package ptolemy.copernicus.java;
 
-import java.util.Map;
-import java.util.Set;
 
+import java.util.*;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
-import soot.PrimType;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
+
 import soot.Local;
+import soot.PrimType;
 import soot.RefType;
 import soot.SootClass;
 import soot.SootField;
+import soot.Unit;
 import soot.jimple.Jimple;
 import soot.jimple.JimpleBody;
 import soot.jimple.Stmt;
 import soot.jimple.StringConstant;
 import soot.util.Chain;
 
-/*
-import soot.jimple.toolkits.invoke.StaticInliner;
-import soot.jimple.toolkits.invoke.InvokeGraphBuilder;
-import soot.jimple.toolkits.scalar.CopyPropagator;
-import soot.jimple.toolkits.scalar.DeadAssignmentEliminator;
-*/
 //////////////////////////////////////////////////////////////////////////
 //// DataUtilities
 /**
@@ -90,7 +85,7 @@ public class DataUtilities {
     public static Local generateExpressionCodeBefore(
             Entity entity, SootClass entityClass, String expression,
             Map nameToField, Map nameToType,
-            JimpleBody body, Stmt insertPoint) {
+            JimpleBody body, Unit insertPoint) {
         Local local;
         try {
             PtParser parser = new PtParser();
@@ -142,14 +137,13 @@ public class DataUtilities {
         implements CodeGenerationScope {
         public ActorCodeGenerationScope(
                 Entity entity, SootClass entityClass, Map nameToField,
-                Map nameToType, JimpleBody body, Stmt insertPoint) {
+                Map nameToType, JimpleBody body, Unit insertPoint) {
             _nameToField = nameToField;
             _nameToType = nameToType;
             _body = body;
             _insertPoint = insertPoint;
             _units = body.getUnits();
             _entity = entity;
-            _entityClass = entityClass;
         }
 
         public ptolemy.data.Token get(String name)
@@ -214,9 +208,11 @@ public class DataUtilities {
             }
 
             // Look for parameter in actor.
-            NamedObj container = _entity;
-            Variable result = getScopedVariable(
-                    null, _entity, name);
+            Variable result = null;
+            if(_entity != null) {
+                result = getScopedVariable(
+                        null, _entity, name);
+            }
             if (result != null) {
                 // Insert code to get a ref to the variable,
                 // and to get the token of that variable.
@@ -238,6 +234,7 @@ public class DataUtilities {
                         Jimple.v().newAssignStmt(containerLocal,
                                 thisLocal),
                         _insertPoint);
+                NamedObj container = _entity;
                 while(container != entityContainer) {
                     Local containerLocal2 = Jimple.v().newLocal("container",
                             RefType.v(PtolemyUtilities.namedObjClass));
@@ -300,16 +297,20 @@ public class DataUtilities {
                 //         "The ID " + name + " is undefined.");
             }
         }
+        
         public Set identifierSet() {
-            return getAllScopedVariableNames(null, _entity);
+            if(_entity == null) {
+                return Collections.EMPTY_SET;
+            } else {
+                return getAllScopedVariableNames(null, _entity);
+            }
         }
 
         private Map _nameToField;
         private Map _nameToType;
         private JimpleBody _body;
-        private Stmt _insertPoint;
+        private Unit _insertPoint;
         private Chain _units;
         private Entity _entity;
-        private SootClass _entityClass;
     }
 }

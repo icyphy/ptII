@@ -141,7 +141,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements Ha
     public static Local getLocalReferenceForEntity(
             Entity entity, SootClass sourceClass, Local local, 
             JimpleBody body, Unit unit, Map options) {
-        System.out.println("Get reference to " + entity + " from " + sourceClass);
+        //  System.out.println("Get reference to " + entity + " from " + sourceClass);
         if(ModelTransformer.isActorClass(sourceClass)) {
             Entity sourceEntity = 
                 ModelTransformer.getActorForClass(sourceClass);

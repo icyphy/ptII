@@ -38,6 +38,7 @@ import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.UnsignedByteToken;
 import ptolemy.data.type.Typeable;
+import ptolemy.copernicus.java.DataUtilities;
 
 import soot.ArrayType;
 import soot.PrimType;
@@ -71,17 +72,8 @@ import soot.toolkits.scalar.LocalUses;
 import soot.toolkits.scalar.UnitValueBoxPair;
 import soot.util.Chain;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
-/*
-import soot.jimple.toolkits.invoke.StaticInliner;
-import soot.jimple.toolkits.invoke.InvokeGraphBuilder;
-import soot.jimple.toolkits.scalar.CopyPropagator;
-import soot.jimple.toolkits.scalar.DeadAssignmentEliminator;
-*/
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyUtilities
 /**
@@ -104,7 +96,7 @@ public class PtolemyUtilities {
      *  the same value as the given token.
      *  @return The new local.
      */
-    public static Local buildConstantTokenLocal(Body body,
+    public static Local buildConstantTokenLocal(JimpleBody body,
             Unit insertPoint, Token token, String localName) {
         Chain units = body.getUnits();
         if (token instanceof ptolemy.data.ArrayToken) {
@@ -270,32 +262,16 @@ public class PtolemyUtilities {
                     localName, complexTokenClass, complexTokenConstructor,
                     complexLocal);
             return tokenLocal;
+        } else if (token instanceof StringToken) {
+            Local tokenLocal = _buildConstantTokenLocal(body, insertPoint,
+                    localName, stringTokenClass, stringTokenConstructor,
+                    StringConstant.v(((StringToken)token).stringValue()));
+            return tokenLocal;
         } else {
-            SootClass tokenClass =
-                Scene.v().loadClassAndSupport(token.getClass().getName());
-            SootMethod tokenConstructor =
-                tokenClass.getMethod("void <init>(java.lang.String)");
-            Local tokenLocal = Jimple.v().newLocal(localName,
-                    RefType.v(tokenClass));
-            body.getLocals().add(tokenLocal);
-            units.insertBefore(Jimple.v().newAssignStmt(tokenLocal,
-                    Jimple.v().newNewExpr(RefType.v(tokenClass))),
-                    insertPoint);
-            // Ugh...  otherwise we get some stupid quotes.
-            if (token instanceof StringToken) {
-                StringToken stringToken = (StringToken)token;
-                units.insertBefore(Jimple.v().newInvokeStmt(
-                        Jimple.v().newSpecialInvokeExpr(tokenLocal,
-                                tokenConstructor,
-                                StringConstant.v(stringToken.stringValue()))),
-                        insertPoint);
-            } else {
-                units.insertBefore(Jimple.v().newInvokeStmt(
-                        Jimple.v().newSpecialInvokeExpr(tokenLocal,
-                                tokenConstructor,
-                                StringConstant.v(token.toString()))),
-                        insertPoint);
-            }
+            String expression = token.toString();
+            Local tokenLocal = DataUtilities.generateExpressionCodeBefore(
+                    null, null, expression,
+                    new HashMap(), new HashMap(), body, insertPoint);
             return tokenLocal;
         }
     }
@@ -318,6 +294,7 @@ public class PtolemyUtilities {
                 localName, tokenClass,
                 tokenConstructor, constructorArg);
     }
+
     private static Local _buildConstantTokenLocal(Body body,
             Unit insertPoint, String localName,
             SootClass tokenClass, SootMethod tokenConstructor,
@@ -1050,6 +1027,7 @@ public class PtolemyUtilities {
 
     public static SootClass booleanMatrixTokenClass;
     public static SootMethod booleanMatrixTokenConstructor;
+    public static SootMethod booleanMatrixTokenArrayConstructor;
     public static SootMethod booleanMatrixMethod;
 
     public static SootField booleanTypeField;
@@ -1191,6 +1169,7 @@ public class PtolemyUtilities {
 
     public static SootClass intMatrixTokenClass;
     public static SootMethod intMatrixTokenConstructor;
+    public static SootMethod intMatrixTokenArrayConstructor;
     public static SootMethod intMatrixMethod;
 
     public static SootField intTypeField;
@@ -1580,6 +1559,8 @@ public class PtolemyUtilities {
             Scene.v().loadClassAndSupport("ptolemy.data.BooleanMatrixToken");
         booleanMatrixTokenConstructor =
             booleanMatrixTokenClass.getMethod("void <init>(boolean[][])");
+        booleanMatrixTokenArrayConstructor =
+            booleanMatrixTokenClass.getMethod("void <init>(ptolemy.data.Token[],int,int)");
         booleanMatrixMethod =
             booleanMatrixTokenClass.getMethod("boolean[][] booleanMatrix()");
 
@@ -1600,6 +1581,8 @@ public class PtolemyUtilities {
             Scene.v().loadClassAndSupport("ptolemy.data.IntMatrixToken");
         intMatrixTokenConstructor =
             intMatrixTokenClass.getMethod("void <init>(int[][])");
+        intMatrixTokenArrayConstructor =
+            intMatrixTokenClass.getMethod("void <init>(ptolemy.data.Token[],int,int)");
         intMatrixMethod =
             intMatrixTokenClass.getMethod("int[][] intMatrix()");
 
