@@ -918,7 +918,7 @@ For more help, choose Help from the upper menu bar.</text>
 
 <xsl:template name="defaultSetAction">
     <xsl:param name="stateName" select="'Default StateName'"/>
-    <xsl:for-each select="../IntegerVariable|../RealVariable|../BooleanVariable">
+    <xsl:for-each select="../IntegerVariable[@kind='Output']|../RealVariable[@kind='Output']|../BooleanVariable[@kind='Output']">
         <xsl:variable name="temp"><xsl:value-of select="@name"/></xsl:variable>
         <xsl:choose>
             <xsl:when test="$temp!=''"><xsl:value-of select="concat($stateName, '.', $temp, '.initialState=', $temp)"/></xsl:when>
