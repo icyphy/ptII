@@ -107,7 +107,7 @@ public class CSPSource extends AtomicActor {
      *   or if there is an error with instantiation of the tokenLimit
      *   parameter.
      *  @exception NameDuplicationException If the name of this actor
-     *   or the tokenLimit paramter is not unique within the container.
+     *   or the tokenLimit parameter is not unique within the container.
      */
     public CSPSource(CompositeActor cont, String name, int limit,
     	    int initValue) throws IllegalActionException,
