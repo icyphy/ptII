@@ -233,6 +233,7 @@ public class DTReceiver extends SDFReceiver implements Receiver {
      *  @return The oldest token in the receiver.
      */
     public Token get() {
+    // -get-
 
         Actor actor = (Actor) super.getContainer().getContainer();
         IOPort currentPort = (IOPort) super.getContainer();
