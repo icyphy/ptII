@@ -36,8 +36,8 @@ Model {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "cxh"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Thu Feb 03 09:41:49 2005"
-  ModelVersionFormat	  "1.%<AutoIncrement:25>"
+  LastModifiedDate	  "Thu Feb 03 10:41:23 2005"
+  ModelVersionFormat	  "1.%<AutoIncrement:29>"
   ConfigurationManager	  "None"
   SimParamPage		  "Solver"
   LinearizationMsg	  "none"
@@ -159,20 +159,6 @@ Model {
   }
   BlockParameterDefaults {
     Block {
-      BlockType		      DiscreteIntegrator
-      IntegratorMethod	      "Forward Euler"
-      ExternalReset	      "none"
-      InitialConditionSource  "internal"
-      InitialCondition	      "0"
-      LimitOutput	      off
-      UpperSaturationLimit    "inf"
-      LowerSaturationLimit    "-inf"
-      ShowSaturationPort      off
-      ShowStatePort	      off
-      SampleTime	      "1"
-      RTWStateStorageClass    "Auto"
-    }
-    Block {
       BlockType		      Gain
       Gain		      "1"
       Multiplication	      "Element-wise(K.*u)"
@@ -216,17 +202,6 @@ Model {
       ZeroCross		      on
     }
     Block {
-      BlockType		      SubSystem
-      ShowPortLabels	      on
-      Permissions	      "ReadWrite"
-      RTWSystemCode	      "Auto"
-      RTWFcnNameOpts	      "Auto"
-      RTWFileNameOpts	      "Auto"
-      SimViewingDevice	      off
-      DataTypeOverride	      "UseLocalSettings"
-      MinMaxOverflowLogging   "UseLocalSettings"
-    }
-    Block {
       BlockType		      Sum
       IconShape		      "rectangular"
       Inputs		      "++"
@@ -238,6 +213,12 @@ Model {
       LockScale		      off
       RndMeth		      "Floor"
       SaturateOnIntegerOverflow	on
+    }
+    Block {
+      BlockType		      UnitDelay
+      X0		      "0"
+      SampleTime	      "1"
+      RTWStateStorageClass    "Auto"
     }
   }
   AnnotationDefaults {
@@ -259,7 +240,7 @@ Model {
   }
   System {
     Name		    "cruiseControlDT"
-    Location		    [161, 109, 712, 422]
+    Location		    [161, 109, 941, 422]
     Open		    on
     ModelBrowserVisibility  off
     ModelBrowserWidth	    200
@@ -273,19 +254,31 @@ Model {
     Block {
       BlockType		      Gain
       Name		      "  Controller\n(simple gain)"
-      Position		      [155, 50, 185, 80]
+      Position		      [110, 50, 140, 80]
       Gain		      "1000"
     }
     Block {
       BlockType		      Gain
+      Name		      "  Controller\n(simple gain)1"
+      Position		      [335, 50, 365, 80]
+      Gain		      "0.1"
+    }
+    Block {
+      BlockType		      Gain
+      Name		      "  Controller\n(simple gain)2"
+      Position		      [515, 95, 545, 125]
+      Gain		      "0.1"
+    }
+    Block {
+      BlockType		      Gain
       Name		      " Convert to\nmiles per hour\n(x 3600)"
-      Position		      [395, 110, 425, 140]
+      Position		      [500, 220, 530, 250]
       Gain		      "3600"
     }
     Block {
       BlockType		      Gain
       Name		      "1/mass"
-      Position		      [230, 50, 260, 80]
+      Position		      [160, 50, 190, 80]
       Gain		      "1/1000"
       Port {
 	PortNumber		1
@@ -310,32 +303,10 @@ Model {
       SampleTime	      "0"
     }
     Block {
-      BlockType		      DiscreteIntegrator
-      Name		      "Discrete-Time\nIntegrator"
-      Ports		      [1, 1]
-      Position		      [405, 45, 440, 85]
-      FontSize		      10
-      IntegratorMethod	      "Forward Euler"
-      ExternalReset	      "none"
-      InitialConditionSource  "internal"
-      SampleTime	      "0.1"
-    }
-    Block {
-      BlockType		      DiscreteIntegrator
-      Name		      "Discrete-Time\nIntegrator1"
-      Ports		      [1, 1]
-      Position		      [315, 45, 350, 85]
-      FontSize		      10
-      IntegratorMethod	      "Forward Euler"
-      ExternalReset	      "none"
-      InitialConditionSource  "internal"
-      SampleTime	      "0.1"
-    }
-    Block {
       BlockType		      Scope
       Name		      "Position"
       Ports		      [1]
-      Position		      [465, 49, 495, 81]
+      Position		      [695, 144, 725, 176]
       Location		      [105, 514, 429, 753]
       Open		      on
       NumInputPorts	      "1"
@@ -357,7 +328,7 @@ Model {
       BlockType		      Scope
       Name		      "Speed"
       Ports		      [1]
-      Position		      [465, 109, 495, 141]
+      Position		      [695, 219, 725, 251]
       Location		      [574, 520, 898, 759]
       Open		      on
       NumInputPorts	      "1"
@@ -375,29 +346,6 @@ Model {
       DataFormat	      "StructureWithTime"
     }
     Block {
-      BlockType		      SubSystem
-      Name		      "Subsystem"
-      Ports		      []
-      Position		      [217, 32, 451, 107]
-      ForegroundColor	      "yellow"
-      BackgroundColor	      "yellow"
-      ShowName		      off
-      TreatAsAtomicUnit	      off
-      System {
-	Name			"Subsystem"
-	Location		[433, 403, 931, 703]
-	Open			off
-	ModelBrowserVisibility	off
-	ModelBrowserWidth	200
-	ScreenColor		"white"
-	PaperOrientation	"landscape"
-	PaperPositionMode	"auto"
-	PaperType		"usletter"
-	PaperUnits		"inches"
-	ZoomFactor		"100"
-      }
-    }
-    Block {
       BlockType		      Sum
       Name		      "Sum"
       Ports		      [2, 1]
@@ -406,16 +354,42 @@ Model {
       IconShape		      "round"
       Inputs		      "|+-"
     }
+    Block {
+      BlockType		      Sum
+      Name		      "Sum1"
+      Ports		      [2, 1]
+      Position		      [380, 55, 400, 75]
+      ShowName		      off
+      IconShape		      "round"
+      Inputs		      "|++"
+    }
+    Block {
+      BlockType		      Sum
+      Name		      "Sum2"
+      Ports		      [2, 1]
+      Position		      [570, 100, 590, 120]
+      ShowName		      off
+      IconShape		      "round"
+      Inputs		      "|++"
+    }
+    Block {
+      BlockType		      UnitDelay
+      Name		      "Unit Delay"
+      Position		      [425, 45, 460, 85]
+      FontSize		      10
+      SampleTime	      "0.1"
+    }
+    Block {
+      BlockType		      UnitDelay
+      Name		      "Unit Delay1"
+      Position		      [610, 90, 645, 130]
+      FontSize		      10
+      SampleTime	      "0.1"
+    }
     Line {
       SrcBlock		      "Desired\nspeed\n(0 to 60\nat time 1)"
       SrcPort		      1
       DstBlock		      "Sum"
-      DstPort		      1
-    }
-    Line {
-      SrcBlock		      "Discrete-Time\nIntegrator"
-      SrcPort		      1
-      DstBlock		      "Position"
       DstPort		      1
     }
     Line {
@@ -425,13 +399,13 @@ Model {
       DstPort		      1
     }
     Line {
-      SrcBlock		      "Discrete-Time\nIntegrator1"
+      SrcBlock		      "Unit Delay"
       SrcPort		      1
-      Points		      [10, 0]
+      Points		      [0, 45; 0, 0]
       Branch {
-	Points			[0, 60]
+	Points			[0, 125; -80, 0]
 	Branch {
-	  Points		  [-285, 0]
+	  Points		  [-305, 0]
 	  DstBlock		  "Sum"
 	  DstPort		  2
 	}
@@ -441,8 +415,13 @@ Model {
 	}
       }
       Branch {
-	DstBlock		"Discrete-Time\nIntegrator"
+	DstBlock		"  Controller\n(simple gain)2"
 	DstPort			1
+      }
+      Branch {
+	Points			[-75, 0]
+	DstBlock		"Sum1"
+	DstPort			2
       }
     }
     Line {
@@ -456,7 +435,7 @@ Model {
       Labels		      [1, 0]
       SrcBlock		      "1/mass"
       SrcPort		      1
-      DstBlock		      "Discrete-Time\nIntegrator1"
+      DstBlock		      "  Controller\n(simple gain)1"
       DstPort		      1
     }
     Line {
@@ -465,9 +444,47 @@ Model {
       DstBlock		      "Speed"
       DstPort		      1
     }
+    Line {
+      SrcBlock		      "Sum1"
+      SrcPort		      1
+      DstBlock		      "Unit Delay"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "  Controller\n(simple gain)1"
+      SrcPort		      1
+      DstBlock		      "Sum1"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Sum2"
+      SrcPort		      1
+      DstBlock		      "Unit Delay1"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "  Controller\n(simple gain)2"
+      SrcPort		      1
+      DstBlock		      "Sum2"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Unit Delay1"
+      SrcPort		      1
+      Points		      [5, 0; 0, 50]
+      Branch {
+	DstBlock		"Position"
+	DstPort			1
+      }
+      Branch {
+	Points			[-75, 0]
+	DstBlock		"Sum2"
+	DstPort			2
+      }
+    }
     Annotation {
       Name		      "Simple Cruise Control System"
-      Position		      [266, 160]
+      Position		      [266, 260]
     }
     Annotation {
       Name		      "Car model (F = ma)"
@@ -475,7 +492,7 @@ Model {
     }
     Annotation {
       Name		      "a\n(acceleration)"
-      Position		      [286, 45]
+      Position		      [361, 25]
     }
     Annotation {
       Name		      "F\n(force)"

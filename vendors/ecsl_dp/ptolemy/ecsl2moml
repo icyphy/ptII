@@ -106,7 +106,8 @@ awk ' {
        print indent "    <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"[" x ", " y "]\">"
        print indent "     </property>"
 
-       if (sawFirstEntity == 0) {
+       useCTDirector = 0
+       if (sawFirstEntity == 0 && useCTDirector == 1) {
            sawFirstEntity = 1
            # Add the director
            print "    <property name=\"CT Director\" class=\"ptolemy.domains.ct.kernel.CTMixedSignalDirector\">"
@@ -131,6 +132,18 @@ awk ' {
            print "                <property name=\"choice2\" class=\"ptolemy.data.expr.Parameter\" value=\"&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;\">"
            print "                </property>"
            print "            </property>"
+           print "        </property>"
+           print "        <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{75.0, 40.0}\">"
+           print "        </property>"
+           print "    </property>"
+        }  
+
+       useSDFDirector = 1
+       if (sawFirstEntity == 0 && useSDFDirector == 1) {
+           sawFirstEntity = 1
+           # Add the director
+           print "    <property name=\"SDF Director\" class=\"ptolemy.domains.sdf.kernel.SDFDirector\">"
+           print "        <property name=\"iterations\" class=\"ptolemy.data.expr.Parameter\" value=\"10\">"
            print "        </property>"
            print "        <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{75.0, 40.0}\">"
            print "        </property>"
@@ -257,6 +270,7 @@ awk 'BEGIN {
     map["Demux"] = "vendors.ecsl_dp.ptolemy.ECSLDemux"
     # FIXME
     map["DiscreteFilter"] = "vendors.ecsl_dp.ptolemy.ECSLDiscreteFilter"
+    map["DiscreteIntegrator"] = "vendors.ecsl_dp.ptolemy.ECSLDiscreteIntegrator"
     map["DiscretePulseGenerator"] = "vendors.ecsl_dp.ptolemy.ECSLDiscretePulseGenerator"
     map["Display"] = "vendors.ecsl_dp.ptolemy.ECSLDisplay"
     # FIXME
@@ -279,18 +293,27 @@ awk 'BEGIN {
     map["S-Function"] = "vendors.ecsl_dp.ptolemy.ECSLSFunction"
     # FIXME
     map["Saturate"] = "vendors.ecsl_dp.ptolemy.ECSLSaturate"
-    map["Scope"] = "vendors.ecsl_dp.ptolemy.Scope"
+
+    # Generate SDF
+    #map["Scope"] = "vendors.ecsl_dp.ptolemy.ECSLTimedPlotter"
+    map["Scope"] = "vendors.ecsl_dp.ptolemy.ECSLSequenceScope"
+
     map["Signum"] = "vendors.ecsl_dp.ptolemy.ECSLSignum"
     # FIXME: set to Sin
     map["Sin"] = "vendors.ecsl_dp.ptolemy.ECSLSin"
     # FIXME Leave off sampleTime, convert integers to doubles
-    map["Step"] = "vendors.ecsl_dp.ptolemy.ECSLStep"
+
+    # Generate SDF
+    #map["Step"] = "vendors.ecsl_dp.ptolemy.ECSLStep"
+    map["Step"] = "vendors.ecsl_dp.ptolemy.ECSLInterpolator"
+
     map["Sum"] = "vendors.ecsl_dp.ptolemy.ECSLSum"
     map["Switch"] = "vendors.ecsl_dp.ptolemy.ECSLSwitch"
     map["Terminator"] = "vendors.ecsl_dp.ptolemy.ECSLTerminator"
     # FIXME
     map["ToWorkspace"] = "vendors.ecsl_dp.ptolemy.ECSLToWorkspace"
-    map["UnitDelay"] = "vendors.ecsl_dp.ptolemy.ECSLUnitDelay"
+    #map["UnitDelay"] = "vendors.ecsl_dp.ptolemy.ECSLUnitDelay"
+    map["UnitDelay"] = "ptolemy.domains.sdf.lib.SampleDelay"
     map["ZeroOrderHold"] = "vendors.ecsl_dp.ptolemy.ECSLZeroOrderHold"
 }
 {
@@ -430,7 +453,7 @@ $0 ~ /<entity/ {
        longName = containerStack[containerCount] "." name
 
        if (index(relation, " ") != 0) {
-           if (class == "ptolemy.domains.ct.lib.Integrator") { 
+           if (class == "ptolemy.domains.ct.lib.Integrator" || class == "ptolemy.domains.sdf.lib.SampleDelay") { 
                # The class cannot handle a multiport, so add a relation.
                addRelationsContainer[longName] = containerStack[containerCount]
                addRelations[longName] = name
@@ -444,15 +467,15 @@ $0 ~ /<entity/ {
        }
 
 
-       if (class == "vendors.ecsl_dp.ptolemy.ECSLSum" \
-               && name == "input" ) {
-           # FIXME: Connect the first Input to minus, the second to plus
-           if (oldName == "In1") {
-               longName = containerStack[containerCount] ".plus"
-           } else if (oldName == "In2") {
-               longName = containerStack[containerCount] ".minus"
-           }
-       }
+       #if (class == "vendors.ecsl_dp.ptolemy.ECSLSum" \
+       #        && name == "input" ) {
+       #    # FIXME: Connect the first Input to minus, the second to plus
+       #    if (oldName == "In1") {
+       #        longName = containerStack[containerCount] ".plus"
+       #    } else if (oldName == "In2") {
+       #        longName = containerStack[containerCount] ".minus"
+       #    }
+       #}
 
        print indent "</port>"
 
@@ -548,8 +571,12 @@ $1 ~ /<\/entity>/ {
     }
 }' < $tmpfile1 > $tmpfile2
 
-# Substitute relation names for relations where we had to add a port
-sed -f ecsl2moml.relations < $tmpfile2 > $tmpfile1 
+if [ -f ecsl2moml.relations ]; then 
+    # Substitute relation names for relations where we had to add a port
+    sed -f ecsl2moml.relations < $tmpfile2 > $tmpfile1 
+else
+    cp $tmpfile2 $tmpfile1
+fi
 
 # Parameter
 awk '{
@@ -599,7 +626,7 @@ awk '{
            }
        }
 
-       if (class == "vendors.ecsl_dp.ptolemy.ECSLStep") {
+       if (class == "vendors.ecsl_dp.ptolemy.ECSLStep" || class = "ptolemy.actor.lib.Interper") {
            if (name == "After") {
                # FIXME: After must be a double so that 1/1000 = 0.001
                # instead of 0

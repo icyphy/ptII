@@ -34,6 +34,7 @@ import ptolemy.actor.lib.IIR;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -44,7 +45,9 @@ import ptolemy.kernel.util.Settable;
 //// ECSLDiscreteIntegrator
 /**
    Discrete Integrator for use with ECSL.
-   Currently, this actor is a special case of IIR
+   Currently, this actor is a special case of IIR and only supports
+   cases where the <i>IntegratorMethod</i> parameter has the value
+   "ForwardEuler".
 
    @author Christopher Brooks.
    @version : ECSLAbs.java,v 1.1 2004/10/25 22:56:07 cxh Exp $
@@ -64,11 +67,57 @@ public class ECSLDiscreteIntegrator extends IIR {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public ECSLAbs(CompositeEntity container, String name)
+    public ECSLDiscreteIntegrator(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        //input.setMultiport(true);
-        //output.setMultiport(true);
+        input.setMultiport(true);
+        output.setMultiport(true);
+
+        // FIXME: properly handle ExternalReset
+        ExternalReset= new StringParameter(this, "ExternalReset");
+        IntegratorMethod= new StringParameter(this, "IntegratorMethod");
+        InitialConditionSource =
+            new StringParameter(this, "InitialConditionSource");
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** Names the external reset.  A common value is "none"
+     *  FIXME: this value is currently ignored.   
+     */
+    public StringParameter ExternalReset;
+
+    /** The name of the integrator method.  Currently, if
+     *  the value is anything other than the string "Forward Euler",
+     *  an exception is thrown.
+     */
+    public StringParameter IntegratorMethod;
+
+    /** The name of the initial condition source.
+     *  A common value is the string "internal".
+     *  FIXME: this value is currently ignored.   
+     */
+    public StringParameter InitialConditionSource;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** React to a change in the value of an attribute.
+     *  @param attribute The attribute whose type changed.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == IntegratorMethod) {
+            if (!IntegratorMethod.getExpression().equals("Forward Euler")) {
+                throw new IllegalActionException("Sorry, IntegratorMethod "
+                        + "be set to \"Forward Euler\", instead it was set "
+                        + "to \"" + IntegratorMethod.getExpression() + "\".");
+            }
+        } else {
+            super.attributeChanged(attribute);
+        }
     }
 
     /** FIXME: noop

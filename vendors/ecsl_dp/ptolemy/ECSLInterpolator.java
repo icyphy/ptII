@@ -42,7 +42,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 
 //////////////////////////////////////////////////////////////////////////
-//// ECSPInterpolator
+//// ECSLInterpolator
 /**
    An Interpolator source for use with ECSL.
 
@@ -67,7 +67,7 @@ public class ECSLInterpolator extends Interpolator {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public ECSPInterpolator(CompositeEntity container, String name)
+    public ECSLInterpolator(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
@@ -77,7 +77,9 @@ public class ECSLInterpolator extends Interpolator {
         SampleTime = new Parameter(this, "SampleTime");
         SampleTime.setVisibility(Settable.EXPERT);
 
-        numberOfCycles.setExpression("1");
+        // ContinuousClock extends Clock, which has numberOfCycles,
+        // but Interpolator does not.
+        // numberOfCycles.setExpression("1");
     }
 
     ///////////////////////////////////////////////////////////////////
