@@ -1,4 +1,4 @@
-/* Three Dimensional (GR) domain receiver.
+/* Graphics (GR) domain receiver.
 
  Copyright (c) 1997-2000 The Regents of the University of California.
  All rights reserved.
@@ -34,7 +34,6 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.Token;
 import ptolemy.data.*;
-import ptolemy.data.expr.*;
 import ptolemy.actor.util.*;
 import ptolemy.actor.util.FIFOQueue;
 import ptolemy.actor.*;
@@ -51,7 +50,7 @@ import javax.media.j3d.*;
 
 
 //////////////////////////////////////////////////////////////////////////
-//// 3DReceiver
+//// GRReceiver
 /**
 @author C. Fong
 @version $Id$
@@ -201,23 +200,28 @@ public class GRReceiver extends AbstractReceiver {
     	_fromPort = null;
         IOPort connectedPort = null;
         List listOfConnectedPorts = null;
-        boolean isCompositeContainer = !((ComponentEntity) _to).isAtomic();
+        ComponentEntity destination = (ComponentEntity) _to;
+        boolean isNonAtomicContainer = !destination.isAtomic();
+        boolean isOutput = _toPort.isOutput();
+        boolean isCrossHierarchyOutputPort = isNonAtomicContainer && isOutput;
+        // Note: when this is true, the container is _opaque_
+        // because otherwise the port won't contain a receiver.
     	
     	_localDirector = director;
     	
-    	if (isCompositeContainer && (_toPort.isOutput()) ) {
+    	if (isCrossHierarchyOutputPort) {
     	    listOfConnectedPorts = _toPort.insidePortList();
     	} else {
-    	    listOfConnectedPorts = _toPort.connectedPortList();
+    	    //listOfConnectedPorts = _toPort.connectedPortList();
+    	    //listOfConnectedPorts = _toPort.deepConnectedOutPortList();
+    	    listOfConnectedPorts = _toPort.deepConnectedPortList();
     	}
     	    
     	Iterator portListIterator = listOfConnectedPorts.iterator();
-    	
     	foundReceiver:
     	while (portListIterator.hasNext()) {
     	    connectedPort = (IOPort) portListIterator.next();
-    	
-    	    if (connectedPort.isOutput() == true) {
+    	    if (connectedPort.isOutput()) {
     		    Receiver[][] remoteReceivers = connectedPort.getRemoteReceivers();
     		    
     		    for(int i=0;i<connectedPort.getWidth();i++) {
@@ -234,7 +238,8 @@ public class GRReceiver extends AbstractReceiver {
     			    }
     		    }
     	    } else if (connectedPort.getContainer() instanceof TypedCompositeActor) {
-    	        // FIXME: should use at isAtomic() insteadof instanceof?
+    	        // This case is for input ports to a nontoplevel CompositeActor
+    	        // FIXME: use at isAtomic() insteadof instanceof?
     	        _from = (Actor) connectedPort.getContainer();
     	        _fromPort = connectedPort;
     	        if (_fromPort == null) {
@@ -242,16 +247,37 @@ public class GRReceiver extends AbstractReceiver {
                         "internal GR error: Receiver with null source");
     	        }
     	        break foundReceiver;
-    	    } else if (connectedPort.isInput() == true) {
+    	    } else if (connectedPort.isInput()) {
     	       // This case occurs when the destination port and 
-    	       // the queried connected port are both inputs.
+    	       // the queried connected port are both input ports;
+    	       // and both of them are not input ports of
+    	       // opaque nontoplevel TypeCompositeActors.
     	       // This case should be ignored.
+    	       // The search for the source Actor will proceed
     	    } 
     	}
     	
     	if (_fromPort == null) {
-    	    throw new InternalErrorException(
+    	    // This should only happen in this case:
+            //           ----------------------
+            //           |    transparent     |
+            //           |                    |
+            //           |     ---------      |
+            //           |     |       |      |
+            // dangling >>>===>R>      |      | 
+            //           |     |       |      |
+            //           |     ---------      |
+            //           |                    |
+            //           ----------------------
+            ComponentEntity origin = (ComponentEntity) _from;
+            boolean illegalSituation = destination.isOpaque() &&
+                                       !destination.isAtomic();
+            if (illegalSituation) {
+                throw new InternalErrorException(
     	        "internal GR error: Receiver with null source");
+    	    } else {
+    	        // this case is illustrated above
+    	    }
     	}
     }
     
@@ -276,6 +302,18 @@ public class GRReceiver extends AbstractReceiver {
             throw new InternalErrorException(
                       "internal GR error: Receiver with null source");
         } 
+        // FIXME: maybe use t.getType() instead?
+        if ((token instanceof ObjectToken) && (detachableGroup != null)) {
+            Object value = ((ObjectToken)token).getValue();
+            if (value instanceof Node) {
+                addChild((Node) value);
+                try {
+                token = new ObjectToken(getNodeObject());
+                } catch (Exception e) {
+                    // FIXME: handle this
+                }
+            }
+        }
         if (!_queue.put(token)) {
             throw new NoRoomException(getContainer(),
                     "Queue is at capacity. Cannot put a token.");
@@ -385,20 +423,27 @@ public class GRReceiver extends AbstractReceiver {
      */
     void displayReceiverInfo() {
         String fromString;
+        String fromTypeString;
         String toString;
         
         if (_from == null) {
-              fromString="0";
+            fromString="0";
         } else {
-              fromString=((Nameable) _from).getName();
+            fromString=((Nameable) _from).getName();
         }
         
-        fromString += " (" + ((TypedIOPort)_fromPort).getType() + ")";
+        if (_fromPort == null) {
+            fromTypeString = "dangling input port";
+        } else {
+            fromTypeString = (((TypedIOPort)_fromPort).getType()).toString();
+        }
+        
+        fromString += " (" + fromTypeString + ")";
         
         if (_to == null) {
-              toString="0";
+            toString="0";
         } else {
-              toString=((Nameable) _to).getName();
+            toString=((Nameable) _to).getName();
         }
         
         toString += " (" + ((TypedIOPort)_toPort).getType() + ")";
@@ -417,16 +462,11 @@ public class GRReceiver extends AbstractReceiver {
     private void _init() {
         _from = null;
         _to   = null;
-        overrideHasToken = false;
         debug = new GRDebug(false);
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                  package-access variables                 ////
-    
-    // override the value of hasToken() given by SDFReceiver
-    // This variable is used in mixed-hierarchical DT
-    boolean overrideHasToken;    
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -446,10 +486,42 @@ public class GRReceiver extends AbstractReceiver {
     // The port containing this receiver
     private IOPort _toPort;
     
-    BranchGroup group;
+    BranchGroup detachableGroup;
+    BranchGroup dummyGroup;
+    BranchGroup attachmentGroup;
+    
+    public void createGroupNode() {
+        detachableGroup = new BranchGroup();
+        detachableGroup.setCapability(BranchGroup.ALLOW_DETACH);
+        dummyGroup = new BranchGroup();
+        dummyGroup.setCapability(Group.ALLOW_CHILDREN_WRITE);
+        dummyGroup.setCapability(Group.ALLOW_CHILDREN_EXTEND);
+        attachmentGroup = new BranchGroup();
+        attachmentGroup.setCapability(Group.ALLOW_CHILDREN_WRITE);
+        attachmentGroup.setCapability(Group.ALLOW_CHILDREN_EXTEND);
+        attachmentGroup.addChild(detachableGroup);
+    }
+    
+    public void addChild(Node node) {
+        detachableGroup.addChild(node);
+    }
+
+    public Node getNodeObject() {
+        return (Node) attachmentGroup;
+    }
+    
+    public void detachBranch() {
+        detachableGroup.detach();
+        dummyGroup.addChild(detachableGroup);
+    }
+    
+    public void attachBranch() {
+        detachableGroup.detach();
+        attachmentGroup.addChild(detachableGroup);
+    }
+    
     
     // display for debugging purposes
     private GRDebug debug;
-    
 
 }

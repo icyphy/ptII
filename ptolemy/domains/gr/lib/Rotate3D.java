@@ -125,18 +125,18 @@ public class Rotate3D extends GRTransform {
     
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the parameters of the new actor.
-     *  @param workspace The workspace for the new object.
+     *  @param ws The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        Rotate3D newObject = (Rotate3D)super.clone(workspace);
-        newObject.angle = (TypedIOPort) newObject.getPort("angle");
-        newObject.initialAngle = (Parameter) newObject.getAttribute("initialAngle");
-        newObject.axisDirection = (Parameter) newObject.getAttribute("axis direction");
-        newObject.pivotLocation = (Parameter) newObject.getAttribute("pivot location");
-        return newObject;
+        Rotate3D newobj = (Rotate3D)super.clone(workspace);
+        newobj.angle = (TypedIOPort) newobj.getPort("angle");
+        newobj.initialAngle = (Parameter) newobj.getAttribute("initialAngle");
+        newobj.axisDirection = (Parameter) newobj.getAttribute("axis direction");
+        newobj.pivotLocation = (Parameter) newobj.getAttribute("pivot location");
+        return newobj;
     }
     
     /** Change the rotation angle depending on the value given in the input port
@@ -202,10 +202,17 @@ public class Rotate3D extends GRTransform {
         
    	    _rotation = new Transform3D();
    	    
+   	    
         _topTranslate = new TransformGroup();
+	    
         _middleRotate = new TransformGroup();
         _middleRotate.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         _bottomTranslate = new TransformGroup();
+        _bottomTranslate.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+	    _bottomTranslate.setCapability(Group.ALLOW_CHILDREN_WRITE);
+	    _bottomTranslate.setCapability(Group.ALLOW_CHILDREN_EXTEND);
+
+        
         
         Transform3D topTransform = new Transform3D();
         topTransform.setTranslation(new Vector3d(_baseX,_baseY,_baseZ));

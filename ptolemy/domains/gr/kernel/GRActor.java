@@ -4,10 +4,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 
-import java.awt.GraphicsConfiguration;
-import com.sun.j3d.utils.applet.MainFrame;
-import com.sun.j3d.utils.geometry.ColorCube;
-import com.sun.j3d.utils.universe.*;
 import javax.media.j3d.*;
 import javax.vecmath.*;
 
@@ -15,15 +11,14 @@ public class GRActor extends TypedAtomicActor {
 
     public GRActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-
         super(container, name);
     }
     
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        GRActor newObject = (GRActor)super.clone(workspace);
-        return newObject;
-    }
     
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        GRActor newobj = (GRActor)super.clone(workspace);
+        return newobj;
+    }
 
     public Node getNodeObject() {
         return null;
@@ -43,16 +38,14 @@ public class GRActor extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
     }
 
+    public void makeSceneGraphConnection() throws IllegalActionException {
+    }
     
     public void addChild(Node node) throws IllegalActionException {
         throw new IllegalActionException("3D domain actor" + this +
                         " cannot have children");
     }
     
-    public void makeLive() {
-    }
-    
     protected void _createModel() throws IllegalActionException {
     }
-    
 }

@@ -67,13 +67,13 @@ public class GRTransform extends GRActor {
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
-        input = new TypedIOPort(this, "input");
-        input.setInput(true);
-	    input.setMultiport(true);
+        sceneGraphIn = new TypedIOPort(this, "sceneGraphIn");
+        sceneGraphIn.setInput(true);
+	    sceneGraphIn.setMultiport(true);
 	    
-	    output = new TypedIOPort(this, "output");
-	    output.setOutput(true);
-	    output.setTypeEquals(BaseType.GENERAL);
+	    sceneGraphOut = new TypedIOPort(this, "sceneGraphOut");
+	    sceneGraphOut.setOutput(true);
+	    sceneGraphOut.setTypeEquals(BaseType.OBJECT);
 	    
 	    accumulate = new Parameter(this, "accumulate", new BooleanToken(false));
     }
@@ -84,12 +84,12 @@ public class GRTransform extends GRActor {
     /** The input port for connecting to other GR Actors in
      *  the scene graph
      */
-    public TypedIOPort input;
+    public TypedIOPort sceneGraphIn;
     
     /** The output port for connecting to other GR Actors in
      *  the scene graph
      */
-    public TypedIOPort output;
+    public TypedIOPort sceneGraphOut;
     
     /** Boolean value determining whether transformations are 
      *  accumulated or reset for each firing
@@ -99,40 +99,40 @@ public class GRTransform extends GRActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add a scene graph child node to this actor
-     */
-    public void addChild(Node node) {
-        transformNode.addChild(node);
-    }
+   
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the parameters of the new actor.
-     *  @param workspace The workspace for the new object.
+     *  @param ws The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        GRTransform newObject = (GRTransform)super.clone(workspace);
-        newObject.input  = (TypedIOPort) newObject.getPort("input");
-        newObject.output = (TypedIOPort) newObject.getPort("output");
-        return newObject;
+        GRTransform newobj = (GRTransform)super.clone(workspace);
+        newobj.sceneGraphIn  = (TypedIOPort) newobj.getPort("sceneGraphIn");
+        newobj.sceneGraphOut = (TypedIOPort) newobj.getPort("sceneGraphOut");
+        return newobj;
     }
     
-    /** Return the encapsulated Java3D node of this 3D actor. The encapsulated
-     *  node for this actor is a Java3D TransformGroup.
-     *  @return the Java3D TransformGroup
-     */    
-    public Node getNodeObject() {
-        return (Node) transformNode;
+    
+    public void makeSceneGraphConnection() throws IllegalActionException {
+        int width = sceneGraphIn.getWidth();
+        for(int i=0;i<width;i++) {
+            if (sceneGraphIn.hasToken(i)) {
+                ObjectToken o = (ObjectToken) sceneGraphIn.get(i);
+                Node n = (Node) o.getValue();
+                addChild(n);
+            }
+        }
+        sceneGraphOut.send(0,new ObjectToken(getNodeObject()));
     }
-
+    
+    
     /** Setup the transform object
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-  	    transformNode = new TransformGroup();
-	    transformNode.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
     }
     
 
@@ -147,11 +147,5 @@ public class GRTransform extends GRActor {
     protected boolean _isAccumulating() throws IllegalActionException {
         return ((BooleanToken) accumulate.getToken()).booleanValue();
     }
-    
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-    
-    protected TransformGroup transformNode;
     
 }

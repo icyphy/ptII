@@ -68,9 +68,9 @@ public class GRShadedShape extends GRActor {
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
-        output = new TypedIOPort(this, "output");
-        output.setOutput(true);
-        output.setTypeEquals(BaseType.GENERAL);
+        sceneGraphOut = new TypedIOPort(this, "sceneGraphOut");
+        sceneGraphOut.setOutput(true);
+        sceneGraphOut.setTypeEquals(BaseType.OBJECT);
         rgbColor = new Parameter(this,"RGB color",
                     new DoubleMatrixToken(new double[][] {{ 0.7, 0.7, 0.7}} ));
         
@@ -88,7 +88,7 @@ public class GRShadedShape extends GRActor {
     /** The output port for connecting to other GR Actors in
      *  the scene graph
      */
-    public TypedIOPort output;
+    public TypedIOPort sceneGraphOut;
     
     /** The red, green, and blue color components of the 3D shape
      */
@@ -107,19 +107,24 @@ public class GRShadedShape extends GRActor {
     
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the parameters of the new actor.
-     *  @param workspace The workspace for the new object.
+     *  @param ws The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        GRShadedShape newObject = (GRShadedShape)super.clone(workspace);
+        GRShadedShape newobj = (GRShadedShape)super.clone(workspace);
         
-        newObject.output = (TypedIOPort)newObject.getPort("output");
-        newObject.rgbColor = (Parameter)newObject.getAttribute("rgbColor");
-        newObject.shininess = (Parameter) newObject.getAttribute("shininess");
-        return newObject;
+        newobj.sceneGraphOut = (TypedIOPort)newobj.getPort("sceneGraphOut");
+        newobj.rgbColor = (Parameter)newobj.getAttribute("rgbColor");
+        newobj.shininess = (Parameter) newobj.getAttribute("shininess");
+        return newobj;
     }
+    
+    public void makeSceneGraphConnection() throws IllegalActionException {
+        sceneGraphOut.send(0,new ObjectToken(getNodeObject()));
+    }
+
     
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -156,6 +161,8 @@ public class GRShadedShape extends GRActor {
         
         _createAppearance();
     }
+    
+    
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
     

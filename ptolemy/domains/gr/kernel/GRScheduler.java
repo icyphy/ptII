@@ -70,8 +70,8 @@ public class GRScheduler extends Scheduler {
      *
      *  @param workspace Object for synchronization and version tracking.
      */
-    public GRScheduler(Workspace workspace) {
-        super(workspace);
+    public GRScheduler(Workspace ws) {
+        super(ws);
 	    _localMemberInitialize();
     }
 
@@ -381,10 +381,10 @@ public class GRScheduler extends Scheduler {
                         pendingActors.addLast(connectedActor);
                     }
                     else if(!presentFiring.equals(desiredFiring))
-                        throw new NotSchedulableException("No solution " +
-                                "exists for the balance equations.\n" +
+                        throw new NotSchedulableException("Graph is " +
+                                "not schedulable\n" +
                                 "Graph is not " +
-                                "consistent under the SDF domain");
+                                "consistent under the GR domain");
                 }
                 catch (NoSuchElementException e) {
                     throw new InternalErrorException("GRScheduler: " +
@@ -392,22 +392,6 @@ public class GRScheduler extends Scheduler {
                             ((ComponentEntity) connectedActor).getName() +
                             "does not appear in the firings Map");
                 }
-
-                /*
-                  else if(!presentFiring.equals(desiredFiring))
-                  throw new NotSchedulableException("No solution " +
-                  "exists for the balance equations.\n" +
-                  "Graph is not" +
-                  "consistent under the SDF domain");
-                  }
-                  catch (NoSuchElementException e) {
-                  throw new InternalErrorException("GRScheduler: " +
-                  "connectedActor " +
-                  ((ComponentEntity) connectedActor).getName() +
-                  "does not appear in the firings Map");
-                  }
-                */
-
                 if (_debugging) {
                     _debug("New Firing: ");
                     _debug(firings.toString());
@@ -459,7 +443,7 @@ public class GRScheduler extends Scheduler {
                         currentPort, connectedPort,
                         "Two output ports are connected " +
                         "on the same relation. " +
-                        "This is not legal in SDF.");
+                        "This is not legal in GR.");
             }
         }
 
@@ -509,10 +493,10 @@ public class GRScheduler extends Scheduler {
                         pendingActors.addLast(connectedActor);
                     }
                     else if(!presentFiring.equals(desiredFiring))
-                        throw new NotSchedulableException("No solution " +
-                                "exists for the balance equations.\n" +
+                        throw new NotSchedulableException("No solution: " +
+                                "Graph is not schedulable.\n" +
                                 "Graph is not" +
-                                "consistent under the SDF domain");
+                                "consistent under the GR domain");
                 }
                 catch (NoSuchElementException e) {
                     throw new InternalErrorException("GRScheduler: " +
@@ -539,7 +523,7 @@ public class GRScheduler extends Scheduler {
      *
      *  @param UnscheduledActors The Actors that need to be scheduled.
      *  @return A LinkedList of the Actors in the order they should fire.
-     *  @exception NotSchedulableException If the algorithm encounters an SDF
+     *  @exception NotSchedulableException If the algorithm encounters an GR
      *  graph that is not consistent with the firing vector, or detects an
      *  inconsistent internal state, or detects a graph that cannot be
      *  scheduled.
@@ -729,7 +713,7 @@ public class GRScheduler extends Scheduler {
             // port that isn't a part of the actor.   This probably means
             // the graph is screwed up, or somebody else is mucking
             // with it.
-            throw new InternalErrorException("SDF Scheduler Failed " +
+            throw new InternalErrorException("GR Scheduler Failed " +
                     "internal consistency check: " + iae.getMessage());
         } finally {
             if (_debugging) _debug("finishing loop");
@@ -832,7 +816,6 @@ public class GRScheduler extends Scheduler {
                 _debug("productionRate = " + productionRate);
                 //_debug("initProduction = " + initProduction);
             }
-            // SDFAtomicActor blindly creates parameters with bad values.
 
             try {
                 Parameter param;
@@ -857,7 +840,7 @@ public class GRScheduler extends Scheduler {
     }
 
     /** Set the firing vector, which is a Map associating an Actor
-     *  with the number of times that it will fire during an SDF iteration.
+     *  with the number of times that it will fire during an GR iteration.
      *  Every object that this Scheduler is responsible for should have an
      *  entry, even if it is zero indicating that the Actor has not yet had
      *  its firings determined.

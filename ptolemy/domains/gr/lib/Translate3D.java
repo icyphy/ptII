@@ -120,20 +120,20 @@ public class Translate3D extends GRTransform {
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the type constraints.
-     *  @param workspace The workspace for the new object.
+     *  @param ws The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        Translate3D newObject = (Translate3D)super.clone(workspace);
-        newObject.xTranslate = (TypedIOPort) newObject.getPort("xTranslate");
-        newObject.yTranslate = (TypedIOPort) newObject.getPort("yTranslate");
-        newObject.zTranslate = (TypedIOPort) newObject.getPort("zTranslate");
-        newObject.initialXTranslation = (Parameter)newObject.getAttribute("xTranslation");
-        newObject.initialYTranslation = (Parameter)newObject.getAttribute("yTranslation");
-        newObject.initialZTranslation = (Parameter)newObject.getAttribute("zTranslation");
-        return newObject;
+        Translate3D newobj = (Translate3D)super.clone(workspace);
+        newobj.xTranslate = (TypedIOPort) newobj.getPort("xTranslate");
+        newobj.yTranslate = (TypedIOPort) newobj.getPort("yTranslate");
+        newobj.zTranslate = (TypedIOPort) newobj.getPort("zTranslate");
+        newobj.initialXTranslation = (Parameter)newobj.getAttribute("xTranslation");
+        newobj.initialYTranslation = (Parameter)newobj.getAttribute("yTranslation");
+        newobj.initialZTranslation = (Parameter)newobj.getAttribute("zTranslation");
+        return newobj;
     }
  
     /** Check the input ports for translation inputs.  Convert the translation
@@ -200,6 +200,9 @@ public class Translate3D extends GRTransform {
         _initialYTranslation = ((DoubleToken) initialYTranslation.getToken()).doubleValue();
         _initialZTranslation = ((DoubleToken) initialZTranslation.getToken()).doubleValue();
 
+   	    transformNode = new TransformGroup();
+	    transformNode.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+
         Transform3D transform = new Transform3D();
 	    transform.setTranslation(new Vector3d(_initialXTranslation,_initialYTranslation,_initialZTranslation));
         transformNode.setTransform(transform);
@@ -209,7 +212,16 @@ public class Translate3D extends GRTransform {
   	    _accumulatedZ = 0.0;
     }
 
+    public Node getNodeObject() {
+        return (Node) transformNode;
+    }
     
+    
+    /** Add a scene graph child node to this actor
+     */
+    public void addChild(Node node) {
+        transformNode.addChild(node);
+    }
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -220,4 +232,10 @@ public class Translate3D extends GRTransform {
     private double _accumulatedX;
     private double _accumulatedY;
     private double _accumulatedZ;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+    
+    protected TransformGroup transformNode;
+
 }
