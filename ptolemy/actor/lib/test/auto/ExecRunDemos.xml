@@ -14,9 +14,9 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[610, 396]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="0.9464073044859">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0027740676051">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{335.7345328282828, 387.3655303030302}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{311.15625, 234.5772540983606}">
     </property>
     <property name="numberOfModelsToRun" class="ptolemy.data.expr.Parameter" value="5">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -40,7 +40,7 @@
     <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model invokes separate Ptolemy processes&#10;for several .xml files contained in a directory.&#10;&#10;If you want to run vergil, then invoke&#10;ptolemy.actor.gui.PtExecuteApplication -full&#10;instead of&#10;ptolemy.actor.gui.MoMLSimpleApplication">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 280.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 270.0">
         </property>
     </property>
     <property name="fileParameter" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/test/auto/">
@@ -87,7 +87,9 @@
         </property>
     </entity>
     <entity name="Exec" class="ptolemy.actor.lib.Exec">
-        <property name="blocking" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="blocking" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="waitFor" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="430.0, 170.0">
         </property>
@@ -150,7 +152,24 @@
     </entity>
     <entity name="LineWriter" class="ptolemy.actor.lib.io.LineWriter">
         <doc>Write the value of a string token, one per line, to a text file.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="555.0, 225.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="575.0, 365.0">
+        </property>
+    </entity>
+    <entity name="AddSubtract2" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="470.0, 365.0">
+        </property>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Finished: &quot;">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 355.0">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -173,6 +192,10 @@
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="DirectoryListing.output" relation="relation"/>
     <link port="ArrayToSequence.input" relation="relation"/>
     <link port="ArrayToSequence.output" relation="relation6"/>
@@ -187,5 +210,9 @@
     <link port="StringMatches.output" relation="relation5"/>
     <link port="Test.input" relation="relation3"/>
     <link port="Test2.input" relation="relation5"/>
-    <link port="LineWriter.input" relation="relation2"/>
+    <link port="LineWriter.input" relation="relation8"/>
+    <link port="AddSubtract2.plus" relation="relation9"/>
+    <link port="AddSubtract2.plus" relation="relation2"/>
+    <link port="AddSubtract2.output" relation="relation8"/>
+    <link port="Const2.output" relation="relation9"/>
 </entity>
