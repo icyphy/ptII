@@ -61,6 +61,8 @@ import java.util.List;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.StringTokenizer;
 
 //////////////////////////////////////////////////////////////////////////
 //// FSMActor
@@ -155,6 +157,15 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
+    /** Attribute specifying the names of the final states of this
+     *  actor. The names are separated by commas. Space characters
+     *  at the beginning, the end, and around commas are ignored.
+     *  Space characters within a name are preserved.
+     *  For example, the value " final, my state 5" designates
+     *  states "final" and "my state 5" as final.
+     */
+    public StringAttribute finalStateNames = null;
+
     /** Attribute specifying the name of the initial state of this
      *  actor.
      */
@@ -173,9 +184,12 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        super.attributeChanged(attribute);
         if (attribute == initialStateName) {
             _initialStateVersion = -1;
+        } else if (attribute == finalStateNames) {
+            _checkFinalStates(finalStateNames.getExpression());
+        } else {
+            super.attributeChanged(attribute);
         }
     }
 
@@ -470,7 +484,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      */
     public boolean postfire() throws IllegalActionException {
         _commitLastChosenTransition();
-        return !_stopRequested;
+        return !_reachedFinalState && !_stopRequested;
     }
 
     /** Return true.
@@ -493,6 +507,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      */
     public void preinitialize() throws IllegalActionException {
         _stopRequested = false;
+        _reachedFinalState = false;
         _createReceivers();
 
         // NOTE: We used to have a strategy of removing the input
@@ -757,6 +772,10 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                     + "destination state.");
         }
         _currentState = _lastChosenTransition.destinationState();
+        if (_finalStateNames != null
+                && _finalStateNames.contains(_currentState.getName())) {
+            _reachedFinalState = true;
+        }
         if (_debugging) {
             _debug(new StateEvent(this, _currentState));
         }
@@ -1117,6 +1136,20 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         }
     }
 
+    // Check that the comma-separated list of state names is valid.
+    private void _checkFinalStates(String names)
+            throws IllegalActionException {
+        HashSet stateNames = new HashSet();
+        StringTokenizer nameTokens =
+                new StringTokenizer(names, ",");
+        while (nameTokens.hasMoreElements()) {
+            String name = (String)nameTokens.nextElement();
+            name = name.trim();
+            stateNames.add(name);
+        }
+        _finalStateNames = stateNames;
+    }
+
     /*  Create receivers for each input port.
      *  @exception IllegalActionException If any port throws it.
      */
@@ -1162,6 +1195,9 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                 "</svg>\n");
         try {
             initialStateName = new StringAttribute(this, "initialStateName");
+            initialStateName.setExpression("");
+            finalStateNames = new StringAttribute(this, "finalStateNames");
+            finalStateNames.setExpression("");
             new Attribute(this, "_nonStrictMarker");
         } catch (KernelException ex) {
             // This should never happen.
@@ -1197,4 +1233,10 @@ public class FSMActor extends CompositeEntity implements TypedActor {
 
     // Version of the reference to the initial state.
     private long _initialStateVersion = -1;
+
+    // The set of names of final states.
+    private HashSet _finalStateNames;
+
+    // True if the current state is a final state.
+    private boolean _reachedFinalState;
 }

@@ -165,7 +165,7 @@ test InterfaceAutomaton-5.1 {test creating input variables} {
     $p2 link $r1
     $dir preinitialize
     listToNames [$ia attributeList]
-} {_iconDescription initialStateName _nonStrictMarker p0_isPresent p0 p1_0_isPresent p1_0 p1_1_isPresent p1_1}
+} {_iconDescription initialStateName finalStateNames _nonStrictMarker p0_isPresent p0 p1_0_isPresent p1_0 p1_1_isPresent p1_1}
 
 ######################################################################
 ####
@@ -220,6 +220,8 @@ test InterfaceAutomaton-8.1 {test generating moml} {
     $ia exportMoML
 } {<entity name="ia" class="ptolemy.domains.fsm.kernel.InterfaceAutomaton">
     <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="s0">
+    </property>
+    <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
     </property>
     <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
     </property>
