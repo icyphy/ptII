@@ -327,7 +327,8 @@ PTJNI_DIR=@PTJNI_DIR@
 PTJNI_PROPERTIES=""
 if [ "$PTJNI_DIR" = "jni" ]; then
     # Properties for compiling
-    JNI_PROPERTIES="-Dptolemy.ptII.jni.architecture=@PTJNI_ARCHITECTURE@ -Dptolemy.ptII.java.dir=\"${PTJAVA_DIR_CLEAN}\""
+    # These properties are now set in $PTII/lib/ptII.properties
+    #JNI_PROPERTIES="-Dptolemy.ptII.jni.architecture=@PTJNI_ARCHITECTURE@ -Dptolemy.ptII.java.dir=\"${PTJAVA_DIR_CLEAN}\""
 fi
 
 #### Joystick
@@ -391,7 +392,8 @@ TOS_PROPERTIES=
 if [ ! -z "$TOSROOT" ]; then 
     TOSROOT_NO_CYGDRIVE=`echo "$TOSROOT" | sed 's@^/cygdrive/\([a-zA-Z]\)/@\1:/@'`
     TOSJARS=${CLASSPATHSEPARATOR}${TOSROOT_NO_CYGDRIVE}
-    TOS_PROPERTIES="-Dptolemy.ptII.tosroot=\"${TOSROOT_NO_CYGDRIVE}\""
+    # This property is now set in $PTII/lib/ptII.properties
+    #TOS_PROPERTIES="-Dptolemy.ptII.tosroot=\"${TOSROOT_NO_CYGDRIVE}\""
 fi
 
 #### X10 is the interface library for power line communication, see
@@ -411,7 +413,7 @@ fi
 # CALTROP_JARS contains java_cup.jar and jasminclasses.jar contains
 # a version of java cup
 ALL_JAR="${DIVA_JAR}${JINI_JARS}${CALTROP_JARS}${CHIC_JARS}${COMMAPI_JARS}${SOOT_JARS}${PTJACL_JARS}${JOYSTICK_JARS}${JYTHON_JARS}${JXTA_JARS}${GIOTTO_JARS}${QTJAVA_JARS}${PSDF_JARS}${SAXON_JAR}${TOSJARS}${X10_JARS}"
-ALL_JFLAG="${DIVA_JFLAG} ${JINI_JFLAG} ${JNI_PROPERTIES} ${TOS_PROPERTIES} -Xmx256M"
+ALL_JFLAG="${DIVA_JFLAG} ${JINI_JFLAG} -Xmx256M"
 
 #### Sandbox
 # Use a fairly tight sandbox to provide security when running models
@@ -510,10 +512,14 @@ javaflag="$ALL_JFLAG"
 
 # Flags that are specific to invoking ptolemy programs.  By default,
 # this sets the ptolemy.ptII.dir environment variable.
+# NOTE: vergil will override this property with the value from 
+# $CLASSPATH/lib/ptII.properties.  However, other apps need this property.
 ptflag="\"-Dptolemy.ptII.dir=$PTII\""
 
 # Start up with the US Locale so as to avoid problems with , instead
 # of . in floating point numbers in German and Swedish locales
+# NOTE: vergil will override this property with the value from 
+# $CLASSPATH/lib/ptII.properties.  However, other apps need this property.
 localeflag="-Duser.language=en -Duser.region=US" 
 
 # See $PTII/doc/coding/debuggin.htm for details about using Emacs as an editor.
@@ -783,8 +789,9 @@ and run:
 	help="Invoke the Ptolemy II User Interface, for example: \
               $0 \
               or \
-              $0 $PTII_CLEAN/ptolemy/moml/demo/modulation.xml
-              $0 -single    bring up a singleWindow interface"
+              $0 $PTII_CLEAN/ptolemy/moml/demo/modulation.xml \
+              $0 -single    bring up a singleWindow interface \
+              NOTE: properties are read from $CLASSPATH/lib/ptII.properties"
 	javastartupclass=ptolemy.vergil.VergilApplication
 
         # Single Window Interface
