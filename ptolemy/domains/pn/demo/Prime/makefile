@@ -44,8 +44,7 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	Prime
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =	#$(PTPACKAGE).jar
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
 	PNGalaxySieve.java \
@@ -63,33 +62,22 @@ EXTRA_SRCS =	$(JSRCS)
 # should not complain about
 MISC_FILES =	$(DIRS) #test
 
-PTAUXJAR =	Prime.jar
-
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	$(PTCLASSJAR) \
-	Prime.jar
+	$(PTCLASSJAR)
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass Prime.jar
+all: jclass $(PTCLASSJAR)
+	@echo "To run all the demos, run 'make demo'"
 
-install: jclass Prime.jar 
+install: all
 
+demo:
+	CLASSPATH=$(CLASSPATH) java ptolemy.domains.pn.demo.Prime.PNPrimeExample 10
 
-
-# 'make clean' removes everything in KRUFT
-KRUFT = Prime.jar
-
-# Jar file consisting of classes used by an applet.  Basically,
-# everything but Message and Pxgraph.
-Prime.jar: 	$(JSRCS) $(JCLASS)
-		(cd $(CLASSPATH); \
-                $(JAR) cf \
-                $(ME)/$@ \
-		$(ME)/*.class )
 depend:
 	@echo "no dependencies in this directory"
 
