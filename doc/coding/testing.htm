@@ -386,8 +386,8 @@ by calling <CODE>createAndExecute</CODE>.  Even better, you
 can test for specific error messages with:
 <pre>
 test SDFSchedulerErrors-1.0 {} {
-     catch {createAndExecute "rateConsistency.xml"} foo
-     list $foo
+    catch {createAndExecute "rateConsistency.xml"} errorMessage
+    list $errorMessage
 } {{ptolemy.kernel.util.IllegalActionException: Failed to compute schedule:
    in .rateConsistency.SDF Director
 Because:
