@@ -219,6 +219,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/cal/demo/demo.jar \
 	ptolemy/domains/experimentalDomains.jar \
 	ptolemy/domains/ci/demo/demo.jar \
+	ptolemy/domains/ci/doc/doc.jar \
 	ptolemy/domains/dt/demo/demo.jar \
 	ptolemy/domains/dt/doc/doc.jar \
 	ptolemy/domains/giotto/demo/demo.jar \
@@ -564,6 +565,13 @@ jnlp_dist_1:
 	$(MAKE) KEYSTORE=$(KEYSTORE2) \
 		KEYALIAS=$(KEYALIAS2) KEYPASSWORD= \
 		PTII_LOCALURL=$(DIST_URL) jnlp_sign
+
+# make jnlp_dist_vergil.jnlp STOREPASSWORD="-storepass xxx"
+jnlp_dist_vergil.jnlp:
+	rm -rf $(JNLPS) $(SIGNED_DIR)
+	$(MAKE) KEYSTORE=$(KEYSTORE2) \
+		KEYALIAS=$(KEYALIAS2) KEYPASSWORD= \
+		PTII_LOCALURL=$(DIST_URL) vergil.jnlp
 
 jnlp_dist_update:
 	tar -cf - $(SIGNED_DIR) $(JNLPS) \
