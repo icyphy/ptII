@@ -139,7 +139,7 @@ public class LineCoder extends SDFAtomicActor {
     public void initialize() throws IllegalActionException {
 
         // FIXME: Handle mutations.
-        _wordlength =((IntToken)(wordlength.getToken())).intValue();
+        _wordlength = ((IntToken)(wordlength.getToken())).intValue();
         setTokenConsumptionRate(input, _wordlength);
 
         DoubleMatrixToken tabletoken = (DoubleMatrixToken)(table.getToken());
