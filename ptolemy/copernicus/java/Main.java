@@ -39,6 +39,7 @@ import ptolemy.copernicus.kernel.ImprovedDeadAssignmentEliminator;
 import ptolemy.copernicus.kernel.InstanceEqualityEliminator;
 import ptolemy.copernicus.kernel.InvocationBinder;
 import ptolemy.copernicus.kernel.JimpleWriter;
+import ptolemy.copernicus.kernel.LibraryUsageReporter;
 import ptolemy.copernicus.kernel.MakefileWriter;
 import ptolemy.copernicus.kernel.SideEffectFreeInvocationRemover;
 import ptolemy.copernicus.kernel.TransformerAdapter;
@@ -371,14 +372,15 @@ public class Main extends KernelMain {
                 new Transform("wjtp.snapshot4", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot4", ClassWriter.v()));
-
+        
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ttn",
                         TokenToNativeTransformer.v(toplevel)));
-
+        
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ufr",
                         UnusedFieldRemover.v()));
+        
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.smr",
                         SideEffectFreeInvocationRemover.v()));
@@ -521,7 +523,9 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.finalSnapshot",
                         JimpleWriter.v()));
-
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.lur",
+                        LibraryUsageReporter.v()));
     }
 
 

@@ -61,6 +61,7 @@ JSRCS = \
 	GeneratorAttribute.java \
 	JimpleWriter.java \
 	KernelMain.java \
+	LibraryUsageReporter.java \
 	MakefileWriter.java \
 	MaybeAliasAnalysis.java \
 	MustAliasAnalysis.java \
