@@ -32,12 +32,14 @@ import ptolemy.kernel.util.IllegalActionException;
 //////////////////////////////////////////////////////////////////////////
 //// CTTransparentDirector
 /**
-   Interface for CT transparent directors. Transparent directors in the CT
-   domain can transfer its internal step size control information to the
-   executive director. It defines methods to support the step size control
-   queries by the executive CTDirector, such that after the internal
-   CT subsystem finishes one integration step, its step size control
-   information will be accessible by the outside CT director.
+   Interface for CT transparent directors. This director extends the 
+   CTGeneralDirector interface. 
+   <p> 
+   Transparent directors in the CT domain can transfer its internal step size 
+   control information to the executive director. It defines methods to support 
+   the step size control queries by the executive CTDirector, such that after 
+   the internal CT subsystem finishes one integration step, its step size 
+   control information will be accessible by the outside CT director.
    <P>
    Directors that implement this interface are typically contained by
    CTCompositeActors.
@@ -46,7 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
    @author  Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.3
-   @Pt.ProposedRating Red (hyzheng)
+   @Pt.ProposedRating Yellow (hyzheng)
    @Pt.AcceptedRating Red (hyzheng)
 
 */
@@ -63,7 +65,7 @@ public interface CTTransparentDirector extends CTGeneralDirector {
 
     /** Implementations of this method should go to the marked state.
      *  If there's no marked state, throws an exception.
-     *  @exception IllegalActionException If there were no marked state.
+     *  @exception IllegalActionException If there is no marked state.
      */
     public void goToMarkedState() throws IllegalActionException ;
 
@@ -91,6 +93,8 @@ public interface CTTransparentDirector extends CTGeneralDirector {
      *  true if the current integration step is accurate from
      *  this director's point of view.
      *  @return True if the current step is accurate.
+     *  @deprecated As Ptolemy II 4.1, use the isOutputAccurate() and 
+     *  isStateAccurate() methods instead.
      */
     public boolean isThisStepAccurate();
 

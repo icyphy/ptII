@@ -58,19 +58,24 @@ import ptolemy.kernel.util.Workspace;
 //// CTDirector
 /**
    Abstract base class for directors in the CT domain. A CTDirector
-   has a CTScheduler which provides the schedules for firing
+   has a CTScheduler which provides static schedules for firing
    the actors in different phases of execution in one iteration.
    <P>
-   A CTDirector may have more than one ODE solvers. In each phase of execution,
+   A CTDirector may have more than one ODE solver. In each phase of execution,
    one ODE solver takes charge of solving the behavior of a model. This solver
    is called the <I>current ODE solver</I>.
    <P>
    The continuous time (CT) domain is a timed domain. There is a global
    notion of time that all the actors are aware of. Time is maintained
-   by the director. The method getModelTime() returns the current
-   notion of time. Time can be set by the setModelTime() method, but this
+   by the director. The method getModelTime() returns the current notion of 
+   model time. Time can be set by the setModelTime() method, but this
    method should not the called by the actors. Time can only be set
-   by directors or their ODE solvers. (FIXME: should not include ODE solvers.)
+   by directors or their ODE solvers. Because ODE solvers can change time 
+   in their fire() methods, we need to record the beginning time of an 
+   iteration to support roll back. The _setIterationBeginTime() method is just 
+   designed for this purpose. It is called in the prefire() method of each 
+   iteration to store the beginning time, and the getIterationBeginTime() 
+   returns the lastly stored time. 
    <P>
    This base class maintains a list of parameters that may be used by
    ODE solvers and actors. These parameters are: <Br>
@@ -408,8 +413,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
         return _currentSolver;
     }
 
-    /** Return the current integration step size. This method is final
-     *  for performance reason.
+    /** Return the current integration step size.
      *  @return The current step size.
      *  @see #setCurrentStepSize
      */
@@ -678,7 +682,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
         // NOTE: Need for integrators to emit their current output so that
         // the state transition actors can operate on the most up-to
         // date inputs and generate derivatives for integrators.
-        // Also, without this, on the first round of firing, the state
+        // Without this, on the first round of integration, the state
         // transition actors will complain that inputs are not ready.
         Iterator integrators =
             schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();

@@ -36,7 +36,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// CTStatefulActor
 /**
    Interface for actors that have states. The state of the actor can be
-   marked (saved). The saved state can be restored so that the actor can go
+   marked (saved). The saved state can be restored so that an actor can go
    back to its previously marked state. This feature is used for rolling
    back the simulation when needed, which is essential when embedding
    CT subsystem in a discrete event system.
@@ -55,8 +55,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public interface CTStatefulActor extends Actor {
 
     /** Implementations of this method should go to the marked state.
-     *  If there's no marked state, throws
-     *  an exception.
+     *  If there's no marked state, throws an exception.
      *  @exception IllegalActionException If there were no marked state.
      */
     public void goToMarkedState() throws IllegalActionException ;

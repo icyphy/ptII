@@ -1,4 +1,4 @@
-/* A static scheduler for the continuous time domain.
+/* The static scheduler for the continuous time domain.
 
 Copyright (c) 1998-2004 The Regents of the University of California.
 All rights reserved.
@@ -63,7 +63,7 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// CTScheduler
 /**
-   Static scheduler for the CT domain.
+   The Static scheduler for the CT domain.
    A CT (sub)system can be mathematically represented as:<Br>
    <pre>
    <pre>    dx/dt = f(x, u, t)<Br>

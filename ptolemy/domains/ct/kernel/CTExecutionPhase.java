@@ -35,7 +35,7 @@ package ptolemy.domains.ct.kernel;
    @author  Haiyang Zheng
    @version $Id$
    @since Ptolemy II 4.1
-   @Pt.ProposedRating Red (hyzheng)
+   @Pt.ProposedRating Yellow (hyzheng)
    @Pt.AcceptedRating Red (hyzheng)
 */
 public final class CTExecutionPhase {

@@ -216,13 +216,13 @@ public class CTBaseIntegrator extends TypedAtomicActor
     }
 
     /** Return the history information of the last index-th step.
+     *  The returned history array has length 2, where the first
+     *  element is the history state, and the second element is
+     *  the corresponding derivative.
      *  The index starts from 0. If the current time is t(n),
      *  then getHistory(0) gives the
      *  state and derivative of time t(n-1), and getHistory(1)
      *  corresponds to time t(n-2).
-     *  The returned history array has length 2, where the first
-     *  element is the history state, and the second element is
-     *  the corresponding derivative.
      *  The history information is equidistant in time, and the
      *  distance is the current step size.
      *  If the step sizes are changed during the execution,
@@ -284,10 +284,10 @@ public class CTBaseIntegrator extends TypedAtomicActor
     /** Go to the marked state. After calling the markState() method,
      *  calling this method will bring the integrator back to the
      *  marked state. This method is used for rollbacking the execution 
-     *  to a previous time point. Note that the derivative is not stored.
+     *  to a previous time point. Note that derivative is not stored.
      *  Therefore, when states are restored, they need to be propogated 
      *  through state transition actors such that the derivatives are 
-     *  restored too.
+     *  restored (reconstructured) too.
      */
     public void goToMarkedState() {
         _state = _storedState;
@@ -301,8 +301,8 @@ public class CTBaseIntegrator extends TypedAtomicActor
      *
      *  @exception IllegalActionException If there's no director,
      *  or, the director is not a CT director, or the director has
-     *  no ODE solver, or thrown by the integratorInitialize() of the solver,
-     *  or the initialState parameter does not contain a valid token.
+     *  no ODE solver, or thrown in the super class, or the initialState 
+     *  parameter does not contain a valid token.
      */
     public void initialize() throws IllegalActionException {
         CTDirector dir = (CTDirector)getDirector();
@@ -332,7 +332,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
 
     /** Return true if the state is resolved successfully.
      *  If the input is not available, or the input is a result of
-     *  divide by zero, an InternalErrorException is thrown.
+     *  divide by zero, a NumericalNonconvergeException is thrown.
      *  @return True if the state is resolved successfully.
      */
     public boolean isStateAccurate() {
@@ -341,7 +341,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
             // If it is NaN, or Infinity, an exception is thrown.
             double f_dot = ((DoubleToken)input.get(0)).doubleValue();
             if (Double.isNaN(f_dot) || Double.isInfinite(f_dot)) {
-                throw new InternalErrorException("The input of " +
+                throw new NumericalNonconvergeException("The input of " +
                         getName() + " is not valid because" +
                         " it is a result of divide-by-zero.");
             }
@@ -374,12 +374,14 @@ public class CTBaseIntegrator extends TypedAtomicActor
     /** Mark and remember the current state. This remembered state can be
      *  retrieved by the goToMarkedState() method. The marked state
      *  may be used for rolling back the execution to a previous time point.
+     *  Note that the derivative is not saved. 
      */
     public void markState() {
         _storedState = getState();
     }
 
-    /** Update the state and its derivative, and push them into history.
+    /** Update the state and its derivative, and push them into history if 
+     *  the history capacity is bigger than 0.
      *  @return True always.
      *  @exception IllegalActionException Not thrown in this base class.
      */
@@ -463,7 +465,8 @@ public class CTBaseIntegrator extends TypedAtomicActor
         }
     }
 
-    /** Set the value of an auxiliary variable.  If the index is out of
+    /** Set the value of an auxiliary variable. The index indicates which
+     *  auxiliary variable in the auxVariables array. If the index is out of
      *  the bound of the auxiliary variable array, an InvalidStateException
      *  is thrown to indicate an inconsistency in the ODE solver.
      *
@@ -534,7 +537,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
     // Derivative.
     private double _derivative;
 
-    // State.
+    // State. 
     private double _state;
 
     // The state stored, may be used for rollback execution.

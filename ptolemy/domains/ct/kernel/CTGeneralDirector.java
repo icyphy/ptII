@@ -49,8 +49,8 @@ public interface CTGeneralDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the current step size used by the solver.
-     *  @return The current step size used by the solver.
+    /** Return the current step size used by this director.
+     *  @return The current step size used by this director.
      */
     public double getCurrentStepSize();
 
@@ -82,4 +82,3 @@ public interface CTGeneralDirector {
      */
     public boolean isDiscretePhase();
 }
-

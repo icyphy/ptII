@@ -282,7 +282,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
 
             if (_debugging) {
                 _debug("The current time of outside model is " + _outsideTime,
-                    "\n its next iteration time is " + outsideNextIterationTime,
+                    " and its next iteration time is " 
+                    + outsideNextIterationTime,
                     "\nThe current time of this director is " + localTime);
             }
 
@@ -296,14 +297,6 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                         + ", but the next iteration time = "
                         + outsideNextIterationTime);
             }
-
-//            // If outside next iteration time is equal to the outside
-//            // time, then this iteration step size is 0.0. Request for
-//            // a refiring of the container at the current time to
-//            // response to new events from outside.
-//            if (outsideNextIterationTime.equals(_outsideTime)) {
-//                executiveDirector.fireAt(container, outsideNextIterationTime);
-//            }
 
             // Ideally, the outside time should equal the local time.
             // If the outside time is less than the local time, then rollback
@@ -345,36 +338,6 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                 _debug("The outside time is equal to the local time. " +
                 "Check whether there are outputs.");
             }
-//            // FIXME: The following code is not necessary. A correct
-//            // implementation of CT director should have already transfered
-//            // events to outside when the container of the director fires.
-//            // FIXME: this should be handled in the postfire method.
-//
-//            // Process local discrete events and emit outputs
-//            // if there are any. If there are any outputs emitted,
-//            // request for a zero delay refire and return false.
-//            if (_hasDiscreteEvents) {
-//                _discretePhaseExecution();
-//                boolean hasOutput = false;
-//                Iterator outports = container.outputPortList().iterator();
-//                while (outports.hasNext()) {
-//                    IOPort p = (IOPort)outports.next();
-//                    if (executiveDirector.transferOutputs(p)) {
-//                        hasOutput = true;
-//                    }
-//                }
-//                _hasDiscreteEvents = false;
-//                if (hasOutput) {
-//                    if (_debugging) {
-//                        _debug(getName(),
-//                                " produces output to the outside domain.",
-//                                " Requesting zero delay refiring",
-//                        " Prefire() returns false.");
-//                    }
-//                    executiveDirector.fireAt(container, _outsideTime);
-//                    return false;
-//                }
-//            }
 
             // set the start time of the current iteration
             // The begin time of an iteration can be changed only by directors.

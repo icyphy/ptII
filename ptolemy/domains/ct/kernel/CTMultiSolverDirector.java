@@ -783,7 +783,8 @@ public class CTMultiSolverDirector extends CTDirector {
         if (_firstIteration) {
             // propagate the initial states with a breakpoint solver
             _propagateResolvedStates();
-            // Restore the solver to normal solver to make tests pass.
+            // Restore the solver to normal solver to make the CTIntegrator 
+            // tests pass.
             _setCurrentODESolver(_normalSolver);
             _firstIteration = false;
         }
@@ -792,8 +793,6 @@ public class CTMultiSolverDirector extends CTDirector {
             _debug("\n !!! discrete phase execution at " + getModelTime());
         }
 
-        // FIXME: this should happen at the beginning of the discrete phase
-        // of execution.
         // configure step sizes
         setCurrentStepSize(0.0);
 
@@ -1213,11 +1212,9 @@ public class CTMultiSolverDirector extends CTDirector {
         solver.fireStateTransitionActors();
         _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
 
-        if (!_firstIteration) {
-            _setExecutionPhase(CTExecutionPhase.FIRING_DYNAMIC_ACTORS_PHASE);
-            solver.fireDynamicActors();
-            _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
-        }
+        _setExecutionPhase(CTExecutionPhase.FIRING_DYNAMIC_ACTORS_PHASE);
+        solver.fireDynamicActors();
+        _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
 
         // Iterate output actors.
         // NOTE: Output schedule does not contain event generators
@@ -1286,17 +1283,18 @@ public class CTMultiSolverDirector extends CTDirector {
         // states and outputs are inaccurate.
         while (!_stopRequested) {
             while (!_stopRequested) {
-                // Restore the saved state of the stateful actors.
-                CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
-                Iterator actors = schedule.get(
-                        CTSchedule.STATEFUL_ACTORS).actorIterator();
-                while (actors.hasNext()) {
-                    CTStatefulActor actor = (CTStatefulActor)actors.next();
-                    if (_debugging) {
-                        _debug("Restore states " + (Nameable)actor);
-                    }
-                    actor.goToMarkedState();
-                }
+                // FIXME: We do not have to restore states because 
+//                // Restore the saved state of the stateful actors.
+//                CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
+//                Iterator actors = schedule.get(
+//                        CTSchedule.STATEFUL_ACTORS).actorIterator();
+//                while (actors.hasNext()) {
+//                    CTStatefulActor actor = (CTStatefulActor)actors.next();
+//                    if (_debugging) {
+//                        _debug("Restore states " + (Nameable)actor);
+//                    }
+//                    actor.goToMarkedState();
+//                }
                 
                 // Reset the round counts and the convergencies to false.
                 // NOTE: some solvers have their convergencies depending on

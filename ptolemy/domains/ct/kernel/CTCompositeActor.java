@@ -44,16 +44,17 @@ import ptolemy.kernel.util.Workspace;
    CTWaveformGenerator.
    <p>
    In the CT domain, normal opaque composite actors are not fired
-   in every iteration. They are only fired in the discrete phase of execution,
-   when they have trigger events. However, CTCompositeActors are fired
-   in every iteration.
+   in every iteration. They are only fired in the discrete phase of execution
+   and when they have trigger events. On the other hand, CTCompositeActors 
+   are fired in both discrete and continuous phases of execution in each
+   iteration.
    <p>
    The key task of this actor is to implement step-size control methods.
    If the local director of this actor is an instance of CTTransparentDirector,
    then any step-size control methods called on this actor will be delegated
    to the local director. If the local director is not a CTTransparentDirector,
    the implementations of the step-size control methods do not affect
-   the current step size.
+   the current step size. 
    <P>
    This composite actor should be used when a CT subsystem needs to transfer
    its step size control information to the outer domain. Typical usage
@@ -125,8 +126,9 @@ public class CTCompositeActor extends TypedCompositeActor
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Call the emitTentativeOutputs method of the local director if the local
-     *  director is an instance of CTTransparentDirector. Otherwise, do nothing.
+    /** Call the emitTentativeOutputs() method of the local director if the 
+     *  local director is an instance of CTTransparentDirector. Otherwise, 
+     *  do nothing.
      *  @exception IllegalActionException If tentative states can not be emitted.
      */
     public void emitTentativeOutputs() throws IllegalActionException {
@@ -136,9 +138,9 @@ public class CTCompositeActor extends TypedCompositeActor
         }
     }
 
-    /** Call the goToMarkedState method of the local director if the local
+    /** Call the goToMarkedState() method of the local director if the local
      *  director is an instance of CTTransparentDirector. Otherwise, do nothing.
-     *  @exception IllegalActionException If there were no marked state.
+     *  @exception IllegalActionException If there is no marked state.
      */
     public void goToMarkedState() throws IllegalActionException {
         Director dir = getDirector();
@@ -147,7 +149,7 @@ public class CTCompositeActor extends TypedCompositeActor
         }
     }
 
-    /** Call the hasCurrentEvent method of the local director if the local
+    /** Call the hasCurrentEvent() method of the local director if the local
      *  director is an instance of CTTransparentDirector. Otherwise,
      *  return false, indicating that this composite actor does not
      *  have an event at the current time.
@@ -161,7 +163,7 @@ public class CTCompositeActor extends TypedCompositeActor
         return false;
     }
 
-    /** Call the isOutputAccurate method of the local director if the local
+    /** Call the isOutputAccurate() method of the local director if the local
      *  director is an instance of CTTransparentDirector. Otherwise, return
      *  true, which indicates the current step size is accurate w.r.t. outputs.
      *  @return True if the current step size is accurate w.r.t. outputs.
@@ -174,7 +176,7 @@ public class CTCompositeActor extends TypedCompositeActor
         return true;
     }
 
-    /** Call the isStateAccurate method of the local director if the local
+    /** Call the isStateAccurate() method of the local director if the local
      *  director is an instance of CTTransparentDirector. Otherwise, return
      *  true, which indicates the current step size is accurate w.r.t. states.
      *  @return True if the current step size is accurate w.r.t. states.
@@ -187,7 +189,7 @@ public class CTCompositeActor extends TypedCompositeActor
         return true;
     }
 
-    /** Return true if the current step size if true w.r.t. both states and
+    /** Return true if the current step size is true w.r.t. both states and
      *  outputs.
      *  @return True if this step is accurate w.r.t. both states and outputs.
      */
@@ -195,7 +197,7 @@ public class CTCompositeActor extends TypedCompositeActor
         return isStateAccurate() && isOutputAccurate();
     }
 
-    /** Call the markState method of the local director if the local
+    /** Call the markState() method of the local director if the local
      *  director is an instance of CTTransparentDirector. Otherwise, do nothing.
      */
     public void markState() {
@@ -205,7 +207,7 @@ public class CTCompositeActor extends TypedCompositeActor
         }
     }
 
-    /** Call the predictedStepSize method of the local director if the local
+    /** Call the predictedStepSize() method of the local director if the local
      *  director is an instance of CTTransparentDirector. Otherwise, return
      *  java.lang.Double.MAX_VALUE.
      *  @return The predicted step size.
@@ -218,10 +220,10 @@ public class CTCompositeActor extends TypedCompositeActor
         return java.lang.Double.MAX_VALUE;
     }
 
-    /** Call the prefireDynamicActors method of the local director if the local
-     *  director is an instance of CTTransparentDirector. Return true if all
-     *  dynamic actors are prefired, otherwise, return false. If the local
-     *  director is not an instance of CTTransparentDirector, return true
+    /** Call the prefireDynamicActors() method of the local director if the 
+     *  local director is an instance of CTTransparentDirector. Return true 
+     *  if all dynamic actors are prefired, otherwise, return false. If the 
+     *  local director is not an instance of CTTransparentDirector, return true
      *  always.
      *  @return True if all dynamic actors are prefired.
      *  @exception IllegalActionException If the local director throws it.
@@ -234,7 +236,7 @@ public class CTCompositeActor extends TypedCompositeActor
         return true;
     }
 
-    /** Call the refinedStepSize method of the local director if the local
+    /** Call the refinedStepSize() method of the local director if the local
      *  director is an instance of CTTransparentDirector. Otherwise, return
      *  the current step size of the executive director.
      *  @return The refined step size.
@@ -244,6 +246,6 @@ public class CTCompositeActor extends TypedCompositeActor
         if ((dir != null) && (dir instanceof CTTransparentDirector)) {
             return ((CTTransparentDirector)dir).refinedStepSize();
         }
-        return ((CTDirector)getExecutiveDirector()).getCurrentStepSize();
+        return ((CTGeneralDirector)getExecutiveDirector()).getCurrentStepSize();
     }
 }

@@ -47,7 +47,7 @@ import ptolemy.kernel.util.IllegalActionException;
    The tentative output is the output if the current integration step is
    accurate. It may not be the "real" output, if there is an "missed" event
    reported by some event detectors.
-   The tentative output is the output of the actor
+   The tentative output is the output of the actor 
    after each iteration (but before the states are updated). They are
    emitted for exciting the event generating and the output schedule.
 
@@ -60,7 +60,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public interface CTDynamicActor extends Actor{
     /** Implementations of this method should emit the tentative outputs.
      *  @exception IllegalActionException If the data transfer is not
-     *       completed.
+     *  completed.
      */
     public void emitTentativeOutputs() throws IllegalActionException;
 }
