@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- This script was automatically generated using Zero G's InstallAnywhere 5 Standard, Build 1534
-     STATUS: Fully Functional LICENSED Edition
-     DATE:   Sun Jun 23 11:58:07 PDT 2002 -->
-<InstallAnywhere_Deployment_Project increments="5649">
+<!-- This script was automatically generated using Zero G's InstallAnywhere 5 Enterprise, Build 1534
+     STATUS: Fully-Functional UNLICENSED Trial Edition
+     DATE:   Sun Jun 30 15:20:10 PDT 2002 -->
+<InstallAnywhere_Deployment_Project increments="5676">
 	<!-- ** DO NOT EDIT ** Essential authorization and configuration data ** DO NOT EDIT ** -->
 	<essentialScriptInfo>
 		<versionID major="5" minor="-1" revision="-1"/>
-		<editionID>53,32,83,116,97,110,100,97,114,100,32,66,117,105,108,100,32,49,53,51,52</editionID>
-		<scriptID>12,42,11,90,80,53,48,51,52,53,75,65,78,50,89,74</scriptID>
+		<editionID>53,32,69,110,116,101,114,112,114,105,115,101,32,66,117,105,108,100,32,49,53,51,52</editionID>
+		<scriptID>12,42,11,85,78,76,73,67,69,78,83,69,68</scriptID>
 		<buildID>3,13,71,87,105,110,100,111,119,115,32,50,48,48,48,44,32,53,46,48,44,32,120,56,54,59,32,74,97,118,97,32,49,46,51,46,49,95,48,51,44,32,83,117,110,32,77,105,99,114,111,115,121,115,116,101,109,115,32,73,110,99,46,44,32,104,116,116,112,58,47,47,106,97,118,97,46,115,117,110,46,99,111,109,47,59,32,101,110,44,32,85,83,59,32,67,112,49,50,53,50</buildID>
 		<!-- The authorizationID may change between project saves and builds.  This does not effect the integrity of the project, nor do changes in this value represent changes in the actual InstallAnywhere project. -->
-		<authorizationID>1,0,0,-32,-109,84,-127,96,80,112,114,103,83,98,113,97,113,49,51,67,58,65,70,68,86,69,64,69,66,69,48,63,87,5,2,11,7,70,126,14,0,0,0</authorizationID>
+		<authorizationID>1,0,0,-32,-61,20,1,-128,64,99,70,101,125,121,100,96,105,48,48,49,56,52,67,98,113,112,124,44,81,100,99,62,57,15,14,9,7,76,99,14,0,0,0</authorizationID>
 	</essentialScriptInfo>
-	<installationObjects uniqueObjects="313">
+	<installationObjects uniqueObjects="314">
 		<object class="com.zerog.ia.installer.Installer" objectID="92a08b599096">
 			<property name="wizardME">
 				<object class="com.zerog.ia.installer.actions.MakeExecutable" objectID="92a0b1b990aa">
@@ -166,7 +166,7 @@ it will search for ones in this list]]></string>
 								</object>
 							</method>
 							<method name="addElement">
-								<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="b1ceedaa9747">
+								<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="d69792568b66">
 									<property name="propertyValue">
 										<string><![CDATA[ptolemy.plot.plotml.EditablePlotMLApplication]]></string>
 									</property>
@@ -209,10 +209,10 @@ and any path to a file to read from that file]]></string>
 								<string><![CDATA[ptplot32.gif]]></string>
 							</property>
 							<property name="smallIconPath">
-								<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\doc\img\]]></string>
+								<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\doc\img\]]></string>
 							</property>
 							<property name="largeIconPath">
-								<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\doc\img\]]></string>
+								<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\doc\img\]]></string>
 							</property>
 						</object>
 					</property>
@@ -235,7 +235,7 @@ and any path to a file to read from that file]]></string>
 								<boolean>false</boolean>
 							</property>
 							<property name="sourcePath">
-								<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\compat\]]></string>
+								<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\compat\]]></string>
 							</property>
 							<property name="shouldUninstall">
 								<boolean>true</boolean>
@@ -263,7 +263,7 @@ and any path to a file to read from that file]]></string>
 								<boolean>false</boolean>
 							</property>
 							<property name="sourcePath">
-								<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
+								<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
 							</property>
 							<property name="shouldUninstall">
 								<boolean>true</boolean>
@@ -296,16 +296,16 @@ and any path to a file to read from that file]]></string>
 										<object class="com.zerog.ia.installer.util.magicfolders.SystemDriveRootMF" factoryID="157" objectID="a4346c439098"/>
 									</property>
 									<property name="solarisMagicFolderPath">
-										<string><![CDATA[$USER_MAGIC_FOLDER_1$]]></string>
+										<string><![CDATA[Ptplot5_2]]></string>
 									</property>
 									<property name="macMagicFolderPath">
-										<string><![CDATA[$USER_MAGIC_FOLDER_1$]]></string>
+										<string><![CDATA[Ptplot5_2]]></string>
 									</property>
 									<property name="macXMagicFolderPath">
-										<string><![CDATA[$USER_MAGIC_FOLDER_1$]]></string>
+										<string><![CDATA[Ptplot5_2]]></string>
 									</property>
 									<property name="win32MagicFolderPath">
-										<string><![CDATA[Ptplot5_2]]></string>
+										<string><![CDATA[$USER_MAGIC_FOLDER_1$]]></string>
 									</property>
 								</object>
 							</property>
@@ -537,7 +537,7 @@ and any path to a file to read from that file]]></string>
 										<boolean>false</boolean>
 									</property>
 									<property name="sourcePath">
-										<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\bin]]></string>
+										<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\bin]]></string>
 									</property>
 									<property name="shouldUninstall">
 										<boolean>true</boolean>
@@ -563,7 +563,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\bin\]]></string>
+												<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\bin\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -589,7 +589,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\bin\]]></string>
+												<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\bin\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -615,7 +615,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\bin\]]></string>
+												<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\bin\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -641,7 +641,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\bin\]]></string>
+												<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\bin\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -667,7 +667,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\bin\]]></string>
+												<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\bin\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -695,7 +695,7 @@ and any path to a file to read from that file]]></string>
 										<boolean>false</boolean>
 									</property>
 									<property name="sourcePath">
-										<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\com]]></string>
+										<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\com]]></string>
 									</property>
 									<property name="shouldUninstall">
 										<boolean>true</boolean>
@@ -721,7 +721,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\com\]]></string>
+												<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\com\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -747,7 +747,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\com\microstar]]></string>
+												<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\com\microstar]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -773,7 +773,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\com\microstar\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\com\microstar\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -799,7 +799,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\com\microstar\xml]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\com\microstar\xml]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -825,7 +825,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\com\microstar\xml\demo]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\com\microstar\xml\demo]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -851,7 +851,7 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																	<property name="sourcePath">
-																		<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\com\microstar\xml\demo\]]></string>
+																		<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\com\microstar\xml\demo\]]></string>
 																	</property>
 																	<property name="shouldUninstall">
 																		<boolean>true</boolean>
@@ -877,7 +877,7 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																	<property name="sourcePath">
-																		<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\com\microstar\xml\demo\]]></string>
+																		<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\com\microstar\xml\demo\]]></string>
 																	</property>
 																	<property name="shouldUninstall">
 																		<boolean>true</boolean>
@@ -903,7 +903,7 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																	<property name="sourcePath">
-																		<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\com\microstar\xml\demo\]]></string>
+																		<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\com\microstar\xml\demo\]]></string>
 																	</property>
 																	<property name="shouldUninstall">
 																		<boolean>true</boolean>
@@ -929,7 +929,7 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																	<property name="sourcePath">
-																		<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\com\microstar\xml\demo\]]></string>
+																		<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\com\microstar\xml\demo\]]></string>
 																	</property>
 																	<property name="shouldUninstall">
 																		<boolean>true</boolean>
@@ -955,7 +955,7 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																	<property name="sourcePath">
-																		<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\com\microstar\xml\demo\]]></string>
+																		<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\com\microstar\xml\demo\]]></string>
 																	</property>
 																	<property name="shouldUninstall">
 																		<boolean>true</boolean>
@@ -981,7 +981,7 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																	<property name="sourcePath">
-																		<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\com\microstar\xml\demo\]]></string>
+																		<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\com\microstar\xml\demo\]]></string>
 																	</property>
 																	<property name="shouldUninstall">
 																		<boolean>true</boolean>
@@ -1007,7 +1007,7 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																	<property name="sourcePath">
-																		<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\com\microstar\xml\demo\]]></string>
+																		<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\com\microstar\xml\demo\]]></string>
 																	</property>
 																	<property name="shouldUninstall">
 																		<boolean>true</boolean>
@@ -1033,7 +1033,7 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																	<property name="sourcePath">
-																		<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\com\microstar\xml\demo\]]></string>
+																		<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\com\microstar\xml\demo\]]></string>
 																	</property>
 																	<property name="shouldUninstall">
 																		<boolean>true</boolean>
@@ -1061,7 +1061,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\com\microstar\xml\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\com\microstar\xml\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -1087,7 +1087,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\com\microstar\xml\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\com\microstar\xml\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -1113,7 +1113,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\com\microstar\xml\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\com\microstar\xml\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -1139,7 +1139,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\com\microstar\xml\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\com\microstar\xml\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -1165,7 +1165,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\com\microstar\xml\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\com\microstar\xml\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -1191,7 +1191,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\com\microstar\xml\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\com\microstar\xml\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -1223,7 +1223,7 @@ and any path to a file to read from that file]]></string>
 										<boolean>false</boolean>
 									</property>
 									<property name="sourcePath">
-										<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\config]]></string>
+										<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\config]]></string>
 									</property>
 									<property name="shouldUninstall">
 										<boolean>true</boolean>
@@ -1249,7 +1249,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\config\]]></string>
+												<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\config\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -1275,7 +1275,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\config\]]></string>
+												<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\config\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -1303,7 +1303,7 @@ and any path to a file to read from that file]]></string>
 										<boolean>false</boolean>
 									</property>
 									<property name="sourcePath">
-										<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\]]></string>
+										<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\]]></string>
 									</property>
 									<property name="shouldUninstall">
 										<boolean>true</boolean>
@@ -1329,7 +1329,7 @@ and any path to a file to read from that file]]></string>
 										<boolean>false</boolean>
 									</property>
 									<property name="sourcePath">
-										<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\]]></string>
+										<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\]]></string>
 									</property>
 									<property name="shouldUninstall">
 										<boolean>true</boolean>
@@ -1355,7 +1355,7 @@ and any path to a file to read from that file]]></string>
 										<boolean>false</boolean>
 									</property>
 									<property name="sourcePath">
-										<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\]]></string>
+										<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\]]></string>
 									</property>
 									<property name="shouldUninstall">
 										<boolean>true</boolean>
@@ -1381,7 +1381,7 @@ and any path to a file to read from that file]]></string>
 										<boolean>false</boolean>
 									</property>
 									<property name="sourcePath">
-										<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\doc]]></string>
+										<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\doc]]></string>
 									</property>
 									<property name="shouldUninstall">
 										<boolean>true</boolean>
@@ -1407,7 +1407,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\doc\]]></string>
+												<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\doc\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -1433,7 +1433,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\doc\codeDoc]]></string>
+												<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\doc\codeDoc]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -1459,7 +1459,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\doc\codeDoc\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\doc\codeDoc\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -1485,7 +1485,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\doc\codeDoc\com]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\doc\codeDoc\com]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -1511,7 +1511,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\doc\codeDoc\com\microstar]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\doc\codeDoc\com\microstar]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -1537,7 +1537,7 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																	<property name="sourcePath">
-																		<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\doc\codeDoc\com\microstar\xml]]></string>
+																		<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\doc\codeDoc\com\microstar\xml]]></string>
 																	</property>
 																	<property name="shouldUninstall">
 																		<boolean>true</boolean>
@@ -1563,7 +1563,7 @@ and any path to a file to read from that file]]></string>
 																				<boolean>false</boolean>
 																			</property>
 																			<property name="sourcePath">
-																				<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\doc\codeDoc\com\microstar\xml\]]></string>
+																				<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\doc\codeDoc\com\microstar\xml\]]></string>
 																			</property>
 																			<property name="shouldUninstall">
 																				<boolean>true</boolean>
@@ -1589,7 +1589,7 @@ and any path to a file to read from that file]]></string>
 																				<boolean>false</boolean>
 																			</property>
 																			<property name="sourcePath">
-																				<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\doc\codeDoc\com\microstar\xml\]]></string>
+																				<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\doc\codeDoc\com\microstar\xml\]]></string>
 																			</property>
 																			<property name="shouldUninstall">
 																				<boolean>true</boolean>
@@ -1615,7 +1615,7 @@ and any path to a file to read from that file]]></string>
 																				<boolean>false</boolean>
 																			</property>
 																			<property name="sourcePath">
-																				<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\doc\codeDoc\com\microstar\xml\]]></string>
+																				<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\doc\codeDoc\com\microstar\xml\]]></string>
 																			</property>
 																			<property name="shouldUninstall">
 																				<boolean>true</boolean>
@@ -1641,7 +1641,7 @@ and any path to a file to read from that file]]></string>
 																				<boolean>false</boolean>
 																			</property>
 																			<property name="sourcePath">
-																				<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\doc\codeDoc\com\microstar\xml\]]></string>
+																				<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\doc\codeDoc\com\microstar\xml\]]></string>
 																			</property>
 																			<property name="shouldUninstall">
 																				<boolean>true</boolean>
@@ -1667,7 +1667,7 @@ and any path to a file to read from that file]]></string>
 																				<boolean>false</boolean>
 																			</property>
 																			<property name="sourcePath">
-																				<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\doc\codeDoc\com\microstar\xml\]]></string>
+																				<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\doc\codeDoc\com\microstar\xml\]]></string>
 																			</property>
 																			<property name="shouldUninstall">
 																				<boolean>true</boolean>
@@ -1693,7 +1693,7 @@ and any path to a file to read from that file]]></string>
 																				<boolean>false</boolean>
 																			</property>
 																			<property name="sourcePath">
-																				<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\doc\codeDoc\com\microstar\xml\]]></string>
+																				<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\doc\codeDoc\com\microstar\xml\]]></string>
 																			</property>
 																			<property name="shouldUninstall">
 																				<boolean>true</boolean>
@@ -1719,7 +1719,7 @@ and any path to a file to read from that file]]></string>
 																				<boolean>false</boolean>
 																			</property>
 																			<property name="sourcePath">
-																				<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\doc\codeDoc\com\microstar\xml\]]></string>
+																				<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\doc\codeDoc\com\microstar\xml\]]></string>
 																			</property>
 																			<property name="shouldUninstall">
 																				<boolean>true</boolean>
@@ -1751,7 +1751,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\doc\codeDoc\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\doc\codeDoc\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -1777,7 +1777,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\doc\codeDoc\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\doc\codeDoc\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -1803,7 +1803,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\doc\codeDoc\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\doc\codeDoc\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -1829,7 +1829,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\doc\codeDoc\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\doc\codeDoc\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -1855,7 +1855,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\doc\codeDoc\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\doc\codeDoc\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -1881,7 +1881,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\doc\codeDoc\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\doc\codeDoc\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -1907,7 +1907,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\doc\codeDoc\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\doc\codeDoc\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -1933,7 +1933,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\doc\codeDoc\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\doc\codeDoc\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -1959,7 +1959,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\doc\codeDoc\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\doc\codeDoc\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -1985,7 +1985,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\doc\codeDoc\ptolemy]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\doc\codeDoc\ptolemy]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -2011,7 +2011,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\doc\codeDoc\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\doc\codeDoc\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -2037,7 +2037,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\doc\codeDoc\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\doc\codeDoc\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -2065,7 +2065,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\doc\]]></string>
+												<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\doc\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -2091,7 +2091,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\doc\]]></string>
+												<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\doc\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -2117,7 +2117,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\doc\]]></string>
+												<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\doc\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -2143,7 +2143,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\doc\img]]></string>
+												<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\doc\img]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -2169,7 +2169,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\doc\]]></string>
+												<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\doc\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -2195,7 +2195,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\doc\]]></string>
+												<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\doc\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -2221,7 +2221,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\doc\]]></string>
+												<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\doc\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -2249,7 +2249,7 @@ and any path to a file to read from that file]]></string>
 										<boolean>false</boolean>
 									</property>
 									<property name="sourcePath">
-										<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\]]></string>
+										<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\]]></string>
 									</property>
 									<property name="shouldUninstall">
 										<boolean>true</boolean>
@@ -2275,7 +2275,7 @@ and any path to a file to read from that file]]></string>
 										<boolean>false</boolean>
 									</property>
 									<property name="sourcePath">
-										<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\mk]]></string>
+										<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\mk]]></string>
 									</property>
 									<property name="shouldUninstall">
 										<boolean>true</boolean>
@@ -2301,7 +2301,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\mk\]]></string>
+												<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\mk\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -2327,7 +2327,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\mk\]]></string>
+												<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\mk\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -2353,7 +2353,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\mk\]]></string>
+												<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\mk\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -2379,7 +2379,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\mk\]]></string>
+												<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\mk\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -2405,7 +2405,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\mk\]]></string>
+												<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\mk\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -2433,7 +2433,7 @@ and any path to a file to read from that file]]></string>
 										<boolean>false</boolean>
 									</property>
 									<property name="sourcePath">
-										<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy]]></string>
+										<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy]]></string>
 									</property>
 									<property name="shouldUninstall">
 										<boolean>true</boolean>
@@ -2459,7 +2459,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\gui]]></string>
+												<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\gui]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -2485,7 +2485,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\gui\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\gui\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -2511,7 +2511,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\gui\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\gui\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -2537,7 +2537,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\gui\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\gui\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -2563,7 +2563,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\gui\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\gui\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -2589,7 +2589,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\gui\demo]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\gui\demo]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -2615,7 +2615,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\gui\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\gui\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -2641,7 +2641,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\gui\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\gui\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -2667,7 +2667,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\gui\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\gui\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -2693,7 +2693,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\gui\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\gui\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -2719,7 +2719,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\gui\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\gui\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -2745,7 +2745,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\gui\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\gui\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -2773,7 +2773,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\gui\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\gui\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -2799,7 +2799,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\gui\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\gui\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -2825,7 +2825,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\gui\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\gui\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -2851,7 +2851,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\gui\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\gui\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -2877,7 +2877,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\gui\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\gui\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -2903,7 +2903,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\gui\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\gui\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -2929,7 +2929,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\gui\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\gui\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -2955,7 +2955,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\gui\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\gui\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -2981,7 +2981,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\gui\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\gui\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -3007,7 +3007,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\gui\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\gui\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -3035,7 +3035,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot]]></string>
+												<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -3061,7 +3061,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -3087,7 +3087,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\compat]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\compat]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -3114,7 +3114,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\compat\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\compat\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -3140,7 +3140,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\compat\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\compat\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -3166,7 +3166,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\compat\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\compat\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -3192,7 +3192,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\compat\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\compat\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -3220,7 +3220,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -3246,7 +3246,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -3272,7 +3272,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -3298,7 +3298,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -3324,7 +3324,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -3350,7 +3350,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -3376,7 +3376,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\data]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo\data]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -3402,7 +3402,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -3428,7 +3428,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -3454,7 +3454,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -3480,7 +3480,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -3506,7 +3506,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -3532,7 +3532,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -3558,7 +3558,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -3584,7 +3584,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -3610,7 +3610,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -3636,7 +3636,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -3662,7 +3662,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -3688,7 +3688,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -3714,7 +3714,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -3740,7 +3740,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -3766,7 +3766,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -3792,7 +3792,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -3818,7 +3818,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -3844,7 +3844,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -3870,7 +3870,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -3896,7 +3896,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -3922,7 +3922,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -3948,7 +3948,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -3974,7 +3974,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -4000,7 +4000,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -4026,7 +4026,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -4052,7 +4052,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -4078,7 +4078,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -4104,7 +4104,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -4130,7 +4130,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -4156,7 +4156,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -4182,7 +4182,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -4208,7 +4208,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -4234,7 +4234,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -4262,7 +4262,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\doc]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\doc]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -4288,7 +4288,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\doc\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\doc\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -4314,7 +4314,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\doc\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\doc\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -4340,7 +4340,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\doc\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\doc\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -4366,7 +4366,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\doc\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\doc\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -4392,7 +4392,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\doc\download]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\doc\download]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -4418,7 +4418,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\doc\img]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\doc\img]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -4444,7 +4444,7 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																	<property name="sourcePath">
-																		<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\doc\img\]]></string>
+																		<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\doc\img\]]></string>
 																	</property>
 																	<property name="shouldUninstall">
 																		<boolean>true</boolean>
@@ -4470,7 +4470,7 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																	<property name="sourcePath">
-																		<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\doc\img\]]></string>
+																		<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\doc\img\]]></string>
 																	</property>
 																	<property name="shouldUninstall">
 																		<boolean>true</boolean>
@@ -4496,7 +4496,7 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																	<property name="sourcePath">
-																		<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\doc\img\]]></string>
+																		<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\doc\img\]]></string>
 																	</property>
 																	<property name="shouldUninstall">
 																		<boolean>true</boolean>
@@ -4522,7 +4522,7 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																	<property name="sourcePath">
-																		<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\doc\img\]]></string>
+																		<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\doc\img\]]></string>
 																	</property>
 																	<property name="shouldUninstall">
 																		<boolean>true</boolean>
@@ -4548,7 +4548,7 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																	<property name="sourcePath">
-																		<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\doc\img\]]></string>
+																		<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\doc\img\]]></string>
 																	</property>
 																	<property name="shouldUninstall">
 																		<boolean>true</boolean>
@@ -4574,7 +4574,7 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																	<property name="sourcePath">
-																		<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\doc\img\]]></string>
+																		<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\doc\img\]]></string>
 																	</property>
 																	<property name="shouldUninstall">
 																		<boolean>true</boolean>
@@ -4602,7 +4602,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\doc\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\doc\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -4628,7 +4628,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\doc\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\doc\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -4654,7 +4654,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\doc\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\doc\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -4680,7 +4680,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\doc\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\doc\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -4706,7 +4706,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\doc\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\doc\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -4732,7 +4732,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\doc\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\doc\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -4758,7 +4758,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\doc\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\doc\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -4784,7 +4784,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\doc\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\doc\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -4810,7 +4810,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\doc\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\doc\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -4836,7 +4836,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\doc\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\doc\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -4864,7 +4864,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -4890,7 +4890,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -4916,7 +4916,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -4942,7 +4942,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -4968,7 +4968,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -4994,7 +4994,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\img]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\img]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -5020,7 +5020,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -5046,7 +5046,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -5072,7 +5072,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -5098,7 +5098,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -5124,7 +5124,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -5150,7 +5150,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -5177,7 +5177,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -5203,7 +5203,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -5229,7 +5229,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -5255,7 +5255,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -5281,7 +5281,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -5307,7 +5307,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -5333,7 +5333,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -5359,7 +5359,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\plotml]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\plotml]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -5385,7 +5385,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\plotml\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\plotml\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -5411,7 +5411,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\plotml\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\plotml\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -5437,7 +5437,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\plotml\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\plotml\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -5463,7 +5463,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\plotml\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\plotml\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -5489,7 +5489,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\plotml\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\plotml\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -5515,7 +5515,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\plotml\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\plotml\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -5541,7 +5541,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\plotml\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\plotml\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -5567,7 +5567,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\plotml\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\plotml\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -5593,7 +5593,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\plotml\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\plotml\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -5619,7 +5619,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\plotml\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\plotml\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -5645,7 +5645,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\plotml\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\plotml\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -5671,7 +5671,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\plotml\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\plotml\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -5697,7 +5697,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\plotml\]]></string>
+																<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\plotml\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -5725,7 +5725,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -5751,7 +5751,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -5777,7 +5777,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -5803,7 +5803,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -5829,7 +5829,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -5855,7 +5855,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -5881,7 +5881,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -5907,7 +5907,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -5933,7 +5933,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -5959,7 +5959,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\test]]></string>
+														<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\test]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -5989,7 +5989,7 @@ and any path to a file to read from that file]]></string>
 										<boolean>false</boolean>
 									</property>
 									<property name="sourcePath">
-										<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\]]></string>
+										<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\]]></string>
 									</property>
 									<property name="shouldUninstall">
 										<boolean>true</boolean>
@@ -6156,7 +6156,7 @@ it will search for ones in this list]]></string>
 												</object>
 											</method>
 											<method name="addElement">
-												<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="b1ceef77979d">
+												<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="d697951d8bb9">
 													<property name="propertyValue">
 														<string><![CDATA[ptolemy.plot.compat.PxgraphApplication]]></string>
 													</property>
@@ -6199,10 +6199,10 @@ and any path to a file to read from that file]]></string>
 												<string><![CDATA[ptplot32.gif]]></string>
 											</property>
 											<property name="smallIconPath">
-												<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\doc\img\]]></string>
+												<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\doc\img\]]></string>
 											</property>
 											<property name="largeIconPath">
-												<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\doc\img\]]></string>
+												<string><![CDATA[$IA_PROJECT_DIR$\adm\tmp\ptplot5.2\ptolemy\plot\doc\img\]]></string>
 											</property>
 										</object>
 									</property>
@@ -6361,7 +6361,7 @@ it will search for ones in this list]]></string>
 												</object>
 											</method>
 											<method name="addElement">
-												<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="b1ceef9597a4">
+												<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="d697953b8bc0">
 													<property name="propertyValue">
 														<string><![CDATA[ptolemy.plot.plotml.HistogramMLApplication]]></string>
 													</property>
@@ -6404,10 +6404,10 @@ and any path to a file to read from that file]]></string>
 												<string><![CDATA[histogram32.gif]]></string>
 											</property>
 											<property name="smallIconPath">
-												<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\doc\img\]]></string>
+												<string><![CDATA[$IA_PROJECT_DIR$\doc\img\]]></string>
 											</property>
 											<property name="largeIconPath">
-												<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\doc\img\]]></string>
+												<string><![CDATA[$IA_PROJECT_DIR$\doc\img\]]></string>
 											</property>
 										</object>
 									</property>
@@ -6430,7 +6430,7 @@ and any path to a file to read from that file]]></string>
 				<string><![CDATA[The installer cannot run on your configuration. It will now quit.]]></string>
 			</property>
 			<property name="userSplashPath">
-				<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\doc\img\]]></string>
+				<string><![CDATA[$IA_PROJECT_DIR$\doc\img\]]></string>
 			</property>
 			<property name="userSplashName">
 				<string><![CDATA[ptplotSplash.gif]]></string>
@@ -6561,6 +6561,16 @@ You may cancel this installation at any time by clicking the 'Cancel' button.]]>
 						</object>
 					</method>
 					<method name="addElement">
+						<object class="com.zerog.ia.installer.actions.EditVariableTable" objectID="d6996b0b8be7">
+							<property name="name">
+								<string><![CDATA[USER_MAGIC_FOLDER_1]]></string>
+							</property>
+							<property name="value">
+								<string><![CDATA[Ptolemy$/$Ptplot52]]></string>
+							</property>
+						</object>
+					</method>
+					<method name="addElement">
 						<object class="com.zerog.ia.installer.actions.LicenseAgrAction" objectID="986c4186926f">
 							<property name="imageOption">
 								<int>1</int>
@@ -6578,7 +6588,7 @@ You may cancel this installation at any time by clicking the 'Cancel' button.]]>
 								<string><![CDATA[Installation and Use of $PRODUCT_NAME$ Requires Acceptance of the Following License Agreement:]]></string>
 							</property>
 							<property name="resourcePath">
-								<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\]]></string>
+								<string><![CDATA[$IA_PROJECT_DIR$\adm\]]></string>
 							</property>
 							<property name="resourceName">
 								<string><![CDATA[copyright.txt]]></string>
@@ -6638,8 +6648,8 @@ You may cancel this installation at any time by clicking the 'Cancel' button.]]>
 							</property>
 							<property name="additionalText">
 								<string><![CDATA[It is best if the pathname to the installation directory does not include any spaces.
-If the pathname does include spaces, then under Java 1.4.0, certain applets that read
-data files from the local disk may fail.]]></string>
+If the pathname does include spaces, then under Java 1.4.0, certain
+applets that read data files from the local disk may fail.]]></string>
 							</property>
 							<property name="canManuallyEnterPath">
 								<boolean>true</boolean>
@@ -6844,7 +6854,7 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 						<string><![CDATA[]]></string>
 					</property>
 					<property name="win32MagicFolderPath">
-						<string><![CDATA[Ptplot 5.2]]></string>
+						<string><![CDATA[$USER_MAGIC_FOLDER_1$]]></string>
 					</property>
 				</object>
 			</property>
@@ -6864,7 +6874,7 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 				<object class="java.util.Properties">
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.project.save.last.date]]></string>
-						<string><![CDATA[Sun Jun 23 11:58:04 PDT 2002]]></string>
+						<string><![CDATA[Sun Jun 30 15:20:09 PDT 2002]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.options.optimization.platform.merge]]></string>
@@ -6896,7 +6906,7 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.project.build.last.date]]></string>
-						<string><![CDATA[Sun Jun 23 11:56:06 PDT 2002]]></string>
+						<string><![CDATA[Sun Jun 30 15:20:09 PDT 2002]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.installer.options.stderr.redirect]]></string>

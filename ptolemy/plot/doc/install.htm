@@ -89,12 +89,12 @@ the <a href="troubleshooting.htm#spaces">Troubleshooting Guide</a>.
 <li> Set the <CODE>PTII</CODE> environment variable to point
 to the top of the Ptplot tree.  Under C-shell, one would do:
 <pre>
-setenv PTII ~/src/ptplot5.2
+setenv PTII ~/src/ptolemy/ptplot5.2
 </pre>
 
 Under Cygwin with bash:
 <pre>
-PTII=c:\\Ptplot5_2
+PTII=c:\\ptolemy\ptplot5.2
 export PTII
 </pre>
 
@@ -201,10 +201,13 @@ downloaded the tar or zip files.
 <li> Set the <CODE>PTII</CODE> variable to the top-level
 directory of the Ptplot tree.
 <pre>
-C:\ptplot5.2&gt; PTII=c:\ptplot5.2
+C:\ptolemy\ptplot5.2&gt; PTII=c:\\ptolemy\\ptplot5.2
 </pre>
 <CODE>PTII</CODE> is used by the standalone <CODE>ptplot.bat</CODE>
 script and other scripts
+<br>(The double backslash is necessary because otherwise bash will interpret 
+<code>c:\ptolemy\ptplot5.2</code> as <code>c:ptolemyptolemy5.2</code>)
+
 <li> Be sure that <code>java</code> is in your path by running
 <code>java -version</code>
 <li> Add <code>%PTII%\bin</code> to your PATH.
@@ -221,26 +224,26 @@ Cygwin.
 ptolemy\plot.
 
 <pre>
-C:\ptplot5.2&gt; cd ptolemy\plot
+C:\ptolemy\ptplot5.2&gt; cd ptolemy\plot
 </pre>
 
 
 <li> set your CLASSPATH to ..\..
 <pre>
-C:\ptplot5.2\ptolemy\plot&gt;set CLASSPATH=..\..
-C:\ptplot5.2\ptolemy\plot&gt;echo %CLASSPATH%
+C:\ptolemy\ptplot5.2\ptolemy\plot&gt;set CLASSPATH=..\..
+C:\ptolemy\ptplot5.2\ptolemy\plot&gt;echo %CLASSPATH%
 ..\..
 </pre>
 
 <li> Remove the old Java files and compile them
 <pre>
-C:\ptplot5.2\ptolemy\plot&gt;del  *.class
-C:\ptplot5.2\ptolemy\plot&gt;javac *.java
+C:\ptolemy\ptplot5.2\ptolemy\plot&gt;del  *.class
+C:\ptolemy\ptplot5.2\ptolemy\plot&gt;javac *.java
 </pre>
 
 <li> Run <CODE>ptplot.bat</CODE>, which reads <CODE>%PTII%</CODE>
 <pre>
-C:\ptplot5.2\ptolemy\plot&gt;ptplot.bat
+C:\ptolemy\ptplot5.2\ptolemy\plot&gt;ptplot.bat
 </pre>
 
 </ol>
@@ -316,15 +319,16 @@ then <CODE>ptolemy.plot.plotml.HistogramMLApplication</CODE> is run
  <p>If the <CODE>ptplot</CODE> script is copied to <CODE>pxgraph</CODE>,
 then <CODE>ptolemy.plot.compat.PxgraphApplication</CODE> is run
 
- <p>Under Unix, you can use a hard link to create the histogram and
-pxgraph script:
+ <p>Under Unix or Windows with Cygwin, you can use a hard link to
+create the histogram and pxgraph script:
+
 <pre>
 cd $PTII/bin
 ln ptplot histogram
 ln ptplot pxgraph
 </pre>
 
- <p>Under Windows, three .bat scripts are provided:
+ <p>Under Windows in a DOS shell, three .bat scripts are provided:
 <CODE>ptplot.bat</CODE>, <CODE>histogram.bat</CODE> and
 <CODE>pxgraph.bat</CODE>
 
