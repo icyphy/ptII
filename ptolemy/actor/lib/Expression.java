@@ -43,6 +43,8 @@ import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.ScopeExtender;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.expr.ParseTreeEvaluator;
+import ptolemy.data.expr.ParseTreeTypeInference;
+import ptolemy.data.expr.ParseTreeFreeVariableCollector;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.type.BaseType;
@@ -51,12 +53,14 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.*;
+import ptolemy.graph.InequalityTerm;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
-
+import java.util.Set;
+import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// Expression
@@ -134,6 +138,8 @@ public class Expression extends TypedAtomicActor {
 
         output = new TypedIOPort(this, "output", false, true);
         expression = new StringAttribute(this, "expression");
+
+        _setOutputTypeConstraint();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -178,6 +184,7 @@ public class Expression extends TypedAtomicActor {
         newObject._parseTree = null;
         newObject._parseTreeEvaluator = null;
         newObject._scope = null;
+        newObject._setOutputTypeConstraint();
         return newObject;
     }
 
@@ -248,6 +255,49 @@ public class Expression extends TypedAtomicActor {
         return true;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                       private methods                     ////
+
+    // Find the variable with the given name in the scope of
+    // this actor, and return it.  If there is no such
+    // variable, then return null.
+    private Variable _findVariable(String name) {
+        NamedObj container = (NamedObj)Expression.this;
+        while (container != null) {
+            Variable result = _searchIn(container, name);
+            if (result != null) {
+                return result;
+            } else {
+                container = (NamedObj)container.getContainer();
+            }
+        }
+        return null;
+    }
+
+    // Search in the container for an attribute with the given name.
+    // Search recursively in any instance of ScopeExtender in the
+    // container.
+    private Variable _searchIn(NamedObj container, String name) {
+        Attribute result = container.getAttribute(name);
+        if (result != null && result instanceof Variable)
+            return (Variable)result;
+        Iterator extenders =
+            container.attributeList(ScopeExtender.class).iterator();
+        while (extenders.hasNext()) {
+            ScopeExtender extender = (ScopeExtender)extenders.next();
+            result = extender.getAttribute(name);
+            if (result != null && result instanceof Variable)
+                return (Variable)result;
+        }
+        return null;
+    }
+
+    // Add a constraint to the type output port of this object.
+    private void _setOutputTypeConstraint() {
+        // NOTE: uncomment this line to add better type constraints.
+        //      output.setTypeAtLeast(new OutputTypeFunction());
+    }
+
     private class VariableScope implements ParserScope {
 
         /** Look up and return the attribute with the specified name in the
@@ -255,8 +305,6 @@ public class Expression extends TypedAtomicActor {
          *  @return The attribute with the specified name in the scope.
          */
         public Token get(String name) throws IllegalActionException {
-            Variable result = null;
-                      
             if(name.equals("time")) {
                 return new DoubleToken(getDirector().getCurrentTime());
             } else if(name.equals("iteration")) {
@@ -267,15 +315,10 @@ public class Expression extends TypedAtomicActor {
             if(token != null) {
                 return token;
             }
-                     
-            NamedObj container = (NamedObj)Expression.this;
-            while (container != null) {
-                result = _searchIn(container, name);
-                if (result != null) {
-                    return result.getToken();
-                } else {
-                    container = (NamedObj)container.getContainer();
-                }
+            
+            Variable result = _findVariable(name);     
+            if (result != null) {
+                return result.getToken();
             }
             return null;
         }
@@ -286,8 +329,6 @@ public class Expression extends TypedAtomicActor {
          *  @return The attribute with the specified name in the scope.
          */
         public Type getType(String name) throws IllegalActionException {
-            Variable result = null;
-
             if(name.equals("time")) {
                 return BaseType.DOUBLE;
             } else if(name.equals("iteration")) {
@@ -299,15 +340,10 @@ public class Expression extends TypedAtomicActor {
             if(port != null) {
                 return port.getType();
             }
-                     
-            NamedObj container = (NamedObj)Expression.this;
-            while (container != null) {
-                result = _searchIn(container, name);
-                if (result != null) {
-                    return result.getType();
-                } else {
-                    container = (NamedObj)container.getContainer();
-                }
+              
+            Variable result = _findVariable(name);
+            if(result != null) {
+                return result.getType();
             }
             return null;
         }
@@ -318,26 +354,142 @@ public class Expression extends TypedAtomicActor {
         public NamedList variableList() {
             return null;
         }
-
-        // Search in the container for an attribute with the given name.
-        // Search recursively in any instance of ScopeExtender in the
-        // container.
-        private Variable _searchIn(NamedObj container, String name) {
-            Attribute result = container.getAttribute(name);
-            if (result != null && result instanceof Variable)
-                return (Variable)result;
-            Iterator extenders =
-                    container.attributeList(ScopeExtender.class).iterator();
-            while (extenders.hasNext()) {
-                ScopeExtender extender = (ScopeExtender)extenders.next();
-                result = extender.getAttribute(name);
-                if (result != null && result instanceof Variable)
-                    return (Variable)result;
-            }
-            return null;
-        }
     }
+    
+    // This class implements a monotonic function of the type of
+    // the output port.
+    // The function value is determined by type inference on the
+    // expression, in the scope of this Expression actor.
+    private class OutputTypeFunction implements InequalityTerm {
 
+	///////////////////////////////////////////////////////////////
+	////                       public inner methods            ////
+
+	/** Return null.
+	 *  @return null.
+	 */
+	public Object getAssociatedObject() {
+	    return null;
+	}
+
+	/** Return the function result.
+	 *  @return A Type.
+	 */
+	public Object getValue() {
+            try {
+                if(_parseTree == null) {
+                    PtParser parser = new PtParser();
+                    _parseTree = parser.generateParseTree(
+                            expression.getExpression());
+                }
+           
+                if(_scope == null) {
+                    _scope = new VariableScope();
+                }
+                Type type = _typeInference.inferTypes(_parseTree, _scope);
+                return type;
+            } catch (IllegalActionException ex) {
+                // Note: how do we know this is monotonic? An error
+                // could occur anywhere in solving..
+                return BaseType.UNKNOWN;
+            }
+        }
+        
+        /** Return the type variable in this inequality term. If the type
+	 *  of the input port is not declarad, return an one element array
+	 *  containing the inequality term representing the type of the port;
+	 *  otherwise, return an empty array.
+	 *  @return An array of InequalityTerm.
+         */
+        public InequalityTerm[] getVariables() {
+            // Return an array that contains type terms for all of the 
+            // inputs and all of the parameters that are free variables for 
+            // the expression.
+            try {
+                if(_parseTree == null) {
+                    PtParser parser = new PtParser();
+                    _parseTree = parser.generateParseTree(
+                            expression.getExpression());
+                }
+            
+                if(_scope == null) {
+                    _scope = new VariableScope();
+                }
+                Set set = 
+                    _variableCollector.collectFreeVariables(_parseTree, _scope);
+                List termList = new LinkedList();
+                for(Iterator elements = set.iterator();
+                    elements.hasNext();) {
+                    String name = (String)elements.next();
+                    if(name.equals("time") ||
+                            name.equals("iteration")) {
+                        continue;
+                    }
+                    TypedIOPort port = (TypedIOPort)getPort(name);
+                    if(port != null && port.getTypeTerm().isSettable()) {
+                        termList.add(port.getTypeTerm());
+                        continue;
+                    } 
+                    Variable result = _findVariable(name);
+                    if (result != null && result.getTypeTerm().isSettable()) {
+                        termList.add(result.getTypeTerm());
+                        continue;
+                    }
+                }
+                return (InequalityTerm[])termList.toArray(
+                        new InequalityTerm[termList.size()]);
+            } catch (IllegalActionException ex) {
+                return new InequalityTerm[0];
+            }
+        }
+
+        /** Throw an Exception. This method cannot be called on a function
+	 *  term.
+         *  @exception IllegalActionException Always thrown.
+         */
+        public void initialize(Object e)
+		throws IllegalActionException {
+	    throw new IllegalActionException(getClass().getName()
+                    + ": Cannot initialize a function term.");
+        }
+
+        /** Return false.
+         *  @return false.
+         */
+        public boolean isSettable() {
+	    return false;
+        }
+
+        /** Return true.
+         *  @return True.
+         */
+        public boolean isValueAcceptable() {
+            return true;
+        }
+
+        /** Throw an Exception. The value of a function term cannot be set.
+         *  @exception IllegalActionException Always thrown.
+         */
+        public void setValue(Object e) throws IllegalActionException {
+	    throw new IllegalActionException(getClass().getName()
+                    + ": The type is not settable.");
+        }
+
+        /** Override the base class to give a description of this term.
+         *  @return A description of this term.
+         */
+        public String toString() {
+            return "(" + getClass().getName() + ", " + getValue() + ")";
+        }
+
+        ///////////////////////////////////////////////////////////////
+        ////                       private inner variable          ////
+
+	private ParseTreeTypeInference _typeInference =
+        new ParseTreeTypeInference();
+        private ParseTreeFreeVariableCollector _variableCollector = 
+        new ParseTreeFreeVariableCollector();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
