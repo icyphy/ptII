@@ -192,7 +192,7 @@ public final class ASTReflect {
 	CompileUnitNode compileUnitNode = null;
 	if (myClass.isInterface()) {
 	    InterfaceDeclNode interfaceDeclNode = null;
-        if (StaticResolution.shallowLoading && StaticResolution.enableShallowLoading) 
+        if (StaticResolution.shallowLoadingEnabled()) 
 		    interfaceDeclNode = ASTShallowInterfaceDeclNode(myClass);
         else interfaceDeclNode = ASTInterfaceDeclNode(myClass);
 	    compileUnitNode =
@@ -200,14 +200,13 @@ public final class ASTReflect {
                 TNLManip.addFirst(interfaceDeclNode));
 	} else {
         ClassDeclNode classDeclNode = null;
-        if (StaticResolution.shallowLoading && StaticResolution.enableShallowLoading)
+        if (StaticResolution.shallowLoadingEnabled())
 	        classDeclNode = ASTShallowClassDeclNode(myClass);
 	    else classDeclNode = ASTClassDeclNode(myClass);
 
 	    compileUnitNode = new CompileUnitNode(packageName,
                 /*imports*/ new LinkedList(), TNLManip.addFirst(classDeclNode));
 	}
-    StaticResolution.shallowLoading = true;  // reset shallow loading of ASTs
 	return compileUnitNode;
     }
 
@@ -1017,22 +1016,30 @@ public final class ASTReflect {
                     + ".\nA dump of the offending AST subtree follows.\n"
                     + node.toString());
         }
-        if (StaticResolution.debugLoading) {
+        if (StaticResolution.debugLoading) 
             System.out.println("_rebuildScopes: rebuilding scopes for '" 
                     + classDecl.fullName() + "'");
-            System.out.println("The scope before re-building:\n" 
-                    + ((classDecl.getScope() == null) ? "null." :
-                    classDecl.getScope().toString(true)));
-       }
 
         // Make sure the scope gets rebuilt, including the adding of inherited scopes.
         classDecl.invalidateScope();
         classDecl.removeVisitor(ResolveInheritanceVisitor.visitorClass());
+        if (parent.hasProperty(StaticResolution.IMPORTED_PACKAGES_KEY))
+            parent.removeProperty(StaticResolution.IMPORTED_PACKAGES_KEY); 
 
         parent.accept(new PackageResolutionVisitor(), null);
+
         parent.accept(new ResolveClassVisitor(), null);
+        
         parent.accept(new ResolveInheritanceVisitor(StaticResolution._defaultTypePolicy),
                 null);
+
+        // Make sure the compile unit is registered in the pass1-resolved set
+        String className = (String) 
+                parent.getDefinedProperty(JavaStaticSemanticConstants.IDENT_KEY);
+        if ((className != null) && 
+                (StaticResolution.allPass1ResolvedMap.get(className) == null)) {
+            StaticResolution.allPass1ResolvedMap.put(className, parent);
+        }
 
         if (StaticResolution.debugLoading) {
             System.out.println("The scope after re-building:\n" 

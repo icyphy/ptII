@@ -193,9 +193,8 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
                             + fullName()); 
                 Class loadedClass = null;
 
-                if (StaticResolution.shallowLoading && 
-                        StaticResolution.enableDeepUserASTs &&
-                        StaticResolution.enableShallowLoading) {
+                if (StaticResolution.shallowLoadingEnabled() &&
+                        StaticResolution.enableDeepUserASTs) {
                     // First, make sure that the class is already loaded or that
                     // we can load the class. Otherwise,
                     // we will have problems if we later have to convert to a deep AST.
@@ -243,7 +242,9 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
                     // openSource() might throw IOException if we can't
                     // get the canonical name of fileName.
                     File file = _pickLibrary(_container).openSource(fileName);
-                    StaticResolution.loadFile(file, 0); // should set the source
+
+                    // The following should set the source
+                    StaticResolution.loadFile(file, 0, fullName()); 
                 }
                 if ((_source == null) || (_source == AbsentTreeNode.instance)) {
                     throw new RuntimeException("file " + fileName +
@@ -263,6 +264,22 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
 
     public void setSuperClass(ClassDecl superClass) {
         _superClass = superClass;
+    }
+
+    /** Get a string representation of the scope of this class and recursively, 
+     *  of all super classes. The string representation includes (in parentheses)
+     *  the loading mode (shallow, full, or deep) of each class that is examined.
+     *  This is useful for diagnostic purposes.
+     *  @return The string representation of scope information.
+     */
+    public String getAllScopes() {
+        StringBuffer scopeString = new StringBuffer();
+        scopeString.append("Scope for Class " + fullName() + " ("
+                + ASTReflect.getLoadingMode((UserTypeDeclNode)getSource()) + "):\n");
+        scopeString.append(getScope().toString());
+        ClassDecl superClass = getSuperClass();
+        if (superClass != null) scopeString.append(superClass.getAllScopes());
+        return scopeString.toString(); 
     }
 
     /** @exception IOException If we can't get the canonical

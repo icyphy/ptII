@@ -69,6 +69,8 @@ public class StaticResolution implements JavaStaticSemanticConstants {
      */
     public static final void buildScopes() {
 
+        // FIXME: what if the compile unit has allready been pass1-resolved
+        // (it is already in the pass1 map)? We don't need to re-do this then.
         Iterator nodeItr = pass0ResolvedList.iterator();
         while (nodeItr.hasNext()) {
             CompileUnitNode node = (CompileUnitNode) nodeItr.next();
@@ -87,15 +89,32 @@ public class StaticResolution implements JavaStaticSemanticConstants {
                 + "\nA dump of the offending AST subtree follows.\n"
                 + node.toString());
             } else {
-                String filename = (String) node.getDefinedProperty(IDENT_KEY);
+                String className = (String) node.getDefinedProperty(IDENT_KEY);
 
-                if (filename != null) {
-                    allPass1ResolvedMap.put(filename, node);
+                if (className != null) {
+                    allPass1ResolvedMap.put(className, node);
                 }
             }
         }
 
         pass0ResolvedList.clear();
+    }
+    
+    /** Disable shallow loading of abstract syntax trees. */
+    public static void disableShallowLoading() {
+        _shallowLoadingEnabled = false;
+    }
+
+    /** Enable shallow loading of abstract syntax trees whenever possible */
+    public static void enableShallowLoading() {
+        _shallowLoadingEnabled = true;
+    }
+
+    /** Return 'true' if and only if shallow loading is presently enabled.
+     *  @return 'true'if and only if shallow loading is presently enabled.
+     */
+    public static boolean shallowLoadingEnabled() {
+        return _shallowLoadingEnabled; 
     }
 
     /** Get the default type visitor. */
@@ -115,6 +134,8 @@ public class StaticResolution implements JavaStaticSemanticConstants {
      */
     public static boolean invalidateCompileUnit(String canonicalFilename,
             int pass) {
+        if (traceLoading)
+            System.out.println("invalidateCompileUnit called on " + canonicalFilename); 
 	// This is called from ptolemy.codegen.ActorCodeGenerator
         if ((pass < 0) || (pass > 2)) {
             throw new IllegalArgumentException("invalid pass number : " +
@@ -184,6 +205,26 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         return found;
     }
 
+    /** Return a string representation of the list of loaded classes and interfaces, 
+     *  the associated
+     *  hash map keys, and the loading statuses. This is useful for diagnostic
+     *  purposes.
+     *  @return The string representation of loaded classes and interfaces.
+     */
+    public static String getLoadedASTNames() {
+        StringBuffer names = new StringBuffer("AST names (key : name (mode))\n");
+        Iterator keys = allPass0ResolvedMap.keySet().iterator();
+        while (keys.hasNext()) {
+            Object nextKey = keys.next();
+            CompileUnitNode unit = (CompileUnitNode) allPass0ResolvedMap.get(nextKey);
+            UserTypeDeclNode declaration = NodeUtil.getDefinedType(unit);
+            names.append(nextKey + ": " + ASTReflect.getFullyQualifiedName(declaration)
+                    + " (" + ASTReflect.getLoadingMode(declaration) + ")\n");
+        }
+        return names.toString();
+
+    }
+
     /** Returns a String representation of node, with qualifiers separated
      *	by periods, if node is a NameNode. If node is AbsentTreeNode.instance,
      *  return "absent name".
@@ -213,14 +254,13 @@ public class StaticResolution implements JavaStaticSemanticConstants {
             TypeNameNode currentClass, JavaDecl currentPackage,
             int categories) {
 
-        if (traceLoading) {
-            System.out.println("StaticResolution.resolveAName(): " +
-	  		        name.hashCode() + " " + nameString(name));
+        if (debugLoading) {
+            System.out.println("StaticResolution.resolveAName(): " + " " 
+                    + nameString(name));
         }
 
         // Check to whether or not we have already resolved the name.
         if (name.hasProperty(DECL_KEY)) {
-            //System.out.println("StaticResolution.resolveAName(): decl already defined, returning name" + name.hashCode());
             return name;
         }
 
@@ -255,7 +295,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
             {
                 ClassDecl classDecl = (ClassDecl) d;
 
-                if (traceLoading) {
+                if (debugLoading) {
 		            System.out.println("StaticResolution.resolveAName(): " +
 				    "about to call classDecl.loadSource() " +
 		 		    d.category + " " + classDecl.getName() );
@@ -290,7 +330,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
                     }
                 }
 
-                if (traceLoading) {
+                if (debugLoading) {
                     System.out.println("resolveAName " + nameString(name) +
                             " (user type) ok, returning ...");
                 }
@@ -320,7 +360,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
                 }
 
                 name.setQualifier(AbsentTreeNode.instance);
-                if (traceLoading) {
+                if (debugLoading) {
                     System.out.println("resolveAName " + nameString(name) +
                             " (field or method) ok, returning ...");
                 }
@@ -329,7 +369,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
         case CG_LOCALVAR:
         case CG_FORMAL:
-            if (traceLoading) {
+            if (debugLoading) {
                 System.out.println("resolveAName " + nameString(name) +
                         " (local var or formal param) ok, returning ...");
             }
@@ -468,14 +508,23 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     }
 
     /** Load the abstract syntax associated with the given file.
-         
         FIXME: this should probably throw the IOException 
+
+        @param file The given file.
+        @param pass The level of desired static resolution (0, 1, or 2).
+        @param className The class or interface name (if we know it) of the 
+        declaration that we are loading, or null (if we do not know the
+        class or interface name). Note: if the file has been loaded before,
+        then it is safest to specify the class name: the class name is used
+        to look up the class, and determine whether or not its AST is already
+        loaded (cached). 
+       
      */
-    public static CompileUnitNode loadFile(File file, int pass) { 
+    public static CompileUnitNode loadFile(File file, int pass, String className) { 
         if (traceLoading) System.out.println("StaticResolution.loadFile:" +
                 file.getName());
         try {
-            return _loadCanonicalFile(file.getCanonicalPath(), pass);
+            return _loadCanonicalFile(file.getCanonicalPath(), pass, className);
         } catch (Exception ex) {
 	    ex.printStackTrace();
             throw new RuntimeException("StaticResolution.loadFile(" +
@@ -484,10 +533,12 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     }
 
     /** Load the source file with the given filename. The filename may be
-     *  relative or absolute.
+     *  relative or absolute. The 'pass' and 'className' arguments are as in
+     *  loadFile.
      */
-    public static CompileUnitNode loadFileName(String filename, int pass) {
-        return loadFile(new File(filename), pass);
+    public static CompileUnitNode loadFileName(String filename, int pass,
+            String className) {
+        return loadFile(new File(filename), pass, className);
     }
 
     /** Load a CompileUnitNode that has been parsed. Go through all passes
@@ -497,11 +548,9 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     public static CompileUnitNode loadCompileUnit(CompileUnitNode node,
             int pass) {
 
-        if (traceLoading) {
+        if (traceLoading) 
             System.out.println("Starting loadCompileUnit(); " +
-                    "the allParsedMap size is " +
-                    JavaParserManip.allParsedMap.size());
-        }
+                    "the allParsedMap size is " + JavaParserManip.allParsedMap.size());
 
         switch (pass) {
         case 0:
@@ -536,26 +585,26 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     ////                         public variables                  ////
 
     // Outer-level packages have SYSTEM_PACKAGE as their container.
-    public static final PackageDecl SYSTEM_PACKAGE;
+    public static PackageDecl SYSTEM_PACKAGE;
     // UNNAMED_PACKAGE is contained by SYSTEM_PACKAGE.
-    public static final PackageDecl UNNAMED_PACKAGE;
-    public static final PackageDecl JAVA_LANG_PACKAGE;
+    public static PackageDecl UNNAMED_PACKAGE;
+    public static PackageDecl JAVA_LANG_PACKAGE;
 
-    public static final ClassDecl OBJECT_DECL;
-    public static final ClassDecl STRING_DECL;
-    public static final ClassDecl CLASS_DECL;
-    public static final ClassDecl CLONEABLE_DECL;
+    public static ClassDecl OBJECT_DECL;
+    public static ClassDecl STRING_DECL;
+    public static ClassDecl CLASS_DECL;
+    public static ClassDecl CLONEABLE_DECL;
 
-    public static final TypeNameNode OBJECT_TYPE;
-    public static final TypeNameNode STRING_TYPE;
-    public static final TypeNameNode CLASS_TYPE;
-    public static final TypeNameNode CLONEABLE_TYPE;
+    public static TypeNameNode OBJECT_TYPE;
+    public static TypeNameNode STRING_TYPE;
+    public static TypeNameNode CLASS_TYPE;
+    public static TypeNameNode CLONEABLE_TYPE;
 
-    public static final ClassDecl  ARRAY_CLASS_DECL;
-    public static final FieldDecl  ARRAY_LENGTH_DECL;
+    public static ClassDecl  ARRAY_CLASS_DECL;
+    public static FieldDecl  ARRAY_LENGTH_DECL;
 
     // FIXME: Where is ARRAY_CLONE_DECL used? It looks like we can remove it.
-    public static final MethodDecl ARRAY_CLONE_DECL;
+    public static MethodDecl ARRAY_CLONE_DECL;
 
     /** A List containing values of CompileUnitNodes that have only been parsed
      *  and have undergone package resolution, but not including nodes that
@@ -592,20 +641,6 @@ public class StaticResolution implements JavaStaticSemanticConstants {
      */ 
     public static boolean debugLoading = false; 
 
-    /** A flag that indicates whether or not we should allow shallow loading
-     *  of ASTs. If the flag is 'true', then 'full' versions of method bodies are
-     *  loaded via reflection. These full versions include class internals,
-     *  except for method bodies. If the flag is 'false', then most subtrees
-     *  of ASTs for loaded classes are excluded, unless the internals of the
-     *  classes are explicitly referenced (e.g., by accesses to fields,
-     *  methods, or constructors). Shallow loading greatly reduces the run-time
-     *  and memory requirements of the code generator, but it is highly
-     *  unstable now, so it may cause problems.
-     *  FIXME: Update the above description with shallow loading becomes stable.
-     *  FIXME: Is there a better place for this flag?
-     */
-     public static boolean enableShallowLoading = false;
-
      /** A flag that indicates whether or not we should allow deep loading
       *  of ASTs for user-defined classes (classes that are not core ptolemy
       *  classes or Java system classes). Note classes that cannot be loaded
@@ -619,50 +654,45 @@ public class StaticResolution implements JavaStaticSemanticConstants {
       */
      public static boolean enableDeepUserASTs = false;
 
-    /** A flag that indicates whether or not subsequent AST loadings of 
-     *  class and interface declarations should be done in "shallow mode"
-     *  (with most subtrees missing). This facilitates demand-driven
-     *  deep-loading of ASTs. A 'true' setting for this flag will be 
-     *  overridden if enableShallowLoading is off. 
-     *  FIXME: this field is a hack for preliminary testing purposes. It should 
-     *  be removed after the demand-driven deep-loading implementation stabilizes.
-     */
-    public static boolean shallowLoading = true; 
+     /** A flag for enabling the display of diagnostic information 
+      *  pertaining to the times at which ASTs are loaded. A 'true' setting
+      *  enables the diagnostic output.
+      */
+     public static boolean traceLoading = true; 
 
-    /** A flag for enabling the display of diagnostic information 
-     *  pertaining to the times at which ASTs are loaded. A 'true' setting
-     *  enables the diagnostic output.
-     */
-    public static boolean traceLoading = false; 
 
-    static {
- 	long startTime= System.currentTimeMillis();
-        System.out.println("StaticResolution<static>: --- Creating SYSTEM_PACKAGE PackageDecl ---" + (System.currentTimeMillis() - startTime) + " ms");
+    /* Perform necessary initialization functions for static resolution. This
+     * method should be called once before any attempt is made to perform
+     * any type of static resolution. Subsequent calls to the method will
+     * be ignored, unless the call is made through the 'redoSetup' method.
+     */
+    public static void setup() {
+        // Proceed only if this is first attempt to initialize static resolution
+        if (_alreadyInitialized) return;
+ 	    long startTime= System.currentTimeMillis();
+        System.out.println("StaticResolution<static>: " 
+                + "--- Creating SYSTEM_PACKAGE PackageDecl ---" 
+                + (System.currentTimeMillis() - startTime) + " ms");
         SYSTEM_PACKAGE  = new PackageDecl("", null);
-        System.out.println("StaticResolution<static>: --- Creating UNNAMED_PACKAGE PackageDecl ---" + (System.currentTimeMillis() - startTime) + " ms");
+        System.out.println("StaticResolution<static>: "
+                + "--- Creating UNNAMED_PACKAGE PackageDecl ---" 
+                + (System.currentTimeMillis() - startTime) + " ms");
         UNNAMED_PACKAGE = new PackageDecl("", SYSTEM_PACKAGE);
-        if (traceLoading) {
-            System.out.println("StaticResolution<static>: " +
-                    "SYSTEM_PACKAGE: " +  SYSTEM_PACKAGE.getScope().toString());
-            System.out.println("StaticResolution<static>: " +
-                    "UNNAMED_PACKAGE: " + UNNAMED_PACKAGE.getScope().toString());
-        }
 
         // dummy scope
         Scope scope = new Scope();
 
-        System.out.println("StaticResolution<static>: --- loading java.lang package ---" + (System.currentTimeMillis() - startTime));
+        System.out.println("StaticResolution<static>: --- loading java.lang package ---" 
+                + (System.currentTimeMillis() - startTime));
 
-	// JAVA_LANG_PACKAGE is only used in FindExtraImportsVisitor
-	NameNode javaLangName = (NameNode) makeNameNode("java.lang");
+	    // JAVA_LANG_PACKAGE is only used in FindExtraImportsVisitor
+	    NameNode javaLangName = (NameNode) makeNameNode("java.lang");
         System.out.println("StaticResolution<static>: scope: " + scope.toString());
-	JAVA_LANG_PACKAGE = _importPackage(scope, javaLangName);
+	    JAVA_LANG_PACKAGE = _importPackage(scope, javaLangName);
 
+        System.out.println("StaticResolution<static>: --- require class on Object ---" + 
+                (System.currentTimeMillis() - startTime));
 
-        System.out.println("StaticResolution<static>: --- require class on Object ---" + (System.currentTimeMillis() - startTime));
-
-	System.out.println("Each call to loadClassName() uses reflection and prints a +");
-	System.out.println("Each call to _loadCanonicalFile() parses a file and prints a .");
         OBJECT_DECL = _requireClass(scope, "Object");
 
         System.out.println("\nStaticResolution<static>: --- done require class on Object ---" + (System.currentTimeMillis() - startTime));
@@ -719,19 +749,37 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         CLASS_DECL  = _requireClass(scope, "Class");
         CLASS_TYPE  = CLASS_DECL.getDefType();
 
+        if (traceLoading) {
+            System.out.println("The SYSTEM_PACKAGE scope is:\n" + 
+                    SYSTEM_PACKAGE.getScope().toString());
+            System.out.println("The UNNAMED_PACKAGE scope is:\n" + 
+                    UNNAMED_PACKAGE.getScope().toString());
+            System.out.println("The JAVA_LANG_PACKAGE scope is:\n" + 
+                    JAVA_LANG_PACKAGE.getScope().toString());
+        }
+
         System.out.println("StaticResolution<static>: --- 1st buildScopes ---" + (System.currentTimeMillis() - startTime));
         buildScopes();
         System.out.println("StaticResolution<static>: --- after buildScopes ---" + (System.currentTimeMillis() - startTime));
+        _alreadyInitialized = true;
+    }
+
+    /** Force re-initialization of static resolution even if the setup() method
+     *  has already been called. This method should be used with caution, as
+     *  multiple re-initializations can lead to unpredictable behavior.
+     */
+    public static void redoSetup() {
+        _alreadyInitialized = false;
+        setup();
     }
 
     public static PackageDecl _importPackage(Scope scope, NameNode name) {
 	// The getScope() call is what loads up the scope with
 	// info about what is in the package by looking in the
 	// appropriate directory
-        if (traceLoading) {
+        if (debugLoading) {
             System.out.println("Calling resolveAName from " + 
-                    "StaticResolution._importPackage(" +
-                     name.getIdent() + ")");
+                    "StaticResolution._importPackage(" + name.getIdent() + ")");
         }
         resolveAName(name, SYSTEM_PACKAGE.getScope(), null, null,
                 CG_PACKAGE);
@@ -760,14 +808,12 @@ public class StaticResolution implements JavaStaticSemanticConstants {
      *  declaration in the list of 'possibles' that is found. 
      */
     private static ScopeIterator _findPossibles(NameNode name, Scope scope,
-            TypeNameNode currentClass,
-            JavaDecl currentPackage,
-            int categories) {
+            TypeNameNode currentClass, JavaDecl currentPackage, int categories) {
 
-	    if (traceLoading) 
+	    if (debugLoading) 
             System.out.println("Begin StaticResolution._findPossibles(): name = " 
                     +  name.getIdent() + "; package = " + currentPackage 
-                    + "; code = " + name.hashCode() + "; cat = " + categories);
+                    + "; code = " + "; cat = " + categories);
 
         ScopeIterator possibles = new ScopeIterator();
 
@@ -776,17 +822,15 @@ public class StaticResolution implements JavaStaticSemanticConstants {
                     (CG_FIELD | CG_METHOD | CG_LOCALVAR |
                             CG_FORMAL | CG_USERTYPE)) != 0) {
                 possibles = scope.lookupFirst(name.getIdent(), categories);
-                if (traceLoading) {
+                if (debugLoading) 
                     System.out.println("Looked up scope for special "
                             + "categories: " + "possibles.hasNext() = " 
-                            + possibles.hasNext()); 
-                }
+                            + possibles.hasNext());
+
+
             } else {
-                //System.out.println("StaticResolution._findPossibles(): looking up package " + name.getIdent());
                 possibles = ((Scope) SYSTEM_PACKAGE.getScope())
                     .lookupFirst(name.getIdent(), categories);
-                if (traceLoading) System.out.println("Looked up package; "
-                        + "possibles.hasNext() = " + possibles.hasNext()); 
             }
         } else {
             // The given NameNode has a qualifier
@@ -808,7 +852,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
             }
 
             NameNode qualifier = (NameNode) name.getQualifier();
-            if (traceLoading) {
+            if (debugLoading) {
                 System.out.println("Calling resolveAName on qualifier from " + 
                         "StaticResolution._findPossibles(" + qualifier.getIdent() + ")");
             }
@@ -820,7 +864,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
             // If the container is a class or interface, we need to make
             // sure it is deeply or fully-loaded at this point.
-            if (StaticResolution.traceLoading) {
+            if (debugLoading) {
                 System.out.println("findPossibles: qualifier's declaration class is: "
                         + ((container == null) ? "null" 
                         : container.getClass().getName()));
@@ -840,25 +884,16 @@ public class StaticResolution implements JavaStaticSemanticConstants {
                             + ASTReflect.getFullyQualifiedName(classSource));
                 ASTReflect.ensureDeepLoading(classSource); 
                 container = JavaDecl.getDecl((TreeNode)classSource);
-                if (debugLoading) {
-                    System.out.println("has scope = " + container.hasScope()); 
-                    System.out.println("container class: " + 
-                        container.getClass().getName());
-                }
             }
 
             if (container.hasScope()) {
                 if ((categories & CG_USERTYPE) != 0) {
                     possibles = container.getTypeScope().lookupFirstLocal(
                             name.getIdent(), categories);
-                    if (traceLoading) System.out.println("Looked up TypeScope: "
-                        + "possibles.hasNext() = " + possibles.hasNext()); 
 
                 } else {
                     possibles = container.getScope().lookupFirstLocal(
                             name.getIdent(), categories);
-                    if (traceLoading) System.out.println("Looked up Scope: "
-                        + "possibles.hasNext() = " + possibles.hasNext()); 
                 }
 
             } else if (container instanceof TypedDecl) {
@@ -946,29 +981,49 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     // Load the source (AST) associated with the given canonical filename (if 
     // the source is not already available),
     // and perform a level of resolution as specified by 'pass.' 
-    private static CompileUnitNode _loadCanonicalFile(String filename, int pass) {
+    private static CompileUnitNode _loadCanonicalFile(String filename, int pass,
+            String className) 
+    {
         if (traceLoading) 
             System.out.println("StaticResolution._loadCanonicalFile: " + filename
-                    + ";pass = " + pass);  
+                    + "; pass = " + pass + "; class = " + ((className == null) ?
+                    "null" : className));  
 
         String noExtensionName = StringManip.partBeforeLast(filename, '.');
 
-        CompileUnitNode loadedAST =
-            (CompileUnitNode) allPass0ResolvedMap.get(noExtensionName);
+        CompileUnitNode loadedAST = null;
+ 
+        if (className != null)
+            loadedAST = (CompileUnitNode) allPass0ResolvedMap.get(className);
+
+        // The following does not make sense since class names (.-separated)
+        // are used as keyes to the allPass0ResolvedMap
+        // loadedAST = (CompileUnitNode) allPass0ResolvedMap.get(noExtensionName);
 
         if (loadedAST == null) {
+            if (traceLoading) {
+                System.out.println("_loadCanonicalFile: " + noExtensionName
+                        + " not found.\n" + getLoadedASTNames()); 
+            }
             // Parse the Java to load a full AST.
             if (traceLoading) System.out.println("_loadCanonicalFile"
                     + ": calling JavaParserManip.parseCanonicalFileName on " 
                     + filename);
             loadedAST = JavaParserManip.parseCanonicalFileName(filename, false);
         }
+        else {
+            if (traceLoading)
+                System.out.println("_loadCanonicalFile: " + noExtensionName 
+                        + " was found"); 
+        }
 
         if (loadedAST == null) {
             throw new RuntimeException("_loadCanonicalFile: Could not load " 
                     + filename);
         }
-        return loadCompileUnit(loadedAST, pass);
+        CompileUnitNode compileUnit = loadCompileUnit(loadedAST, pass);
+
+        return compileUnit;
     }
 
     // Load classes into the scope.
@@ -995,8 +1050,8 @@ public class StaticResolution implements JavaStaticSemanticConstants {
             }
             if (traceLoading) {
 	            System.out.println("StaticResolution._requireClass(): ignoring load "
-                + "request because " + name + " has already been loaded (using " 
-                + ASTReflect.getLoadingMode((UserTypeDeclNode)source) + "mode)"); 
+                        + "request because " + name + " has already been loaded (using " 
+                        + ASTReflect.getLoadingMode((UserTypeDeclNode)source) + "mode)"); 
             }
             return (ClassDecl)decl;
         }
@@ -1006,7 +1061,6 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 	        // Use reflection
 	        Class myClass = ASTReflect.lookupClass(name);
 	        if (myClass.isInterface()) {
-                // StaticResolution.shallowLoading = false;
 		        InterfaceDeclNode interfaceDeclNode = 
                         ASTReflect.ASTInterfaceDeclNode(myClass);
 		        classDecl = new ClassDecl(name,
@@ -1026,7 +1080,6 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 		        scope.add(classDecl);
 	        } else {
 
-                // StaticResolution.shallowLoading = false;
 		        ClassDeclNode classDeclNode = ASTReflect.ASTClassDeclNode(myClass);
     
 		        classDecl = new ClassDecl(name,
@@ -1062,7 +1115,6 @@ public class StaticResolution implements JavaStaticSemanticConstants {
                         + "call loadSource() on '" + classDecl.getName() + "'");
             }
             try {
-                // StaticResolution.shallowLoading = false;
                 classDecl.loadSource();
             } catch (IOException e) {
                 throw new RuntimeException("Failed to load source: " + e);
@@ -1092,7 +1144,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
         if (traceLoading) System.out.println("resolvePass0: starting package resolution");
         node.accept(new PackageResolutionVisitor(), null);
-        if (traceLoading) System.out.println("resolvePass0: finsihed package resolution");
+        if (traceLoading) System.out.println("resolvePass0: finished package resolution");
 
         pass0ResolvedList.add(node);
 
@@ -1109,12 +1161,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     private static CompileUnitNode _resolvePass1(CompileUnitNode node) {
 
         String filename = (String) node.getProperty(IDENT_KEY);
-
-        if (traceLoading)  
-            System.out.println("StaticResolution._resolvePass1: " + filename);
-        
         buildScopes();  
-
 
         if (filename != null) {
             // allow the node returned by pass 1 to be a different one
@@ -1164,6 +1211,20 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** A flag that indicates whether or not initialization of static resolution
+     *  has been performed.
+     */
+    private static boolean _alreadyInitialized = false;
    
+    /** A flag that indicates whether or not we should allow shallow loading
+     *  of ASTs. If the flag is 'false', then 'full' versions of method bodies are
+     *  loaded via reflection. These full versions include class internals,
+     *  except for method bodies. If the flag is 'true', then most subtrees
+     *  of ASTs for loaded classes are excluded, unless the internals of the
+     *  classes are explicitly referenced (e.g., by accesses to fields,
+     *  methods, or constructors). Shallow loading greatly reduces the run-time
+     *  and memory requirements of the code generator.
+     */
+     private static boolean _shallowLoadingEnabled = false;
 
 }

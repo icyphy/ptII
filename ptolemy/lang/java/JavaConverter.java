@@ -126,6 +126,9 @@ public class JavaConverter implements JavaStaticSemanticConstants {
         // The list of pass return results.
         LinkedList passResults = new LinkedList();
 
+        // Initialize static resolution if necessary
+        if (_performStaticResolution) StaticResolution.setup();
+
         for (int f = 0; f < files; f++) {
             JavaParser javaParser = new JavaParser();
 
@@ -231,27 +234,50 @@ public class JavaConverter implements JavaStaticSemanticConstants {
         }
         return passResults;
     }
+   
+   
+    /**
+     *  Parse a Java source file, and
+     *  generate code using the resulting abstract syntax tree
+     *  and the code generator pass(es) with which this
+     *  object has been configured. 
+     *
+     * @param fileName The Java source file that is to be converted.
+     * @return The return values returned by each code generation pass on the file.
+     */
+    public LinkedList convert(String fileName) {
+        String[] sources = new String[1];
+        sources[0] = fileName;
+        return convert(sources);
+    }
 
     /**
      * Configure the output format and static resolution flag of
      * code generation. No configuration is required if
-     * the default behavior (no verbose output and no static resolution)
+     * the default behavior (no verbose output, no static resolution,
+     * no parser debugging output, and disabling of shallow abstract syntax trees)
      * is desired.
      * @param verbose Indicates whether or not verbose output should
-     * be generated. Verbose output includes debugging output from
-     * the Java parser, and resulting abstract syntax trees and
-     * return values from all code generation passes.
+     * be generated. "Verbose output" includes 
+     * the resulting abstract syntax trees and
+     * return values from all code generation passes, but excludes debugging
+     * output from the Java parser.
      * @param performStaticResolution Indicates whether or not
      * static resolution should be performed prior to invoking the
      * given list of code generation passes.
      * @param debugParser Indicates whether or not debugging output should 
      * be turned on in the Java parser.
+     * @param enableShallowLoading Indicates whether or not shallow loading of
+     * abstract syntax trees should be enabled. Shallow loading is an
+     * experimental feature that significantly reduces the number and size
+     * of abstract syntax trees that must be processed during static resolution.
      */ 
     public void configure(boolean verbose, boolean performStaticResolution,
-            boolean debugParser) {
+            boolean debugParser, boolean enableShallowLoading) {
         _verbose = verbose;
         _performStaticResolution = performStaticResolution;
-        _debugParser = debugParser; 
+        _debugParser = debugParser;
+        if (enableShallowLoading) StaticResolution.enableShallowLoading(); 
     }
 
     // The "back-end" code generator used to convert the input Java. 
