@@ -194,13 +194,7 @@ public class EntityLibrary
      */
     public EntityLibrary(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
-        // Can't call the two-argument parent constructor because it
-        // requires a TypedCompositeActor argument.  Thus, we have to
-        // duplicate everything done by constructors all the way up
-        // the chain.  Fortunately, this isn't much.
-        super(container.workspace());
-        setName(name);
-        setContainer(container);
+        super(container, name);
         // NOTE: Used to call uniqueName() here to choose the name for the
         // marker.  This is a bad idea.  This calls getEntity(), which
         // triggers populate() on the library, defeating deferred

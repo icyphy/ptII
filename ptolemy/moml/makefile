@@ -56,6 +56,7 @@ JSRCS =	EntityLibrary.java \
 	MoMLAttribute.java \
 	MoMLChangeRequest.java \
 	MoMLParser.java \
+	ProcessedString.java \
 	URLAttribute.java
 
 EXTRA_SRCS =	$(JSRCS) \

@@ -765,7 +765,7 @@ set body {
 
 set moml "$header $body"
 
-test MoMLParser-1.18 {test director persistence} {
+test MoMLParser-1.18 {test property persistence} {
     $parser reset
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
@@ -791,7 +791,7 @@ set body {
 
 set moml "$header $body"
 
-test MoMLParser-1.18.1 {test director persistence in instatiation of a class} {
+test MoMLParser-1.18.1 {test property persistence in instatiation of a class} {
     $parser reset
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
