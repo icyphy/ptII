@@ -322,7 +322,7 @@ directives inside the file.  This version only supports
 <li>This version does not support X resources.
 <p>
 For further information about this tool, see the
-<a href="http://ptolemy.eecs.berkeley.edu/java/plot">Java Plot Website</a>.
+<a href="http://ptolemy.eecs.berkeley.edu/java/ptplot">Java Plot Website</a>.
 
  * @author Christopher Hylands (cxh@eecs.berkeley.edu)
  * @version $Id$
