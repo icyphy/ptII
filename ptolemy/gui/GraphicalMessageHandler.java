@@ -57,9 +57,19 @@ class.
 */
 public class GraphicalMessageHandler extends MessageHandler {
 
+    /** Get the component set by a call to setContext(), or null if none.
+     *  @see setContext(Component)
+     *  @return The component with respect to which the display window
+     *   is iconfied, or null if none has been specified.
+     */
+    public static Component getContext() {
+        return _context;
+    }
+
     /** Set the component with respect to which the display window
      *  should be created.  This ensures that if the application is
      *  iconified or deiconified, that the display window goes with it.
+     *  @see getContext
      *  @param context The component context.
      */
     public static void setContext(Component context) {
