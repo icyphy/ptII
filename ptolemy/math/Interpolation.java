@@ -105,7 +105,7 @@ public class Interpolation {
      */
     public void setIndexes(int[] indexes) {
 	int prev = -1;
-        for (int i=0; i<indexes.length; i++) {
+        for (int i = 0; i < indexes.length; i++) {
             if (indexes[i] <= prev ) {
                 throw new IllegalArgumentException("Interpolation.setIndexes" +
 		    " index array is not increasing and non-negative.");
@@ -133,7 +133,7 @@ public class Interpolation {
      *  @exception IllegalArgumentException If the order is not 0, 1, or 3.
      */
     public void setOrder(int order) {
-	if (order !=0 && order != 1 && order != 3) {
+	if (order != 0 && order != 1 && order != 3) {
 	    throw new IllegalArgumentException("Interpolation.setOrder: " +
 		"The order " + order + " is not valid.");
 	}
@@ -193,7 +193,7 @@ public class Interpolation {
 	int indexIndexStart = -1;
 
 	// search though all indexes to find iStart.
-	for (int i=0; i<numRefPoints; i++) {
+	for (int i = 0; i < numRefPoints; i++) {
 	    if (_indexes[i] == index) {
 		return _values[i];
 	    } else if (_indexes[i] < index) {
@@ -328,7 +328,7 @@ public class Interpolation {
 	Gh[2] = tanStart;
 	Gh[3] = tanEnd;
 
-	// compute the coefficients vector coef[a,b,c,d] or the 3rd order
+	// compute the coefficients vector coef[a, b, c, d] or the 3rd order
 	// curve.
 	double[] coef = MatrixMath.multiply(Gh, MInverse);
 
