@@ -441,6 +441,23 @@ public class TypedIOPort extends IOPort implements Typeable {
         return _typeTerm;
     }
 
+    /** Check whether the current type of this port is acceptable.
+     *  A type is acceptable if it represents an instantiable object.
+     *  Any type is acceptable (including non-instantiable types)
+     *  if the associated port is not connected to anything.
+     *  @return True if the current type is acceptable.
+     */
+    public boolean isTypeAcceptable() {
+        if (this.getType().isInstantiable()) {
+            return true;
+        }
+        // For a disconnected port, any type is acceptable.
+        if (this.numLinks() == 0) {
+            return true;
+        }
+        return false;
+    }
+
     /** Remove a type listener from this port.  If the listener is
      *  not attached to this port, do nothing.
      *  @param listener The TypeListener to be removed.
@@ -1019,21 +1036,13 @@ public class TypedIOPort extends IOPort implements Typeable {
             return !_declaredType.isConstant();
         }
 
-        /** Check whether the current type of this port is acceptable.
-         *  A type is acceptable if it represents an instantiable object.
-         *  Any type is acceptable (including non-instantiable types)
-         *  if the associated port is not connected to anything.
-         *  @return True if the current type is acceptable.
+        /** Check whether the current value of this term is acceptable.
+	 *  This method delegates the check to the isTypeAcceptable()
+	 *  method of the outer class.
+         *  @return True if the current value is acceptable.
          */
         public boolean isValueAcceptable() {
-            if (getType().isInstantiable()) {
-                return true;
-            }
-            // For a disconnected port, any type is acceptable.
-            if (TypedIOPort.this.numLinks() == 0) {
-                return true;
-            }
-            return false;
+            return isTypeAcceptable();
         }
 
         /** Set the type of this port.

@@ -76,6 +76,19 @@ public class RefinementPort extends TypedIOPort {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Override the super class method to allow UNKNOWN type if this
+     *  port does not have any inside links.
+     *  @return True if this port does not have any inside links,
+     *   or the super class method returns true.
+     */
+    public boolean isTypeAcceptable() {
+        if (numInsideLinks() == 0) {
+	    return true;
+	} else {
+	    return super.isTypeAcceptable();
+	}
+    }
+
     /** Override the base class so that if the port is being removed
      *  from the current container, then it is also removed from the
      *  controller and from each of the refinements.

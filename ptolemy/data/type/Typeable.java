@@ -64,6 +64,11 @@ public interface Typeable {
      */
     public InequalityTerm getTypeTerm();
 
+    /** Check whether the type of this object is acceptable.
+     *  @return True if the type of this object is acceptable.
+     */
+    public boolean isTypeAcceptable();
+
     /** Constrain the type of this object to be equal to or greater
      *  than the type of the argument.  Notice that this constraint
      *  is not enforced until type resolution is done, and is not

@@ -505,6 +505,17 @@ public class Variable extends Attribute implements Typeable, Settable {
         return true;
     }
 
+    /** Check whether the current type of this variable is acceptable.
+     *  A type is acceptable if it represents an instantiable object.
+     *  @return True if the current type is acceptable.
+     */
+    public boolean isTypeAcceptable() {
+        if (getType().isInstantiable()) {
+            return true;
+        }
+        return false;
+    }
+
     /** Force evaluation of this variable and its value dependents
      *  of this variable.
      *  This method bypasses the lazy evaluation feature of this class
@@ -1508,16 +1519,13 @@ public class Variable extends Attribute implements Typeable, Settable {
 	    return ( !_declaredType.isConstant());
         }
 
-        /** Check whether the current type of this term is acceptable,
-         *  and return true if it is.  A type is acceptable
-         *  if it represents an instantiable object.
-         *  @return True if the current type is acceptable.
+        /** Check whether the current value of this term is acceptable.
+         *  This method delegates the check to the isTypeAcceptable()
+	 *  method of the outer class.
+         *  @return True if the current value is acceptable.
          */
         public boolean isValueAcceptable() {
-            if (getType().isInstantiable()) {
-                return true;
-            }
-            return false;
+            return isTypeAcceptable();
         }
 
         /** Set the type of this variable.
