@@ -104,8 +104,7 @@ test ramp-1.1 {Generate .c, .i.h, and .h files for ramp.xml} {
 	# exec will _not_ report this as an error. 
 	# -stderrok was introduced in $PTII/lib/ptjacl.jar on 8/14/02
 
-	#exec -stderrok java -classpath $classpath ptolemy.copernicus.c.Main $modelFile -d $dummyDirectory $debugFlag -p $phaseName $outputDirectorySpecifier
-	generateCExec java -classpath $classpath ptolemy.copernicus.c.Main $modelFile -d $dummyDirectory $debugFlag -p $phaseName $outputDirectorySpecifier
+	exec -stderrok java -classpath $classpath ptolemy.copernicus.c.Main $modelFile -d $dummyDirectory $debugFlag -p $phaseName $outputDirectorySpecifier
     }
 
     # Make sure all the output files were created.
