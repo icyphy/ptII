@@ -66,23 +66,23 @@ that its value is set in the constructor and cannot then be modified.
 public class FixPointQuantization extends Quantization {
 
     /** Construct a FixPointQuantization object based on the provided
-     * string.
-     *  <p>
-     *  The string may consist of just <i>precision</i> or
-     *  <i>precision,overflow</i> or <i>precision,overflow,rounding</i>,
-     *  and may optionally be enclosed in parentheses.
-     *  <p>
-     *  <i>precision</i> must be one of the Precision formats;
+     *  string.  The string may consist of just <i>precision</i> or
+     *  <i>precision,overflow</i> or
+     *  <i>precision,overflow,rounding</i>, and may optionally be
+     *  enclosed in parentheses.
+     * 
+     *  <p> <i>precision</i> must be one of the Precision formats;
      *  <i>integer-bits.fraction-bits</i> or
-     *  <i>total-bits/integer-bits</i>.
-     *  <p>
-     *  <i>overflow</i> must be one of the Overflow stategies; e.g.
-     *  <i>saturate</i> or <i>modulo</i> or <i>trap</i>.
-     *  <p>
-     *  <i>rounding</i> must be one of the Rounding stategies; e.g.
-     *  <i>up</i> or <i>half_even</i> or <i>unnecessary</i>.
-     *  <p>
-     *  Omitted strategies default to <i>saturate</i> and <i>nearest</i>.
+     *  <i>total-bits/integer-bits</i>. 
+     * 
+     *  <p> <i>overflow</i> must be
+     *  one of the Overflow stategies; e.g.  <i>saturate</i> or
+     *  <i>modulo</i> or <i>trap</i>.   The default is <i>saturate</i>.
+     *
+     *  <p> <i>rounding</i> must be one
+     *  of the Rounding stategies; e.g.  <i>up</i> or <i>half_even</i>
+     *  or <i>unnecessary</i>.   The default is <i>nearest</i>.
+     *
      *
      *  @param string The string representing the
      *  quantization specification.
@@ -99,15 +99,20 @@ public class FixPointQuantization extends Quantization {
          && (string.charAt(strLen-1) == ')'))
             string = string.substring(1, strLen-1);
         StringTokenizer st = new StringTokenizer(string,",");
-        if (!st.hasMoreTokens())
+        if (!st.hasMoreTokens()) {
             throw new IllegalArgumentException("A precision string" +
                     " consisting of two integers separated " +
                     " by a '/', or '.' token is required");
+        }
+
         _precision = new Precision(st.nextToken());
-        if (st.hasMoreTokens())
-            constructOverflow(st.nextToken());
-        if (st.hasMoreTokens())
-            constructRounding(st.nextToken());
+
+        if (st.hasMoreTokens()) {
+            Overflow.getName(st.nextToken());
+        }
+        if (st.hasMoreTokens()) {
+            Rounding.getName(st.nextToken());
+        }
         if (st.hasMoreTokens())
             throw new IllegalArgumentException("FixPointQuantization "
                 + "requires at most a precision overflow and rounding,");
@@ -129,8 +134,8 @@ public class FixPointQuantization extends Quantization {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-   /** Return true if the indicated object describes the same
-     *  mapping to quantized values.
+    /** Return true if the given object describes the same
+     *  mapping to quantized values as this object.
      *  @return True if the quantizations are equal.
      */
     public boolean equals(Object object) {
@@ -144,8 +149,7 @@ public class FixPointQuantization extends Quantization {
         return false;
     }
 
-    /** Return the precision fore the mantissa of a compliant
-     *  2's complement representation,
+    /** Return the precision of the mantissa of the value.
      *  @return The precision.
      */
     public Precision getMantissaPrecision() {
