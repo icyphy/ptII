@@ -54,7 +54,7 @@ should terminate themselves. For this a method setFinish() is defined.
 This method would set a local flag in the receivers and wake up all the 
 processes waiting on some call to the receiver. On waking up these 
 processes would see that the termination flag set and behave accordingly. 
-A sample implentation is <BR>
+A sample implementation is <BR>
 <Code>
 public synchronized void setFinish() {
     _terminate = true;

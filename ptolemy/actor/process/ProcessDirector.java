@@ -105,7 +105,7 @@ public class ProcessDirector extends Director {
      *  <i>not</i> added to the directory of that workspace (It must be added
      *  by the user if he wants it to be there).
      *  The result is a new director with no container, no pending mutations,
-     *  and no topology listeners. The count of active proceses is zero 
+     *  and no topology listeners. The count of active processes is zero 
      *  and it is not paused.
      *
      *  @param ws The workspace for the cloned object.
@@ -129,10 +129,10 @@ public class ProcessDirector extends Director {
      */
     public void fire()
 	    throws IllegalActionException {
-	Workspace worksp = workspace();
+	Workspace workspace = workspace();
 	synchronized (this) {
 	    while (!_checkForDeadlock()) {
-		worksp.wait(this);
+		workspace.wait(this);
 	    }
 	    _notdone = !_handleDeadlock();
 	}
@@ -141,7 +141,7 @@ public class ProcessDirector extends Director {
 
 
     /** Increases the count of paused threads and checks whether the
-     *  entire model has sucessfully paused.
+     *  entire model has successfully paused.
      */
     public synchronized void increasePausedCount() {
         _actorsPaused++;
@@ -166,10 +166,10 @@ public class ProcessDirector extends Director {
             throws IllegalActionException {
         CompositeActor container = ((CompositeActor)getContainer());
         if (container!= null) {
-            Enumeration allactors = container.deepGetEntities();
+            Enumeration allActors = container.deepGetEntities();
             //Creating receivers and threads for all actors;
-            while (allactors.hasMoreElements()) {
-                Actor actor = (Actor)allactors.nextElement();
+            while (allActors.hasMoreElements()) {
+                Actor actor = (Actor)allActors.nextElement();
                 ProcessThread pnt = new ProcessThread(actor, this);
                 _threadList.insertFirst(pnt);
 		_newthreads.insertFirst(pnt);
@@ -222,8 +222,8 @@ public class ProcessDirector extends Director {
     //  Should a pausedEvent be sent when the model is fully paused?
     public void pause() 
             throws IllegalActionException {
-        Workspace worksp = workspace();
-	worksp.getReadAccess();
+        Workspace workspace = workspace();
+	workspace.getReadAccess();
 	try {
 	    // Obtaining a list of all actors in this compositeActor
 	    CompositeActor cont = (CompositeActor)getContainer();
@@ -267,12 +267,12 @@ public class ProcessDirector extends Director {
 		}
 	    }
 	} finally {
-	    worksp.doneReading();
+	    workspace.doneReading();
 	}
 	
 	synchronized (this) {
 	    while (!_checkForPause()) {
-		worksp.wait(this);
+		workspace.wait(this);
 	    }
 	}
         return;
@@ -331,7 +331,7 @@ public class ProcessDirector extends Director {
      *  should be.
      *  Note that the wrapup methods are not invoked on the actors
      *  under control of this director as each actor is executed by a
-     *  seperate thread. They are called from the thread itself.
+     *  separate thread. They are called from the thread itself.
      *  <p>
      *  @exception IllegalActionException if a method accessing the topology
      *   throws it.
@@ -452,7 +452,7 @@ public class ProcessDirector extends Director {
     /** Return true. 
      *  In derived classes, override this method to obtain domain
      *  specific handling of deadlocks. It should return true if a 
-     *  real deadlock has occured and the simulation can be ended.
+     *  real deadlock has occurred and the simulation can be ended.
      *  It should return if the simulation has data to proceed and
      *  need not be terminated.
      *
@@ -495,7 +495,7 @@ public class ProcessDirector extends Director {
 
     //private boolean _deadlock = false;
 
-    // The receivers that were paused when a pause was repuested.
+    // The receivers that were paused when a pause was requested.
     private LinkedList _pausedReceivers = new LinkedList();
 
     // The threads started by this director.
