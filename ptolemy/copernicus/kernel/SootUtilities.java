@@ -119,6 +119,7 @@ import ptolemy.data.IntToken;
 import ptolemy.data.LongToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
+import ptolemy.kernel.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// SootUtilities
@@ -993,8 +994,9 @@ public class SootUtilities {
             SootField field = (SootField)fields.next();
             if(superClass.declaresFieldByName(field.getName())) {
                 // SootField superField = superClass.getFieldByName(field.getName());
-                String newName = sanitizeName(superClass.getName()) +
-                        field.getName();
+                String newName = 
+                    StringUtilities.sanitizeName(superClass.getName()) +
+                    field.getName();
                 System.out.println("Renaming field " + field + " to " 
                         + newName + " to avoid collision with superClass field "
                         + superClass.getFieldByName(field.getName()));
@@ -1454,6 +1456,7 @@ public class SootUtilities {
             String name) {
         while(theClass != null) {
             if(theClass.declaresMethodByName(name)) {
+                System.out.println("found method " + name + " in " + theClass);
                 return theClass.getMethodByName(name);
             }
             theClass = theClass.getSuperclass();

@@ -195,7 +195,7 @@ public class CircuitTransformer extends SceneTransformer {
             String outDir = Options.getString(options, "outDir");
             CircuitCreator.create(combinedGraph, 
                     outDir, targetPackage, 
-                    "JHDL" + SootUtilities.sanitizeName(
+                    "JHDL" + StringUtilities.sanitizeName(
                             _model.getName()));
         } catch (Exception ex) {
             ex.printStackTrace();

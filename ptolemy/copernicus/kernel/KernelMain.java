@@ -42,6 +42,7 @@ import ptolemy.actor.Manager;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringUtilities;
 import ptolemy.kernel.util.VersionAttribute;
 import ptolemy.moml.MoMLParser;
 
@@ -211,7 +212,7 @@ public class KernelMain {
 	}
 
 	// Make the name follow Java initializer naming conventions.
-	_toplevel.setName(SootUtilities.sanitizeName(_toplevel.getName()));
+	_toplevel.setName(StringUtilities.sanitizeName(_toplevel.getName()));
 
 
         // Temporary hack because cloning doesn't properly clone

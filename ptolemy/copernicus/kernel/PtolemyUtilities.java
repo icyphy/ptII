@@ -780,6 +780,9 @@ public class PtolemyUtilities {
     // Soot class representing the ptolemy.data.type.ArrayType class.
     public static SootClass arrayTypeClass;
 
+    // Soot Method representing NamedObj.attachText()
+    public static SootMethod attachTextMethod;
+
     // Soot Method representing NamedObj.attributeChanged().
     public static SootMethod attributeChangedMethod;
 
@@ -862,6 +865,9 @@ public class PtolemyUtilities {
     public static SootField longTypeField;
     public static SootField longMatrixTypeField;
     
+    // SootClass representing ptolemy.actor.Manager
+    public static SootClass managerClass;
+
     // SootClass representing ptolemy.kernel.util.NamedObj.
     public static SootClass namedObjClass;
 
@@ -970,6 +976,8 @@ public class PtolemyUtilities {
                 + "getAttribute(java.lang.String)");
         attributeChangedMethod = namedObjClass.getMethod(
                 "void attributeChanged(ptolemy.kernel.util.Attribute)");
+        attachTextMethod = namedObjClass.getMethod(
+                "void _attachText(java.lang.String,java.lang.String)");
 
         attributeClass =
             Scene.v().loadClassAndSupport("ptolemy.kernel.util.Attribute");
@@ -1090,5 +1098,7 @@ public class PtolemyUtilities {
             Scene.v().loadClassAndSupport("ptolemy.kernel.util.KernelRuntimeException");
         runtimeExceptionClass = 
             Scene.v().loadClassAndSupport("java.lang.RuntimeException");
+        managerClass = 
+            Scene.v().loadClassAndSupport("ptolemy.actor.Manager");
     }
 }
