@@ -46,15 +46,19 @@ import java.awt.Font;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Iterator;
 
 import javax.swing.SwingConstants;
 
 //////////////////////////////////////////////////////////////////////////
 //// EditorIcon
 /**
-An icon is the visual representation of an entity. This class is a factory
-for such visual representations. This base class creates an icon as a
-a Diva figure (an instanceof of diva.canvas.Figure). It also provides
+An icon is the visual representation of an entity or attribute.
+The visual representation is a Diva Figure. This class is an attribute
+that serves as a factory for such figures. This base class creates the
+figure by composing the figures of any contained attributes that have
+icons.  If there are no such contained attributes, then it creates a
+default figure that is a white rectangle. This class also provides
 a facility for generating a Swing icon (i.e. an instance of javax.swing.Icon)
 from that figure (the createIcon() method).
 <p>
@@ -64,28 +68,22 @@ by the createFigure() method.  The decorated version has, in this
 base class, a label showing the name of the entity, unless the entity
 contains an attribute called "_hideName".  The swing icon created
 by createIcon() does not include the decorations, but rather is only
-the background figure.  In this base class, the background figure is
-a simple white box.
+the background figure.
 <p>
-Derived classes most likely will customize the createBackgroundFigure()
-method.  This will affect both the Diva Figure and the Swing
-Icon representations.  Derived classes can also create the figure or
+Derived classes may simply populate this attribute with other
+visible attributes (attributes that contain icons), or they can
+override the createBackgroundFigure() method.  This will affect
+both the Diva Figure and the Swing Icon representations.
+Derived classes can also create the figure or
 the icon in a different way entirely (for example, starting with a
 Swing icon and creating the figure using a SwingWrapper) by overriding
 both createBackgroundFigure() and createIcon().
 
-@author Steve Neuendorffer, John Reekie, Contributor: Edward A. Lee
+@author Steve Neuendorffer, John Reekie, Edward A. Lee
 @version $Id$
 @since Ptolemy II 2.0
 */
 public class EditorIcon extends Attribute {
-
-    // NOTE: This class used to have a major design error.  It
-    // implemented NotPersistent, which told the MoMLWriter class
-    // to not write MoML for it.  But derived classes then are
-    // forced to be non-persistent,
-    // which means that we cannot have custom icons for objects.
-    // An icon is required to be an instance of EditorIcon...
 
     /** Create a new icon with the given name in the given container.
      *  @param container The container.
@@ -103,16 +101,42 @@ public class EditorIcon extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Create a new background figure.  This should manufacture a new
-     *  figure each time, since figures are inexpensive and contain
-     *  their own location.  This base class returns a default background
-     *  figure, which is a simple white box.  Subclasses will generally
-     *  override this method to create more interesting figures.
+    /** Create a new background figure.  This figure is a composition of
+     *  the figures of any contained visible attributes. If there are no such
+     *  visible attributes, then this figure is a simple white box.
+     *  If you override this method, keep in mind that this method is expected
+     *  to manufacture a new figure each time, since figures are
+     *  inexpensive and contain their own location and transformations.
      *  This method should never return null.
      *  @return A new figure.
      */
     public Figure createBackgroundFigure() {
-        return _createDefaultBackgroundFigure();
+        
+        // If this icon itself contains any visible attributes, then
+        // compose their background figures to make this one.
+        CompositeFigure figure = null;
+        Iterator attributes = attributeList().iterator();
+        while (attributes.hasNext()) {
+            Attribute attribute = (Attribute) attributes.next();
+            // There is a level of indirection where the "subIcon" is a
+            // "visible attribute" containing an attribute named "_icon"
+            // that actually has the icon.
+            Iterator subIcons =
+                attribute.attributeList(EditorIcon.class).iterator();
+            while (subIcons.hasNext()) {
+                EditorIcon subIcon = (EditorIcon) subIcons.next();
+                if (figure == null) {
+                    figure = new CompositeFigure(subIcon.createBackgroundFigure());
+                } else {
+                    figure.add(subIcon.createBackgroundFigure());
+                }
+            }
+        }
+        if (figure == null) {
+            return _createDefaultBackgroundFigure();
+        } else {
+            return figure;
+        }
     }
 
     /** Create a new Diva figure that visually represents this icon.
@@ -131,7 +155,8 @@ public class EditorIcon extends Attribute {
     public Figure createFigure() {
         Figure background = createBackgroundFigure();
         Rectangle2D backBounds = background.getBounds();
-        Figure figure = new CompositeFigure(background);
+        CompositeFigure figure = new CompositeFigure(background);
+             
         NamedObj container = (NamedObj)getContainer();
         // Create the label, unless this is a visible attribute,
         // which typically carries no label.
@@ -147,13 +172,13 @@ public class EditorIcon extends Attribute {
                     // Shift the label slightly right so it doesn't
                     // collide with ports.
                     label.translateTo(backBounds.getX() + 5, backBounds.getY());
-                    ((CompositeFigure)figure).add(label);
+                    figure.add(label);
                 } else {
                     LabelFigure label = new LabelFigure(name,
                             _labelFont, 1.0, SwingConstants.CENTER);
                     label.translateTo(backBounds.getCenterX(),
                             backBounds.getCenterY());
-                    ((CompositeFigure)figure).add(label);
+                    figure.add(label);
                 }
             }
         }
