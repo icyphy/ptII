@@ -50,7 +50,10 @@ This is in contrast to Java's default that a byte is in the range
 a custom conversion <i>unsignedConvert()</i> from byte to integer.  
 Conversion to byte already gives the desired behavior of truncating 
 the value, keeping the lowest 8 bits.  Thus, for example, the integers 
--1 and 1023 both truncate to the byte 255.
+-1 and 1023 both truncate to the byte 255.  Throughout the code, casts 
+(byte) to byte occurr.  These are necessary because Java converts to 
+integer or higher by default when doing arithmetic.  Java does this 
+even when the types of both operands are byte.
 
 @author Winthrop Williams
 @version $Id$
@@ -552,14 +555,17 @@ public class ByteToken extends ScalarToken {
     }
 
     /** Return a new token whose value is the value of this token
-     *  subtracted from the value of the argument token.
-     *  Type resolution also occurs here, with the returned token type
+     *  subtracted from the value of the argument token.  Type
+     *  resolution also occurs here, with the returned token type
      *  chosen to achieve a lossless conversion.
      *  @param leftArgument The token to subtract this token from.
      *  @return A new token containing the result.
-     *  @exception IllegalActionException If the argument token
-     *   is not of a type that can be added to this token, or the units
-     *   of this token and the argument token are not the same.
+     *  @exception IllegalActionException If the argument token is not
+     *  of a type that can be added to this token, or the units of
+     *  this token and the argument token are not the same.  
+     *  FIXME: byte (and int too) have less code in the 
+     *  subtractReverse() method.  Something is not being handled 
+     *  here.  CPO is not even being checked!!  
      */
     public Token subtractReverse(Token leftArgument)
             throws IllegalActionException {
@@ -594,16 +600,16 @@ public class ByteToken extends ScalarToken {
     }
 
     /** Convert the given unsigned byte to an integer.  This is
-     *  different from the default (int) conversion.  The default
-     *  (int) conversion yields negative values from bytes whose high
-     *  bit is true.  This is necessary because Java, by default,
-     *  interprets bytes as signed numbers.  We are interested in
-     *  unsigned bytes.  Conversion from integers to bytes requires no
-     *  hand coding.  This is because Java converts to bytes by
-     *  keeping just the least significant 8 bits.  It pays no
-     *  attention to sign in that conversion.
+     *  different from the default <i>(int)</i> conversion.  The
+     *  default (int) conversion yields negative values from bytes
+     *  whose high bit is true.  This is necessary because Java, by
+     *  default, interprets bytes as signed numbers.  We are
+     *  interested in unsigned bytes.  Conversion from integers to
+     *  bytes requires no hand coding.  This is because Java converts
+     *  to bytes by keeping just the least significant 8 bits.  It
+     *  pays no attention to sign in that conversion.
      *  @param byte The byte to convert.
-     *  @return An integer between 0 and 255.
+     *  @return An integer between 0 and 255.  
      */
     public int unsignedConvert(byte value) {
         int intValue = value;
