@@ -54,6 +54,7 @@ JSRCS = \
 	DSPApplication.java \
 	FullApplication.java \
 	HyVisualApplication.java \
+	MenuApplication.java \
 	PtinyApplication.java \
 	PtinySandboxApplication.java
 
@@ -78,48 +79,48 @@ OTHER_JARS = \
 
 all: jclass $(OTHER_JARS)
 install: all
-DSPApplication.jar: DSPApplication.class
+DSPApplication.jar: DSPApplication.class MenuApplication.class
 	rm -rf $(PTJAR_TMPDIR) $@
 	mkdir $(PTJAR_TMPDIR)
 	# Copy Application specific classes from this directory
 	mkdir -p $(PTJAR_TMPDIR)/$(ME)
-	-cp $< 'DSPApplication$$1.class' \
+	-cp $< MenuApplication.class \
 		$(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
 	@echo "Creating $@"
 	(cd $(PTJAR_TMPDIR); "$(JAR)" -cvf tmp.jar .)
 	mv $(PTJAR_TMPDIR)/tmp.jar $@
 	rm -rf $(PTJAR_TMPDIR)
 
-FullApplication.jar: FullApplication.class
+FullApplication.jar: FullApplication.class MenuApplication.class
 	rm -rf $(PTJAR_TMPDIR) $@
 	mkdir $(PTJAR_TMPDIR)
 	# Copy Application specific classes from this directory
 	mkdir -p $(PTJAR_TMPDIR)/$(ME)
-	-cp $< 'FullApplication$$1.class' \
+	-cp $< MenuApplication.class \
 		$(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
 	@echo "Creating $@"
 	(cd $(PTJAR_TMPDIR); "$(JAR)" -cvf tmp.jar .)
 	mv $(PTJAR_TMPDIR)/tmp.jar $@
 	rm -rf $(PTJAR_TMPDIR)
 
-HyVisualApplication.jar: HyVisualApplication.class 
+HyVisualApplication.jar: HyVisualApplication.class MenuApplication.class
 	rm -rf $(PTJAR_TMPDIR) $@
 	mkdir $(PTJAR_TMPDIR)
 	# Copy Application specific classes from this directory
 	mkdir -p $(PTJAR_TMPDIR)/$(ME)
-	-cp $< 'HyVisualApplication$$1.class' \
+	-cp $< MenuApplication.class \
 		$(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
 	@echo "Creating $@"
 	(cd $(PTJAR_TMPDIR); "$(JAR)" -cvf tmp.jar .)
 	mv $(PTJAR_TMPDIR)/tmp.jar $@
 	rm -rf $(PTJAR_TMPDIR)
 
-PtinyApplication.jar: PtinyApplication.class
+PtinyApplication.jar: PtinyApplication.class MenuApplication.class
 	rm -rf $(PTJAR_TMPDIR) $@
 	mkdir $(PTJAR_TMPDIR)
 	# Copy Application specific classes from this directory
 	mkdir -p $(PTJAR_TMPDIR)/$(ME)
-	-cp $< 'PtinyApplication$$1.class' \
+	-cp $< MenuApplication.class \
 		$(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
 	@echo "Creating $@"
 	(cd $(PTJAR_TMPDIR); "$(JAR)" -cvf tmp.jar .)
@@ -127,12 +128,12 @@ PtinyApplication.jar: PtinyApplication.class
 	rm -rf $(PTJAR_TMPDIR)
 
 
-PtinySandboxApplication.jar: PtinySandboxApplication.class
+PtinySandboxApplication.jar: PtinySandboxApplication.class MenuApplication.class
 	rm -rf $(PTJAR_TMPDIR) $@
 	mkdir $(PTJAR_TMPDIR)
 	# Copy Application specific classes from this directory
 	mkdir -p $(PTJAR_TMPDIR)/$(ME)
-	-cp $< 'PtinySandBoxApplication$$1.class' \
+	-cp $< MenuApplication.class \
 		$(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
 	@echo "Creating $@"
 	(cd $(PTJAR_TMPDIR); "$(JAR)" -cvf tmp.jar .)

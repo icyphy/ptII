@@ -1,4 +1,4 @@
-/* Wrapper class to start up the Hybrid Systems
+/* Wrapper class to start up the Hybrid Systems Tool
 
  Copyright (c) 2001-2003 The Regents of the University of California.
  All rights reserved.
@@ -30,15 +30,16 @@
 
 package ptolemy.actor.gui.jnlp;
 
-import ptolemy.vergil.VergilApplication;
-import ptolemy.gui.MessageHandler;
-
-import javax.swing.SwingUtilities;
-
 //////////////////////////////////////////////////////////////////////////
 //// HyVisualApplication
-/** A wrapper class that calls ptolemy.actor.gui.MoMLApplication for
-use with Java Network Launching Protocol (JNLP) aka Web Start.
+
+/** A wrapper class that calls eventually calls
+ptolemy.vergil.VergilApplication for use with Java Network Launching
+Protocol (JNLP) aka Web Start.
+
+<p>This class is very similar to other classes that invoke
+Vergil applications under Web Start because each application
+needs to have its own jar file.
 
 <p>In Web Start 1.0.1, it is necessary to sign the application
 if it is to have access to the local disk etc.  The way that this is
@@ -49,40 +50,17 @@ that two Web Start applications cannot share one jar file, so
 we create these wrapper classes that call the appropriate main class.
 <p>For more information about JNLP, see $PTII/mk/jnlp.in.
 
-@see ptolemy.vergil.VergilApplication
+@see MenuApplication
 
 @author Christopher Hylands
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class HyVisualApplication {
+public class HyVisualApplication extends MenuApplication {
     public static void main(final String [] args) {
-        // We set the security manager to null for two reasons
-
-        // 1) Get rid of the following message when we open the file browser:
-        // "There is no disk in the drive. Please insert a disk into drive A"
-        // with the standard Abort/Retry/Ignore buttons.
-        // See:
-        // http://forum.java.sun.com/thread.jsp?forum=38&thread=71610
-
-        // 2)Speed things up, see
-        // http://forums.java.sun.com/thread.jsp?forum=38&thread=134393
-
+	// See the class comment of MenuApplication
+	// about why we set the security manager to null.
         System.setSecurityManager(null);
-
-	// Invoke in the event thread so that we don't have problems
-	// rendering HTML.
-	// Note that this makes Web Start a little slower to come up,
-	// but it avoids the problems in rendering that HyVisual 2.2-beta had.
-	SwingUtilities.invokeLater(new Runnable() {
-		public void run() {
-		    try {
-			ptolemy.vergil.VergilApplication.main(args);
-		    } catch (Exception ex) {
-			MessageHandler.error("Command failed", ex);
-			System.exit(0);
-		    }
-		}
-	    });
+	MenuApplication.main(args);
     }
 }
