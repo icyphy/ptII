@@ -47,6 +47,7 @@ to the composite, they will be instances of WirelessIOPort.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 4.0
 */
 public class WirelessComposite extends TypedCompositeActor {
 

@@ -1,6 +1,6 @@
 /* A class modeling a sensor that transmits location information.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
+ Copyright (c) 2003-2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -76,6 +76,7 @@ be detected by another sensor, and the tree changes dynamically.
 
 @author Yang Zhao
 @version $ $
+@since Ptolemy II 4.0
 */
 public class Sensor extends TypedAtomicActor {
 

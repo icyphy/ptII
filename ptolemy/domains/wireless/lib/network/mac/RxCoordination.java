@@ -2,7 +2,7 @@
 /* Generates acknowledgements, routes data frames to the network layer
    and indicates receipt of Ack and Cts to TxCoordination process.
 
- Copyright (c) 1999-2004 The Regents of the University of California.
+ Copyright (c) 2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -55,6 +55,7 @@ also notifies TxCoordination process of the receipt of either CTS or Ack.
 
 @author Charlie Zhong
 @version $Id$
+@since Ptolemy II 4.0
 */
 
 public class RxCoordination extends MACActorBase {

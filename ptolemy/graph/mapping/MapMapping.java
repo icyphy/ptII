@@ -1,6 +1,6 @@
 /* A base class for a Mapping that is based on a Map.
 
- Copyright (c) 2002-2004 The University of Maryland.
+ Copyright (c) 2003-2004 The University of Maryland.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -36,7 +36,7 @@ set of keys in the Map. MapMappings are immutable in the
 sense that the underlying Map cannot be changed (although the keys and
 values associated with the Map can be changed).
 
-@since Ptolemy II 2.0
+@since Ptolemy II 4.0
 @author Shuvra S. Bhattacharyya
 @version $Id$
 */

@@ -1,6 +1,6 @@
 /* A common interface for all the maximum profit to cost analyzers.
 
- Copyright (c) 2002-2004 The University of Maryland.
+ Copyright (c) 2003-2004 The University of Maryland.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -34,7 +34,7 @@ import java.util.List;
 /**
 A common interface for all the maximum profit to cost analyzers.
 <p>
-@since Ptolemy II 2.0
+@since Ptolemy II 4.0
 @see ptolemy.graph.analysis.MaximumProfitToCostRatioAnalysis
 @author Shahrooz Shahparnia
 @version $Id$

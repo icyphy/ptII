@@ -86,7 +86,7 @@ or the transmit() public method.
 
 @author Xiaojun Liu, Edward A. Lee and Yang Zhao
 @version $Id$
-@since Ptolemy II 2.1
+@since Ptolemy II 4.0
 */
 public class AtomicWirelessChannel extends TypedAtomicActor
     implements WirelessChannel, ValueListener {

@@ -1,6 +1,6 @@
 /* An actor that provides the common functions to all wireless network models.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
+ Copyright (c) 2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -53,6 +53,7 @@ that are widely used in the OMNET c++ classes.
 
 @author Yang Zhao, Charlie Zhong
 @version $Id$
+@since Ptolemy II 4.0
 */
 
 public class NetworkActorBase extends TypedAtomicActor {

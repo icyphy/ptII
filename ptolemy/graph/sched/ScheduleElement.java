@@ -1,6 +1,6 @@
 /* An abstract base class for a schedule element.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
+ Copyright (c) 2003-2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -58,7 +58,7 @@ A default value of 1 is used for the iteration count.
 University of Maryland at College Park, based on a file by
 Brian K. Vogel, Steve Neuendorffer
 @version $Id$
-@since Ptolemy II 2.0
+@since Ptolemy II 4.0
 @see ptolemy.graph.sched.Firing
 @see ptolemy.graph.sched.Schedule
 @see ptolemy.graph.sched.ScheduleElement

@@ -1,7 +1,7 @@
 /* Maximum profit to cost ratio analyzer which uses Parhi's algorithm for
 iteration bound.
 
- Copyright (c) 2002-2004 The University of Maryland. All rights reserved.
+ Copyright (c) 2003-2004 The University of Maryland. All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
  software and its documentation for any purpose, provided that the above
@@ -58,7 +58,7 @@ K. Ito and K. K. Parhi. Determining the minimum iteration period of an
 algorithm. Journal of VLSI Signal Processing, 11(3):229-244, December 1995
 <p>
 @see ptolemy.graph.analysis.MaximumProfitToCostRatioAnalysis
-@since Ptolemy II 2.0
+@since Ptolemy II 4.0
 @author Shahrooz Shahparnia
 @version $Id$
 */

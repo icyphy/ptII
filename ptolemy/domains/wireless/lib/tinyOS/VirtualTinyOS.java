@@ -1,7 +1,7 @@
 /* An actor that evaluates matlab expressions with input ports
    providing variables
 
- Copyright (c) 1998-2004 The Regents of the University of California and
+ Copyright (c) 2004 The Regents of the University of California and
  Research in Motion Limited.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -54,7 +54,7 @@ FIXME: this class hasn't been fully implemented.
 FIXME: add more doc here.
 @author Yang Zhao, Xiaojun Liu
 @version $ $
-@since Ptolemy II 3.0
+@since Ptolemy II 4.0
 */
 public class VirtualTinyOS extends TypedAtomicActor {
 

@@ -1,6 +1,6 @@
 /* An actor that finds a destination to send data to.
 
- Copyright (c) 1997-2004 The Regents of the University of California.
+ Copyright (c) 2003-2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -78,6 +78,7 @@ or any domain that respects fireAt() calls.
 @author Edward A. Lee
 @see IOPort#getWidth()
 @version $Id$
+@since Ptolemy II 4.0
 */
 public class SmartSender extends TypedAtomicActor {
 

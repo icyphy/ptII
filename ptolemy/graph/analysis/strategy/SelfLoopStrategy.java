@@ -1,6 +1,6 @@
 /* Computation of self-loops in a graph.
 
- Copyright (c) 2002-2004 The University of Maryland. All rights reserved.
+ Copyright (c) 2003-2004 The University of Maryland. All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
  software and its documentation for any purpose, provided that the above
@@ -46,7 +46,7 @@ This analysis requires <em>O</em>(<em>E</em>) time, where <em>E</em> is the
 number of edges in the graph.
 <p>
 @see ptolemy.graph.analysis.SelfLoopAnalysis
-@since Ptolemy II 2.0
+@since Ptolemy II 4.0
 @author Shuvra S. Bhattacharyya, Shahrooz Shahparnia
 @version $Id$
 */

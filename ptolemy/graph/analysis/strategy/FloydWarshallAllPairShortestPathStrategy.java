@@ -1,7 +1,7 @@
 /* Computation of the all pair shortest path of a DirectedGraph using the
 Floyd-Warshall algorithm.
 
- Copyright (c) 2002-2004 The University of Maryland. All rights reserved.
+ Copyright (c) 2003-2004 The University of Maryland. All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
  software and its documentation for any purpose, provided that the above
@@ -55,7 +55,7 @@ unless otherwise specified by a self edge for a cyclic graph.
 includes the node with label "i".
 <p>
 @see ptolemy.graph.analysis.AllPairShortestPathAnalysis
-@since Ptolemy II 2.0
+@since Ptolemy II 4.0
 @author Shahrooz Shahparnia
 @version $Id$
 */

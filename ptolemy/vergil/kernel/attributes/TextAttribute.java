@@ -1,6 +1,6 @@
 /* An attribute for a visible text annotation.
 
- Copyright (c) 2001-2004 The Regents of the University of California.
+ Copyright (c) 2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -55,6 +55,7 @@ This is an attribute that is rendered as text annotation.
 <p>
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 4.0
 */
 public class TextAttribute extends Attribute {
 

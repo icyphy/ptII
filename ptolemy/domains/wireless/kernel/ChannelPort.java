@@ -57,6 +57,7 @@ actors instead of atomic actors).
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 4.0
 */
 
 public class ChannelPort extends WirelessIOPort {

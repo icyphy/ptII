@@ -1,6 +1,6 @@
 /* A mirror transformer for graphs.
 
- Copyright (c) 2002-2004 The University of Maryland. All rights reserved.
+ Copyright (c) 2003-2004 The University of Maryland. All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
  software and its documentation for any purpose, provided that the above
@@ -46,7 +46,7 @@ by a single node called super node.
 <p>
 
 @see ptolemy.graph.analysis.ClusterNodesAnalysis
-@since Ptolemy II 2.0
+@since Ptolemy II 4.0
 @author Shahrooz Shahparnia based on a method by Ming Yung Ko.
 @version $Id$
 */

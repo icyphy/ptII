@@ -1,6 +1,6 @@
 /* Exception for domain incompatibility in mappings.
 
- Copyright (c) 2002-2004 The University of Maryland.
+ Copyright (c) 2003-2004 The University of Maryland.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -32,7 +32,7 @@ package ptolemy.graph.mapping;
 /**
 Exception for domain incompatibility in mappings.
 
-@since Ptolemy II 2.0
+@since Ptolemy II 4.0
 @author Shahrooz Shahparnia
 @version $Id$
 */

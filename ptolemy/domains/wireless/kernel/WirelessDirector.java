@@ -45,6 +45,7 @@ only difference being that it creates instances of WirelessReceiver.
 
 @author Sanjeev Kohli, N. Vinay Krishnan, Cheng Tien Ee, and Xiaojun Liu
 @version $Id$
+@since Ptolemy II 4.0
 @see DEDirector
 */
 public class WirelessDirector extends DEDirector {

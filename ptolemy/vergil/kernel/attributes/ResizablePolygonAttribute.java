@@ -1,6 +1,6 @@
 /* An attribute with a reference to a polygon.
 
- Copyright (c) 2001-2004 The Regents of the University of California.
+ Copyright (c) 2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -56,6 +56,7 @@ scaled to fit the specified width and height.
 <p>
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 4.0
 */
 public class ResizablePolygonAttribute extends FilledShapeAttribute {
 

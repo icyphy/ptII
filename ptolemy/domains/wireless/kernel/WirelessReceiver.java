@@ -54,6 +54,7 @@ fix this until we can create an empty record token. yang
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 4.0
 */
 
 public class WirelessReceiver extends DEReceiver {

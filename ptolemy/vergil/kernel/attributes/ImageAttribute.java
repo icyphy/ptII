@@ -1,6 +1,6 @@
 /* An attribute with a reference to an image.
 
- Copyright (c) 2001-2004 The Regents of the University of California.
+ Copyright (c) 2003-2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -57,6 +57,7 @@ its <i>scale</i> attribute specifies a scaling factor, as a percentage.
 <p>
 @author Edward A. Lee and Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 4.0
 */
 public class ImageAttribute extends Attribute {
 

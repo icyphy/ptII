@@ -1,6 +1,6 @@
 /* A mapping from an arbitrary domain of values into some range.
 
- Copyright (c) 2002-2004 The University of Maryland.
+ Copyright (c) 2003-2004 The University of Maryland.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -46,7 +46,7 @@ assume that the arguments are in the corresponding domains). In such cases,
 the {@link #inDomain(Object)} method can be used when it is desired
 to make sure that that a candidate argument is in the domain.
 
-@since Ptolemy II 2.0
+@since Ptolemy II 4.0
 @author Shuvra S. Bhattacharyya, Shahrooz Shahparnia
 @version $Id$
 */

@@ -1,7 +1,7 @@
 /*  An interface for all the analyzers that compute the all pair shortest path
 of a directed graph.
 
- Copyright (c) 2002-2004 The University of Maryland.
+ Copyright (c) 2003-2004 The University of Maryland.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -39,7 +39,7 @@ An interface for all the analyzers that compute the all pair shortest path of
 a directed graph.
 <p>
 @see ptolemy.graph.analysis.AllPairShortestPathAnalysis
-@since Ptolemy II 2.0
+@since Ptolemy II 4.0
 @author Shahrooz Shahparnia
 @version $Id$
 */

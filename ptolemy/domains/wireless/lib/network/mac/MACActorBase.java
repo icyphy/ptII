@@ -1,6 +1,6 @@
 /* An actor that provides the channel status.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
+ Copyright (c) 2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -56,7 +56,7 @@ Based on this, it is relatively easy to translate a OMNET class
 to a actor here.
 @author Yang Zhao
 @version MACActorBase.java,v 1.8 2004/04/12 15:30:36 cxh Exp
-@since Ptolemy II 2.1
+@since Ptolemy II 4.0
 */
 
 public class MACActorBase extends NetworkActorBase {

@@ -1,6 +1,6 @@
 /* A base interface for transformers.
 
- Copyright (c) 2002-2004 The University of Maryland.
+ Copyright (c) 2003-2004 The University of Maryland.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -37,7 +37,7 @@ and vice versa. If only unilateral relation is being considered,
 this can be communicated to the client through the {@link #hasBackwardMapping()}
 and {@link #hasForwardMapping()} methods.
 <p>
-@since Ptolemy II 2.0
+@since Ptolemy II 4.0
 @author Shahrooz Shahparnia, Shuvra S. Bhattacharyya
 @version $Id$
 */

@@ -83,6 +83,7 @@ specified model and get the new properties back from it.
 
 @author Yang Zhao, Edward Lee
 @version $Id$
+@since Ptolemy II 4.0
 */
 public class TransmitPropertyTransformer extends RunCompositeActor
     implements PropertyTransformer {

@@ -1,6 +1,6 @@
 /* A base class for all the strategies.
 
- Copyright (c) 2002-2004 The University of Maryland. All rights reserved.
+ Copyright (c) 2003-2004 The University of Maryland. All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
  software and its documentation for any purpose, provided that the above
@@ -36,7 +36,7 @@ A base class for all the strategies. The Analysis package is implementing the
 Strategy pattern, and the Strategy class defines the family of classes that
 implement different strategies for given analyzers.
 <p>
-@since Ptolemy II 2.0
+@since Ptolemy II 4.0
 @author Shahrooz Shahparnia
 @version $Id$
 */

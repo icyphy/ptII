@@ -1,6 +1,6 @@
 /* A channel with a specified loss probability.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
+ Copyright (c) 2003-2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -75,6 +75,7 @@ to provide some other notion of distance.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 4.0
 */
 public class ErasureChannel extends AtomicWirelessChannel {
 

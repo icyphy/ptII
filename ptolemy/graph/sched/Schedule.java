@@ -1,6 +1,6 @@
 /* A count and a list of schedule elements.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
+ Copyright (c) 2003-2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -100,7 +100,7 @@ multiple threads are concurrently accessing the schedule.
 S. S. Bhattacharyya, P K. Murthy, and E. A. Lee,
 Software Syntheses from Dataflow Graphs, Kluwer Academic Publishers, 1996.
 
-@since Ptolemy II 2.0
+@since Ptolemy II 4.0
 @author Shahrooz Shahparnia, Mingyung Ko,
 University of Maryland at College Park, based on a file by
 Brian K. Vogel, Steve Neuendorffer

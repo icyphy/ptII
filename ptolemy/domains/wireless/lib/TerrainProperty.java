@@ -1,6 +1,6 @@
 /* An actor that provides terrain properties.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
+ Copyright (c) 2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -64,6 +64,7 @@ getProperty() method to get the property.
 
 @author Yang Zhao
 @version $Id$
+@since Ptolemy II 4.0
 */
 public class TerrainProperty extends TypedAtomicActor
     implements PropertyTransformer {

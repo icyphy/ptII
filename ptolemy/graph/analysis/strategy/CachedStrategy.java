@@ -1,6 +1,6 @@
  /* A base class for cached analyzers on graphs.
 
- Copyright (c) 2002-2004 The University of Maryland. All rights reserved.
+ Copyright (c) 2003-2004 The University of Maryland. All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
  software and its documentation for any purpose, provided that the above
@@ -54,7 +54,7 @@ calling the {@link #reset()} method in case of data changes.
 
 <p> [1] G. Ramalingam. <em>Bounded Incremental Computation</em>. PhD thesis,
 University of Wisconsin at Madison, August 1993.
-@since Ptolemy II 2.0
+@since Ptolemy II 4.0
 @author Shuvra S. Bhattacharyya, Ming Yung Ko and Shahrooz Shahparnia
 @version $Id$
 */

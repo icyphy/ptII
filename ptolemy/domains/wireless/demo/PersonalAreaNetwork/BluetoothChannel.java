@@ -1,6 +1,6 @@
 /* A channel with a specified propagation speed.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
+ Copyright (c) 2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -52,6 +52,7 @@ characteristics of the Bluetooth protocol will be modelled in this channel.
 
 @author TODO: Philip Baldwin
 @version $Id$
+@since Ptolemy II 4.0
 */
 
 public class BluetoothChannel extends LimitedRangeChannel {

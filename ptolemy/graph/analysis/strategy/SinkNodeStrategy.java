@@ -1,6 +1,6 @@
 /* Computation of sink nodes in a graph.
 
- Copyright (c) 2002-2004 The University of Maryland. All rights reserved.
+ Copyright (c) 2003-2004 The University of Maryland. All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
  software and its documentation for any purpose, provided that the above
@@ -47,7 +47,7 @@ This analysis requires <em>O</em>(<em>N</em>) time, where <em>N</em> is the
 number of nodes in the graph.
 <p>
 @see ptolemy.graph.analysis.SinkNodeAnalysis
-@since Ptolemy II 2.0
+@since Ptolemy II 4.0
 @author Ming Yung Ko, Shahrooz Shahparnia
 @version $Id$
 */

@@ -1,6 +1,6 @@
 /* An actor that detects collisions.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
+ Copyright (c) 2003-2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -157,6 +157,7 @@ It also requires that all three inputs have tokens when fired.
 
 @author Yang Zhao, Xiaojun Liu, Edward Lee
 @version $Id$
+@since Ptolemy II 4.0
 @see PowerLossChannel
 @see GetProperties
 @see ptolemy.actor.lib.RecordDisassembler

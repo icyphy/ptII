@@ -1,6 +1,6 @@
 /* A base interface for all the graph analyzers.
 
- Copyright (c) 2002-2004 The University of Maryland.
+ Copyright (c) 2003-2004 The University of Maryland.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -35,7 +35,7 @@ import ptolemy.graph.Graph;
 A base interface for all the graph analyzers. Graph analyzers are analyzers
 which analyze graphs and compute results, that will be accessed through methods
 that interfaces that extend this one will define.
-@since Ptolemy II 2.0
+@since Ptolemy II 4.0
 @author Shahrooz Shahparnia
 @version $Id$
 */

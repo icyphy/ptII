@@ -1,6 +1,6 @@
 /* A common interface for all the cycle mean analyzers.
 
- Copyright (c) 2002-2004 The University of Maryland.
+ Copyright (c) 2003-2004 The University of Maryland.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -35,7 +35,7 @@ import java.util.List;
 A common interface for all the cycle mean analyzers.
 <p>
 @see ptolemy.graph.analysis.CycleMeanAnalysis
-@since Ptolemy II 2.0
+@since Ptolemy II 4.0
 @author Shahrooz Shahparnia
 @version $Id$
 */

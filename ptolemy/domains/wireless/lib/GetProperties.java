@@ -72,6 +72,7 @@ explicitly.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 4.0
 */
 public class GetProperties extends TypedAtomicActor {
 

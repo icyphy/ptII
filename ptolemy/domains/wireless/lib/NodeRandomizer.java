@@ -78,6 +78,7 @@ uniformly distributed between <i>y1</i> and <i>y2</i>.
 
 @author Sanjeev Kohli, N. Vinay Krishnan, Cheng Tien Ee, Edward Lee and Xiaojun Liu
 @version $Id$
+@since Ptolemy II 4.0
 @see Locatable
 */
 public class NodeRandomizer extends TypedAtomicActor {

@@ -1,6 +1,6 @@
 /* Triangulate to identify the origin of a signal.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
+ Copyright (c) 2003-2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -94,6 +94,7 @@ implementation represent the X and Y locations of the event.
 
 @author Xiaojun Liu, Edward A. Lee
 @version $Id$
+@since Ptolemy II 4.0
 */
 
 public class Triangulator extends TypedAtomicActor {

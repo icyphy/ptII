@@ -95,6 +95,7 @@ that send on the channel and the channel port.
 
 @author Edward A. Lee and Xiaojun Liu
 @version $Id$
+@since Ptolemy II 4.0
 */
 
 public class WirelessIOPort
