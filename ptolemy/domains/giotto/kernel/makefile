@@ -48,7 +48,6 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	GiottoCEmachineFrameworkGenerator.java \
 	GiottoCodeGenerator.java \
 	GiottoDirector.java \
 	GiottoReceiver.java \
