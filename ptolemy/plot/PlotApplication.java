@@ -47,14 +47,16 @@ Command-line options include:
 <dl>
 
 <dt><code>-help</code></a>
-<dt>Display the usage, including all command-line options
-    that exist for backward compatibility.
-
+<dt>Print the usage, including all command-line options
+    that exist for backward compatibility and then exit.
+    The help menu choice will display the same information.
 <dt><code>-test</code></a>
 <dt>Display the plot, then exit after 2 seconds.
 
 <dt><code>-version</code></a>
-<dt>Display the program version.
+<dt>Print the program version and then exit.
+    While ptplot is running,
+    the version menu choice will display the same information.
 </dl>
 
 <p>
@@ -206,9 +208,10 @@ public class PlotApplication extends PlotFrame {
         Message message = new Message(
                 "PlotApplication is a standalone Java 2D plot application\n" +
                 "It can read files compatible with the Ptolemy plot\n" +
-                "file format (currently only ASCII).  For a description\n " +
-                "of the file format, see the Plot and PlotBox classes.\n" +
-                "Command-line options include:\n" + _usage(),
+                "file format (currently only ASCII).\n" +
+                "Command-line options include:\n" + _usage() +
+                "ASCII Files should have the following format\n" +
+                plot._usage(),
                 null, null, 20, 40,
                 TextArea.SCROLLBARS_BOTH);
         message.setTitle("Usage of Ptolemy Plot");
@@ -238,7 +241,8 @@ public class PlotApplication extends PlotFrame {
 
             if (arg.equals("-help")) {
                 // -help is not in the original X11 pxgraph.
-                System.out.println(_usage());
+                System.out.println(_usage() + plot._usage());
+                System.exit(0);
                 continue;
             } else if (arg.equals("-test")) {
                 // -test is not in the original X11 pxgraph.
@@ -250,7 +254,8 @@ public class PlotApplication extends PlotFrame {
                 continue;
             } else if (arg.equals("-v") || arg.equals("-version")) {
                 // -version is not in the original X11 pxgraph.
-                _about();
+                System.out.println("Version 2.2, Build $Id$");
+                System.exit(0);
                 continue;
             } else if (arg.startsWith("=")) {
                 // Process =WxH+X+Y
@@ -333,9 +338,12 @@ public class PlotApplication extends PlotFrame {
         String commandFlags[][] = {
             {"-bar", "BarGraph",  ""},
             {"-bb", "BoundBox",  "(Ignored)"},
+            {"-bigendian", "",  ""},
+            {"-littleendian", "",  ""},
             {"-binary", "Binary",  ""},
             // -impulses is not in the original X11 pxgraph.
             {"-impulses", "Impulses",  ""},
+            {"-help", "",  ""},
             {"-lnx", "XLog",  ""},
             {"-lny", "YLog",  ""},
             {"-m", "Markers",  ""},
@@ -351,7 +359,7 @@ public class PlotApplication extends PlotFrame {
             {"-v", "Version",  ""},
             {"-version", "Version",  ""},
         };
-        String result = "Usage: plot [ options ] [=WxH+X+Y] [file ...]\n\n"
+        String result = "Usage: ptplot [ options ] [=WxH+X+Y] [file ...]\n\n"
             + " options that take values as second args:\n";
 
         int i;
@@ -367,8 +375,7 @@ public class PlotApplication extends PlotFrame {
         }
         result += "\nThe following pxgraph features are not supported:\n"
             + " * Directives in pxgraph input files\n"
-            + " * Xresources\n"
-            + "For complete documentation, see the pxgraph program docs.";
+            + " * Xresources\n";
         return result;
     }
 
