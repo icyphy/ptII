@@ -242,12 +242,12 @@ public class GeneratorTableau extends Tableau {
             // Next, put in a panel to configure the code generator.
             // If the model contains an attribute with tableau
             // configuration information, use that.  Otherwise, make one.
-            GeneratorTableauAttribute attribute =
-                (GeneratorTableauAttribute)
+            GeneratorAttribute attribute =
+                (GeneratorAttribute)
                 model.getAttribute("_generator",
-                        GeneratorTableauAttribute.class);
+                        GeneratorAttribute.class);
             if (attribute == null) {
-                attribute = new GeneratorTableauAttribute(
+                attribute = new GeneratorAttribute(
                         model, "_generator");
             }
 
@@ -258,7 +258,7 @@ public class GeneratorTableau extends Tableau {
 
 
             Configurer configurer = new Configurer(attribute);
-            final GeneratorTableauAttribute options = attribute;
+            final GeneratorAttribute options = attribute;
 
             JPanel controlPanel = new JPanel();
             controlPanel.add(configurer);

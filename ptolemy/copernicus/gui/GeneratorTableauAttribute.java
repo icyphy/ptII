@@ -32,12 +32,18 @@ package ptolemy.copernicus.gui;
 
 import ptolemy.actor.gui.style.CheckBoxStyle;
 import ptolemy.actor.gui.style.ChoiceStyle;
+import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.TableauFrame;
+import ptolemy.actor.gui.TextEditor;
+import ptolemy.actor.gui.TextEffigy;
+import ptolemy.actor.gui.EditorFactory;
 import ptolemy.copernicus.kernel.GeneratorAttribute;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.Documentation;
 
+import java.awt.Frame;
 import java.io.File;
 import java.lang.reflect.Field;
 
@@ -70,5 +76,43 @@ public class GeneratorTableauAttribute extends GeneratorAttribute {
     public GeneratorTableauAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+	_attachText("_iconDescription", "<svg>\n" +
+                "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"40\" "
+                + "style=\"fill:blue\"/>"
+                + "<text x=\"-40\" y=\"-5\" "
+                + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
+                + "Double click to\ngenerate code.</text></svg>");
+        new SingletonAttribute(this, "_hideName");
+        new GeneratorTableauEditorFactory(this, "_editorFactory");
+    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    private class GeneratorTableauEditorFactory extends EditorFactory {
+
+        public GeneratorTableauEditorFactory(NamedObj _container, String name)
+                throws IllegalActionException, NameDuplicationException {
+            super(_container, name);
+	}
+        /** Create an editor for configuring the specified object with the
+         *  specified parent window.
+         *  @param object The object to configure.
+         *  @param parent The parent window, or null if there is none.
+         */
+        public void createEditor(NamedObj object, Frame parent) {
+            try {
+                Configuration configuration
+                    = ((TableauFrame)parent).getConfiguration();
+
+                NamedObj _container = (NamedObj)object.getContainer();
+                TextEffigy codeEffigy = TextEffigy.newTextEffigy(
+                        configuration.getDirectory(), toString());
+                codeEffigy.setModified(true);
+                configuration.createPrimaryTableau(codeEffigy);
+            } catch (Exception ex) {
+                throw new InternalErrorException(object, ex,
+                        "Cannot generate code. Perhaps outside Vergil?");
+            }
+        }
     }
 }

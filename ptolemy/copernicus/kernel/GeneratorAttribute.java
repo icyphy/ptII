@@ -88,6 +88,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
+	System.out.println("GeneratorAttribute(" + container + " " + name);
 	// Read in the initialParameters file.
         initialParametersURL =
 	    new Parameter(this, "initialParametersURL",
@@ -149,6 +150,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
     ////                         public methods                    ////
 
     public void changeExecuted(ChangeRequest change) {
+	System.out.println("changeExecuted: " + change + "\n" + change.getDescription());
     }
 
     public void changeFailed(ChangeRequest change, final Exception exception) {
