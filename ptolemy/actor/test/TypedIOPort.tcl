@@ -40,13 +40,6 @@ if {[string compare test [info procs test]] == 1} then {
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
-# If a file contains non-graphical tests, then it should be named .tcl
-# If a file contains graphical tests, then it should be called .itcl
-#
-# It would be nice if the tests would work in a vanilla itkwish binary.
-# Check for necessary classes and adjust the auto_path accordingly.
-#
-
 # NOTE:  All of the following tests use this director,
 # pretty much as a dummy.
 set director [java::new ptolemy.actor.Director]
@@ -184,3 +177,41 @@ test TypedIOPort-4.2 {test description} {
 
     $p1 description $detail
 } {ptolemy.actor.TypedIOPort {..E1.P1} type {declared double resolved double}}
+
+
+######################################################################
+####
+#
+test TypedIOPort-5.0 {test Listeners } {
+    set e0 [java::new ptolemy.actor.TypedCompositeActor]
+    $e0 setDirector $director
+    $e0 setManager $manager
+    set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 E1]
+    set p1 [java::new ptolemy.actor.TypedIOPort]
+    set p2 [java::new ptolemy.actor.TypedIOPort $e1 P2]
+
+    # No listeners have been added, and no scheduler is present
+    set listener [java::new ptolemy.actor.test.TestTypeListener]
+
+    # Try remove when there are no TypeListeners added yet
+    $p1 removeTypeListener $listener
+
+    $p1 addTypeListener $listener
+
+    # Try adding it twice
+    $p1 addTypeListener $listener
+
+    set tDouble [[java::new ptolemy.data.DoubleToken] getType]
+    $p1 setTypeEquals $tDouble
+
+    $p1 removeTypeListener $listener
+
+    set tInt [[java::new ptolemy.data.IntToken] getType]
+
+    # We removed the type listener, so this should not add a message
+    # to the listener
+
+    $p1 setTypeEquals $tInt
+
+    $listener getMessage
+} {./unknown/double}
