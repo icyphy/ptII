@@ -112,6 +112,7 @@ public class CastAndInstanceofEliminator extends BodyTransformer
                                 ((ArrayType)opType).numDimensions) {
                             // We know the answer is false.
                             box.setValue(IntConstant.v(0));
+                            System.out.println("Replacing " + value + " with false.");
                             continue;
                         }
                         Type checkBase = ((ArrayType)checkType).baseType;
@@ -131,13 +132,17 @@ public class CastAndInstanceofEliminator extends BodyTransformer
                     SootClass checkClass = ((RefType)checkRef).getSootClass();
                     SootClass opClass = ((RefType)checkRef).getSootClass();
                     Hierarchy hierarchy = Scene.v().getActiveHierarchy();
+                    System.out.println("checkClass = " + checkClass);
+                    System.out.println("opClass = " + opClass);
                     if(checkClass.isInterface()) {
                         if(opClass.getInterfaces().contains(checkClass)) {
                             // Then we know the instanceof will be true.
-                            box.setValue(IntConstant.v(1));
+                            System.out.println("Replacing " + value + " with true.");
+                             box.setValue(IntConstant.v(1));
                         }
                     } else if(hierarchy.isClassSuperclassOfIncluding(checkClass, opClass)) {
                         // Then we know the instanceof will be true.
+                            System.out.println("Replacing " + value + " with true.");
                         box.setValue(IntConstant.v(1));
                     }
                 }

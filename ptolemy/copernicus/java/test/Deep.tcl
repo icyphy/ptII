@@ -47,7 +47,7 @@ if {[info procs jdkClassPathSeparator] == "" } then {
 }
 
 # Uncomment this to get a full report, or set in your Tcl shell window.
-# set VERBOSE 1
+set VERBOSE 1
 
 ######################################################################
 ####
@@ -67,6 +67,13 @@ test Deep-1.2 {Compile and run the SDF IIR test} {
     list {}
 } {{}}
 
+#  test Deep-1.3 {Compile and run the SDF ArrayAppend test} {
+#      set result [sootDeepCodeGeneration \
+#  	    [file join $relativePathToPTII ptolemy actor lib test auto \
+#  	    ArrayAppend.xml]]
+#      list {}
+#  } {{}}
+
 # Now try to generate code for all the tests in the auto directories.
 #  autoDeepCG [file join $relativePathToPTII ptolemy actor lib test auto]
 #  autoDeepCG [file join $relativePathToPTII ptolemy actor lib conversions test auto]
@@ -77,9 +84,9 @@ test Deep-1.2 {Compile and run the SDF IIR test} {
 #  autoDeepCG [file join $relativePathToPTII ptolemy domains fsm kernel test auto]
 #  autoDeepCG [file join $relativePathToPTII ptolemy domains fsm test auto]
 #  autoDeepCG [file join $relativePathToPTII ptolemy domains hdf kernel test auto]
-autoDeepCG [file join $relativePathToPTII ptolemy domains sdf kernel test auto]
-autoDeepCG [file join $relativePathToPTII ptolemy domains sdf lib test auto]
-autoDeepCG [file join $relativePathToPTII ptolemy domains sdf lib vq test auto]
+#autoDeepCG [file join $relativePathToPTII ptolemy domains sdf kernel test auto]
+#autoDeepCG [file join $relativePathToPTII ptolemy domains sdf lib test auto]
+#autoDeepCG [file join $relativePathToPTII ptolemy domains sdf lib vq test auto]
 #  autoDeepCG [file join $relativePathToPTII ptolemy domains sr kernel test auto]
 #  autoDeepCG [file join $relativePathToPTII ptolemy domains sr lib test auto]
 

@@ -30,6 +30,7 @@ import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.data.*;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.Typeable;
+import ptolemy.copernicus.kernel.ActorTransformer;
 import ptolemy.copernicus.kernel.SootUtilities;
 
 
@@ -75,25 +76,32 @@ public class InlineParameterTransformer extends SceneTransformer {
 
         // For every variable and settable attribute in the model, create a
         // field that has the value of that attributes.
-        _createTokenAndExpressionFields(Scene.v().getMainClass(), _model, _model,
+        _createTokenAndExpressionFields(
+                Scene.v().getMainClass(), _model, _model,
                 attributeToValueFieldMap, debug);
 
         // Loop over all the actor instance classes.
         for(Iterator i = _model.entityList().iterator();
             i.hasNext();) {
             Entity entity = (Entity)i.next();
-            String className = Options.getString(options, "targetPackage")
-                + "." + entity.getName();
-            SootClass entityClass = Scene.v().loadClassAndSupport(className);
+            String className =
+                ActorTransformer.getInstanceClassName(entity, options);
+            SootClass entityClass = 
+                        Scene.v().loadClassAndSupport(className);
             
-            _createTokenAndExpressionFields(entityClass, entity, entity,
+            _createTokenAndExpressionFields(
+                    entityClass, entity, entity,
                     attributeToValueFieldMap, debug);
         }
 
-        for(Iterator i = Scene.v().getApplicationClasses().iterator();
+        for(Iterator i = _model.entityList().iterator();
             i.hasNext();) {
-            SootClass theClass = (SootClass)i.next();
-            
+            Entity entity = (Entity)i.next();
+            String className =
+                ActorTransformer.getInstanceClassName(entity, options);
+            SootClass theClass = 
+                        Scene.v().loadClassAndSupport(className);
+                 
             // inline calls to parameter.getToken and getExpression
             for(Iterator methods = theClass.getMethods().iterator();
                 methods.hasNext();) {
@@ -113,12 +121,6 @@ public class InlineParameterTransformer extends SceneTransformer {
                     //FIXME: what if no thisLocal?
                     throw new RuntimeException("method " + method + " does not have a thisLocal!");
                 }
-                /*Jimple.v().newLocal("this", 
-                        RefType.v(theClass));
-                body.getLocals().add(thisLocal);
-                body.getUnits().addFirst(Jimple.v().newIdentityStmt(thisLocal, 
-                        Jimple.v().newThisRef((RefType)thisLocal.getType())));
-                */
 
                 if(debug) System.out.println("method = " + method);
 
@@ -451,7 +453,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                 // attribute statically evaluates to null.
                 return null;
             } else {
-                throw new RuntimeException("Unknown type of value: " + local + " in " + method);
+                throw new RuntimeException("Unknown type of value: " + value + " in " + method);
             }
         } else {
             String string = "More than one definition of = " + local + "\n";

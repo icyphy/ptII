@@ -60,7 +60,7 @@ proc sootDeepCodeGeneration {model} {
     
     set targetPackage ptolemy.copernicus.java.test.cg
 
-    set args [java::new {String[]} 12 \
+    set args [java::new {String[]} 46 \
 	    [list \
 	    $model "-d" $relativePathToPTII \
 	    "-p" "wjtp.at" "deep,targetPackage:$targetPackage" \
@@ -73,11 +73,13 @@ proc sootDeepCodeGeneration {model} {
 	    "-p" "wjtp.iat" "deep,targetPackage:$targetPackage" \
 	    "-p" "wjtp.ipt" "deep,targetPackage:$targetPackage" \
 	    "-p" "wjtp.itt" "deep,targetPackage:$targetPackage" \
-	    "-p" "wjtp.ttn" "deep,targetPackage:$targetPackage" \
+	    "-p" "wjtp.ttn" "disable,deep,debug,targetPackage:$targetPackage" \
 	    "-p" "wjtp.ts" "deep" \
 	    "-p" "jtp.iee" "deep" \
 	    "-p" "wjtp.umr" "deep" \
+	    "--jimple" \
 	    ]]
+
     set main [java::new ptolemy.copernicus.java.Main $args]
     set toplevel [$main readInModel $model]
     $main initialize $toplevel
@@ -141,7 +143,7 @@ proc sootDeepCodeGeneration {model} {
 #    return [exec java -Xfuture -classpath $classpath ptolemy.actor.gui.CompositeActorApplication -iterations 10 -class $modelName]
     puts "sootDeepCodeGeneration {$model}: running $modelName"
 
-    return [exec java -Xfuture -classpath $classpath ptolemy.actor.gui.CompositeActorApplication -class $modelName]
+    return [exec java -Xfuture -classpath $classpath ptolemy.copernicus.java.test.cg.Main]
 }
 
 

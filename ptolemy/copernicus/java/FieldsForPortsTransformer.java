@@ -31,6 +31,7 @@ import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.data.*;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.Typeable;
+import ptolemy.copernicus.kernel.ActorTransformer;
 import ptolemy.copernicus.kernel.SootUtilities;
 
 
@@ -83,8 +84,8 @@ public class FieldsForPortsTransformer extends SceneTransformer {
         for(Iterator i = _model.entityList().iterator();
             i.hasNext();) {
             Entity entity = (Entity)i.next();
-            String className = Options.getString(options, "targetPackage")
-                + "." + entity.getName();
+            String className =
+                ActorTransformer.getInstanceClassName(entity, options);
             SootClass entityClass = Scene.v().loadClassAndSupport(className);
             _getPortFields(entityClass, entity, entity,
                     portToFieldMap);
@@ -92,10 +93,13 @@ public class FieldsForPortsTransformer extends SceneTransformer {
         }
 
         // Loop over all the classes and replace getAttribute calls.
-        for(Iterator i = Scene.v().getApplicationClasses().iterator();
+        for(Iterator i = _model.entityList().iterator();
             i.hasNext();) {
-            SootClass theClass = (SootClass)i.next();
-            
+            Entity entity = (Entity)i.next();
+            String className =
+                ActorTransformer.getInstanceClassName(entity, options);
+            SootClass theClass = Scene.v().loadClassAndSupport(className);
+                  
             // Loop through all the methods in the class.
             for(Iterator methods = theClass.getMethods().iterator();
                 methods.hasNext();) {

@@ -90,21 +90,39 @@ public class InstanceEqualityEliminator extends BodyTransformer
                     BinopExpr binop = (BinopExpr)value;
                     Value left = binop.getOp1();
                     Value right = binop.getOp2();
-                    if(left.getType() instanceof RefType &&
-                            right.getType() instanceof RefType) {
+                    if((left.getType() instanceof RefType ||
+                            left.getType() instanceof NullType) &&
+                            (right.getType() instanceof RefType ||
+                                    right.getType() instanceof NullType)) {
+                        Set leftMustAliases, rightMustAliases;
+                        if(left instanceof Local) {
+                            leftMustAliases = mustAliasAnalysis.getAliasesOfBefore((Local)left, unit);
+                        } else {
+                            // A null constant.
+                            leftMustAliases = new HashSet();
+                            leftMustAliases.add(left);
+                        } 
+                        if(right instanceof Local) {
+                            rightMustAliases = mustAliasAnalysis.getAliasesOfBefore((Local)right, unit);
+                        } else {
+                            // A null constant.
+                            rightMustAliases = new HashSet();
+                            rightMustAliases.add(right);
+                        } 
+                         
                         if(debug) System.out.println("checking unit = " + unit);
                         if(debug) System.out.println("left aliases = " + 
-                                mustAliasAnalysis.getAliasesOfBefore((Local)left, unit));
+                               leftMustAliases);
                         if(debug) System.out.println("right aliases = " + 
-                                mustAliasAnalysis.getAliasesOfBefore((Local)right, unit));
-                        if(debug) System.out.println("left maybe aliases = " + 
-                                maybeAliasAnalysis.getAliasesOfBefore((Local)left, unit));
-                        if(debug) System.out.println("right maybe aliases = " + 
-                                maybeAliasAnalysis.getAliasesOfBefore((Local)right, unit));
+                                rightMustAliases);
+                        //  if(debug) System.out.println("left maybe aliases = " + 
+                        //        maybeAliasAnalysis.getAliasesOfBefore((Local)left, unit));
+                        //if(debug) System.out.println("right maybe aliases = " + 
+                        //        maybeAliasAnalysis.getAliasesOfBefore((Local)right, unit));
                         // Utter hack... Should be:
                         // if(mustAliasAnalysis.getAliasesOfBefore((Local)left, unit).contains(right)) {
-                        Set intersection = mustAliasAnalysis.getAliasesOfBefore((Local)left, unit);
-                        intersection.retainAll(mustAliasAnalysis.getAliasesOfBefore((Local)right, unit));
+                        Set intersection = leftMustAliases;
+                        intersection.retainAll(rightMustAliases);
                         if(!intersection.isEmpty()) {
                             binop.getOp1Box().setValue(IntConstant.v(0));
                             binop.getOp2Box().setValue(IntConstant.v(0));

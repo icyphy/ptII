@@ -31,15 +31,20 @@ package ptolemy.copernicus.java;
 
 import soot.*;
 import soot.jimple.*;
+import soot.jimple.toolkits.invoke.ClassHierarchyAnalysis;
 import soot.jimple.toolkits.invoke.SiteInliner;
 import soot.jimple.toolkits.invoke.StaticInliner;
+import soot.jimple.toolkits.invoke.InvokeGraph;
 import soot.jimple.toolkits.invoke.InvokeGraphBuilder;
+import soot.jimple.toolkits.invoke.VariableTypeAnalysis;
 import soot.jimple.toolkits.scalar.ConditionalBranchFolder;
 import soot.jimple.toolkits.scalar.ConstantPropagatorAndFolder;
 import soot.jimple.toolkits.scalar.CopyPropagator;
 import soot.jimple.toolkits.scalar.DeadAssignmentEliminator;
 import soot.jimple.toolkits.scalar.UnreachableCodeEliminator;
 import soot.jimple.toolkits.scalar.Evaluator;
+import soot.jimple.toolkits.scalar.LocalNameStandardizer;
+import soot.jimple.toolkits.typing.TypeAssigner;
 import soot.toolkits.graph.*;
 import soot.toolkits.scalar.*;
 import soot.dava.*;
@@ -96,6 +101,15 @@ public class TokenToNativeTransformer extends SceneTransformer {
             return;
         }
 
+     // We need all classes as library:
+    //      for(Iterator classes = Scene.v().getClasses().iterator();
+//              classes.hasNext();) {
+//              SootClass theClass = (SootClass)classes.next();
+//              if(theClass.isContextClass()) {
+//                  theClass.setLibraryClass();
+//              }
+//          }
+
         // Compute the set of locals that are tokens, but not safe to inline.
         // For now, this includes any token that originates 
         // from a call to evaluateParseTree.
@@ -115,7 +129,6 @@ public class TokenToNativeTransformer extends SceneTransformer {
             while(doneSomething && (count < 20)) {
                 doneSomething = false;
                 System.out.println("inlining methods iteration " + count++);
-                // First split local variables that are redefined...  
                 // This will allow us to get a better type inference below.
                 for(Iterator methods = entityClass.getMethods().iterator();
                     methods.hasNext();) {
@@ -123,7 +136,13 @@ public class TokenToNativeTransformer extends SceneTransformer {
                     
                     JimpleBody body = (JimpleBody)method.retrieveActiveBody();
                     
+                    // First split local variables that are used in multiple places.
                     LocalSplitter.v().transform(body, phaseName + ".ls", "");
+                    // We may have locals with the same name.  Rename them.
+                    LocalNameStandardizer.v().transform(body, phaseName + ".lns", "");
+                    // Assign types to local variables... This types everything that
+                    // isn't a token type.
+                    //TypeAssigner.v().transform(body, phaseName + ".ta", "");
                     // Run some cleanup...  this will speedup the rest of the analysis.
                     // And prevent typing errors.
                     CastAndInstanceofEliminator.eliminateCastsAndInstanceOf(
@@ -134,6 +153,10 @@ public class TokenToNativeTransformer extends SceneTransformer {
                     UnreachableCodeEliminator.v().transform(body, phaseName + ".uce", "");
                 }
 
+                // InvokeGraph invokeGraph = ClassHierarchyAnalysis.newInvokeGraph();
+                //Scene.v().setActiveInvokeGraph(invokeGraph);
+                //VariableTypeAnalysis vta = new VariableTypeAnalysis(invokeGraph);
+                
                 // Now run the type specialization algorithm...  This 
                 // allows us to resolve the methods that we are inlining
                 // with better precision.
@@ -175,30 +198,40 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                 }
                             }
 
-                            if(value instanceof VirtualInvokeExpr) {
-                                VirtualInvokeExpr r = (VirtualInvokeExpr)value;
-                                // System.out.println("invoking = " + r.getMethod());
-                                
+                            if(value instanceof VirtualInvokeExpr ||
+                               value instanceof InterfaceInvokeExpr) {
+                                InstanceInvokeExpr r = (InstanceInvokeExpr)value;
+                           
+                                // If we are invoking a method on a Token, and
+                                // the token is not unsafe.
                                 if(r.getBase().getType() instanceof RefType &&
                                         !unsafeLocalSet.contains(r.getBase())) {
                                     RefType type = (RefType)r.getBase().getType();
                                                                                
                                     if(SootUtilities.derivesFrom(type.getSootClass(),
                                             PtolemyUtilities.tokenClass)) {
-                                        List methodList = 
-                                            hierarchy.resolveAbstractDispatch(
+                                        //||  SootUtilities.derivesFrom(type.getSootClass(),
+                                        //               PtolemyUtilities.typeClass)) {
+                                        // Then determine the method that was
+                                        // actually invoked.
+                                         List methodList = 
+                                        //      invokeGraph.getTargetsOf((Stmt)unit);
+                                         hierarchy.resolveAbstractDispatch(
                                                     type.getSootClass(), 
-                                                    r.getMethod());
-                                        //System.out.println("checking token method call = " + r);
-                                        //System.out.println("baseType = " + type.getSootClass());
+                                                   r.getMethod());
+                                        
+                                        // If there was only one possible method...
                                         if(methodList.size() == 1) {
+                                            // Then inline its code
                                             SootMethod inlinee = (SootMethod)methodList.get(0);
                                             if(inlinee.getName().equals("getClass")) {
                                                 // FIXME: do something better here.
                                                 SootMethod newGetClassMethod = Scene.v().getMethod(
-                                                        "<java.lang.Class: java.lang.Class forName(java.lang.String)>");
+                                                        "<java.lang.Class: java.lang.Class "
+                                                        + "forName(java.lang.String)>");
                                                 box.setValue(Jimple.v().newStaticInvokeExpr(
-                                                        newGetClassMethod, StringConstant.v("java.lang.Object")));
+                                                        newGetClassMethod,
+                                                        StringConstant.v("java.lang.Object")));
                                                         
                                             } else {
                                                 SootClass declaringClass = inlinee.getDeclaringClass();
@@ -215,7 +248,12 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                                             inlinee, (Stmt)unit, method);
                                                     doneSomething = true;
                                                 }
-                                                
+                                            }
+                                        } else {
+                                            System.out.println("uninlinable method invocation = " + r);
+                                            for(Iterator j = methodList.iterator(); 
+                                                j.hasNext();) {
+                                                System.out.println("method = " + j.next());
                                             }
                                         }
                                     }
@@ -250,8 +288,8 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                 StaticInvokeExpr r = (StaticInvokeExpr)value;
                                 // Inline typelattice methods.
                                 if(r.getMethod().getDeclaringClass().equals(PtolemyUtilities.typeLatticeClass)) {
-                                    PtolemyUtilities.inlineTypeLatticeMethods(body,
-                                            unit, box, r, objectToTokenType);
+                                    PtolemyUtilities.inlineTypeLatticeMethods(method,
+                                            unit, box, r, objectToTokenType, localDefs);
                                 }
 
                                 // System.out.println("static invoking = " + r.getMethod());
@@ -928,12 +966,12 @@ public class TokenToNativeTransformer extends SceneTransformer {
                         }
                     }
                 }
-                CastAndInstanceofEliminator.eliminateCastsAndInstanceOf(
-                        body, phaseName + ".cie", unsafeLocalSet);
-                CopyPropagator.v().transform(body, phaseName + ".cp", "");
-                ConstantPropagatorAndFolder.v().transform(body, phaseName + ".cpf", "");
-                ConditionalBranchFolder.v().transform(body, phaseName + ".cbf", "");
-                UnreachableCodeEliminator.v().transform(body, phaseName + ".uce", "");
+                //                CastAndInstanceofEliminator.eliminateCastsAndInstanceOf(
+                //        body, phaseName + ".cie", unsafeLocalSet);
+                //CopyPropagator.v().transform(body, phaseName + ".cp", "");
+                //ConstantPropagatorAndFolder.v().transform(body, phaseName + ".cpf", "");
+                //ConditionalBranchFolder.v().transform(body, phaseName + ".cbf", "");
+                //UnreachableCodeEliminator.v().transform(body, phaseName + ".uce", "");
             }
         }
         
@@ -1106,7 +1144,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                         fieldToReplacementLeftLocal.get(tokenField);
                     Local replacementRightLocal = (Local)
                         fieldToReplacementRightLocal.get(tokenField);
-                   if(debug) System.out.println("replacementLeftLocal = " + replacementLeftLocal);
+                    if(debug) System.out.println("replacementLeftLocal = " + replacementLeftLocal);
                     if(debug) System.out.println("replacementRightLocal = " + replacementRightLocal);
                     body.getUnits().insertBefore(
                             Jimple.v().newAssignStmt(

@@ -72,6 +72,14 @@ public class Main extends KernelMain {
     /** Add transforms to the Scene.
      */
     public void addTransforms() {
+	super.addTransforms();
+        // Create instance classes for actors.
+	// This transformer takes no input as far as soot is concerned
+	// (i.e. no application classes) and creates application
+	// classes from the model.
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.at",
+                ActorTransformer.v(_toplevel)));
+
         // Add a transformer to convert each actor class to JHDL.
         // "wjtp" means "whole java tranformation package"
         // This transformer is required to be a scene transformer,

@@ -62,10 +62,12 @@ import soot.ValueBox;
 import soot.VoidType;
 
 import soot.jimple.IntConstant;
+import soot.jimple.InvokeExpr;
 import soot.jimple.Jimple;
 import soot.jimple.JimpleBody;
 import soot.jimple.StringConstant;
 import soot.jimple.SpecialInvokeExpr;
+import soot.jimple.Stmt;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -174,6 +176,12 @@ public class ActorTransformer extends SceneTransformer {
                 superClass = theClass.getSuperclass();
             }
 
+            // Go through all the initialization code and removing any
+            // parameter initialization code.
+            // FIXME: This needs to look at all code that is reachable
+            // from a constructor.
+            _removeAttributeInitialization(theClass);
+
             // replace the previous dummy body
             // for the initialization method with a new one.
             body = Jimple.v().newBody(initMethod);
@@ -185,7 +193,8 @@ public class ActorTransformer extends SceneTransformer {
             // insert code to initialize the settable
             // parameters of this instance and
             // create fields for attributes.
-            ModelTransformer.createFieldsForAttributes(body, entity, thisLocal, 
+            ModelTransformer.createFieldsForAttributes(
+                    body, entity, thisLocal, 
                     entity, thisLocal, entityInstanceClass);
                     
             // return void
@@ -199,8 +208,11 @@ public class ActorTransformer extends SceneTransformer {
     }
 
     public static String getInstanceClassName(Entity entity, Map options) {
+        // Note that we use sanitizeName because entity names can have 
+        // spaces, and append leading characters because entity names
+        // can start with numbers.
         return Options.getString(options, "targetPackage")
-            + "." + entity.getName();
+            + ".CG" + SootUtilities.sanitizeName(entity.getName());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -248,6 +260,28 @@ public class ActorTransformer extends SceneTransformer {
             method.setActiveBody(body);
             body.insertIdentityStmts();
             body.getUnits().add(Jimple.v().newReturnVoidStmt());            
+        }
+    }
+
+    private static void _removeAttributeInitialization(SootClass theClass) {
+        for(Iterator methods = theClass.getMethods().iterator();
+            methods.hasNext();) {
+            SootMethod method = (SootMethod)methods.next();
+            JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+            for(Iterator units = body.getUnits().snapshotIterator();
+                units.hasNext();) {
+                Stmt stmt = (Stmt)units.next();
+                if(stmt.containsInvokeExpr()) {
+                    InvokeExpr r = (InvokeExpr)stmt.getInvokeExpr();
+                    // This is steve...  This is steve gacking at the ugliest code 
+                    // he's written in a while.   See steve gack.
+                    if(r.getMethod().getName().equals("attributeChanged") ||
+                            r.getMethod().getName().equals("setExpression") ||
+                            r.getMethod().getName().equals("setToken")) {
+                        body.getUnits().remove(stmt);
+                    }
+                }
+            }
         }
     }
 

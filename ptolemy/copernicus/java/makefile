@@ -110,7 +110,7 @@ JVM_SIZE = -Xmx132m
 
 # Soot command line arguments for the user.  To list all the arguments, use
 # make SOOT_USER_ARGS=-h
-SOOT_USER_ARGS = -O
+SOOT_USER_ARGS =
 
 compileShallowDemo: $(JCLASS)
 	@echo "generate shallow code for $(SOURCEPACKAGE)"
@@ -121,8 +121,8 @@ compileShallowDemo: $(JCLASS)
 		-p wjtp.mt targetPackage:$(SHALLOWTARGETPACKAGE) \
 		-p wjtp.umr disabled \
 		$(SOOT_USER_ARGS)
-	@echo "Here is that javap output"
-	javap -verbose -l -s -classpath $(ROOT) $(SHALLOWTARGETCLASS)
+#	@echo "Here is that javap output"
+#	javap -verbose -l -s -classpath $(ROOT) $(SHALLOWTARGETCLASS)
 
 runShallowDemo:
 	@echo "Run the model"
@@ -152,8 +152,8 @@ compileDeepDemo: $(JCLASS)
 		-p jtp.iee deep \
 		-p wjtp.umr deep \
 		$(SOOT_USER_ARGS)
-	@echo "Here is that javap output"
-	javap -verbose -l -s -classpath $(ROOT) $(DEEPTARGETCLASS)
+#	@echo "Here is that javap output"
+#	javap -verbose -l -s -classpath $(ROOT) $(DEEPTARGETCLASS)
 
 runDeepDemo:
 	@echo "Run the deep model"

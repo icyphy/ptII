@@ -93,11 +93,24 @@ public class Main extends KernelMain {
      */
     public void addTransforms() {
 	super.addTransforms();
+        
+        // Sanitize names of objects in the model.
+        // We change the names to all be valid java identifiers
+        // so that we can 
+        //      Scene.v().getPack("wjtp").add(new Transform("wjtp.ns",
+        //         NameSanitizer.v(_toplevel)));
+
+        // Create instance classes for actors.
+	// This transformer takes no input as far as soot is concerned
+	// (i.e. no application classes) and creates application
+	// classes from the model.
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.at",
+                ActorTransformer.v(_toplevel)));
 
         // Create a class for the composite actor of the model
         Scene.v().getPack("wjtp").add(new Transform("wjtp.mt",
                 ModelTransformer.v(_toplevel)));
-
+        
         // Add a command line interface (i.e. Main)
         Scene.v().getPack("wjtp").add(new Transform("wjtp.clt",
                 CommandLineTransformer.v(_toplevel)));
@@ -108,19 +121,23 @@ public class Main extends KernelMain {
         // is a field for every attribute, and replace calls
         // to getAttribute with references to those fields.
         Scene.v().getPack("wjtp").add(new Transform("wjtp.ffat",
-                FieldsForAttributesTransformer.v(_toplevel)));
+               FieldsForAttributesTransformer.v(_toplevel)));
         // In each actor and composite actor, ensure that there
         // is a field for every port, and replace calls
         // to getPortwith references to those fields.
         Scene.v().getPack("wjtp").add(new Transform("wjtp.ffpt",
                 FieldsForPortsTransformer.v(_toplevel)));
+
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.ls",
+                new TransformerAdapter(LocalSplitter.v())));
+                                
         // While we still have references to ports, use the
         // resolved types of the ports and run a typing
         // algorithm to specialize the types of domain
         // polymorphic actors.  After this step, no
         // uninstantiable types should remain.
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.ts",
-                TypeSpecializer.v(_toplevel)));
+        //    Scene.v().getPack("wjtp").add(new Transform("wjtp.ts",
+        //        TypeSpecializer.v(_toplevel)));
 
         // Set about removing reference to attributes and parameters.
         // Anywhere where a method is called on an attribute or
@@ -133,7 +150,7 @@ public class Main extends KernelMain {
         // assignments to attributes and handle them differently.)
         Scene.v().getPack("wjtp").add(new Transform("wjtp.iat",
                 InlineParameterTransformer.v(_toplevel)));
-
+        
         // Anywhere we have a method call on a token that can be
         // statically evaluated (usually, these will have been
         // created by inlining parameters), inline those calls.
@@ -154,18 +171,27 @@ public class Main extends KernelMain {
         // references that were created.
         Scene.v().getPack("wjtp").add(new Transform("wjtp.itt",
                 InlineTokenTransformer.v(_toplevel)));
-        // Scene.v().getPack("wjtp").add(new Transform("wjtp.ls",
-        //        new TransformerAdapter(LocalSplitter.v())));
-
-        //  Scene.v().getPack("wjtp").add(new Transform("wjtp.ts",
-        //       TypeSpecializer.v(_toplevel)));
+     
+        //Scene.v().getPack("wjtp").add(new Transform("wjtp.ta",
+        //        new TransformerAdapter(TypeAssigner.v())));
 
         Scene.v().getPack("wjtp").add(new Transform("wjtp.umr",
                 UnreachableMethodRemover.v()));
-
+ 
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.cse",
+                new TransformerAdapter(CommonSubexpressionEliminator.v())));
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.cp",
+                new TransformerAdapter(CopyPropagator.v())));
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.cpf",
+                new TransformerAdapter(ConstantPropagatorAndFolder.v())));
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.cbf",
+                    new TransformerAdapter(ConditionalBranchFolder.v())));
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.uce",
+                new TransformerAdapter(UnreachableCodeEliminator.v())));
+        
         Scene.v().getPack("wjtp").add(new Transform("wjtp.ttn",
                 TokenToNativeTransformer.v(_toplevel)));
-
+        
         // Scene.v().getPack("wjtp").add(new Transform("wjtp.ibg",
         //        InvokeGraphBuilder.v()));
         // Scene.v().getPack("wjtp").add(new Transform("wjtp.si",
@@ -175,14 +201,6 @@ public class Main extends KernelMain {
         //  Scene.v().getPack("jtp").add(new Transform("jtp.clu",
         //        ConstantLoopUnroller.v()));
 
-         // Some cleanup.
-         // Remove object creations that are now dead (i.e. aren't used
-         // and have no side effects).  This currently only deals with
-         // Token and Type constructors, since we know that these will
-         // have no interesting side effects.  More complex analysis
-         // is possible here, but not likely worth it.
-        Scene.v().getPack("jtp").add(new Transform("jop.doe",
-                DeadObjectEliminator.v()));
 
         // Remove tests of object equality that can be statically
         // determined.  The generated code ends up with alot of
@@ -193,10 +211,20 @@ public class Main extends KernelMain {
         Scene.v().getPack("jtp").add(new Transform("jtp.iee",
                 InstanceEqualityEliminator.v()));
 
+      
+        // Some cleanup.
+        // Remove object creations that are now dead (i.e. aren't used
+        // and have no side effects).  This currently only deals with
+        // Token and Type constructors, since we know that these will
+        // have no interesting side effects.  More complex analysis
+        // is possible here, but not likely worth it.
+        Scene.v().getPack("jtp").add(new Transform("jop.doe",
+                DeadObjectEliminator.v()));
         // Removes references to instancefields that come from 'this'.
         Scene.v().getPack("jop").add(new Transform("jop.dae",
                 ImprovedDeadAssignmentEliminator.v()));
-        
+
+          
     }
 
     /** Read in a MoML model, generate java files

@@ -32,11 +32,19 @@ package ptolemy.copernicus.kernel;
 import soot.ArrayType;
 import soot.BaseType;
 import soot.Body;
+import soot.BooleanType;
+import soot.ByteType;
+import soot.CharType;
+import soot.DoubleType;
+import soot.FloatType;
 import soot.Hierarchy;
+import soot.IntType;
 import soot.Local;
+import soot.LongType;
 import soot.Modifier;
 import soot.RefType;
 import soot.Scene;
+import soot.ShortType;
 import soot.SootClass;
 import soot.SootField;
 import soot.SootMethod;
@@ -113,6 +121,7 @@ import java.util.List;
 
 import java.lang.reflect.Method;
 
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.LongToken;
 import ptolemy.data.DoubleToken;
@@ -558,6 +567,13 @@ public class SootUtilities {
     public static Constant convertArgumentToConstantValue(Object object) {
         if(object == null) {
             return NullConstant.v();
+        } else if(object instanceof BooleanToken) {
+            BooleanToken flag = (BooleanToken)object;
+            if(flag.booleanValue()) {
+                return IntConstant.v(1);
+            } else {
+                return IntConstant.v(0);
+            }
         } else if(object instanceof IntToken) {
             return IntConstant.v(((IntToken)object).intValue());
         } else if(object instanceof LongToken) {
@@ -566,6 +582,13 @@ public class SootUtilities {
             return StringConstant.v(((StringToken)object).stringValue());
         } else if(object instanceof DoubleToken) {
             return DoubleConstant.v(((DoubleToken)object).doubleValue());
+        } else if(object instanceof Boolean) {
+            Boolean flag = (Boolean)object;
+            if(flag.booleanValue()) {
+                return IntConstant.v(1);
+            } else {
+                return IntConstant.v(0);
+            }
         } else if(object instanceof Integer) {
             return IntConstant.v(((Integer)object).intValue());
         } else if(object instanceof Long) {
@@ -922,8 +945,31 @@ public class SootUtilities {
         // System.out.println("folding " + theClass + " into " + superClass);
         Scene.v().setActiveHierarchy(new Hierarchy());
 
-        // Copy the interface declarations
+        // Copy the interface declarations.
         theClass.getInterfaces().addAll(superClass.getInterfaces());
+
+        // Rename fields in the given class
+        // whose name is the same between
+        // the given class and its superclass.
+        for(Iterator fields = theClass.getFields().snapshotIterator();
+            fields.hasNext();) {
+            SootField field = (SootField)fields.next();
+            if(superClass.declaresFieldByName(field.getName())) {
+                // SootField superField = superClass.getFieldByName(field.getName());
+                String newName = sanitizeName(superClass.getName()) +
+                        field.getName();
+                System.out.println("Renaming field " + field + " to " 
+                        + newName + " to avoid collision with superClass field "
+                        + superClass.getFieldByName(field.getName()));
+                        
+                field.setName(newName);
+                // We have to do this seemingly useless 
+                // thing, since the scene caches a pointer
+                // to the field based on it's name.
+                theClass.removeField(field);
+                theClass.addField(field);
+            }
+        }
 
         // Copy the field declarations.
         List collidedFieldList = _copyFields(theClass, superClass);
@@ -1024,22 +1070,42 @@ public class SootUtilities {
         // And now replace any remaining references to the super class.
         changeTypesInMethods(theClass, superClass, theClass);
 
-        // Change the names of fields that were created
-        // that collided with existing fields.
-        for(Iterator fields = collidedFieldList.iterator();
-            fields.hasNext();) {
-            SootField field = (SootField)fields.next();
-            System.out.println("WARNING: fixing naming collision for " + field);
-            field.setName(sanitizeName(superClass.getName()) +
-                          field.getName());
-            // we have to do this seemingly useless 
-            // thing, since the scene caches a pointer
-            // to the field based on it's name.
-            theClass.removeField(field);
-            theClass.addField(field);
-        }
-        
         theClass.setSuperclass(superClass.getSuperclass());
+    }
+
+    /** Given a Type object, return the java.lang.Class object that the
+     *  type represents.
+     */
+    public static Class getClassForType(Type type) throws ClassNotFoundException {
+        if(type instanceof RefType) {
+            return Class.forName(((RefType)type).getSootClass().getName());
+        } else if(type instanceof ArrayType) {
+            ArrayType arrayType = (ArrayType)type;
+            String identifier = "";
+            for(int i = 0; i < arrayType.numDimensions; i++) {
+                identifier += "[";
+            }
+            identifier += getClassForType(arrayType.baseType).getName();
+            return Class.forName(identifier);
+        } else if(type instanceof ByteType) {
+            return Byte.TYPE;
+        } else if(type instanceof CharType) {
+            return Character.TYPE;
+        } else if(type instanceof DoubleType) {
+            return Double.TYPE;
+        } else if(type instanceof FloatType) {
+            return Float.TYPE;
+        } else if(type instanceof IntType) {
+            return Integer.TYPE;
+        } else if(type instanceof LongType) {
+            return Long.TYPE;
+        } else if(type instanceof ShortType) {
+            return Short.TYPE;
+        } else if(type instanceof BooleanType) {
+            return Boolean.TYPE;
+        } else {
+            throw new RuntimeException("unknown type = " + type);
+        }
     }
 
     /** Get the method in the given class that has the given name and will
@@ -1230,11 +1296,9 @@ public class SootUtilities {
     }
 
     /** Reflect the given method on the class of the given object.  
-     * Invoke the method and return the returned value as a constant.
-     * If the returned value cannot be represented as a constant, then 
-     * throw an exception.
+     * Invoke the method and return the returned value 
      */
-    public static Constant reflectAndInvokeMethod(Object object, 
+    public static Object reflectAndInvokeMethod(Object object, 
             SootMethod sootMethod, Value argValues[]) {
         Class objectClass = object.getClass();
         Class[] parameterClasses =
@@ -1247,11 +1311,11 @@ public class SootUtilities {
             Type parameterType = (Type)parameterTypes.next();
             try {
                 args[i] = convertConstantValueToArgument(argValues[i]);
-                parameterClasses[i] = 
-                    Class.forName(parameterType.toString());
+                parameterClasses[i] = getClassForType(parameterType);
                 i++;
             } catch (Exception ex) {
-                throw new RuntimeException("class not found = " 
+                ex.printStackTrace();
+                throw new RuntimeException("Class not found = " 
                         + parameterType.toString());
             }
         }
@@ -1263,10 +1327,11 @@ public class SootUtilities {
             
             returned = method.invoke(object, args);
         } catch (Exception ex) {
-            throw new RuntimeException("method not found = " 
+            throw new RuntimeException("Method not found = " 
                     + sootMethod.getName());
         }
-        return convertArgumentToConstantValue(returned);
+       
+        return returned;
     }
 
     /** Sanitize a String so that it can be used as a Java identifier.

@@ -109,13 +109,6 @@ public class KernelMain {
 	// library classes)
         Scene.v().getPack("wjtp").add(new Transform("wjtp.hack",
                 new _IgnoreAllApplicationClasses(), ""));
-
-        // Create instance classes for actors.
-	// This transformer takes no input as far as soot is concerned
-	// (i.e. no application classes) and creates application
-	// classes from the model.
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.at",
-                ActorTransformer.v(_toplevel)));
     }
 
     /** Call soot.Main.main(), which does command line argument

@@ -39,7 +39,7 @@ import java.util.*;
 
 /**
 An analysis that maps each local or field to the set of objects or
-fields that must alias is, at a particular point in the code.  
+fields that must alias it, at a particular point in the code.  
 */
 public class MustAliasAnalysis extends ForwardFlowAnalysis {
     public MustAliasAnalysis(UnitGraph g) {

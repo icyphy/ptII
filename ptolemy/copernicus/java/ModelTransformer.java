@@ -30,9 +30,9 @@
 package ptolemy.copernicus.java;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.IORelation;
+import ptolemy.actor.TypedIORelation;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.copernicus.kernel.ActorTransformer;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
@@ -68,10 +68,12 @@ import soot.util.*;
 import java.lang.reflect.Constructor;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -107,13 +109,30 @@ public class ModelTransformer extends SceneTransformer {
         return super.getDeclaredOptions() + " deep targetPackage";
     }
 
+    /** Return the name of the field that is created for the
+     *  given entity.
+     */
+    public static String getFieldNameForEntity(Entity entity) {
+        return SootUtilities.sanitizeName(entity.getName());
+    }
+
+    /** Return the name of the field that is created to 
+     *  represent the given channel of the given type of the
+     *  given relation.
+     */
+    public static String getBufferFieldName(TypedIORelation relation, 
+            int channel, ptolemy.data.type.Type type) {
+        return "_" + SootUtilities.sanitizeName(relation.getName())
+            + "_" + channel
+            + "_" + SootUtilities.sanitizeName(type.toString());           
+    }
+
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("ModelTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
 
         // create a class for the model
-        String modelClassName = Options.getString(options, "targetPackage")
-            + "." + _model.getName();
+        String modelClassName = ActorTransformer.getInstanceClassName(_model, options);
 
         EntitySootClass modelClass =
             new EntitySootClass(PtolemyUtilities.compositeActorClass, modelClassName,
@@ -143,8 +162,8 @@ public class ModelTransformer extends SceneTransformer {
         _removeSuperExecutableMethods(modelClass);
 
         // Resolve name collisions.
-        LocalNameStandardizer.v().transform(body, phaseName + ".lns");
         LocalSplitter.v().transform(body, phaseName + ".lns");
+        LocalNameStandardizer.v().transform(body, phaseName + ".lns");
 
         Scene.v().setActiveHierarchy(new Hierarchy());
     }
@@ -219,10 +238,10 @@ public class ModelTransformer extends SceneTransformer {
             Chain clinitUnits = clinitBody.getUnits();
             
             // If we're doing deep (SDF) codegen, then create a
-            // queue for every channel of every relation.
+            // queue for every type of every channel of every relation.
             for(Iterator relations = composite.relationList().iterator();
                 relations.hasNext();) {
-                IORelation relation = (IORelation)relations.next();
+                TypedIORelation relation = (TypedIORelation)relations.next();
                 Parameter bufferSizeParameter = 
                     (Parameter)relation.getAttribute("bufferSize");
                 int bufferSize;
@@ -235,34 +254,49 @@ public class ModelTransformer extends SceneTransformer {
                     continue;
                 }
 
-                // Create a new local variable.
-                // FIXME: This is probably not the right type for a relation...
-                ptolemy.data.type.Type type = 
-                    ((TypedIOPort)relation.linkedPortList().get(0)).getType();
-                BaseType tokenType =
-                    PtolemyUtilities.getSootTypeForTokenType(type);
-                Type arrayType = ArrayType.v(tokenType, 1);
-                Local arrayLocal = 
-                    Jimple.v().newLocal("bufferArray", arrayType);
-                clinitBody.getLocals().add(arrayLocal);
-
-                for(int i=0; i < relation.getWidth(); i++) {
-                    SootField field = new SootField("_" + 
-                            relation.getName() + "_" + i, arrayType,
-                            Modifier.PUBLIC | Modifier.STATIC);
-                    modelClass.addField(field);
+                // Determine the types that the relation is connected to.
+                Map typeMap = new HashMap();
+                List destinationPortList = relation.linkedDestinationPortList();
+                for(Iterator destinationPorts = destinationPortList.iterator();
+                    destinationPorts.hasNext();) {
+                    TypedIOPort port = (TypedIOPort)destinationPorts.next();
+                    ptolemy.data.type.Type type = port.getType();
+                    typeMap.put(type.toString(), type);
+                }
+                
+                for(Iterator types = typeMap.keySet().iterator();
+                    types.hasNext();) {
+                    ptolemy.data.type.Type type = 
+                        (ptolemy.data.type.Type)typeMap.get(types.next());
+                    BaseType tokenType =
+                        PtolemyUtilities.getSootTypeForTokenType(type);
+                    Type arrayType = ArrayType.v(tokenType, 1);
+                    String fieldName = relation.getName() + "_bufferLocal";
+                    Local arrayLocal = 
+                        Jimple.v().newLocal(fieldName, arrayType);
+                    clinitBody.getLocals().add(arrayLocal);
                     
-                    // Tag the field with the type.
-                    field.addTag(new TypeTag(type));
-
-                    // Create the new buffer
-                    clinitUnits.addFirst(Jimple.v().newAssignStmt(
-                            Jimple.v().newStaticFieldRef(field),
-                            arrayLocal));
-                    clinitUnits.addFirst(Jimple.v().newAssignStmt(arrayLocal, 
-                            Jimple.v().newNewArrayExpr(tokenType, 
-                                    IntConstant.v(bufferSize))));
-                    
+                    for(int i = 0; i < relation.getWidth(); i++) {
+                        SootField field = new SootField(
+                                getBufferFieldName(relation, i, type),
+                                arrayType,
+                                Modifier.PUBLIC | Modifier.STATIC);
+                        modelClass.addField(field);
+                        // System.out.println("creating field = " + field);
+                        
+                        // Tag the field with the type.
+                        field.addTag(new TypeTag(type));
+                        
+                        // Create the new buffer
+                        // Note: reverse order!
+                        clinitUnits.addFirst(Jimple.v().newAssignStmt(
+                                Jimple.v().newStaticFieldRef(field),
+                                arrayLocal));
+                        clinitUnits.addFirst(Jimple.v().newAssignStmt(arrayLocal, 
+                                Jimple.v().newNewArrayExpr(tokenType, 
+                                        IntConstant.v(bufferSize))));
+                        
+                    }
                 }
             }
         } else {
@@ -352,8 +386,7 @@ public class ModelTransformer extends SceneTransformer {
             if(Options.getBoolean(options, "deep")) {
 		// If we are doing deep codegen, then use the actor
 		// classes we created earlier.
-		className = Options.getString(options, "targetPackage") +
-		    "." + entity.getName();
+		className = ActorTransformer.getInstanceClassName(entity, options);
 	    } else {
             
 		// If we are doing shallow, then use the base actor
@@ -361,10 +394,12 @@ public class ModelTransformer extends SceneTransformer {
 		className = entity.getClass().getName();
             }
             
+            String entityName = getFieldNameForEntity(entity);
+
 	    // Create a new local variable.
 	    Local local = 
                 PtolemyUtilities.createNamedObjAndLocal(body, className,
-                        thisLocal, entity.getName());
+                        thisLocal, entityName);
 	    _entityLocalMap.put(entity, local);
 
             if(entity instanceof CompositeEntity) {
@@ -379,7 +414,7 @@ public class ModelTransformer extends SceneTransformer {
 		// include a field for each actor.
 		SootUtilities.createAndSetFieldFromLocal(
                         body, local, modelClass,
-                        PtolemyUtilities.actorType, entity.getName());
+                        PtolemyUtilities.actorType, entityName);
             } else {
 		// If we are doing shallow code generation, then
 		// include code to initialize the parameters of this
@@ -434,8 +469,8 @@ public class ModelTransformer extends SceneTransformer {
                 Local local = PtolemyUtilities.createNamedObjAndLocal(
                         body, className,
                         entityLocal, port.getName());
-                if(port instanceof IOPort) {
-                    IOPort ioport = (IOPort)port;
+                if(port instanceof TypedIOPort) {
+                    TypedIOPort ioport = (TypedIOPort)port;
                     if(ioport.isInput()) {
                         body.getUnits().add(Jimple.v().newInvokeStmt(
                                 Jimple.v().newVirtualInvokeExpr(local,

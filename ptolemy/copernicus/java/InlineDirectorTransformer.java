@@ -30,6 +30,7 @@
 package ptolemy.copernicus.java;
 
 import ptolemy.actor.CompositeActor;
+import ptolemy.copernicus.kernel.ActorTransformer;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.Entity;
@@ -139,7 +140,8 @@ public class InlineDirectorTransformer extends SceneTransformer {
             for(Iterator entities = _model.entityList().iterator();
                 entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
-                SootField field = modelClass.getFieldByName(entity.getName());
+                String fieldName = ModelTransformer.getFieldNameForEntity(entity);
+                SootField field = modelClass.getFieldByName(fieldName);
                 // Get the field.
                 units.add(Jimple.v().newAssignStmt(actorLocal,
                         Jimple.v().newInstanceFieldRef(thisLocal, field)));
@@ -171,7 +173,8 @@ public class InlineDirectorTransformer extends SceneTransformer {
             for(Iterator entities = _model.entityList().iterator();
                 entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
-                SootField field = modelClass.getFieldByName(entity.getName());
+                String fieldName = ModelTransformer.getFieldNameForEntity(entity);
+                SootField field = modelClass.getFieldByName(fieldName);
                 // Set the field.
                 units.add(Jimple.v().newAssignStmt(actorLocal,
                         Jimple.v().newInstanceFieldRef(thisLocal, field)));
@@ -217,7 +220,8 @@ public class InlineDirectorTransformer extends SceneTransformer {
             }
             while(schedule.hasNext()) {
                 Entity entity = (Entity)schedule.next();
-                SootField field = modelClass.getFieldByName(entity.getName());
+                String fieldName = ModelTransformer.getFieldNameForEntity(entity);
+                SootField field = modelClass.getFieldByName(fieldName);
                 // Set the field.
                 units.add(Jimple.v().newAssignStmt(actorLocal,
                         Jimple.v().newInstanceFieldRef(thisLocal, field)));
@@ -256,7 +260,8 @@ public class InlineDirectorTransformer extends SceneTransformer {
             for(Iterator entities = _model.entityList().iterator();
                 entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
-                SootField field = modelClass.getFieldByName(entity.getName());
+                String fieldName = ModelTransformer.getFieldNameForEntity(entity);
+                SootField field = modelClass.getFieldByName(fieldName);
                 // Set the field.
                 units.add(Jimple.v().newAssignStmt(actorLocal,
                         Jimple.v().newInstanceFieldRef(thisLocal, field)));

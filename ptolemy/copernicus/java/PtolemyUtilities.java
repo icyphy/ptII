@@ -98,6 +98,8 @@ import soot.toolkits.graph.CompleteUnitGraph;
 import soot.toolkits.scalar.UnitValueBoxPair;
 import soot.toolkits.scalar.SimpleLocalDefs;
 import soot.toolkits.scalar.SimpleLocalUses;
+import soot.toolkits.scalar.LocalDefs;
+import soot.toolkits.scalar.LocalUses;
 
 import soot.util.Chain;
 
@@ -222,33 +224,96 @@ public class PtolemyUtilities {
    public static Local buildConstantTypeLocal(Body body, Object insertPoint,
             ptolemy.data.type.Type type) {
         Chain units = body.getUnits();
-        if(type instanceof ptolemy.data.type.BaseType) {  
-            SootClass typeClass =
-                Scene.v().loadClassAndSupport("ptolemy.data.type.BaseType");
-            SootMethod typeConstructor =
-                SootUtilities.searchForMethodByName(typeClass, "forName");
+        if(type instanceof ptolemy.data.type.BaseType) { 
             Local typeLocal = Jimple.v().newLocal("type_" + type.toString(),
-                    RefType.v(typeClass));
+                    RefType.v(baseTypeClass));
             body.getLocals().add(typeLocal);
-            units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
-                    Jimple.v().newStaticInvokeExpr(typeConstructor,
-                            StringConstant.v(type.toString()))),
-                    insertPoint);
+            // This may look ugly, but wherever we insert type casts
+            // it is more efficient and also much easier to optimize
+            // during the translation process if we want to inline code.
+            if(type.equals(ptolemy.data.type.BaseType.UNKNOWN)) {
+                units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
+                        Jimple.v().newStaticFieldRef(unknownTypeField)),
+                        insertPoint);
+            } else if(type.equals(ptolemy.data.type.BaseType.BOOLEAN)) {
+                units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
+                        Jimple.v().newStaticFieldRef(booleanTypeField)),
+                        insertPoint);
+            } else if(type.equals(ptolemy.data.type.BaseType.BOOLEAN_MATRIX)) {
+                units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
+                        Jimple.v().newStaticFieldRef(booleanMatrixTypeField)),
+                        insertPoint);
+            } else if(type.equals(ptolemy.data.type.BaseType.COMPLEX)) {
+                units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
+                        Jimple.v().newStaticFieldRef(complexTypeField)),
+                        insertPoint);
+            } else if(type.equals(ptolemy.data.type.BaseType.COMPLEX_MATRIX)) {
+                units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
+                        Jimple.v().newStaticFieldRef(complexMatrixTypeField)),
+                        insertPoint);
+            } else if(type.equals(ptolemy.data.type.BaseType.DOUBLE)) {
+                units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
+                        Jimple.v().newStaticFieldRef(doubleTypeField)),
+                        insertPoint);
+            } else if(type.equals(ptolemy.data.type.BaseType.DOUBLE_MATRIX)) {
+                units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
+                        Jimple.v().newStaticFieldRef(doubleMatrixTypeField)),
+                        insertPoint);
+            } else if(type.equals(ptolemy.data.type.BaseType.FIX)) {
+                units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
+                        Jimple.v().newStaticFieldRef(fixTypeField)),
+                        insertPoint);
+            } else if(type.equals(ptolemy.data.type.BaseType.FIX_MATRIX)) {
+                units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
+                        Jimple.v().newStaticFieldRef(fixMatrixTypeField)),
+                        insertPoint);
+            } else if(type.equals(ptolemy.data.type.BaseType.INT)) {
+                units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
+                        Jimple.v().newStaticFieldRef(intTypeField)),
+                        insertPoint);
+            } else if(type.equals(ptolemy.data.type.BaseType.INT_MATRIX)) {
+                units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
+                        Jimple.v().newStaticFieldRef(intMatrixTypeField)),
+                        insertPoint);
+            } else if(type.equals(ptolemy.data.type.BaseType.LONG)) {
+                units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
+                        Jimple.v().newStaticFieldRef(longTypeField)),
+                        insertPoint);
+            } else if(type.equals(ptolemy.data.type.BaseType.LONG_MATRIX)) {
+                units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
+                        Jimple.v().newStaticFieldRef(longMatrixTypeField)),
+                        insertPoint);
+            } else if(type.equals(ptolemy.data.type.BaseType.OBJECT)) {
+                units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
+                        Jimple.v().newStaticFieldRef(objectTypeField)),
+                        insertPoint);
+            } else if(type.equals(ptolemy.data.type.BaseType.STRING)) {
+                units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
+                        Jimple.v().newStaticFieldRef(stringTypeField)),
+                        insertPoint);
+            } else {
+                // Some base type that we didn't special case above.
+                SootMethod typeConstructor =
+                    SootUtilities.searchForMethodByName(
+                            baseTypeClass, "forName");
+                units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
+                        Jimple.v().newStaticInvokeExpr(typeConstructor,
+                                StringConstant.v(type.toString()))),
+                        insertPoint);
+            }
             return typeLocal;
         } else if(type instanceof ptolemy.data.type.ArrayType) {
             // recurse
-            SootClass typeClass =
-                Scene.v().loadClassAndSupport("ptolemy.data.type.ArrayType");
             SootMethod typeConstructor =
-                SootUtilities.searchForMethodByName(typeClass, "<init>");
+                SootUtilities.searchForMethodByName(arrayTypeClass, "<init>");
             Local elementTypeLocal = buildConstantTypeLocal(body, insertPoint,
                     ((ptolemy.data.type.ArrayType)type).getElementType());
             Local typeLocal = Jimple.v().newLocal("type_arrayOf" +
                     elementTypeLocal.getName(),
-                    RefType.v(typeClass));
+                    RefType.v(arrayTypeClass));
             body.getLocals().add(typeLocal);
             units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
-                    Jimple.v().newNewExpr(RefType.v(typeClass))),
+                    Jimple.v().newNewExpr(RefType.v(arrayTypeClass))),
                     insertPoint);
             units.insertBefore(Jimple.v().newInvokeStmt(
                     Jimple.v().newSpecialInvokeExpr(typeLocal,
@@ -381,8 +446,6 @@ public class PtolemyUtilities {
             // has no data.
             return RefType.v("ptolemy.data.Token");
         } else if(type instanceof ptolemy.data.type.BaseType) {
-            //   System.out.println("className = " + 
-            // ((ptolemy.data.type.BaseType)type).getTokenClass().getName());
             ptolemy.data.type.BaseType baseType = 
                 (ptolemy.data.type.BaseType)type;
             return RefType.v(baseType.getTokenClass().getName());
@@ -421,6 +484,75 @@ public class PtolemyUtilities {
         }
     }
 
+    /** Attempt to determine the constant value of the given local, which is assumed to have a variable
+     *  type.  Walk backwards through all the possible places that the local may have been defined and
+     *  try to symbolically evaluate the value of the variable. If the value can be determined, 
+     *  then return it, otherwise throw an exception
+     */ 
+    public static ptolemy.data.type.Type getTypeValue(SootMethod method, Local local, 
+            Unit location, LocalDefs localDefs) {
+        List definitionList = localDefs.getDefsOfAt(local, location);
+        if(definitionList.size() == 1) {
+            DefinitionStmt stmt = (DefinitionStmt)definitionList.get(0);
+            Value value = (Value)stmt.getRightOp();
+            if(value instanceof Local) {
+                return getTypeValue(method, (Local)value,
+                        stmt, localDefs);
+            } else if(value instanceof CastExpr) {
+                return getTypeValue(method, (Local)((CastExpr)value).getOp(),
+                        stmt, localDefs);
+            } else if(value instanceof FieldRef) {
+                SootField field = ((FieldRef)value).getField();
+                if(field.equals(unknownTypeField)) {
+                    return ptolemy.data.type.BaseType.UNKNOWN;
+                } else if(field.equals(booleanTypeField)) {
+                    return ptolemy.data.type.BaseType.BOOLEAN;
+                } else if(field.equals(booleanMatrixTypeField)) {
+                    return ptolemy.data.type.BaseType.BOOLEAN_MATRIX;
+                } else if(field.equals(complexTypeField)) {
+                    return ptolemy.data.type.BaseType.COMPLEX;
+                } else if(field.equals(complexMatrixTypeField)) {
+                    return ptolemy.data.type.BaseType.COMPLEX_MATRIX;
+                } else if(field.equals(doubleTypeField)) {
+                    return ptolemy.data.type.BaseType.DOUBLE;
+                } else if(field.equals(doubleMatrixTypeField)) {
+                    return ptolemy.data.type.BaseType.DOUBLE_MATRIX;
+                } else if(field.equals(fixTypeField)) {
+                    return ptolemy.data.type.BaseType.FIX;
+                } else if(field.equals(fixMatrixTypeField)) {
+                    return ptolemy.data.type.BaseType.FIX_MATRIX;
+                } else if(field.equals(intTypeField)) {
+                    return ptolemy.data.type.BaseType.INT;
+                } else if(field.equals(intMatrixTypeField)) {
+                    return ptolemy.data.type.BaseType.INT_MATRIX;
+                } else if(field.equals(longTypeField)) {
+                    return ptolemy.data.type.BaseType.LONG;
+                } else if(field.equals(longMatrixTypeField)) {
+                    return ptolemy.data.type.BaseType.LONG_MATRIX;
+                } else if(field.equals(objectTypeField)) {
+                    return ptolemy.data.type.BaseType.OBJECT;
+                } else if(field.equals(stringTypeField)) {
+                    return ptolemy.data.type.BaseType.STRING;
+                } else {
+                    throw new RuntimeException("Unknown type field: " + field);
+                }                    
+            } else if(value instanceof NullConstant) {
+                // If we get to an assignment from null, then the 
+                // attribute statically evaluates to null.
+                return null;
+            } else {
+                throw new RuntimeException("Unknown type of value: " + value + " in " + method);
+            }
+        } else {
+            String string = "More than one definition of = " + local + "\n";
+            for(Iterator i = definitionList.iterator();
+                i.hasNext();) {
+                string += "Definition = " + i.next().toString();
+            }
+            throw new RuntimeException(string);
+        }
+    }
+ 
     /** Inline the given invocation expression, given knowledge that the
      *  method was invoked on the given named object.  In general, 
      *  methods that return information that can be determined from the
@@ -443,19 +575,44 @@ public class PtolemyUtilities {
         }
     }
 
-    public static void inlineTypeLatticeMethods(JimpleBody body,
-            Unit unit, ValueBox box, StaticInvokeExpr expr, Map objectToTokenType) {
-        SootMethod tokenCompareMethod = PtolemyUtilities.typeLatticeClass.getMethod(
+    public static void inlineTypeLatticeMethods(SootMethod method,
+            Unit unit, ValueBox box, StaticInvokeExpr expr, 
+            Map objectToTokenType, LocalDefs localDefs) {
+        SootMethod tokenTokenCompareMethod = PtolemyUtilities.typeLatticeClass.getMethod(
                 "int compare(ptolemy.data.Token,ptolemy.data.Token)");
-        if(expr.getMethod().equals(tokenCompareMethod)) {
+        SootMethod tokenTypeCompareMethod = PtolemyUtilities.typeLatticeClass.getMethod(
+                "int compare(ptolemy.data.Token,ptolemy.data.type.Type)");
+        SootMethod typeTokenCompareMethod = PtolemyUtilities.typeLatticeClass.getMethod(
+                "int compare(ptolemy.data.type.Type,ptolemy.data.Token)");
+        SootMethod typeTypeCompareMethod = PtolemyUtilities.typeLatticeClass.getMethod(
+                "int compare(ptolemy.data.type.Type,ptolemy.data.type.Type)");
+
+        ptolemy.data.type.Type type1;
+        ptolemy.data.type.Type type2;
+        if(expr.getMethod().equals(tokenTokenCompareMethod)) {
             Local tokenLocal1 = (Local)expr.getArg(0);
             Local tokenLocal2 = (Local)expr.getArg(1);
-            ptolemy.data.type.Type type1 = (ptolemy.data.type.Type)objectToTokenType.get(tokenLocal1);
-            ptolemy.data.type.Type type2 = (ptolemy.data.type.Type)objectToTokenType.get(tokenLocal2);
-            box.setValue(IntConstant.v(TypeLattice.compare(type1, type2)));
+            type1 = (ptolemy.data.type.Type)objectToTokenType.get(tokenLocal1);
+            type2 = (ptolemy.data.type.Type)objectToTokenType.get(tokenLocal2);
+        } else if(expr.getMethod().equals(typeTokenCompareMethod)) {
+            Local typeLocal = (Local)expr.getArg(0);
+            Local tokenLocal = (Local)expr.getArg(1);
+            type1 = getTypeValue(method, typeLocal, unit, localDefs);
+            type2 = (ptolemy.data.type.Type)objectToTokenType.get(tokenLocal);
+        } else if(expr.getMethod().equals(tokenTypeCompareMethod)) {
+            Local tokenLocal = (Local)expr.getArg(0);
+            Local typeLocal = (Local)expr.getArg(1);
+            type1 = (ptolemy.data.type.Type)objectToTokenType.get(tokenLocal);
+            type2 = getTypeValue(method, typeLocal, unit, localDefs);
+        } else if(expr.getMethod().equals(typeTypeCompareMethod)) {
+            Local typeLocal1 = (Local)expr.getArg(0);
+            Local typeLocal2 = (Local)expr.getArg(1);
+            type1 = getTypeValue(method, typeLocal1, unit, localDefs);
+            type2 = getTypeValue(method, typeLocal2, unit, localDefs);
         } else {
             throw new RuntimeException("attempt to inline unhandled typeLattice method: " + unit);
         }
+        box.setValue(IntConstant.v(TypeLattice.compare(type1, type2)));
     }
     
     /** Inline the given invocation expression, given knowledge that the
@@ -576,6 +733,9 @@ public class PtolemyUtilities {
 
     // Soot Method representing the ArrayToken(Token[]) constructor.
     public static SootMethod arrayTokenConstructor;
+    
+    // Soot class representing the ptolemy.data.type.ArrayType class.
+    public static SootClass arrayTypeClass;
 
     // Soot Method representing NamedObj.attributeChanged().
     public static SootMethod attributeChangedMethod;
@@ -586,15 +746,29 @@ public class PtolemyUtilities {
     // Soot Type representing the ptolemy.kernel.util.Settable class.
     public static Type attributeType;
 
+    // Soot Class representing the ptolemy.data.type.BaseType class.
+    public static SootClass baseTypeClass;
+
+    public static SootField booleanTypeField;
+    public static SootField booleanMatrixTypeField;
+    public static SootField complexTypeField;
+    public static SootField complexMatrixTypeField;
+   
     // Soot class representing the ptolemy.actor.TypedCompositeActor class.
     public static SootClass compositeActorClass;
 
-    // Soot class representing the ptolemy.kernel.Entity class.
+    public static SootField doubleTypeField;
+    public static SootField doubleMatrixTypeField;
+
+     // Soot class representing the ptolemy.kernel.Entity class.
     public static SootClass entityClass;
 
     // Soot class representing the ptolemy.actor.Executable interface.
     public static SootClass executableInterface;
 
+    public static SootField fixTypeField;
+    public static SootField fixMatrixTypeField;
+  
     // SootMethod representing
     // ptolemy.kernel.util.Attribute.getAttribute();
     public static SootMethod getAttributeMethod;
@@ -614,12 +788,19 @@ public class PtolemyUtilities {
     // SootMethod representing ptolemy.kernel.ComponentPort.insertLink().
     public static SootMethod insertLinkMethod;
 
+    public static SootField intTypeField;
+    public static SootField intMatrixTypeField;
+    public static SootField longTypeField;
+    public static SootField  longMatrixTypeField;
+    
     // SootClass representing ptolemy.kernel.util.NamedObj.
     public static SootClass namedObjClass;
 
     // SootClass representing java.lang.Object.
     public static SootClass objectClass;
     
+    public static SootField objectTypeField;
+
     // Soot Class representing the ptolemy.kernel.ComponentPort class.
     public static SootClass portClass;
 
@@ -648,6 +829,8 @@ public class PtolemyUtilities {
     //The soot class representing java.lang.system 
     public static SootClass stringClass;
     
+    public static SootField stringTypeField;
+    
     //The soot class representing java.lang.system 
     public static SootClass systemClass;
 
@@ -661,8 +844,11 @@ public class PtolemyUtilities {
 
     public static SootClass typeClass;
 
+    public static SootMethod typeConvertMethod;
+
     public static SootClass typeLatticeClass;
  
+    public static SootField unknownTypeField;
     public static SootClass variableClass;
 
     public static SootMethod variableConstructorWithoutToken;
@@ -752,6 +938,30 @@ public class PtolemyUtilities {
 
         typeClass =
             Scene.v().loadClassAndSupport("ptolemy.data.type.Type");
+        typeConvertMethod =
+            typeClass.getMethod("ptolemy.data.Token convert(ptolemy.data.Token)");
+
+        arrayTypeClass =
+            Scene.v().loadClassAndSupport("ptolemy.data.type.ArrayType");
+        baseTypeClass =
+                Scene.v().loadClassAndSupport("ptolemy.data.type.BaseType");
+        unknownTypeField = baseTypeClass.getFieldByName("UNKNOWN");
+        booleanTypeField = baseTypeClass.getFieldByName("BOOLEAN");
+        booleanMatrixTypeField = 
+            baseTypeClass.getFieldByName("BOOLEAN_MATRIX");
+        complexTypeField = baseTypeClass.getFieldByName("COMPLEX");
+        complexMatrixTypeField = 
+            baseTypeClass.getFieldByName("COMPLEX_MATRIX");
+        doubleTypeField = baseTypeClass.getFieldByName("DOUBLE");
+        doubleMatrixTypeField = baseTypeClass.getFieldByName("DOUBLE_MATRIX");
+        fixTypeField = baseTypeClass.getFieldByName("FIX");
+        fixMatrixTypeField = baseTypeClass.getFieldByName("FIX_MATRIX");
+        intTypeField = baseTypeClass.getFieldByName("INT");
+        intMatrixTypeField = baseTypeClass.getFieldByName("INT_MATRIX");
+        longTypeField = baseTypeClass.getFieldByName("LONG");
+        longMatrixTypeField = baseTypeClass.getFieldByName("LONG_MATRIX");
+        objectTypeField = baseTypeClass.getFieldByName("OBJECT");
+        stringTypeField = baseTypeClass.getFieldByName("STRING");
 
         typeLatticeClass =
             Scene.v().loadClassAndSupport("ptolemy.data.type.TypeLattice");

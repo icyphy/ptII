@@ -31,6 +31,7 @@ import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.data.*;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.Typeable;
+import ptolemy.copernicus.kernel.ActorTransformer;
 import ptolemy.copernicus.kernel.SootUtilities;
 
 
@@ -78,24 +79,29 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                 _model, attributeToFieldMap);
         classToObjectMap.put(Scene.v().getMainClass(), _model);
        
-        // Loop over all the actor instance classes and create
+        // Loop over all the actor instance classes and get the
         // attribute fields.
         for(Iterator i = _model.entityList().iterator();
             i.hasNext();) {
             Entity entity = (Entity)i.next();
-            String className = Options.getString(options, "targetPackage")
-                + "." + entity.getName();
-            SootClass entityClass = Scene.v().loadClassAndSupport(className);
+            String className = 
+                ActorTransformer.getInstanceClassName(entity, options);
+            SootClass entityClass = 
+                Scene.v().loadClassAndSupport(className);
             _getAttributeFields(entityClass, entity, entity,
                     attributeToFieldMap);
             classToObjectMap.put(entityClass, entity);
         }
 
-        // Loop over all the classes and replace getAttribute calls.
-        for(Iterator i = Scene.v().getApplicationClasses().iterator();
+        // Loop over all the entity classes and replace getAttribute calls.
+       for(Iterator i = _model.entityList().iterator();
             i.hasNext();) {
-            SootClass theClass = (SootClass)i.next();
-            
+            Entity entity = (Entity)i.next();
+            String className = 
+                ActorTransformer.getInstanceClassName(entity, options);
+            SootClass theClass = 
+                Scene.v().loadClassAndSupport(className);
+       
             // replace calls to getAttribute with field references.
             // inline calls to parameter.getToken and getExpression
             for(Iterator methods = theClass.getMethods().iterator();

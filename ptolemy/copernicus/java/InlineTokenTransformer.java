@@ -54,6 +54,7 @@ import ptolemy.moml.*;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.data.*;
 import ptolemy.data.expr.Variable;
+import ptolemy.copernicus.kernel.ActorTransformer;
 import ptolemy.copernicus.kernel.SootUtilities;
 
 
@@ -82,10 +83,11 @@ public class InlineTokenTransformer extends SceneTransformer {
     }
 
     public String getDeclaredOptions() { 
-        return super.getDeclaredOptions() + " deep"; 
+        return super.getDeclaredOptions() + " debug deep"; 
     }
 
     protected void internalTransform(String phaseName, Map options) {
+        boolean debug = Options.getBoolean(options, "debug");
         int localCount = 0;
         System.out.println("InlineTokenTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
@@ -98,13 +100,15 @@ public class InlineTokenTransformer extends SceneTransformer {
         for(Iterator i = _model.entityList().iterator();
             i.hasNext();) {
             Entity entity = (Entity)i.next();
-            String className = Options.getString(options, "targetPackage")
-                + "." + entity.getName();
-            SootClass entityClass = Scene.v().loadClassAndSupport(className);
+            String className = 
+                ActorTransformer.getInstanceClassName(entity, options);
+            SootClass entityClass = 
+                Scene.v().loadClassAndSupport(className);
       
-            System.out.println("class = " + entityClass);
-            // replace calls to getAttribute with field references.
-            // inline calls to parameter.getToken and getExpression
+            if(debug) System.out.println("class = " + entityClass);
+         
+            // Inline calls to token methods that can be statically 
+            // evaluated.
             for(Iterator methods = entityClass.getMethods().iterator();
                 methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
@@ -123,18 +127,12 @@ public class InlineTokenTransformer extends SceneTransformer {
                     //FIXME: what if no thisLocal?
                     continue;
                 }
-                /*Jimple.v().newLocal("this", 
-                        RefType.v(entityClass));
-                body.getLocals().add(thisLocal);
-                body.getUnits().addFirst(Jimple.v().newIdentityStmt(thisLocal, 
-                        Jimple.v().newThisRef((RefType)thisLocal.getType())));
-                */
 
-                System.out.println("method = " + method);
+                if(debug) System.out.println("method = " + method);
 
                 CompleteUnitGraph unitGraph = 
                     new CompleteUnitGraph(body);
-                // this will help us figure out where locals are defined.
+                // This will help us figure out where locals are defined.
                 SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
                 SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, localDefs);
                 Hierarchy hierarchy = Scene.v().getActiveHierarchy();
@@ -148,7 +146,7 @@ public class InlineTokenTransformer extends SceneTransformer {
                         Value value = box.getValue();
                         if(value instanceof InstanceInvokeExpr) {
                             InstanceInvokeExpr r = (InstanceInvokeExpr)value;
-                            //       System.out.println("invoking = " + r.getMethod());
+                            // System.out.println("invoking = " + r.getMethod());
                          
                             if(r.getBase().getType() instanceof RefType) {
                                 RefType type = (RefType)r.getBase().getType();
@@ -168,23 +166,45 @@ public class InlineTokenTransformer extends SceneTransformer {
                                         break;
                                     }
                                 }
-
+                                
                                 if(SootUtilities.derivesFrom(type.getSootClass(), 
                                         PtolemyUtilities.tokenClass)) {
+
                                     // if we are invoking a method on a token class, then
                                     // attempt to get the constant value of the token.
                                     Token token = getTokenValue(entity, (Local)r.getBase(), unit, localDefs);
                                     //  System.out.println("reference to Token with value = " + token);
                                    
-                                    // If we have a token and all the args are constant valued, then
+                                    // If we have a token and all the args are constant valued, 
+                                    // and the method returns a Constant, or a token, then
                                     if(token != null && argCount == r.getArgCount()) {
+                                        if(debug) {
+                                            System.out.println("statically invoking " + r);
+                                            for(int j = 0; j < r.getArgCount(); j++) {
+                                                System.out.println("argument " + j + " = " + argValues[j]);
+                                            }
+                                        }
                                         // reflect and invoke the same method on our token
-                                        Constant constant = 
+                                        Object object = 
                                             SootUtilities.reflectAndInvokeMethod(token, r.getMethod(), argValues);
                                         //      System.out.println("method result  = " + constant);
                                         
-                                        // replace the method invocation.
-                                        box.setValue(constant);
+                                        Type returnType = r.getMethod().getReturnType();
+                                        if(returnType instanceof RefType) {
+                                            SootClass returnClass = ((RefType)returnType).getSootClass();
+                                            if(SootUtilities.derivesFrom(returnClass,
+                                                    PtolemyUtilities.tokenClass)) {
+                                                Local local = PtolemyUtilities.buildConstantTokenLocal(body, 
+                                                        unit, (Token)object, "token");
+                                                box.setValue(local);
+                                            }
+                                        } else if(returnType instanceof BaseType &&
+                                                  !(returnType instanceof VoidType)) {
+                                            // Must be a primitive type...
+                                            Constant constant =
+                                                SootUtilities.convertArgumentToConstantValue(object);
+                                            box.setValue(constant);
+                                        }
                                     } 
                                 }
                             }

@@ -142,13 +142,11 @@ public class TypeSpecializer extends SceneTransformer {
             Map map = _updateTypes(debug, theClass, objectToInequalityTerm);
             return map;
         } else {
-            if(debug) {
-                System.out.println("Unsatisfied Inequalities:");
-                Iterator inequalities = solver.unsatisfiedInequalities();
-                while (inequalities.hasNext()) {
-                    System.out.println("Inequality: " 
-                            + inequalities.next().toString());
-                }
+            System.out.println("Unsatisfied Inequalities:");
+            Iterator inequalities = solver.unsatisfiedInequalities();
+            while (inequalities.hasNext()) {
+                System.out.println("Inequality: " 
+                        + inequalities.next().toString());
             }
             throw new RuntimeException("NO Type solution found!");
         }
@@ -405,8 +403,10 @@ public class TypeSpecializer extends SceneTransformer {
             if(!SootUtilities.derivesFrom(newType.getSootClass(), tokenType.getSootClass())) {
                 // If the new Type is less specific, in Java terms, than what we 
                 // had before, then the resulting code is likely not correct.
-                throw new RuntimeException("Warning! Resolved type of " + object + 
+                // FIXME: hack to get around the bogus type lattice.  This should be an exception.
+                System.out.println("Warning! Resolved type of " + object + 
                         " to " + newType + " which is more general than the old type " + type);
+                newType = tokenType;
             }
             
             // create a new type isomorphic with the old type.
@@ -448,6 +448,7 @@ public class TypeSpecializer extends SceneTransformer {
         } else if(value instanceof InstanceInvokeExpr) {
             InstanceInvokeExpr r = (InstanceInvokeExpr)value;
             String methodName = r.getMethod().getName();
+            //        System.out.println("invokeExpr = " + r);
             SootClass baseClass = ((RefType)r.getBase().getType()).getSootClass();
             InequalityTerm baseTerm =
                 (InequalityTerm)objectToInequalityTerm.get(r.getBase());
@@ -617,14 +618,17 @@ public class TypeSpecializer extends SceneTransformer {
                 // The type of the argument must be greater than the type of the
                 // cast.
                 // The return type will be the type of the cast.
-                InequalityTerm baseTerm = (InequalityTerm)objectToInequalityTerm.get(
-                        castExpr.getOp());
+                InequalityTerm baseTerm = new VariableTerm(
+                        PtolemyUtilities.getTokenTypeForSootType(tokenType),
+                        tokenType);
+                    //(InequalityTerm)objectToInequalityTerm.get(
+                    //     castExpr.getOp());
                 InequalityTerm typeTerm = new ConstantTerm(
                         PtolemyUtilities.getTokenTypeForSootType(tokenType),
-                        castExpr);
+                        tokenType);
                 //System.out.println("baseTerm = " + baseTerm);
                 //System.out.println("typeTerm = " + typeTerm);
-                _addInequality(debug, solver, typeTerm, baseTerm);
+                 _addInequality(debug, solver, typeTerm, baseTerm);
                 return baseTerm;
             } else {
                 // Otherwise there is nothing to be done.
@@ -798,8 +802,8 @@ public class TypeSpecializer extends SceneTransformer {
 
         public void setValue(Object e) throws IllegalActionException {
 	    if (!_declaredType.isSubstitutionInstance((ptolemy.data.type.Type)e)) {
-	    	throw new RuntimeException("Variable$TypeTerm.setValue: "
-		        + "Cannot update the type of this variable to the "
+	    	throw new RuntimeException("VariableTerm.setValue: "
+		        + "Cannot update the type of " + this + " to the "
 			+ "new type."
                         + ", Variable type: " + _declaredType.toString()
 			+ ", New type: " + e.toString());
