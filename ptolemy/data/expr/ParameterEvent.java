@@ -49,15 +49,15 @@ public class ParameterEvent {
     ///////////////////////////////////////////////////////////////////
     ////                     public static fields                  ////
 
-    /** The Parameter changed as a new Token was placed directly 
-     *  in it.
-     */
-    public static final int SET_FROM_TOKEN = 1;
-
     /** The Parameter changed as a new expression was placed in 
      *  it and evaluated to a new Token.
      */
-    public static final int SET_FROM_EXPRESSION = 2;
+    public static final int SET_FROM_EXPRESSION = 1;
+
+    /** The Parameter changed as a new Token was placed directly 
+     *  in it.
+     */
+    public static final int SET_FROM_TOKEN = 2;
 
     /** The Parameter changed as another Parameter, which the 
      *  expression in the Parameter referenced, changed.
@@ -117,8 +117,8 @@ public class ParameterEvent {
      * a preceding underscore for consistency with AWT.
      */
     private int id;
-
+    
     /** The Parameter that was removed or changed.
      */
-     private Parameter _parameter;
+    private Parameter _parameter;
 }
