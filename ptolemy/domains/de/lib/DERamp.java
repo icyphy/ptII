@@ -137,7 +137,8 @@ public class DERamp extends TypedAtomicActor {
         // FIXME: this might not work if user change the parameter during
         // simulation.
         if (compare == CPO.INCOMPARABLE) {
-            throw new InvalidStateException("Bad parameter type in DERamp.initialize()");
+            throw new InvalidStateException(
+                    "Bad parameter type in DERamp.initialize()");
         }
         if (compare == CPO.LOWER) {
             output.setTypeEquals(stepClass);
