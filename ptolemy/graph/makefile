@@ -41,10 +41,6 @@ ME =		java/pt/graph
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
-# The graph and CPO classes use 1.2 features.  This line will go away
-# after all the other packages use 1.2.
-JAVAHOME = /opt/jdk1.2latest
-
 # Flags to pass to javadoc. (Override value in tycho.mk)
 JDOCFLAGS = 	-author -version -public
 
