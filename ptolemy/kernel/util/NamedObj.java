@@ -73,11 +73,11 @@ public class NamedObj {
      * @returns a reference to the list of parameters.  
      */
     public ParamList getParam(){
-      	  if( _paramList == null){
-              _paramList = new ParamList();
-          }
-	  return _paramList;
-      }
+        if( _paramList == null){
+            _paramList = new ParamList();
+        }
+        return _paramList;
+    }
 
 
     //////////////////////////////////////////////////////////////////////////
@@ -92,6 +92,6 @@ public class NamedObj {
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
-     private String _name;
-     private ParamList _paramList = null;
+    private String _name;
+    private ParamList _paramList = null;
 }
