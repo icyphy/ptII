@@ -404,6 +404,7 @@ TOKEN : /* Arithmetic operators */
   |	< MULTIPLY: "*" >
   |	< DIVIDE: "/" >
   |     < MODULO: "%" >
+  |     < POWER: "^" >
 }
 
 TOKEN : /* Relational operators */
@@ -424,7 +425,7 @@ TOKEN : /* Boolean & bitwise operators */
   |     < BITWISE_NOT: "~" >                          
   |	< AND: "&" >
   |     < OR: "|" >
-  |     < XOR: "^" >  
+  |     < XOR: "#" >  
 
 }
 
@@ -872,7 +873,7 @@ void term()       :
 /*@egen*/
    (
            unary() ( 
-                   ( x = <MULTIPLY> | x = <DIVIDE> | x = <MODULO> ) unary()
+                   ( x = <MULTIPLY> | x = <DIVIDE> | x = <MODULO> | x = <POWER> ) unary()
                    {
                        jjtn001._lexicalTokens.addLast(x);
                    }

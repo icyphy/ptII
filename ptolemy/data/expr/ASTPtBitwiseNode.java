@@ -110,7 +110,7 @@ public class ASTPtBitwiseNode extends ASTPtRootNode {
                         result = new LongToken(arg1 & arg2);
                     } else if (op.equals("|")) {
                         result = new LongToken(arg1 | arg2);
-                    } else if (op.equals("^")) {
+                    } else if (op.equals("#")) {
                         result = new LongToken(arg1 ^ arg2);
                     } else {
                         throw new IllegalActionException(
@@ -124,7 +124,7 @@ public class ASTPtBitwiseNode extends ASTPtRootNode {
                         result = new IntToken(arg1 & arg2);
                     } else if (op.equals("|")) {
                         result = new IntToken(arg1 | arg2);
-                    } else if (op.equals("^")) {
+                    } else if (op.equals("#")) {
                         result = new IntToken(arg1 ^ arg2);
                     } else {
                         throw new IllegalActionException(

@@ -44,30 +44,31 @@ public interface PtParserConstants {
   int MULTIPLY = 12;
   int DIVIDE = 13;
   int MODULO = 14;
-  int GT = 15;
-  int LT = 16;
-  int GTE = 17;
-  int LTE = 18;
-  int NOTEQUALS = 19;
-  int EQUALS = 20;
-  int COND_AND = 21;
-  int COND_OR = 22;
-  int BOOL_NOT = 23;
-  int BITWISE_NOT = 24;
-  int AND = 25;
-  int OR = 26;
-  int XOR = 27;
-  int INTEGER = 28;
-  int DECIMAL_LITERAL = 29;
-  int HEX_LITERAL = 30;
-  int OCTAL_LITERAL = 31;
-  int EXPONENT = 32;
-  int DOUBLE = 33;
-  int COMPLEX = 34;
-  int BOOLEAN = 35;
-  int ID = 36;
-  int LETTER = 37;
-  int STRING = 38;
+  int POWER = 15;
+  int GT = 16;
+  int LT = 17;
+  int GTE = 18;
+  int LTE = 19;
+  int NOTEQUALS = 20;
+  int EQUALS = 21;
+  int COND_AND = 22;
+  int COND_OR = 23;
+  int BOOL_NOT = 24;
+  int BITWISE_NOT = 25;
+  int AND = 26;
+  int OR = 27;
+  int XOR = 28;
+  int INTEGER = 29;
+  int DECIMAL_LITERAL = 30;
+  int HEX_LITERAL = 31;
+  int OCTAL_LITERAL = 32;
+  int EXPONENT = 33;
+  int DOUBLE = 34;
+  int COMPLEX = 35;
+  int BOOLEAN = 36;
+  int ID = 37;
+  int LETTER = 38;
+  int STRING = 39;
 
   int DEFAULT = 0;
   int IN_SINGLE_LINE_COMMENT = 1;
@@ -90,6 +91,7 @@ public interface PtParserConstants {
     "\"*\"",
     "\"/\"",
     "\"%\"",
+    "\"^\"",
     "\">\"",
     "\"<\"",
     "\">=\"",
@@ -102,7 +104,7 @@ public interface PtParserConstants {
     "\"~\"",
     "\"&\"",
     "\"|\"",
-    "\"^\"",
+    "\"#\"",
     "<INTEGER>",
     "<DECIMAL_LITERAL>",
     "<HEX_LITERAL>",
